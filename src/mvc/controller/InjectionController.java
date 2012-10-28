@@ -17,7 +17,10 @@ import mvc.model.database.Table;
 import mvc.view.GUI;
 
 
-
+/**
+ * Controller in the MVC pattern, is involved mainly when the user makes actions
+ * on the GUI: uses Connect button, validates a database, table or values
+ */
 public class InjectionController {
 
 	public InjectionModel injectionModel;
@@ -32,6 +35,10 @@ public class InjectionController {
 //		model.addObserver(console);
 	}
 	
+	/**
+	 * Send each parameters from the GUI to the model in order to start the preparation,
+	 * the injection process is started in a new thread via function inputValidation()
+	 */
 	public void controlInput(String getData, String postData, String cookieData, String headerData, String method, 
 			boolean isProxyfied, String proxyAdress, String proxyPort) {
 		try {
@@ -55,7 +62,7 @@ public class InjectionController {
 			injectionModel.headerData = headerData;
 			injectionModel.method = method;
 			
-			injectionModel.etape = 0;
+			injectionModel.securitySteps = 0;
 			
 			new Thread(new Runnable() {
 				@Override
@@ -70,7 +77,14 @@ public class InjectionController {
 		}
 	}
 
+	/**
+	 * Process the user choice on the database list: start the search for tables
+	 * @param databaseSelected corresponding DB model object selected by user
+	 * @return Interruptable sent upward to the view, allows the start/pause/stop actions from the view
+	 */
 	public Interruptable selectDatabase(final Database databaseSelected){
+		// Dirty object definition that allows to send the object itself to another function
+		// in his own body
 		final Interruptable[] interruptable = new Interruptable[1];
 		
 		interruptable[0] = new Interruptable(){
@@ -94,7 +108,14 @@ public class InjectionController {
 		return interruptable[0];
 	}
 
+	/**
+	 * Process the user choice on the table list: start the search for columns
+	 * @param selectedTable corresponding DB model object selected by user
+	 * @return Interruptable sent upward to the view, allows the start/pause/stop actions from the view
+	 */
 	public Interruptable selectTable(final Table selectedTable) {
+		// Dirty object definition that allows to send the object itself to another function
+		// in his own body
 		final Interruptable[] interruptable = new Interruptable[1];
 		
 		interruptable[0] = new Interruptable(){
@@ -116,7 +137,14 @@ public class InjectionController {
 		return interruptable[0];
 	}
 	
+	/**
+	 * Process the user choice on the column list: start the search for values
+	 * @param databaseSelected corresponding DB model object selected by user
+	 * @return Interruptable sent upward to the view, allows the start/pause/stop actions from the view
+	 */
 	public Interruptable selectValues(final List<Column> values) {
+		// Dirty object definition that allows to send the object itself to another function
+		// in his own body
 		final Interruptable[] interruptable = new Interruptable[1];
 		
 		interruptable[0] = new Interruptable(){
