@@ -891,9 +891,11 @@ firstSuccessPageSource,
 
 	/**
 	 * Get all data from a SQL request (remember that data will often been cut, we need to reach ALL the data)
-	 * We expect the following well formed
-	 * => hh[0-9A-F]*jj[0-9A-F]*c?hhgghh[0-9A-F]*jj[0-9A-F]*c?hh
-	 * We must check if that long line is cut, and where it is cut,
+	 * We expect the following well formed line
+	 * => hh[0-9A-F]*jj[0-9A-F]*c?hhgghh[0-9A-F]*jj[0-9A-F]*c?hhg...hi
+	 * We must check if that long line is cut, and where it is cut, basically we will move our position in a virtual 2D array,
+	 * and use LIMIT and MID to move the cursor ; LIMIT skips whole line (useful if result contains 1 or more complete row) ; and 
+	 * MID skips characters in a line (useful if result contains less than 1 row)
 	 * The process can be interrupted by the user (stop/pause)
 	 */
 	private class Stoppable_loopIntoResults extends Stoppable{
