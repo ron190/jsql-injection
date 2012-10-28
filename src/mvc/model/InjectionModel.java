@@ -470,6 +470,10 @@ firstSuccessPageSource,
 		return Integer.toString(lengthFields[lengthFields.length-1][1]);
 	}
 
+	/**
+	 * Build a simple error based query, and verify if successful
+	 * Check a lot of locale strings
+	 */
 	private boolean isErrorBasedInjectable() {		
 		String performanceSourcePage = this.inject(
 			this.insertionCharacter + 
