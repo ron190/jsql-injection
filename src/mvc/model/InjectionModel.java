@@ -512,11 +512,19 @@ firstSuccessPageSource,
 				;
 	}
 
+	/**
+	 * Test if blind works, can be stopped
+	 * @return
+	 */
 	private boolean isBlindInjectable() throws PreparationException {
-		blindModel = new BlindInjection(this, this.initialUrl+this.getData+this.insertionCharacter); // forme une url GET, mais devrait être générique (post/cookie/header)
+		blindModel = new BlindInjection(this, this.initialUrl+this.getData+this.insertionCharacter);
 		return blindModel.isBlindInjectable();
 	}
 
+	/**
+	 * Test if time based works, can be stopped
+	 * @return
+	 */
 	private boolean isTimeBasedInjectable() throws PreparationException {
 		timeModel = new TimeInjection(this, this.initialUrl+this.getData+this.insertionCharacter);
 		return timeModel.isTimeInjectable();
