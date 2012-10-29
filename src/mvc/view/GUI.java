@@ -59,8 +59,8 @@ public class GUI extends JFrame implements Observer {
 		super("jSQL Injection");
 
         try {
-			URL urlSmall = this.getClass().getResource("/database-icon-16x16.png");
-			URL urlBig = this.getClass().getResource("/database-icon-32x32.png");
+			URL urlSmall = this.getClass().getResource("/images/database-icon-16x16.png");
+			URL urlBig = this.getClass().getResource("/images/database-icon-32x32.png");
 	        ArrayList<Image> images = new ArrayList<Image>();
 			images.add( ImageIO.read(urlBig) );
 	        images.add( ImageIO.read(urlSmall) );
@@ -69,9 +69,9 @@ public class GUI extends JFrame implements Observer {
 			e.printStackTrace();
 		}
 
-		UIManager.put("Tree.leafIcon", new ImageIcon(getClass().getResource("/server_database.png")));
-		UIManager.put("Tree.openIcon", new ImageIcon(getClass().getResource("/server_database.png")));
-		UIManager.put("Tree.closedIcon", new ImageIcon(getClass().getResource("/server_database.png")));
+		UIManager.put("Tree.leafIcon", new ImageIcon(getClass().getResource("/images/server_database.png")));
+		UIManager.put("Tree.openIcon", new ImageIcon(getClass().getResource("/images/server_database.png")));
+		UIManager.put("Tree.closedIcon", new ImageIcon(getClass().getResource("/images/server_database.png")));
 		
 		model = newModel;
 		model.addObserver(this);
@@ -284,16 +284,16 @@ public class GUI extends JFrame implements Observer {
 			valuesTabbedPane.setTabComponentAt(valuesTabbedPane.indexOfComponent(newTableJPanel), header);
 			
 		}else if( "add-normal".equals(""+oEvent) ){
-			statusPanel.labelNormal.setIcon(new ImageIcon(getClass().getResource("/gradeit_icon.png")));
+			statusPanel.labelNormal.setIcon(new ImageIcon(getClass().getResource("/images/gradeit_icon.png")));
 			
 		}else if( "add-errorbased".equals(""+oEvent) ){
-			statusPanel.labelErrorBased.setIcon(new ImageIcon(getClass().getResource("/gradeit_icon.png")));
+			statusPanel.labelErrorBased.setIcon(new ImageIcon(getClass().getResource("/images/gradeit_icon.png")));
 			
 		}else if( "add-blind".equals(""+oEvent) ){
-			statusPanel.labelBlind.setIcon(new ImageIcon(getClass().getResource("/gradeit_icon.png")));
+			statusPanel.labelBlind.setIcon(new ImageIcon(getClass().getResource("/images/gradeit_icon.png")));
 			
 		}else if( "add-timebased".equals(""+oEvent) ){
-			statusPanel.labelTimeBased.setIcon(new ImageIcon(getClass().getResource("/gradeit_icon.png")));
+			statusPanel.labelTimeBased.setIcon(new ImageIcon(getClass().getResource("/images/gradeit_icon.png")));
 			
 		}else if( "end-preparation".equals(""+oEvent) ){
 			inputPanel.submitButton.setText("Connect"); // pas de pb rencontré: stop changé en submit

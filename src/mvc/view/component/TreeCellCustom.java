@@ -54,8 +54,8 @@ public class TreeCellCustom extends JPanel {
 	public JLabel label = new JLabel();
 	public JLabel loader = new JLabel();
 	public JCheckBox checkBox = new JCheckBox();
-	public JButton button = new JButton(new ImageIcon(getClass().getResource("/play.png")));
-	public JButton buttonPause = new JButton(new ImageIcon(getClass().getResource("/pause.png")));
+	public JButton button = new JButton(new ImageIcon(getClass().getResource("/images/play.png")));
+	public JButton buttonPause = new JButton(new ImageIcon(getClass().getResource("/images/pause.png")));
 	public JProgressBar progressBar = new JProgressBar();
 	
 	public TreeCellCustom(JTree tree, TreeNode currentNode){
@@ -64,7 +64,7 @@ public class TreeCellCustom extends JPanel {
 	 	      button.setFont( new Font(button.getFont().getName(),Font.PLAIN,button.getFont().getSize()) );
 	 	 buttonPause.setFont( new Font(buttonPause.getFont().getName(),Font.PLAIN,buttonPause.getFont().getSize()) );
 	 	 
-	 	ImageIcon iconLoader = new ImageIcon(getClass().getResource("/loader.gif"));
+	 	ImageIcon iconLoader = new ImageIcon(getClass().getResource("/images/loader.gif"));
 	 	iconLoader.setImageObserver(new NodeImageObserver(tree, currentNode));
 	 	loader.setIcon(iconLoader);
 

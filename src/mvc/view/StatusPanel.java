@@ -16,7 +16,7 @@ public class StatusPanel extends JPanel{
 	private static final long serialVersionUID = -5439904812395393271L;
 	
 	public final String INFO_DEFAULT_VALUE = "-";
-	public final ImageIcon squareIcon = new ImageIcon(getClass().getResource("/bullet_square_grey.png"));
+	public final ImageIcon squareIcon = new ImageIcon(getClass().getResource("/images/bullet_square_grey.png"));
 
 	public JTextField labelDBVersion = new JTextField(INFO_DEFAULT_VALUE);
 	public JTextField labelCurrentDB = new JTextField(INFO_DEFAULT_VALUE);

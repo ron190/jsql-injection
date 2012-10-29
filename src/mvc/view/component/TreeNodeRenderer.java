@@ -39,19 +39,19 @@ public class TreeNodeRenderer extends DefaultTreeCellRenderer {
 						
 						if(dataModel.isTable())
 							if(leaf){
-					      		c.icon.setIcon(new ImageIcon(getClass().getResource("/table_go.png")));
+					      		c.icon.setIcon(new ImageIcon(getClass().getResource("/images/table_go.png")));
 					      	}else if(expanded){
-					      		c.icon.setIcon(new ImageIcon(getClass().getResource("/table.png")));
+					      		c.icon.setIcon(new ImageIcon(getClass().getResource("/images/table.png")));
 					      	}else{
-					      		c.icon.setIcon(new ImageIcon(getClass().getResource("/table.png")));
+					      		c.icon.setIcon(new ImageIcon(getClass().getResource("/images/table.png")));
 					      	}
 						else
 							if(leaf){
-					      		c.icon.setIcon(new ImageIcon(getClass().getResource("/database_go.png")));
+					      		c.icon.setIcon(new ImageIcon(getClass().getResource("/images/database_go.png")));
 					      	}else if(expanded){
-					      		c.icon.setIcon(new ImageIcon(getClass().getResource("/database.png")));
+					      		c.icon.setIcon(new ImageIcon(getClass().getResource("/images/database.png")));
 					      	}else{
-					      		c.icon.setIcon(new ImageIcon(getClass().getResource("/database.png")));
+					      		c.icon.setIcon(new ImageIcon(getClass().getResource("/images/database.png")));
 					      	}
 				      	
 						if(selected){
@@ -66,12 +66,12 @@ public class TreeNodeRenderer extends DefaultTreeCellRenderer {
 						
 						if(dataModel.isRunning){
 							c.button.setVisible(true);
-							c.button.setIcon(new ImageIcon(getClass().getResource("/stop.png")));
+							c.button.setIcon(new ImageIcon(getClass().getResource("/images/stop.png")));
 							c.buttonPause.setVisible(true);
 						}
 						
 						if(dataModel.interruptable != null && dataModel.interruptable.suspendFlag == true){
-							c.buttonPause.setIcon(new ImageIcon(getClass().getResource("/resume.png")));
+							c.buttonPause.setIcon(new ImageIcon(getClass().getResource("/images/resume.png")));
 						}
 						
 						if(dataModel.hasProgress){

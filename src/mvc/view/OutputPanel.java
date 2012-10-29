@@ -60,10 +60,10 @@ public class OutputPanel extends JSplitPane{
 		treeAndTableSplitPane.setDividerSize(5);
         
         JTabbedPane infoTabs = new JTabbedPane();
-        infoTabs.addTab("Console", new ImageIcon(getClass().getResource("/console.gif")), new JScrollPane(gui.consoleArea));
-        infoTabs.addTab("Chunk", new ImageIcon(getClass().getResource("/category.gif")), new JScrollPane(gui.chunks));
-        infoTabs.addTab("Binary", new ImageIcon(getClass().getResource("/binary.gif")), new JScrollPane(gui.binaryArea));
-        infoTabs.addTab("Header", new ImageIcon(getClass().getResource("/update.gif")), new JScrollPane(gui.headers));
+        infoTabs.addTab("Console", new ImageIcon(getClass().getResource("/images/console.gif")), new JScrollPane(gui.consoleArea));
+        infoTabs.addTab("Chunk", new ImageIcon(getClass().getResource("/images/category.gif")), new JScrollPane(gui.chunks));
+        infoTabs.addTab("Binary", new ImageIcon(getClass().getResource("/images/binary.gif")), new JScrollPane(gui.binaryArea));
+        infoTabs.addTab("Header", new ImageIcon(getClass().getResource("/images/update.gif")), new JScrollPane(gui.headers));
         infoTabs.setFont(new Font(infoTabs.getFont().getName(),Font.PLAIN,infoTabs.getFont().getSize()));
         
         this.setTopComponent(treeAndTableSplitPane);

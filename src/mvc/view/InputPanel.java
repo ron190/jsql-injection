@@ -53,7 +53,7 @@ public class InputPanel extends JPanel implements ActionListener{
 	private JRadioButton radioCookie = new JRadioButton();
 	private JRadioButton radioHeader = new JRadioButton();
 	
-	public JButton submitButton = new JButton("Connect", new ImageIcon(getClass().getResource("/server_go.png")));
+	public JButton submitButton = new JButton("Connect", new ImageIcon(getClass().getResource("/images/server_go.png")));
 		
 	public InputPanel(final InjectionController controller, final InjectionModel model){
 		this.controller = controller;
@@ -140,7 +140,7 @@ public class InputPanel extends JPanel implements ActionListener{
 	    final JPanel softwareInfo = new JPanel();
         softwareInfo.setLayout(new BoxLayout(softwareInfo, BoxLayout.X_AXIS));
 		
-		final JButton settingButton = new JButton("Show Settings", new ImageIcon(getClass().getResource("/cog.png")));
+		final JButton settingButton = new JButton("Show Settings", new ImageIcon(getClass().getResource("/images/cog.png")));
 		settingButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {

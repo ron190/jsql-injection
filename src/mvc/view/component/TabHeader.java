@@ -71,7 +71,7 @@ public class TabHeader extends JPanel implements ActionListener, MouseListener {
 		
 		this.add(tabTitleLabel);
 		
-		Icon closeIcon = new ImageIcon(this.getClass().getResource("/gtk_close.png"));
+		Icon closeIcon = new ImageIcon(this.getClass().getResource("/images/gtk_close.png"));
 		Dimension closeButtonSize = new Dimension(closeIcon.getIconWidth(), closeIcon.getIconHeight());
 	    
 		JButton tabCloseButton = new JButton(closeIcon);
