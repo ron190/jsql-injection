@@ -517,7 +517,7 @@ firstSuccessPageSource,
 	 * @return true if blind works
 	 */
 	private boolean isBlindInjectable() throws PreparationException {
-		blindModel = new BlindInjection(this, this.initialUrl+this.getData+this.insertionCharacter);
+		blindModel = new BlindInjection(this);
 		return blindModel.isBlindInjectable();
 	}
 
