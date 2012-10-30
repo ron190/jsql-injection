@@ -19,7 +19,9 @@ import mvc.model.InjectionModel;
 import mvc.model.Interruptable;
 import mvc.model.Stoppable;
 
-
+/**
+ * Test branching
+ */
 public class BlindInjection {
 	private String initialUrl;
 	
