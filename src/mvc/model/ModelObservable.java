@@ -9,13 +9,13 @@ import javax.swing.SwingUtilities;
 
 /**
  * Define the features of the injection model:
- * - allow to stop the preparation of injection
+ * - stop the preparation of injection,
  * - Callable for parallelizing HTTP tasks,
  * - communication with view, via Observable
  */
 public abstract class ModelObservable extends Observable {
 	/**
-	 * Simple boolean state, true if user wants to stop preparation
+	 * Simple boolean state, true if user wants to stop preparation.
 	 * During the preparation, several methods will check if the execution must be stopped
 	 */
 	public boolean stopFlag = false;
@@ -25,10 +25,10 @@ public abstract class ModelObservable extends Observable {
 	}
 	
 	/**
-	 *  Header for the inject() methods, definition needed for call()
-	 *  dataInjection: SQL query
-	 *  responseHeader unused
-	 *  useVisibleIndex false if injection indexes aren't needed
+	 *  Function header for the inject() methods, definition needed by call(),
+	 *  dataInjection: SQL query,
+	 *  responseHeader unused,
+	 *  useVisibleIndex false if injection indexes aren't needed,
 	 *  return source page after the HTTP call 
 	 */
 	public abstract String inject( String dataInjection );

@@ -23,29 +23,31 @@ import mvc.view.GUI;
  */
 public class InjectionController {
 
+	// The model
 	public InjectionModel injectionModel;
+	// The view
 	private GUI gui;
 	
 	public InjectionController(InjectionModel newModel){
 		injectionModel = newModel;
-		
 		gui = new GUI(this, newModel);
-		
 //		Console console = new Console();
 //		model.addObserver(console);
 	}
 	
 	/**
-	 * Send each parameters from the GUI to the model in order to start the preparation,
-	 * the injection process is started in a new thread via function inputValidation()
+	 * Send each parameters from the GUI to the model in order to start the preparation of injection,
+	 * the injection process is started in a new thread via model function inputValidation()
 	 */
 	public void controlInput(String getData, String postData, String cookieData, String headerData, String method, 
 			boolean isProxyfied, String proxyAdress, String proxyPort) {
 		try {
+			// Define proxy settings
 			injectionModel.isProxyfied = isProxyfied;
 			injectionModel.proxyAdress = proxyAdress;
 			injectionModel.proxyPort = proxyPort;
 			
+			// Parse url and GET query string
 			injectionModel.getData = "";
 			Matcher regexSearch = Pattern.compile("(.*)(\\?.*)").matcher(getData);
 			if(regexSearch.find()){
@@ -57,13 +59,16 @@ public class InjectionController {
 				injectionModel.initialUrl = getData;
 			}
 			
+			// Define other methods
 			injectionModel.postData = postData;
 			injectionModel.cookieData = cookieData;
 			injectionModel.headerData = headerData;
 			injectionModel.method = method;
 			
+			// Reset level of evasion
 			injectionModel.securitySteps = 0;
 			
+			// Start the model injection process in a thread
 			new Thread(new Runnable() {
 				@Override
 				public void run() {
@@ -71,6 +76,7 @@ public class InjectionController {
 				}
 			}, "InjectionController - controlInput").start();
 			
+			// Erase everything in the view from a previous injection
 			gui.resetInterface();
 		} catch (MalformedURLException e) {
 			injectionModel.sendMessage(e.getMessage());
@@ -78,13 +84,13 @@ public class InjectionController {
 	}
 
 	/**
-	 * Process the user choice on the database list: start the search for tables
-	 * @param databaseSelected corresponding DB model object selected by user
+	 * Process the user choice on the view: search for tables
+	 * @param databaseSelected database selected by user
 	 * @return Interruptable sent upward to the view, allows the start/pause/stop actions from the view
 	 */
 	public Interruptable selectDatabase(final Database databaseSelected){
 		// Dirty object definition that allows to send the object itself to another function
-		// in his own body
+		// in his own body #Need more clean solution
 		final Interruptable[] interruptable = new Interruptable[1];
 		
 		interruptable[0] = new Interruptable(){
@@ -109,8 +115,8 @@ public class InjectionController {
 	}
 
 	/**
-	 * Process the user choice on the table list: start the search for columns
-	 * @param selectedTable corresponding DB model object selected by user
+	 * Process the user choice on the view: search for columns
+	 * @param selectedTable table selected by user
 	 * @return Interruptable sent upward to the view, allows the start/pause/stop actions from the view
 	 */
 	public Interruptable selectTable(final Table selectedTable) {
@@ -138,8 +144,8 @@ public class InjectionController {
 	}
 	
 	/**
-	 * Process the user choice on the column list: start the search for values
-	 * @param databaseSelected corresponding DB model object selected by user
+	 * Process the user choice on the view: search for values
+	 * @param values columns selected by user
 	 * @return Interruptable sent upward to the view, allows the start/pause/stop actions from the view
 	 */
 	public Interruptable selectValues(final List<Column> values) {

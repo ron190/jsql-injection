@@ -1,8 +1,8 @@
 package mvc.model;
 
 /**
- * That Runnable class allows stop/pause/resume features for each parallelized tasks,
- * Method action() is paused/stopped every time your loop checks is own state with isInterrupted(),
+ * Runnable class, allow stop/pause/resume features for each parallelized tasks,
+ * Method action() is paused/stopped every time a loop checks is own state with isInterrupted(),
  * How to use: subclass Interruptable, define the abstract method action() with pausable task, then start it with begin()
  */
 public abstract class Interruptable implements Runnable {

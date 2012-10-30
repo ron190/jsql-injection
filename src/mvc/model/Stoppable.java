@@ -4,8 +4,8 @@ import exception.PreparationException;
 import exception.StoppableException;
 
 /**
- * That Runnable class allows to stop preparation, whereas Interruptable also provides pause/resume
- * Execution should be stopped in your code if after a state check with isPreparationStopped(),
+ * Runnable class, can stop preparation, whereas Interruptable also provides pause/resume.
+ * Execution should be stopped after a state check with isPreparationStopped(),
  * How to use: subclass Stoppable, define the abstract method action() with task that can be stopped, then start it with begin()
  */
 public abstract class Stoppable implements Runnable {
@@ -22,19 +22,19 @@ public abstract class Stoppable implements Runnable {
 		this.model = model;
 	}	
 	/**
-	 * Starting from the view, controller calls selectDatabase() that creates an Interruptable,
-	 * which call Stoppable_loopIntoResults(), so Interruptable must go through Stoppable to
-	 * allow pause feature
+	 * Starting from the view, the controller calls selectDatabase() that creates an Interruptable,
+	 * which call Stoppable_loopIntoResults(), so Interruptable must go through Stoppable in order to
+	 * let the view pause itself
 	 * #Need rework
-	 * @param model Allows to access the stopFlag 
-	 * @param interruptable Let simply pass it
+	 * @param model needed for accessing the stopFlag 
+	 * @param interruptable pass it for the view pause/resume
 	 */
 	public Stoppable(InjectionModel model, Interruptable interruptable){
 		this.model = model;
 		this.interruptable = interruptable;
 	}
 
-	// Only return the model state
+	// Return the user stop choice from model
 	public boolean isPreparationStopped(){
 		synchronized(this) {
 			if(model.stopFlag){

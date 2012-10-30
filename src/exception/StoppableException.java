@@ -1,8 +1,8 @@
 package exception;
 
 /**
- * Exception class that manages the interruption of injection process, concerns
- * every actions taken by the user after the preparation
+ * Exception class thrown during normal injection process, 
+ * concern every steps when user interact with database elements (database, table, column)
  */
 public class StoppableException extends Exception {
 	private static final long serialVersionUID = -3573501525824167565L;

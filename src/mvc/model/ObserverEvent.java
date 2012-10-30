@@ -1,9 +1,9 @@
 package mvc.model;
 
 /**
- * Define what the view wait for, to update GUI, it is used by the Observer pattern
+ * Object needed by the view to update GUI, used by the Observer pattern,
  * message: string id that defines the action
- * arg: the object required by the view to proceed the action
+ * arg: object required by the view to proceed the action
  */
 public class ObserverEvent {
 	private String message;
