@@ -15,6 +15,9 @@ import javax.swing.JRootPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
+/**
+ * 
+ */
 public class ActionHandler {
 	private JRootPane rootPane;
 	private JTabbedPane valuesTabbedPane;
