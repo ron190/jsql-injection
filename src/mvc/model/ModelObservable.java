@@ -6,7 +6,6 @@ import java.util.concurrent.Callable;
 
 import javax.swing.SwingUtilities;
 
-
 /**
  * Define the features of the injection model:
  * - stop the preparation of injection,

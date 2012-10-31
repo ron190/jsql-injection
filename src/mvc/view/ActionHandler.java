@@ -16,7 +16,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 /**
- * 
+ * Keyword shortcut definition:
+ * - ctrl TAB: switch to next tab,
+ * - ctrl shift TAB: switch to previous tab,
+ * - ctrl W: delete tab
  */
 public class ActionHandler {
 	private JRootPane rootPane;

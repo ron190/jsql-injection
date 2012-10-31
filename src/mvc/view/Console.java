@@ -2,6 +2,9 @@ package mvc.view;
 
 import java.util.Observable;
 
+/**
+ * Alternative view, simple console 
+ */
 public class Console implements java.util.Observer {
 
 	@Override
