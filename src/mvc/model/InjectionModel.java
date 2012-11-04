@@ -832,7 +832,7 @@ firstSuccessPageSource,
 		}
 		regexSearch.reset();
 		
-		int rowsFound = 0, duplicates = 0, cutted = 0;
+		int rowsFound = 0/*, duplicates = 0, cutted = 0*/;
 		List<List<String>> listValues = new ArrayList<List<String>>();
 			
 		// Build a 2D array of strings from the data we have parsed
@@ -840,8 +840,8 @@ firstSuccessPageSource,
 		while(regexSearch.find()){ 
 			String values = StringTool.hexstr(regexSearch.group(1));
 			int instances = Integer.parseInt( StringTool.hexstr(regexSearch.group(2)) );
-			if(regexSearch.group(3) != null)
-				cutted++;
+			/*if(regexSearch.group(3) != null)
+				cutted++;*/
 			
 			listValues.add(new ArrayList<String>());
 			listValues.get(rowsFound).add(""+(rowsFound+1));
@@ -849,7 +849,7 @@ firstSuccessPageSource,
 			for(String cellValue: values.split(StringTool.hexstr("7f"),-1)){
 				listValues.get(rowsFound).add(cellValue);
 			}
-            duplicates += instances - 1;
+            /*duplicates += instances - 1;*/
             rowsFound++;
 //            System.out.println( rowsFound + ". "+ instances +"x "+  values.replace("00", "").replace("\r\n", "").replace("\n", "").replace("\r", "") );
 		}
@@ -919,7 +919,7 @@ firstSuccessPageSource,
 			 * keep track of characters we have reached (startPosition) and use these to skip characters,
 			 */
 			String finalResultSource = "", currentResultSource = "";
-			for(int limitSQLResult=0, startPosition=1, i=1;/* 3 */;startPosition = currentResultSource.length()+1, i++){
+			for(int limitSQLResult=0, startPosition=1/*, i=1*/;;startPosition = currentResultSource.length()+1/*, i++*/){
 				
 //				try { /*System.out.println("loop: "+currentResultSource);*/ Thread.sleep(500); } catch (InterruptedException e) { e.printStackTrace(); }
 //				if(isPreparationStopped() || (interruptable != null && interruptable.isInterrupted())) throw new StoppableException();
