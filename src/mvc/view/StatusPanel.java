@@ -12,17 +12,24 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+/**
+ * Panel for statusbar
+ */
 public class StatusPanel extends JPanel{
 	private static final long serialVersionUID = -5439904812395393271L;
 	
+	// Default string in place of database infos
 	public final String INFO_DEFAULT_VALUE = "-";
+	// Display icon for injection methods on the right
 	public final ImageIcon squareIcon = new ImageIcon(getClass().getResource("/images/bullet_square_grey.png"));
 
+	// Database infos
 	public JTextField labelDBVersion = new JTextField(INFO_DEFAULT_VALUE);
 	public JTextField labelCurrentDB = new JTextField(INFO_DEFAULT_VALUE);
 	public JTextField labelCurrentUser = new JTextField(INFO_DEFAULT_VALUE);
 	public JTextField labelAuthenticatedUser = new JTextField(INFO_DEFAULT_VALUE);
 	
+	// Injection methods
 	public JLabel labelNormal = new JLabel("Normal", squareIcon, SwingConstants.LEFT);
 	public JLabel labelErrorBased = new JLabel("ErrorBased", squareIcon, SwingConstants.LEFT);
 	public JLabel labelBlind = new JLabel("Blind", squareIcon, SwingConstants.LEFT);
@@ -32,9 +39,9 @@ public class StatusPanel extends JPanel{
 		this.setLayout( new BoxLayout(this, BoxLayout.LINE_AXIS) );
 		this.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		
+		// Panel for database infos
 		JPanel connectionInfos = new JPanel();
 		GroupLayout layout = new GroupLayout(connectionInfos);
-
 		connectionInfos.setLayout(layout);
 		connectionInfos.setAlignmentX(Component.LEFT_ALIGNMENT);
 

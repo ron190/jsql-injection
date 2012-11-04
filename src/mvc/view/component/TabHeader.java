@@ -20,6 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 
+/**
+ * Panel displayed as a header for tabs
+ */
 public class TabHeader extends JPanel implements ActionListener, MouseListener {
 	private static final long serialVersionUID = 8127944685828300647L;
 	
@@ -33,6 +36,9 @@ public class TabHeader extends JPanel implements ActionListener, MouseListener {
         this.setOpaque(false);
         
         this.addMouseListener(new MouseAdapter(){
+        	/**
+        	 * Right click: remove tab
+        	 */
         	@Override
         	public void mouseClicked(MouseEvent e) {
         		Component component = e.getComponent();
@@ -43,6 +49,9 @@ public class TabHeader extends JPanel implements ActionListener, MouseListener {
         			}
         		}
         	}
+        	/**
+        	 * Left click: select tab
+        	 */
         	@Override
         	public void mousePressed(MouseEvent e) {
         		Component component = e.getComponent();
@@ -55,6 +64,7 @@ public class TabHeader extends JPanel implements ActionListener, MouseListener {
         	}
         });
         
+        // Set the text of tab
 		JLabel tabTitleLabel = new JLabel(){
 			private static final long serialVersionUID = -3224791474462317469L;
 
@@ -66,11 +76,10 @@ public class TabHeader extends JPanel implements ActionListener, MouseListener {
                 return null;
             }
         };
-		
 		tabTitleLabel.setFont( new Font(tabTitleLabel.getFont().getName(),Font.PLAIN,tabTitleLabel.getFont().getSize()) );
-		
 		this.add(tabTitleLabel);
 		
+		// Icon for closing tab
 		Icon closeIcon = new ImageIcon(this.getClass().getResource("/images/gtk_close.png"));
 		Dimension closeButtonSize = new Dimension(closeIcon.getIconWidth(), closeIcon.getIconHeight());
 	    
@@ -88,12 +97,18 @@ public class TabHeader extends JPanel implements ActionListener, MouseListener {
 		this.add(tabCloseButton);
 	}
 	
+	/**
+	 * Action for close button: remove tab
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		int closeTabNumber = valuesTabbedPane.indexOfTabComponent(TabHeader.this);
 		valuesTabbedPane.removeTabAt(closeTabNumber);
 	}
 	
+	/**
+	 * Simple mouse over effect
+	 */
 	@Override
 	public void mouseEntered(MouseEvent e) {
         Component component = e.getComponent();
@@ -103,6 +118,9 @@ public class TabHeader extends JPanel implements ActionListener, MouseListener {
         }
     }
 
+	/**
+	 * Simple mouse over effect
+	 */
 	@Override
     public void mouseExited(MouseEvent e) {
         Component component = e.getComponent();

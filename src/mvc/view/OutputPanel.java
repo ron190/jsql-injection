@@ -16,26 +16,34 @@ import javax.swing.tree.TreeSelectionModel;
 import mvc.view.component.TreeNodeEditor;
 import mvc.view.component.TreeNodeRenderer;
 
+/**
+ * Pane composed of tree and tabs on top, and info tabs on bottom.
+ */
 public class OutputPanel extends JSplitPane{
 	private static final long serialVersionUID = -5696939494054282278L;
 	
 	public OutputPanel(final GUI gui){
 		super(JSplitPane.VERTICAL_SPLIT, true);
 				
+		// First node in tree
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Databases");
 		gui.databaseTree = new JTree(root);
 		
+		// Graphic manager for components
 		TreeNodeRenderer renderer = new TreeNodeRenderer();
 		gui.databaseTree.setCellRenderer(renderer);
 		
+		// Action manager for components
 	    TreeNodeEditor editor = new TreeNodeEditor(gui.databaseTree, gui.controller, gui.valuesTabbedPane);
 	    gui.databaseTree.setCellEditor(editor);
 	    
+	    // Tree setting
 	    gui.databaseTree.setEditable(true);	// allows repaint nodes
 	    gui.databaseTree.setShowsRootHandles(true);
 	    gui.databaseTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 	    
-	    gui.databaseTree.getModel().addTreeModelListener(new TreeModelListener() { // allows repaint progressbar
+	    // Dirty trick that allows repaint progressbar
+	    gui.databaseTree.getModel().addTreeModelListener(new TreeModelListener() { 
 			
 			@Override public void treeStructureChanged(TreeModelEvent arg0) {}
 			@Override public void treeNodesRemoved(TreeModelEvent arg0) {}
@@ -53,12 +61,14 @@ public class OutputPanel extends JSplitPane{
 			
 		});
 		
+	    // Tree and tabs on top
 		JSplitPane treeAndTableSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
 		treeAndTableSplitPane.setLeftComponent( new JScrollPane(gui.databaseTree) );
 		treeAndTableSplitPane.setRightComponent( gui.valuesTabbedPane );
 		treeAndTableSplitPane.setDividerLocation(285);
 		treeAndTableSplitPane.setDividerSize(5);
         
+		// Infos tabs in bottom
         JTabbedPane infoTabs = new JTabbedPane();
         infoTabs.addTab("Console", new ImageIcon(getClass().getResource("/images/console.gif")), new JScrollPane(gui.consoleArea));
         infoTabs.addTab("Chunk", new ImageIcon(getClass().getResource("/images/category.gif")), new JScrollPane(gui.chunks));
@@ -66,6 +76,7 @@ public class OutputPanel extends JSplitPane{
         infoTabs.addTab("Header", new ImageIcon(getClass().getResource("/images/update.gif")), new JScrollPane(gui.headers));
         infoTabs.setFont(new Font(infoTabs.getFont().getName(),Font.PLAIN,infoTabs.getFont().getSize()));
         
+        // Setting for top and bottom components
         this.setTopComponent(treeAndTableSplitPane);
         this.setBottomComponent( infoTabs );
         this.setDividerLocation(280);
