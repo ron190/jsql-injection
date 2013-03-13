@@ -100,10 +100,11 @@ public class AboutDialog extends JDialog{
             "Source code: <a href=\"http://code.google.com/p/jsql-injection/source/browse/#git%2Fsrc\">Git repository</a><br><br>"+
             "Visit jSQL Injection <a href=\"http://code.google.com/p/jsql-injection/\">webpage</a><br>"+
             "Forum: <a href=\"https://groups.google.com/forum/?fromgroups#!forum/jsql-injection\">jSQL discussion group</a><br><br>" +
+            "<u>Your support is important</u><br>" +
             "Support the development of jSQL, you can do any (or all) of the following:<br>" +
             "- Star the <a href=\"http://code.google.com/p/jsql-injection/\">project homepage</a>" +
             " or the <a href=\"http://code.google.com/p/jsql-injection/downloads/list\">download page</a> (the star" +
-            " is displayed if you have previously logged in your Google account),<br>" +
+            " is displayed if you have previously logged into your Google account),<br>" +
             "- Click the +1 on the <a href=\"http://code.google.com/p/jsql-injection/\">project homepage</a>" +
             " or on the <a href=\"https://groups.google.com/forum/?fromgroups#!forum/jsql-injection\">group page</a>,<br>" +
             "- Become a member of the <a href=\"https://groups.google.com/forum/?fromgroups#!forum/jsql-injection\">jSQL group</a>,<br>" +

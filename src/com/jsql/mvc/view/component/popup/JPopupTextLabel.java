@@ -12,10 +12,6 @@ import javax.swing.JTextField;
 public class JPopupTextLabel extends JTextField {
     private static final long serialVersionUID = 3902552856079929374L;
     
-    public JPopupTextLabel(){
-        initialize();
-    }
-
     public JPopupTextLabel(String string) {
         super(string);
         initialize();
@@ -46,6 +42,5 @@ public class JPopupTextLabel extends JTextField {
 
         this.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
         this.setEditable(false);
-        this.setBackground(this.getBackground());
     }
 }

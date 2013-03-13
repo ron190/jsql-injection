@@ -95,7 +95,7 @@ public class InputPanel extends JPanel implements ActionListener{
         ToolTipManager.sharedInstance().setInitialDelay(500);   // timer before showing tooltip
         ToolTipManager.sharedInstance().setDismissDelay(30000); // timer before closing automatically tooltip
         ToolTipManager.sharedInstance().setReshowDelay(1);      // timer used when mouse move to another component, show tooltip immediately if timer is not expired
-        textGET.setToolTipText("<html>The connection url: <b>http://hostname:port/path</b><br>" +
+        textGET.setToolTipText("<html>The connection URL: <b>http://hostname:port/path</b><br>" +
                 "Add optional GET query: <b>http://hostname:port/path?parameter1=value1&parameterN=valueN</b><br><br>" +
                 "<b><u>If you know injection works with GET</u></b>, set GET query and select corresponding radio (if necessary),<br><br>" +
                 "<b><u>Last parameter</u></b> in GET query is the injection parameter (parameterN in example),<br><br>" +
@@ -173,7 +173,7 @@ public class InputPanel extends JPanel implements ActionListener{
         this.add(buttonsPanel);
 
         // Labels on the left
-           final JLabel labelGET = new JLabel("Url ");
+           final JLabel labelGET = new JLabel("URL ");
           final JLabel labelPOST = new JLabel("POST ");
         final JLabel labelCookie = new JLabel("Cookie ");
         final JLabel labelHeader = new JLabel("Header ");

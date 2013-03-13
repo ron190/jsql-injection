@@ -26,9 +26,9 @@ public class TreeNodeRenderer extends DefaultTreeCellRenderer {
     public Component getTreeCellRendererComponent(JTree tree, Object nodeRenderer,
             boolean selected, boolean expanded, boolean leaf, int row,
             boolean hasFocus) {
-        
+
         Component returnValue = null;
-        
+
         if ((nodeRenderer != null) && (nodeRenderer instanceof DefaultMutableTreeNode)) {
             DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
             if(currentNode != null){
@@ -36,18 +36,18 @@ public class TreeNodeRenderer extends DefaultTreeCellRenderer {
                 if(userObject instanceof TreeNodeModel<?>){
                     TreeCellCustom c = new TreeCellCustom(tree,currentNode);
                     TreeNodeModel<?> dataModel = (TreeNodeModel<?>) userObject;
-    
+
                     if(dataModel.isColumn()){
                         JCheckBox checkbox = new JCheckBox(dataModel+"", dataModel.isSelected);
                         checkbox.setFont( new Font(checkbox.getFont().getName(),Font.PLAIN|Font.ITALIC,checkbox.getFont().getSize()) );
                         checkbox.setBackground(Color.WHITE);
                         return checkbox;
-                        
+
                     }else if(dataModel.isTable() || dataModel.isDatabase()){
                         c.label.setText(dataModel+"");
                         c.label.setVisible(true);
                         c.icon.setVisible(true);
-                        
+
                         if(dataModel.isTable())
                             if(leaf)
                                 c.icon.setIcon(new ImageIcon(getClass().getResource("/com/jsql/images/table_go.png")));
@@ -58,18 +58,18 @@ public class TreeNodeRenderer extends DefaultTreeCellRenderer {
                                 c.icon.setIcon(new ImageIcon(getClass().getResource("/com/jsql/images/database_go.png")));
                             else
                                 c.icon.setIcon(new ImageIcon(getClass().getResource("/com/jsql/images/database.png")));
-                        
+
                         if(selected){
                             c.label.setBackground(new Color(195,214,233));
                         }else{
                             c.label.setBackground(new Color(255,255,255));
                             c.label.setBorder(new RoundedCornerBorder(4,1,false));
                         }
-                        
+
                         if(dataModel.hasProgress){
                             if(dataModel.isTable() && (dataModel.getParent()+"").equals("information_schema")){
                                 c.loader.setVisible(true);
-                                
+
                                 if(dataModel.interruptable.suspendFlag){
                                     ImageIcon i = new ImageIcon(getClass().getResource("/com/jsql/images/loader2.gif")){
                                         @Override
@@ -91,7 +91,7 @@ public class TreeNodeRenderer extends DefaultTreeCellRenderer {
                                 c.progressBar.setMaximum(dataCount);
                                 c.progressBar.setValue(dataModel.childUpgradeCount);
                                 c.progressBar.setVisible(true);
-                                
+
                                 if(dataModel.interruptable.suspendFlag){
                                     c.progressBar.showPauseBullet = true;
                                 }
@@ -100,7 +100,7 @@ public class TreeNodeRenderer extends DefaultTreeCellRenderer {
                         }else if(dataModel.hasIndeterminatedProgress){
                             c.loader.setVisible(true);
                             c.icon.setVisible(false);
-                            
+
                             if(dataModel.interruptable.suspendFlag){
                                 ImageIcon i = new ImageIcon(getClass().getResource("/com/jsql/images/loader2.gif")){
                                     @Override
@@ -121,32 +121,29 @@ public class TreeNodeRenderer extends DefaultTreeCellRenderer {
                     }
                     returnValue = c;
                 }else{
-                    JPanel l = new JPanel(new BorderLayout());
-                    l.setBorder(null);
-                    JLabel m = new JLabel((String)((DefaultMutableTreeNode)currentNode).getUserObject());
-                    l.add(m);
-//                    m.setBorder()
-                    m.setBorder(new RoundedCornerBorder(4,1,false));
+                    JPanel nodePanel = new JPanel(new BorderLayout());
+                    JLabel nodeText = new JLabel((String)((DefaultMutableTreeNode)currentNode).getUserObject());
+                    nodePanel.add(nodeText);
+                    nodeText.setBorder(new RoundedCornerBorder(4,1,false));
                     if( (currentNode != null) && (currentNode instanceof DefaultMutableTreeNode)){
-                        if( selected )
-                          {
-                                l.setBackground( new Color(195,214,233) );
-                                m.setBorder(new RoundedCornerBorder(4,1,true));
-                          }else
-                              l.setBackground( Color.white );
+                        if( selected ){
+                            nodePanel.setBackground( new Color(195,214,233) );
+                            nodeText.setBorder(new RoundedCornerBorder(4,1,true));
+                        }else
+                            nodePanel.setBackground( Color.white );
                         if(hasFocus)
-                            m.setBorder(new RoundedCornerBorder(4,1,true));
+                            nodeText.setBorder(new RoundedCornerBorder(4,1,true));
                         else
-                            m.setBorder(new RoundedCornerBorder(4,1,false));
+                            nodeText.setBorder(new RoundedCornerBorder(4,1,false));
                     }
-                    returnValue = l;
+                    returnValue = nodePanel;
                 }
             }
         }
-        if (returnValue == null) {
-            returnValue = defaultRenderer.getTreeCellRendererComponent(tree, nodeRenderer, selected, expanded,
-                    leaf, row, hasFocus);
-        }
+        //        if (returnValue == null) {
+        //            returnValue = defaultRenderer.getTreeCellRendererComponent(tree, nodeRenderer, selected, expanded,
+        //                    leaf, row, hasFocus);
+        //        }
         return returnValue;
     }
 }

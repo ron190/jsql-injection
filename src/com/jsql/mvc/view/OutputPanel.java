@@ -288,7 +288,7 @@ public class OutputPanel extends JSplitPaneWithZeroSizeDivider{
         infoTabs.addTab("Console", new ImageIcon(getClass().getResource("/com/jsql/images/console.gif")), new RoundJScrollPane(gui.consoleArea));
         infoTabs.addTab("Chunk", new ImageIcon(getClass().getResource("/com/jsql/images/category.gif")), new RoundJScrollPane(gui.chunks), "Hexadecimal data to parse");
         infoTabs.addTab("Binary", new ImageIcon(getClass().getResource("/com/jsql/images/binary.gif")), new RoundJScrollPane(gui.binaryArea), "Time/Blind data bytes");
-        infoTabs.addTab("Header", new ImageIcon(getClass().getResource("/com/jsql/images/update.gif")), new RoundJScrollPane(gui.headers), "Url calls information");
+        infoTabs.addTab("Header", new ImageIcon(getClass().getResource("/com/jsql/images/update.gif")), new RoundJScrollPane(gui.headers), "URL calls information");
         
         // Setting for top and bottom components
         this.setTopComponent(treeAndTableSplitPane);
@@ -317,34 +317,34 @@ public class OutputPanel extends JSplitPaneWithZeroSizeDivider{
     
     public static JSplitPane setDividerLocation(final JSplitPane splitter,
             final double proportion) {
-            if (splitter.isShowing()) {
+        if (splitter.isShowing()) {
             if(splitter.getWidth() > 0 && splitter.getHeight() > 0) {
-            splitter.setDividerLocation(proportion);
+                splitter.setDividerLocation(proportion);
             }
             else {
-            splitter.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent ce) {
-            splitter.removeComponentListener(this);
-            setDividerLocation(splitter, proportion);
+                splitter.addComponentListener(new ComponentAdapter() {
+                    @Override
+                    public void componentResized(ComponentEvent ce) {
+                        splitter.removeComponentListener(this);
+                        setDividerLocation(splitter, proportion);
+                    }
+                });
             }
-            });
-            }
-            }
-            else {
+        }
+        else {
             splitter.addHierarchyListener(new HierarchyListener() {
-            @Override
-            public void hierarchyChanged(HierarchyEvent e) {
-            if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 &&
-            splitter.isShowing()) {
-            splitter.removeHierarchyListener(this);
-            setDividerLocation(splitter, proportion);
-            }
-            }
+                @Override
+                public void hierarchyChanged(HierarchyEvent e) {
+                    if((e.getChangeFlags() & HierarchyEvent.SHOWING_CHANGED) != 0 &&
+                            splitter.isShowing()) {
+                        splitter.removeHierarchyListener(this);
+                        setDividerLocation(splitter, proportion);
+                    }
+                }
             });
-            }
-            return splitter;
-            }
+        }
+        return splitter;
+    }
     
     class CustomTreeRenderer extends DefaultTreeCellRenderer{
         DefaultTreeCellRenderer defaultRenderer = new DefaultTreeCellRenderer();
@@ -707,7 +707,7 @@ public class OutputPanel extends JSplitPaneWithZeroSizeDivider{
             s.setLayout(new BoxLayout(s, BoxLayout.X_AXIS));
             s.add(Box.createHorizontalGlue());
             
-            JLabel a = new JLabel("Url to the webshell directory [optional]:");
+            JLabel a = new JLabel("URL to the webshell directory [optional]:");
             s.add(a);
             s.add(Box.createHorizontalGlue());
             

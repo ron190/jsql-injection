@@ -61,5 +61,4 @@ public class JPopupTextComponentMenu extends JPopupMenu
             @Override public void popupMenuCanceled(PopupMenuEvent e) {}
         });
     }
-
 }
