@@ -1,7 +1,10 @@
 package com.jsql.mvc.view;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -14,7 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 
@@ -41,7 +43,7 @@ public class InputPanel extends JPanel implements ActionListener{
     private InjectionModel model;
     
     // Every text input: user provides default injection data, every HTTP requests will include them
-    private JPopupTextField textGET = new JPopupTextField("http://127.0.0.1/simulate_get.php?lib=", true, true);
+    JPopupTextField textGET = new JPopupTextField("http://127.0.0.1/simulate_get.php?lib=", true, true);
     private JPopupTextField textPOST = new JPopupTextField();
     private JPopupTextField textCookie = new JPopupTextField();
     private JPopupTextField textHeader = new JPopupTextField();
@@ -57,6 +59,8 @@ public class InputPanel extends JPanel implements ActionListener{
     // Connection button
     public JButton submitButton = new JButton("Connect", new ImageIcon(getClass().getResource("/com/jsql/images/server_go.png")));
     
+    public JLabel injectionLoader = new JLabel(new ImageIcon(getClass().getResource("/com/jsql/images/ajax-loader-mini.gif")));
+
     public InputPanel(final InjectionController controller, final InjectionModel model){
         this.controller = controller;
         this.model = model;
@@ -95,52 +99,43 @@ public class InputPanel extends JPanel implements ActionListener{
         ToolTipManager.sharedInstance().setInitialDelay(500);   // timer before showing tooltip
         ToolTipManager.sharedInstance().setDismissDelay(30000); // timer before closing automatically tooltip
         ToolTipManager.sharedInstance().setReshowDelay(1);      // timer used when mouse move to another component, show tooltip immediately if timer is not expired
-        textGET.setToolTipText("<html>The connection URL: <b>http://hostname:port/path</b><br>" +
-                "Add optional GET query: <b>http://hostname:port/path?parameter1=value1&parameterN=valueN</b><br><br>" +
-                "<b><u>If you know injection works with GET</u></b>, set GET query and select corresponding radio (if necessary),<br><br>" +
-                "<b><u>Last parameter</u></b> in GET query is the injection parameter (parameterN in example),<br><br>" +
-                "You can omit the value of the last parameter and let the application find the best one:<br>" +
-                "<b>http://hostname:port/path?parameter1=value1&parameterN=</b><br><br>" +
-                "Or you can force the value if you know it's the most appropriate:<br>" +
-                "<b>http://hostname:port/path?parameter1=value1&parameterN=0'</b></html>");
-        textPOST.setToolTipText("<html>Add optional POST data: <b>parameter1=value1&parameterN=valueN</b><br>" +
-                "<br><b><u>If you know injection works with POST</u></b>, set POST data and select corresponding radio on the right,<br><br>" +
-                "<b><u>Last parameter</u></b> in POST data is the injection parameter (parameterN in example),<br><br>" +
-                "You can omit the value of the last parameter and let the application find the best one:<br>" +
-                "<b>parameter1=value1&parameterN=</b><br><br>" +
-                "Or you can force the value if you know it's the most appropriate:<br>" +
-                "<b>parameter1=value1&parameterN=0'</b></html>");
-        textCookie.setToolTipText("<html>Add optional Cookie data: <b>parameter1=value1;parameterN=valueN</b><br>" +
-                "<br><b><u>If you know injection works with Cookie</u></b>, set Cookie data and select corresponding radio on the right,<br><br>" +
-                "<b><u>Last parameter</u></b> in Cookie data is the injection parameter (parameterN in example),<br><br>" +
-                "You can omit the value of the last parameter and let the application find the best one:<br>" +
-                "<b>parameter1=value1;parameterN=</b><br><br>" +
-                "Or you can force the value if you know it's the most appropriate:<br>" +
-                "<b>parameter1=value1;parameterN=0'</b></html>");
-        textHeader.setToolTipText("<html>Add optional Header data: <b>parameter1:value1\\r\\nparameterN:valueN</b><br>" +
-                "<br><b><u>If you know injection works with Header</u></b>, set Header data and select corresponding radio on the right,<br><br>" +
-                "<b><u>Last parameter</u></b> in Header data is the injection parameter (parameterN in example),<br><br>" +
-                "You can omit the value of the last parameter and let the application find the best one:<br>" +
-                "<b>parameter1:value1\\r\\nparameterN:</b><br><br>" +
-                "Or you can force the value if you know it's the most appropriate:<br>" +
-                "<b>parameter1:value1\\r\\nparameterN:0'</b></html>");
+        textGET.setToolTipText("<html><b>Website URL</b><br>" +
+                "jSQL <u>always</u> injects the last parameter (in any mode: default/GET, POST, Cookie or Header).<br>" +
+                "Leave last parameter blank to let jSQL search for the best value automatically:<br>" +
+                "<i>Example: <<b>http://hostname/path?paramN=valueN&injectMe=</b></i><br>" +
+                "Or force last parameter with your own value (use working id or well known string like 0' or -1):<br>" +
+                "<i>Example: <b>http://hostname/path?paramN=valueN&injectMe=0'</b></i></html>");
+        textPOST.setToolTipText("<html><b>POST parameters</b> (see formatting to use below)<br>" +
+                "jSQL <u>always</u> injects the last parameter (in any mode selected).<br>" +
+                "<i>Automatic search for best value: <b>paramN=valueN&injectMe=</b><br>" +
+                "Force your own value, example: <b>paramN=valueN&injectMe=0'</b></i></html>");
+        textCookie.setToolTipText("<html><b>Cookie parameters</b> (see formatting to use below)<br>" +
+                "jSQL <u>always</u> injects the last parameter (in any mode selected).<br>" +
+                "<i>Automatic search for best value: <b>paramN=valueN;injectMe=</b><br>" +
+                "Force your own value, example: <b>paramN=valueN;injectMe=0'</b></i></html>");
+        textHeader.setToolTipText("<html><b>Header parameters</b> (see formatting to use below)<br>" +
+                "jSQL <u>always</u> injects the last parameter (in any mode selected).<br>" +
+                "<i>Automatic search for best value: <b>paramN:valueN\\r\\ninjectMe:</b><br>" +
+                "Force your own value, example: <b>paramN:valueN\\r\\ninjectMe:0'</b></i></html>");
         
-        radioGET.setToolTipText("Inject via GET data");
-        radioPOST.setToolTipText("Inject via POST data");
-        radioCookie.setToolTipText("Inject via cookie data");
-        radioHeader.setToolTipText("Inject via header data");
+        radioGET.setToolTipText("Inject using GET parameters");
+        radioPOST.setToolTipText("Inject using POST parameters");
+        radioCookie.setToolTipText("Inject using Cookie parameters");
+        radioHeader.setToolTipText("Inject using Header parameters");
         
         // Url GET bar
-        textGET.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                SwingUtilities.invokeLater( new Runnable() {
-                    @Override
-                    public void run() {
-                        textGET.selectAll();
-                    }
-                });
-            }
-        });
+//        textGET.addFocusListener(new java.awt.event.FocusAdapter() {
+//            @Override
+//            public void focusGained(FocusEvent e) {
+//            	textGET.select(0, textGET.getText().length());
+//            }
+//
+//            @Override
+//            public void focusLost(FocusEvent e) {
+//            	textGET.select(0, 0);
+//            }
+//        });
+        
         textGET.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(UIManager.getColor ( "Panel.background" ), 2), 
                 new RoundedCornerBorder(22,3,true)));
@@ -162,9 +157,12 @@ public class InputPanel extends JPanel implements ActionListener{
         buttonsPanel.setLayout( new BoxLayout(buttonsPanel, BoxLayout.X_AXIS) );
         
         submitButton.addActionListener(this);
+        injectionLoader.setVisible(false);
         
         // Buttons position
         buttonsPanel.add(submitButton);
+        buttonsPanel.add(Box.createRigidArea(new Dimension(5,0)));
+        buttonsPanel.add(injectionLoader);
         buttonsPanel.add(Box.createHorizontalGlue());
         
         // Buttons format
@@ -241,6 +239,7 @@ public class InputPanel extends JPanel implements ActionListener{
         final ImageIcon downIcon = new ImageIcon(getClass().getResource("/com/jsql/images/resultset_down.png"));
         
         final JButton advancedButton = new JButton(downIcon);
+        advancedButton.setToolTipText("Advanced");
         advancedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -284,9 +283,17 @@ public class InputPanel extends JPanel implements ActionListener{
             if(model.isInjectionBuilt)
                 option = JOptionPane.showConfirmDialog(null, 
                     "Start a new injection?", "New injection", JOptionPane.OK_CANCEL_OPTION);
+//          ,0,new ImageIcon(getClass().getResource("/com/jsql/images/Retro Block Question 2.png")
+
             // Then start injection
             if(!model.isInjectionBuilt || option == JOptionPane.OK_OPTION){
                 submitButton.setText("Stop");
+                
+//                Image image = Toolkit.getDefaultToolkit().createImage(getClass().getResource("/com/jsql/images/spinner.gif"));
+//                ImageIcon spinIcon = new ImageIcon(image);
+//                submitButton.setIcon(spinIcon);
+                injectionLoader.setVisible(true);
+                
                 controller.controlInput(
                     textGET.getText(), 
                     textPOST.getText(), 

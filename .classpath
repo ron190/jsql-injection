@@ -2,5 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre7"/>
+	<classpathentry kind="lib" path="C:/Users/Watthieu/Downloads/jsoup-1.7.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Watthieu/Downloads/commons-codec-1.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Watthieu/Downloads/commons-lang3-3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -2,24 +2,28 @@ package com.jsql.mvc.view;
 
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,24 +34,31 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.JTree;
 import javax.swing.JViewport;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
+
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import com.jsql.mvc.controller.InjectionController;
 import com.jsql.mvc.model.InjectionModel;
@@ -56,13 +67,17 @@ import com.jsql.mvc.model.database.Column;
 import com.jsql.mvc.model.database.Database;
 import com.jsql.mvc.model.database.ElementDatabase;
 import com.jsql.mvc.model.database.Table;
-import com.jsql.mvc.view.component.BlockCaret2;
+import com.jsql.mvc.view.component.BlockCaret;
+import com.jsql.mvc.view.component.CustomJList;
+import com.jsql.mvc.view.component.CustomJList.StringObject;
+import com.jsql.mvc.view.component.CustomJTabbedPane;
+import com.jsql.mvc.view.component.CustomTerminal;
 import com.jsql.mvc.view.component.RoundedCornerBorder;
 import com.jsql.mvc.view.component.TabHeader;
 import com.jsql.mvc.view.component.TablePanel;
-import com.jsql.mvc.view.component.TestConsole;
 import com.jsql.mvc.view.component.TreeNodeModel;
 import com.jsql.mvc.view.component.popup.JPopupTextArea;
+import com.jsql.tool.StringTool;
 
 
 /**
@@ -132,14 +147,15 @@ public class GUI extends JFrame implements Observer {
         // No bold for menu + round corner
         UIManager.put("Menu.font", myFont);
         UIManager.put("PopupMenu.font", myFont);
-        UIManager.put("PopupMenu.border", new RoundedCornerBorder(2,2,true));
-        UIManager.put("MenuItem.selectionBackground", new Color(195,214,233));
+        UIManager.put("PopupMenu.border", new RoundedCornerBorder(2,2,true, Color.LIGHT_GRAY));
+        UIManager.put("Menu.selectionBackground", new Color(200,221,242));
+        UIManager.put("MenuItem.selectionBackground", new Color(200,221,242));
         UIManager.put("MenuItem.font", myFont);
-        UIManager.put("MenuItem.border", new RoundedCornerBorder(2,2,false));
+        UIManager.put("MenuItem.border", new RoundedCornerBorder(2,2,false, Color.LIGHT_GRAY));
 
         // Custom tab
-        UIManager.put("TabbedPane.darkShadow", new Color(190,198,205));
-        UIManager.put("TabbedPane.highlight", new Color(180,194,224));
+//        UIManager.put("TabbedPane.darkShadow", new Color(190,198,205));
+//        UIManager.put("TabbedPane.highlight", new Color(180,194,224));
         UIManager.put("TabbedPane.contentBorderInsets", new Insets(0,0,0,0));
         UIManager.put("TabbedPane.tabAreaInsets", new Insets(3, 2, 0, 2));
         UIManager.put("TabbedPane.tabInsets", new Insets(2,3+5,2,3));
@@ -148,6 +164,7 @@ public class GUI extends JFrame implements Observer {
         UIManager.put("ScrollBar.squareButtons", false);
         UIManager.put("TextField.font", new Font(((Font) UIManager.get("TextField.font")).getName(),Font.PLAIN,((Font) UIManager.get("TextField.font")).getSize()));
         UIManager.put("TextArea.font", new Font("Courier New",Font.PLAIN,((Font) UIManager.get("TextArea.font")).getSize()));
+        UIManager.put("ComboBox.font", myFont);
         UIManager.put("Button.font", myFont);
         UIManager.put("Label.font", myFont);
         UIManager.put("CheckBox.font", myFont);
@@ -155,8 +172,21 @@ public class GUI extends JFrame implements Observer {
         UIManager.put("Table.font", myFont);
         UIManager.put("TableHeader.font", myFont);
         UIManager.put("ToolTip.font", myFont);
+        
+//        UIManager.put("ComboBox.background", Color.WHITE);
+        UIManager.put("ComboBox.selectionBackground", new Color(211,230,255));
+        
         UIManager.put("ToolTip.background", new Color(255,255,225));
+        UIManager.put("ToolTip.backgroundInactive", new Color(255,255,225));
         UIManager.put("ToolTip.border", new RoundedCornerBorder(2,2,true));
+        UIManager.put("ToolTip.borderInactive", new RoundedCornerBorder(2,2,true));
+        UIManager.put("ToolTip.foreground", Color.BLACK);
+        UIManager.put("ToolTip.foregroundInactive", Color.BLACK);
+        UIManager.put("TextField.selectionBackground", new Color(211,230,255));
+        UIManager.put("TextArea.selectionBackground", new Color(211,230,255));
+        UIManager.put("Label.selectionBackground", new Color(211,230,255));
+        UIManager.put("EditorPane.selectionBackground", new Color(211,230,255));
+        UIManager.put("Table.selectionBackground", new Color(211,230,255));
         
         // Custom tree
         UIManager.put("Tree.expandedIcon", new ImageIcon(GUI.this.getClass().getResource("/com/jsql/images/close.png")));
@@ -164,8 +194,9 @@ public class GUI extends JFrame implements Observer {
         UIManager.put("Tree.lineTypeDashed", true);
         
         // Custom progress bar
-        UIManager.put("ProgressBar.border", BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(3, 0, 4, 0), new RoundedCornerBorder(2,2,true)));
-        UIManager.put("ProgressBar.foreground", new Color(158,210,152));
+        UIManager.put("ProgressBar.border", BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(3, 0, 4, 0), new RoundedCornerBorder(2,2,true,Color.GRAY)));
+//        UIManager.put("ProgressBar.foreground", new Color(158,210,152));
+        UIManager.put("ProgressBar.foreground", new Color(136,183,104));
         UIManager.put("ProgressBar.background", UIManager.get("Tree.background"));
 
         // Object creation after customization
@@ -174,7 +205,7 @@ public class GUI extends JFrame implements Observer {
         headers = new JPopupTextArea();
         binaryArea = new JPopupTextArea();
         
-        valuesTabbedPane = new JTabbedPane();
+        valuesTabbedPane = new CustomJTabbedPane();
         
         // Save model
         model = newModel;
@@ -190,11 +221,11 @@ public class GUI extends JFrame implements Observer {
         JMenu menuFile = new JMenu("File");
         menuFile.setMnemonic('F');
         
-        JMenuItem itemSave = new JMenuItem("Save Tab As...");
+        JMenuItem itemSave = new JMenuItem("Save Tab As...", 'S');
         itemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         itemSave.addActionListener(new ActionSaveTabListener(this));
         
-        JMenuItem itemExit = new JMenuItem("Exit");
+        JMenuItem itemExit = new JMenuItem("Exit", 'x');
         itemExit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -213,7 +244,7 @@ public class GUI extends JFrame implements Observer {
         JMenu menuEdit = new JMenu("Edit");
         menuEdit.setMnemonic('E');
         
-        JMenuItem itemCopy = new JMenuItem("Copy");
+        JMenuItem itemCopy = new JMenuItem("Copy", 'C');
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         itemCopy.addActionListener(new ActionListener() {
             @Override
@@ -225,7 +256,7 @@ public class GUI extends JFrame implements Observer {
             }
         });
         
-        JMenuItem itemSelectAll = new JMenuItem("Select All");
+        JMenuItem itemSelectAll = new JMenuItem("Select All", 'A');
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.addActionListener(new ActionListener() {
             @Override
@@ -245,9 +276,75 @@ public class GUI extends JFrame implements Observer {
         menuEdit.add(itemSelectAll);
         
         // Window Menu > Preferences
-        JMenu menuTools = new JMenu("Window");
+        JMenu menuTools = new JMenu("Windows");
         menuTools.setMnemonic('W');
-        JMenuItem itemTools = new JMenuItem("Preferences");
+        JMenuItem itemTools = new JMenuItem("Preferences", 'P');
+        
+        JMenu menuView = new JMenu("Show View");
+        menuView.setMnemonic('V');
+        JMenuItem itemFile = new JMenuItem("Database", new ImageIcon(getClass().getResource("/com/jsql/images/server_database.png")));
+        menuView.add(itemFile);
+        JMenuItem itemFile2 = new JMenuItem("Admin page", new ImageIcon(getClass().getResource("/com/jsql/images/server_admin.png")));
+        menuView.add(itemFile2);
+        JMenuItem itemFile3 = new JMenuItem("File", new ImageIcon(getClass().getResource("/com/jsql/images/server_file.png")));
+        menuView.add(itemFile3);
+        JMenuItem itemFile4 = new JMenuItem("Webshell", new ImageIcon(getClass().getResource("/com/jsql/images/server_console.png")));
+        menuView.add(itemFile4);
+        JMenuItem itemFile5 = new JMenuItem("Brute force", new ImageIcon(getClass().getResource("/com/jsql/images/lock.png")));
+        menuView.add(itemFile5);
+        JMenuItem itemFile6 = new JMenuItem("Coder", new ImageIcon(getClass().getResource("/com/jsql/images/text_letter_omega.png")));
+        menuView.add(itemFile6);
+        menuTools.add(menuView);
+        menuTools.add(new JSeparator());
+        
+        itemFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.CTRL_MASK));
+        itemFile2.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.CTRL_MASK));
+        itemFile3.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, ActionEvent.CTRL_MASK));
+        itemFile4.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_4, ActionEvent.CTRL_MASK));
+        itemFile5.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_5, ActionEvent.CTRL_MASK));
+        itemFile6.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_6, ActionEvent.CTRL_MASK));
+        
+    	itemFile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				GUI.this.outputPanel.leftTabbedPane.setSelectedIndex(0);
+			}
+		});
+        
+        itemFile2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				GUI.this.outputPanel.leftTabbedPane.setSelectedIndex(1);
+			}
+		});
+        
+        itemFile3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				GUI.this.outputPanel.leftTabbedPane.setSelectedIndex(2);
+			}
+		});
+        
+        itemFile4.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				GUI.this.outputPanel.leftTabbedPane.setSelectedIndex(3);
+			}
+		});
+        
+        itemFile5.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				GUI.this.outputPanel.leftTabbedPane.setSelectedIndex(4);
+			}
+		});
+        
+        itemFile6.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				GUI.this.outputPanel.leftTabbedPane.setSelectedIndex(5);
+			}
+		});
         
         // Render the Preferences dialog behind scene 
         final PreferencesDialog prefDiag = new PreferencesDialog(this);
@@ -268,8 +365,8 @@ public class GUI extends JFrame implements Observer {
         // Help Menu > about
         JMenu menuHelp = new JMenu("Help");
         menuHelp.setMnemonic('H');
-        JMenuItem itemHelp = new JMenuItem("About jSQL Injection");
-        JMenuItem itemUpdate = new JMenuItem("Check for Updates");
+        JMenuItem itemHelp = new JMenuItem("About jSQL Injection", 'A');
+        JMenuItem itemUpdate = new JMenuItem("Check for Updates", 'U');
         
         // Render the About dialog behind scene
         final AboutDialog aboutDiag = new AboutDialog(this);
@@ -292,6 +389,7 @@ public class GUI extends JFrame implements Observer {
                     @Override
                     public void run() {
                         try {
+                        	model.sendMessage("Checking updates...");
                             URLConnection con = new URL("http://jsql-injection.googlecode.com/git/.version").openConnection();
                             con.setReadTimeout(60000);
                             con.setConnectTimeout(60000);
@@ -301,7 +399,6 @@ public class GUI extends JFrame implements Observer {
                             while( (line = reader.readLine()) != null ) pageSource += line+"\n";
                             reader.close();
                             
-        //                    pageSource = "0.4";
                             Float gitVersion = Float.parseFloat(pageSource);
                             if(gitVersion <= Float.parseFloat(model.jSQLVersion))
                                 model.sendMessage("jSQL Injection is up to date.");
@@ -618,14 +715,16 @@ public class GUI extends JFrame implements Observer {
 
             // Create a new table to display the values
             TablePanel newTableJPanel = new TablePanel(data, columnNames, valuesTabbedPane);
+            
             // Create a new tab: add header and table
-            valuesTabbedPane.addTab(table.getParent()+"."+table+" "+
-                    "("+(columnNames.length-2)+" fields) ",newTableJPanel);
+            valuesTabbedPane.addTab(table+" ",newTableJPanel);
             // Focus on the new tab
             valuesTabbedPane.setSelectedComponent(newTableJPanel);
             
             // Create a custom tab header with close button
             TabHeader header = new TabHeader(valuesTabbedPane);
+            header.setToolTipText("<html><b>"+table.getParent()+"."+table+"</b><br>"+
+                    "<i>"+StringTool.join(Arrays.copyOfRange(columnNames, 2, columnNames.length),"<br>")+"</i></html>");
             // Apply the custom header to the tab
             valuesTabbedPane.setTabComponentAt(valuesTabbedPane.indexOfComponent(newTableJPanel), header);
         
@@ -649,7 +748,6 @@ public class GUI extends JFrame implements Observer {
         }else if( "add-fileprivilege".equals(""+oEvent) ){
             outputPanel.filePrivilegeLabel.setIcon(new ImageIcon(getClass().getResource("/com/jsql/images/gradeit_icon.png")));
             outputPanel.shellfilePrivilegeLabel.setIcon(new ImageIcon(getClass().getResource("/com/jsql/images/gradeit_icon.png")));
-//            outputPanel.uploadfilePrivilegeLabel.setIcon(new ImageIcon(getClass().getResource("/com/jsql/images/gradeit_icon.png")));
             
         // Reset the button after the end of preparation
         }else if( "remove-normal".equals(""+oEvent) ){
@@ -670,21 +768,23 @@ public class GUI extends JFrame implements Observer {
         // Reset the button after the end of preparation
         }else if( "remove-fileprivilege".equals(""+oEvent) ){
             outputPanel.filePrivilegeLabel.setIcon(new ImageIcon(getClass().getResource("/com/jsql/images/bullet_square_red.png")));
-            outputPanel.runFileButton.setEnabled(false);
+            outputPanel.runFileButton.setEnabled(true);
+            outputPanel.runFileButton.setText("Read file(s)");
             outputPanel.shellfilePrivilegeLabel.setIcon(new ImageIcon(getClass().getResource("/com/jsql/images/bullet_square_red.png")));
-            outputPanel.shellrunFileButton.setEnabled(false);
-//            outputPanel.uploadfilePrivilegeLabel.setIcon(new ImageIcon(getClass().getResource("/com/jsql/images/bullet_square_red.png")));
-//            outputPanel.uploadrunFileButton.setEnabled(false);
+            outputPanel.shellrunFileButton.setEnabled(true);
+            outputPanel.shellrunFileButton.setText("Create webshell");
+            outputPanel.adminPageLoader.setVisible(false);
+            outputPanel.runFileLoader.setVisible(false);
             
         // Reset the button after the end of preparation
         }else if( "end-preparation".equals(""+oEvent) ){
             inputPanel.submitButton.setText("Connect");
             inputPanel.submitButton.setEnabled(true);
+            inputPanel.injectionLoader.setVisible(false);
             
             if(model.isInjectionBuilt){
                 outputPanel.runFileButton.setEnabled(true);
                 outputPanel.shellrunFileButton.setEnabled(true);
-//                outputPanel.uploadrunFileButton.setEnabled(true);
             }
             
         // Add a header string to the tab  
@@ -713,20 +813,14 @@ public class GUI extends JFrame implements Observer {
             header.setToolTipText(fileCompletePath);
             // Apply the custom header to the tab
             valuesTabbedPane.setTabComponentAt(valuesTabbedPane.indexOfComponent(scroller), header);
+            
+            StringObject v = new CustomJList<StringObject>().new StringObject(fileCompletePath.replace(fileName, ""));
+            ((DefaultListModel<StringObject>)outputPanel.listFile.getModel()).addElement(v);
 
-//            fileText.requestFocusInWindow();
         }else if( "add-shell".equals(""+oEvent) ){
             String[] observerEventData = (String[]) oEvent.getArg();
-            
-//            String fileName = observerEventData.get(0);
-//            String data = observerEventData.get(1);
-            
-//            JPopupTextArea fileText = new JPopupTextArea();
-//            fileText.setText(data);
-//            JScrollPane scroller = new JScrollPane(fileText);
-//            valuesTabbedPane.addTab(fileName+" ", scroller);
             UUID l = UUID.randomUUID();
-            TestConsole z = new TestConsole(observerEventData[0], model, l, observerEventData[1]);
+            CustomTerminal z = new CustomTerminal(observerEventData[0], model, l, observerEventData[1]);
             consoles.put(l, z);
             
             JScrollPane scroller = new JScrollPane(z);
@@ -737,36 +831,118 @@ public class GUI extends JFrame implements Observer {
             
             // Create a custom tab header with close button
             TabHeader header = new TabHeader(valuesTabbedPane, new ImageIcon(getClass().getResource("/com/jsql/images/application_osx_terminal.png")));
-            header.setToolTipText(observerEventData[1]);
+            header.setToolTipText("<html><b>Webshell URL and directory</b><br>"+observerEventData[1]+"test_outfile.php<br>"+observerEventData[0]+"test_outfile.php</html>");
+            
             // Apply the custom header to the tab
             valuesTabbedPane.setTabComponentAt(valuesTabbedPane.indexOfComponent(scroller), header);
 
             z.requestFocusInWindow();
+            
         }else if( "add-shell-cmd".equals(""+oEvent) ){
             Object[] observerEventData = (Object[]) oEvent.getArg();
             UUID m = (UUID)observerEventData[0];
-            TestConsole b = consoles.get(m);
+            CustomTerminal b = consoles.get(m);
             String n = (String)observerEventData[1];
-//            System.out.println("#a#"+(b==null));
-//            System.out.println("#b#"+(n==null));
-//            try{
-                b.append(""+n);
-//            }catch(Exception e){
-//                System.out.println("why?!");
-//            }
-              b.isEdited[0] = false;
-              b.setEditable(true);
-              b.setCaret(new BlockCaret2());
-              b.append("\n"+b.prompt);
-              b.setCaretPosition(b.getDocument().getLength());
+            b.append(""+n);
+            b.isEdited[0] = false;
+            b.setEditable(true);
+            b.setCaret(new BlockCaret());
+            b.append("\n"+b.prompt);
+            b.setCaretPosition(b.getDocument().getLength());
+            b.setCursor(null);
+            
+        }else if( "add-admin".equals(""+oEvent) ){
+            final String observerEventData = (String) oEvent.getArg();
+            
+            String pageSource = "";
+            try {
+                pageSource = Jsoup.clean(Jsoup.connect(observerEventData).get().html()
+                      .replaceAll("<img.*>", "") 
+                      .replaceAll("<input.*type=\"?hidden\"?.*>", "") 
+                      .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:black;color:white;text-align:center;border:1px solid black;width:100px;\">button</div>") 
+                      .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"), 
+                      Whitelist.relaxed()
+                      .addTags("center","div","span")
+//                  .addAttributes("input","type","value","disabled")
+//                  .addAttributes("img","src","width","height")
+                      .addAttributes(":all","style")
+//                  .addEnforcedAttribute("input", "disabled", "disabled")
+                      );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+          
+            JTextPane t = new JTextPane();
+            t.setContentType("text/html");
+            t.setEditable( false );
+            t.setText(pageSource);
+            
+            final JPopupMenu menu = new JPopupMenu();
+            JMenuItem item = new JMenuItem("Copy page URL");
+            menu.add(item);
+            
+            item.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent arg0) {
+                    StringSelection stringSelection = new StringSelection(observerEventData);
+                    Clipboard clpbrd = Toolkit.getDefaultToolkit ().getSystemClipboard ();
+                    clpbrd.setContents (stringSelection, null);
+                }
+            });
 
-//            b.append(b.prompt);
+            t.addMouseListener(new MouseAdapter() {
+                public void mousePressed(MouseEvent evt) {
+                    if (evt.isPopupTrigger()) {
+                        menu.show(evt.getComponent(), evt.getX(), evt.getY());
+                    }
+                }
+
+                public void mouseReleased(MouseEvent evt) {
+                    if (evt.isPopupTrigger()) {
+                        menu.show(evt.getComponent(), evt.getX(), evt.getY());
+                    }
+                }
+            });
+            
+            final JScrollPane scroller = new JScrollPane(t);
+            valuesTabbedPane.addTab(observerEventData.replaceAll(".*/", "")+" ", scroller);
+            
+            // Focus on the new tab
+            valuesTabbedPane.setSelectedComponent(scroller);
+            
+            // Create a custom tab header with close button
+            TabHeader header = new TabHeader(valuesTabbedPane, 
+                    new ImageIcon(getClass().getResource("/com/jsql/images/page_white_wrench.png")));
+            header.setToolTipText("<html>"+observerEventData+"</html>");
+            
+            // Apply the custom header to the tab
+            valuesTabbedPane.setTabComponentAt(valuesTabbedPane.indexOfComponent(scroller), header);
+
+            t.requestFocusInWindow();
+            
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    scroller.getViewport().setViewPosition(new java.awt.Point(0, 0));
+                }
+            });
+        }else if( "end-admin-search".equals(""+oEvent) ){
+            outputPanel.adminPageButton.setText("Test admin page(s)");
+            outputPanel.adminPageButton.setEnabled(true);
+//            outputPanel.adminPageButton.setIcon(null);
+            outputPanel.adminPageLoader.setVisible(false);
+            
+        }else if( "end-file-search".equals(""+oEvent) ){
+            outputPanel.runFileButton.setText("Read file(s)");
+            outputPanel.runFileButton.setEnabled(true);
+//          outputPanel.adminPageButton.setIcon(null);
+            outputPanel.runFileLoader.setVisible(false);
+            
+        }else if( "end-webshell-search".equals(""+oEvent) ){
+            
         }
     }
     
-    Map<UUID,TestConsole> 
-    consoles = new HashMap<UUID,TestConsole>();
-
+    Map<UUID,CustomTerminal> consoles = new HashMap<UUID,CustomTerminal>();
     
     /**
      * Empty the interface
@@ -791,10 +967,10 @@ public class GUI extends JFrame implements Observer {
         chunks.setText("");
         headers.setText("");
         binaryArea.setText("");
+        consoleArea.setText("-- jSQL Injection version "+ model.jSQLVersion +" --\n");
         
         outputPanel.runFileButton.setEnabled(false);
         outputPanel.shellrunFileButton.setEnabled(false);
-//        outputPanel.uploadrunFileButton.setEnabled(false);
         
         // Default status info
         statusPanel.labelDBVersion.setText(statusPanel.INFO_DEFAULT_VALUE);
@@ -810,6 +986,5 @@ public class GUI extends JFrame implements Observer {
         
         outputPanel.filePrivilegeLabel.setIcon(statusPanel.squareIcon);
         outputPanel.shellfilePrivilegeLabel.setIcon(statusPanel.squareIcon);
-//        outputPanel.uploadfilePrivilegeLabel.setIcon(statusPanel.squareIcon);
     }
 }

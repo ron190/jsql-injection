@@ -4,10 +4,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dialog;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.Socket;
+import java.net.URL;
 import java.util.prefs.Preferences;
 
 import javax.swing.BorderFactory;
@@ -19,12 +27,12 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import com.jsql.exception.PreparationException;
 import com.jsql.mvc.model.InjectionModel;
 import com.jsql.mvc.view.component.RoundedCornerBorder;
 import com.jsql.mvc.view.component.popup.JPopupTextField;
@@ -54,12 +62,12 @@ public class PreferencesDialog extends JDialog{
         
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.LINE_AXIS));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 5));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
         
-        okButton = new JButton("Ok");
-        okButton.setBorder(new RoundedCornerBorder(20,3,true));
+        okButton = new JButton("Apply");
+        okButton.setBorder(new RoundedCornerBorder(7,3,true));
         
-        JButton cancelButton = new JButton("Cancel");
+        JButton cancelButton = new JButton("Close");
         cancelButton.setBorder(new RoundedCornerBorder(7,3,true));
         cancelButton.addActionListener(escListener);
         
@@ -67,6 +75,77 @@ public class PreferencesDialog extends JDialog{
         
         this.setLayout(new BorderLayout());
         Container contentPane = this.getContentPane();
+        
+        JButton checkIPButton = new JButton("Check your IP");
+        checkIPButton.setBorder(new RoundedCornerBorder(3,3,true));
+        checkIPButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new Thread(new Runnable() {
+					@Override
+					public void run() {
+						// Test if proxy is available then apply settings 
+			            if(gui.model.isProxyfied && !gui.model.proxyAddress.equals("") && !gui.model.proxyPort.equals("")){
+			                try {
+			                	gui.model.sendMessage("Testing proxy...");
+			                    new Socket(gui.model.proxyAddress, Integer.parseInt(gui.model.proxyPort)).close();
+			                } catch (Exception e) {
+			                	gui.model.sendErrorMessage("Proxy connection failed: " + gui.model.proxyAddress+":"+gui.model.proxyPort+
+			                    		"\nVerify your proxy informations or disable proxy setting.");
+			                	return;
+			                }
+			                gui.model.sendMessage("Proxy is responding.");
+			                
+//			                System.setProperty("http.proxyHost", proxyAddress);
+//			                System.setProperty("http.proxyPort", proxyPort);
+			            }
+			            
+						BufferedReader in = null;
+				        try {
+				        	URL whatismyip = new URL("http://checkip.amazonaws.com");
+				        	HttpURLConnection con = (HttpURLConnection) whatismyip.openConnection();
+				        	con.setDefaultUseCaches(false); 
+				        	con.setUseCaches(false);
+				        	con.setRequestProperty("Pragma", "no-cache");
+				        	con.setRequestProperty("Cache-Control", "no-cache");
+				        	con.setRequestProperty("Expires", "-1");
+				        	
+				            in = new BufferedReader(new InputStreamReader( con.getInputStream(), "UTF-8" ));
+				            String ip2 = in.readLine();
+				            gui.model.sendMessage( "Your IP information (AWS): " + ip2 );
+				            
+				            whatismyip = new URL("http://freegeoip.net/csv/");
+				            con = (HttpURLConnection) whatismyip.openConnection();
+				            con.setDefaultUseCaches(false); 
+				        	con.setUseCaches(false);
+				        	con.setRequestProperty("Pragma", "no-cache");
+				        	con.setRequestProperty("Cache-Control", "no-cache");
+				        	con.setRequestProperty("Expires", "-1");
+				        	
+				            in = new BufferedReader(new InputStreamReader( con.getInputStream(), "UTF-8" ));
+				            ip2 = in.readLine();
+				            gui.model.sendMessage( "Your IP information (freegeoip): " + ip2 );
+				        } catch (MalformedURLException e) {
+				        	gui.model.sendErrorMessage("Malformed URL: "+e.getMessage());
+						} catch (IOException e) {
+							gui.model.sendErrorMessage("Error during proxy test: "+e.getMessage());
+							gui.model.sendErrorMessage("Use your browser to verify your proxy is working.");
+						} finally {
+				            if (in != null) {
+				                try {
+				                    in.close();
+				                } catch (IOException e) {
+				                	gui.model.sendErrorMessage("Error during proxy test: "+e.getMessage());
+				                	gui.model.sendErrorMessage("Use your browser to verify your proxy is working.");
+				                }
+				            }
+				        }
+					}
+				}).start();
+			}
+		});
+        
+        mainPanel.add(checkIPButton);
         mainPanel.add(Box.createGlue());
         mainPanel.add(okButton);
         mainPanel.add(Box.createHorizontalStrut(5));
@@ -120,9 +199,29 @@ public class PreferencesDialog extends JDialog{
                 prefs.put(ID2, gui.model.proxyAddress);
                 prefs.put(ID3, gui.model.proxyPort);
                 
-                PreferencesDialog.this.dispose();
+                if(gui.model.isProxyfied){
+	                System.setProperty("http.proxyHost", gui.model.proxyAddress);
+	                System.setProperty("http.proxyPort", gui.model.proxyPort);
+                }else{
+                	System.setProperty("http.proxyHost", "");
+	                System.setProperty("http.proxyPort", "");
+                }
+	                	
+                gui.model.sendMessage("Preferences saved.");
+//                PreferencesDialog.this.dispose();
             }
         });
+        
+        this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				super.windowClosed(e);
+
+				textProxyAddress.setText( gui.model.proxyAddress );
+		        textProxyPort.setText( gui.model.proxyPort );
+		        checkboxIsProxy.setSelected(gui.model.isProxyfied);
+			}
+		});
 
         // Proxy settings, Horizontal column rules
         settingLayout.setHorizontalGroup(

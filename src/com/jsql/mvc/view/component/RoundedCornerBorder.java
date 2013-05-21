@@ -19,11 +19,17 @@ public class RoundedCornerBorder extends AbstractBorder {
     private boolean drawBorder;
     private int leftRightMargin;
     private int topBottomMargin;
+    private Color c = new Color(132,172,221);
     
     public RoundedCornerBorder(int leftRightMargin, int topBottomMargin, boolean drawBorder){
         this.leftRightMargin = leftRightMargin;
         this.topBottomMargin = topBottomMargin;
         this.drawBorder = drawBorder;
+    }
+    
+    public RoundedCornerBorder(int leftRightMargin, int topBottomMargin, boolean drawBorder, Color c){
+        this(leftRightMargin, topBottomMargin, drawBorder);
+        this.c = c;
     }
     
     @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
@@ -39,7 +45,7 @@ public class RoundedCornerBorder extends AbstractBorder {
             g2.fill(corner);
         }
         if(drawBorder)
-            g2.setColor(Color.GRAY);
+            g2.setColor(this.c);
         g2.draw(round);
         g2.dispose();
     }

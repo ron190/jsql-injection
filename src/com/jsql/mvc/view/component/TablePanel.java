@@ -100,6 +100,8 @@ public class TablePanel extends JPanel {
         newJTable.setComponentPopupMenu(new JPopupTableMenu(newJTable));
         newJTable.setAutoCreateRowSorter(true);
         
+        newJTable.setDragEnabled(true);
+        
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         URL url = getClass().getResource("/com/jsql/images/excel.png");
 

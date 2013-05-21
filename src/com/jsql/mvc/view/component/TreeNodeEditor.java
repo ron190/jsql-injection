@@ -214,10 +214,10 @@ public class TreeNodeEditor extends AbstractCellEditor implements TreeCellEditor
                         !currentTableModel.hasBeenSearched && currentTableModel.isRunning))){
                     JPopupMenu tablePopupMenu = new JPopupMenu();
                     
-                    JMenuItem mnCheckAll = new JMenuItem("Check All");
-                    JMenuItem mnUncheckAll = new JMenuItem("Uncheck All");
-                    JMenuItem mnLoad = new JMenuItem("Load/Stop");
-                    JMenuItem mnPause = new JMenuItem("Pause/Resume");
+                    JMenuItem mnCheckAll = new JMenuItem("Check All",'C');
+                    JMenuItem mnUncheckAll = new JMenuItem("Uncheck All",'U');
+                    JMenuItem mnLoad = new JMenuItem("Load/Stop",'o');
+                    JMenuItem mnPause = new JMenuItem("Pause/Resume",'s');
                     
                     if(!currentTableModel.hasBeenSearched){
                         mnCheckAll.setEnabled(false);

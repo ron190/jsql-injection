@@ -1,5 +1,9 @@
 package com.jsql.mvc.model;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.Callable;
@@ -52,11 +56,10 @@ public abstract class ModelObservable extends Observable {
         
         @Override
         public MyCallable call() throws Exception {
-//            Thread.sleep(1000);
             content = ModelObservable.this.inject(url);
             return this;
         }
-    }
+    }    
     
     /**
      * Simple object to ease the communication with the view

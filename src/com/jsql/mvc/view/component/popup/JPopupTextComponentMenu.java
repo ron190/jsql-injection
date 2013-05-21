@@ -26,11 +26,13 @@ public class JPopupTextComponentMenu extends JPopupMenu
         copyItem.setAction(cmp.getActionMap().get(DefaultEditorKit.copyAction));
         copyItem.setText("Copy");
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+        copyItem.setMnemonic('C');
 
         JMenuItem selectAllItem = new JMenuItem();
         selectAllItem.setAction(cmp.getActionMap().get(DefaultEditorKit.selectAllAction));
         selectAllItem.setText("Select All");
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+        selectAllItem.setMnemonic('A');
         
         this.add( copyItem );
         
@@ -39,11 +41,13 @@ public class JPopupTextComponentMenu extends JPopupMenu
             cutItem.setAction(cmp.getActionMap().get(DefaultEditorKit.cutAction));
             cutItem.setText("Cut");
             cutItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
-
+            cutItem.setMnemonic('t');
+            
             JMenuItem pasteItem = new JMenuItem();
             pasteItem.setAction(cmp.getActionMap().get(DefaultEditorKit.pasteAction));
             pasteItem.setText("Paste");
             pasteItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
+            pasteItem.setMnemonic('P');
             
             this.add( cutItem );
             this.add( pasteItem );

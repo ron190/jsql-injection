@@ -83,10 +83,16 @@ public class StatusPanel extends JPanel{
         injectionType.add(labelErrorBased);
         injectionType.add(labelNormal);
         
-        labelTimeBased.setToolTipText("<html>Boolean SQL test generates a specific wait time.<br>Read each bit of encoded data (16 URL calls for one character).<br>Slowest and less reliable method</html>");
-        labelBlind.setToolTipText("<html>Boolean SQL test generates pageA for true and pageB for false.<br>Read each bit of encoded data (16 URL calls for one character).<br>Slow and less reliable method</html>");
-        labelErrorBased.setToolTipText("<html>Read encoded data directly from source page.<br>Fast and accurate method</html>");
-        labelNormal.setToolTipText("<html>Read large encoded data directly from source page.<br>Fastest and accurate method</html>");
+        labelTimeBased.setToolTipText("<html><b>Slowest and less reliable method</b><br>" +
+        		"Boolean SQL test generates a 5s wait time for false SQL statement.<br>" +
+        		"<i>Read each bit of encoded characters (16 URL calls by character).</i></html>");
+        labelBlind.setToolTipText("<html><b>Slow and less reliable method</b><br>" +
+        		"Boolean SQL test generates pageA for true SQL statement, pageB for false.<br>" +
+        		"<i>Read each bit of encoded characters (16 URL calls by character).</i></html>");
+        labelErrorBased.setToolTipText("<html><b>Fast and accurate method</b><br>" +
+        		"<i>Read encoded data directly from source page.</i></html>");
+        labelNormal.setToolTipText("<html><b>Fastest and accurate method</b><br>" +
+        		"<i>Read large encoded data directly from source page.</i></html>");
         
         this.add(injectionType);
         

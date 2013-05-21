@@ -9,14 +9,14 @@ import javax.swing.text.DefaultCaret;
 import javax.swing.text.JTextComponent;
 
 
-public class BlockCaret2 extends DefaultCaret {
+public class BlockCaret extends DefaultCaret {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * @brief Class Constructor
      */
-    public BlockCaret2() {
+    public BlockCaret() {
         setBlinkRate(500); // half a second
     }
 

@@ -60,7 +60,7 @@ public class TreeNodeRenderer extends DefaultTreeCellRenderer {
                                 c.icon.setIcon(new ImageIcon(getClass().getResource("/com/jsql/images/database.png")));
 
                         if(selected){
-                            c.label.setBackground(new Color(195,214,233));
+                            c.label.setBackground(new Color(211,230,255));
                         }else{
                             c.label.setBackground(new Color(255,255,255));
                             c.label.setBorder(new RoundedCornerBorder(4,1,false));
@@ -127,7 +127,7 @@ public class TreeNodeRenderer extends DefaultTreeCellRenderer {
                     nodeText.setBorder(new RoundedCornerBorder(4,1,false));
                     if( (currentNode != null) && (currentNode instanceof DefaultMutableTreeNode)){
                         if( selected ){
-                            nodePanel.setBackground( new Color(195,214,233) );
+                            nodePanel.setBackground( new Color(211,230,255) );
                             nodeText.setBorder(new RoundedCornerBorder(4,1,true));
                         }else
                             nodePanel.setBackground( Color.white );

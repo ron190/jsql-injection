@@ -46,10 +46,10 @@ public class BlindInjection {
         injectionModel = newModel;
         
         // Define the proxy settings
-        if(injectionModel.isProxyfied){
-            System.setProperty("http.proxyHost", injectionModel.proxyAddress);
-            System.setProperty("http.proxyPort", injectionModel.proxyPort);
-        }
+//        if(injectionModel.isProxyfied){
+//            System.setProperty("http.proxyHost", injectionModel.proxyAddress);
+//            System.setProperty("http.proxyPort", injectionModel.proxyPort);
+//        }
 
         // Call the SQL request which must be TRUE (usually ?id=1)
         blankTrueMark = callUrl("");

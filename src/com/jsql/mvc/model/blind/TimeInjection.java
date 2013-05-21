@@ -43,10 +43,10 @@ public class TimeInjection {
         injectionModel = newModel;
         
         // Define the proxy settings
-        if(injectionModel.isProxyfied){
-            System.setProperty("http.proxyHost", injectionModel.proxyAddress);
-            System.setProperty("http.proxyPort", injectionModel.proxyPort);
-        }
+//        if(injectionModel.isProxyfied){
+//            System.setProperty("http.proxyHost", injectionModel.proxyAddress);
+//            System.setProperty("http.proxyPort", injectionModel.proxyPort);
+//        }
 
         // Every FALSE SQL statements will be checked, more statements means a more robust application 
         String[] falseTest = {"true=false","true%21=true","false%21=false","1=2","1%21=1","2%21=2"};

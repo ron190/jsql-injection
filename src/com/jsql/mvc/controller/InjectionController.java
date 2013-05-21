@@ -93,7 +93,7 @@ public class InjectionController {
                 try {
                     injectionModel.listTables(databaseSelected, interruptable[0]);
                 } catch (NumberFormatException e) {
-                    injectionModel.sendErrorMessage(e.getMessage());
+                    injectionModel.sendErrorMessage("Error during table search: incorrect number " + e.getMessage());
                 } catch (PreparationException e) {
                     injectionModel.sendErrorMessage(e.getMessage());
                 } catch (StoppableException e) {

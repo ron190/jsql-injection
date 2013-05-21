@@ -23,6 +23,7 @@ public class JPopupTableMenu extends JPopupMenu {
         JMenuItem copyItem = new JMenuItem();
         copyItem.setAction(new ActionCopy());
         copyItem.setText("Copy");
+        copyItem.setMnemonic('C');
         this.add( copyItem );
         
         this.addSeparator();
@@ -30,6 +31,7 @@ public class JPopupTableMenu extends JPopupMenu {
         JMenuItem selectAllItem = new JMenuItem();
         selectAllItem.setAction(new ActionSelectAll());
         selectAllItem.setText("Select All");
+        selectAllItem.setMnemonic('A');
         this.add( selectAllItem );
         
         // Show menu next mouse pointer
