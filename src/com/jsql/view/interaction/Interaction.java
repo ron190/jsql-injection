@@ -8,16 +8,14 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.exception;
+package com.jsql.view.interaction;
 
 /**
- * Exception class thrown during normal injection process,
- * concern every steps when user interact with database elements (database, table, column)
+ * Action ordered by the Model and applied to the View
  */
-public class StoppableException extends Exception {
-    private static final long serialVersionUID = -3573501525824167565L;
-    
-    public StoppableException(){
-        super("Execution stopped by user.");
-    }
+public interface Interaction{
+    /**
+     * Do the action ordered by the model
+     */
+    public void execute();
 }

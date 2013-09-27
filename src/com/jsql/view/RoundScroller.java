@@ -8,16 +8,24 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.exception;
+package com.jsql.view;
+
+import java.awt.Component;
+
+import javax.swing.BorderFactory;
+import javax.swing.JScrollPane;
+
 
 /**
- * Exception class thrown during normal injection process,
- * concern every steps when user interact with database elements (database, table, column)
+ * Scroller with round border.
  */
-public class StoppableException extends Exception {
-    private static final long serialVersionUID = -3573501525824167565L;
-    
-    public StoppableException(){
-        super("Execution stopped by user.");
+public class RoundScroller extends JScrollPane {
+    private static final long serialVersionUID = -5044132525591212636L;
+
+    public RoundScroller(Component c){
+        super(c);
+        
+        this.setBorder(BorderFactory.createEmptyBorder());
+        this.setViewportBorder(new RoundBorder(2,2,true));
     }
 }

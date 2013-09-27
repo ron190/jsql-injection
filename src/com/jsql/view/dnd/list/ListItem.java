@@ -8,16 +8,18 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.exception;
+package com.jsql.view.dnd.list;
 
-/**
- * Exception class thrown during normal injection process,
- * concern every steps when user interact with database elements (database, table, column)
- */
-public class StoppableException extends Exception {
-    private static final long serialVersionUID = -3573501525824167565L;
+public class ListItem{
     
-    public StoppableException(){
-        super("Execution stopped by user.");
+    String internalString;
+    
+    public ListItem(String newString){
+        internalString = newString;
+    }
+
+    @Override
+    public String toString() {
+        return internalString;
     }
 }

@@ -1,0 +1,195 @@
+/*******************************************************************************
+ * Copyhacked (H) 2012-2013.
+ * This program and the accompanying materials
+ * are made available under no term at all, use it like
+ * you want, but share and discuss about it
+ * every time possible with every body.
+ * 
+ * Contributors:
+ *      ron190 at ymail dot com - initial implementation
+ ******************************************************************************/
+package com.jsql.view.table;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.KeyboardFocusManager;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListSelectionModel;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JViewport;
+import javax.swing.KeyStroke;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+
+import com.jsql.view.component.popup.JPopupTableMenu;
+
+/**
+ * Display a table for database values.
+ * Add keyboard shortcut, mouse icon, text and header formatting.
+ */
+public class TablePanel extends JPanel {
+    private static final long serialVersionUID = 4505998197469263100L;
+    
+    public JTable table;
+    
+    public void selectTable(){
+        table.selectAll();
+    }
+    
+    public void copyTable(){
+        ActionEvent nev = new ActionEvent(table, ActionEvent.ACTION_PERFORMED, "copy");
+        table.getActionMap().get(nev.getActionCommand()).actionPerformed(nev);
+    }
+    
+    public TablePanel(String[][] data, String[] columnNames, JTabbedPane newJTabbedPane){
+        super(new GridLayout(1,0));
+        
+        table = new JTable(data, columnNames){
+            private static final long serialVersionUID = 4221305668526115726L;
+
+            public boolean isCellEditable(int row,int column){
+                return false;
+            }
+        };
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        table.setColumnSelectionAllowed(true);
+        table.setRowHeight(20);
+        table.setRowSelectionAllowed(true);
+        table.setCellSelectionEnabled(true);
+        table.setGridColor(Color.LIGHT_GRAY);
+        
+        final TableCellRenderer tcrOs = table.getTableHeader().getDefaultRenderer();
+        table.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table,
+                    Object value, boolean isSelected, boolean hasFocus,
+                    int row, int column) {
+                JLabel lbl = (JLabel) tcrOs.getTableCellRendererComponent(table, " "+value+" ", isSelected, hasFocus, row, column);
+                lbl.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.LIGHT_GRAY), BorderFactory.createEmptyBorder(0, 5, 0, 5)));
+                return lbl;
+            }
+        });
+        
+        table.getColumnModel().getColumn(0).setResizable(false);
+        table.getColumnModel().getColumn(0).setPreferredWidth(34);
+        table.getColumnModel().getColumn(0).setMinWidth(34);
+        table.getColumnModel().getColumn(0).setMaxWidth(34);
+        
+        table.getColumnModel().getColumn(1).setResizable(false);
+        table.getColumnModel().getColumn(1).setPreferredWidth(70);
+        table.getColumnModel().getColumn(1).setMinWidth(70);
+        table.getColumnModel().getColumn(1).setMaxWidth(70);
+
+        DefaultTableCellRenderer centerHorizontalAlignment = new CenterRenderer();
+        table.getColumnModel().getColumn(0).setCellRenderer(centerHorizontalAlignment);
+        table.getColumnModel().getColumn(1).setCellRenderer(centerHorizontalAlignment);
+        
+        table.getTableHeader().setReorderingAllowed(false);
+        
+        table.setComponentPopupMenu(new JPopupTableMenu(table));
+        table.setAutoCreateRowSorter(true);
+        
+        table.setDragEnabled(true);
+        
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        URL url = getClass().getResource("/com/jsql/view/images/excel.png");
+
+        Image image = null;
+        try {
+            image = ImageIO.read(url.openStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        table.setCursor(toolkit.createCustomCursor(image, new Point(12, 12),"Hand"));
+        table.addMouseListener( new MouseAdapter(){
+            public void mousePressed( MouseEvent e ){
+                table.requestFocusInWindow();
+                if ( SwingUtilities.isRightMouseButton( e ) ){
+                    Point p = e.getPoint();
+                    
+                    // get the row index that contains that coordinate
+                    int rowNumber = table.rowAtPoint( p );
+                    int colNumber = table.columnAtPoint( p );
+                    // Get the ListSelectionModel of the JTable
+                    DefaultListSelectionModel  model = (DefaultListSelectionModel) table.getSelectionModel();
+                    DefaultListSelectionModel  model2 = (DefaultListSelectionModel) table.getColumnModel().getSelectionModel();
+                    
+                    model.moveLeadSelectionIndex(rowNumber);
+                    model2.moveLeadSelectionIndex(colNumber);
+                }
+            }
+        });
+        
+        table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), null);
+        table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+                KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK), null);
+        
+        // Can't get rid of warning about raw type
+        Set<KeyStroke> forward = new HashSet(table.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+        forward.add(KeyStroke.getKeyStroke("TAB"));
+        table.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forward);
+        Set<KeyStroke> backward = new HashSet(table.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
+        backward.add(KeyStroke.getKeyStroke("shift TAB"));
+        table.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backward);
+        
+        TableColumnAdjuster columnAdjuster = new TableColumnAdjuster(table);
+        columnAdjuster.adjustColumns();
+
+        JScrollPane scroller = new JScrollPane(table);
+        
+        scroller.setColumnHeader(new JViewport() {
+            private static final long serialVersionUID = 3600474852945594435L;
+
+            @Override public Dimension getPreferredSize() {
+                Dimension d = super.getPreferredSize();
+                d.height = 21;
+                return d;
+            }
+        });
+
+        new FixedColumnTable(1, scroller);
+        this.add(scroller);
+    }
+    
+    private class CenterRenderer extends DefaultTableCellRenderer{
+        private static final long serialVersionUID = -3624608585496119576L;
+
+        public CenterRenderer(){
+            this.setHorizontalAlignment(JLabel.CENTER);
+        }
+        
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            setBackground(new Color(230,230,230));
+            setText(value.toString());
+            return this;
+        }
+    }
+}
+

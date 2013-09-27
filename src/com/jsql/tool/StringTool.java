@@ -1,9 +1,19 @@
+/*******************************************************************************
+ * Copyhacked (H) 2012-2013.
+ * This program and the accompanying materials
+ * are made available under no term at all, use it like
+ * you want, but share and discuss about it
+ * every time possible with every body.
+ * 
+ * Contributors:
+ *      ron190 at ymail dot com - initial implementation
+ ******************************************************************************/
 package com.jsql.tool;
 
 import java.math.BigInteger;
 
 /**
- * Class containing string operations lacking from java, like join()
+ * String operations lacking from java, like join()
  */
 public class StringTool {
     /**
@@ -24,7 +34,7 @@ public class StringTool {
     /**
      * Convert a hexadecimal String to String
      * @param arg Hexadecimal String to convert
-     * @return String conversion
+     * @return The string converted from hex
      */
     public static String hexstr(String hex){
         byte[] bytes = new byte[hex.length() / 2];
@@ -37,7 +47,7 @@ public class StringTool {
 
     /**
      * Convert a String to a hexadecimal String
-     * @param arg String to convert
+     * @param arg The string to convert
      * @return Hexadecimal String conversion
      */
     public static String strhex(String arg) {
