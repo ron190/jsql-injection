@@ -8,14 +8,12 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.component.popup;
+package com.jsql.view.component.popupmenu;
 
 import java.awt.MouseInfo;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 
 import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
@@ -24,9 +22,9 @@ import javax.swing.event.PopupMenuListener;
 
 import com.jsql.view.GUITools;
 
+@SuppressWarnings("serial")
 public class JPopupTableMenu extends JPopupMenu {
-    private static final long serialVersionUID = 1L;
-    
+	
     JTable table;
     
     public JPopupTableMenu(JTable table){
@@ -62,8 +60,6 @@ public class JPopupTableMenu extends JPopupMenu {
     }
     
     class ActionSelectAll extends AbstractAction{
-        private static final long serialVersionUID = 1L;
-
         @Override
         public void actionPerformed(ActionEvent e) {
             table.selectAll();
@@ -71,8 +67,6 @@ public class JPopupTableMenu extends JPopupMenu {
     }
     
     class ActionCopy extends AbstractAction{
-        private static final long serialVersionUID = 1L;
-
         @Override
         public void actionPerformed(ActionEvent e) {
             ActionEvent copyEvent = new ActionEvent(table, ActionEvent.ACTION_PERFORMED, "copy");

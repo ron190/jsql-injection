@@ -14,16 +14,13 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
 import com.jsql.model.bean.ElementDatabase;
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.tree.NodeModel;
 
 /**
  * Stop the refreshing of progress bar
  */
-public class EndProgress implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class EndProgress implements InteractionCommand{
     // The element in the database tree for which the progress ends
     private ElementDatabase dataElementDatabase;
 
@@ -31,9 +28,7 @@ public class EndProgress implements Interaction{
      * @param mainGUI
      * @param interactionParams Element to update
      */
-    public EndProgress(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
-
+    public EndProgress(Object[] interactionParams){
         dataElementDatabase = (ElementDatabase) interactionParams[0];
     }
 
@@ -42,11 +37,10 @@ public class EndProgress implements Interaction{
      */
     public void execute(){
         // Tree model, update the tree (refresh, add node, etc)
-        DefaultTreeModel treeModel = (DefaultTreeModel) gui.databaseTree.getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
 
         // Get the node
-        NodeModel<?> progressingTreeNodeModel =
-                (NodeModel<?>) gui.getNode(dataElementDatabase).getUserObject();
+        NodeModel progressingTreeNodeModel = (NodeModel) GUIMediator.gui().getNode(dataElementDatabase).getUserObject();
         // Mark the node model as 'no progress bar'
         progressingTreeNodeModel.hasProgress = false;
         // Mark the node model as 'no stop/pause/resume button'
@@ -55,6 +49,6 @@ public class EndProgress implements Interaction{
         progressingTreeNodeModel.childUpgradeCount = 0;
 
         // Update the node
-        treeModel.nodeChanged((TreeNode) gui.getNode(dataElementDatabase)); // update progressbar
+        treeModel.nodeChanged((TreeNode) GUIMediator.gui().getNode(dataElementDatabase)); // update progressbar
     }
 }

@@ -10,25 +10,19 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 
 /**
  * Append text to the tab Console
  */
-public class MessageConsole implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class MessageConsole implements InteractionCommand{
     // Text to append to the Console log area
     private String text;
 
     /**
-     * @param mainGUI
      * @param interactionParams Text to append
      */
-    public MessageConsole(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
-
+    public MessageConsole(Object[] interactionParams){
         text = (String) interactionParams[0];
     }
 
@@ -36,7 +30,7 @@ public class MessageConsole implements Interaction{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        gui.consoleArea.append(text);
-        gui.consoleArea.setCaretPosition(gui.consoleArea.getDocument().getLength());
+    	GUIMediator.gui().consoleArea.append(text);
+        GUIMediator.gui().consoleArea.setCaretPosition(GUIMediator.gui().consoleArea.getDocument().getLength());
     }
 }

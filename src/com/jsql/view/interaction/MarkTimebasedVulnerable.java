@@ -10,28 +10,24 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 
 /**
  * Mark the injection as vulnerable to a time based injection
  */
-public class MarkTimebasedVulnerable implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class MarkTimebasedVulnerable implements InteractionCommand{
     /**
      * @param mainGUI
      * @param nullParam
      */
-    public MarkTimebasedVulnerable(GUI mainGUI, Object[] nullParam){
-        gui = mainGUI;
+    public MarkTimebasedVulnerable(Object[] nullParam){
     }
 
     /* (non-Javadoc)
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        gui.getStatusPanel().setTimeBasedIcon(GUITools.TICK);
+    	GUIMediator.gui().getStatusPanel().setTimeBasedIcon(GUITools.TICK);
     }
 }

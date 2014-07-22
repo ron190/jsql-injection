@@ -9,6 +9,7 @@
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
 package com.jsql.view.dnd.list;
+
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
@@ -23,11 +24,9 @@ import javax.swing.DefaultListModel;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
-import javax.swing.TransferHandler.TransferSupport;
 
+@SuppressWarnings("serial")
 public class ListTransfertHandler extends TransferHandler{
-    private static final long serialVersionUID = -1029596387333896827L;
-
     private DnDList dnDlist;
     
     public ListTransfertHandler(DnDList list){
@@ -44,7 +43,7 @@ public class ListTransfertHandler extends TransferHandler{
 
     @Override
     protected Transferable createTransferable(JComponent c) {
-        JList<ListItem> list = (JList<ListItem>)c;
+    	DnDList list = (DnDList)c;
         dragPaths = list.getSelectedValuesList();
 
         StringBuffer buff = new StringBuffer();
@@ -54,7 +53,8 @@ public class ListTransfertHandler extends TransferHandler{
         return new StringSelection(buff.toString());
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     protected void exportDone(JComponent c, Transferable data, int action) {
         if (action == TransferHandler.MOVE) {
             JList<ListItem> list = (JList<ListItem>)c;
@@ -72,7 +72,8 @@ public class ListTransfertHandler extends TransferHandler{
         return support.isDataFlavorSupported(DataFlavor.stringFlavor) || support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public boolean importData(TransferSupport support) {
         if (!canImport(support)) {
             return false;

@@ -22,34 +22,29 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import com.jsql.view.dnd.tab.DnDTabbedPane;
+import com.jsql.view.GUIMediator;
 
 /**
  * Panel displayed as a header for tabs
  */
+@SuppressWarnings("serial")
 public class TabHeader extends JPanel implements MouseListener{
-    private static final long serialVersionUID = 8127944685828300647L;
-    
-    private DnDTabbedPane valuesTabbedPane;
-    
-    public TabHeader(DnDTabbedPane valuesTabbedPane){
-        this(valuesTabbedPane, new ImageIcon(TabHeader.class.getResource("/com/jsql/view/images/table.png")));
+	
+    public TabHeader(){
+        this(new ImageIcon(TabHeader.class.getResource("/com/jsql/view/images/table.png")));
     }
     
-    public TabHeader(DnDTabbedPane valuesTabbedPane, ImageIcon imageIcon){
+	public TabHeader(ImageIcon imageIcon){
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
         
-        this.valuesTabbedPane = valuesTabbedPane;
         this.setOpaque(false);
         
         // Set the text of tab
         JLabel tabTitleLabel = new JLabel(){
-            private static final long serialVersionUID = -3224791474462317469L;
-
             public String getText() {
-                int i = TabHeader.this.valuesTabbedPane.indexOfTabComponent(TabHeader.this);
+                int i = GUIMediator.right().indexOfTabComponent(TabHeader.this);
                 if (i != -1) {
-                    return TabHeader.this.valuesTabbedPane.getTitleAt(i);
+                    return GUIMediator.right().getTitleAt(i);
                 }
                 return null;
             }
@@ -80,8 +75,8 @@ public class TabHeader extends JPanel implements MouseListener{
     @Override
     public void mouseClicked(MouseEvent e) {
         if(SwingUtilities.isRightMouseButton(e))return;
-        int closeTabNumber = valuesTabbedPane.indexOfTabComponent(TabHeader.this);
-        valuesTabbedPane.removeTabAt(closeTabNumber);
+        int closeTabNumber = GUIMediator.right().indexOfTabComponent(TabHeader.this);
+        GUIMediator.right().removeTabAt(closeTabNumber);
     }
 
     @Override public void mouseEntered(MouseEvent e) {}

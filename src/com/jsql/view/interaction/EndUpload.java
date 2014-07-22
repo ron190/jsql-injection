@@ -10,29 +10,24 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 
 /**
  * End the refreshing of File search button
  */
-public class EndUpload implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class EndUpload implements InteractionCommand{
     /**
-     * @param mainGUI
      * @param interactionParams
      */
-    public EndUpload(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
+    public EndUpload(Object[] interactionParams){
     }
 
     /* (non-Javadoc)
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        gui.getOutputPanel().uploadManager.restoreButtonText();
-        gui.getOutputPanel().uploadManager.setButtonEnable(true);
-        gui.getOutputPanel().uploadManager.hideLoader();
+        GUIMediator.gui().getOutputPanel().uploadManager.restoreButtonText();
+        GUIMediator.gui().getOutputPanel().uploadManager.setButtonEnable(true);
+        GUIMediator.gui().getOutputPanel().uploadManager.hideLoader();
     }
 }

@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view;
+package com.jsql.view.component;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -23,9 +23,9 @@ import java.awt.geom.RoundRectangle2D;
 
 import javax.swing.border.AbstractBorder;
 
+@SuppressWarnings("serial")
 public class RoundBorder extends AbstractBorder {
-    
-    private static final long serialVersionUID = -8907356713659164971L;
+	
     private boolean drawBorder;
     private int leftRightMargin;
     private int topBottomMargin;

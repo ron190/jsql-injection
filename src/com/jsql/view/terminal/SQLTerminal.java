@@ -14,10 +14,10 @@ import java.util.UUID;
 
 import com.jsql.model.InjectionModel;
 
+@SuppressWarnings("serial")
 public class SQLTerminal extends Terminal {
-    private static final long serialVersionUID = -7396306452612141915L;
 
-    public SQLTerminal(InjectionModel model, UUID terminalID, String wbhPath, String... args) {
+	public SQLTerminal(InjectionModel model, UUID terminalID, String wbhPath, String... args) {
         super(model, terminalID, wbhPath, "sql");
         this.args = args; 
     }

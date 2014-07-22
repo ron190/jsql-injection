@@ -23,14 +23,13 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.TreeNode;
 
 import com.jsql.view.GUITools;
-import com.jsql.view.RoundBorder;
+import com.jsql.view.component.RoundBorder;
 
 /**
  * A tree Node composed of an icon, a GIF loader, a progress bar, a label.
  */
+@SuppressWarnings("serial")
 public class NodePanel extends JPanel {
-    private static final long serialVersionUID = -5833890081484609705L;
-    
     /**
      * Default icon of the node (database or table)
      */

@@ -18,11 +18,10 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.JTextComponent;
 
+@SuppressWarnings("serial")
 public class BlockCaret extends DefaultCaret {
 
-    private static final long serialVersionUID = 1L;
-
-    public BlockCaret() {
+	public BlockCaret() {
         setBlinkRate(500); // half a second
     }
 

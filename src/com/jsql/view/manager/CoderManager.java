@@ -44,17 +44,16 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.jsql.tool.StringTool;
 import com.jsql.view.GUITools;
-import com.jsql.view.RoundScroller;
 import com.jsql.view.component.JSplitPaneWithZeroSizeDivider;
-import com.jsql.view.component.popup.JPopupTextArea;
-import com.jsql.view.component.popup.JPopupTextAreaEditable;
+import com.jsql.view.component.RoundScroller;
+import com.jsql.view.component.popupmenu.JPopupTextArea;
+import com.jsql.view.component.popupmenu.JPopupTextAreaEditable;
 
 /**
  * Manager to code/uncode string in various methods.
  */
+@SuppressWarnings("serial")
 public class CoderManager extends JPanel{
-    private static final long serialVersionUID = -8130837561511575264L;
-
     private JPopupTextAreaEditable entry;
     private JComboBox<String> encoding;
     private JPopupTextArea result;

@@ -9,6 +9,7 @@
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
 package com.jsql.view.dnd.list;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,25 +36,24 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.RoundScroller;
-import com.jsql.view.component.popup.JPopupTextAreaEditable;
+import com.jsql.view.component.RoundScroller;
+import com.jsql.view.component.popupmenu.JPopupTextAreaEditable;
 
 public class MouseAction extends MouseAdapter {
     private DnDList myList;
     private int[] mouseOver;
-    private GUI gui;
 
     public MouseAction(DnDList myList, int[] mouseOver){
         this.myList = myList;
         this.mouseOver = mouseOver;
-        this.gui = gui;
     }
     
-    public void showPopup(final MouseEvent e) {
+    @SuppressWarnings("unchecked")
+	public void showPopup(final MouseEvent e) {
         if (e.isPopupTrigger()){
-            JList list = (JList)e.getSource();
+            JList<ListItem> list = (JList<ListItem>)e.getSource();
 
             JPopupMenu tablePopupMenu = new JPopupMenu();
 
@@ -83,7 +83,7 @@ public class MouseAction extends MouseAdapter {
             mnSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
             
             //Create a file chooser
-            final JFileChooser importFileDialog = new JFileChooser(myList.gui.model.pathFile);
+            final JFileChooser importFileDialog = new JFileChooser(GUIMediator.model().pathFile);
             importFileDialog.setDialogTitle("Import a list of file paths");
             importFileDialog.setMultiSelectionEnabled(true);
 
@@ -182,9 +182,8 @@ public class MouseAction extends MouseAdapter {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
                     try {
-                        final JFileChooser importFileDialog = new JFileChooser(myList.gui.model.pathFile){
-                            private static final long serialVersionUID = 2636947540442342901L;
-
+                        @SuppressWarnings("serial")
+						final JFileChooser importFileDialog = new JFileChooser(GUIMediator.model().pathFile){
                             @Override
                             public void approveSelection(){
                                 File file = this.getSelectedFile();

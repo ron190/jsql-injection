@@ -11,6 +11,7 @@
 package com.jsql.view.panel;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
@@ -20,18 +21,17 @@ import javax.swing.GroupLayout;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 import com.jsql.view.GUITools;
-import com.jsql.view.component.popup.JPopupTextLabel;
+import com.jsql.view.component.popupmenu.JPopupTextLabel;
 
 /**
  * Panel for statusbar
  */
-public class Statusbar extends JPanel{
-    private static final long serialVersionUID = -5439904812395393271L;
-
+@SuppressWarnings("serial")
+public class StatusbarPanel extends JPanel{
+	
     // Default string in place of database infos
     private final String INFO_DEFAULT_VALUE = "-";
 
@@ -42,14 +42,19 @@ public class Statusbar extends JPanel{
     private JPopupTextLabel labelAuthenticatedUser = new JPopupTextLabel("");
 
     // Injection methods
-    private JLabel labelNormal = new JLabel("Normal", SwingConstants.LEFT);
-    private JLabel labelErrorBased = new JLabel("ErrorBased", SwingConstants.LEFT);
-    private JLabel labelBlind = new JLabel("Blind", SwingConstants.LEFT);
-    private JLabel labelTimeBased = new JLabel("TimeBased", SwingConstants.LEFT);
-
-    public Statusbar(){
+    public JLabel labelNormal;
+    public JLabel labelErrorBased;
+    public JLabel labelBlind;
+    public JLabel labelTimeBased;
+    
+    public StatusbarPanel(){
+        labelNormal = new RadioLinkStatusbar("Normal");
+        labelErrorBased = new RadioLinkStatusbar("ErrorBased");
+        labelBlind = new RadioLinkStatusbar("Blind");
+        labelTimeBased = new RadioLinkStatusbar("TimeBased");
+    	
         this.setLayout( new BoxLayout(this, BoxLayout.LINE_AXIS) );
-        this.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        this.setBorder(BorderFactory.createEmptyBorder(0, 5, 2, 5));
 
         this.reset();
 
@@ -92,7 +97,10 @@ public class Statusbar extends JPanel{
         types.add(labelBlind);
         types.add(labelErrorBased);
         types.add(labelNormal);
-
+        
+        // Add pixels to the right to compensate width when strategy is selected 
+        labelTimeBased.setPreferredSize(new Dimension(labelTimeBased.getPreferredSize().width+3,labelTimeBased.getPreferredSize().height));
+        
         labelTimeBased.setToolTipText("<html><b>Slowest and less reliable method</b><br>" +
                 "Boolean SQL test generates a 5s wait time for false SQL statement.<br>" +
                 "<i>Read each bit of encoded characters (16 URL calls by character).</i></html>");
@@ -147,6 +155,11 @@ public class Statusbar extends JPanel{
         labelErrorBased.setIcon(GUITools.SQUARE_GREY);
         labelBlind.setIcon(GUITools.SQUARE_GREY);
         labelTimeBased.setIcon(GUITools.SQUARE_GREY);
+        
+        labelNormal.setFont(GUITools.myFont);
+		labelErrorBased.setFont(GUITools.myFont);
+		labelBlind.setFont(GUITools.myFont);
+		labelTimeBased.setFont(GUITools.myFont);
     }
 
     public void setInfos(String version, String database, String user, String authenticatedUser){

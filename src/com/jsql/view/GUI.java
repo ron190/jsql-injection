@@ -22,7 +22,6 @@ import java.util.UUID;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTree;
 import javax.swing.TransferHandler;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -32,13 +31,13 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.ElementDatabase;
 import com.jsql.model.bean.Request;
 import com.jsql.view.component.Menubar;
-import com.jsql.view.component.popup.JPopupTextArea;
+import com.jsql.view.component.popupmenu.JPopupTextArea;
 import com.jsql.view.dnd.tab.DnDTabbedPane;
 import com.jsql.view.dnd.tab.TabTransferHandler;
 import com.jsql.view.dropshadow.ShadowPopupFactory;
-import com.jsql.view.interaction.Interaction;
-import com.jsql.view.panel.LeftRightBottom;
-import com.jsql.view.panel.Statusbar;
+import com.jsql.view.interaction.InteractionCommand;
+import com.jsql.view.panel.LeftRightBottomPanel;
+import com.jsql.view.panel.StatusbarPanel;
 import com.jsql.view.panel.TopPanel;
 import com.jsql.view.terminal.Terminal;
 
@@ -49,21 +48,8 @@ import com.jsql.view.terminal.Terminal;
  * - at the center: tree on the left, table on the right,
  * - at the bottom: information labels
  */
+@SuppressWarnings("serial")
 public class GUI extends JFrame implements Observer {
-    private static final long serialVersionUID = 9164724117078636255L;
-
-    // Used to call threads
-    public InjectionController controller;
-    
-    // Used to get proxy, path settings
-    public InjectionModel model;
-
-    // Tree for database components
-    public JTree databaseTree;
-    
-    // Tabs for values displayed in a table
-    public DnDTabbedPane right;
-
     /**
      * Text area for injection informations:
      * - console: standard readable message,
@@ -78,12 +64,12 @@ public class GUI extends JFrame implements Observer {
     public JPopupTextArea javaDebug;
 
     // Panel of textfields at the top
-    private TopPanel top;
+//    public TopPanel top;
 
-    public LeftRightBottom outputPanel;
+    public LeftRightBottomPanel outputPanel;
     
     // Panel of labels in the statusbar
-    private Statusbar statusPanel;
+    private StatusbarPanel statusPanel;
 
     // List of terminal by unique identifier
     public Map<UUID,Terminal> consoles = new HashMap<UUID,Terminal>();
@@ -94,8 +80,10 @@ public class GUI extends JFrame implements Observer {
     public final String JAVA_VISIBLE = "java_visible";
     
     // Build the GUI: add app icon, tree icons, the 3 main panels
-    public GUI(InjectionController controller, InjectionModel model){
+    public GUI(){
         super("jSQL Injection");
+        
+        GUIMediator.register(this);
 
         // Define a small and large app icon
         this.setIconImages(GUITools.getIcons());
@@ -111,37 +99,39 @@ public class GUI extends JFrame implements Observer {
         binaryArea = new JPopupTextArea();
         javaDebug = new JPopupTextArea();
 
-        right = new DnDTabbedPane();
+//        right = new DnDTabbedPane();
+        GUIMediator.register(new DnDTabbedPane());
+        
         TransferHandler handler = new TabTransferHandler();
-        right.setTransferHandler(handler);
-
-        // Save model
-        this.model = model;
+        GUIMediator.right().setTransferHandler(handler);
+        
         // Register the view to the model
-        this.model.addObserver(this);
+        GUIMediator.model().addObserver(this);
+        
         // Save controller
-        this.controller = controller;
+//        this.controller = controller;
 
-        this.setJMenuBar(new Menubar(this));
+        this.setJMenuBar( new Menubar() );
 
         // Add hotkeys to rootpane ctrl-tab, ctrl-shift-tab, ctrl-w
-        GUITools.addShortcut(right);
+        ActionHandler.addShortcut(GUIMediator.right());
 
         // Define the default panel: each component on a vertical line
         this.getContentPane().setLayout( new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS) );
 
         // Textfields at the top
-        top = new TopPanel(this.controller, this.model);
-        this.add(top);
+//        top = new TopPanel();
+        GUIMediator.register(new TopPanel());
+        this.add(GUIMediator.top());
 
         // Main panel for tree ans tables in the middle
         JPanel mainPanel = new JPanel(new GridLayout(1,0));
-        outputPanel = new LeftRightBottom(this);
+        outputPanel = new LeftRightBottomPanel();
         mainPanel.add(outputPanel);
         this.add(mainPanel);
 
         // Info on the bottom
-        statusPanel = new Statusbar();
+        statusPanel = new StatusbarPanel();
         this.add(statusPanel);
 
         // Reduce size of components
@@ -149,7 +139,7 @@ public class GUI extends JFrame implements Observer {
 
         // Size of window
         this.setSize(1024, 768);
-        top.submit.requestFocusInWindow();
+//        top.submit.requestFocusInWindow();
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -157,14 +147,16 @@ public class GUI extends JFrame implements Observer {
         this.setLocationRelativeTo(null);
 
         // Define the keyword shortcuts for tabs #Need to work even if the focus is not on tabs
-        GUITools.addShortcut(this.getRootPane(), right);
+        ActionHandler.addShortcut(this.getRootPane(), GUIMediator.right());
+        
+        ActionHandler.addShortcut();
     }
 
     /**
      *  Map a database element with the corresponding tree node.
      *  The injection model send a database element to the view, then the view access its graphic component to update
      */
-    private Map<ElementDatabase, DefaultMutableTreeNode> treeNodeModels = new HashMap<ElementDatabase, DefaultMutableTreeNode>();
+    Map<ElementDatabase, DefaultMutableTreeNode> treeNodeModels = new HashMap<ElementDatabase, DefaultMutableTreeNode>();
 
     public DefaultMutableTreeNode getNode(ElementDatabase elt){
         return treeNodeModels.get(elt);
@@ -187,27 +179,27 @@ public class GUI extends JFrame implements Observer {
         try {
             Class<?> cl = Class.forName("com.jsql.view.interaction." + interaction.getMessage());
 
-            Class<?>[] types = new Class[]{com.jsql.view.GUI.class, Object[].class};
+            Class<?>[] types = new Class[]{Object[].class};
 
             cl.getConstructors();
             Constructor<?> ct = cl.getConstructor(types);
 
-            Interaction o2 = (Interaction) ct.newInstance(new Object[]{this, interaction.getParameters()});
+            InteractionCommand o2 = (InteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
             o2.execute();
         } catch (ClassNotFoundException e) {
-            this.model.sendDebugMessage(e);
+        	GUIMediator.model().sendDebugMessage(e);
         } catch (InstantiationException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         } catch (IllegalAccessException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         } catch (NoSuchMethodException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         } catch (SecurityException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         } catch (IllegalArgumentException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         } catch (InvocationTargetException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         }
     }
 
@@ -216,19 +208,19 @@ public class GUI extends JFrame implements Observer {
      */
     public void resetInterface(){
         // Tree model for refresh the tree
-        DefaultTreeModel treeModel = (DefaultTreeModel) databaseTree.getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
         // The tree root
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
 
         // Delete tabs
-        right.removeAll();
+        GUIMediator.right().removeAll();
         // Remove tree nodes
         root.removeAllChildren();
         // Refresh the root
         treeModel.nodeChanged(root);
         // Refresh the tree
         treeModel.reload();
-        databaseTree.setRootVisible(true);
+        GUIMediator.databaseTree().setRootVisible(true);
 
         // Empty infos tabs
         chunks.setText("");
@@ -251,23 +243,23 @@ public class GUI extends JFrame implements Observer {
      * Getter for main center panel, composed by left and right tabs
      * @return Center panel
      */
-    public LeftRightBottom getOutputPanel(){
+    public LeftRightBottomPanel getOutputPanel(){
         return outputPanel;
     }
 
-    /**
-     * Getter for user input panel at the top of window.
-     * @return Top panel
-     */
-    public TopPanel getInputPanel(){
-        return top;
-    }
+//    /**
+//     * Getter for user input panel at the top of window.
+//     * @return Top panel
+//     */
+//    public TopPanel getInputPanel(){
+//        return top;
+//    }
 
     /**
      * Getter for statusbar.
      * @return Statusbar panel
      */
-    public Statusbar getStatusPanel(){
+    public StatusbarPanel getStatusPanel(){
         return statusPanel;
     }
 }

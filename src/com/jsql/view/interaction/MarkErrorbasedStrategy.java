@@ -10,12 +10,23 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
+import com.jsql.view.GUIMediator;
+import com.jsql.view.GUITools;
+
 /**
- * Action ordered by the Model and applied to the View
+ * Mark the injection as invulnerable to a error based injection
  */
-public interface Interaction{
+public class MarkErrorbasedStrategy implements InteractionCommand{
     /**
-     * Do the action ordered by the model
+     * @param interactionParams
      */
-    public void execute();
+    public MarkErrorbasedStrategy(Object[] interactionParams){
+    }
+
+    /* (non-Javadoc)
+     * @see com.jsql.mvc.view.message.ActionOnView#execute()
+     */
+    public void execute(){
+        GUITools.setUnderlined(GUIMediator.gui().getStatusPanel().labelErrorBased);
+    }
 }

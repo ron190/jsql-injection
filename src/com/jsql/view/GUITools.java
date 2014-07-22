@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.jsql.view;
 
-import java.awt.AWTKeyStroke;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
@@ -19,45 +18,39 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.KeyboardFocusManager;
-import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
+import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
-import javax.swing.Action;
-import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.InputMap;
-import javax.swing.JComponent;
-import javax.swing.JRootPane;
-import javax.swing.JTabbedPane;
-import javax.swing.KeyStroke;
+import javax.swing.JLabel;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 import javax.swing.plaf.ColorUIResource;
 
+import com.jsql.view.component.RoundBorder;
 
 /**
  * Build default component appearence, keyboard shortcuts and icons.
  */
+@SuppressWarnings("serial")
 public class GUITools {
     public static final Color MENU_BLU = new Color(200,221,242);
 
     public static final Color SELECTION_BACKGROUND = new Color(211,230,255);
+//    public static final Color SELECTION_BACKGROUND = new Color(200,221,242);
     public static final Color DEFAULT_BACKGROUND = UIManager.getColor("Panel.background");
 
     public static final Icon TICK = new ImageIcon(GUITools.class.getResource("/com/jsql/view/images/check.png"));
@@ -75,13 +68,14 @@ public class GUITools {
 
     public static final Icon TABLE = new ImageIcon(GUITools.class.getResource("/com/jsql/view/images/table.png"));
     public static final Icon EMPTY = new ImageIcon(new BufferedImage(16,16, BufferedImage.TRANSLUCENT));
+	public static final Icon ZEROSIZE = new ImageIcon() {public void paintIcon(Component c, Graphics g, int x, int y) {}};
 
     public static final String PATH_PAUSE = "/com/jsql/view/images/pause.png";
     public static final String PATH_PROGRESSBAR = "/com/jsql/view/images/progressBar.gif";
 
     public static final Border BLU_ROUND_BORDER = new RoundBorder(3, 3, true);
 
-    public static final Font myFont = new Font("Segoe UI",Font.PLAIN,UIManager.getDefaults().getFont("TextPane.font").getSize());
+    public static final Font myFont = new Font("Segoe UI", Font.PLAIN, UIManager.getDefaults().getFont("TextPane.font").getSize());
 
     /**
      * Change the default style of various components.
@@ -106,6 +100,9 @@ public class GUITools {
         UIManager.put("Tree.openIcon", new ImageIcon());
         UIManager.put("Tree.closedIcon", new ImageIcon());
 
+        // Admin page
+        UIManager.put("TextPane.selectionBackground", SELECTION_BACKGROUND);
+        
         // No bold for menu + round corner
         UIManager.put("Menu.font", myFont);
         UIManager.put("PopupMenu.font", myFont);
@@ -119,8 +116,6 @@ public class GUITools {
         UIManager.put("CheckBoxMenuItem.font", myFont);
         UIManager.put("CheckBoxMenuItem.borderPainted", false);
         UIManager.put("CheckBoxMenuItem.checkIcon", new ImageIcon(GUITools.class.getResource("/com/jsql/view/images/check.png")){
-            private static final long serialVersionUID = 4678543809597003902L;
-
             @Override
             public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
                 ButtonModel m = ((AbstractButton)c).getModel();
@@ -132,6 +127,8 @@ public class GUITools {
         // Custom tab
         //        UIManager.put("TabbedPane.darkShadow", new Color(190,198,205));
         //        UIManager.put("TabbedPane.highlight", new Color(180,194,224));
+//        UIManager.put("TabbedPane.selected", SELECTION_BACKGROUND);
+//        UIManager.put("TabbedPane.background", SELECTION_BACKGROUND);
         UIManager.put("TabbedPane.contentBorderInsets", new Insets(0,0,0,0));
         UIManager.put("TabbedPane.tabAreaInsets", new Insets(3, 2, 0, 2));
         UIManager.put("TabbedPane.tabInsets", new Insets(2,3+5,2,3));
@@ -139,7 +136,7 @@ public class GUITools {
         // Replace square with bar
         UIManager.put("ScrollBar.squareButtons", false);
         UIManager.put("TextField.font", new Font(((Font) UIManager.get("TextField.font")).getName(),Font.PLAIN,((Font) UIManager.get("TextField.font")).getSize()));
-        UIManager.put("TextArea.font", new Font("Courier New",Font.PLAIN,((Font) UIManager.get("TextArea.font")).getSize()));
+        UIManager.put("TextArea.font", new Font("monospaced",Font.PLAIN,((Font) UIManager.get("TextArea.font")).getSize()));
         UIManager.put("ComboBox.font", myFont);
         UIManager.put("Button.font", myFont);
         UIManager.put("Label.font", myFont);
@@ -166,7 +163,7 @@ public class GUITools {
         UIManager.put("Table.selectionBackground", SELECTION_BACKGROUND);
 
         UIManager.put("Table.focusCellHighlightBorder", BorderFactory.createCompoundBorder( new AbstractBorder() {
-            @Override
+			@Override
             public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
                 Graphics2D gg = (Graphics2D) g;
                 gg.setColor(Color.GRAY);
@@ -187,103 +184,6 @@ public class GUITools {
         UIManager.put("ProgressBar.background", UIManager.get("Tree.background"));
     }
 
-    private static JTabbedPane valuesTabbedPane;
-
-    /**
-     * Add action to a single tabbedpane (ctrl-tab, ctrl-shift-tab)
-     */
-    public static void addShortcut(JTabbedPane tabbedPane)
-    {
-        KeyStroke ctrlTab = KeyStroke.getKeyStroke("ctrl TAB");
-        KeyStroke ctrlShiftTab = KeyStroke.getKeyStroke("ctrl shift TAB");
-
-        // Remove ctrl-tab from normal focus traversal
-        Set<AWTKeyStroke> forwardKeys = new HashSet<AWTKeyStroke>(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
-        forwardKeys.remove(ctrlTab);
-        tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
-
-        // Remove ctrl-shift-tab from normal focus traversal
-        Set<AWTKeyStroke> backwardKeys = new HashSet<AWTKeyStroke>(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
-        backwardKeys.remove(ctrlShiftTab);
-        tabbedPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
-
-        // Add keys to the tab's input map
-        InputMap inputMap = tabbedPane.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-        inputMap.put(ctrlTab, "navigateNext");
-        inputMap.put(ctrlShiftTab, "navigatePrevious");
-    }
-
-    /**
-     * Add action to application window (ctrl-tab, ctrl-shift-tab, ctrl-W)
-     */
-    public static void addShortcut(JRootPane rootPane, JTabbedPane valuesTabbedPane){
-        GUITools.valuesTabbedPane = valuesTabbedPane;
-
-        Action closeTab = new ActionRemoveTab();
-        Action nextTab = new ActionNextTab();
-        Action previousTab = new ActionPreviousTab();
-
-        Set<AWTKeyStroke> forwardKeys = new HashSet<AWTKeyStroke>(rootPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
-        forwardKeys.remove(KeyStroke.getKeyStroke("ctrl TAB"));
-        rootPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
-
-        Set<AWTKeyStroke> forwardKeys2 = new HashSet<AWTKeyStroke>(rootPane.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
-        forwardKeys2.remove(KeyStroke.getKeyStroke("ctrl shift TAB"));
-        rootPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, forwardKeys2);
-
-        InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap actionMap = rootPane.getActionMap();
-
-        inputMap.put(KeyStroke.getKeyStroke("ctrl W"), "actionString-closeTab");
-        actionMap.put("actionString-closeTab", closeTab);
-
-        inputMap.put(KeyStroke.getKeyStroke("ctrl TAB"), "actionString-nextTab");
-        actionMap.put("actionString-nextTab", nextTab);
-
-        inputMap.put(KeyStroke.getKeyStroke("ctrl shift TAB"), "actionString-previousTab");
-        actionMap.put("actionString-previousTab", previousTab);
-    }
-
-    private static class ActionRemoveTab extends AbstractAction {
-        private static final long serialVersionUID = -6234281651977146545L;
-
-        public void actionPerformed(ActionEvent e) {
-            if(valuesTabbedPane.getTabCount() > 0){
-                valuesTabbedPane.removeTabAt(valuesTabbedPane.getSelectedIndex());
-            }
-        }
-    }
-
-    private static class ActionNextTab extends AbstractAction {
-        private static final long serialVersionUID = 3514524611956271798L;
-
-        public void actionPerformed(ActionEvent e) {
-            if(valuesTabbedPane.getTabCount() > 0){
-                int selectedIndex = valuesTabbedPane.getSelectedIndex();
-                if(selectedIndex+1 < valuesTabbedPane.getTabCount()){
-                    valuesTabbedPane.setSelectedIndex(selectedIndex+1);
-                }else{
-                    valuesTabbedPane.setSelectedIndex(0);
-                }
-            }
-        }
-    }
-
-    private static class ActionPreviousTab extends AbstractAction {
-        private static final long serialVersionUID = -984315842794140182L;
-
-        public void actionPerformed(ActionEvent e) {
-            if(valuesTabbedPane.getTabCount() > 0){
-                int selectedIndex = valuesTabbedPane.getSelectedIndex();
-                if(selectedIndex-1 > -1){
-                    valuesTabbedPane.setSelectedIndex(selectedIndex-1);
-                }else{
-                    valuesTabbedPane.setSelectedIndex(valuesTabbedPane.getTabCount()-1);
-                }
-            }
-        }
-    }
-
     /**
      * Icons for application window.
      * @return List of a 16x16 (default) and 32x32 icon (alt-tab, taskbar)
@@ -300,5 +200,21 @@ public class GUITools {
             e.printStackTrace();
         }
         return images;
+    }
+
+    public static void setUnderlined(JLabel label){
+    	Font font = label.getFont();
+        Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>(font.getAttributes());
+        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);
+        attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+//        attributes.put(TextAttribute.FOREGROUND, Color.BLUE);
+        label.setFont(font.deriveFont(attributes));
+    }
+
+    public static void removeFont(JLabel label){
+    	Font font = label.getFont();
+        Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>(font.getAttributes());
+        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);
+        label.setFont(font.deriveFont(attributes));
     }
 }

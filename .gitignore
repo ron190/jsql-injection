@@ -1,3 +1,8 @@
 bin/
 .metadata
 .classpath
+/target
+.classpath
+.project
+target/
+.settings/

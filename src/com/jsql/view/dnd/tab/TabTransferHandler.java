@@ -11,14 +11,11 @@
 package com.jsql.view.dnd.tab;
 
 import java.awt.Cursor;
-import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DragSource;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.activation.ActivationDataFlavor;
@@ -26,6 +23,7 @@ import javax.activation.DataHandler;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
+@SuppressWarnings("serial")
 public class TabTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
     public TabTransferHandler() {
@@ -99,26 +97,27 @@ public class TabTransferHandler extends TransferHandler {
 //             return false;
 //         }
 //     }
-    private BufferedImage makeDragTabImage(DnDTabbedPane tabbedPane) {
-        Rectangle rect = tabbedPane.getBoundsAt(tabbedPane.dragTabIndex);
-        BufferedImage image = new BufferedImage(tabbedPane.getWidth(), tabbedPane.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        Graphics g = image.getGraphics();
-        tabbedPane.paint(g);
-        g.dispose();
-        if(rect.x<0) {
-            rect.translate(-rect.x,0);
-        }
-        if(rect.y<0) {
-            rect.translate(0,-rect.y);
-        }
-        if(rect.x+rect.width>image.getWidth()) {
-            rect.width = image.getWidth() - rect.x;
-        }
-        if(rect.y+rect.height>image.getHeight()) {
-            rect.height = image.getHeight() - rect.y;
-        }
-        return image.getSubimage(rect.x,rect.y,rect.width,rect.height);
-    }
+    
+//    private BufferedImage makeDragTabImage(DnDTabbedPane tabbedPane) {
+//        Rectangle rect = tabbedPane.getBoundsAt(tabbedPane.dragTabIndex);
+//        BufferedImage image = new BufferedImage(tabbedPane.getWidth(), tabbedPane.getHeight(), BufferedImage.TYPE_INT_ARGB);
+//        Graphics g = image.getGraphics();
+//        tabbedPane.paint(g);
+//        g.dispose();
+//        if(rect.x<0) {
+//            rect.translate(-rect.x,0);
+//        }
+//        if(rect.y<0) {
+//            rect.translate(0,-rect.y);
+//        }
+//        if(rect.x+rect.width>image.getWidth()) {
+//            rect.width = image.getWidth() - rect.x;
+//        }
+//        if(rect.y+rect.height>image.getHeight()) {
+//            rect.height = image.getHeight() - rect.y;
+//        }
+//        return image.getSubimage(rect.x,rect.y,rect.width,rect.height);
+//    }
 
     private static GhostGlassPane glassPane;
     @Override public int getSourceActions(JComponent c) {

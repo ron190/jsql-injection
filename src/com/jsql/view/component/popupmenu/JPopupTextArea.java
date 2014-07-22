@@ -8,25 +8,29 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.component.popup;
+package com.jsql.view.component.popupmenu;
 
-import java.awt.Font;
+import java.awt.Cursor;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.JTextField;
+import javax.swing.JTextArea;
 
-public class JPopupTextLabel extends JTextField {
-    private static final long serialVersionUID = 3902552856079929374L;
-    
-    public JPopupTextLabel(String string) {
-        super(string);
+@SuppressWarnings("serial")
+public class JPopupTextArea extends JTextArea {
+	
+    public JPopupTextArea(){
         initialize();
     }
     
+    public JPopupTextArea(int i, int j) {
+        super(i,j);
+        initialize();
+    }
+
     public void initialize(){
         this.setComponentPopupMenu(new JPopupTextComponentMenu(this));
         
@@ -34,23 +38,21 @@ public class JPopupTextLabel extends JTextField {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                JPopupTextLabel.this.requestFocusInWindow();
+                JPopupTextArea.this.requestFocusInWindow();
             }
         });
         
         this.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent arg0) {
-                JPopupTextLabel.this.getCaret().setVisible(true);
-                JPopupTextLabel.this.getCaret().setSelectionVisible(true);
+                JPopupTextArea.this.getCaret().setVisible(true);
+                JPopupTextArea.this.getCaret().setSelectionVisible(true);
             }
         });
-
-        Font boldFont = new Font(this.getFont().getName(),Font.BOLD,this.getFont().getSize());
-        this.setFont(boldFont);
-        this.setDragEnabled(true);
-
-        this.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+        
+        this.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         this.setEditable(false);
+        this.setDragEnabled(true);
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
     }
 }

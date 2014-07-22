@@ -10,7 +10,6 @@
  ******************************************************************************/
 package com.jsql.model;
 
-import java.util.concurrent.ExecutionException;
 
 /**
  * An action class that allows stop/pause/resume features for each parallelized tasks (mainly for tree actions).

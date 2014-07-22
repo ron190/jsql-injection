@@ -13,16 +13,13 @@ package com.jsql.view.interaction;
 import javax.swing.tree.DefaultTreeModel;
 
 import com.jsql.model.bean.ElementDatabase;
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.tree.NodeModel;
 
 /**
  * Start refreshing the progress bar of an element in the database tree, progression is not tracked (like colum search)
  */
-public class StartIndeterminateProgress implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class StartIndeterminateProgress implements InteractionCommand{
     // The element in the database tree for which the progress starts
     private ElementDatabase dataElementDatabase;
 
@@ -30,9 +27,7 @@ public class StartIndeterminateProgress implements Interaction{
      * @param mainGUI
      * @param interactionParams Element in the database tree to update
      */
-    public StartIndeterminateProgress(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
-
+    public StartIndeterminateProgress(Object[] interactionParams){
         dataElementDatabase = (ElementDatabase) interactionParams[0];
     }
 
@@ -41,16 +36,16 @@ public class StartIndeterminateProgress implements Interaction{
      */
     public void execute(){
         // Tree model, update the tree (refresh, add node, etc)
-        DefaultTreeModel treeModel = (DefaultTreeModel) gui.databaseTree.getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
 
         // Get the node
-        NodeModel<?> progressingTreeNodeModel =
-                (NodeModel<?>) gui.getNode(dataElementDatabase).getUserObject();
+        NodeModel progressingTreeNodeModel =
+                (NodeModel) GUIMediator.gui().getNode(dataElementDatabase).getUserObject();
         // Mark the node model as 'loading'
         progressingTreeNodeModel.hasIndeterminatedProgress = true;
 
         //        treeModel.nodeStructureChanged((TreeNode) treeNodeModels.get(dataElementDatabase)); // update progressbar
         // Update the node
-        treeModel.nodeChanged(gui.getNode(dataElementDatabase));
+        treeModel.nodeChanged(GUIMediator.gui().getNode(dataElementDatabase));
     }
 }

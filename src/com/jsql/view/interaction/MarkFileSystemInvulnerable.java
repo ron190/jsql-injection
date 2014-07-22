@@ -10,43 +10,38 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 
 /**
  * Mark the injection as using a user profile invulnerable to file I/O
  */
-public class MarkFileSystemInvulnerable implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class MarkFileSystemInvulnerable implements InteractionCommand{
     /**
-     * @param mainGUI
      * @param interactionParams
      */
-    public MarkFileSystemInvulnerable(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
+    public MarkFileSystemInvulnerable(Object[] interactionParams){
     }
 
     /* (non-Javadoc)
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        gui.getOutputPanel().fileManager.changeIcon(GUITools.SQUARE_RED);
-        gui.getOutputPanel().fileManager.setButtonEnable(true);
-        gui.getOutputPanel().fileManager.restoreButtonText();
-        gui.getOutputPanel().fileManager.hideLoader();
-
-        gui.getOutputPanel().shellManager.changeIcon(GUITools.SQUARE_RED);
-        gui.getOutputPanel().shellManager.setButtonEnable(true);
-        gui.getOutputPanel().shellManager.restoreButtonText();
+        GUIMediator.gui().getOutputPanel().fileManager.changeIcon(GUITools.SQUARE_RED);
+        GUIMediator.gui().getOutputPanel().fileManager.setButtonEnable(true);
+        GUIMediator.gui().getOutputPanel().fileManager.restoreButtonText();
+        GUIMediator.gui().getOutputPanel().fileManager.hideLoader();
         
-        gui.getOutputPanel().uploadManager.changeIcon(GUITools.SQUARE_RED);
-        gui.getOutputPanel().uploadManager.setButtonEnable(true);
-        gui.getOutputPanel().uploadManager.restoreButtonText();
+        GUIMediator.gui().getOutputPanel().shellManager.changeIcon(GUITools.SQUARE_RED);
+        GUIMediator.gui().getOutputPanel().shellManager.setButtonEnable(true);
+        GUIMediator.gui().getOutputPanel().shellManager.restoreButtonText();
         
-        gui.getOutputPanel().sqlShellManager.changeIcon(GUITools.SQUARE_RED);
-        gui.getOutputPanel().sqlShellManager.setButtonEnable(true);
-        gui.getOutputPanel().sqlShellManager.restoreButtonText();
+        GUIMediator.gui().getOutputPanel().uploadManager.changeIcon(GUITools.SQUARE_RED);
+        GUIMediator.gui().getOutputPanel().uploadManager.setButtonEnable(true);
+        GUIMediator.gui().getOutputPanel().uploadManager.restoreButtonText();
+        
+        GUIMediator.gui().getOutputPanel().sqlShellManager.changeIcon(GUITools.SQUARE_RED);
+        GUIMediator.gui().getOutputPanel().sqlShellManager.setButtonEnable(true);
+        GUIMediator.gui().getOutputPanel().sqlShellManager.restoreButtonText();
     }
 }

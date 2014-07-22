@@ -10,25 +10,19 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 
 /**
  * Append text to the tab Binary
  */
-public class MessageBinary implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class MessageBinary implements InteractionCommand{
     // Text to append to the Binary log area
     private String text;
 
     /**
-     * @param mainGUI
      * @param interactionParams Text to append
      */
-    public MessageBinary(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
-
+    public MessageBinary(Object[] interactionParams){
         text = (String) interactionParams[0];
     }
 
@@ -36,7 +30,7 @@ public class MessageBinary implements Interaction{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        gui.binaryArea.append(text);
-        gui.binaryArea.setCaretPosition(gui.binaryArea.getDocument().getLength());
+    	GUIMediator.gui().binaryArea.append(text);
+        GUIMediator.gui().binaryArea.setCaretPosition(GUIMediator.gui().binaryArea.getDocument().getLength());
     }
 }

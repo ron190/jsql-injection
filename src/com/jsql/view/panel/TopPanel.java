@@ -15,93 +15,67 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.plaf.basic.BasicArrowButton;
 
-import com.jsql.controller.InjectionController;
-import com.jsql.model.InjectionModel;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.RoundBorder;
-import com.jsql.view.component.popup.JPopupTextField;
+import com.jsql.view.component.ComponentBorder;
+import com.jsql.view.component.RoundBorder;
+import com.jsql.view.component.popupmenu.JPopupTextField;
 
 /**
  * Create panel at the top of the window.
  * Contains textfields in a panel, and proxy setting in another
  */
+@SuppressWarnings("serial")
 public class TopPanel extends JPanel{
-    private static final long serialVersionUID = -1242173041381245542L;
-
-    // Constant for selected radio
-    private static final boolean IS_SELECTED = true;
-
-    // MVC controller: receive every parameters validated by user
-    private InjectionController controller;
-
-    // MVC model: used to test if an injection has been built
-    private InjectionModel model;
 
     // Every text input: user provides default injection data, every HTTP requests will include them
     public JPopupTextField textGET = new JPopupTextField("http://127.0.0.1/simulate_get.php?lib=", true, true);
-    private JPopupTextField textPOST = new JPopupTextField();
-    private JPopupTextField textCookie = new JPopupTextField();
-    private JPopupTextField textHeader = new JPopupTextField();
+    private JPopupTextField textPOST = new JPopupTextField(true);
+    private JPopupTextField textCookie = new JPopupTextField(true);
+    private JPopupTextField textHeader = new JPopupTextField(true);
 
     // Radio buttons, user choose the injection method, via url query string, post, cookie or header
-    private JRadioButton radioGET = new JRadioButton("", IS_SELECTED);
-    private JRadioButton radioPOST = new JRadioButton();
-    private JRadioButton radioCookie = new JRadioButton();
-    private JRadioButton radioHeader = new JRadioButton();
+    private RadioLinkAddressBar radioGET;
+    private RadioLinkAddressBar radioPOST;
+    private RadioLinkAddressBar radioCookie;
+    private RadioLinkAddressBar radioHeader;
     
-    // Group for radio buttons
-    private ButtonGroup method = new ButtonGroup();
+    private String sendMethod = "GET";
+
+	public JLabel loader = new JLabel(GUITools.SPINNER);
 
     // Connection button
-    public JButton submit = new JButton("Connect", new ImageIcon(getClass().getResource("/com/jsql/view/images/connect.png")));
+    public ButtonAddressBar submitAddressBar = new ButtonAddressBar();
 
-    public JLabel loader = new JLabel(GUITools.SPINNER);
-
-    public TopPanel(final InjectionController controller, final InjectionModel model){
-        this.controller = controller;
-        this.model = model;
+    public TopPanel(){
+        radioGET = new RadioLinkAddressBar("GET", true);
+        radioPOST = new RadioLinkAddressBar("POST");
+        radioCookie = new RadioLinkAddressBar("Cookie");
+        radioHeader = new RadioLinkAddressBar("Header");
 
         // Vertical positioning for components
         this.setLayout( new BoxLayout(this, BoxLayout.PAGE_AXIS) );
 
-        // First panel at the top, contain text components
+        // First panel at the top, contains text components
         JPanel panel = new JPanel();
         GroupLayout layout = new GroupLayout(panel);
         panel.setLayout(layout);
-        panel.setBorder(
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createTitledBorder(""),
-                        BorderFactory.createEmptyBorder(5,5,5,5)
-                        ));
+        panel.setBorder(BorderFactory.createEmptyBorder(7,5,5,0));
         this.add(panel);
 
-        radioGET.setBorder(BorderFactory.createEmptyBorder(8, 5, 0, 0));
-        radioPOST.setBorder(BorderFactory.createEmptyBorder(6, 5, 0, 0));
-        radioCookie.setBorder(BorderFactory.createEmptyBorder(6, 5, 0, 0));
-        radioHeader.setBorder(BorderFactory.createEmptyBorder(6, 5, 0, 0));
-
-        // String id, injection method
-        radioGET.setActionCommand("GET");
-        radioPOST.setActionCommand("POST");
-        radioCookie.setActionCommand("COOKIE");
-        radioHeader.setActionCommand("HEADER");
-        // Add radios to the group
-        method.add(radioGET);
-        method.add(radioPOST);
-        method.add(radioCookie);
-        method.add(radioHeader);
+        radioGET.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 3));
+        radioPOST.setBorder(BorderFactory.createEmptyBorder(6, 0, 0, 3));
+        radioCookie.setBorder(BorderFactory.createEmptyBorder(6, 0, 0, 3));
+        radioHeader.setBorder(BorderFactory.createEmptyBorder(6, 0, 0, 3));
 
         // Tooltip setting
         textGET.setToolTipText("<html><b>Website URL</b><br>" +
@@ -129,54 +103,49 @@ public class TopPanel extends JPanel{
         radioHeader.setToolTipText("Inject using Header parameters");
 
         textGET.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(UIManager.getColor ( "Panel.background" ), 2),
+        		BorderFactory.createMatteBorder(2,2,4,0,UIManager.getColor ( "Panel.background" )),
                 new RoundBorder(22,3,true)));
 
         textPOST.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1,2,1,2,UIManager.getColor ( "Panel.background" )),
+                BorderFactory.createMatteBorder(1,2,1,0,UIManager.getColor ( "Panel.background" )),
                 GUITools.BLU_ROUND_BORDER));
         textCookie.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1,2,1,2,UIManager.getColor ( "Panel.background" )),
+                BorderFactory.createMatteBorder(1,2,1,0,UIManager.getColor ( "Panel.background" )),
                 GUITools.BLU_ROUND_BORDER));
         textHeader.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1,2,1,2,UIManager.getColor ( "Panel.background" )),
+                BorderFactory.createMatteBorder(1,2,4,0,UIManager.getColor ( "Panel.background" )),
                 GUITools.BLU_ROUND_BORDER));
-
-        // Buttons under textfields
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        // Lining components
-        buttonsPanel.setLayout( new BoxLayout(buttonsPanel, BoxLayout.X_AXIS) );
-
-        submit.addActionListener(new ActionStart());
+        
+        textGET.addActionListener(new ActionStart());
+        textPOST.addActionListener(new ActionStart());
+        textCookie.addActionListener(new ActionStart());
+        textHeader.addActionListener(new ActionStart());
+        
+        submitAddressBar.setToolTipText("<html>Start injection of the address in the Location Bar</html>");
+        submitAddressBar.addActionListener(new ActionStart());
+        new ComponentBorder( submitAddressBar ).install( textGET );
+        
         loader.setVisible(false);
+        new ComponentBorder( loader ).install( textGET );
+        
+        // Add pixels to the right to compensate width when strategy is selected 
+        radioHeader.setPreferredSize(new Dimension(radioHeader.getPreferredSize().width+3,radioHeader.getPreferredSize().height));
+        radioHeader.setMinimumSize(new Dimension(radioHeader.getPreferredSize().width+3,radioHeader.getPreferredSize().height));
+        radioHeader.setHorizontalAlignment(SwingConstants.RIGHT);
 
-        // Buttons position
-        buttonsPanel.add(submit);
-        buttonsPanel.add(Box.createRigidArea(new Dimension(5,0)));
-        buttonsPanel.add(loader);
-        buttonsPanel.add(Box.createHorizontalGlue());
-
-        // Buttons format
-        submit.setBorder(GUITools.BLU_ROUND_BORDER);
-
-        this.add(buttonsPanel);
-
-        // Labels on the left
-        final JLabel labelGET = new JLabel("URL ");
-        final JLabel labelPOST = new JLabel("POST ");
-        final JLabel labelCookie = new JLabel("Cookie ");
-        final JLabel labelHeader = new JLabel("Header ");
-
+        final BasicArrowButton advancedButton = new BasicArrowButton(BasicArrowButton.SOUTH);
+        advancedButton.setBorderPainted(false);
+        advancedButton.setOpaque(false);
+        
         // Horizontal column rules
         layout.setHorizontalGroup(
             layout.createSequentialGroup()
                 // Label width fixed
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING,false)
-                        .addComponent(labelGET)
-                        .addComponent(labelPOST)
-                        .addComponent(labelCookie)
-                        .addComponent(labelHeader))
+                        .addComponent(radioGET)  
+                        .addComponent(radioPOST) 
+                        .addComponent(radioCookie)
+                        .addComponent(radioHeader))
                 // Resizable textfields
                 .addGroup(layout.createParallelGroup()
                         .addComponent(textGET)
@@ -184,82 +153,62 @@ public class TopPanel extends JPanel{
                         .addComponent(textCookie)
                         .addComponent(textHeader))
                 // Radio width fixed
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING,false)
-                        .addComponent(radioGET)
-                        .addComponent(radioPOST)
-                        .addComponent(radioCookie)
-                        .addComponent(radioHeader))
-                );
+		        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING,false)
+		        		.addComponent(advancedButton))
+        		);
 
         // Vertical line rules
         layout.setVerticalGroup(
             layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(labelGET)
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER, false)
+                        .addComponent(radioGET)
                         .addComponent(textGET)
-                        .addComponent(radioGET))
+                        .addComponent(advancedButton))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(labelPOST)
+                        .addComponent(radioPOST)
                         .addComponent(textPOST)
-                        .addComponent(radioPOST))
+                        )
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(labelCookie)
+                        .addComponent(radioCookie)
                         .addComponent(textCookie)
-                        .addComponent(radioCookie))
+                        )
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(labelHeader)
+                        .addComponent(radioHeader)
                         .addComponent(textHeader)
-                        .addComponent(radioHeader))
+                        )
                 );
 
-        labelGET.setVisible(false);
         radioGET.setVisible(false);
 
-        labelPOST.setVisible(false);
         textPOST.setVisible(false);
         radioPOST.setVisible(false);
 
-        labelCookie.setVisible(false);
         textCookie.setVisible(false);
         radioCookie.setVisible(false);
 
-        labelHeader.setVisible(false);
         textHeader.setVisible(false);
         radioHeader.setVisible(false);
 
-        final ImageIcon upIcon = new ImageIcon(getClass().getResource("/com/jsql/view/images/arrowUp.png"));
-        final ImageIcon downIcon = new ImageIcon(getClass().getResource("/com/jsql/view/images/arrowDown.png"));
-
-        final JButton advancedButton = new JButton(downIcon);
         advancedButton.setToolTipText("Advanced");
         advancedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                Boolean mustChange = advancedButton.getIcon() == downIcon;
+                Boolean toggleVisibility = advancedButton.getDirection() == BasicArrowButton.SOUTH;
 
-                labelGET.setVisible(mustChange);
+                radioGET.setVisible(toggleVisibility);
 
-                radioGET.setVisible(mustChange);
-                radioGET.setSelected(!mustChange);
+                textPOST.setVisible(toggleVisibility);
+                radioPOST.setVisible(toggleVisibility);
 
-                labelPOST.setVisible(mustChange);
-                textPOST.setVisible(mustChange);
-                radioPOST.setVisible(mustChange);
+                textCookie.setVisible(toggleVisibility);
+                radioCookie.setVisible(toggleVisibility);
 
-                labelCookie.setVisible(mustChange);
-                textCookie.setVisible(mustChange);
-                radioCookie.setVisible(mustChange);
+                textHeader.setVisible(toggleVisibility);
+                radioHeader.setVisible(toggleVisibility);
 
-                labelHeader.setVisible(mustChange);
-                textHeader.setVisible(mustChange);
-                radioHeader.setVisible(mustChange);
-
-                advancedButton.setIcon( mustChange?upIcon:downIcon );
+                advancedButton.setDirection( toggleVisibility ? BasicArrowButton.NORTH : BasicArrowButton.SOUTH );
             }
         });
-
-        buttonsPanel.add(advancedButton);
-        advancedButton.setBorder(GUITools.BLU_ROUND_BORDER);
     }
 
     /**
@@ -269,33 +218,36 @@ public class TopPanel extends JPanel{
         @Override
         public void actionPerformed(ActionEvent e) {
             // No injection running
-            if(submit.getText().equals("Connect")){
+        	if(submitAddressBar.state.equals("Connect")){
                 int option = 0;
                 // Ask the user confirmation if injection already built
-                if(model.isInjectionBuilt)
-                    option = JOptionPane.showConfirmDialog(null,
-                            "Start a new injection?", "New injection", JOptionPane.OK_CANCEL_OPTION);
+                if(GUIMediator.model().isInjectionBuilt)
+                    option = JOptionPane.showConfirmDialog(null, "Start a new injection?", "New injection", JOptionPane.OK_CANCEL_OPTION);
                 
                 // Then start injection
-                if(!model.isInjectionBuilt || option == JOptionPane.OK_OPTION){
-                    submit.setText("Stop");
-                    loader.setVisible(true);
+                if(!GUIMediator.model().isInjectionBuilt || option == JOptionPane.OK_OPTION){
+                    submitAddressBar.setInjectionRunning();
+                    GUIMediator.top().loader.setVisible(true);
                     
-                    controller.controlInput(
-                            textGET.getText(),
-                            textPOST.getText(),
-                            textCookie.getText(),
-                            textHeader.getText(),
-                            method.getSelection().getActionCommand()
-                            );
+                    GUIMediator.controller().controlInput(
+                        textGET.getText(),
+                        textPOST.getText(),
+                        textCookie.getText(),
+                        textHeader.getText(),
+                        sendMethod
+                    );
                 }
                 
             // Injection currently running, stop the process
-            }else if(submit.getText().equals("Stop")){
-                submit.setText("Stopping...");
-                submit.setEnabled(false);
-                controller.injectionModel.stop();
+            }else if(submitAddressBar.state.equals("Stop")){
+            	GUIMediator.top().loader.setVisible(false);
+                submitAddressBar.setInjectionStopping();
+                GUIMediator.model().stop();
             }
         }
     }
+    
+    public void setSendMethod(String sendMethod) {
+		this.sendMethod = sendMethod;
+	}
 }

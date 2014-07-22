@@ -10,36 +10,34 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 
 /**
  * End the refreshing of the main Start injection button
  */
-public class EndPreparation implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class EndPreparation implements InteractionCommand{
     /**
-     * @param mainGUI
      * @param interactionParams
      */
-    public EndPreparation(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
+    public EndPreparation(Object[] interactionParams){
     }
 
     /* (non-Javadoc)
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        gui.getInputPanel().submit.setText("Connect");
-        gui.getInputPanel().submit.setEnabled(true);
-        gui.getInputPanel().loader.setVisible(false);
+//        gui.getInputPanel().submit.setText("Connect");
+//        gui.getInputPanel().submit.setEnabled(true);
+    	GUIMediator.top().submitAddressBar.setInjectionReady();
+//        gui.getInputPanel().loader.setVisible(false);
+//        gui.menubar.loader.setVisible(false);
+        GUIMediator.top().loader.setVisible(false);
 
-        if(gui.model.isInjectionBuilt){
-            gui.getOutputPanel().fileManager.setButtonEnable(true);
-            gui.getOutputPanel().shellManager.setButtonEnable(true);
-            gui.getOutputPanel().sqlShellManager.setButtonEnable(true);
-            gui.getOutputPanel().uploadManager.setButtonEnable(true);
+        if(GUIMediator.model().isInjectionBuilt){
+            GUIMediator.gui().getOutputPanel().fileManager.setButtonEnable(true);
+            GUIMediator.gui().getOutputPanel().shellManager.setButtonEnable(true);
+            GUIMediator.gui().getOutputPanel().sqlShellManager.setButtonEnable(true);
+            GUIMediator.gui().getOutputPanel().uploadManager.setButtonEnable(true);
         }
     }
 }

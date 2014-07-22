@@ -17,33 +17,29 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.Database;
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.tree.NodeModel;
+import com.jsql.view.tree.NodeModelDatabase;
 
 /**
  * Add the databases to current injection panel
  */
-public class AddDatabases implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class AddDatabases implements InteractionCommand{
     // Databases retreived by the view
     private List<Database> databases;
 
     /**
-     * @param mainGUI
      * @param interactionParams List of databases retreived by the Model
      */
-    public AddDatabases(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
-
+    @SuppressWarnings("unchecked")
+	public AddDatabases(Object[] interactionParams){
         // Get list of databases from the model
         databases = (List<Database>) interactionParams[0];
     }
 
     public void execute(){
         // Tree model, update the tree (refresh, add node, etc)
-        DefaultTreeModel treeModel = (DefaultTreeModel) gui.databaseTree.getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
 
         // First node in tree
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
@@ -51,11 +47,12 @@ public class AddDatabases implements Interaction{
         // Loop into the list of databases
         for(Database database: databases){
             // Create a node model with the database element
-            NodeModel<Database> newTreeNodeModel = new NodeModel<Database>(database);
+//            NodeModel<Database> newTreeNodeModel = new NodeModel<Database>(database);
+            NodeModel newTreeNodeModel = new NodeModelDatabase(database);
             // Create the node
             DefaultMutableTreeNode newNode = new DefaultMutableTreeNode( newTreeNodeModel );
             // Save the node
-            gui.putNode(database, newNode);
+            GUIMediator.gui().putNode(database, newNode);
             // Add the node to the tree
             root.add(newNode);
         }
@@ -63,7 +60,7 @@ public class AddDatabases implements Interaction{
         // Refresh the tree
         treeModel.reload(root);
         // Open the root node
-        gui.databaseTree.expandPath( new TreePath(root.getPath()) );
-        gui.databaseTree.setRootVisible(false);
+        GUIMediator.databaseTree().expandPath( new TreePath(root.getPath()) );
+        GUIMediator.databaseTree().setRootVisible(false);
     }
 }

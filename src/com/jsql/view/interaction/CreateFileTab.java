@@ -12,18 +12,15 @@ package com.jsql.view.interaction;
 
 import javax.swing.ImageIcon;
 
-import com.jsql.view.GUI;
-import com.jsql.view.RoundScroller;
+import com.jsql.view.GUIMediator;
+import com.jsql.view.component.RoundScroller;
 import com.jsql.view.component.TabHeader;
-import com.jsql.view.component.popup.JPopupTextArea;
+import com.jsql.view.component.popupmenu.JPopupTextArea;
 
 /**
  * Create a new tab for the file
  */
-public class CreateFileTab implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class CreateFileTab implements InteractionCommand{
     // Name of the file
     private String name;
 
@@ -34,12 +31,9 @@ public class CreateFileTab implements Interaction{
     private String path;
 
     /**
-     * @param mainGUI
      * @param interactionParams Name, content and path of the file
      */
-    public CreateFileTab(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
-
+    public CreateFileTab(Object[] interactionParams){
         name = (String) interactionParams[0];
         content = (String) interactionParams[1];
         path = (String) interactionParams[2];
@@ -54,22 +48,22 @@ public class CreateFileTab implements Interaction{
         RoundScroller scroller = new RoundScroller(fileText);
 
         fileText.setCaretPosition(0);
-        gui.right.addTab(name+" ", scroller);
+        GUIMediator.right().addTab(name+" ", scroller);
 
         // Focus on the new tab
-        gui.right.setSelectedComponent(scroller);
+        GUIMediator.right().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(gui.right, new ImageIcon(getClass().getResource("/com/jsql/view/images/file.png")));
+        TabHeader header = new TabHeader(new ImageIcon(getClass().getResource("/com/jsql/view/images/file.png")));
 
-        gui.right.setToolTipTextAt(gui.right.indexOfComponent(scroller), path);
+        GUIMediator.right().setToolTipTextAt(GUIMediator.right().indexOfComponent(scroller), path);
 
         // Apply the custom header to the tab
-        gui.right.setTabComponentAt(gui.right.indexOfComponent(scroller), header);
+        GUIMediator.right().setTabComponentAt(GUIMediator.right().indexOfComponent(scroller), header);
 
         // Add the path String to the list of files only if there is no same StringObject value already
-        gui.getOutputPanel().shellManager.addToList(path.replace(name, ""));
-        gui.getOutputPanel().uploadManager.addToList(path.replace(name, ""));
-        gui.getOutputPanel().sqlShellManager.addToList(path.replace(name, ""));
+        GUIMediator.gui().getOutputPanel().shellManager.addToList(path.replace(name, ""));
+        GUIMediator.gui().getOutputPanel().uploadManager.addToList(path.replace(name, ""));
+        GUIMediator.gui().getOutputPanel().sqlShellManager.addToList(path.replace(name, ""));
     }
 }

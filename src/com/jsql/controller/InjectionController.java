@@ -18,30 +18,17 @@ import java.util.regex.Pattern;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.InjectionModel;
 import com.jsql.model.Interruptable;
 import com.jsql.model.bean.Column;
 import com.jsql.model.bean.Database;
 import com.jsql.model.bean.Table;
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 
 /**
  * Controller in the MVC pattern, is involved mainly when the user makes actions
  * on the GUI: uses Connect button, validates a database, table or values
  */
 public class InjectionController {
-
-    // The model
-    public InjectionModel injectionModel;
-    // The view
-    private GUI gui;
-    
-    public InjectionController(InjectionModel newModel){
-        injectionModel = newModel;
-        gui = new GUI(this, newModel);
-//        Console console = new Console();
-//        model.addObserver(console);
-    }
     
     /**
      * Send each parameters from the GUI to the model in order to start the preparation of injection,
@@ -50,38 +37,38 @@ public class InjectionController {
     public void controlInput(String getData, String postData, String cookieData, String headerData, String method) {
         try {
             // Parse url and GET query string
-            injectionModel.getData = "";
+            GUIMediator.model().getData = "";
             Matcher regexSearch = Pattern.compile("(.*)(\\?.*)").matcher(getData);
             if(regexSearch.find()){
                 URL url = new URL( getData );
-                injectionModel.initialUrl = regexSearch.group(1);
+                GUIMediator.model().initialUrl = regexSearch.group(1);
                 if( !url.getQuery().equals("") )
-                    injectionModel.getData = regexSearch.group(2);
+                    GUIMediator.model().getData = regexSearch.group(2);
             }else{
-                injectionModel.initialUrl = getData;
+                GUIMediator.model().initialUrl = getData;
             }
             
             // Define other methods
-            injectionModel.postData = postData;
-            injectionModel.cookieData = cookieData;
-            injectionModel.headerData = headerData;
-            injectionModel.method = method;
+            GUIMediator.model().postData = postData;
+            GUIMediator.model().cookieData = cookieData;
+            GUIMediator.model().headerData = headerData;
+            GUIMediator.model().method = method;
             
             // Reset level of evasion
-            injectionModel.securitySteps = 0;
+            GUIMediator.model().securitySteps = 0;
             
             // Start the model injection process in a thread
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    injectionModel.inputValidation();
+                    GUIMediator.model().inputValidation();
                 }
             }, "InjectionController - controlInput").start();
             
             // Erase everything in the view from a previous injection
-            gui.resetInterface();
+            GUIMediator.gui().resetInterface();
         } catch (MalformedURLException e) {
-            injectionModel.sendMessage(e.getMessage());
+            GUIMediator.model().sendMessage(e.getMessage());
         }
     }
 
@@ -96,18 +83,18 @@ public class InjectionController {
         // Indirect class, allows to send itself to his own body
         final Interruptable[] interruptable = new Interruptable[1];
         
-        interruptable[0] = new Interruptable(injectionModel){
+        interruptable[0] = new Interruptable(GUIMediator.model()){
             @Override
             public void action() {
                 
                 try {
-                    injectionModel.dao.listTables(databaseSelected, interruptable[0]);
+                    GUIMediator.model().dao.listTables(databaseSelected, interruptable[0]);
                 } catch (NumberFormatException e) {
-                    injectionModel.sendErrorMessage("Error during table search: incorrect number " + e.getMessage());
+                    GUIMediator.model().sendErrorMessage("Error during table search: incorrect number " + e.getMessage());
                 } catch (PreparationException e) {
-                    injectionModel.sendErrorMessage(e.getMessage());
+                    GUIMediator.model().sendErrorMessage(e.getMessage());
                 } catch (StoppableException e) {
-                    injectionModel.sendErrorMessage(e.getMessage());
+                    GUIMediator.model().sendErrorMessage(e.getMessage());
                 }
                 
             }
@@ -128,16 +115,16 @@ public class InjectionController {
         // Indirect class, allows to send itself to his own body
         final Interruptable[] interruptable = new Interruptable[1];
         
-        interruptable[0] = new Interruptable(injectionModel){
+        interruptable[0] = new Interruptable(GUIMediator.model()){
             @Override
             public void action() {
                 
                 try {
-                    injectionModel.dao.listColumns(selectedTable, interruptable[0]);
+                    GUIMediator.model().dao.listColumns(selectedTable, interruptable[0]);
                 } catch (PreparationException e) {
-                    injectionModel.sendErrorMessage(e.getMessage());
+                    GUIMediator.model().sendErrorMessage(e.getMessage());
                 } catch (StoppableException e) {
-                    injectionModel.sendErrorMessage(e.getMessage());
+                    GUIMediator.model().sendErrorMessage(e.getMessage());
                 }
                 
             }
@@ -158,16 +145,16 @@ public class InjectionController {
         // Indirect class, allows to send itself to his own body
         final Interruptable[] interruptable = new Interruptable[1];
         
-        interruptable[0] = new Interruptable(injectionModel){
+        interruptable[0] = new Interruptable(GUIMediator.model()){
             @Override
             public void action() {
                 
                 try {
-                    injectionModel.dao.listValues(values, interruptable[0]);
+                    GUIMediator.model().dao.listValues(values, interruptable[0]);
                 } catch (PreparationException e) {
-                    injectionModel.sendErrorMessage(e.getMessage());
+                    GUIMediator.model().sendErrorMessage(e.getMessage());
                 } catch (StoppableException e) {
-                    injectionModel.sendErrorMessage(e.getMessage());
+                    GUIMediator.model().sendErrorMessage(e.getMessage());
                 }
 
             }

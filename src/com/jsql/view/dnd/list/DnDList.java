@@ -39,24 +39,35 @@ import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
 
-import com.jsql.view.GUI;
-
 /**
  * A list supporting drag and drop.
  * @param <ListItem>
  */
-public class DnDList extends JList {
-    private static final long serialVersionUID = -9206830979770165601L;
-    
-    private JList<ListItem> myList;
+@SuppressWarnings("serial")
+public class DnDList extends JList<ListItem> {
+    private DnDList myList;
     public DefaultListModel<ListItem> listModel;
-    GUI gui;
     
     public List<String> defaultList;
     
-    public DnDList(GUI gui, List<String> newList){
-        this(newList);
-        this.gui = gui;
+    public List<ListItem> getSelectedValuesList() {
+    	ListSelectionModel sm = getSelectionModel();
+    	ListModel<ListItem> dm = getModel();
+
+    	int iMin = sm.getMinSelectionIndex();
+    	int iMax = sm.getMaxSelectionIndex();
+
+    	if ((iMin < 0) || (iMax < 0)) {
+    		return Collections.emptyList();
+    	}
+
+    	List<ListItem> selectedItems = new ArrayList<ListItem>();
+    	for(int i = iMin; i <= iMax; i++) {
+    		if (sm.isSelectedIndex(i)) {
+    			selectedItems.add(dm.getElementAt(i));
+    		}
+    	}
+    	return selectedItems;
     }
     
     public DnDList(List<String> newList){
@@ -77,8 +88,6 @@ public class DnDList extends JList {
         // Transform Cut, selects next value
         ActionMap listActionMap = myList.getActionMap();
         listActionMap.put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {
-            private static final long serialVersionUID = -8154421201183457014L;
-
             @Override public void actionPerformed(ActionEvent e) {
                 if(myList.getSelectedValuesList().isEmpty()) return;
                 
@@ -105,7 +114,7 @@ public class DnDList extends JList {
         listActionMap.put(TransferHandler.getPasteAction().getValue(Action.NAME),
                 TransferHandler.getPasteAction());
 
-        ListCellRenderer renderer = new ComplexCellRenderer(myList, mouseOver);
+        ListCellRenderer<ListItem> renderer = new ComplexCellRenderer(myList, mouseOver);
         myList.setCellRenderer(renderer);
 
         // Allows color change when list loses/gains focus
@@ -223,11 +232,8 @@ public class DnDList extends JList {
             myList.setSelectionInterval(startPosition, endPosition-1);
         
         myList.scrollRectToVisible(
-                myList.getCellBounds(
-                        myList.getMinSelectionIndex(),
-                        myList.getMaxSelectionIndex()
-                        )
-                );
-       
+            myList.getCellBounds(myList.getMinSelectionIndex(), myList.getMaxSelectionIndex())
+        );
+        
     }
 }

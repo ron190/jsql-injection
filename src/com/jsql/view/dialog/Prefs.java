@@ -44,22 +44,19 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.RoundBorder;
-import com.jsql.view.component.popup.JPopupTextField;
+import com.jsql.view.component.RoundBorder;
+import com.jsql.view.component.popupmenu.JPopupTextField;
 
+@SuppressWarnings("serial")
 public class Prefs extends JDialog{
-    private static final long serialVersionUID = 1093836441729193729L;
-
+	
     public JButton okButton;
 
-    private GUI gui;
+    public Prefs(){
+        super(GUIMediator.gui(), "Preferences", Dialog.ModalityType.MODELESS);
 
-    public Prefs(final GUI gui){
-        super(gui, "Preferences", Dialog.ModalityType.MODELESS);
-
-        this.gui = gui;
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setResizable(false);
 
@@ -128,35 +125,35 @@ public class Prefs extends JDialog{
         JLabel labelUseProxy = new JLabel("Use proxy  ");
 
         // Proxy setting: IP, port, checkbox to activate proxy
-        final JPopupTextField textProxyAddress = new JPopupTextField(gui.model.proxyAddress, true);
-        final JPopupTextField textProxyPort = new JPopupTextField(gui.model.proxyPort, true);
-        final JCheckBox checkboxIsProxy = new JCheckBox("",gui.model.isProxyfied);
+        final JPopupTextField textProxyAddress = new JPopupTextField(GUIMediator.model().proxyAddress, true);
+        final JPopupTextField textProxyPort = new JPopupTextField(GUIMediator.model().proxyPort, true);
+        final JCheckBox checkboxIsProxy = new JCheckBox("", GUIMediator.model().isProxyfied);
 
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 // Define proxy settings
-                gui.model.isProxyfied = checkboxIsProxy.isSelected();
-                gui.model.proxyAddress = textProxyAddress.getText();
-                gui.model.proxyPort = textProxyPort.getText();
+                GUIMediator.model().isProxyfied = checkboxIsProxy.isSelected();
+                GUIMediator.model().proxyAddress = textProxyAddress.getText();
+                GUIMediator.model().proxyPort = textProxyPort.getText();
 
                 Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
                 String ID1 = "isProxyfied";
                 String ID2 = "proxyAddress";
                 String ID3 = "proxyPort";
-                prefs.putBoolean(ID1, gui.model.isProxyfied);
-                prefs.put(ID2, gui.model.proxyAddress);
-                prefs.put(ID3, gui.model.proxyPort);
+                prefs.putBoolean(ID1, GUIMediator.model().isProxyfied);
+                prefs.put(ID2, GUIMediator.model().proxyAddress);
+                prefs.put(ID3, GUIMediator.model().proxyPort);
 
-                if(gui.model.isProxyfied){
-                    System.setProperty("http.proxyHost", gui.model.proxyAddress);
-                    System.setProperty("http.proxyPort", gui.model.proxyPort);
+                if(GUIMediator.model().isProxyfied){
+                    System.setProperty("http.proxyHost", GUIMediator.model().proxyAddress);
+                    System.setProperty("http.proxyPort", GUIMediator.model().proxyPort);
                 }else{
                     System.setProperty("http.proxyHost", "");
                     System.setProperty("http.proxyPort", "");
                 }
 
-                gui.model.sendMessage("Preferences saved.");
+                GUIMediator.model().sendMessage("Preferences saved.");
             }
         });
 
@@ -165,9 +162,9 @@ public class Prefs extends JDialog{
             public void windowClosed(WindowEvent e) {
                 super.windowClosed(e);
 
-                textProxyAddress.setText( gui.model.proxyAddress );
-                textProxyPort.setText( gui.model.proxyPort );
-                checkboxIsProxy.setSelected(gui.model.isProxyfied);
+                textProxyAddress.setText( GUIMediator.model().proxyAddress );
+                textProxyPort.setText( GUIMediator.model().proxyPort );
+                checkboxIsProxy.setSelected(GUIMediator.model().isProxyfied);
             }
         });
 
@@ -204,7 +201,7 @@ public class Prefs extends JDialog{
         this.setSize(300, 180);
         this.getRootPane().setDefaultButton(okButton);
         cancelButton.requestFocusInWindow();
-        this.setLocationRelativeTo(gui);
+        this.setLocationRelativeTo(GUIMediator.gui());
     }
 
     private class ActionCheckIP implements ActionListener{
@@ -214,21 +211,21 @@ public class Prefs extends JDialog{
                 @Override
                 public void run() {
                     // Test if proxy is available then apply settings
-                    if(gui.model.isProxyfied && !gui.model.proxyAddress.equals("") && !gui.model.proxyPort.equals("")){
+                    if(GUIMediator.model().isProxyfied && !GUIMediator.model().proxyAddress.equals("") && !GUIMediator.model().proxyPort.equals("")){
                         try {
-                            gui.model.sendMessage("Testing proxy...");
-                            new Socket(gui.model.proxyAddress, Integer.parseInt(gui.model.proxyPort)).close();
+                            GUIMediator.model().sendMessage("Testing proxy...");
+                            new Socket(GUIMediator.model().proxyAddress, Integer.parseInt(GUIMediator.model().proxyPort)).close();
                         } catch (Exception e) {
-                            gui.model.sendErrorMessage("Proxy connection failed: " + gui.model.proxyAddress+":"+gui.model.proxyPort+
+                            GUIMediator.model().sendErrorMessage("Proxy connection failed: " + GUIMediator.model().proxyAddress+":"+GUIMediator.model().proxyPort+
                                     "\nVerify your proxy informations or disable proxy setting.");
                             return;
                         }
-                        gui.model.sendMessage("Proxy is responding.");
+                        GUIMediator.model().sendMessage("Proxy is responding.");
                     }
                     
                     BufferedReader in = null;
                     try {
-                        gui.model.sendMessage("Checking IP...");
+                        GUIMediator.model().sendMessage("Checking IP...");
                         
                         URL whatismyip = new URL("http://checkip.amazonaws.com");
                         HttpURLConnection con = (HttpURLConnection) whatismyip.openConnection();
@@ -240,7 +237,7 @@ public class Prefs extends JDialog{
                         
                         in = new BufferedReader(new InputStreamReader( con.getInputStream(), "UTF-8" ));
                         String ip2 = in.readLine();
-                        gui.model.sendMessage( "Your IP information (AWS): " + ip2 );
+                        GUIMediator.model().sendMessage( "Your IP information (AWS): " + ip2 );
                         
                         whatismyip = new URL("http://freegeoip.net/csv/");
                         con = (HttpURLConnection) whatismyip.openConnection();
@@ -252,20 +249,20 @@ public class Prefs extends JDialog{
                         
                         in = new BufferedReader(new InputStreamReader( con.getInputStream(), "UTF-8" ));
                         ip2 = in.readLine();
-                        gui.model.sendMessage( "Your IP information (freegeoip): " + ip2 );
+                        GUIMediator.model().sendMessage( "Your IP information (freegeoip): " + ip2 );
                     } catch (MalformedURLException e) {
-                        gui.model.sendErrorMessage("Malformed URL: "+e.getMessage());
+                        GUIMediator.model().sendErrorMessage("Malformed URL: "+e.getMessage());
                     } catch (IOException e) {
-                        gui.model.sendErrorMessage("Error during proxy test: "+e.getMessage());
-                        gui.model.sendErrorMessage("Use your browser to verify your proxy is working.");
+                        GUIMediator.model().sendErrorMessage("Error during proxy test: "+e.getMessage());
+                        GUIMediator.model().sendErrorMessage("Use your browser to verify your proxy is working.");
                     } finally {
                         if (in != null) {
                             try {
-                                gui.model.sendMessage("Checking IP done.");
+                                GUIMediator.model().sendMessage("Checking IP done.");
                                 in.close();
                             } catch (IOException e) {
-                                gui.model.sendErrorMessage("Error during proxy test: "+e.getMessage());
-                                gui.model.sendErrorMessage("Use your browser to verify your proxy is working.");
+                                GUIMediator.model().sendErrorMessage("Error during proxy test: "+e.getMessage());
+                                GUIMediator.model().sendErrorMessage("Use your browser to verify your proxy is working.");
                             }
                         }
                     }

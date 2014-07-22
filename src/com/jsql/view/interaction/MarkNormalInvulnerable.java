@@ -10,28 +10,23 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 
 /**
  * Mark the injection as invulnerable to a normal injection
  */
-public class MarkNormalInvulnerable implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class MarkNormalInvulnerable implements InteractionCommand{
     /**
-     * @param mainGUI
      * @param interactionParams
      */
-    public MarkNormalInvulnerable(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
+    public MarkNormalInvulnerable(Object[] interactionParams){
     }
 
     /* (non-Javadoc)
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        gui.getStatusPanel().setNormalIcon(GUITools.SQUARE_RED);
+    	GUIMediator.gui().getStatusPanel().setNormalIcon(GUITools.SQUARE_RED);
     }
 }

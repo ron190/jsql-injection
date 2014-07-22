@@ -12,16 +12,13 @@ package com.jsql.view.interaction;
 
 import java.util.UUID;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.terminal.Terminal;
 
 /**
  * Append the result of a command in the terminal
  */
-public class GetShellResult implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class GetShellResult implements InteractionCommand{
     // Unique identifier for the terminal.
     // Used for outputing results of commands in the right shell tab (in case of multiple shell opened)
     private UUID terminalID;
@@ -36,9 +33,7 @@ public class GetShellResult implements Interaction{
      * @param mainGUI
      * @param interactionParams The unique identifier of the terminal and the command's result to display
      */
-    public GetShellResult(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
-
+    public GetShellResult(Object[] interactionParams){
         terminalID = (UUID) interactionParams[0];
         result = (String) interactionParams[1];
         cmd = (String) interactionParams[2];
@@ -48,12 +43,13 @@ public class GetShellResult implements Interaction{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        Terminal terminal = gui.consoles.get(terminalID);
+        Terminal terminal = GUIMediator.gui().consoles.get(terminalID);
         
         if(!result.equals(""))
             terminal.append(result);
         else
-            terminal.append("No result.\nTry "+cmd.trim()+" 2>&1 to get error messages.\n");
+//            terminal.append("No result\n");
+	        terminal.append("No result.\nTry "+cmd.trim()+" 2>&1 to get error messages.\n");
         
         terminal.append("\n");
         terminal.reset();

@@ -29,36 +29,28 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.RoundScroller;
-import com.jsql.view.component.popup.JPopupTextField;
-import com.jsql.view.component.popup.JPopupTextLabel;
+import com.jsql.view.component.RoundScroller;
+import com.jsql.view.component.popupmenu.JPopupTextField;
 import com.jsql.view.dnd.list.DnDList;
 import com.jsql.view.dnd.list.ListItem;
 
 /**
  * Manager for uploading PHP webshell to the host
  */
+@SuppressWarnings("serial")
 public class SQLShellManager extends JPanel{
-    private static final long serialVersionUID = -8504371566082352384L;
-
-    /**
-     * Main frame.
-     */
-    private GUI gui;
-
     /**
      * Contains the paths of webshell.
      */
-    private JList<ListItem> shellPaths;
+    private DnDList shellPaths;
 
     /**
      * Starts the upload process.
@@ -80,10 +72,8 @@ public class SQLShellManager extends JPanel{
      * Build the manager panel.
      * @param gui The main frame
      */
-    public SQLShellManager(final GUI gui){
+    public SQLShellManager(){
         super(new BorderLayout());
-
-        this.gui = gui;
 
         JPanel infos = new JPanel();
         
@@ -143,10 +133,10 @@ public class SQLShellManager extends JPanel{
             while( (line = reader.readLine()) != null ) pathsList.add(line);
             reader.close();
         } catch (IOException e) {
-            gui.model.sendDebugMessage(e);
+        	GUIMediator.model().sendDebugMessage(e);
         }
 
-        shellPaths = new DnDList(gui, pathsList);
+        shellPaths = new DnDList(pathsList);
         this.add(new RoundScroller(shellPaths), BorderLayout.CENTER);
 
         JPanel southPanel = new JPanel();
@@ -182,20 +172,21 @@ public class SQLShellManager extends JPanel{
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if(shellPaths.getSelectedValuesList().size() == 0){
-                    gui.model.sendErrorMessage("Select at least one directory");
+                	GUIMediator.model().sendErrorMessage("Select at least one directory");
                     return;
                 }
 
-                for(final ListItem path: shellPaths.getSelectedValuesList()){
+//                for(final ListItem path: shellPaths.getSelectedValuesList()){
+            	for(final Object path: shellPaths.getSelectedValuesList()){
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                gui.model.rao.getSQLShell(path.toString(), shellURL.getText(), user.getText(), pass.getText());
+                            	GUIMediator.model().rao.getSQLShell(path.toString(), shellURL.getText(), user.getText(), pass.getText());
                             } catch (PreparationException e) {
-                                gui.model.sendErrorMessage("Problem writing into " + path);
+                            	GUIMediator.model().sendErrorMessage("Problem writing into " + path);
                             } catch (StoppableException e) {
-                                gui.model.sendErrorMessage("Problem writing into " + path);
+                            	GUIMediator.model().sendErrorMessage("Problem writing into " + path);
                             }
                         }
                     }, "getShell").start();
@@ -224,9 +215,8 @@ public class SQLShellManager extends JPanel{
      * @param element The string to add to the list
      */
     public void addToList(String element){
-        int i = 0;
         boolean found = false;
-        for (;i < ((DefaultListModel<ListItem>)shellPaths.getModel()).size();i++){
+        for (int i = 0;i < ((DefaultListModel<ListItem>)shellPaths.getModel()).size();i++){
             if (((DefaultListModel<ListItem>)shellPaths.getModel()).get(i).toString().equals(element)) {
                 found = true;
             }

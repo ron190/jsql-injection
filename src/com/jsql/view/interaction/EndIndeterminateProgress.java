@@ -14,26 +14,20 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
 import com.jsql.model.bean.ElementDatabase;
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.tree.NodeModel;
 
 /**
  * Stop refreshing the progress bar of a search for which the progression is not tracked (like colum search)
  */
-public class EndIndeterminateProgress implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class EndIndeterminateProgress implements InteractionCommand{
     // The element in the database tree for which the progress ends
     private ElementDatabase dataElementDatabase;
 
     /**
-     * @param mainGUI
      * @param interactionParams Element to update
      */
-    public EndIndeterminateProgress(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
-
+    public EndIndeterminateProgress(Object[] interactionParams){
         dataElementDatabase = (ElementDatabase) interactionParams[0];
     }
 
@@ -42,17 +36,17 @@ public class EndIndeterminateProgress implements Interaction{
      */
     public void execute(){
         // Tree model, update the tree (refresh, add node, etc)
-        DefaultTreeModel treeModel = (DefaultTreeModel) gui.databaseTree.getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
 
         // Get the node
-        NodeModel<?> progressingTreeNodeModel =
-                (NodeModel<?>) gui.getNode(dataElementDatabase).getUserObject();
+        NodeModel progressingTreeNodeModel =
+                (NodeModel) GUIMediator.gui().getNode(dataElementDatabase).getUserObject();
         // Mark the node model as 'no loading bar'
         progressingTreeNodeModel.hasIndeterminatedProgress = false;
         // Mark the node model as 'no stop/pause/resume button'
         progressingTreeNodeModel.isRunning = false;
 
         // Update the node
-        treeModel.nodeChanged((TreeNode) gui.getNode(dataElementDatabase));
+        treeModel.nodeChanged((TreeNode) GUIMediator.gui().getNode(dataElementDatabase));
     }
 }

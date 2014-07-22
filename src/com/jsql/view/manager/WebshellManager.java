@@ -28,34 +28,27 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.RoundScroller;
-import com.jsql.view.component.popup.JPopupTextField;
+import com.jsql.view.component.RoundScroller;
+import com.jsql.view.component.popupmenu.JPopupTextField;
 import com.jsql.view.dnd.list.DnDList;
 import com.jsql.view.dnd.list.ListItem;
 
 /**
  * Manager for uploading PHP webshell to the host
  */
+@SuppressWarnings("serial")
 public class WebshellManager extends JPanel{
-    private static final long serialVersionUID = -8504371566082352384L;
-
-    /**
-     * Main frame.
-     */
-    private GUI gui;
-
     /**
      * Contains the paths of webshell.
      */
-    private JList<ListItem> shellPaths;
+    private DnDList shellPaths;
 
     /**
      * Starts the upload process.
@@ -77,10 +70,8 @@ public class WebshellManager extends JPanel{
      * Build the manager panel.
      * @param gui The main frame
      */
-    public WebshellManager(final GUI gui){
+    public WebshellManager(){
         super(new BorderLayout());
-
-        this.gui = gui;
 
         ArrayList<String> pathsList = new ArrayList<String>();
         try {
@@ -90,10 +81,10 @@ public class WebshellManager extends JPanel{
             while( (line = reader.readLine()) != null ) pathsList.add(line);
             reader.close();
         } catch (IOException e) {
-            gui.model.sendDebugMessage(e);
+        	GUIMediator.model().sendDebugMessage(e);
         }
 
-        shellPaths = new DnDList(gui, pathsList);
+        shellPaths = new DnDList(pathsList);
         this.add(new RoundScroller(shellPaths), BorderLayout.CENTER);
 
         JPanel southPanel = new JPanel();
@@ -129,20 +120,20 @@ public class WebshellManager extends JPanel{
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if(shellPaths.getSelectedValuesList().size() == 0){
-                    gui.model.sendErrorMessage("Select at least one directory");
+                	GUIMediator.model().sendErrorMessage("Select at least one directory");
                     return;
                 }
 
-                for(final ListItem path: shellPaths.getSelectedValuesList()){
+                for(final Object path: shellPaths.getSelectedValuesList()){
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                                gui.model.rao.getShell(path.toString(), shellURL.getText());
+                            	GUIMediator.model().rao.getShell(path.toString(), shellURL.getText());
                             } catch (PreparationException e) {
-                                gui.model.sendErrorMessage("Problem writing into " + path);
+                            	GUIMediator.model().sendErrorMessage("Problem writing into " + path);
                             } catch (StoppableException e) {
-                                gui.model.sendErrorMessage("Problem writing into " + path);
+                            	GUIMediator.model().sendErrorMessage("Problem writing into " + path);
                             }
                         }
                     }, "getShell").start();
@@ -171,9 +162,8 @@ public class WebshellManager extends JPanel{
      * @param element The string to add to the list
      */
     public void addToList(String element){
-        int i = 0;
         boolean found = false;
-        for (;i < ((DefaultListModel<ListItem>)shellPaths.getModel()).size();i++){
+        for (int i = 0 ; i < ((DefaultListModel<ListItem>)shellPaths.getModel()).size() ; i++){
             if (((DefaultListModel<ListItem>)shellPaths.getModel()).get(i).toString().equals(element)) {
                 found = true;
             }

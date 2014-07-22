@@ -18,9 +18,9 @@ import javax.swing.JOptionPane;
 /**
  * File chooser for supporting 'file already exists'
  */
+@SuppressWarnings("serial")
 public class FileChooser extends JFileChooser{
-    private static final long serialVersionUID = -7032680779242125129L;
-    
+	
     public FileChooser(String s){
         super(s);
     }

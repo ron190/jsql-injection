@@ -10,13 +10,25 @@
  ******************************************************************************/
 package com.jsql.view.table;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.KeyStroke;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 /*
  *    Class to manage the widths of colunmns in a table.
@@ -368,9 +380,9 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
     /*
      *  Action to adjust or restore the width of a single column or all columns
      */
-    class ColumnAction extends AbstractAction
+    @SuppressWarnings("serial")
+	class ColumnAction extends AbstractAction
     {
-        private static final long serialVersionUID = -659458155340794725L;
         private boolean isSelectedColumn;
         private boolean isAdjust;
 
@@ -411,9 +423,9 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
      *  Toggle properties of the TableColumnAdjuster so the user can
      *  customize the functionality to their preferences
      */
-    class ToggleAction extends AbstractAction
+    @SuppressWarnings("serial")
+	class ToggleAction extends AbstractAction
     {
-        private static final long serialVersionUID = -3836728594003224225L;
         private boolean isToggleDynamic;
         private boolean isToggleLarger;
 

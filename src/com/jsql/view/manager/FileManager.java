@@ -27,26 +27,22 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.RoundScroller;
+import com.jsql.view.component.RoundScroller;
 import com.jsql.view.dnd.list.DnDList;
 
 /**
  * Manager to read a file from the host.
  */
+@SuppressWarnings("serial")
 public class FileManager extends JPanel{
-    private static final long serialVersionUID = -4685622112637438009L;
-
-    private GUI gui;
-
     private JButton run;
 
     private JLabel privilege;
@@ -55,10 +51,8 @@ public class FileManager extends JPanel{
 
     private final String defaultText = "Read file(s)";
 
-    public FileManager(final GUI gui){
+    public FileManager(){
         super(new BorderLayout());
-
-        this.gui = gui;
 
         ArrayList<String> pathList = new ArrayList<String>();
         try {
@@ -68,10 +62,10 @@ public class FileManager extends JPanel{
             while( (line = reader.readLine()) != null ) pathList.add(line);
             reader.close();
         } catch (IOException e) {
-            gui.model.sendDebugMessage(e);
+        	GUIMediator.model().sendDebugMessage(e);
         }
 
-        final JList listFile = new DnDList(gui, pathList);
+        final DnDList listFile = new DnDList(pathList);
 
         this.add(new RoundScroller(listFile), BorderLayout.CENTER);
 
@@ -95,7 +89,7 @@ public class FileManager extends JPanel{
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if(listFile.getSelectedValuesList().size() == 0){
-                    gui.model.sendErrorMessage("Select at least one file");
+                	GUIMediator.model().sendErrorMessage("Select at least one file");
                     return;
                 }
 
@@ -105,18 +99,18 @@ public class FileManager extends JPanel{
                         if(run.getText().equals(defaultText)){
                             run.setText("Stop");
                             try {
-                                gui.getOutputPanel().shellManager.clearSelection();
-                                gui.getOutputPanel().sqlShellManager.clearSelection();
+                            	GUIMediator.gui().getOutputPanel().shellManager.clearSelection();
+                            	GUIMediator.gui().getOutputPanel().sqlShellManager.clearSelection();
                                 loader.setVisible(true);
-                                gui.model.rao.getFile(listFile.getSelectedValuesList());
+                                GUIMediator.model().rao.getFile(listFile.getSelectedValuesList());
                             } catch (PreparationException e) {
-                                gui.model.sendErrorMessage("Problem reading file");
+                            	GUIMediator.model().sendErrorMessage("Problem reading file");
                             } catch (StoppableException e) {
-                                gui.model.sendErrorMessage("Problem reading file");
+                            	GUIMediator.model().sendErrorMessage("Problem reading file");
                             }
 
                         }else{
-                            gui.model.rao.endFileSearch = true;
+                        	GUIMediator.model().rao.endFileSearch = true;
                             run.setEnabled(false);
                         }
                     }

@@ -24,18 +24,17 @@ import javax.swing.SwingUtilities;
 /**
  * Tabs with mousewheel and right click action.
  */
-public class TabbedPane extends JTabbedPane {
-    public TabbedPane(boolean showMenu){
-        this();
+@SuppressWarnings("serial")
+public class MouseTabbedPane extends JTabbedPane {
 
-        if(showMenu)
-            this.addMouseListener(new TabSelectionMouseHandler());
-    }
-
-    public TabbedPane(){
+    public MouseTabbedPane(){
         super();
 
         this.addMouseWheelListener(new TabbedPaneMouseWheelScroller());
+    }
+    
+    public void activateMenu(){
+    	this.addMouseListener(new TabSelectionMouseHandler());
     }
 
     private class TabSelectionMouseHandler extends MouseAdapter {
@@ -72,7 +71,7 @@ public class TabbedPane extends JTabbedPane {
     }
 
     private class TabAction extends AbstractAction {
-        private JTabbedPane tabPane;
+		private JTabbedPane tabPane;
         private int index;
 
         public TabAction(JTabbedPane tabPane, int index) {

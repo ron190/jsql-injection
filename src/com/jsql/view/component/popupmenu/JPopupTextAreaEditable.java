@@ -8,11 +8,11 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.component.popup;
+package com.jsql.view.component.popupmenu;
 
+@SuppressWarnings("serial")
 public class JPopupTextAreaEditable extends JPopupTextArea {
-    private static final long serialVersionUID = 3433897652316982678L;
-
+	
     public JPopupTextAreaEditable(){
         super();
         

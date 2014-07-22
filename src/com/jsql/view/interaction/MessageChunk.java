@@ -10,25 +10,19 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 
 /**
  * Append text to the tab Chunk
  */
-public class MessageChunk implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class MessageChunk implements InteractionCommand{
     // Text to append to the Chunk log area
     private String text;
 
     /**
-     * @param mainGUI
      * @param interactionParams Text to append
      */
-    public MessageChunk(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
-
+    public MessageChunk(Object[] interactionParams){
         text = (String) interactionParams[0];
     }
 
@@ -36,7 +30,7 @@ public class MessageChunk implements Interaction{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        gui.chunks.append(text);
-        gui.chunks.setCaretPosition(gui.chunks.getDocument().getLength());
+    	GUIMediator.gui().chunks.append(text);
+        GUIMediator.gui().chunks.setCaretPosition(GUIMediator.gui().chunks.getDocument().getLength());
     }
 }

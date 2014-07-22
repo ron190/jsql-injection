@@ -12,10 +12,19 @@ package com.jsql.view.table;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JViewport;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 /*
  *  Prevent the specified number of columns from scrolling horizontally in
@@ -42,7 +51,8 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener
      *  Specify the number of columns to be fixed and the scroll pane
      *  containing the table.
      */
-    public FixedColumnTable(int fixedColumns, JScrollPane scrollPane)
+    @SuppressWarnings("serial")
+	public FixedColumnTable(int fixedColumns, JScrollPane scrollPane)
     {
         this.scrollPane = scrollPane;
 
@@ -56,8 +66,6 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener
 //        int totalColumns = main.getColumnCount();
 
         fixed = new JTable(){
-            private static final long serialVersionUID = 4221305668526115726L;
-
             public boolean isCellEditable(int row,int column){
                 return false;
             }

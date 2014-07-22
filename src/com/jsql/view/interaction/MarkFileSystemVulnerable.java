@@ -10,31 +10,26 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 
 /**
  * Mark the injection as using a user profile vulnerable to file I/O
  */
-public class MarkFileSystemVulnerable implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class MarkFileSystemVulnerable implements InteractionCommand{
     /**
-     * @param mainGUI
      * @param nullParam
      */
-    public MarkFileSystemVulnerable(GUI mainGUI, Object[] nullParam){
-        gui = mainGUI;
+    public MarkFileSystemVulnerable(Object[] nullParam){
     }
 
     /* (non-Javadoc)
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        gui.getOutputPanel().fileManager.changeIcon(GUITools.TICK);
-        gui.getOutputPanel().shellManager.changeIcon(GUITools.TICK);
-        gui.getOutputPanel().sqlShellManager.changeIcon(GUITools.TICK);
-        gui.getOutputPanel().uploadManager.changeIcon(GUITools.TICK);
+        GUIMediator.gui().getOutputPanel().fileManager.changeIcon(GUITools.TICK);
+        GUIMediator.gui().getOutputPanel().shellManager.changeIcon(GUITools.TICK);
+        GUIMediator.gui().getOutputPanel().sqlShellManager.changeIcon(GUITools.TICK);
+        GUIMediator.gui().getOutputPanel().uploadManager.changeIcon(GUITools.TICK);
     }
 }

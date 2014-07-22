@@ -27,23 +27,20 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.RoundScroller;
+import com.jsql.view.component.RoundScroller;
 import com.jsql.view.dnd.list.DnDList;
 
 /**
  * Manager to display webpages frequently used as backoffice administration.
  */
+@SuppressWarnings("serial")
 public class AdminPageManager extends JPanel{
-    private static final long serialVersionUID = 4932555176351798889L;
-
-    private GUI gui;
-
+	
     private JButton run;
 
     private JLabel privilege;
@@ -52,10 +49,8 @@ public class AdminPageManager extends JPanel{
 
     private final String defaultText = "Test admin page(s)";
 
-    public AdminPageManager(final GUI gui){
+    public AdminPageManager(){
         super(new BorderLayout());
-
-        this.gui = gui;
 
         ArrayList<String> pathList = new ArrayList<String>();
         try {
@@ -65,10 +60,10 @@ public class AdminPageManager extends JPanel{
             while( (line = reader.readLine()) != null ) pathList.add(line);
             reader.close();
         } catch (IOException e) {
-            gui.model.sendDebugMessage(e);
+        	GUIMediator.model().sendDebugMessage(e);
         }
 
-        final JList listFile = new DnDList(gui, pathList);
+        final DnDList listFile = new DnDList(pathList);
 
         this.add(new RoundScroller(listFile), BorderLayout.CENTER);
 
@@ -91,7 +86,7 @@ public class AdminPageManager extends JPanel{
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if(listFile.getSelectedValuesList().size() == 0){
-                    gui.model.sendErrorMessage("Select at least one admin page");
+                	GUIMediator.model().sendErrorMessage("Select at least one admin page");
                     return;
                 }
                 new Thread(new Runnable() {
@@ -100,9 +95,9 @@ public class AdminPageManager extends JPanel{
                         if(run.getText().equals(defaultText)){
                             run.setText("Stop");
                             loader.setVisible(true);
-                            gui.model.rao.getAdminPage(gui.getInputPanel().textGET.getText(), listFile.getSelectedValuesList());
+                            GUIMediator.model().rao.getAdminPage(GUIMediator.top().textGET.getText(), listFile.getSelectedValuesList());
                         }else{
-                            gui.model.rao.endAdminSearch = true;
+                        	GUIMediator.model().rao.endAdminSearch = true;
                             run.setEnabled(false);
                         }
                     }

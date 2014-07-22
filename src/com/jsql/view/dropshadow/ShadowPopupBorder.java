@@ -60,6 +60,7 @@ import javax.swing.border.AbstractBorder;
  * @see ShadowPopup
  * @see ShadowPopupFactory
  */
+@SuppressWarnings("serial")
 final class ShadowPopupBorder extends AbstractBorder {
 
     /**

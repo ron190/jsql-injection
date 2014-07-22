@@ -10,29 +10,24 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 
 /**
  * End the refreshing of administration page search button
  */
-public class EndAdminSearch implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class EndAdminSearch implements InteractionCommand{
     /**
-     * @param mainGUI
      * @param interactionParams
      */
-    public EndAdminSearch(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
+    public EndAdminSearch(Object[] interactionParams){
     }
 
     /* (non-Javadoc)
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        gui.getOutputPanel().adminPageManager.restoreButtonText();
-        gui.getOutputPanel().adminPageManager.enableButton(true);
-        gui.getOutputPanel().adminPageManager.hideLoader();
+        GUIMediator.gui().getOutputPanel().adminPageManager.restoreButtonText();
+        GUIMediator.gui().getOutputPanel().adminPageManager.enableButton(true);
+        GUIMediator.gui().getOutputPanel().adminPageManager.hideLoader();
     }
 }

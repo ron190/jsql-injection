@@ -42,10 +42,9 @@ package com.jsql.view.dropshadow;
 
 import java.awt.Component;
 
+import javax.swing.LookAndFeel;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
-import javax.swing.LookAndFeel;
-
 
 /**
  * The JGoodies Looks implementation of {@code PopupFactory}.

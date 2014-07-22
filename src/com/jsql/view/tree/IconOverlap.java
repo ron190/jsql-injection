@@ -22,9 +22,8 @@ import javax.swing.ImageIcon;
  * An icon composed of a main icon and
  * another one displayed in the nottom right corner.
  */
+@SuppressWarnings("serial")
 public class IconOverlap extends ImageIcon {
-    private static final long serialVersionUID = 7320065670040840803L;
-
     /**
      * The icon displayed on the bottom right corner.
      */

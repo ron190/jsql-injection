@@ -31,6 +31,7 @@ import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 import javax.swing.TransferHandler;
 
+@SuppressWarnings("serial")
 public class DnDTabbedPane extends JTabbedPane {
     private static final int LINEWIDTH = 3;
     private final Rectangle lineRect = new Rectangle();

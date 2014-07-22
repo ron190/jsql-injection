@@ -22,9 +22,8 @@ import com.jsql.view.GUITools;
 /**
  * A progress bar with a Pause icon over it.
  */
+@SuppressWarnings("serial")
 public class ProgressBarPausable extends JProgressBar{
-    private static final long serialVersionUID = -3448570322741253228L;
-
     /**
      * True if icon should be displayed, false otherwise.
      */

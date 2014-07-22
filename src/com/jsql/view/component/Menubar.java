@@ -39,22 +39,21 @@ import javax.swing.MenuSelectionManager;
 import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.view.GUI;
+import com.jsql.view.ActionHandler;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.RoundScroller;
 import com.jsql.view.SaveTabAction;
 import com.jsql.view.dialog.About;
 import com.jsql.view.dialog.Prefs;
-import com.jsql.view.panel.LeftRightBottom;
 import com.jsql.view.table.TablePanel;
 
 /**
  * Software menubar.
  */
+@SuppressWarnings("serial")
 public class Menubar extends JMenuBar {
-    private static final long serialVersionUID = 3568728818280839048L;
-
-    public Menubar(final GUI gui){
+	
+    public Menubar(){
         // File Menu > save tab | exit
         JMenu menuFile = new JMenu("File");
         menuFile.setMnemonic('F');
@@ -62,16 +61,18 @@ public class Menubar extends JMenuBar {
         JMenuItem itemSave = new JMenuItem("Save Tab As...", 'S');
         itemSave.setIcon(GUITools.EMPTY);
         itemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-        itemSave.addActionListener(new SaveTabAction(gui));
+        itemSave.addActionListener(new SaveTabAction());
 
         JMenuItem itemExit = new JMenuItem("Exit", 'x');
         itemExit.setIcon(GUITools.EMPTY);
         itemExit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                gui.dispose();
+            	GUIMediator.gui().dispose();
             }
         });
+        
+        ActionHandler.addShortcut(Menubar.this);
 
         menuFile.add(itemSave);
         menuFile.add(new JSeparator());
@@ -87,10 +88,10 @@ public class Menubar extends JMenuBar {
         itemCopy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(gui.right.getSelectedComponent() instanceof TablePanel)
-                    ((TablePanel) gui.right.getSelectedComponent()).copyTable();
-                else if(gui.right.getSelectedComponent() instanceof JScrollPane)
-                    ((JTextArea) (((JViewport) (((JScrollPane) gui.right.getSelectedComponent()).getViewport()))).getView()).copy();
+                if(GUIMediator.right().getSelectedComponent() instanceof TablePanel)
+                    ((TablePanel) GUIMediator.right().getSelectedComponent()).copyTable();
+                else if(GUIMediator.right().getSelectedComponent() instanceof JScrollPane)
+                    ((JTextArea) (((JViewport) (((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()))).getView()).copy();
             }
         });
 
@@ -100,12 +101,12 @@ public class Menubar extends JMenuBar {
         itemSelectAll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(gui.right.getSelectedComponent() instanceof TablePanel)
-                    ((TablePanel) gui.right.getSelectedComponent()).selectTable();
+                if(GUIMediator.right().getSelectedComponent() instanceof TablePanel)
+                    ((TablePanel) GUIMediator.right().getSelectedComponent()).selectTable();
                 // Textarea need focus to select all
-                else if(gui.right.getSelectedComponent() instanceof JScrollPane){
-                    ((JTextArea) (((JViewport) (((JScrollPane) gui.right.getSelectedComponent()).getViewport()))).getView()).requestFocusInWindow();
-                    ((JTextArea) (((JViewport) (((JScrollPane) gui.right.getSelectedComponent()).getViewport()))).getView()).selectAll();
+                else if(GUIMediator.right().getSelectedComponent() instanceof JScrollPane){
+                    ((JTextArea) (((JViewport) (((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()))).getView()).requestFocusInWindow();
+                    ((JTextArea) (((JViewport) (((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()))).getView()).selectAll();
                 }
             }
         });
@@ -137,19 +138,18 @@ public class Menubar extends JMenuBar {
         JMenuItem coder = new JMenuItem("Coder", GUITools.CODER);
         menuView.add(coder);
         menuTools.add(menuView);
-        menuTools.add(new JSeparator());
 
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
         
         JMenu menuPanel = new JMenu("Show Panel");
         menuView.setMnemonic('V');
-        final JCheckBoxMenuItem chunk = new JCheckBoxMenuItem("Chunk", new ImageIcon(getClass().getResource("/com/jsql/view/images/chunk.gif")), prefs.getBoolean(gui.CHUNK_VISIBLE, true));
+        final JCheckBoxMenuItem chunk = new JCheckBoxMenuItem("Chunk", new ImageIcon(getClass().getResource("/com/jsql/view/images/chunk.gif")), prefs.getBoolean(GUIMediator.gui().CHUNK_VISIBLE, true));
         menuPanel.add(chunk);
-        final JCheckBoxMenuItem binary = new JCheckBoxMenuItem("Binary", new ImageIcon(getClass().getResource("/com/jsql/view/images/binary.gif")), prefs.getBoolean(gui.BINARY_VISIBLE, true));
+        final JCheckBoxMenuItem binary = new JCheckBoxMenuItem("Binary", new ImageIcon(getClass().getResource("/com/jsql/view/images/binary.gif")), prefs.getBoolean(GUIMediator.gui().BINARY_VISIBLE, true));
         menuPanel.add(binary);
-        final JCheckBoxMenuItem header = new JCheckBoxMenuItem("Header", new ImageIcon(getClass().getResource("/com/jsql/view/images/header.gif")), prefs.getBoolean(gui.HEADER_VISIBLE, true));
+        final JCheckBoxMenuItem header = new JCheckBoxMenuItem("Header", new ImageIcon(getClass().getResource("/com/jsql/view/images/header.gif")), prefs.getBoolean(GUIMediator.gui().HEADER_VISIBLE, true));
         menuPanel.add(header);
-        final JCheckBoxMenuItem javaDebug = new JCheckBoxMenuItem("Java", new ImageIcon(GUITools.class.getResource("/com/jsql/view/images/cup.png")), prefs.getBoolean(gui.JAVA_VISIBLE, false));
+        final JCheckBoxMenuItem javaDebug = new JCheckBoxMenuItem("Java", new ImageIcon(GUITools.class.getResource("/com/jsql/view/images/cup.png")), prefs.getBoolean(GUIMediator.gui().JAVA_VISIBLE, false));
         
         class StayOpenCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI {
             @Override
@@ -166,22 +166,22 @@ public class Menubar extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(chunk.isSelected())
-                    gui.outputPanel.bottom.insertTab("Chunk", new ImageIcon(getClass().getResource("/com/jsql/view/images/chunk.gif")), new RoundScroller(gui.chunks), "Hexadecimal data recovered",
+                    GUIMediator.bottom().insertTab("Chunk", new ImageIcon(getClass().getResource("/com/jsql/view/images/chunk.gif")), new RoundScroller(GUIMediator.gui().chunks), "Hexadecimal data recovered",
                             javaDebug.isSelected()&&header.isSelected()&&binary.isSelected()?
-                                    gui.outputPanel.bottom.getTabCount()-3
+                                    GUIMediator.bottom().getTabCount()-3
                             :
                                 javaDebug.isSelected()&&header.isSelected()||javaDebug.isSelected()&&binary.isSelected()||header.isSelected()&&binary.isSelected()?    
-                                        gui.outputPanel.bottom.getTabCount()-2
+                                        GUIMediator.bottom().getTabCount()-2
                                 :
                                     javaDebug.isSelected()||binary.isSelected()||header.isSelected()?
-                                        gui.outputPanel.bottom.getTabCount()-1
+                                        GUIMediator.bottom().getTabCount()-1
                                     :
-                                        gui.outputPanel.bottom.getTabCount()
+                                        GUIMediator.bottom().getTabCount()
                             );
                 else
-                    for(int i=0; i < gui.outputPanel.bottom.getTabCount() ;i++)
-                        if (gui.outputPanel.bottom.getTitleAt(i).equals("Chunk")) {
-                            gui.outputPanel.bottom.remove(gui.outputPanel.bottom.getComponentAt(i));
+                    for(int i=0; i < GUIMediator.bottom().getTabCount() ;i++)
+                        if (GUIMediator.bottom().getTitleAt(i).equals("Chunk")) {
+                            GUIMediator.bottom().remove(GUIMediator.bottom().getComponentAt(i));
                             break;
                         }
             }
@@ -190,19 +190,19 @@ public class Menubar extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(binary.isSelected())
-                    gui.outputPanel.bottom.insertTab("Binary", new ImageIcon(getClass().getResource("/com/jsql/view/images/binary.gif")), new RoundScroller(gui.binaryArea), "Time/Blind bytes", 
+                    GUIMediator.bottom().insertTab("Binary", new ImageIcon(getClass().getResource("/com/jsql/view/images/binary.gif")), new RoundScroller(GUIMediator.gui().binaryArea), "Time/Blind bytes", 
                             javaDebug.isSelected()&&header.isSelected()?
-                                    gui.outputPanel.bottom.getTabCount()-2
+                                    GUIMediator.bottom().getTabCount()-2
                             :
                                 javaDebug.isSelected()||header.isSelected()?
-                                        gui.outputPanel.bottom.getTabCount()-1
+                                        GUIMediator.bottom().getTabCount()-1
                                 :
-                                        gui.outputPanel.bottom.getTabCount()
+                                        GUIMediator.bottom().getTabCount()
                                 );
                 else
-                    for(int i=0; i < gui.outputPanel.bottom.getTabCount() ;i++)
-                        if (gui.outputPanel.bottom.getTitleAt(i).equals("Binary")) {
-                            gui.outputPanel.bottom.remove(gui.outputPanel.bottom.getComponentAt(i));
+                    for(int i=0; i < GUIMediator.bottom().getTabCount() ;i++)
+                        if (GUIMediator.bottom().getTitleAt(i).equals("Binary")) {
+                            GUIMediator.bottom().remove(GUIMediator.bottom().getComponentAt(i));
                             break;
                         }
             }
@@ -211,11 +211,11 @@ public class Menubar extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(header.isSelected())
-                    gui.outputPanel.bottom.insertTab("Header", new ImageIcon(getClass().getResource("/com/jsql/view/images/header.gif")), new RoundScroller(gui.headers), "URL calls information", javaDebug.isSelected()?gui.outputPanel.bottom.getTabCount()-1:gui.outputPanel.bottom.getTabCount());
+                    GUIMediator.bottom().insertTab("Header", new ImageIcon(getClass().getResource("/com/jsql/view/images/header.gif")), new RoundScroller(GUIMediator.gui().headers), "URL calls information", javaDebug.isSelected()?GUIMediator.bottom().getTabCount()-1:GUIMediator.bottom().getTabCount());
                 else
-                    for(int i=0; i < gui.outputPanel.bottom.getTabCount() ;i++)
-                        if (gui.outputPanel.bottom.getTitleAt(i).equals("Header")) {
-                            gui.outputPanel.bottom.remove(gui.outputPanel.bottom.getComponentAt(i));
+                    for(int i=0; i < GUIMediator.bottom().getTabCount() ;i++)
+                        if (GUIMediator.bottom().getTitleAt(i).equals("Header")) {
+                            GUIMediator.bottom().remove(GUIMediator.bottom().getComponentAt(i));
                             break;
                         }
             }
@@ -224,11 +224,11 @@ public class Menubar extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(javaDebug.isSelected())
-                    gui.outputPanel.bottom.insertTab("Java", new ImageIcon(getClass().getResource("/com/jsql/view/images/cup.png")), new RoundScroller(gui.javaDebug), "Java console", gui.outputPanel.bottom.getTabCount());
+                    GUIMediator.bottom().insertTab("Java", new ImageIcon(getClass().getResource("/com/jsql/view/images/cup.png")), new RoundScroller(GUIMediator.gui().javaDebug), "Java console", GUIMediator.bottom().getTabCount());
                 else
-                    for(int i=0; i < gui.outputPanel.bottom.getTabCount() ;i++)
-                        if (gui.outputPanel.bottom.getTitleAt(i).equals("Java")) {
-                            gui.outputPanel.bottom.remove(gui.outputPanel.bottom.getComponentAt(i));
+                    for(int i=0; i < GUIMediator.bottom().getTabCount() ;i++)
+                        if (GUIMediator.bottom().getTitleAt(i).equals("Java")) {
+                            GUIMediator.bottom().remove(GUIMediator.bottom().getComponentAt(i));
                             break;
                         }
             }
@@ -252,19 +252,19 @@ public class Menubar extends JMenuBar {
             m.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                    gui.getOutputPanel().left.setSelectedIndex(p.get(m));
+                	GUIMediator.left().setSelectedIndex(p.get(m));
                 }
             });
         }
 
         // Render the Preferences dialog behind scene
-        final Prefs prefDiag = new Prefs(gui);
+        final Prefs prefDiag = new Prefs();
         preferences.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 // Center the dialog
                 if(!prefDiag.isVisible()){
-                    prefDiag.setLocationRelativeTo(gui);
+                    prefDiag.setLocationRelativeTo(GUIMediator.gui());
                     prefDiag.setVisible(true); // needed here for button focus
                     prefDiag.okButton.requestFocusInWindow();
                 }
@@ -282,7 +282,7 @@ public class Menubar extends JMenuBar {
         itemUpdate.setIcon(GUITools.EMPTY);
 
         // Render the About dialog behind scene
-        final About aboutDiag = new About(gui);
+        final About aboutDiag = new About();
         itemHelp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -302,7 +302,7 @@ public class Menubar extends JMenuBar {
                     @Override
                     public void run() {
                         try {
-                            gui.model.sendMessage("Checking updates...");
+                            GUIMediator.model().sendMessage("Checking updates...");
                             URLConnection con = new URL("http://jsql-injection.googlecode.com/git/.version").openConnection();
                             con.setReadTimeout(60000);
                             con.setConnectTimeout(60000);
@@ -313,18 +313,19 @@ public class Menubar extends JMenuBar {
                             reader.close();
 
                             Float gitVersion = Float.parseFloat(pageSource);
-                            if(gitVersion <= Float.parseFloat(gui.model.jSQLVersion))
-                                gui.model.sendMessage("jSQL Injection is up to date.");
+                            GUIMediator.model();
+							if(gitVersion <= Float.parseFloat(InjectionModel.jSQLVersion))
+                                GUIMediator.model().sendMessage("jSQL Injection is up to date.");
                             else{
-                                gui.model.sendErrorMessage("A new version of jSQL Injection is available.");
+                                GUIMediator.model().sendErrorMessage("A new version of jSQL Injection is available.");
                                 Desktop.getDesktop().browse(new URI("http://code.google.com/p/jsql-injection/downloads/list"));
                             }
                         } catch (NumberFormatException err) {
-                            gui.model.sendErrorMessage("A problem occured with repository version, you can visit the updates page here:\nhttp://code.google.com/p/jsql-injection/downloads/list");
+                            GUIMediator.model().sendErrorMessage("A problem occured with repository version, you can visit the updates page here:\nhttp://code.google.com/p/jsql-injection/downloads/list");
                         } catch (IOException e1) {
-                            gui.model.sendErrorMessage("Repository website is not responding, you can visit the updates page here:\nhttp://code.google.com/p/jsql-injection/downloads/list");
+                            GUIMediator.model().sendErrorMessage("Repository website is not responding, you can visit the updates page here:\nhttp://code.google.com/p/jsql-injection/downloads/list");
                         } catch (URISyntaxException e) {
-                            gui.model.sendDebugMessage(e);
+                            GUIMediator.model().sendDebugMessage(e);
                         }
 
                     }

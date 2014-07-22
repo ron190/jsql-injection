@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view;
+package com.jsql.view.component;
 
 import java.awt.Component;
 
@@ -19,9 +19,9 @@ import javax.swing.JScrollPane;
 /**
  * Scroller with round border.
  */
+@SuppressWarnings("serial")
 public class RoundScroller extends JScrollPane {
-    private static final long serialVersionUID = -5044132525591212636L;
-
+	
     public RoundScroller(Component c){
         super(c);
         

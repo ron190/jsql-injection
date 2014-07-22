@@ -19,6 +19,7 @@ import java.awt.Rectangle;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+@SuppressWarnings("serial")
 public class GhostGlassPane extends JPanel {
     private DnDTabbedPane tabbedPane;
     public GhostGlassPane(DnDTabbedPane tabbedPane) {

@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.component.popup;
+package com.jsql.view.component.popupmenu;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -26,6 +26,7 @@ import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.event.UndoableEditEvent;
@@ -36,12 +37,11 @@ import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
 import com.jsql.view.GUITools;
-import com.jsql.view.RoundBorder;
 
 
+@SuppressWarnings("serial")
 public class JPopupTextField extends JTextField {
-    private static final long serialVersionUID = 3353663305066550031L;
-    
+	
     private boolean bigTextField = false;
     private boolean drawPic = false;
     BufferedImage image;
@@ -88,7 +88,9 @@ public class JPopupTextField extends JTextField {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                JPopupTextField.this.requestFocusInWindow();
+                // Left button will deselect text after selectAll, so only for right click
+                if(SwingUtilities.isRightMouseButton(e))
+                	JPopupTextField.this.requestFocusInWindow();
             }
         });
         
@@ -131,8 +133,6 @@ public class JPopupTextField extends JTextField {
         // Create an undo action and add it to the text component
         this.getActionMap().put("Undo",
             new AbstractAction("Undo") {
-                private static final long serialVersionUID = 4306924502441733626L;
-
                 public void actionPerformed(ActionEvent evt) {
                     try {
                         if (undo.canUndo()) {
@@ -149,8 +149,6 @@ public class JPopupTextField extends JTextField {
         // Create a redo action and add it to the text component
         this.getActionMap().put("Redo",
             new AbstractAction("Redo") {
-                private static final long serialVersionUID = 4771013112601866334L;
-
                 public void actionPerformed(ActionEvent evt) {
                     try {
                         if (undo.canRedo()) {

@@ -34,6 +34,7 @@ package com.jsql.view.component;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+
 import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
@@ -44,12 +45,20 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
  * A JSplitPane that uses a 1 pixel thin visible divider,
  * but a 9 pixel wide transparent drag area.
  */
+@SuppressWarnings("serial")
 public class JSplitPaneWithZeroSizeDivider extends JSplitPane
 {
     /**
      * The size of the transparent drag area.
      */
     private int dividerDragSize = 9;
+    
+    public void disableDragSize(){
+    	dividerDragSize = 0;
+    }
+    public void enableDragSize(){
+    	dividerDragSize = 9;
+    }
 
     /**
      * The offset of the transparent drag area relative to the visible divider line.

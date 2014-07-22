@@ -14,8 +14,8 @@ import java.util.UUID;
 
 import com.jsql.model.InjectionModel;
 
+@SuppressWarnings("serial")
 public class WebshellTerminal extends Terminal {
-    private static final long serialVersionUID = -7387042122390007426L;
 
     public WebshellTerminal(InjectionModel model, UUID terminalID, String wbhPath) {
         super(model, terminalID, wbhPath, "terminal");

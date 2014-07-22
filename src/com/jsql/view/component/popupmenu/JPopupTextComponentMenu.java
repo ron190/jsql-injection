@@ -8,14 +8,12 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.component.popup;
+package com.jsql.view.component.popupmenu;
 
 import java.awt.MouseInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
 
-import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
@@ -26,13 +24,13 @@ import javax.swing.text.JTextComponent;
 
 import com.jsql.view.GUITools;
 
-public class JPopupTextComponentMenu extends JPopupMenu
-{
-    private static final long serialVersionUID = 8092372084470989050L;
-
+@SuppressWarnings("serial")
+public class JPopupTextComponentMenu extends JPopupMenu{
+	
     public JPopupTextComponentMenu(JTextComponent cmp){
         this(cmp, false);
     }
+    
     public JPopupTextComponentMenu(JTextComponent newComponent, boolean isTextField){
         JTextComponent component = newComponent;
         

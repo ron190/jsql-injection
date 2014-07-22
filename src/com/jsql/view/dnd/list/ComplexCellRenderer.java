@@ -26,7 +26,7 @@ import javax.swing.border.LineBorder;
 
 import com.jsql.view.GUITools;
 
-public class ComplexCellRenderer implements ListCellRenderer {
+public class ComplexCellRenderer implements ListCellRenderer<ListItem> {
     JList<ListItem> myList;
     int[] mouseOver;
     
@@ -37,7 +37,8 @@ public class ComplexCellRenderer implements ListCellRenderer {
     
     protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 
-    public Component getListCellRendererComponent(JList list, Object value, int index,
+    @SuppressWarnings("serial")
+	public Component getListCellRendererComponent(JList<? extends ListItem> list, ListItem value, int index,
             boolean isSelected, boolean cellHasFocus) {
         JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index,
                 isSelected, cellHasFocus);

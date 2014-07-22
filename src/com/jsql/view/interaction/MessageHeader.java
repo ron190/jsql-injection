@@ -10,15 +10,12 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 
 /**
  * Append a text to the tab Header
  */
-public class MessageHeader implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class MessageHeader implements InteractionCommand{
     // The text to append to the tab
     private String text;
 
@@ -26,9 +23,7 @@ public class MessageHeader implements Interaction{
      * @param mainGUI
      * @param interactionParams Text to append
      */
-    public MessageHeader(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
-
+    public MessageHeader(Object[] interactionParams){
         text = (String) interactionParams[0];
     }
 
@@ -36,7 +31,7 @@ public class MessageHeader implements Interaction{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        gui.headers.append(text);
-        gui.headers.setCaretPosition(gui.headers.getDocument().getLength());
+    	GUIMediator.gui().headers.append(text);
+        GUIMediator.gui().headers.setCaretPosition(GUIMediator.gui().headers.getDocument().getLength());
     }
 }

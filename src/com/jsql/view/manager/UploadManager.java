@@ -26,35 +26,27 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.RoundScroller;
-import com.jsql.view.component.popup.JPopupTextField;
-import com.jsql.view.dialog.FileChooser;
+import com.jsql.view.component.RoundScroller;
+import com.jsql.view.component.popupmenu.JPopupTextField;
 import com.jsql.view.dnd.list.DnDList;
 import com.jsql.view.dnd.list.ListItem;
 
 /**
  * Manager for uploading PHP webshell to the host
  */
+@SuppressWarnings("serial")
 public class UploadManager extends JPanel{
-    private static final long serialVersionUID = -8504371566082352384L;
-
-    /**
-     * Main frame.
-     */
-    private GUI gui;
-
     /**
      * Contains the paths of webshell.
      */
-    private JList<ListItem> folderPaths;
+    private DnDList folderPaths;
 
     /**
      * Starts the upload process.
@@ -78,10 +70,8 @@ public class UploadManager extends JPanel{
      * Build the manager panel.
      * @param gui The main frame
      */
-    public UploadManager(final GUI gui){
+    public UploadManager(){
         super(new BorderLayout());
-
-        this.gui = gui;
 
         ArrayList<String> pathsList = new ArrayList<String>();
         pathsList.add("/var/www/html/defaut/");
@@ -91,7 +81,7 @@ public class UploadManager extends JPanel{
         pathsList.add("/home/www/");
         pathsList.add("E:/Outils/EasyPHP-5.3.9/www/");
 
-        folderPaths = new DnDList(gui, pathsList);
+        folderPaths = new DnDList(pathsList);
         this.add(new RoundScroller(folderPaths), BorderLayout.CENTER);
 
         JPanel southPanel = new JPanel();
@@ -127,27 +117,27 @@ public class UploadManager extends JPanel{
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if(folderPaths.getSelectedValuesList().size() == 0){
-                    gui.model.sendErrorMessage("Select at least one directory");
+                	GUIMediator.model().sendErrorMessage("Select at least one directory");
                     return;
                 }
 
-                final JFileChooser filechooser = new JFileChooser(gui.model.pathFile);
+                final JFileChooser filechooser = new JFileChooser(GUIMediator.model().pathFile);
                 filechooser.setDialogTitle("Choose file to upload");
                 
-                int returnVal = filechooser.showOpenDialog(gui);
+                int returnVal = filechooser.showOpenDialog(GUIMediator.gui());
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    for(final ListItem path: folderPaths.getSelectedValuesList()){
+                    for(final Object path: folderPaths.getSelectedValuesList()){
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 File file = filechooser.getSelectedFile();
                                 try{
                                     loader.setVisible(true);
-                                    gui.model.rao.upload(path.toString(), shellURL.getText(), file);
+                                    GUIMediator.model().rao.upload(path.toString(), shellURL.getText(), file);
                                 }catch (PreparationException e){
-                                    gui.model.sendErrorMessage("Can't upload file "+ file.getName() +" to " + path);
+                                	GUIMediator.model().sendErrorMessage("Can't upload file "+ file.getName() +" to " + path);
                                 }catch (StoppableException e){
-                                    gui.model.sendErrorMessage("Can't upload file "+ file.getName() +" to " + path);
+                                	GUIMediator.model().sendErrorMessage("Can't upload file "+ file.getName() +" to " + path);
                                 }
                             }
                         }, "upload").start();
@@ -178,9 +168,8 @@ public class UploadManager extends JPanel{
      * @param element The string to add to the list
      */
     public void addToList(String element){
-        int i = 0;
         boolean found = false;
-        for (;i < ((DefaultListModel<ListItem>)folderPaths.getModel()).size();i++){
+        for (int i = 0;i < ((DefaultListModel<ListItem>)folderPaths.getModel()).size();i++){
             if (((DefaultListModel<ListItem>)folderPaths.getModel()).get(i).toString().equals(element)) {
                 found = true;
             }

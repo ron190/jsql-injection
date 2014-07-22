@@ -31,17 +31,16 @@ import javax.swing.UIManager;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.view.GUITools;
-import com.jsql.view.RoundScroller;
 import com.jsql.view.bruteforce.HashBruter;
-import com.jsql.view.component.popup.JPopupTextArea;
-import com.jsql.view.component.popup.JPopupTextField;
+import com.jsql.view.component.RoundScroller;
+import com.jsql.view.component.popupmenu.JPopupTextArea;
+import com.jsql.view.component.popupmenu.JPopupTextField;
 
 /**
  * Manager to brute force a hash of various types.
  */
+@SuppressWarnings("serial")
 public class BruteForceManager extends JPanel{
-    private static final long serialVersionUID = 7813237648910094160L;
-
     public AbstractButton run;
 
     private JPopupTextField hash;

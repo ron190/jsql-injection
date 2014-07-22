@@ -38,8 +38,8 @@ import com.jsql.model.InjectionModel;
 /**
  * A Terminal built from scratch.
  */
+@SuppressWarnings("serial")
 public abstract class Terminal extends JTextPane{
-    private static final long serialVersionUID = 7020035385573317805L;
 
     protected InjectionModel model;
     
@@ -71,7 +71,7 @@ public abstract class Terminal extends JTextPane{
         }
         host = u.getHost();
         
-        this.setFont(new Font("Courier New",Font.PLAIN,((Font) UIManager.get("TextArea.font")).getSize()+1));
+        this.setFont(new Font("monospaced",Font.PLAIN,((Font) UIManager.get("TextArea.font")).getSize()+1));
         this.setCaret(new BlockCaret());
         this.setBackground(Color.BLACK);
         this.setForeground(Color.LIGHT_GRAY);

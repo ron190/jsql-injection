@@ -21,16 +21,13 @@ import java.util.regex.Pattern;
 import javax.swing.UIManager;
 import javax.swing.text.StyleConstants;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.terminal.Terminal;
 
 /**
  * Append the result of a command in the terminal
  */
-public class GetSQLShellResult implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class GetSQLShellResult implements InteractionCommand{
     // Unique identifier for the terminal.
     // Used for outputing results of commands in the right shell tab (in case of multiple shell opened)
     private UUID terminalID;
@@ -39,25 +36,23 @@ public class GetSQLShellResult implements Interaction{
     private String result;
 
     // The command executed in shell
-    private String cmd;
+//    private String cmd;
 
     /**
      * @param mainGUI
      * @param interactionParams The unique identifier of the terminal and the command's result to display
      */
-    public GetSQLShellResult(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
-
+    public GetSQLShellResult(Object[] interactionParams){
         terminalID = (UUID) interactionParams[0];
         result = (String) interactionParams[1];
-        cmd = (String) interactionParams[2];
+//        cmd = (String) interactionParams[2];
     }
 
     /* (non-Javadoc)
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        Terminal terminal = gui.consoles.get(terminalID);
+        Terminal terminal = GUIMediator.gui().consoles.get(terminalID);
         
         if(result.indexOf("<SQLr>") > -1){
             ArrayList<ArrayList<String>> i = new ArrayList<ArrayList<String>>();
@@ -92,15 +87,8 @@ public class GetSQLShellResult implements Interaction{
                 }
                 
                 if(!result.equals("")){
-                    StyleConstants.setFontFamily(terminal.style, "Lucida Console");
-                    StyleConstants.setFontSize(terminal.style, ((Font) UIManager.get("TextArea.font")).getSize()-1);
-                    
-                    terminal.appendStyle("\n");
-                    
-                    int l = 0;
-                    for(Integer iii: ml){
-                        l += iii+1 + 2;
-                    }
+                    StyleConstants.setFontFamily(terminal.style, "monospaced");
+                    StyleConstants.setFontSize(terminal.style, ((Font) UIManager.get("TextArea.font")).getSize()+1);
 
                     terminal.appendStyle("+");
                     for(Integer a1: ml){
@@ -124,7 +112,7 @@ public class GetSQLShellResult implements Interaction{
                     }
                     terminal.appendStyle("\n");
                     
-                    StyleConstants.setFontFamily(terminal.style, "Courier New");
+                    StyleConstants.setFontFamily(terminal.style, "monospaced");
                     StyleConstants.setFontSize(terminal.style, ((Font) UIManager.get("TextArea.font")).getSize()+1);
                 }
             }
@@ -133,7 +121,7 @@ public class GetSQLShellResult implements Interaction{
         }else if(result.indexOf("<SQLe>") > -1){
             terminal.append(result.replace("<SQLe>", "") + "\n");
         }else
-            terminal.append("No result.");
+            terminal.append("No result\n");
         terminal.append("\n");
         terminal.reset();
     }

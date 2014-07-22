@@ -10,8 +10,6 @@
  ******************************************************************************/
 package com.jsql.model;
 
-import java.util.concurrent.ExecutionException;
-
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 
@@ -62,7 +60,7 @@ public abstract class Stoppable implements Runnable {
      * @return source page
      * @throws PreparationException if action throws exception
      */
-    String begin() throws PreparationException{
+    public String begin() throws PreparationException{
         Thread t = new Thread(this, "Stoppable - begin");
         t.start();
         try {

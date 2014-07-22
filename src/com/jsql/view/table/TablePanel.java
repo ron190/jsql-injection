@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.table;
 
+import java.awt.AWTKeyStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -44,15 +45,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-import com.jsql.view.component.popup.JPopupTableMenu;
+import com.jsql.view.component.popupmenu.JPopupTableMenu;
 
 /**
  * Display a table for database values.
  * Add keyboard shortcut, mouse icon, text and header formatting.
  */
+@SuppressWarnings("serial")
 public class TablePanel extends JPanel {
-    private static final long serialVersionUID = 4505998197469263100L;
-    
     public JTable table;
     
     public void selectTable(){
@@ -68,8 +68,6 @@ public class TablePanel extends JPanel {
         super(new GridLayout(1,0));
         
         table = new JTable(data, columnNames){
-            private static final long serialVersionUID = 4221305668526115726L;
-
             public boolean isCellEditable(int row,int column){
                 return false;
             }
@@ -151,10 +149,10 @@ public class TablePanel extends JPanel {
                 KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK), null);
         
         // Can't get rid of warning about raw type
-        Set<KeyStroke> forward = new HashSet(table.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
+        Set<AWTKeyStroke> forward = new HashSet<AWTKeyStroke>(table.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
         forward.add(KeyStroke.getKeyStroke("TAB"));
         table.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forward);
-        Set<KeyStroke> backward = new HashSet(table.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
+        Set<AWTKeyStroke> backward = new HashSet<AWTKeyStroke>(table.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
         backward.add(KeyStroke.getKeyStroke("shift TAB"));
         table.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backward);
         
@@ -164,8 +162,6 @@ public class TablePanel extends JPanel {
         JScrollPane scroller = new JScrollPane(table);
         
         scroller.setColumnHeader(new JViewport() {
-            private static final long serialVersionUID = 3600474852945594435L;
-
             @Override public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();
                 d.height = 21;
@@ -178,8 +174,6 @@ public class TablePanel extends JPanel {
     }
     
     private class CenterRenderer extends DefaultTableCellRenderer{
-        private static final long serialVersionUID = -3624608585496119576L;
-
         public CenterRenderer(){
             this.setHorizontalAlignment(JLabel.CENTER);
         }

@@ -17,7 +17,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.swing.ImageIcon;
@@ -29,28 +28,22 @@ import javax.swing.SwingUtilities;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import com.jsql.view.GUI;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.RoundScroller;
+import com.jsql.view.component.RoundScroller;
 import com.jsql.view.component.TabHeader;
 
 /**
  * Create a new tab for an administration webpage
  */
-public class CreateAdminPageTab implements Interaction{
-    // The main View
-    private GUI gui;
-
+public class CreateAdminPageTab implements InteractionCommand{
     // Url for the administration webpage
     private final String url;
 
     /**
-     * @param mainGUI
      * @param interactionParams Url of the webpage
      */
-    public CreateAdminPageTab(GUI mainGUI, Object[] interactionParams){
-        gui = mainGUI;
-
+    public CreateAdminPageTab(Object[] interactionParams){
         url = (String) interactionParams[0];
     }
 
@@ -74,7 +67,7 @@ public class CreateAdminPageTab implements Interaction{
                     //              .addEnforcedAttribute("input", "disabled", "disabled")
                     );
         } catch (IOException e) {
-            gui.model.sendDebugMessage(e);
+        	GUIMediator.model().sendDebugMessage(e);
         }
 
         JTextPane browser = new JTextPane();
@@ -111,19 +104,18 @@ public class CreateAdminPageTab implements Interaction{
         });
 
         final RoundScroller scroller = new RoundScroller(browser);
-        gui.right.addTab(url.replaceAll(".*/", "")+" ", scroller);
+        GUIMediator.right().addTab(url.replaceAll(".*/", "")+" ", scroller);
 
         // Focus on the new tab
-        gui.right.setSelectedComponent(scroller);
+        GUIMediator.right().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(gui.right,
-                new ImageIcon(getClass().getResource("/com/jsql/view/images/admin.png")));
+        TabHeader header = new TabHeader(new ImageIcon(getClass().getResource("/com/jsql/view/images/admin.png")));
 
-        gui.right.setToolTipTextAt(gui.right.indexOfComponent(scroller), "<html>"+url+"</html>");
+        GUIMediator.right().setToolTipTextAt(GUIMediator.right().indexOfComponent(scroller), "<html>"+url+"</html>");
 
         // Apply the custom header to the tab
-        gui.right.setTabComponentAt(gui.right.indexOfComponent(scroller), header);
+        GUIMediator.right().setTabComponentAt(GUIMediator.right().indexOfComponent(scroller), header);
 
         browser.requestFocusInWindow();
 
