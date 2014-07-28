@@ -36,10 +36,11 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import javax.swing.JSplitPane;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
+
+import com.jsql.view.GUITools;
 
 /**
  * A JSplitPane that uses a 1 pixel thin visible divider,
@@ -76,7 +77,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane
     public JSplitPaneWithZeroSizeDivider( int orientation ) {
         super( orientation );
         setContinuousLayout( true );
-        setDividerSize( 1 );
+//        setDividerSize( 1 );
     }
 
     public JSplitPaneWithZeroSizeDivider(int horizontalSplit, boolean b) {
@@ -144,7 +145,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane
         public ZeroSizeDivider( BasicSplitPaneUI ui ) {
             super( ui );
             super.setBorder( null );
-            setBackground( UIManager.getColor( "controlShadow" ) );
+            setBackground( GUITools.COMPONENT_BORDER );
         }
 
         @Override

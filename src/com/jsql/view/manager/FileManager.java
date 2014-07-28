@@ -23,37 +23,29 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.component.RoundScroller;
-import com.jsql.view.dnd.list.DnDList;
+import com.jsql.view.component.JScrollPanePixelBorder;
+import com.jsql.view.list.dnd.DnDList;
 
 /**
  * Manager to read a file from the host.
  */
 @SuppressWarnings("serial")
-public class FileManager extends JPanel{
-    private JButton run;
-
-    private JLabel privilege;
-
-    private JLabel loader = new JLabel(GUITools.SPINNER);
-
-    private final String defaultText = "Read file(s)";
+public class FileManager extends ListManager{
 
     public FileManager(){
-        super(new BorderLayout());
-
+        this.setLayout(new BorderLayout());
+        this.setDefaultText("Read file(s)");
+        
         ArrayList<String> pathList = new ArrayList<String>();
         try {
             InputStream in = this.getClass().getResourceAsStream("/com/jsql/list/file.txt");
@@ -67,12 +59,15 @@ public class FileManager extends JPanel{
 
         final DnDList listFile = new DnDList(pathList);
 
-        this.add(new RoundScroller(listFile), BorderLayout.CENTER);
+        this.add(new JScrollPanePixelBorder(1,1,0,0,listFile), BorderLayout.CENTER);
 
-        JPanel southPanel = new JPanel();
-        southPanel.setOpaque(false);
-        southPanel.setLayout( new BoxLayout(southPanel, BoxLayout.X_AXIS) );
-
+        JPanel lastLine = new JPanel();
+        lastLine.setOpaque(false);
+        lastLine.setLayout( new BoxLayout(lastLine, BoxLayout.X_AXIS) );
+        lastLine.setBorder(BorderFactory.createCompoundBorder(
+        		BorderFactory.createMatteBorder(0,1,0,0,GUITools.COMPONENT_BORDER), 
+        		BorderFactory.createEmptyBorder(1, 0, 1, 1)));
+        
         run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/fileSearch.png")));
 
         run.setToolTipText("<html><b>Select file(s) to read</b><br>" +
@@ -82,9 +77,8 @@ public class FileManager extends JPanel{
                 "as followed: if remote host can be requested like http://site.com/index.php?page=about, then try to<br>" +
                 "browse instead http://site.com/index.php?page[]=about, an error may show a complete file path.</i></html>");
         run.setEnabled(false);
-        run.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(2,0,0,0,UIManager.getColor ( "Panel.background" )),
-                GUITools.BLU_ROUND_BORDER));
+        run.setBorder(GUITools.BLU_ROUND_BORDER);
+        
         run.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -125,42 +119,12 @@ public class FileManager extends JPanel{
 
         loader.setVisible(false);
 
-        southPanel.add(privilege);
-        southPanel.add(Box.createHorizontalGlue());
-        southPanel.add(loader);
-        southPanel.add(Box.createRigidArea(new Dimension(5,0)));
-        southPanel.add(run);
+        lastLine.add(privilege);
+        lastLine.add(Box.createHorizontalGlue());
+        lastLine.add(loader);
+        lastLine.add(Box.createRigidArea(new Dimension(5,0)));
+        lastLine.add(run);
         
-        this.add(southPanel, BorderLayout.SOUTH);
-    }
-
-    /**
-     * Hide the loader icon.
-     */
-    public void hideLoader(){
-        loader.setVisible(false);
-    }
-
-    /**
-     * Enable or disable the button.
-     * @param i The new state of the button
-     */
-    public void setButtonEnable(boolean a){
-        run.setEnabled(a);
-    }
-
-    /**
-     * Display another icon to the Privilege label.
-     * @param i The new icon
-     */
-    public void changeIcon(Icon i){
-        privilege.setIcon(i);
-    }
-
-    /**
-     * Restore the default text to the button after a search.
-     */
-    public void restoreButtonText(){
-        run.setText(defaultText);
+        this.add(lastLine, BorderLayout.SOUTH);
     }
 }

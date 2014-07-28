@@ -1,8 +1,8 @@
 bin/
 .metadata
 .classpath
-/target
-.classpath
+
+target/
 .project
 target/
 .settings/

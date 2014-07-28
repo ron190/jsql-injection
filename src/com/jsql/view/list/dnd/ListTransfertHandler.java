@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.dnd.list;
+package com.jsql.view.list.dnd;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
@@ -25,14 +25,10 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
 
+import com.jsql.view.GUIMediator;
+
 @SuppressWarnings("serial")
 public class ListTransfertHandler extends TransferHandler{
-    private DnDList dnDlist;
-    
-    public ListTransfertHandler(DnDList list){
-        dnDlist = list;
-    }
-    
     // Export
     @Override
     public int getSourceActions(JComponent c) {
@@ -79,7 +75,7 @@ public class ListTransfertHandler extends TransferHandler{
             return false;
         }
 
-        JList<ListItem> list = (JList<ListItem>)support.getComponent();
+        DnDList list = (DnDList)support.getComponent();
         DefaultListModel<ListItem> model = (DefaultListModel<ListItem>)list.getModel();
         if (support.isDrop()) { //This is a drop
             if (support.isDataFlavorSupported(DataFlavor.stringFlavor)){
@@ -104,9 +100,9 @@ public class ListTransfertHandler extends TransferHandler{
                                 model.add(childIndex++, new ListItem(value.replace("\\", "/")));
                             }
                     } catch (UnsupportedFlavorException e) {
-                        e.printStackTrace();
+                        GUIMediator.model().sendDebugMessage(e);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        GUIMediator.model().sendDebugMessage(e);
                     }
                 }
 
@@ -123,11 +119,11 @@ public class ListTransfertHandler extends TransferHandler{
                 int childIndex = dl.getIndex();
 
                 try {
-                    dnDlist.dropPasteFile((List<File>)support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor), childIndex);
+                	list.dropPasteFile((List<File>)support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor), childIndex);
                 } catch (UnsupportedFlavorException e) {
-                    e.printStackTrace();
+                    GUIMediator.model().sendDebugMessage(e);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    GUIMediator.model().sendDebugMessage(e);
                 }
             }
         } else { //This is a paste
@@ -163,9 +159,9 @@ public class ListTransfertHandler extends TransferHandler{
                                         )
                                 );
                     } catch (UnsupportedFlavorException e) {
-                        e.printStackTrace();
+                        GUIMediator.model().sendDebugMessage(e);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        GUIMediator.model().sendDebugMessage(e);
                     }
                 }else if(transferableFromClipboard.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                     try {
@@ -174,11 +170,11 @@ public class ListTransfertHandler extends TransferHandler{
                             y = list.getSelectedIndex();
                         list.clearSelection();
 
-                        dnDlist.dropPasteFile((List<File>)transferableFromClipboard.getTransferData(DataFlavor.javaFileListFlavor), y);
+                        list.dropPasteFile((List<File>)transferableFromClipboard.getTransferData(DataFlavor.javaFileListFlavor), y);
                     } catch (UnsupportedFlavorException e) {
-                        e.printStackTrace();
+                        GUIMediator.model().sendDebugMessage(e);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        GUIMediator.model().sendDebugMessage(e);
                     }
                 }
 

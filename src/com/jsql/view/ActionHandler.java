@@ -156,8 +156,12 @@ public class ActionHandler {
         
         /* Show/Hide the Menubar with Alt key */
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher(){
+        	@Override
             public boolean dispatchKeyEvent(KeyEvent e) {
-	          	if (e.getKeyCode() == KeyEvent.VK_ALT && e.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)) {
+	          	if (e.isAltDown() && e.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D)) {
+	          		GUIMediator.top().textGET.requestFocusInWindow();
+	                return true;
+	          	}else if (e.getKeyCode() == KeyEvent.VK_ALT && e.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)) {
 	          		menubar.setVisible(!menubar.isVisible());
 	                return true;
 	          	}

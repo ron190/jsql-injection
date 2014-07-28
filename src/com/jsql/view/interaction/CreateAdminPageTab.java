@@ -15,6 +15,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -22,21 +23,24 @@ import java.io.IOException;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
 import javax.swing.JTextPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
+import javax.swing.text.DefaultEditorKit;
 
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.component.RoundScroller;
-import com.jsql.view.component.TabHeader;
+import com.jsql.view.component.JScrollPanePixelBorder;
+import com.jsql.view.tab.TabHeader;
 
 /**
  * Create a new tab for an administration webpage
  */
-public class CreateAdminPageTab implements InteractionCommand{
+public class CreateAdminPageTab implements IInteractionCommand{
     // Url for the administration webpage
     private final String url;
 
@@ -70,15 +74,34 @@ public class CreateAdminPageTab implements InteractionCommand{
         	GUIMediator.model().sendDebugMessage(e);
         }
 
-        JTextPane browser = new JTextPane();
+        final JTextPane browser = new JTextPane();
         browser.setContentType("text/html");
         browser.setEditable( false );
         browser.setText(htmlSource);
 
         final JPopupMenu menu = new JPopupMenu();
+        
         JMenuItem item = new JMenuItem("Copy page URL");
         item.setIcon(GUITools.EMPTY);
+        
+        JMenuItem copyItem = new JMenuItem();
+        copyItem.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
+        copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+        copyItem.setMnemonic('C');
+        copyItem.setText("Copy");
+        copyItem.setIcon(GUITools.EMPTY);
+        
+        JMenuItem itemSelectAll = new JMenuItem("Select All");
+        itemSelectAll.setIcon(GUITools.EMPTY);
+        itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
+        itemSelectAll.setText("Select All");
+        itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+        itemSelectAll.setMnemonic('A');
+        
         menu.add(item);
+        menu.add(new JSeparator());
+        menu.add(copyItem);
+        menu.add(itemSelectAll);
 
         item.addActionListener(new ActionListener() {
             @Override
@@ -89,6 +112,13 @@ public class CreateAdminPageTab implements InteractionCommand{
             }
         });
 
+        itemSelectAll.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent arg0) {
+        		browser.selectAll();
+        	}
+        });
+        
         browser.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
@@ -103,7 +133,7 @@ public class CreateAdminPageTab implements InteractionCommand{
             }
         });
 
-        final RoundScroller scroller = new RoundScroller(browser);
+        final JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1,0,0,0,browser);
         GUIMediator.right().addTab(url.replaceAll(".*/", "")+" ", scroller);
 
         // Focus on the new tab

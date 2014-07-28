@@ -8,28 +8,19 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.dnd.list;
+package com.jsql.view.list.dnd;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
 import java.util.Arrays;
 
 import javax.swing.Action;
-import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
@@ -38,14 +29,12 @@ import javax.swing.TransferHandler;
 
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.component.RoundScroller;
-import com.jsql.view.component.popupmenu.JPopupTextAreaEditable;
 
-public class MouseAction extends MouseAdapter {
+public class MenuAction extends MouseAdapter {
     private DnDList myList;
     private int[] mouseOver;
 
-    public MouseAction(DnDList myList, int[] mouseOver){
+    public MenuAction(DnDList myList, int[] mouseOver){
         this.myList = myList;
         this.mouseOver = mouseOver;
     }
@@ -87,53 +76,7 @@ public class MouseAction extends MouseAdapter {
             importFileDialog.setDialogTitle("Import a list of file paths");
             importFileDialog.setMultiSelectionEnabled(true);
 
-            mnNew.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent arg0) {
-                    JPanel panel = new JPanel(new BorderLayout());
-                    final JPopupTextAreaEditable textarea = new JPopupTextAreaEditable(6, 50);
-                    panel.add(new JLabel("Add new value(s) to the list:"), BorderLayout.NORTH);
-                    panel.add(new RoundScroller(textarea));
-                    
-                    textarea.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mousePressed(MouseEvent e) {
-                            super.mousePressed(e);
-                            textarea.requestFocusInWindow();
-                        }
-                    });
-
-                    int result = JOptionPane.showOptionDialog(myList.getTopLevelAncestor(),
-                            panel,
-                            "Add Value(s)",
-                            JOptionPane.OK_CANCEL_OPTION,
-                            JOptionPane.QUESTION_MESSAGE,
-                            null,
-                            new String[]{"Ok", "Cancel"}, // this is the array
-                            "Cancel");
-
-                    if(!textarea.getText().equals("") && result == JOptionPane.YES_OPTION){
-                        int lastIndex = 0;
-                        if(myList.getSelectedIndex() > 0)
-                            lastIndex = myList.getSelectedIndex();
-
-                        int firstIndex = lastIndex;
-                        for(String newItem: textarea.getText().split("\\n"))
-                            if(!newItem.equals(""))
-                                ((DefaultListModel<ListItem>)myList.getModel()).add(lastIndex++, new ListItem(newItem.replace("\\", "/")));
-
-                        myList.setSelectionInterval(firstIndex, lastIndex-1);
-                        myList.scrollRectToVisible(
-                                myList.getCellBounds(
-                                        myList.getMinSelectionIndex(),
-                                        myList.getMaxSelectionIndex()
-                                        )
-                                );
-
-                        textarea.setText(null);
-                    }
-                }
-            });
+            mnNew.addActionListener(new MenuActionNewValue(myList));
 
             mnImport.addActionListener(new ActionListener() {
                 @Override
@@ -178,50 +121,7 @@ public class MouseAction extends MouseAdapter {
                 }
             });
 
-            mnExport.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent arg0) {
-                    try {
-                        @SuppressWarnings("serial")
-						final JFileChooser importFileDialog = new JFileChooser(GUIMediator.model().pathFile){
-                            @Override
-                            public void approveSelection(){
-                                File file = this.getSelectedFile();
-                                if(getDialogType() == SAVE_DIALOG)
-                                    if(file.exists()){
-                                        int replace = JOptionPane.showConfirmDialog(this,
-                                                file.getName() + " already exists.\nDo you want to replace it?", "Confirm Export",
-                                                JOptionPane.YES_NO_OPTION);
-                                        switch(replace){
-                                            case JOptionPane.YES_OPTION:
-                                                super.approveSelection();
-                                                return;
-                                            case JOptionPane.NO_OPTION: return;
-                                            case JOptionPane.CLOSED_OPTION: return;
-                                            case JOptionPane.CANCEL_OPTION:
-                                                cancelSelection();
-                                                return;
-                                        }
-                                    }else{
-                                        super.approveSelection();
-                                    }
-                            }
-                        };
-                        importFileDialog.setDialogTitle("Export list to a file");
-                        int choice = importFileDialog.showSaveDialog(myList.getTopLevelAncestor());
-                        if (choice != JFileChooser.APPROVE_OPTION) return;
-
-                        PrintStream out = new PrintStream(new FileOutputStream(importFileDialog.getSelectedFile()));
-                        int len = myList.getModel().getSize();
-                        for(int i = 0; i < len; i++)
-                            out.println( myList.getModel().getElementAt(i).toString() );
-                        
-                        out.close();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+            mnExport.addActionListener(new MenuActionExport(myList));
 
             mnRestoreDefault.addActionListener(new ActionListener() {
                 @Override
@@ -261,7 +161,8 @@ public class MouseAction extends MouseAdapter {
         }
     }
 
-    @Override public void mousePressed(MouseEvent e) {
+    @Override 
+    public void mousePressed(MouseEvent e) {
         if ( SwingUtilities.isRightMouseButton(e) ){
             int clickIndex = myList.locationToIndex(e.getPoint());
             boolean containsIndex = false;
@@ -280,7 +181,8 @@ public class MouseAction extends MouseAdapter {
     public void mouseReleased(MouseEvent e) {
         showPopup(e);
     }
-
+    
+    @Override
     public void mouseExited(MouseEvent e) {
         mouseOver[0] = -1;
         myList.repaint();

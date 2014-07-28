@@ -41,6 +41,9 @@ public class ComponentBorder implements Border
 	private int gap = 5;
 	private boolean adjustInsets = true;
 	private Insets borderInsets = new Insets(0, 0, 0, 0);
+	
+	private int addX;
+	private int addY;
 
 	/**
 	 *  Convenience constructor that uses the default edge (Edge.RIGHT) and
@@ -51,6 +54,13 @@ public class ComponentBorder implements Border
 	public ComponentBorder(JComponent component)
 	{
 		this(component,	Edge.RIGHT);
+	}
+
+	public ComponentBorder(JComponent component, int addX, int addY)
+	{
+		this(component,	Edge.RIGHT);
+		this.addX = addX;
+		this.addY = addY;
 	}
 
 	/**
@@ -174,7 +184,7 @@ public class ComponentBorder implements Border
 	{
 		float x2 = (width  - component.getWidth())  * component.getAlignmentX() + x;
 		float y2 = (height - component.getHeight()) * component.getAlignmentY() + y;
-		component.setLocation((int)x2+17, (int)y2);
+		component.setLocation((int)x2+addX, (int)y2+addY);
 	}
 
 	/*

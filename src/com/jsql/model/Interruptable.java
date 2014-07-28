@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.jsql.model;
 
+import com.jsql.view.GUIMediator;
+
 
 /**
  * An action class that allows stop/pause/resume features for each parallelized tasks (mainly for tree actions).
@@ -24,12 +26,6 @@ public abstract class Interruptable implements Runnable {
     
     // Make the action to pause if true, else make it unpause
     private boolean pauseFlag = false;
-    
-    private InjectionModel model;
-
-    public Interruptable(InjectionModel model) {
-        this.model = model;
-    }
 
     /**
      * Thread's states Pause and Stop are processed by this method:
@@ -45,8 +41,7 @@ public abstract class Interruptable implements Runnable {
                 try {
                     this.wait();
                 } catch (InterruptedException e) {
-                    model.sendDebugMessage(e);
-                    model.sendErrorMessage("Current thread was interrupted while waiting.");
+                    GUIMediator.model().sendDebugMessage(e);
                 }
             }
             

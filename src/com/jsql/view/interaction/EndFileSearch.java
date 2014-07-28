@@ -15,7 +15,7 @@ import com.jsql.view.GUIMediator;
 /**
  * End the refreshing of File search button
  */
-public class EndFileSearch implements InteractionCommand{
+public class EndFileSearch implements IInteractionCommand{
     /**
      * @param interactionParams
      */

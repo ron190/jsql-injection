@@ -32,7 +32,7 @@ public class JPopupTextArea extends JTextArea {
     }
 
     public void initialize(){
-        this.setComponentPopupMenu(new JPopupTextComponentMenu(this));
+        this.setComponentPopupMenu(new JPopupTextMenu(this));
         
         this.addMouseListener(new MouseAdapter() {
             @Override

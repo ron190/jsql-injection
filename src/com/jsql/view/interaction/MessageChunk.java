@@ -15,7 +15,7 @@ import com.jsql.view.GUIMediator;
 /**
  * Append text to the tab Chunk
  */
-public class MessageChunk implements InteractionCommand{
+public class MessageChunk implements IInteractionCommand{
     // Text to append to the Chunk log area
     private String text;
 

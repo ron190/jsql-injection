@@ -34,16 +34,15 @@ import javax.swing.text.StyledDocument;
 import sun.swing.SwingUtilities2;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.view.GUIMediator;
 
 /**
  * A Terminal built from scratch.
  */
 @SuppressWarnings("serial")
 public abstract class Terminal extends JTextPane{
-
-    protected InjectionModel model;
     
-    public final boolean[] isEdited = {false};
+    private final boolean[] isEdited = {false};
 
     private ArrayList<String> cmds = new ArrayList<String>();
     private int cmdsIndex = 0;
@@ -58,16 +57,14 @@ public abstract class Terminal extends JTextPane{
         return getUI().getPreferredSize(this).width <= getParent().getSize().width;
     }
     
-    public Terminal(InjectionModel model, UUID terminalID, String wbhPath, String shellLabel){
-        this.model = model;
-        
+    public Terminal(UUID terminalID, String wbhPath, String shellLabel){
         this.shellLabel= shellLabel; 
         
         URL u = null;
         try {
             u = new URL(wbhPath);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            GUIMediator.model().sendDebugMessage(e);
         }
         host = u.getHost();
         
@@ -86,7 +83,7 @@ public abstract class Terminal extends JTextPane{
         this.setHighlighter(null);
 
         this.addMouseListener(new EmptyFocus());
-        this.addKeyListener(new TerminalKey(this.model, terminalID, wbhPath));
+        this.addKeyListener(new TerminalKey(GUIMediator.model(), terminalID, wbhPath));
     }
     
     String[] args = null;
@@ -154,7 +151,7 @@ public abstract class Terminal extends JTextPane{
                             Terminal.this.action(cmd[0], terminalID, wbhPath, args);
                         }else{
                             Terminal.this.reset();
-                        };
+                        }
                     }
                 });
             
@@ -172,7 +169,7 @@ public abstract class Terminal extends JTextPane{
                     try {
                         Terminal.this.getDocument().remove(root.getElement(linenum).getStartOffset() + prompt.length(), cmd[0].length()-1);
                     } catch (BadLocationException e) {
-                        e.printStackTrace();
+                        GUIMediator.model().sendDebugMessage(e);
                     }
                     
                     Terminal.this.append(cmds.get(cmdsIndex));
@@ -190,7 +187,7 @@ public abstract class Terminal extends JTextPane{
                     try {
                         Terminal.this.getDocument().remove(root.getElement(linenum).getStartOffset() + prompt.length(), cmd[0].length()-1);
                     } catch (BadLocationException e) {
-                        e.printStackTrace();
+                        GUIMediator.model().sendDebugMessage(e);
                     }
                     
                     Terminal.this.append(cmds.get(cmdsIndex));
@@ -306,7 +303,7 @@ public abstract class Terminal extends JTextPane{
             Document doc = Terminal.this.getDocument();
             doc.insertString(doc.getLength(), string, null);
         } catch(BadLocationException e) {
-            this.model.sendDebugMessage(e);
+        	GUIMediator.model().sendDebugMessage(e);
         }
     }
     public void appendStyle(String string) {
@@ -314,7 +311,7 @@ public abstract class Terminal extends JTextPane{
             Document doc = Terminal.this.getDocument();
             doc.insertString(doc.getLength(), string, style);
         } catch(BadLocationException e) {
-            this.model.sendDebugMessage(e);
+        	GUIMediator.model().sendDebugMessage(e);
         }
     }
 
@@ -372,7 +369,7 @@ public abstract class Terminal extends JTextPane{
             if(measurePrompt)
                 prompt += string;
         } catch (BadLocationException e) {
-            this.model.sendDebugMessage(e);
+        	GUIMediator.model().sendDebugMessage(e);
         }
     }
     
@@ -395,7 +392,14 @@ public abstract class Terminal extends JTextPane{
     /**
      * Cancel every mouse movement processing like drag/drop.
      */
-    @Override public void addMouseMotionListener(MouseMotionListener l){}
+    @Override synchronized public void addMouseMotionListener(MouseMotionListener l){}
     
+    /**
+     * Run when cmd is validated
+     * @param cmd Command to execute
+     * @param terminalID Unique ID for terminal instance
+     * @param wbhPath URL of shell
+     * @param arg Additional parameters (User and password for SQLShell)
+     */
     abstract void action(String cmd, UUID terminalID, String wbhPath, String... arg);
 }

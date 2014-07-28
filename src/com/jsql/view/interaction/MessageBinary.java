@@ -15,7 +15,7 @@ import com.jsql.view.GUIMediator;
 /**
  * Append text to the tab Binary
  */
-public class MessageBinary implements InteractionCommand{
+public class MessageBinary implements IInteractionCommand{
     // Text to append to the Binary log area
     private String text;
 

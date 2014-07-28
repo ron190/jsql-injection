@@ -18,6 +18,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+import com.jsql.view.GUIMediator;
+
 /**
  * An icon composed of a main icon and
  * another one displayed in the nottom right corner.
@@ -42,7 +44,7 @@ public class IconOverlap extends ImageIcon {
             BufferedImage im2 = ImageIO.read(IconOverlap.class.getResource(overlap));
             g.drawImage(im2, (this.getIconWidth()-im2.getWidth())/2, (this.getIconHeight()-im2.getHeight())/2, null);
         } catch (IOException e) {
-            e.printStackTrace();
+            GUIMediator.model().sendDebugMessage(e);
         }
     }
 }

@@ -11,7 +11,6 @@
 package com.jsql.view.interaction;
 
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 
 import com.jsql.model.bean.ElementDatabase;
 import com.jsql.view.GUIMediator;
@@ -20,7 +19,7 @@ import com.jsql.view.tree.NodeModel;
 /**
  * Stop the refreshing of progress bar
  */
-public class EndProgress implements InteractionCommand{
+public class EndProgress implements IInteractionCommand{
     // The element in the database tree for which the progress ends
     private ElementDatabase dataElementDatabase;
 
@@ -49,6 +48,6 @@ public class EndProgress implements InteractionCommand{
         progressingTreeNodeModel.childUpgradeCount = 0;
 
         // Update the node
-        treeModel.nodeChanged((TreeNode) GUIMediator.gui().getNode(dataElementDatabase)); // update progressbar
+        treeModel.nodeChanged(GUIMediator.gui().getNode(dataElementDatabase)); // update progressbar
     }
 }

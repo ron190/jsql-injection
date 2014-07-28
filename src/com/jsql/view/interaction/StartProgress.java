@@ -19,7 +19,7 @@ import com.jsql.view.tree.NodeModel;
 /**
  * Start refreshing the progress bar of an element in the database tree
  */
-public class StartProgress implements InteractionCommand{
+public class StartProgress implements IInteractionCommand{
     // The element in the database tree for which the progress starts
     private ElementDatabase dataElementDatabase;
 
@@ -44,7 +44,6 @@ public class StartProgress implements InteractionCommand{
         // Mark the node model as 'display progress bar'
         progressingTreeNodeModel.hasProgress = true;
 
-        //        treeModel.nodeStructureChanged((TreeNode) treeNodeModels.get(dataElementDatabase)); // update progressbar
         // Update the node
         treeModel.nodeChanged(GUIMediator.gui().getNode(dataElementDatabase));
     }

@@ -24,7 +24,7 @@ import com.jsql.view.tree.NodeModelTable;
 /**
  * Add the tables to the corresponding database
  */
-public class AddTables implements InteractionCommand{
+public class AddTables implements IInteractionCommand{
     // Tables retreived by the view
     private List<Table> tables;
 
@@ -49,7 +49,6 @@ public class AddTables implements InteractionCommand{
         // Loop into the list of tables
         for(Table table: tables){
             // Create a node model with the table element
-//            NodeModel<Table> newTreeNodeModel = new NodeModel<Table>(table);
             NodeModel newTreeNodeModel = new NodeModelTable(table);
             // Create the node
             DefaultMutableTreeNode newNode = new DefaultMutableTreeNode( newTreeNodeModel );

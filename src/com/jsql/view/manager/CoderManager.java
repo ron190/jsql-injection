@@ -44,8 +44,8 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.jsql.tool.StringTool;
 import com.jsql.view.GUITools;
+import com.jsql.view.component.JScrollPanePixelBorder;
 import com.jsql.view.component.JSplitPaneWithZeroSizeDivider;
-import com.jsql.view.component.RoundScroller;
 import com.jsql.view.component.popupmenu.JPopupTextArea;
 import com.jsql.view.component.popupmenu.JPopupTextAreaEditable;
 
@@ -69,6 +69,7 @@ public class CoderManager extends JPanel{
 
         final JPanel middleLine = new JPanel();
         middleLine.setLayout( new BoxLayout(middleLine, BoxLayout.X_AXIS) );
+        middleLine.setBorder(BorderFactory.createEmptyBorder(1, 0, 1, 1));
 
         encoding = new JComboBox<String>(new String[]{
                 "base64 < encode",
@@ -91,23 +92,23 @@ public class CoderManager extends JPanel{
                 "sha-512 < hash",
                 "mysql < hash"
         });
-        encoding.setMaximumSize(new Dimension(200,22));
+
         encoding.setSelectedItem("base64 > decode");
 
         JButton run = new JButton("Run", new ImageIcon(getClass().getResource("/com/jsql/view/images/tick.png")));
         run.setBorder(GUITools.BLU_ROUND_BORDER);
 
         middleLine.add(encoding);
-        middleLine.add(Box.createHorizontalGlue());
+        middleLine.add(Box.createRigidArea(new Dimension(1,0)));
         middleLine.add(run);
 
-        topMixed.add(new RoundScroller(entry), BorderLayout.CENTER);
+        topMixed.add(new JScrollPanePixelBorder(1,1,1,0,entry), BorderLayout.CENTER);
         topMixed.add(middleLine, BorderLayout.SOUTH);
 
         JPanel bottom = new JPanel(new BorderLayout());
         result = new JPopupTextArea();
         result.setLineWrap(true);
-        bottom.add(new RoundScroller(result), BorderLayout.CENTER);
+        bottom.add(new JScrollPanePixelBorder(1,1,0,0,result), BorderLayout.CENTER);
 
         run.addActionListener(new ActionCode());
 
@@ -128,7 +129,7 @@ public class CoderManager extends JPanel{
             if(Arrays.asList(new String[]{"md2","md5","sha-1","sha-256","sha-384","sha-512"}).contains(encoding.getSelectedItem().toString().replace(" < hash", ""))){
                 MessageDigest md = null;
                 try {
-                    md = MessageDigest.getInstance((String) encoding.getSelectedItem().toString().replace(" < hash", ""));
+                    md = MessageDigest.getInstance(encoding.getSelectedItem().toString().replace(" < hash", ""));
                 } catch (NoSuchAlgorithmException e1) {
                     result.setText("No such algorithm for hashes exists");
                 }

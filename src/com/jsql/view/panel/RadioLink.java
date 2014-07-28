@@ -34,7 +34,7 @@ public abstract class RadioLink extends JLabel{
 				if(RadioLink.this.isActivable() && SwingUtilities.isLeftMouseButton(e)){
 					for(JLabel r: RadioLink.this.getGroup())
 						if(((JLabel) e.getComponent()) != r)
-							r.setFont(GUITools.myFont);
+							r.setFont(GUITools.MYFONT);
 						else
 							RadioLink.this.action();
 							

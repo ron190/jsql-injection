@@ -16,7 +16,7 @@ import com.jsql.view.GUITools;
 /**
  * Mark the injection as invulnerable to a normal injection
  */
-public class MarkNormalStrategy implements InteractionCommand{
+public class MarkNormalStrategy implements IInteractionCommand{
     /**
      * @param interactionParams
      */
@@ -27,6 +27,6 @@ public class MarkNormalStrategy implements InteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        GUITools.setUnderlined(GUIMediator.gui().getStatusPanel().labelNormal);
+        GUITools.setUnderlined(GUIMediator.status().labelNormal);
     }
 }

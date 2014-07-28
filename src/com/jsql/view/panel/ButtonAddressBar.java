@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import com.jsql.view.GUITools;
+
 @SuppressWarnings("serial")
 public class ButtonAddressBar extends JButton{
 	public ButtonAddressBar() {
@@ -42,7 +44,7 @@ public class ButtonAddressBar extends JButton{
 	public void setInjectionStopping(){
 		state = "Stopping...";
 		this.setRolloverEnabled(false); // turn on before rollovers work
-		this.setIcon(new ImageIcon(this.getClass().getResource("/com/jsql/view/images/spinner.gif")));
+		this.setIcon(GUITools.LOADER_GIF);
 		this.setEnabled(false);
 	}
 }

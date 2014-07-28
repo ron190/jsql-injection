@@ -2,27 +2,27 @@ package com.jsql.model.pattern.strategy;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.InjectionModel;
 import com.jsql.model.Interruptable;
 import com.jsql.model.Stoppable;
 import com.jsql.model.bean.Request;
-import com.jsql.model.blind.TimeInjection;
+import com.jsql.model.blind.ConcreteTimeInjection;
+import com.jsql.view.GUIMediator;
 
 public class TimeStrategy implements IInjectionStrategy {
-	private InjectionModel model;
-	private TimeInjection time;
-	private boolean isApplicable = false;
 	
-	public TimeStrategy(InjectionModel model){
-		this.model = model;
-	}
+	private ConcreteTimeInjection time;
+//	private TimeInjection time;
+	
+	private boolean isApplicable = false;
 	
 	@Override
 	public void checkApplicability() throws PreparationException {
-		model.sendMessage("Time based test...");
+		GUIMediator.model().sendMessage("Time based test...");
 		
-		time = new TimeInjection(model);
-		isApplicable = time.isTimeInjectable();
+		time = new ConcreteTimeInjection();
+//		time = new TimeInjection();
+		isApplicable = time.isInjectable();
+//		isApplicable = time.isTimeInjectable();
 		
 		if(isApplicable)
 			activate();
@@ -39,14 +39,14 @@ public class TimeStrategy implements IInjectionStrategy {
 	public void activate() {
 		Request request = new Request();
         request.setMessage("MarkTimebasedVulnerable");
-        model.interact(request);
+        GUIMediator.model().interact(request);
 	}
 
 	@Override
 	public void deactivate() {
         Request request = new Request();
         request.setMessage("MarkTimebasedInvulnerable");
-        model.interact(request);
+        GUIMediator.model().interact(request);
 	}
 
 	@Override
@@ -66,16 +66,16 @@ public class TimeStrategy implements IInjectionStrategy {
 
 	@Override
 	public void applyStrategy() {
-		model.sendMessage("Using timebased injection...");
-		model.applyStrategy(this);
+		GUIMediator.model().sendMessage("Using timebased injection...");
+		GUIMediator.model().applyStrategy(this);
 		
         Request request = new Request();
         request.setMessage("MessageBinary");
-        request.setParameters("Each request will ask \"Is the bit is true?\", and a true response must not exceed 5 seconds.\n");
-        model.interact(request);
+        request.setParameters("Asking server \"Is this bit true?\", if delay does not exceed 5 seconds then response is true.\n");
+        GUIMediator.model().interact(request);
 		
 		Request request2 = new Request();
         request2.setMessage("MarkTimeStrategy");
-        model.interact(request2);
+        GUIMediator.model().interact(request2);
 	}
 }

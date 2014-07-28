@@ -138,12 +138,9 @@ public class Prefs extends JDialog{
                 GUIMediator.model().proxyPort = textProxyPort.getText();
 
                 Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-                String ID1 = "isProxyfied";
-                String ID2 = "proxyAddress";
-                String ID3 = "proxyPort";
-                prefs.putBoolean(ID1, GUIMediator.model().isProxyfied);
-                prefs.put(ID2, GUIMediator.model().proxyAddress);
-                prefs.put(ID3, GUIMediator.model().proxyPort);
+                prefs.putBoolean("isProxyfied", GUIMediator.model().isProxyfied);
+                prefs.put("proxyAddress", GUIMediator.model().proxyAddress);
+                prefs.put("proxyPort", GUIMediator.model().proxyPort);
 
                 if(GUIMediator.model().isProxyfied){
                     System.setProperty("http.proxyHost", GUIMediator.model().proxyAddress);

@@ -42,10 +42,10 @@ public class NodeModelEmpty extends NodeModel{
             boolean hasFocus){
     	DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
     	JPanel emptyPanel = new JPanel(new BorderLayout());
-        JLabel text = new JLabel(((DefaultMutableTreeNode)currentNode).getUserObject().toString());
+        JLabel text = new JLabel(currentNode.getUserObject().toString());
         emptyPanel.add(text);
         text.setBorder(new RoundBorder(4,1,false));
-        if( (currentNode != null) && (currentNode instanceof DefaultMutableTreeNode)){
+        if( currentNode != null ){
             if( selected ){
                 emptyPanel.setBackground( GUITools.SELECTION_BACKGROUND );
                 text.setBorder(new RoundBorder(4,1,true));
@@ -62,5 +62,6 @@ public class NodeModelEmpty extends NodeModel{
 	@Override Icon getIcon(boolean leaf) {return null;}
 	@Override void runAction() {}
 	@Override void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {}
-	void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j){}
+	@Override void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j){}
+	@Override boolean verifyShowPopup() { return false;	}
 }

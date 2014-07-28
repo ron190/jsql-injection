@@ -12,17 +12,19 @@ package com.jsql.view.interaction;
 
 import java.util.UUID;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
+import javax.swing.border.Border;
 
 import com.jsql.view.GUIMediator;
-import com.jsql.view.component.TabHeader;
+import com.jsql.view.tab.TabHeader;
 import com.jsql.view.terminal.WebshellTerminal;
 
 /**
  * Create a new tab for the terminal
  */
-public class CreateShellTab implements InteractionCommand{
+public class CreateShellTab implements IInteractionCommand{
     // Full path of the shell file on remote host
     private String path;
 
@@ -42,10 +44,14 @@ public class CreateShellTab implements InteractionCommand{
      */
     public void execute(){
         UUID terminalID = UUID.randomUUID();
-        WebshellTerminal terminal = new WebshellTerminal(GUIMediator.model(), terminalID, url);
+        WebshellTerminal terminal = new WebshellTerminal(terminalID, url);
         GUIMediator.gui().consoles.put(terminalID, terminal);
 
         JScrollPane scroller = new JScrollPane(terminal);
+        Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+        scroller.setViewportBorder(border);
+        scroller.setBorder(border);
+
         GUIMediator.right().addTab("Web shell ", scroller);
 
         // Focus on the new tab

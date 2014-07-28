@@ -83,7 +83,7 @@ public class InjectionController {
         // Indirect class, allows to send itself to his own body
         final Interruptable[] interruptable = new Interruptable[1];
         
-        interruptable[0] = new Interruptable(GUIMediator.model()){
+        interruptable[0] = new Interruptable(){
             @Override
             public void action() {
                 
@@ -115,7 +115,7 @@ public class InjectionController {
         // Indirect class, allows to send itself to his own body
         final Interruptable[] interruptable = new Interruptable[1];
         
-        interruptable[0] = new Interruptable(GUIMediator.model()){
+        interruptable[0] = new Interruptable(){
             @Override
             public void action() {
                 
@@ -145,7 +145,7 @@ public class InjectionController {
         // Indirect class, allows to send itself to his own body
         final Interruptable[] interruptable = new Interruptable[1];
         
-        interruptable[0] = new Interruptable(GUIMediator.model()){
+        interruptable[0] = new Interruptable(){
             @Override
             public void action() {
                 

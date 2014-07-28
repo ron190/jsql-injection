@@ -19,6 +19,7 @@ import java.util.zip.Checksum;
 import javax.swing.JOptionPane;
 
 import com.jsql.tool.StringTool;
+import com.jsql.view.GUIMediator;
 
 public class HashBruter extends Bruter {
     /*
@@ -85,8 +86,8 @@ public class HashBruter extends Bruter {
                 while (paused) {
                     try {
                         Thread.sleep(500);
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
+                    } catch (InterruptedException e) {
+                        GUIMediator.model().sendDebugMessage(e);
                     }
                 }
                 generateAllPossibleCombinations("", size);
@@ -99,8 +100,8 @@ public class HashBruter extends Bruter {
         while (paused) {
             try {
                 Thread.sleep(500);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
+            } catch (InterruptedException e) {
+                GUIMediator.model().sendDebugMessage(e);
             }
         }
         if (found == false || done == false) {

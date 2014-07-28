@@ -43,7 +43,7 @@ public class NodeModelTable extends NodeModel{
 		if(leaf)
 			return new ImageIcon(getClass().getResource("/com/jsql/view/images/tableGo.png"));
 		else
-			return GUITools.TABLE;
+			return GUITools.TABLE_ICON;
 	}
 
 	@Override
@@ -88,44 +88,46 @@ public class NodeModelTable extends NodeModel{
 			tablePopupMenu.add(mnUncheckAll);
 			tablePopupMenu.add(new JSeparator());
 		}
-
-		mnCheckAll.addActionListener(new ActionListener() {
+		
+		class CheckUncheck implements ActionListener {
+			boolean check;
+			
+			CheckUncheck(boolean check){
+				this.check = check;
+			}
+			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
-
+				
 				int tableChildCount = treeModel.getChildCount(currentTableNode);
 				for(int i=0; i < tableChildCount ;i++) {
 					DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(currentTableNode, i);
 					if( currentChild.getUserObject() instanceof NodeModel ){
 						NodeModel columnTreeNodeModel = (NodeModel) currentChild.getUserObject();
-						columnTreeNodeModel.isChecked = true;
-						currentTableModel.hasChildChecked = true;
+						columnTreeNodeModel.isChecked = check;
+						currentTableModel.hasChildChecked = check;
 					}
 				}
-
+				
 				treeModel.nodeChanged(currentTableNode);
 			}
-		});
-
-		mnUncheckAll.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
-
-				int tableChildCount = treeModel.getChildCount(currentTableNode);
-				for(int i=0; i < tableChildCount ;i++) {
-					DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(currentTableNode, i);
-					if( currentChild.getUserObject() instanceof NodeModel ){
-						NodeModel columnTreeNodeModel = (NodeModel) currentChild.getUserObject();
-						columnTreeNodeModel.isChecked = false;
-						currentTableModel.hasChildChecked = false;
-					}
-				}
-
-				treeModel.nodeChanged(currentTableNode);
+		}
+		
+		class CheckAll extends CheckUncheck{
+			CheckAll() {
+				super(true);
 			}
-		});
+		}
+		
+		class UncheckAll extends CheckUncheck{
+			UncheckAll() {
+				super(false);
+			}
+		}
+
+		mnCheckAll.addActionListener(new CheckAll());
+		mnUncheckAll.addActionListener(new UncheckAll());
 
 		mnCheckAll.setIcon(GUITools.EMPTY);
 		mnUncheckAll.setIcon(GUITools.EMPTY);
@@ -133,5 +135,9 @@ public class NodeModelTable extends NodeModel{
 		tablePopupMenu.add(mnCheckAll);
 		tablePopupMenu.add(mnUncheckAll);
 		tablePopupMenu.add(new JSeparator());
+	}
+	
+	@Override boolean verifyShowPopup() { 
+		return this.hasBeenSearched || !this.hasBeenSearched && this.isRunning; 
 	}
 }

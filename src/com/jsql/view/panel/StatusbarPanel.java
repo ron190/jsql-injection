@@ -54,7 +54,7 @@ public class StatusbarPanel extends JPanel{
         labelTimeBased = new RadioLinkStatusbar("TimeBased");
     	
         this.setLayout( new BoxLayout(this, BoxLayout.LINE_AXIS) );
-        this.setBorder(BorderFactory.createEmptyBorder(0, 5, 2, 5));
+        this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, GUITools.COMPONENT_BORDER),BorderFactory.createEmptyBorder(0, 5, 2, 5)));
 
         this.reset();
 
@@ -156,10 +156,10 @@ public class StatusbarPanel extends JPanel{
         labelBlind.setIcon(GUITools.SQUARE_GREY);
         labelTimeBased.setIcon(GUITools.SQUARE_GREY);
         
-        labelNormal.setFont(GUITools.myFont);
-		labelErrorBased.setFont(GUITools.myFont);
-		labelBlind.setFont(GUITools.myFont);
-		labelTimeBased.setFont(GUITools.myFont);
+        labelNormal.setFont(GUITools.MYFONT);
+		labelErrorBased.setFont(GUITools.MYFONT);
+		labelBlind.setFont(GUITools.MYFONT);
+		labelTimeBased.setFont(GUITools.MYFONT);
     }
 
     public void setInfos(String version, String database, String user, String authenticatedUser){

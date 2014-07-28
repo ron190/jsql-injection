@@ -16,7 +16,7 @@ import com.jsql.view.GUITools;
 /**
  * Mark the injection as using a user profile invulnerable to file I/O
  */
-public class MarkFileSystemInvulnerable implements InteractionCommand{
+public class MarkFileSystemInvulnerable implements IInteractionCommand{
     /**
      * @param interactionParams
      */

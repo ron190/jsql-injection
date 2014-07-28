@@ -15,7 +15,7 @@ import com.jsql.view.GUIMediator;
 /**
  * Update the database general information in status bar
  */
-public class MessageInfo implements InteractionCommand{
+public class MessageInfo implements IInteractionCommand{
     /**
      * @param nullParam
      */
@@ -26,10 +26,11 @@ public class MessageInfo implements InteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-    	GUIMediator.gui().getStatusPanel().setInfos(
-    			GUIMediator.model().versionDB, 
-    			GUIMediator.model().currentDB, 
-    			GUIMediator.model().currentUser, 
-    			GUIMediator.model().authenticatedUser);
+    	GUIMediator.status().setInfos(
+			GUIMediator.model().versionDB, 
+			GUIMediator.model().currentDB, 
+			GUIMediator.model().currentUser, 
+			GUIMediator.model().authenticatedUser
+		);
     }
 }

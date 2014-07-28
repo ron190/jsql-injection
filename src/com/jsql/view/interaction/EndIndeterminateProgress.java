@@ -11,7 +11,6 @@
 package com.jsql.view.interaction;
 
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeNode;
 
 import com.jsql.model.bean.ElementDatabase;
 import com.jsql.view.GUIMediator;
@@ -20,7 +19,7 @@ import com.jsql.view.tree.NodeModel;
 /**
  * Stop refreshing the progress bar of a search for which the progression is not tracked (like colum search)
  */
-public class EndIndeterminateProgress implements InteractionCommand{
+public class EndIndeterminateProgress implements IInteractionCommand{
     // The element in the database tree for which the progress ends
     private ElementDatabase dataElementDatabase;
 
@@ -47,6 +46,6 @@ public class EndIndeterminateProgress implements InteractionCommand{
         progressingTreeNodeModel.isRunning = false;
 
         // Update the node
-        treeModel.nodeChanged((TreeNode) GUIMediator.gui().getNode(dataElementDatabase));
+        treeModel.nodeChanged(GUIMediator.gui().getNode(dataElementDatabase));
     }
 }

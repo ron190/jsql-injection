@@ -25,13 +25,13 @@ import javax.swing.text.JTextComponent;
 import com.jsql.view.GUITools;
 
 @SuppressWarnings("serial")
-public class JPopupTextComponentMenu extends JPopupMenu{
+public class JPopupTextMenu extends JPopupMenu{
 	
-    public JPopupTextComponentMenu(JTextComponent cmp){
+    public JPopupTextMenu(JTextComponent cmp){
         this(cmp, false);
     }
     
-    public JPopupTextComponentMenu(JTextComponent newComponent, boolean isTextField){
+    public JPopupTextMenu(JTextComponent newComponent, boolean isTextField){
         JTextComponent component = newComponent;
         
         JMenuItem copyItem = new JMenuItem();
@@ -76,7 +76,7 @@ public class JPopupTextComponentMenu extends JPopupMenu{
         this.addPopupMenuListener(new PopupMenuListener() {
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                JPopupTextComponentMenu.this.setLocation(MouseInfo.getPointerInfo().getLocation());
+                JPopupTextMenu.this.setLocation(MouseInfo.getPointerInfo().getLocation());
             }
             @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
             @Override public void popupMenuCanceled(PopupMenuEvent e) {}

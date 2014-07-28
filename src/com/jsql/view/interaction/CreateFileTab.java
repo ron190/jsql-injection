@@ -13,14 +13,14 @@ package com.jsql.view.interaction;
 import javax.swing.ImageIcon;
 
 import com.jsql.view.GUIMediator;
-import com.jsql.view.component.RoundScroller;
-import com.jsql.view.component.TabHeader;
+import com.jsql.view.component.JScrollPanePixelBorder;
 import com.jsql.view.component.popupmenu.JPopupTextArea;
+import com.jsql.view.tab.TabHeader;
 
 /**
  * Create a new tab for the file
  */
-public class CreateFileTab implements InteractionCommand{
+public class CreateFileTab implements IInteractionCommand{
     // Name of the file
     private String name;
 
@@ -45,7 +45,7 @@ public class CreateFileTab implements InteractionCommand{
     public void execute(){
         JPopupTextArea fileText = new JPopupTextArea();
         fileText.setText(content);
-        RoundScroller scroller = new RoundScroller(fileText);
+        JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1,0,0,0,fileText);
 
         fileText.setCaretPosition(0);
         GUIMediator.right().addTab(name+" ", scroller);

@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.panel;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +22,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicArrowButton;
 
 import com.jsql.view.GUIMediator;
@@ -51,7 +51,7 @@ public class TopPanel extends JPanel{
     
     private String sendMethod = "GET";
 
-	public JLabel loader = new JLabel(GUITools.SPINNER);
+	public JLabel loader = new JLabel(GUITools.LOADER_GIF);
 
     // Connection button
     public ButtonAddressBar submitAddressBar = new ButtonAddressBar();
@@ -69,7 +69,7 @@ public class TopPanel extends JPanel{
         JPanel panel = new JPanel();
         GroupLayout layout = new GroupLayout(panel);
         panel.setLayout(layout);
-        panel.setBorder(BorderFactory.createEmptyBorder(7,5,5,0));
+        panel.setBorder(BorderFactory.createEmptyBorder(2,2,2,0));
         this.add(panel);
 
         radioGET.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 3));
@@ -103,17 +103,17 @@ public class TopPanel extends JPanel{
         radioHeader.setToolTipText("Inject using Header parameters");
 
         textGET.setBorder(BorderFactory.createCompoundBorder(
-        		BorderFactory.createMatteBorder(2,2,4,0,UIManager.getColor ( "Panel.background" )),
+        		BorderFactory.createMatteBorder(4, 2, 3, 0, GUITools.DEFAULT_BACKGROUND),
                 new RoundBorder(22,3,true)));
 
         textPOST.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1,2,1,0,UIManager.getColor ( "Panel.background" )),
+                BorderFactory.createMatteBorder(1, 2, 1, 0, GUITools.DEFAULT_BACKGROUND),
                 GUITools.BLU_ROUND_BORDER));
         textCookie.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1,2,1,0,UIManager.getColor ( "Panel.background" )),
+                BorderFactory.createMatteBorder(1, 2, 1, 0, GUITools.DEFAULT_BACKGROUND),
                 GUITools.BLU_ROUND_BORDER));
         textHeader.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1,2,4,0,UIManager.getColor ( "Panel.background" )),
+                BorderFactory.createMatteBorder(1, 2, 3, 0, GUITools.DEFAULT_BACKGROUND),
                 GUITools.BLU_ROUND_BORDER));
         
         textGET.addActionListener(new ActionStart());
@@ -123,10 +123,11 @@ public class TopPanel extends JPanel{
         
         submitAddressBar.setToolTipText("<html>Start injection of the address in the Location Bar</html>");
         submitAddressBar.addActionListener(new ActionStart());
-        new ComponentBorder( submitAddressBar ).install( textGET );
+        new ComponentBorder( submitAddressBar, 17, 0 ).install( textGET );
         
         loader.setVisible(false);
-        new ComponentBorder( loader ).install( textGET );
+        new ComponentBorder( loader, 17, 1 ).install( textGET );
+        loader.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
         
         // Add pixels to the right to compensate width when strategy is selected 
         radioHeader.setPreferredSize(new Dimension(radioHeader.getPreferredSize().width+3,radioHeader.getPreferredSize().height));

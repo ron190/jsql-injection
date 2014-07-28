@@ -19,7 +19,7 @@ import com.jsql.view.tree.NodeModel;
 /**
  * Refresh the progress bar of an element in the database tree
  */
-public class UpdateProgress implements InteractionCommand{
+public class UpdateProgress implements IInteractionCommand{
     // The element in the database tree to refresh
     private ElementDatabase dataElementDatabase;
 

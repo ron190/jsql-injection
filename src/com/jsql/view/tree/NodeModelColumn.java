@@ -39,7 +39,7 @@ public class NodeModelColumn extends NodeModel{
             boolean selected, boolean expanded, boolean leaf, int row,
             boolean hasFocus){
     	JCheckBox checkbox = new JCheckBox(this.toString(), this.isChecked);
-        checkbox.setFont( new Font(checkbox.getFont().getName(),Font.PLAIN|Font.ITALIC,checkbox.getFont().getSize()) );
+        checkbox.setFont( new Font(checkbox.getFont().getName(), Font.PLAIN|Font.ITALIC, checkbox.getFont().getSize()) );
         checkbox.setBackground(Color.WHITE);
         return checkbox;
     }
@@ -48,4 +48,5 @@ public class NodeModelColumn extends NodeModel{
 	@Override void runAction() {}
 	@Override void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {}
 	@Override void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j){}
+	@Override boolean verifyShowPopup() { return false; }
 }

@@ -2,30 +2,26 @@ package com.jsql.model.pattern.strategy;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.InjectionModel;
 import com.jsql.model.Interruptable;
 import com.jsql.model.Stoppable;
 import com.jsql.model.bean.Request;
+import com.jsql.view.GUIMediator;
 
 public class NormalStrategy implements IInjectionStrategy {
-	private InjectionModel model;
+
 	private boolean isApplicable = false;
 
 	@Override
 	public void checkApplicability() throws PreparationException {
-		model.sendMessage("Normal test...");
-		model.initialQuery = model.new Stoppable_getInitialQuery(model).begin();
+		GUIMediator.model().sendMessage("Normal test...");
+		GUIMediator.model().initialQuery = GUIMediator.model().new Stoppable_getInitialQuery().begin();
 
-		isApplicable = !model.initialQuery.equals("");
+		isApplicable = !GUIMediator.model().initialQuery.equals("");
 		
 		if(isApplicable)
 			activate();
 		else
 			deactivate();
-	}
-	
-	public NormalStrategy(InjectionModel model){
-		this.model = model;
 	}
 
 	@Override
@@ -37,19 +33,19 @@ public class NormalStrategy implements IInjectionStrategy {
 	public void activate() {
 		Request request = new Request();
         request.setMessage("MarkNormalVulnerable");
-        model.interact(request);
+        GUIMediator.model().interact(request);
 	}
 
 	@Override
 	public void deactivate() {
         Request request = new Request();
         request.setMessage("MarkNormalInvulnerable");
-        model.interact(request);
+        GUIMediator.model().interact(request);
 	}
 
 	@Override
 	public String inject(String sqlQuery, String startPosition, Interruptable interruptable, Stoppable stoppable) throws StoppableException {
-		return model.inject(
+		return GUIMediator.model().inject(
                 "select+" +
 	                "concat(" +
 		                "0x53514c69," +
@@ -66,11 +62,11 @@ public class NormalStrategy implements IInjectionStrategy {
 
 	@Override
 	public void applyStrategy() {
-		model.sendMessage("Using normal injection...");
-		model.applyStrategy(this);
+		GUIMediator.model().sendMessage("Using normal injection...");
+		GUIMediator.model().applyStrategy(this);
 		
 		Request request = new Request();
         request.setMessage("MarkNormalStrategy");
-        model.interact(request);
+        GUIMediator.model().interact(request);
 	}
 }

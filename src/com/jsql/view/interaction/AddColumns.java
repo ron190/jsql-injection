@@ -24,7 +24,7 @@ import com.jsql.view.tree.NodeModelColumn;
 /**
  * Add the columns to corresponding table
  */
-public class AddColumns implements InteractionCommand{
+public class AddColumns implements IInteractionCommand{
     // Columns retreived by the view
     private List<Column> columns;
 
@@ -50,7 +50,6 @@ public class AddColumns implements InteractionCommand{
         // Loop into the list of columns
         for(Column column: columns){
             // Create a node model with the column element
-//            NodeModel<Column> newTreeNodeModel = new NodeModel<Column>(column);
             NodeModel newTreeNodeModel = new NodeModelColumn(column);
 
             // Create the node

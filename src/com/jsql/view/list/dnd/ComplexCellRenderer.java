@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.dnd.list;
+package com.jsql.view.list.dnd;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
@@ -27,15 +27,13 @@ import javax.swing.border.LineBorder;
 import com.jsql.view.GUITools;
 
 public class ComplexCellRenderer implements ListCellRenderer<ListItem> {
-    JList<ListItem> myList;
     int[] mouseOver;
     
-    public ComplexCellRenderer(JList<ListItem> myList, int[] mouseOver){
-        this.myList = myList;
+    public ComplexCellRenderer(int[] mouseOver){
         this.mouseOver = mouseOver;
     }
     
-    protected DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
+    private static DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 
     @SuppressWarnings("serial")
 	public Component getListCellRendererComponent(JList<? extends ListItem> list, ListItem value, int index,
@@ -45,20 +43,20 @@ public class ComplexCellRenderer implements ListCellRenderer<ListItem> {
 
         renderer.setFont(new Font("Segoe UI", Font.PLAIN, renderer.getFont().getSize()));
 
-        if(isSelected&&myList.isFocusOwner())
+        if(isSelected && list.isFocusOwner())
             renderer.setBackground(GUITools.SELECTION_BACKGROUND);
         else if(mouseOver[0] == index)
             renderer.setBackground(new Color(237,245,255));
-        else if(isSelected&&!myList.isFocusOwner())
+        else if(isSelected && !list.isFocusOwner())
             renderer.setBackground(new Color(248,249,249));
         else
             renderer.setBackground(Color.WHITE);
 
-        if(isSelected&&myList.isFocusOwner())
+        if(isSelected && list.isFocusOwner())
             renderer.setBorder(new LineBorder(new Color(132,172,221), 1, true));
         else if(mouseOver[0] == index)
             renderer.setBorder(new LineBorder(new Color(185,215,252), 1, true));
-        else if(isSelected&&!myList.isFocusOwner())
+        else if(isSelected && !list.isFocusOwner())
             renderer.setBorder(new LineBorder(new Color(218,218,218), 1, true));
         else if(cellHasFocus)
             renderer.setBorder(BorderFactory.createCompoundBorder( new AbstractBorder() {

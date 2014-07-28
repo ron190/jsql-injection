@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.dnd.tab;
+package com.jsql.view.tab.dnd;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -25,11 +25,15 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
 import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
 import javax.swing.DropMode;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 import javax.swing.TransferHandler;
+
+import com.jsql.view.GUITools;
+import com.jsql.view.tab.CustomMetalTabbedPaneUI;
 
 @SuppressWarnings("serial")
 public class DnDTabbedPane extends JTabbedPane {
@@ -111,6 +115,8 @@ public class DnDTabbedPane extends JTabbedPane {
             }
         });
         addPropertyChangeListener(h);
+        setUI(new CustomMetalTabbedPaneUI());
+        setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER));
     }
     private DropMode dropMode = DropMode.INSERT;
     public DropLocation dropLocationForPoint(Point p) {

@@ -33,7 +33,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
-import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.MenuSelectionManager;
 import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
@@ -53,6 +52,11 @@ import com.jsql.view.table.TablePanel;
 @SuppressWarnings("serial")
 public class Menubar extends JMenuBar {
 	
+	public JCheckBoxMenuItem chunk;
+	public JCheckBoxMenuItem binary;
+	public JCheckBoxMenuItem network;
+	public JCheckBoxMenuItem javaDebug;
+    
     public Menubar(){
         // File Menu > save tab | exit
         JMenu menuFile = new JMenu("File");
@@ -91,7 +95,7 @@ public class Menubar extends JMenuBar {
                 if(GUIMediator.right().getSelectedComponent() instanceof TablePanel)
                     ((TablePanel) GUIMediator.right().getSelectedComponent()).copyTable();
                 else if(GUIMediator.right().getSelectedComponent() instanceof JScrollPane)
-                    ((JTextArea) (((JViewport) (((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()))).getView()).copy();
+                    ((JTextArea) ((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport().getView()).copy();
             }
         });
 
@@ -105,8 +109,8 @@ public class Menubar extends JMenuBar {
                     ((TablePanel) GUIMediator.right().getSelectedComponent()).selectTable();
                 // Textarea need focus to select all
                 else if(GUIMediator.right().getSelectedComponent() instanceof JScrollPane){
-                    ((JTextArea) (((JViewport) (((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()))).getView()).requestFocusInWindow();
-                    ((JTextArea) (((JViewport) (((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()))).getView()).selectAll();
+                    ((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport().getView().requestFocusInWindow();
+                    ((JTextArea) ((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport().getView()).selectAll();
                 }
             }
         });
@@ -123,19 +127,19 @@ public class Menubar extends JMenuBar {
 
         JMenu menuView = new JMenu("Show View");
         menuView.setMnemonic('V');
-        JMenuItem database = new JMenuItem("Database", GUITools.DATABASE_SERVER);
+        JMenuItem database = new JMenuItem("Database", GUITools.DATABASE_SERVER_ICON);
         menuView.add(database);
-        JMenuItem adminPage = new JMenuItem("Admin page", GUITools.ADMIN_SERVER);
+        JMenuItem adminPage = new JMenuItem("Admin page", GUITools.ADMIN_SERVER_ICON);
         menuView.add(adminPage);
-        JMenuItem file = new JMenuItem("File", GUITools.FILE_SERVER);
+        JMenuItem file = new JMenuItem("File", GUITools.FILE_SERVER_ICON);
         menuView.add(file);
-        JMenuItem webshell = new JMenuItem("Web shell", GUITools.SHELL_SERVER);
+        JMenuItem webshell = new JMenuItem("Web shell", GUITools.SHELL_SERVER_ICON);
         menuView.add(webshell);
-        JMenuItem sqlshell = new JMenuItem("SQL shell", GUITools.SHELL_SERVER);
+        JMenuItem sqlshell = new JMenuItem("SQL shell", GUITools.SHELL_SERVER_ICON);
         menuView.add(sqlshell);
-        JMenuItem bruteforce = new JMenuItem("Brute force", GUITools.BRUTER);
+        JMenuItem bruteforce = new JMenuItem("Brute force", GUITools.BRUTER_ICON);
         menuView.add(bruteforce);
-        JMenuItem coder = new JMenuItem("Coder", GUITools.CODER);
+        JMenuItem coder = new JMenuItem("Coder", GUITools.CODER_ICON);
         menuView.add(coder);
         menuTools.add(menuView);
 
@@ -143,13 +147,13 @@ public class Menubar extends JMenuBar {
         
         JMenu menuPanel = new JMenu("Show Panel");
         menuView.setMnemonic('V');
-        final JCheckBoxMenuItem chunk = new JCheckBoxMenuItem("Chunk", new ImageIcon(getClass().getResource("/com/jsql/view/images/chunk.gif")), prefs.getBoolean(GUIMediator.gui().CHUNK_VISIBLE, true));
+        chunk = new JCheckBoxMenuItem("Chunk", new ImageIcon(getClass().getResource("/com/jsql/view/images/chunk.gif")), prefs.getBoolean(GUITools.CHUNK_VISIBLE, true));
         menuPanel.add(chunk);
-        final JCheckBoxMenuItem binary = new JCheckBoxMenuItem("Binary", new ImageIcon(getClass().getResource("/com/jsql/view/images/binary.gif")), prefs.getBoolean(GUIMediator.gui().BINARY_VISIBLE, true));
+        binary = new JCheckBoxMenuItem("Binary", new ImageIcon(getClass().getResource("/com/jsql/view/images/binary.gif")), prefs.getBoolean(GUITools.BINARY_VISIBLE, true));
         menuPanel.add(binary);
-        final JCheckBoxMenuItem header = new JCheckBoxMenuItem("Header", new ImageIcon(getClass().getResource("/com/jsql/view/images/header.gif")), prefs.getBoolean(GUIMediator.gui().HEADER_VISIBLE, true));
-        menuPanel.add(header);
-        final JCheckBoxMenuItem javaDebug = new JCheckBoxMenuItem("Java", new ImageIcon(GUITools.class.getResource("/com/jsql/view/images/cup.png")), prefs.getBoolean(GUIMediator.gui().JAVA_VISIBLE, false));
+        network = new JCheckBoxMenuItem("Network", new ImageIcon(getClass().getResource("/com/jsql/view/images/header.gif")), prefs.getBoolean(GUITools.NETWORK_VISIBLE, true));
+        menuPanel.add(network);
+        javaDebug = new JCheckBoxMenuItem("Java", new ImageIcon(GUITools.class.getResource("/com/jsql/view/images/cup.png")), prefs.getBoolean(GUITools.JAVA_VISIBLE, false));
         
         class StayOpenCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI {
             @Override
@@ -158,7 +162,7 @@ public class Menubar extends JMenuBar {
             }
         }
         
-        for(JCheckBoxMenuItem i: new JCheckBoxMenuItem[]{chunk,binary,header,javaDebug}){
+        for(JCheckBoxMenuItem i: new JCheckBoxMenuItem[]{chunk,binary,network,javaDebug}){
             i.setUI(new StayOpenCheckBoxMenuItemUI());
         }
         
@@ -166,71 +170,36 @@ public class Menubar extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(chunk.isSelected())
-                    GUIMediator.bottom().insertTab("Chunk", new ImageIcon(getClass().getResource("/com/jsql/view/images/chunk.gif")), new RoundScroller(GUIMediator.gui().chunks), "Hexadecimal data recovered",
-                            javaDebug.isSelected()&&header.isSelected()&&binary.isSelected()?
-                                    GUIMediator.bottom().getTabCount()-3
-                            :
-                                javaDebug.isSelected()&&header.isSelected()||javaDebug.isSelected()&&binary.isSelected()||header.isSelected()&&binary.isSelected()?    
-                                        GUIMediator.bottom().getTabCount()-2
-                                :
-                                    javaDebug.isSelected()||binary.isSelected()||header.isSelected()?
-                                        GUIMediator.bottom().getTabCount()-1
-                                    :
-                                        GUIMediator.bottom().getTabCount()
-                            );
+                	GUIMediator.bottom().insertChunkTab();
                 else
-                    for(int i=0; i < GUIMediator.bottom().getTabCount() ;i++)
-                        if (GUIMediator.bottom().getTitleAt(i).equals("Chunk")) {
-                            GUIMediator.bottom().remove(GUIMediator.bottom().getComponentAt(i));
-                            break;
-                        }
+                	GUIMediator.bottom().remove(GUIMediator.gui().chunks.getParent().getParent());
             }
         });
         binary.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(binary.isSelected())
-                    GUIMediator.bottom().insertTab("Binary", new ImageIcon(getClass().getResource("/com/jsql/view/images/binary.gif")), new RoundScroller(GUIMediator.gui().binaryArea), "Time/Blind bytes", 
-                            javaDebug.isSelected()&&header.isSelected()?
-                                    GUIMediator.bottom().getTabCount()-2
-                            :
-                                javaDebug.isSelected()||header.isSelected()?
-                                        GUIMediator.bottom().getTabCount()-1
-                                :
-                                        GUIMediator.bottom().getTabCount()
-                                );
+                	GUIMediator.bottom().insertBinaryTab();
                 else
-                    for(int i=0; i < GUIMediator.bottom().getTabCount() ;i++)
-                        if (GUIMediator.bottom().getTitleAt(i).equals("Binary")) {
-                            GUIMediator.bottom().remove(GUIMediator.bottom().getComponentAt(i));
-                            break;
-                        }
+                	GUIMediator.bottom().remove(GUIMediator.gui().binaryArea.getParent().getParent());
             }
         });
-        header.addActionListener(new ActionListener() {
+        network.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(header.isSelected())
-                    GUIMediator.bottom().insertTab("Header", new ImageIcon(getClass().getResource("/com/jsql/view/images/header.gif")), new RoundScroller(GUIMediator.gui().headers), "URL calls information", javaDebug.isSelected()?GUIMediator.bottom().getTabCount()-1:GUIMediator.bottom().getTabCount());
-                else
-                    for(int i=0; i < GUIMediator.bottom().getTabCount() ;i++)
-                        if (GUIMediator.bottom().getTitleAt(i).equals("Header")) {
-                            GUIMediator.bottom().remove(GUIMediator.bottom().getComponentAt(i));
-                            break;
-                        }
+                if(network.isSelected()){
+                	GUIMediator.bottom().insertNetworkTab();
+                }else
+                	GUIMediator.bottom().remove(GUIMediator.gui().network);
             }
         });
         javaDebug.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(javaDebug.isSelected())
-                    GUIMediator.bottom().insertTab("Java", new ImageIcon(getClass().getResource("/com/jsql/view/images/cup.png")), new RoundScroller(GUIMediator.gui().javaDebug), "Java console", GUIMediator.bottom().getTabCount());
+                	GUIMediator.bottom().insertJavaDebugTab();
                 else
-                    for(int i=0; i < GUIMediator.bottom().getTabCount() ;i++)
-                        if (GUIMediator.bottom().getTitleAt(i).equals("Java")) {
-                            GUIMediator.bottom().remove(GUIMediator.bottom().getComponentAt(i));
-                            break;
-                        }
+                	GUIMediator.bottom().remove(GUIMediator.gui().javaDebug.getParent().getParent());
             }
         });
         
@@ -314,17 +283,20 @@ public class Menubar extends JMenuBar {
 
                             Float gitVersion = Float.parseFloat(pageSource);
                             GUIMediator.model();
-							if(gitVersion <= Float.parseFloat(InjectionModel.jSQLVersion))
+							if(gitVersion <= Float.parseFloat(InjectionModel.JSQLVERSION))
                                 GUIMediator.model().sendMessage("jSQL Injection is up to date.");
                             else{
                                 GUIMediator.model().sendErrorMessage("A new version of jSQL Injection is available.");
                                 Desktop.getDesktop().browse(new URI("http://code.google.com/p/jsql-injection/downloads/list"));
                             }
-                        } catch (NumberFormatException err) {
-                            GUIMediator.model().sendErrorMessage("A problem occured with repository version, you can visit the updates page here:\nhttp://code.google.com/p/jsql-injection/downloads/list");
-                        } catch (IOException e1) {
-                            GUIMediator.model().sendErrorMessage("Repository website is not responding, you can visit the updates page here:\nhttp://code.google.com/p/jsql-injection/downloads/list");
+                        } catch (NumberFormatException e) {
+                            GUIMediator.model().sendErrorMessage("An error occured while checking updates, download the latest version from official website :\nhttp://code.google.com/p/jsql-injection/downloads/list");
+                            GUIMediator.model().sendDebugMessage(e);
+                        } catch (IOException e) {
+                            GUIMediator.model().sendErrorMessage("An error occured while checking updates, download the latest version from official website :\nhttp://code.google.com/p/jsql-injection/downloads/list");
+                            GUIMediator.model().sendDebugMessage(e);
                         } catch (URISyntaxException e) {
+                            GUIMediator.model().sendErrorMessage("An error occured while checking updates, download the latest version from official website :\nhttp://code.google.com/p/jsql-injection/downloads/list");
                             GUIMediator.model().sendDebugMessage(e);
                         }
 

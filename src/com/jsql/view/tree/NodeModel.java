@@ -28,9 +28,7 @@ import javax.swing.tree.TreePath;
 
 import com.jsql.model.Interruptable;
 import com.jsql.model.bean.Column;
-import com.jsql.model.bean.Database;
 import com.jsql.model.bean.ElementDatabase;
-import com.jsql.model.bean.Table;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 import com.jsql.view.component.RoundBorder;
@@ -66,22 +64,36 @@ public abstract class NodeModel{
     public ElementDatabase getParent(){
         return dataObject.getParent();
     }
-    public boolean isDatabase(){
-        return dataObject instanceof Database;
-    }
-    public boolean isTable(){
-        return dataObject instanceof Table;
-    }
-    public boolean isColumn(){
-        return dataObject instanceof Column;
-    }
 
     public String toString(){
         return dataObject != null ? this.dataObject.getLabel() : emptyObject;
     }
     
-    abstract Icon getIcon(boolean leaf);
-    abstract void runAction();
+    void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j){
+        JPopupMenu tablePopupMenu = new JPopupMenu();
+        
+        JMenuItem mnLoad = new JMenuItem("Load/Stop",'o');
+        JMenuItem mnPause = new JMenuItem("Pause/Resume",'s');
+        mnLoad.setIcon(GUITools.EMPTY);
+        mnPause.setIcon(GUITools.EMPTY);
+        
+        if(!this.hasChildChecked && !this.isRunning)
+            mnLoad.setEnabled(false);
+        mnLoad.addActionListener(new ActionLoadStop(this, currentTableNode));
+        
+        if(!this.isRunning)
+            mnPause.setEnabled(false);
+        mnPause.addActionListener(new ActionPauseUnpause(this));
+        
+        this.displayMenu(tablePopupMenu, path);
+        tablePopupMenu.add(mnLoad);
+        tablePopupMenu.add(mnPause);
+        
+        mnLoad.setIcon(GUITools.EMPTY);
+        mnPause.setIcon(GUITools.EMPTY);
+        
+        tablePopupMenu.show(GUIMediator.databaseTree(), i, j);
+    }
     
     public class ActionLoadStop implements ActionListener{
         NodeModel nodeData;
@@ -109,10 +121,8 @@ public abstract class NodeModel{
                 }
             }
             
-            if(this.nodeData.isTable() && !this.nodeData.isRunning && columnsToSearch.size() == 0)
-                return;
-            else if(this.nodeData.isDatabase() && !this.nodeData.isRunning && columnsToSearch.size() == 0)
-                return;
+            if(!this.nodeData.isRunning && columnsToSearch.size() == 0)
+            	return;
 
             if(!this.nodeData.isRunning){
                 this.nodeData.interruptable = GUIMediator.controller().selectValues(columnsToSearch);
@@ -151,33 +161,10 @@ public abstract class NodeModel{
         }
     }
     
-    void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j){
-        JPopupMenu tablePopupMenu = new JPopupMenu();
-        
-        JMenuItem mnLoad = new JMenuItem("Load/Stop",'o');
-        JMenuItem mnPause = new JMenuItem("Pause/Resume",'s');
-        mnLoad.setIcon(GUITools.EMPTY);
-        mnPause.setIcon(GUITools.EMPTY);
-        
-        if(!this.hasChildChecked && !this.isRunning)
-            mnLoad.setEnabled(false);
-        mnLoad.addActionListener(new ActionLoadStop(this, currentTableNode));
-        
-        if(!this.isRunning)
-            mnPause.setEnabled(false);
-        mnPause.addActionListener(new ActionPauseUnpause(this));
-        
-        this.displayMenu(tablePopupMenu, path);
-        tablePopupMenu.add(mnLoad);
-        tablePopupMenu.add(mnPause);
-        
-        mnLoad.setIcon(GUITools.EMPTY);
-        mnPause.setIcon(GUITools.EMPTY);
-        
-        tablePopupMenu.show(GUIMediator.databaseTree(), i, j);
-    }
-    
     abstract void displayMenu(JPopupMenu tablePopupMenu, TreePath path);
+    abstract boolean verifyShowPopup();
+    abstract Icon getIcon(boolean leaf);
+    abstract void runAction();
     
     void displayProgress(NodePanel panel, DefaultMutableTreeNode currentNode){
     	int dataCount = this.dataObject.getCount();
@@ -206,7 +193,7 @@ public abstract class NodeModel{
         if(selected){
             panel.label.setBackground(GUITools.SELECTION_BACKGROUND);
         }else{
-            panel.label.setBackground(new Color(255,255,255));
+            panel.label.setBackground(Color.WHITE);
             panel.label.setBorder(new RoundBorder(4,1,false));
         }
 

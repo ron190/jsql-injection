@@ -27,7 +27,7 @@ import com.jsql.view.terminal.Terminal;
 /**
  * Append the result of a command in the terminal
  */
-public class GetSQLShellResult implements InteractionCommand{
+public class GetSQLShellResult implements IInteractionCommand{
     // Unique identifier for the terminal.
     // Used for outputing results of commands in the right shell tab (in case of multiple shell opened)
     private UUID terminalID;

@@ -16,7 +16,7 @@ import com.jsql.view.GUITools;
 /**
  * Mark the injection as invulnerable to a error based injection
  */
-public class MarkErrorbasedStrategy implements InteractionCommand{
+public class MarkErrorbasedStrategy implements IInteractionCommand{
     /**
      * @param interactionParams
      */
@@ -27,6 +27,6 @@ public class MarkErrorbasedStrategy implements InteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        GUITools.setUnderlined(GUIMediator.gui().getStatusPanel().labelErrorBased);
+        GUITools.setUnderlined(GUIMediator.status().labelErrorBased);
     }
 }

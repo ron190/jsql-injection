@@ -23,7 +23,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
-import javax.swing.JViewport;
 import javax.swing.table.TableModel;
 
 import com.jsql.model.InjectionModel;
@@ -77,11 +76,11 @@ public class SaveTabAction implements ActionListener {
                 }
             }
         }else if(GUIMediator.right().getSelectedComponent() instanceof JScrollPane){
-            if((((JViewport) (((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()))).getView() instanceof JTextArea){
+            if( (((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()).getView() instanceof JTextArea ){
                 JTextArea textArea = null;
                 
-                if((JTextArea) (((JViewport) (((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()))).getView() != null)
-                    textArea = (JTextArea) (((JViewport) (((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()))).getView();
+                if((JTextArea) (((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()).getView() != null)
+                    textArea = (JTextArea) (((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()).getView();
                 
                 if(textArea == null)
                     return;
@@ -102,11 +101,11 @@ public class SaveTabAction implements ActionListener {
                         GUIMediator.model().sendErrorMessage(err.getMessage());
                     }
                 }
-            }else if((((JViewport) (((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()))).getView() instanceof JTextPane){
+            }else if((((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()).getView() instanceof JTextPane){
                 JTextPane textArea = null;
                 
-                if((JTextPane) (((JViewport) (((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()))).getView() != null)
-                    textArea = (JTextPane) (((JViewport) (((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()))).getView();
+                if((JTextPane) (((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()).getView() != null)
+                    textArea = (JTextPane) ( ((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()).getView();
                 
                 if(textArea == null)
                     return;

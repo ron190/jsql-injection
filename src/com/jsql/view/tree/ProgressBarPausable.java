@@ -17,6 +17,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JProgressBar;
 
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 
 /**
@@ -42,7 +43,7 @@ public class ProgressBarPausable extends JProgressBar{
                 BufferedImage im2 = ImageIO.read(NodePanel.class.getResource(GUITools.PATH_PAUSE));
                 g.drawImage(im2, (this.getWidth()-im2.getWidth())/2, (this.getHeight()-im2.getHeight())/2, null);
             } catch (IOException e) {
-                e.printStackTrace();
+                GUIMediator.model().sendDebugMessage(e);
             }
         }
     }

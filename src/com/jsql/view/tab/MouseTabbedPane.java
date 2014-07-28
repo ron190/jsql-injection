@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.component;
+package com.jsql.view.tab;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -20,6 +20,10 @@ import javax.swing.AbstractAction;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+import com.jsql.view.ActionHandler;
 
 /**
  * Tabs with mousewheel and right click action.
@@ -31,6 +35,19 @@ public class MouseTabbedPane extends JTabbedPane {
         super();
 
         this.addMouseWheelListener(new TabbedPaneMouseWheelScroller());
+        this.setUI(new CustomMetalTabbedPaneUI());
+        this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        
+        // Give focus on tab change
+        this.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent arg0) {
+            	MouseTabbedPane.this.requestFocusInWindow();
+            }
+        });
+        
+        // Hotkeys ctrl-TAB, ctrl-shift-TAB
+        ActionHandler.addShortcut(this);
     }
     
     public void activateMenu(){

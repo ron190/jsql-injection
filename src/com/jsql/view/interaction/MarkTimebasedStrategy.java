@@ -16,7 +16,7 @@ import com.jsql.view.GUITools;
 /**
  * Mark the injection as invulnerable to a time based injection
  */
-public class MarkTimebasedStrategy implements InteractionCommand{
+public class MarkTimebasedStrategy implements IInteractionCommand{
     /**
      * @param mainGUI
      * @param interactionParams
@@ -28,6 +28,6 @@ public class MarkTimebasedStrategy implements InteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        GUITools.setUnderlined(GUIMediator.gui().getStatusPanel().labelTimeBased);
+        GUITools.setUnderlined(GUIMediator.status().labelTimeBased);
     }
 }

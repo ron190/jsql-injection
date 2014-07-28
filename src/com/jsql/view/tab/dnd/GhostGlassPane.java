@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.dnd.tab;
+package com.jsql.view.tab.dnd;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;

@@ -16,7 +16,7 @@ import com.jsql.view.GUITools;
 /**
  * Mark the injection as vulnerable to a time based injection
  */
-public class MarkTimebasedVulnerable implements InteractionCommand{
+public class MarkTimebasedVulnerable implements IInteractionCommand{
     /**
      * @param mainGUI
      * @param nullParam
@@ -28,6 +28,6 @@ public class MarkTimebasedVulnerable implements InteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-    	GUIMediator.gui().getStatusPanel().setTimeBasedIcon(GUITools.TICK);
+    	GUIMediator.status().setTimeBasedIcon(GUITools.TICK);
     }
 }

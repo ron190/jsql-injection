@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.component;
+package com.jsql.view.tab;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;

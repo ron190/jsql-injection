@@ -46,6 +46,10 @@ public class NodeModelDatabase extends NodeModel{
         	this.isRunning = true;
         }
 	}
+	
+	@Override boolean verifyShowPopup() { 
+		return !this.hasBeenSearched && this.isRunning; 
+	}
 
 	@Override void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {}
 }

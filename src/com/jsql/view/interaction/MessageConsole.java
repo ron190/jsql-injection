@@ -15,7 +15,7 @@ import com.jsql.view.GUIMediator;
 /**
  * Append text to the tab Console
  */
-public class MessageConsole implements InteractionCommand{
+public class MessageConsole implements IInteractionCommand{
     // Text to append to the Console log area
     private String text;
 

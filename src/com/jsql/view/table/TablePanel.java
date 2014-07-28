@@ -42,9 +42,11 @@ import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import com.jsql.view.GUIMediator;
 import com.jsql.view.component.popupmenu.JPopupTableMenu;
 
 /**
@@ -68,10 +70,17 @@ public class TablePanel extends JPanel {
         super(new GridLayout(1,0));
         
         table = new JTable(data, columnNames){
+        	@Override
             public boolean isCellEditable(int row,int column){
                 return false;
             }
+        	
+//        	@Override
+//        	public boolean getScrollableTracksViewportHeight() { 
+//        	    return getPreferredSize().height < getParent().getHeight(); 
+//        	}
         };
+        
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         table.setColumnSelectionAllowed(true);
@@ -120,10 +129,10 @@ public class TablePanel extends JPanel {
         try {
             image = ImageIO.read(url.openStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            GUIMediator.model().sendDebugMessage(e);
         }
 
-        table.setCursor(toolkit.createCustomCursor(image, new Point(12, 12),"Hand"));
+        table.setCursor(toolkit.createCustomCursor(image, new Point(12, 12), "Hand"));
         table.addMouseListener( new MouseAdapter(){
             public void mousePressed( MouseEvent e ){
                 table.requestFocusInWindow();
@@ -148,7 +157,6 @@ public class TablePanel extends JPanel {
         table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK), null);
         
-        // Can't get rid of warning about raw type
         Set<AWTKeyStroke> forward = new HashSet<AWTKeyStroke>(table.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
         forward.add(KeyStroke.getKeyStroke("TAB"));
         table.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forward);
@@ -159,7 +167,10 @@ public class TablePanel extends JPanel {
         TableColumnAdjuster columnAdjuster = new TableColumnAdjuster(table);
         columnAdjuster.adjustColumns();
 
+        Border border = BorderFactory.createEmptyBorder();
         JScrollPane scroller = new JScrollPane(table);
+        scroller.setViewportBorder(border);
+        scroller.setBorder(border);
         
         scroller.setColumnHeader(new JViewport() {
             @Override public Dimension getPreferredSize() {

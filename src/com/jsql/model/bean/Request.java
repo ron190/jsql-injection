@@ -26,11 +26,11 @@ public class Request {
         return parameters;
     }
 
-    public void setMessage(String new_message){
-        message = new_message;
+    public void setMessage(String message){
+        this.message = message;
     }
 
-    public void setParameters(Object... new_parameters){
-        parameters = new_parameters;
+    public void setParameters(Object... parameters){
+        this.parameters = parameters;
     }
 }

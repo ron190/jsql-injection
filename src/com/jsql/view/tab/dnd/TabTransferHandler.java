@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.dnd.tab;
+package com.jsql.view.tab.dnd;
 
 import java.awt.Cursor;
 import java.awt.Point;
@@ -22,6 +22,8 @@ import javax.activation.ActivationDataFlavor;
 import javax.activation.DataHandler;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
+
+import com.jsql.view.GUIMediator;
 
 @SuppressWarnings("serial")
 public class TabTransferHandler extends TransferHandler {
@@ -47,7 +49,7 @@ public class TabTransferHandler extends TransferHandler {
         Point pt = tdl.getDropPoint();
         DnDTabbedPane target = (DnDTabbedPane)support.getComponent();
         target.autoScrollTest(pt);
-        DnDTabbedPane.DropLocation dl = (DnDTabbedPane.DropLocation)target.dropLocationForPoint(pt);
+        DnDTabbedPane.DropLocation dl = target.dropLocationForPoint(pt);
         int idx = dl.getIndex();
         boolean isDropable = false;
 
@@ -149,10 +151,10 @@ public class TabTransferHandler extends TransferHandler {
                 source.exportTab(source.dragTabIndex, target, index);
             }
             return true;
-        }catch(UnsupportedFlavorException ufe) {
-            ufe.printStackTrace();
-        }catch(IOException ioe) {
-            ioe.printStackTrace();
+        }catch(UnsupportedFlavorException e) {
+        	GUIMediator.model().sendDebugMessage(e);
+        }catch(IOException e) {
+        	GUIMediator.model().sendDebugMessage(e);
         }
         return false;
     }

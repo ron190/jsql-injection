@@ -2,27 +2,27 @@ package com.jsql.model.pattern.strategy;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.InjectionModel;
 import com.jsql.model.Interruptable;
 import com.jsql.model.Stoppable;
 import com.jsql.model.bean.Request;
-import com.jsql.model.blind.BlindInjection;
+import com.jsql.model.blind.ConcreteBlindInjection;
+import com.jsql.view.GUIMediator;
 
 public class BlindStrategy implements IInjectionStrategy {
-	private InjectionModel model;
-	private BlindInjection blind;
-	private boolean isApplicable = false;
 	
-	public BlindStrategy(InjectionModel model){
-		this.model = model;
-	}
+	private ConcreteBlindInjection blind;
+//	private BlindInjection blind;
+	
+	private boolean isApplicable = false;
 	
 	@Override
 	public void checkApplicability() throws PreparationException {
-		model.sendMessage("Blind test...");
+		GUIMediator.model().sendMessage("Blind test...");
 		
-		blind = new BlindInjection(model);
-		isApplicable = blind.isBlindInjectable();
+		blind = new ConcreteBlindInjection();
+//		blind = new BlindInjection();
+		isApplicable = blind.isInjectable();
+//		isApplicable = blind.isBlindInjectable();
 		
 		if(isApplicable)
 			activate();
@@ -39,14 +39,14 @@ public class BlindStrategy implements IInjectionStrategy {
 	public void activate() {
         Request request = new Request();
         request.setMessage("MarkBlindVulnerable");
-        model.interact(request);
+        GUIMediator.model().interact(request);
 	}
 
 	@Override
 	public void deactivate() {
         Request request = new Request();
         request.setMessage("MarkBlindInvulnerable");
-        model.interact(request);
+        GUIMediator.model().interact(request);
 	}
 
 	@Override
@@ -66,16 +66,16 @@ public class BlindStrategy implements IInjectionStrategy {
 
 	@Override
 	public void applyStrategy() {
-		model.sendMessage("Using blind injection...");
-		model.applyStrategy(this);
+		GUIMediator.model().sendMessage("Using blind injection...");
+		GUIMediator.model().applyStrategy(this);
 		
 		Request request = new Request();
 		request.setMessage("MessageBinary");
 		request.setParameters("A blind SQL request is true if the diff between a correct page (e.g existing id) and current page is not as the following: "+blind.constantFalseMark+"\n");
-		model.interact(request);
+		GUIMediator.model().interact(request);
 		
 		Request request2 = new Request();
         request2.setMessage("MarkBlindStrategy");
-        model.interact(request2);
+        GUIMediator.model().interact(request2);
 	}
 }

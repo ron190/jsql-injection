@@ -19,7 +19,7 @@ import com.jsql.view.tree.NodeModel;
 /**
  * Start refreshing the progress bar of an element in the database tree, progression is not tracked (like colum search)
  */
-public class StartIndeterminateProgress implements InteractionCommand{
+public class StartIndeterminateProgress implements IInteractionCommand{
     // The element in the database tree for which the progress starts
     private ElementDatabase dataElementDatabase;
 
@@ -44,7 +44,6 @@ public class StartIndeterminateProgress implements InteractionCommand{
         // Mark the node model as 'loading'
         progressingTreeNodeModel.hasIndeterminatedProgress = true;
 
-        //        treeModel.nodeStructureChanged((TreeNode) treeNodeModels.get(dataElementDatabase)); // update progressbar
         // Update the node
         treeModel.nodeChanged(GUIMediator.gui().getNode(dataElementDatabase));
     }

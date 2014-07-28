@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.jsql.view.component.popupmenu;
 
+import javax.swing.BorderFactory;
+
 @SuppressWarnings("serial")
 public class JPopupTextAreaEditable extends JPopupTextArea {
 	
@@ -26,7 +28,11 @@ public class JPopupTextAreaEditable extends JPopupTextArea {
     }
     
     public void initialize(){
-        this.setComponentPopupMenu(new JPopupTextComponentMenu(this, true));
+        this.setComponentPopupMenu(new JPopupTextMenu(this, true));
         this.setEditable(true);
+        
+        this.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+
+        JTextEditable.setEditable(this);
     }
 }

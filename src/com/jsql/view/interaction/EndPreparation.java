@@ -15,7 +15,7 @@ import com.jsql.view.GUIMediator;
 /**
  * End the refreshing of the main Start injection button
  */
-public class EndPreparation implements InteractionCommand{
+public class EndPreparation implements IInteractionCommand{
     /**
      * @param interactionParams
      */
@@ -26,11 +26,7 @@ public class EndPreparation implements InteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-//        gui.getInputPanel().submit.setText("Connect");
-//        gui.getInputPanel().submit.setEnabled(true);
     	GUIMediator.top().submitAddressBar.setInjectionReady();
-//        gui.getInputPanel().loader.setVisible(false);
-//        gui.menubar.loader.setVisible(false);
         GUIMediator.top().loader.setVisible(false);
 
         if(GUIMediator.model().isInjectionBuilt){

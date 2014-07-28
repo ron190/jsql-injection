@@ -27,12 +27,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 
-import com.jsql.model.InjectionModel;
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 import com.jsql.view.bruteforce.HashBruter;
-import com.jsql.view.component.RoundScroller;
+import com.jsql.view.component.JScrollPanePixelBorder;
 import com.jsql.view.component.popupmenu.JPopupTextArea;
 import com.jsql.view.component.popupmenu.JPopupTextField;
 
@@ -57,13 +56,11 @@ public class BruteForceManager extends JPanel{
     
     private JPopupTextArea result;
     private JLabel loader;
-    
-    private InjectionModel model;
 
-    public BruteForceManager(InjectionModel model){
+    public BruteForceManager(){
         super(new BorderLayout());
-
-        this.model = model;
+        
+        this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, GUITools.COMPONENT_BORDER));
         
         JPanel options = new JPanel(new BorderLayout());
 
@@ -76,7 +73,7 @@ public class BruteForceManager extends JPanel{
                 "usually hashed inside database.</i></html>");
         firstLine.add(hash, BorderLayout.CENTER);
         hash.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(2,2,2,0,UIManager.getColor ( "Panel.background" )),
+                BorderFactory.createMatteBorder(2,2,2,0, GUITools.DEFAULT_BACKGROUND),
                 GUITools.BLU_ROUND_BORDER));
 
         final JPanel secondLine = new JPanel();
@@ -91,6 +88,7 @@ public class BruteForceManager extends JPanel{
 
         hashTypes = new JComboBox<String>(new String[]{"md2","md5","sha-1","sha-256","sha-384",
                 "sha-512","mysql"/*,"crc16","crc32","crc64","adler32"*/});
+        
         hashTypes.setSelectedIndex(1);
         hashTypes.setMaximumSize( new Dimension((int) hashTypes.getPreferredSize().getWidth(),22) );
         hashTypes.setToolTipText("<html><b>Type of hash</b><br>" +
@@ -161,22 +159,24 @@ public class BruteForceManager extends JPanel{
 
         result = new JPopupTextArea();
         result.setLineWrap(true);
-        this.add(new RoundScroller(result), BorderLayout.CENTER);
+        this.add(new JScrollPanePixelBorder(1,1,0,0,result), BorderLayout.CENTER);
         
         JPanel lastLine = new JPanel();
         lastLine.setOpaque(false);
         lastLine.setLayout( new BoxLayout(lastLine, BoxLayout.X_AXIS) );
+        lastLine.setBorder(BorderFactory.createCompoundBorder(
+        		BorderFactory.createMatteBorder(0,1,0,0,GUITools.COMPONENT_BORDER), 
+        		BorderFactory.createEmptyBorder(1, 0, 1, 1)));
+        
         run = new JButton("Start",new ImageIcon(getClass().getResource("/com/jsql/view/images/key.png")));
         run.setToolTipText("<html><b>Begin brute forcing the hash</b><br>" +
                 "<i>Such process calculates a hash for every possible combinations of characters, hoping<br>" +
                 "a hash will be equal to the user's one. It always either fails or never ends. Use instead<br>" +
                 "websites like md5decrypter.co.uk to search for precalculated pairs of hash and password,<br>" +
                 "also you may try other brute force softwares like John the Ripper.</i></html>");
-        run.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(2,0,0,0,UIManager.getColor ( "Panel.background" )),
-                GUITools.BLU_ROUND_BORDER));
+        run.setBorder(GUITools.BLU_ROUND_BORDER);
 
-        loader = new JLabel(GUITools.SPINNER);
+        loader = new JLabel(GUITools.LOADER_GIF);
         loader.setVisible(false);
 
         lastLine.add(Box.createHorizontalGlue());
@@ -254,9 +254,9 @@ public class BruteForceManager extends JPanel{
                             hashBruter.setEndtime(System.nanoTime());
 
                             try {
-                                Thread.sleep(1000); // /!\ KEEP IT: delay to update result panel /!\
+                                Thread.sleep(1000); // delay to update result panel
                             } catch (InterruptedException e) {
-                                e.printStackTrace();
+                                GUIMediator.model().sendDebugMessage(e);
                             }
                             
                             result.setText("Current string: " + hashBruter.getPassword() + "\n");
@@ -292,7 +292,7 @@ public class BruteForceManager extends JPanel{
                                     hashBruter.getGeneratedHash() + "\n" +
                                     "String: " + hashBruter.getPassword());
                             
-                            BruteForceManager.this.model.sendMessage("Found hash:\n" +
+                            GUIMediator.model().sendMessage("Found hash:\n" +
                                     hashBruter.getGeneratedHash() + "\n" +
                                     "String: " + hashBruter.getPassword());
                         }else if(hashBruter.isDone()){

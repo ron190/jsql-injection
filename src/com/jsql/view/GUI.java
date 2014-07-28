@@ -23,22 +23,22 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.TransferHandler;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import com.jsql.controller.InjectionController;
-import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.ElementDatabase;
 import com.jsql.model.bean.Request;
+import com.jsql.view.component.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.component.Menubar;
 import com.jsql.view.component.popupmenu.JPopupTextArea;
-import com.jsql.view.dnd.tab.DnDTabbedPane;
-import com.jsql.view.dnd.tab.TabTransferHandler;
 import com.jsql.view.dropshadow.ShadowPopupFactory;
-import com.jsql.view.interaction.InteractionCommand;
+import com.jsql.view.interaction.IInteractionCommand;
 import com.jsql.view.panel.LeftRightBottomPanel;
 import com.jsql.view.panel.StatusbarPanel;
 import com.jsql.view.panel.TopPanel;
+import com.jsql.view.tab.dnd.DnDTabbedPane;
+import com.jsql.view.tab.dnd.TabTransferHandler;
 import com.jsql.view.terminal.Terminal;
 
 /**
@@ -57,27 +57,30 @@ public class GUI extends JFrame implements Observer {
      * - header: result of HTTP connection
      * - binary: blind/time progress
      */
-    public JPopupTextArea consoleArea;
-    public JPopupTextArea chunks;
-    public JPopupTextArea headers;
-    public JPopupTextArea binaryArea;
-    public JPopupTextArea javaDebug;
-
-    // Panel of textfields at the top
-//    public TopPanel top;
+    public JPopupTextArea consoleArea = new JPopupTextArea();
+    public JPopupTextArea chunks = new JPopupTextArea();
+    public JSplitPaneWithZeroSizeDivider network;
+    public JPopupTextArea binaryArea = new JPopupTextArea();
+    public JPopupTextArea javaDebug = new JPopupTextArea();
 
     public LeftRightBottomPanel outputPanel;
     
-    // Panel of labels in the statusbar
-    private StatusbarPanel statusPanel;
-
     // List of terminal by unique identifier
     public Map<UUID,Terminal> consoles = new HashMap<UUID,Terminal>();
 
-    public final String CHUNK_VISIBLE = "chunk_visible";
-    public final String BINARY_VISIBLE = "binary_visible";
-    public final String HEADER_VISIBLE = "header_visible";
-    public final String JAVA_VISIBLE = "java_visible";
+    /**
+     *  Map a database element with the corresponding tree node.
+     *  The injection model send a database element to the view, then the view access its graphic component to update
+     */
+    Map<ElementDatabase, DefaultMutableTreeNode> treeNodeModels = new HashMap<ElementDatabase, DefaultMutableTreeNode>();
+    
+    public DefaultMutableTreeNode getNode(ElementDatabase elt){
+    	return treeNodeModels.get(elt);
+    }
+    
+    public void putNode(ElementDatabase elt, DefaultMutableTreeNode node){
+    	treeNodeModels.put(elt, node);
+    }
     
     // Build the GUI: add app icon, tree icons, the 3 main panels
     public GUI(){
@@ -95,11 +98,9 @@ public class GUI extends JFrame implements Observer {
         // Object creation after customization
         consoleArea = new JPopupTextArea();
         chunks = new JPopupTextArea();
-        headers = new JPopupTextArea();
         binaryArea = new JPopupTextArea();
         javaDebug = new JPopupTextArea();
 
-//        right = new DnDTabbedPane();
         GUIMediator.register(new DnDTabbedPane());
         
         TransferHandler handler = new TabTransferHandler();
@@ -109,9 +110,8 @@ public class GUI extends JFrame implements Observer {
         GUIMediator.model().addObserver(this);
         
         // Save controller
-//        this.controller = controller;
-
-        this.setJMenuBar( new Menubar() );
+        GUIMediator.register(new Menubar());
+        this.setJMenuBar(GUIMediator.menubar());
 
         // Add hotkeys to rootpane ctrl-tab, ctrl-shift-tab, ctrl-w
         ActionHandler.addShortcut(GUIMediator.right());
@@ -120,7 +120,6 @@ public class GUI extends JFrame implements Observer {
         this.getContentPane().setLayout( new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS) );
 
         // Textfields at the top
-//        top = new TopPanel();
         GUIMediator.register(new TopPanel());
         this.add(GUIMediator.top());
 
@@ -131,15 +130,15 @@ public class GUI extends JFrame implements Observer {
         this.add(mainPanel);
 
         // Info on the bottom
-        statusPanel = new StatusbarPanel();
-        this.add(statusPanel);
+        GUIMediator.register(new StatusbarPanel());
+        this.add(GUIMediator.status());
 
         // Reduce size of components
         this.pack(); // nécessaire après le masquage des param proxy
 
         // Size of window
         this.setSize(1024, 768);
-//        top.submit.requestFocusInWindow();
+//        GUIMediator.top().submitAddressBar.requestFocusInWindow();
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -148,24 +147,9 @@ public class GUI extends JFrame implements Observer {
 
         // Define the keyword shortcuts for tabs #Need to work even if the focus is not on tabs
         ActionHandler.addShortcut(this.getRootPane(), GUIMediator.right());
-        
         ActionHandler.addShortcut();
     }
 
-    /**
-     *  Map a database element with the corresponding tree node.
-     *  The injection model send a database element to the view, then the view access its graphic component to update
-     */
-    Map<ElementDatabase, DefaultMutableTreeNode> treeNodeModels = new HashMap<ElementDatabase, DefaultMutableTreeNode>();
-
-    public DefaultMutableTreeNode getNode(ElementDatabase elt){
-        return treeNodeModels.get(elt);
-    }
-    
-    public void putNode(ElementDatabase elt, DefaultMutableTreeNode node){
-        treeNodeModels.put(elt, node);
-    }
-    
     /**
      * Observer pattern
      * Receive an update order from the model:
@@ -181,10 +165,10 @@ public class GUI extends JFrame implements Observer {
 
             Class<?>[] types = new Class[]{Object[].class};
 
-            cl.getConstructors();
+//            cl.getConstructors();
             Constructor<?> ct = cl.getConstructor(types);
 
-            InteractionCommand o2 = (InteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
+            IInteractionCommand o2 = (IInteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
             o2.execute();
         } catch (ClassNotFoundException e) {
         	GUIMediator.model().sendDebugMessage(e);
@@ -207,6 +191,10 @@ public class GUI extends JFrame implements Observer {
      * Empty the interface
      */
     public void resetInterface(){
+    	// Empty tree objects
+    	treeNodeModels.clear();
+    	consoles.clear();
+    	
         // Tree model for refresh the tree
         DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
         // The tree root
@@ -224,7 +212,7 @@ public class GUI extends JFrame implements Observer {
 
         // Empty infos tabs
         chunks.setText("");
-        headers.setText("");
+        ((DefaultTableModel) GUIMediator.gui().getOutputPanel().networkTable.getModel()).setRowCount(0);;
         binaryArea.setText("");
 
         outputPanel.fileManager.setButtonEnable(false);
@@ -232,7 +220,7 @@ public class GUI extends JFrame implements Observer {
         outputPanel.sqlShellManager.setButtonEnable(false);
 
         // Default status info
-        statusPanel.reset();
+        GUIMediator.status().reset();
 
         outputPanel.fileManager.changeIcon(GUITools.SQUARE_GREY);
         outputPanel.shellManager.changeIcon(GUITools.SQUARE_GREY);
@@ -245,21 +233,5 @@ public class GUI extends JFrame implements Observer {
      */
     public LeftRightBottomPanel getOutputPanel(){
         return outputPanel;
-    }
-
-//    /**
-//     * Getter for user input panel at the top of window.
-//     * @return Top panel
-//     */
-//    public TopPanel getInputPanel(){
-//        return top;
-//    }
-
-    /**
-     * Getter for statusbar.
-     * @return Statusbar panel
-     */
-    public StatusbarPanel getStatusPanel(){
-        return statusPanel;
     }
 }

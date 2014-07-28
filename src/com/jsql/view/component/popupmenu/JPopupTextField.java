@@ -14,28 +14,17 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
-import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
-import javax.swing.event.UndoableEditEvent;
-import javax.swing.event.UndoableEditListener;
-import javax.swing.text.Document;
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
-import javax.swing.undo.UndoManager;
 
+import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 
 
@@ -56,7 +45,7 @@ public class JPopupTextField extends JTextField {
         super.paintComponent(g);
         if(drawPic){
             int y = (getHeight() - image.getHeight())/2;
-            g.drawImage(image, x0, y, this);
+            g.drawImage(image, x0, y+1, this);
         }
     }
     
@@ -84,33 +73,21 @@ public class JPopupTextField extends JTextField {
     }
 
     public void initialize(){
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                // Left button will deselect text after selectAll, so only for right click
-                if(SwingUtilities.isRightMouseButton(e))
-                	JPopupTextField.this.requestFocusInWindow();
-            }
-        });
-        
         this.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(UIManager.getColor ( "Panel.background" ), 2),
+                BorderFactory.createLineBorder( GUITools.DEFAULT_BACKGROUND, 2),
                 GUITools.BLU_ROUND_BORDER));
         
         if(drawPic){
             URL url = this.getClass().getResource("/com/jsql/view/images/globe.png");
             try {
                 image = ImageIO.read(url);
-            } catch (IOException e1) {
-                e1.printStackTrace();
+            } catch (IOException e) {
+                GUIMediator.model().sendDebugMessage(e);
             }
             Border border = UIManager.getBorder("TextField.border");
             x0 = border.getBorderInsets(this).left + 4;
             this.setMargin(new Insets(0, x0 + image.getWidth() + 2, 0, 0));
         }
-        
-        this.setComponentPopupMenu(new JPopupTextComponentMenu(this, true));
         
         if(bigTextField){
             this.setPreferredSize(new Dimension(0, 26));
@@ -118,48 +95,6 @@ public class JPopupTextField extends JTextField {
             this.setFont(plainFont);
         }
         
-        this.setDragEnabled(true);
-        
-        final UndoManager undo = new UndoManager();
-        Document doc = this.getDocument();
-        
-        // Listen for undo and redo events
-        doc.addUndoableEditListener(new UndoableEditListener() {
-            public void undoableEditHappened(UndoableEditEvent evt) {
-                undo.addEdit(evt.getEdit());
-            }
-        });
-        
-        // Create an undo action and add it to the text component
-        this.getActionMap().put("Undo",
-            new AbstractAction("Undo") {
-                public void actionPerformed(ActionEvent evt) {
-                    try {
-                        if (undo.canUndo()) {
-                            undo.undo();
-                        }
-                    } catch (CannotUndoException e) {
-                    }
-                }
-           });
-        
-        // Bind the undo action to ctl-Z
-        this.getInputMap().put(KeyStroke.getKeyStroke("control Z"), "Undo");
-        
-        // Create a redo action and add it to the text component
-        this.getActionMap().put("Redo",
-            new AbstractAction("Redo") {
-                public void actionPerformed(ActionEvent evt) {
-                    try {
-                        if (undo.canRedo()) {
-                            undo.redo();
-                        }
-                    } catch (CannotRedoException e) {
-                    }
-                }
-            });
-        
-        // Bind the redo action to ctl-Y
-        this.getInputMap().put(KeyStroke.getKeyStroke("control Y"), "Redo");
+        JTextEditable.setEditable(this);
     }
 }

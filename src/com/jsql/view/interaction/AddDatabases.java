@@ -24,7 +24,7 @@ import com.jsql.view.tree.NodeModelDatabase;
 /**
  * Add the databases to current injection panel
  */
-public class AddDatabases implements InteractionCommand{
+public class AddDatabases implements IInteractionCommand{
     // Databases retreived by the view
     private List<Database> databases;
 
@@ -47,7 +47,6 @@ public class AddDatabases implements InteractionCommand{
         // Loop into the list of databases
         for(Database database: databases){
             // Create a node model with the database element
-//            NodeModel<Database> newTreeNodeModel = new NodeModel<Database>(database);
             NodeModel newTreeNodeModel = new NodeModelDatabase(database);
             // Create the node
             DefaultMutableTreeNode newNode = new DefaultMutableTreeNode( newTreeNodeModel );

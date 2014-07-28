@@ -8,14 +8,18 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.interaction;
+package com.jsql.view.list.dnd;
 
-/**
- * Action ordered by the Model and applied to the View
- */
-public interface InteractionCommand{
-    /**
-     * Do the action ordered by the model
-     */
-    public void execute();
+public class ListItem{
+    
+    String internalString;
+    
+    public ListItem(String newString){
+        internalString = newString;
+    }
+
+    @Override
+    public String toString() {
+        return internalString;
+    }
 }

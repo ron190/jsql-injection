@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.dnd.list;
+package com.jsql.view.list.dnd;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
@@ -39,13 +39,15 @@ import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
 
+import com.jsql.view.GUIMediator;
+
 /**
  * A list supporting drag and drop.
  * @param <ListItem>
  */
 @SuppressWarnings("serial")
 public class DnDList extends JList<ListItem> {
-    private DnDList myList;
+    
     public DefaultListModel<ListItem> listModel;
     
     public List<String> defaultList;
@@ -78,20 +80,19 @@ public class DnDList extends JList<ListItem> {
         for(String path: newList)
             listModel.addElement(new ListItem(path));
 
-        myList = this;
         this.setModel(listModel);
         
         final int[] mouseOver = {-1};
         
-        myList.addMouseListener(new MouseAction(this, mouseOver));
+        this.addMouseListener(new MenuAction(this, mouseOver));
 
         // Transform Cut, selects next value
-        ActionMap listActionMap = myList.getActionMap();
+        ActionMap listActionMap = this.getActionMap();
         listActionMap.put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                if(myList.getSelectedValuesList().isEmpty()) return;
+                if(DnDList.this.getSelectedValuesList().isEmpty()) return;
                 
-                List<ListItem> selectedValues = myList.getSelectedValuesList();
+                List<ListItem> selectedValues = DnDList.this.getSelectedValuesList();
                 List<ListItem> siblings = new ArrayList<ListItem>();
                 for(ListItem value:selectedValues){
                     int valueIndex = listModel.indexOf(value);
@@ -104,7 +105,7 @@ public class DnDList extends JList<ListItem> {
 
                 TransferHandler.getCutAction().actionPerformed(e);
                 for(ListItem sibling:siblings)
-                    myList.setSelectedValue(sibling, true);
+                	DnDList.this.setSelectedValue(sibling, true);
             }
 
         });
@@ -114,54 +115,54 @@ public class DnDList extends JList<ListItem> {
         listActionMap.put(TransferHandler.getPasteAction().getValue(Action.NAME),
                 TransferHandler.getPasteAction());
 
-        ListCellRenderer<ListItem> renderer = new ComplexCellRenderer(myList, mouseOver);
-        myList.setCellRenderer(renderer);
+        ListCellRenderer<ListItem> renderer = new ComplexCellRenderer(mouseOver);
+        this.setCellRenderer(renderer);
 
         // Allows color change when list loses/gains focus
-        myList.addFocusListener(new FocusListener() {
+        this.addFocusListener(new FocusListener() {
             @Override
             public void focusLost(FocusEvent arg0) {
-                myList.repaint();
+            	DnDList.this.repaint();
             }
             @Override
             public void focusGained(FocusEvent arg0) {
-                myList.repaint();
+                DnDList.this.repaint();
             }
         });
 
-        myList.setDragEnabled(true);
-        myList.setDropMode(DropMode.INSERT);
+        this.setDragEnabled(true);
+        this.setDropMode(DropMode.INSERT);
         
         // Allows deleting values
-        myList.addKeyListener(new KeyAdapter() {
+        this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent arg0) {
                 if (arg0.getKeyCode() == KeyEvent.VK_DELETE)
-                    remove();
+                	DnDList.this.remove();
             }
         });
 
         // Set Drag and Drop
-        myList.setTransferHandler(new ListTransfertHandler(this));
+        this.setTransferHandler(new ListTransfertHandler());
     }
 
     void remove(){
-        if(myList.getSelectedValuesList().isEmpty())return;
+        if(this.getSelectedValuesList().isEmpty())return;
 
-        List<ListItem> selectedValues = myList.getSelectedValuesList();
+        List<ListItem> selectedValues = this.getSelectedValuesList();
         for(ListItem i:selectedValues){
             int l = listModel.indexOf(i);
             listModel.removeElement(i);
             if(l == listModel.getSize())
-                myList.setSelectedIndex(l-1);
+                this.setSelectedIndex(l-1);
             else
-                myList.setSelectedIndex(l);
+                this.setSelectedIndex(l);
         }
-        if(myList.getMinSelectionIndex() > -1 && myList.getMaxSelectionIndex() > -1)
-            myList.scrollRectToVisible(
-                    myList.getCellBounds(
-                            myList.getMinSelectionIndex(),
-                            myList.getMaxSelectionIndex()
+        if(this.getMinSelectionIndex() > -1 && this.getMaxSelectionIndex() > -1)
+            this.scrollRectToVisible(
+                    this.getCellBounds(
+                            this.getMinSelectionIndex(),
+                            this.getMaxSelectionIndex()
                             )
                     );
     }
@@ -172,7 +173,7 @@ public class DnDList extends JList<ListItem> {
      * @param position
      */
     void dropPasteFile(List<File> filesToImport, int position){
-        final DefaultListModel<ListItem> listModel = (DefaultListModel<ListItem>) myList.getModel();
+        final DefaultListModel<ListItem> listModel = (DefaultListModel<ListItem>) this.getModel();
 
         if(filesToImport.size() == 0) return;
         try {
@@ -180,7 +181,7 @@ public class DnDList extends JList<ListItem> {
                 File fileToImport = it.next();
 
                 if(Files.probeContentType(fileToImport.toPath())==null || !Files.probeContentType(fileToImport.toPath()).equals("text/plain")){
-                    JOptionPane.showMessageDialog(myList.getTopLevelAncestor(),
+                    JOptionPane.showMessageDialog(this.getTopLevelAncestor(),
                             "Unsupported file format.\nPlease import only text/plain files.",
                             "Import Error",
                             JOptionPane.ERROR_MESSAGE,
@@ -189,11 +190,11 @@ public class DnDList extends JList<ListItem> {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            GUIMediator.model().sendDebugMessage(e);
         }
 
         String[] options = {"Replace", "Add", "Cancel"};
-        int answer = JOptionPane.showOptionDialog(myList.getTopLevelAncestor(),
+        int answer = JOptionPane.showOptionDialog(this.getTopLevelAncestor(),
                 "Replace list or add to current location?",
                 "Import file",
                 JOptionPane.YES_NO_CANCEL_OPTION,
@@ -221,18 +222,18 @@ public class DnDList extends JList<ListItem> {
                 while((line = fileReader.readLine()) != null)
                     if(!line.equals(""))
                         listModel.add(endPosition++, new ListItem(line.replace("\\", "/")));
-            } catch (FileNotFoundException e1) {
-                e1.printStackTrace();
+            } catch (FileNotFoundException e) {
+            	GUIMediator.model().sendDebugMessage(e);
             } catch (IOException e) {
-                e.printStackTrace();
+                GUIMediator.model().sendDebugMessage(e);
             }
         }
         
         if(listModel.size()>0)
-            myList.setSelectionInterval(startPosition, endPosition-1);
+            this.setSelectionInterval(startPosition, endPosition-1);
         
-        myList.scrollRectToVisible(
-            myList.getCellBounds(myList.getMinSelectionIndex(), myList.getMaxSelectionIndex())
+        this.scrollRectToVisible(
+            this.getCellBounds(this.getMinSelectionIndex(), this.getMaxSelectionIndex())
         );
         
     }

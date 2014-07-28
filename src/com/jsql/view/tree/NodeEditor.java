@@ -57,7 +57,9 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
                     if(componentRenderer instanceof JCheckBox){
                         ((JCheckBox)componentRenderer).addActionListener(new ActionCheckUncheck(nodeData, currentNode));
                     }
-                }catch(Exception e){}
+                }catch(Exception e){
+                	GUIMediator.model().sendDebugMessage(e);
+                }
             }
         }
 
@@ -121,18 +123,13 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
         if (e.isPopupTrigger()){
             JTree tree = (JTree)e.getSource();
             TreePath path = tree.getPathForLocation(e.getX(), e.getY());
-            if (path == null)
-                return;
+            if (path == null) return;
 
-            final DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+            DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
 
             if (currentTableNode.getUserObject() instanceof NodeModel) {
-                final NodeModel currentTableModel = (NodeModel) currentTableNode.getUserObject();
-                
-                if((currentTableModel.isDatabase() && !currentTableModel.hasBeenSearched && currentTableModel.isRunning) ||
-                      (currentTableModel.isTable() && (currentTableModel.hasBeenSearched || 
-                        !currentTableModel.hasBeenSearched && currentTableModel.isRunning))){
-                	
+                NodeModel currentTableModel = (NodeModel) currentTableNode.getUserObject();
+                if(currentTableModel.verifyShowPopup()){
                 	currentTableModel.showPopup(currentTableNode, path, e.getX(), e.getY());
                 }
             }

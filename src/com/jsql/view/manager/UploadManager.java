@@ -11,7 +11,6 @@
 package com.jsql.view.manager;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -20,8 +19,6 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -33,45 +30,24 @@ import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.component.RoundScroller;
+import com.jsql.view.component.JScrollPanePixelBorder;
 import com.jsql.view.component.popupmenu.JPopupTextField;
-import com.jsql.view.dnd.list.DnDList;
-import com.jsql.view.dnd.list.ListItem;
+import com.jsql.view.list.dnd.DnDList;
 
 /**
  * Manager for uploading PHP webshell to the host
  */
 @SuppressWarnings("serial")
-public class UploadManager extends JPanel{
-    /**
-     * Contains the paths of webshell.
-     */
-    private DnDList folderPaths;
-
-    /**
-     * Starts the upload process.
-     */
-    private JButton run;
-
-    private JLabel loader = new JLabel(GUITools.SPINNER);
-
-    /**
-     * Display the FILE privilege of current user.
-     */
-    private JLabel privilege;
-
-    /**
-     * Text of the button that start the upload process.
-     * Used to get back the default text after a search (defaultText->"Stop"->defaultText).
-     */
-    private String defaultText = "Choose a file";
+public class UploadManager extends ListManager{
 
     /**
      * Build the manager panel.
      * @param gui The main frame
      */
     public UploadManager(){
-        super(new BorderLayout());
+        this.setLayout(new BorderLayout());
+        
+        this.setDefaultText("Choose a file");
 
         ArrayList<String> pathsList = new ArrayList<String>();
         pathsList.add("/var/www/html/defaut/");
@@ -81,14 +57,20 @@ public class UploadManager extends JPanel{
         pathsList.add("/home/www/");
         pathsList.add("E:/Outils/EasyPHP-5.3.9/www/");
 
-        folderPaths = new DnDList(pathsList);
-        this.add(new RoundScroller(folderPaths), BorderLayout.CENTER);
+        listPaths = new DnDList(pathsList);
+        this.add(new JScrollPanePixelBorder(1,1,0,0,listPaths), BorderLayout.CENTER);
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
 
+        JPanel urlLine = new JPanel(new BorderLayout());
+
         JLabel label = new JLabel("[Optional] URL to the upload directory:");
-        label.setAlignmentX(Component.CENTER_ALIGNMENT); // Works only for BoxLayout
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+
+        urlLine.setBorder(BorderFactory.createCompoundBorder(
+        		BorderFactory.createMatteBorder(0,1,0,0,GUITools.COMPONENT_BORDER), 
+        		BorderFactory.createEmptyBorder(1, 1, 1, 1)));
 
         final JPopupTextField shellURL = new JPopupTextField();
         String tooltip = "<html><b>How to use</b><br>" +
@@ -100,9 +82,14 @@ public class UploadManager extends JPanel{
                 "is http://site.com/another/path/ (because of alias or url rewriting for example).</i></html>";
         shellURL.setToolTipText(tooltip);
         shellURL.setBorder(GUITools.BLU_ROUND_BORDER);
+        urlLine.add(shellURL);
+        urlLine.add(label, BorderLayout.NORTH);
 
         JPanel lastLine = new JPanel();
         lastLine.setLayout( new BoxLayout(lastLine, BoxLayout.X_AXIS) );
+        lastLine.setBorder(BorderFactory.createCompoundBorder(
+        		BorderFactory.createMatteBorder(0,1,0,0,GUITools.COMPONENT_BORDER), 
+        		BorderFactory.createEmptyBorder(1, 0, 1, 1)));
 
         run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/add.png")));
         run.setToolTipText("<html><b>Select folder(s) in which uploader is created, then choose a file to upload</b><br>" +
@@ -110,13 +97,13 @@ public class UploadManager extends JPanel{
                 "<i>If necessary, you must set the URL of uploader directory (see note on text component).</i>" +
                 "</html>");
         run.setEnabled(false);
-        run.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(2, 0, 0, 0, GUITools.DEFAULT_BACKGROUND),
-                GUITools.BLU_ROUND_BORDER));
+        
+        run.setBorder(GUITools.BLU_ROUND_BORDER);
+        
         run.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if(folderPaths.getSelectedValuesList().size() == 0){
+                if(listPaths.getSelectedValuesList().size() == 0){
                 	GUIMediator.model().sendErrorMessage("Select at least one directory");
                     return;
                 }
@@ -126,7 +113,7 @@ public class UploadManager extends JPanel{
                 
                 int returnVal = filechooser.showOpenDialog(GUIMediator.gui());
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    for(final Object path: folderPaths.getSelectedValuesList()){
+                    for(final Object path: listPaths.getSelectedValuesList()){
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -157,63 +144,8 @@ public class UploadManager extends JPanel{
         lastLine.add(Box.createHorizontalGlue());
         lastLine.add(run);
 
-        southPanel.add(label);
-        southPanel.add(shellURL);
+        southPanel.add(urlLine);
         southPanel.add(lastLine);
         this.add(southPanel, BorderLayout.SOUTH);
-    }
-
-    /**
-     * Add a new string to the list if it's not a duplicate.
-     * @param element The string to add to the list
-     */
-    public void addToList(String element){
-        boolean found = false;
-        for (int i = 0;i < ((DefaultListModel<ListItem>)folderPaths.getModel()).size();i++){
-            if (((DefaultListModel<ListItem>)folderPaths.getModel()).get(i).toString().equals(element)) {
-                found = true;
-            }
-        }
-        if(!found){
-            ListItem v = new ListItem(element);
-            ((DefaultListModel<ListItem>)folderPaths.getModel()).addElement(v);
-        }
-    }
-
-    /**
-     * Hide the loader icon.
-     */
-    public void hideLoader(){
-        loader.setVisible(false);
-    }
-
-    /**
-     * Unselect every element of the list.
-     */
-    public void clearSelection(){
-        folderPaths.clearSelection();
-    }
-
-    /**
-     * Enable or disable the button.
-     * @param i The new state of the button
-     */
-    public void setButtonEnable(boolean a){
-        run.setEnabled(a);
-    }
-
-    /**
-     * Display another icon to the Privilege label.
-     * @param i The new icon
-     */
-    public void changeIcon(Icon i){
-        privilege.setIcon(i);
-    }
-
-    /**
-     * Restore the default text to the button after a search.
-     */
-    public void restoreButtonText(){
-        run.setText(defaultText);
     }
 }

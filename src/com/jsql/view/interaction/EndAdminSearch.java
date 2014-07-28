@@ -15,7 +15,7 @@ import com.jsql.view.GUIMediator;
 /**
  * End the refreshing of administration page search button
  */
-public class EndAdminSearch implements InteractionCommand{
+public class EndAdminSearch implements IInteractionCommand{
     /**
      * @param interactionParams
      */
@@ -27,7 +27,7 @@ public class EndAdminSearch implements InteractionCommand{
      */
     public void execute(){
         GUIMediator.gui().getOutputPanel().adminPageManager.restoreButtonText();
-        GUIMediator.gui().getOutputPanel().adminPageManager.enableButton(true);
+        GUIMediator.gui().getOutputPanel().adminPageManager.setButtonEnable(true);
         GUIMediator.gui().getOutputPanel().adminPageManager.hideLoader();
     }
 }

@@ -24,6 +24,8 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
@@ -56,7 +58,7 @@ import com.jsql.view.GUIMediator;
  * Model in charge of injection, MVC functionalities are provided by ModelObservable
  */
 public class InjectionModel extends ModelObservable {
-    public final static String jSQLVersion = "0.6";
+    public final static String JSQLVERSION = "0.6";
 
     public String insertionCharacter;       // i.e, -1 in "[...].php?id=-1 union select[...]"
     public String firstSuccessPageSource;       // HTML source of page successfully responding to multiple fileds selection (select 1,2,3,...)
@@ -84,16 +86,16 @@ public class InjectionModel extends ModelObservable {
     public boolean isProxyfied = false;
 
     public IInjectionStrategy injectionStrategy;
-    public BlindStrategy blindStrategy = new BlindStrategy(this);
-    public ErrorbasedStrategy errorbasedStrategy = new ErrorbasedStrategy(this);
-    public NormalStrategy normalStrategy = new NormalStrategy(this);
-    public TimeStrategy timeStrategy = new TimeStrategy(this);
+    public BlindStrategy blindStrategy = new BlindStrategy();
+    public ErrorbasedStrategy errorbasedStrategy = new ErrorbasedStrategy();
+    public NormalStrategy normalStrategy = new NormalStrategy();
+    public TimeStrategy timeStrategy = new TimeStrategy();
 
     public boolean isInjectionBuilt = false;     // Allow to directly start an injection after a failed one
     // without asking the user 'Start a new injection?'
 
-    public RessourceAccessObject rao = new RessourceAccessObject(this);
-    public DataAccessObject dao = new DataAccessObject(this);
+    public RessourceAccessObject rao = new RessourceAccessObject();
+    public DataAccessObject dao = new DataAccessObject();
     
     public int securitySteps = 0;           // Current evasion step, 0 is 'no evasion'
 
@@ -171,7 +173,7 @@ public class InjectionModel extends ModelObservable {
 
             // Define insertionCharacter, i.e, -1 in "[...].php?id=-1 union select[...]",
             this.sendMessage("Get insertion character...");
-            this.insertionCharacter = new Stoppable_getInsertionCharacter(this).begin();
+            this.insertionCharacter = new Stoppable_getInsertionCharacter().begin();
 
             // Test each injection methods: time, blind, error, normal
             timeStrategy.checkApplicability();
@@ -221,7 +223,7 @@ public class InjectionModel extends ModelObservable {
             dao.getDBInfos();
 
             // Stop injection if database is too old
-            if(versionDB.startsWith("4")||versionDB.startsWith("3"))
+            if(versionDB.charAt(0) == '4' || versionDB.charAt(0) == '3')
                 throw new PreparationException("Old database, automatic search is not possible");
 
             // Get the databases
@@ -247,61 +249,57 @@ public class InjectionModel extends ModelObservable {
      * in the source page
      */
     private class Stoppable_getInsertionCharacter extends Stoppable{
-        public Stoppable_getInsertionCharacter(InjectionModel model) {
-            super(model);
-        }
-
         @Override
         public String action(Object... args) throws PreparationException, StoppableException {
             // Has the url a query string?
-            if( model.method.equalsIgnoreCase("GET") && (model.getData == null || model.getData.equals("")) ){
+            if( GUIMediator.model().method.equalsIgnoreCase("GET") && (GUIMediator.model().getData == null || GUIMediator.model().getData.equals("")) ){
                 throw new PreparationException("No query string");
             // Is the query string well formed?
-            }else if( model.method.equalsIgnoreCase("GET") && model.getData.matches("[^\\w]*=.*") ){
+            }else if( GUIMediator.model().method.equalsIgnoreCase("GET") && GUIMediator.model().getData.matches("[^\\w]*=.*") ){
                 throw new PreparationException("Incorrect query string");
-            }else if( model.method.equalsIgnoreCase("POST") && model.postData.indexOf("=")<0 ){
+            }else if( GUIMediator.model().method.equalsIgnoreCase("POST") && GUIMediator.model().postData.indexOf("=")<0 ){
                 throw new PreparationException("Incorrect POST datas");
-            }else if( model.method.equalsIgnoreCase("COOKIE") && model.cookieData.indexOf("=")<0 ){
+            }else if( GUIMediator.model().method.equalsIgnoreCase("COOKIE") && GUIMediator.model().cookieData.indexOf("=")<0 ){
                 throw new PreparationException("Incorrect COOKIE datas");
-            }else if( !model.headerData.equals("") && model.headerData.indexOf(":")<0 ){
+            }else if( !GUIMediator.model().headerData.equals("") && GUIMediator.model().headerData.indexOf(":")<0 ){
                 throw new PreparationException("Incorrect HEADER datas");
             // Parse query information: url=>everything before the sign '=',
             // start of query string=>everything after '='
-            }else if( model.method.equalsIgnoreCase("GET") && !model.getData.matches(".*=$") ){
-                Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(model.getData);
+            }else if( GUIMediator.model().method.equalsIgnoreCase("GET") && !GUIMediator.model().getData.matches(".*=$") ){
+                Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(GUIMediator.model().getData);
                 regexSearch.find();
                 try{
-                    model.getData = regexSearch.group(1);
+                    GUIMediator.model().getData = regexSearch.group(1);
                     return regexSearch.group(2);
                 }catch(IllegalStateException e){
                     throw new PreparationException("Incorrect GET format");
                 }
             // Parse post information
-            }else if( model.method.equalsIgnoreCase("POST") && !model.postData.matches(".*=$") ){
-                Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(model.postData);
+            }else if( GUIMediator.model().method.equalsIgnoreCase("POST") && !GUIMediator.model().postData.matches(".*=$") ){
+                Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(GUIMediator.model().postData);
                 regexSearch.find();
                 try{
-                    model.postData = regexSearch.group(1);
+                    GUIMediator.model().postData = regexSearch.group(1);
                     return regexSearch.group(2);
                 }catch(IllegalStateException e){
                     throw new PreparationException("Incorrect POST format");
                 }
             // Parse cookie information
-            }else if( model.method.equalsIgnoreCase("COOKIE") && !model.cookieData.matches(".*=$") ){
-                Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(model.cookieData);
+            }else if( GUIMediator.model().method.equalsIgnoreCase("COOKIE") && !GUIMediator.model().cookieData.matches(".*=$") ){
+                Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(GUIMediator.model().cookieData);
                 regexSearch.find();
                 try{
-                    model.cookieData = regexSearch.group(1);
+                    GUIMediator.model().cookieData = regexSearch.group(1);
                     return regexSearch.group(2);
                 }catch(IllegalStateException e){
                     throw new PreparationException("Incorrect Cookie format");
                 }
             // Parse header information
-            }else if( model.method.equalsIgnoreCase("HEADER") && !model.headerData.matches(".*:$") ){
-                Matcher regexSearch = Pattern.compile("(.*:)(.*)").matcher(model.headerData);
+            }else if( GUIMediator.model().method.equalsIgnoreCase("HEADER") && !GUIMediator.model().headerData.matches(".*:$") ){
+                Matcher regexSearch = Pattern.compile("(.*:)(.*)").matcher(GUIMediator.model().headerData);
                 regexSearch.find();
                 try{
-                    model.headerData = regexSearch.group(1);
+                    GUIMediator.model().headerData = regexSearch.group(1);
                     return regexSearch.group(2);
                 }catch(IllegalStateException e){
                     throw new PreparationException("Incorrect Header format");
@@ -331,11 +329,9 @@ public class InjectionModel extends ModelObservable {
                         return currentCallable.tag; // the correct character
                     }
                 } catch (InterruptedException e) {
-                    this.model.sendDebugMessage(e);
-                    model.sendErrorMessage("Current thread was interrupted while waiting.");
+                    GUIMediator.model().sendDebugMessage(e);
                 } catch (ExecutionException e) {
-                    this.model.sendDebugMessage(e);
-                    model.sendErrorMessage("Computation threw an exception.");
+                    GUIMediator.model().sendDebugMessage(e);
                 }
             }
 
@@ -349,10 +345,6 @@ public class InjectionModel extends ModelObservable {
      * Parallelizes the search, provides the stop capability
      */
     public class Stoppable_getInitialQuery extends Stoppable{
-        public Stoppable_getInitialQuery(InjectionModel model) {
-            super(model);
-        }
-
         @Override
         public String action(Object... args) throws PreparationException, StoppableException {
             // Parallelize the search
@@ -381,7 +373,7 @@ public class InjectionModel extends ModelObservable {
                     
                     // Found a correct mark 1337[index]7331 in the source
                     if(Pattern.compile(".*1337\\d+7331.*", Pattern.DOTALL).matcher(currentCallable.content).matches()){
-                        model.firstSuccessPageSource = currentCallable.content;
+                    	GUIMediator.model().firstSuccessPageSource = currentCallable.content;
                         initialQuery = currentCallable.url.replaceAll("0%2b1","1");
                         requestFound = true;
                     // Else add a new index
@@ -395,11 +387,9 @@ public class InjectionModel extends ModelObservable {
                 taskExecutor.shutdown();
                 taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
-                this.model.sendDebugMessage(e);
-                model.sendErrorMessage("Current thread was interrupted while waiting.");
+            	GUIMediator.model().sendDebugMessage(e);
             } catch (ExecutionException e) {
-                this.model.sendDebugMessage(e);
-                model.sendErrorMessage("Computation threw an exception.");
+            	GUIMediator.model().sendDebugMessage(e);
             }
 
             if(requestFound)
@@ -487,14 +477,13 @@ public class InjectionModel extends ModelObservable {
      * The process can be interrupted by the user (stop/pause)
      */
     public class Stoppable_loopIntoResults extends Stoppable{
-        public Stoppable_loopIntoResults(InjectionModel model) {
-            super(model);
-        }
-        public Stoppable_loopIntoResults(InjectionModel model, Interruptable interruptable){
-            super(model, interruptable);
+    	public Stoppable_loopIntoResults() {}
+    	
+        public Stoppable_loopIntoResults(Interruptable interruptable){
+            super(interruptable);
         }
 
-        @Override
+		@Override
         public String action(Object... args) throws PreparationException, StoppableException {
             String initialSQLQuery = (String) args[0];
             String[] sourcePage = (String[]) args[1];
@@ -777,16 +766,17 @@ public class InjectionModel extends ModelObservable {
             this.sendErrorMessage("Error during connection: " + e.getMessage());
         }
 
-        // Start the log informations
-        String logs = "\n";
-
+        Map<String, Object> msgHeader = new HashMap<String, Object>();
+        msgHeader.put("Url", urlUltimate);
+        
         /**
          * Build the COOKIE and logs infos
          * #Need primary evasion
          */
         if(!this.cookieData.equals("")){
             connection.addRequestProperty("Cookie", this.buildQuery("COOKIE", cookieData, useVisibleIndex, dataInjection));
-            logs += "\n"+"Cookie: " + this.buildQuery("COOKIE", cookieData, useVisibleIndex, dataInjection);
+            
+            msgHeader.put("Cookie", this.buildQuery("COOKIE", cookieData, useVisibleIndex, dataInjection));
         }
 
         /**
@@ -801,7 +791,8 @@ public class InjectionModel extends ModelObservable {
                     this.sendErrorMessage("Unsupported header encoding " + e.getMessage());
                 }
             }
-            logs += "\n"+"Header: " + this.buildQuery("HEADER", headerData, useVisibleIndex, dataInjection);
+            
+            msgHeader.put("Header", this.buildQuery("HEADER", headerData, useVisibleIndex, dataInjection));
         }
 
         /**
@@ -818,8 +809,8 @@ public class InjectionModel extends ModelObservable {
                 dataOut.writeBytes(this.buildQuery("POST", postData, useVisibleIndex, dataInjection));
                 dataOut.flush();
                 dataOut.close();
-
-                logs += "\n"+"Post: " + this.buildQuery("POST", postData, useVisibleIndex, dataInjection);
+                
+                msgHeader.put("Post", this.buildQuery("POST", postData, useVisibleIndex, dataInjection));
             } catch (IOException e) {
                 this.sendErrorMessage("Error during POST connection " + e.getMessage());
             }
@@ -828,19 +819,20 @@ public class InjectionModel extends ModelObservable {
         /**
          * Add info and header response to the logs
          */
-        logs += "\n" + urlUltimate;
+        Map<String, String> msgResponse = new HashMap<String, String>();
         for (int i=0; ;i++) {
             String headerName = connection.getHeaderFieldKey(i);
             String headerValue = connection.getHeaderField(i);
             if (headerName == null && headerValue == null) break;
-
-            logs += "\n" + (headerName==null?"":headerName+": ") + headerValue;
+            
+            msgResponse.put(headerName == null ? "Method" : headerName, headerValue);
         }
+        msgHeader.put("Response", msgResponse);
 
         // Inform the view about the log infos
         Request request = new Request();
         request.setMessage("MessageHeader");
-        request.setParameters(logs);
+        request.setParameters(msgHeader);
         this.interact(request);
 
         // Request the web page to the server
@@ -935,7 +927,7 @@ public class InjectionModel extends ModelObservable {
     }
 
     public void sendWelcomeMessage() {
-        this.sendFirstMessage("-- jSQL Injection version "+ jSQLVersion +" --");
+        this.sendFirstMessage("-- jSQL Injection version "+ JSQLVERSION +" --");
     }
 
 	public void applyStrategy(IInjectionStrategy injectionStrategy) {

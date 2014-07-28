@@ -16,7 +16,7 @@ import com.jsql.view.GUITools;
 /**
  * Mark the injection as invulnerable to a blind injection
  */
-public class MarkBlindStrategy implements InteractionCommand{
+public class MarkBlindStrategy implements IInteractionCommand{
     /**
      * @param interactionParams
      */
@@ -27,6 +27,6 @@ public class MarkBlindStrategy implements InteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        GUITools.setUnderlined(GUIMediator.gui().getStatusPanel().labelBlind);
+        GUITools.setUnderlined(GUIMediator.status().labelBlind);
     }
 }

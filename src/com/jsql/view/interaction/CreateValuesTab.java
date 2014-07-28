@@ -19,7 +19,7 @@ import javax.swing.table.TableRowSorter;
 import com.jsql.model.bean.ElementDatabase;
 import com.jsql.tool.StringTool;
 import com.jsql.view.GUIMediator;
-import com.jsql.view.component.TabHeader;
+import com.jsql.view.tab.TabHeader;
 import com.jsql.view.table.ColumnComparator;
 import com.jsql.view.table.TablePanel;
 import com.jsql.view.tree.NodeModel;
@@ -27,7 +27,7 @@ import com.jsql.view.tree.NodeModel;
 /**
  * Create a new tab for the values
  */
-public class CreateValuesTab implements InteractionCommand{
+public class CreateValuesTab implements IInteractionCommand{
     // Array of column names, diplayed in header table
     private String[] columnNames;
 

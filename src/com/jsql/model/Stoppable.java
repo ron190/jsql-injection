@@ -12,6 +12,7 @@ package com.jsql.model;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
+import com.jsql.view.GUIMediator;
 
 /**
  * Runnable class, can stop preparation, whereas Interruptable also provides pause/resume.
@@ -20,17 +21,13 @@ import com.jsql.exception.StoppableException;
  */
 public abstract class Stoppable implements Runnable {
     
-    InjectionModel model;
-    
     Interruptable interruptable;
     
     private String errorResponse;
     
     private String threadResponse = "";
     
-    public Stoppable(InjectionModel model){
-        this.model = model;
-    }
+    public Stoppable(){}
     
     /**
      * Starting from the view, the controller calls selectDatabase() that creates an Interruptable,
@@ -40,9 +37,8 @@ public abstract class Stoppable implements Runnable {
      * @param model needed for accessing the stopFlag
      * @param interruptable pass it for the view pause/resume
      */
-    public Stoppable(InjectionModel model, Interruptable interruptable){
-        this.model = model;
-        this.interruptable = interruptable;
+    public Stoppable(Interruptable interruptable){
+    	this.interruptable = interruptable;
     }
 
     /**
@@ -51,7 +47,7 @@ public abstract class Stoppable implements Runnable {
      */
     public boolean shouldStop(){
         synchronized(this) {
-            return model.stopFlag;
+            return GUIMediator.model().stopFlag;
         }
     }
     
@@ -66,8 +62,7 @@ public abstract class Stoppable implements Runnable {
         try {
             t.join();
         } catch (InterruptedException e) {
-            this.model.sendDebugMessage(e);
-            model.sendErrorMessage("Current thread was interrupted while waiting.");
+        	GUIMediator.model().sendDebugMessage(e);
         }
         
         if(this.errorResponse != null){
@@ -83,7 +78,6 @@ public abstract class Stoppable implements Runnable {
      */
     @Override
     public void run() {
-        
         try {
             this.threadResponse = action();
         } catch (PreparationException e) {
@@ -91,7 +85,6 @@ public abstract class Stoppable implements Runnable {
         } catch (StoppableException e) {
             this.errorResponse = e.getMessage();
         }
-        
     }
     
     abstract String action(Object... args) throws PreparationException, StoppableException;

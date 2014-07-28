@@ -12,19 +12,19 @@ package com.jsql.view.terminal;
 
 import java.util.UUID;
 
-import com.jsql.model.InjectionModel;
+import com.jsql.view.GUIMediator;
 
 @SuppressWarnings("serial")
 public class SQLTerminal extends Terminal {
 
-	public SQLTerminal(InjectionModel model, UUID terminalID, String wbhPath, String... args) {
-        super(model, terminalID, wbhPath, "sql");
+	public SQLTerminal(UUID terminalID, String wbhPath, String... args) {
+        super(terminalID, wbhPath, "sql");
         this.args = args; 
     }
 
     @Override
     void action(String cmd, UUID terminalID, String wbhPath, String... arg) {
-        this.model.rao.executeSQLShell(cmd, terminalID, wbhPath, arg[0], arg[1]);
+    	GUIMediator.model().rao.executeSQLShell(cmd, terminalID, wbhPath, arg[0], arg[1]);
     }
 
 }

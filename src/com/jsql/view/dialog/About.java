@@ -22,7 +22,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -40,17 +43,18 @@ import javax.swing.KeyStroke;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
+import com.jsql.view.component.JScrollPanePixelBorder;
 import com.jsql.view.component.RoundBorder;
-import com.jsql.view.component.RoundScroller;
-import com.jsql.view.component.popupmenu.JPopupTextComponentMenu;
+import com.jsql.view.component.popupmenu.JPopupTextMenu;
 
 @SuppressWarnings("serial")
 public class About extends JDialog{
 	
     public JButton close = null;
-    RoundScroller scrollPane;
+    JScrollPanePixelBorder scrollPane;
 
     public About(){
         super(GUIMediator.gui(), "About jSQL Injection", Dialog.ModalityType.MODELESS);
@@ -106,12 +110,21 @@ public class About extends JDialog{
         // Contact info, use HTML text
         final JEditorPane text[] = new JEditorPane[1];
 		try {
-			text[0] = new JEditorPane(About.class.getResource("about.htm"));
+			text[0] = new JEditorPane();
+			text[0].setContentType("text/html");
+			
+            InputStream in = About.class.getResourceAsStream("about.htm");
+            String line, result = "";
+            BufferedReader reader = new BufferedReader(new InputStreamReader( in ));
+            while( (line = reader.readLine()) != null ) result += line;
+            reader.close();
+            
+            text[0].setText(result.replace("%JSQLVERSION%", InjectionModel.JSQLVERSION));
 		} catch (IOException e) {
 			GUIMediator.model().sendDebugMessage(e);
 		}
 
-		text[0].setComponentPopupMenu(new JPopupTextComponentMenu(text[0]));
+		text[0].setComponentPopupMenu(new JPopupTextMenu(text[0]));
 
         text[0].addMouseListener(new MouseAdapter() {
             @Override
@@ -147,7 +160,7 @@ public class About extends JDialog{
             }
         });
 
-        scrollPane = new RoundScroller(text[0]);
+        scrollPane = new JScrollPanePixelBorder(1, 1, 1, 0, text[0]);
         dialogPane.add(scrollPane, BorderLayout.CENTER);
 
         reinit();

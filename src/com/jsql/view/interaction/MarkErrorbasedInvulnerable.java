@@ -16,7 +16,7 @@ import com.jsql.view.GUITools;
 /**
  * Mark the injection as invulnerable to a error based injection
  */
-public class MarkErrorbasedInvulnerable implements InteractionCommand{
+public class MarkErrorbasedInvulnerable implements IInteractionCommand{
     /**
      * @param interactionParams
      */
@@ -27,6 +27,6 @@ public class MarkErrorbasedInvulnerable implements InteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-    	GUIMediator.gui().getStatusPanel().setErrorBasedIcon(GUITools.SQUARE_RED);
+    	GUIMediator.status().setErrorBasedIcon(GUITools.SQUARE_RED);
     }
 }
