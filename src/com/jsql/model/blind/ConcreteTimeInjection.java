@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import com.jsql.exception.PreparationException;
+import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 
 public class ConcreteTimeInjection extends AbstractBlindInjection {
@@ -33,16 +34,16 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
          *  Parallelize the call to the FALSE statements, it will use inject() from the model
          */
         ExecutorService executorFalseMark = Executors.newCachedThreadPool();
-        List<TimeCallable> listCallableFalse = new ArrayList<TimeCallable>();
+        List<IBlindCallable> listCallableFalse = new ArrayList<IBlindCallable>();
         for (String urlTest: falseTest){
             listCallableFalse.add(new TimeCallable(urlTest));
         }
         // Begin the url requests
-        List<Future<TimeCallable>> listFalseMark = null;
+        List<Future<IBlindCallable>> listFalseMark = null;
         try {
             listFalseMark = executorFalseMark.invokeAll(listCallableFalse);
         } catch (InterruptedException e) {
-        	GUIMediator.model().sendDebugMessage(e);
+        	InjectionModel.logger.error(e, e);
         }
         executorFalseMark.shutdown();
 
@@ -51,7 +52,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
          * Allow the user to stop the loop
          */
         try {
-            for(Future<TimeCallable> falseMark: listFalseMark){
+            for(Future<IBlindCallable> falseMark: listFalseMark){
                 if(GUIMediator.model().stopFlag)return;
                 if(falseMark.get().isTrue()){
                     isTimeInjectable = false;
@@ -59,9 +60,9 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
                 }
             }
         } catch (InterruptedException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         } catch (ExecutionException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
 
         /**
@@ -73,11 +74,11 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
             listCallableTrue.add(new TimeCallable(urlTest));
         }
         // Begin the url requests
-        List<Future<TimeCallable>> listTrueMark;
+        List<Future<IBlindCallable>> listTrueMark;
         try {
             listTrueMark = executorTrueMark.invokeAll(listCallableTrue);
         } catch (InterruptedException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
             return;
         }
         executorTrueMark.shutdown();
@@ -87,7 +88,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
          * Allow the user to stop the loop
          */
         try {
-            for(Future<TimeCallable> falseMark: listTrueMark){
+            for(Future<IBlindCallable> falseMark: listTrueMark){
                 if(GUIMediator.model().stopFlag)return;
                 if(!falseMark.get().isTrue()){
                     isTimeInjectable = false;
@@ -95,19 +96,19 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
                 }
             }
         } catch (InterruptedException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         } catch (ExecutionException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
     }
     
 	@Override
-	public Callable getCallable(String string, int indexCharacter, boolean iS_LENGTH_TEST) {
+	public Callable<IBlindCallable> getCallable(String string, int indexCharacter, boolean iS_LENGTH_TEST) {
 		return new TimeCallable(string, indexCharacter, iS_LENGTH_TEST);
 	}
 
 	@Override
-	public Callable getCallable(String string, int indexCharacter, int bit) {
+	public Callable<IBlindCallable> getCallable(String string, int indexCharacter, int bit) {
 		return new TimeCallable(string, indexCharacter, bit);
 	}
 
@@ -124,10 +125,16 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
         try {
             blindTest.call();
         } catch (Exception e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
 
         return isTimeInjectable && blindTest.isTrue();
+	}
+
+	@Override
+	public String getInfoMessage() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

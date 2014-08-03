@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -30,7 +30,7 @@ public class MessageBinary implements IInteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-    	GUIMediator.gui().binaryArea.append(text);
-        GUIMediator.gui().binaryArea.setCaretPosition(GUIMediator.gui().binaryArea.getDocument().getLength());
+    	GUIMediator.bottomPanel().binaryArea.append(text);
+        GUIMediator.bottomPanel().binaryArea.setCaretPosition(GUIMediator.bottomPanel().binaryArea.getDocument().getLength());
     }
 }

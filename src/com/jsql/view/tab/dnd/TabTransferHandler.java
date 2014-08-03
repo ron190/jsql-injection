@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -23,14 +23,15 @@ import javax.activation.DataHandler;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.model.InjectionModel;
+import com.jsql.view.panel.RightPaneAdapter;
 
 @SuppressWarnings("serial")
 public class TabTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
     public TabTransferHandler() {
 //        System.out.println("TabTransferHandler");
-        localObjectFlavor = new ActivationDataFlavor(DnDTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "DnDTabbedPane");
+        localObjectFlavor = new ActivationDataFlavor(RightPaneAdapter.class, DataFlavor.javaJVMLocalObjectMimeType, "RightPaneAdapter");
     }
     private DnDTabbedPane source = null;
     @Override protected Transferable createTransferable(JComponent c) {
@@ -49,7 +50,7 @@ public class TabTransferHandler extends TransferHandler {
         Point pt = tdl.getDropPoint();
         DnDTabbedPane target = (DnDTabbedPane)support.getComponent();
         target.autoScrollTest(pt);
-        DnDTabbedPane.DropLocation dl = target.dropLocationForPoint(pt);
+        DnDTabbedPane.DropLocation dl = target.dropLocationForPointLocal(pt);
         int idx = dl.getIndex();
         boolean isDropable = false;
 
@@ -82,12 +83,12 @@ public class TabTransferHandler extends TransferHandler {
         if(isDropable) {
             support.setShowDropLocation(true);
             dl.setDropable(true);
-            target.setDropLocation(dl, null, true);
+            target.setDropLocationLocal(dl, null, true);
             return true;
         }else{
             support.setShowDropLocation(false);
             dl.setDropable(false);
-            target.setDropLocation(dl, null, false);
+            target.setDropLocationLocal(dl, null, false);
             return false;
         }
     }
@@ -152,16 +153,16 @@ public class TabTransferHandler extends TransferHandler {
             }
             return true;
         }catch(UnsupportedFlavorException e) {
-        	GUIMediator.model().sendDebugMessage(e);
+        	InjectionModel.logger.error(e, e);
         }catch(IOException e) {
-        	GUIMediator.model().sendDebugMessage(e);
+        	InjectionModel.logger.error(e, e);
         }
         return false;
     }
     @Override protected void exportDone(JComponent c, Transferable data, int action) {
 //        System.out.println("exportDone");
         DnDTabbedPane src = (DnDTabbedPane)c;
-        src.setDropLocation(null, null, false);
+        src.setDropLocationLocal(null, null, false);
         src.repaint();
         glassPane.setVisible(false);
         src.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));

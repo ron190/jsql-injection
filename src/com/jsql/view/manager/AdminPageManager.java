@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -27,10 +27,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.component.JScrollPanePixelBorder;
 import com.jsql.view.list.dnd.DnDList;
+import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 
 /**
  * Manager to display webpages frequently used as backoffice administration.
@@ -50,7 +51,7 @@ public class AdminPageManager extends ListManager{
             while( (line = reader.readLine()) != null ) pathList.add(line);
             reader.close();
         } catch (IOException e) {
-        	GUIMediator.model().sendDebugMessage(e);
+        	InjectionModel.logger.error(e, e);
         }
 
         final DnDList listFile = new DnDList(pathList);
@@ -79,7 +80,7 @@ public class AdminPageManager extends ListManager{
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if(listFile.getSelectedValuesList().size() == 0){
-                	GUIMediator.model().sendErrorMessage("Select at least one admin page");
+                	InjectionModel.logger.warn("Select at least one admin page");
                     return;
                 }
                 new Thread(new Runnable() {
@@ -88,7 +89,7 @@ public class AdminPageManager extends ListManager{
                         if(run.getText().equals(defaultText)){
                             run.setText("Stop");
                             loader.setVisible(true);
-                            GUIMediator.model().rao.getAdminPage(GUIMediator.top().textGET.getText(), listFile.getSelectedValuesList());
+                            GUIMediator.model().rao.getAdminPage(GUIMediator.top().addressBar.getText(), listFile.getSelectedValuesList());
                         }else{
                         	GUIMediator.model().rao.endAdminSearch = true;
                             run.setEnabled(false);

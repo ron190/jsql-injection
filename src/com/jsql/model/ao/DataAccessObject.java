@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -17,12 +17,13 @@ import java.util.regex.Pattern;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.Interruptable;
+import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.Column;
 import com.jsql.model.bean.Database;
 import com.jsql.model.bean.ElementDatabase;
 import com.jsql.model.bean.Request;
 import com.jsql.model.bean.Table;
+import com.jsql.model.interruptable.Interruptable;
 import com.jsql.tool.StringTool;
 import com.jsql.view.GUIMediator;
 
@@ -33,7 +34,7 @@ public class DataAccessObject {
      * => version{%}database{%}user{%}CURRENT_USER
      */
     public void getDBInfos() throws PreparationException, StoppableException {
-    	GUIMediator.model().sendMessage("Fetching informations...");
+    	InjectionModel.logger.info("Fetching informations...");
         
         String[] sourcePage = {""};
 
@@ -82,7 +83,7 @@ public class DataAccessObject {
      * The process can be stopped by the user
      */
     public void listDatabases() throws PreparationException, StoppableException {
-    	GUIMediator.model().sendMessage("Fetching databases...");
+    	InjectionModel.logger.info("Fetching databases...");
         
         String[] sourcePage = {""};
         String hexResult = GUIMediator.model().new Stoppable_loopIntoResults().action(
@@ -404,8 +405,8 @@ public class DataAccessObject {
                 }
             }
             if(isIncomplete){
-                GUIMediator.model().sendErrorMessage("Max string length reached on the distant MySQL server, the row number "+(indexRow+1)+" is incomplete:\n" +
-                        StringTool.join(listValues.get(indexRow).toArray(new String[listValues.get(indexRow).size()]), ", ") );
+                InjectionModel.logger.warn("Max string length reached on the distant MySQL server, the row number "+(indexRow+1)+" is incomplete:" );
+                InjectionModel.logger.warn(StringTool.join(listValues.get(indexRow).toArray(new String[listValues.get(indexRow).size()]), ", ") );
             }
         }
 

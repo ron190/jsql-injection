@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -27,21 +27,21 @@ public class MarkFileSystemInvulnerable implements IInteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        GUIMediator.gui().getOutputPanel().fileManager.changeIcon(GUITools.SQUARE_RED);
-        GUIMediator.gui().getOutputPanel().fileManager.setButtonEnable(true);
-        GUIMediator.gui().getOutputPanel().fileManager.restoreButtonText();
-        GUIMediator.gui().getOutputPanel().fileManager.hideLoader();
+        GUIMediator.left().fileManager.changeIcon(GUITools.SQUARE_RED);
+        GUIMediator.left().fileManager.setButtonEnable(true);
+        GUIMediator.left().fileManager.restoreButtonText();
+        GUIMediator.left().fileManager.hideLoader();
         
-        GUIMediator.gui().getOutputPanel().shellManager.changeIcon(GUITools.SQUARE_RED);
-        GUIMediator.gui().getOutputPanel().shellManager.setButtonEnable(true);
-        GUIMediator.gui().getOutputPanel().shellManager.restoreButtonText();
+        GUIMediator.left().shellManager.changeIcon(GUITools.SQUARE_RED);
+        GUIMediator.left().shellManager.setButtonEnable(true);
+        GUIMediator.left().shellManager.restoreButtonText();
         
-        GUIMediator.gui().getOutputPanel().uploadManager.changeIcon(GUITools.SQUARE_RED);
-        GUIMediator.gui().getOutputPanel().uploadManager.setButtonEnable(true);
-        GUIMediator.gui().getOutputPanel().uploadManager.restoreButtonText();
+        GUIMediator.left().uploadManager.changeIcon(GUITools.SQUARE_RED);
+        GUIMediator.left().uploadManager.setButtonEnable(true);
+        GUIMediator.left().uploadManager.restoreButtonText();
         
-        GUIMediator.gui().getOutputPanel().sqlShellManager.changeIcon(GUITools.SQUARE_RED);
-        GUIMediator.gui().getOutputPanel().sqlShellManager.setButtonEnable(true);
-        GUIMediator.gui().getOutputPanel().sqlShellManager.restoreButtonText();
+        GUIMediator.left().sqlShellManager.changeIcon(GUITools.SQUARE_RED);
+        GUIMediator.left().sqlShellManager.setButtonEnable(true);
+        GUIMediator.left().sqlShellManager.restoreButtonText();
     }
 }

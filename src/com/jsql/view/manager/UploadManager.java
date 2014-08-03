@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -24,15 +24,17 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
+import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.component.JScrollPanePixelBorder;
-import com.jsql.view.component.popupmenu.JPopupTextField;
 import com.jsql.view.list.dnd.DnDList;
+import com.jsql.view.scrollpane.JScrollPanePixelBorder;
+import com.jsql.view.textcomponent.JPopupTextField;
 
 /**
  * Manager for uploading PHP webshell to the host
@@ -72,7 +74,7 @@ public class UploadManager extends ListManager{
         		BorderFactory.createMatteBorder(0,1,0,0,GUITools.COMPONENT_BORDER), 
         		BorderFactory.createEmptyBorder(1, 1, 1, 1)));
 
-        final JPopupTextField shellURL = new JPopupTextField();
+        final JTextField shellURL = new JPopupTextField().getProxy();
         String tooltip = "<html><b>How to use</b><br>" +
                 "- Leave blank if the file from address bar is located in selected folder(s), webshell will also be in it.<br>" +
                 "<i>E.g Address bar is set with http://127.0.0.1/simulate_get.php?lib=, file simulate_get.php<br>" +
@@ -104,7 +106,7 @@ public class UploadManager extends ListManager{
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if(listPaths.getSelectedValuesList().size() == 0){
-                	GUIMediator.model().sendErrorMessage("Select at least one directory");
+                	InjectionModel.logger.warn("Select at least one directory");
                     return;
                 }
 
@@ -122,9 +124,9 @@ public class UploadManager extends ListManager{
                                     loader.setVisible(true);
                                     GUIMediator.model().rao.upload(path.toString(), shellURL.getText(), file);
                                 }catch (PreparationException e){
-                                	GUIMediator.model().sendErrorMessage("Can't upload file "+ file.getName() +" to " + path);
+                                	InjectionModel.logger.warn("Can't upload file "+ file.getName() +" to " + path);
                                 }catch (StoppableException e){
-                                	GUIMediator.model().sendErrorMessage("Can't upload file "+ file.getName() +" to " + path);
+                                	InjectionModel.logger.warn("Can't upload file "+ file.getName() +" to " + path);
                                 }
                             }
                         }, "upload").start();

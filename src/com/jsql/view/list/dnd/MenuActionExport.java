@@ -10,6 +10,7 @@ import java.io.PrintStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 
 public class MenuActionExport implements ActionListener {
@@ -59,7 +60,7 @@ public class MenuActionExport implements ActionListener {
             
             out.close();
         } catch (FileNotFoundException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
     }
 }

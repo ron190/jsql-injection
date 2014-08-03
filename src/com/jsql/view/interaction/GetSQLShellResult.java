@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -87,8 +87,8 @@ public class GetSQLShellResult implements IInteractionCommand{
                 }
                 
                 if(!result.equals("")){
-                    StyleConstants.setFontFamily(terminal.style, "monospaced");
-                    StyleConstants.setFontSize(terminal.style, ((Font) UIManager.get("TextArea.font")).getSize()+1);
+                    StyleConstants.setFontFamily(terminal.getStyle(), "monospaced");
+                    StyleConstants.setFontSize(terminal.getStyle(), ((Font) UIManager.get("TextArea.font")).getSize()+1);
 
                     terminal.appendStyle("+");
                     for(Integer a1: ml){
@@ -112,8 +112,8 @@ public class GetSQLShellResult implements IInteractionCommand{
                     }
                     terminal.appendStyle("\n");
                     
-                    StyleConstants.setFontFamily(terminal.style, "monospaced");
-                    StyleConstants.setFontSize(terminal.style, ((Font) UIManager.get("TextArea.font")).getSize()+1);
+                    StyleConstants.setFontFamily(terminal.getStyle(), "monospaced");
+                    StyleConstants.setFontSize(terminal.getStyle(), ((Font) UIManager.get("TextArea.font")).getSize()+1);
                 }
             }
         }else if(result.indexOf("<SQLm>") > -1){

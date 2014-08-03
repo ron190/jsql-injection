@@ -12,9 +12,10 @@ import java.util.concurrent.TimeUnit;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.Interruptable;
-import com.jsql.model.Stoppable;
+import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.Request;
+import com.jsql.model.interruptable.Interruptable;
+import com.jsql.model.interruptable.Stoppable;
 import com.jsql.view.GUIMediator;
 
 public abstract class AbstractBlindInjection {
@@ -58,7 +59,7 @@ public abstract class AbstractBlindInjection {
                 try {
                     success = taskExecutor.awaitTermination(0, TimeUnit.SECONDS);
                 } catch (InterruptedException e) {
-                    GUIMediator.model().sendDebugMessage(e);
+                    InjectionModel.logger.error(e, e);
                 }
                 if (!success) {
                     // awaitTermination timed out, interrupt everyone
@@ -116,9 +117,9 @@ public abstract class AbstractBlindInjection {
                     }
                 }
             } catch (InterruptedException e) {
-                GUIMediator.model().sendDebugMessage(e);
+                InjectionModel.logger.error(e, e);
             } catch (ExecutionException e) {
-                GUIMediator.model().sendDebugMessage(e);
+                InjectionModel.logger.error(e, e);
             }
         }
 
@@ -127,7 +128,7 @@ public abstract class AbstractBlindInjection {
             taskExecutor.shutdown();
             taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
 
         // Build the complete final string from array of bits
@@ -146,4 +147,5 @@ public abstract class AbstractBlindInjection {
 	public abstract Callable<IBlindCallable> getCallable(String string, int indexCharacter, boolean iS_LENGTH_TEST);
 	public abstract Callable<IBlindCallable> getCallable(String string, int indexCharacter, int bit);
 	public abstract boolean isInjectable() throws PreparationException;
+	public abstract String getInfoMessage();
 }

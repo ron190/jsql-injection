@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -23,25 +23,27 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import com.jsql.view.GUITools;
-import com.jsql.view.component.RoundBorder;
+import com.jsql.view.ui.RoundBorder;
 
 /**
- * Model adding functional layer to the node, add information to tree node in term of injection process.
- * Used by renderer and editor.
- * @param <T> The database element for this node.
+ * Model for default item used on an empty tree.
  */
 public class NodeModelEmpty extends NodeModel{
-	
-    public NodeModelEmpty(String newObject){
-    	super(newObject);
+    
+    /**
+     * Flat node for empty tree.
+     * @param textNode
+     */
+    public NodeModelEmpty(String textNode){
+        super(textNode);
     }
     
     @Override
     public Component getComponent(JTree tree, Object nodeRenderer,
             boolean selected, boolean expanded, boolean leaf, int row,
             boolean hasFocus){
-    	DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
-    	JPanel emptyPanel = new JPanel(new BorderLayout());
+        DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
+        JPanel emptyPanel = new JPanel(new BorderLayout());
         JLabel text = new JLabel(currentNode.getUserObject().toString());
         emptyPanel.add(text);
         text.setBorder(new RoundBorder(4,1,false));
@@ -49,19 +51,29 @@ public class NodeModelEmpty extends NodeModel{
             if( selected ){
                 emptyPanel.setBackground( GUITools.SELECTION_BACKGROUND );
                 text.setBorder(new RoundBorder(4,1,true));
-            }else
+            }else{
                 emptyPanel.setBackground(Color.WHITE);
-            if(hasFocus)
-                text.setBorder(new RoundBorder(4,1,true));
-            else
-                text.setBorder(new RoundBorder(4,1,false));
+            }
+            text.setBorder(new RoundBorder(4,1,hasFocus));
         }
         return emptyPanel;
     }
 
-	@Override Icon getIcon(boolean leaf) {return null;}
-	@Override void runAction() {}
-	@Override void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {}
-	@Override void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j){}
-	@Override boolean verifyShowPopup() { return false;	}
+    @Override Icon getIcon(boolean leaf) {
+        // No icon for default node
+        return null;
+    }
+    @Override void runAction() {
+        // Not used
+    }
+    @Override void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {
+        // Not used
+    }
+    @Override void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j){
+        // Not used
+    }
+    @Override boolean verifyShowPopup() { 
+        // Not used
+        return false;
+    }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -40,10 +40,11 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 import javax.swing.plaf.ColorUIResource;
 
-import com.jsql.view.component.CleanMetalScrollBarUI;
-import com.jsql.view.component.CustomBasicComboBoxUI;
-import com.jsql.view.component.RoundBorder;
+import com.jsql.model.InjectionModel;
 import com.jsql.view.tab.CustomMetalTabbedPaneUI;
+import com.jsql.view.ui.CleanMetalScrollBarUI;
+import com.jsql.view.ui.CustomBasicComboBoxUI;
+import com.jsql.view.ui.RoundBorder;
 
 /**
  * Build default component appearence, keyboard shortcuts and icons.
@@ -143,6 +144,7 @@ public class GUITools {
         
         UIManager.put("TextField.font", new Font(((Font) UIManager.get("TextField.font")).getName(),Font.PLAIN,((Font) UIManager.get("TextField.font")).getSize()));
         UIManager.put("TextArea.font", new Font("monospaced",Font.PLAIN,((Font) UIManager.get("TextArea.font")).getSize()));
+        UIManager.put("TextPane.font", new Font("monospaced",Font.PLAIN,((Font) UIManager.get("TextArea.font")).getSize()));
         UIManager.put("ComboBox.font", MYFONT);
         UIManager.put("Button.font", MYFONT);
         UIManager.put("Label.font", MYFONT);
@@ -161,6 +163,7 @@ public class GUITools {
         
         UIManager.put("ComboBox.selectionBackground", SELECTION_BACKGROUND);
         UIManager.put("TextField.selectionBackground", SELECTION_BACKGROUND);
+        UIManager.put("TextPane.selectionBackground", SELECTION_BACKGROUND);
         UIManager.put("TextArea.selectionBackground", SELECTION_BACKGROUND);
         UIManager.put("Label.selectionBackground", SELECTION_BACKGROUND);
         UIManager.put("EditorPane.selectionBackground", SELECTION_BACKGROUND);
@@ -208,7 +211,7 @@ public class GUITools {
             images.add( ImageIO.read(urlBig) );
             images.add( ImageIO.read(urlSmall) );
         } catch (IOException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
         return images;
     }

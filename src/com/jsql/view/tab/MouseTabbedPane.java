@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -23,7 +23,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.jsql.view.ActionHandler;
+import com.jsql.view.action.ActionHandler;
 
 /**
  * Tabs with mousewheel and right click action.
@@ -32,8 +32,6 @@ import com.jsql.view.ActionHandler;
 public class MouseTabbedPane extends JTabbedPane {
 
     public MouseTabbedPane(){
-        super();
-
         this.addMouseWheelListener(new TabbedPaneMouseWheelScroller());
         this.setUI(new CustomMetalTabbedPaneUI());
         this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -82,8 +80,9 @@ public class MouseTabbedPane extends JTabbedPane {
             } else {
                 selIndex += dir;
             }
-            if(0 <= selIndex && selIndex < tabPane.getTabCount())
+            if(0 <= selIndex && selIndex < tabPane.getTabCount()){
                 tabPane.setSelectedIndex(selIndex);
+            }
         }
     }
 

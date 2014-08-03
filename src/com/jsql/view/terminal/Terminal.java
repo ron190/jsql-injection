@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -20,6 +20,7 @@ import java.awt.event.MouseMotionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.swing.JTextPane;
@@ -34,37 +35,52 @@ import javax.swing.text.StyledDocument;
 import sun.swing.SwingUtilities2;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.view.GUIMediator;
 
 /**
- * A Terminal built from scratch.
+ * A Terminal completely built from text pane.
  */
 @SuppressWarnings("serial")
 public abstract class Terminal extends JTextPane{
     
-    private final boolean[] isEdited = {false};
+    /**
+     * True if terminal is processing command.
+     */
+    private boolean[] isEdited = {false};
 
-    private ArrayList<String> cmds = new ArrayList<String>();
+    /**
+     * Past commands entered by user.
+     */
+    private List<String> cmds = new ArrayList<String>();
+    
+    /**
+     * Current position in array of past commands.
+     */
     private int cmdsIndex = 0;
+    
+    /**
+     * Server name or IP to display on prompt.
+     */
     private String host;
     
     /**
-     * NoWrap
+     * User and password for database.
      */
-    @Override
-    public boolean getScrollableTracksViewportWidth()
-    {
-        return getUI().getPreferredSize(this).width <= getParent().getSize().width;
-    }
+    protected String[] loginPassword = null;
     
-    public Terminal(UUID terminalID, String wbhPath, String shellLabel){
+    /**
+     * Build a shell instance.
+     * @param terminalID Unique identifier to discriminate beyond multiple opened terminals
+     * @param shellURL URL of current shell
+     * @param shellLabel Type of shell to display on prompt
+     */
+    public Terminal(UUID terminalID, String shellURL, String shellLabel){
         this.shellLabel= shellLabel; 
         
         URL u = null;
         try {
-            u = new URL(wbhPath);
+            u = new URL(shellURL);
         } catch (MalformedURLException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.warn("URL is malformed: no protocol");
         }
         host = u.getHost();
         
@@ -83,10 +99,8 @@ public abstract class Terminal extends JTextPane{
         this.setHighlighter(null);
 
         this.addMouseListener(new EmptyFocus());
-        this.addKeyListener(new TerminalKey(GUIMediator.model(), terminalID, wbhPath));
+        this.addKeyListener(new TerminalKey(terminalID, shellURL));
     }
-    
-    String[] args = null;
     
     /**
      * Keyboard key processing.
@@ -94,12 +108,10 @@ public abstract class Terminal extends JTextPane{
     private class TerminalKey extends KeyAdapter{
         private UUID terminalID;
         private String wbhPath;
-        private InjectionModel model;
         
-        public TerminalKey(InjectionModel newModel, UUID newTerminalID, String newWbhPath){
+        public TerminalKey(UUID newTerminalID, String newWbhPath){
             terminalID = newTerminalID;
             wbhPath = newWbhPath;
-            model = newModel;
         }
         
         public void keyPressed(KeyEvent ke){
@@ -111,7 +123,7 @@ public abstract class Terminal extends JTextPane{
             try {
                 linenum = Terminal.this.getLineOfOffset(caretpos);
             } catch (BadLocationException e) {
-                this.model.sendDebugMessage(e);
+                InjectionModel.logger.error(e, e);
             }
 
             // Cancel every user keyboard input if another command has just been send
@@ -127,7 +139,7 @@ public abstract class Terminal extends JTextPane{
                         root.getElement(linenum).getEndOffset() - root.getElement(linenum).getStartOffset())
                         .replace(prompt, "");
             } catch (BadLocationException e) {
-                this.model.sendDebugMessage(e);
+                InjectionModel.logger.error(e, e);
             }
             
             // Validate user input ; disable text editing
@@ -137,7 +149,7 @@ public abstract class Terminal extends JTextPane{
                 Terminal.this.setEditable(false);
                 
                 // Populate cmd list for key up/down
-                if(!cmd[0].trim().equals("")){
+                if(!"".equals(cmd[0].trim())){
                     cmds.add(cmd[0].trim());
                     cmdsIndex = cmds.size();
                 }
@@ -145,10 +157,11 @@ public abstract class Terminal extends JTextPane{
                 // SwingUtilities instead of Thread to avoid some flickering
                 javax.swing.SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-                        Terminal.this.append("\n"); // Inside Swing thread to avoid flickering
-                        if(!cmd[0].trim().equals("")){
+                        // Inside Swing thread to avoid flickering
+                        Terminal.this.append("\n"); 
+                        if(!"".equals(cmd[0].trim())){
                             Terminal.this.setCaretPosition(Terminal.this.getDocument().getLength());
-                            Terminal.this.action(cmd[0], terminalID, wbhPath, args);
+                            Terminal.this.action(cmd[0], terminalID, wbhPath, loginPassword);
                         }else{
                             Terminal.this.reset();
                         }
@@ -159,17 +172,19 @@ public abstract class Terminal extends JTextPane{
             }else if(ke.getKeyCode() == KeyEvent.VK_UP){
                 ke.consume();
                 
-                if(cmdsIndex > 0)
+                if(cmdsIndex > 0){
                     cmdsIndex--;
+                }
                 
-                if(cmds.size() > 0){
-                    if(cmds.size() > 1 && cmdsIndex == cmds.size() - 1 && !cmd[0].trim().equals(""))
+                if(!cmds.isEmpty()){
+                    if(cmds.size() > 1 && cmdsIndex == cmds.size() - 1 && !"".equals(cmd[0].trim())){
                         cmdsIndex--;
+                    }
                     
                     try {
                         Terminal.this.getDocument().remove(root.getElement(linenum).getStartOffset() + prompt.length(), cmd[0].length()-1);
                     } catch (BadLocationException e) {
-                        GUIMediator.model().sendDebugMessage(e);
+                        InjectionModel.logger.error(e, e);
                     }
                     
                     Terminal.this.append(cmds.get(cmdsIndex));
@@ -180,14 +195,15 @@ public abstract class Terminal extends JTextPane{
             }else if(ke.getKeyCode() == KeyEvent.VK_DOWN){
                 ke.consume();
                 
-                if(cmdsIndex < cmds.size())
+                if(cmdsIndex < cmds.size()){
                     cmdsIndex++;
+                }
                     
-                if(cmds.size() > 0 && cmdsIndex < cmds.size()){
+                if(!cmds.isEmpty() && cmdsIndex < cmds.size()){
                     try {
                         Terminal.this.getDocument().remove(root.getElement(linenum).getStartOffset() + prompt.length(), cmd[0].length()-1);
                     } catch (BadLocationException e) {
-                        GUIMediator.model().sendDebugMessage(e);
+                        InjectionModel.logger.error(e, e);
                     }
                     
                     Terminal.this.append(cmds.get(cmdsIndex));
@@ -206,19 +222,21 @@ public abstract class Terminal extends JTextPane{
                 try {
                     columnnum = caretpos - Terminal.this.getLineStartOffset(linenum);
                 } catch (BadLocationException e) {
-                    this.model.sendDebugMessage(e);
+                    InjectionModel.logger.error(e, e);
                 }
-                if(columnnum <= prompt.length())
+                if(columnnum <= prompt.length()){
                     ke.consume();
+                }
 
             // Delete to the left until prompt
             }else if(ke.getKeyCode() == KeyEvent.VK_BACK_SPACE){
                 try {
                     int columnnum = caretpos - Terminal.this.getLineStartOffset(linenum);
-                    if(columnnum <= prompt.length())
+                    if(columnnum <= prompt.length()){
                         ke.consume();
+                    }
                 } catch (BadLocationException e) {
-                    this.model.sendDebugMessage(e);
+                    InjectionModel.logger.error(e, e);
                 }
                 
             // Get to the beginning of the line
@@ -227,7 +245,7 @@ public abstract class Terminal extends JTextPane{
                 try {
                     Terminal.this.setCaretPosition(Terminal.this.getLineStartOffset(linenum)+prompt.length() );
                 } catch (BadLocationException e) {
-                    this.model.sendDebugMessage(e);
+                    InjectionModel.logger.error(e, e);
                 }
                 
             // Cancel the select all shortcut Ctrl+A
@@ -250,6 +268,9 @@ public abstract class Terminal extends JTextPane{
         }
     }
     
+    /**
+     * Update terminal and use default behavior.
+     */
     public void reset(){
         Terminal.this.isEdited[0] = false;
         Terminal.this.setEditable(true);
@@ -265,11 +286,12 @@ public abstract class Terminal extends JTextPane{
      * @throws BadLocationException
      */
     public int getLineOfOffset(int offset) throws BadLocationException {
-        Document doc = Terminal.this.getDocument();
+        final String ERRORLOCATION = "Can't translate offset to line";
+        Document doc = this.getDocument();
         if (offset < 0) {
-            throw new BadLocationException("Can't translate offset to line", -1);
+            throw new BadLocationException(ERRORLOCATION, -1);
         } else if (offset > doc.getLength()) {
-            throw new BadLocationException("Can't translate offset to line", doc.getLength() + 1);
+            throw new BadLocationException(ERRORLOCATION, doc.getLength() + 1);
         } else {
             Element map = doc.getDefaultRootElement();
             return map.getElementIndex(offset);
@@ -300,31 +322,39 @@ public abstract class Terminal extends JTextPane{
      */
     public void append(String string) {
         try {
-            Document doc = Terminal.this.getDocument();
+            Document doc = this.getDocument();
             doc.insertString(doc.getLength(), string, null);
         } catch(BadLocationException e) {
-        	GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
     }
     public void appendStyle(String string) {
         try {
-            Document doc = Terminal.this.getDocument();
+            Document doc = this.getDocument();
             doc.insertString(doc.getLength(), string, style);
         } catch(BadLocationException e) {
-        	GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
     }
 
     /**
      * Document used to append colored text.
      */
-    private StyledDocument doc = this.getStyledDocument();
+    private StyledDocument styledDocument = this.getStyledDocument();
     
     /**
      * Style used for coloring text.
      */
-    public Style style = this.addStyle("Necrophagist's next album is 2014.", null);
+    private Style style = this.addStyle("Necrophagist's next album is 2014.", null);
     
+    /**
+     * Style getter.
+     * @return Style for document
+     */
+    public Style getStyle() {
+        return style;
+    }
+
     /**
      *  Length of prompt.
      */
@@ -337,6 +367,9 @@ public abstract class Terminal extends JTextPane{
         displayPrompt(false);
     }
     
+    /**
+     * Text to display next caret.
+     */
     protected String shellLabel;
     
     /**
@@ -365,11 +398,12 @@ public abstract class Terminal extends JTextPane{
     private void appendPrompt(String string, Color color, boolean measurePrompt){
         try {
             StyleConstants.setForeground(style, color);
-            doc.insertString(doc.getLength(), string, style);
-            if(measurePrompt)
+            styledDocument.insertString(styledDocument.getLength(), string, style);
+            if(measurePrompt){
                 prompt += string;
+            }
         } catch (BadLocationException e) {
-        	GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
     }
     
@@ -383,19 +417,38 @@ public abstract class Terminal extends JTextPane{
             Terminal.this.requestFocusInWindow();
             Terminal.this.setCaretPosition(Terminal.this.getDocument().getLength());
         }
-        @Override public void mouseReleased(MouseEvent e) { e.consume(); }
-        @Override public void mouseExited(MouseEvent e) { e.consume(); }
-        @Override public void mouseEntered(MouseEvent e) { e.consume(); }
-        @Override public void mouseClicked(MouseEvent e) { e.consume(); }
+        @Override public void mouseReleased(MouseEvent e) { 
+            e.consume(); 
+        }
+        @Override public void mouseExited(MouseEvent e) {
+            e.consume(); 
+        }
+        @Override public void mouseEntered(MouseEvent e) { 
+            e.consume(); 
+        }
+        @Override public void mouseClicked(MouseEvent e) { 
+            e.consume(); 
+        }
+    }
+    
+    /**
+     * NoWrap
+     */
+    @Override
+    public boolean getScrollableTracksViewportWidth()
+    {
+        return getUI().getPreferredSize(this).width <= getParent().getSize().width;
     }
     
     /**
      * Cancel every mouse movement processing like drag/drop.
      */
-    @Override synchronized public void addMouseMotionListener(MouseMotionListener l){}
+    @Override synchronized public void addMouseMotionListener(MouseMotionListener l){
+        // Do nothing
+    }
     
     /**
-     * Run when cmd is validated
+     * Run when cmd is validated.
      * @param cmd Command to execute
      * @param terminalID Unique ID for terminal instance
      * @param wbhPath URL of shell

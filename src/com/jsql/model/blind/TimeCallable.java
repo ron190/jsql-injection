@@ -2,12 +2,15 @@ package com.jsql.model.blind;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import com.jsql.model.blind.diff_match_patch.Diff;
 
 /**
  * Define a call HTTP to the server, require the associated url, character position and bit.
  * diffSeconds represents the response time of the current page
  */
-public class TimeCallable implements IBlindCallable<TimeCallable>{
+public class TimeCallable implements IBlindCallable{
     // The URL called
     private String timeUrl;
 
@@ -78,5 +81,10 @@ public class TimeCallable implements IBlindCallable<TimeCallable>{
 	
 	public int getCurrentBit() {
 		return currentBit;
+	}
+
+	@Override
+	public List<Diff> getOpcodes() {
+		return null;
 	}
 }

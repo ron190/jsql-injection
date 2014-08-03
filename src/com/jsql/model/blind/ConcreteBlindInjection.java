@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import com.jsql.exception.PreparationException;
+import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 
 public class ConcreteBlindInjection extends AbstractBlindInjection {
@@ -40,16 +41,16 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
          *  Parallelize the call to the FALSE statements, it will use inject() from the model
          */
         ExecutorService executorFalseMark = Executors.newCachedThreadPool();
-        List<BlindCallable> listCallableFalse = new ArrayList<BlindCallable>();
+        List<IBlindCallable> listCallableFalse = new ArrayList<IBlindCallable>();
         for (String urlTest: falseTest){
             listCallableFalse.add(new BlindCallable(urlTest));
         }
         // Begin the url requests
-        List<Future<BlindCallable>> listFalseMark;
+        List<Future<IBlindCallable>> listFalseMark;
         try {
             listFalseMark = executorFalseMark.invokeAll(listCallableFalse);
         } catch (InterruptedException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
             return;
         }
         executorFalseMark.shutdown();
@@ -60,17 +61,15 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
          */
         try {
             constantFalseMark = listFalseMark.get(0).get().getOpcodes();
-            //            System.out.println(">>>false "+constantFalseMark);
-            for(Future<BlindCallable> falseMark: listFalseMark){
+            for(Future<IBlindCallable> falseMark: listFalseMark){
                 if(GUIMediator.model().stopFlag)return;
                 constantFalseMark.retainAll(falseMark.get().getOpcodes());
             }
         } catch (InterruptedException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         } catch (ExecutionException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
-        //        System.out.println(">>>false-s "+constantFalseMark);
 
         if(GUIMediator.model().stopFlag)return;
 
@@ -83,11 +82,11 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
             listCallableTrue.add(new BlindCallable(/*initialUrl+*/"+and+"+urlTest+"--+"));
         }
         // Begin the url requests
-        List<Future<BlindCallable>> listTrueMark;
+        List<Future<IBlindCallable>> listTrueMark;
         try {
             listTrueMark = executorTrueMark.invokeAll(listCallableTrue);
         } catch (InterruptedException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
             return;
         }
         executorTrueMark.shutdown();
@@ -98,18 +97,15 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
          * Allow the user to stop the loop
          */
         try {
-            //            System.out.println(">>>true "+constantTrueMark);
-            for(Future<BlindCallable> trueMark: listTrueMark){
+            for(Future<IBlindCallable> trueMark: listTrueMark){
                 if(GUIMediator.model().stopFlag)return;
                 constantFalseMark.removeAll(trueMark.get().getOpcodes());
             }
         } catch (InterruptedException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         } catch (ExecutionException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
-
-        //        System.out.println(">>> "+constantFalseMark);
     }
 
     // Run a HTTP call via the model
@@ -117,18 +113,13 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
         return GUIMediator.model().inject(GUIMediator.model().insertionCharacter + urlString);
     }
     
-//	@Override
-//	public Callable getCallable(String string, boolean iS_LENGTH_TEST) {
-//		return new BBCallable(string, iS_LENGTH_TEST);
-//	}
-    
     @Override
-    public Callable getCallable(String string, int indexCharacter, boolean iS_LENGTH_TEST) {
+    public Callable<IBlindCallable> getCallable(String string, int indexCharacter, boolean iS_LENGTH_TEST) {
     	return new BlindCallable(string, indexCharacter, iS_LENGTH_TEST);
     }
 
 	@Override
-	public Callable getCallable(String string, int indexCharacter, int bit) {
+	public Callable<IBlindCallable> getCallable(String string, int indexCharacter, int bit) {
 		return new BlindCallable(string, indexCharacter, bit);
 	}
 
@@ -145,9 +136,14 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
         try {
             blindTest.call();
         } catch (Exception e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
 
         return constantFalseMark != null && blindTest.isTrue() && constantFalseMark.size() > 0;
     }
+
+	@Override
+	public String getInfoMessage() {
+		return "A blind SQL request is true if the diff between a correct page (e.g existing id) and current page is not as the following: " + constantFalseMark + "\n";
+	}
 }

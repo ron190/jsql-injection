@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -36,7 +36,7 @@ import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
 
 import com.jsql.controller.InjectionController;
 import com.jsql.exception.PreparationException;
@@ -45,6 +45,8 @@ import com.jsql.model.ao.DataAccessObject;
 import com.jsql.model.ao.RessourceAccessObject;
 import com.jsql.model.bean.ElementDatabase;
 import com.jsql.model.bean.Request;
+import com.jsql.model.interruptable.Interruptable;
+import com.jsql.model.interruptable.Stoppable;
 import com.jsql.model.pattern.strategy.BlindStrategy;
 import com.jsql.model.pattern.strategy.ErrorbasedStrategy;
 import com.jsql.model.pattern.strategy.IInjectionStrategy;
@@ -99,14 +101,16 @@ public class InjectionModel extends ModelObservable {
     
     public int securitySteps = 0;           // Current evasion step, 0 is 'no evasion'
 
+    public static Logger logger = Logger.getLogger(InjectionModel.class);
+
     public InjectionModel(){
-        this.sendWelcomeMessage();
+        logger.info("jSQL Injection version "+ JSQLVERSION);
 
         String sVersion = System.getProperty("java.version");
         sVersion = sVersion.substring(0, 3);
         Float fVersion = Float.valueOf(sVersion);
         if (fVersion.floatValue() < (float) 1.7) {
-            this.sendErrorMessage("You are running an old version of Java, please install the latest version from java.com.");
+            InjectionModel.logger.warn("You are running an old version of Java, please install the latest version from java.com.");
         }
 
         // Use Preferences API to persist proxy configuration
@@ -147,18 +151,19 @@ public class InjectionModel extends ModelObservable {
             // Test if proxy is available then apply settings
             if(isProxyfied && !proxyAddress.equals("") && !proxyPort.equals("")){
                 try {
-                    this.sendMessage("Testing proxy...");
+                    InjectionModel.logger.info("Testing proxy...");
                     new Socket(proxyAddress, Integer.parseInt(proxyPort)).close();
                 } catch (Exception e) {
                     throw new PreparationException("Proxy connection failed: " + proxyAddress+":"+proxyPort+
                             "\nVerify your proxy informations or disable proxy setting.");
                 }
-                this.sendMessage("Proxy is responding.");
+                InjectionModel.logger.info("Proxy is responding.");
             }
 
             // Test the HTTP connection
             try {
-                this.sendMessage("Starting new injection\nConnection test...");
+                InjectionModel.logger.info("Starting new injection");
+                InjectionModel.logger.info("Connection test...");
 
                 URLConnection con = new URL(this.initialUrl).openConnection();
                 con.setReadTimeout(15000);
@@ -172,7 +177,7 @@ public class InjectionModel extends ModelObservable {
             }
 
             // Define insertionCharacter, i.e, -1 in "[...].php?id=-1 union select[...]",
-            this.sendMessage("Get insertion character...");
+            InjectionModel.logger.info("Get insertion character...");
             this.insertionCharacter = new Stoppable_getInsertionCharacter().begin();
 
             // Test each injection methods: time, blind, error, normal
@@ -193,7 +198,7 @@ public class InjectionModel extends ModelObservable {
                     // No injection possible, increase evasion level and restart whole process
                     securitySteps++;
                     if(securitySteps<=2){
-                        this.sendMessage("Injection not possible, testing evasion n°"+securitySteps+"...");
+                        InjectionModel.logger.warn("Injection not possible, testing evasion n°"+securitySteps+"...");
                         getData += insertionCharacter; // sinon perte de insertionCharacter entre 2 injections
                         inputValidation();
                         return;
@@ -210,7 +215,7 @@ public class InjectionModel extends ModelObservable {
                     // Rare situation where injection fails after being validated, try with some evasion
                     securitySteps++;
                     if(securitySteps<=2){
-                        this.sendMessage("Injection not possible, testing evasion n°"+securitySteps+"...");
+                        InjectionModel.logger.warn("Injection not possible, testing evasion n°"+securitySteps+"...");
                         getData += insertionCharacter; // sinon perte de insertionCharacter entre 2 injections
                         inputValidation();
                         return;
@@ -229,12 +234,12 @@ public class InjectionModel extends ModelObservable {
             // Get the databases
             dao.listDatabases();
             
-            this.sendMessage("Done.");
+            InjectionModel.logger.info("Done.");
             isInjectionBuilt = true;
         }catch(PreparationException e){
-            sendErrorMessage(e.getMessage());
+            InjectionModel.logger.warn(e.getMessage());
         }catch(StoppableException e){
-            sendErrorMessage(e.getMessage());
+            InjectionModel.logger.warn(e.getMessage());
         }finally{
             Request request = new Request();
             request.setMessage("EndPreparation");
@@ -329,9 +334,9 @@ public class InjectionModel extends ModelObservable {
                         return currentCallable.tag; // the correct character
                     }
                 } catch (InterruptedException e) {
-                    GUIMediator.model().sendDebugMessage(e);
+                    InjectionModel.logger.error(e, e);
                 } catch (ExecutionException e) {
-                    GUIMediator.model().sendDebugMessage(e);
+                    InjectionModel.logger.error(e, e);
                 }
             }
 
@@ -387,9 +392,9 @@ public class InjectionModel extends ModelObservable {
                 taskExecutor.shutdown();
                 taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
             } catch (InterruptedException e) {
-            	GUIMediator.model().sendDebugMessage(e);
+            	InjectionModel.logger.error(e, e);
             } catch (ExecutionException e) {
-            	GUIMediator.model().sendDebugMessage(e);
+            	InjectionModel.logger.error(e, e);
             }
 
             if(requestFound)
@@ -513,8 +518,6 @@ public class InjectionModel extends ModelObservable {
 
                 sourcePage[0] = istrategy.inject(sqlQuery, startPosition+"", interruptable, this);
                 
-                //                model.sendMessage("Packet "+i+".\n"+currentResultSource);
-
                 // Parse all the data we have retrieved
                 Matcher regexSearch = Pattern.compile("SQLi([0-9A-Fghij]+)", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(sourcePage[0]);
 
@@ -708,7 +711,7 @@ public class InjectionModel extends ModelObservable {
         try {
             urlObject = new URL(urlUltimate);
         } catch (MalformedURLException e) {
-            this.sendErrorMessage("Malformed URL " + e.getMessage());
+            InjectionModel.logger.warn("Malformed URL " + e.getMessage());
         }
 
         /**
@@ -753,7 +756,7 @@ public class InjectionModel extends ModelObservable {
                 //                System.out.println(new Date() + " " + urlUltimate);
                 urlObject = new URL(urlUltimate);
             } catch (MalformedURLException e) {
-                this.sendErrorMessage("Malformed URL " + e.getMessage());
+                InjectionModel.logger.warn("Malformed URL " + e.getMessage());
             }
         }
 
@@ -763,7 +766,7 @@ public class InjectionModel extends ModelObservable {
             connection.setReadTimeout(15000);
             connection.setConnectTimeout(15000);
         } catch (IOException e) {
-            this.sendErrorMessage("Error during connection: " + e.getMessage());
+            InjectionModel.logger.warn("Error during connection: " + e.getMessage());
         }
 
         Map<String, Object> msgHeader = new HashMap<String, Object>();
@@ -788,7 +791,7 @@ public class InjectionModel extends ModelObservable {
                 try {
                     connection.addRequestProperty(s.split(":",2)[0], URLDecoder.decode(s.split(":",2)[1],"UTF-8"));
                 } catch (UnsupportedEncodingException e) {
-                    this.sendErrorMessage("Unsupported header encoding " + e.getMessage());
+                    InjectionModel.logger.warn("Unsupported header encoding " + e.getMessage());
                 }
             }
             
@@ -812,7 +815,7 @@ public class InjectionModel extends ModelObservable {
                 
                 msgHeader.put("Post", this.buildQuery("POST", postData, useVisibleIndex, dataInjection));
             } catch (IOException e) {
-                this.sendErrorMessage("Error during POST connection " + e.getMessage());
+                InjectionModel.logger.warn("Error during POST connection " + e.getMessage());
             }
         }
 
@@ -842,9 +845,9 @@ public class InjectionModel extends ModelObservable {
             while( (line = reader.readLine()) != null ) pageSource += line;
             reader.close();
         } catch (MalformedURLException e) {
-            this.sendErrorMessage("Malformed URL " + e.getMessage());
+            InjectionModel.logger.warn("Malformed URL " + e.getMessage());
         } catch (IOException e) {
-            this.sendErrorMessage("Read error " + e.getMessage()); /* lot of timeout in local use */
+            InjectionModel.logger.warn("Read error " + e.getMessage()); /* lot of timeout in local use */
         }
 
         // return the source code of the page
@@ -873,47 +876,21 @@ public class InjectionModel extends ModelObservable {
         }
     }
 
-    /**
-     * Inform the view about a console message
-     * @param message
-     */
-    public void sendMessage(String message) {
-        Request request = new Request();
-        request.setMessage("MessageConsole");
-        request.setParameters("\n"+message);
-        this.interact(request);
-    }
-    
-    /**
-     * Inform the view about a console message
-     * @param message
-     */
-    public void sendFirstMessage(String message) {
-        Request request = new Request();
-        request.setMessage("MessageConsole");
-        request.setParameters(message);
-        this.interact(request);
-    }
-    
-    /**
-     * Inform the view about a Java debug message
-     * @param message
-     */
-    public void sendDebugMessage(Exception e) {
-        e.printStackTrace();
-        
-        Request request = new Request();
-        request.setMessage("MessageJava");
-        request.setParameters(ExceptionUtils.getStackTrace(e));
-        this.interact(request);
-    }
+//    /**
+//     * Inform the view about a console message
+//     * @param message
+//     */
+//    public void sendFirstMessage(String message) {
+//        Request request = new Request();
+//        request.setMessage("MessageConsole");
+//        request.setParameters(message);
+//        this.interact(request);
+//    }
     
     public void sendResponseFromSite(String message, String source) {
-        this.sendMessage( message + ", response from site:\n>>>"+ source );
-    }
-    
-    public void sendErrorMessage(String message) {
-        this.sendMessage("*** "+message);
+//        InjectionModel.logger.info( message + ", response from site:\n>>>"+ source );
+    	logger.info( message + ", response from site:" );
+    	logger.info( ">>>"+ source );
     }
 
     public static void main(String[] args) {
@@ -924,10 +901,6 @@ public class InjectionModel extends ModelObservable {
                 GUIMediator.register(new GUI());
             }
         });
-    }
-
-    public void sendWelcomeMessage() {
-        this.sendFirstMessage("-- jSQL Injection version "+ JSQLVERSION +" --");
     }
 
 	public void applyStrategy(IInjectionStrategy injectionStrategy) {

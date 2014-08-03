@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -26,8 +26,8 @@ public class EndFileSearch implements IInteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        GUIMediator.gui().getOutputPanel().fileManager.restoreButtonText();
-        GUIMediator.gui().getOutputPanel().fileManager.setButtonEnable(true);
-        GUIMediator.gui().getOutputPanel().fileManager.hideLoader();
+        GUIMediator.left().fileManager.restoreButtonText();
+        GUIMediator.left().fileManager.setButtonEnable(true);
+        GUIMediator.left().fileManager.hideLoader();
     }
 }

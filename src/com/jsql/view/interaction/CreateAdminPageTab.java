@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -32,9 +32,10 @@ import javax.swing.text.DefaultEditorKit;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.component.JScrollPanePixelBorder;
+import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.tab.TabHeader;
 
 /**
@@ -71,7 +72,7 @@ public class CreateAdminPageTab implements IInteractionCommand{
                     //              .addEnforcedAttribute("input", "disabled", "disabled")
                     );
         } catch (IOException e) {
-        	GUIMediator.model().sendDebugMessage(e);
+        	InjectionModel.logger.error(e, e);
         }
 
         final JTextPane browser = new JTextPane();

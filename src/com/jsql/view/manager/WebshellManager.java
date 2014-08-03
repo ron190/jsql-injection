@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -17,6 +17,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -26,15 +28,17 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
+import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.component.JScrollPanePixelBorder;
-import com.jsql.view.component.popupmenu.JPopupTextField;
 import com.jsql.view.list.dnd.DnDList;
+import com.jsql.view.scrollpane.JScrollPanePixelBorder;
+import com.jsql.view.textcomponent.JPopupTextField;
 
 /**
  * Manager for uploading PHP webshell to the host
@@ -59,7 +63,7 @@ public class WebshellManager extends ListManager{
             while( (line = reader.readLine()) != null ) pathsList.add(line);
             reader.close();
         } catch (IOException e) {
-        	GUIMediator.model().sendDebugMessage(e);
+        	InjectionModel.logger.error(e, e);
         }
 
         listPaths = new DnDList(pathsList);
@@ -77,7 +81,7 @@ public class WebshellManager extends ListManager{
         		BorderFactory.createMatteBorder(0,1,0,0,GUITools.COMPONENT_BORDER), 
         		BorderFactory.createEmptyBorder(1, 1, 1, 1)));
         
-        final JPopupTextField shellURL = new JPopupTextField();
+        final JTextField shellURL = new JPopupTextField().getProxy();
         String tooltip = "<html><b>How to use</b><br>" +
                 "- Leave blank if the file from address bar is located in selected folder(s), shell will also be in it.<br>" +
                 "<i>E.g Address bar is set with http://127.0.0.1/simulate_get.php?lib=, file simulate_get.php<br>" +
@@ -109,8 +113,18 @@ public class WebshellManager extends ListManager{
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if(listPaths.getSelectedValuesList().size() == 0){
-                	GUIMediator.model().sendErrorMessage("Select at least one directory");
+                	InjectionModel.logger.warn("Select at least one directory");
                     return;
+                }
+                
+                if(!"".equals(shellURL.getText())){
+	                URL u = null;
+	                try {
+	                    u = new URL(shellURL.getText());
+	                } catch (MalformedURLException e) {
+	                    InjectionModel.logger.warn("URL is malformed: no protocol");
+	                    return;
+	                }
                 }
 
                 for(final Object path: listPaths.getSelectedValuesList()){
@@ -120,9 +134,9 @@ public class WebshellManager extends ListManager{
                             try {
                             	GUIMediator.model().rao.getShell(path.toString(), shellURL.getText());
                             } catch (PreparationException e) {
-                            	GUIMediator.model().sendErrorMessage("Problem writing into " + path);
+                            	InjectionModel.logger.warn("Problem writing into " + path);
                             } catch (StoppableException e) {
-                            	GUIMediator.model().sendErrorMessage("Problem writing into " + path);
+                            	InjectionModel.logger.warn("Problem writing into " + path);
                             }
                         }
                     }, "getShell").start();

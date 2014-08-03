@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -21,10 +21,12 @@ import javax.swing.GroupLayout;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import com.jsql.view.GUITools;
-import com.jsql.view.component.popupmenu.JPopupTextLabel;
+import com.jsql.view.radio.RadioLinkStatusbar;
+import com.jsql.view.textcomponent.JPopupLabel;
 
 /**
  * Panel for statusbar
@@ -36,10 +38,14 @@ public class StatusbarPanel extends JPanel{
     private final String INFO_DEFAULT_VALUE = "-";
 
     // Database infos
-    private JPopupTextLabel labelDBVersion = new JPopupTextLabel("");
-    private JPopupTextLabel labelCurrentDB = new JPopupTextLabel("");
-    private JPopupTextLabel labelCurrentUser = new JPopupTextLabel("");
-    private JPopupTextLabel labelAuthenticatedUser = new JPopupTextLabel("");
+//    private JPopupTextLabel labelDBVersion = new JPopupTextLabel("");
+//    private JPopupTextLabel labelCurrentDB = new JPopupTextLabel("");
+//    private JPopupTextLabel labelCurrentUser = new JPopupTextLabel("");
+//    private JPopupTextLabel labelAuthenticatedUser = new JPopupTextLabel("");
+    private JTextField labelDBVersion = new JPopupLabel().getProxy();
+    private JTextField labelCurrentDB = new JPopupLabel().getProxy();
+    private JTextField labelCurrentUser = new JPopupLabel().getProxy();
+    private JTextField labelAuthenticatedUser = new JPopupLabel().getProxy();
 
     // Injection methods
     public JLabel labelNormal;

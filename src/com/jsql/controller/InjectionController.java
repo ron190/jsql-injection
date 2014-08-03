@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -18,10 +18,11 @@ import java.util.regex.Pattern;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.Interruptable;
+import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.Column;
 import com.jsql.model.bean.Database;
 import com.jsql.model.bean.Table;
+import com.jsql.model.interruptable.Interruptable;
 import com.jsql.view.GUIMediator;
 
 /**
@@ -68,7 +69,7 @@ public class InjectionController {
             // Erase everything in the view from a previous injection
             GUIMediator.gui().resetInterface();
         } catch (MalformedURLException e) {
-            GUIMediator.model().sendMessage(e.getMessage());
+        	InjectionModel.logger.warn(e.getMessage());
         }
     }
 
@@ -90,11 +91,11 @@ public class InjectionController {
                 try {
                     GUIMediator.model().dao.listTables(databaseSelected, interruptable[0]);
                 } catch (NumberFormatException e) {
-                    GUIMediator.model().sendErrorMessage("Error during table search: incorrect number " + e.getMessage());
+                    InjectionModel.logger.warn("Error during table search: incorrect number " + e.getMessage());
                 } catch (PreparationException e) {
-                    GUIMediator.model().sendErrorMessage(e.getMessage());
+                    InjectionModel.logger.warn(e.getMessage());
                 } catch (StoppableException e) {
-                    GUIMediator.model().sendErrorMessage(e.getMessage());
+                    InjectionModel.logger.warn(e.getMessage());
                 }
                 
             }
@@ -122,9 +123,9 @@ public class InjectionController {
                 try {
                     GUIMediator.model().dao.listColumns(selectedTable, interruptable[0]);
                 } catch (PreparationException e) {
-                    GUIMediator.model().sendErrorMessage(e.getMessage());
+                    InjectionModel.logger.warn(e.getMessage());
                 } catch (StoppableException e) {
-                    GUIMediator.model().sendErrorMessage(e.getMessage());
+                    InjectionModel.logger.warn(e.getMessage());
                 }
                 
             }
@@ -152,9 +153,9 @@ public class InjectionController {
                 try {
                     GUIMediator.model().dao.listValues(values, interruptable[0]);
                 } catch (PreparationException e) {
-                    GUIMediator.model().sendErrorMessage(e.getMessage());
+                    InjectionModel.logger.warn(e.getMessage());
                 } catch (StoppableException e) {
-                    GUIMediator.model().sendErrorMessage(e.getMessage());
+                    InjectionModel.logger.warn(e.getMessage());
                 }
 
             }

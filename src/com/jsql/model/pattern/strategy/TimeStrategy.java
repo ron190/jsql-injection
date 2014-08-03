@@ -2,10 +2,11 @@ package com.jsql.model.pattern.strategy;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.Interruptable;
-import com.jsql.model.Stoppable;
+import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.Request;
 import com.jsql.model.blind.ConcreteTimeInjection;
+import com.jsql.model.interruptable.Interruptable;
+import com.jsql.model.interruptable.Stoppable;
 import com.jsql.view.GUIMediator;
 
 public class TimeStrategy implements IInjectionStrategy {
@@ -17,7 +18,7 @@ public class TimeStrategy implements IInjectionStrategy {
 	
 	@Override
 	public void checkApplicability() throws PreparationException {
-		GUIMediator.model().sendMessage("Time based test...");
+		InjectionModel.logger.info("Time based test...");
 		
 		time = new ConcreteTimeInjection();
 //		time = new TimeInjection();
@@ -66,7 +67,7 @@ public class TimeStrategy implements IInjectionStrategy {
 
 	@Override
 	public void applyStrategy() {
-		GUIMediator.model().sendMessage("Using timebased injection...");
+		InjectionModel.logger.info("Using timebased injection...");
 		GUIMediator.model().applyStrategy(this);
 		
         Request request = new Request();

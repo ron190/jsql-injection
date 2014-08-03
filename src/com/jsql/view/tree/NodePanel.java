@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -23,7 +23,7 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.TreeNode;
 
 import com.jsql.view.GUITools;
-import com.jsql.view.component.RoundBorder;
+import com.jsql.view.ui.RoundBorder;
 
 /**
  * A tree Node composed of an icon, a GIF loader, a progress bar, a label.
@@ -31,17 +31,17 @@ import com.jsql.view.component.RoundBorder;
 @SuppressWarnings("serial")
 public class NodePanel extends JPanel {
     /**
-     * Default icon of the node (database or table)
+     * Default icon of the node (database or table).
      */
     private JLabel icon = new JLabel();
     
     /**
-     * A GIF loader, displayed if progress track is unknown (like columns)
+     * A GIF loader, displayed if progress track is unknown (like columns).
      */
     private JLabel loader = new JLabel();
     
     /**
-     * Progress bar displayed during injection, with pause icon displayed if user paused the process
+     * Progress bar displayed during injection, with pause icon displayed if user paused the process.
      */
     public ProgressBarPausable progressBar = new ProgressBarPausable();
     
@@ -50,7 +50,9 @@ public class NodePanel extends JPanel {
      */
     public JLabel label = new JLabel();
     
-    public NodePanel(JTree tree, TreeNode currentNode){
+    public NodePanel(final JTree tree, final TreeNode currentNode){
+        super();
+        
         ImageIcon animatedGIF = new ImageIcon(getClass().getResource(GUITools.PATH_PROGRESSBAR));
         animatedGIF.setImageObserver(new AnimatedObserver(tree, currentNode));
         loader.setIcon(animatedGIF);

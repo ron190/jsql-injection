@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -39,7 +39,7 @@ import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.model.InjectionModel;
 
 /**
  * A list supporting drag and drop.
@@ -190,7 +190,7 @@ public class DnDList extends JList<ListItem> {
                 }
             }
         } catch (IOException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
 
         String[] options = {"Replace", "Add", "Cancel"};
@@ -223,9 +223,9 @@ public class DnDList extends JList<ListItem> {
                     if(!line.equals(""))
                         listModel.add(endPosition++, new ListItem(line.replace("\\", "/")));
             } catch (FileNotFoundException e) {
-            	GUIMediator.model().sendDebugMessage(e);
+            	InjectionModel.logger.error(e, e);
             } catch (IOException e) {
-                GUIMediator.model().sendDebugMessage(e);
+                InjectionModel.logger.error(e, e);
             }
         }
         

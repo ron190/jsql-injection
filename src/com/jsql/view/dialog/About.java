@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -46,9 +46,9 @@ import javax.swing.event.HyperlinkListener;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.component.JScrollPanePixelBorder;
-import com.jsql.view.component.RoundBorder;
-import com.jsql.view.component.popupmenu.JPopupTextMenu;
+import com.jsql.view.popupmenu.JPopupTextMenu;
+import com.jsql.view.scrollpane.JScrollPanePixelBorder;
+import com.jsql.view.ui.RoundBorder;
 
 @SuppressWarnings("serial")
 public class About extends JDialog{
@@ -92,9 +92,9 @@ public class About extends JDialog{
                 try {
                     Desktop.getDesktop().browse(new URI("http://code.google.com/p/jsql-injection/"));
                 } catch (IOException e) {
-                    GUIMediator.model().sendDebugMessage(e);
+                    InjectionModel.logger.error(e, e);
                 } catch (URISyntaxException e) {
-                    GUIMediator.model().sendDebugMessage(e);
+                    InjectionModel.logger.error(e, e);
                 }
             }
         });
@@ -121,7 +121,7 @@ public class About extends JDialog{
             
             text[0].setText(result.replace("%JSQLVERSION%", InjectionModel.JSQLVERSION));
 		} catch (IOException e) {
-			GUIMediator.model().sendDebugMessage(e);
+			InjectionModel.logger.error(e, e);
 		}
 
 		text[0].setComponentPopupMenu(new JPopupTextMenu(text[0]));
@@ -152,9 +152,9 @@ public class About extends JDialog{
                     try {
                         Desktop.getDesktop().browse(hle.getURL().toURI());
                     } catch (IOException e) {
-                    	GUIMediator.model().sendErrorMessage(e.getMessage());
+                    	InjectionModel.logger.warn(e.getMessage());
                     } catch (URISyntaxException e) {
-                        GUIMediator.model().sendDebugMessage(e);
+                        InjectionModel.logger.error(e, e);
                     }
                 }
             }

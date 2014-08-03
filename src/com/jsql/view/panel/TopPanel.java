@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -12,6 +12,7 @@ package com.jsql.view.panel;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,14 +22,17 @@ import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.component.ComponentBorder;
-import com.jsql.view.component.RoundBorder;
-import com.jsql.view.component.popupmenu.JPopupTextField;
+import com.jsql.view.radio.RadioLinkAddressBar;
+import com.jsql.view.textcomponent.JAddressBar;
+import com.jsql.view.textcomponent.JPopupTextField;
+import com.jsql.view.ui.ComponentBorder;
+import com.jsql.view.ui.RoundBorder;
 
 /**
  * Create panel at the top of the window.
@@ -37,11 +41,10 @@ import com.jsql.view.component.popupmenu.JPopupTextField;
 @SuppressWarnings("serial")
 public class TopPanel extends JPanel{
 
-    // Every text input: user provides default injection data, every HTTP requests will include them
-    public JPopupTextField textGET = new JPopupTextField("http://127.0.0.1/simulate_get.php?lib=", true, true);
-    private JPopupTextField textPOST = new JPopupTextField(true);
-    private JPopupTextField textCookie = new JPopupTextField(true);
-    private JPopupTextField textHeader = new JPopupTextField(true);
+    public JTextField addressBar = new JAddressBar("http://127.0.0.1/simulate_get.php?lib=").getProxy();
+    private JTextField textPOST = new JPopupTextField().getProxy();
+    private JTextField textCookie = new JPopupTextField().getProxy();
+    private JTextField textHeader = new JPopupTextField().getProxy();
 
     // Radio buttons, user choose the injection method, via url query string, post, cookie or header
     private RadioLinkAddressBar radioGET;
@@ -78,7 +81,7 @@ public class TopPanel extends JPanel{
         radioHeader.setBorder(BorderFactory.createEmptyBorder(6, 0, 0, 3));
 
         // Tooltip setting
-        textGET.setToolTipText("<html><b>Website URL</b><br>" +
+        addressBar.setToolTipText("<html><b>Website URL</b><br>" +
                 "jSQL <u>always</u> injects the last parameter (in any mode: default/GET, POST, Cookie or Header).<br>" +
                 "Leave last parameter blank to let jSQL search for the best value automatically:<br>" +
                 "<i>Example: <<b>http://hostname/path?paramN=valueN&injectMe=</b></i><br>" +
@@ -102,31 +105,41 @@ public class TopPanel extends JPanel{
         radioCookie.setToolTipText("Inject using Cookie parameters");
         radioHeader.setToolTipText("Inject using Header parameters");
 
-        textGET.setBorder(BorderFactory.createCompoundBorder(
+        /**
+         * Define UI and the left padding for addressBar
+         */
+        addressBar.setBorder(BorderFactory.createCompoundBorder(
         		BorderFactory.createMatteBorder(4, 2, 3, 0, GUITools.DEFAULT_BACKGROUND),
-                new RoundBorder(22,3,true)));
+                new RoundBorder(24,3,true)));
 
         textPOST.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 1, 0, GUITools.DEFAULT_BACKGROUND),
+                BorderFactory.createMatteBorder(1, 2, 0, 0, GUITools.DEFAULT_BACKGROUND),
                 GUITools.BLU_ROUND_BORDER));
         textCookie.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 1, 0, GUITools.DEFAULT_BACKGROUND),
+                BorderFactory.createMatteBorder(1, 2, 0, 0, GUITools.DEFAULT_BACKGROUND),
                 GUITools.BLU_ROUND_BORDER));
         textHeader.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 2, 3, 0, GUITools.DEFAULT_BACKGROUND),
                 GUITools.BLU_ROUND_BORDER));
+
+        textPOST.setPreferredSize(new Dimension(0, 27));
+        textPOST.setFont(textPOST.getFont().deriveFont(Font.PLAIN,textPOST.getFont().getSize()+2));
+        textCookie.setPreferredSize(new Dimension(0, 27));
+        textCookie.setFont(textCookie.getFont().deriveFont(Font.PLAIN,textCookie.getFont().getSize()+2));
+        textHeader.setPreferredSize(new Dimension(0, 27));
+        textHeader.setFont(textHeader.getFont().deriveFont(Font.PLAIN,textHeader.getFont().getSize()+2));
         
-        textGET.addActionListener(new ActionStart());
+        addressBar.addActionListener(new ActionStart());
         textPOST.addActionListener(new ActionStart());
         textCookie.addActionListener(new ActionStart());
         textHeader.addActionListener(new ActionStart());
         
         submitAddressBar.setToolTipText("<html>Start injection of the address in the Location Bar</html>");
         submitAddressBar.addActionListener(new ActionStart());
-        new ComponentBorder( submitAddressBar, 17, 0 ).install( textGET );
+        new ComponentBorder( submitAddressBar, 17, 0 ).install( addressBar );
         
         loader.setVisible(false);
-        new ComponentBorder( loader, 17, 1 ).install( textGET );
+        new ComponentBorder( loader, 17, 1 ).install( addressBar );
         loader.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
         
         // Add pixels to the right to compensate width when strategy is selected 
@@ -149,7 +162,7 @@ public class TopPanel extends JPanel{
                         .addComponent(radioHeader))
                 // Resizable textfields
                 .addGroup(layout.createParallelGroup()
-                        .addComponent(textGET)
+                        .addComponent(addressBar)
                         .addComponent(textPOST)
                         .addComponent(textCookie)
                         .addComponent(textHeader))
@@ -163,7 +176,7 @@ public class TopPanel extends JPanel{
             layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER, false)
                         .addComponent(radioGET)
-                        .addComponent(textGET)
+                        .addComponent(addressBar)
                         .addComponent(advancedButton))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(radioPOST)
@@ -231,7 +244,7 @@ public class TopPanel extends JPanel{
                     GUIMediator.top().loader.setVisible(true);
                     
                     GUIMediator.controller().controlInput(
-                        textGET.getText(),
+                        addressBar.getText(),
                         textPOST.getText(),
                         textCookie.getText(),
                         textHeader.getText(),

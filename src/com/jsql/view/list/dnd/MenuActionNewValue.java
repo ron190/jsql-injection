@@ -10,9 +10,10 @@ import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
-import com.jsql.view.component.JScrollPanePixelBorder;
-import com.jsql.view.component.popupmenu.JPopupTextAreaEditable;
+import com.jsql.view.scrollpane.JScrollPanePixelBorder;
+import com.jsql.view.textcomponent.JPopupTextArea;
 
 public class MenuActionNewValue implements ActionListener {
 	
@@ -26,7 +27,7 @@ public class MenuActionNewValue implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent arg0) {
         JPanel panel = new JPanel(new BorderLayout());
-        final JPopupTextAreaEditable textarea = new JPopupTextAreaEditable(6, 50);
+        final JTextArea textarea = new JPopupTextArea(new JTextArea(6, 50)).getProxy();
         panel.add(new JLabel("Add new value(s) to the list:"), BorderLayout.NORTH);
         panel.add(new JScrollPanePixelBorder(1,1,1,1,textarea));
         

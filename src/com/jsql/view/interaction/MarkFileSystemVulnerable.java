@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -27,9 +27,9 @@ public class MarkFileSystemVulnerable implements IInteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        GUIMediator.gui().getOutputPanel().fileManager.changeIcon(GUITools.TICK);
-        GUIMediator.gui().getOutputPanel().shellManager.changeIcon(GUITools.TICK);
-        GUIMediator.gui().getOutputPanel().sqlShellManager.changeIcon(GUITools.TICK);
-        GUIMediator.gui().getOutputPanel().uploadManager.changeIcon(GUITools.TICK);
+        GUIMediator.left().fileManager.changeIcon(GUITools.TICK);
+        GUIMediator.left().shellManager.changeIcon(GUITools.TICK);
+        GUIMediator.left().sqlShellManager.changeIcon(GUITools.TICK);
+        GUIMediator.left().uploadManager.changeIcon(GUITools.TICK);
     }
 }

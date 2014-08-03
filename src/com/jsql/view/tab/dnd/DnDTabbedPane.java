@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -119,7 +119,7 @@ public class DnDTabbedPane extends JTabbedPane {
         setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER));
     }
     private DropMode dropMode = DropMode.INSERT;
-    public DropLocation dropLocationForPoint(Point p) {
+    public DropLocation dropLocationForPointLocal(Point p) {
 //        boolean isTB = getTabPlacement()==JTabbedPane.TOP || getTabPlacement()==JTabbedPane.BOTTOM;
         switch(dropMode) {
         case INSERT:
@@ -140,7 +140,7 @@ public class DnDTabbedPane extends JTabbedPane {
     public final DropLocation getDropLocation() {
         return dropLocation;
     }
-    public Object setDropLocation(TransferHandler.DropLocation location, Object state, boolean forDrop) {
+    public Object setDropLocationLocal(TransferHandler.DropLocation location, Object state, boolean forDrop) {
         DropLocation old = dropLocation;
         if(location==null || !forDrop) {
             dropLocation = new DropLocation(new Point(), -1);
@@ -284,7 +284,7 @@ public class DnDTabbedPane extends JTabbedPane {
                 th.exportAsDrag(src, e, TransferHandler.MOVE);
                 lineRect.setRect(0,0,0,0);
                 src.getRootPane().getGlassPane().setVisible(true);
-                src.setDropLocation(new DropLocation(tabPt, -1), null, true);
+                src.setDropLocationLocal(new DropLocation(tabPt, -1), null, true);
                 startPt = null;
             }
         }

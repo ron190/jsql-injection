@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -139,9 +139,9 @@ public class RessourceAccessObject {
                     nb++;
                 }
             } catch (InterruptedException e) {
-                GUIMediator.model().sendDebugMessage(e);
+                InjectionModel.logger.error(e, e);
             } catch (ExecutionException e) {
-                GUIMediator.model().sendDebugMessage(e);
+                InjectionModel.logger.error(e, e);
             }
         }
 
@@ -149,12 +149,12 @@ public class RessourceAccessObject {
         try {
             taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
 
         this.endAdminSearch = false;
 
-        GUIMediator.model().sendMessage("Admin page(s) found: "+nb+"/"+submittedTasks);
+        InjectionModel.logger.info("Admin page(s) found: "+nb+"/"+submittedTasks);
 
         Request request = new Request();
         request.setMessage("EndAdminSearch");
@@ -194,7 +194,7 @@ public class RessourceAccessObject {
             request.setParameters(path, url);
             GUIMediator.model().interact(request);
         }else{
-            GUIMediator.model().sendErrorMessage("Web shell not usable.");
+            InjectionModel.logger.warn("Web shell not usable.");
         }
     }
     
@@ -288,9 +288,9 @@ public class RessourceAccessObject {
                 imgIs.close();
                 
                 if(result.indexOf("SQLiy") > -1)
-                    GUIMediator.model().sendMessage("Upload successful.");
+                	InjectionModel.logger.info("Upload successful.");
                 else
-                    GUIMediator.model().sendErrorMessage("Upload failed.");
+                    InjectionModel.logger.warn("Upload failed.");
                 
                 Map<String, Object> msgHeader = new HashMap<String, Object>();
                 msgHeader.put("Url", url);
@@ -314,21 +314,21 @@ public class RessourceAccessObject {
                 request.setParameters(msgHeader);
                 GUIMediator.model().interact(request);
             } catch (Exception e) {
-                GUIMediator.model().sendDebugMessage(e);
+                InjectionModel.logger.error(e, e);
             } finally {
                 try {
                     os.close();
                 } catch (Exception e) {
-                    GUIMediator.model().sendDebugMessage(e);
+                    InjectionModel.logger.error(e, e);
                 }
                 try {
                     is.close();
                 } catch (Exception e) {
-                    GUIMediator.model().sendDebugMessage(e);
+                    InjectionModel.logger.error(e, e);
                 }
             }
         }else{
-            GUIMediator.model().sendErrorMessage("Upload not usable.");
+            InjectionModel.logger.warn("Upload not usable.");
         }
         
         Request request = new Request();
@@ -354,7 +354,7 @@ public class RessourceAccessObject {
             GUIMediator.model().interact(request);
             hasFileRight = false;
         }else if(StringTool.hexstr(hexResult).equals("false")){
-            GUIMediator.model().sendErrorMessage( "No FILE privilege" );
+            InjectionModel.logger.warn( "No FILE privilege" );
             Request request = new Request();
             request.setMessage("MarkFileSystemInvulnerable");
             GUIMediator.model().interact(request);
@@ -399,15 +399,15 @@ public class RessourceAccessObject {
                     GUIMediator.model().interact(request);
 
                     if(!duplicate.contains(path.replace(name, "")))
-                        GUIMediator.model().sendMessage("Shell might be possible in folder "+path.replace(name, ""));
+                    	InjectionModel.logger.info("Shell might be possible in folder "+path.replace(name, ""));
                     duplicate.add(path.replace(name, ""));
 
                     nb++;
                 }
             } catch (InterruptedException e) {
-                GUIMediator.model().sendDebugMessage(e);
+                InjectionModel.logger.error(e, e);
             } catch (ExecutionException e) {
-                GUIMediator.model().sendDebugMessage(e);
+                InjectionModel.logger.error(e, e);
             }
         }
 
@@ -415,12 +415,12 @@ public class RessourceAccessObject {
         try {
             taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
 
         endFileSearch = false;
 
-        GUIMediator.model().sendMessage("File(s) found: "+nb+"/"+submittedTasks);
+        InjectionModel.logger.info("File(s) found: "+nb+"/"+submittedTasks);
         Request request = new Request();
         request.setMessage("EndFileSearch");
         GUIMediator.model().interact(request);
@@ -507,9 +507,9 @@ public class RessourceAccessObject {
             request.setParameters(msgHeader);
             GUIMediator.model().interact(request);
         } catch (MalformedURLException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         } catch (IOException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }finally{
         	// Unfroze interface
         	Request request = new Request();
@@ -561,7 +561,7 @@ public class RessourceAccessObject {
             request.setParameters(path, url, user, pass);
             GUIMediator.model().interact(request);
         }else{
-            GUIMediator.model().sendErrorMessage("SQL shell not usable.");
+            InjectionModel.logger.warn("SQL shell not usable.");
         }
     }
 
@@ -606,9 +606,9 @@ public class RessourceAccessObject {
             request.setParameters(msgHeader);
             GUIMediator.model().interact(request);
         } catch (MalformedURLException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         } catch (IOException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }finally{
         	// Unfroze interface
         	Request request = new Request();

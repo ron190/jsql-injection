@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -18,11 +18,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.model.InjectionModel;
 
 /**
- * An icon composed of a main icon and
- * another one displayed in the nottom right corner.
+ * An icon composed of a main icon and another one displayed in the bottom right corner.
  */
 @SuppressWarnings("serial")
 public class IconOverlap extends ImageIcon {
@@ -44,7 +43,7 @@ public class IconOverlap extends ImageIcon {
             BufferedImage im2 = ImageIO.read(IconOverlap.class.getResource(overlap));
             g.drawImage(im2, (this.getIconWidth()-im2.getWidth())/2, (this.getIconHeight()-im2.getHeight())/2, null);
         } catch (IOException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -30,10 +30,10 @@ public class EndPreparation implements IInteractionCommand{
         GUIMediator.top().loader.setVisible(false);
 
         if(GUIMediator.model().isInjectionBuilt){
-            GUIMediator.gui().getOutputPanel().fileManager.setButtonEnable(true);
-            GUIMediator.gui().getOutputPanel().shellManager.setButtonEnable(true);
-            GUIMediator.gui().getOutputPanel().sqlShellManager.setButtonEnable(true);
-            GUIMediator.gui().getOutputPanel().uploadManager.setButtonEnable(true);
+            GUIMediator.left().fileManager.setButtonEnable(true);
+            GUIMediator.left().shellManager.setButtonEnable(true);
+            GUIMediator.left().sqlShellManager.setButtonEnable(true);
+            GUIMediator.left().uploadManager.setButtonEnable(true);
         }
     }
 }

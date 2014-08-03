@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -46,8 +46,8 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-import com.jsql.view.GUIMediator;
-import com.jsql.view.component.popupmenu.JPopupTableMenu;
+import com.jsql.model.InjectionModel;
+import com.jsql.view.popupmenu.JPopupTableMenu;
 
 /**
  * Display a table for database values.
@@ -129,7 +129,7 @@ public class TablePanel extends JPanel {
         try {
             image = ImageIO.read(url.openStream());
         } catch (IOException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
 
         table.setCursor(toolkit.createCustomCursor(image, new Point(12, 12), "Hand"));

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -11,6 +11,8 @@
 package com.jsql.view;
 
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -18,27 +20,25 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.UUID;
+import java.util.prefs.Preferences;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.TransferHandler;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.ElementDatabase;
 import com.jsql.model.bean.Request;
-import com.jsql.view.component.JSplitPaneWithZeroSizeDivider;
-import com.jsql.view.component.Menubar;
-import com.jsql.view.component.popupmenu.JPopupTextArea;
+import com.jsql.view.action.ActionHandler;
 import com.jsql.view.dropshadow.ShadowPopupFactory;
 import com.jsql.view.interaction.IInteractionCommand;
+import com.jsql.view.menubar.Menubar;
 import com.jsql.view.panel.LeftRightBottomPanel;
 import com.jsql.view.panel.StatusbarPanel;
 import com.jsql.view.panel.TopPanel;
-import com.jsql.view.tab.dnd.DnDTabbedPane;
-import com.jsql.view.tab.dnd.TabTransferHandler;
 import com.jsql.view.terminal.Terminal;
 
 /**
@@ -50,18 +50,6 @@ import com.jsql.view.terminal.Terminal;
  */
 @SuppressWarnings("serial")
 public class GUI extends JFrame implements Observer {
-    /**
-     * Text area for injection informations:
-     * - console: standard readable message,
-     * - chunk: data read from web page
-     * - header: result of HTTP connection
-     * - binary: blind/time progress
-     */
-    public JPopupTextArea consoleArea = new JPopupTextArea();
-    public JPopupTextArea chunks = new JPopupTextArea();
-    public JSplitPaneWithZeroSizeDivider network;
-    public JPopupTextArea binaryArea = new JPopupTextArea();
-    public JPopupTextArea javaDebug = new JPopupTextArea();
 
     public LeftRightBottomPanel outputPanel;
     
@@ -82,6 +70,7 @@ public class GUI extends JFrame implements Observer {
     	treeNodeModels.put(elt, node);
     }
     
+
     // Build the GUI: add app icon, tree icons, the 3 main panels
     public GUI(){
         super("jSQL Injection");
@@ -91,20 +80,9 @@ public class GUI extends JFrame implements Observer {
         // Define a small and large app icon
         this.setIconImages(GUITools.getIcons());
 
+        // Load UI before any component
         GUITools.prepareGUI();
-        
         ShadowPopupFactory.install();
-
-        // Object creation after customization
-        consoleArea = new JPopupTextArea();
-        chunks = new JPopupTextArea();
-        binaryArea = new JPopupTextArea();
-        javaDebug = new JPopupTextArea();
-
-        GUIMediator.register(new DnDTabbedPane());
-        
-        TransferHandler handler = new TabTransferHandler();
-        GUIMediator.right().setTransferHandler(handler);
         
         // Register the view to the model
         GUIMediator.model().addObserver(this);
@@ -112,9 +90,6 @@ public class GUI extends JFrame implements Observer {
         // Save controller
         GUIMediator.register(new Menubar());
         this.setJMenuBar(GUIMediator.menubar());
-
-        // Add hotkeys to rootpane ctrl-tab, ctrl-shift-tab, ctrl-w
-        ActionHandler.addShortcut(GUIMediator.right());
 
         // Define the default panel: each component on a vertical line
         this.getContentPane().setLayout( new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS) );
@@ -129,6 +104,32 @@ public class GUI extends JFrame implements Observer {
         mainPanel.add(outputPanel);
         this.add(mainPanel);
 
+        GUIMediator.gui().addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
+                prefs.putInt(outputPanel.VERTICALSPLITTER_PREFNAME, outputPanel.leftRight.getDividerLocation());
+                prefs.putInt(outputPanel.HORIZONTALSPLITTER_PREFNAME, outputPanel.getHeight() - outputPanel.getDividerLocation());
+                
+                prefs.putBoolean(GUITools.BINARY_VISIBLE, false);
+                prefs.putBoolean(GUITools.CHUNK_VISIBLE, false);
+                prefs.putBoolean(GUITools.NETWORK_VISIBLE, false);
+                prefs.putBoolean(GUITools.JAVA_VISIBLE, false);
+                
+                for(int i=0; i < GUIMediator.bottom().getTabCount() ;i++){
+                    if (GUIMediator.bottom().getTitleAt(i).equals("Binary")) {
+                        prefs.putBoolean(GUITools.BINARY_VISIBLE, true);
+                    }else if (GUIMediator.bottom().getTitleAt(i).equals("Chunk")) {
+                        prefs.putBoolean(GUITools.CHUNK_VISIBLE, true);
+                    }else if (GUIMediator.bottom().getTitleAt(i).equals("Network")) {
+                        prefs.putBoolean(GUITools.NETWORK_VISIBLE, true);
+                    }else if (GUIMediator.bottom().getTitleAt(i).equals("Java")) {
+                        prefs.putBoolean(GUITools.JAVA_VISIBLE, true);
+                    }
+                }
+            }
+        });
+        
         // Info on the bottom
         GUIMediator.register(new StatusbarPanel());
         this.add(GUIMediator.status());
@@ -162,28 +163,25 @@ public class GUI extends JFrame implements Observer {
 
         try {
             Class<?> cl = Class.forName("com.jsql.view.interaction." + interaction.getMessage());
-
             Class<?>[] types = new Class[]{Object[].class};
-
-//            cl.getConstructors();
             Constructor<?> ct = cl.getConstructor(types);
 
             IInteractionCommand o2 = (IInteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
             o2.execute();
         } catch (ClassNotFoundException e) {
-        	GUIMediator.model().sendDebugMessage(e);
+        	InjectionModel.logger.error(e, e);
         } catch (InstantiationException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         } catch (IllegalAccessException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         } catch (NoSuchMethodException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         } catch (SecurityException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         } catch (IllegalArgumentException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         } catch (InvocationTargetException e) {
-            GUIMediator.model().sendDebugMessage(e);
+            InjectionModel.logger.error(e, e);
         }
     }
 
@@ -211,20 +209,20 @@ public class GUI extends JFrame implements Observer {
         GUIMediator.databaseTree().setRootVisible(true);
 
         // Empty infos tabs
-        chunks.setText("");
-        ((DefaultTableModel) GUIMediator.gui().getOutputPanel().networkTable.getModel()).setRowCount(0);;
-        binaryArea.setText("");
+        GUIMediator.bottomPanel().chunks.setText("");
+        ((DefaultTableModel) GUIMediator.bottomPanel().networkTable.getModel()).setRowCount(0);
+        GUIMediator.bottomPanel().binaryArea.setText("");
 
-        outputPanel.fileManager.setButtonEnable(false);
-        outputPanel.shellManager.setButtonEnable(false);
-        outputPanel.sqlShellManager.setButtonEnable(false);
+//        GUIMediator.left().fileManager.setButtonEnable(false);
+//        GUIMediator.left().shellManager.setButtonEnable(false);
+//        GUIMediator.left().sqlShellManager.setButtonEnable(false);
 
         // Default status info
         GUIMediator.status().reset();
 
-        outputPanel.fileManager.changeIcon(GUITools.SQUARE_GREY);
-        outputPanel.shellManager.changeIcon(GUITools.SQUARE_GREY);
-        outputPanel.sqlShellManager.changeIcon(GUITools.SQUARE_GREY);
+//        GUIMediator.left().fileManager.changeIcon(GUITools.SQUARE_GREY);
+//        GUIMediator.left().shellManager.changeIcon(GUITools.SQUARE_GREY);
+//        GUIMediator.left().sqlShellManager.changeIcon(GUITools.SQUARE_GREY);
     }
 
     /**

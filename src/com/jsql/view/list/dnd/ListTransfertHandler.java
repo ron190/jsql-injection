@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -25,7 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.model.InjectionModel;
 
 @SuppressWarnings("serial")
 public class ListTransfertHandler extends TransferHandler{
@@ -100,9 +100,9 @@ public class ListTransfertHandler extends TransferHandler{
                                 model.add(childIndex++, new ListItem(value.replace("\\", "/")));
                             }
                     } catch (UnsupportedFlavorException e) {
-                        GUIMediator.model().sendDebugMessage(e);
+                        InjectionModel.logger.error(e, e);
                     } catch (IOException e) {
-                        GUIMediator.model().sendDebugMessage(e);
+                        InjectionModel.logger.error(e, e);
                     }
                 }
 
@@ -121,9 +121,9 @@ public class ListTransfertHandler extends TransferHandler{
                 try {
                 	list.dropPasteFile((List<File>)support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor), childIndex);
                 } catch (UnsupportedFlavorException e) {
-                    GUIMediator.model().sendDebugMessage(e);
+                    InjectionModel.logger.error(e, e);
                 } catch (IOException e) {
-                    GUIMediator.model().sendDebugMessage(e);
+                    InjectionModel.logger.error(e, e);
                 }
             }
         } else { //This is a paste
@@ -159,9 +159,9 @@ public class ListTransfertHandler extends TransferHandler{
                                         )
                                 );
                     } catch (UnsupportedFlavorException e) {
-                        GUIMediator.model().sendDebugMessage(e);
+                        InjectionModel.logger.error(e, e);
                     } catch (IOException e) {
-                        GUIMediator.model().sendDebugMessage(e);
+                        InjectionModel.logger.error(e, e);
                     }
                 }else if(transferableFromClipboard.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                     try {
@@ -172,9 +172,9 @@ public class ListTransfertHandler extends TransferHandler{
 
                         list.dropPasteFile((List<File>)transferableFromClipboard.getTransferData(DataFlavor.javaFileListFlavor), y);
                     } catch (UnsupportedFlavorException e) {
-                        GUIMediator.model().sendDebugMessage(e);
+                        InjectionModel.logger.error(e, e);
                     } catch (IOException e) {
-                        GUIMediator.model().sendDebugMessage(e);
+                        InjectionModel.logger.error(e, e);
                     }
                 }
 

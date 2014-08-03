@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -31,10 +31,11 @@ import javax.swing.SwingConstants;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
+import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
-import com.jsql.view.component.JScrollPanePixelBorder;
 import com.jsql.view.list.dnd.DnDList;
+import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 
 /**
  * Manager to read a file from the host.
@@ -54,7 +55,7 @@ public class FileManager extends ListManager{
             while( (line = reader.readLine()) != null ) pathList.add(line);
             reader.close();
         } catch (IOException e) {
-        	GUIMediator.model().sendDebugMessage(e);
+        	InjectionModel.logger.error(e, e);
         }
 
         final DnDList listFile = new DnDList(pathList);
@@ -83,7 +84,7 @@ public class FileManager extends ListManager{
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if(listFile.getSelectedValuesList().size() == 0){
-                	GUIMediator.model().sendErrorMessage("Select at least one file");
+                	InjectionModel.logger.warn("Select at least one file");
                     return;
                 }
 
@@ -93,14 +94,14 @@ public class FileManager extends ListManager{
                         if(run.getText().equals(defaultText)){
                             run.setText("Stop");
                             try {
-                            	GUIMediator.gui().getOutputPanel().shellManager.clearSelection();
-                            	GUIMediator.gui().getOutputPanel().sqlShellManager.clearSelection();
+                            	GUIMediator.left().shellManager.clearSelection();
+                            	GUIMediator.left().sqlShellManager.clearSelection();
                                 loader.setVisible(true);
                                 GUIMediator.model().rao.getFile(listFile.getSelectedValuesList());
                             } catch (PreparationException e) {
-                            	GUIMediator.model().sendErrorMessage("Problem reading file");
+                            	InjectionModel.logger.warn("Problem reading file");
                             } catch (StoppableException e) {
-                            	GUIMediator.model().sendErrorMessage("Problem reading file");
+                            	InjectionModel.logger.warn("Problem reading file");
                             }
 
                         }else{

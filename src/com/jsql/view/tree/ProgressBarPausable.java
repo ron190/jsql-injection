@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -17,7 +17,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JProgressBar;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.model.InjectionModel;
 import com.jsql.view.GUITools;
 
 /**
@@ -43,7 +43,7 @@ public class ProgressBarPausable extends JProgressBar{
                 BufferedImage im2 = ImageIO.read(NodePanel.class.getResource(GUITools.PATH_PAUSE));
                 g.drawImage(im2, (this.getWidth()-im2.getWidth())/2, (this.getHeight()-im2.getHeight())/2, null);
             } catch (IOException e) {
-                GUIMediator.model().sendDebugMessage(e);
+                InjectionModel.logger.error(e, e);
             }
         }
     }

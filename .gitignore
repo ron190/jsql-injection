@@ -1,8 +1,6 @@
 bin/
 .metadata
-.classpath
-
 target/
-.project
 target/
 .settings/
+.sonar/

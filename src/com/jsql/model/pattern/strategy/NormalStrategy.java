@@ -2,9 +2,10 @@ package com.jsql.model.pattern.strategy;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.Interruptable;
-import com.jsql.model.Stoppable;
+import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.Request;
+import com.jsql.model.interruptable.Interruptable;
+import com.jsql.model.interruptable.Stoppable;
 import com.jsql.view.GUIMediator;
 
 public class NormalStrategy implements IInjectionStrategy {
@@ -13,7 +14,7 @@ public class NormalStrategy implements IInjectionStrategy {
 
 	@Override
 	public void checkApplicability() throws PreparationException {
-		GUIMediator.model().sendMessage("Normal test...");
+		InjectionModel.logger.info("Normal test...");
 		GUIMediator.model().initialQuery = GUIMediator.model().new Stoppable_getInitialQuery().begin();
 
 		isApplicable = !GUIMediator.model().initialQuery.equals("");
@@ -62,7 +63,7 @@ public class NormalStrategy implements IInjectionStrategy {
 
 	@Override
 	public void applyStrategy() {
-		GUIMediator.model().sendMessage("Using normal injection...");
+		InjectionModel.logger.info("Using normal injection...");
 		GUIMediator.model().applyStrategy(this);
 		
 		Request request = new Request();

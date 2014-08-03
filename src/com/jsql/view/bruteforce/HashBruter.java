@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -18,8 +18,8 @@ import java.util.zip.Checksum;
 
 import javax.swing.JOptionPane;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.tool.StringTool;
-import com.jsql.view.GUIMediator;
 
 public class HashBruter extends Bruter {
     /*
@@ -87,7 +87,7 @@ public class HashBruter extends Bruter {
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
-                        GUIMediator.model().sendDebugMessage(e);
+                        InjectionModel.logger.error(e, e);
                     }
                 }
                 generateAllPossibleCombinations("", size);
@@ -101,7 +101,7 @@ public class HashBruter extends Bruter {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                GUIMediator.model().sendDebugMessage(e);
+                InjectionModel.logger.error(e, e);
             }
         }
         if (found == false || done == false) {

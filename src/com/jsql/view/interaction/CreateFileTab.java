@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -11,11 +11,12 @@
 package com.jsql.view.interaction;
 
 import javax.swing.ImageIcon;
+import javax.swing.JTextArea;
 
 import com.jsql.view.GUIMediator;
-import com.jsql.view.component.JScrollPanePixelBorder;
-import com.jsql.view.component.popupmenu.JPopupTextArea;
+import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.tab.TabHeader;
+import com.jsql.view.textcomponent.JPopupTextArea;
 
 /**
  * Create a new tab for the file
@@ -43,7 +44,7 @@ public class CreateFileTab implements IInteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        JPopupTextArea fileText = new JPopupTextArea();
+        JTextArea fileText = new JPopupTextArea().getProxy();
         fileText.setText(content);
         JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1,0,0,0,fileText);
 
@@ -62,8 +63,8 @@ public class CreateFileTab implements IInteractionCommand{
         GUIMediator.right().setTabComponentAt(GUIMediator.right().indexOfComponent(scroller), header);
 
         // Add the path String to the list of files only if there is no same StringObject value already
-        GUIMediator.gui().getOutputPanel().shellManager.addToList(path.replace(name, ""));
-        GUIMediator.gui().getOutputPanel().uploadManager.addToList(path.replace(name, ""));
-        GUIMediator.gui().getOutputPanel().sqlShellManager.addToList(path.replace(name, ""));
+        GUIMediator.left().shellManager.addToList(path.replace(name, ""));
+        GUIMediator.left().uploadManager.addToList(path.replace(name, ""));
+        GUIMediator.left().sqlShellManager.addToList(path.replace(name, ""));
     }
 }

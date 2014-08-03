@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -36,6 +36,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
@@ -44,24 +45,23 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.jsql.tool.StringTool;
 import com.jsql.view.GUITools;
-import com.jsql.view.component.JScrollPanePixelBorder;
-import com.jsql.view.component.JSplitPaneWithZeroSizeDivider;
-import com.jsql.view.component.popupmenu.JPopupTextArea;
-import com.jsql.view.component.popupmenu.JPopupTextAreaEditable;
+import com.jsql.view.scrollpane.JScrollPanePixelBorder;
+import com.jsql.view.splitpane.JSplitPaneWithZeroSizeDivider;
+import com.jsql.view.textcomponent.JPopupTextArea;
 
 /**
  * Manager to code/uncode string in various methods.
  */
 @SuppressWarnings("serial")
 public class CoderManager extends JPanel{
-    private JPopupTextAreaEditable entry;
+    private JTextArea entry;
     private JComboBox<String> encoding;
-    private JPopupTextArea result;
+    private JTextArea result;
 
     public CoderManager(){
         super(new BorderLayout());
 
-        entry = new JPopupTextAreaEditable();
+        entry = new JPopupTextArea(new JTextArea()).getProxy();
         entry.setEditable(true);
         entry.setLineWrap(true);
 
@@ -106,7 +106,7 @@ public class CoderManager extends JPanel{
         topMixed.add(middleLine, BorderLayout.SOUTH);
 
         JPanel bottom = new JPanel(new BorderLayout());
-        result = new JPopupTextArea();
+        result = new JPopupTextArea().getProxy();
         result.setLineWrap(true);
         bottom.add(new JScrollPanePixelBorder(1,1,0,0,result), BorderLayout.CENTER);
 

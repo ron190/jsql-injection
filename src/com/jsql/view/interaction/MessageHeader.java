@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -50,13 +50,13 @@ public class MessageHeader implements IInteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        GUIMediator.gui().getOutputPanel().listHTTPHeader.add(new HTTPHeader(url, cookie, post, header, response));
-        DefaultTableModel model = (DefaultTableModel) ((JTable)((JScrollPane) GUIMediator.gui().network.getLeftComponent()).getViewport().getView()).getModel();
+        GUIMediator.bottomPanel().listHTTPHeader.add(new HTTPHeader(url, cookie, post, header, response));
+        DefaultTableModel model = (DefaultTableModel) ((JTable)((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().getView()).getModel();
         model.addRow(new Object[]{response.get("Method"), url, response.get("Content-Length"), response.get("Content-Type")});
         
-        Rectangle rect = ((JTable)((JScrollPane) GUIMediator.gui().network.getLeftComponent()).getViewport().getView()).getCellRect(((JTable)((JScrollPane) GUIMediator.gui().network.getLeftComponent()).getViewport().getView()).getRowCount()-1, 0 /* col */, true);
-        Point pt = ((JScrollPane) GUIMediator.gui().network.getLeftComponent()).getViewport().getViewPosition();
+        Rectangle rect = ((JTable)((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().getView()).getCellRect(((JTable)((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().getView()).getRowCount()-1, 0 /* col */, true);
+        Point pt = ((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().getViewPosition();
         rect.translate(-pt.x, -pt.y);
-        ((JScrollPane) GUIMediator.gui().network.getLeftComponent()).getViewport().scrollRectToVisible(rect);
+        ((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().scrollRectToVisible(rect);
     }
 }

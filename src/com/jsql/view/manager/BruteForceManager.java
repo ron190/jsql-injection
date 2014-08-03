@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -25,15 +25,16 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.model.InjectionModel;
 import com.jsql.view.GUITools;
 import com.jsql.view.bruteforce.HashBruter;
-import com.jsql.view.component.JScrollPanePixelBorder;
-import com.jsql.view.component.popupmenu.JPopupTextArea;
-import com.jsql.view.component.popupmenu.JPopupTextField;
+import com.jsql.view.scrollpane.JScrollPanePixelBorder;
+import com.jsql.view.textcomponent.JPopupTextArea;
+import com.jsql.view.textcomponent.JPopupTextField;
 
 /**
  * Manager to brute force a hash of various types.
@@ -42,7 +43,7 @@ import com.jsql.view.component.popupmenu.JPopupTextField;
 public class BruteForceManager extends JPanel{
     public AbstractButton run;
 
-    private JPopupTextField hash;
+    private JTextField hash;
     private JComboBox<String> hashTypes;
     
     private JCheckBox low;
@@ -50,11 +51,11 @@ public class BruteForceManager extends JPanel{
     private JCheckBox num;
     private JCheckBox spec;
     
-    private JPopupTextField exclude;
-    private JPopupTextField mini;
-    private JPopupTextField max;
+    private JTextField exclude;
+    private JTextField mini;
+    private JTextField max;
     
-    private JPopupTextArea result;
+    private JTextArea result;
     private JLabel loader;
 
     public BruteForceManager(){
@@ -67,7 +68,7 @@ public class BruteForceManager extends JPanel{
         JPanel firstLine = new JPanel(new BorderLayout());
         firstLine.add(new JLabel(" Hash"), BorderLayout.WEST);
 
-        hash = new JPopupTextField();
+        hash = new JPopupTextField().getProxy();
         hash.setToolTipText("<html><b>Hash to brute force</b><br>" +
                 "<i>Passwords for admin pages or for database users are<br>" +
                 "usually hashed inside database.</i></html>");
@@ -120,13 +121,13 @@ public class BruteForceManager extends JPanel{
         thirdLine.setLayout( new BoxLayout(thirdLine, BoxLayout.X_AXIS) );
         
         thirdLine.add(new JLabel(" Exclude ", SwingConstants.RIGHT));
-        exclude = new JPopupTextField();
+        exclude = new JPopupTextField().getProxy();
         exclude.setToolTipText("<html><b>Exclude characters</b><br>" +
                 "Speed up process by excluding characters from the search.</html>");
         thirdLine.add(exclude);
 
-        mini = new JPopupTextField("1");
-        max = new JPopupTextField("5");
+        mini = new JPopupTextField("1").getProxy();
+        max = new JPopupTextField("5").getProxy();
         
         thirdLine.add(new JLabel(" Length min. ", SwingConstants.RIGHT));
         thirdLine.add(mini);
@@ -157,7 +158,7 @@ public class BruteForceManager extends JPanel{
         options.add(secondAndThirdLine, BorderLayout.SOUTH);
         this.add(options, BorderLayout.NORTH);
 
-        result = new JPopupTextArea();
+        result = new JPopupTextArea().getProxy();
         result.setLineWrap(true);
         this.add(new JScrollPanePixelBorder(1,1,0,0,result), BorderLayout.CENTER);
         
@@ -256,7 +257,7 @@ public class BruteForceManager extends JPanel{
                             try {
                                 Thread.sleep(1000); // delay to update result panel
                             } catch (InterruptedException e) {
-                                GUIMediator.model().sendDebugMessage(e);
+                                InjectionModel.logger.error(e, e);
                             }
                             
                             result.setText("Current string: " + hashBruter.getPassword() + "\n");
@@ -292,9 +293,9 @@ public class BruteForceManager extends JPanel{
                                     hashBruter.getGeneratedHash() + "\n" +
                                     "String: " + hashBruter.getPassword());
                             
-                            GUIMediator.model().sendMessage("Found hash:\n" +
-                                    hashBruter.getGeneratedHash() + "\n" +
-                                    "String: " + hashBruter.getPassword());
+                            InjectionModel.logger.info("Found hash:");
+                            InjectionModel.logger.info(hashBruter.getGeneratedHash());
+                            InjectionModel.logger.info("String: " + hashBruter.getPassword());
                         }else if(hashBruter.isDone()){
                             result.append("\n\n*** Hash not found");
                         }

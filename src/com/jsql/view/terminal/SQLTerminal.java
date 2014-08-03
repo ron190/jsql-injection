@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -14,17 +14,25 @@ import java.util.UUID;
 
 import com.jsql.view.GUIMediator;
 
+/**
+ * A terminal for SQL shell injection.
+ */
 @SuppressWarnings("serial")
 public class SQLTerminal extends Terminal {
 
-	public SQLTerminal(UUID terminalID, String wbhPath, String... args) {
-        super(terminalID, wbhPath, "sql");
-        this.args = args; 
+   /**
+     * Build a SQL shell instance.
+     * @param terminalID Unique identifier to discriminate beyond multiple opened terminals
+     * @param shellURL URL of current shell
+     * @param args User and password
+     */
+    public SQLTerminal(UUID terminalID, String shellURL, String... args) {
+        super(terminalID, shellURL, "sql");
+        this.loginPassword = args; 
     }
 
     @Override
     void action(String cmd, UUID terminalID, String wbhPath, String... arg) {
-    	GUIMediator.model().rao.executeSQLShell(cmd, terminalID, wbhPath, arg[0], arg[1]);
+        GUIMediator.model().rao.executeSQLShell(cmd, terminalID, wbhPath, arg[0], arg[1]);
     }
-
 }

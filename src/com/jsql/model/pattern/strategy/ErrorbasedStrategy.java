@@ -1,9 +1,10 @@
 package com.jsql.model.pattern.strategy;
 
 import com.jsql.exception.StoppableException;
-import com.jsql.model.Interruptable;
-import com.jsql.model.Stoppable;
+import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.Request;
+import com.jsql.model.interruptable.Interruptable;
+import com.jsql.model.interruptable.Stoppable;
 import com.jsql.view.GUIMediator;
 
 public class ErrorbasedStrategy implements IInjectionStrategy {
@@ -12,7 +13,7 @@ public class ErrorbasedStrategy implements IInjectionStrategy {
 
 	@Override
 	public void checkApplicability() {
-		GUIMediator.model().sendMessage("Error based test...");
+		InjectionModel.logger.info("Error based test...");
 		
 		String performanceSourcePage = GUIMediator.model().inject(
 			GUIMediator.model().insertionCharacter + "+and(" +
@@ -101,7 +102,7 @@ public class ErrorbasedStrategy implements IInjectionStrategy {
 
 	@Override
 	public void applyStrategy() {
-		GUIMediator.model().sendMessage("Using error based injection...");
+		InjectionModel.logger.info("Using error based injection...");
 		GUIMediator.model().applyStrategy(this);
 		
 		Request request = new Request();

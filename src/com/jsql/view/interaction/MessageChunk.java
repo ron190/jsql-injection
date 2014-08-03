@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -30,7 +30,7 @@ public class MessageChunk implements IInteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-    	GUIMediator.gui().chunks.append(text);
-        GUIMediator.gui().chunks.setCaretPosition(GUIMediator.gui().chunks.getDocument().getLength());
+    	GUIMediator.bottomPanel().chunks.append(text);
+        GUIMediator.bottomPanel().chunks.setCaretPosition(GUIMediator.bottomPanel().chunks.getDocument().getLength());
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -26,8 +26,8 @@ public class EndUpload implements IInteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        GUIMediator.gui().getOutputPanel().uploadManager.restoreButtonText();
-        GUIMediator.gui().getOutputPanel().uploadManager.setButtonEnable(true);
-        GUIMediator.gui().getOutputPanel().uploadManager.hideLoader();
+        GUIMediator.left().uploadManager.restoreButtonText();
+        GUIMediator.left().uploadManager.setButtonEnable(true);
+        GUIMediator.left().uploadManager.hideLoader();
     }
 }

@@ -1,12 +1,13 @@
 package com.jsql.model.blind;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Define a call HTTP to the server, require the associated url, character position and bit.
  * Opcodes represents the differences between the TRUE page, and the resulting page
  */
-public class BlindCallable implements IBlindCallable<BlindCallable>{
+public class BlindCallable implements IBlindCallable{
     // The URL called
     private String blindUrl;
     // Character position
@@ -61,7 +62,7 @@ public class BlindCallable implements IBlindCallable<BlindCallable>{
         return this;
     }
 
-    public LinkedList<diff_match_patch.Diff> getOpcodes() {
+    public List<diff_match_patch.Diff> getOpcodes() {
 		return opcodes;
 	}
     

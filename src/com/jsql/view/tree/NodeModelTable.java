@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -22,122 +22,125 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import com.jsql.model.bean.ElementDatabase;
 import com.jsql.model.bean.Table;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 
 /**
- * Model adding functional layer to the node, add information to tree node in term of injection process.
- * Used by renderer and editor.
- * @param <T> The database element for this node.
+ * Table model displaying the table icon on the label.
  */
 public class NodeModelTable extends NodeModel{
-	
-	public NodeModelTable(ElementDatabase newObject) {
-		super(newObject);
-	}
+    
+	/**
+     * Node as a table model.
+     * @param table Element table coming from model
+     */
+    public NodeModelTable(Table table) {
+        super(table);
+    }
 
-	@Override
-	Icon getIcon(boolean leaf) {
-		if(leaf)
-			return new ImageIcon(getClass().getResource("/com/jsql/view/images/tableGo.png"));
-		else
-			return GUITools.TABLE_ICON;
-	}
+    @Override
+    Icon getIcon(boolean leaf) {
+        if(leaf){
+            return new ImageIcon(getClass().getResource("/com/jsql/view/images/tableGo.png"));
+        }else{
+            return GUITools.TABLE_ICON;
+        }
+    }
 
-	@Override
-	void displayProgress(NodePanel panel, DefaultMutableTreeNode currentNode) {
-		if(this.getParent().toString().equals("information_schema")){
-			panel.showLoader();
+    @Override
+    void displayProgress(NodePanel panel, DefaultMutableTreeNode currentNode) {
+        if( "information_schema".equals(this.getParent().toString()) ){
+            panel.showLoader();
 
-			if(this.interruptable.isPaused()){
-				ImageIcon animatedGIFPaused = new IconOverlap(GUITools.PATH_PROGRESSBAR, GUITools.PATH_PAUSE);
-				animatedGIFPaused.setImageObserver(new AnimatedObserver(GUIMediator.databaseTree(), currentNode));
-				panel.setLoaderIcon( animatedGIFPaused );
-			}
-		}else
-			super.displayProgress(panel, currentNode);
-	}
+            if(this.interruptable.isPaused()){
+                ImageIcon animatedGIFPaused = new IconOverlap(GUITools.PATH_PROGRESSBAR, GUITools.PATH_PAUSE);
+                animatedGIFPaused.setImageObserver(new AnimatedObserver(GUIMediator.databaseTree(), currentNode));
+                panel.setLoaderIcon( animatedGIFPaused );
+            }
+        }else{
+            super.displayProgress(panel, currentNode);
+        }
+    }
 
-	@Override
-	void runAction() {
-		Table selectedTable = (Table) this.dataObject;
-		if(!this.hasBeenSearched && !this.isRunning){
-			this.interruptable = GUIMediator.controller().selectTable(selectedTable);
-			this.isRunning = true;
-		}		
-	}
+    @Override
+    void runAction() {
+        Table selectedTable = (Table) this.dataObject;
+        if(!this.hasBeenSearched && !this.isRunning){
+            this.interruptable = GUIMediator.controller().selectTable(selectedTable);
+            this.isRunning = true;
+        }        
+    }
 
-	@Override
-	void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {
-		final DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-		final NodeModel currentTableModel = (NodeModel) currentTableNode.getUserObject();
+    @Override
+    void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {
+        final DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+        final NodeModel currentTableModel = (NodeModel) currentTableNode.getUserObject();
 
-		JMenuItem mnCheckAll = new JMenuItem("Check All",'C');
-		JMenuItem mnUncheckAll = new JMenuItem("Uncheck All",'U');
+        JMenuItem mnCheckAll = new JMenuItem("Check All",'C');
+        JMenuItem mnUncheckAll = new JMenuItem("Uncheck All",'U');
 
-		mnCheckAll.setIcon(GUITools.EMPTY);
-		mnUncheckAll.setIcon(GUITools.EMPTY);
+        mnCheckAll.setIcon(GUITools.EMPTY);
+        mnUncheckAll.setIcon(GUITools.EMPTY);
 
-		if(!this.hasBeenSearched){
-			mnCheckAll.setEnabled(false);
-			mnUncheckAll.setEnabled(false);
+        if(!this.hasBeenSearched){
+            mnCheckAll.setEnabled(false);
+            mnUncheckAll.setEnabled(false);
 
-			tablePopupMenu.add(mnCheckAll);
-			tablePopupMenu.add(mnUncheckAll);
-			tablePopupMenu.add(new JSeparator());
-		}
-		
-		class CheckUncheck implements ActionListener {
-			boolean check;
-			
-			CheckUncheck(boolean check){
-				this.check = check;
-			}
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
-				
-				int tableChildCount = treeModel.getChildCount(currentTableNode);
-				for(int i=0; i < tableChildCount ;i++) {
-					DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(currentTableNode, i);
-					if( currentChild.getUserObject() instanceof NodeModel ){
-						NodeModel columnTreeNodeModel = (NodeModel) currentChild.getUserObject();
-						columnTreeNodeModel.isChecked = check;
-						currentTableModel.hasChildChecked = check;
-					}
-				}
-				
-				treeModel.nodeChanged(currentTableNode);
-			}
-		}
-		
-		class CheckAll extends CheckUncheck{
-			CheckAll() {
-				super(true);
-			}
-		}
-		
-		class UncheckAll extends CheckUncheck{
-			UncheckAll() {
-				super(false);
-			}
-		}
+            tablePopupMenu.add(mnCheckAll);
+            tablePopupMenu.add(mnUncheckAll);
+            tablePopupMenu.add(new JSeparator());
+        }
+        
+        class CheckUncheck implements ActionListener {
+            boolean check;
+            
+            CheckUncheck(boolean check){
+                this.check = check;
+            }
+            
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
+                
+                int tableChildCount = treeModel.getChildCount(currentTableNode);
+                for(int i=0; i < tableChildCount ;i++) {
+                    DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(currentTableNode, i);
+                    if( currentChild.getUserObject() instanceof NodeModel ){
+                        NodeModel columnTreeNodeModel = (NodeModel) currentChild.getUserObject();
+                        columnTreeNodeModel.isChecked = check;
+                        currentTableModel.hasChildChecked = check;
+                    }
+                }
+                
+                treeModel.nodeChanged(currentTableNode);
+            }
+        }
+        
+        class CheckAll extends CheckUncheck{
+            CheckAll() {
+                super(true);
+            }
+        }
+        
+        class UncheckAll extends CheckUncheck{
+            UncheckAll() {
+                super(false);
+            }
+        }
 
-		mnCheckAll.addActionListener(new CheckAll());
-		mnUncheckAll.addActionListener(new UncheckAll());
+        mnCheckAll.addActionListener(new CheckAll());
+        mnUncheckAll.addActionListener(new UncheckAll());
 
-		mnCheckAll.setIcon(GUITools.EMPTY);
-		mnUncheckAll.setIcon(GUITools.EMPTY);
+        mnCheckAll.setIcon(GUITools.EMPTY);
+        mnUncheckAll.setIcon(GUITools.EMPTY);
 
-		tablePopupMenu.add(mnCheckAll);
-		tablePopupMenu.add(mnUncheckAll);
-		tablePopupMenu.add(new JSeparator());
-	}
-	
-	@Override boolean verifyShowPopup() { 
-		return this.hasBeenSearched || !this.hasBeenSearched && this.isRunning; 
-	}
+        tablePopupMenu.add(mnCheckAll);
+        tablePopupMenu.add(mnUncheckAll);
+        tablePopupMenu.add(new JSeparator());
+    }
+    
+    @Override boolean verifyShowPopup() { 
+        return this.hasBeenSearched || !this.hasBeenSearched && this.isRunning; 
+    }
 }

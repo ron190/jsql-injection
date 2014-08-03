@@ -2,8 +2,8 @@ package com.jsql.model.pattern.strategy;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.Interruptable;
-import com.jsql.model.Stoppable;
+import com.jsql.model.interruptable.Interruptable;
+import com.jsql.model.interruptable.Stoppable;
 
 /**
  * Define a strategy to inject SQL with methods like errorbased or timebased

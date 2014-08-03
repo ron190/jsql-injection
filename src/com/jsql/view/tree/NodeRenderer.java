@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -21,15 +21,18 @@ import javax.swing.tree.DefaultTreeCellRenderer;
  */
 @SuppressWarnings("serial")
 public class NodeRenderer extends DefaultTreeCellRenderer {
+    public NodeRenderer(){
+        super();
+    }
+    
+    @Override
+    public Component getTreeCellRendererComponent(JTree tree, Object nodeRenderer,
+            boolean selected, boolean expanded, boolean leaf, int row,
+            boolean hasFocus) {
 
-	@Override
-	public Component getTreeCellRendererComponent(JTree tree, Object nodeRenderer,
-			boolean selected, boolean expanded, boolean leaf, int row,
-			boolean hasFocus) {
-
-		DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
-		Object userObject = currentNode.getUserObject();
-		NodeModel dataModel = (NodeModel) userObject;
-		return dataModel.getComponent(tree, nodeRenderer, selected, expanded, leaf, row, hasFocus);
-	}
+        DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
+        Object userObject = currentNode.getUserObject();
+        NodeModel dataModel = (NodeModel) userObject;
+        return dataModel.getComponent(tree, nodeRenderer, selected, expanded, leaf, row, hasFocus);
+    }
 }

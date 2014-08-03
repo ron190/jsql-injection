@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2013.
+ * Copyhacked (H) 2012-2014.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -26,8 +26,8 @@ public class EndAdminSearch implements IInteractionCommand{
      * @see com.jsql.mvc.view.message.ActionOnView#execute()
      */
     public void execute(){
-        GUIMediator.gui().getOutputPanel().adminPageManager.restoreButtonText();
-        GUIMediator.gui().getOutputPanel().adminPageManager.setButtonEnable(true);
-        GUIMediator.gui().getOutputPanel().adminPageManager.hideLoader();
+        GUIMediator.left().adminPageManager.restoreButtonText();
+        GUIMediator.left().adminPageManager.setButtonEnable(true);
+        GUIMediator.left().adminPageManager.hideLoader();
     }
 }
