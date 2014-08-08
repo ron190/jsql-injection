@@ -4,7 +4,7 @@
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
  * every time possible with every body.
- * 
+ *
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
@@ -40,45 +40,45 @@ import com.jsql.view.textcomponent.JPopupTextField;
  * Manager to brute force a hash of various types.
  */
 @SuppressWarnings("serial")
-public class BruteForceManager extends JPanel{
+public class BruteForceManager extends JPanel {
     public AbstractButton run;
 
     private JTextField hash;
     private JComboBox<String> hashTypes;
-    
+
     private JCheckBox low;
     private JCheckBox up;
     private JCheckBox num;
     private JCheckBox spec;
-    
+
     private JTextField exclude;
     private JTextField mini;
     private JTextField max;
-    
+
     private JTextArea result;
     private JLabel loader;
 
-    public BruteForceManager(){
+    public BruteForceManager() {
         super(new BorderLayout());
-        
+
         this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, GUITools.COMPONENT_BORDER));
-        
+
         JPanel options = new JPanel(new BorderLayout());
 
         JPanel firstLine = new JPanel(new BorderLayout());
         firstLine.add(new JLabel(" Hash"), BorderLayout.WEST);
 
         hash = new JPopupTextField().getProxy();
-        hash.setToolTipText("<html><b>Hash to brute force</b><br>" +
-                "<i>Passwords for admin pages or for database users are<br>" +
-                "usually hashed inside database.</i></html>");
+        hash.setToolTipText("<html><b>Hash to brute force</b><br>"
+                + "<i>Passwords for admin pages or for database users are<br>"
+                + "usually hashed inside database.</i></html>");
         firstLine.add(hash, BorderLayout.CENTER);
         hash.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(2,2,2,0, GUITools.DEFAULT_BACKGROUND),
+                BorderFactory.createMatteBorder(2, 2, 2, 0, GUITools.DEFAULT_BACKGROUND),
                 GUITools.BLU_ROUND_BORDER));
 
         final JPanel secondLine = new JPanel();
-        secondLine.setLayout( new BoxLayout(secondLine, BoxLayout.X_AXIS) );
+        secondLine.setLayout(new BoxLayout(secondLine, BoxLayout.X_AXIS));
 
         low = new JCheckBox("a-z", true);
         up = new JCheckBox("A-Z", true);
@@ -87,14 +87,14 @@ public class BruteForceManager extends JPanel{
 
         secondLine.add(new JLabel(" Type ", SwingConstants.RIGHT));
 
-        hashTypes = new JComboBox<String>(new String[]{"md2","md5","sha-1","sha-256","sha-384",
-                "sha-512","mysql"/*,"crc16","crc32","crc64","adler32"*/});
+        hashTypes = new JComboBox<String>(new String[]{"md2", "md5", "sha-1", "sha-256", "sha-384",
+                "sha-512", "mysql" /*,"crc16","crc32","crc64","adler32"*/});
         
         hashTypes.setSelectedIndex(1);
-        hashTypes.setMaximumSize( new Dimension((int) hashTypes.getPreferredSize().getWidth(),22) );
-        hashTypes.setToolTipText("<html><b>Type of hash</b><br>" +
-                "<i>MD5 is commonly used to hash password of admin pages. MySQL passwords are<br>" +
-                "hashed differently (cf. Type mysql ; these are found into database 'mysql', table 'user').</i></html>");
+        hashTypes.setMaximumSize(new Dimension((int) hashTypes.getPreferredSize().getWidth(), 22));
+        hashTypes.setToolTipText("<html><b>Type of hash</b><br>"
+                + "<i>MD5 is commonly used to hash password of admin pages. MySQL passwords are<br>"
+                + "hashed differently (cf. Type mysql ; these are found into database 'mysql', table 'user').</i></html>");
 
         secondLine.add(hashTypes);
 
@@ -104,26 +104,26 @@ public class BruteForceManager extends JPanel{
         secondLine.add(spec);
         secondLine.add(Box.createGlue());
 
-        low.setToolTipText("<html><b>Lower case characters</b><br>" +
-                "Check if searched string contains any of following characters:<br>" +
-                "<span style=\"font-family:'Courier New';\">abcdefghijklmnopqrstuvwxyz</span></html>");
-        up.setToolTipText("<html><b>Upper case characters</b><br>" +
-                "Check if searched string contains any of following characters:<br>" +
-                "<span style=\"font-family:'Courier New';\">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span></html>");
-        num.setToolTipText("<html><b>Numeric characters</b><br>" +
-                "Check if searched string contains any of following characters:<br>" +
-                "<span style=\"font-family:'Courier New';\">0123456789</span></html>");
-        spec.setToolTipText("<html><b>Special characters</b><br>" +
-                "Check if searched string contains any of following characters:<br>" +
-                "<span style=\"font-family:'Courier New';\">&nbsp;~`!@#$%^&*()_-+={}[]|\\;:'\"<.,>/?</span></html>");
+        low.setToolTipText("<html><b>Lower case characters</b><br>"
+                + "Check if searched string contains any of following characters:<br>"
+                + "<span style=\"font-family:'Courier New';\">abcdefghijklmnopqrstuvwxyz</span></html>");
+        up.setToolTipText("<html><b>Upper case characters</b><br>"
+                + "Check if searched string contains any of following characters:<br>"
+                + "<span style=\"font-family:'Courier New';\">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span></html>");
+        num.setToolTipText("<html><b>Numeric characters</b><br>"
+                + "Check if searched string contains any of following characters:<br>"
+                + "<span style=\"font-family:'Courier New';\">0123456789</span></html>");
+        spec.setToolTipText("<html><b>Special characters</b><br>"
+                + "Check if searched string contains any of following characters:<br>"
+                + "<span style=\"font-family:'Courier New';\">&nbsp;~`!@#$%^&*()_-+={}[]|\\;:'\"<.,>/?</span></html>");
 
         JPanel thirdLine = new JPanel();
-        thirdLine.setLayout( new BoxLayout(thirdLine, BoxLayout.X_AXIS) );
+        thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));
         
         thirdLine.add(new JLabel(" Exclude ", SwingConstants.RIGHT));
         exclude = new JPopupTextField().getProxy();
-        exclude.setToolTipText("<html><b>Exclude characters</b><br>" +
-                "Speed up process by excluding characters from the search.</html>");
+        exclude.setToolTipText("<html><b>Exclude characters</b><br>"
+                + "Speed up process by excluding characters from the search.</html>");
         thirdLine.add(exclude);
 
         mini = new JPopupTextField("1").getProxy();
@@ -134,47 +134,47 @@ public class BruteForceManager extends JPanel{
         thirdLine.add(new JLabel("max. ", SwingConstants.RIGHT));
         thirdLine.add(max);
 
-        mini.setToolTipText("<html><b>Minimum length of searched string</b><br>" +
-                "Speed up process by specifying the minimum length to search.</html>");
-        max.setToolTipText("<html><b>Maximum length of searched string</b><br>" +
-                "Speed up process by specifying the maximum length to search.</html>");
+        mini.setToolTipText("<html><b>Minimum length of searched string</b><br>" 
+                + "Speed up process by specifying the minimum length to search.</html>");
+        max.setToolTipText("<html><b>Maximum length of searched string</b><br>" 
+                + "Speed up process by specifying the maximum length to search.</html>");
         
         mini.setHorizontalAlignment(JTextField.RIGHT);
         max.setHorizontalAlignment(JTextField.RIGHT);
 
-        exclude.setMaximumSize(new Dimension(90,(int) exclude.getPreferredSize().getHeight()));
-        exclude.setMinimumSize(new Dimension(90,(int) exclude.getPreferredSize().getHeight()));
+        exclude.setMaximumSize(new Dimension(90, (int) exclude.getPreferredSize().getHeight()));
+        exclude.setMinimumSize(new Dimension(90, (int) exclude.getPreferredSize().getHeight()));
 
-        mini.setMaximumSize(new Dimension(30,(int) mini.getPreferredSize().getHeight()));
-        max.setMaximumSize(new Dimension(30,(int) max.getPreferredSize().getHeight()));
-        mini.setMinimumSize(new Dimension(30,(int) mini.getPreferredSize().getHeight()));
-        max.setMinimumSize(new Dimension(30,(int) max.getPreferredSize().getHeight()));
+        mini.setMaximumSize(new Dimension(30, (int) mini.getPreferredSize().getHeight()));
+        max.setMaximumSize(new Dimension(30, (int) max.getPreferredSize().getHeight()));
+        mini.setMinimumSize(new Dimension(30, (int) mini.getPreferredSize().getHeight()));
+        max.setMinimumSize(new Dimension(30, (int) max.getPreferredSize().getHeight()));
 
         final JPanel secondAndThirdLine = new JPanel(new BorderLayout());
         secondAndThirdLine.add(secondLine, BorderLayout.NORTH);
         secondAndThirdLine.add(thirdLine, BorderLayout.SOUTH);
 
-        options.add(firstLine,BorderLayout.NORTH);
+        options.add(firstLine, BorderLayout.NORTH);
         options.add(secondAndThirdLine, BorderLayout.SOUTH);
         this.add(options, BorderLayout.NORTH);
 
         result = new JPopupTextArea().getProxy();
         result.setLineWrap(true);
-        this.add(new JScrollPanePixelBorder(1,1,0,0,result), BorderLayout.CENTER);
+        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, result), BorderLayout.CENTER);
         
         JPanel lastLine = new JPanel();
         lastLine.setOpaque(false);
-        lastLine.setLayout( new BoxLayout(lastLine, BoxLayout.X_AXIS) );
+        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(BorderFactory.createCompoundBorder(
-        		BorderFactory.createMatteBorder(0,1,0,0,GUITools.COMPONENT_BORDER), 
-        		BorderFactory.createEmptyBorder(1, 0, 1, 1)));
+                BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER),
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)));
         
-        run = new JButton("Start",new ImageIcon(getClass().getResource("/com/jsql/view/images/key.png")));
-        run.setToolTipText("<html><b>Begin brute forcing the hash</b><br>" +
-                "<i>Such process calculates a hash for every possible combinations of characters, hoping<br>" +
-                "a hash will be equal to the user's one. It always either fails or never ends. Use instead<br>" +
-                "websites like md5decrypter.co.uk to search for precalculated pairs of hash and password,<br>" +
-                "also you may try other brute force softwares like John the Ripper.</i></html>");
+        run = new JButton("Start", new ImageIcon(getClass().getResource("/com/jsql/view/images/key.png")));
+        run.setToolTipText("<html><b>Begin brute forcing the hash</b><br>"
+                + "<i>Such process calculates a hash for every possible combinations of characters, hoping<br>"
+                + "a hash will be equal to the user's one. It always either fails or never ends. Use instead<br>"
+                + "websites like md5decrypter.co.uk to search for precalculated pairs of hash and password,<br>"
+                + "also you may try other brute force softwares like John the Ripper.</i></html>");
         run.setBorder(GUITools.BLU_ROUND_BORDER);
 
         loader = new JLabel(GUITools.LOADER_GIF);
@@ -182,43 +182,42 @@ public class BruteForceManager extends JPanel{
 
         lastLine.add(Box.createHorizontalGlue());
         lastLine.add(loader);
-        lastLine.add(Box.createRigidArea(new Dimension(5,0)));
+        lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
         lastLine.add(run);
-        
+
         run.addActionListener(new BruteForceAction());
-        
+
         this.add(lastLine, BorderLayout.SOUTH);
     }
     
-    private class BruteForceAction implements ActionListener{
-        final Boolean[] doStop = {false};
-        
+    private class BruteForceAction implements ActionListener {
+        private final Boolean[] doStop = {false};
+
         @Override
         public void actionPerformed(ActionEvent arg0) {
-            if(run.getText().equals("Stop")){
+            if (run.getText().equals("Stop")) {
                 run.setEnabled(false);
                 doStop[0] = true;
-            }
-            else{
-                try{
+            } else {
+                try {
                     Integer.parseInt(max.getText());
                     Integer.parseInt(mini.getText());
-                }catch(NumberFormatException e){
+                } catch (NumberFormatException e) {
                     result.setText("*** Incorrect length");
                     return;
                 }
 
-                if(hash.getText().equals("")){
+                if (hash.getText().equals("")) {
                     result.setText("*** Empty hash");
                     return;
-                }else if(
-                        !spec.isSelected()&&
-                        !up.isSelected()&&
-                        !low.isSelected()&&
-                        !num.isSelected()){
+                } else if (
+                        !spec.isSelected()
+                        && !up.isSelected()
+                        && !low.isSelected()
+                        && !num.isSelected()) {
                     result.setText("*** Select a character range");
                     return;
-                }else if( Integer.parseInt(max.getText()) < Integer.parseInt(mini.getText()) ){
+                } else if (Integer.parseInt(max.getText()) < Integer.parseInt(mini.getText())) {
                     result.setText("*** Incorrect minimum and maximum length");
                     return;
                 }
@@ -238,13 +237,23 @@ public class BruteForceManager extends JPanel{
                         hashBruter.setMinLength(Integer.parseInt(mini.getText()));
                         hashBruter.setMaxLength(Integer.parseInt(max.getText()));
 
-                        if(spec.isSelected()) hashBruter.addSpecialCharacters();
-                        if(up.isSelected()) hashBruter.addUpperCaseLetters();
-                        if(low.isSelected()) hashBruter.addLowerCaseLetters();
-                        if(num.isSelected()) hashBruter.addDigits();
-                        if(!exclude.getText().equals("")) hashBruter.excludeChars(exclude.getText());
+                        if (spec.isSelected()) {
+                            hashBruter.addSpecialCharacters();
+                        }
+                        if (up.isSelected()) {
+                            hashBruter.addUpperCaseLetters();
+                        }
+                        if (low.isSelected()) {
+                            hashBruter.addLowerCaseLetters();
+                        }
+                        if (num.isSelected()) {
+                            hashBruter.addDigits();
+                        }
+                        if (!exclude.getText().equals("")) {
+                            hashBruter.excludeChars(exclude.getText());
+                        }
 
-                        hashBruter.setType((String)hashTypes.getSelectedItem());
+                        hashBruter.setType((String) hashTypes.getSelectedItem());
                         hashBruter.setHash(hash.getText().toUpperCase().replaceAll("[^a-zA-Z0-9]", "").trim());
 
                         // Begin the unhashing process
@@ -255,9 +264,10 @@ public class BruteForceManager extends JPanel{
                             hashBruter.setEndtime(System.nanoTime());
 
                             try {
-                                Thread.sleep(1000); // delay to update result panel
+                                // delay to update result panel
+                                Thread.sleep(1000);
                             } catch (InterruptedException e) {
-                                InjectionModel.logger.error(e, e);
+                                InjectionModel.LOGGER.error(e, e);
                             }
                             
                             result.setText("Current string: " + hashBruter.getPassword() + "\n");
@@ -268,17 +278,17 @@ public class BruteForceManager extends JPanel{
                             result.append("Per second: " + hashBruter.getPerSecond() + "\n\n");
                             result.append( hashBruter.calculateTimeElapsed() + "\n");
                             
-                            if(hashBruter.getPerSecond()!=0){
-                                result.append( "Traversing remaining: " +
-                                        Math.round(Math.floor(Float.parseFloat(Long.toString(hashBruter.getRemainder()))/(float)hashBruter.getPerSecond()/60f/60.0f/24f)) + "days " +
-                                        Math.round(Math.floor(Float.parseFloat(Long.toString(hashBruter.getRemainder()))/(float)hashBruter.getPerSecond()/60f/60f%24)) + "h " +
-                                        Math.round(Math.floor(Float.parseFloat(Long.toString(hashBruter.getRemainder()))/(float)hashBruter.getPerSecond()/60f%60)) + "min " +
-                                        Math.round((Float.parseFloat(Long.toString(hashBruter.getRemainder()))/(float)hashBruter.getPerSecond())%60) + "s\n"); 
+                            if (hashBruter.getPerSecond() != 0) {
+                                result.append("Traversing remaining: " +
+                                        Math.round(Math.floor(Float.parseFloat(Long.toString(hashBruter.getRemainder())) / (float) hashBruter.getPerSecond() / 60f / 60.0f / 24f)) + "days " +
+                                        Math.round(Math.floor(Float.parseFloat(Long.toString(hashBruter.getRemainder())) / (float) hashBruter.getPerSecond() / 60f / 60f % 24)) + "h " +
+                                        Math.round(Math.floor(Float.parseFloat(Long.toString(hashBruter.getRemainder())) / (float) hashBruter.getPerSecond() / 60f % 60)) + "min " +
+                                        Math.round((Float.parseFloat(Long.toString(hashBruter.getRemainder())) / (float) hashBruter.getPerSecond()) % 60) + "s\n"); 
                             }
                             
-                            result.append("Percent done: " + (100*(float)hashBruter.getCounter()/hashBruter.getNumberOfPossibilities()) + "%");
+                            result.append("Percent done: " + (100 * (float) hashBruter.getCounter() / hashBruter.getNumberOfPossibilities()) + "%");
                             
-                            if(doStop[0]){
+                            if (doStop[0]) {
                                 hashBruter.setIsDone(true);
                                 hashBruter.setFound(true);
                                 break;
@@ -286,17 +296,17 @@ public class BruteForceManager extends JPanel{
                         }
 
                         // Display the result
-                        if(doStop[0]){
+                        if (doStop[0]) {
                             result.append("\n\n*** Aborted\n");
-                        }else if(hashBruter.isFound()){
-                            result.append("\n\nFound hash:\n" +
-                                    hashBruter.getGeneratedHash() + "\n" +
-                                    "String: " + hashBruter.getPassword());
+                        } else if (hashBruter.isFound()) {
+                            result.append("\n\nFound hash:\n"
+                                    + hashBruter.getGeneratedHash() + "\n"
+                                    + "String: " + hashBruter.getPassword());
                             
-                            InjectionModel.logger.info("Found hash:");
-                            InjectionModel.logger.info(hashBruter.getGeneratedHash());
-                            InjectionModel.logger.info("String: " + hashBruter.getPassword());
-                        }else if(hashBruter.isDone()){
+                            InjectionModel.LOGGER.info("Found hash:");
+                            InjectionModel.LOGGER.info(hashBruter.getGeneratedHash());
+                            InjectionModel.LOGGER.info("String: " + hashBruter.getPassword());
+                        } else if (hashBruter.isDone()) {
                             result.append("\n\n*** Hash not found");
                         }
                         

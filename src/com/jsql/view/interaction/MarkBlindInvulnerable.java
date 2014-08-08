@@ -14,19 +14,17 @@ import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 
 /**
- * Mark the injection as invulnerable to a blind injection
+ * Mark the injection as invulnerable to a blind injection.
  */
-public class MarkBlindInvulnerable implements IInteractionCommand{
+public class MarkBlindInvulnerable implements IInteractionCommand {
     /**
      * @param interactionParams
      */
-    public MarkBlindInvulnerable(Object[] interactionParams){
+    public MarkBlindInvulnerable(Object[] interactionParams) {
+        // Do nothing
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
-    	GUIMediator.status().setBlindIcon(GUITools.SQUARE_RED);
+    public void execute() {
+        GUIMediator.status().setBlindIcon(GUITools.SQUARE_RED);
     }
 }

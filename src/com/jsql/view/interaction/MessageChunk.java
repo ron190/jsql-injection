@@ -13,24 +13,23 @@ package com.jsql.view.interaction;
 import com.jsql.view.GUIMediator;
 
 /**
- * Append text to the tab Chunk
+ * Append text to the tab Chunk.
  */
-public class MessageChunk implements IInteractionCommand{
-    // Text to append to the Chunk log area
+public class MessageChunk implements IInteractionCommand {
+    /**
+     * Text to append to the Chunk log area.
+     */
     private String text;
 
     /**
      * @param interactionParams Text to append
      */
-    public MessageChunk(Object[] interactionParams){
+    public MessageChunk(Object[] interactionParams) {
         text = (String) interactionParams[0];
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
-    	GUIMediator.bottomPanel().chunks.append(text);
+    public void execute() {
+        GUIMediator.bottomPanel().chunks.append(text);
         GUIMediator.bottomPanel().chunks.setCaretPosition(GUIMediator.bottomPanel().chunks.getDocument().getLength());
     }
 }

@@ -37,33 +37,37 @@ import com.jsql.view.menubar.Menubar;
 import com.jsql.view.textcomponent.JPopupLabel;
 
 /**
- * Keyword shortcut definition:
- * - ctrl TAB: switch to next tab,
- * - ctrl shift TAB: switch to previous tab,
+ * Keyword shortcut definition. <br>
+ * - ctrl TAB: switch to next tab, <br>
+ * - ctrl shift TAB: switch to previous tab, <br>
  * - ctrl W: delete tab
  */
-public class ActionHandler {
+public final class ActionHandler {
     
-	public static void addShortcut(){
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener(){
-	        public void propertyChange(final PropertyChangeEvent e){
-	        	if (e.getNewValue() instanceof JTextField || e.getNewValue() instanceof JPopupLabel){
-	        		SwingUtilities.invokeLater(new Runnable(){
-	        			public void run(){
-	        				JTextField textField = (JTextField)e.getNewValue();
-	        				textField.selectAll();
-	        			}
-	        		});
-	        	}
-	        }
-	    });
-	}
-	
+    private ActionHandler() {
+        //not called
+    }
+    
+    public static void addShortcut() {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
+            public void propertyChange(final PropertyChangeEvent e) {
+                if (e.getNewValue() instanceof JTextField 
+                        || e.getNewValue() instanceof JPopupLabel) {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            JTextField textField = (JTextField) e.getNewValue();
+                            textField.selectAll();
+                        }
+                    });
+                }
+            }
+        });
+    }
+    
     /**
-     * Add action to a single tabbedpane (ctrl-tab, ctrl-shift-tab)
+     * Add action to a single tabbedpane (ctrl-tab, ctrl-shift-tab).
      */
-    public static void addShortcut(JTabbedPane tabbedPane)
-    {
+    public static void addShortcut(JTabbedPane tabbedPane) {
         KeyStroke ctrlTab = KeyStroke.getKeyStroke("ctrl TAB");
         KeyStroke ctrlShiftTab = KeyStroke.getKeyStroke("ctrl shift TAB");
 
@@ -84,13 +88,13 @@ public class ActionHandler {
     }
     
     /**
-     * Add action to global root (ctrl-tab, ctrl-shift-tab, ctrl-W)
+     * Add action to global root (ctrl-tab, ctrl-shift-tab, ctrl-W).
      */
     @SuppressWarnings("serial")
-	public static void addShortcut(JRootPane rootPane, final JTabbedPane valuesTabbedPane){
+    public static void addShortcut(JRootPane rootPane, final JTabbedPane valuesTabbedPane) {
         Action closeTab = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                if(valuesTabbedPane.getTabCount() > 0){
+                if (valuesTabbedPane.getTabCount() > 0) {
                     valuesTabbedPane.removeTabAt(valuesTabbedPane.getSelectedIndex());
                 }
             }
@@ -98,11 +102,11 @@ public class ActionHandler {
         
         Action nextTab = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                if(valuesTabbedPane.getTabCount() > 0){
+                if (valuesTabbedPane.getTabCount() > 0) {
                     int selectedIndex = valuesTabbedPane.getSelectedIndex();
-                    if(selectedIndex+1 < valuesTabbedPane.getTabCount()){
-                        valuesTabbedPane.setSelectedIndex(selectedIndex+1);
-                    }else{
+                    if (selectedIndex + 1 < valuesTabbedPane.getTabCount()) {
+                        valuesTabbedPane.setSelectedIndex(selectedIndex + 1);
+                    } else {
                         valuesTabbedPane.setSelectedIndex(0);
                     }
                 }
@@ -111,12 +115,12 @@ public class ActionHandler {
         
         Action previousTab = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
-                if(valuesTabbedPane.getTabCount() > 0){
+                if (valuesTabbedPane.getTabCount() > 0) {
                     int selectedIndex = valuesTabbedPane.getSelectedIndex();
-                    if(selectedIndex-1 > -1){
-                        valuesTabbedPane.setSelectedIndex(selectedIndex-1);
-                    }else{
-                        valuesTabbedPane.setSelectedIndex(valuesTabbedPane.getTabCount()-1);
+                    if (selectedIndex - 1 > -1) {
+                        valuesTabbedPane.setSelectedIndex(selectedIndex - 1);
+                    } else {
+                        valuesTabbedPane.setSelectedIndex(valuesTabbedPane.getTabCount() - 1);
                     }
                 }
             }
@@ -143,31 +147,33 @@ public class ActionHandler {
         actionMap.put("actionString-previousTab", previousTab);
     }
 
-	public static void addShortcut(final Menubar menubar) {
+    public static void addShortcut(final Menubar menubar) {
         /* Hide Menubar when focusing any component */
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener(){
-        	public void propertyChange(final PropertyChangeEvent e){
-                SwingUtilities.invokeLater(new Runnable(){
-                    public void run(){
-                    	menubar.setVisible(false);
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
+            public void propertyChange(final PropertyChangeEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        menubar.setVisible(false);
                     }
                 });
-	        }
-	    });
+            }
+        });
         
         /* Show/Hide the Menubar with Alt key */
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher(){
-        	@Override
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+            @Override
             public boolean dispatchKeyEvent(KeyEvent e) {
-	          	if (e.isAltDown() && e.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D)) {
-	          		GUIMediator.top().addressBar.requestFocusInWindow();
-	                return true;
-	          	}else if (e.getKeyCode() == KeyEvent.VK_ALT && e.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)) {
-	          		menubar.setVisible(!menubar.isVisible());
-	                return true;
-	          	}
-	          	return false;
-	        }
+                  if (e.isAltDown()
+                          && e.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D)) {
+                      GUIMediator.top().addressBar.requestFocusInWindow();
+                      return true;
+                  } else if (e.getKeyCode() == KeyEvent.VK_ALT
+                          && e.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)) {
+                      menubar.setVisible(!menubar.isVisible());
+                      return true;
+                  }
+                  return false;
+            }
         });
-	}
+    }
 }

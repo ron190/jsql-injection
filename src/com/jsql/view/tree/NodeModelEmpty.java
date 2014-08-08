@@ -28,38 +28,37 @@ import com.jsql.view.ui.RoundBorder;
 /**
  * Model for default item used on an empty tree.
  */
-public class NodeModelEmpty extends NodeModel{
-    
+public class NodeModelEmpty extends NodeModel {
     /**
      * Flat node for empty tree.
      * @param textNode
      */
-    public NodeModelEmpty(String textNode){
+    public NodeModelEmpty(String textNode) {
         super(textNode);
     }
-    
+
     @Override
     public Component getComponent(JTree tree, Object nodeRenderer,
             boolean selected, boolean expanded, boolean leaf, int row,
-            boolean hasFocus){
+            boolean hasFocus) {
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         JPanel emptyPanel = new JPanel(new BorderLayout());
         JLabel text = new JLabel(currentNode.getUserObject().toString());
         emptyPanel.add(text);
-        text.setBorder(new RoundBorder(4,1,false));
-        if( currentNode != null ){
-            if( selected ){
-                emptyPanel.setBackground( GUITools.SELECTION_BACKGROUND );
-                text.setBorder(new RoundBorder(4,1,true));
-            }else{
+        text.setBorder(new RoundBorder(4, 1, false));
+        if (currentNode != null) {
+            if (selected) {
+                emptyPanel.setBackground(GUITools.SELECTION_BACKGROUND);
+                text.setBorder(new RoundBorder(4, 1, true));
+            } else {
                 emptyPanel.setBackground(Color.WHITE);
             }
-            text.setBorder(new RoundBorder(4,1,hasFocus));
+            text.setBorder(new RoundBorder(4, 1, hasFocus));
         }
         return emptyPanel;
     }
 
-    @Override Icon getIcon(boolean leaf) {
+    @Override Icon getLeafIcon(boolean leaf) {
         // No icon for default node
         return null;
     }
@@ -69,10 +68,10 @@ public class NodeModelEmpty extends NodeModel{
     @Override void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {
         // Not used
     }
-    @Override void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j){
+    @Override public void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j) {
         // Not used
     }
-    @Override boolean verifyShowPopup() { 
+    @Override boolean verifyShowPopup() {
         // Not used
         return false;
     }

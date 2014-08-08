@@ -2,6 +2,7 @@ package com.jsql.view.radio;
 
 import java.awt.font.TextAttribute;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -9,39 +10,56 @@ import javax.swing.SwingConstants;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 
+/**
+ * Radio label used to change injection strategy (normal, blind, etc).
+ */
 @SuppressWarnings("serial")
-public class RadioLinkStatusbar extends RadioLink{
-	
-	private static ArrayList<JLabel> group = new ArrayList<JLabel>();
+public class RadioLinkStatusbar extends RadioLink {
+    /**
+     * Group of radio label for status bar.
+     */
+    private static List<JLabel> group = new ArrayList<JLabel>();
 
-	public RadioLinkStatusbar(String string) {
-		super(string);
-		init();
-	}
+    /**
+     * A default radio label.
+     * @param string Text for radio label
+     */
+    public RadioLinkStatusbar(String string) {
+        super(string);
+        init();
+    }
 
-	public RadioLinkStatusbar(String string, boolean isSelected) {
-		super(string, isSelected);
-		init();
-	}
-	
-	private void init(){
-	    RadioLinkStatusbar.group.add(this);
-		this.setHorizontalAlignment(SwingConstants.LEFT);
-	}
+    /**
+     * A default radio label selected.
+     * @param string Text for radio label
+     * @param isSelected True if radio label should be selected
+     */
+    public RadioLinkStatusbar(String string, boolean isSelected) {
+        super(string, isSelected);
+        init();
+    }
 
-	@Override
-	void action() {
-		GUIMediator.model().applyStrategy(RadioLinkStatusbar.this.getText());
-	}
+    /**
+     * Add radio to the radio group.
+     */
+    private void init() {
+        RadioLinkStatusbar.group.add(this);
+        this.setHorizontalAlignment(SwingConstants.LEFT);
+    }
 
-	@Override
-	ArrayList<JLabel> getGroup() {
-		return RadioLinkStatusbar.group;
-	}
-	
-	@Override
-	protected boolean isActivable() {
-		return RadioLinkStatusbar.this.getIcon() == GUITools.TICK && 
-				!RadioLinkStatusbar.this.getFont().getAttributes().containsValue(TextAttribute.WEIGHT_BOLD);
-	}
+    @Override
+    void action() {
+        GUIMediator.model().applyStrategy(RadioLinkStatusbar.this.getText());
+    }
+
+    @Override
+    List<JLabel> getGroup() {
+        return RadioLinkStatusbar.group;
+    }
+
+    @Override
+    protected boolean isActivable() {
+        return RadioLinkStatusbar.this.getIcon() == GUITools.TICK
+            && !RadioLinkStatusbar.this.getFont().getAttributes().containsValue(TextAttribute.WEIGHT_BOLD);
+    }
 }

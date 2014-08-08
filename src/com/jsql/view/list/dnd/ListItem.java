@@ -10,11 +10,14 @@
  ******************************************************************************/
 package com.jsql.view.list.dnd;
 
-public class ListItem{
+/**
+ * Basic object to avoid String incompatibility with drag and drop feature.
+ */
+public class ListItem {
     
-    String internalString;
+    private String internalString;
     
-    public ListItem(String newString){
+    public ListItem(String newString) {
         internalString = newString;
     }
 

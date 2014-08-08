@@ -20,27 +20,34 @@ import javax.swing.text.JTextComponent;
 
 import com.jsql.view.GUITools;
 
+/**
+ * Default popup menu for textfield and texteditor.
+ */
 @SuppressWarnings("serial")
-public class JPopupTextMenu extends JPopupComponentMenu{
-	
-	 public JPopupTextMenu(JTextComponent component){
-    	super(component);
-        
-        if(component.isEditable()){
+public class JPopupTextMenu extends JPopupComponentMenu {
+
+    /**
+     * Create popup menu for this component.
+     * @param component The component receiving the menu
+     */
+    public JPopupTextMenu(JTextComponent component) {
+        super(component);
+
+        if (component.isEditable()) {
             JMenuItem cutItem = new JMenuItem();
             cutItem.setIcon(GUITools.EMPTY);
             cutItem.setAction(component.getActionMap().get(DefaultEditorKit.cutAction));
             cutItem.setText("Cut");
             cutItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
             cutItem.setMnemonic('t');
-            
+
             JMenuItem pasteItem = new JMenuItem();
             pasteItem.setIcon(GUITools.EMPTY);
             pasteItem.setAction(component.getActionMap().get(DefaultEditorKit.pasteAction));
             pasteItem.setText("Paste");
             pasteItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
             pasteItem.setMnemonic('P');
-            
+
             // Before Copy menu
             this.add(cutItem, 0);
             // After Copy menu

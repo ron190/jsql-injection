@@ -28,7 +28,7 @@ import javax.swing.TransferHandler;
 import com.jsql.model.InjectionModel;
 
 @SuppressWarnings("serial")
-public class ListTransfertHandler extends TransferHandler{
+public class ListTransfertHandler extends TransferHandler {
     // Export
     @Override
     public int getSourceActions(JComponent c) {
@@ -39,25 +39,27 @@ public class ListTransfertHandler extends TransferHandler{
 
     @Override
     protected Transferable createTransferable(JComponent c) {
-    	DnDList list = (DnDList)c;
+        DnDList list = (DnDList) c;
         dragPaths = list.getSelectedValuesList();
 
         StringBuffer buff = new StringBuffer();
-        for(ListItem t: dragPaths)
-            buff.append(t+"\n");
+        for (ListItem t: dragPaths) {
+            buff.append(t + "\n");
+        }
 
         return new StringSelection(buff.toString());
     }
 
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     protected void exportDone(JComponent c, Transferable data, int action) {
         if (action == TransferHandler.MOVE) {
-            JList<ListItem> list = (JList<ListItem>)c;
-            DefaultListModel<ListItem> model = (DefaultListModel<ListItem>)list.getModel();
-            for(ListItem t: dragPaths)
+            JList<ListItem> list = (JList<ListItem>) c;
+            DefaultListModel<ListItem> model = (DefaultListModel<ListItem>) list.getModel();
+            for (ListItem t: dragPaths) {
                 model.remove(model.indexOf(t));
-
+            }
+            
             dragPaths = null;
         }
     }
@@ -65,88 +67,97 @@ public class ListTransfertHandler extends TransferHandler{
     //Import
     @Override
     public boolean canImport(TransferSupport support) {
-        return support.isDataFlavorSupported(DataFlavor.stringFlavor) || support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
+        return support.isDataFlavorSupported(DataFlavor.stringFlavor)
+                || support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
     }
 
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public boolean importData(TransferSupport support) {
         if (!canImport(support)) {
             return false;
         }
 
-        DnDList list = (DnDList)support.getComponent();
-        DefaultListModel<ListItem> model = (DefaultListModel<ListItem>)list.getModel();
+        DnDList list = (DnDList) support.getComponent();
+        DefaultListModel<ListItem> model = (DefaultListModel<ListItem>) list.getModel();
         if (support.isDrop()) { //This is a drop
-            if (support.isDataFlavorSupported(DataFlavor.stringFlavor)){
-                JList.DropLocation dl = (JList.DropLocation)support.getDropLocation();
+            if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                JList.DropLocation dl = (JList.DropLocation) support.getDropLocation();
                 int childIndex = dl.getIndex();
 
                 List<Integer> selectAfterDrop = new ArrayList<Integer>();
 
-                if(dragPaths != null && dragPaths.size()>0){ // DnD from list
-                    for(ListItem value: dragPaths)
-                        if(!value.toString().equals("")){
-                            ListItem newValue = new ListItem(value.toString().replace("\\", "/")); //! FUUuu
+                // DnD from list
+                if (dragPaths != null && !dragPaths.isEmpty()) {
+                    for (ListItem value: dragPaths) {
+                        if (!value.toString().equals("")) {
+                            //! FUUuu
+                            ListItem newValue = new ListItem(value.toString().replace("\\", "/"));
                             selectAfterDrop.add(childIndex);
                             model.add(childIndex++, newValue);
                         }
-                }else{ // DnD from outside
+                    }
+                // DnD from outside
+                } else {
                     try {
                         String importString = (String) (support.getTransferable().getTransferData(DataFlavor.stringFlavor));
-                        for(String value: importString.split("\\n"))
-                            if(!value.equals("")){
+                        for (String value: importString.split("\\n")) {
+                            if (!value.equals("")) {
                                 selectAfterDrop.add(childIndex);
                                 model.add(childIndex++, new ListItem(value.replace("\\", "/")));
                             }
+                        }
                     } catch (UnsupportedFlavorException e) {
-                        InjectionModel.logger.error(e, e);
+                        InjectionModel.LOGGER.error(e, e);
                     } catch (IOException e) {
-                        InjectionModel.logger.error(e, e);
+                        InjectionModel.LOGGER.error(e, e);
                     }
                 }
 
                 //array is the Integer array
                 int[] selectedIndices = new int[selectAfterDrop.size()];
-                int i=0;
+                int i = 0;
                 for (Integer integer: selectAfterDrop) {
                     selectedIndices[i] = integer.intValue();
                     i++;
                 }
                 list.setSelectedIndices(selectedIndices);
-            }else if(support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                JList.DropLocation dl = (JList.DropLocation)support.getDropLocation();
+            } else if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                JList.DropLocation dl = (JList.DropLocation) support.getDropLocation();
                 int childIndex = dl.getIndex();
 
                 try {
-                	list.dropPasteFile((List<File>)support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor), childIndex);
+                    list.dropPasteFile((List<File>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor), childIndex);
                 } catch (UnsupportedFlavorException e) {
-                    InjectionModel.logger.error(e, e);
+                    InjectionModel.LOGGER.error(e, e);
                 } catch (IOException e) {
-                    InjectionModel.logger.error(e, e);
+                    InjectionModel.LOGGER.error(e, e);
                 }
             }
-        } else { //This is a paste
+        //This is a paste
+        } else {
             Transferable transferableFromClipboard = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
-            if (transferableFromClipboard != null)
-                if(transferableFromClipboard.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+            if (transferableFromClipboard != null) {
+                if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                     try {
                         String clipboardText = (String) transferableFromClipboard.getTransferData(DataFlavor.stringFlavor);
 
                         int y = 0;
-                        if(list.getSelectedIndex() > 0)
+                        if (list.getSelectedIndex() > 0) {
                             y = list.getSelectedIndex();
+                        }
                         list.clearSelection();
 
                         List<Integer> k = new ArrayList<Integer>();
-                        for(String f: clipboardText.split("\\n"))
-                            if(!f.equals("")){
+                        for (String f: clipboardText.split("\\n")) {
+                            if (!f.equals("")) {
                                 ListItem c = new ListItem(f.replace("\\", "/"));
                                 k.add(y);
                                 model.add(y++, c);
                             }
+                        }
                         int[] array2 = new int[k.size()];
-                        int i=0;
+                        int i = 0;
                         for (Integer integer : k) {
                             array2[i] = integer.intValue();
                             i++;
@@ -159,25 +170,26 @@ public class ListTransfertHandler extends TransferHandler{
                                         )
                                 );
                     } catch (UnsupportedFlavorException e) {
-                        InjectionModel.logger.error(e, e);
+                        InjectionModel.LOGGER.error(e, e);
                     } catch (IOException e) {
-                        InjectionModel.logger.error(e, e);
+                        InjectionModel.LOGGER.error(e, e);
                     }
-                }else if(transferableFromClipboard.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                } else if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                     try {
                         int y = 0;
-                        if(list.getSelectedIndex() > 0)
+                        if (list.getSelectedIndex() > 0) {
                             y = list.getSelectedIndex();
+                        }
                         list.clearSelection();
 
-                        list.dropPasteFile((List<File>)transferableFromClipboard.getTransferData(DataFlavor.javaFileListFlavor), y);
+                        list.dropPasteFile((List<File>) transferableFromClipboard.getTransferData(DataFlavor.javaFileListFlavor), y);
                     } catch (UnsupportedFlavorException e) {
-                        InjectionModel.logger.error(e, e);
+                        InjectionModel.LOGGER.error(e, e);
                     } catch (IOException e) {
-                        InjectionModel.logger.error(e, e);
+                        InjectionModel.LOGGER.error(e, e);
                     }
                 }
-
+            }
         }
 
         return true;

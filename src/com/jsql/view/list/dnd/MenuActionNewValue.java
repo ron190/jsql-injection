@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyhacked (H) 2012-2014.
+ * This program and the accompanying materials
+ * are made available under no term at all, use it like
+ * you want, but share and discuss about it
+ * every time possible with every body.
+ *
+ * Contributors:
+ *      ron190 at ymail dot com - initial implementation
+ *******************************************************************************/
 package com.jsql.view.list.dnd;
 
 import java.awt.BorderLayout;
@@ -16,20 +26,20 @@ import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.textcomponent.JPopupTextArea;
 
 public class MenuActionNewValue implements ActionListener {
-	
-	private DnDList myList;
-	
-	public MenuActionNewValue(DnDList myList) {
-		super();
-		this.myList = myList;
-	}
-	
+    
+    private DnDList myList;
+    
+    public MenuActionNewValue(DnDList myList) {
+        super();
+        this.myList = myList;
+    }
+    
     @Override
     public void actionPerformed(ActionEvent arg0) {
         JPanel panel = new JPanel(new BorderLayout());
         final JTextArea textarea = new JPopupTextArea(new JTextArea(6, 50)).getProxy();
         panel.add(new JLabel("Add new value(s) to the list:"), BorderLayout.NORTH);
-        panel.add(new JScrollPanePixelBorder(1,1,1,1,textarea));
+        panel.add(new JScrollPanePixelBorder(1, 1, 1, 1, textarea));
         
         textarea.addMouseListener(new MouseAdapter() {
             @Override
@@ -48,17 +58,20 @@ public class MenuActionNewValue implements ActionListener {
                 new String[]{"Ok", "Cancel"}, // this is the array
                 "Cancel");
 
-        if(!textarea.getText().equals("") && result == JOptionPane.YES_OPTION){
+        if (!"".equals(textarea.getText()) && result == JOptionPane.YES_OPTION) {
             int lastIndex = 0;
-            if(myList.getSelectedIndex() > 0)
+            if (myList.getSelectedIndex() > 0) {
                 lastIndex = myList.getSelectedIndex();
+            }
 
             int firstIndex = lastIndex;
-            for(String newItem: textarea.getText().split("\\n"))
-                if(!newItem.equals(""))
-                    ((DefaultListModel<ListItem>)myList.getModel()).add(lastIndex++, new ListItem(newItem.replace("\\", "/")));
+            for (String newItem: textarea.getText().split("\\n")) {
+                if (!newItem.equals("")) {
+                    ((DefaultListModel<ListItem>) myList.getModel()).add(lastIndex++, new ListItem(newItem.replace("\\", "/")));
+                }
+            }
 
-            myList.setSelectionInterval(firstIndex, lastIndex-1);
+            myList.setSelectionInterval(firstIndex, lastIndex - 1);
             myList.scrollRectToVisible(
                     myList.getCellBounds(
                             myList.getMinSelectionIndex(),

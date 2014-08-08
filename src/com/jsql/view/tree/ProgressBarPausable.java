@@ -4,7 +4,7 @@
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
  * every time possible with every body.
- * 
+ *
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
@@ -24,13 +24,16 @@ import com.jsql.view.GUITools;
  * A progress bar with a Pause icon over it.
  */
 @SuppressWarnings("serial")
-public class ProgressBarPausable extends JProgressBar{
+public class ProgressBarPausable extends JProgressBar {
     /**
      * True if icon should be displayed, false otherwise.
      */
     private boolean showIcon = false;
 
-    public ProgressBarPausable(){
+    /**
+     * Create progress bar with a Pause icon over it.
+     */
+    public ProgressBarPausable() {
         super();
     }
 
@@ -38,12 +41,12 @@ public class ProgressBarPausable extends JProgressBar{
     public void paint(Graphics g) {
         super.paint(g);
 
-        if(showIcon){
+        if (showIcon) {
             try {
                 BufferedImage im2 = ImageIO.read(NodePanel.class.getResource(GUITools.PATH_PAUSE));
-                g.drawImage(im2, (this.getWidth()-im2.getWidth())/2, (this.getHeight()-im2.getHeight())/2, null);
+                g.drawImage(im2, (this.getWidth() - im2.getWidth()) / 2, (this.getHeight() - im2.getHeight()) / 2, null);
             } catch (IOException e) {
-                InjectionModel.logger.error(e, e);
+                InjectionModel.LOGGER.error(e, e);
             }
         }
     }
@@ -51,7 +54,7 @@ public class ProgressBarPausable extends JProgressBar{
     /**
      * Activate pause state, hence display pause icon.
      */
-    public void pause(){
+    public void pause() {
         showIcon = true;
     }
 }

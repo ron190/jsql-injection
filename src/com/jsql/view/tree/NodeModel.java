@@ -24,13 +24,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
+import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.Column;
 import com.jsql.model.bean.ElementDatabase;
-import com.jsql.model.interruptable.Interruptable;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 import com.jsql.view.ui.RoundBorder;
@@ -38,257 +38,236 @@ import com.jsql.view.ui.RoundBorder;
 /**
  * Model adding functional layer to the node ; used by renderer and editor.
  */
-public abstract class NodeModel{
-	/**
-	 * Element from injection model in a linked list
-	 */
-    public ElementDatabase dataObject;
-    
+public abstract class NodeModel {
     /**
-     * Text for empty node
+     * Element from injection model in a linked list.
      */
-    public String emptyObject;
-    
+    protected ElementDatabase dataObject;
+
     /**
-     * Current item injection progress regarding total number of elements
+     * Text for empty node.
+     */
+    private String emptyObject;
+
+    /**
+     * Current item injection progress regarding total number of elements.
      */
     public int childUpgradeCount = 0;
 
     /**
-     * Link to model execution in order to pause or stop item processing 
-     */
-    public Interruptable interruptable;
-
-    /**
-     * Used by checkbox node ; true if checkbox is checked, false otherwise
+     * Used by checkbox node ; true if checkbox is checked, false otherwise.
      */
     public boolean isChecked = false;
-    
+
     /**
-     * Indicates if process on current node is running
+     * Indicates if process on current node is running.
      */
     public boolean isRunning = false;
-    
+
     /**
      * True if current table node has checkbox selected, false otherwise.
-     * Used to display popup menu and block injection start if no checkbox selected
+     * Used to display popup menu and block injection start if no checkbox selected.
      */
     public boolean hasChildChecked = false;
-    
+
     /**
      * True if current node has already been filled, false otherwise.
-     * Used to display correct popup menu and block injection start if already done
+     * Used to display correct popup menu and block injection start if already done.
      */
     public boolean hasBeenSearched = false;
-    
+
     /**
      * True if current node is loading with unknown total number, false otherwise.
-     * Used to display gif loader
+     * Used to display gif loader.
      */
     public boolean hasIndeterminatedProgress = false;
-    
-    
+
     /**
      * True if current node is loading with total number known, false otherwise.
-     * Used to display progress bar
+     * Used to display progress bar.
      */
     public boolean hasProgress = false;
 
     /**
-     * Create a functional model for tree node
-     * @param dataObject Database structural component 
+     * Create a functional model for tree node.
+     * @param dataObject Database structural component
      */
-    public NodeModel(ElementDatabase dataObject){
+    public NodeModel(ElementDatabase dataObject) {
         this.dataObject = dataObject;
     }
 
     /**
-     * Create an empty model for tree node
-     * @param dataObject Database structural component 
-     */    
-    public NodeModel(String emptyObject){
+     * Create an empty model for tree node.
+     * @param emptyObject Empty tree default node
+     */
+    public NodeModel(String emptyObject) {
         this.emptyObject = emptyObject;
     }
-    
+
     /**
-     * Get the database parent of current node
+     * Get the database parent of current node.
      * @return Parent
      */
-    public ElementDatabase getParent(){
+    protected ElementDatabase getParent() {
         return dataObject.getParent();
     }
 
-    @Override
-    public String toString(){
-        return dataObject != null ? this.dataObject.getLabel() : emptyObject;
-    }
-    
     /**
-     * Display a popup menu for a database or table node
+     * Display a popup menu for a database or table node.
      * @param currentTableNode Current node
      * @param path Path of current node
      * @param x Popup menu x mouse coordinate
      * @param y Popup menu y mouse coordinate
      */
-    void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int x, int y){
+    public void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int x, int y) {
         JPopupMenu tablePopupMenu = new JPopupMenu();
-        
-        JMenuItem mnLoad = new JMenuItem("Load/Stop",'o');
-        JMenuItem mnPause = new JMenuItem("Pause/Resume",'s');
+
+        JMenuItem mnLoad = new JMenuItem("Load/Stop", 'o');
+        JMenuItem mnPause = new JMenuItem("Pause/Resume", 's');
         mnLoad.setIcon(GUITools.EMPTY);
         mnPause.setIcon(GUITools.EMPTY);
-        
-        if(!this.hasChildChecked && !this.isRunning){
+
+        if (!this.hasChildChecked && !this.isRunning) {
             mnLoad.setEnabled(false);
         }
         mnLoad.addActionListener(new ActionLoadStop(this, currentTableNode));
-        
-        if(!this.isRunning){
+
+        if (!this.isRunning) {
             mnPause.setEnabled(false);
         }
-        mnPause.addActionListener(new ActionPauseUnpause(this));
-        
+        mnPause.addActionListener(new ActionPauseUnpause());
+
         this.displayMenu(tablePopupMenu, path);
         tablePopupMenu.add(mnLoad);
         tablePopupMenu.add(mnPause);
-        
+
         mnLoad.setIcon(GUITools.EMPTY);
         mnPause.setIcon(GUITools.EMPTY);
-        
+
         tablePopupMenu.show(GUIMediator.databaseTree(), x, y);
     }
-    
+
     /**
-     * Action to start and stop injection process 
+     * Action to start and stop injection process.
      */
-    private class ActionLoadStop implements ActionListener{
+    private class ActionLoadStop implements ActionListener {
         NodeModel nodeData;
         DefaultMutableTreeNode currentTableNode;
-        
-        public ActionLoadStop(NodeModel nodeData, DefaultMutableTreeNode currentTableNode){
+
+        public ActionLoadStop(NodeModel nodeData, DefaultMutableTreeNode currentTableNode) {
             this.nodeData = nodeData;
             this.currentTableNode = currentTableNode;
         }
-        
+
         @Override
         public void actionPerformed(ActionEvent e) {
             DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
             DefaultMutableTreeNode tableNode = currentTableNode;
-            List<Column> columnsToSearch = new ArrayList<Column>();
-            
+            final List<Column> columnsToSearch = new ArrayList<Column>();
+
             int tableChildCount = treeModel.getChildCount(tableNode);
-            for(int i=0; i < tableChildCount ;i++) {
+            for (int i = 0; i < tableChildCount; i++) {
                 DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
-                if( currentChild.getUserObject() instanceof NodeModel ){
+                if (currentChild.getUserObject() instanceof NodeModel) {
                     NodeModel columnTreeNodeModel = (NodeModel) currentChild.getUserObject();
-                    if(columnTreeNodeModel.isChecked){
+                    if (columnTreeNodeModel.isChecked) {
                         columnsToSearch.add((Column) columnTreeNodeModel.dataObject);
                     }
                 }
             }
-            
-            if(!this.nodeData.isRunning && columnsToSearch.isEmpty()){
+
+            if (!this.nodeData.isRunning && columnsToSearch.isEmpty()) {
                 return;
             }
-            
-            if(!this.nodeData.isRunning){
-                this.nodeData.interruptable = GUIMediator.controller().selectValues(columnsToSearch);
-            }else{
-                this.nodeData.interruptable.stop();
-                this.nodeData.interruptable.unPause();
+
+            if (!this.nodeData.isRunning) {
+                new SwingWorker<Object, Object>(){
+
+                    @Override
+                    protected Object doInBackground() throws Exception {
+                        GUIMediator.model().dao.listValues(columnsToSearch);
+                        return null;
+                    }
+                    
+                }.execute();
+            } else {
+                GUIMediator.model().suspendables.get(NodeModel.this.dataObject).stop();
+                GUIMediator.model().suspendables.get(NodeModel.this.dataObject).unPause();
                 this.nodeData.childUpgradeCount = 0;
-                this.nodeData.hasIndeterminatedProgress = this.nodeData.hasProgress = false;
-                this.nodeData.interruptable.resume();
+                this.nodeData.hasIndeterminatedProgress = false;
+                this.nodeData.hasProgress = false;
+                GUIMediator.model().suspendables.get(NodeModel.this.dataObject).resume();
             }
             this.nodeData.isRunning = !this.nodeData.isRunning;
 
-            GUIMediator.databaseTree().getCellEditor().stopCellEditing(); // !!important!!
+            // !!important!!
+            GUIMediator.databaseTree().getCellEditor().stopCellEditing();
         }
     }
-    
+
     /**
-     * Action to pause and unpause injection process 
+     * Action to pause and unpause injection process.
      */
-    public class ActionPauseUnpause implements ActionListener{
-        NodeModel nodeData;
-        public ActionPauseUnpause(NodeModel nodeData){
-            this.nodeData = nodeData;
-        }
-        
+    private class ActionPauseUnpause implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(nodeData.interruptable.isPaused()){
-                nodeData.interruptable.unPause();
+            if (GUIMediator.model().suspendables.get(NodeModel.this.dataObject).isPaused()) {
+                GUIMediator.model().suspendables.get(NodeModel.this.dataObject).unPause();
             } else {
-                nodeData.interruptable.pause();
+                GUIMediator.model().suspendables.get(NodeModel.this.dataObject).pause();
             }
             
             // Restart the action after an unpause
-            if(!nodeData.interruptable.isPaused()){
-                nodeData.interruptable.resume();
+            if (!GUIMediator.model().suspendables.get(NodeModel.this.dataObject).isPaused()) {
+                GUIMediator.model().suspendables.get(NodeModel.this.dataObject).resume();
             }
-            
+
             // !!important!!
-            GUIMediator.databaseTree().getCellEditor().stopCellEditing(); 
+            GUIMediator.databaseTree().getCellEditor().stopCellEditing();
             // reload stucked GIF loader
-            GUIMediator.databaseTree().repaint(); 
+            GUIMediator.databaseTree().repaint();
         }
     }
-    
+
     /**
-     * Method to display a popupmenu on mouse right click if needed 
-     * @param tablePopupMenu Menu to display
-     * @param path Treepath of current node
-     */
-    abstract void displayMenu(JPopupMenu tablePopupMenu, TreePath path);
-    
-    /**
-     * Check if menu should be opened, i.e: does not show menu on except during injection
+     * Draw the panel component based on node model.
+     * @param tree
+     * @param nodeRenderer
+     * @param isSelected
+     * @param isExpanded
+     * @param isLeaf
+     * @param row
+     * @param hasFocus
      * @return
      */
-    abstract boolean verifyShowPopup();
-    abstract Icon getIcon(boolean leaf);
-    abstract void runAction();
-    
-    void displayProgress(NodePanel panel, DefaultMutableTreeNode currentNode){
-        int dataCount = this.dataObject.getCount();
-        panel.progressBar.setMaximum(dataCount);
-        panel.progressBar.setValue(this.childUpgradeCount);
-        panel.progressBar.setVisible(true);
-
-        if(this.interruptable.isPaused()){
-            panel.progressBar.pause();
-        }
-    }
-    
     public Component getComponent(final JTree tree, Object nodeRenderer,
-            final boolean selected, boolean expanded, boolean leaf, int row,
-            boolean hasFocus){
-        
+            final boolean isSelected, boolean isExpanded, boolean isLeaf, int row,
+            boolean hasFocus) {
+
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
-        final NodePanel panel = new NodePanel(tree,currentNode);
-            
+        final NodePanel panel = new NodePanel(tree, currentNode);
+
         panel.label.setText(this.toString());
         panel.label.setVisible(true);
         panel.showIcon();
 
-        panel.setIcon(this.getIcon(leaf));
+        panel.setIcon(this.getLeafIcon(isLeaf));
 
         panel.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent arg0) {
                 panel.label.setBackground(GUITools.SELECTION_BACKGROUND);
-                panel.label.setBorder(new RoundBorder(4,1,true));
+                panel.label.setBorder(new RoundBorder(4, 1, true));
                 System.out.println("b");
             }
             @Override
             public void focusLost(FocusEvent arg0) {
-                panel.label.setBackground(new Color(248,249,249));
-                panel.label.setBorder(new RoundBorder(4,1,true,new Color(218,218,218)));
+                panel.label.setBackground(new Color(248, 249, 249));
+                panel.label.setBorder(new RoundBorder(4, 1, new Color(218, 218, 218)));
                 System.out.println("a");
             }
         });
-        
+
 //        if(isSelected && list.isFocusOwner())
 //            renderer.setBackground(GUITools.SELECTION_BACKGROUND);
 //        else if(mouseOver[0] == index)
@@ -317,26 +296,75 @@ public abstract class NodeModel{
 //        else
 //            renderer.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         
-        if(selected){
+        if (isSelected) {
             panel.label.setBackground(GUITools.SELECTION_BACKGROUND);
-        }else{
+        } else {
             panel.label.setBackground(Color.WHITE);
-            panel.label.setBorder(new RoundBorder(4,1,false));
+            panel.label.setBorder(new RoundBorder(4, 1, false));
         }
 
-        if(this.hasProgress){
+        if (this.hasProgress) {
             displayProgress(panel, currentNode);
             panel.hideIcon();
-        }else if(this.hasIndeterminatedProgress){
+        } else if (this.hasIndeterminatedProgress) {
             panel.showLoader();
             panel.hideIcon();
 
-            if(this.interruptable.isPaused()){
+            if (GUIMediator.model().suspendables.get(NodeModel.this.dataObject).isPaused()) {
                 ImageIcon animatedGIFPaused = new IconOverlap(GUITools.PATH_PROGRESSBAR, GUITools.PATH_PAUSE);
                 animatedGIFPaused.setImageObserver(new AnimatedObserver(GUIMediator.databaseTree(), currentNode));
                 panel.setLoaderIcon(animatedGIFPaused);
             }
         }
+        
         return panel;
+    }
+    
+    /**
+     * Update progressbar ; dispay the pause icon if node is paused.
+     * @param panel Panel that contains the bar to update
+     * @param currentNode Functional node model object
+     */
+    protected void displayProgress(NodePanel panel, DefaultMutableTreeNode currentNode) {
+        int dataCount = this.dataObject.getCount();
+        panel.progressBar.setMaximum(dataCount);
+        panel.progressBar.setValue(this.childUpgradeCount);
+        panel.progressBar.setVisible(true);
+        
+        if (GUIMediator.model().suspendables.get(this.dataObject).isPaused()) {
+            panel.progressBar.pause();
+        }
+    }
+    
+    /**
+     * Display a popupmenu on mouse right click if needed.
+     * @param tablePopupMenu Menu to display
+     * @param path Treepath of current node
+     */
+    abstract void displayMenu(JPopupMenu tablePopupMenu, TreePath path);
+    
+    /**
+     * Check if menu should be opened.
+     * i.e: does not show menu on database except during injection.
+     * @return True if popupup should be opened, false otherwise
+     */
+    abstract boolean verifyShowPopup();
+    
+    /**
+     * Get icon displayed next to the node text. 
+     * @param isLeaf True will display an arrow icon, false won't
+     * @return Icon to display
+     */
+    abstract Icon getLeafIcon(boolean isLeaf);
+    
+    /**
+     * Run injection process (see GUIMediator.model().dao).
+     * Used by database and table nodes.
+     */
+    abstract void runAction();
+    
+    @Override
+    public String toString() {
+        return dataObject != null ? this.dataObject.getLabel() : emptyObject;
     }
 }

@@ -13,23 +13,21 @@ package com.jsql.view.interaction;
 import com.jsql.view.GUIMediator;
 
 /**
- * End the refreshing of the main Start injection button
+ * End the refreshing of the main Start injection button.
  */
-public class EndPreparation implements IInteractionCommand{
+public class EndPreparation implements IInteractionCommand {
     /**
      * @param interactionParams
      */
-    public EndPreparation(Object[] interactionParams){
+    public EndPreparation(Object[] interactionParams) {
+        // Do nothing
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
-    	GUIMediator.top().submitAddressBar.setInjectionReady();
+    public void execute() {
+        GUIMediator.top().submitAddressBar.setInjectionReady();
         GUIMediator.top().loader.setVisible(false);
 
-        if(GUIMediator.model().isInjectionBuilt){
+        if (GUIMediator.model().isInjectionBuilt) {
             GUIMediator.left().fileManager.setButtonEnable(true);
             GUIMediator.left().shellManager.setButtonEnable(true);
             GUIMediator.left().sqlShellManager.setButtonEnable(true);

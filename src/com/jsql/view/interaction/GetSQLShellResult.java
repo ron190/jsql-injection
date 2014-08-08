@@ -10,118 +10,106 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.UIManager;
-import javax.swing.text.StyleConstants;
+import org.apache.commons.lang3.StringUtils;
 
 import com.jsql.view.GUIMediator;
 import com.jsql.view.terminal.Terminal;
 
 /**
- * Append the result of a command in the terminal
+ * Append the result of a command in the terminal.
  */
-public class GetSQLShellResult implements IInteractionCommand{
-    // Unique identifier for the terminal.
-    // Used for outputing results of commands in the right shell tab (in case of multiple shell opened)
+public class GetSQLShellResult implements IInteractionCommand {
+    /**
+     * Unique identifier for the terminal. Used for outputing results of
+     * commands in the right shell tab (in case of multiple shell opened).
+     */
     private UUID terminalID;
 
-    // The result of a command executed in shell
+    /**
+     * The result of a command executed in shell.
+     */
     private String result;
 
-    // The command executed in shell
-//    private String cmd;
-
     /**
-     * @param mainGUI
      * @param interactionParams The unique identifier of the terminal and the command's result to display
      */
-    public GetSQLShellResult(Object[] interactionParams){
+    public GetSQLShellResult(Object[] interactionParams) {
         terminalID = (UUID) interactionParams[0];
         result = (String) interactionParams[1];
-//        cmd = (String) interactionParams[2];
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
-        Terminal terminal = GUIMediator.gui().consoles.get(terminalID);
+    public void execute() {
+        Terminal terminal = GUIMediator.gui().getConsoles().get(this.terminalID);
         
-        if(result.indexOf("<SQLr>") > -1){
-            ArrayList<ArrayList<String>> i = new ArrayList<ArrayList<String>>();
-            Matcher regexSearch = Pattern.compile("<tr>(<td>.*?</td>)</tr>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(result);
-            while(regexSearch.find()){
-                String values = regexSearch.group(1);
+        if (this.result.indexOf("<SQLr>") > -1) {
+            List<List<String>> listRows = new ArrayList<List<String>>();
+            Matcher rowsMatcher = Pattern.compile("<tr>(<td>.*?</td>)</tr>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(this.result);
+            while (rowsMatcher.find()) {
+                String values = rowsMatcher.group(1);
                 
-                Matcher regexSearch2 = Pattern.compile("<td>(.*?)</td>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(values);
-                ArrayList<String> j = new ArrayList<String>();
-                i.add(j);
-                while(regexSearch2.find()){
-                    String values2 = regexSearch2.group(1);
-                    j.add(values2);
+                Matcher fieldsMatcher = Pattern.compile("<td>(.*?)</td>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(values);
+                List<String> listFields = new ArrayList<String>();
+                listRows.add(listFields);
+                while (fieldsMatcher.find()) {
+                    String field = fieldsMatcher.group(1);
+                    listFields.add(field);
                 }
             }
             
-            if(i.size() <= 0){
+            if (listRows.isEmpty()) {
                 terminal.append("Empty result.\n");
-            }else{
-                ArrayList<Integer> ml = new ArrayList<Integer>();
-                for(final int[] ii = {0}; ii[0] < i.get(0).size() ; ii[0]++){
-                    Collections.sort( i, new Comparator<ArrayList<String>>() {
-                        
+            } else {
+                List<Integer> listFieldsLength = new ArrayList<Integer>();
+                for (final int[] indexLongestRowSearch = {0}; indexLongestRowSearch[0] < listRows.get(0).size(); indexLongestRowSearch[0]++) {
+                    Collections.sort(listRows, new Comparator<List<String>>() {
                         @Override
-                        public int compare(ArrayList<String> o1, ArrayList<String> o2) {
-                            return o2.get(ii[0]).length() - o1.get(ii[0]).length();
+                        public int compare(List<String> firstRow, List<String> secondRow) {
+                            return secondRow.get(indexLongestRowSearch[0]).length() - firstRow.get(indexLongestRowSearch[0]).length();
                         }
-                        
-                    } );
+                    });
                     
-                    ml.add(i.get(0).get(ii[0]).length());
+                    listFieldsLength.add(listRows.get(0).get(indexLongestRowSearch[0]).length());
                 }
                 
-                if(!result.equals("")){
-                    StyleConstants.setFontFamily(terminal.getStyle(), "monospaced");
-                    StyleConstants.setFontSize(terminal.getStyle(), ((Font) UIManager.get("TextArea.font")).getSize()+1);
-
-                    terminal.appendStyle("+");
-                    for(Integer a1: ml){
-                        terminal.appendStyle("-"+new String(new char[a1]).replace("\0", "-")+"-+");
+                if (!"".equals(this.result)) {
+                    terminal.append("+");
+                    for (Integer fieldLength: listFieldsLength) {
+                        terminal.append("-" + StringUtils.repeat("-", fieldLength) + "-+");
                     }
-                    terminal.appendStyle("\n");
+                    terminal.append("\n");
                     
-                    for(ArrayList<String> a1: i){
-                        terminal.appendStyle("|");
-                        int ii=0;
-                        for(String s: a1){
-                            terminal.appendStyle(" "+s+new String(new char[ml.get(ii)-s.length()]).replace("\0", " ")+" |");
-                            ii++;
+                    for (List<String> listFields: listRows) {
+                        terminal.append("|");
+                        int cursorPosition = 0;
+                        for (String field: listFields) {
+                            terminal.append(" " + field + StringUtils.repeat(" ", listFieldsLength.get(cursorPosition) - field.length()) + " |");
+                            cursorPosition++;
                         }
-                        terminal.appendStyle("\n");
+                        terminal.append("\n");
                     }
                     
-                    terminal.appendStyle("+");
-                    for(Integer a1: ml){
-                        terminal.appendStyle("-"+new String(new char[a1]).replace("\0", "-")+"-+");
+                    terminal.append("+");
+                    for (Integer fieldLength: listFieldsLength) {
+                        terminal.append("-" + StringUtils.repeat("-", fieldLength) + "-+");
                     }
-                    terminal.appendStyle("\n");
-                    
-                    StyleConstants.setFontFamily(terminal.getStyle(), "monospaced");
-                    StyleConstants.setFontSize(terminal.getStyle(), ((Font) UIManager.get("TextArea.font")).getSize()+1);
+                    terminal.append("\n");
                 }
             }
-        }else if(result.indexOf("<SQLm>") > -1){
-            terminal.append(result.replace("<SQLm>", "") + "\n");
-        }else if(result.indexOf("<SQLe>") > -1){
-            terminal.append(result.replace("<SQLe>", "") + "\n");
-        }else
+        } else if (this.result.indexOf("<SQLm>") > -1) {
+            terminal.append(this.result.replace("<SQLm>", "") + "\n");
+        } else if (this.result.indexOf("<SQLe>") > -1) {
+            terminal.append(this.result.replace("<SQLe>", "") + "\n");
+        } else {
             terminal.append("No result\n");
+        }
         terminal.append("\n");
         terminal.reset();
     }

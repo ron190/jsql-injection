@@ -53,11 +53,11 @@ import com.jsql.view.textcomponent.JPopupTextField;
 import com.jsql.view.ui.RoundBorder;
 
 @SuppressWarnings("serial")
-public class Prefs extends JDialog{
-	
+public class Prefs extends JDialog {
+    
     public JButton okButton;
 
-    public Prefs(){
+    public Prefs() {
         super(GUIMediator.gui(), "Preferences", Dialog.ModalityType.MODELESS);
 
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -74,17 +74,17 @@ public class Prefs extends JDialog{
             }
         };
 
-        this.getRootPane().registerKeyboardAction(escListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);        
+        this.getRootPane().registerKeyboardAction(escListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.LINE_AXIS));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
         okButton = new JButton("Apply");
-        okButton.setBorder(new RoundBorder(7,3,true));
+        okButton.setBorder(new RoundBorder(7, 3, true));
 
         JButton cancelButton = new JButton("Close");
-        cancelButton.setBorder(new RoundBorder(7,3,true));
+        cancelButton.setBorder(new RoundBorder(7, 3, true));
         cancelButton.addActionListener(escListener);
 
         this.getRootPane().setDefaultButton(okButton);
@@ -95,9 +95,9 @@ public class Prefs extends JDialog{
         JButton checkIPButton = new JButton("Check your IP", new ImageIcon(GUITools.class.getResource("/com/jsql/view/images/wrench.png")));
         checkIPButton.setBorder(GUITools.BLU_ROUND_BORDER);
         checkIPButton.addActionListener(new ActionCheckIP());
-        checkIPButton.setToolTipText("<html><b>Verify public IP address used by jSQL</b><br>" +
-        		"Address is your own public IP if you don't use a proxy. If you use a proxy<br>" +
-        		"like TOR, your public IP is hidden and another IP is used, provided by the proxy.</html>");
+        checkIPButton.setToolTipText("<html><b>Verify public IP address used by jSQL</b><br>"
+                + "Address is your own public IP if you don't use a proxy. If you use a proxy<br>"
+                + "like TOR, your public IP is hidden and another IP is used, provided by the proxy.</html>");
 
         mainPanel.add(checkIPButton);
         mainPanel.add(Box.createGlue());
@@ -116,10 +116,9 @@ public class Prefs extends JDialog{
         settingPanel.setBorder(
                 BorderFactory.createCompoundBorder(
                         BorderFactory.createCompoundBorder(
-                                BorderFactory.createEmptyBorder(5,5,5,5),
+                                BorderFactory.createEmptyBorder(5, 5, 5, 5),
                                 roundedTitledBorder
-                                ),
-                                BorderFactory.createEmptyBorder(5,5,5,5)
+                                ), BorderFactory.createEmptyBorder(5, 5, 5, 5)
                         ));
 
         // Proxy label
@@ -133,9 +132,9 @@ public class Prefs extends JDialog{
         final JCheckBox checkboxIsProxy = new JCheckBox("", GUIMediator.model().isProxyfied);
 
         textProxyAddress.setPreferredSize(new Dimension(0, 27));
-        textProxyAddress.setFont(textProxyAddress.getFont().deriveFont(Font.PLAIN,textProxyAddress.getFont().getSize()+2));
+        textProxyAddress.setFont(textProxyAddress.getFont().deriveFont(Font.PLAIN, textProxyAddress.getFont().getSize() + 2));
         textProxyPort.setPreferredSize(new Dimension(0, 27));
-        textProxyPort.setFont(textProxyPort.getFont().deriveFont(Font.PLAIN,textProxyPort.getFont().getSize()+2));
+        textProxyPort.setFont(textProxyPort.getFont().deriveFont(Font.PLAIN, textProxyPort.getFont().getSize() + 2));
         
         okButton.addActionListener(new ActionListener() {
             @Override
@@ -150,15 +149,15 @@ public class Prefs extends JDialog{
                 prefs.put("proxyAddress", GUIMediator.model().proxyAddress);
                 prefs.put("proxyPort", GUIMediator.model().proxyPort);
 
-                if(GUIMediator.model().isProxyfied){
+                if (GUIMediator.model().isProxyfied) {
                     System.setProperty("http.proxyHost", GUIMediator.model().proxyAddress);
                     System.setProperty("http.proxyPort", GUIMediator.model().proxyPort);
-                }else{
+                } else {
                     System.setProperty("http.proxyHost", "");
                     System.setProperty("http.proxyPort", "");
                 }
 
-                InjectionModel.logger.info("Preferences saved.");
+                InjectionModel.LOGGER.info("Preferences saved.");
             }
         });
 
@@ -167,8 +166,8 @@ public class Prefs extends JDialog{
             public void windowClosed(WindowEvent e) {
                 super.windowClosed(e);
 
-                textProxyAddress.setText( GUIMediator.model().proxyAddress );
-                textProxyPort.setText( GUIMediator.model().proxyPort );
+                textProxyAddress.setText(GUIMediator.model().proxyAddress);
+                textProxyPort.setText(GUIMediator.model().proxyPort);
                 checkboxIsProxy.setSelected(GUIMediator.model().isProxyfied);
             }
         });
@@ -176,7 +175,7 @@ public class Prefs extends JDialog{
         // Proxy settings, Horizontal column rules
         settingLayout.setHorizontalGroup(
                 settingLayout.createSequentialGroup()
-                .addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.TRAILING,false)
+                .addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                         .addComponent(labelUseProxy)
                         .addComponent(labelProxyAddress)
                         .addComponent(labelProxyPort))
@@ -209,28 +208,29 @@ public class Prefs extends JDialog{
         this.setLocationRelativeTo(GUIMediator.gui());
     }
 
-    private class ActionCheckIP implements ActionListener{
+    private class ActionCheckIP implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     // Test if proxy is available then apply settings
-                    if(GUIMediator.model().isProxyfied && !GUIMediator.model().proxyAddress.equals("") && !GUIMediator.model().proxyPort.equals("")){
+                    if (GUIMediator.model().isProxyfied && !GUIMediator.model().proxyAddress.equals("") && !GUIMediator.model().proxyPort.equals("")) {
                         try {
-                        	InjectionModel.logger.info("Testing proxy...");
+                            InjectionModel.LOGGER.info("Testing proxy...");
                             new Socket(GUIMediator.model().proxyAddress, Integer.parseInt(GUIMediator.model().proxyPort)).close();
                         } catch (Exception e) {
-                            InjectionModel.logger.warn("Proxy connection failed: " + GUIMediator.model().proxyAddress+":"+GUIMediator.model().proxyPort+
-                                    "\nVerify your proxy informations or disable proxy setting.");
+                            InjectionModel.LOGGER.warn("Proxy connection failed: " 
+                                    + GUIMediator.model().proxyAddress + ":" + GUIMediator.model().proxyPort
+                                    + "\nVerify your proxy informations or disable proxy setting.");
                             return;
                         }
-                        InjectionModel.logger.info("Proxy is responding.");
+                        InjectionModel.LOGGER.info("Proxy is responding.");
                     }
                     
                     BufferedReader in = null;
                     try {
-                    	InjectionModel.logger.info("Checking IP...");
+                        InjectionModel.LOGGER.info("Checking IP...");
                         
                         URL whatismyip = new URL("http://checkip.amazonaws.com");
                         HttpURLConnection con = (HttpURLConnection) whatismyip.openConnection();
@@ -240,9 +240,9 @@ public class Prefs extends JDialog{
                         con.setRequestProperty("Cache-Control", "no-cache");
                         con.setRequestProperty("Expires", "-1");
                         
-                        in = new BufferedReader(new InputStreamReader( con.getInputStream(), "UTF-8" ));
+                        in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                         String ip2 = in.readLine();
-                        InjectionModel.logger.info( "Your IP information (AWS): " + ip2 );
+                        InjectionModel.LOGGER.info("Your IP information (AWS): " + ip2);
                         
                         whatismyip = new URL("http://freegeoip.net/csv/");
                         con = (HttpURLConnection) whatismyip.openConnection();
@@ -252,22 +252,22 @@ public class Prefs extends JDialog{
                         con.setRequestProperty("Cache-Control", "no-cache");
                         con.setRequestProperty("Expires", "-1");
                         
-                        in = new BufferedReader(new InputStreamReader( con.getInputStream(), "UTF-8" ));
+                        in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
                         ip2 = in.readLine();
-                        InjectionModel.logger.info( "Your IP information (freegeoip): " + ip2 );
+                        InjectionModel.LOGGER.info("Your IP information (freegeoip): " + ip2);
                     } catch (MalformedURLException e) {
-                        InjectionModel.logger.warn("Malformed URL: "+e.getMessage());
+                        InjectionModel.LOGGER.warn("Malformed URL: " + e.getMessage());
                     } catch (IOException e) {
-                        InjectionModel.logger.warn("Error during proxy test: "+e.getMessage());
-                        InjectionModel.logger.warn("Use your browser to verify your proxy is working.");
+                        InjectionModel.LOGGER.warn("Error during proxy test: " + e.getMessage());
+                        InjectionModel.LOGGER.warn("Use your browser to verify your proxy is working.");
                     } finally {
                         if (in != null) {
                             try {
-                            	InjectionModel.logger.info("Checking IP done.");
+                                InjectionModel.LOGGER.info("Checking IP done.");
                                 in.close();
                             } catch (IOException e) {
-                                InjectionModel.logger.warn("Error during proxy test: "+e.getMessage());
-                                InjectionModel.logger.warn("Use your browser to verify your proxy is working.");
+                                InjectionModel.LOGGER.warn("Error during proxy test: " + e.getMessage());
+                                InjectionModel.LOGGER.warn("Use your browser to verify your proxy is working.");
                             }
                         }
                     }

@@ -1,77 +1,76 @@
 package com.jsql.view.radio;
 
-import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
 
-import com.jsql.view.GUITools;
-
+/**
+ * A label to mimic a radiobox contained in a group.
+ * Display as underlined if label is selected.
+ */
 @SuppressWarnings("serial")
-public abstract class RadioLink extends JLabel{
+public abstract class RadioLink extends JLabel {
+    /**
+     * Build a radio label.
+     * @param string Text for label
+     * @param isSelected Is the radio selected by default?
+     */
+    public RadioLink(String string, boolean isSelected) {
+        this(string);
+        this.setUnderlined();
+    }
 
-	public RadioLink(String string, boolean isSelected) {
-		this(string);
-		GUITools.setUnderlined(this);
-	}
-	
-	public RadioLink(String string) {
-		super(string);
-		
-		addMouseListener(new MouseAdapter() {
-			Font original;
-			
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				super.mouseClicked(e);
-				if(RadioLink.this.isActivable() && SwingUtilities.isLeftMouseButton(e)){
-					for(JLabel r: RadioLink.this.getGroup())
-						if(((JLabel) e.getComponent()) != r)
-							r.setFont(GUITools.MYFONT);
-						else
-							RadioLink.this.action();
-							
-					GUITools.setUnderlined((JLabel) e.getComponent());
-					
-					original = e.getComponent().getFont();
-					RadioLink.this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				}
-			}
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				super.mouseEntered(e);
-				original = e.getComponent().getFont();
-				
-				if(RadioLink.this.isActivable()){
-    				Font font = RadioLink.this.getFont();
-    		        Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>(font.getAttributes());
-    		        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-    		        RadioLink.this.setFont(font.deriveFont(attributes));
-    				RadioLink.this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				}
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				super.mouseExited(e);
-				RadioLink.this.setFont(original);
-				RadioLink.this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			}
-		});
-	}
-	
-	protected boolean isActivable(){
-		return !RadioLink.this.getFont().getAttributes().containsValue(TextAttribute.WEIGHT_BOLD);
-	}
-	
-	abstract void action();
-	abstract ArrayList<JLabel> getGroup();
+    /**
+     * Build a radio label.
+     * @param string Text for label
+     */
+    public RadioLink(String string) {
+        super(string);
+
+        this.addMouseListener(new RadioMouseAdapter());
+    }
+
+    /**
+     * Radio is selectable/hoverable if it is not already selected (bold).
+     * @return True if radio is not already selected
+     */
+    protected boolean isActivable() {
+        return !RadioLink.this.getFont().getAttributes().containsValue(TextAttribute.WEIGHT_BOLD);
+    }
+
+    /**
+     * Change font of radio label to underline.
+     */
+    public final void setUnderlined() {
+        Font font = this.getFont();
+        Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>(font.getAttributes());
+        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);
+        attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+        this.setFont(font.deriveFont(attributes));
+    }
+
+    /**
+     * Change font of radio label to default.
+     */
+    public void removeFont() {
+        Font font = this.getFont();
+        Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>(font.getAttributes());
+        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);
+        this.setFont(font.deriveFont(attributes));
+    }
+
+    /**
+     * An action run when radio is checked by user.
+     */
+    abstract void action();
+    
+    /**
+     * Group of radio components, either the radio for HTTP method or the one for injection strategy.
+     * @return
+     */
+    abstract List<JLabel> getGroup();
 }

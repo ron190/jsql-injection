@@ -17,103 +17,104 @@ import com.jsql.view.console.JColoredConsole;
 import com.jsql.view.console.JavaConsoleAdapter;
 
 public class SwingAppender extends WriterAppender {
-	private static JColoredConsole consoleColored;
-	private static JavaConsoleAdapter javaConsole;
+    private static JColoredConsole consoleColored;
+    private static JavaConsoleAdapter javaConsole;
 
-	static SimpleAttributeSet ERROR = new SimpleAttributeSet();
-	static SimpleAttributeSet INFO = new SimpleAttributeSet();
-	static SimpleAttributeSet ALL = new SimpleAttributeSet();
-	static SimpleAttributeSet FATAL = new SimpleAttributeSet();
-	static SimpleAttributeSet WARN = new SimpleAttributeSet();
-	static SimpleAttributeSet DEBUG = new SimpleAttributeSet();
+    private static final SimpleAttributeSet ERROR = new SimpleAttributeSet();
+    private static final SimpleAttributeSet INFO = new SimpleAttributeSet();
+    private static final SimpleAttributeSet ALL = new SimpleAttributeSet();
+    private static final SimpleAttributeSet FATAL = new SimpleAttributeSet();
+    private static final SimpleAttributeSet WARN = new SimpleAttributeSet();
+    private static final SimpleAttributeSet DEBUG = new SimpleAttributeSet();
 
-	// Best to reuse attribute sets as much as possible.
-	static {
-		StyleConstants.setForeground(ALL, Color.green);
-		StyleConstants.setForeground(FATAL, Color.red);
-		//		StyleConstants.setItalic(ERROR, true);
+    // Best to reuse attribute sets as much as possible.
+    static {
+        StyleConstants.setForeground(ALL, Color.green);
+        StyleConstants.setForeground(FATAL, Color.red);
+        //        StyleConstants.setItalic(ERROR, true);
 
-		StyleConstants.setForeground(ERROR, Color.red);
-		//		StyleConstants.setBold(ERROR, true);
+        StyleConstants.setForeground(ERROR, Color.red);
+        //        StyleConstants.setBold(ERROR, true);
 
-//		StyleConstants.setForeground(WARN, Color.yellow);
-		StyleConstants.setForeground(WARN, Color.red);
+//        StyleConstants.setForeground(WARN, Color.yellow);
+        StyleConstants.setForeground(WARN, Color.red);
 
-		//		StyleConstants.setForeground(INFO, Color.blue);
-		StyleConstants.setForeground(DEBUG, Color.green);
-		StyleConstants.setItalic(DEBUG, true);
-	}
+        //        StyleConstants.setForeground(INFO, Color.blue);
+        StyleConstants.setForeground(DEBUG, Color.green);
+        StyleConstants.setItalic(DEBUG, true);
+    }
 
-	public SwingAppender() {
-		this.setLayout(new PatternLayout("[%-5p] (%F:%L) - %m%n"));
-	}
+    public SwingAppender() {
+        this.setLayout(new PatternLayout("[%-5p] (%F:%L) - %m%n"));
+    }
 
-	/**
-	 * Method from Log4j AppenderSkeleton that gets a call for all Log4J events.
-	 *
-	 * @param event A logging event.
-	 * @see org.apache.log4j.AppenderSkeleton
-	 */
-	public void append(final LoggingEvent event) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				insertText(layout.format(event), event.getLevel(), event
-						.getThrowableInformation());
-			}});
-	}
+    /**
+     * Method from Log4j AppenderSkeleton that gets a call for all Log4J events.
+     *
+     * @param event A logging event.
+     * @see org.apache.log4j.AppenderSkeleton
+     */
+    public void append(final LoggingEvent event) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                insertText(layout.format(event), event.getLevel(), event
+                        .getThrowableInformation());
+            }
+        });
+    }
 
-	/**
-	 * Requires a layout.
-	 *
-	 * @return true.
-	 */
-	public boolean requiresLayout() {
-		return true;
-	}
+    /**
+     * Requires a layout.
+     *
+     * @return true.
+     */
+    public boolean requiresLayout() {
+        return true;
+    }
 
-	/**
-	 * This method overrides the parent {@link WriterAppender#closeWriter}
-	 * implementation to do nothing because the console stream is not ours to
-	 * close.
-	 */
-	protected final void closeWriter() {
-	}
+    /**
+     * This method overrides the parent {@link WriterAppender#closeWriter}
+     * implementation to do nothing because the console stream is not ours to
+     * close.
+     */
+    protected final void closeWriter() {
+    }
 
-	/**
-	 * Colorizes the specified message for the specified log4j level.
-	 */
-	private void insertText(String message, Level level, ThrowableInformation ti) {
+    /**
+     * Colorizes the specified message for the specified log4j level.
+     */
+    private void insertText(String message, Level level, ThrowableInformation throwableInformation) {
 
-		switch (level.toInt()) {
-		case Level.ALL_INT:
-			break;
-		case Level.FATAL_INT:
-			break;
-		case Level.ERROR_INT:
-			String s[] = ti.getThrowableStrRep();
-			for (int i = 0; i < s.length; i++) {
-				javaConsole.append(s[i], ERROR);
-			}
-			break;
-		case Level.WARN_INT:
-			consoleColored.append(message, WARN);
-			consoleColored.setCaretPosition(consoleColored.getDocument().getLength());
-			break;
-		case Level.INFO_INT:
-			consoleColored.append(message, INFO);
-			consoleColored.setCaretPosition(consoleColored.getDocument().getLength());
-			break;
-		case Level.DEBUG_INT:
-			//	      insertText(message, DEBUG);
-			break;
-		}
-	}
+        switch (level.toInt()) {
+            case Level.ALL_INT:
+                break;
+            case Level.FATAL_INT:
+                break;
+            case Level.ERROR_INT:
+                for (String rep: throwableInformation.getThrowableStrRep()) {
+                    javaConsole.append(rep, ERROR);
+                }
+                break;
+            case Level.WARN_INT:
+                consoleColored.append(message, WARN);
+                consoleColored.setCaretPosition(consoleColored.getDocument().getLength());
+                break;
+            case Level.INFO_INT:
+                consoleColored.append(message, INFO);
+                consoleColored.setCaretPosition(consoleColored.getDocument().getLength());
+                break;
+            case Level.DEBUG_INT:
+                break;
+            default:
+                break;
+        }
+    }
 
-	public void register(JavaConsoleAdapter javaConsole) {
-		SwingAppender.javaConsole = javaConsole;
-	}
+    public void register(JavaConsoleAdapter javaConsole) {
+        SwingAppender.javaConsole = javaConsole;
+    }
 
-	public void register(DefaultConsoleAdapter consoleColored) {
-		SwingAppender.consoleColored = consoleColored;
-	}
+    public void register(DefaultConsoleAdapter consoleColored) {
+        SwingAppender.consoleColored = consoleColored;
+    }
 }

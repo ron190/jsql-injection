@@ -25,22 +25,28 @@ import javax.swing.SwingUtilities;
 import com.jsql.view.GUIMediator;
 
 /**
- * Panel displayed as a header for tabs
+ * Panel displayed as a header for tabs.
  */
 @SuppressWarnings("serial")
-public class TabHeader extends JPanel implements MouseListener{
-	
-    public TabHeader(){
+public class TabHeader extends JPanel implements MouseListener {
+
+    /**
+     * Tab header with default tab icon.
+     */
+    public TabHeader() {
         this(new ImageIcon(TabHeader.class.getResource("/com/jsql/view/images/table.png")));
     }
-    
-	public TabHeader(ImageIcon imageIcon){
+
+    /**
+     * Tab header with a custom icon.
+     */
+    public TabHeader(ImageIcon imageIcon) {
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        
+
         this.setOpaque(false);
-        
+
         // Set the text of tab
-        JLabel tabTitleLabel = new JLabel(){
+        JLabel tabTitleLabel = new JLabel() {
             public String getText() {
                 int i = GUIMediator.right().indexOfTabComponent(TabHeader.this);
                 if (i != -1) {
@@ -51,36 +57,47 @@ public class TabHeader extends JPanel implements MouseListener{
         };
         tabTitleLabel.setIcon(imageIcon);
         this.add(tabTitleLabel);
-        
+
         // Icon for closing tab
         Icon closeIcon = new ImageIcon(this.getClass().getResource("/com/jsql/view/images/close.png"));
         Dimension closeButtonSize = new Dimension(closeIcon.getIconWidth(), closeIcon.getIconHeight());
-        
+
         JButton tabCloseButton = new JButton(closeIcon);
         tabCloseButton.setPreferredSize(closeButtonSize);
         tabCloseButton.setContentAreaFilled(false);
         tabCloseButton.setFocusable(false);
         tabCloseButton.setBorderPainted(false);
-        tabCloseButton.setRolloverEnabled(true); // turn on before rollovers work
+        // turn on before rollovers work
+        tabCloseButton.setRolloverEnabled(true);
         tabCloseButton.setRolloverIcon(new ImageIcon(this.getClass().getResource("/com/jsql/view/images/closeRollover.png")));
         tabCloseButton.setPressedIcon(new ImageIcon(this.getClass().getResource("/com/jsql/view/images/closePressed.png")));
         tabCloseButton.addMouseListener(this);
-        
+
         this.add(tabCloseButton);
     }
-    
+
     /**
-     * Action for close button: remove tab
+     * Action for close button: remove tab.
      */
     @Override
     public void mouseClicked(MouseEvent e) {
-        if(SwingUtilities.isRightMouseButton(e))return;
+        if (SwingUtilities.isRightMouseButton(e)) {
+            return;
+        }
         int closeTabNumber = GUIMediator.right().indexOfTabComponent(TabHeader.this);
         GUIMediator.right().removeTabAt(closeTabNumber);
     }
 
-    @Override public void mouseEntered(MouseEvent e) {}
-    @Override public void mouseExited(MouseEvent e) {}
-    @Override public void mousePressed(MouseEvent e) {}
-    @Override public void mouseReleased(MouseEvent e) {}
+    @Override public void mouseEntered(MouseEvent e) {
+        // Do nothing
+    }
+    @Override public void mouseExited(MouseEvent e) {
+        // Do nothing
+    }
+    @Override public void mousePressed(MouseEvent e) {
+        // Do nothing
+    }
+    @Override public void mouseReleased(MouseEvent e) {
+        // Do nothing
+    }
 }

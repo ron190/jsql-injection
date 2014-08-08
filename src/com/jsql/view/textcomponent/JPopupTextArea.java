@@ -22,12 +22,11 @@ import javax.swing.JTextArea;
  */
 @SuppressWarnings("serial")
 public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements JComponentDecorator<JTextArea> {
-
     /**
      * Build new instance of JTextField to decorate.
      */
     public JPopupTextArea() {
-        this(new JTextArea(){
+        this(new JTextArea() {
             @Override
             public boolean isEditable() {
                 return false;
@@ -40,16 +39,16 @@ public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements JC
      */
     public JPopupTextArea(JTextArea proxy) {
         super(proxy);
-        
-        this.proxy.addFocusListener(new FocusAdapter() {
+
+        this.getProxy().addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent arg0) {
-                JPopupTextArea.this.proxy.getCaret().setVisible(true);
-                JPopupTextArea.this.proxy.getCaret().setSelectionVisible(true);
+                JPopupTextArea.this.getProxy().getCaret().setVisible(true);
+                JPopupTextArea.this.getProxy().getCaret().setSelectionVisible(true);
             }
         });
-        
-        this.proxy.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-        this.proxy.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
+
+        this.getProxy().setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        this.getProxy().setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
     }
 }

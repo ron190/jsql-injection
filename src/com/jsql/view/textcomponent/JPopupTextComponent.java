@@ -31,30 +31,29 @@ import com.jsql.view.popupmenu.JPopupTextMenu;
  */
 @SuppressWarnings("serial")
 public class JPopupTextComponent<T extends JTextComponent> extends JPopupComponent<T> implements JComponentDecorator<T> {
-
     /**
      * Save the component to decorate, add the Undo/Redo.
      * @param proxy Swing component to decorate
      */
-    public JPopupTextComponent(final T proxy){
+    public JPopupTextComponent(final T proxy) {
         super(proxy);
-        
-        this.proxy.setComponentPopupMenu(new JPopupTextMenu(this.proxy));
-        
-        this.proxy.setDragEnabled(true);
-        
+
+        this.getProxy().setComponentPopupMenu(new JPopupTextMenu(this.getProxy()));
+
+        this.getProxy().setDragEnabled(true);
+
         final UndoManager undo = new UndoManager();
-        Document doc = this.proxy.getDocument();
-        
+        Document doc = this.getProxy().getDocument();
+
         // Listen for undo and redo events
         doc.addUndoableEditListener(new UndoableEditListener() {
             public void undoableEditHappened(UndoableEditEvent evt) {
                 undo.addEdit(evt.getEdit());
             }
         });
-        
+
         // Create an undo action and add it to the text component
-        this.proxy.getActionMap().put("Undo",
+        this.getProxy().getActionMap().put("Undo",
             new AbstractAction("Undo") {
                 public void actionPerformed(ActionEvent evt) {
                     try {
@@ -62,17 +61,17 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
                             undo.undo();
                         }
                     } catch (CannotUndoException e) {
-                        InjectionModel.logger.error(e, e);
+                        InjectionModel.LOGGER.error(e, e);
                     }
                 }
            }
         );
-        
+
         // Bind the undo action to ctl-Z
-        this.proxy.getInputMap().put(KeyStroke.getKeyStroke("control Z"), "Undo");
-        
+        this.getProxy().getInputMap().put(KeyStroke.getKeyStroke("control Z"), "Undo");
+
         // Create a redo action and add it to the text component
-        this.proxy.getActionMap().put("Redo",
+        this.getProxy().getActionMap().put("Redo",
             new AbstractAction("Redo") {
                 public void actionPerformed(ActionEvent evt) {
                     try {
@@ -80,13 +79,13 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
                             undo.redo();
                         }
                     } catch (CannotRedoException e) {
-                        InjectionModel.logger.error(e, e);
+                        InjectionModel.LOGGER.error(e, e);
                     }
                 }
             }
         );
-        
+
         // Bind the redo action to ctl-Y
-        this.proxy.getInputMap().put(KeyStroke.getKeyStroke("control Y"), "Redo");
+        this.getProxy().getInputMap().put(KeyStroke.getKeyStroke("control Y"), "Redo");
     }
 }

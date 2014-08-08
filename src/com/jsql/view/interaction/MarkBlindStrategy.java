@@ -11,22 +11,19 @@
 package com.jsql.view.interaction;
 
 import com.jsql.view.GUIMediator;
-import com.jsql.view.GUITools;
 
 /**
- * Mark the injection as invulnerable to a blind injection
+ * Mark the injection as invulnerable to a blind injection.
  */
-public class MarkBlindStrategy implements IInteractionCommand{
+public class MarkBlindStrategy implements IInteractionCommand {
     /**
      * @param interactionParams
      */
-    public MarkBlindStrategy(Object[] interactionParams){
+    public MarkBlindStrategy(Object[] interactionParams) {
+        // Do nothing
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
-        GUITools.setUnderlined(GUIMediator.status().labelBlind);
+    public void execute() {
+        GUIMediator.status().labelBlind.setUnderlined();
     }
 }

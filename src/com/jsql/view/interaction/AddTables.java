@@ -22,24 +22,23 @@ import com.jsql.view.tree.NodeModel;
 import com.jsql.view.tree.NodeModelTable;
 
 /**
- * Add the tables to the corresponding database
+ * Add the tables to the corresponding database.
  */
-public class AddTables implements IInteractionCommand{
-    // Tables retreived by the view
+public class AddTables implements IInteractionCommand {
+    /**
+     * Tables retreived by the view.
+     */
     private List<Table> tables;
 
     /**
      * @param interactionParams List of tables retreived by the Model
      */
     @SuppressWarnings("unchecked")
-	public AddTables(Object[] interactionParams){
+    public AddTables(Object[] interactionParams) {
         tables = (List<Table>) interactionParams[0];
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
+    public void execute() {
         // Tree model, update the tree (refresh, add node, etc)
         DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
 
@@ -47,23 +46,23 @@ public class AddTables implements IInteractionCommand{
         DefaultMutableTreeNode databaseNode = null;
 
         // Loop into the list of tables
-        for(Table table: tables){
+        for (Table table: tables) {
             // Create a node model with the table element
             NodeModel newTreeNodeModel = new NodeModelTable(table);
             // Create the node
-            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode( newTreeNodeModel );
+            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(newTreeNodeModel);
             // Save the node
-            GUIMediator.gui().putNode(table, newNode);
+            GUIMediator.gui().getTreeNodeModels().put(table, newNode);
 
             // Get the parent database
-            databaseNode = GUIMediator.gui().getNode(table.getParent());
+            databaseNode = GUIMediator.gui().getTreeNodeModels().get(table.getParent());
             // Add the table to the database
             treeModel.insertNodeInto(newNode, databaseNode, databaseNode.getChildCount());
         }
 
-        if(databaseNode != null){
+        if (databaseNode != null) {
             // Open the database node
-        	GUIMediator.databaseTree().expandPath( new TreePath(databaseNode.getPath()) );
+            GUIMediator.databaseTree().expandPath(new TreePath(databaseNode.getPath()));
             // The database has just been search (avoid double check)
             ((NodeModel) databaseNode.getUserObject()).hasBeenSearched = true;
         }

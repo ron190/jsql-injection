@@ -15,28 +15,43 @@ package com.jsql.model.bean;
  * Allow to traverse upward to its corresponding table
  */
 public class Column extends ElementDatabase {
-    // The table that contains the current column
+    /**
+     * The table that contains the current column.
+     */
     private Table parentTable;
 
-    // Define the column label and parent table
+    /**
+     * Define the column label and parent table.
+     * @param newColumnName
+     * @param newTableName
+     */
     public Column(String newColumnName, Table newTableName) {
         this.elementValue = newColumnName;
         this.parentTable = newTableName;
     }
 
-    // Return the parent table
+    /**
+     * Return the parent table.
+     * @return Parent for column
+     */
     @Override
     public ElementDatabase getParent() {
         return parentTable;
     }
 
-    // Default 0, a column doesn't contain anything
+    /**
+     * Default 0, a column doesn't contain anything.
+     * @return No child for column
+     */
     @Override
     public int getCount() {
         return 0;
     }
 
-    // A readable label for column is its own label, nothing fancy
+    /**
+     * A readable label for column is its own label.
+     * @return column text
+     */
     @Override
     public String getLabel() {
         return toString();

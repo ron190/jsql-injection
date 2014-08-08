@@ -42,7 +42,6 @@ package com.jsql.view.dropshadow;
 
 import java.awt.Component;
 
-import javax.swing.LookAndFeel;
 import javax.swing.Popup;
 import javax.swing.PopupFactory;
 
@@ -70,8 +69,8 @@ import javax.swing.PopupFactory;
  * @see java.awt.AWTPermission
  * @see java.awt.Robot
  * @see javax.swing.Popup
- * @see LookAndFeel#initialize
- * @see LookAndFeel#uninitialize
+ * @see javax.swing.LookAndFeel#initialize
+ * @see javax.swing.LookAndFeel#uninitialize
  */
 public final class ShadowPopupFactory extends PopupFactory {
 
@@ -173,9 +172,9 @@ public final class ShadowPopupFactory extends PopupFactory {
      * @param x        Initial x screen coordinate
      * @param y        Initial y screen coordinate
      * @return Popup containing Contents
-     * @throws IllegalArgumentException if contents is null
+     * //@ throws IllegalArgumentException if contents is null
      *
-     * @see Options#isPopupDropShadowActive()
+     * //@ see Options#isPopupDropShadowActive()
      */
     @Override
     public Popup getPopup(Component owner, Component contents, int x, int y) {

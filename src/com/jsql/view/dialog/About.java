@@ -51,14 +51,14 @@ import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.ui.RoundBorder;
 
 @SuppressWarnings("serial")
-public class About extends JDialog{
-	
-    public JButton close = null;
-    JScrollPanePixelBorder scrollPane;
+public class About extends JDialog {
 
-    public About(){
+    public JButton close = null;
+    private JScrollPanePixelBorder scrollPane;
+
+    public About() {
         super(GUIMediator.gui(), "About jSQL Injection", Dialog.ModalityType.MODELESS);
-        
+
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         // Define a small and large app icon
@@ -78,9 +78,9 @@ public class About extends JDialog{
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));
         lastLine.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        close = new JButton("Close");
-        close.setBorder(new RoundBorder(20, 3, true));
-        close.addActionListener(escapeListener);
+        this.close = new JButton("Close");
+        this.close.setBorder(new RoundBorder(20, 3, true));
+        this.close.addActionListener(escapeListener);
 
         this.setLayout(new BorderLayout());
         Container dialogPane = this.getContentPane();
@@ -92,15 +92,15 @@ public class About extends JDialog{
                 try {
                     Desktop.getDesktop().browse(new URI("http://code.google.com/p/jsql-injection/"));
                 } catch (IOException e) {
-                    InjectionModel.logger.error(e, e);
+                    InjectionModel.LOGGER.error(e, e);
                 } catch (URISyntaxException e) {
-                    InjectionModel.logger.error(e, e);
+                    InjectionModel.LOGGER.error(e, e);
                 }
             }
         });
         lastLine.add(webpage);
         lastLine.add(Box.createGlue());
-        lastLine.add(close);
+        lastLine.add(this.close);
 
         JLabel iconJSQL = new JLabel(new ImageIcon(GUIMediator.gui().getClass().getResource("/com/jsql/view/images/app-32x32.png")));
         iconJSQL.setBorder(BorderFactory.createEmptyBorder(2, 15, 2, 15));
@@ -108,23 +108,25 @@ public class About extends JDialog{
         dialogPane.add(lastLine, BorderLayout.SOUTH);
 
         // Contact info, use HTML text
-        final JEditorPane text[] = new JEditorPane[1];
-		try {
-			text[0] = new JEditorPane();
-			text[0].setContentType("text/html");
-			
+        final JEditorPane[] text = new JEditorPane[1];
+        try {
+            text[0] = new JEditorPane();
+            text[0].setContentType("text/html");
+
             InputStream in = About.class.getResourceAsStream("about.htm");
             String line, result = "";
-            BufferedReader reader = new BufferedReader(new InputStreamReader( in ));
-            while( (line = reader.readLine()) != null ) result += line;
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            while ((line = reader.readLine()) != null) {
+                result += line;
+            }
             reader.close();
-            
-            text[0].setText(result.replace("%JSQLVERSION%", InjectionModel.JSQLVERSION));
-		} catch (IOException e) {
-			InjectionModel.logger.error(e, e);
-		}
 
-		text[0].setComponentPopupMenu(new JPopupTextMenu(text[0]));
+            text[0].setText(result.replace("%JSQLVERSION%", InjectionModel.JSQLVERSION));
+        } catch (IOException e) {
+            InjectionModel.LOGGER.error(e, e);
+        }
+
+        text[0].setComponentPopupMenu(new JPopupTextMenu(text[0]));
 
         text[0].addMouseListener(new MouseAdapter() {
             @Override
@@ -133,7 +135,7 @@ public class About extends JDialog{
                 text[0].requestFocusInWindow();
             }
         });
-        
+
         text[0].addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent arg0) {
@@ -152,25 +154,25 @@ public class About extends JDialog{
                     try {
                         Desktop.getDesktop().browse(hle.getURL().toURI());
                     } catch (IOException e) {
-                    	InjectionModel.logger.warn(e.getMessage());
+                        InjectionModel.LOGGER.warn(e.getMessage());
                     } catch (URISyntaxException e) {
-                        InjectionModel.logger.error(e, e);
+                        InjectionModel.LOGGER.error(e, e);
                     }
                 }
             }
         });
 
-        scrollPane = new JScrollPanePixelBorder(1, 1, 1, 0, text[0]);
-        dialogPane.add(scrollPane, BorderLayout.CENTER);
+        this.scrollPane = new JScrollPanePixelBorder(1, 1, 1, 0, text[0]);
+        dialogPane.add(this.scrollPane, BorderLayout.CENTER);
 
         reinit();
     }
 
-    public void reinit(){
-        scrollPane.getViewport().setViewPosition(new Point(0,0));
+    public final void reinit() {
+        this.scrollPane.getViewport().setViewPosition(new Point(0, 0));
         this.setSize(400, 300);
         this.setLocationRelativeTo(GUIMediator.gui());
-        close.requestFocusInWindow();
-        this.getRootPane().setDefaultButton(close);
+        this.close.requestFocusInWindow();
+        this.getRootPane().setDefaultButton(this.close);
     }
 }

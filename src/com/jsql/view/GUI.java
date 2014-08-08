@@ -42,37 +42,55 @@ import com.jsql.view.panel.TopPanel;
 import com.jsql.view.terminal.Terminal;
 
 /**
- * View in the MVC pattern, define all the components and process actions sent by the model,
- * Main groups of components:
- * - at the top: textfields input,
- * - at the center: tree on the left, table on the right,
- * - at the bottom: information labels
+ * View in the MVC pattern, defines all the components
+ * and process actions sent by the model.<br>
+ * Main groups of components:<br>
+ * - at the top: textfields input,<br>
+ * - at the center: tree on the left, table on the right,<br>
+ * - at the bottom: information labels.
  */
 @SuppressWarnings("serial")
 public class GUI extends JFrame implements Observer {
-
-    public LeftRightBottomPanel outputPanel;
-    
-    // List of terminal by unique identifier
-    public Map<UUID,Terminal> consoles = new HashMap<UUID,Terminal>();
+    /**
+     * Main center panel, composed by left and right tabs.
+     * @return Center panel
+     */
+    private LeftRightBottomPanel outputPanel;
 
     /**
-     *  Map a database element with the corresponding tree node.
-     *  The injection model send a database element to the view, then the view access its graphic component to update
+     * List of terminal by unique identifier.
      */
-    Map<ElementDatabase, DefaultMutableTreeNode> treeNodeModels = new HashMap<ElementDatabase, DefaultMutableTreeNode>();
-    
-    public DefaultMutableTreeNode getNode(ElementDatabase elt){
-    	return treeNodeModels.get(elt);
-    }
-    
-    public void putNode(ElementDatabase elt, DefaultMutableTreeNode node){
-    	treeNodeModels.put(elt, node);
-    }
-    
+    private Map<UUID, Terminal> consoles = new HashMap<UUID, Terminal>();
 
-    // Build the GUI: add app icon, tree icons, the 3 main panels
-    public GUI(){
+    /**
+     * Get list of terminal by unique identifier.
+     * @return Map of key/value UUID => Terminal
+     */
+    public final Map<UUID, Terminal> getConsoles() {
+        return consoles;
+    }
+
+    /**
+     *  Map a database element with the corresponding tree node.<br>
+     *  The injection model send a database element to the view, then
+     *  the view access its graphic component to update.
+     */
+    private Map<ElementDatabase, DefaultMutableTreeNode> treeNodeModels
+                = new HashMap<ElementDatabase, DefaultMutableTreeNode>();
+    
+    /**
+     *  Get the database tree model.
+     *  @return Tree model
+     */
+    public final Map<ElementDatabase, DefaultMutableTreeNode>
+                    getTreeNodeModels() {
+        return treeNodeModels;
+    }
+
+    /**
+     * Build the GUI: add app icon, tree icons, the 3 main panels.
+     */
+    public GUI() {
         super("jSQL Injection");
         
         GUIMediator.register(this);
@@ -92,14 +110,14 @@ public class GUI extends JFrame implements Observer {
         this.setJMenuBar(GUIMediator.menubar());
 
         // Define the default panel: each component on a vertical line
-        this.getContentPane().setLayout( new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS) );
+        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
 
         // Textfields at the top
         GUIMediator.register(new TopPanel());
         this.add(GUIMediator.top());
 
         // Main panel for tree ans tables in the middle
-        JPanel mainPanel = new JPanel(new GridLayout(1,0));
+        JPanel mainPanel = new JPanel(new GridLayout(1, 0));
         outputPanel = new LeftRightBottomPanel();
         mainPanel.add(outputPanel);
         this.add(mainPanel);
@@ -108,22 +126,22 @@ public class GUI extends JFrame implements Observer {
             @Override
             public void windowClosing(WindowEvent e) {
                 Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-                prefs.putInt(outputPanel.VERTICALSPLITTER_PREFNAME, outputPanel.leftRight.getDividerLocation());
-                prefs.putInt(outputPanel.HORIZONTALSPLITTER_PREFNAME, outputPanel.getHeight() - outputPanel.getDividerLocation());
+                prefs.putInt(LeftRightBottomPanel.VERTICALSPLITTER_PREFNAME, outputPanel.leftRight.getDividerLocation());
+                prefs.putInt(LeftRightBottomPanel.HORIZONTALSPLITTER_PREFNAME, outputPanel.getHeight() - outputPanel.getDividerLocation());
                 
                 prefs.putBoolean(GUITools.BINARY_VISIBLE, false);
                 prefs.putBoolean(GUITools.CHUNK_VISIBLE, false);
                 prefs.putBoolean(GUITools.NETWORK_VISIBLE, false);
                 prefs.putBoolean(GUITools.JAVA_VISIBLE, false);
                 
-                for(int i=0; i < GUIMediator.bottom().getTabCount() ;i++){
+                for (int i = 0; i < GUIMediator.bottom().getTabCount(); i++) {
                     if (GUIMediator.bottom().getTitleAt(i).equals("Binary")) {
                         prefs.putBoolean(GUITools.BINARY_VISIBLE, true);
-                    }else if (GUIMediator.bottom().getTitleAt(i).equals("Chunk")) {
+                    } else if (GUIMediator.bottom().getTitleAt(i).equals("Chunk")) {
                         prefs.putBoolean(GUITools.CHUNK_VISIBLE, true);
-                    }else if (GUIMediator.bottom().getTitleAt(i).equals("Network")) {
+                    } else if (GUIMediator.bottom().getTitleAt(i).equals("Network")) {
                         prefs.putBoolean(GUITools.NETWORK_VISIBLE, true);
-                    }else if (GUIMediator.bottom().getTitleAt(i).equals("Java")) {
+                    } else if (GUIMediator.bottom().getTitleAt(i).equals("Java")) {
                         prefs.putBoolean(GUITools.JAVA_VISIBLE, true);
                     }
                 }
@@ -152,10 +170,10 @@ public class GUI extends JFrame implements Observer {
     }
 
     /**
-     * Observer pattern
-     * Receive an update order from the model:
-     * - Use the Request message to get the Interaction class
-     * - Pass the parameters to that class
+     * Observer pattern.<br>
+     * Receive an update order from the model:<br>
+     * - Use the Request message to get the Interaction class,<br>
+     * - Pass the parameters to that class.
      */
     @Override
     public void update(Observable model, Object newInteraction) {
@@ -169,30 +187,30 @@ public class GUI extends JFrame implements Observer {
             IInteractionCommand o2 = (IInteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
             o2.execute();
         } catch (ClassNotFoundException e) {
-        	InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         } catch (InstantiationException e) {
-            InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         } catch (IllegalAccessException e) {
-            InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         } catch (NoSuchMethodException e) {
-            InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         } catch (SecurityException e) {
-            InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         } catch (IllegalArgumentException e) {
-            InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         } catch (InvocationTargetException e) {
-            InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         }
     }
 
     /**
-     * Empty the interface
+     * Empty the interface.
      */
-    public void resetInterface(){
-    	// Empty tree objects
-    	treeNodeModels.clear();
-    	consoles.clear();
-    	
+    public void resetInterface() {
+        // Empty tree objects
+        treeNodeModels.clear();
+        consoles.clear();
+        
         // Tree model for refresh the tree
         DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
         // The tree root
@@ -213,23 +231,15 @@ public class GUI extends JFrame implements Observer {
         ((DefaultTableModel) GUIMediator.bottomPanel().networkTable.getModel()).setRowCount(0);
         GUIMediator.bottomPanel().binaryArea.setText("");
 
-//        GUIMediator.left().fileManager.setButtonEnable(false);
-//        GUIMediator.left().shellManager.setButtonEnable(false);
-//        GUIMediator.left().sqlShellManager.setButtonEnable(false);
+        GUIMediator.left().fileManager.setButtonEnable(false);
+        GUIMediator.left().shellManager.setButtonEnable(false);
+        GUIMediator.left().sqlShellManager.setButtonEnable(false);
 
         // Default status info
         GUIMediator.status().reset();
 
-//        GUIMediator.left().fileManager.changeIcon(GUITools.SQUARE_GREY);
-//        GUIMediator.left().shellManager.changeIcon(GUITools.SQUARE_GREY);
-//        GUIMediator.left().sqlShellManager.changeIcon(GUITools.SQUARE_GREY);
-    }
-
-    /**
-     * Getter for main center panel, composed by left and right tabs
-     * @return Center panel
-     */
-    public LeftRightBottomPanel getOutputPanel(){
-        return outputPanel;
+        GUIMediator.left().fileManager.changePrivilegeIcon(GUITools.SQUARE_GREY);
+        GUIMediator.left().shellManager.changePrivilegeIcon(GUITools.SQUARE_GREY);
+        GUIMediator.left().sqlShellManager.changePrivilegeIcon(GUITools.SQUARE_GREY);
     }
 }

@@ -13,19 +13,17 @@ package com.jsql.view.interaction;
 import com.jsql.view.GUIMediator;
 
 /**
- * End the refreshing of administration page search button
+ * End the refreshing of administration page search button.
  */
-public class EndAdminSearch implements IInteractionCommand{
+public class EndAdminSearch implements IInteractionCommand {
     /**
      * @param interactionParams
      */
-    public EndAdminSearch(Object[] interactionParams){
+    public EndAdminSearch(Object[] interactionParams) {
+        // Do nothing
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
+    public void execute() {
         GUIMediator.left().adminPageManager.restoreButtonText();
         GUIMediator.left().adminPageManager.setButtonEnable(true);
         GUIMediator.left().adminPageManager.hideLoader();

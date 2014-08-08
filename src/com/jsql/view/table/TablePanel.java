@@ -56,31 +56,28 @@ import com.jsql.view.popupmenu.JPopupTableMenu;
 @SuppressWarnings("serial")
 public class TablePanel extends JPanel {
     public JTable table;
-    
-    public void selectTable(){
-        table.selectAll();
-    }
-    
-    public void copyTable(){
-        ActionEvent nev = new ActionEvent(table, ActionEvent.ACTION_PERFORMED, "copy");
-        table.getActionMap().get(nev.getActionCommand()).actionPerformed(nev);
-    }
-    
-    public TablePanel(String[][] data, String[] columnNames, JTabbedPane newJTabbedPane){
-        super(new GridLayout(1,0));
-        
-        table = new JTable(data, columnNames){
-        	@Override
-            public boolean isCellEditable(int row,int column){
+
+    /**
+     * Create a panel containing a table to display injection values.
+     * @param data Array 2D with injection table data
+     * @param columnNames Names of columns from database
+     * @param newJTabbedPane Tabbed pane containing tab for values
+     */
+    public TablePanel(String[][] data, String[] columnNames, JTabbedPane newJTabbedPane) {
+        super(new GridLayout(1, 0));
+
+        table = new JTable(data, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
                 return false;
             }
-        	
-//        	@Override
-//        	public boolean getScrollableTracksViewportHeight() { 
-//        	    return getPreferredSize().height < getParent().getHeight(); 
-//        	}
+
+//            @Override
+//            public boolean getScrollableTracksViewportHeight() {
+//                return getPreferredSize().height < getParent().getHeight();
+//            }
         };
-        
+
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         table.setColumnSelectionAllowed(true);
@@ -88,24 +85,24 @@ public class TablePanel extends JPanel {
         table.setRowSelectionAllowed(true);
         table.setCellSelectionEnabled(true);
         table.setGridColor(Color.LIGHT_GRAY);
-        
+
         final TableCellRenderer tcrOs = table.getTableHeader().getDefaultRenderer();
         table.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table,
                     Object value, boolean isSelected, boolean hasFocus,
                     int row, int column) {
-                JLabel lbl = (JLabel) tcrOs.getTableCellRendererComponent(table, " "+value+" ", isSelected, hasFocus, row, column);
+                JLabel lbl = (JLabel) tcrOs.getTableCellRendererComponent(table, " " + value + " ", isSelected, hasFocus, row, column);
                 lbl.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.LIGHT_GRAY), BorderFactory.createEmptyBorder(0, 5, 0, 5)));
                 return lbl;
             }
         });
-        
+
         table.getColumnModel().getColumn(0).setResizable(false);
         table.getColumnModel().getColumn(0).setPreferredWidth(34);
         table.getColumnModel().getColumn(0).setMinWidth(34);
         table.getColumnModel().getColumn(0).setMaxWidth(34);
-        
+
         table.getColumnModel().getColumn(1).setResizable(false);
         table.getColumnModel().getColumn(1).setPreferredWidth(70);
         table.getColumnModel().getColumn(1).setMinWidth(70);
@@ -114,14 +111,14 @@ public class TablePanel extends JPanel {
         DefaultTableCellRenderer centerHorizontalAlignment = new CenterRenderer();
         table.getColumnModel().getColumn(0).setCellRenderer(centerHorizontalAlignment);
         table.getColumnModel().getColumn(1).setCellRenderer(centerHorizontalAlignment);
-        
+
         table.getTableHeader().setReorderingAllowed(false);
-        
+
         table.setComponentPopupMenu(new JPopupTableMenu(table));
         table.setAutoCreateRowSorter(true);
-        
+
         table.setDragEnabled(true);
-        
+
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         URL url = getClass().getResource("/com/jsql/view/images/excel.png");
 
@@ -129,41 +126,41 @@ public class TablePanel extends JPanel {
         try {
             image = ImageIO.read(url.openStream());
         } catch (IOException e) {
-            InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         }
 
         table.setCursor(toolkit.createCustomCursor(image, new Point(12, 12), "Hand"));
-        table.addMouseListener( new MouseAdapter(){
-            public void mousePressed( MouseEvent e ){
+        table.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
                 table.requestFocusInWindow();
-                if ( SwingUtilities.isRightMouseButton( e ) ){
+                if (SwingUtilities.isRightMouseButton(e)) {
                     Point p = e.getPoint();
-                    
+
                     // get the row index that contains that coordinate
-                    int rowNumber = table.rowAtPoint( p );
-                    int colNumber = table.columnAtPoint( p );
+                    int rowNumber = table.rowAtPoint(p);
+                    int colNumber = table.columnAtPoint(p);
                     // Get the ListSelectionModel of the JTable
                     DefaultListSelectionModel  model = (DefaultListSelectionModel) table.getSelectionModel();
                     DefaultListSelectionModel  model2 = (DefaultListSelectionModel) table.getColumnModel().getSelectionModel();
-                    
+
                     model.moveLeadSelectionIndex(rowNumber);
                     model2.moveLeadSelectionIndex(colNumber);
                 }
             }
         });
-        
+
         table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), null);
         table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
                 KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK), null);
-        
+
         Set<AWTKeyStroke> forward = new HashSet<AWTKeyStroke>(table.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
         forward.add(KeyStroke.getKeyStroke("TAB"));
         table.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forward);
         Set<AWTKeyStroke> backward = new HashSet<AWTKeyStroke>(table.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
         backward.add(KeyStroke.getKeyStroke("shift TAB"));
         table.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backward);
-        
+
         TableColumnAdjuster columnAdjuster = new TableColumnAdjuster(table);
         columnAdjuster.adjustColumns();
 
@@ -171,7 +168,7 @@ public class TablePanel extends JPanel {
         JScrollPane scroller = new JScrollPane(table);
         scroller.setViewportBorder(border);
         scroller.setBorder(border);
-        
+
         scroller.setColumnHeader(new JViewport() {
             @Override public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();
@@ -183,15 +180,33 @@ public class TablePanel extends JPanel {
         new FixedColumnTable(1, scroller);
         this.add(scroller);
     }
-    
-    private class CenterRenderer extends DefaultTableCellRenderer{
-        public CenterRenderer(){
+
+    /**
+     * Select every cells.
+     */
+    public void selectTable() {
+        table.selectAll();
+    }
+
+    /**
+     * Perform copy event on current table.
+     */
+    public void copyTable() {
+        ActionEvent nev = new ActionEvent(table, ActionEvent.ACTION_PERFORMED, "copy");
+        table.getActionMap().get(nev.getActionCommand()).actionPerformed(nev);
+    }
+
+    /**
+     * Renderer used to center text on certains columns.
+     */
+    private class CenterRenderer extends DefaultTableCellRenderer {
+        public CenterRenderer() {
             this.setHorizontalAlignment(JLabel.CENTER);
         }
-        
+
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            setBackground(new Color(230,230,230));
+            setBackground(new Color(230, 230, 230));
             setText(value.toString());
             return this;
         }

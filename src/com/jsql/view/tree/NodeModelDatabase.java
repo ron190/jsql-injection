@@ -13,6 +13,7 @@ package com.jsql.view.tree;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingWorker;
 import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.Database;
@@ -21,8 +22,7 @@ import com.jsql.view.GUIMediator;
 /**
  * Database model displaying the database icon on the label.
  */
-public class NodeModelDatabase extends NodeModel{
-    
+public class NodeModelDatabase extends NodeModel {
     /**
      * Node as a database model.
      * @param database Element database coming from model
@@ -32,25 +32,33 @@ public class NodeModelDatabase extends NodeModel{
     }
 
     @Override
-    Icon getIcon(boolean leaf) {
-        if(leaf){
+    Icon getLeafIcon(boolean leaf) {
+        if (leaf) {
             return new ImageIcon(getClass().getResource("/com/jsql/view/images/databaseGo.png"));
-        }else{
+        } else {
             return new ImageIcon(getClass().getResource("/com/jsql/view/images/database.png"));
         }
     }
 
     @Override
     void runAction() {
-        Database selectedDatabase = (Database) this.dataObject;
-        if(!this.hasBeenSearched && !this.isRunning){
-            this.interruptable = GUIMediator.controller().selectDatabase(selectedDatabase);
+        final Database selectedDatabase = (Database) this.dataObject;
+        if (!this.hasBeenSearched && !this.isRunning) {
+            new SwingWorker<Object, Object>(){
+
+                @Override
+                protected Object doInBackground() throws Exception {
+                    GUIMediator.model().dao.listTables(selectedDatabase);
+                    return null;
+                }
+                
+            }.execute();
             this.isRunning = true;
         }
     }
-    
-    @Override boolean verifyShowPopup() { 
-        return !this.hasBeenSearched && this.isRunning; 
+
+    @Override boolean verifyShowPopup() {
+        return !this.hasBeenSearched && this.isRunning;
     }
 
     @Override void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {

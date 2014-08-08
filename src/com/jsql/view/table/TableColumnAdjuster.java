@@ -1,13 +1,3 @@
-/*******************************************************************************
- * Copyhacked (H) 2012-2014.
- * This program and the accompanying materials
- * are made available under no term at all, use it like
- * you want, but share and discuss about it
- * every time possible with every body.
- * 
- * Contributors:
- *      ron190 at ymail dot com - initial implementation
- ******************************************************************************/
 package com.jsql.view.table;
 
 import java.awt.Color;
@@ -197,7 +187,7 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
             width = Math.max(width, tableColumn.getPreferredWidth());
         }
 
-        columnSizes.put(tableColumn, new Integer(tableColumn.getWidth()));
+        columnSizes.put(tableColumn, Integer.valueOf(tableColumn.getWidth()));
         table.getTableHeader().setResizingColumn(tableColumn);
         tableColumn.setWidth(width);
     }
@@ -381,7 +371,7 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
      *  Action to adjust or restore the width of a single column or all columns
      */
     @SuppressWarnings("serial")
-	class ColumnAction extends AbstractAction
+    class ColumnAction extends AbstractAction
     {
         private boolean isSelectedColumn;
         private boolean isAdjust;
@@ -393,28 +383,25 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
         }
 
         @Override
-        public void actionPerformed(ActionEvent e)
-        {
+        public void actionPerformed(ActionEvent e) {
             //  Handle selected column(s) width change actions
 
-            if (isSelectedColumn)
-            {
+            if (isSelectedColumn) {
                 int[] columns = table.getSelectedColumns();
 
-                for (int i = 0; i < columns.length; i++)
-                {
-                    if (isAdjust)
+                for (int i = 0; i < columns.length; i++) {
+                    if (isAdjust) {
                         adjustColumn(columns[i]);
-                    else
+                    } else {
                         restoreColumn(columns[i]);
+                    }
                 }
-            }
-            else
-            {
-                if (isAdjust)
+            } else {
+                if (isAdjust) {
                     adjustColumns();
-                else
+                } else {
                     restoreColumns();
+                }
             }
         }
     }
@@ -424,7 +411,7 @@ public class TableColumnAdjuster implements PropertyChangeListener, TableModelLi
      *  customize the functionality to their preferences
      */
     @SuppressWarnings("serial")
-	class ToggleAction extends AbstractAction
+    class ToggleAction extends AbstractAction
     {
         private boolean isToggleDynamic;
         private boolean isToggleLarger;

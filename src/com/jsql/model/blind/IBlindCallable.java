@@ -7,16 +7,16 @@ import com.jsql.model.blind.diff_match_patch.Diff;
 
 public interface IBlindCallable extends Callable<IBlindCallable> {
     /**
-     * Check if a response time means the SQL query is true,
+     * Check if a response time means the SQL query is true.
      * @return true if the current SQL test is confirmed
      */
-    public boolean isTrue();
+    boolean isTrue();
 
-	public boolean getisLengthTest();
-	
-	public int getCurrentIndex();
-	
-	public int getCurrentBit();
+    boolean isLengthTest();
+    
+    int getCurrentIndex();
+    
+    int getCurrentBit();
 
-	public List<Diff> getOpcodes();
+    List<Diff> getOpcodes();
 }

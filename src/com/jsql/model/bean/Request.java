@@ -18,19 +18,19 @@ public class Request {
     private String message;
     private Object[] parameters;
 
-    public String getMessage(){
+    public String getMessage() {
         return message;
     }
 
-    public Object getParameters(){
+    public Object getParameters() {
         return parameters;
     }
 
-    public void setMessage(String message){
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    public void setParameters(Object... parameters){
+    public void setParameters(Object... parameters) {
         this.parameters = parameters;
     }
 }

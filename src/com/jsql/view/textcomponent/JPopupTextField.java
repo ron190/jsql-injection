@@ -20,14 +20,13 @@ import com.jsql.view.GUITools;
  */
 @SuppressWarnings("serial")
 public class JPopupTextField extends JPopupTextComponent<JTextField> implements JComponentDecorator<JTextField> {
-
     /**
      * Build new instance of JTextField to decorate.
      */
     public JPopupTextField() {
         this(new JTextField());
     }
-    
+
     /**
      * Build new instance of JTextField to decorate with default text.
      * @param string Text to display
@@ -35,16 +34,16 @@ public class JPopupTextField extends JPopupTextComponent<JTextField> implements 
     public JPopupTextField(String string) {
         this(new JTextField(string));
     }
-    
+
     /**
      * Decorate a provided JTextField.
-     * @param proxy The JTextField to decorate 
+     * @param proxy The JTextField to decorate
      */
     public JPopupTextField(JTextField proxy) {
         super(proxy);
-        
-        this.proxy.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder( GUITools.DEFAULT_BACKGROUND, 2),
+
+        this.getProxy().setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(GUITools.DEFAULT_BACKGROUND, 2),
                 GUITools.BLU_ROUND_BORDER));
     }
 }

@@ -24,30 +24,29 @@ import com.jsql.view.popupmenu.JPopupComponentMenu;
  */
 @SuppressWarnings("serial")
 public class JPopupComponent<T extends JComponent> extends JComponent implements JComponentDecorator<T> {
-
     /**
      * Decorated component.
      */
-    protected T proxy;
-    
+    private T proxy;
+
     /**
      * Get the decorated component, add popup menu Select All and Copy.
      * @param proxy Swing component to decorate
      */
     public JPopupComponent(final T proxy) {
         super();
-        
+
         this.proxy = proxy;
-        
+
         this.proxy.setComponentPopupMenu(new JPopupComponentMenu(this.proxy));
-        
+
         this.proxy.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
-                
+
                 // Left button will deselect text after selectAll, so only for right click
-                if(SwingUtilities.isRightMouseButton(e)){
+                if (SwingUtilities.isRightMouseButton(e)) {
                     JPopupComponent.this.proxy.requestFocusInWindow();
                 }
             }

@@ -2393,7 +2393,7 @@ public class diff_match_patch {
         @Override
         public int compareTo(Diff arg0) {
             // TODO Auto-generated method stub
-            return this.toString().equals(arg0.toString())?0:1;
+            return this.toString().equals(arg0.toString()) ? 0 : 1;
         }
     }
 

@@ -14,19 +14,17 @@ import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 
 /**
- * Mark the injection as vulnerable to a error-based injection
+ * Mark the injection as vulnerable to a error-based injection.
  */
-public class MarkErrorbasedVulnerable implements IInteractionCommand{
+public class MarkErrorbasedVulnerable implements IInteractionCommand {
     /**
      * @param interactionParams
      */
-    public MarkErrorbasedVulnerable(Object[] interactionParams){
+    public MarkErrorbasedVulnerable(Object[] interactionParams) {
+        // Do nothing
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
-    	GUIMediator.status().setErrorBasedIcon(GUITools.TICK);
+    public void execute() {
+        GUIMediator.status().setErrorBasedIcon(GUITools.TICK);
     }
 }

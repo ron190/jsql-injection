@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -37,34 +38,36 @@ import com.jsql.view.scrollpane.JScrollPanePixelBorder;
  * Manager to display webpages frequently used as backoffice administration.
  */
 @SuppressWarnings("serial")
-public class AdminPageManager extends ListManager{
+public class AdminPageManager extends ListManager {
 
-    public AdminPageManager(){
+    public AdminPageManager() {
         this.setLayout(new BorderLayout());
         this.setDefaultText("Test admin page(s)");
 
-        ArrayList<String> pathList = new ArrayList<String>();
+        List<String> pathList = new ArrayList<String>();
         try {
             InputStream in = this.getClass().getResourceAsStream("/com/jsql/list/admin-page.txt");
             String line;
-            BufferedReader reader = new BufferedReader(new InputStreamReader( in ));
-            while( (line = reader.readLine()) != null ) pathList.add(line);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            while ((line = reader.readLine()) != null) {
+                pathList.add(line);
+            }
             reader.close();
         } catch (IOException e) {
-        	InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         }
 
         final DnDList listFile = new DnDList(pathList);
 
-        this.add(new JScrollPanePixelBorder(1,1,0,0,listFile), BorderLayout.CENTER);
+        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, listFile), BorderLayout.CENTER);
 
         JPanel lastLine = new JPanel();
         lastLine.setOpaque(false);
-        lastLine.setLayout( new BoxLayout(lastLine, BoxLayout.X_AXIS) );
+        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
 
         lastLine.setBorder(BorderFactory.createCompoundBorder(
-        		BorderFactory.createMatteBorder(0,1,0,0,GUITools.COMPONENT_BORDER), 
-        		BorderFactory.createEmptyBorder(1, 0, 1, 1)));
+                BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER), 
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)));
         
         run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/adminSearch.png")));
 
@@ -79,19 +82,19 @@ public class AdminPageManager extends ListManager{
         run.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if(listFile.getSelectedValuesList().size() == 0){
-                	InjectionModel.logger.warn("Select at least one admin page");
+                if (listFile.getSelectedValuesList().isEmpty()) {
+                    InjectionModel.LOGGER.warn("Select at least one admin page");
                     return;
                 }
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        if(run.getText().equals(defaultText)){
+                        if (run.getText().equals(defaultText)) {
                             run.setText("Stop");
                             loader.setVisible(true);
                             GUIMediator.model().rao.getAdminPage(GUIMediator.top().addressBar.getText(), listFile.getSelectedValuesList());
-                        }else{
-                        	GUIMediator.model().rao.endAdminSearch = true;
+                        } else {
+                            GUIMediator.model().rao.endAdminSearch = true;
                             run.setEnabled(false);
                         }
                     }
@@ -103,7 +106,7 @@ public class AdminPageManager extends ListManager{
 
         lastLine.add(Box.createHorizontalGlue());
         lastLine.add(loader);
-        lastLine.add(Box.createRigidArea(new Dimension(5,0)));
+        lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
         lastLine.add(run);
         this.add(lastLine, BorderLayout.SOUTH);
     }

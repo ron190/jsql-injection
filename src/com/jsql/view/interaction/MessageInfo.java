@@ -13,24 +13,21 @@ package com.jsql.view.interaction;
 import com.jsql.view.GUIMediator;
 
 /**
- * Update the database general information in status bar
+ * Update the general information in status bar.
  */
-public class MessageInfo implements IInteractionCommand{
+public class MessageInfo implements IInteractionCommand {
     /**
      * @param nullParam
      */
-    public MessageInfo(Object[] nullParam){
+    public MessageInfo(Object[] nullParam) {
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
-    	GUIMediator.status().setInfos(
-			GUIMediator.model().versionDB, 
-			GUIMediator.model().currentDB, 
-			GUIMediator.model().currentUser, 
-			GUIMediator.model().authenticatedUser
-		);
+    public void execute() {
+        GUIMediator.status().setInfos(
+            GUIMediator.model().versionDB,
+            GUIMediator.model().currentDB,
+            GUIMediator.model().currentUser,
+            GUIMediator.model().authenticatedUser
+        );
     }
 }

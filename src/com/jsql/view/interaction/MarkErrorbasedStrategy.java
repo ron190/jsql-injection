@@ -11,22 +11,19 @@
 package com.jsql.view.interaction;
 
 import com.jsql.view.GUIMediator;
-import com.jsql.view.GUITools;
 
 /**
- * Mark the injection as invulnerable to a error based injection
+ * Mark the injection as invulnerable to a error based injection.
  */
-public class MarkErrorbasedStrategy implements IInteractionCommand{
+public class MarkErrorbasedStrategy implements IInteractionCommand {
     /**
      * @param interactionParams
      */
-    public MarkErrorbasedStrategy(Object[] interactionParams){
+    public MarkErrorbasedStrategy(Object[] interactionParams) {
+        // Do nothing
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
-        GUITools.setUnderlined(GUIMediator.status().labelErrorBased);
+    public void execute() {
+        GUIMediator.status().labelErrorBased.setUnderlined();
     }
 }

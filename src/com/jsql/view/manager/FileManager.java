@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -41,33 +42,35 @@ import com.jsql.view.scrollpane.JScrollPanePixelBorder;
  * Manager to read a file from the host.
  */
 @SuppressWarnings("serial")
-public class FileManager extends ListManager{
+public class FileManager extends ListManager {
 
-    public FileManager(){
+    public FileManager() {
         this.setLayout(new BorderLayout());
         this.setDefaultText("Read file(s)");
         
-        ArrayList<String> pathList = new ArrayList<String>();
+        List<String> pathList = new ArrayList<String>();
         try {
             InputStream in = this.getClass().getResourceAsStream("/com/jsql/list/file.txt");
             String line;
-            BufferedReader reader = new BufferedReader(new InputStreamReader( in ));
-            while( (line = reader.readLine()) != null ) pathList.add(line);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            while ((line = reader.readLine()) != null) {
+                pathList.add(line);
+            }
             reader.close();
         } catch (IOException e) {
-        	InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         }
 
         final DnDList listFile = new DnDList(pathList);
 
-        this.add(new JScrollPanePixelBorder(1,1,0,0,listFile), BorderLayout.CENTER);
+        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, listFile), BorderLayout.CENTER);
 
         JPanel lastLine = new JPanel();
         lastLine.setOpaque(false);
-        lastLine.setLayout( new BoxLayout(lastLine, BoxLayout.X_AXIS) );
+        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(BorderFactory.createCompoundBorder(
-        		BorderFactory.createMatteBorder(0,1,0,0,GUITools.COMPONENT_BORDER), 
-        		BorderFactory.createEmptyBorder(1, 0, 1, 1)));
+                BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER),
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)));
         
         run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/fileSearch.png")));
 
@@ -83,29 +86,29 @@ public class FileManager extends ListManager{
         run.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if(listFile.getSelectedValuesList().size() == 0){
-                	InjectionModel.logger.warn("Select at least one file");
+                if (listFile.getSelectedValuesList().isEmpty()) {
+                    InjectionModel.LOGGER.warn("Select at least one file");
                     return;
                 }
 
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        if(run.getText().equals(defaultText)){
+                        if (run.getText().equals(defaultText)) {
                             run.setText("Stop");
                             try {
-                            	GUIMediator.left().shellManager.clearSelection();
-                            	GUIMediator.left().sqlShellManager.clearSelection();
+                                GUIMediator.left().shellManager.clearSelection();
+                                GUIMediator.left().sqlShellManager.clearSelection();
                                 loader.setVisible(true);
                                 GUIMediator.model().rao.getFile(listFile.getSelectedValuesList());
                             } catch (PreparationException e) {
-                            	InjectionModel.logger.warn("Problem reading file");
+                                InjectionModel.LOGGER.warn("Problem reading file");
                             } catch (StoppableException e) {
-                            	InjectionModel.logger.warn("Problem reading file");
+                                InjectionModel.LOGGER.warn("Problem reading file");
                             }
 
-                        }else{
-                        	GUIMediator.model().rao.endFileSearch = true;
+                        } else {
+                            GUIMediator.model().rao.endFileSearch = true;
                             run.setEnabled(false);
                         }
                     }
@@ -114,7 +117,7 @@ public class FileManager extends ListManager{
         });
 
         privilege = new JLabel("File privilege", GUITools.SQUARE_GREY, SwingConstants.LEFT);
-        privilege.setBorder(BorderFactory.createMatteBorder(2,0,0,0,GUITools.DEFAULT_BACKGROUND));
+        privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, GUITools.DEFAULT_BACKGROUND));
         privilege.setToolTipText("<html><b>Needs the file privilege to work</b><br>" +
                 "Shows if the privilege FILE is granted to current user</html>");
 
@@ -123,7 +126,7 @@ public class FileManager extends ListManager{
         lastLine.add(privilege);
         lastLine.add(Box.createHorizontalGlue());
         lastLine.add(loader);
-        lastLine.add(Box.createRigidArea(new Dimension(5,0)));
+        lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
         lastLine.add(run);
         
         this.add(lastLine, BorderLayout.SOUTH);

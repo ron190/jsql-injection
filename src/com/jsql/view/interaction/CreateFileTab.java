@@ -19,37 +19,40 @@ import com.jsql.view.tab.TabHeader;
 import com.jsql.view.textcomponent.JPopupTextArea;
 
 /**
- * Create a new tab for the file
+ * Create a new tab for the file.
  */
-public class CreateFileTab implements IInteractionCommand{
-    // Name of the file
+public class CreateFileTab implements IInteractionCommand {
+    /**
+     * Name of the file.
+     */
     private String name;
 
-    // Content of the file
+    /**
+     * Content of the file.
+     */
     private String content;
 
-    // Full path of the file
+    /**
+     * Full path of the file.
+     */
     private String path;
 
     /**
      * @param interactionParams Name, content and path of the file
      */
-    public CreateFileTab(Object[] interactionParams){
+    public CreateFileTab(Object[] interactionParams) {
         name = (String) interactionParams[0];
         content = (String) interactionParams[1];
         path = (String) interactionParams[2];
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
+    public void execute() {
         JTextArea fileText = new JPopupTextArea().getProxy();
         fileText.setText(content);
-        JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1,0,0,0,fileText);
+        JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 0, 0, 0, fileText);
 
         fileText.setCaretPosition(0);
-        GUIMediator.right().addTab(name+" ", scroller);
+        GUIMediator.right().addTab(name + " ", scroller);
 
         // Focus on the new tab
         GUIMediator.right().setSelectedComponent(scroller);

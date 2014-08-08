@@ -11,36 +11,47 @@
 package com.jsql.model.bean;
 
 /**
- * Define a Database, e.g is sent to the view by the model after injection
+ * Define a Database, e.g is sent to the view by the model after injection.
  */
 public class Database extends ElementDatabase {
-    // The number of tables in the database
+    /**
+     * The number of tables in the database.
+     */
     private String tableCount;
 
-    // Define the database label and number of tables
+    /**
+     * Define the database label and number of tables.
+     * @param newDatabaseName
+     * @param newTableCount
+     */
     public Database(String newDatabaseName, String newTableCount) {
         this.elementValue = newDatabaseName;
         this.tableCount = newTableCount;
     }
 
-    // A database has no parent
+    /**
+     * A database has no parent.
+     */
     @Override
     public ElementDatabase getParent() {
         return null;
     }
 
-    // Return the number of tables in the table
+    /**
+     * Return the number of tables in the table.
+     */
     @Override
     public int getCount() {
         return Integer.parseInt(tableCount);
     }
 
     /**
-     * A readable label for the database, with number of tables, displayed by the view
-     * e.g my_database (7 tables)
+     * A readable label for the database, with number of tables,
+     * displayed by the view, e.g my_database (7 tables).
      */
     @Override
     public String getLabel() {
-        return this.elementValue + " ("+tableCount+" table"+(Integer.parseInt(tableCount)>0?"s":"")+")";
+        return this.elementValue 
+                + " (" + tableCount + " table" + (Integer.parseInt(tableCount) > 0 ? "s" : "") + ")";
     }
 }

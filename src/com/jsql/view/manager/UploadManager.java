@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -37,21 +38,20 @@ import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.textcomponent.JPopupTextField;
 
 /**
- * Manager for uploading PHP webshell to the host
+ * Manager for uploading PHP webshell to the host.
  */
 @SuppressWarnings("serial")
-public class UploadManager extends ListManager{
+public class UploadManager extends ListManager {
 
     /**
      * Build the manager panel.
-     * @param gui The main frame
      */
-    public UploadManager(){
+    public UploadManager() {
         this.setLayout(new BorderLayout());
-        
+
         this.setDefaultText("Choose a file");
 
-        ArrayList<String> pathsList = new ArrayList<String>();
+        List<String> pathsList = new ArrayList<String>();
         pathsList.add("/var/www/html/defaut/");
         pathsList.add("/var/www/html/default/");
         pathsList.add("/var/www/html/");
@@ -60,7 +60,7 @@ public class UploadManager extends ListManager{
         pathsList.add("E:/Outils/EasyPHP-5.3.9/www/");
 
         listPaths = new DnDList(pathsList);
-        this.add(new JScrollPanePixelBorder(1,1,0,0,listPaths), BorderLayout.CENTER);
+        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, listPaths), BorderLayout.CENTER);
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
@@ -71,8 +71,8 @@ public class UploadManager extends ListManager{
         label.setHorizontalAlignment(SwingConstants.CENTER);
 
         urlLine.setBorder(BorderFactory.createCompoundBorder(
-        		BorderFactory.createMatteBorder(0,1,0,0,GUITools.COMPONENT_BORDER), 
-        		BorderFactory.createEmptyBorder(1, 1, 1, 1)));
+                BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER),
+                BorderFactory.createEmptyBorder(1, 1, 1, 1)));
 
         final JTextField shellURL = new JPopupTextField().getProxy();
         String tooltip = "<html><b>How to use</b><br>" +
@@ -88,10 +88,10 @@ public class UploadManager extends ListManager{
         urlLine.add(label, BorderLayout.NORTH);
 
         JPanel lastLine = new JPanel();
-        lastLine.setLayout( new BoxLayout(lastLine, BoxLayout.X_AXIS) );
+        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(BorderFactory.createCompoundBorder(
-        		BorderFactory.createMatteBorder(0,1,0,0,GUITools.COMPONENT_BORDER), 
-        		BorderFactory.createEmptyBorder(1, 0, 1, 1)));
+                BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER), 
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)));
 
         run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/add.png")));
         run.setToolTipText("<html><b>Select folder(s) in which uploader is created, then choose a file to upload</b><br>" +
@@ -105,8 +105,8 @@ public class UploadManager extends ListManager{
         run.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if(listPaths.getSelectedValuesList().size() == 0){
-                	InjectionModel.logger.warn("Select at least one directory");
+                if (listPaths.getSelectedValuesList().isEmpty()) {
+                    InjectionModel.LOGGER.warn("Select at least one directory");
                     return;
                 }
 
@@ -115,18 +115,18 @@ public class UploadManager extends ListManager{
                 
                 int returnVal = filechooser.showOpenDialog(GUIMediator.gui());
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    for(final Object path: listPaths.getSelectedValuesList()){
+                    for (final Object path: listPaths.getSelectedValuesList()) {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 File file = filechooser.getSelectedFile();
-                                try{
+                                try {
                                     loader.setVisible(true);
                                     GUIMediator.model().rao.upload(path.toString(), shellURL.getText(), file);
-                                }catch (PreparationException e){
-                                	InjectionModel.logger.warn("Can't upload file "+ file.getName() +" to " + path);
-                                }catch (StoppableException e){
-                                	InjectionModel.logger.warn("Can't upload file "+ file.getName() +" to " + path);
+                                } catch (PreparationException e) {
+                                    InjectionModel.LOGGER.warn("Can't upload file " + file.getName() + " to " + path);
+                                } catch (StoppableException e) {
+                                    InjectionModel.LOGGER.warn("Can't upload file " + file.getName() + " to " + path);
                                 }
                             }
                         }, "upload").start();

@@ -31,7 +31,7 @@ public class BlockCaret extends DefaultCaret {
 
     @Override
     protected synchronized void damage(Rectangle r) {
-        if (r == null){
+        if (r == null) {
             return;
         }
 
@@ -44,19 +44,21 @@ public class BlockCaret extends DefaultCaret {
         // in this case we must be prepared to set a valid width, or else
         // paint()
         // will receive a bogus clip area and caret will not get drawn properly.
-        if (width <= 0){
+        if (width <= 0) {
             width = getComponent().getWidth();
         }
 
-        repaint();  //Calls getComponent().repaint(x, y, width, height) to erase
-        repaint();  // previous location of caret. Sometimes one call isn't enough.
+        //Calls getComponent().repaint(x, y, width, height) to erase
+        repaint();
+        // previous location of caret. Sometimes one call isn't enough.
+        repaint();
     }
 
     @Override
     public void paint(Graphics g) {
         JTextComponent comp = getComponent();
 
-        if (comp == null){
+        if (comp == null) {
             return;
         }
 
@@ -65,7 +67,7 @@ public class BlockCaret extends DefaultCaret {
         char dotChar;
         try {
             r = comp.modelToView(dot);
-            if (r == null){
+            if (r == null) {
                 return;
             }
             dotChar = comp.getText(dot, 1).charAt(0);
@@ -73,7 +75,7 @@ public class BlockCaret extends DefaultCaret {
             return;
         }
 
-        if(Character.isWhitespace(dotChar)){
+        if (Character.isWhitespace(dotChar)) {
             dotChar = '_';
         }
 
@@ -85,13 +87,13 @@ public class BlockCaret extends DefaultCaret {
             return;
         }
 
-        g.setColor(new Color(0,255,0));
-        
+        g.setColor(new Color(0, 255, 0));
+
         // do this to draw in XOR mode
-        g.setXORMode(comp.getBackground()); 
+        g.setXORMode(comp.getBackground());
 
         width = g.getFontMetrics().charWidth(dotChar);
-        if (isVisible()){
+        if (isVisible()) {
             g.fillRect(r.x, r.y, width, r.height);
         }
     }

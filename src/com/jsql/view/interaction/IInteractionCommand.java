@@ -11,11 +11,11 @@
 package com.jsql.view.interaction;
 
 /**
- * Action ordered by the Model and applied to the View
+ * Action ordered by the Model and applied to the View.
  */
-public interface IInteractionCommand{
+public interface IInteractionCommand {
     /**
-     * Do the action ordered by the model
+     * Do the action ordered by the model.
      */
-    public void execute();
+    void execute();
 }

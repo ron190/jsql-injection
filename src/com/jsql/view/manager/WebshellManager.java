@@ -20,6 +20,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -41,33 +42,34 @@ import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.textcomponent.JPopupTextField;
 
 /**
- * Manager for uploading PHP webshell to the host
+ * Manager for uploading PHP webshell to the host and send system commands.
  */
 @SuppressWarnings("serial")
-public class WebshellManager extends ListManager{
+public class WebshellManager extends ListManager {
 
     /**
      * Build the manager panel.
-     * @param gui The main frame
      */
-    public WebshellManager(){
+    public WebshellManager() {
         this.setLayout(new BorderLayout());
 
         this.setDefaultText("Create web shell");
         
-        ArrayList<String> pathsList = new ArrayList<String>();
+        List<String> pathsList = new ArrayList<String>();
         try {
             InputStream in = this.getClass().getResourceAsStream("/com/jsql/list/shell.txt");
             String line;
-            BufferedReader reader = new BufferedReader(new InputStreamReader( in ));
-            while( (line = reader.readLine()) != null ) pathsList.add(line);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            while ((line = reader.readLine()) != null) {
+                pathsList.add(line);
+            }
             reader.close();
         } catch (IOException e) {
-        	InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         }
 
         listPaths = new DnDList(pathsList);
-        this.add(new JScrollPanePixelBorder(1,1,0,0,listPaths), BorderLayout.CENTER);
+        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, listPaths), BorderLayout.CENTER);
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
@@ -78,8 +80,8 @@ public class WebshellManager extends ListManager{
         label.setHorizontalAlignment(SwingConstants.CENTER);
         
         urlLine.setBorder(BorderFactory.createCompoundBorder(
-        		BorderFactory.createMatteBorder(0,1,0,0,GUITools.COMPONENT_BORDER), 
-        		BorderFactory.createEmptyBorder(1, 1, 1, 1)));
+                BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER),
+                BorderFactory.createEmptyBorder(1, 1, 1, 1)));
         
         final JTextField shellURL = new JPopupTextField().getProxy();
         String tooltip = "<html><b>How to use</b><br>" +
@@ -95,10 +97,10 @@ public class WebshellManager extends ListManager{
         urlLine.add(label, BorderLayout.NORTH);
 
         JPanel lastLine = new JPanel();
-        lastLine.setLayout( new BoxLayout(lastLine, BoxLayout.X_AXIS) );
+        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(BorderFactory.createCompoundBorder(
-        		BorderFactory.createMatteBorder(0,1,0,0,GUITools.COMPONENT_BORDER), 
-        		BorderFactory.createEmptyBorder(1, 0, 1, 1)));
+                BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER),
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)));
         
         run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/shellSearch.png")));
         run.setToolTipText("<html><b>Select folder(s) in which shell is created</b><br>" +
@@ -106,37 +108,36 @@ public class WebshellManager extends ListManager{
                 "<i>If necessary, you must set the URL of shell directory (see note on text component).</i>" +
                 "</html>");
         run.setEnabled(false);
-        
+
         run.setBorder(GUITools.BLU_ROUND_BORDER);
-        
+
         run.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if(listPaths.getSelectedValuesList().size() == 0){
-                	InjectionModel.logger.warn("Select at least one directory");
+                if (listPaths.getSelectedValuesList().isEmpty()) {
+                    InjectionModel.LOGGER.warn("Select at least one directory");
                     return;
                 }
-                
-                if(!"".equals(shellURL.getText())){
-	                URL u = null;
-	                try {
-	                    u = new URL(shellURL.getText());
-	                } catch (MalformedURLException e) {
-	                    InjectionModel.logger.warn("URL is malformed: no protocol");
-	                    return;
-	                }
+
+                if (!"".equals(shellURL.getText())) {
+                    try {
+                        new URL(shellURL.getText());
+                    } catch (MalformedURLException e) {
+                        InjectionModel.LOGGER.warn("URL is malformed: no protocol");
+                        return;
+                    }
                 }
 
-                for(final Object path: listPaths.getSelectedValuesList()){
+                for (final Object path: listPaths.getSelectedValuesList()) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                            	GUIMediator.model().rao.getShell(path.toString(), shellURL.getText());
+                                GUIMediator.model().rao.getShell(path.toString(), shellURL.getText());
                             } catch (PreparationException e) {
-                            	InjectionModel.logger.warn("Problem writing into " + path);
+                                InjectionModel.LOGGER.warn("Problem writing into " + path);
                             } catch (StoppableException e) {
-                            	InjectionModel.logger.warn("Problem writing into " + path);
+                                InjectionModel.LOGGER.warn("Problem writing into " + path);
                             }
                         }
                     }, "getShell").start();
@@ -147,8 +148,8 @@ public class WebshellManager extends ListManager{
 
         privilege = new JLabel("File privilege", GUITools.SQUARE_GREY, SwingConstants.LEFT);
         privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, GUITools.DEFAULT_BACKGROUND));
-        privilege.setToolTipText("<html><b>Needs the file privilege to work</b><br>" +
-                "Shows if the privilege FILE is granted to current user</html>");
+        privilege.setToolTipText("<html><b>Needs the file privilege to work</b><br>"
+                + "Shows if the privilege FILE is granted to current user</html>");
 
         lastLine.add(privilege);
         lastLine.add(Box.createHorizontalGlue());

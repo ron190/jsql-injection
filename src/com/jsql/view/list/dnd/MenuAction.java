@@ -34,15 +34,15 @@ public class MenuAction extends MouseAdapter {
     private DnDList myList;
     private int[] mouseOver;
 
-    public MenuAction(DnDList myList, int[] mouseOver){
+    public MenuAction(DnDList myList, int[] mouseOver) {
         this.myList = myList;
         this.mouseOver = mouseOver;
     }
     
     @SuppressWarnings("unchecked")
-	public void showPopup(final MouseEvent e) {
-        if (e.isPopupTrigger()){
-            JList<ListItem> list = (JList<ListItem>)e.getSource();
+    public void showPopup(final MouseEvent e) {
+        if (e.isPopupTrigger()) {
+            JList<ListItem> list = (JList<ListItem>) e.getSource();
 
             JPopupMenu tablePopupMenu = new JPopupMenu();
 
@@ -82,8 +82,9 @@ public class MenuAction extends MouseAdapter {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
                     int choice = importFileDialog.showOpenDialog(myList.getTopLevelAncestor());
-                    if (choice == JFileChooser.APPROVE_OPTION)
+                    if (choice == JFileChooser.APPROVE_OPTION) {
                         myList.dropPasteFile(Arrays.asList(importFileDialog.getSelectedFiles()), myList.locationToIndex(e.getPoint()));
+                    }
                 }
             });
 
@@ -91,8 +92,9 @@ public class MenuAction extends MouseAdapter {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     Action a = myList.getActionMap().get(TransferHandler.getCopyAction().getValue(Action.NAME));
-                    if (a != null)
+                    if (a != null) {
                         a.actionPerformed(new ActionEvent(myList, ActionEvent.ACTION_PERFORMED, null));
+                    }
                 }
             });
 
@@ -100,8 +102,9 @@ public class MenuAction extends MouseAdapter {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     Action action = myList.getActionMap().get(TransferHandler.getCutAction().getValue(Action.NAME));
-                    if (action != null)
+                    if (action != null) {
                         action.actionPerformed(new ActionEvent(myList, ActionEvent.ACTION_PERFORMED, null));
+                    }
                 }
             });
 
@@ -109,8 +112,9 @@ public class MenuAction extends MouseAdapter {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     Action action = myList.getActionMap().get(TransferHandler.getPasteAction().getValue(Action.NAME));
-                    if (action != null)
+                    if (action != null) {
                         action.actionPerformed(new ActionEvent(myList, ActionEvent.ACTION_PERFORMED, null));
+                    }
                 }
             });
 
@@ -127,8 +131,9 @@ public class MenuAction extends MouseAdapter {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
                     myList.listModel.clear();
-                    for(String path: myList.defaultList)
+                    for (String path: myList.defaultList) {
                         myList.listModel.addElement(new ListItem(path));
+                    }
                 }
             });
 
@@ -161,18 +166,20 @@ public class MenuAction extends MouseAdapter {
         }
     }
 
-    @Override 
+    @Override
     public void mousePressed(MouseEvent e) {
-        if ( SwingUtilities.isRightMouseButton(e) ){
+        if (SwingUtilities.isRightMouseButton(e)) {
             int clickIndex = myList.locationToIndex(e.getPoint());
             boolean containsIndex = false;
-            for(int currentIndex: myList.getSelectedIndices())
-                if(currentIndex == clickIndex){
+            for (int currentIndex: myList.getSelectedIndices()) {
+                if (currentIndex == clickIndex) {
                     containsIndex = true;
                     break;
                 }
-            if(!containsIndex)
+            }
+            if (!containsIndex) {
                 myList.setSelectedIndex(clickIndex);
+            }
         }
         showPopup(e);
     }

@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -43,16 +44,15 @@ import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.textcomponent.JPopupTextField;
 
 /**
- * Manager for uploading PHP webshell to the host
+ * Manager for uploading PHP SQL shell to the host and send queries.
  */
 @SuppressWarnings("serial")
-public class SQLShellManager extends ListManager{
+public class SQLShellManager extends ListManager {
 
     /**
      * Build the manager panel.
-     * @param gui The main frame
      */
-    public SQLShellManager(){
+    public SQLShellManager() {
         this.setLayout(new BorderLayout());
         this.setDefaultText("Create SQL shell");
 
@@ -71,9 +71,9 @@ public class SQLShellManager extends ListManager{
         final JTextField pass = new JPopupTextField().getProxy();
         
         user.setToolTipText("<html><b>MySQL username</b><br>" +
-        		"Users' names are stored into database <i>mysql</i>, table <i>user</i>.<br>" +
-        		"It could be left empty if a blank user has been defined.<br>" +
-        		"<i>Try to read an existing php page to get database credentials.</i></html>");
+                "Users' names are stored into database <i>mysql</i>, table <i>user</i>.<br>" +
+                "It could be left empty if a blank user has been defined.<br>" +
+                "<i>Try to read an existing php page to get database credentials.</i></html>");
         pass.setToolTipText("<html><b>MySQL password</b><br>" +
                 "Passwords hashes are stored into database <i>mysql</i>, table <i>user</i>.<br>" +
                 "You can brute force the hash with type <i>mysql</i>.<br>" +
@@ -82,16 +82,16 @@ public class SQLShellManager extends ListManager{
         
         user.setBorder(GUITools.BLU_ROUND_BORDER);
         JPanel m = new JPanel(new BorderLayout());
-        m.setBorder(BorderFactory.createEmptyBorder(1,0,0,0));
+        m.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
         m.add(pass);
         JPanel mm = new JPanel(new BorderLayout());
-        mm.setBorder(BorderFactory.createEmptyBorder(1,0,0,0));
+        mm.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
         mm.add(passLabel);
         pass.setBorder(GUITools.BLU_ROUND_BORDER);
         
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
-                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING,false)
+                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                             .addComponent(userLabel)
                             .addComponent(mm))
                     .addGroup(layout.createParallelGroup()
@@ -111,19 +111,21 @@ public class SQLShellManager extends ListManager{
         
         this.add(infos, BorderLayout.NORTH);
         
-        ArrayList<String> pathsList = new ArrayList<String>();
+        List<String> pathsList = new ArrayList<String>();
         try {
             InputStream in = this.getClass().getResourceAsStream("/com/jsql/list/shell.txt");
             String line;
-            BufferedReader reader = new BufferedReader(new InputStreamReader( in ));
-            while( (line = reader.readLine()) != null ) pathsList.add(line);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            while ((line = reader.readLine()) != null) {
+                pathsList.add(line);
+            }
             reader.close();
         } catch (IOException e) {
-        	InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         }
 
         listPaths = new DnDList(pathsList);
-        this.add(new JScrollPanePixelBorder(1,1,0,0,listPaths), BorderLayout.CENTER);
+        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, listPaths), BorderLayout.CENTER);
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
@@ -134,8 +136,8 @@ public class SQLShellManager extends ListManager{
         label.setHorizontalAlignment(SwingConstants.CENTER);
 
         urlLine.setBorder(BorderFactory.createCompoundBorder(
-        		BorderFactory.createMatteBorder(0,1,0,0,GUITools.COMPONENT_BORDER), 
-        		BorderFactory.createEmptyBorder(1, 1, 1, 1)));
+                BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER),
+                BorderFactory.createEmptyBorder(1, 1, 1, 1)));
         
         final JTextField shellURL = new JPopupTextField().getProxy();
         String tooltip = "<html><b>How to use</b><br>" +
@@ -151,10 +153,10 @@ public class SQLShellManager extends ListManager{
         urlLine.add(label, BorderLayout.NORTH);
 
         JPanel lastLine = new JPanel();
-        lastLine.setLayout( new BoxLayout(lastLine, BoxLayout.X_AXIS) );
+        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(BorderFactory.createCompoundBorder(
-        		BorderFactory.createMatteBorder(0,1,0,0,GUITools.COMPONENT_BORDER), 
-        		BorderFactory.createEmptyBorder(1, 0, 1, 1)));
+                BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER), 
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)));
 
         run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/shellSearch.png")));
         run.setToolTipText("<html><b>Select folder(s) in which shell is created</b><br>" +
@@ -168,30 +170,30 @@ public class SQLShellManager extends ListManager{
         run.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if(listPaths.getSelectedValuesList().size() == 0){
-                	InjectionModel.logger.warn("Select at least one directory");
+                if (listPaths.getSelectedValuesList().isEmpty()) {
+                    InjectionModel.LOGGER.warn("Select at least one directory");
                     return;
                 }
                 
-                if(!"".equals(shellURL.getText())){
-	                try {
-	                    new URL(shellURL.getText());
-	                } catch (MalformedURLException e) {
-	                    InjectionModel.logger.warn("URL is malformed: no protocol");
-	                    return;
-	                }
+                if (!"".equals(shellURL.getText())) {
+                    try {
+                        new URL(shellURL.getText());
+                    } catch (MalformedURLException e) {
+                        InjectionModel.LOGGER.warn("URL is malformed: no protocol");
+                        return;
+                    }
                 }
 
-            	for(final Object path: listPaths.getSelectedValuesList()){
+                for (final Object path: listPaths.getSelectedValuesList()) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             try {
-                            	GUIMediator.model().rao.getSQLShell(path.toString(), shellURL.getText(), user.getText(), pass.getText());
+                                GUIMediator.model().rao.getSQLShell(path.toString(), shellURL.getText(), user.getText(), pass.getText());
                             } catch (PreparationException e) {
-                            	InjectionModel.logger.warn("Problem writing into " + path);
+                                InjectionModel.LOGGER.warn("Problem writing into " + path);
                             } catch (StoppableException e) {
-                            	InjectionModel.logger.warn("Problem writing into " + path);
+                                InjectionModel.LOGGER.warn("Problem writing into " + path);
                             }
                         }
                     }, "getShell").start();

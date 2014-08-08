@@ -26,24 +26,29 @@ import com.jsql.model.InjectionModel;
 @SuppressWarnings("serial")
 public class IconOverlap extends ImageIcon {
     /**
-     * The icon displayed on the bottom right corner.
+     * The path of icon displayed on the bottom right corner.
      */
-    private String overlap;
+    private String iconPathOverlap;
 
-    public IconOverlap(String main, String overlap){
+    /**
+     * Create icon with tiny icon on top layer.
+     * @param main Main icon to display
+     * @param iconPathOverlap Secondary icon to display on top of main icon
+     */
+    public IconOverlap(String main, String iconPathOverlap) {
         super(IconOverlap.class.getResource(main));
 
-        this.overlap = overlap;
+        this.iconPathOverlap = iconPathOverlap;
     }
 
     @Override
     public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
         super.paintIcon(c, g, x, y);
         try {
-            BufferedImage im2 = ImageIO.read(IconOverlap.class.getResource(overlap));
-            g.drawImage(im2, (this.getIconWidth()-im2.getWidth())/2, (this.getIconHeight()-im2.getHeight())/2, null);
+            BufferedImage im2 = ImageIO.read(IconOverlap.class.getResource(iconPathOverlap));
+            g.drawImage(im2, (this.getIconWidth() - im2.getWidth()) / 2, (this.getIconHeight() - im2.getHeight()) / 2, null);
         } catch (IOException e) {
-            InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         }
     }
 }

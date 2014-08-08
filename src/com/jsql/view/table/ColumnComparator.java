@@ -12,14 +12,17 @@ package com.jsql.view.table;
 
 import java.util.Comparator;
 
+/**
+ * Comporator for table column values ; column with only int data is sorted like 3 < 20 < 100,
+ * column with string will sort like 100 < 20 < 3.
+ */
 public class ColumnComparator implements Comparator<Object> {
     /**
      * Custom compare to sort numbers as numbers.
      * Strings as strings, with numbers ordered before strings.
-     * 
      * @param o1
      * @param o2
-     * @return
+     * @return 
      */
     @Override
     public int compare(Object oo1, Object oo2) {
@@ -34,22 +37,24 @@ public class ColumnComparator implements Comparator<Object> {
             if (isSecondNumeric) {
                 return Integer.valueOf(o1).compareTo(Integer.valueOf(o2));
             } else {
-                return -1; // numbers always smaller than letters
+                // numbers always smaller than letters
+                return -1;
             }
         } else {
             if (isSecondNumeric) {
-                return 1; // numbers always smaller than letters
+                // numbers always smaller than letters
+                return 1;
             } else {
-                try{
+                try {
                     Integer.parseInt(o1);
                     isFirstNumeric = true;
-                }catch(NumberFormatException e){
+                } catch (NumberFormatException e) {
                     isFirstNumeric = false;
                 }
-                try{
+                try {
                     Integer.parseInt(o2);
                     isSecondNumeric = true;
-                }catch(NumberFormatException e){
+                } catch (NumberFormatException e) {
                     isSecondNumeric = false;
                 }
 
@@ -61,11 +66,13 @@ public class ColumnComparator implements Comparator<Object> {
                         }
                         return intCompare;
                     } else {
-                        return -1; // numbers always smaller than letters
+                        // numbers always smaller than letters
+                        return -1;
                     }
                 } else {
                     if (isSecondNumeric) {
-                        return 1; // numbers always smaller than letters
+                        // numbers always smaller than letters
+                        return 1;
                     } else {
                         return o1.compareToIgnoreCase(o2);
                     }

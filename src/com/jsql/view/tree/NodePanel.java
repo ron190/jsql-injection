@@ -4,7 +4,7 @@
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
  * every time possible with every body.
- * 
+ *
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
@@ -34,83 +34,88 @@ public class NodePanel extends JPanel {
      * Default icon of the node (database or table).
      */
     private JLabel icon = new JLabel();
-    
+
     /**
      * A GIF loader, displayed if progress track is unknown (like columns).
      */
     private JLabel loader = new JLabel();
-    
+
     /**
      * Progress bar displayed during injection, with pause icon displayed if user paused the process.
      */
     public ProgressBarPausable progressBar = new ProgressBarPausable();
-    
+
     /**
      * Text of the node.
      */
     public JLabel label = new JLabel();
-    
-    public NodePanel(final JTree tree, final TreeNode currentNode){
+
+    /**
+     * Create Panel for tree nodes.
+     * @param tree JTree to populate
+     * @param currentNode Node to draw in the tree
+     */
+    public NodePanel(final JTree tree, final TreeNode currentNode) {
         super();
-        
+
         ImageIcon animatedGIF = new ImageIcon(getClass().getResource(GUITools.PATH_PROGRESSBAR));
         animatedGIF.setImageObserver(new AnimatedObserver(tree, currentNode));
-        loader.setIcon(animatedGIF);
+        this.loader.setIcon(animatedGIF);
 
-        progressBar.setPreferredSize(new Dimension(16, 16));
-        progressBar.setUI(new BasicProgressBarUI());
-        label.setOpaque(true);
+        this.progressBar.setPreferredSize(new Dimension(16, 16));
+        this.progressBar.setUI(new BasicProgressBarUI());
+        this.label.setOpaque(true);
 
-        label.setBorder(new RoundBorder(4,1,true));
-        
+        this.label.setBorder(new RoundBorder(4, 1, true));
+
         this.setBackground(Color.WHITE);
-        
+
         this.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 3));
-        this.add(icon);
-        this.add(loader);
-        this.add(progressBar);
-        this.add(label);
-        
-        progressBar.setVisible(false);
-             loader.setVisible(false);
-              label.setVisible(false);
-               icon.setVisible(false);
+        this.add(this.icon);
+        this.add(this.loader);
+        this.add(this.progressBar);
+        this.add(this.label);
+
+        this.progressBar.setVisible(false);
+             this.loader.setVisible(false);
+              this.label.setVisible(false);
+               this.icon.setVisible(false);
     }
-    
+
     /**
      * Change the text icon.
      * @param newIcon An icon to display next to the text.
      */
-    public void setIcon(Icon newIcon){
-        icon.setIcon(newIcon);
+    public void setIcon(Icon newIcon) {
+        this.icon.setIcon(newIcon);
     }
     
     /**
      * Display the normal text icon to the left.
      */
-    public void showIcon(){
-        icon.setVisible(true);
+    public void showIcon() {
+        this.icon.setVisible(true);
     }
     
     /**
      * Mask the node icon for example when the loader component is displayed.
      */
-    public void hideIcon(){
-        icon.setVisible(false);
+    public void hideIcon() {
+        this.icon.setVisible(false);
     }
     
     /**
      * Change the loader icon.
      * @param newIcon An icon to display for the loader.
      */
-    public void setLoaderIcon(Icon newIcon){
-        loader.setIcon(newIcon);
+    public void setLoaderIcon(Icon newIcon) {
+        this.loader.setIcon(newIcon);
     }
 
     /**
      * Display the animated gif loader.
      */
-    public void showLoader(){
-        loader.setVisible(true);
+    public void showLoader() {
+        this.loader.setVisible(true);
     }
 }

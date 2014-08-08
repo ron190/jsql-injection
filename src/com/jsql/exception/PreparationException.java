@@ -11,17 +11,18 @@
 package com.jsql.exception;
 
 /**
- * Exception class thrown during initial step of injection (aka preparation),
- * concern every steps before the user can interact with database elements (database, table, column)
+ * Exception class thrown during initial step of injection (aka preparation).
+ * Concerns every steps before the user can interact
+ * with database elements (database, table, column)
  */
 @SuppressWarnings("serial")
 public class PreparationException extends Exception {
-	
-    public PreparationException(){
+    
+    public PreparationException() {
         super("Execution stopped by user.");
     }
     
-    public PreparationException(String message){
+    public PreparationException(String message) {
         super(message);
     }
 }

@@ -51,13 +51,13 @@ import com.jsql.view.table.TablePanel;
  */
 @SuppressWarnings("serial")
 public class Menubar extends JMenuBar {
-	
-	public JCheckBoxMenuItem chunk;
-	public JCheckBoxMenuItem binary;
-	public JCheckBoxMenuItem network;
-	public JCheckBoxMenuItem javaDebug;
-    
-    public Menubar(){
+
+    public JCheckBoxMenuItem chunk;
+    public JCheckBoxMenuItem binary;
+    public JCheckBoxMenuItem network;
+    public JCheckBoxMenuItem javaDebug;
+
+    public Menubar() {
         // File Menu > save tab | exit
         JMenu menuFile = new JMenu("File");
         menuFile.setMnemonic('F');
@@ -72,10 +72,10 @@ public class Menubar extends JMenuBar {
         itemExit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-            	GUIMediator.gui().dispose();
+                GUIMediator.gui().dispose();
             }
         });
-        
+
         ActionHandler.addShortcut(Menubar.this);
 
         menuFile.add(itemSave);
@@ -92,10 +92,11 @@ public class Menubar extends JMenuBar {
         itemCopy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(GUIMediator.right().getSelectedComponent() instanceof TablePanel)
+                if (GUIMediator.right().getSelectedComponent() instanceof TablePanel) {
                     ((TablePanel) GUIMediator.right().getSelectedComponent()).copyTable();
-                else if(GUIMediator.right().getSelectedComponent() instanceof JScrollPane)
+                } else if (GUIMediator.right().getSelectedComponent() instanceof JScrollPane) {
                     ((JTextArea) ((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport().getView()).copy();
+                }
             }
         });
 
@@ -105,10 +106,10 @@ public class Menubar extends JMenuBar {
         itemSelectAll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(GUIMediator.right().getSelectedComponent() instanceof TablePanel)
+                if (GUIMediator.right().getSelectedComponent() instanceof TablePanel) {
                     ((TablePanel) GUIMediator.right().getSelectedComponent()).selectTable();
                 // Textarea need focus to select all
-                else if(GUIMediator.right().getSelectedComponent() instanceof JScrollPane){
+                } else if (GUIMediator.right().getSelectedComponent() instanceof JScrollPane) {
                     ((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport().getView().requestFocusInWindow();
                     ((JTextArea) ((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport().getView()).selectAll();
                 }
@@ -144,7 +145,7 @@ public class Menubar extends JMenuBar {
         menuTools.add(menuView);
 
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-        
+
         JMenu menuPanel = new JMenu("Show Panel");
         menuView.setMnemonic('V');
         chunk = new JCheckBoxMenuItem("Chunk", new ImageIcon(getClass().getResource("/com/jsql/view/images/chunk.gif")), prefs.getBoolean(GUITools.CHUNK_VISIBLE, true));
@@ -154,59 +155,63 @@ public class Menubar extends JMenuBar {
         network = new JCheckBoxMenuItem("Network", new ImageIcon(getClass().getResource("/com/jsql/view/images/header.gif")), prefs.getBoolean(GUITools.NETWORK_VISIBLE, true));
         menuPanel.add(network);
         javaDebug = new JCheckBoxMenuItem("Java", new ImageIcon(GUITools.class.getResource("/com/jsql/view/images/cup.png")), prefs.getBoolean(GUITools.JAVA_VISIBLE, false));
-        
+
         class StayOpenCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI {
             @Override
             protected void doClick(MenuSelectionManager msm) {
                 menuItem.doClick(0);
             }
         }
-        
-        for(JCheckBoxMenuItem i: new JCheckBoxMenuItem[]{chunk,binary,network,javaDebug}){
+
+        for (JCheckBoxMenuItem i: new JCheckBoxMenuItem[]{chunk, binary, network, javaDebug}) {
             i.setUI(new StayOpenCheckBoxMenuItemUI());
         }
-        
+
         chunk.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(chunk.isSelected())
-                	GUIMediator.bottomPanel().insertChunkTab();
-                else
-                	GUIMediator.bottom().remove(GUIMediator.bottomPanel().chunks.getParent().getParent());
+                if (chunk.isSelected()) {
+                    GUIMediator.bottomPanel().insertChunkTab();
+                } else {
+                    GUIMediator.bottom().remove(GUIMediator.bottomPanel().chunks.getParent().getParent());
+                }
             }
         });
         binary.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(binary.isSelected())
-                	GUIMediator.bottomPanel().insertBinaryTab();
-                else
-                	GUIMediator.bottom().remove(GUIMediator.bottomPanel().binaryArea.getParent().getParent());
+                if (binary.isSelected()) {
+                    GUIMediator.bottomPanel().insertBinaryTab();
+                } else {
+                    GUIMediator.bottom().remove(GUIMediator.bottomPanel().binaryArea.getParent().getParent());
+                }
             }
         });
         network.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(network.isSelected()){
-                	GUIMediator.bottomPanel().insertNetworkTab();
-                }else
-                	GUIMediator.bottom().remove(GUIMediator.bottomPanel().network);
+                if (network.isSelected()) {
+                    GUIMediator.bottomPanel().insertNetworkTab();
+                } else {
+                    GUIMediator.bottom().remove(GUIMediator.bottomPanel().network);
+                }
             }
         });
         javaDebug.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(javaDebug.isSelected())
-                	GUIMediator.bottomPanel().insertJavaDebugTab();
-                else
-                	GUIMediator.bottom().remove(GUIMediator.bottomPanel().javaDebug.getParent().getParent());
+                if (javaDebug.isSelected()) {
+                    GUIMediator.bottomPanel().insertJavaDebugTab();
+                } else {
+                    GUIMediator.bottom().remove(GUIMediator.bottomPanel().javaDebug.getParent().getParent());
+                }
             }
         });
-        
+
         menuPanel.add(javaDebug);
         menuTools.add(menuPanel);
         menuTools.add(new JSeparator());
-        
+
         database.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.CTRL_MASK));
         adminPage.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.CTRL_MASK));
         file.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, ActionEvent.CTRL_MASK));
@@ -216,12 +221,18 @@ public class Menubar extends JMenuBar {
         coder.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_7, ActionEvent.CTRL_MASK));
 
         final Map<JMenuItem, Integer> p = new HashMap<JMenuItem, Integer>();
-        p.put(database, 0); p.put(adminPage, 1); p.put(file, 2); p.put(webshell, 3); p.put(sqlshell, 4); p.put(bruteforce, 5); p.put(coder, 6);
-        for(final JMenuItem m: p.keySet()){
+        p.put(database, 0);
+        p.put(adminPage, 1);
+        p.put(file, 2);
+        p.put(webshell, 3);
+        p.put(sqlshell, 4);
+        p.put(bruteforce, 5);
+        p.put(coder, 6);
+        for (final JMenuItem m: p.keySet()) {
             m.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                	GUIMediator.left().setSelectedIndex(p.get(m));
+                    GUIMediator.left().setSelectedIndex(p.get(m));
                 }
             });
         }
@@ -232,9 +243,10 @@ public class Menubar extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 // Center the dialog
-                if(!prefDiag.isVisible()){
+                if (!prefDiag.isVisible()) {
                     prefDiag.setLocationRelativeTo(GUIMediator.gui());
-                    prefDiag.setVisible(true); // needed here for button focus
+                    // needed here for button focus
+                    prefDiag.setVisible(true);
                     prefDiag.okButton.requestFocusInWindow();
                 }
                 prefDiag.setVisible(true);
@@ -256,9 +268,10 @@ public class Menubar extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 // Center the dialog
-                if(!aboutDiag.isVisible()){
+                if (!aboutDiag.isVisible()) {
                     aboutDiag.reinit();
-                    aboutDiag.setVisible(true); // needed here for button focus
+                    // needed here for button focus
+                    aboutDiag.setVisible(true);
                     aboutDiag.close.requestFocusInWindow();
                 }
                 aboutDiag.setVisible(true);
@@ -271,36 +284,38 @@ public class Menubar extends JMenuBar {
                     @Override
                     public void run() {
                         try {
-                        	InjectionModel.logger.info("Checking updates...");
+                            InjectionModel.LOGGER.info("Checking updates...");
                             URLConnection con = new URL("http://jsql-injection.googlecode.com/git/.version").openConnection();
                             con.setReadTimeout(60000);
                             con.setConnectTimeout(60000);
 
-                            BufferedReader reader = new BufferedReader(new InputStreamReader( con.getInputStream() ));
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
                             String line, pageSource = "";
-                            while( (line = reader.readLine()) != null ) pageSource += line+"\n";
+                            while ((line = reader.readLine()) != null) {
+                                pageSource += line + "\n";
+                            }
                             reader.close();
 
                             Float gitVersion = Float.parseFloat(pageSource);
                             GUIMediator.model();
-							if(gitVersion <= Float.parseFloat(InjectionModel.JSQLVERSION))
-								InjectionModel.logger.info("jSQL Injection is up to date.");
-                            else{
-                                InjectionModel.logger.warn("A new version of jSQL Injection is available.");
+                            if (gitVersion <= Float.parseFloat(InjectionModel.JSQLVERSION)) {
+                                InjectionModel.LOGGER.info("jSQL Injection is up to date.");
+                            } else {
+                                InjectionModel.LOGGER.warn("A new version of jSQL Injection is available.");
                                 Desktop.getDesktop().browse(new URI("http://code.google.com/p/jsql-injection/downloads/list"));
                             }
                         } catch (NumberFormatException e) {
-                            InjectionModel.logger.warn("An error occured while checking updates, download the latest version from official website :");
-                            InjectionModel.logger.warn("http://code.google.com/p/jsql-injection/downloads/list");
-                            InjectionModel.logger.error(e, e);
+                            InjectionModel.LOGGER.warn("An error occured while checking updates, download the latest version from official website :");
+                            InjectionModel.LOGGER.warn("http://code.google.com/p/jsql-injection/downloads/list");
+                            InjectionModel.LOGGER.error(e, e);
                         } catch (IOException e) {
-                            InjectionModel.logger.warn("An error occured while checking updates, download the latest version from official website :");
-                            InjectionModel.logger.warn("http://code.google.com/p/jsql-injection/downloads/list");
-                            InjectionModel.logger.error(e, e);
+                            InjectionModel.LOGGER.warn("An error occured while checking updates, download the latest version from official website :");
+                            InjectionModel.LOGGER.warn("http://code.google.com/p/jsql-injection/downloads/list");
+                            InjectionModel.LOGGER.error(e, e);
                         } catch (URISyntaxException e) {
-                            InjectionModel.logger.warn("An error occured while checking updates, download the latest version from official website :");
-                            InjectionModel.logger.warn("http://code.google.com/p/jsql-injection/downloads/list");
-                            InjectionModel.logger.error(e, e);
+                            InjectionModel.LOGGER.warn("An error occured while checking updates, download the latest version from official website :");
+                            InjectionModel.LOGGER.warn("http://code.google.com/p/jsql-injection/downloads/list");
+                            InjectionModel.LOGGER.error(e, e);
                         }
 
                     }

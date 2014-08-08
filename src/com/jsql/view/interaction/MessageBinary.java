@@ -13,24 +13,23 @@ package com.jsql.view.interaction;
 import com.jsql.view.GUIMediator;
 
 /**
- * Append text to the tab Binary
+ * Append text to the tab Binary.
  */
-public class MessageBinary implements IInteractionCommand{
-    // Text to append to the Binary log area
+public class MessageBinary implements IInteractionCommand {
+    /**
+     * Text to append to the Binary log area.
+     */
     private String text;
 
     /**
      * @param interactionParams Text to append
      */
-    public MessageBinary(Object[] interactionParams){
+    public MessageBinary(Object[] interactionParams) {
         text = (String) interactionParams[0];
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
-    	GUIMediator.bottomPanel().binaryArea.append(text);
+    public void execute() {
+        GUIMediator.bottomPanel().binaryArea.append(text);
         GUIMediator.bottomPanel().binaryArea.setCaretPosition(GUIMediator.bottomPanel().binaryArea.getDocument().getLength());
     }
 }

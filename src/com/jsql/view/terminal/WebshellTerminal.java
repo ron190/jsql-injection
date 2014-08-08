@@ -19,7 +19,6 @@ import com.jsql.view.GUIMediator;
  */
 @SuppressWarnings("serial")
 public class WebshellTerminal extends Terminal {
-
     /**
      * Build a webshell instance.
      * @param terminalID Unique identifier to discriminate beyond multiple opened terminals

@@ -14,19 +14,17 @@ import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 
 /**
- * Mark the injection as invulnerable to a normal injection
+ * Mark the injection as invulnerable to a normal injection.
  */
-public class MarkNormalInvulnerable implements IInteractionCommand{
+public class MarkNormalInvulnerable implements IInteractionCommand {
     /**
      * @param interactionParams
      */
-    public MarkNormalInvulnerable(Object[] interactionParams){
+    public MarkNormalInvulnerable(Object[] interactionParams) {
+        // Do nothing
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
-    	GUIMediator.status().setNormalIcon(GUITools.SQUARE_RED);
+    public void execute() {
+        GUIMediator.status().setNormalIcon(GUITools.SQUARE_RED);
     }
 }

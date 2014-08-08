@@ -43,7 +43,6 @@ import com.jsql.model.InjectionModel;
 
 /**
  * A list supporting drag and drop.
- * @param <ListItem>
  */
 @SuppressWarnings("serial")
 public class DnDList extends JList<ListItem> {
@@ -53,32 +52,33 @@ public class DnDList extends JList<ListItem> {
     public List<String> defaultList;
     
     public List<ListItem> getSelectedValuesList() {
-    	ListSelectionModel sm = getSelectionModel();
-    	ListModel<ListItem> dm = getModel();
+        ListSelectionModel sm = getSelectionModel();
+        ListModel<ListItem> dm = getModel();
 
-    	int iMin = sm.getMinSelectionIndex();
-    	int iMax = sm.getMaxSelectionIndex();
+        int iMin = sm.getMinSelectionIndex();
+        int iMax = sm.getMaxSelectionIndex();
 
-    	if ((iMin < 0) || (iMax < 0)) {
-    		return Collections.emptyList();
-    	}
+        if ((iMin < 0) || (iMax < 0)) {
+            return Collections.emptyList();
+        }
 
-    	List<ListItem> selectedItems = new ArrayList<ListItem>();
-    	for(int i = iMin; i <= iMax; i++) {
-    		if (sm.isSelectedIndex(i)) {
-    			selectedItems.add(dm.getElementAt(i));
-    		}
-    	}
-    	return selectedItems;
+        List<ListItem> selectedItems = new ArrayList<ListItem>();
+        for (int i = iMin; i <= iMax; i++) {
+            if (sm.isSelectedIndex(i)) {
+                selectedItems.add(dm.getElementAt(i));
+            }
+        }
+        return selectedItems;
     }
     
-    public DnDList(List<String> newList){
+    public DnDList(List<String> newList) {
         defaultList = newList;
 
         listModel = new DefaultListModel<ListItem>();
 
-        for(String path: newList)
+        for (String path: newList) {
             listModel.addElement(new ListItem(path));
+        }
 
         this.setModel(listModel);
         
@@ -90,22 +90,26 @@ public class DnDList extends JList<ListItem> {
         ActionMap listActionMap = this.getActionMap();
         listActionMap.put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {
             @Override public void actionPerformed(ActionEvent e) {
-                if(DnDList.this.getSelectedValuesList().isEmpty()) return;
+                if (DnDList.this.getSelectedValuesList().isEmpty()) {
+                    return;
+                }
                 
                 List<ListItem> selectedValues = DnDList.this.getSelectedValuesList();
                 List<ListItem> siblings = new ArrayList<ListItem>();
-                for(ListItem value:selectedValues){
+                for (ListItem value: selectedValues) {
                     int valueIndex = listModel.indexOf(value);
 
-                    if(valueIndex < listModel.size()-1)
-                        siblings.add(listModel.get(valueIndex+1));
-                    else if(valueIndex > 0)
-                        siblings.add(listModel.get(valueIndex-1));
+                    if (valueIndex < listModel.size() - 1) {
+                        siblings.add(listModel.get(valueIndex + 1));
+                    } else if (valueIndex > 0) {
+                        siblings.add(listModel.get(valueIndex - 1));
+                    }
                 }
 
                 TransferHandler.getCutAction().actionPerformed(e);
-                for(ListItem sibling:siblings)
-                	DnDList.this.setSelectedValue(sibling, true);
+                for (ListItem sibling: siblings) {
+                    DnDList.this.setSelectedValue(sibling, true);
+                }
             }
 
         });
@@ -122,7 +126,7 @@ public class DnDList extends JList<ListItem> {
         this.addFocusListener(new FocusListener() {
             @Override
             public void focusLost(FocusEvent arg0) {
-            	DnDList.this.repaint();
+                DnDList.this.repaint();
             }
             @Override
             public void focusGained(FocusEvent arg0) {
@@ -137,8 +141,9 @@ public class DnDList extends JList<ListItem> {
         this.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent arg0) {
-                if (arg0.getKeyCode() == KeyEvent.VK_DELETE)
-                	DnDList.this.remove();
+                if (arg0.getKeyCode() == KeyEvent.VK_DELETE) {
+                    DnDList.this.remove();
+                }
             }
         });
 
@@ -146,51 +151,58 @@ public class DnDList extends JList<ListItem> {
         this.setTransferHandler(new ListTransfertHandler());
     }
 
-    void remove(){
-        if(this.getSelectedValuesList().isEmpty())return;
+    void remove() {
+        if (this.getSelectedValuesList().isEmpty()) {
+            return;
+        }
 
         List<ListItem> selectedValues = this.getSelectedValuesList();
-        for(ListItem i:selectedValues){
+        for (ListItem i: selectedValues) {
             int l = listModel.indexOf(i);
             listModel.removeElement(i);
-            if(l == listModel.getSize())
-                this.setSelectedIndex(l-1);
-            else
+            if (l == listModel.getSize()) {
+                this.setSelectedIndex(l - 1);
+            } else {
                 this.setSelectedIndex(l);
+            }
         }
-        if(this.getMinSelectionIndex() > -1 && this.getMaxSelectionIndex() > -1)
+        if (this.getMinSelectionIndex() > -1 && this.getMaxSelectionIndex() > -1) {
             this.scrollRectToVisible(
                     this.getCellBounds(
                             this.getMinSelectionIndex(),
                             this.getMaxSelectionIndex()
                             )
                     );
+        }
     }
 
     /**
-     * Load a file into the list (drag/drop or copy/paste)
+     * Load a file into the list (drag/drop or copy/paste).
      * @param filesToImport
      * @param position
      */
-    void dropPasteFile(List<File> filesToImport, int position){
+    void dropPasteFile(List<File> filesToImport, int position) {
         final DefaultListModel<ListItem> listModel = (DefaultListModel<ListItem>) this.getModel();
 
-        if(filesToImport.size() == 0) return;
+        if (filesToImport.isEmpty()) {
+            return;
+        }
         try {
-            for( Iterator<File> it = filesToImport.iterator(); it.hasNext(); ) {
+            for (Iterator<File> it = filesToImport.iterator(); it.hasNext();) {
                 File fileToImport = it.next();
 
-                if(Files.probeContentType(fileToImport.toPath())==null || !Files.probeContentType(fileToImport.toPath()).equals("text/plain")){
+                if (Files.probeContentType(fileToImport.toPath()) == null
+                        || !Files.probeContentType(fileToImport.toPath()).equals("text/plain")) {
                     JOptionPane.showMessageDialog(this.getTopLevelAncestor(),
                             "Unsupported file format.\nPlease import only text/plain files.",
                             "Import Error",
                             JOptionPane.ERROR_MESSAGE,
                             new ImageIcon(getClass().getResource("/com/jsql/view/images/error.png")));
-                    return ;
+                    return;
                 }
             }
         } catch (IOException e) {
-            InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         }
 
         String[] options = {"Replace", "Add", "Cancel"};
@@ -206,31 +218,36 @@ public class DnDList extends JList<ListItem> {
         int startPosition = position;
         int endPosition = startPosition;
 
-        if (answer != JOptionPane.YES_OPTION && answer != JOptionPane.NO_OPTION) return;
+        if (answer != JOptionPane.YES_OPTION && answer != JOptionPane.NO_OPTION) {
+            return;
+        }
         
-        if (answer == JOptionPane.YES_OPTION){
+        if (answer == JOptionPane.YES_OPTION) {
             listModel.clear();
             startPosition = 0;
             endPosition = 0;
         }
         
-        for( Iterator<File> iterator = (filesToImport).iterator(); iterator.hasNext(); ) {
+        for (Iterator<File> iterator = (filesToImport).iterator(); iterator.hasNext();) {
             BufferedReader fileReader;
             try {
                 fileReader = new BufferedReader(new FileReader(iterator.next()));
                 String line;
-                while((line = fileReader.readLine()) != null)
-                    if(!line.equals(""))
+                while ((line = fileReader.readLine()) != null) {
+                    if (!line.equals("")) {
                         listModel.add(endPosition++, new ListItem(line.replace("\\", "/")));
+                    }
+                }
             } catch (FileNotFoundException e) {
-            	InjectionModel.logger.error(e, e);
+                InjectionModel.LOGGER.error(e, e);
             } catch (IOException e) {
-                InjectionModel.logger.error(e, e);
+                InjectionModel.LOGGER.error(e, e);
             }
         }
         
-        if(listModel.size()>0)
-            this.setSelectionInterval(startPosition, endPosition-1);
+        if (!listModel.isEmpty()) {
+            this.setSelectionInterval(startPosition, endPosition - 1);
+        }
         
         this.scrollRectToVisible(
             this.getCellBounds(this.getMinSelectionIndex(), this.getMaxSelectionIndex())

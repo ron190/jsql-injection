@@ -19,22 +19,33 @@ package com.jsql.model.bean;
  * Concern only databases, tables and columns, values are raw data directly processed by the view
  */
 public abstract class ElementDatabase {
-    // Label of the current element
+    /**
+     * Label of the current element.
+     */
     protected String elementValue;
     
-    // Traverse upward, and return the parent
-    public abstract ElementDatabase getParent();
     /**
-     * Return the number of elements contained by current element
-     * - for database: number of tables
-     * - for table: number of rows
+     * Traverse upward, and return the parent.
+     * @return
+     */
+    public abstract ElementDatabase getParent();
+    
+    /**
+     * Return the number of elements contained by current element :<br>
+     * - for database: number of tables,<br>
+     * - for table: number of rows.<br>
      */
     public abstract int getCount();
     
-    // Return a readable label displayed by the view
+    /**
+     * Return a readable label displayed by the view.
+     * @return
+     */
     public abstract String getLabel();
     
-    // Return the label of current element
+    /**
+     * Return the label of current element.
+     */
     public String toString() {
         return this.elementValue;
     }

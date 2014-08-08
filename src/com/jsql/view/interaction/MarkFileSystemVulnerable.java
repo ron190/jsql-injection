@@ -14,22 +14,20 @@ import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 
 /**
- * Mark the injection as using a user profile vulnerable to file I/O
+ * Mark the injection as using a user profile vulnerable to file I/O.
  */
-public class MarkFileSystemVulnerable implements IInteractionCommand{
+public class MarkFileSystemVulnerable implements IInteractionCommand {
     /**
      * @param nullParam
      */
-    public MarkFileSystemVulnerable(Object[] nullParam){
+    public MarkFileSystemVulnerable(Object[] nullParam) {
+        // Do nothing
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
-        GUIMediator.left().fileManager.changeIcon(GUITools.TICK);
-        GUIMediator.left().shellManager.changeIcon(GUITools.TICK);
-        GUIMediator.left().sqlShellManager.changeIcon(GUITools.TICK);
-        GUIMediator.left().uploadManager.changeIcon(GUITools.TICK);
+    public void execute() {
+        GUIMediator.left().fileManager.changePrivilegeIcon(GUITools.TICK);
+        GUIMediator.left().shellManager.changePrivilegeIcon(GUITools.TICK);
+        GUIMediator.left().sqlShellManager.changePrivilegeIcon(GUITools.TICK);
+        GUIMediator.left().uploadManager.changePrivilegeIcon(GUITools.TICK);
     }
 }

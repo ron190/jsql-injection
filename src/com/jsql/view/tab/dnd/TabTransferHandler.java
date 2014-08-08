@@ -1,13 +1,3 @@
-/*******************************************************************************
- * Copyhacked (H) 2012-2014.
- * This program and the accompanying materials
- * are made available under no term at all, use it like
- * you want, but share and discuss about it
- * every time possible with every body.
- * 
- * Contributors:
- *      ron190 at ymail dot com - initial implementation
- ******************************************************************************/
 package com.jsql.view.tab.dnd;
 
 import java.awt.Cursor;
@@ -65,7 +55,7 @@ public class TabTransferHandler extends TransferHandler {
         if(target==source) {
             //System.out.println("target==source");
             isDropable = target.getTabAreaBounds().contains(pt) && idx>=0 && idx!=target.dragTabIndex && idx!=target.dragTabIndex+1;
-        }else{
+        } else {
             //System.out.format("target!=source%n  target: %s%n  source: %s", target.getName(), source.getName());
             if(source!=null && target!=source.getComponentAt(source.dragTabIndex)) {
                 isDropable = target.getTabAreaBounds().contains(pt) && idx>=0;
@@ -85,7 +75,7 @@ public class TabTransferHandler extends TransferHandler {
             dl.setDropable(true);
             target.setDropLocationLocal(dl, null, true);
             return true;
-        }else{
+        } else {
             support.setShowDropLocation(false);
             dl.setDropable(false);
             target.setDropLocationLocal(dl, null, false);
@@ -148,14 +138,14 @@ public class TabTransferHandler extends TransferHandler {
             int index = dl.getIndex(); //boolean insert = dl.isInsert();
             if(target==source) {
                 source.convertTab(source.dragTabIndex, index); //getTargetTabIndex(e.getLocation()));
-            }else{
+            } else {
                 source.exportTab(source.dragTabIndex, target, index);
             }
             return true;
         }catch(UnsupportedFlavorException e) {
-        	InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         }catch(IOException e) {
-        	InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         }
         return false;
     }

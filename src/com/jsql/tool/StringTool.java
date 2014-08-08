@@ -11,32 +11,42 @@
 package com.jsql.tool;
 
 import java.math.BigInteger;
+import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * String operations lacking from java, like join()
+ * String operations missing like join().
  */
-public class StringTool {
+public final class StringTool {
+    
+    private StringTool() {
+        //not called
+    }
+    
     /**
-     * Concatenate strings with separator
+     * Concatenate strings with separator.
      * @param strings Array of strings to join
      * @param separator String that concatenate two values of the array
-     * @return
+     * @return Joined string
      */
     public static String join(String[] strings, String separator) {
         StringBuffer sb = new StringBuffer();
-        for (int i=0; i < strings.length; i++) {
-            if (i != 0) sb.append(separator);
+        for (int i = 0; i < strings.length; i++) {
+            if (i != 0) {
+                sb.append(separator);
+            }
             sb.append(strings[i]);
         }
         return sb.toString();
     }
 
     /**
-     * Convert a hexadecimal String to String
-     * @param arg Hexadecimal String to convert
+     * Convert a hexadecimal String to String.
+     * @param hex Hexadecimal String to convert
      * @return The string converted from hex
      */
-    public static String hexstr(String hex){
+    public static String hexstr(String hex) {
         byte[] bytes = new byte[hex.length() / 2];
         for (int i = 0; i < bytes.length; i++) {
             bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
@@ -46,11 +56,26 @@ public class StringTool {
     }
 
     /**
-     * Convert a String to a hexadecimal String
+     * Convert a String to a hexadecimal String.
      * @param arg The string to convert
      * @return Hexadecimal String conversion
      */
     public static String strhex(String arg) {
         return String.format("%x", new BigInteger(arg.getBytes()));
+    }
+    
+    public static Map<String, String> getHeaders(URLConnection conn) {
+        Map<String, String> msgResponse = new HashMap<String, String>();
+        
+        for (int i = 0;; i++) {
+            String headerName = conn.getHeaderFieldKey(i);
+            String headerValue = conn.getHeaderField(i);
+            if (headerName == null && headerValue == null) {
+                break;
+            }
+            msgResponse.put(headerName == null ? "Method" : headerName, headerValue);
+        }
+
+        return msgResponse;
     }
 }

@@ -18,14 +18,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.font.TextAttribute;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
@@ -33,7 +30,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
@@ -50,8 +46,13 @@ import com.jsql.view.ui.RoundBorder;
  * Build default component appearence, keyboard shortcuts and icons.
  */
 @SuppressWarnings("serial")
-public class GUITools {
-    public static final Color SELECTION_BACKGROUND = new Color(211,230,255);
+public final class GUITools {
+    
+    private GUITools() {
+        //not called
+    }
+    
+    public static final Color SELECTION_BACKGROUND = new Color(211, 230, 255);
     public static final Color DEFAULT_BACKGROUND = UIManager.getColor("Panel.background");
     public static final Color COMPONENT_BORDER = UIManager.getColor("controlShadow");
     
@@ -69,8 +70,8 @@ public class GUITools {
     public static final Icon UPLOAD_ICON = new ImageIcon(GUITools.class.getResource("/com/jsql/view/images/server_add.png"));
     public static final Icon TABLE_ICON = new ImageIcon(GUITools.class.getResource("/com/jsql/view/images/table.png"));
 
-    public static final Icon EMPTY = new ImageIcon(new BufferedImage(16,16, BufferedImage.TRANSLUCENT));
-	public static final Icon ZEROSIZE = new ImageIcon() {public void paintIcon(Component c, Graphics g, int x, int y) {}};
+    public static final Icon EMPTY = new ImageIcon(new BufferedImage(16, 16, BufferedImage.TRANSLUCENT));
+    public static final Icon ZEROSIZE = new ImageIcon() { public void paintIcon(Component c, Graphics g, int x, int y) { } };
 
     public static final String PATH_PAUSE = "/com/jsql/view/images/pause.png";
     public static final String PATH_PROGRESSBAR = "/com/jsql/view/images/progressBar.gif";
@@ -87,13 +88,16 @@ public class GUITools {
     /**
      * Change the default style of various components.
      */
-    public static void prepareGUI(){
-        ToolTipManager.sharedInstance().setInitialDelay(500);   // timer before showing tooltip
-        ToolTipManager.sharedInstance().setDismissDelay(30000); // timer before closing automatically tooltip
-        ToolTipManager.sharedInstance().setReshowDelay(1);      // timer used when mouse move to another component, show tooltip immediately if timer is not expired
+    public static void prepareGUI() {
+        // timer before showing tooltip
+        ToolTipManager.sharedInstance().setInitialDelay(500);
+        // timer before closing automatically tooltip
+        ToolTipManager.sharedInstance().setDismissDelay(30000);
+        // timer used when mouse move to another component, show tooltip immediately if timer is not expired
+        ToolTipManager.sharedInstance().setReshowDelay(1);
 
-        UIManager.put("ToolTip.background", new Color(255,255,225));
-        UIManager.put("ToolTip.backgroundInactive", new Color(255,255,225));
+        UIManager.put("ToolTip.background", new Color(255, 255, 225));
+        UIManager.put("ToolTip.backgroundInactive", new Color(255, 255, 225));
         UIManager.put("ToolTip.foreground", Color.BLACK);
         UIManager.put("ToolTip.foregroundInactive", Color.BLACK);
         
@@ -126,25 +130,26 @@ public class GUITools {
         UIManager.put("CheckBoxMenuItem.selectionBackground", SELECTION_BACKGROUND);
         UIManager.put("CheckBoxMenuItem.font", MYFONT);
         UIManager.put("CheckBoxMenuItem.borderPainted", false);
-        UIManager.put("CheckBoxMenuItem.checkIcon", new ImageIcon(GUITools.class.getResource("/com/jsql/view/images/check.png")){
+        UIManager.put("CheckBoxMenuItem.checkIcon", new ImageIcon(GUITools.class.getResource("/com/jsql/view/images/check.png")) {
             @Override
             public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
-                ButtonModel m = ((AbstractButton)c).getModel();
-                if(m.isSelected())
+                ButtonModel m = ((AbstractButton) c).getModel();
+                if (m.isSelected()) {
                     super.paintIcon(c, g, x, y);
+                }
             }
         });
 
         // Custom tab
-        UIManager.put("TabbedPane.contentBorderInsets", new Insets(0,0,0,0));	// margin of current tab panel
-        UIManager.put("TabbedPane.tabAreaInsets", new Insets(3, 2, 0, 2));		// margin above tabs
-        UIManager.put("TabbedPane.tabInsets", new Insets(2,3+5,2,3));			// margin around tab name
+        UIManager.put("TabbedPane.contentBorderInsets", new Insets(0, 0, 0, 0));    // margin of current tab panel
+        UIManager.put("TabbedPane.tabAreaInsets", new Insets(3, 2, 0, 2));        // margin above tabs
+        UIManager.put("TabbedPane.tabInsets", new Insets(2, 3 + 5, 2, 3));            // margin around tab name
         
 //        UIManager.put("ScrollBar.squareButtons", true);
         
-        UIManager.put("TextField.font", new Font(((Font) UIManager.get("TextField.font")).getName(),Font.PLAIN,((Font) UIManager.get("TextField.font")).getSize()));
-        UIManager.put("TextArea.font", new Font("monospaced",Font.PLAIN,((Font) UIManager.get("TextArea.font")).getSize()));
-        UIManager.put("TextPane.font", new Font("monospaced",Font.PLAIN,((Font) UIManager.get("TextArea.font")).getSize()));
+        UIManager.put("TextField.font", new Font(((Font) UIManager.get("TextField.font")).getName(), Font.PLAIN, ((Font) UIManager.get("TextField.font")).getSize()));
+        UIManager.put("TextArea.font", new Font("monospaced", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize()));
+        UIManager.put("TextPane.font", new Font("monospaced", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize()));
         UIManager.put("ComboBox.font", MYFONT);
         UIManager.put("Button.font", MYFONT);
         UIManager.put("Label.font", MYFONT);
@@ -169,19 +174,19 @@ public class GUITools {
         UIManager.put("EditorPane.selectionBackground", SELECTION_BACKGROUND);
         UIManager.put("Table.selectionBackground", SELECTION_BACKGROUND);
 
-        UIManager.put("Table.focusCellHighlightBorder", 
-    		BorderFactory.createCompoundBorder( 
-	    		new AbstractBorder() {
-					@Override
-		            public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
-		                Graphics2D gg = (Graphics2D) g;
-		                gg.setColor(Color.GRAY);
-		                gg.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{1}, 0));
-		                gg.drawRect(x, y, w - 1, h - 1);
-		            }
-		        }, 
-		        BorderFactory.createEmptyBorder(0, 1, 0, 0)
-	        )
+        UIManager.put("Table.focusCellHighlightBorder",
+            BorderFactory.createCompoundBorder(
+                new AbstractBorder() {
+                    @Override
+                    public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
+                        Graphics2D gg = (Graphics2D) g;
+                        gg.setColor(Color.GRAY);
+                        gg.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{1}, 0));
+                        gg.drawRect(x, y, w - 1, h - 1);
+                    }
+                },
+                BorderFactory.createEmptyBorder(0, 1, 0, 0)
+            )
         );
         
         // Custom tree
@@ -190,8 +195,10 @@ public class GUITools {
         UIManager.put("Tree.lineTypeDashed", true);
 
         // Custom progress bar
-        UIManager.put("ProgressBar.border", BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(3, 0, 4, 0), new RoundBorder(2,2,true,Color.GRAY)));
-        UIManager.put("ProgressBar.foreground", new Color(136,183,104));
+        UIManager.put("ProgressBar.border", BorderFactory.createCompoundBorder(
+                BorderFactory.createEmptyBorder(3, 0, 4, 0),
+                new RoundBorder(2, 2, Color.GRAY)));
+        UIManager.put("ProgressBar.foreground", new Color(136, 183, 104));
         UIManager.put("ProgressBar.background", UIManager.get("Tree.background"));
         
         UIManager.put("TabbedPaneUI", CustomMetalTabbedPaneUI.class.getName());
@@ -203,31 +210,16 @@ public class GUITools {
      * Icons for application window.
      * @return List of a 16x16 (default) and 32x32 icon (alt-tab, taskbar)
      */
-    public static List<Image> getIcons(){
+    public static List<Image> getIcons() {
         List<Image> images = new ArrayList<Image>();
         URL urlSmall = GUITools.class.getResource("/com/jsql/view/images/app-16x16.png");
         URL urlBig = GUITools.class.getResource("/com/jsql/view/images/app-32x32.png");
         try {
-            images.add( ImageIO.read(urlBig) );
-            images.add( ImageIO.read(urlSmall) );
+            images.add(ImageIO.read(urlBig));
+            images.add(ImageIO.read(urlSmall));
         } catch (IOException e) {
-            InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         }
         return images;
-    }
-
-    public static void setUnderlined(JLabel label){
-    	Font font = label.getFont();
-        Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>(font.getAttributes());
-        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);
-        attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
-        label.setFont(font.deriveFont(attributes));
-    }
-
-    public static void removeFont(JLabel label){
-    	Font font = label.getFont();
-        Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>(font.getAttributes());
-        attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);
-        label.setFont(font.deriveFont(attributes));
     }
 }

@@ -24,22 +24,27 @@ import javax.swing.tree.TreePath;
  */
 public class AnimatedObserver implements ImageObserver {
     private JTree tree;
-    private DefaultTreeModel model;
+    private DefaultTreeModel treeModel;
     private TreeNode node;
 
-    AnimatedObserver(JTree tree, TreeNode node) {
+    /**
+     * Build GIF animator for tree node.
+     * @param tree Tree containing GIF node
+     * @param node Node with a GIF to animate
+     */
+    public AnimatedObserver(JTree tree, TreeNode node) {
         this.tree = tree;
-        this.model = (DefaultTreeModel) tree.getModel();
+        this.treeModel = (DefaultTreeModel) tree.getModel();
         this.node = node;
     }
 
     @Override
     public boolean imageUpdate(Image img, int flags, int x, int y, int w, int h) {
         if ((flags & (FRAMEBITS | ALLBITS)) != 0) {
-            TreePath path = new TreePath(model.getPathToRoot(node));
-            Rectangle rect = tree.getPathBounds(path);
+            TreePath path = new TreePath(this.treeModel.getPathToRoot(this.node));
+            Rectangle rect = this.tree.getPathBounds(path);
             if (rect != null) {
-                tree.repaint(rect);
+                this.tree.repaint(rect);
             }
         }
         return (flags & (ALLBITS | ABORT)) == 0;

@@ -1,13 +1,3 @@
-/*******************************************************************************
- * Copyhacked (H) 2012-2014.
- * This program and the accompanying materials
- * are made available under no term at all, use it like
- * you want, but share and discuss about it
- * every time possible with every body.
- * 
- * Contributors:
- *      ron190 at ymail dot com - initial implementation
- ******************************************************************************/
 package com.jsql.view.splitpane;
 /*
  * Copyright (c) 2011 Karl Tauber <karl at jformdesigner dot com>
@@ -47,18 +37,17 @@ import com.jsql.view.GUITools;
  * but a 9 pixel wide transparent drag area.
  */
 @SuppressWarnings("serial")
-public class JSplitPaneWithZeroSizeDivider extends JSplitPane
-{
+public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
     /**
      * The size of the transparent drag area.
      */
     private int dividerDragSize = 9;
     
-    public void disableDragSize(){
-    	dividerDragSize = 0;
+    public void disableDragSize() {
+        dividerDragSize = 0;
     }
-    public void enableDragSize(){
-    	dividerDragSize = 9;
+    public void enableDragSize() {
+        dividerDragSize = 9;
     }
 
     /**
@@ -71,12 +60,12 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane
     private int dividerDragOffset = 4;
 
     public JSplitPaneWithZeroSizeDivider() {
-        this( HORIZONTAL_SPLIT );
+        this(HORIZONTAL_SPLIT);
     }
 
-    public JSplitPaneWithZeroSizeDivider( int orientation ) {
-        super( orientation );
-        setContinuousLayout( true );
+    public JSplitPaneWithZeroSizeDivider(int orientation) {
+        super(orientation);
+        setContinuousLayout(true);
 //        setDividerSize( 1 );
     }
 
@@ -88,7 +77,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane
         return dividerDragSize;
     }
 
-    public void setDividerDragSize( int dividerDragSize ) {
+    public void setDividerDragSize(int dividerDragSize) {
         this.dividerDragSize = dividerDragSize;
         revalidate();
     }
@@ -97,7 +86,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane
         return dividerDragOffset;
     }
 
-    public void setDividerDragOffset( int dividerDragOffset ) {
+    public void setDividerDragOffset(int dividerDragOffset) {
         this.dividerDragOffset = dividerDragOffset;
         revalidate();
     }
@@ -108,68 +97,65 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane
         super.layout();
 
         // increase divider width or height
-        BasicSplitPaneDivider divider = ((BasicSplitPaneUI)getUI()).getDivider();
+        BasicSplitPaneDivider divider = ((BasicSplitPaneUI) getUI()).getDivider();
         Rectangle bounds = divider.getBounds();
-        if( orientation == HORIZONTAL_SPLIT ) {
+        if (orientation == HORIZONTAL_SPLIT) {
             bounds.x -= dividerDragOffset;
             bounds.width = dividerDragSize;
         } else {
             bounds.y -= dividerDragOffset;
             bounds.height = dividerDragSize;
         }
-        divider.setBounds( bounds );
+        divider.setBounds(bounds);
     }
 
     @Override
     public void updateUI() {
-        setUI( new SplitPaneWithZeroSizeDividerUI() );
+        setUI(new SplitPaneWithZeroSizeDividerUI());
         revalidate();
     }
 
     //---- class SplitPaneWithZeroSizeDividerUI -------------------------------
 
-    private class SplitPaneWithZeroSizeDividerUI
-    extends BasicSplitPaneUI
-    {
+    private class SplitPaneWithZeroSizeDividerUI extends BasicSplitPaneUI {
         @Override
         public BasicSplitPaneDivider createDefaultDivider() {
-            return new ZeroSizeDivider( this );
+            return new ZeroSizeDivider(this);
         }
     }
 
     //---- class ZeroSizeDivider ----------------------------------------------
 
-    private class ZeroSizeDivider
-    extends BasicSplitPaneDivider
-    {
-        public ZeroSizeDivider( BasicSplitPaneUI ui ) {
-            super( ui );
-            super.setBorder( null );
-            setBackground( GUITools.COMPONENT_BORDER );
+    private class ZeroSizeDivider extends BasicSplitPaneDivider {
+        public ZeroSizeDivider(BasicSplitPaneUI ui) {
+            super(ui);
+            super.setBorder(null);
+            setBackground(GUITools.COMPONENT_BORDER);
         }
 
         @Override
-        public void setBorder( Border border ) {
+        public void setBorder(Border border) {
             // ignore
         }
 
         @Override
-        public void paint( Graphics g ) {
-            g.setColor( getBackground() );
-            if( orientation == HORIZONTAL_SPLIT )
-                g.drawLine( dividerDragOffset, 0, dividerDragOffset, getHeight() - 1 );
-            else
-                g.drawLine( 0, dividerDragOffset, getWidth() - 1, dividerDragOffset );
+        public void paint(Graphics g) {
+            g.setColor(getBackground());
+            if (orientation == HORIZONTAL_SPLIT) {
+                g.drawLine(dividerDragOffset, 0, dividerDragOffset, getHeight() - 1);
+            } else {
+                g.drawLine(0, dividerDragOffset, getWidth() - 1, dividerDragOffset);
+            }
         }
 
         @Override
-        protected void dragDividerTo( int location ) {
-            super.dragDividerTo( location + dividerDragOffset );
+        protected void dragDividerTo(int location) {
+            super.dragDividerTo(location + dividerDragOffset);
         }
 
         @Override
-        protected void finishDraggingTo( int location ) {
-            super.finishDraggingTo( location + dividerDragOffset );
+        protected void finishDraggingTo(int location) {
+            super.finishDraggingTo(location + dividerDragOffset);
         }
     }
 }

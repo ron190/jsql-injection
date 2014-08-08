@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyhacked (H) 2012-2014.
+ * This program and the accompanying materials
+ * are made available under no term at all, use it like
+ * you want, but share and discuss about it
+ * every time possible with every body.
+ *
+ * Contributors:
+ *      ron190 at ymail dot com - initial implementation
+ *******************************************************************************/
 package com.jsql.view.panel;
 
 import java.awt.Dimension;
@@ -34,57 +44,65 @@ public class LeftPaneAdapter extends MouseTabbedPane {
     public UploadManager uploadManager = new UploadManager();
     public SQLShellManager sqlShellManager = new SQLShellManager();
 
-    public LeftPaneAdapter(){
+    public LeftPaneAdapter() {
         this.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
-        this.setMinimumSize(new Dimension()); // Allows to resize to zero
+        // Allows to resize to zero
+        this.setMinimumSize(new Dimension());
         this.activateMenu();
-        
+
         // First node in tree
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(new NodeModelEmpty("No database"));
         final JTree tree = new JTree(root);
         GUIMediator.register(tree);
-        
+
         // Graphic manager for components
         tree.setCellRenderer(new NodeRenderer());
-        
+
         // Action manager for components
         tree.setCellEditor(new NodeEditor());
-        
+
         // Tree setting
-        tree.setEditable(true);    // allows repaint nodes
+        // allows repaint nodes
+        tree.setEditable(true);
         tree.setShowsRootHandles(true);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        
+
         // Dirty trick that allows to repaint progressbar
         tree.getModel().addTreeModelListener(new TreeModelListener() {
             @Override
             public void treeNodesChanged(TreeModelEvent arg0) {
-                if(arg0 != null){
+                if (arg0 != null) {
                     tree.firePropertyChange(
-                        JTree.ROOT_VISIBLE_PROPERTY, 
+                        JTree.ROOT_VISIBLE_PROPERTY,
                         !tree.isRootVisible(),
                         tree.isRootVisible()
                     );
                 }
             }
-            @Override public void treeStructureChanged(TreeModelEvent arg0) {}
-            @Override public void treeNodesRemoved(TreeModelEvent arg0) {}
-            @Override public void treeNodesInserted(TreeModelEvent arg0) {}
+            @Override public void treeStructureChanged(TreeModelEvent arg0) {
+                // Do nothing
+            }
+            @Override public void treeNodesRemoved(TreeModelEvent arg0) {
+                // Do nothing
+            }
+            @Override public void treeNodesInserted(TreeModelEvent arg0) {
+                // Do nothing
+            }
         });
-        
+
         tree.addFocusListener(new FocusListener() {
             @Override
             public void focusLost(FocusEvent arg0) {
-            	System.out.println("x");
+                System.out.println("x");
             }
             @Override
             public void focusGained(FocusEvent arg0) {
-            	System.out.println("y");
+                System.out.println("y");
             }
         });
-        
-        JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1,1,0,0,tree);
-        
+
+        JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 1, 0, 0, tree);
+
         this.addTab("Database", GUITools.DATABASE_SERVER_ICON, scroller, "Explore databases from remote host");
         this.addTab("Admin page", GUITools.ADMIN_SERVER_ICON, adminPageManager, "Test admin pages on remote host");
         this.addTab("File", GUITools.FILE_SERVER_ICON, fileManager, "Read files from remote host");
@@ -93,9 +111,9 @@ public class LeftPaneAdapter extends MouseTabbedPane {
         this.addTab("Upload", GUITools.UPLOAD_ICON, uploadManager, "Upload a file to host");
         this.addTab("Brute force", GUITools.BRUTER_ICON, new BruteForceManager(), "Brute force hashes");
         this.addTab("Coder", GUITools.CODER_ICON, new CoderManager(), "Encode or decode a string");
-        
+
         this.fileManager.setButtonEnable(false);
         this.shellManager.setButtonEnable(false);
         this.sqlShellManager.setButtonEnable(false);
-	}
+    }
 }

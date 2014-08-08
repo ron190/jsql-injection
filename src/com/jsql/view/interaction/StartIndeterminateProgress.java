@@ -17,34 +17,34 @@ import com.jsql.view.GUIMediator;
 import com.jsql.view.tree.NodeModel;
 
 /**
- * Start refreshing the progress bar of an element in the database tree, progression is not tracked (like colum search)
+ * Start refreshing the progress bar of an element in the database tree.
+ * Progression is not tracked (like colum search).
  */
-public class StartIndeterminateProgress implements IInteractionCommand{
-    // The element in the database tree for which the progress starts
+public class StartIndeterminateProgress implements IInteractionCommand {
+    /**
+     * The element in the database tree for which the progress starts.
+     */
     private ElementDatabase dataElementDatabase;
 
     /**
      * @param mainGUI
      * @param interactionParams Element in the database tree to update
      */
-    public StartIndeterminateProgress(Object[] interactionParams){
+    public StartIndeterminateProgress(Object[] interactionParams) {
         dataElementDatabase = (ElementDatabase) interactionParams[0];
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
+    public void execute() {
         // Tree model, update the tree (refresh, add node, etc)
         DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
 
         // Get the node
         NodeModel progressingTreeNodeModel =
-                (NodeModel) GUIMediator.gui().getNode(dataElementDatabase).getUserObject();
+                (NodeModel) GUIMediator.gui().getTreeNodeModels().get(dataElementDatabase).getUserObject();
         // Mark the node model as 'loading'
         progressingTreeNodeModel.hasIndeterminatedProgress = true;
 
         // Update the node
-        treeModel.nodeChanged(GUIMediator.gui().getNode(dataElementDatabase));
+        treeModel.nodeChanged(GUIMediator.gui().getTreeNodeModels().get(dataElementDatabase));
     }
 }

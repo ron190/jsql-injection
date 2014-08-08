@@ -22,25 +22,24 @@ import com.jsql.view.tree.NodeModel;
 import com.jsql.view.tree.NodeModelColumn;
 
 /**
- * Add the columns to corresponding table
+ * Add the columns to corresponding table.
  */
-public class AddColumns implements IInteractionCommand{
-    // Columns retreived by the view
+public class AddColumns implements IInteractionCommand {
+    /**
+     * Columns retreived by the view.
+     */
     private List<Column> columns;
 
     /**
      * @param interactionParams List of columns retreived by the Model
      */
     @SuppressWarnings("unchecked")
-	public AddColumns(Object[] interactionParams){
+    public AddColumns(Object[] interactionParams) {
         // Get list of columns from the model
         columns = (List<Column>) interactionParams[0];
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
+    public void execute() {
         // Tree model, update the tree (refresh, add node, etc)
         DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
 
@@ -48,21 +47,21 @@ public class AddColumns implements IInteractionCommand{
         DefaultMutableTreeNode tableNode = null;
 
         // Loop into the list of columns
-        for(Column column: columns){
+        for (Column column: columns) {
             // Create a node model with the column element
             NodeModel newTreeNodeModel = new NodeModelColumn(column);
 
             // Create the node
-            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode( newTreeNodeModel );
+            DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(newTreeNodeModel);
             // Get the parent table
-            tableNode = GUIMediator.gui().getNode(column.getParent());
+            tableNode = GUIMediator.gui().getTreeNodeModels().get(column.getParent());
             // Add the column to the table
             treeModel.insertNodeInto(newNode, tableNode, tableNode.getChildCount());
         }
 
-        if(tableNode != null){
+        if (tableNode != null) {
             // Open the table node
-        	GUIMediator.databaseTree().expandPath( new TreePath(tableNode.getPath()) );
+            GUIMediator.databaseTree().expandPath(new TreePath(tableNode.getPath()));
             // The table has just been search (avoid double check)
             ((NodeModel) tableNode.getUserObject()).hasBeenSearched = true;
         }

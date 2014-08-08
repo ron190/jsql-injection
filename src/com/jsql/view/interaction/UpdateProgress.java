@@ -17,32 +17,32 @@ import com.jsql.view.GUIMediator;
 import com.jsql.view.tree.NodeModel;
 
 /**
- * Refresh the progress bar of an element in the database tree
+ * Refresh the progress bar of an element in the database tree.
  */
-public class UpdateProgress implements IInteractionCommand{
-    // The element in the database tree to refresh
+public class UpdateProgress implements IInteractionCommand {
+    /**
+     * The element in the database tree to refresh.
+     */
     private ElementDatabase dataElementDatabase;
 
-    // The index of progression
+    /**
+     * The index of progression.
+     */
     private int dataCount;
 
     /**
-     * @param mainGUI
      * @param interactionParams Element in the database tree and progression index
      */
-    public UpdateProgress(Object[] interactionParams){
+    public UpdateProgress(Object[] interactionParams) {
         dataElementDatabase = (ElementDatabase) interactionParams[0];
 
         dataCount = (Integer) interactionParams[1];
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
+    public void execute() {
         // Get the node
         NodeModel progressingTreeNodeModel =
-                (NodeModel) GUIMediator.gui().getNode(dataElementDatabase).getUserObject();
+                (NodeModel) GUIMediator.gui().getTreeNodeModels().get(dataElementDatabase).getUserObject();
         // Update the progress value of the model
         progressingTreeNodeModel.childUpgradeCount = dataCount;
 
@@ -50,6 +50,6 @@ public class UpdateProgress implements IInteractionCommand{
         DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
 
         // Update the node
-        treeModel.nodeChanged(GUIMediator.gui().getNode(dataElementDatabase));
+        treeModel.nodeChanged(GUIMediator.gui().getTreeNodeModels().get(dataElementDatabase));
     }
 }

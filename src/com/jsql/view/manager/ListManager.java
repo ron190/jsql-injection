@@ -21,10 +21,10 @@ import com.jsql.view.list.dnd.DnDList;
 import com.jsql.view.list.dnd.ListItem;
 
 /**
- * Manager for uploading PHP webshell to the host
+ * Abstract manager containing a drag and drop list of item.
  */
 @SuppressWarnings("serial")
-public class ListManager extends JPanel{
+abstract class ListManager extends JPanel {
     /**
      * Contains the paths of webshell.
      */
@@ -44,65 +44,65 @@ public class ListManager extends JPanel{
      * Text of the button that start the upload process.
      * Used to get back the default text after a search (defaultText->"Stop"->defaultText).
      */
-    protected String defaultText;  
+    protected String defaultText;
 
-	protected JLabel loader = new JLabel(GUITools.LOADER_GIF);
+    protected JLabel loader = new JLabel(GUITools.LOADER_GIF);
 
     /**
      * Add a new string to the list if it's not a duplicate.
      * @param element The string to add to the list
      */
-    public void addToList(String element){
+    public void addToList(String element) {
         boolean found = false;
-        for (int i = 0 ; i < ((DefaultListModel<ListItem>)listPaths.getModel()).size() ; i++){
-            if (((DefaultListModel<ListItem>)listPaths.getModel()).get(i).toString().equals(element)) {
+        for (int i = 0; i < ((DefaultListModel<ListItem>) listPaths.getModel()).size(); i++) {
+            if (((DefaultListModel<ListItem>) listPaths.getModel()).get(i).toString().equals(element)) {
                 found = true;
             }
         }
-        if(!found){
+        if (!found) {
             ListItem v = new ListItem(element);
-            ((DefaultListModel<ListItem>)listPaths.getModel()).addElement(v);
+            ((DefaultListModel<ListItem>) listPaths.getModel()).addElement(v);
         }
     }
 
     /**
      * Hide the loader icon.
      */
-    public void hideLoader(){
+    public void hideLoader() {
         loader.setVisible(false);
     }
 
     /**
      * Unselect every element of the list.
      */
-    public void clearSelection(){
+    public void clearSelection() {
         listPaths.clearSelection();
     }
 
     /**
      * Enable or disable the button.
-     * @param i The new state of the button
+     * @param isEnable The new state of the button
      */
-    public void setButtonEnable(boolean a){
-        run.setEnabled(a);
+    public void setButtonEnable(boolean isEnable) {
+        run.setEnabled(isEnable);
     }
 
     /**
      * Display another icon to the Privilege label.
-     * @param i The new icon
+     * @param icon The new icon
      */
-    public void changeIcon(Icon i){
-        privilege.setIcon(i);
+    public void changePrivilegeIcon(Icon icon) {
+        privilege.setIcon(icon);
     }
 
     /**
      * Restore the default text to the button after a search.
      */
-    public void restoreButtonText(){
+    public void restoreButtonText() {
         run.setText(defaultText);
-    }  
+    }
     
     public void setDefaultText(String defaultText) {
-		this.defaultText = defaultText;
-	}
+        this.defaultText = defaultText;
+    }
 }

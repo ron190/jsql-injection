@@ -80,14 +80,14 @@ public class HashBruter extends Bruter {
     public void tryBruteForce() {
         starttime = System.nanoTime();
         for (int size = minLength; size <= maxLength; size++) {
-            if (found == true || done == true) {
+            if (found || done) {
                 break;
             } else {
                 while (paused) {
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
-                        InjectionModel.logger.error(e, e);
+                        InjectionModel.LOGGER.error(e, e);
                     }
                 }
                 generateAllPossibleCombinations("", size);
@@ -101,24 +101,23 @@ public class HashBruter extends Bruter {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                InjectionModel.logger.error(e, e);
+                InjectionModel.LOGGER.error(e, e);
             }
         }
-        if (found == false || done == false) {
+        if (!found || !done) {
             if (baseString.length() == length) {
                 if(type.equalsIgnoreCase("crc32")) {
-                generatedHash = generateCRC32(baseString);
+                    generatedHash = generateCRC32(baseString);
                 } else if(type.equalsIgnoreCase("adler32")) {
-                generatedHash = generateAdler32(baseString);
+                    generatedHash = generateAdler32(baseString);
                 } else if(type.equalsIgnoreCase("crc16")) {
-                    generatedHash=generateCRC16(baseString);
+                    generatedHash = generateCRC16(baseString);
                 } else if(type.equalsIgnoreCase("crc64")) {
-                    generatedHash=generateCRC64(baseString.getBytes());
+                    generatedHash = generateCRC64(baseString.getBytes());
                 } else if(type.equalsIgnoreCase("mysql")) {
-                    generatedHash=generateMySQL(baseString.toCharArray());
-                }
-                else {
-                generatedHash = generateHash(baseString.toCharArray());
+                    generatedHash = generateMySQL(baseString.toCharArray());
+                } else {
+                    generatedHash = generateHash(baseString.toCharArray());
                 }
                     password = baseString;
                 if (hash.equals(generatedHash)) {
@@ -154,7 +153,7 @@ public class HashBruter extends Bruter {
         } catch (NoSuchAlgorithmException e1) {
             JOptionPane.showMessageDialog(null, "No such algorithm for hashes exists", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        String passwordString2 = new String( StringTool.hexstr(encodedPasswordInString).toCharArray() );
+        String passwordString2 = new String(StringTool.hexstr(encodedPasswordInString).toCharArray());
         byte[] passwordByte2 = passwordString2.getBytes();
         md2.update(passwordByte2, 0, passwordByte2.length);
         byte[] encodedPassword2 = md2.digest();
@@ -199,7 +198,7 @@ public class HashBruter extends Bruter {
     private String generateCRC32(String baseString) {
                
                 //Convert string to bytes
-                byte bytes[] = baseString.getBytes();
+                byte[] bytes = baseString.getBytes();
                
                 Checksum checksum = new CRC32();
                
@@ -221,7 +220,7 @@ public class HashBruter extends Bruter {
     private String generateAdler32(String baseString) {
                
                 //Convert string to bytes
-                byte bytes[] = baseString.getBytes();
+                byte[] bytes = baseString.getBytes();
                
                 Checksum checksum = new Adler32();
                

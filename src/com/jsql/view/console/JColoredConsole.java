@@ -10,25 +10,46 @@ import javax.swing.text.SimpleAttributeSet;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 
+/**
+ * A JTextPane which displays colored strings.
+ */
 @SuppressWarnings("serial")
 public class JColoredConsole extends JTextPane {
-	String tabName;
-	
-	public JColoredConsole(String tabName){
-		this.tabName = tabName;
-//		this.setAutoscrolls(true);	// does not work
-	}
-	
-	public void append(String message, SimpleAttributeSet attribut){
-		try {
-			this.getDocument().insertString(this.getDocument().getLength(), (this.getDocument().getLength()==0?"":"\n")+message, attribut);
-			
-			int tabIndex = GUIMediator.bottom().indexOfTab(tabName);
-			Component tabHeader = GUIMediator.bottom().getTabComponentAt(tabIndex);
-			if(GUIMediator.bottom().getSelectedIndex() != tabIndex)
-				tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
-		} catch (BadLocationException e) {
-			InjectionModel.logger.fatal(message);
-		}
-	}
+    /**
+     * Text name of tab.
+     */
+    private String tabName;
+
+    /**
+     * Create a JTextPane which displays colored strings.
+     * @param newTabName Text name of tab
+     */
+    public JColoredConsole(final String newTabName) {
+        this.tabName = newTabName;
+//        this.setAutoscrolls(true);    // does not work
+    }
+
+    /**
+     * Add a string to the end of JTextPane.
+     * @param message Text to add
+     * @param attribut Font
+     */
+    public void append(String message, SimpleAttributeSet attribut) {
+        try {
+            this.getDocument().insertString(
+                this.getDocument().getLength(),
+                (this.getDocument().getLength() == 0 ? "" : "\n") + message,
+                attribut
+            );
+
+            int tabIndex = GUIMediator.bottom().indexOfTab(tabName);
+            Component tabHeader
+                    = GUIMediator.bottom().getTabComponentAt(tabIndex);
+            if (GUIMediator.bottom().getSelectedIndex() != tabIndex) {
+                tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
+            }
+        } catch (BadLocationException e) {
+            InjectionModel.LOGGER.fatal(message);
+        }
+    }
 }

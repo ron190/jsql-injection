@@ -28,7 +28,7 @@ public class SQLTerminal extends Terminal {
      */
     public SQLTerminal(UUID terminalID, String shellURL, String... args) {
         super(terminalID, shellURL, "sql");
-        this.loginPassword = args; 
+        this.loginPassword = args;
     }
 
     @Override

@@ -12,12 +12,13 @@ package com.jsql.exception;
 
 /**
  * Exception class thrown during normal injection process,
- * concern every steps when user interact with database elements (database, table, column)
+ * concerns every steps when user interact with
+ * database elements (database, table, column).
  */
 @SuppressWarnings("serial")
 public class StoppableException extends Exception {
-	
-    public StoppableException(){
+    
+    public StoppableException() {
         super("Execution stopped by user.");
     }
 }

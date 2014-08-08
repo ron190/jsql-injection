@@ -24,10 +24,17 @@ import javax.swing.text.DefaultEditorKit;
 
 import com.jsql.view.GUITools;
 
+/**
+ * Popup menu for editable text component.
+ */
 @SuppressWarnings("serial")
-public class JPopupComponentMenu extends JPopupMenu{
-	
-    public JPopupComponentMenu(JComponent component){
+public class JPopupComponentMenu extends JPopupMenu {
+
+    /**
+     * Create a popup menu for editable component.
+     * @param component The component with the new menu
+     */
+    public JPopupComponentMenu(JComponent component) {
         JMenuItem copyItem = new JMenuItem();
         copyItem.setAction(component.getActionMap().get(DefaultEditorKit.copyAction));
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
@@ -35,25 +42,29 @@ public class JPopupComponentMenu extends JPopupMenu{
         copyItem.setText("Copy");
         copyItem.setIcon(GUITools.EMPTY);
         this.setLightWeightPopupEnabled(false);
-        
+
         JMenuItem selectAllItem = new JMenuItem();
         selectAllItem.setIcon(GUITools.EMPTY);
         selectAllItem.setAction(component.getActionMap().get(DefaultEditorKit.selectAllAction));
         selectAllItem.setText("Select All");
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         selectAllItem.setMnemonic('A');
-        
-        this.add( copyItem );
+
+        this.add(copyItem);
         this.addSeparator();
-        this.add( selectAllItem );
-        
+        this.add(selectAllItem);
+
         this.addPopupMenuListener(new PopupMenuListener() {
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
                 JPopupComponentMenu.this.setLocation(MouseInfo.getPointerInfo().getLocation());
             }
-            @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {}
-            @Override public void popupMenuCanceled(PopupMenuEvent e) {}
+            @Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+                // Do nothing
+            }
+            @Override public void popupMenuCanceled(PopupMenuEvent e) {
+                // Do nothing
+            }
         });
     }
 }

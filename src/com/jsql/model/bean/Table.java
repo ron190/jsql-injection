@@ -11,44 +11,57 @@
 package com.jsql.model.bean;
 
 /**
- * Define a Table, e.g is sent to the view by the model after injection
- * Allow to traverse upward to its corresponding database
+ * Define a Table, e.g is sent to the view by the model after injection.
+ * Allow to traverse upward to its corresponding database.
  */
 public class Table extends ElementDatabase {
-    // The database that contains the current column
+    /**
+     * The database that contains the current column.
+     */
     private Database parentDatabase;
     
-    // The number of rows in the table
+    /**
+     * The number of rows in the table.
+     */
     private String rowCount;
 
-    // Define the table label, number of rows and parent database
+    /**
+     * Define the table label, number of rows and parent database.
+     * @param newTableName
+     * @param newRowCount
+     * @param newParentDatabase
+     */
     public Table(String newTableName, String newRowCount, Database newParentDatabase) {
         this.elementValue = newTableName;
         this.rowCount = newRowCount;
         this.parentDatabase = newParentDatabase;
     }
 
-    // Return the parent database
+    /**
+     * Return the parent database.
+     */
     @Override
     public ElementDatabase getParent() {
         return this.parentDatabase;
     }
 
-    // Return the number of rows in the table
+    /**
+     * Return the number of rows in the table.
+     */
     @Override
     public int getCount() {
         return Integer.parseInt(rowCount);
     }
 
     /**
-     * A readable label for the table, with number of rows, displayed by the view
-     * If parent database is the system information_schema, number of rows is unknown
-     * e.g my_table (7 rows)
+     * A readable label for the table, with number of rows, displayed
+     * by the view. If parent database is the system information_schema, number
+     * of rows is unknown, e.g my_table (7 rows).
      */
     @Override
     public String getLabel() {
-        return this.elementValue + " ("+
-                (parentDatabase.toString().equals("information_schema")?"?":rowCount)
-            +" row"+(Integer.parseInt(rowCount)>0?"s":"")+")";
+        return this.elementValue + " (" +
+                (parentDatabase.toString().equals("information_schema") ? "?" : rowCount)
+            + " row" + (Integer.parseInt(rowCount) > 1 ? "s" : "") + ")";
     }
 }

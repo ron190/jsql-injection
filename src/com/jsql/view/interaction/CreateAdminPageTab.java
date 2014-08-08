@@ -39,23 +39,22 @@ import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.tab.TabHeader;
 
 /**
- * Create a new tab for an administration webpage
+ * Create a new tab for an administration webpage.
  */
-public class CreateAdminPageTab implements IInteractionCommand{
-    // Url for the administration webpage
+public class CreateAdminPageTab implements IInteractionCommand {
+    /**
+     * Url for the administration webpage.
+     */
     private final String url;
 
     /**
      * @param interactionParams Url of the webpage
      */
-    public CreateAdminPageTab(Object[] interactionParams){
+    public CreateAdminPageTab(Object[] interactionParams) {
         url = (String) interactionParams[0];
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
+    public void execute() {
 
         String htmlSource = "";
         try {
@@ -65,19 +64,19 @@ public class CreateAdminPageTab implements IInteractionCommand{
                     .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>") 
                     .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
                     Whitelist.relaxed()
-                    .addTags("center","div","span")
+                    .addTags("center", "div", "span")
                     //              .addAttributes("input","type","value","disabled")
                     //              .addAttributes("img","src","width","height")
-                    .addAttributes(":all","style")
+                    .addAttributes(":all", "style")
                     //              .addEnforcedAttribute("input", "disabled", "disabled")
                     );
         } catch (IOException e) {
-        	InjectionModel.logger.error(e, e);
+            InjectionModel.LOGGER.error(e, e);
         }
 
         final JTextPane browser = new JTextPane();
         browser.setContentType("text/html");
-        browser.setEditable( false );
+        browser.setEditable(false);
         browser.setText(htmlSource);
 
         final JPopupMenu menu = new JPopupMenu();
@@ -108,16 +107,16 @@ public class CreateAdminPageTab implements IInteractionCommand{
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 StringSelection stringSelection = new StringSelection(url);
-                Clipboard clipboard = Toolkit.getDefaultToolkit ().getSystemClipboard ();
-                clipboard.setContents (stringSelection, null);
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clipboard.setContents(stringSelection, null);
             }
         });
 
         itemSelectAll.addActionListener(new ActionListener() {
-        	@Override
-        	public void actionPerformed(ActionEvent arg0) {
-        		browser.selectAll();
-        	}
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                browser.selectAll();
+            }
         });
         
         browser.addMouseListener(new MouseAdapter() {
@@ -134,8 +133,8 @@ public class CreateAdminPageTab implements IInteractionCommand{
             }
         });
 
-        final JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1,0,0,0,browser);
-        GUIMediator.right().addTab(url.replaceAll(".*/", "")+" ", scroller);
+        final JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 0, 0, 0, browser);
+        GUIMediator.right().addTab(url.replaceAll(".*/", "") + " ", scroller);
 
         // Focus on the new tab
         GUIMediator.right().setSelectedComponent(scroller);
@@ -143,7 +142,7 @@ public class CreateAdminPageTab implements IInteractionCommand{
         // Create a custom tab header with close button
         TabHeader header = new TabHeader(new ImageIcon(getClass().getResource("/com/jsql/view/images/admin.png")));
 
-        GUIMediator.right().setToolTipTextAt(GUIMediator.right().indexOfComponent(scroller), "<html>"+url+"</html>");
+        GUIMediator.right().setToolTipTextAt(GUIMediator.right().indexOfComponent(scroller), "<html>" + url + "</html>");
 
         // Apply the custom header to the tab
         GUIMediator.right().setTabComponentAt(GUIMediator.right().indexOfComponent(scroller), header);

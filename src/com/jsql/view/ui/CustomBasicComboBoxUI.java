@@ -15,6 +15,11 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 /**
  * Better Combox UI.
  */
-public class CustomBasicComboBoxUI extends BasicComboBoxUI{
-    // Disable ugly MetalComboBoxUI
+public class CustomBasicComboBoxUI extends BasicComboBoxUI {
+    /**
+     * Disable default MetalComboBoxUI
+     */
+    public CustomBasicComboBoxUI() {
+        super();
+    }
 }

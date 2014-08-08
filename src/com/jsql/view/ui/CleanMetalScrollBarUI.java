@@ -9,6 +9,7 @@
  *      ron190 at ymail dot com - initial implementation
  *******************************************************************************/
 package com.jsql.view.ui;
+
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
@@ -22,17 +23,6 @@ import javax.swing.plaf.metal.MetalScrollBarUI;
  * UI for scrollbars without click button, cleaner and smaller track.
  */
 public class CleanMetalScrollBarUI extends MetalScrollBarUI {
-
-    @Override
-    protected JButton createDecreaseButton(int orientation) {
-        return createZeroButton();
-    }
-    
-    @Override
-    protected JButton createIncreaseButton(int orientation) {
-        return createZeroButton();
-    }
-    
     /**
      * Build a zero size button.
      * @return Zero size button
@@ -46,22 +36,33 @@ public class CleanMetalScrollBarUI extends MetalScrollBarUI {
         return button;
     }
     
-    @Override 
+
+    @Override
+    protected JButton createDecreaseButton(int orientation) {
+        return createZeroButton();
+    }
+
+    @Override
+    protected JButton createIncreaseButton(int orientation) {
+        return createZeroButton();
+    }
+
+    @Override
     protected void paintTrack(Graphics g, JComponent c, Rectangle r) {
         // Disable background border and color
     }
-    
+
     @Override
     public Dimension getPreferredSize(JComponent c) {
         return new Dimension(12, 12);
     }
-    
+
     /**
-     * Used by UIManager.put("ScrollBarUI", class).
-     * @param c
-     * @return new UI
+     * Allows to load Custom ScrollBar UI by UIManager.put("ScrollBarUI", class).
+     * @param c Component to customize
+     * @return new ScrollBar UI
      */
-    public static ComponentUI createUI(JComponent c){
+    public static ComponentUI createUI(JComponent c) {
         return new CleanMetalScrollBarUI();
     }
 }

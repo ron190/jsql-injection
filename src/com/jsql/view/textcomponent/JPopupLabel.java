@@ -22,29 +22,28 @@ import javax.swing.JTextField;
  */
 @SuppressWarnings("serial")
 public class JPopupLabel extends JPopupTextComponent<JTextField> implements JComponentDecorator<JTextField> {
-    
     /**
      * Build a ineditable JTextField in order to create a correct popup menu.
      */
-    public JPopupLabel(){
-        super(new JTextField(){
+    public JPopupLabel() {
+        super(new JTextField() {
             @Override
             public boolean isEditable() {
                 return false;
             }
         });
-        
-        this.proxy.addFocusListener(new FocusAdapter() {
+
+        this.getProxy().addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent arg0) {
-                JPopupLabel.this.proxy.getCaret().setVisible(true);
-                JPopupLabel.this.proxy.getCaret().setSelectionVisible(true);
+                JPopupLabel.this.getProxy().getCaret().setVisible(true);
+                JPopupLabel.this.getProxy().getCaret().setSelectionVisible(true);
             }
         });
 
-        this.proxy.setFont(this.proxy.getFont().deriveFont(Font.BOLD));
-        this.proxy.setDragEnabled(true);
+        this.getProxy().setFont(this.getProxy().getFont().deriveFont(Font.BOLD));
+        this.getProxy().setDragEnabled(true);
 
-        this.proxy.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+        this.getProxy().setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
     }
 }

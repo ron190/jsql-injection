@@ -13,19 +13,17 @@ package com.jsql.view.interaction;
 import com.jsql.view.GUIMediator;
 
 /**
- * End the refreshing of File search button
+ * End the refreshing of File search button.
  */
-public class EndFileSearch implements IInteractionCommand{
+public class EndFileSearch implements IInteractionCommand {
     /**
      * @param interactionParams
      */
-    public EndFileSearch(Object[] interactionParams){
+    public EndFileSearch(Object[] interactionParams) {
+        // Do nothing
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
+    public void execute() {
         GUIMediator.left().fileManager.restoreButtonText();
         GUIMediator.left().fileManager.setButtonEnable(true);
         GUIMediator.left().fileManager.hideLoader();

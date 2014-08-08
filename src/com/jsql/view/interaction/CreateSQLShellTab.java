@@ -17,15 +17,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 
+import com.jsql.model.ao.RessourceAccessObject;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.tab.TabHeader;
 import com.jsql.view.terminal.SQLTerminal;
 
 /**
- * Create a new tab for the terminal
+ * Create a new tab for the terminal.
  */
-public class CreateSQLShellTab implements IInteractionCommand{
-    // Full path of the shell file on remote host
+public class CreateSQLShellTab implements IInteractionCommand {
+    /**
+     * Full path of the shell file on remote host.
+     */
     private String path;
 
     // Url of the shell webpage on remote host
@@ -34,23 +37,19 @@ public class CreateSQLShellTab implements IInteractionCommand{
     private String pass;
 
     /**
-     * @param mainGUI
      * @param interactionParams The local path and url for the shell
      */
-    public CreateSQLShellTab(Object[] interactionParams){
+    public CreateSQLShellTab(Object[] interactionParams) {
         path = (String) interactionParams[0];
         url = (String) interactionParams[1];
         user = (String) interactionParams[2];
         pass = (String) interactionParams[3];
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
+    public void execute() {
         UUID terminalID = UUID.randomUUID();
         SQLTerminal terminal = new SQLTerminal(terminalID, url, user, pass);
-        GUIMediator.gui().consoles.put(terminalID, terminal);
+        GUIMediator.gui().getConsoles().put(terminalID, terminal);
 
         JScrollPane scroller = new JScrollPane(terminal);
         Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
@@ -65,8 +64,10 @@ public class CreateSQLShellTab implements IInteractionCommand{
         // Create a custom tab header with close button
         TabHeader header = new TabHeader(new ImageIcon(getClass().getResource("/com/jsql/view/images/shell.png")));
 
-        GUIMediator.right().setToolTipTextAt(GUIMediator.right().indexOfComponent(scroller),
-                "<html><b>URL</b><br>"+url+GUIMediator.model().rao.SQLSHELL_FILENAME+"<br><b>Path</b><br>"+path+GUIMediator.model().rao.SQLSHELL_FILENAME+"</html>");
+        GUIMediator.right().setToolTipTextAt(
+                GUIMediator.right().indexOfComponent(scroller),
+                "<html><b>URL</b><br>" + url + RessourceAccessObject.SQLSHELL_FILENAME
+                + "<br><b>Path</b><br>" + path + RessourceAccessObject.SQLSHELL_FILENAME + "</html>");
 
         // Apply the custom header to the tab
         GUIMediator.right().setTabComponentAt(GUIMediator.right().indexOfComponent(scroller), header);

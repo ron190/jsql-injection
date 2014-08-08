@@ -33,14 +33,23 @@ import com.jsql.view.GUIMediator;
  * Tree cell editor responsible for mouse action on nodes.
  */
 @SuppressWarnings("serial")
-public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, TreeSelectionListener, MouseListener{
+public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, TreeSelectionListener, MouseListener {
+    /**
+     * Renderer for nodes included JPanel, button, checkbox, icons...
+     */
+    private NodeRenderer defaultTreeRenderer;
 
-    private NodeRenderer treeRenderer;
-
+    /**
+     * Value contained in the editor.
+     * Returned by getCellEditorValue().
+     */
     private NodeModel nodeData;
 
+    /**
+     * Build editor, add tree and mouse listener.
+     */
     public NodeEditor() {
-        treeRenderer = new NodeRenderer();
+        this.defaultTreeRenderer = new NodeRenderer();
         GUIMediator.databaseTree().addTreeSelectionListener(this);
         GUIMediator.databaseTree().addMouseListener(this);
     }
@@ -49,18 +58,18 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
     public Component getTreeCellEditorComponent(JTree tree, Object nodeRenderer,
             boolean selected, boolean expanded, boolean leaf, int row) {
 
-        Component componentRenderer = treeRenderer.getTreeCellRendererComponent(tree, nodeRenderer, true, expanded, leaf,
+        Component componentRenderer = defaultTreeRenderer.getTreeCellRendererComponent(tree, nodeRenderer, true, expanded, leaf,
                 row, true);
 
         final DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         Object userObject = currentNode.getUserObject();
-        try{
-            nodeData = (NodeModel) userObject;
-            if(componentRenderer instanceof JCheckBox){
-                ((JCheckBox)componentRenderer).addActionListener(new ActionCheckUncheck(nodeData, currentNode));
+        try {
+            this.nodeData = (NodeModel) userObject;
+            if (componentRenderer instanceof JCheckBox) {
+                ((JCheckBox) componentRenderer).addActionListener(new ActionCheckUncheck(this.nodeData, currentNode));
             }
-        }catch(Exception e){
-            InjectionModel.logger.error(e, e);
+        } catch (Exception e) {
+            InjectionModel.LOGGER.error(e, e);
         }
 
         return componentRenderer;
@@ -68,18 +77,18 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
 
     @Override
     public Object getCellEditorValue() {
-        return nodeData;
+        return this.nodeData;
     }
 
     /**
      * Check and unckeck column as checkbox.
      */
-    private class ActionCheckUncheck implements ActionListener{
-        
-        NodeModel nodeData;
-        DefaultMutableTreeNode currentTableNode;
-        
-        public ActionCheckUncheck(NodeModel nodeData, DefaultMutableTreeNode currentTableNode){
+    private class ActionCheckUncheck implements ActionListener {
+
+        private NodeModel nodeData;
+        private DefaultMutableTreeNode currentTableNode;
+
+        public ActionCheckUncheck(NodeModel nodeData, DefaultMutableTreeNode currentTableNode) {
             this.nodeData = nodeData;
             this.currentTableNode = currentTableNode;
         }
@@ -88,18 +97,18 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
         public void actionPerformed(ActionEvent e) {
             Object source = e.getSource();
             JCheckBox columnCheckBox = (JCheckBox) source;
-            nodeData.isChecked = columnCheckBox.isSelected();
+            this.nodeData.isChecked = columnCheckBox.isSelected();
 
             DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
-            DefaultMutableTreeNode tableNode = (DefaultMutableTreeNode) currentTableNode.getParent();
+            DefaultMutableTreeNode tableNode = (DefaultMutableTreeNode) this.currentTableNode.getParent();
 
             int tableChildCount = treeModel.getChildCount(tableNode);
             boolean isOneChildSelected = false;
-            for(int i=0; i < tableChildCount ;i++) {
+            for (int i = 0; i < tableChildCount; i++) {
                 DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
-                if( currentChild.getUserObject() instanceof NodeModel ){
+                if (currentChild.getUserObject() instanceof NodeModel) {
                     NodeModel columnTreeNodeModel = (NodeModel) currentChild.getUserObject();
-                    if(columnTreeNodeModel.isChecked){
+                    if (columnTreeNodeModel.isChecked) {
                         isOneChildSelected = true;
                         break;
                     }
@@ -109,20 +118,20 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
             NodeModel nodeUserObject = (NodeModel) tableNode.getUserObject();
             nodeUserObject.hasChildChecked = isOneChildSelected;
             // !!important!!
-//            NodeEditor.this.stopCellEditing(); 
+//            NodeEditor.this.stopCellEditing();
         }
     }
 
     @Override
     public void valueChanged(TreeSelectionEvent arg0) {
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) GUIMediator.databaseTree().getLastSelectedPathComponent();
-        
+
         // Get rid of java.lang.NullPointerException
-        if(node == null) {
+        if (node == null) {
             return;
         }
 
-        if(node.getUserObject() instanceof NodeModel){
+        if (node.getUserObject() instanceof NodeModel) {
             NodeModel dataModel = (NodeModel) node.getUserObject();
             dataModel.runAction();
         }
@@ -132,11 +141,11 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
      * Fix compatibility issue with right click on Linux.
      * @param e Mouse event
      */
-    public void maybeShowPopup(MouseEvent e) {
-        if (e.isPopupTrigger()){
-            JTree tree = (JTree)e.getSource();
+    private void maybeShowPopup(MouseEvent e) {
+        if (e.isPopupTrigger()) {
+            JTree tree = (JTree) e.getSource();
             TreePath path = tree.getPathForLocation(e.getX(), e.getY());
-            if (path == null){
+            if (path == null) {
                 return;
             }
 
@@ -144,7 +153,7 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
 
             if (currentTableNode.getUserObject() instanceof NodeModel) {
                 NodeModel currentTableModel = (NodeModel) currentTableNode.getUserObject();
-                if(currentTableModel.verifyShowPopup()){
+                if (currentTableModel.verifyShowPopup()) {
                     currentTableModel.showPopup(currentTableNode, path, e.getX(), e.getY());
                 }
             }
@@ -155,20 +164,23 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
     public void mousePressed(MouseEvent e) {
         maybeShowPopup(e);
     }
+    
     @Override
     public void mouseReleased(MouseEvent e) {
         maybeShowPopup(e);
     }
 
-    @Override 
+    @Override
     public void mouseClicked(MouseEvent e) {
         // Do nothing
     }
-    @Override 
+    
+    @Override
     public void mouseEntered(MouseEvent e) {
         // Do nothing
     }
-    @Override 
+    
+    @Override
     public void mouseExited(MouseEvent e) {
         // Do nothing
     }

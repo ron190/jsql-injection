@@ -17,11 +17,15 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 /**
- * Render a tree node based on the node model.
+ * Render a tree node based on node model.
+ * Can render default tree node, or node for database, table or column.
  */
 @SuppressWarnings("serial")
 public class NodeRenderer extends DefaultTreeCellRenderer {
-    public NodeRenderer(){
+    /**
+     * Create tree node based on the node model.
+     */
+    public NodeRenderer() {
         super();
     }
     

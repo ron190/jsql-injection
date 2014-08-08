@@ -27,8 +27,7 @@ import com.jsql.model.bean.Column;
  * Column model creating a checkbox.
  * Used by renderer and editor.
  */
-public class NodeModelColumn extends NodeModel{
-    
+public class NodeModelColumn extends NodeModel {
     /**
      * Node as a column model.
      * @param column Element column coming from model
@@ -36,18 +35,18 @@ public class NodeModelColumn extends NodeModel{
     public NodeModelColumn(Column column) {
         super(column);
     }
-    
+
     @Override
     public Component getComponent(JTree tree, Object nodeRenderer,
             boolean selected, boolean expanded, boolean leaf, int row,
-            boolean hasFocus){
+            boolean hasFocus) {
         JCheckBox checkbox = new JCheckBox(this.toString(), this.isChecked);
-        checkbox.setFont( new Font(checkbox.getFont().getName(), Font.PLAIN|Font.ITALIC, checkbox.getFont().getSize()) );
+        checkbox.setFont(new Font(checkbox.getFont().getName(), Font.PLAIN | Font.ITALIC, checkbox.getFont().getSize()));
         checkbox.setBackground(Color.WHITE);
         return checkbox;
     }
 
-    @Override Icon getIcon(boolean leaf) {
+    @Override Icon getLeafIcon(boolean leaf) {
         // Do nothing
         return null;
     }
@@ -57,10 +56,10 @@ public class NodeModelColumn extends NodeModel{
     @Override void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {
         // Do nothing
     }
-    @Override void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j){
+    @Override public void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j) {
         // Do nothing
     }
-    @Override boolean verifyShowPopup() { 
+    @Override boolean verifyShowPopup() {
         // Do nothing
         return false; 
     }

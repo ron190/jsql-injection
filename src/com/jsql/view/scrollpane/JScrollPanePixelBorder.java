@@ -17,24 +17,35 @@ import javax.swing.JScrollPane;
 
 import com.jsql.view.GUITools;
 
-
 /**
- * Scroller with round border.
+ * Scroller with border.
  */
 @SuppressWarnings("serial")
 public class JScrollPanePixelBorder extends JScrollPane {
-	
-	public JScrollPanePixelBorder(int top, int left, int bottom, int right, Component c){
-		this(c);
-		
-		this.setBorder(BorderFactory.createMatteBorder(top, 0, bottom, 0, GUITools.COMPONENT_BORDER));
-		this.setViewportBorder(BorderFactory.createMatteBorder(0, left, 0, right, GUITools.COMPONENT_BORDER));
-	}
-	
-    public JScrollPanePixelBorder(Component c){
+    /**
+     * Create a scrollpane with top and left border for default component and a slide one.
+     * A component slided to the right will normaly hide the left border, JScrollPanePixelBorder fix this.
+     * @param c Component to decorate with a scroll
+     */
+    public JScrollPanePixelBorder(Component c) {
         super(c);
-        
+
         this.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, GUITools.COMPONENT_BORDER));
         this.setViewportBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, GUITools.COMPONENT_BORDER));
+    }
+
+    /**
+     * A scrollpane with custom borders
+     * @param top Border top size
+     * @param left Border left size
+     * @param bottom Border bottom size
+     * @param right Border right size
+     * @param c Component to decorate
+     */
+    public JScrollPanePixelBorder(int top, int left, int bottom, int right, Component c) {
+        this(c);
+
+        this.setBorder(BorderFactory.createMatteBorder(top, 0, bottom, 0, GUITools.COMPONENT_BORDER));
+        this.setViewportBorder(BorderFactory.createMatteBorder(0, left, 0, right, GUITools.COMPONENT_BORDER));
     }
 }

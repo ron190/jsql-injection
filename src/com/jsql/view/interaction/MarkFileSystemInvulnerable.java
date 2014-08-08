@@ -14,33 +14,31 @@ import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 
 /**
- * Mark the injection as using a user profile invulnerable to file I/O
+ * Mark the injection as using a user profile invulnerable to file I/O.
  */
-public class MarkFileSystemInvulnerable implements IInteractionCommand{
+public class MarkFileSystemInvulnerable implements IInteractionCommand {
     /**
      * @param interactionParams
      */
-    public MarkFileSystemInvulnerable(Object[] interactionParams){
+    public MarkFileSystemInvulnerable(Object[] interactionParams) {
+        // Do nothing
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
-        GUIMediator.left().fileManager.changeIcon(GUITools.SQUARE_RED);
+    public void execute() {
+        GUIMediator.left().fileManager.changePrivilegeIcon(GUITools.SQUARE_RED);
         GUIMediator.left().fileManager.setButtonEnable(true);
         GUIMediator.left().fileManager.restoreButtonText();
         GUIMediator.left().fileManager.hideLoader();
         
-        GUIMediator.left().shellManager.changeIcon(GUITools.SQUARE_RED);
+        GUIMediator.left().shellManager.changePrivilegeIcon(GUITools.SQUARE_RED);
         GUIMediator.left().shellManager.setButtonEnable(true);
         GUIMediator.left().shellManager.restoreButtonText();
         
-        GUIMediator.left().uploadManager.changeIcon(GUITools.SQUARE_RED);
+        GUIMediator.left().uploadManager.changePrivilegeIcon(GUITools.SQUARE_RED);
         GUIMediator.left().uploadManager.setButtonEnable(true);
         GUIMediator.left().uploadManager.restoreButtonText();
         
-        GUIMediator.left().sqlShellManager.changeIcon(GUITools.SQUARE_RED);
+        GUIMediator.left().sqlShellManager.changePrivilegeIcon(GUITools.SQUARE_RED);
         GUIMediator.left().sqlShellManager.setButtonEnable(true);
         GUIMediator.left().sqlShellManager.restoreButtonText();
     }

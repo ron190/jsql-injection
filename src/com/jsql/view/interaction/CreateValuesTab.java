@@ -25,23 +25,28 @@ import com.jsql.view.table.TablePanel;
 import com.jsql.view.tree.NodeModel;
 
 /**
- * Create a new tab for the values
+ * Create a new tab for the values.
  */
-public class CreateValuesTab implements IInteractionCommand{
-    // Array of column names, diplayed in header table
+public class CreateValuesTab implements IInteractionCommand {
+    /**
+     * Array of column names, diplayed in header table.
+     */
     private String[] columnNames;
 
-    // 2D array of values
+    /**
+     * 2D array of values.
+     */
     private String[][] data;
 
-    // The table containing the data
+    /**
+     * The table containing the data.
+     */
     private ElementDatabase table;
 
     /**
-     * @param mainGUI
      * @param interactionParams Names of columns, table's values and corresponding table
      */
-    public CreateValuesTab(Object[] interactionParams){
+    public CreateValuesTab(Object[] interactionParams) {
         // Array of column names, diplayed in header table
         columnNames = (String[]) interactionParams[0];
         // 2D array of values
@@ -50,12 +55,10 @@ public class CreateValuesTab implements IInteractionCommand{
         table = (ElementDatabase) interactionParams[2];
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
+    public void execute() {
         // Get the node
-        NodeModel progressingTreeNodeModel = (NodeModel) GUIMediator.gui().getNode(table).getUserObject();
+        NodeModel progressingTreeNodeModel =
+                (NodeModel) GUIMediator.gui().getTreeNodeModels().get(table).getUserObject();
 
         // Update the progress value of the model, end the progress
         progressingTreeNodeModel.childUpgradeCount = table.getCount();
@@ -71,20 +74,22 @@ public class CreateValuesTab implements IInteractionCommand{
         Comparator<Object> c1 = new ColumnComparator();
 
         rowSorter.setModel(newTableJPanel.table.getModel());
-        for(int i = 2 ; i < newTableJPanel.table.getColumnCount() ; i++)
+        for (int i = 2; i < newTableJPanel.table.getColumnCount(); i++) {
             rowSorter.setComparator(i, c1);
+        }
 
         // Create a new tab: add header and table
-        GUIMediator.right().addTab(table+" ",newTableJPanel);
+        GUIMediator.right().addTab(table + " ", newTableJPanel);
         // Focus on the new tab
         GUIMediator.right().setSelectedComponent(newTableJPanel);
 
         // Create a custom tab header with close button
         TabHeader header = new TabHeader();
 
-        GUIMediator.right().setToolTipTextAt(GUIMediator.right().indexOfComponent(newTableJPanel),
-                "<html><b>"+table.getParent()+"."+table+"</b><br>"+
-                        "<i>"+StringTool.join(Arrays.copyOfRange(columnNames, 2, columnNames.length),"<br>")+"</i></html>");
+        GUIMediator.right().setToolTipTextAt(
+                GUIMediator.right().indexOfComponent(newTableJPanel),
+                "<html><b>" + table.getParent() + "." + table + "</b><br>"
+                + "<i>" + StringTool.join(Arrays.copyOfRange(columnNames, 2, columnNames.length), "<br>") + "</i></html>");
 
         // Apply the custom header to the tab
         GUIMediator.right().setTabComponentAt(GUIMediator.right().indexOfComponent(newTableJPanel), header);

@@ -1,13 +1,3 @@
-/*******************************************************************************
- * Copyhacked (H) 2012-2014.
- * This program and the accompanying materials
- * are made available under no term at all, use it like
- * you want, but share and discuss about it
- * every time possible with every body.
- * 
- * Contributors:
- *      ron190 at ymail dot com - initial implementation
- ******************************************************************************/
 package com.jsql.view.table;
 
 import java.awt.Color;
@@ -52,7 +42,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener
      *  containing the table.
      */
     @SuppressWarnings("serial")
-	public FixedColumnTable(int fixedColumns, JScrollPane scrollPane)
+    public FixedColumnTable(int fixedColumns, JScrollPane scrollPane)
     {
         this.scrollPane = scrollPane;
 
@@ -65,16 +55,16 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener
 
 //        int totalColumns = main.getColumnCount();
 
-        fixed = new JTable(){
-            public boolean isCellEditable(int row,int column){
+        fixed = new JTable() {
+            public boolean isCellEditable(int row,int column) {
                 return false;
             }
         };
-        fixed.setAutoCreateColumnsFromModel( false );
+        fixed.setAutoCreateColumnsFromModel(false);
         fixed.setRowHeight(20);
-        fixed.setModel( main.getModel() );
-        fixed.setSelectionModel( main.getSelectionModel() );
-        fixed.setFocusable( false );
+        fixed.setModel(main.getModel());
+        fixed.setSelectionModel(main.getSelectionModel());
+        fixed.setFocusable(false);
         fixed.getTableHeader().setReorderingAllowed(false);
         
         fixed.setGridColor(Color.LIGHT_GRAY);

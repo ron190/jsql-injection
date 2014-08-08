@@ -22,9 +22,9 @@ import com.jsql.model.bean.HTTPHeader;
 import com.jsql.view.GUIMediator;
 
 /**
- * Append a text to the tab Header
+ * Append a text to the tab Header.
  */
-public class MessageHeader implements IInteractionCommand{
+public class MessageHeader implements IInteractionCommand {
     // The text to append to the tab
     private String url;
     private String cookie;
@@ -37,8 +37,8 @@ public class MessageHeader implements IInteractionCommand{
      * @param interactionParams Text to append
      */
     @SuppressWarnings("unchecked")
-	public MessageHeader(Object[] interactionParams){
-    	Map<String, Object> params = (Map<String, Object>) interactionParams[0];
+    public MessageHeader(Object[] interactionParams) {
+        Map<String, Object> params = (Map<String, Object>) interactionParams[0];
         url = (String) params.get("Url");
         cookie = (String) params.get("Cookie");
         post = (String) params.get("Post");
@@ -46,15 +46,12 @@ public class MessageHeader implements IInteractionCommand{
         response = (Map<String, String>) params.get("Response");
     }
 
-    /* (non-Javadoc)
-     * @see com.jsql.mvc.view.message.ActionOnView#execute()
-     */
-    public void execute(){
+    public void execute() {
         GUIMediator.bottomPanel().listHTTPHeader.add(new HTTPHeader(url, cookie, post, header, response));
-        DefaultTableModel model = (DefaultTableModel) ((JTable)((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().getView()).getModel();
+        DefaultTableModel model = (DefaultTableModel) ((JTable) ((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().getView()).getModel();
         model.addRow(new Object[]{response.get("Method"), url, response.get("Content-Length"), response.get("Content-Type")});
         
-        Rectangle rect = ((JTable)((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().getView()).getCellRect(((JTable)((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().getView()).getRowCount()-1, 0 /* col */, true);
+        Rectangle rect = ((JTable) ((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().getView()).getCellRect(((JTable) ((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().getView()).getRowCount() - 1, 0 /* col */, true);
         Point pt = ((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().getViewPosition();
         rect.translate(-pt.x, -pt.y);
         ((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().scrollRectToVisible(rect);

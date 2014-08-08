@@ -68,36 +68,36 @@ final class ShadowPopupBorder extends AbstractBorder {
      */
     private static final int SHADOW_SIZE = 5;
 
-	/**
-	 * The singleton instance used to draw all borders.
-	 */
-	private static ShadowPopupBorder instance = new ShadowPopupBorder();
+    /**
+     * The singleton instance used to draw all borders.
+     */
+    private static ShadowPopupBorder instance = new ShadowPopupBorder();
 
-	/**
-	 * The drop shadow is created from a PNG image with 8 bit alpha channel.
-	 */
-	private static Image shadow
-//		= new ImageIcon(ShadowPopupBorder.class.getResource("shadow.png")).getImage();
-    	= new ImageIcon(ShadowPopupBorder.class.getResource("/com/jsql/view/images/shadow.png")).getImage();
+    /**
+     * The drop shadow is created from a PNG image with 8 bit alpha channel.
+     */
+    private static Image shadow
+//        = new ImageIcon(ShadowPopupBorder.class.getResource("shadow.png")).getImage();
+        = new ImageIcon(ShadowPopupBorder.class.getResource("/com/jsql/view/images/shadow.png")).getImage();
 
 
     // Instance Creation *****************************************************
 
-	/**
-	 * Returns the singleton instance used to draw all borders.
-	 */
-	public static ShadowPopupBorder getInstance() {
-		return instance;
-	}
+    /**
+     * Returns the singleton instance used to draw all borders.
+     */
+    public static ShadowPopupBorder getInstance() {
+        return instance;
+    }
 
 
-	/**
-	 * Paints the border for the specified component with the specified
+    /**
+     * Paints the border for the specified component with the specified
      * position and size.
-	 */
-	@Override
+     */
+    @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-		// fake drop shadow effect in case of heavy weight popups
+        // fake drop shadow effect in case of heavy weight popups
         JComponent popup = (JComponent) c;
         Image hShadowBg = (Image) popup.getClientProperty(ShadowPopupFactory.PROP_HORIZONTAL_BACKGROUND);
         if (hShadowBg != null) {
@@ -108,22 +108,22 @@ final class ShadowPopupBorder extends AbstractBorder {
             g.drawImage(vShadowBg, x + width - 5, y, c);
         }
 
-		// draw drop shadow
-		g.drawImage(shadow, x +  5, y + height - 5, x + 10, y + height, 0, 6, 5, 11, null, c);
-		g.drawImage(shadow, x + 10, y + height - 5, x + width - 5, y + height, 5, 6, 6, 11, null, c);
-		g.drawImage(shadow, x + width - 5, y + 5, x + width, y + 10, 6, 0, 11, 5, null, c);
-		g.drawImage(shadow, x + width - 5, y + 10, x + width, y + height - 5, 6, 5, 11, 6, null, c);
-		g.drawImage(shadow, x + width - 5, y + height - 5, x + width, y + height, 6, 6, 11, 11, null, c);
-	}
+        // draw drop shadow
+        g.drawImage(shadow, x +  5, y + height - 5, x + 10, y + height, 0, 6, 5, 11, null, c);
+        g.drawImage(shadow, x + 10, y + height - 5, x + width - 5, y + height, 5, 6, 6, 11, null, c);
+        g.drawImage(shadow, x + width - 5, y + 5, x + width, y + 10, 6, 0, 11, 5, null, c);
+        g.drawImage(shadow, x + width - 5, y + 10, x + width, y + height - 5, 6, 5, 11, 6, null, c);
+        g.drawImage(shadow, x + width - 5, y + height - 5, x + width, y + height, 6, 6, 11, 11, null, c);
+    }
 
 
-	/**
-	 * Returns the insets of the border.
-	 */
-	@Override
+    /**
+     * Returns the insets of the border.
+     */
+    @Override
     public Insets getBorderInsets(Component c) {
-		return new Insets(0, 0, SHADOW_SIZE, SHADOW_SIZE);
-	}
+        return new Insets(0, 0, SHADOW_SIZE, SHADOW_SIZE);
+    }
 
 
     /**
