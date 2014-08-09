@@ -24,6 +24,7 @@ public class MarkFileSystemVulnerable implements IInteractionCommand {
         // Do nothing
     }
 
+    @Override
     public void execute() {
         GUIMediator.left().fileManager.changePrivilegeIcon(GUITools.TICK);
         GUIMediator.left().shellManager.changePrivilegeIcon(GUITools.TICK);

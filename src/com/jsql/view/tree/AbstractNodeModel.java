@@ -29,8 +29,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.model.bean.Column;
-import com.jsql.model.bean.ElementDatabase;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 import com.jsql.view.ui.RoundBorder;
@@ -38,11 +38,11 @@ import com.jsql.view.ui.RoundBorder;
 /**
  * Model adding functional layer to the node ; used by renderer and editor.
  */
-public abstract class NodeModel {
+public abstract class AbstractNodeModel {
     /**
      * Element from injection model in a linked list.
      */
-    protected ElementDatabase dataObject;
+    protected AbstractElementDatabase dataObject;
 
     /**
      * Text for empty node.
@@ -92,7 +92,7 @@ public abstract class NodeModel {
      * Create a functional model for tree node.
      * @param dataObject Database structural component
      */
-    public NodeModel(ElementDatabase dataObject) {
+    public AbstractNodeModel(AbstractElementDatabase dataObject) {
         this.dataObject = dataObject;
     }
 
@@ -100,7 +100,7 @@ public abstract class NodeModel {
      * Create an empty model for tree node.
      * @param emptyObject Empty tree default node
      */
-    public NodeModel(String emptyObject) {
+    public AbstractNodeModel(String emptyObject) {
         this.emptyObject = emptyObject;
     }
 
@@ -108,7 +108,7 @@ public abstract class NodeModel {
      * Get the database parent of current node.
      * @return Parent
      */
-    protected ElementDatabase getParent() {
+    protected AbstractElementDatabase getParent() {
         return dataObject.getParent();
     }
 
@@ -151,10 +151,10 @@ public abstract class NodeModel {
      * Action to start and stop injection process.
      */
     private class ActionLoadStop implements ActionListener {
-        NodeModel nodeData;
+        AbstractNodeModel nodeData;
         DefaultMutableTreeNode currentTableNode;
 
-        public ActionLoadStop(NodeModel nodeData, DefaultMutableTreeNode currentTableNode) {
+        public ActionLoadStop(AbstractNodeModel nodeData, DefaultMutableTreeNode currentTableNode) {
             this.nodeData = nodeData;
             this.currentTableNode = currentTableNode;
         }
@@ -168,8 +168,8 @@ public abstract class NodeModel {
             int tableChildCount = treeModel.getChildCount(tableNode);
             for (int i = 0; i < tableChildCount; i++) {
                 DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
-                if (currentChild.getUserObject() instanceof NodeModel) {
-                    NodeModel columnTreeNodeModel = (NodeModel) currentChild.getUserObject();
+                if (currentChild.getUserObject() instanceof AbstractNodeModel) {
+                    AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
                     if (columnTreeNodeModel.isChecked) {
                         columnsToSearch.add((Column) columnTreeNodeModel.dataObject);
                     }
@@ -191,12 +191,12 @@ public abstract class NodeModel {
                     
                 }.execute();
             } else {
-                GUIMediator.model().suspendables.get(NodeModel.this.dataObject).stop();
-                GUIMediator.model().suspendables.get(NodeModel.this.dataObject).unPause();
+                GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).stop();
+                GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).unPause();
                 this.nodeData.childUpgradeCount = 0;
                 this.nodeData.hasIndeterminatedProgress = false;
                 this.nodeData.hasProgress = false;
-                GUIMediator.model().suspendables.get(NodeModel.this.dataObject).resume();
+                GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).resume();
             }
             this.nodeData.isRunning = !this.nodeData.isRunning;
 
@@ -211,15 +211,15 @@ public abstract class NodeModel {
     private class ActionPauseUnpause implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (GUIMediator.model().suspendables.get(NodeModel.this.dataObject).isPaused()) {
-                GUIMediator.model().suspendables.get(NodeModel.this.dataObject).unPause();
+            if (GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).isPaused()) {
+                GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).unPause();
             } else {
-                GUIMediator.model().suspendables.get(NodeModel.this.dataObject).pause();
+                GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).pause();
             }
             
             // Restart the action after an unpause
-            if (!GUIMediator.model().suspendables.get(NodeModel.this.dataObject).isPaused()) {
-                GUIMediator.model().suspendables.get(NodeModel.this.dataObject).resume();
+            if (!GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).isPaused()) {
+                GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).resume();
             }
 
             // !!important!!
@@ -310,7 +310,7 @@ public abstract class NodeModel {
             panel.showLoader();
             panel.hideIcon();
 
-            if (GUIMediator.model().suspendables.get(NodeModel.this.dataObject).isPaused()) {
+            if (GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).isPaused()) {
                 ImageIcon animatedGIFPaused = new IconOverlap(GUITools.PATH_PROGRESSBAR, GUITools.PATH_PAUSE);
                 animatedGIFPaused.setImageObserver(new AnimatedObserver(GUIMediator.databaseTree(), currentNode));
                 panel.setLoaderIcon(animatedGIFPaused);

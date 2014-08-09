@@ -46,6 +46,7 @@ public class CreateSQLShellTab implements IInteractionCommand {
         pass = (String) interactionParams[3];
     }
 
+    @Override
     public void execute() {
         UUID terminalID = UUID.randomUUID();
         SQLTerminal terminal = new SQLTerminal(terminalID, url, user, pass);

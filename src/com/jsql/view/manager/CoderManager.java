@@ -54,10 +54,24 @@ import com.jsql.view.textcomponent.JPopupTextArea;
  */
 @SuppressWarnings("serial")
 public class CoderManager extends JPanel {
+    /**
+     * User input to encode. 
+     */
     private JTextArea entry;
+
+    /**
+     * Encoding user has choosed. 
+     */
     private JComboBox<String> encoding;
+
+    /**
+     * JTextArea displaying result of encoding/decoding.
+     */
     private JTextArea result;
 
+    /**
+     * Create a panel to encode a string.
+     */
     public CoderManager() {
         super(new BorderLayout());
 
@@ -110,7 +124,7 @@ public class CoderManager extends JPanel {
         result.setLineWrap(true);
         bottom.add(new JScrollPanePixelBorder(1, 1, 0, 0, result), BorderLayout.CENTER);
 
-        run.addActionListener(new ActionCode());
+        run.addActionListener(new ActionCoder());
 
         JSplitPaneWithZeroSizeDivider divider = new JSplitPaneWithZeroSizeDivider(JSplitPane.VERTICAL_SPLIT);
         divider.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -123,7 +137,10 @@ public class CoderManager extends JPanel {
         this.add(divider, BorderLayout.CENTER);
     }
 
-    private class ActionCode implements ActionListener {
+    /**
+     * Action runned when encoding.
+     */
+    private class ActionCoder implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent arg0) {
             if (Arrays.asList(new String[]{ "md2", "md5", "sha-1", "sha-256", "sha-384", "sha-512" } ).contains(encoding.getSelectedItem().toString().replace(" < hash", ""))) {
@@ -138,7 +155,7 @@ public class CoderManager extends JPanel {
                 byte[] passwordByte = passwordString.getBytes();
                 md.update(passwordByte, 0, passwordByte.length);
                 byte[] encodedPassword = md.digest();
-                String encodedPasswordInString = toHexString(encodedPassword);
+                String encodedPasswordInString = digestToHexString(encodedPassword);
                 
                 result.setText(encodedPasswordInString);
             } else if ("mysql".equals(encoding.getSelectedItem().toString().replace(" < hash", ""))) {
@@ -153,13 +170,13 @@ public class CoderManager extends JPanel {
                 byte[] passwordBytes = password.getBytes();
                 md.update(passwordBytes, 0, passwordBytes.length);
                 byte[] hashSHA1 = md.digest();
-                String stringSHA1 = toHexString(hashSHA1);
+                String stringSHA1 = digestToHexString(hashSHA1);
                 
                 String passwordSHA1 = new String(StringTool.hexstr(stringSHA1).toCharArray());
                 byte[] passwordSHA1Bytes = passwordSHA1.getBytes();
                 md.update(passwordSHA1Bytes, 0, passwordSHA1Bytes.length);
                 byte[] hashSHA1SH1 = md.digest();
-                String mysqlHash = toHexString(hashSHA1SH1);
+                String mysqlHash = digestToHexString(hashSHA1SH1);
                 
                 result.setText(mysqlHash);
             } else if ("hex < encode".equals(encoding.getSelectedItem())) {
@@ -222,14 +239,30 @@ public class CoderManager extends JPanel {
         }
     }
 
+    /**
+     * Adapter method for base64 decode.
+     * @param s base64 decode
+     * @return Base64 decoded string
+     */
     private String base64Decode(String s) {
         return StringUtils.newStringUtf8(Base64.decodeBase64(s));
     }
 
+    /**
+     * Adapter method for base64 encode.
+     * @param s String to base64 encode
+     * @return Base64 encoded string
+     */
     private String base64Encode(String s) {
         return Base64.encodeBase64String(StringUtils.getBytesUtf8(s));
     }
 
+    /**
+     * Zip a string.
+     * @param str Text to zip
+     * @return Zipped string
+     * @throws IOException
+     */
     private String compress(String str) throws IOException {
         if (str == null || str.length() == 0) {
             return str;
@@ -241,6 +274,12 @@ public class CoderManager extends JPanel {
         return out.toString("ISO-8859-1");
     }
 
+    /**
+     * Unzip a String encoded from base64 or hexadecimal. 
+     * @param str String to unzip
+     * @return String unzipped
+     * @throws IOException
+     */
     private String decompress(String str) throws IOException {
         if (str == null || str.length() == 0) {
             return str;
@@ -257,6 +296,11 @@ public class CoderManager extends JPanel {
         return response.toString();
     }
 
+    /**
+     * Convert byte character to hexadecimal StringBuffer character.
+     * @param b Byte character to convert
+     * @param buf Hexadecimal converted character
+     */
     private void byte2hex(byte b, StringBuffer buf) {
         char[] hexChars = {'0', '1', '2', '3', '4', '5', '6', '7', '8',
                 '9', 'A', 'B', 'C', 'D', 'E', 'F'};
@@ -266,11 +310,16 @@ public class CoderManager extends JPanel {
         buf.append(hexChars[low]);
     }
 
-    private String toHexString(byte[] block) {
+    /**
+     * Convert a digest hash to a string representation.
+     * @param block Digest array
+     * @return Hash as a string
+     */
+    private String digestToHexString(byte[] block) {
         StringBuffer buf = new StringBuffer();
         int len = block.length;
         for (int i = 0; i < len; i++) {
-            byte2hex(block[i], buf);
+            this.byte2hex(block[i], buf);
         }
         return buf.toString();
     }

@@ -44,6 +44,7 @@ public class CreateShellTab implements IInteractionCommand {
         url = (String) interactionParams[1];
     }
 
+    @Override
     public void execute() {
         UUID terminalID = UUID.randomUUID();
         WebshellTerminal terminal = new WebshellTerminal(terminalID, url);

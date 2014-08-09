@@ -23,6 +23,7 @@ public class EndAdminSearch implements IInteractionCommand {
         // Do nothing
     }
 
+    @Override
     public void execute() {
         GUIMediator.left().adminPageManager.restoreButtonText();
         GUIMediator.left().adminPageManager.setButtonEnable(true);

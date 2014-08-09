@@ -4,9 +4,9 @@ import java.util.regex.Pattern;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.bean.ElementDatabase;
+import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.model.bean.Request;
-import com.jsql.model.pattern.strategy.IInjectionStrategy;
+import com.jsql.model.pattern.strategy.AbstractInjectionStrategy;
 import com.jsql.view.GUIMediator;
 
 /**
@@ -18,20 +18,20 @@ import com.jsql.view.GUIMediator;
  * MID skips characters in a line (useful if result contains less than 1 row).
  * The process can be interrupted by the user (stop/pause).
  */
-public class StoppableLoopIntoResults extends Suspendable {
+public class StoppableLoopIntoResults extends AbstractSuspendable {
     @Override
     public String action(Object... args) throws PreparationException, StoppableException {
         String initialSQLQuery = (String) args[0];
         String[] sourcePage = (String[]) args[1];
         boolean useLimit = (Boolean) args[2];
         int numberToFind = (Integer) args[3];
-        ElementDatabase searchName = (ElementDatabase) args[4];
+        AbstractElementDatabase searchName = (AbstractElementDatabase) args[4];
         GUIMediator.model().suspendables.remove(searchName);
         GUIMediator.model().suspendables.put(searchName, this);
 
         String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", "");
 
-        IInjectionStrategy istrategy = GUIMediator.model().injectionStrategy;
+        AbstractInjectionStrategy istrategy = GUIMediator.model().getInjectionStrategy();
         /*
          * As we know the expected number of rows (numberToFind), then it stops injection if all rows are found,
          * keep track of rows we have reached (limitSQLResult) and use these to skip entire rows,

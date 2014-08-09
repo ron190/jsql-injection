@@ -49,16 +49,34 @@ import com.jsql.view.list.dnd.ListItem;
  * Get informations from file system, commands, webpage.
  */
 public class RessourceAccessObject {
-    
+    /**
+     * File name for web shell.
+     */
     public static final String WEBSHELL_FILENAME
             = "j" + InjectionModel.JSQLVERSION + ".tmp1.php";
+    
+    /**
+     * File name for upload form.
+     */
     public static final String UPLOAD_FILENAME
             = "j" + InjectionModel.JSQLVERSION + ".tmp2.php";
+    
+    /**
+     * File name for sql shell.
+     */
     public static final String SQLSHELL_FILENAME
             = "j" + InjectionModel.JSQLVERSION + ".tmp3.php";
     
+    /**
+     * True if admin page sould stop, false otherwise.
+     */
     public boolean endAdminSearch = false;
     
+    /**
+     * Check if every page in the list responds 200 OK.
+     * @param string
+     * @param list List of admin pages ot test
+     */
     public void getAdminPage(String string, List<ListItem> list) {
         String fin = string.replaceAll("^https?://[^/]*", "");
         String debut = string.replace(fin, "");
@@ -123,6 +141,13 @@ public class RessourceAccessObject {
         GUIMediator.model().interact(request);
     }
     
+    /**
+     * Create a webshell in the server.
+     * @param path Remote path othe file 
+     * @param url
+     * @throws PreparationException
+     * @throws StoppableException
+     */
     public void getShell(String path, String url)
             throws PreparationException, StoppableException {
         if (!this.checkFilePrivilege()) {
@@ -166,6 +191,14 @@ public class RessourceAccessObject {
         }
     }
     
+    /**
+     * Upload a file to the server.
+     * @param path Remote path of the file to upload 
+     * @param url URL of uploaded file
+     * @param file File to upload
+     * @throws PreparationException
+     * @throws StoppableException
+     */
     public void upload(String path, String url, File file) throws PreparationException, StoppableException {
         if (!this.checkFilePrivilege()) {
             return;
@@ -268,7 +301,7 @@ public class RessourceAccessObject {
                 msgHeader.put("Cookie", "");
                 msgHeader.put("Post", "");
                 msgHeader.put("Header", "");
-                msgHeader.put("Response", StringTool.getHeaders(conn));
+                msgHeader.put("Response", StringTool.getHTTPHeaders(conn));
 
                 Request request = new Request();
                 request.setMessage("MessageHeader");
@@ -297,6 +330,12 @@ public class RessourceAccessObject {
         GUIMediator.model().interact(request);
     }
     
+    /**
+     * Check if current user can read files.
+     * @return True if user can read file, false otherwise
+     * @throws PreparationException
+     * @throws StoppableException
+     */
     public boolean checkFilePrivilege() throws PreparationException, StoppableException {
         String[] sourcePage = {""};
 
@@ -330,8 +369,22 @@ public class RessourceAccessObject {
         return hasFileRight;
     }
     
+    /**
+     * True if current user has right to read file. 
+     */
     public boolean hasFileRight = false;
+    
+    /**
+     * True if file search must stop, false otherwise.
+     */
     public boolean endFileSearch = false;
+    
+    /**
+     * Create a panel for each file in the list.
+     * @param list List of file to read
+     * @throws PreparationException
+     * @throws StoppableException
+     */
     public void getFile(List<ListItem> list) throws PreparationException, StoppableException {
         if (!checkFilePrivilege()) {
             return;
@@ -422,7 +475,7 @@ public class RessourceAccessObject {
             msgHeader.put("Cookie", "");
             msgHeader.put("Post", "");
             msgHeader.put("Header", "");
-            msgHeader.put("Response", StringTool.getHeaders(connection));
+            msgHeader.put("Response", StringTool.getHTTPHeaders(connection));
             
             Request request = new Request();
             request.setMessage("MessageHeader");
@@ -441,6 +494,15 @@ public class RessourceAccessObject {
         }
     }
 
+    /**
+     * Create SQL shell on the server. Override user name and password eventually.
+     * @param path Script to create on the server
+     * @param url URL for the script (used for url rewriting)
+     * @param user User name for current database
+     * @param pass User password for current database
+     * @throws PreparationException
+     * @throws StoppableException
+     */
     public void getSQLShell(String path, String url, String user, String pass) throws PreparationException, StoppableException {
         if (!this.checkFilePrivilege()) {
             return;
@@ -489,6 +551,14 @@ public class RessourceAccessObject {
         }
     }
 
+    /**
+     * Execute SQL request into terminal defined by URL path, eventually override with database user/pass identifiers.
+     * @param cmd SQL request to execute
+     * @param terminalID Identifier of terminal sending the request
+     * @param wbhPath URL to send SQL request against
+     * @param user User name [optional]
+     * @param pass USEr password [optional]
+     */
     public void executeSQLShell(String cmd, UUID terminalID, String wbhPath, String user, String pass) {
         URLConnection connection;
         String result = "";
@@ -518,7 +588,7 @@ public class RessourceAccessObject {
             msgHeader.put("Cookie", "");
             msgHeader.put("Post", "");
             msgHeader.put("Header", "");
-            msgHeader.put("Response", StringTool.getHeaders(connection));
+            msgHeader.put("Response", StringTool.getHTTPHeaders(connection));
             
             Request request = new Request();
             request.setMessage("MessageHeader");

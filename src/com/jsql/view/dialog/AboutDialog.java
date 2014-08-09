@@ -50,13 +50,25 @@ import com.jsql.view.popupmenu.JPopupTextMenu;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.ui.RoundBorder;
 
+/**
+ * A dialog displaying information on jSQL.
+ */
 @SuppressWarnings("serial")
-public class About extends JDialog {
-
+public class AboutDialog extends JDialog {
+    /**
+     * Button receiving focus.
+     */
     public JButton close = null;
+    
+    /**
+     * Dialog scroller.
+     */
     private JScrollPanePixelBorder scrollPane;
 
-    public About() {
+    /**
+     * Create a dialog for general information on project jsql.
+     */
+    public AboutDialog() {
         super(GUIMediator.gui(), "About jSQL Injection", Dialog.ModalityType.MODELESS);
 
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -68,7 +80,7 @@ public class About extends JDialog {
         ActionListener escapeListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                About.this.dispose();
+                AboutDialog.this.dispose();
             }
         };
 
@@ -113,7 +125,7 @@ public class About extends JDialog {
             text[0] = new JEditorPane();
             text[0].setContentType("text/html");
 
-            InputStream in = About.class.getResourceAsStream("about.htm");
+            InputStream in = AboutDialog.class.getResourceAsStream("about.htm");
             String line, result = "";
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
@@ -168,6 +180,9 @@ public class About extends JDialog {
         reinit();
     }
 
+    /**
+     * Set back default setting for About frame.
+     */
     public final void reinit() {
         this.scrollPane.getViewport().setViewPosition(new Point(0, 0));
         this.setSize(400, 300);

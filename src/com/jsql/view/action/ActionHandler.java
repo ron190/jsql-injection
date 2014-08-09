@@ -43,12 +43,17 @@ import com.jsql.view.textcomponent.JPopupLabel;
  * - ctrl W: delete tab
  */
 public final class ActionHandler {
-    
+    /**
+     * Utility class without constructor.
+     */
     private ActionHandler() {
         //not called
     }
     
-    public static void addShortcut() {
+    /**
+     * Select all textfield content when focused.
+     */
+    public static void addTextFieldShortcutSelectAll() {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
             public void propertyChange(final PropertyChangeEvent e) {
                 if (e.getNewValue() instanceof JTextField 
@@ -147,6 +152,10 @@ public final class ActionHandler {
         actionMap.put("actionString-previousTab", previousTab);
     }
 
+    /**
+     * Create Alt shortcut to display menubar ; remove menubar when focus is set to a component.
+     * @param menubar The menubar to display
+     */
     public static void addShortcut(final Menubar menubar) {
         /* Hide Menubar when focusing any component */
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {

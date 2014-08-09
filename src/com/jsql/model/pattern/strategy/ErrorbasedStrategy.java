@@ -1,15 +1,15 @@
 package com.jsql.model.pattern.strategy;
 
 import com.jsql.exception.StoppableException;
+import com.jsql.model.AbstractSuspendable;
 import com.jsql.model.InjectionModel;
-import com.jsql.model.Suspendable;
 import com.jsql.model.bean.Request;
 import com.jsql.view.GUIMediator;
 
-public class ErrorbasedStrategy implements IInjectionStrategy {
-
-    private boolean isApplicable = false;
-
+/**
+ * Injection strategy using error attack.
+ */
+public class ErrorbasedStrategy extends AbstractInjectionStrategy {
     @Override
     public void checkApplicability() {
         InjectionModel.LOGGER.info("Error based test...");
@@ -49,16 +49,11 @@ public class ErrorbasedStrategy implements IInjectionStrategy {
                  || performanceSourcePage.indexOf("Dupliran unos '1' za klju") != -1
                  || performanceSourcePage.indexOf("Entrada '1' duplicada para a chave ") != -1;
         
-        if (isApplicable) {
+        if (this.isApplicable) {
             activate();
         } else {
             deactivate();
         }
-    }
-
-    @Override
-    public boolean isApplicable() {
-        return isApplicable;
     }
 
     @Override
@@ -76,7 +71,7 @@ public class ErrorbasedStrategy implements IInjectionStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, Suspendable stoppable) throws StoppableException {
+    public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable) throws StoppableException {
         return GUIMediator.model().inject(
                 GUIMediator.model().insertionCharacter + "+and" +
                     "(" +

@@ -18,7 +18,7 @@ import com.jsql.view.GUIMediator;
  * A terminal for web shell injection.
  */
 @SuppressWarnings("serial")
-public class WebshellTerminal extends Terminal {
+public class WebshellTerminal extends AbstractTerminal {
     /**
      * Build a webshell instance.
      * @param terminalID Unique identifier to discriminate beyond multiple opened terminals

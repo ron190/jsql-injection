@@ -15,21 +15,44 @@ package com.jsql.model.bean;
  * Used with the Observer pattern.
  */
 public class Request {
+    /**
+     * Class identifier for the interraction.
+     */
     private String message;
+    
+    /**
+     * List of parameters.
+     */
     private Object[] parameters;
 
+    /**
+     * Get identifier class name for this interraction.
+     * @return Name of interraction
+     */
     public String getMessage() {
         return message;
     }
 
-    public Object getParameters() {
+    /**
+     * Get the list of custom parameters for this request.
+     * @return List of parameter(s).
+     */
+    public Object[] getParameters() {
         return parameters;
     }
 
+    /**
+     * Identifier message for this request.
+     * @param message Text identifier
+     */
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * Set custom parameters for the request.
+     * @param parameters List of parameters
+     */
     public void setParameters(Object... parameters) {
         this.parameters = parameters;
     }

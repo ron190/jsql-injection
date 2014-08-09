@@ -19,9 +19,12 @@ import javax.swing.JOptionPane;
  * File chooser for supporting 'file already exists'.
  */
 @SuppressWarnings("serial")
-public class FileChooser extends JFileChooser {
-    
-    public FileChooser(String s) {
+public class ReplaceFileChooser extends JFileChooser {
+    /**
+     * Create a file chooser with a replace confirm dialog. 
+     * @param s
+     */
+    public ReplaceFileChooser(String s) {
         super(s);
     }
     

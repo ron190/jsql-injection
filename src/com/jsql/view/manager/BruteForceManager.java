@@ -41,23 +41,69 @@ import com.jsql.view.textcomponent.JPopupTextField;
  */
 @SuppressWarnings("serial")
 public class BruteForceManager extends JPanel {
+    /**
+     * Button running the attack.
+     */
     public AbstractButton run;
-
+    
+    /**
+     * Input for hash to brute force.
+     */
     private JTextField hash;
+    
+    /**
+     * Combobox of hashing methods.
+     */
     private JComboBox<String> hashTypes;
-
-    private JCheckBox low;
-    private JCheckBox up;
-    private JCheckBox num;
-    private JCheckBox spec;
-
+    
+    /**
+     * Enable injection of lowercase characters.
+     */
+    private JCheckBox lowerCaseCharacters;
+    
+    /**
+     * Enable injection of uppercase characters.
+     */
+    private JCheckBox upperCaseCharacters;
+    
+    /**
+     * Enable injection of numeric characters.
+     */
+    private JCheckBox numericCharacters;
+    
+    /**
+     * Enable injection of special characters. 
+     */
+    private JCheckBox specialCharacters;
+    
+    /**
+     * List of characters to exclude from the attack.
+     */
     private JTextField exclude;
-    private JTextField mini;
-    private JTextField max;
-
+    
+    /**
+     * Minimum length of string to attack.
+     */
+    private JTextField minimumLength;
+    
+    /**
+     * Maximum length of string to attack.
+     */
+    private JTextField maximumLength;
+    
+    /**
+     * Textarea displaying result.
+     */
     private JTextArea result;
+    
+    /**
+     * Animated GIF displayed during attack. 
+     */
     private JLabel loader;
 
+    /**
+     * Create a panel to run brute force attack. 
+     */
     public BruteForceManager() {
         super(new BorderLayout());
 
@@ -80,10 +126,10 @@ public class BruteForceManager extends JPanel {
         final JPanel secondLine = new JPanel();
         secondLine.setLayout(new BoxLayout(secondLine, BoxLayout.X_AXIS));
 
-        low = new JCheckBox("a-z", true);
-        up = new JCheckBox("A-Z", true);
-        num = new JCheckBox("0-9", true);
-        spec = new JCheckBox("Special", true);
+        lowerCaseCharacters = new JCheckBox("a-z", true);
+        upperCaseCharacters = new JCheckBox("A-Z", true);
+        numericCharacters = new JCheckBox("0-9", true);
+        specialCharacters = new JCheckBox("Special", true);
 
         secondLine.add(new JLabel(" Type ", SwingConstants.RIGHT));
 
@@ -98,22 +144,22 @@ public class BruteForceManager extends JPanel {
 
         secondLine.add(hashTypes);
 
-        secondLine.add(low);
-        secondLine.add(up);
-        secondLine.add(num);
-        secondLine.add(spec);
+        secondLine.add(lowerCaseCharacters);
+        secondLine.add(upperCaseCharacters);
+        secondLine.add(numericCharacters);
+        secondLine.add(specialCharacters);
         secondLine.add(Box.createGlue());
 
-        low.setToolTipText("<html><b>Lower case characters</b><br>"
+        lowerCaseCharacters.setToolTipText("<html><b>Lower case characters</b><br>"
                 + "Check if searched string contains any of following characters:<br>"
                 + "<span style=\"font-family:'Courier New';\">abcdefghijklmnopqrstuvwxyz</span></html>");
-        up.setToolTipText("<html><b>Upper case characters</b><br>"
+        upperCaseCharacters.setToolTipText("<html><b>Upper case characters</b><br>"
                 + "Check if searched string contains any of following characters:<br>"
                 + "<span style=\"font-family:'Courier New';\">ABCDEFGHIJKLMNOPQRSTUVWXYZ</span></html>");
-        num.setToolTipText("<html><b>Numeric characters</b><br>"
+        numericCharacters.setToolTipText("<html><b>Numeric characters</b><br>"
                 + "Check if searched string contains any of following characters:<br>"
                 + "<span style=\"font-family:'Courier New';\">0123456789</span></html>");
-        spec.setToolTipText("<html><b>Special characters</b><br>"
+        specialCharacters.setToolTipText("<html><b>Special characters</b><br>"
                 + "Check if searched string contains any of following characters:<br>"
                 + "<span style=\"font-family:'Courier New';\">&nbsp;~`!@#$%^&*()_-+={}[]|\\;:'\"<.,>/?</span></html>");
 
@@ -126,29 +172,29 @@ public class BruteForceManager extends JPanel {
                 + "Speed up process by excluding characters from the search.</html>");
         thirdLine.add(exclude);
 
-        mini = new JPopupTextField("1").getProxy();
-        max = new JPopupTextField("5").getProxy();
+        minimumLength = new JPopupTextField("1").getProxy();
+        maximumLength = new JPopupTextField("5").getProxy();
         
         thirdLine.add(new JLabel(" Length min. ", SwingConstants.RIGHT));
-        thirdLine.add(mini);
+        thirdLine.add(minimumLength);
         thirdLine.add(new JLabel("max. ", SwingConstants.RIGHT));
-        thirdLine.add(max);
+        thirdLine.add(maximumLength);
 
-        mini.setToolTipText("<html><b>Minimum length of searched string</b><br>" 
+        minimumLength.setToolTipText("<html><b>Minimum length of searched string</b><br>" 
                 + "Speed up process by specifying the minimum length to search.</html>");
-        max.setToolTipText("<html><b>Maximum length of searched string</b><br>" 
+        maximumLength.setToolTipText("<html><b>Maximum length of searched string</b><br>" 
                 + "Speed up process by specifying the maximum length to search.</html>");
         
-        mini.setHorizontalAlignment(JTextField.RIGHT);
-        max.setHorizontalAlignment(JTextField.RIGHT);
+        minimumLength.setHorizontalAlignment(JTextField.RIGHT);
+        maximumLength.setHorizontalAlignment(JTextField.RIGHT);
 
         exclude.setMaximumSize(new Dimension(90, (int) exclude.getPreferredSize().getHeight()));
         exclude.setMinimumSize(new Dimension(90, (int) exclude.getPreferredSize().getHeight()));
 
-        mini.setMaximumSize(new Dimension(30, (int) mini.getPreferredSize().getHeight()));
-        max.setMaximumSize(new Dimension(30, (int) max.getPreferredSize().getHeight()));
-        mini.setMinimumSize(new Dimension(30, (int) mini.getPreferredSize().getHeight()));
-        max.setMinimumSize(new Dimension(30, (int) max.getPreferredSize().getHeight()));
+        minimumLength.setMaximumSize(new Dimension(30, (int) minimumLength.getPreferredSize().getHeight()));
+        maximumLength.setMaximumSize(new Dimension(30, (int) maximumLength.getPreferredSize().getHeight()));
+        minimumLength.setMinimumSize(new Dimension(30, (int) minimumLength.getPreferredSize().getHeight()));
+        maximumLength.setMinimumSize(new Dimension(30, (int) maximumLength.getPreferredSize().getHeight()));
 
         final JPanel secondAndThirdLine = new JPanel(new BorderLayout());
         secondAndThirdLine.add(secondLine, BorderLayout.NORTH);
@@ -190,6 +236,9 @@ public class BruteForceManager extends JPanel {
         this.add(lastLine, BorderLayout.SOUTH);
     }
     
+    /**
+     * Run a brute force attack.
+     */
     private class BruteForceAction implements ActionListener {
         private final Boolean[] doStop = {false};
 
@@ -200,8 +249,8 @@ public class BruteForceManager extends JPanel {
                 doStop[0] = true;
             } else {
                 try {
-                    Integer.parseInt(max.getText());
-                    Integer.parseInt(mini.getText());
+                    Integer.parseInt(maximumLength.getText());
+                    Integer.parseInt(minimumLength.getText());
                 } catch (NumberFormatException e) {
                     result.setText("*** Incorrect length");
                     return;
@@ -211,13 +260,13 @@ public class BruteForceManager extends JPanel {
                     result.setText("*** Empty hash");
                     return;
                 } else if (
-                        !spec.isSelected()
-                        && !up.isSelected()
-                        && !low.isSelected()
-                        && !num.isSelected()) {
+                        !specialCharacters.isSelected()
+                        && !upperCaseCharacters.isSelected()
+                        && !lowerCaseCharacters.isSelected()
+                        && !numericCharacters.isSelected()) {
                     result.setText("*** Select a character range");
                     return;
-                } else if (Integer.parseInt(max.getText()) < Integer.parseInt(mini.getText())) {
+                } else if (Integer.parseInt(maximumLength.getText()) < Integer.parseInt(minimumLength.getText())) {
                     result.setText("*** Incorrect minimum and maximum length");
                     return;
                 }
@@ -234,19 +283,19 @@ public class BruteForceManager extends JPanel {
                         // Configure the hasher
                         final HashBruter hashBruter = new HashBruter();
 
-                        hashBruter.setMinLength(Integer.parseInt(mini.getText()));
-                        hashBruter.setMaxLength(Integer.parseInt(max.getText()));
+                        hashBruter.setMinLength(Integer.parseInt(minimumLength.getText()));
+                        hashBruter.setMaxLength(Integer.parseInt(maximumLength.getText()));
 
-                        if (spec.isSelected()) {
+                        if (specialCharacters.isSelected()) {
                             hashBruter.addSpecialCharacters();
                         }
-                        if (up.isSelected()) {
+                        if (upperCaseCharacters.isSelected()) {
                             hashBruter.addUpperCaseLetters();
                         }
-                        if (low.isSelected()) {
+                        if (lowerCaseCharacters.isSelected()) {
                             hashBruter.addLowerCaseLetters();
                         }
-                        if (num.isSelected()) {
+                        if (numericCharacters.isSelected()) {
                             hashBruter.addDigits();
                         }
                         if (!exclude.getText().equals("")) {

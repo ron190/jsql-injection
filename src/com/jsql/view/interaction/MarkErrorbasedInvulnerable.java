@@ -24,6 +24,7 @@ public class MarkErrorbasedInvulnerable implements IInteractionCommand {
         // Do nothing
     }
 
+    @Override
     public void execute() {
         GUIMediator.status().setErrorBasedIcon(GUITools.SQUARE_RED);
     }

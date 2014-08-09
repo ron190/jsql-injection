@@ -13,13 +13,13 @@ import javax.swing.JLabel;
  * Display as underlined if label is selected.
  */
 @SuppressWarnings("serial")
-public abstract class RadioLink extends JLabel {
+public abstract class AbstractRadioLink extends JLabel {
     /**
      * Build a radio label.
      * @param string Text for label
      * @param isSelected Is the radio selected by default?
      */
-    public RadioLink(String string, boolean isSelected) {
+    public AbstractRadioLink(String string, boolean isSelected) {
         this(string);
         this.setUnderlined();
     }
@@ -28,7 +28,7 @@ public abstract class RadioLink extends JLabel {
      * Build a radio label.
      * @param string Text for label
      */
-    public RadioLink(String string) {
+    public AbstractRadioLink(String string) {
         super(string);
 
         this.addMouseListener(new RadioMouseAdapter());
@@ -39,7 +39,7 @@ public abstract class RadioLink extends JLabel {
      * @return True if radio is not already selected
      */
     protected boolean isActivable() {
-        return !RadioLink.this.getFont().getAttributes().containsValue(TextAttribute.WEIGHT_BOLD);
+        return !AbstractRadioLink.this.getFont().getAttributes().containsValue(TextAttribute.WEIGHT_BOLD);
     }
 
     /**

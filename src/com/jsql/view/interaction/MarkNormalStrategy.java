@@ -23,6 +23,7 @@ public class MarkNormalStrategy implements IInteractionCommand {
         // Do nothing
     }
 
+    @Override
     public void execute() {
         GUIMediator.status().labelNormal.setUnderlined();
     }

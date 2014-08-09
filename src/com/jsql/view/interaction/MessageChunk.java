@@ -28,6 +28,7 @@ public class MessageChunk implements IInteractionCommand {
         text = (String) interactionParams[0];
     }
 
+    @Override
     public void execute() {
         GUIMediator.bottomPanel().chunks.append(text);
         GUIMediator.bottomPanel().chunks.setCaretPosition(GUIMediator.bottomPanel().chunks.getDocument().getLength());

@@ -14,7 +14,7 @@ package com.jsql.model.bean;
  * Define a Column, e.g is sent to the view by the model after injection.
  * Allow to traverse upward to its corresponding table
  */
-public class Column extends ElementDatabase {
+public class Column extends AbstractElementDatabase {
     /**
      * The table that contains the current column.
      */
@@ -35,7 +35,7 @@ public class Column extends ElementDatabase {
      * @return Parent for column
      */
     @Override
-    public ElementDatabase getParent() {
+    public AbstractElementDatabase getParent() {
         return parentTable;
     }
 

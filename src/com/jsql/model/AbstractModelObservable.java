@@ -22,7 +22,7 @@ import com.jsql.model.bean.Request;
  * - Callable for parallelizing HTTP tasks,<br>
  * - communication with view, via Observable.
  */
-public abstract class ModelObservable extends Observable {
+public abstract class AbstractModelObservable extends Observable {
     /**
      * Simple boolean state, true if user wants to stop preparation.<br>
      * During the preparation, several methods will
@@ -30,8 +30,11 @@ public abstract class ModelObservable extends Observable {
      */
     public boolean stopFlag = false;
 
+    /**
+     * 
+     */
     public void stop() {
-        stopFlag = true;
+        this.stopFlag = true;
     }
 
     /**
@@ -51,8 +54,8 @@ public abstract class ModelObservable extends Observable {
     public void interact(final Request interaction) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                ModelObservable.this.setChanged();
-                ModelObservable.this.notifyObservers(interaction);
+                AbstractModelObservable.this.setChanged();
+                AbstractModelObservable.this.notifyObservers(interaction);
             }
         });
     }

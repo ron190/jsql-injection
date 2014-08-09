@@ -4,7 +4,10 @@ import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.view.GUIMediator;
 
-public abstract class Suspendable implements Runnable{
+/**
+ * A thread used to inject database ; stoppable and pausable.
+ */
+public abstract class AbstractSuspendable implements Runnable{
     /**
      * Make the action to stop if true.
      */
@@ -15,8 +18,14 @@ public abstract class Suspendable implements Runnable{
      */
     private boolean pauseFlag = false;
 
+    /**
+     * Error message.
+     */
     private String errorResponse;
     
+    /**
+     * PAge source code as Hex string.
+     */
     private String threadResponse = "";
     
     /**

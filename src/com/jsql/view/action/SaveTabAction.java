@@ -27,7 +27,7 @@ import javax.swing.table.TableModel;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
-import com.jsql.view.dialog.FileChooser;
+import com.jsql.view.dialog.ReplaceFileChooser;
 import com.jsql.view.table.TablePanel;
 
 /**
@@ -36,7 +36,7 @@ import com.jsql.view.table.TablePanel;
 public class SaveTabAction implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
-        final FileChooser filechooser = new FileChooser(GUIMediator.model().pathFile);
+        final ReplaceFileChooser filechooser = new ReplaceFileChooser(GUIMediator.model().prefPathFile);
 
         if (GUIMediator.right().getSelectedComponent() instanceof TablePanel) {
             JTable table = ((TablePanel) GUIMediator.right().getSelectedComponent()).table;
@@ -50,9 +50,9 @@ public class SaveTabAction implements ActionListener {
             int returnVal = filechooser.showSaveDialog(GUIMediator.gui());
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = filechooser.getSelectedFile();
-                GUIMediator.model().pathFile = filechooser.getCurrentDirectory().toString();
+                GUIMediator.model().prefPathFile = filechooser.getCurrentDirectory().toString();
                 Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-                prefs.put("pathFile", GUIMediator.model().pathFile);
+                prefs.put("pathFile", GUIMediator.model().prefPathFile);
 
                 try {
                     TableModel model = table.getModel();
@@ -93,9 +93,9 @@ public class SaveTabAction implements ActionListener {
                 int returnVal = filechooser.showSaveDialog(GUIMediator.gui());
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = filechooser.getSelectedFile();
-                    GUIMediator.model().pathFile = filechooser.getCurrentDirectory().toString();
+                    GUIMediator.model().prefPathFile = filechooser.getCurrentDirectory().toString();
                     Preferences prefs = Preferences.userRoot().node(GUIMediator.model().getClass().getName());
-                    prefs.put("pathFile", GUIMediator.model().pathFile);
+                    prefs.put("pathFile", GUIMediator.model().prefPathFile);
                     
                     try {
                         BufferedWriter fileOut = new BufferedWriter(new FileWriter(file));
@@ -120,9 +120,9 @@ public class SaveTabAction implements ActionListener {
                 int returnVal = filechooser.showSaveDialog(GUIMediator.gui());
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     File file = filechooser.getSelectedFile();
-                    GUIMediator.model().pathFile = filechooser.getCurrentDirectory().toString();
+                    GUIMediator.model().prefPathFile = filechooser.getCurrentDirectory().toString();
                     Preferences prefs = Preferences.userRoot().node(GUIMediator.model().getClass().getName());
-                    prefs.put("pathFile", GUIMediator.model().pathFile);
+                    prefs.put("pathFile", GUIMediator.model().prefPathFile);
                     
                     try {
                         BufferedWriter fileOut = new BufferedWriter(new FileWriter(file));

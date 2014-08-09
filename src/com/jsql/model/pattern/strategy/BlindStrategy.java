@@ -2,36 +2,34 @@ package com.jsql.model.pattern.strategy;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
+import com.jsql.model.AbstractSuspendable;
 import com.jsql.model.InjectionModel;
-import com.jsql.model.Suspendable;
 import com.jsql.model.bean.Request;
 import com.jsql.model.blind.ConcreteBlindInjection;
 import com.jsql.view.GUIMediator;
 
-public class BlindStrategy implements IInjectionStrategy {
-    
+/**
+ * Injection strategy using blind attack.
+ */
+public class BlindStrategy extends AbstractInjectionStrategy {
+    /**
+     * Blind injection object.
+     */
     private ConcreteBlindInjection blind;
-    
-    private boolean isApplicable = false;
     
     @Override
     public void checkApplicability() throws PreparationException {
         InjectionModel.LOGGER.info("Blind test...");
         
-        blind = new ConcreteBlindInjection();
+        this.blind = new ConcreteBlindInjection();
         
-        isApplicable = blind.isInjectable();
+        this.isApplicable = this.blind.isInjectable();
         
-        if (isApplicable) {
+        if (this.isApplicable) {
             activate();
         } else {
             deactivate();
         }
-    }
-
-    @Override
-    public boolean isApplicable() {
-        return isApplicable;
     }
 
     @Override
@@ -49,7 +47,7 @@ public class BlindStrategy implements IInjectionStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, Suspendable stoppable) throws StoppableException {
+    public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable) throws StoppableException {
         return blind.inject("(" +
                 "select+" +
                     "concat(" +

@@ -12,6 +12,9 @@ import com.jsql.exception.PreparationException;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 
+/**
+ * A blind attack class using thread asynchronisation.
+ */
 public class ConcreteBlindInjection extends AbstractBlindInjection {
     /**
      * Source code of the TRUE web page (usually ?id=1).
@@ -42,6 +45,11 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
         return constantFalseMark;
     }
 
+    /**
+     * Create blind attack initialisation.
+     * If every false test are not in true mark and every true test are in
+     * true test, then blind attack is confirmed.
+     */
     public ConcreteBlindInjection() {
 
         // Call the SQL request which must be TRUE (usually ?id=1)
@@ -69,12 +77,12 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
          *  it will use inject() from the model
          */
         ExecutorService executorFalseMark = Executors.newCachedThreadPool();
-        List<IBlindCallable> listCallableFalse = new ArrayList<IBlindCallable>();
+        List<AbstractBlindCallable> listCallableFalse = new ArrayList<AbstractBlindCallable>();
         for (String urlTest: falseTest) {
             listCallableFalse.add(new BlindCallable(urlTest));
         }
         // Begin the url requests
-        List<Future<IBlindCallable>> listFalseMark;
+        List<Future<AbstractBlindCallable>> listFalseMark;
         try {
             listFalseMark = executorFalseMark.invokeAll(listCallableFalse);
         } catch (InterruptedException e) {
@@ -90,7 +98,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
          */
         try {
             constantFalseMark = listFalseMark.get(0).get().getOpcodes();
-            for (Future<IBlindCallable> falseMark: listFalseMark) {
+            for (Future<AbstractBlindCallable> falseMark: listFalseMark) {
                 if (GUIMediator.model().stopFlag) {
                     return;
                 }
@@ -116,7 +124,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
             listCallableTrue.add(new BlindCallable("+and+" + urlTest + "--+"));
         }
         // Begin the url requests
-        List<Future<IBlindCallable>> listTrueMark;
+        List<Future<AbstractBlindCallable>> listTrueMark;
         try {
             listTrueMark = executorTrueMark.invokeAll(listCallableTrue);
         } catch (InterruptedException e) {
@@ -131,7 +139,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
          * Allow the user to stop the loop.
          */
         try {
-            for (Future<IBlindCallable> trueMark: listTrueMark) {
+            for (Future<AbstractBlindCallable> trueMark: listTrueMark) {
                 if (GUIMediator.model().stopFlag) {
                     return;
                 }
@@ -144,22 +152,13 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
         }
     }
 
-    /**
-     * Run a HTTP call via the model.
-     * @param urlString URL to inject
-     * @return Source code
-     */
-    public static String callUrl(String urlString) {
-        return GUIMediator.model().inject(GUIMediator.model().insertionCharacter + urlString);
-    }
-    
     @Override
-    public Callable<IBlindCallable> getCallable(String string, int indexCharacter, boolean isLengthTest) {
+    public Callable<AbstractBlindCallable> getCallable(String string, int indexCharacter, boolean isLengthTest) {
         return new BlindCallable(string, indexCharacter, isLengthTest);
     }
 
     @Override
-    public Callable<IBlindCallable> getCallable(String string, int indexCharacter, int bit) {
+    public Callable<AbstractBlindCallable> getCallable(String string, int indexCharacter, int bit) {
         return new BlindCallable(string, indexCharacter, bit);
     }
 

@@ -18,7 +18,7 @@ import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.Table;
 import com.jsql.view.GUIMediator;
-import com.jsql.view.tree.NodeModel;
+import com.jsql.view.tree.AbstractNodeModel;
 import com.jsql.view.tree.NodeModelTable;
 
 /**
@@ -38,6 +38,7 @@ public class AddTables implements IInteractionCommand {
         tables = (List<Table>) interactionParams[0];
     }
 
+    @Override
     public void execute() {
         // Tree model, update the tree (refresh, add node, etc)
         DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
@@ -48,7 +49,7 @@ public class AddTables implements IInteractionCommand {
         // Loop into the list of tables
         for (Table table: tables) {
             // Create a node model with the table element
-            NodeModel newTreeNodeModel = new NodeModelTable(table);
+            AbstractNodeModel newTreeNodeModel = new NodeModelTable(table);
             // Create the node
             DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(newTreeNodeModel);
             // Save the node
@@ -64,7 +65,7 @@ public class AddTables implements IInteractionCommand {
             // Open the database node
             GUIMediator.databaseTree().expandPath(new TreePath(databaseNode.getPath()));
             // The database has just been search (avoid double check)
-            ((NodeModel) databaseNode.getUserObject()).hasBeenSearched = true;
+            ((AbstractNodeModel) databaseNode.getUserObject()).hasBeenSearched = true;
         }
     }
 }

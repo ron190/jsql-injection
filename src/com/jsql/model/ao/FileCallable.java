@@ -7,10 +7,25 @@ import com.jsql.model.StoppableLoopIntoResults;
 import com.jsql.tool.StringTool;
 import com.jsql.view.GUIMediator;
 
+/**
+ * Callable to read file source code.
+ */
 public class FileCallable implements Callable<FileCallable> {
-    public String url, fileSource;
+    /**
+     * Url of the file to read.
+     */
+    public String url;
     
-    FileCallable(String url) {
+    /**
+     * Source code of file.
+     */
+    public String fileSource;
+
+    /**
+     * Create Callable to read a file.
+     * @param url
+     */
+    public FileCallable(String url) {
         this.url = url;
     }
 

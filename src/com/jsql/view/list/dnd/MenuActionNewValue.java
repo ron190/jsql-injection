@@ -25,10 +25,19 @@ import javax.swing.JTextArea;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.textcomponent.JPopupTextArea;
 
+/**
+ * Action to add a new item to a JList.
+ */
 public class MenuActionNewValue implements ActionListener {
-    
+    /**
+     * List to add new items.
+     */
     private DnDList myList;
     
+    /**
+     * Create action to add new item list.
+     * @param myList List to add new items. 
+     */
     public MenuActionNewValue(DnDList myList) {
         super();
         this.myList = myList;

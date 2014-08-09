@@ -38,21 +38,21 @@ import com.jsql.model.InjectionModel;
  * A Terminal completely built from swing text pane.
  */
 @SuppressWarnings("serial")
-public abstract class Terminal extends JTextPane {
+public abstract class AbstractTerminal extends JTextPane {
     /**
      * True if terminal is processing command.
      */
-    boolean[] isEdited = {false};
+    public boolean[] isEdited = {false};
 
     /**
      * Past commands entered by user.
      */
-    List<String> cmds = new ArrayList<String>();
+    public List<String> cmds = new ArrayList<String>();
 
     /**
      * Current position in array of past commands.
      */
-    int cmdsIndex = 0;
+    public int cmdsIndex = 0;
 
     /**
      * Server name or IP to display on prompt.
@@ -73,7 +73,7 @@ public abstract class Terminal extends JTextPane {
      * @param shellURL URL of current shell
      * @param shellLabel Type of shell to display on prompt
      */
-    public Terminal(UUID terminalID, String shellURL, String shellLabel) {
+    public AbstractTerminal(UUID terminalID, String shellURL, String shellLabel) {
         this.terminalID = terminalID;
         this.wbhPath = shellURL;
 
@@ -109,11 +109,11 @@ public abstract class Terminal extends JTextPane {
      * Update terminal and use default behavior.
      */
     public void reset() {
-        Terminal.this.isEdited[0] = false;
-        Terminal.this.setEditable(true);
-        Terminal.this.displayPrompt();
-        Terminal.this.setCaretPosition(Terminal.this.getDocument().getLength());
-        Terminal.this.setCursor(null);
+        AbstractTerminal.this.isEdited[0] = false;
+        AbstractTerminal.this.setEditable(true);
+        AbstractTerminal.this.displayPrompt();
+        AbstractTerminal.this.setCaretPosition(AbstractTerminal.this.getDocument().getLength());
+        AbstractTerminal.this.setCursor(null);
     }
 
     /**
@@ -142,11 +142,11 @@ public abstract class Terminal extends JTextPane {
      * @throws BadLocationException
      */
     public int getLineStartOffset(int line) throws BadLocationException {
-        Element map = Terminal.this.getDocument().getDefaultRootElement();
+        Element map = AbstractTerminal.this.getDocument().getDefaultRootElement();
         if (line < 0) {
             throw new BadLocationException("Negative line", -1);
         } else if (line >= map.getElementCount()) {
-            throw new BadLocationException("No such line", Terminal.this.getDocument().getLength() + 1);
+            throw new BadLocationException("No such line", AbstractTerminal.this.getDocument().getLength() + 1);
         } else {
             Element lineElem = map.getElement(line);
             return lineElem.getStartOffset();
@@ -243,8 +243,8 @@ public abstract class Terminal extends JTextPane {
         @Override
         public void mousePressed(MouseEvent e) {
             e.consume();
-            Terminal.this.requestFocusInWindow();
-            Terminal.this.setCaretPosition(Terminal.this.getDocument().getLength());
+            AbstractTerminal.this.requestFocusInWindow();
+            AbstractTerminal.this.setCaretPosition(AbstractTerminal.this.getDocument().getLength());
         }
         @Override public void mouseReleased(MouseEvent e) {
             e.consume();

@@ -47,8 +47,7 @@ import com.jsql.view.textcomponent.JPopupTextField;
  * Manager for uploading PHP SQL shell to the host and send queries.
  */
 @SuppressWarnings("serial")
-public class SQLShellManager extends ListManager {
-
+public class SQLShellManager extends AbstractListManager {
     /**
      * Build the manager panel.
      */
@@ -124,8 +123,8 @@ public class SQLShellManager extends ListManager {
             InjectionModel.LOGGER.error(e, e);
         }
 
-        listPaths = new DnDList(pathsList);
-        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, listPaths), BorderLayout.CENTER);
+        this.listPaths = new DnDList(pathsList);
+        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, this.listPaths), BorderLayout.CENTER);
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
@@ -158,19 +157,19 @@ public class SQLShellManager extends ListManager {
                 BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)));
 
-        run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/shellSearch.png")));
-        run.setToolTipText("<html><b>Select folder(s) in which shell is created</b><br>" +
+        this.run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/shellSearch.png")));
+        this.run.setToolTipText("<html><b>Select folder(s) in which shell is created</b><br>" +
                 "Path must be correct and correspond to a PHP folder, gives no result otherwise.<br>" +
                 "<i>If necessary, you must set the URL of shell directory (see note on text component).</i>" +
                 "</html>");
-        run.setEnabled(false);
+        this.run.setEnabled(false);
         
-        run.setBorder(GUITools.BLU_ROUND_BORDER);
+        this.run.setBorder(GUITools.BLU_ROUND_BORDER);
         
-        run.addActionListener(new ActionListener() {
+        this.run.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (listPaths.getSelectedValuesList().isEmpty()) {
+                if (SQLShellManager.this.listPaths.getSelectedValuesList().isEmpty()) {
                     InjectionModel.LOGGER.warn("Select at least one directory");
                     return;
                 }
@@ -184,7 +183,7 @@ public class SQLShellManager extends ListManager {
                     }
                 }
 
-                for (final Object path: listPaths.getSelectedValuesList()) {
+                for (final Object path: SQLShellManager.this.listPaths.getSelectedValuesList()) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -202,14 +201,14 @@ public class SQLShellManager extends ListManager {
             }
         });
 
-        privilege = new JLabel("File privilege", GUITools.SQUARE_GREY, SwingConstants.LEFT);
-        privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, GUITools.DEFAULT_BACKGROUND));
-        privilege.setToolTipText("<html><b>Needs the file privilege to work</b><br>" +
+        this.privilege = new JLabel("File privilege", GUITools.SQUARE_GREY, SwingConstants.LEFT);
+        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, GUITools.DEFAULT_BACKGROUND));
+        this.privilege.setToolTipText("<html><b>Needs the file privilege to work</b><br>" +
                 "Shows if the privilege FILE is granted to current user</html>");
 
-        lastLine.add(privilege);
+        lastLine.add(this.privilege);
         lastLine.add(Box.createHorizontalGlue());
-        lastLine.add(run);
+        lastLine.add(this.run);
 
         southPanel.add(urlLine);
         southPanel.add(lastLine);

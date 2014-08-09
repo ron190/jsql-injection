@@ -18,7 +18,7 @@ package com.jsql.model.bean;
  * inverse isn't required (database>table>column is not used)
  * Concern only databases, tables and columns, values are raw data directly processed by the view
  */
-public abstract class ElementDatabase {
+public abstract class AbstractElementDatabase {
     /**
      * Label of the current element.
      */
@@ -28,7 +28,7 @@ public abstract class ElementDatabase {
      * Traverse upward, and return the parent.
      * @return
      */
-    public abstract ElementDatabase getParent();
+    public abstract AbstractElementDatabase getParent();
     
     /**
      * Return the number of elements contained by current element :<br>

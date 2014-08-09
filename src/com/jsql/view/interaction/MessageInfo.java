@@ -20,12 +20,14 @@ public class MessageInfo implements IInteractionCommand {
      * @param nullParam
      */
     public MessageInfo(Object[] nullParam) {
+        // Do nothing
     }
 
+    @Override
     public void execute() {
         GUIMediator.status().setInfos(
-            GUIMediator.model().versionDB,
-            GUIMediator.model().currentDB,
+            GUIMediator.model().versionDatabase,
+            GUIMediator.model().currentDatabase,
             GUIMediator.model().currentUser,
             GUIMediator.model().authenticatedUser
         );

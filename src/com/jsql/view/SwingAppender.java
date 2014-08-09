@@ -12,13 +12,23 @@ import org.apache.log4j.WriterAppender;
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.ThrowableInformation;
 
-import com.jsql.view.console.DefaultConsoleAdapter;
+import com.jsql.view.console.AdapterDefaultColoredConsole;
+import com.jsql.view.console.AdapterJavaConsole;
 import com.jsql.view.console.JColoredConsole;
-import com.jsql.view.console.JavaConsoleAdapter;
 
+/**
+ * Log4j swing appender to display console message to respective textareas.
+ */
 public class SwingAppender extends WriterAppender {
+    /**
+     * Main console textfield.
+     */
     private static JColoredConsole consoleColored;
-    private static JavaConsoleAdapter javaConsole;
+    
+    /**
+     * Java console textfield.
+     */
+    private AdapterJavaConsole javaConsole;
 
     private static final SimpleAttributeSet ERROR = new SimpleAttributeSet();
     private static final SimpleAttributeSet INFO = new SimpleAttributeSet();
@@ -65,19 +75,20 @@ public class SwingAppender extends WriterAppender {
 
     /**
      * Requires a layout.
-     *
      * @return true.
      */
+    @Override
     public boolean requiresLayout() {
         return true;
     }
 
     /**
-     * This method overrides the parent {@link WriterAppender#closeWriter}
-     * implementation to do nothing because the console stream is not ours to
-     * close.
+     * This method overrides the parent {@link WriterAppender#closeWriter} implementation
+     * to do nothing because the console stream is not ours to close.
      */
+    @Override
     protected final void closeWriter() {
+        // Do nothing
     }
 
     /**
@@ -110,11 +121,19 @@ public class SwingAppender extends WriterAppender {
         }
     }
 
-    public void register(JavaConsoleAdapter javaConsole) {
-        SwingAppender.javaConsole = javaConsole;
+    /**
+     * Register the java console.
+     * @param javaConsole
+     */
+    public void register(AdapterJavaConsole javaConsole) {
+        this.javaConsole = javaConsole;
     }
 
-    public void register(DefaultConsoleAdapter consoleColored) {
+    /**
+     * Register the default console.
+     * @param consoleColored
+     */
+    public void register(AdapterDefaultColoredConsole consoleColored) {
         SwingAppender.consoleColored = consoleColored;
     }
 }

@@ -19,13 +19,13 @@ import javax.swing.JTextField;
  * A JTextField displaying an icon and buttons.
  */
 @SuppressWarnings("serial")
-public class JAddressBar extends JPopupTextField implements JComponentDecorator<JTextField> {
+public class JAddressBar extends JPopupTextField implements DecoratorJComponent<JTextField> {
     /**
      * Constructor with default text.
      * @param string The text to display
      */
-    public JAddressBar(String string) {
-        super(new JTextFieldWithIcon(string));
+    public JAddressBar() {
+        super(new JTextFieldWithIcon());
 
         this.getProxy().setPreferredSize(new Dimension(0, 27));
         this.getProxy().setFont(this.getProxy().getFont().deriveFont(Font.PLAIN, this.getProxy().getFont().getSize() + 2));

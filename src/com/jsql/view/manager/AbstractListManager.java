@@ -24,7 +24,7 @@ import com.jsql.view.list.dnd.ListItem;
  * Abstract manager containing a drag and drop list of item.
  */
 @SuppressWarnings("serial")
-abstract class ListManager extends JPanel {
+abstract class AbstractListManager extends JPanel {
     /**
      * Contains the paths of webshell.
      */
@@ -46,6 +46,9 @@ abstract class ListManager extends JPanel {
      */
     protected String defaultText;
 
+    /**
+     * A animated GIF displayed during processing.
+     */
     protected JLabel loader = new JLabel(GUITools.LOADER_GIF);
 
     /**
@@ -102,6 +105,10 @@ abstract class ListManager extends JPanel {
         run.setText(defaultText);
     }
     
+    /**
+     * Set text of the button.
+     * @param defaultText The text of the button
+     */
     public void setDefaultText(String defaultText) {
         this.defaultText = defaultText;
     }

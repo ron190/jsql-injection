@@ -16,7 +16,7 @@ import javax.swing.JComponent;
  * Decorate a swing component.
  * @param <T> Component like JTextField or JTextArea to decorate
  */
-interface JComponentDecorator<T extends JComponent> {
+interface DecoratorJComponent<T extends JComponent> {
     /**
      * Get back the decorated component.
      * @return Proxyfied component

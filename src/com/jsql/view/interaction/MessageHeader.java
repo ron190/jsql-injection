@@ -33,7 +33,6 @@ public class MessageHeader implements IInteractionCommand {
     private Map<String, String> response;
 
     /**
-     * @param mainGUI
      * @param interactionParams Text to append
      */
     @SuppressWarnings("unchecked")
@@ -46,6 +45,7 @@ public class MessageHeader implements IInteractionCommand {
         response = (Map<String, String>) params.get("Response");
     }
 
+    @Override
     public void execute() {
         GUIMediator.bottomPanel().listHTTPHeader.add(new HTTPHeader(url, cookie, post, header, response));
         DefaultTableModel model = (DefaultTableModel) ((JTable) ((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().getView()).getModel();

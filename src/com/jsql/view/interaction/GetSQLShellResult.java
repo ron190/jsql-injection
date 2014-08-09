@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 
 import com.jsql.view.GUIMediator;
-import com.jsql.view.terminal.Terminal;
+import com.jsql.view.terminal.AbstractTerminal;
 
 /**
  * Append the result of a command in the terminal.
@@ -46,8 +46,9 @@ public class GetSQLShellResult implements IInteractionCommand {
         result = (String) interactionParams[1];
     }
 
+    @Override
     public void execute() {
-        Terminal terminal = GUIMediator.gui().getConsoles().get(this.terminalID);
+        AbstractTerminal terminal = GUIMediator.gui().getConsoles().get(this.terminalID);
         
         if (this.result.indexOf("<SQLr>") > -1) {
             List<List<String>> listRows = new ArrayList<List<String>>();

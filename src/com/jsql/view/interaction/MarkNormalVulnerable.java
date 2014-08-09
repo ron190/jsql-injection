@@ -24,6 +24,7 @@ public class MarkNormalVulnerable implements IInteractionCommand {
         // Do nothing
     }
 
+    @Override
     public void execute() {
         GUIMediator.status().setNormalIcon(GUITools.TICK);
     }

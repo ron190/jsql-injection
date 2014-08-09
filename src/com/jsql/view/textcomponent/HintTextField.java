@@ -8,6 +8,7 @@ import java.awt.RenderingHints;
 
 import javax.swing.JTextField;
 
+@SuppressWarnings("serial")
 public class HintTextField extends JTextField {
     public HintTextField(String hint) {
         _hint = hint;

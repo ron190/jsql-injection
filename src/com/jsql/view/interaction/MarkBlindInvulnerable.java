@@ -24,6 +24,7 @@ public class MarkBlindInvulnerable implements IInteractionCommand {
         // Do nothing
     }
 
+    @Override
     public void execute() {
         GUIMediator.status().setBlindIcon(GUITools.SQUARE_RED);
     }

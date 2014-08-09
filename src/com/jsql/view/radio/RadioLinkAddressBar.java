@@ -11,7 +11,7 @@ import com.jsql.view.GUIMediator;
  * Radio label for HTTP method (GET, POST, etc).
  */
 @SuppressWarnings("serial")
-public class RadioLinkAddressBar extends RadioLink {
+public class RadioLinkAddressBar extends AbstractRadioLink {
     /**
      * Group of radio label for address bar.
      */

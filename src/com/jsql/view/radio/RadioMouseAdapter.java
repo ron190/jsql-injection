@@ -12,6 +12,9 @@ import javax.swing.SwingUtilities;
 
 import com.jsql.view.GUITools;
 
+/**
+ * Mouse adapter for radio link effect (hover and click).
+ */
 public class RadioMouseAdapter extends MouseAdapter {
     private Font original;
 
@@ -19,7 +22,7 @@ public class RadioMouseAdapter extends MouseAdapter {
     public void mouseClicked(MouseEvent e) {
         super.mouseClicked(e);
         
-        RadioLink radio = (RadioLink) e.getComponent();
+        AbstractRadioLink radio = (AbstractRadioLink) e.getComponent();
         
         if (radio.isActivable() && SwingUtilities.isLeftMouseButton(e)) {
             for (JLabel r: radio.getGroup()) {
@@ -41,7 +44,7 @@ public class RadioMouseAdapter extends MouseAdapter {
     public void mouseEntered(MouseEvent e) {
         super.mouseEntered(e);
         
-        RadioLink radio = (RadioLink) e.getComponent();
+        AbstractRadioLink radio = (AbstractRadioLink) e.getComponent();
         
         original = e.getComponent().getFont();
 
@@ -58,7 +61,7 @@ public class RadioMouseAdapter extends MouseAdapter {
     public void mouseExited(MouseEvent e) {
         super.mouseExited(e);
         
-        RadioLink radio = (RadioLink) e.getComponent();
+        AbstractRadioLink radio = (AbstractRadioLink) e.getComponent();
         
         radio.setFont(original);
         radio.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));

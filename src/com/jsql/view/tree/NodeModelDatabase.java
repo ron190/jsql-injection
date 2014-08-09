@@ -22,7 +22,7 @@ import com.jsql.view.GUIMediator;
 /**
  * Database model displaying the database icon on the label.
  */
-public class NodeModelDatabase extends NodeModel {
+public class NodeModelDatabase extends AbstractNodeModel {
     /**
      * Node as a database model.
      * @param database Element database coming from model

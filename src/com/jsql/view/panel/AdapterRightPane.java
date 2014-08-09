@@ -17,9 +17,16 @@ import com.jsql.view.action.ActionHandler;
 import com.jsql.view.tab.dnd.DnDTabbedPane;
 import com.jsql.view.tab.dnd.TabTransferHandler;
 
+/**
+ * TabbedPane containing result injection panels.
+ */
 @SuppressWarnings("serial")
-public class RightPaneAdapter extends DnDTabbedPane {
-    public RightPaneAdapter() {
+public class AdapterRightPane extends DnDTabbedPane {
+    
+    /**
+     * Create the panel containing injection results.
+     */
+    public AdapterRightPane() {
         this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
         TransferHandler handler = new TabTransferHandler();

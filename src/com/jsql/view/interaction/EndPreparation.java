@@ -23,6 +23,7 @@ public class EndPreparation implements IInteractionCommand {
         // Do nothing
     }
 
+    @Override
     public void execute() {
         GUIMediator.top().submitAddressBar.setInjectionReady();
         GUIMediator.top().loader.setVisible(false);

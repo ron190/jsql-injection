@@ -30,15 +30,34 @@ import javax.swing.TransferHandler;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 
-public class MenuAction extends MouseAdapter {
+/**
+ * A Mouse action to display a popupmenu on a JList.
+ */
+public class MouseAdapterMenuAction extends MouseAdapter {
+    /**
+     * JList to add popupmenu.
+     */
     private DnDList myList;
+    
+    /**
+     * True if JList is hovered.
+     */
     private int[] mouseOver;
-
-    public MenuAction(DnDList myList, int[] mouseOver) {
+    
+    /**
+     * Create a popup menu for current JList item.
+     * @param myList List with action
+     * @param mouseOver Is JList hovered
+     */
+    public MouseAdapterMenuAction(DnDList myList, int[] mouseOver) {
         this.myList = myList;
         this.mouseOver = mouseOver;
     }
     
+    /**
+     * Displays a popup menu for JList.
+     * @param e Mouse event 
+     */
     @SuppressWarnings("unchecked")
     public void showPopup(final MouseEvent e) {
         if (e.isPopupTrigger()) {
@@ -72,7 +91,7 @@ public class MenuAction extends MouseAdapter {
             mnSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
             
             //Create a file chooser
-            final JFileChooser importFileDialog = new JFileChooser(GUIMediator.model().pathFile);
+            final JFileChooser importFileDialog = new JFileChooser(GUIMediator.model().prefPathFile);
             importFileDialog.setDialogTitle("Import a list of file paths");
             importFileDialog.setMultiSelectionEnabled(true);
 
@@ -121,7 +140,7 @@ public class MenuAction extends MouseAdapter {
             mnDelete.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                    myList.remove();
+                    myList.removeSelectedItem();
                 }
             });
 

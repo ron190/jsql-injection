@@ -30,7 +30,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.ElementDatabase;
+import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.model.bean.Request;
 import com.jsql.view.action.ActionHandler;
 import com.jsql.view.dropshadow.ShadowPopupFactory;
@@ -39,7 +39,7 @@ import com.jsql.view.menubar.Menubar;
 import com.jsql.view.panel.LeftRightBottomPanel;
 import com.jsql.view.panel.StatusbarPanel;
 import com.jsql.view.panel.TopPanel;
-import com.jsql.view.terminal.Terminal;
+import com.jsql.view.terminal.AbstractTerminal;
 
 /**
  * View in the MVC pattern, defines all the components
@@ -60,13 +60,13 @@ public class GUI extends JFrame implements Observer {
     /**
      * List of terminal by unique identifier.
      */
-    private Map<UUID, Terminal> consoles = new HashMap<UUID, Terminal>();
+    private Map<UUID, AbstractTerminal> consoles = new HashMap<UUID, AbstractTerminal>();
 
     /**
      * Get list of terminal by unique identifier.
      * @return Map of key/value UUID => Terminal
      */
-    public final Map<UUID, Terminal> getConsoles() {
+    public final Map<UUID, AbstractTerminal> getConsoles() {
         return consoles;
     }
 
@@ -75,14 +75,14 @@ public class GUI extends JFrame implements Observer {
      *  The injection model send a database element to the view, then
      *  the view access its graphic component to update.
      */
-    private Map<ElementDatabase, DefaultMutableTreeNode> treeNodeModels
-                = new HashMap<ElementDatabase, DefaultMutableTreeNode>();
+    private Map<AbstractElementDatabase, DefaultMutableTreeNode> treeNodeModels
+                = new HashMap<AbstractElementDatabase, DefaultMutableTreeNode>();
     
     /**
      *  Get the database tree model.
      *  @return Tree model
      */
-    public final Map<ElementDatabase, DefaultMutableTreeNode>
+    public final Map<AbstractElementDatabase, DefaultMutableTreeNode>
                     getTreeNodeModels() {
         return treeNodeModels;
     }
@@ -166,7 +166,7 @@ public class GUI extends JFrame implements Observer {
 
         // Define the keyword shortcuts for tabs #Need to work even if the focus is not on tabs
         ActionHandler.addShortcut(this.getRootPane(), GUIMediator.right());
-        ActionHandler.addShortcut();
+        ActionHandler.addTextFieldShortcutSelectAll();
     }
 
     /**
@@ -208,8 +208,10 @@ public class GUI extends JFrame implements Observer {
      */
     public void resetInterface() {
         // Empty tree objects
-        treeNodeModels.clear();
-        consoles.clear();
+        this.treeNodeModels.clear();
+        this.consoles.clear();
+//        GUIMediator.model().suspendables.clear();
+        GUIMediator.bottomPanel().listHTTPHeader.clear();
         
         // Tree model for refresh the tree
         DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();

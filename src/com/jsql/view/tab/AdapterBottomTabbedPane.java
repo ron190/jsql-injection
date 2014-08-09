@@ -11,9 +11,9 @@
 package com.jsql.view.tab;
 
 /**
- * Adapt MouseTabbedPane class to another in order to ease the Mediator drilling.
+ * Adapt MouseTabbedPane to another class in order to ease Mediator registering.
  */
 @SuppressWarnings("serial")
-public class BottomTabbedPaneAdapter extends MouseTabbedPane {
+public class AdapterBottomTabbedPane extends MouseTabbedPane {
     // Nothing more
 }

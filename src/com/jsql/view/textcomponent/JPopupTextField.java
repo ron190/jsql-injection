@@ -19,7 +19,7 @@ import com.jsql.view.GUITools;
  * A JTextField decorated with popup menu and border.
  */
 @SuppressWarnings("serial")
-public class JPopupTextField extends JPopupTextComponent<JTextField> implements JComponentDecorator<JTextField> {
+public class JPopupTextField extends JPopupTextComponent<JTextField> implements DecoratorJComponent<JTextField> {
     /**
      * Build new instance of JTextField to decorate.
      */

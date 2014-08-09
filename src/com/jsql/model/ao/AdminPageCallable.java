@@ -10,14 +10,24 @@ import com.jsql.tool.StringTool;
 import com.jsql.view.GUIMediator;
 
 /**
- * Callable for parallelized HTTP tasks
- * url: SQL query
- * content: source code of the web page
- * tag: store user information (ex. current index)
+ * Callable for admin page finder.
  */
 public class AdminPageCallable implements Callable<AdminPageCallable> {
-    public String url, responseCodeHTTP;
-    AdminPageCallable(String url) {
+    /**
+     * url: SQL query
+     */
+    public String url;
+    
+    /**
+     * HTTP header response code.
+     */
+    public String responseCodeHTTP;
+    
+    /**
+     * Create a callable to find admin page.
+     * @param url URL of admin page
+     */
+    public AdminPageCallable(String url) {
         this.url = url;
     }
 
@@ -34,7 +44,7 @@ public class AdminPageCallable implements Callable<AdminPageCallable> {
             msgHeader.put("Cookie", "");
             msgHeader.put("Post", "");
             msgHeader.put("Header", "");
-            msgHeader.put("Response", StringTool.getHeaders(connection));
+            msgHeader.put("Response", StringTool.getHTTPHeaders(connection));
 
             connection.disconnect();
 

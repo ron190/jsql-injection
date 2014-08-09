@@ -13,7 +13,7 @@ package com.jsql.view.interaction;
 import java.util.UUID;
 
 import com.jsql.view.GUIMediator;
-import com.jsql.view.terminal.Terminal;
+import com.jsql.view.terminal.AbstractTerminal;
 
 /**
  * Append the result of a command in the terminal.
@@ -44,8 +44,9 @@ public class GetShellResult implements IInteractionCommand {
         cmd = (String) interactionParams[2];
     }
 
+    @Override
     public void execute() {
-        Terminal terminal = GUIMediator.gui().getConsoles().get(terminalID);
+        AbstractTerminal terminal = GUIMediator.gui().getConsoles().get(terminalID);
         
         if (!result.equals("")) {
             terminal.append(result);

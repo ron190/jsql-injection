@@ -38,11 +38,10 @@ import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.textcomponent.JPopupTextField;
 
 /**
- * Manager for uploading PHP webshell to the host.
+ * Manager to upload files to the host.
  */
 @SuppressWarnings("serial")
-public class UploadManager extends ListManager {
-
+public class UploadManager extends AbstractListManager {
     /**
      * Build the manager panel.
      */
@@ -59,8 +58,8 @@ public class UploadManager extends ListManager {
         pathsList.add("/home/www/");
         pathsList.add("E:/Outils/EasyPHP-5.3.9/www/");
 
-        listPaths = new DnDList(pathsList);
-        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, listPaths), BorderLayout.CENTER);
+        this.listPaths = new DnDList(pathsList);
+        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, this.listPaths), BorderLayout.CENTER);
 
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
@@ -93,35 +92,35 @@ public class UploadManager extends ListManager {
                 BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)));
 
-        run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/add.png")));
-        run.setToolTipText("<html><b>Select folder(s) in which uploader is created, then choose a file to upload</b><br>" +
+        this.run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/add.png")));
+        this.run.setToolTipText("<html><b>Select folder(s) in which uploader is created, then choose a file to upload</b><br>" +
                 "Path must be correct and correspond to a PHP folder, gives no result otherwise.<br>" +
                 "<i>If necessary, you must set the URL of uploader directory (see note on text component).</i>" +
                 "</html>");
-        run.setEnabled(false);
+        this.run.setEnabled(false);
         
-        run.setBorder(GUITools.BLU_ROUND_BORDER);
+        this.run.setBorder(GUITools.BLU_ROUND_BORDER);
         
-        run.addActionListener(new ActionListener() {
+        this.run.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                if (listPaths.getSelectedValuesList().isEmpty()) {
+                if (UploadManager.this.listPaths.getSelectedValuesList().isEmpty()) {
                     InjectionModel.LOGGER.warn("Select at least one directory");
                     return;
                 }
 
-                final JFileChooser filechooser = new JFileChooser(GUIMediator.model().pathFile);
+                final JFileChooser filechooser = new JFileChooser(GUIMediator.model().prefPathFile);
                 filechooser.setDialogTitle("Choose file to upload");
                 
                 int returnVal = filechooser.showOpenDialog(GUIMediator.gui());
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    for (final Object path: listPaths.getSelectedValuesList()) {
+                    for (final Object path: UploadManager.this.listPaths.getSelectedValuesList()) {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 File file = filechooser.getSelectedFile();
                                 try {
-                                    loader.setVisible(true);
+                                    UploadManager.this.loader.setVisible(true);
                                     GUIMediator.model().rao.upload(path.toString(), shellURL.getText(), file);
                                 } catch (PreparationException e) {
                                     InjectionModel.LOGGER.warn("Can't upload file " + file.getName() + " to " + path);
@@ -135,16 +134,16 @@ public class UploadManager extends ListManager {
             }
         });
 
-        privilege = new JLabel("File privilege", GUITools.SQUARE_GREY, SwingConstants.LEFT);
-        privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, GUITools.DEFAULT_BACKGROUND));
-        privilege.setToolTipText("<html><b>Needs the file privilege to work</b><br>" +
+        this.privilege = new JLabel("File privilege", GUITools.SQUARE_GREY, SwingConstants.LEFT);
+        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, GUITools.DEFAULT_BACKGROUND));
+        this.privilege.setToolTipText("<html><b>Needs the file privilege to work</b><br>" +
                 "Shows if the privilege FILE is granted to current user</html>");
 
-        loader.setVisible(false);
+        this.loader.setVisible(false);
 
-        lastLine.add(privilege);
+        lastLine.add(this.privilege);
         lastLine.add(Box.createHorizontalGlue());
-        lastLine.add(run);
+        lastLine.add(this.run);
 
         southPanel.add(urlLine);
         southPanel.add(lastLine);

@@ -43,7 +43,7 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
      * Value contained in the editor.
      * Returned by getCellEditorValue().
      */
-    private NodeModel nodeData;
+    private AbstractNodeModel nodeData;
 
     /**
      * Build editor, add tree and mouse listener.
@@ -64,7 +64,7 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
         final DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         Object userObject = currentNode.getUserObject();
         try {
-            this.nodeData = (NodeModel) userObject;
+            this.nodeData = (AbstractNodeModel) userObject;
             if (componentRenderer instanceof JCheckBox) {
                 ((JCheckBox) componentRenderer).addActionListener(new ActionCheckUncheck(this.nodeData, currentNode));
             }
@@ -85,10 +85,10 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
      */
     private class ActionCheckUncheck implements ActionListener {
 
-        private NodeModel nodeData;
+        private AbstractNodeModel nodeData;
         private DefaultMutableTreeNode currentTableNode;
 
-        public ActionCheckUncheck(NodeModel nodeData, DefaultMutableTreeNode currentTableNode) {
+        public ActionCheckUncheck(AbstractNodeModel nodeData, DefaultMutableTreeNode currentTableNode) {
             this.nodeData = nodeData;
             this.currentTableNode = currentTableNode;
         }
@@ -106,8 +106,8 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
             boolean isOneChildSelected = false;
             for (int i = 0; i < tableChildCount; i++) {
                 DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
-                if (currentChild.getUserObject() instanceof NodeModel) {
-                    NodeModel columnTreeNodeModel = (NodeModel) currentChild.getUserObject();
+                if (currentChild.getUserObject() instanceof AbstractNodeModel) {
+                    AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
                     if (columnTreeNodeModel.isChecked) {
                         isOneChildSelected = true;
                         break;
@@ -115,7 +115,7 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
                 }
             }
 
-            NodeModel nodeUserObject = (NodeModel) tableNode.getUserObject();
+            AbstractNodeModel nodeUserObject = (AbstractNodeModel) tableNode.getUserObject();
             nodeUserObject.hasChildChecked = isOneChildSelected;
             // !!important!!
 //            NodeEditor.this.stopCellEditing();
@@ -131,8 +131,8 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
             return;
         }
 
-        if (node.getUserObject() instanceof NodeModel) {
-            NodeModel dataModel = (NodeModel) node.getUserObject();
+        if (node.getUserObject() instanceof AbstractNodeModel) {
+            AbstractNodeModel dataModel = (AbstractNodeModel) node.getUserObject();
             dataModel.runAction();
         }
     }
@@ -151,8 +151,8 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
 
             DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
 
-            if (currentTableNode.getUserObject() instanceof NodeModel) {
-                NodeModel currentTableModel = (NodeModel) currentTableNode.getUserObject();
+            if (currentTableNode.getUserObject() instanceof AbstractNodeModel) {
+                AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
                 if (currentTableModel.verifyShowPopup()) {
                     currentTableModel.showPopup(currentTableNode, path, e.getX(), e.getY());
                 }

@@ -36,11 +36,11 @@ import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.ao.DataAccessObject;
 import com.jsql.model.ao.RessourceAccessObject;
-import com.jsql.model.bean.ElementDatabase;
+import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.model.bean.Request;
+import com.jsql.model.pattern.strategy.AbstractInjectionStrategy;
 import com.jsql.model.pattern.strategy.BlindStrategy;
 import com.jsql.model.pattern.strategy.ErrorbasedStrategy;
-import com.jsql.model.pattern.strategy.IInjectionStrategy;
 import com.jsql.model.pattern.strategy.NormalStrategy;
 import com.jsql.model.pattern.strategy.TimeStrategy;
 import com.jsql.tool.StringTool;
@@ -51,9 +51,15 @@ import com.jsql.view.GUIMediator;
  * Model in charge of injection.<br>
  * MVC functionalities are provided by ModelObservable.
  */
-public class InjectionModel extends ModelObservable {
-    public Map<ElementDatabase, Suspendable> suspendables = new HashMap<ElementDatabase, Suspendable>();
+public class InjectionModel extends AbstractModelObservable {
+    /**
+     * List of running jobs.
+     */
+    public Map<AbstractElementDatabase, AbstractSuspendable> suspendables = new HashMap<AbstractElementDatabase, AbstractSuspendable>();
     
+    /**
+     * Current version of application.
+     */
     public static final String JSQLVERSION = "0.6";
 
     /**
@@ -85,29 +91,98 @@ public class InjectionModel extends ModelObservable {
      * GET, POST, COOKIE, HEADER (State/Strategy pattern).
      */
     public String method;
-
+    
+    /**
+     * Get data submitted by user.
+     */
     public String getData;
+    
+    /**
+     * Post data submitted by user.
+     */
     public String postData;
+    
+    /**
+     * Cookie data submitted by user.
+     */
     public String cookieData;
+    
+    /**
+     * Header data submitted by user.
+     */
     public String headerData;
 
-    public String versionDB;
-    public String currentDB;
+    /**
+     * Current version of database.
+     */
+    public String versionDatabase;
+    
+    /**
+     * Selected database.
+     */
+    public String currentDatabase;
+    
+    /**
+     * User connected to database.
+     */
     public String currentUser;
+    
+    /**
+     * User authenticated in database.
+     */
     public String authenticatedUser;
-
+    
+    /**
+     * Proxy address.
+     */
     public String proxyAddress;
+    
+    /**
+     * Proxy port.
+     */
     public String proxyPort;
-
-    public String pathFile;
-
+    
+    /**
+     * File path saved in preference.
+     */
+    public String prefPathFile;
+    
+    /**
+     * True if connection is proxified.
+     */
     public boolean isProxyfied = false;
+    
+    /**
+     * Current injection strategy.
+     */
+    private AbstractInjectionStrategy injectionStrategy;
+    
+    /**
+     * Get current injection strategy.
+     */
+    public AbstractInjectionStrategy getInjectionStrategy() {
+        return injectionStrategy;
+    }
 
-    public IInjectionStrategy injectionStrategy;
-    public BlindStrategy blindStrategy = new BlindStrategy();
-    public ErrorbasedStrategy errorbasedStrategy = new ErrorbasedStrategy();
-    public NormalStrategy normalStrategy = new NormalStrategy();
-    public TimeStrategy timeStrategy = new TimeStrategy();
+    /**
+     * Strategy for blind attack injection.
+     */
+    private BlindStrategy blindStrategy = new BlindStrategy();
+    
+    /**
+     * Strategy for error attack injection.
+     */
+    private ErrorbasedStrategy errorbasedStrategy = new ErrorbasedStrategy();
+    
+    /**
+     * Strategy for time attack injection.
+     */
+    private NormalStrategy normalStrategy = new NormalStrategy();
+    
+    /**
+     * Strategy for time attack injection.
+     */
+    private TimeStrategy timeStrategy = new TimeStrategy();
 
     /**
      * Allow to directly start an injection after a failed one
@@ -115,14 +190,29 @@ public class InjectionModel extends ModelObservable {
      */
     public boolean isInjectionBuilt = false;
 
+    /**
+     * Object to load file information.
+     */
     public RessourceAccessObject rao = new RessourceAccessObject();
+    
+    /**
+     * Object to load database information. 
+     */
     public DataAccessObject dao = new DataAccessObject();
     
-    // Current evasion step, 0 is 'no evasion'
+    /**
+     * Current evasion step, 0 is 'no evasion'
+     */
     public int securitySteps = 0;
 
+    /**
+     * Log4j logger sent to view.
+     */
     public static final Logger LOGGER = Logger.getLogger(InjectionModel.class);
 
+    /**
+     * Create injection process.
+     */
     public InjectionModel() {
         LOGGER.info("jSQL Injection version " + JSQLVERSION);
 
@@ -143,7 +233,7 @@ public class InjectionModel extends ModelObservable {
         this.proxyAddress = prefs.get("proxyAddress", "127.0.0.1");
         this.proxyPort = prefs.get("proxyPort", "8118");
         
-        this.pathFile = prefs.get("pathFile", System.getProperty("user.dir"));
+        this.prefPathFile = prefs.get("pathFile", System.getProperty("user.dir"));
 
         if (isProxyfied) {
             System.setProperty("http.proxyHost", proxyAddress);
@@ -160,8 +250,8 @@ public class InjectionModel extends ModelObservable {
         visibleIndex = null;
         initialQuery = null;
 
-        versionDB = null;
-        currentDB = null;
+        versionDatabase = null;
+        currentDatabase = null;
         currentUser = null;
         authenticatedUser = null;
         
@@ -258,7 +348,7 @@ public class InjectionModel extends ModelObservable {
             dao.getDBInfos();
 
             // Stop injection if database is too old
-            if (versionDB.charAt(0) == '4' || versionDB.charAt(0) == '3') {
+            if (versionDatabase.charAt(0) == '4' || versionDatabase.charAt(0) == '3') {
                 throw new PreparationException("Old database, automatic search is not possible");
             }
 
@@ -491,7 +581,7 @@ public class InjectionModel extends ModelObservable {
             }
         }
 
-        msgHeader.put("Response", StringTool.getHeaders(connection));
+        msgHeader.put("Response", StringTool.getHTTPHeaders(connection));
 
         // Inform the view about the log infos
         Request request = new Request();
@@ -542,15 +632,28 @@ public class InjectionModel extends ModelObservable {
         }
     }
 
+    /**
+     * Display source code in console.
+     * @param message Error message
+     * @param source Text to display in console
+     */
     public void sendResponseFromSite(String message, String source) {
         LOGGER.info(message + ", response from site:");
         LOGGER.info(">>>" + source);
     }
 
-    public void applyStrategy(IInjectionStrategy injectionStrategy) {
+    /**
+     * Set injection strategy.
+     * @param injectionStrategy Strategy for injection
+     */
+    public void applyStrategy(AbstractInjectionStrategy injectionStrategy) {
         this.injectionStrategy = injectionStrategy; 
     }
 
+    /**
+     * Set injection strategy.
+     * @param text Strategy used by user
+     */
     public void applyStrategy(String text) {
         if (text.equalsIgnoreCase("timebased")) {
             this.injectionStrategy = timeStrategy;
@@ -607,6 +710,10 @@ public class InjectionModel extends ModelObservable {
         }
     }
     
+    /**
+     * Application starting point.
+     * @param args CLI parameters (not used)
+     */
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {

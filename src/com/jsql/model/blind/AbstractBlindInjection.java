@@ -12,11 +12,14 @@ import java.util.concurrent.TimeUnit;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
+import com.jsql.model.AbstractSuspendable;
 import com.jsql.model.InjectionModel;
-import com.jsql.model.Suspendable;
 import com.jsql.model.bean.Request;
 import com.jsql.view.GUIMediator;
 
+/**
+ *
+ */
 public abstract class AbstractBlindInjection {
     /**
      * Constant linked to a URL, true if that url
@@ -31,7 +34,7 @@ public abstract class AbstractBlindInjection {
      * @return Final string: SQLiABCDEF...
      * @throws StoppableException
      */
-    public String inject(String inj, Suspendable stoppable) throws StoppableException {
+    public String inject(String inj, AbstractSuspendable stoppable) throws StoppableException {
         /**
          *  List of the characters, each one represented by an array of 8 bits
          *  e.g SQLi: bytes[0] => 01010011:S, bytes[1] => 01010001:Q ...
@@ -42,7 +45,7 @@ public abstract class AbstractBlindInjection {
 
         // Parallelize the URL requests
         ExecutorService taskExecutor = Executors.newFixedThreadPool(150);
-        CompletionService<IBlindCallable> taskCompletionService = new ExecutorCompletionService<IBlindCallable>(taskExecutor);
+        CompletionService<AbstractBlindCallable> taskCompletionService = new ExecutorCompletionService<AbstractBlindCallable>(taskExecutor);
 
         // Send the first binary question: is the SQL result empty?
         taskCompletionService.submit(getCallable(inj, 0, ISLENGTHTEST));
@@ -74,7 +77,7 @@ public abstract class AbstractBlindInjection {
             }
             try {
                 // The URL call is done, bring back the finished task
-                IBlindCallable currentCallable = taskCompletionService.take().get();
+                AbstractBlindCallable currentCallable = taskCompletionService.take().get();
                 // One task has just ended, decrease active tasks by 1
                 submittedTasks--;
                 /*
@@ -152,8 +155,41 @@ public abstract class AbstractBlindInjection {
         return result;
     }
 
-    public abstract Callable<IBlindCallable> getCallable(String string, int indexCharacter, boolean isLengthTest);
-    public abstract Callable<IBlindCallable> getCallable(String string, int indexCharacter, int bit);
+    /**
+     * Run a HTTP call via the model.
+     * @param urlString URL to inject
+     * @return Source code
+     */
+    public static String callUrl(String urlString) {
+        return GUIMediator.model().inject(GUIMediator.model().insertionCharacter + urlString);
+    }
+    
+    /**
+     * 
+     * @param string
+     * @param indexCharacter
+     * @param isLengthTest
+     * @return
+     */
+    public abstract Callable<AbstractBlindCallable> getCallable(String string, int indexCharacter, boolean isLengthTest);
+    
+    /**
+     * 
+     * @param string
+     * @param indexCharacter
+     * @param bit
+     * @return
+     */
+    public abstract Callable<AbstractBlindCallable> getCallable(String string, int indexCharacter, int bit);
+    
+    /**
+     * 
+     */
     public abstract boolean isInjectable() throws PreparationException;
+    
+    /**
+     * Display a message to explain how is blid/time working.
+     * @return
+     */
     public abstract String getInfoMessage();
 }

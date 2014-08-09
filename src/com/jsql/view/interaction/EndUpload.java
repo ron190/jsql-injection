@@ -23,6 +23,7 @@ public class EndUpload implements IInteractionCommand {
      // Do nothing
     }
 
+    @Override
     public void execute() {
         GUIMediator.left().uploadManager.restoreButtonText();
         GUIMediator.left().uploadManager.setButtonEnable(true);

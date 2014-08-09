@@ -14,9 +14,15 @@ package com.jsql.view.list.dnd;
  * Basic object to avoid String incompatibility with drag and drop feature.
  */
 public class ListItem {
-    
+    /**
+     * Text displayed on item.
+     */
     private String internalString;
     
+    /**
+     * Create a JList item.
+     * @param newString
+     */
     public ListItem(String newString) {
         internalString = newString;
     }

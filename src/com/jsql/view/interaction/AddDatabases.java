@@ -18,7 +18,7 @@ import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.Database;
 import com.jsql.view.GUIMediator;
-import com.jsql.view.tree.NodeModel;
+import com.jsql.view.tree.AbstractNodeModel;
 import com.jsql.view.tree.NodeModelDatabase;
 
 /**
@@ -39,6 +39,7 @@ public class AddDatabases implements IInteractionCommand {
         databases = (List<Database>) interactionParams[0];
     }
 
+    @Override
     public void execute() {
         // Tree model, update the tree (refresh, add node, etc)
         DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
@@ -49,7 +50,7 @@ public class AddDatabases implements IInteractionCommand {
         // Loop into the list of databases
         for (Database database: databases) {
             // Create a node model with the database element
-            NodeModel newTreeNodeModel = new NodeModelDatabase(database);
+            AbstractNodeModel newTreeNodeModel = new NodeModelDatabase(database);
             // Create the node
             DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(newTreeNodeModel);
             // Save the node

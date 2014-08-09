@@ -23,9 +23,19 @@ import javax.swing.JOptionPane;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 
+/**
+ * Action to export a JList.
+ */
 public class MenuActionExport implements ActionListener {
+    /**
+     * List to export.
+     */
     private DnDList myList;
     
+    /**
+     * Create action to export a list.
+     * @param myList List to export.
+     */
     public MenuActionExport(DnDList myList) {
         super();
         this.myList = myList;
@@ -35,7 +45,7 @@ public class MenuActionExport implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
         try {
             @SuppressWarnings("serial")
-            final JFileChooser importFileDialog = new JFileChooser(GUIMediator.model().pathFile) {
+            final JFileChooser importFileDialog = new JFileChooser(GUIMediator.model().prefPathFile) {
                 @Override
                 public void approveSelection() {
                     File file = this.getSelectedFile();

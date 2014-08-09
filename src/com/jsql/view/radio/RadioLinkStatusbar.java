@@ -14,7 +14,7 @@ import com.jsql.view.GUITools;
  * Radio label used to change injection strategy (normal, blind, etc).
  */
 @SuppressWarnings("serial")
-public class RadioLinkStatusbar extends RadioLink {
+public class RadioLinkStatusbar extends AbstractRadioLink {
     /**
      * Group of radio label for status bar.
      */

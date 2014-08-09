@@ -23,6 +23,7 @@ public class EndFileSearch implements IInteractionCommand {
         // Do nothing
     }
 
+    @Override
     public void execute() {
         GUIMediator.left().fileManager.restoreButtonText();
         GUIMediator.left().fileManager.setButtonEnable(true);

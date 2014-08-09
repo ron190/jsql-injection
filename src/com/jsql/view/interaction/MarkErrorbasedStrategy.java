@@ -23,6 +23,7 @@ public class MarkErrorbasedStrategy implements IInteractionCommand {
         // Do nothing
     }
 
+    @Override
     public void execute() {
         GUIMediator.status().labelErrorBased.setUnderlined();
     }

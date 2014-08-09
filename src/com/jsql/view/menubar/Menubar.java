@@ -42,21 +42,38 @@ import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 import com.jsql.view.action.ActionHandler;
 import com.jsql.view.action.SaveTabAction;
-import com.jsql.view.dialog.About;
-import com.jsql.view.dialog.Prefs;
+import com.jsql.view.dialog.AboutDialog;
+import com.jsql.view.dialog.PreferenceDialog;
 import com.jsql.view.table.TablePanel;
 
 /**
- * Software menubar.
+ * Application main menubar.
  */
 @SuppressWarnings("serial")
 public class Menubar extends JMenuBar {
+    /**
+     * Checkbox item to show/hide chunk console.
+     */
+    public JCheckBoxMenuItem chunkMenu;
 
-    public JCheckBoxMenuItem chunk;
-    public JCheckBoxMenuItem binary;
-    public JCheckBoxMenuItem network;
-    public JCheckBoxMenuItem javaDebug;
+    /**
+     * Checkbox item to show/hide binary console.
+     */
+    public JCheckBoxMenuItem binaryMenu;
 
+    /**
+     * Checkbox item to show/hide network panel.
+     */
+    public JCheckBoxMenuItem networkMenu;
+
+    /**
+     * Checkbox item to show/hide java console.
+     */
+    public JCheckBoxMenuItem javaDebugMenu;
+
+    /**
+     * Create a menubar on main frame.
+     */
     public Menubar() {
         // File Menu > save tab | exit
         JMenu menuFile = new JMenu("File");
@@ -148,13 +165,13 @@ public class Menubar extends JMenuBar {
 
         JMenu menuPanel = new JMenu("Show Panel");
         menuView.setMnemonic('V');
-        chunk = new JCheckBoxMenuItem("Chunk", new ImageIcon(getClass().getResource("/com/jsql/view/images/chunk.gif")), prefs.getBoolean(GUITools.CHUNK_VISIBLE, true));
-        menuPanel.add(chunk);
-        binary = new JCheckBoxMenuItem("Binary", new ImageIcon(getClass().getResource("/com/jsql/view/images/binary.gif")), prefs.getBoolean(GUITools.BINARY_VISIBLE, true));
-        menuPanel.add(binary);
-        network = new JCheckBoxMenuItem("Network", new ImageIcon(getClass().getResource("/com/jsql/view/images/header.gif")), prefs.getBoolean(GUITools.NETWORK_VISIBLE, true));
-        menuPanel.add(network);
-        javaDebug = new JCheckBoxMenuItem("Java", new ImageIcon(GUITools.class.getResource("/com/jsql/view/images/cup.png")), prefs.getBoolean(GUITools.JAVA_VISIBLE, false));
+        chunkMenu = new JCheckBoxMenuItem("Chunk", new ImageIcon(getClass().getResource("/com/jsql/view/images/chunk.gif")), prefs.getBoolean(GUITools.CHUNK_VISIBLE, true));
+        menuPanel.add(chunkMenu);
+        binaryMenu = new JCheckBoxMenuItem("Binary", new ImageIcon(getClass().getResource("/com/jsql/view/images/binary.gif")), prefs.getBoolean(GUITools.BINARY_VISIBLE, true));
+        menuPanel.add(binaryMenu);
+        networkMenu = new JCheckBoxMenuItem("Network", new ImageIcon(getClass().getResource("/com/jsql/view/images/header.gif")), prefs.getBoolean(GUITools.NETWORK_VISIBLE, true));
+        menuPanel.add(networkMenu);
+        javaDebugMenu = new JCheckBoxMenuItem("Java", new ImageIcon(GUITools.class.getResource("/com/jsql/view/images/cup.png")), prefs.getBoolean(GUITools.JAVA_VISIBLE, false));
 
         class StayOpenCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI {
             @Override
@@ -163,44 +180,44 @@ public class Menubar extends JMenuBar {
             }
         }
 
-        for (JCheckBoxMenuItem i: new JCheckBoxMenuItem[]{chunk, binary, network, javaDebug}) {
+        for (JCheckBoxMenuItem i: new JCheckBoxMenuItem[]{chunkMenu, binaryMenu, networkMenu, javaDebugMenu}) {
             i.setUI(new StayOpenCheckBoxMenuItemUI());
         }
 
-        chunk.addActionListener(new ActionListener() {
+        chunkMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (chunk.isSelected()) {
+                if (chunkMenu.isSelected()) {
                     GUIMediator.bottomPanel().insertChunkTab();
                 } else {
                     GUIMediator.bottom().remove(GUIMediator.bottomPanel().chunks.getParent().getParent());
                 }
             }
         });
-        binary.addActionListener(new ActionListener() {
+        binaryMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (binary.isSelected()) {
+                if (binaryMenu.isSelected()) {
                     GUIMediator.bottomPanel().insertBinaryTab();
                 } else {
                     GUIMediator.bottom().remove(GUIMediator.bottomPanel().binaryArea.getParent().getParent());
                 }
             }
         });
-        network.addActionListener(new ActionListener() {
+        networkMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (network.isSelected()) {
+                if (networkMenu.isSelected()) {
                     GUIMediator.bottomPanel().insertNetworkTab();
                 } else {
                     GUIMediator.bottom().remove(GUIMediator.bottomPanel().network);
                 }
             }
         });
-        javaDebug.addActionListener(new ActionListener() {
+        javaDebugMenu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (javaDebug.isSelected()) {
+                if (javaDebugMenu.isSelected()) {
                     GUIMediator.bottomPanel().insertJavaDebugTab();
                 } else {
                     GUIMediator.bottom().remove(GUIMediator.bottomPanel().javaDebug.getParent().getParent());
@@ -208,7 +225,7 @@ public class Menubar extends JMenuBar {
             }
         });
 
-        menuPanel.add(javaDebug);
+        menuPanel.add(javaDebugMenu);
         menuTools.add(menuPanel);
         menuTools.add(new JSeparator());
 
@@ -238,7 +255,7 @@ public class Menubar extends JMenuBar {
         }
 
         // Render the Preferences dialog behind scene
-        final Prefs prefDiag = new Prefs();
+        final PreferenceDialog prefDiag = new PreferenceDialog();
         preferences.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -263,7 +280,7 @@ public class Menubar extends JMenuBar {
         itemUpdate.setIcon(GUITools.EMPTY);
 
         // Render the About dialog behind scene
-        final About aboutDiag = new About();
+        final AboutDialog aboutDiag = new AboutDialog();
         itemHelp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {

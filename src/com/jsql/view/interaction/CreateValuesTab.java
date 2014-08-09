@@ -16,13 +16,13 @@ import java.util.Comparator;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import com.jsql.model.bean.ElementDatabase;
+import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.tool.StringTool;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.tab.TabHeader;
 import com.jsql.view.table.ColumnComparator;
 import com.jsql.view.table.TablePanel;
-import com.jsql.view.tree.NodeModel;
+import com.jsql.view.tree.AbstractNodeModel;
 
 /**
  * Create a new tab for the values.
@@ -41,7 +41,7 @@ public class CreateValuesTab implements IInteractionCommand {
     /**
      * The table containing the data.
      */
-    private ElementDatabase table;
+    private AbstractElementDatabase table;
 
     /**
      * @param interactionParams Names of columns, table's values and corresponding table
@@ -52,13 +52,14 @@ public class CreateValuesTab implements IInteractionCommand {
         // 2D array of values
         data = (String[][]) interactionParams[1];
         // The table containing the data
-        table = (ElementDatabase) interactionParams[2];
+        table = (AbstractElementDatabase) interactionParams[2];
     }
 
+    @Override
     public void execute() {
         // Get the node
-        NodeModel progressingTreeNodeModel =
-                (NodeModel) GUIMediator.gui().getTreeNodeModels().get(table).getUserObject();
+        AbstractNodeModel progressingTreeNodeModel =
+                (AbstractNodeModel) GUIMediator.gui().getTreeNodeModels().get(table).getUserObject();
 
         // Update the progress value of the model, end the progress
         progressingTreeNodeModel.childUpgradeCount = table.getCount();

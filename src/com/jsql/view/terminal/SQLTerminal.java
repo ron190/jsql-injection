@@ -18,7 +18,7 @@ import com.jsql.view.GUIMediator;
  * A terminal for SQL shell injection.
  */
 @SuppressWarnings("serial")
-public class SQLTerminal extends Terminal {
+public class SQLTerminal extends AbstractTerminal {
 
    /**
      * Build a SQL shell instance.

@@ -18,7 +18,7 @@ import com.jsql.view.GUIMediator;
  * in the source page.
  */
 //    private class StoppableGetInsertionCharacter extends Stoppable {
-public class StoppableGetInsertionCharacter extends Suspendable {
+public class StoppableGetInsertionCharacter extends AbstractSuspendable {
     @Override
     public String action(Object... args) throws PreparationException, StoppableException {
         // Has the url a query string?
@@ -82,9 +82,9 @@ public class StoppableGetInsertionCharacter extends Suspendable {
         //         Unknown column '1337' in 'order clause'
         // or   supplied argument is not a valid MySQL result resource
         ExecutorService taskExecutor = Executors.newCachedThreadPool();
-        CompletionService<SimpleCallable> taskCompletionService = new ExecutorCompletionService<SimpleCallable>(taskExecutor);
+        CompletionService<SourceCodeCallable> taskCompletionService = new ExecutorCompletionService<SourceCodeCallable>(taskExecutor);
         for (String insertionCharacter : new String[] {"0", "0'", "'", "-1", "1", "\"", "-1)"}) {
-            taskCompletionService.submit(new SimpleCallable(insertionCharacter + "+order+by+1337--+", insertionCharacter));
+            taskCompletionService.submit(new SourceCodeCallable(insertionCharacter + "+order+by+1337--+", insertionCharacter));
         }
 
         int total = 7;
@@ -95,13 +95,13 @@ public class StoppableGetInsertionCharacter extends Suspendable {
                 throw new StoppableException();
             }
             try {
-                SimpleCallable currentCallable = taskCompletionService.take().get();
+                SourceCodeCallable currentCallable = taskCompletionService.take().get();
                 total--;
                 String pageSource = currentCallable.content;
                 if (Pattern.compile(".*Unknown column '1337' in 'order clause'.*", Pattern.DOTALL).matcher(pageSource).matches() 
                         || Pattern.compile(".*supplied argument is not a valid MySQL result resource.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     // the correct character
-                    return currentCallable.tag;
+                    return currentCallable.insertionCharacter;
                 }
             } catch (InterruptedException e) {
                 InjectionModel.LOGGER.error(e, e);

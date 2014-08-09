@@ -2,34 +2,28 @@ package com.jsql.model.pattern.strategy;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
+import com.jsql.model.AbstractSuspendable;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.StoppableGetInitialQuery;
-import com.jsql.model.Suspendable;
 import com.jsql.model.bean.Request;
 import com.jsql.view.GUIMediator;
 
-public class NormalStrategy implements IInjectionStrategy {
-
-    private boolean isApplicable = false;
-
+/**
+ * Injection strategy using normal attack.
+ */
+public class NormalStrategy extends AbstractInjectionStrategy {
     @Override
     public void checkApplicability() throws PreparationException {
         InjectionModel.LOGGER.info("Normal test...");
-//        GUIMediator.model().initialQuery = GUIMediator.model().new StoppableGetInitialQuery().begin();
         GUIMediator.model().initialQuery = new StoppableGetInitialQuery().beginSynchrone();
 
-        isApplicable = !GUIMediator.model().initialQuery.equals("");
+        this.isApplicable = !GUIMediator.model().initialQuery.equals("");
         
-        if (isApplicable) {
+        if (this.isApplicable) {
             activate();
         } else {
             deactivate();
         }
-    }
-
-    @Override
-    public boolean isApplicable() {
-        return isApplicable;
     }
 
     @Override
@@ -47,7 +41,7 @@ public class NormalStrategy implements IInjectionStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, Suspendable stoppable) throws StoppableException {
+    public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable) throws StoppableException {
         return GUIMediator.model().inject(
                 "select+" +
                     "concat(" +

@@ -47,7 +47,9 @@ import com.jsql.view.ui.RoundBorder;
  */
 @SuppressWarnings("serial")
 public final class GUITools {
-    
+    /**
+     * Utility class.
+     */
     private GUITools() {
         //not called
     }

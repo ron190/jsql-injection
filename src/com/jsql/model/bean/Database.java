@@ -13,7 +13,7 @@ package com.jsql.model.bean;
 /**
  * Define a Database, e.g is sent to the view by the model after injection.
  */
-public class Database extends ElementDatabase {
+public class Database extends AbstractElementDatabase {
     /**
      * The number of tables in the database.
      */
@@ -33,7 +33,7 @@ public class Database extends ElementDatabase {
      * A database has no parent.
      */
     @Override
-    public ElementDatabase getParent() {
+    public AbstractElementDatabase getParent() {
         return null;
     }
 

@@ -26,7 +26,7 @@ public class JColoredConsole extends JTextPane {
      */
     public JColoredConsole(final String newTabName) {
         this.tabName = newTabName;
-//        this.setAutoscrolls(true);    // does not work
+        // this.setAutoscrolls(true);    // does not work
     }
 
     /**

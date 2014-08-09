@@ -24,6 +24,7 @@ public class MarkBlindVulnerable implements IInteractionCommand {
         // Do nothing
     }
 
+    @Override
     public void execute() {
         GUIMediator.status().setBlindIcon(GUITools.TICK);
     }

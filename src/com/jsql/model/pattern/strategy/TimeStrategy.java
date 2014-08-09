@@ -12,38 +12,33 @@ package com.jsql.model.pattern.strategy;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
+import com.jsql.model.AbstractSuspendable;
 import com.jsql.model.InjectionModel;
-import com.jsql.model.Suspendable;
 import com.jsql.model.bean.Request;
 import com.jsql.model.blind.ConcreteTimeInjection;
 import com.jsql.view.GUIMediator;
 
-public class TimeStrategy implements IInjectionStrategy {
-    
-    private ConcreteTimeInjection time;
-//    private TimeInjection time;
-    
-    private boolean isApplicable = false;
+/**
+ * Injection strategy using time attack.
+ */
+public class TimeStrategy extends AbstractInjectionStrategy {
+    /**
+     * Injection method using time attack.
+     */
+    private ConcreteTimeInjection timeInjection;
     
     @Override
     public void checkApplicability() throws PreparationException {
         InjectionModel.LOGGER.info("Time based test...");
         
-        time = new ConcreteTimeInjection();
-//        time = new TimeInjection();
-        isApplicable = time.isInjectable();
-//        isApplicable = time.isTimeInjectable();
+        this.timeInjection = new ConcreteTimeInjection();
+        this.isApplicable = this.timeInjection.isInjectable();
         
-        if (isApplicable) {
+        if (this.isApplicable) {
             activate();
         } else {
             deactivate();
         }
-    }
-
-    @Override
-    public boolean isApplicable() {
-        return isApplicable;
     }
     
     @Override
@@ -61,8 +56,8 @@ public class TimeStrategy implements IInjectionStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, Suspendable stoppable) throws StoppableException {
-        return time.inject(
+    public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable) throws StoppableException {
+        return this.timeInjection.inject(
                 "(" 
                     + "select+"
                         + "concat("
@@ -83,7 +78,7 @@ public class TimeStrategy implements IInjectionStrategy {
         
         Request request = new Request();
         request.setMessage("MessageBinary");
-        request.setParameters("Asking server \"Is this bit true?\", if delay does not exceed 5 seconds then response is true.\n");
+        request.setParameters(timeInjection.getInfoMessage());
         GUIMediator.model().interact(request);
         
         Request request2 = new Request();

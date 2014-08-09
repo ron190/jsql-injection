@@ -30,7 +30,7 @@ import com.jsql.view.popupmenu.JPopupTextMenu;
  * @param <T> Component like JTextField or JTextArea to decorate
  */
 @SuppressWarnings("serial")
-public class JPopupTextComponent<T extends JTextComponent> extends JPopupComponent<T> implements JComponentDecorator<T> {
+public class JPopupTextComponent<T extends JTextComponent> extends JPopupComponent<T> implements DecoratorJComponent<T> {
     /**
      * Save the component to decorate, add the Undo/Redo.
      * @param proxy Swing component to decorate

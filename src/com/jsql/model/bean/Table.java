@@ -14,7 +14,7 @@ package com.jsql.model.bean;
  * Define a Table, e.g is sent to the view by the model after injection.
  * Allow to traverse upward to its corresponding database.
  */
-public class Table extends ElementDatabase {
+public class Table extends AbstractElementDatabase {
     /**
      * The database that contains the current column.
      */
@@ -41,7 +41,7 @@ public class Table extends ElementDatabase {
      * Return the parent database.
      */
     @Override
-    public ElementDatabase getParent() {
+    public AbstractElementDatabase getParent() {
         return this.parentDatabase;
     }
 

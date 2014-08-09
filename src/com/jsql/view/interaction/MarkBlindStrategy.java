@@ -23,6 +23,7 @@ public class MarkBlindStrategy implements IInteractionCommand {
         // Do nothing
     }
 
+    @Override
     public void execute() {
         GUIMediator.status().labelBlind.setUnderlined();
     }

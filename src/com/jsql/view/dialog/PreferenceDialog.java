@@ -21,13 +21,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.Socket;
-import java.net.URL;
 import java.util.prefs.Preferences;
 
 import javax.swing.BorderFactory;
@@ -52,12 +45,20 @@ import com.jsql.view.GUITools;
 import com.jsql.view.textcomponent.JPopupTextField;
 import com.jsql.view.ui.RoundBorder;
 
+/**
+ * A dialog for saving application settings.
+ */
 @SuppressWarnings("serial")
-public class Prefs extends JDialog {
-    
+public class PreferenceDialog extends JDialog {
+    /**
+     * Button getting focus.
+     */
     public JButton okButton;
 
-    public Prefs() {
+    /**
+     * Create Preferences panel to save jSQL settings.
+     */
+    public PreferenceDialog() {
         super(GUIMediator.gui(), "Preferences", Dialog.ModalityType.MODELESS);
 
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -70,7 +71,7 @@ public class Prefs extends JDialog {
         ActionListener escListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Prefs.this.dispose();
+                PreferenceDialog.this.dispose();
             }
         };
 
@@ -206,73 +207,5 @@ public class Prefs extends JDialog {
         this.getRootPane().setDefaultButton(okButton);
         cancelButton.requestFocusInWindow();
         this.setLocationRelativeTo(GUIMediator.gui());
-    }
-
-    private class ActionCheckIP implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    // Test if proxy is available then apply settings
-                    if (GUIMediator.model().isProxyfied && !GUIMediator.model().proxyAddress.equals("") && !GUIMediator.model().proxyPort.equals("")) {
-                        try {
-                            InjectionModel.LOGGER.info("Testing proxy...");
-                            new Socket(GUIMediator.model().proxyAddress, Integer.parseInt(GUIMediator.model().proxyPort)).close();
-                        } catch (Exception e) {
-                            InjectionModel.LOGGER.warn("Proxy connection failed: " 
-                                    + GUIMediator.model().proxyAddress + ":" + GUIMediator.model().proxyPort
-                                    + "\nVerify your proxy informations or disable proxy setting.");
-                            return;
-                        }
-                        InjectionModel.LOGGER.info("Proxy is responding.");
-                    }
-                    
-                    BufferedReader in = null;
-                    try {
-                        InjectionModel.LOGGER.info("Checking IP...");
-                        
-                        URL whatismyip = new URL("http://checkip.amazonaws.com");
-                        HttpURLConnection con = (HttpURLConnection) whatismyip.openConnection();
-                        con.setDefaultUseCaches(false);
-                        con.setUseCaches(false);
-                        con.setRequestProperty("Pragma", "no-cache");
-                        con.setRequestProperty("Cache-Control", "no-cache");
-                        con.setRequestProperty("Expires", "-1");
-                        
-                        in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-                        String ip2 = in.readLine();
-                        InjectionModel.LOGGER.info("Your IP information (AWS): " + ip2);
-                        
-                        whatismyip = new URL("http://freegeoip.net/csv/");
-                        con = (HttpURLConnection) whatismyip.openConnection();
-                        con.setDefaultUseCaches(false);
-                        con.setUseCaches(false);
-                        con.setRequestProperty("Pragma", "no-cache");
-                        con.setRequestProperty("Cache-Control", "no-cache");
-                        con.setRequestProperty("Expires", "-1");
-                        
-                        in = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-                        ip2 = in.readLine();
-                        InjectionModel.LOGGER.info("Your IP information (freegeoip): " + ip2);
-                    } catch (MalformedURLException e) {
-                        InjectionModel.LOGGER.warn("Malformed URL: " + e.getMessage());
-                    } catch (IOException e) {
-                        InjectionModel.LOGGER.warn("Error during proxy test: " + e.getMessage());
-                        InjectionModel.LOGGER.warn("Use your browser to verify your proxy is working.");
-                    } finally {
-                        if (in != null) {
-                            try {
-                                InjectionModel.LOGGER.info("Checking IP done.");
-                                in.close();
-                            } catch (IOException e) {
-                                InjectionModel.LOGGER.warn("Error during proxy test: " + e.getMessage());
-                                InjectionModel.LOGGER.warn("Use your browser to verify your proxy is working.");
-                            }
-                        }
-                    }
-                }
-            }, "Prefs - Action check IP").start();
-        }
     }
 }

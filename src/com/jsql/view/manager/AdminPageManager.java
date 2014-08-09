@@ -38,11 +38,13 @@ import com.jsql.view.scrollpane.JScrollPanePixelBorder;
  * Manager to display webpages frequently used as backoffice administration.
  */
 @SuppressWarnings("serial")
-public class AdminPageManager extends ListManager {
-
+public class AdminPageManager extends AbstractListManager {
+    /**
+     * Create admin page finder.
+     */
     public AdminPageManager() {
         this.setLayout(new BorderLayout());
-        this.setDefaultText("Test admin page(s)");
+        this.setDefaultText("Find admin page(s)");
 
         List<String> pathList = new ArrayList<String>();
         try {
@@ -71,7 +73,7 @@ public class AdminPageManager extends ListManager {
         
         run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/adminSearch.png")));
 
-        run.setToolTipText("<html><b>Select admin page(s) to test</b><br>" +
+        run.setToolTipText("<html><b>Select admin page(s) to find</b><br>" +
                 "Page file must exist, gives no result otherwise.<br>" +
                 "<i>Default list contains well known names of administration pages ; login and password are<br>" +
                 "generally required to access them (see Database and Brute force).<br>" +

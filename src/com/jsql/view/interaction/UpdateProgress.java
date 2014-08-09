@@ -12,9 +12,9 @@ package com.jsql.view.interaction;
 
 import javax.swing.tree.DefaultTreeModel;
 
-import com.jsql.model.bean.ElementDatabase;
+import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.view.GUIMediator;
-import com.jsql.view.tree.NodeModel;
+import com.jsql.view.tree.AbstractNodeModel;
 
 /**
  * Refresh the progress bar of an element in the database tree.
@@ -23,7 +23,7 @@ public class UpdateProgress implements IInteractionCommand {
     /**
      * The element in the database tree to refresh.
      */
-    private ElementDatabase dataElementDatabase;
+    private AbstractElementDatabase dataElementDatabase;
 
     /**
      * The index of progression.
@@ -34,15 +34,16 @@ public class UpdateProgress implements IInteractionCommand {
      * @param interactionParams Element in the database tree and progression index
      */
     public UpdateProgress(Object[] interactionParams) {
-        dataElementDatabase = (ElementDatabase) interactionParams[0];
+        dataElementDatabase = (AbstractElementDatabase) interactionParams[0];
 
         dataCount = (Integer) interactionParams[1];
     }
 
+    @Override
     public void execute() {
         // Get the node
-        NodeModel progressingTreeNodeModel =
-                (NodeModel) GUIMediator.gui().getTreeNodeModels().get(dataElementDatabase).getUserObject();
+        AbstractNodeModel progressingTreeNodeModel =
+                (AbstractNodeModel) GUIMediator.gui().getTreeNodeModels().get(dataElementDatabase).getUserObject();
         // Update the progress value of the model
         progressingTreeNodeModel.childUpgradeCount = dataCount;
 

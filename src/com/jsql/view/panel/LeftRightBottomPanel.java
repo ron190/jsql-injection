@@ -29,16 +29,31 @@ import com.jsql.view.GUITools;
 import com.jsql.view.splitpane.JSplitPaneWithZeroSizeDivider;
 
 /**
- * Pane composed of tree and tabs on top, and info tabs on bottom.
+ * SplitPane composed of tree and tabs on top, and info tabs on bottom.
  */
 @SuppressWarnings("serial")
 public class LeftRightBottomPanel extends JSplitPaneWithZeroSizeDivider {
-
+    /**
+     * Name of preference for splitter vertical.
+     * Reset divider position for current application version.
+     */
     public static final String VERTICALSPLITTER_PREFNAME = "verticalSplitter-" + InjectionModel.JSQLVERSION;
+    
+    /**
+     * Name of preference for splitter horizontal.
+     * Reset divider position for current application version. 
+     */
     public static final String HORIZONTALSPLITTER_PREFNAME = "horizontalSplitter-" + InjectionModel.JSQLVERSION;
 
+    /**
+     * SplitPane containing Manager panels on the left and result tabs on the right.
+     */
     public JSplitPaneWithZeroSizeDivider leftRight;
 
+    /**
+     * Create main panel with Manager panels on the left, result tabs on the right,
+     * and consoles in the bottom. 
+     */
     public LeftRightBottomPanel() {
         super(JSplitPane.VERTICAL_SPLIT, true);
 
@@ -46,16 +61,16 @@ public class LeftRightBottomPanel extends JSplitPaneWithZeroSizeDivider {
         int verticalSplitter = prefs.getInt(LeftRightBottomPanel.VERTICALSPLITTER_PREFNAME, 300);
         int horizontalSplitter = prefs.getInt(LeftRightBottomPanel.HORIZONTALSPLITTER_PREFNAME, 200);
 
-        GUIMediator.register(new LeftPaneAdapter());
-        GUIMediator.register(new RightPaneAdapter());
+        GUIMediator.register(new AdapterLeftPane());
+        GUIMediator.register(new AdapterRightPane());
 
         // Tree and tabs on top
-        leftRight = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT, true);
-        leftRight.setLeftComponent(GUIMediator.left());
-        leftRight.setRightComponent(GUIMediator.right());
-        leftRight.setDividerLocation(verticalSplitter);
-        leftRight.setDividerSize(0);
-        leftRight.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, GUITools.COMPONENT_BORDER));
+        this.leftRight = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT, true);
+        this.leftRight.setLeftComponent(GUIMediator.left());
+        this.leftRight.setRightComponent(GUIMediator.right());
+        this.leftRight.setDividerLocation(verticalSplitter);
+        this.leftRight.setDividerSize(0);
+        this.leftRight.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, GUITools.COMPONENT_BORDER));
 
         this.setDividerSize(0);
         this.setBorder(null);
@@ -74,7 +89,7 @@ public class LeftRightBottomPanel extends JSplitPaneWithZeroSizeDivider {
 
         hideShowAction = new HideShowConsoleAction(arrowUpPanel);
 
-        hideBottomButton.addMouseListener(hideShowAction);
+        hideBottomButton.addMouseListener(LeftRightBottomPanel.hideShowAction);
         arrowUpPanel.add(Box.createHorizontalGlue());
         arrowUpPanel.add(hideBottomButton, BorderLayout.EAST);
         arrowUpPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, GUITools.COMPONENT_BORDER));
@@ -94,26 +109,51 @@ public class LeftRightBottomPanel extends JSplitPaneWithZeroSizeDivider {
         this.setResizeWeight(1);
     }
 
+    /**
+     * MouseAdapter used on arrow on tabbedpane header and on
+     * ersatz button when bottom panel is hidden.
+     */
     public static HideShowConsoleAction hideShowAction;
 
+    /**
+     * MouseAdapter to show/hide bottom panel.
+     */
     class HideShowConsoleAction extends MouseAdapter {
+        /**
+         * Save the divider location when bottom panel is not visible.
+         */
         private int loc = 0;
+        
+        /**
+         * Ersatz panel to display in place of tabbedpane.
+         */
         private JPanel panel;
+        
+        /**
+         * Create the hide/show bottom panel action.
+         */
         public HideShowConsoleAction(JPanel panel) {
             super();
             this.panel = panel;
         }
+        
+        /**
+         * Hide bottom panel if both main and bottom are visible, also
+         * displays an ersatz bar replacing tabbedpane.  
+         * Or else if only main panel is visible then displays bottom panel
+         * and hide ersatz panel.
+         */
         @Override
         public void mouseClicked(MouseEvent arg0) {
             if (LeftRightBottomPanel.this.getTopComponent().isVisible() && LeftRightBottomPanel.this.getBottomComponent().isVisible()) {
                 LeftRightBottomPanel.this.getBottomComponent().setVisible(false);
-                loc = LeftRightBottomPanel.this.getDividerLocation();
-                panel.setVisible(true);
+                this.loc = LeftRightBottomPanel.this.getDividerLocation();
+                this.panel.setVisible(true);
                 LeftRightBottomPanel.this.disableDragSize();
             } else {
                 LeftRightBottomPanel.this.getBottomComponent().setVisible(true);
-                LeftRightBottomPanel.this.setDividerLocation(loc);
-                panel.setVisible(false);
+                LeftRightBottomPanel.this.setDividerLocation(this.loc);
+                this.panel.setVisible(false);
                 LeftRightBottomPanel.this.enableDragSize();
             }
         }

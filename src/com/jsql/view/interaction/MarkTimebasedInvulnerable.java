@@ -24,6 +24,7 @@ public class MarkTimebasedInvulnerable implements IInteractionCommand {
         // Do nothing
     }
 
+    @Override
     public void execute() {
         GUIMediator.status().setTimeBasedIcon(GUITools.SQUARE_RED);
     }

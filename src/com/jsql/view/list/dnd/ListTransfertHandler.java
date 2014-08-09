@@ -27,15 +27,20 @@ import javax.swing.TransferHandler;
 
 import com.jsql.model.InjectionModel;
 
+/**
+ * Handler for processing cut/copy/paste/drag/drop action on a JList items.
+ */
 @SuppressWarnings("serial")
 public class ListTransfertHandler extends TransferHandler {
-    // Export
+    /**
+     * List of cut/copy/paste/drag/drop items.
+     */
+    private List<ListItem> dragPaths = null;
+    
     @Override
     public int getSourceActions(JComponent c) {
         return TransferHandler.COPY_OR_MOVE;
     }
-
-    List<ListItem> dragPaths = null;
 
     @Override
     protected Transferable createTransferable(JComponent c) {
@@ -64,7 +69,6 @@ public class ListTransfertHandler extends TransferHandler {
         }
     }
 
-    //Import
     @Override
     public boolean canImport(TransferSupport support) {
         return support.isDataFlavorSupported(DataFlavor.stringFlavor)
@@ -80,7 +84,8 @@ public class ListTransfertHandler extends TransferHandler {
 
         DnDList list = (DnDList) support.getComponent();
         DefaultListModel<ListItem> model = (DefaultListModel<ListItem>) list.getModel();
-        if (support.isDrop()) { //This is a drop
+        //This is a drop
+        if (support.isDrop()) {
             if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                 JList.DropLocation dl = (JList.DropLocation) support.getDropLocation();
                 int childIndex = dl.getIndex();

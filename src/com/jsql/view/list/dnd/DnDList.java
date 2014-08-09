@@ -46,11 +46,19 @@ import com.jsql.model.InjectionModel;
  */
 @SuppressWarnings("serial")
 public class DnDList extends JList<ListItem> {
-    
+    /**
+     * Model for the JList.
+     */
     public DefaultListModel<ListItem> listModel;
     
+    /**
+     * List of default items.
+     */
     public List<String> defaultList;
     
+    /**
+     * Compatibility method for java 6.
+     */
     public List<ListItem> getSelectedValuesList() {
         ListSelectionModel sm = getSelectionModel();
         ListModel<ListItem> dm = getModel();
@@ -71,6 +79,10 @@ public class DnDList extends JList<ListItem> {
         return selectedItems;
     }
     
+    /**
+     * Create a JList decorated with drag/drop features.
+     * @param newList List to decorate
+     */
     public DnDList(List<String> newList) {
         defaultList = newList;
 
@@ -84,7 +96,7 @@ public class DnDList extends JList<ListItem> {
         
         final int[] mouseOver = {-1};
         
-        this.addMouseListener(new MenuAction(this, mouseOver));
+        this.addMouseListener(new MouseAdapterMenuAction(this, mouseOver));
 
         // Transform Cut, selects next value
         ActionMap listActionMap = this.getActionMap();
@@ -142,7 +154,7 @@ public class DnDList extends JList<ListItem> {
             @Override
             public void keyPressed(KeyEvent arg0) {
                 if (arg0.getKeyCode() == KeyEvent.VK_DELETE) {
-                    DnDList.this.remove();
+                    DnDList.this.removeSelectedItem();
                 }
             }
         });
@@ -151,7 +163,10 @@ public class DnDList extends JList<ListItem> {
         this.setTransferHandler(new ListTransfertHandler());
     }
 
-    void remove() {
+    /**
+     * Delete selected items from the list.
+     */
+    void removeSelectedItem() {
         if (this.getSelectedValuesList().isEmpty()) {
             return;
         }
@@ -168,11 +183,11 @@ public class DnDList extends JList<ListItem> {
         }
         if (this.getMinSelectionIndex() > -1 && this.getMaxSelectionIndex() > -1) {
             this.scrollRectToVisible(
-                    this.getCellBounds(
-                            this.getMinSelectionIndex(),
-                            this.getMaxSelectionIndex()
-                            )
-                    );
+                this.getCellBounds(
+                    this.getMinSelectionIndex(),
+                    this.getMaxSelectionIndex()
+                )
+            );
         }
     }
 
@@ -182,8 +197,6 @@ public class DnDList extends JList<ListItem> {
      * @param position
      */
     void dropPasteFile(List<File> filesToImport, int position) {
-        final DefaultListModel<ListItem> listModel = (DefaultListModel<ListItem>) this.getModel();
-
         if (filesToImport.isEmpty()) {
             return;
         }

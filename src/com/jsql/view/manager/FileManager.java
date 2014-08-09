@@ -42,8 +42,10 @@ import com.jsql.view.scrollpane.JScrollPanePixelBorder;
  * Manager to read a file from the host.
  */
 @SuppressWarnings("serial")
-public class FileManager extends ListManager {
-
+public class FileManager extends AbstractListManager {
+    /**
+     * Create the manager panel to read a file.
+     */
     public FileManager() {
         this.setLayout(new BorderLayout());
         this.setDefaultText("Read file(s)");

@@ -19,7 +19,9 @@ import java.util.Map;
  * String operations missing like join().
  */
 public final class StringTool {
-    
+    /**
+     * Utility class.
+     */
     private StringTool() {
         //not called
     }
@@ -64,7 +66,12 @@ public final class StringTool {
         return String.format("%x", new BigInteger(arg.getBytes()));
     }
     
-    public static Map<String, String> getHeaders(URLConnection conn) {
+    /**
+     * Extract HTTP headers from a connection.
+     * @param conn Connection with HTTP headers
+     * @return Map of HTTP headers <name, value>
+     */
+    public static Map<String, String> getHTTPHeaders(URLConnection conn) {
         Map<String, String> msgResponse = new HashMap<String, String>();
         
         for (int i = 0;; i++) {

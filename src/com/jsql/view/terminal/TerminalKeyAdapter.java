@@ -22,9 +22,9 @@ import com.jsql.model.InjectionModel;
  * Keyboard key processing.
  */
 public class TerminalKeyAdapter extends KeyAdapter {
-    private Terminal terminal;
+    private AbstractTerminal terminal;
 
-    public TerminalKeyAdapter(Terminal terminal) {
+    public TerminalKeyAdapter(AbstractTerminal terminal) {
         this.terminal = terminal;
     }
 

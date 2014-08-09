@@ -28,6 +28,7 @@ public class MessageBinary implements IInteractionCommand {
         text = (String) interactionParams[0];
     }
 
+    @Override
     public void execute() {
         GUIMediator.bottomPanel().binaryArea.append(text);
         GUIMediator.bottomPanel().binaryArea.setCaretPosition(GUIMediator.bottomPanel().binaryArea.getDocument().getLength());

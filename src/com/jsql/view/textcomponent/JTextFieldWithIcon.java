@@ -33,14 +33,6 @@ import com.jsql.model.InjectionModel;
  */
 @SuppressWarnings("serial")
 public class JTextFieldWithIcon extends JTextField {
-    /**
-     * Build textfield with icon and text.
-     * @param text Default text to display
-     */
-    public JTextFieldWithIcon(String text) {
-        super(text);
-    }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

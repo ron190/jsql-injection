@@ -24,6 +24,7 @@ public class MarkTimebasedVulnerable implements IInteractionCommand {
         // Do nothing
     }
 
+    @Override
     public void execute() {
         GUIMediator.status().setTimeBasedIcon(GUITools.TICK);
     }

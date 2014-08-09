@@ -21,7 +21,7 @@ import javax.swing.JTextField;
  * A uneditable JTextField decorated with popup menu and border.
  */
 @SuppressWarnings("serial")
-public class JPopupLabel extends JPopupTextComponent<JTextField> implements JComponentDecorator<JTextField> {
+public class JPopupLabel extends JPopupTextComponent<JTextField> implements DecoratorJComponent<JTextField> {
     /**
      * Build a ineditable JTextField in order to create a correct popup menu.
      */

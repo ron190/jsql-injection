@@ -9,28 +9,33 @@ import com.jsql.view.manager.SQLShellManager;
 import com.jsql.view.manager.UploadManager;
 import com.jsql.view.manager.WebshellManager;
 import com.jsql.view.menubar.Menubar;
+import com.jsql.view.panel.AdapterLeftPane;
+import com.jsql.view.panel.AdapterRightPane;
 import com.jsql.view.panel.BottomPanel;
-import com.jsql.view.panel.LeftPaneAdapter;
-import com.jsql.view.panel.RightPaneAdapter;
 import com.jsql.view.panel.StatusbarPanel;
 import com.jsql.view.panel.TopPanel;
-import com.jsql.view.tab.BottomTabbedPaneAdapter;
+import com.jsql.view.tab.AdapterBottomTabbedPane;
 
+/**
+ * Mediator registering usefull components in a loose dependance way.  
+ */
 public final class GUIMediator {
-    
+    /**
+     * Utility class.
+     */
     private GUIMediator() {
         //not called
     }
     
     private static JTree databaseTree;
-    private static RightPaneAdapter right;
-    private static LeftPaneAdapter left;
+    private static AdapterRightPane right;
+    private static AdapterLeftPane left;
     
     private static InjectionModel model;
     private static GUI gui;
     private static Menubar menubar;
     private static TopPanel top;
-    private static BottomTabbedPaneAdapter bottom;
+    private static AdapterBottomTabbedPane bottom;
     private static BottomPanel bottomPanel;
     private static StatusbarPanel status;
     
@@ -43,10 +48,10 @@ public final class GUIMediator {
     public static JTree databaseTree() {
         return databaseTree;
     }
-    public static RightPaneAdapter right() {
+    public static AdapterRightPane right() {
         return right;
     }
-    public static LeftPaneAdapter left() {
+    public static AdapterLeftPane left() {
         return left;
     }
      
@@ -62,7 +67,7 @@ public final class GUIMediator {
     public static TopPanel top() {
         return top;
     }
-    public static BottomTabbedPaneAdapter bottom() {
+    public static AdapterBottomTabbedPane bottom() {
         return bottom;
     }
     public static BottomPanel bottomPanel() {
@@ -103,7 +108,7 @@ public final class GUIMediator {
     public static void register(TopPanel top) {
         GUIMediator.top = top;
     }
-    public static void register(BottomTabbedPaneAdapter bottom) {
+    public static void register(AdapterBottomTabbedPane bottom) {
         GUIMediator.bottom = bottom;
     }
     public static void register(BottomPanel bottomPanel) {
@@ -115,10 +120,10 @@ public final class GUIMediator {
     public static void register(JTree databaseTree) {
         GUIMediator.databaseTree = databaseTree;
     }
-    public static void register(RightPaneAdapter right) {
+    public static void register(AdapterRightPane right) {
         GUIMediator.right = right;
     }
-    public static void register(LeftPaneAdapter left) {
+    public static void register(AdapterLeftPane left) {
         GUIMediator.left = left;
     }
     

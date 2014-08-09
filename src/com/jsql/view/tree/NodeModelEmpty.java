@@ -28,7 +28,7 @@ import com.jsql.view.ui.RoundBorder;
 /**
  * Model for default item used on an empty tree.
  */
-public class NodeModelEmpty extends NodeModel {
+public class NodeModelEmpty extends AbstractNodeModel {
     /**
      * Flat node for empty tree.
      * @param textNode

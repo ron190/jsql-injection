@@ -19,14 +19,17 @@ import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.StoppableLoopIntoResults;
+import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.model.bean.Column;
 import com.jsql.model.bean.Database;
-import com.jsql.model.bean.ElementDatabase;
 import com.jsql.model.bean.Request;
 import com.jsql.model.bean.Table;
 import com.jsql.tool.StringTool;
 import com.jsql.view.GUIMediator;
 
+/**
+ * Database ressource object to read database, table, columns.
+ */
 public class DataAccessObject {
     /**
      * Get the initial database informations.<br>
@@ -62,9 +65,9 @@ public class DataAccessObject {
             throw new PreparationException();
         }
 
-        GUIMediator.model().versionDB =
+        GUIMediator.model().versionDatabase =
                 StringTool.hexstr(hexResult).split("\\{%\\}")[0];
-        GUIMediator.model().currentDB =
+        GUIMediator.model().currentDatabase =
                 StringTool.hexstr(hexResult).split("\\{%\\}")[1];
         GUIMediator.model().currentUser =
                 StringTool.hexstr(hexResult).split("\\{%\\}")[2];
@@ -323,8 +326,8 @@ public class DataAccessObject {
      * @param values columns selected by user
      */
     public void listValues(List<Column> argsElementDatabase) throws PreparationException, StoppableException {
-        ElementDatabase database = argsElementDatabase.get(0).getParent().getParent();
-        ElementDatabase table = argsElementDatabase.get(0).getParent();
+        AbstractElementDatabase database = argsElementDatabase.get(0).getParent().getParent();
+        AbstractElementDatabase table = argsElementDatabase.get(0).getParent();
         int rowCount = argsElementDatabase.get(0).getParent().getCount();
 
         // Inform the view that table has just been used
@@ -335,7 +338,7 @@ public class DataAccessObject {
 
         // Build an array of column names
         List<String> columnsName = new ArrayList<String>();
-        for (ElementDatabase e: argsElementDatabase) {
+        for (AbstractElementDatabase e: argsElementDatabase) {
             columnsName.add(e.toString());
         }
 

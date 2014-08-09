@@ -36,15 +36,40 @@ import com.jsql.view.tree.NodeEditor;
 import com.jsql.view.tree.NodeModelEmpty;
 import com.jsql.view.tree.NodeRenderer;
 
+/**
+ * Panel on the left with functionalities like webshell, file reading and admin page finder.
+ */
 @SuppressWarnings("serial")
-public class LeftPaneAdapter extends MouseTabbedPane {
+public class AdapterLeftPane extends MouseTabbedPane {
+    /**
+     * Panel for executing system commands.
+     */
     public WebshellManager shellManager = new WebshellManager();
+
+    /**
+     * Panel for testing backoffice admin pages.
+     */
     public AdminPageManager adminPageManager = new AdminPageManager();
+
+    /**
+     * Panel for reading files source.
+     */
     public FileManager fileManager = new FileManager();
+
+    /**
+     * Panel for uploading files.
+     */
     public UploadManager uploadManager = new UploadManager();
+
+    /**
+     * Panel for sending SQL requests.
+     */
     public SQLShellManager sqlShellManager = new SQLShellManager();
 
-    public LeftPaneAdapter() {
+    /**
+     * Create manager panel.
+     */
+    public AdapterLeftPane() {
         this.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
         // Allows to resize to zero
         this.setMinimumSize(new Dimension());

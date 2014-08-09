@@ -36,7 +36,7 @@ public class NodeRenderer extends DefaultTreeCellRenderer {
 
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         Object userObject = currentNode.getUserObject();
-        NodeModel dataModel = (NodeModel) userObject;
+        AbstractNodeModel dataModel = (AbstractNodeModel) userObject;
         return dataModel.getComponent(tree, nodeRenderer, selected, expanded, leaf, row, hasFocus);
     }
 }

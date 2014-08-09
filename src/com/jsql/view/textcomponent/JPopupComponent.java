@@ -23,7 +23,7 @@ import com.jsql.view.popupmenu.JPopupComponentMenu;
  * @param <T> Component like JTextField or JTextArea to decorate
  */
 @SuppressWarnings("serial")
-public class JPopupComponent<T extends JComponent> extends JComponent implements JComponentDecorator<T> {
+public class JPopupComponent<T extends JComponent> extends JComponent implements DecoratorJComponent<T> {
     /**
      * Decorated component.
      */

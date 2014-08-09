@@ -23,6 +23,7 @@ public class MarkTimebasedStrategy implements IInteractionCommand {
         // Do nothing
     }
 
+    @Override
     public void execute() {
         GUIMediator.status().labelTimeBased.setUnderlined();
     }

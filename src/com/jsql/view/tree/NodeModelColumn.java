@@ -27,7 +27,7 @@ import com.jsql.model.bean.Column;
  * Column model creating a checkbox.
  * Used by renderer and editor.
  */
-public class NodeModelColumn extends NodeModel {
+public class NodeModelColumn extends AbstractNodeModel {
     /**
      * Node as a column model.
      * @param column Element column coming from model

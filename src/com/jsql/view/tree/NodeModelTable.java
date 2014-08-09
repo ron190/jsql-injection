@@ -30,7 +30,7 @@ import com.jsql.view.GUITools;
 /**
  * Table model displaying the table icon on the label.
  */
-public class NodeModelTable extends NodeModel {
+public class NodeModelTable extends AbstractNodeModel {
     /**
      * Node as a table model.
      * @param table Element table coming from model
@@ -83,7 +83,7 @@ public class NodeModelTable extends NodeModel {
     @Override
     void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {
         final DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-        final NodeModel currentTableModel = (NodeModel) currentTableNode.getUserObject();
+        final AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
 
         JMenuItem mnCheckAll = new JMenuItem("Check All", 'C');
         JMenuItem mnUncheckAll = new JMenuItem("Uncheck All", 'U');
@@ -114,8 +114,8 @@ public class NodeModelTable extends NodeModel {
                 int tableChildCount = treeModel.getChildCount(currentTableNode);
                 for (int i = 0; i < tableChildCount; i++) {
                     DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(currentTableNode, i);
-                    if (currentChild.getUserObject() instanceof NodeModel) {
-                        NodeModel columnTreeNodeModel = (NodeModel) currentChild.getUserObject();
+                    if (currentChild.getUserObject() instanceof AbstractNodeModel) {
+                        AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
                         columnTreeNodeModel.isChecked = check;
                         currentTableModel.hasChildChecked = check;
                     }

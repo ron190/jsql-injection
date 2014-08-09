@@ -12,6 +12,9 @@ import com.jsql.exception.PreparationException;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 
+/**
+ * A time attack class using thread asynchronisation.
+ */
 public class ConcreteTimeInjection extends AbstractBlindInjection {
     /**
      * Waiting time in seconds, if response time is above
@@ -25,6 +28,11 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
      */
     private boolean isTimeInjectable = true;
 
+    /**
+     * Create time attack initialisation.
+     * If every false requests are under 5 seconds and every true are below 5 seconds,
+     * then time attack is confirmed. 
+     */
     public ConcreteTimeInjection() {
         /*
          * Every FALSE SQL statements will be checked,
@@ -48,12 +56,12 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
          *  it will use inject() from the model
          */
         ExecutorService executorFalseMark = Executors.newCachedThreadPool();
-        List<IBlindCallable> listCallableFalse = new ArrayList<IBlindCallable>();
+        List<AbstractBlindCallable> listCallableFalse = new ArrayList<AbstractBlindCallable>();
         for (String urlTest: falseTest) {
             listCallableFalse.add(new TimeCallable(urlTest));
         }
         // Begin the url requests
-        List<Future<IBlindCallable>> listFalseMark = null;
+        List<Future<AbstractBlindCallable>> listFalseMark = null;
         try {
             listFalseMark = executorFalseMark.invokeAll(listCallableFalse);
         } catch (InterruptedException e) {
@@ -67,7 +75,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
          * Allow the user to stop the loop
          */
         try {
-            for (Future<IBlindCallable> falseMark: listFalseMark) {
+            for (Future<AbstractBlindCallable> falseMark: listFalseMark) {
                 if (GUIMediator.model().stopFlag) {
                     return;
                 }
@@ -92,7 +100,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
             listCallableTrue.add(new TimeCallable(urlTest));
         }
         // Begin the url requests
-        List<Future<IBlindCallable>> listTrueMark;
+        List<Future<AbstractBlindCallable>> listTrueMark;
         try {
             listTrueMark = executorTrueMark.invokeAll(listCallableTrue);
         } catch (InterruptedException e) {
@@ -107,7 +115,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
          * Allow the user to stop the loop
          */
         try {
-            for (Future<IBlindCallable> falseMark: listTrueMark) {
+            for (Future<AbstractBlindCallable> falseMark: listTrueMark) {
                 if (GUIMediator.model().stopFlag) {
                     return;
                 }
@@ -124,17 +132,13 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
     }
     
     @Override
-    public Callable<IBlindCallable> getCallable(String string, int indexCharacter, boolean isLengthTest) {
+    public Callable<AbstractBlindCallable> getCallable(String string, int indexCharacter, boolean isLengthTest) {
         return new TimeCallable(string, indexCharacter, isLengthTest);
     }
 
     @Override
-    public Callable<IBlindCallable> getCallable(String string, int indexCharacter, int bit) {
+    public Callable<AbstractBlindCallable> getCallable(String string, int indexCharacter, int bit) {
         return new TimeCallable(string, indexCharacter, bit);
-    }
-
-    public static String callUrl(String timeUrl) {
-        return GUIMediator.model().inject(GUIMediator.model().insertionCharacter + timeUrl);
     }
 
     @Override
@@ -155,8 +159,6 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
 
     @Override
     public String getInfoMessage() {
-        // TODO Auto-generated method stub
-        return null;
+        return "Asking server \"Is this bit true?\", if delay does not exceed 5 seconds then response is true.\n";
     }
-
 }

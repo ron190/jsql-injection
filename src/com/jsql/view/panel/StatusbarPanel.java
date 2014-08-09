@@ -25,7 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import com.jsql.view.GUITools;
-import com.jsql.view.radio.RadioLink;
+import com.jsql.view.radio.AbstractRadioLink;
 import com.jsql.view.radio.RadioLinkStatusbar;
 import com.jsql.view.textcomponent.JPopupLabel;
 
@@ -34,29 +34,59 @@ import com.jsql.view.textcomponent.JPopupLabel;
  */
 @SuppressWarnings("serial")
 public class StatusbarPanel extends JPanel {
-
     /**
      * Default string in place of database infos.
      */
     private static final String INFO_DEFAULT_VALUE = "-";
 
-    // Database infos
+    /**
+     * Textfield not editable for database version.
+     */
     private JTextField labelDBVersion = new JPopupLabel().getProxy();
+    
+    /**
+     * Textfield not editable for database name.
+     */
     private JTextField labelCurrentDB = new JPopupLabel().getProxy();
+    
+    /**
+     * Textfield not editable for current user in database.
+     */
     private JTextField labelCurrentUser = new JPopupLabel().getProxy();
+    
+    /**
+     * Textfield not editable for authenticated user in database.
+     */
     private JTextField labelAuthenticatedUser = new JPopupLabel().getProxy();
 
-    // Injection methods
-    public RadioLink labelNormal;
-    public RadioLink labelErrorBased;
-    public RadioLink labelBlind;
-    public RadioLink labelTimeBased;
+    /**
+     * Selectable link for normal strategy.
+     */
+    public AbstractRadioLink labelNormal;
+    
+    /**
+     * Selectable link for error strategy.
+     */
+    public AbstractRadioLink labelErrorBased;
+    
+    /**
+     * Selectable link for blind strategy.
+     */
+    public AbstractRadioLink labelBlind;
+    
+    /**
+     * Selectable link for time strategy.
+     */
+    public AbstractRadioLink labelTimeBased;
 
+    /**
+     * Create status panel on south of frame.
+     */
     public StatusbarPanel() {
-        labelNormal = new RadioLinkStatusbar("Normal");
-        labelErrorBased = new RadioLinkStatusbar("ErrorBased");
-        labelBlind = new RadioLinkStatusbar("Blind");
-        labelTimeBased = new RadioLinkStatusbar("TimeBased");
+        this.labelNormal = new RadioLinkStatusbar("Normal");
+        this.labelErrorBased = new RadioLinkStatusbar("ErrorBased");
+        this.labelBlind = new RadioLinkStatusbar("Blind");
+        this.labelTimeBased = new RadioLinkStatusbar("TimeBased");
 
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         this.setBorder(
@@ -76,23 +106,23 @@ public class StatusbarPanel extends JPanel {
         this.add(Box.createHorizontalGlue());
 
         Font boldFont = new Font(((Font) UIManager.get("Label.font")).getName(), Font.BOLD, ((Font) UIManager.get("Label.font")).getSize());
-        labelDBVersion.setFont(boldFont);
-        labelCurrentDB.setFont(boldFont);
-        labelCurrentUser.setFont(boldFont);
-        labelAuthenticatedUser.setFont(boldFont);
-
-        labelDBVersion.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
-        labelDBVersion.setEditable(false);
-        labelDBVersion.setBackground(this.getBackground());
-        labelCurrentDB.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
-        labelCurrentDB.setEditable(false);
-        labelCurrentDB.setBackground(this.getBackground());
-        labelCurrentUser.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
-        labelCurrentUser.setEditable(false);
-        labelCurrentUser.setBackground(this.getBackground());
-        labelAuthenticatedUser.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
-        labelAuthenticatedUser.setEditable(false);
-        labelAuthenticatedUser.setBackground(this.getBackground());
+        this.labelDBVersion.setFont(boldFont);
+        this.labelCurrentDB.setFont(boldFont);
+        this.labelCurrentUser.setFont(boldFont);
+        this.labelAuthenticatedUser.setFont(boldFont);
+        
+        this.labelDBVersion.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+        this.labelDBVersion.setEditable(false);
+        this.labelDBVersion.setBackground(this.getBackground());
+        this.labelCurrentDB.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+        this.labelCurrentDB.setEditable(false);
+        this.labelCurrentDB.setBackground(this.getBackground());
+        this.labelCurrentUser.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+        this.labelCurrentUser.setEditable(false);
+        this.labelCurrentUser.setBackground(this.getBackground());
+        this.labelAuthenticatedUser.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+        this.labelAuthenticatedUser.setEditable(false);
+        this.labelAuthenticatedUser.setBackground(this.getBackground());
 
         JLabel titleDatabaseVersion = new JLabel("Database version");
         JLabel titleCurrentDB = new JLabel("Current db");
@@ -101,23 +131,23 @@ public class StatusbarPanel extends JPanel {
 
         JPanel types = new JPanel();
         types.setLayout(new BoxLayout(types, BoxLayout.PAGE_AXIS));
-        types.add(labelTimeBased);
-        types.add(labelBlind);
-        types.add(labelErrorBased);
-        types.add(labelNormal);
+        types.add(this.labelTimeBased);
+        types.add(this.labelBlind);
+        types.add(this.labelErrorBased);
+        types.add(this.labelNormal);
 
         // Add pixels to the right to compensate width when strategy is selected
-        labelTimeBased.setPreferredSize(new Dimension(labelTimeBased.getPreferredSize().width + 3, labelTimeBased.getPreferredSize().height));
+        this.labelTimeBased.setPreferredSize(new Dimension(this.labelTimeBased.getPreferredSize().width + 3, this.labelTimeBased.getPreferredSize().height));
         
-        labelTimeBased.setToolTipText("<html><b>Slowest and less reliable method</b><br>"
+        this.labelTimeBased.setToolTipText("<html><b>Slowest and less reliable method</b><br>"
                 + "Boolean SQL test generates a 5s wait time for false SQL statement.<br>"
                 + "<i>Read each bit of encoded characters (16 URL calls by character).</i></html>");
-        labelBlind.setToolTipText("<html><b>Slow and less reliable method</b><br>"
+        this.labelBlind.setToolTipText("<html><b>Slow and less reliable method</b><br>"
                 + "Boolean SQL test generates pageA for true SQL statement, pageB for false.<br>"
                 + "<i>Read each bit of encoded characters (16 URL calls by character).</i></html>");
-        labelErrorBased.setToolTipText("<html><b>Fast and accurate method</b><br>"
+        this.labelErrorBased.setToolTipText("<html><b>Fast and accurate method</b><br>"
                 + "<i>Read encoded data directly from source page.</i></html>");
-        labelNormal.setToolTipText("<html><b>Fastest and accurate method</b><br>"
+        this.labelNormal.setToolTipText("<html><b>Fastest and accurate method</b><br>"
                 + "<i>Read large encoded data directly from source page.</i></html>");
 
         this.add(types);
@@ -130,63 +160,92 @@ public class StatusbarPanel extends JPanel {
                         .addComponent(titleCurrentUser)
                         .addComponent(titleAuthenticatedUser))
                 .addGroup(layout.createParallelGroup()
-                        .addComponent(labelDBVersion)
-                        .addComponent(labelCurrentDB)
-                        .addComponent(labelCurrentUser)
-                        .addComponent(labelAuthenticatedUser))
+                        .addComponent(this.labelDBVersion)
+                        .addComponent(this.labelCurrentDB)
+                        .addComponent(this.labelCurrentUser)
+                        .addComponent(this.labelAuthenticatedUser))
         );
 
         layout.setVerticalGroup(
             layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(titleDatabaseVersion)
-                        .addComponent(labelDBVersion))
+                        .addComponent(this.labelDBVersion))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(titleCurrentDB)
-                        .addComponent(labelCurrentDB))
+                        .addComponent(this.labelCurrentDB))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(titleCurrentUser)
-                        .addComponent(labelCurrentUser))
+                        .addComponent(this.labelCurrentUser))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(titleAuthenticatedUser)
-                        .addComponent(labelAuthenticatedUser))
+                        .addComponent(this.labelAuthenticatedUser))
         );
     }
 
+    /**
+     * Set default values for database information. 
+     */
     public final void reset() {
-        labelDBVersion.setText(StatusbarPanel.INFO_DEFAULT_VALUE);
-        labelCurrentDB.setText(StatusbarPanel.INFO_DEFAULT_VALUE);
-        labelCurrentUser.setText(StatusbarPanel.INFO_DEFAULT_VALUE);
-        labelAuthenticatedUser.setText(StatusbarPanel.INFO_DEFAULT_VALUE);
-
-        labelNormal.setIcon(GUITools.SQUARE_GREY);
-        labelErrorBased.setIcon(GUITools.SQUARE_GREY);
-        labelBlind.setIcon(GUITools.SQUARE_GREY);
-        labelTimeBased.setIcon(GUITools.SQUARE_GREY);
-
-        labelNormal.setFont(GUITools.MYFONT);
-        labelErrorBased.setFont(GUITools.MYFONT);
-        labelBlind.setFont(GUITools.MYFONT);
-        labelTimeBased.setFont(GUITools.MYFONT);
+        this.labelDBVersion.setText(StatusbarPanel.INFO_DEFAULT_VALUE);
+        this.labelCurrentDB.setText(StatusbarPanel.INFO_DEFAULT_VALUE);
+        this.labelCurrentUser.setText(StatusbarPanel.INFO_DEFAULT_VALUE);
+        this.labelAuthenticatedUser.setText(StatusbarPanel.INFO_DEFAULT_VALUE);
+        
+        this.labelNormal.setIcon(GUITools.SQUARE_GREY);
+        this.labelErrorBased.setIcon(GUITools.SQUARE_GREY);
+        this.labelBlind.setIcon(GUITools.SQUARE_GREY);
+        this.labelTimeBased.setIcon(GUITools.SQUARE_GREY);
+        
+        this.labelNormal.setFont(GUITools.MYFONT);
+        this.labelErrorBased.setFont(GUITools.MYFONT);
+        this.labelBlind.setFont(GUITools.MYFONT);
+        this.labelTimeBased.setFont(GUITools.MYFONT);
     }
 
+    /**
+     * Set database information in statusbar.
+     * @param version Database version
+     * @param database Name of current database
+     * @param user User name logged into database
+     * @param authenticatedUser User authenticated
+     */
     public void setInfos(String version, String database, String user, String authenticatedUser) {
-        labelDBVersion.setText(version);
-        labelCurrentDB.setText(database);
-        labelCurrentUser.setText(user);
-        labelAuthenticatedUser.setText(authenticatedUser);
+        this.labelDBVersion.setText(version);
+        this.labelCurrentDB.setText(database);
+        this.labelCurrentUser.setText(user);
+        this.labelAuthenticatedUser.setText(authenticatedUser);
     }
 
+    /**
+     * Displays an icon next to normal label.
+     * @param icon Icon to display
+     */
     public void setNormalIcon(Icon icon) {
-        labelNormal.setIcon(icon);
+        this.labelNormal.setIcon(icon);
     }
+    
+    /**
+     * Displays an icon next to errorbased label.
+     * @param icon Icon to display
+     */
     public void setErrorBasedIcon(Icon icon) {
-        labelErrorBased.setIcon(icon);
+        this.labelErrorBased.setIcon(icon);
     }
+    
+    /**
+     * Displays an icon next to blind label.
+     * @param icon Icon to display
+     */
     public void setBlindIcon(Icon icon) {
-        labelBlind.setIcon(icon);
+        this.labelBlind.setIcon(icon);
     }
+    
+    /**
+     * Displays an icon next to timebased label.
+     * @param icon Icon to display
+     */
     public void setTimeBasedIcon(Icon icon) {
-        labelTimeBased.setIcon(icon);
+        this.labelTimeBased.setIcon(icon);
     }
 }
