@@ -81,10 +81,7 @@ public class NodeModelTable extends AbstractNodeModel {
     }
 
     @Override
-    void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {
-        final DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-        final AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
-
+    void displayMenu(JPopupMenu tablePopupMenu, final TreePath path) {
         JMenuItem mnCheckAll = new JMenuItem("Check All", 'C');
         JMenuItem mnUncheckAll = new JMenuItem("Uncheck All", 'U');
 
@@ -100,15 +97,18 @@ public class NodeModelTable extends AbstractNodeModel {
             tablePopupMenu.add(new JSeparator());
         }
 
-        class CheckUncheck implements ActionListener {
+        class TableMenuCheckUncheck implements ActionListener {
             private boolean check;
             
-            CheckUncheck(boolean check) {
+            TableMenuCheckUncheck(boolean check) {
                 this.check = check;
             }
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
+                final DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+                final AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
+                
                 DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
 
                 int tableChildCount = treeModel.getChildCount(currentTableNode);
@@ -116,8 +116,8 @@ public class NodeModelTable extends AbstractNodeModel {
                     DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(currentTableNode, i);
                     if (currentChild.getUserObject() instanceof AbstractNodeModel) {
                         AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
-                        columnTreeNodeModel.isChecked = check;
-                        currentTableModel.hasChildChecked = check;
+                        columnTreeNodeModel.isChecked = this.check;
+                        currentTableModel.hasChildChecked = this.check;
                     }
                 }
 
@@ -125,13 +125,13 @@ public class NodeModelTable extends AbstractNodeModel {
             }
         }
 
-        class CheckAll extends CheckUncheck {
+        class CheckAll extends TableMenuCheckUncheck {
             CheckAll() {
                 super(true);
             }
         }
 
-        class UncheckAll extends CheckUncheck {
+        class UncheckAll extends TableMenuCheckUncheck {
             UncheckAll() {
                 super(false);
             }

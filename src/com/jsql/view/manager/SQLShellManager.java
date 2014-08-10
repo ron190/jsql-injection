@@ -66,18 +66,18 @@ public class SQLShellManager extends AbstractListManager {
         
         JLabel userLabel = new JLabel(" [Optional] User ");
         JLabel passLabel = new JLabel(" [Optional] Pass ");
-        final JTextField user = new JPopupTextField().getProxy();
-        final JTextField pass = new JPopupTextField().getProxy();
+        final JTextField user = new JPopupTextField("[Optional] User").getProxy();
+        final JTextField pass = new JPopupTextField("[Optional] Pass").getProxy();
         
         user.setToolTipText("<html><b>MySQL username</b><br>" +
-                "Users' names are stored into database <i>mysql</i>, table <i>user</i>.<br>" +
-                "It could be left empty if a blank user has been defined.<br>" +
-                "<i>Try to read an existing php page to get database credentials.</i></html>");
+                "Users are stored in table <i>user</i> of database <i>mysql</i>.<br>" +
+                "Can be left empty if no user has been defined.<br>" +
+                "<i>Try to read an existing php file to get plaintext database credentials.</i></html>");
         pass.setToolTipText("<html><b>MySQL password</b><br>" +
-                "Passwords hashes are stored into database <i>mysql</i>, table <i>user</i>.<br>" +
+                "Password hashes are stored in table <i>user</i> of database <i>mysql</i>.<br>" +
                 "You can brute force the hash with type <i>mysql</i>.<br>" +
-                "It could be left empty if a blank password has been defined.<br>" +
-                "<i>Try to read an existing php page to get database credentials.</i></html>");
+                "Can be left empty if no password has been defined.<br>" +
+                "<i>Try to read an existing php file to get plaintext database credentials.</i></html>");
         
         user.setBorder(GUITools.BLU_ROUND_BORDER);
         JPanel m = new JPanel(new BorderLayout());
@@ -129,27 +129,32 @@ public class SQLShellManager extends AbstractListManager {
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
 
-        JPanel urlLine = new JPanel(new BorderLayout());
+//        JPanel urlLine = new JPanel(new BorderLayout());
 
         JLabel label = new JLabel("[Optional] URL to the SQL shell directory:");
         label.setHorizontalAlignment(SwingConstants.CENTER);
 
-        urlLine.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER),
-                BorderFactory.createEmptyBorder(1, 1, 1, 1)));
+//        urlLine.setBorder(BorderFactory.createCompoundBorder(
+//                BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER),
+//                BorderFactory.createEmptyBorder(1, 1, 1, 1)));
         
-        final JTextField shellURL = new JPopupTextField().getProxy();
-        String tooltip = "<html><b>How to use</b><br>" +
-                "- Leave blank if the file from address bar is located in selected folder(s), shell will also be in it.<br>" +
+        final JTextField shellURL = new JPopupTextField("[Optional] URL to the SQL shell directory").getProxy();
+        String tooltip = "<html><b>How to use optional shell URL</b><br>" +
+                "- Leave blank if the file from URL is in selected folder, shell will be created in this folder.<br>" +
                 "<i>E.g Address bar is set with http://127.0.0.1/simulate_get.php?lib=, file simulate_get.php<br>" +
                 "is located in selected '/var/www/', then shell will be created in that folder.</i><br>" +
-                "- Or force URL for the selected folder.<br>" +
+                "- Or force a URL for selected folder.<br>" +
                 "<i>E.g Shell is created in selected '/var/www/site/folder/' ; corresponding URL for this folder<br>" +
                 "is http://site.com/another/path/ (because of alias or url rewriting for example).</i></html>";
         shellURL.setToolTipText(tooltip);
-        shellURL.setBorder(GUITools.BLU_ROUND_BORDER);
-        urlLine.add(shellURL);
-        urlLine.add(label, BorderLayout.NORTH);
+//        shellURL.setBorder(GUITools.BLU_ROUND_BORDER);
+        shellURL.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER),
+                        BorderFactory.createMatteBorder(1, 1, 0, 1, GUITools.DEFAULT_BACKGROUND)),
+                        GUITools.BLU_ROUND_BORDER));
+//        urlLine.add(shellURL);
+//        urlLine.add(label, BorderLayout.NORTH);
 
         JPanel lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
@@ -160,7 +165,7 @@ public class SQLShellManager extends AbstractListManager {
         this.run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/shellSearch.png")));
         this.run.setToolTipText("<html><b>Select folder(s) in which shell is created</b><br>" +
                 "Path must be correct and correspond to a PHP folder, gives no result otherwise.<br>" +
-                "<i>If necessary, you must set the URL of shell directory (see note on text component).</i>" +
+                "<i>If necessary, you must set the URL of shell directory (see note on optional URL).</i>" +
                 "</html>");
         this.run.setEnabled(false);
         
@@ -210,7 +215,8 @@ public class SQLShellManager extends AbstractListManager {
         lastLine.add(Box.createHorizontalGlue());
         lastLine.add(this.run);
 
-        southPanel.add(urlLine);
+//        southPanel.add(urlLine);
+        southPanel.add(shellURL);
         southPanel.add(lastLine);
         this.add(southPanel, BorderLayout.SOUTH);
     }

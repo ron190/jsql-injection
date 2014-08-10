@@ -143,14 +143,15 @@ public class ComponentBorder implements Border {
         this.gap = gap;
     }
 
-//
-//  Implement the Border interface
-//
-
+    //
+    //  Implement the Border interface
+    //
+    @Override
     public Insets getBorderInsets(Component c) {
         return borderInsets;
     }
 
+    @Override
     public boolean isBorderOpaque() {
         return false;
     }
@@ -180,7 +181,6 @@ public class ComponentBorder implements Border {
         determineInsetsAndAlignment();
 
         //  Add this Border to the parent
-
         Border current = parent.getBorder();
 
         if (current == null) {
@@ -191,7 +191,6 @@ public class ComponentBorder implements Border {
         }
 
         //  Add component to the parent
-
         parent.add(component);
     }
 
@@ -210,7 +209,6 @@ public class ComponentBorder implements Border {
         //
         //  The X, Y alignment of the component is controlled by both the edge
         //  and alignment parameters
-
         if (edge == Edge.TOP) {
             borderInsets.top = component.getPreferredSize().height + gap;
             component.setAlignmentX(alignment);
@@ -243,7 +241,6 @@ public class ComponentBorder implements Border {
 
         //  May need to adust the height of the parent component to fit
         //  the component in the Border
-
         if (edge == Edge.RIGHT || edge == Edge.LEFT) {
             int parentHeight = parent.getPreferredSize().height - parentInsets.top - parentInsets.bottom;
             int diff = component.getHeight() - parentHeight;
@@ -258,7 +255,6 @@ public class ComponentBorder implements Border {
 
         //  May need to adust the width of the parent component to fit
         //  the component in the Border
-
         if (edge == Edge.TOP || edge == Edge.BOTTOM) {
             int parentWidth = parent.getPreferredSize().width - parentInsets.left - parentInsets.right;
             int diff = component.getWidth() - parentWidth;

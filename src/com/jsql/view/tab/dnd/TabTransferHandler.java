@@ -14,14 +14,14 @@ import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.view.panel.AdapterRightPane;
+import com.jsql.view.tab.AdapterRightTabbedPane;
 
 @SuppressWarnings("serial")
 public class TabTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
     public TabTransferHandler() {
 //        System.out.println("TabTransferHandler");
-        localObjectFlavor = new ActivationDataFlavor(AdapterRightPane.class, DataFlavor.javaJVMLocalObjectMimeType, "RightPaneAdapter");
+        localObjectFlavor = new ActivationDataFlavor(AdapterRightTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "RightPaneAdapter");
     }
     private DnDTabbedPane source = null;
     @Override protected Transferable createTransferable(JComponent c) {

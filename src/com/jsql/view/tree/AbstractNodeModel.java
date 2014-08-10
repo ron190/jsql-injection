@@ -12,25 +12,18 @@ package com.jsql.view.tree;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
-import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.AbstractElementDatabase;
-import com.jsql.model.bean.Column;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 import com.jsql.view.ui.RoundBorder;
@@ -119,7 +112,7 @@ public abstract class AbstractNodeModel {
      * @param x Popup menu x mouse coordinate
      * @param y Popup menu y mouse coordinate
      */
-    public void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int x, int y) {
+    public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, int x, int y) {
         JPopupMenu tablePopupMenu = new JPopupMenu();
 
         JMenuItem mnLoad = new JMenuItem("Load/Stop", 'o');
@@ -135,7 +128,7 @@ public abstract class AbstractNodeModel {
         if (!this.isRunning) {
             mnPause.setEnabled(false);
         }
-        mnPause.addActionListener(new ActionPauseUnpause());
+        mnPause.addActionListener(new ActionPauseUnpause(this, currentTableNode));
 
         this.displayMenu(tablePopupMenu, path);
         tablePopupMenu.add(mnLoad);
@@ -145,88 +138,6 @@ public abstract class AbstractNodeModel {
         mnPause.setIcon(GUITools.EMPTY);
 
         tablePopupMenu.show(GUIMediator.databaseTree(), x, y);
-    }
-
-    /**
-     * Action to start and stop injection process.
-     */
-    private class ActionLoadStop implements ActionListener {
-        AbstractNodeModel nodeData;
-        DefaultMutableTreeNode currentTableNode;
-
-        public ActionLoadStop(AbstractNodeModel nodeData, DefaultMutableTreeNode currentTableNode) {
-            this.nodeData = nodeData;
-            this.currentTableNode = currentTableNode;
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
-            DefaultMutableTreeNode tableNode = currentTableNode;
-            final List<Column> columnsToSearch = new ArrayList<Column>();
-
-            int tableChildCount = treeModel.getChildCount(tableNode);
-            for (int i = 0; i < tableChildCount; i++) {
-                DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
-                if (currentChild.getUserObject() instanceof AbstractNodeModel) {
-                    AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
-                    if (columnTreeNodeModel.isChecked) {
-                        columnsToSearch.add((Column) columnTreeNodeModel.dataObject);
-                    }
-                }
-            }
-
-            if (!this.nodeData.isRunning && columnsToSearch.isEmpty()) {
-                return;
-            }
-
-            if (!this.nodeData.isRunning) {
-                new SwingWorker<Object, Object>(){
-
-                    @Override
-                    protected Object doInBackground() throws Exception {
-                        GUIMediator.model().dao.listValues(columnsToSearch);
-                        return null;
-                    }
-                    
-                }.execute();
-            } else {
-                GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).stop();
-                GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).unPause();
-                this.nodeData.childUpgradeCount = 0;
-                this.nodeData.hasIndeterminatedProgress = false;
-                this.nodeData.hasProgress = false;
-                GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).resume();
-            }
-            this.nodeData.isRunning = !this.nodeData.isRunning;
-
-            // !!important!!
-            GUIMediator.databaseTree().getCellEditor().stopCellEditing();
-        }
-    }
-
-    /**
-     * Action to pause and unpause injection process.
-     */
-    private class ActionPauseUnpause implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).isPaused()) {
-                GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).unPause();
-            } else {
-                GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).pause();
-            }
-            
-            // Restart the action after an unpause
-            if (!GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).isPaused()) {
-                GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).resume();
-            }
-
-            // !!important!!
-            GUIMediator.databaseTree().getCellEditor().stopCellEditing();
-            // reload stucked GIF loader
-            GUIMediator.databaseTree().repaint();
-        }
     }
 
     /**

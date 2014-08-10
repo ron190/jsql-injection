@@ -79,6 +79,28 @@ public class Menubar extends JMenuBar {
         JMenu menuFile = new JMenu("File");
         menuFile.setMnemonic('F');
 
+        JMenuItem itemNewWindows = new JMenuItem("New Window", 'N');
+        itemNewWindows.setIcon(GUITools.EMPTY);
+        itemNewWindows.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+        itemNewWindows.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                InjectionModel.LOGGER.info("Starting new window.");
+                String separator = System.getProperty("file.separator");
+                String classpath = System.getProperty("java.class.path");
+                String path = System.getProperty("java.home") + separator + "bin" + separator + "java";
+                ProcessBuilder processBuilder = 
+                        new ProcessBuilder(path, "-cp",
+                        classpath, 
+                        InjectionModel.class.getName());
+                try {
+                    processBuilder.start();
+                } catch (IOException e1) {
+                    InjectionModel.LOGGER.error("Error opening new window.");
+                }
+            }
+        });
+
         JMenuItem itemSave = new JMenuItem("Save Tab As...", 'S');
         itemSave.setIcon(GUITools.EMPTY);
         itemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
@@ -95,6 +117,8 @@ public class Menubar extends JMenuBar {
 
         ActionHandler.addShortcut(Menubar.this);
 
+        menuFile.add(itemNewWindows);
+        menuFile.add(new JSeparator());
         menuFile.add(itemSave);
         menuFile.add(new JSeparator());
         menuFile.add(itemExit);
@@ -155,6 +179,8 @@ public class Menubar extends JMenuBar {
         menuView.add(webshell);
         JMenuItem sqlshell = new JMenuItem("SQL shell", GUITools.SHELL_SERVER_ICON);
         menuView.add(sqlshell);
+        JMenuItem upload = new JMenuItem("Upload", GUITools.UPLOAD_ICON);
+        menuView.add(upload);
         JMenuItem bruteforce = new JMenuItem("Brute force", GUITools.BRUTER_ICON);
         menuView.add(bruteforce);
         JMenuItem coder = new JMenuItem("Coder", GUITools.CODER_ICON);
@@ -234,8 +260,9 @@ public class Menubar extends JMenuBar {
         file.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, ActionEvent.CTRL_MASK));
         webshell.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_4, ActionEvent.CTRL_MASK));
         sqlshell.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_5, ActionEvent.CTRL_MASK));
-        bruteforce.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_6, ActionEvent.CTRL_MASK));
-        coder.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_7, ActionEvent.CTRL_MASK));
+        upload.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_6, ActionEvent.CTRL_MASK));
+        bruteforce.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_7, ActionEvent.CTRL_MASK));
+        coder.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_8, ActionEvent.CTRL_MASK));
 
         final Map<JMenuItem, Integer> p = new HashMap<JMenuItem, Integer>();
         p.put(database, 0);

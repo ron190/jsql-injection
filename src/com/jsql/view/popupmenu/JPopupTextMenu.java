@@ -25,7 +25,6 @@ import com.jsql.view.GUITools;
  */
 @SuppressWarnings("serial")
 public class JPopupTextMenu extends JPopupComponentMenu {
-
     /**
      * Create popup menu for this component.
      * @param component The component receiving the menu

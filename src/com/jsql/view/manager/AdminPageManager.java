@@ -76,7 +76,7 @@ public class AdminPageManager extends AbstractListManager {
         run.setToolTipText("<html><b>Select admin page(s) to find</b><br>" +
                 "Page file must exist, gives no result otherwise.<br>" +
                 "<i>Default list contains well known names of administration pages ; login and password are<br>" +
-                "generally required to access them (see Database and Brute force).<br>" +
+                "generally required by them (see Database and Brute force).<br>" +
                 "If main URL is http://website.com/folder/page.php?arg=value, then it searches for both<br>" +
                 "http://website.com/[admin pages] and http://website.com/folder/[admin pages]</i></html>");
         run.setBorder(GUITools.BLU_ROUND_BORDER);

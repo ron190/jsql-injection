@@ -140,9 +140,9 @@ public class StatusbarPanel extends JPanel {
         this.labelTimeBased.setPreferredSize(new Dimension(this.labelTimeBased.getPreferredSize().width + 3, this.labelTimeBased.getPreferredSize().height));
         
         this.labelTimeBased.setToolTipText("<html><b>Slowest and less reliable method</b><br>"
-                + "Boolean SQL test generates a 5s wait time for false SQL statement.<br>"
+                + "Boolean SQL test generates a 5s delay for false SQL statement.<br>"
                 + "<i>Read each bit of encoded characters (16 URL calls by character).</i></html>");
-        this.labelBlind.setToolTipText("<html><b>Slow and less reliable method</b><br>"
+        this.labelBlind.setToolTipText("<html><b>Slow and reliable method</b><br>"
                 + "Boolean SQL test generates pageA for true SQL statement, pageB for false.<br>"
                 + "<i>Read each bit of encoded characters (16 URL calls by character).</i></html>");
         this.labelErrorBased.setToolTipText("<html><b>Fast and accurate method</b><br>"
@@ -196,6 +196,11 @@ public class StatusbarPanel extends JPanel {
         this.labelErrorBased.setIcon(GUITools.SQUARE_GREY);
         this.labelBlind.setIcon(GUITools.SQUARE_GREY);
         this.labelTimeBased.setIcon(GUITools.SQUARE_GREY);
+        
+//        this.labelNormal.removeFont();
+//        this.labelErrorBased.removeFont();
+//        this.labelBlind.removeFont();
+//        this.labelTimeBased.removeFont();
         
         this.labelNormal.setFont(GUITools.MYFONT);
         this.labelErrorBased.setFont(GUITools.MYFONT);

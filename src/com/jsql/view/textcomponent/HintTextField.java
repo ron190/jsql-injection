@@ -1,5 +1,6 @@
 package com.jsql.view.textcomponent;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,11 +9,34 @@ import java.awt.RenderingHints;
 
 import javax.swing.JTextField;
 
+/**
+ * Textfield with information text displayed when empty.
+ */
 @SuppressWarnings("serial")
 public class HintTextField extends JTextField {
-    public HintTextField(String hint) {
-        _hint = hint;
+    /**
+     * Text to display when empty.
+     */
+    private String hint = "";
+    
+    /**
+     * Create a textfield with hint and default value.
+     * @param hint Text displayed when empty
+     * @param value Default value
+     */
+    public HintTextField(String hint, String value) {
+        this(hint);
+        setText(value);
     }
+    
+    /**
+     * Create a textfield with hint.
+     * @param hint Text displayed when empty
+     */
+    public HintTextField(String hint) {
+        this.hint = hint;
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -26,8 +50,8 @@ public class HintTextField extends JTextField {
             int m = 0xfefefefe;
             int c2 = ((c0 & m) >>> 1) + ((c1 & m) >>> 1);
             g.setColor(new Color(c2, true));
-            g.drawString(_hint, ins.left, h / 2 + fm.getAscent() / 2 - 2);
+            g.setFont(this.getFont().deriveFont(Font.ITALIC));
+            g.drawString(hint, ins.left + 2, h / 2 + fm.getAscent() / 2 - 1);
         }
     }
-    private final String _hint;
 }

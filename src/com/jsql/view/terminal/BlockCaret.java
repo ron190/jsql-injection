@@ -23,7 +23,9 @@ import javax.swing.text.JTextComponent;
  */
 @SuppressWarnings("serial")
 public class BlockCaret extends DefaultCaret {
-
+    /**
+     * Create a caret shaped for terminal.
+     */
     public BlockCaret() {
         // half a second
         this.setBlinkRate(500);

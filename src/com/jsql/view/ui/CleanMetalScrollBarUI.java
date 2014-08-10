@@ -27,7 +27,7 @@ public class CleanMetalScrollBarUI extends MetalScrollBarUI {
      * Build a zero size button.
      * @return Zero size button
      */
-    protected JButton createZeroButton() {
+    private JButton createZeroButton() {
         JButton button = new JButton("zero button");
         Dimension zeroDim = new Dimension();
         button.setPreferredSize(zeroDim);
@@ -36,7 +36,6 @@ public class CleanMetalScrollBarUI extends MetalScrollBarUI {
         return button;
     }
     
-
     @Override
     protected JButton createDecreaseButton(int orientation) {
         return createZeroButton();

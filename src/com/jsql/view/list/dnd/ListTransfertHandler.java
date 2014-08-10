@@ -52,7 +52,7 @@ public class ListTransfertHandler extends TransferHandler {
             buff.append(t + "\n");
         }
 
-        return new StringSelection(buff.toString());
+        return new StringSelection(buff.toString().trim());
     }
 
     @SuppressWarnings("unchecked")

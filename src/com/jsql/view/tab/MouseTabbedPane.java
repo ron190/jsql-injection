@@ -17,8 +17,10 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import javax.swing.AbstractAction;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -68,7 +70,8 @@ public class MouseTabbedPane extends JTabbedPane {
 
                 int tabCount = tabPane.getTabCount();
                 for (int i = 0; i < tabCount; i++) {
-                    menu.add(new TabAction(tabPane, i));
+                    JMenuItem menuItem = menu.add(new TabAction(tabPane, i));
+                    menuItem.setAccelerator(KeyStroke.getKeyStroke("ctrl " + (i + 1)));
                 }
 
                 menu.show(tabPane, e.getX(), e.getY());

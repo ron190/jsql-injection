@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  *******************************************************************************/
-package com.jsql.view.panel;
+package com.jsql.view.tab;
 
 import javax.swing.JTabbedPane;
 import javax.swing.TransferHandler;
@@ -21,12 +21,12 @@ import com.jsql.view.tab.dnd.TabTransferHandler;
  * TabbedPane containing result injection panels.
  */
 @SuppressWarnings("serial")
-public class AdapterRightPane extends DnDTabbedPane {
+public class AdapterRightTabbedPane extends DnDTabbedPane {
     
     /**
      * Create the panel containing injection results.
      */
-    public AdapterRightPane() {
+    public AdapterRightTabbedPane() {
         this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
         TransferHandler handler = new TabTransferHandler();

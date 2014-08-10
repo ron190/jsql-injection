@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  *******************************************************************************/
-package com.jsql.view.panel;
+package com.jsql.view.tab;
 
 import java.awt.Dimension;
 import java.awt.event.FocusEvent;
@@ -31,7 +31,6 @@ import com.jsql.view.manager.SQLShellManager;
 import com.jsql.view.manager.UploadManager;
 import com.jsql.view.manager.WebshellManager;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
-import com.jsql.view.tab.MouseTabbedPane;
 import com.jsql.view.tree.NodeEditor;
 import com.jsql.view.tree.NodeModelEmpty;
 import com.jsql.view.tree.NodeRenderer;
@@ -40,7 +39,7 @@ import com.jsql.view.tree.NodeRenderer;
  * Panel on the left with functionalities like webshell, file reading and admin page finder.
  */
 @SuppressWarnings("serial")
-public class AdapterLeftPane extends MouseTabbedPane {
+public class AdapterLeftTabbedPane extends MouseTabbedPane {
     /**
      * Panel for executing system commands.
      */
@@ -69,7 +68,7 @@ public class AdapterLeftPane extends MouseTabbedPane {
     /**
      * Create manager panel.
      */
-    public AdapterLeftPane() {
+    public AdapterLeftTabbedPane() {
         this.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
         // Allows to resize to zero
         this.setMinimumSize(new Dimension());
@@ -131,8 +130,8 @@ public class AdapterLeftPane extends MouseTabbedPane {
         this.addTab("Database", GUITools.DATABASE_SERVER_ICON, scroller, "Explore databases from remote host");
         this.addTab("Admin page", GUITools.ADMIN_SERVER_ICON, adminPageManager, "Test admin pages on remote host");
         this.addTab("File", GUITools.FILE_SERVER_ICON, fileManager, "Read files from remote host");
-        this.addTab("Web shell", GUITools.SHELL_SERVER_ICON, shellManager, "<html>Create a web shell to remote host ; open a terminal<br><i>Allows OS commands like ipconfig/ifconfig</i></html>");
-        this.addTab("SQL shell", GUITools.SHELL_SERVER_ICON, sqlShellManager, "<html>Create a SQL shell to remote host ; open a terminal<br><i>Allows SQL commands like update/grant</i></html>");
+        this.addTab("Web shell", GUITools.SHELL_SERVER_ICON, shellManager, "<html>Create a web shell to remote host and open a terminal<br><i>Allows system commands like ipconfig/ifconfig</i></html>");
+        this.addTab("SQL shell", GUITools.SHELL_SERVER_ICON, sqlShellManager, "<html>Create a SQL shell to remote host and open a terminal<br><i>Allows SQL commands like update/grant</i></html>");
         this.addTab("Upload", GUITools.UPLOAD_ICON, uploadManager, "Upload a file to host");
         this.addTab("Brute force", GUITools.BRUTER_ICON, new BruteForceManager(), "Brute force hashes");
         this.addTab("Coder", GUITools.CODER_ICON, new CoderManager(), "Encode or decode a string");

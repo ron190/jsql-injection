@@ -19,15 +19,23 @@ import javax.swing.text.Element;
 import com.jsql.model.InjectionModel;
 
 /**
- * Keyboard key processing.
+ * Keyboard key processing for terminal.
  */
 public class TerminalKeyAdapter extends KeyAdapter {
+    /**
+     * Terminal where keys are processed.
+     */
     private AbstractTerminal terminal;
 
+    /**
+     * Create a keyboard processor for a terminal.
+     * @param terminal Terminal where keys are processed
+     */
     public TerminalKeyAdapter(AbstractTerminal terminal) {
         this.terminal = terminal;
     }
 
+    @Override
     public void keyPressed(KeyEvent ke) {
         final Element root = terminal.getDocument().getDefaultRootElement();
         final int caretpos = terminal.getCaretPosition();

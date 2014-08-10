@@ -19,7 +19,6 @@ import com.jsql.view.GUIMediator;
  */
 @SuppressWarnings("serial")
 public class SQLTerminal extends AbstractTerminal {
-
    /**
      * Build a SQL shell instance.
      * @param terminalID Unique identifier to discriminate beyond multiple opened terminals

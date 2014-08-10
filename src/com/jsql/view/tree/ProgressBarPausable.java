@@ -41,7 +41,7 @@ public class ProgressBarPausable extends JProgressBar {
     public void paint(Graphics g) {
         super.paint(g);
 
-        if (showIcon) {
+        if (this.showIcon) {
             try {
                 BufferedImage im2 = ImageIO.read(NodePanel.class.getResource(GUITools.PATH_PAUSE));
                 g.drawImage(im2, (this.getWidth() - im2.getWidth()) / 2, (this.getHeight() - im2.getHeight()) / 2, null);
@@ -55,6 +55,6 @@ public class ProgressBarPausable extends JProgressBar {
      * Activate pause state, hence display pause icon.
      */
     public void pause() {
-        showIcon = true;
+        this.showIcon = true;
     }
 }

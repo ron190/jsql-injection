@@ -210,10 +210,16 @@ public class GUI extends JFrame implements Observer {
         // Empty tree objects
         this.treeNodeModels.clear();
         this.consoles.clear();
-//        GUIMediator.model().suspendables.clear();
+        
+        /*
+         * TODO : clear properly paused processes remaining when another new
+         * injection is run.
+         */
+        // GUIMediator.model().suspendables.clear();
+        
         GUIMediator.bottomPanel().listHTTPHeader.clear();
         
-        // Tree model for refresh the tree
+        // Tree model for refreshing the tree
         DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
         // The tree root
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();

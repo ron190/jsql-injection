@@ -55,6 +55,9 @@ import com.jsql.view.popupmenu.JPopupTableMenu;
  */
 @SuppressWarnings("serial")
 public class TablePanel extends JPanel {
+    /**
+     * Table to display in the panel.
+     */
     public JTable table;
 
     /**

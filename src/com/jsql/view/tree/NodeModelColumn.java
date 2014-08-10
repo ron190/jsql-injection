@@ -41,7 +41,7 @@ public class NodeModelColumn extends AbstractNodeModel {
             boolean selected, boolean expanded, boolean leaf, int row,
             boolean hasFocus) {
         JCheckBox checkbox = new JCheckBox(this.toString(), this.isChecked);
-        checkbox.setFont(new Font(checkbox.getFont().getName(), Font.PLAIN | Font.ITALIC, checkbox.getFont().getSize()));
+        checkbox.setFont(checkbox.getFont().deriveFont(Font.PLAIN | Font.ITALIC, checkbox.getFont().getSize()));
         checkbox.setBackground(Color.WHITE);
         return checkbox;
     }

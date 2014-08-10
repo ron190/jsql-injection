@@ -49,17 +49,17 @@ public class TopPanel extends JPanel {
     /**
      * Used by POST method.
      */
-    private JTextField textPOST = new JPopupTextField().getProxy();
+    private JTextField textPOST = new JPopupTextField("paramN=valueN&injectMe=").getProxy();
     
     /**
      * Used by COOKIE method.
      */
-    private JTextField textCookie = new JPopupTextField().getProxy();
+    private JTextField textCookie = new JPopupTextField("paramN=valueN;injectMe=").getProxy();
     
     /**
      * Used by HEADER method.
      */
-    private JTextField textHeader = new JPopupTextField().getProxy();
+    private JTextField textHeader = new JPopupTextField("paramN:valueN\\r\\ninjectMe:").getProxy();
 
     /**
      * Radio selected for GET injection.
@@ -129,15 +129,15 @@ public class TopPanel extends JPanel {
             + "Or force last parameter with your own value (use working id or well known string like 0' or -1):<br>"
             + "<i>Example: <b>http://hostname/path?paramN=valueN&injectMe=0'</b></i></html>"
         );
-        this.textPOST.setToolTipText("<html><b>POST parameters</b> (see formatting to use below)<br>" +
+        this.textPOST.setToolTipText("<html><b>POST parameters</b><br>" +
                 "jSQL <u>always</u> injects the last parameter (in any mode selected).<br>" +
                 "<i>Automatic search for best value: <b>paramN=valueN&injectMe=</b><br>" +
                 "Force your own value, example: <b>paramN=valueN&injectMe=0'</b></i></html>");
-        this.textCookie.setToolTipText("<html><b>Cookie parameters</b> (see formatting to use below)<br>" +
+        this.textCookie.setToolTipText("<html><b>Cookie parameters</b><br>" +
                 "jSQL <u>always</u> injects the last parameter (in any mode selected).<br>" +
                 "<i>Automatic search for best value: <b>paramN=valueN;injectMe=</b><br>" +
                 "Force your own value, example: <b>paramN=valueN;injectMe=0'</b></i></html>");
-        this.textHeader.setToolTipText("<html><b>Header parameters</b> (see formatting to use below)<br>" +
+        this.textHeader.setToolTipText("<html><b>Header parameters</b><br>" +
                 "jSQL <u>always</u> injects the last parameter (in any mode selected).<br>" +
                 "<i>Automatic search for best value: <b>paramN:valueN\\r\\ninjectMe:</b><br>" +
                 "Force your own value, example: <b>paramN:valueN\\r\\ninjectMe:0'</b></i></html>");
@@ -161,7 +161,7 @@ public class TopPanel extends JPanel {
                 BorderFactory.createMatteBorder(1, 2, 0, 0, GUITools.DEFAULT_BACKGROUND),
                 GUITools.BLU_ROUND_BORDER));
         this.textHeader.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 3, 0, GUITools.DEFAULT_BACKGROUND),
+                BorderFactory.createMatteBorder(1, 2, 0, 0, GUITools.DEFAULT_BACKGROUND),
                 GUITools.BLU_ROUND_BORDER));
 
         this.textPOST.setPreferredSize(new Dimension(0, 27));

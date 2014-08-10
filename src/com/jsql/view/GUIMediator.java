@@ -9,12 +9,12 @@ import com.jsql.view.manager.SQLShellManager;
 import com.jsql.view.manager.UploadManager;
 import com.jsql.view.manager.WebshellManager;
 import com.jsql.view.menubar.Menubar;
-import com.jsql.view.panel.AdapterLeftPane;
-import com.jsql.view.panel.AdapterRightPane;
 import com.jsql.view.panel.BottomPanel;
 import com.jsql.view.panel.StatusbarPanel;
 import com.jsql.view.panel.TopPanel;
 import com.jsql.view.tab.AdapterBottomTabbedPane;
+import com.jsql.view.tab.AdapterLeftTabbedPane;
+import com.jsql.view.tab.AdapterRightTabbedPane;
 
 /**
  * Mediator registering usefull components in a loose dependance way.  
@@ -28,8 +28,8 @@ public final class GUIMediator {
     }
     
     private static JTree databaseTree;
-    private static AdapterRightPane right;
-    private static AdapterLeftPane left;
+    private static AdapterRightTabbedPane right;
+    private static AdapterLeftTabbedPane left;
     
     private static InjectionModel model;
     private static GUI gui;
@@ -48,10 +48,10 @@ public final class GUIMediator {
     public static JTree databaseTree() {
         return databaseTree;
     }
-    public static AdapterRightPane right() {
+    public static AdapterRightTabbedPane right() {
         return right;
     }
-    public static AdapterLeftPane left() {
+    public static AdapterLeftTabbedPane left() {
         return left;
     }
      
@@ -120,10 +120,10 @@ public final class GUIMediator {
     public static void register(JTree databaseTree) {
         GUIMediator.databaseTree = databaseTree;
     }
-    public static void register(AdapterRightPane right) {
+    public static void register(AdapterRightTabbedPane right) {
         GUIMediator.right = right;
     }
-    public static void register(AdapterLeftPane left) {
+    public static void register(AdapterLeftTabbedPane left) {
         GUIMediator.left = left;
     }
     

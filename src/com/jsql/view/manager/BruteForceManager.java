@@ -114,9 +114,9 @@ public class BruteForceManager extends JPanel {
         JPanel firstLine = new JPanel(new BorderLayout());
         firstLine.add(new JLabel(" Hash"), BorderLayout.WEST);
 
-        hash = new JPopupTextField().getProxy();
+        hash = new JPopupTextField("Hash to find").getProxy();
         hash.setToolTipText("<html><b>Hash to brute force</b><br>"
-                + "<i>Passwords for admin pages or for database users are<br>"
+                + "<i>Password for admin pages and for database users are<br>"
                 + "usually hashed inside database.</i></html>");
         firstLine.add(hash, BorderLayout.CENTER);
         hash.setBorder(BorderFactory.createCompoundBorder(
@@ -167,13 +167,13 @@ public class BruteForceManager extends JPanel {
         thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));
         
         thirdLine.add(new JLabel(" Exclude ", SwingConstants.RIGHT));
-        exclude = new JPopupTextField().getProxy();
+        exclude = new JPopupTextField("Character(s) to exclude").getProxy();
         exclude.setToolTipText("<html><b>Exclude characters</b><br>"
                 + "Speed up process by excluding characters from the search.</html>");
         thirdLine.add(exclude);
 
-        minimumLength = new JPopupTextField("1").getProxy();
-        maximumLength = new JPopupTextField("5").getProxy();
+        minimumLength = new JPopupTextField("min", "1").getProxy();
+        maximumLength = new JPopupTextField("max", "5").getProxy();
         
         thirdLine.add(new JLabel(" Length min. ", SwingConstants.RIGHT));
         thirdLine.add(minimumLength);

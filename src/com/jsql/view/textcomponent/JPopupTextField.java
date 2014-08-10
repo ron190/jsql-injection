@@ -21,18 +21,19 @@ import com.jsql.view.GUITools;
 @SuppressWarnings("serial")
 public class JPopupTextField extends JPopupTextComponent<JTextField> implements DecoratorJComponent<JTextField> {
     /**
-     * Build new instance of JTextField to decorate.
+     * Build new instance of JTextField to decorate with default text.
+     * @param string Text to display
      */
-    public JPopupTextField() {
-        this(new JTextField());
+    public JPopupTextField(String hint) {
+        this(new HintTextField(hint));
     }
 
     /**
      * Build new instance of JTextField to decorate with default text.
      * @param string Text to display
      */
-    public JPopupTextField(String string) {
-        this(new JTextField(string));
+    public JPopupTextField(String hint, String value) {
+        this(new HintTextField(hint, value));
     }
 
     /**

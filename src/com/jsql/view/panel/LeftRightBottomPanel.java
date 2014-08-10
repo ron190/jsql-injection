@@ -27,6 +27,8 @@ import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 import com.jsql.view.splitpane.JSplitPaneWithZeroSizeDivider;
+import com.jsql.view.tab.AdapterLeftTabbedPane;
+import com.jsql.view.tab.AdapterRightTabbedPane;
 
 /**
  * SplitPane composed of tree and tabs on top, and info tabs on bottom.
@@ -61,8 +63,8 @@ public class LeftRightBottomPanel extends JSplitPaneWithZeroSizeDivider {
         int verticalSplitter = prefs.getInt(LeftRightBottomPanel.VERTICALSPLITTER_PREFNAME, 300);
         int horizontalSplitter = prefs.getInt(LeftRightBottomPanel.HORIZONTALSPLITTER_PREFNAME, 200);
 
-        GUIMediator.register(new AdapterLeftPane());
-        GUIMediator.register(new AdapterRightPane());
+        GUIMediator.register(new AdapterLeftTabbedPane());
+        GUIMediator.register(new AdapterRightTabbedPane());
 
         // Tree and tabs on top
         this.leftRight = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT, true);

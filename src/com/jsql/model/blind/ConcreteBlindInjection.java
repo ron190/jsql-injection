@@ -121,7 +121,8 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
         ExecutorService executorTrueMark = Executors.newCachedThreadPool();
         List<BlindCallable> listCallableTrue = new ArrayList<BlindCallable>();
         for (String urlTest: trueTest) {
-            listCallableTrue.add(new BlindCallable("+and+" + urlTest + "--+"));
+//            listCallableTrue.add(new BlindCallable("+and+" + urlTest + "--+"));
+            listCallableTrue.add(new BlindCallable(urlTest));
         }
         // Begin the url requests
         List<Future<AbstractBlindCallable>> listTrueMark;
