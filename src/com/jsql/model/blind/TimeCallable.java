@@ -2,15 +2,12 @@ package com.jsql.model.blind;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-
-import com.jsql.model.blind.diff_match_patch.Diff;
 
 /**
  * Define a call HTTP to the server, require the associated url, character position and bit.
  * diffSeconds represents the response time of the current page
  */
-public class TimeCallable extends AbstractBlindCallable {
+public class TimeCallable extends AbstractBlindCallable<TimeCallable> {
     /**
      * Time before the url call.
      */
@@ -71,10 +68,5 @@ public class TimeCallable extends AbstractBlindCallable {
         long diff = milliseconds2 - milliseconds1;
         this.diffSeconds = diff / 1000;
         return this;
-    }
-
-    @Override
-    public List<Diff> getOpcodes() {
-        return null;
     }
 }

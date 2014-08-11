@@ -12,11 +12,13 @@ package com.jsql.view.terminal;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 
-import com.jsql.model.InjectionModel;
+import org.apache.log4j.Logger;
 
 /**
  * Keyboard key processing for terminal.
@@ -26,6 +28,21 @@ public class TerminalKeyAdapter extends KeyAdapter {
      * Terminal where keys are processed.
      */
     private AbstractTerminal terminal;
+
+    /**
+     * Past commands entered by user.
+     */
+    private List<String> cmds = new ArrayList<String>();
+
+    /**
+     * Current position in array of past commands.
+     */
+    private int cmdsIndex = 0;
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(TerminalKeyAdapter.class);
 
     /**
      * Create a keyboard processor for a terminal.
@@ -45,7 +62,7 @@ public class TerminalKeyAdapter extends KeyAdapter {
         try {
             linenum = terminal.getLineOfOffset(caretpos);
         } catch (BadLocationException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         // Cancel every user keyboard input if another command has just been send
@@ -61,7 +78,7 @@ public class TerminalKeyAdapter extends KeyAdapter {
                     root.getElement(linenum).getEndOffset() - root.getElement(linenum).getStartOffset())
                     .replace(terminal.prompt, "");
         } catch (BadLocationException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         // Validate user input ; disable text editing
@@ -72,8 +89,8 @@ public class TerminalKeyAdapter extends KeyAdapter {
 
             // Populate cmd list for key up/down
             if (!"".equals(cmd[0].trim())) {
-                terminal.cmds.add(cmd[0].trim());
-                terminal.cmdsIndex = terminal.cmds.size();
+                this.cmds.add(cmd[0].trim());
+                this.cmdsIndex = this.cmds.size();
             }
 
             // SwingUtilities instead of Thread to avoid some flickering
@@ -94,22 +111,22 @@ public class TerminalKeyAdapter extends KeyAdapter {
         } else if (ke.getKeyCode() == KeyEvent.VK_UP) {
             ke.consume();
 
-            if (terminal.cmdsIndex > 0) {
-                terminal.cmdsIndex--;
+            if (this.cmdsIndex > 0) {
+                this.cmdsIndex--;
             }
 
-            if (!terminal.cmds.isEmpty()) {
-                if (terminal.cmds.size() > 1 && terminal.cmdsIndex == terminal.cmds.size() - 1 && !"".equals(cmd[0].trim())) {
-                    terminal.cmdsIndex--;
+            if (!this.cmds.isEmpty()) {
+                if (this.cmds.size() > 1 && this.cmdsIndex == this.cmds.size() - 1 && !"".equals(cmd[0].trim())) {
+                    this.cmdsIndex--;
                 }
 
                 try {
                     terminal.getDocument().remove(root.getElement(linenum).getStartOffset() + terminal.prompt.length(), cmd[0].length() - 1);
                 } catch (BadLocationException e) {
-                    InjectionModel.LOGGER.error(e, e);
+                    LOGGER.error(e, e);
                 }
 
-                terminal.append(terminal.cmds.get(terminal.cmdsIndex));
+                terminal.append(this.cmds.get(this.cmdsIndex));
                 terminal.setCaretPosition(terminal.getDocument().getLength());
             }
 
@@ -117,18 +134,18 @@ public class TerminalKeyAdapter extends KeyAdapter {
         } else if (ke.getKeyCode() == KeyEvent.VK_DOWN) {
             ke.consume();
 
-            if (terminal.cmdsIndex < terminal.cmds.size()) {
-                terminal.cmdsIndex++;
+            if (this.cmdsIndex < this.cmds.size()) {
+                this.cmdsIndex++;
             }
 
-            if (!terminal.cmds.isEmpty() && terminal.cmdsIndex < terminal.cmds.size()) {
+            if (!this.cmds.isEmpty() && this.cmdsIndex < this.cmds.size()) {
                 try {
                     terminal.getDocument().remove(root.getElement(linenum).getStartOffset() + terminal.prompt.length(), cmd[0].length() - 1);
                 } catch (BadLocationException e) {
-                    InjectionModel.LOGGER.error(e, e);
+                    LOGGER.error(e, e);
                 }
 
-                terminal.append(terminal.cmds.get(terminal.cmdsIndex));
+                terminal.append(this.cmds.get(this.cmdsIndex));
                 terminal.setCaretPosition(terminal.getDocument().getLength());
             }
 
@@ -144,7 +161,7 @@ public class TerminalKeyAdapter extends KeyAdapter {
             try {
                 columnnum = caretpos - terminal.getLineStartOffset(linenum);
             } catch (BadLocationException e) {
-                InjectionModel.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             }
             if (columnnum <= terminal.prompt.length()) {
                 ke.consume();
@@ -158,7 +175,7 @@ public class TerminalKeyAdapter extends KeyAdapter {
                     ke.consume();
                 }
             } catch (BadLocationException e) {
-                InjectionModel.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             }
 
             // Get to the beginning of the line
@@ -167,7 +184,7 @@ public class TerminalKeyAdapter extends KeyAdapter {
             try {
                 terminal.setCaretPosition(terminal.getLineStartOffset(linenum) + terminal.prompt.length());
             } catch (BadLocationException e) {
-                InjectionModel.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             }
 
             // Cancel the select all shortcut Ctrl+A

@@ -46,7 +46,7 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
             //     this.model.sendDebugMessage(e);
             // }
 
-            if (this.pauseShouldStopPause()) {
+            if (this.stopOrPause()) {
                 break;
             }
 

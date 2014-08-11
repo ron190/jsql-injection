@@ -8,7 +8,8 @@ import java.util.zip.Checksum;
 
 import javax.swing.JOptionPane;
 
-import com.jsql.model.InjectionModel;
+import org.apache.log4j.Logger;
+
 import com.jsql.tool.StringTool;
 
 public class HashBruter extends Bruter {
@@ -47,6 +48,11 @@ public class HashBruter extends Bruter {
     public String hash, generatedHash, password;
     public String type;
 
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(HashBruter.class);
+
     public String getType() {
         return type;
     }
@@ -77,7 +83,7 @@ public class HashBruter extends Bruter {
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
-                        InjectionModel.LOGGER.error(e, e);
+                        LOGGER.error(e, e);
                     }
                 }
                 generateAllPossibleCombinations("", size);
@@ -91,7 +97,7 @@ public class HashBruter extends Bruter {
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                InjectionModel.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             }
         }
         if (!found || !done) {

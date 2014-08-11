@@ -17,8 +17,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import javax.swing.JTextPane;
@@ -30,9 +28,9 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import sun.swing.SwingUtilities2;
+import org.apache.log4j.Logger;
 
-import com.jsql.model.InjectionModel;
+import sun.swing.SwingUtilities2;
 
 /**
  * A Terminal completely built from swing text pane.
@@ -43,16 +41,6 @@ public abstract class AbstractTerminal extends JTextPane {
      * True if terminal is processing command.
      */
     public boolean[] isEdited = {false};
-
-    /**
-     * Past commands entered by user.
-     */
-    public List<String> cmds = new ArrayList<String>();
-
-    /**
-     * Current position in array of past commands.
-     */
-    public int cmdsIndex = 0;
 
     /**
      * Server name or IP to display on prompt.
@@ -66,6 +54,11 @@ public abstract class AbstractTerminal extends JTextPane {
 
     UUID terminalID;
     String wbhPath;
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(AbstractTerminal.class);
 
     /**
      * Build a shell instance.
@@ -83,7 +76,7 @@ public abstract class AbstractTerminal extends JTextPane {
         try {
             u = new URL(shellURL);
         } catch (MalformedURLException e) {
-            InjectionModel.LOGGER.warn("URL is malformed: no protocol");
+            LOGGER.warn("URL is malformed: no protocol");
         }
         host = u.getHost();
 
@@ -93,7 +86,7 @@ public abstract class AbstractTerminal extends JTextPane {
         this.setForeground(Color.LIGHT_GRAY);
 
         // Disable antialisaing
-        putClientProperty(SwingUtilities2.AA_TEXT_PROPERTY_KEY, null);
+        this.putClientProperty(SwingUtilities2.AA_TEXT_PROPERTY_KEY, null);
 
         this.displayPrompt(true);
 
@@ -162,7 +155,7 @@ public abstract class AbstractTerminal extends JTextPane {
             Document doc = this.getDocument();
             doc.insertString(doc.getLength(), string, null);
         } catch (BadLocationException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
     }
     
@@ -232,7 +225,7 @@ public abstract class AbstractTerminal extends JTextPane {
                 prompt += string;
             }
         } catch (BadLocationException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
     }
 

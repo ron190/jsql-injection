@@ -1,14 +1,11 @@
 package com.jsql.model.blind;
 
-import java.util.List;
 import java.util.concurrent.Callable;
-
-import com.jsql.model.blind.diff_match_patch.Diff;
 
 /**
  * Callable used to read blind/time database information.
  */
-public abstract class AbstractBlindCallable implements Callable<AbstractBlindCallable> {
+public abstract class AbstractBlindCallable<T extends AbstractBlindCallable<T>> implements Callable<T> {
     /**
      * The URL called.
      */
@@ -28,18 +25,6 @@ public abstract class AbstractBlindCallable implements Callable<AbstractBlindCal
      * Default call used for bit test.
      */
     protected boolean isLengthTest = false;
-    
-    /**
-     * Check if a response time means the SQL query is true.
-     * @return true if the current SQL test is confirmed
-     */
-    abstract boolean isTrue();
-
-    /**
-     * Get blind diffs against a true page.
-     * @return List of diffs
-     */
-    abstract List<Diff> getOpcodes();
     
     /**
      * Get state of this callable.
@@ -63,4 +48,10 @@ public abstract class AbstractBlindCallable implements Callable<AbstractBlindCal
     public int getCurrentBit() {
         return this.currentBit;
     }
+    
+    /**
+     * Check if a response time means the SQL query is true.
+     * @return true if the current SQL test is confirmed
+     */
+    abstract boolean isTrue();
 }

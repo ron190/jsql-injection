@@ -60,7 +60,7 @@ public class ActionLoadStop implements ActionListener {
 
                 @Override
                 protected Object doInBackground() throws Exception {
-                    GUIMediator.model().dao.listValues(columnsToSearch);
+                    GUIMediator.model().DAO.listValues(columnsToSearch);
                     return null;
                 }
 

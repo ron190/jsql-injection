@@ -26,13 +26,18 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-import com.jsql.model.InjectionModel;
+import org.apache.log4j.Logger;
 
 /**
  * A JTextField with globe icon displayed on the left. 
  */
 @SuppressWarnings("serial")
 public class JTextFieldWithIcon extends JTextField {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(JTextFieldWithIcon.class);
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -42,7 +47,7 @@ public class JTextFieldWithIcon extends JTextField {
         try {
             image = ImageIO.read(url);
         } catch (IOException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         Border border = UIManager.getBorder("TextField.border");

@@ -10,10 +10,11 @@
  *******************************************************************************/
 package com.jsql.model.pattern.strategy;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.AbstractSuspendable;
-import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.Request;
 import com.jsql.model.blind.ConcreteTimeInjection;
 import com.jsql.view.GUIMediator;
@@ -27,9 +28,14 @@ public class TimeStrategy extends AbstractInjectionStrategy {
      */
     private ConcreteTimeInjection timeInjection;
     
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(TimeStrategy.class);
+
     @Override
     public void checkApplicability() throws PreparationException {
-        InjectionModel.LOGGER.info("Time based test...");
+        LOGGER.info("Time based test...");
         
         this.timeInjection = new ConcreteTimeInjection();
         this.isApplicable = this.timeInjection.isInjectable();
@@ -73,7 +79,7 @@ public class TimeStrategy extends AbstractInjectionStrategy {
 
     @Override
     public void applyStrategy() {
-        InjectionModel.LOGGER.info("Using timebased injection...");
+        LOGGER.info("Using timebased injection...");
         GUIMediator.model().applyStrategy(this);
         
         Request request = new Request();

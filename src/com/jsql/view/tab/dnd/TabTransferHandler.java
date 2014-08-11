@@ -13,11 +13,17 @@ import javax.activation.DataHandler;
 import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
-import com.jsql.model.InjectionModel;
+import org.apache.log4j.Logger;
+
 import com.jsql.view.tab.AdapterRightTabbedPane;
 
 @SuppressWarnings("serial")
 public class TabTransferHandler extends TransferHandler {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(TabTransferHandler.class);
+
     private final DataFlavor localObjectFlavor;
     public TabTransferHandler() {
 //        System.out.println("TabTransferHandler");
@@ -143,9 +149,9 @@ public class TabTransferHandler extends TransferHandler {
             }
             return true;
         }catch(UnsupportedFlavorException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }catch(IOException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
         return false;
     }

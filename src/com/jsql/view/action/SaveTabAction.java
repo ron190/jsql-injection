@@ -25,6 +25,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.table.TableModel;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.dialog.ReplaceFileChooser;
@@ -34,6 +36,11 @@ import com.jsql.view.table.TablePanel;
  * Save the content of tab in a file.
  */
 public class SaveTabAction implements ActionListener {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(SaveTabAction.class);
+
     @Override
     public void actionPerformed(ActionEvent e) {
         final ReplaceFileChooser filechooser = new ReplaceFileChooser(GUIMediator.model().prefPathFile);
@@ -74,7 +81,7 @@ public class SaveTabAction implements ActionListener {
                     excel.close();
                     
                 } catch (IOException err) {
-                    InjectionModel.LOGGER.warn(err.getMessage());
+                    LOGGER.warn(err.getMessage());
                 }
             }
         } else if (GUIMediator.right().getSelectedComponent() instanceof JScrollPane) {
@@ -102,7 +109,7 @@ public class SaveTabAction implements ActionListener {
                         textArea.write(fileOut);
                         fileOut.close();
                     } catch (IOException err) {
-                        InjectionModel.LOGGER.warn(err.getMessage());
+                        LOGGER.warn(err.getMessage());
                     }
                 }
             } else if ((((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport()).getView() instanceof JTextPane) {
@@ -129,14 +136,14 @@ public class SaveTabAction implements ActionListener {
                         textArea.write(fileOut);
                         fileOut.close();
                     } catch (IOException err) {
-                        InjectionModel.LOGGER.warn(err.getMessage());
+                        LOGGER.warn(err.getMessage());
                     }
                 }
             } else {
-                InjectionModel.LOGGER.warn("No tab to save.");
+                LOGGER.warn("No tab to save.");
             }
         } else {
-            InjectionModel.LOGGER.warn("No tab to save.");
+            LOGGER.warn("No tab to save.");
         }
     }
 

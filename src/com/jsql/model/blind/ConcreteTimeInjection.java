@@ -1,21 +1,22 @@
 package com.jsql.model.blind;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.exception.PreparationException;
-import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 
 /**
  * A time attack class using thread asynchronisation.
  */
-public class ConcreteTimeInjection extends AbstractBlindInjection {
+public class ConcreteTimeInjection extends AbstractBlindInjection<TimeCallable> {
     /**
      * Waiting time in seconds, if response time is above
      * then the SQL query is false.
@@ -27,6 +28,11 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
      *  change it to false if it isn't confirmed.
      */
     private boolean isTimeInjectable = true;
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ConcreteTimeInjection.class);
 
     /**
      * Create time attack initialisation.
@@ -56,16 +62,17 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
          *  it will use inject() from the model
          */
         ExecutorService executorFalseMark = Executors.newCachedThreadPool();
-        List<AbstractBlindCallable> listCallableFalse = new ArrayList<AbstractBlindCallable>();
+        Collection<TimeCallable> listCallableFalse = new ArrayList<TimeCallable>();
         for (String urlTest: falseTest) {
             listCallableFalse.add(new TimeCallable(urlTest));
         }
+        
         // Begin the url requests
-        List<Future<AbstractBlindCallable>> listFalseMark = null;
+        List<Future<TimeCallable>> listFalseMark = null;
         try {
             listFalseMark = executorFalseMark.invokeAll(listCallableFalse);
         } catch (InterruptedException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
         executorFalseMark.shutdown();
 
@@ -75,7 +82,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
          * Allow the user to stop the loop
          */
         try {
-            for (Future<AbstractBlindCallable> falseMark: listFalseMark) {
+            for (Future<TimeCallable> falseMark: listFalseMark) {
                 if (GUIMediator.model().stopFlag) {
                     return;
                 }
@@ -85,9 +92,9 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
                 }
             }
         } catch (InterruptedException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         } catch (ExecutionException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         /*
@@ -95,16 +102,17 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
          *  it will use inject() from the model
          */
         ExecutorService executorTrueMark = Executors.newCachedThreadPool();
-        List<TimeCallable> listCallableTrue = new ArrayList<TimeCallable>();
+        Collection<TimeCallable> listCallableTrue = new ArrayList<TimeCallable>();
         for (String urlTest: trueTest) {
             listCallableTrue.add(new TimeCallable(urlTest));
         }
+        
         // Begin the url requests
-        List<Future<AbstractBlindCallable>> listTrueMark;
+        List<Future<TimeCallable>> listTrueMark;
         try {
             listTrueMark = executorTrueMark.invokeAll(listCallableTrue);
         } catch (InterruptedException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
             return;
         }
         executorTrueMark.shutdown();
@@ -115,7 +123,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
          * Allow the user to stop the loop
          */
         try {
-            for (Future<AbstractBlindCallable> falseMark: listTrueMark) {
+            for (Future<TimeCallable> falseMark: listTrueMark) {
                 if (GUIMediator.model().stopFlag) {
                     return;
                 }
@@ -125,19 +133,19 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
                 }
             }
         } catch (InterruptedException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         } catch (ExecutionException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
     }
     
     @Override
-    public Callable<AbstractBlindCallable> getCallable(String string, int indexCharacter, boolean isLengthTest) {
+    public TimeCallable getCallable(String string, int indexCharacter, boolean isLengthTest) {
         return new TimeCallable(string, indexCharacter, isLengthTest);
     }
 
     @Override
-    public Callable<AbstractBlindCallable> getCallable(String string, int indexCharacter, int bit) {
+    public TimeCallable getCallable(String string, int indexCharacter, int bit) {
         return new TimeCallable(string, indexCharacter, bit);
     }
 
@@ -151,7 +159,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection {
         try {
             blindTest.call();
         } catch (Exception e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         return this.isTimeInjectable && blindTest.isTrue();

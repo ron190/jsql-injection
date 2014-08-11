@@ -2,7 +2,6 @@ package com.jsql.model.blind;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
@@ -10,23 +9,29 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.AbstractSuspendable;
-import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.Request;
 import com.jsql.view.GUIMediator;
 
 /**
  *
  */
-public abstract class AbstractBlindInjection {
+public abstract class AbstractBlindInjection<T extends AbstractBlindCallable<T>> {
     /**
      * Constant linked to a URL, true if that url
      * checks the end of the SQL result, false otherwise.
      */
     protected static final boolean ISLENGTHTEST = true;
     
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(AbstractBlindInjection.class);
+
     /**
      * Process the whole blind injection, character by character, bit by bit.
      * @param inj SQL query
@@ -45,7 +50,7 @@ public abstract class AbstractBlindInjection {
 
         // Parallelize the URL requests
         ExecutorService taskExecutor = Executors.newFixedThreadPool(150);
-        CompletionService<AbstractBlindCallable> taskCompletionService = new ExecutorCompletionService<AbstractBlindCallable>(taskExecutor);
+        CompletionService<T> taskCompletionService = new ExecutorCompletionService<T>(taskExecutor);
 
         // Send the first binary question: is the SQL result empty?
         taskCompletionService.submit(getCallable(inj, 0, ISLENGTHTEST));
@@ -58,7 +63,7 @@ public abstract class AbstractBlindInjection {
          */
         while (submittedTasks > 0) {
             // stop/pause/resume if user needs that
-            if (stoppable.pauseShouldStopPause()) {
+            if (stoppable.stopOrPause()) {
                 taskExecutor.shutdown();
 
                 // Wait for termination
@@ -66,7 +71,7 @@ public abstract class AbstractBlindInjection {
                 try {
                     success = taskExecutor.awaitTermination(0, TimeUnit.SECONDS);
                 } catch (InterruptedException e) {
-                    InjectionModel.LOGGER.error(e, e);
+                    LOGGER.error(e, e);
                 }
                 if (!success) {
                     // awaitTermination timed out, interrupt everyone
@@ -77,7 +82,7 @@ public abstract class AbstractBlindInjection {
             }
             try {
                 // The URL call is done, bring back the finished task
-                AbstractBlindCallable currentCallable = taskCompletionService.take().get();
+                T currentCallable = taskCompletionService.take().get();
                 // One task has just ended, decrease active tasks by 1
                 submittedTasks--;
                 /*
@@ -100,11 +105,11 @@ public abstract class AbstractBlindInjection {
                         // Add all 9 new tasks
                         submittedTasks += 9;
                     }
-                    /*
-                     * Process the url that has just checked a bit,
-                     * Retrieve the bits for that character, and
-                     * change the bit from undefined to 0 or 1
-                     */
+                /*
+                 * Process the url that has just checked a bit,
+                 * Retrieve the bits for that character, and
+                 * change the bit from undefined to 0 or 1
+                 */
                 } else {
                     // The bits linked to the url
                     char[] e = bytes.get(currentCallable.getCurrentIndex() - 1);
@@ -128,9 +133,9 @@ public abstract class AbstractBlindInjection {
                     }
                 }
             } catch (InterruptedException e) {
-                InjectionModel.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             } catch (ExecutionException e) {
-                InjectionModel.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             }
         }
 
@@ -139,7 +144,7 @@ public abstract class AbstractBlindInjection {
             taskExecutor.shutdown();
             taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         // Build the complete final string from array of bits
@@ -149,8 +154,9 @@ public abstract class AbstractBlindInjection {
             String str = new Character((char) charCode).toString();
             result += str;
         }
-        //        System.out.println("nb caractères: "+indexChar);
-        //        System.out.println("résultat: "+result);
+        
+        // System.out.println("nb caractères: "+indexChar);
+        // System.out.println("résultat: "+result);
         // Return the final string
         return result;
     }
@@ -171,7 +177,7 @@ public abstract class AbstractBlindInjection {
      * @param isLengthTest
      * @return
      */
-    public abstract Callable<AbstractBlindCallable> getCallable(String string, int indexCharacter, boolean isLengthTest);
+    public abstract T getCallable(String string, int indexCharacter, boolean isLengthTest);
     
     /**
      * 
@@ -180,7 +186,7 @@ public abstract class AbstractBlindInjection {
      * @param bit
      * @return
      */
-    public abstract Callable<AbstractBlindCallable> getCallable(String string, int indexCharacter, int bit);
+    public abstract T getCallable(String string, int indexCharacter, int bit);
     
     /**
      * 

@@ -12,19 +12,11 @@ package com.jsql.view.manager;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -39,11 +31,8 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.binary.StringUtils;
-import org.apache.commons.lang3.StringEscapeUtils;
 
-import com.jsql.tool.StringTool;
 import com.jsql.view.GUITools;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.splitpane.JSplitPaneWithZeroSizeDivider;
@@ -57,17 +46,17 @@ public class CoderManager extends JPanel {
     /**
      * User input to encode. 
      */
-    private JTextArea entry;
+    JTextArea entry;
 
     /**
      * Encoding user has choosed. 
      */
-    private JComboBox<String> encoding;
+    JComboBox<String> encoding;
 
     /**
      * JTextArea displaying result of encoding/decoding.
      */
-    private JTextArea result;
+    JTextArea result;
 
     /**
      * Create a panel to encode a string.
@@ -124,7 +113,7 @@ public class CoderManager extends JPanel {
         result.setLineWrap(true);
         bottom.add(new JScrollPanePixelBorder(1, 1, 0, 0, result), BorderLayout.CENTER);
 
-        run.addActionListener(new ActionCoder());
+        run.addActionListener(new ActionCoder(this));
 
         JSplitPaneWithZeroSizeDivider divider = new JSplitPaneWithZeroSizeDivider(JSplitPane.VERTICAL_SPLIT);
         divider.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -138,113 +127,11 @@ public class CoderManager extends JPanel {
     }
 
     /**
-     * Action runned when encoding.
-     */
-    private class ActionCoder implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent arg0) {
-            if (Arrays.asList(new String[]{ "md2", "md5", "sha-1", "sha-256", "sha-384", "sha-512" } ).contains(encoding.getSelectedItem().toString().replace(" < hash", ""))) {
-                MessageDigest md = null;
-                try {
-                    md = MessageDigest.getInstance(encoding.getSelectedItem().toString().replace(" < hash", ""));
-                } catch (NoSuchAlgorithmException e1) {
-                    result.setText("No such algorithm for hashes exists");
-                }
-                
-                String passwordString = new String(entry.getText().toCharArray());
-                byte[] passwordByte = passwordString.getBytes();
-                md.update(passwordByte, 0, passwordByte.length);
-                byte[] encodedPassword = md.digest();
-                String encodedPasswordInString = digestToHexString(encodedPassword);
-                
-                result.setText(encodedPasswordInString);
-            } else if ("mysql".equals(encoding.getSelectedItem().toString().replace(" < hash", ""))) {
-                MessageDigest md = null;
-                try {
-                    md = MessageDigest.getInstance("sha-1");
-                } catch (NoSuchAlgorithmException e1) {
-                    result.setText("No such algorithm for hashes exists");
-                }
-                
-                String password = new String(entry.getText().toCharArray());
-                byte[] passwordBytes = password.getBytes();
-                md.update(passwordBytes, 0, passwordBytes.length);
-                byte[] hashSHA1 = md.digest();
-                String stringSHA1 = digestToHexString(hashSHA1);
-                
-                String passwordSHA1 = new String(StringTool.hexstr(stringSHA1).toCharArray());
-                byte[] passwordSHA1Bytes = passwordSHA1.getBytes();
-                md.update(passwordSHA1Bytes, 0, passwordSHA1Bytes.length);
-                byte[] hashSHA1SH1 = md.digest();
-                String mysqlHash = digestToHexString(hashSHA1SH1);
-                
-                result.setText(mysqlHash);
-            } else if ("hex < encode".equals(encoding.getSelectedItem())) {
-                try {
-                    result.setText(Hex.encodeHexString(entry.getText().getBytes("UTF-8")).trim());
-                } catch (UnsupportedEncodingException e) {
-                    result.setText("Encoding error: " + e.getMessage());
-                }
-            } else if ("hex > decode".equals(encoding.getSelectedItem())) {
-                try {
-                    result.setText(new String(Hex.decodeHex(entry.getText().toCharArray()), "UTF-8"));
-                } catch (Exception e) {
-                    result.setText("Decoding error: " + e.getMessage());
-                }
-            } else if ("hex(zipped) < encode".equals(encoding.getSelectedItem())) {
-                try {
-                    result.setText(Hex.encodeHexString(compress(entry.getText()).getBytes("UTF-8")).trim());
-                } catch (Exception e) {
-                    result.setText("Encoding error: " + e.getMessage());
-                }
-            } else if ("hex(zipped) > decode".equals(encoding.getSelectedItem())) {
-                try {
-                    result.setText(decompress(new String(Hex.decodeHex(entry.getText().toCharArray()), "UTF-8")));
-                } catch (Exception e) {
-                    result.setText("Decoding error: " + e.getMessage());
-                }
-            } else if ("base64(zipped) < encode".equals(encoding.getSelectedItem())) {
-                try {
-                    result.setText(base64Encode(compress(entry.getText())));
-                } catch (IOException e) {
-                    result.setText("Encoding error: " + e.getMessage());
-                }
-            } else if ("base64(zipped) > decode".equals(encoding.getSelectedItem())) {
-                try {
-                    result.setText(decompress(base64Decode(entry.getText())));
-                } catch (IOException e) {
-                    result.setText("Decoding error: " + e.getMessage());
-                }
-            } else if ("base64 < encode".equals(encoding.getSelectedItem())) {
-                result.setText(base64Encode(entry.getText()));
-            } else if ("base64 > decode".equals(encoding.getSelectedItem())) {
-                result.setText(base64Decode(entry.getText()));
-            } else if ("html < encode".equals(encoding.getSelectedItem())) {
-                result.setText(StringEscapeUtils.escapeHtml3(entry.getText()));
-            } else if ("html > decode".equals(encoding.getSelectedItem())) {
-                result.setText(StringEscapeUtils.unescapeHtml3(entry.getText()));
-            } else if ("url < encode".equals(encoding.getSelectedItem())) {
-                try {
-                    result.setText(URLEncoder.encode(entry.getText(), "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    result.setText("Encoding error: " + e.getMessage());
-                }
-            } else if ("url > decode".equals(encoding.getSelectedItem())) {
-                try {
-                    result.setText(URLDecoder.decode(entry.getText(), "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    result.setText("Decoding error: " + e.getMessage());
-                }
-            }
-        }
-    }
-
-    /**
      * Adapter method for base64 decode.
      * @param s base64 decode
      * @return Base64 decoded string
      */
-    private String base64Decode(String s) {
+    String base64Decode(String s) {
         return StringUtils.newStringUtf8(Base64.decodeBase64(s));
     }
 
@@ -253,7 +140,7 @@ public class CoderManager extends JPanel {
      * @param s String to base64 encode
      * @return Base64 encoded string
      */
-    private String base64Encode(String s) {
+    String base64Encode(String s) {
         return Base64.encodeBase64String(StringUtils.getBytesUtf8(s));
     }
 
@@ -263,7 +150,7 @@ public class CoderManager extends JPanel {
      * @return Zipped string
      * @throws IOException
      */
-    private String compress(String str) throws IOException {
+    String compress(String str) throws IOException {
         if (str == null || str.length() == 0) {
             return str;
         }
@@ -280,7 +167,7 @@ public class CoderManager extends JPanel {
      * @return String unzipped
      * @throws IOException
      */
-    private String decompress(String str) throws IOException {
+    String decompress(String str) throws IOException {
         if (str == null || str.length() == 0) {
             return str;
         }
@@ -315,7 +202,7 @@ public class CoderManager extends JPanel {
      * @param block Digest array
      * @return Hash as a string
      */
-    private String digestToHexString(byte[] block) {
+    String digestToHexString(byte[] block) {
         StringBuffer buf = new StringBuffer();
         int len = block.length;
         for (int i = 0; i < len; i++) {

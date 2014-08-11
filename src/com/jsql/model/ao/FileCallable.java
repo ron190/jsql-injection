@@ -3,9 +3,9 @@ import java.util.concurrent.Callable;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
+import com.jsql.model.InjectionModel;
 import com.jsql.model.StoppableLoopIntoResults;
 import com.jsql.tool.StringTool;
-import com.jsql.view.GUIMediator;
 
 /**
  * Callable to read file source code.
@@ -14,12 +14,12 @@ public class FileCallable implements Callable<FileCallable> {
     /**
      * Url of the file to read.
      */
-    public String url;
-    
+    private String url;
+
     /**
      * Source code of file.
      */
-    public String fileSource;
+    private String fileSource;
 
     /**
      * Create Callable to read a file.
@@ -31,7 +31,7 @@ public class FileCallable implements Callable<FileCallable> {
 
     @Override
     public FileCallable call() throws Exception {
-        if (!GUIMediator.model().rao.endFileSearch) {
+        if (!InjectionModel.RAO.endFileSearch) {
             String[] sourcePage = {""};
 
             String hexResult = "";
@@ -50,5 +50,13 @@ public class FileCallable implements Callable<FileCallable> {
             fileSource = hexResult;
         }
         return this;
+    }
+    
+    public String getUrl() {
+        return url;
+    }
+
+    public String getFileSource() {
+        return fileSource;
     }
 }

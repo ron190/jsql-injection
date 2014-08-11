@@ -15,9 +15,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.InjectionModel;
 import com.jsql.model.StoppableLoopIntoResults;
 import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.model.bean.Column;
@@ -32,11 +33,16 @@ import com.jsql.view.GUIMediator;
  */
 public class DataAccessObject {
     /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(DataAccessObject.class);
+
+    /**
      * Get the initial database informations.<br>
      * => version{%}database{%}user{%}CURRENT_USER
      */
     public void getDBInfos() throws PreparationException, StoppableException {
-        InjectionModel.LOGGER.info("Fetching informations...");
+        LOGGER.info("Fetching informations...");
         
         String[] sourcePage = {""};
 
@@ -60,7 +66,7 @@ public class DataAccessObject {
             null
         );
 
-        if (hexResult.equals("")) {
+        if ("".equals(hexResult)) {
             GUIMediator.model().sendResponseFromSite("Show db info failed", sourcePage[0].trim());
             throw new PreparationException();
         }
@@ -89,7 +95,7 @@ public class DataAccessObject {
      * The process can be stopped by the user.
      */
     public void listDatabases() throws PreparationException, StoppableException {
-        InjectionModel.LOGGER.info("Fetching databases...");
+        LOGGER.info("Fetching databases...");
         
         String[] sourcePage = {""};
         String hexResult = new StoppableLoopIntoResults().action(
@@ -430,8 +436,8 @@ public class DataAccessObject {
                 }
             }
             if (isIncomplete) {
-                InjectionModel.LOGGER.warn("String is too long, row #" + (indexRow + 1) + " is incomplete:");
-                InjectionModel.LOGGER.warn(StringTool.join(listValues.get(indexRow).toArray(new String[listValues.get(indexRow).size()]), ", "));
+                LOGGER.warn("String is too long, row #" + (indexRow + 1) + " is incomplete:");
+                LOGGER.warn(StringTool.join(listValues.get(indexRow).toArray(new String[listValues.get(indexRow).size()]), ", "));
             }
         }
 

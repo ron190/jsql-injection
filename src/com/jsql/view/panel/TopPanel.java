@@ -49,17 +49,17 @@ public class TopPanel extends JPanel {
     /**
      * Used by POST method.
      */
-    private JTextField textPOST = new JPopupTextField("paramN=valueN&injectMe=").getProxy();
+    private JTextField textPOST = new JPopupTextField("e.g. paramN=valueN&injectMe=").getProxy();
     
     /**
      * Used by COOKIE method.
      */
-    private JTextField textCookie = new JPopupTextField("paramN=valueN;injectMe=").getProxy();
+    private JTextField textCookie = new JPopupTextField("e.g. paramN=valueN;injectMe=").getProxy();
     
     /**
      * Used by HEADER method.
      */
-    private JTextField textHeader = new JPopupTextField("paramN:valueN\\r\\ninjectMe:").getProxy();
+    private JTextField textHeader = new JPopupTextField("e.g. paramN:valueN\\r\\ninjectMe:").getProxy();
 
     /**
      * Radio selected for GET injection.

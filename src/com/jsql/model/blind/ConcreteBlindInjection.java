@@ -1,33 +1,27 @@
 package com.jsql.model.blind;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.exception.PreparationException;
-import com.jsql.model.InjectionModel;
+import com.jsql.model.blind.diff_match_patch.Diff;
 import com.jsql.view.GUIMediator;
 
 /**
  * A blind attack class using thread asynchronisation.
  */
-public class ConcreteBlindInjection extends AbstractBlindInjection {
+public class ConcreteBlindInjection extends AbstractBlindInjection<BlindCallable> {
     /**
      * Source code of the TRUE web page (usually ?id=1).
      */
     private static String blankTrueMark;
-
-    /**
-     * Get source code of the TRUE web page.
-     * @return Source code in HTML
-     */
-    public static String getBlankTrueMark() {
-        return blankTrueMark;
-    }
 
     /**
      *  List of string differences found in all the FALSE queries, compared
@@ -35,15 +29,12 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
      *  at least one same string, which shouldn't be present in all
      *  the TRUE queries.
      */
-    private static List<diff_match_patch.Diff> constantFalseMark;
+    private static List<Diff> constantFalseMark = new ArrayList<Diff>();
 
     /**
-     *  Get False Marks.
-     *  @return False marks
+     * Log4j logger sent to view.
      */
-    public static List<diff_match_patch.Diff> getConstantFalseMark() {
-        return constantFalseMark;
-    }
+    private static final Logger LOGGER = Logger.getLogger(ConcreteBlindInjection.class);
 
     /**
      * Create blind attack initialisation.
@@ -77,16 +68,17 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
          *  it will use inject() from the model
          */
         ExecutorService executorFalseMark = Executors.newCachedThreadPool();
-        List<AbstractBlindCallable> listCallableFalse = new ArrayList<AbstractBlindCallable>();
+        Collection<BlindCallable> listCallableFalse = new ArrayList<BlindCallable>();
         for (String urlTest: falseTest) {
             listCallableFalse.add(new BlindCallable(urlTest));
         }
+        
         // Begin the url requests
-        List<Future<AbstractBlindCallable>> listFalseMark;
+        List<Future<BlindCallable>> listFalseMark;
         try {
             listFalseMark = executorFalseMark.invokeAll(listCallableFalse);
         } catch (InterruptedException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
             return;
         }
         executorFalseMark.shutdown();
@@ -98,16 +90,16 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
          */
         try {
             constantFalseMark = listFalseMark.get(0).get().getOpcodes();
-            for (Future<AbstractBlindCallable> falseMark: listFalseMark) {
+            for (Future<BlindCallable> falseMark: listFalseMark) {
                 if (GUIMediator.model().stopFlag) {
                     return;
                 }
                 constantFalseMark.retainAll(falseMark.get().getOpcodes());
             }
         } catch (InterruptedException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         } catch (ExecutionException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         if (GUIMediator.model().stopFlag) {
@@ -119,17 +111,17 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
          *  it will use inject() from the model.
          */
         ExecutorService executorTrueMark = Executors.newCachedThreadPool();
-        List<BlindCallable> listCallableTrue = new ArrayList<BlindCallable>();
+        Collection<BlindCallable> listCallableTrue = new ArrayList<BlindCallable>();
         for (String urlTest: trueTest) {
-//            listCallableTrue.add(new BlindCallable("+and+" + urlTest + "--+"));
             listCallableTrue.add(new BlindCallable(urlTest));
         }
+        
         // Begin the url requests
-        List<Future<AbstractBlindCallable>> listTrueMark;
+        List<Future<BlindCallable>> listTrueMark;
         try {
             listTrueMark = executorTrueMark.invokeAll(listCallableTrue);
         } catch (InterruptedException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
             return;
         }
         executorTrueMark.shutdown();
@@ -140,26 +132,26 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
          * Allow the user to stop the loop.
          */
         try {
-            for (Future<AbstractBlindCallable> trueMark: listTrueMark) {
+            for (Future<BlindCallable> trueMark: listTrueMark) {
                 if (GUIMediator.model().stopFlag) {
                     return;
                 }
                 ConcreteBlindInjection.constantFalseMark.removeAll(trueMark.get().getOpcodes());
             }
         } catch (InterruptedException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         } catch (ExecutionException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
     }
 
     @Override
-    public Callable<AbstractBlindCallable> getCallable(String string, int indexCharacter, boolean isLengthTest) {
+    public BlindCallable getCallable(String string, int indexCharacter, boolean isLengthTest) {
         return new BlindCallable(string, indexCharacter, isLengthTest);
     }
 
     @Override
-    public Callable<AbstractBlindCallable> getCallable(String string, int indexCharacter, int bit) {
+    public BlindCallable getCallable(String string, int indexCharacter, int bit) {
         return new BlindCallable(string, indexCharacter, bit);
     }
 
@@ -177,12 +169,10 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
         try {
             blindTest.call();
         } catch (Exception e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
-        return ConcreteBlindInjection.constantFalseMark != null
-                && blindTest.isTrue()
-                && !ConcreteBlindInjection.constantFalseMark.isEmpty();
+        return blindTest.isTrue() && !ConcreteBlindInjection.constantFalseMark.isEmpty();
     }
 
     @Override
@@ -191,5 +181,21 @@ public class ConcreteBlindInjection extends AbstractBlindInjection {
                 + "a correct page (e.g existing id) and current page "
                 + "is not as the following: "
                 + ConcreteBlindInjection.constantFalseMark + "\n";
+    }
+
+    /**
+     * Get source code of the TRUE web page.
+     * @return Source code in HTML
+     */
+    public static String getBlankTrueMark() {
+        return blankTrueMark;
+    }
+    
+    /**
+     *  Get False Marks.
+     *  @return False marks
+     */
+    public static List<Diff> getConstantFalseMark() {
+        return constantFalseMark;
     }
 }

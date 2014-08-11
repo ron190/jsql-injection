@@ -39,17 +39,17 @@ public class ButtonAddressBar extends JButton {
     /**
      * Icon for loading process.
      */
-    private static final Icon arrowDefault = new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/images/arrowDefault.png"));
+    private static final Icon ARROWDEFAULT = new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/images/arrowDefault.png"));
 
     /**
      * Icon rollover for loading process.
      */
-    private static final Icon arrowRollover = new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/images/arrowRollover.png"));
+    private static final Icon ARROWROLLOVER = new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/images/arrowRollover.png"));
 
     /**
      * Icon pressed for loading process.
      */
-    private static final Icon arrowPressed = new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/images/arrowPressed.png"));
+    private static final Icon ARROWPRESSED = new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/images/arrowPressed.png"));
 
     /**
      * Create a button in address bar.
@@ -62,9 +62,10 @@ public class ButtonAddressBar extends JButton {
         this.setBorderPainted(false);
         
         // turn on before rollovers work
-        this.setRolloverEnabled(true); this.setIcon(ButtonAddressBar.arrowDefault);
-        this.setRolloverIcon(ButtonAddressBar.arrowRollover);
-        this.setPressedIcon(ButtonAddressBar.arrowPressed);
+        this.setRolloverEnabled(true);
+        this.setIcon(ButtonAddressBar.ARROWDEFAULT);
+        this.setRolloverIcon(ButtonAddressBar.ARROWROLLOVER);
+        this.setPressedIcon(ButtonAddressBar.ARROWPRESSED);
     }
 
     /**
@@ -76,9 +77,9 @@ public class ButtonAddressBar extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(true);
-        this.setIcon(ButtonAddressBar.arrowDefault);
-        this.setRolloverIcon(ButtonAddressBar.arrowRollover);
-        this.setPressedIcon(ButtonAddressBar.arrowPressed);
+        this.setIcon(ButtonAddressBar.ARROWDEFAULT);
+        this.setRolloverIcon(ButtonAddressBar.ARROWROLLOVER);
+        this.setPressedIcon(ButtonAddressBar.ARROWPRESSED);
     }
 
     /**

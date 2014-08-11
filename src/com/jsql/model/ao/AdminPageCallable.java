@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.Request;
 import com.jsql.tool.StringTool;
 import com.jsql.view.GUIMediator;
@@ -16,13 +17,13 @@ public class AdminPageCallable implements Callable<AdminPageCallable> {
     /**
      * url: SQL query
      */
-    public String url;
+    private String url;
     
     /**
      * HTTP header response code.
      */
-    public String responseCodeHTTP;
-    
+    private String responseCodeHTTP;
+
     /**
      * Create a callable to find admin page.
      * @param url URL of admin page
@@ -33,7 +34,7 @@ public class AdminPageCallable implements Callable<AdminPageCallable> {
 
     @Override
     public AdminPageCallable call() throws Exception {
-        if (!GUIMediator.model().rao.endAdminSearch) {
+        if (!InjectionModel.RAO.endAdminSearch) {
             URL targetUrl = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) targetUrl.openConnection();
             connection.setRequestMethod("HEAD");
@@ -54,5 +55,13 @@ public class AdminPageCallable implements Callable<AdminPageCallable> {
             GUIMediator.model().interact(request);
         }
         return this;
+    }
+    
+    public String getUrl() {
+        return url;
+    }
+
+    public String getResponseCodeHTTP() {
+        return responseCodeHTTP;
     }
 }

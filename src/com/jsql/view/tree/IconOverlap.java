@@ -18,7 +18,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import com.jsql.model.InjectionModel;
+import org.apache.log4j.Logger;
 
 /**
  * An icon composed of a main icon and another one displayed in the bottom right corner.
@@ -29,6 +29,11 @@ public class IconOverlap extends ImageIcon {
      * The path of icon displayed on the bottom right corner.
      */
     private String iconPathOverlap;
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(IconOverlap.class);
 
     /**
      * Create icon with tiny icon on top layer.
@@ -48,7 +53,7 @@ public class IconOverlap extends ImageIcon {
             BufferedImage im2 = ImageIO.read(IconOverlap.class.getResource(iconPathOverlap));
             g.drawImage(im2, (this.getIconWidth() - im2.getWidth()) / 2, (this.getIconHeight() - im2.getHeight()) / 2, null);
         } catch (IOException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
     }
 }

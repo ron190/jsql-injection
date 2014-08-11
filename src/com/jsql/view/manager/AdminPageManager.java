@@ -28,6 +28,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
@@ -39,6 +41,11 @@ import com.jsql.view.scrollpane.JScrollPanePixelBorder;
  */
 @SuppressWarnings("serial")
 public class AdminPageManager extends AbstractListManager {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(AdminPageManager.class);
+
     /**
      * Create admin page finder.
      */
@@ -56,7 +63,7 @@ public class AdminPageManager extends AbstractListManager {
             }
             reader.close();
         } catch (IOException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         final DnDList listFile = new DnDList(pathList);
@@ -85,7 +92,7 @@ public class AdminPageManager extends AbstractListManager {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (listFile.getSelectedValuesList().isEmpty()) {
-                    InjectionModel.LOGGER.warn("Select at least one admin page");
+                    LOGGER.warn("Select at least one admin page");
                     return;
                 }
                 new Thread(new Runnable() {
@@ -94,9 +101,9 @@ public class AdminPageManager extends AbstractListManager {
                         if (run.getText().equals(defaultText)) {
                             run.setText("Stop");
                             loader.setVisible(true);
-                            GUIMediator.model().rao.getAdminPage(GUIMediator.top().addressBar.getText(), listFile.getSelectedValuesList());
+                            InjectionModel.RAO.getAdminPage(GUIMediator.top().addressBar.getText(), listFile.getSelectedValuesList());
                         } else {
-                            GUIMediator.model().rao.endAdminSearch = true;
+                            InjectionModel.RAO.endAdminSearch = true;
                             run.setEnabled(false);
                         }
                     }

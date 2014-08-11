@@ -39,6 +39,8 @@ import javax.swing.KeyStroke;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
@@ -53,7 +55,12 @@ public class PreferenceDialog extends JDialog {
     /**
      * Button getting focus.
      */
-    public JButton okButton;
+    private JButton okButton;
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(PreferenceDialog.class);
 
     /**
      * Create Preferences panel to save jSQL settings.
@@ -128,8 +135,8 @@ public class PreferenceDialog extends JDialog {
         JLabel labelUseProxy = new JLabel("Use proxy  ");
 
         // Proxy setting: IP, port, checkbox to activate proxy
-        final JTextField textProxyAddress = new JPopupTextField(GUIMediator.model().proxyAddress).getProxy();
-        final JTextField textProxyPort = new JPopupTextField(GUIMediator.model().proxyPort).getProxy();
+        final JTextField textProxyAddress = new JPopupTextField("e.g Tor address: 127.0.0.1", GUIMediator.model().proxyAddress).getProxy();
+        final JTextField textProxyPort = new JPopupTextField("e.g Tor port: 8118", GUIMediator.model().proxyPort).getProxy();
         final JCheckBox checkboxIsProxy = new JCheckBox("", GUIMediator.model().isProxyfied);
 
         textProxyAddress.setPreferredSize(new Dimension(0, 27));
@@ -158,7 +165,7 @@ public class PreferenceDialog extends JDialog {
                     System.setProperty("http.proxyPort", "");
                 }
 
-                InjectionModel.LOGGER.info("Preferences saved.");
+                LOGGER.info("Preferences saved.");
             }
         });
 
@@ -207,5 +214,9 @@ public class PreferenceDialog extends JDialog {
         this.getRootPane().setDefaultButton(okButton);
         cancelButton.requestFocusInWindow();
         this.setLocationRelativeTo(GUIMediator.gui());
+    }
+
+    public void requestButtonFocus() {
+        this.okButton.requestFocusInWindow();
     }
 }

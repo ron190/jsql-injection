@@ -1,9 +1,10 @@
 package com.jsql.model.pattern.strategy;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.AbstractSuspendable;
-import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.Request;
 import com.jsql.model.blind.ConcreteBlindInjection;
 import com.jsql.view.GUIMediator;
@@ -17,9 +18,14 @@ public class BlindStrategy extends AbstractInjectionStrategy {
      */
     private ConcreteBlindInjection blind;
     
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(BlindStrategy.class);
+
     @Override
     public void checkApplicability() throws PreparationException {
-        InjectionModel.LOGGER.info("Blind test...");
+        LOGGER.info("Blind test...");
         
         this.blind = new ConcreteBlindInjection();
         
@@ -63,7 +69,7 @@ public class BlindStrategy extends AbstractInjectionStrategy {
 
     @Override
     public void applyStrategy() {
-        InjectionModel.LOGGER.info("Using blind injection...");
+        LOGGER.info("Using blind injection...");
         GUIMediator.model().applyStrategy(this);
         
         Request request = new Request();

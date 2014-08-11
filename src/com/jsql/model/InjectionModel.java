@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
@@ -158,13 +159,6 @@ public class InjectionModel extends AbstractModelObservable {
     private AbstractInjectionStrategy injectionStrategy;
     
     /**
-     * Get current injection strategy.
-     */
-    public AbstractInjectionStrategy getInjectionStrategy() {
-        return injectionStrategy;
-    }
-
-    /**
      * Strategy for blind attack injection.
      */
     private BlindStrategy blindStrategy = new BlindStrategy();
@@ -193,12 +187,12 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Object to load file information.
      */
-    public RessourceAccessObject rao = new RessourceAccessObject();
+    public final static RessourceAccessObject RAO = new RessourceAccessObject();
     
     /**
      * Object to load database information. 
      */
-    public DataAccessObject dao = new DataAccessObject();
+    public final static DataAccessObject DAO = new DataAccessObject();
     
     /**
      * Current evasion step, 0 is 'no evasion'
@@ -208,7 +202,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Log4j logger sent to view.
      */
-    public static final Logger LOGGER = Logger.getLogger(InjectionModel.class);
+    private static final Logger LOGGER = Logger.getLogger(InjectionModel.class);
 
     /**
      * Create injection process.
@@ -220,7 +214,7 @@ public class InjectionModel extends AbstractModelObservable {
         sVersion = sVersion.substring(0, 3);
         Float fVersion = Float.valueOf(sVersion);
         if (fVersion.floatValue() < (float) 1.7) {
-            InjectionModel.LOGGER.warn("You are running an old version of Java, please install the latest version from java.com.");
+            LOGGER.warn("You are running an old version of Java, please install the latest version from java.com.");
         }
 
         // Use Preferences API to persist proxy configuration
@@ -260,25 +254,25 @@ public class InjectionModel extends AbstractModelObservable {
         
         this.injectionStrategy = null;
         
-        rao.hasFileRight = false;
+        InjectionModel.RAO.hasFileRight = false;
 
         try {
             // Test if proxy is available then apply settings
-            if (isProxyfied && !proxyAddress.equals("") && !proxyPort.equals("")) {
+            if (isProxyfied && !"".equals(proxyAddress) && !"".equals(proxyPort)) {
                 try {
-                    InjectionModel.LOGGER.info("Testing proxy...");
+                    LOGGER.info("Testing proxy...");
                     new Socket(proxyAddress, Integer.parseInt(proxyPort)).close();
                 } catch (Exception e) {
                     throw new PreparationException("Proxy connection failed: " + proxyAddress + ":" + proxyPort
                             + "\nVerify your proxy informations or disable proxy setting.");
                 }
-                InjectionModel.LOGGER.info("Proxy is responding.");
+                LOGGER.info("Proxy is responding.");
             }
 
             // Test the HTTP connection
             try {
-                InjectionModel.LOGGER.info("Starting new injection");
-                InjectionModel.LOGGER.info("Connection test...");
+                LOGGER.info("Starting new injection");
+                LOGGER.info("Connection test...");
 
                 URLConnection con = new URL(this.initialUrl).openConnection();
                 con.setReadTimeout(15000);
@@ -292,8 +286,8 @@ public class InjectionModel extends AbstractModelObservable {
             }
 
             // Define insertionCharacter, i.e, -1 in "[...].php?id=-1 union select[...]",
-            InjectionModel.LOGGER.info("Get insertion character...");
-//            this.insertionCharacter = new StoppableGetInsertionCharacter().begin();
+            LOGGER.info("Get insertion character...");
+            
             this.insertionCharacter = new StoppableGetInsertionCharacter().beginSynchrone();
 
             // Test each injection methods: time, blind, error, normal
@@ -314,7 +308,7 @@ public class InjectionModel extends AbstractModelObservable {
                     // No injection possible, increase evasion level and restart whole process
                     securitySteps++;
                     if (securitySteps <= 2) {
-                        InjectionModel.LOGGER.warn("Injection not possible, testing evasion n°" + securitySteps + "...");
+                        LOGGER.warn("Injection not possible, testing evasion n°" + securitySteps + "...");
                         // sinon perte de insertionCharacter entre 2 injections
                         getData += insertionCharacter;
                         inputValidation();
@@ -333,7 +327,7 @@ public class InjectionModel extends AbstractModelObservable {
                     // Rare situation where injection fails after being validated, try with some evasion
                     securitySteps++;
                     if (securitySteps <= 2) {
-                        InjectionModel.LOGGER.warn("Injection not possible, testing evasion n°" + securitySteps + "...");
+                        LOGGER.warn("Injection not possible, testing evasion n°" + securitySteps + "...");
                         // sinon perte de insertionCharacter entre 2 injections
                         getData += insertionCharacter;
                         inputValidation();
@@ -345,7 +339,7 @@ public class InjectionModel extends AbstractModelObservable {
             }
 
             // Get the initial informations from database
-            dao.getDBInfos();
+            DAO.getDBInfos();
 
             // Stop injection if database is too old
             if (versionDatabase.charAt(0) == '4' || versionDatabase.charAt(0) == '3') {
@@ -353,14 +347,14 @@ public class InjectionModel extends AbstractModelObservable {
             }
 
             // Get the databases
-            dao.listDatabases();
+            DAO.listDatabases();
             
-            InjectionModel.LOGGER.info("Done.");
+            LOGGER.info("Done.");
             isInjectionBuilt = true;
         } catch (PreparationException e) {
-            InjectionModel.LOGGER.warn(e.getMessage());
+            LOGGER.warn(e.getMessage());
         } catch (StoppableException e) {
-            InjectionModel.LOGGER.warn(e.getMessage());
+            LOGGER.warn(e.getMessage());
         } finally {
             Request request = new Request();
             request.setMessage("EndPreparation");
@@ -378,7 +372,7 @@ public class InjectionModel extends AbstractModelObservable {
     private String getVisibleIndex(String firstSuccessPageSource) {
         // Parse all indexes found
         Matcher regexSearch = Pattern.compile("1337(\\d+?)7331", Pattern.DOTALL).matcher(firstSuccessPageSource);
-        ArrayList<String> foundIndexes = new ArrayList<String>();
+        List<String> foundIndexes = new ArrayList<String>();
         while (regexSearch.find()) {
             foundIndexes.add(regexSearch.group(1));
         }
@@ -407,7 +401,7 @@ public class InjectionModel extends AbstractModelObservable {
         //     column 1: index
         //     column 2: # found, so #######...#######
         regexSearch = Pattern.compile("SQLi(\\d+)(#*)", Pattern.DOTALL).matcher(performanceSourcePage);
-        ArrayList<String[]> performanceResults = new ArrayList<String[]>();
+        List<String[]> performanceResults = new ArrayList<String[]>();
         while (regexSearch.find()) {
             performanceResults.add(new String[]{regexSearch.group(1), regexSearch.group(2)});
         }
@@ -458,7 +452,7 @@ public class InjectionModel extends AbstractModelObservable {
      * @param responseHeader unused
      * @return source code of current page
      */
-    public String inject(String dataInjection, String[] responseHeader,
+    public String inject(String newDataInjection, String[] responseHeader,
             boolean useVisibleIndex) {
         HttpURLConnection connection = null;
         URL urlObject = null;
@@ -466,19 +460,19 @@ public class InjectionModel extends AbstractModelObservable {
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
         String urlUltimate = this.initialUrl;
         // escape crazy characters, like \
-        dataInjection = dataInjection.replace("\\", "\\\\");
+        String dataInjection = newDataInjection.replace("\\", "\\\\");
 
         try {
             urlObject = new URL(urlUltimate);
         } catch (MalformedURLException e) {
-            InjectionModel.LOGGER.warn("Malformed URL " + e.getMessage());
+            LOGGER.warn("Malformed URL " + e.getMessage());
         }
 
         /**
          * Build the GET query string infos
          * Add primary evasion
          */
-        if (this.getData != null && !this.getData.equals("")) {
+        if (this.getData != null && !"".equals(this.getData)) {
             urlUltimate += this.buildQuery("GET", getData, useVisibleIndex, dataInjection);
             try {
                 /*
@@ -517,7 +511,7 @@ public class InjectionModel extends AbstractModelObservable {
                 //                System.out.println(new Date() + " " + urlUltimate);
                 urlObject = new URL(urlUltimate);
             } catch (MalformedURLException e) {
-                InjectionModel.LOGGER.warn("Malformed URL " + e.getMessage());
+                LOGGER.warn("Malformed URL " + e.getMessage());
             }
         }
 
@@ -527,7 +521,7 @@ public class InjectionModel extends AbstractModelObservable {
             connection.setReadTimeout(15000);
             connection.setConnectTimeout(15000);
         } catch (IOException e) {
-            InjectionModel.LOGGER.warn("Error during connection: " + e.getMessage());
+            LOGGER.warn("Error during connection: " + e.getMessage());
         }
 
         Map<String, Object> msgHeader = new HashMap<String, Object>();
@@ -537,7 +531,7 @@ public class InjectionModel extends AbstractModelObservable {
          * Build the COOKIE and logs infos
          * #Need primary evasion
          */
-        if (!this.cookieData.equals("")) {
+        if (!"".equals(this.cookieData)) {
             connection.addRequestProperty("Cookie", this.buildQuery("COOKIE", cookieData, useVisibleIndex, dataInjection));
             
             msgHeader.put("Cookie", this.buildQuery("COOKIE", cookieData, useVisibleIndex, dataInjection));
@@ -547,12 +541,12 @@ public class InjectionModel extends AbstractModelObservable {
          * Build the HEADER and logs infos
          * #Need primary evasion
          */
-        if (!this.headerData.equals("")) {
+        if (!"".equals(this.headerData)) {
             for (String s: this.buildQuery("HEADER", headerData, useVisibleIndex, dataInjection).split(";")) {
                 try {
                     connection.addRequestProperty(s.split(":", 2)[0], URLDecoder.decode(s.split(":", 2)[1], "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
-                    InjectionModel.LOGGER.warn("Unsupported header encoding " + e.getMessage());
+                    LOGGER.warn("Unsupported header encoding " + e.getMessage());
                 }
             }
             
@@ -563,7 +557,7 @@ public class InjectionModel extends AbstractModelObservable {
          * Build the POST and logs infos
          * #Need primary evasion
          */
-        if (!this.postData.equals("")) {
+        if (!"".equals(this.postData)) {
             try {
                 connection.setDoOutput(true);
                 connection.setRequestMethod("POST");
@@ -576,7 +570,7 @@ public class InjectionModel extends AbstractModelObservable {
                 
                 msgHeader.put("Post", this.buildQuery("POST", postData, useVisibleIndex, dataInjection));
             } catch (IOException e) {
-                InjectionModel.LOGGER.warn(
+                LOGGER.warn(
                         "Error during POST connection " + e.getMessage());
             }
         }
@@ -598,10 +592,10 @@ public class InjectionModel extends AbstractModelObservable {
             }
             reader.close();
         } catch (MalformedURLException e) {
-            InjectionModel.LOGGER.warn("Malformed URL " + e.getMessage());
+            LOGGER.warn("Malformed URL " + e.getMessage());
         } catch (IOException e) {
             /* lot of timeout in local use */
-            InjectionModel.LOGGER.warn("Read error " + e.getMessage());
+            LOGGER.warn("Read error " + e.getMessage());
         }
 
         // return the source code of the page
@@ -655,13 +649,13 @@ public class InjectionModel extends AbstractModelObservable {
      * @param text Strategy used by user
      */
     public void applyStrategy(String text) {
-        if (text.equalsIgnoreCase("timebased")) {
+        if ("timebased".equalsIgnoreCase(text)) {
             this.injectionStrategy = timeStrategy;
-        } else if (text.equalsIgnoreCase("blind")) {
+        } else if ("blind".equalsIgnoreCase(text)) {
             this.injectionStrategy = blindStrategy;
-        } else if (text.equalsIgnoreCase("errorbased")) {
+        } else if ("errorbased".equalsIgnoreCase(text)) {
             this.injectionStrategy = errorbasedStrategy;
-        } else if (text.equalsIgnoreCase("normal")) {
+        } else if ("normal".equalsIgnoreCase(text)) {
             this.injectionStrategy = normalStrategy;
         }
     }
@@ -679,7 +673,7 @@ public class InjectionModel extends AbstractModelObservable {
             if (regexSearch.find()) {
                 URL url = new URL(getData);
                 this.initialUrl = regexSearch.group(1);
-                if (!url.getQuery().equals("")) {
+                if (!"".equals(url.getQuery())) {
                     this.getData = regexSearch.group(2);
                 }
             } else {
@@ -706,7 +700,7 @@ public class InjectionModel extends AbstractModelObservable {
             // Erase everything in the view from a previous injection
             GUIMediator.gui().resetInterface();
         } catch (MalformedURLException e) {
-            InjectionModel.LOGGER.warn(e.getMessage());
+            LOGGER.warn(e.getMessage());
         }
     }
     
@@ -721,5 +715,12 @@ public class InjectionModel extends AbstractModelObservable {
                 GUIMediator.register(new GUI());
             }
         });
+    }
+
+    /**
+     * Get current injection strategy.
+     */
+    public AbstractInjectionStrategy getInjectionStrategy() {
+        return injectionStrategy;
     }
 }

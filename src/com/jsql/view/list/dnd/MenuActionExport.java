@@ -20,7 +20,8 @@ import java.io.PrintStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import com.jsql.model.InjectionModel;
+import org.apache.log4j.Logger;
+
 import com.jsql.view.GUIMediator;
 
 /**
@@ -32,6 +33,11 @@ public class MenuActionExport implements ActionListener {
      */
     private DnDList myList;
     
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(MenuActionExport.class);
+
     /**
      * Create action to export a list.
      * @param myList List to export.
@@ -85,7 +91,7 @@ public class MenuActionExport implements ActionListener {
             }
             out.close();
         } catch (FileNotFoundException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
     }
 }

@@ -71,7 +71,7 @@ public class NodeModelTable extends AbstractNodeModel {
 
                 @Override
                 protected Object doInBackground() throws Exception {
-                    GUIMediator.model().dao.listColumns(selectedTable);
+                    GUIMediator.model().DAO.listColumns(selectedTable);
                     return null;
                 }
                 

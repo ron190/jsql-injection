@@ -36,7 +36,8 @@ import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 import javax.swing.plaf.ColorUIResource;
 
-import com.jsql.model.InjectionModel;
+import org.apache.log4j.Logger;
+
 import com.jsql.view.tab.CustomMetalTabbedPaneUI;
 import com.jsql.view.ui.CleanMetalScrollBarUI;
 import com.jsql.view.ui.CustomBasicComboBoxUI;
@@ -48,12 +49,10 @@ import com.jsql.view.ui.RoundBorder;
 @SuppressWarnings("serial")
 public final class GUITools {
     /**
-     * Utility class.
+     * Log4j logger sent to view.
      */
-    private GUITools() {
-        //not called
-    }
-    
+    private static final Logger LOGGER = Logger.getLogger(GUITools.class);
+
     public static final Color SELECTION_BACKGROUND = new Color(211, 230, 255);
     public static final Color DEFAULT_BACKGROUND = UIManager.getColor("Panel.background");
     public static final Color COMPONENT_BORDER = UIManager.getColor("controlShadow");
@@ -86,6 +85,13 @@ public final class GUITools {
     public static final String BINARY_VISIBLE = "binary_visible";
     public static final String NETWORK_VISIBLE = "header_visible";
     public static final String JAVA_VISIBLE = "java_visible";
+    
+    /**
+     * Utility class.
+     */
+    private GUITools() {
+        //not called
+    }
     
     /**
      * Change the default style of various components.
@@ -143,9 +149,12 @@ public final class GUITools {
         });
 
         // Custom tab
-        UIManager.put("TabbedPane.contentBorderInsets", new Insets(0, 0, 0, 0));    // margin of current tab panel
-        UIManager.put("TabbedPane.tabAreaInsets", new Insets(3, 2, 0, 2));        // margin above tabs
-        UIManager.put("TabbedPane.tabInsets", new Insets(2, 3 + 5, 2, 3));            // margin around tab name
+        // margin of current tab panel
+        UIManager.put("TabbedPane.contentBorderInsets", new Insets(0, 0, 0, 0));
+        // margin above tabs
+        UIManager.put("TabbedPane.tabAreaInsets", new Insets(3, 2, 0, 2));
+        // margin around tab name
+        UIManager.put("TabbedPane.tabInsets", new Insets(2, 3 + 5, 2, 3));
         
 //        UIManager.put("ScrollBar.squareButtons", true);
         
@@ -220,7 +229,7 @@ public final class GUITools {
             images.add(ImageIO.read(urlBig));
             images.add(ImageIO.read(urlSmall));
         } catch (IOException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
         return images;
     }

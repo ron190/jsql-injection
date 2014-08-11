@@ -1,9 +1,10 @@
 package com.jsql.model.pattern.strategy;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.AbstractSuspendable;
-import com.jsql.model.InjectionModel;
 import com.jsql.model.StoppableGetInitialQuery;
 import com.jsql.model.bean.Request;
 import com.jsql.view.GUIMediator;
@@ -12,9 +13,14 @@ import com.jsql.view.GUIMediator;
  * Injection strategy using normal attack.
  */
 public class NormalStrategy extends AbstractInjectionStrategy {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(NormalStrategy.class);
+
     @Override
     public void checkApplicability() throws PreparationException {
-        InjectionModel.LOGGER.info("Normal test...");
+        LOGGER.info("Normal test...");
         GUIMediator.model().initialQuery = new StoppableGetInitialQuery().beginSynchrone();
 
         this.isApplicable = !GUIMediator.model().initialQuery.equals("");
@@ -59,7 +65,7 @@ public class NormalStrategy extends AbstractInjectionStrategy {
 
     @Override
     public void applyStrategy() {
-        InjectionModel.LOGGER.info("Using normal injection...");
+        LOGGER.info("Using normal injection...");
         GUIMediator.model().applyStrategy(this);
         
         Request request = new Request();

@@ -12,8 +12,6 @@ package com.jsql.view.panel;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.prefs.Preferences;
 
 import javax.swing.BorderFactory;
@@ -53,6 +51,17 @@ public class LeftRightBottomPanel extends JSplitPaneWithZeroSizeDivider {
     public JSplitPaneWithZeroSizeDivider leftRight;
 
     /**
+     * 
+     */
+    private static final JPanel ERSATZARROWPANEL = new JPanel();
+    
+    /**
+     * MouseAdapter used on arrow on tabbedpane header and on
+     * ersatz button when bottom panel is hidden.
+     */
+    public static final ActionHideShowConsole HIDESHOWPANEL = new ActionHideShowConsole(ERSATZARROWPANEL);
+
+    /**
      * Create main panel with Manager panels on the left, result tabs on the right,
      * and consoles in the bottom. 
      */
@@ -80,24 +89,21 @@ public class LeftRightBottomPanel extends JSplitPaneWithZeroSizeDivider {
         JPanel leftRightBottomPanel = new JPanel(new BorderLayout());
         leftRightBottomPanel.add(leftRight, BorderLayout.CENTER);
 
-        JPanel arrowUpPanel = new JPanel();
-        arrowUpPanel.setLayout(new BorderLayout());
-        arrowUpPanel.setOpaque(false);
-        arrowUpPanel.setPreferredSize(new Dimension(17, 22));
-        arrowUpPanel.setMaximumSize(new Dimension(17, 22));
+        ERSATZARROWPANEL.setLayout(new BorderLayout());
+        ERSATZARROWPANEL.setOpaque(false);
+        ERSATZARROWPANEL.setPreferredSize(new Dimension(17, 22));
+        ERSATZARROWPANEL.setMaximumSize(new Dimension(17, 22));
         JButton hideBottomButton = new BasicArrowButton(BasicArrowButton.NORTH);
         hideBottomButton.setBorderPainted(false);
         hideBottomButton.setOpaque(false);
 
-        hideShowAction = new HideShowConsoleAction(arrowUpPanel);
+        hideBottomButton.addActionListener(LeftRightBottomPanel.HIDESHOWPANEL);
+        ERSATZARROWPANEL.add(Box.createHorizontalGlue());
+        ERSATZARROWPANEL.add(hideBottomButton, BorderLayout.EAST);
+        ERSATZARROWPANEL.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, GUITools.COMPONENT_BORDER));
+        ERSATZARROWPANEL.setVisible(false);
 
-        hideBottomButton.addMouseListener(LeftRightBottomPanel.hideShowAction);
-        arrowUpPanel.add(Box.createHorizontalGlue());
-        arrowUpPanel.add(hideBottomButton, BorderLayout.EAST);
-        arrowUpPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, GUITools.COMPONENT_BORDER));
-        arrowUpPanel.setVisible(false);
-
-        leftRightBottomPanel.add(arrowUpPanel, BorderLayout.SOUTH);
+        leftRightBottomPanel.add(ERSATZARROWPANEL, BorderLayout.SOUTH);
 
         // Setting for top and bottom components
         this.setTopComponent(leftRightBottomPanel);
@@ -109,55 +115,5 @@ public class LeftRightBottomPanel extends JSplitPaneWithZeroSizeDivider {
 
         // defines left and bottom pane
         this.setResizeWeight(1);
-    }
-
-    /**
-     * MouseAdapter used on arrow on tabbedpane header and on
-     * ersatz button when bottom panel is hidden.
-     */
-    public static HideShowConsoleAction hideShowAction;
-
-    /**
-     * MouseAdapter to show/hide bottom panel.
-     */
-    class HideShowConsoleAction extends MouseAdapter {
-        /**
-         * Save the divider location when bottom panel is not visible.
-         */
-        private int loc = 0;
-        
-        /**
-         * Ersatz panel to display in place of tabbedpane.
-         */
-        private JPanel panel;
-        
-        /**
-         * Create the hide/show bottom panel action.
-         */
-        public HideShowConsoleAction(JPanel panel) {
-            super();
-            this.panel = panel;
-        }
-        
-        /**
-         * Hide bottom panel if both main and bottom are visible, also
-         * displays an ersatz bar replacing tabbedpane.  
-         * Or else if only main panel is visible then displays bottom panel
-         * and hide ersatz panel.
-         */
-        @Override
-        public void mouseClicked(MouseEvent arg0) {
-            if (LeftRightBottomPanel.this.getTopComponent().isVisible() && LeftRightBottomPanel.this.getBottomComponent().isVisible()) {
-                LeftRightBottomPanel.this.getBottomComponent().setVisible(false);
-                this.loc = LeftRightBottomPanel.this.getDividerLocation();
-                this.panel.setVisible(true);
-                LeftRightBottomPanel.this.disableDragSize();
-            } else {
-                LeftRightBottomPanel.this.getBottomComponent().setVisible(true);
-                LeftRightBottomPanel.this.setDividerLocation(this.loc);
-                this.panel.setVisible(false);
-                LeftRightBottomPanel.this.enableDragSize();
-            }
-        }
     }
 }

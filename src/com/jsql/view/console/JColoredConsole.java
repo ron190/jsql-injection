@@ -7,7 +7,8 @@ import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 
-import com.jsql.model.InjectionModel;
+import org.apache.log4j.Logger;
+
 import com.jsql.view.GUIMediator;
 
 /**
@@ -19,6 +20,11 @@ public class JColoredConsole extends JTextPane {
      * Text name of tab.
      */
     private String tabName;
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(JColoredConsole.class);
 
     /**
      * Create a JTextPane which displays colored strings.
@@ -49,7 +55,7 @@ public class JColoredConsole extends JTextPane {
                 tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
             }
         } catch (BadLocationException e) {
-            InjectionModel.LOGGER.fatal(message);
+            LOGGER.fatal(message);
         }
     }
 }

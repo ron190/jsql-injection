@@ -13,17 +13,17 @@ public class SourceCodeCallable implements Callable<SourceCodeCallable> {
     /**
      * URL to load.
      */
-    public String url;
+    private String url;
 
     /**
      * Source code for current page.
      */
-    public String content;
+    private String content;
 
     /**
      * Character used for current page.
      */
-    public String insertionCharacter;
+    private String insertionCharacter;
     
     /**
      * Create a callable to get initial query or insertion character.
@@ -47,5 +47,17 @@ public class SourceCodeCallable implements Callable<SourceCodeCallable> {
     public SourceCodeCallable call() throws Exception {
         this.content = GUIMediator.model().inject(this.url);
         return this;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+    
+    public String getContent() {
+        return content;
+    }
+    
+    public String getInsertionCharacter() {
+        return insertionCharacter;
     }
 }

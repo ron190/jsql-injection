@@ -285,7 +285,7 @@ public class BottomPanel extends JPanel {
         showBottomButton.setPreferredSize(showBottomButton.getPreferredSize());
         showBottomButton.setMaximumSize(showBottomButton.getPreferredSize());
 
-        showBottomButton.addMouseListener(LeftRightBottomPanel.hideShowAction);
+        showBottomButton.addActionListener(LeftRightBottomPanel.HIDESHOWPANEL);
 
         JPanel arrowDownPanel = new JPanel();
         arrowDownPanel.setLayout(new BoxLayout(arrowDownPanel, BoxLayout.PAGE_AXIS));
@@ -307,7 +307,6 @@ public class BottomPanel extends JPanel {
 
         this.chunks.setLineWrap(true);
         this.binaryArea.setLineWrap(true);
-//        GUIMediator.gui().consoleArea.setLineWrap(true);
     }
 
     /**

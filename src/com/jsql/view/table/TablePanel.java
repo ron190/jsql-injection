@@ -46,7 +46,8 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-import com.jsql.model.InjectionModel;
+import org.apache.log4j.Logger;
+
 import com.jsql.view.popupmenu.JPopupTableMenu;
 
 /**
@@ -59,6 +60,11 @@ public class TablePanel extends JPanel {
      * Table to display in the panel.
      */
     public JTable table;
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(TablePanel.class);
 
     /**
      * Create a panel containing a table to display injection values.
@@ -129,7 +135,7 @@ public class TablePanel extends JPanel {
         try {
             image = ImageIO.read(url.openStream());
         } catch (IOException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         table.setCursor(toolkit.createCustomCursor(image, new Point(12, 12), "Hand"));

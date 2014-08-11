@@ -12,8 +12,6 @@ package com.jsql.view.manager;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -29,9 +27,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import com.jsql.model.InjectionModel;
 import com.jsql.view.GUITools;
-import com.jsql.view.bruteforce.HashBruter;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.textcomponent.JPopupTextArea;
 import com.jsql.view.textcomponent.JPopupTextField;
@@ -49,57 +45,57 @@ public class BruteForceManager extends JPanel {
     /**
      * Input for hash to brute force.
      */
-    private JTextField hash;
+    JTextField hash;
     
     /**
      * Combobox of hashing methods.
      */
-    private JComboBox<String> hashTypes;
+    JComboBox<String> hashTypes;
     
     /**
      * Enable injection of lowercase characters.
      */
-    private JCheckBox lowerCaseCharacters;
+    JCheckBox lowerCaseCharacters;
     
     /**
      * Enable injection of uppercase characters.
      */
-    private JCheckBox upperCaseCharacters;
+    JCheckBox upperCaseCharacters;
     
     /**
      * Enable injection of numeric characters.
      */
-    private JCheckBox numericCharacters;
+    JCheckBox numericCharacters;
     
     /**
      * Enable injection of special characters. 
      */
-    private JCheckBox specialCharacters;
+    JCheckBox specialCharacters;
     
     /**
      * List of characters to exclude from the attack.
      */
-    private JTextField exclude;
+    JTextField exclude;
     
     /**
      * Minimum length of string to attack.
      */
-    private JTextField minimumLength;
+    JTextField minimumLength;
     
     /**
      * Maximum length of string to attack.
      */
-    private JTextField maximumLength;
+    JTextField maximumLength;
     
     /**
      * Textarea displaying result.
      */
-    private JTextArea result;
+    JTextArea result;
     
     /**
      * Animated GIF displayed during attack. 
      */
-    private JLabel loader;
+    JLabel loader;
 
     /**
      * Create a panel to run brute force attack. 
@@ -231,142 +227,8 @@ public class BruteForceManager extends JPanel {
         lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
         lastLine.add(run);
 
-        run.addActionListener(new BruteForceAction());
+        run.addActionListener(new ActionBruteForce(this));
 
         this.add(lastLine, BorderLayout.SOUTH);
-    }
-    
-    /**
-     * Run a brute force attack.
-     */
-    private class BruteForceAction implements ActionListener {
-        private final Boolean[] doStop = {false};
-
-        @Override
-        public void actionPerformed(ActionEvent arg0) {
-            if (run.getText().equals("Stop")) {
-                run.setEnabled(false);
-                doStop[0] = true;
-            } else {
-                try {
-                    Integer.parseInt(maximumLength.getText());
-                    Integer.parseInt(minimumLength.getText());
-                } catch (NumberFormatException e) {
-                    result.setText("*** Incorrect length");
-                    return;
-                }
-
-                if (hash.getText().equals("")) {
-                    result.setText("*** Empty hash");
-                    return;
-                } else if (
-                        !specialCharacters.isSelected()
-                        && !upperCaseCharacters.isSelected()
-                        && !lowerCaseCharacters.isSelected()
-                        && !numericCharacters.isSelected()) {
-                    result.setText("*** Select a character range");
-                    return;
-                } else if (Integer.parseInt(maximumLength.getText()) < Integer.parseInt(minimumLength.getText())) {
-                    result.setText("*** Incorrect minimum and maximum length");
-                    return;
-                }
-
-                new Thread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        // Reset the panel
-                        run.setText("Stop");
-                        loader.setVisible(true);
-                        result.setText(null);
-
-                        // Configure the hasher
-                        final HashBruter hashBruter = new HashBruter();
-
-                        hashBruter.setMinLength(Integer.parseInt(minimumLength.getText()));
-                        hashBruter.setMaxLength(Integer.parseInt(maximumLength.getText()));
-
-                        if (specialCharacters.isSelected()) {
-                            hashBruter.addSpecialCharacters();
-                        }
-                        if (upperCaseCharacters.isSelected()) {
-                            hashBruter.addUpperCaseLetters();
-                        }
-                        if (lowerCaseCharacters.isSelected()) {
-                            hashBruter.addLowerCaseLetters();
-                        }
-                        if (numericCharacters.isSelected()) {
-                            hashBruter.addDigits();
-                        }
-                        if (!exclude.getText().equals("")) {
-                            hashBruter.excludeChars(exclude.getText());
-                        }
-
-                        hashBruter.setType((String) hashTypes.getSelectedItem());
-                        hashBruter.setHash(hash.getText().toUpperCase().replaceAll("[^a-zA-Z0-9]", "").trim());
-
-                        // Begin the unhashing process
-                        Thread thread = new Thread(new Runnable() { @Override public void run() { hashBruter.tryBruteForce(); } }, "Display brute force results");
-                        thread.start();
-
-                        while (!hashBruter.isDone() && !hashBruter.isFound() && !doStop[0]) {
-                            hashBruter.setEndtime(System.nanoTime());
-
-                            try {
-                                // delay to update result panel
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                InjectionModel.LOGGER.error(e, e);
-                            }
-                            
-                            result.setText("Current string: " + hashBruter.getPassword() + "\n");
-                            result.append("Current hash: " + hashBruter.getGeneratedHash() + "\n\n");
-                            result.append("Number of possibilities: " + hashBruter.getNumberOfPossibilities() + "\n");
-                            result.append("Checked hashes: " + hashBruter.getCounter() + "\n");
-                            result.append("Estimated hashes left: " + hashBruter.getRemainder() + "\n");
-                            result.append("Per second: " + hashBruter.getPerSecond() + "\n\n");
-                            result.append( hashBruter.calculateTimeElapsed() + "\n");
-                            
-                            if (hashBruter.getPerSecond() != 0) {
-                                result.append("Traversing remaining: " +
-                                        Math.round(Math.floor(Float.parseFloat(Long.toString(hashBruter.getRemainder())) / (float) hashBruter.getPerSecond() / 60f / 60.0f / 24f)) + "days " +
-                                        Math.round(Math.floor(Float.parseFloat(Long.toString(hashBruter.getRemainder())) / (float) hashBruter.getPerSecond() / 60f / 60f % 24)) + "h " +
-                                        Math.round(Math.floor(Float.parseFloat(Long.toString(hashBruter.getRemainder())) / (float) hashBruter.getPerSecond() / 60f % 60)) + "min " +
-                                        Math.round((Float.parseFloat(Long.toString(hashBruter.getRemainder())) / (float) hashBruter.getPerSecond()) % 60) + "s\n"); 
-                            }
-                            
-                            result.append("Percent done: " + (100 * (float) hashBruter.getCounter() / hashBruter.getNumberOfPossibilities()) + "%");
-                            
-                            if (doStop[0]) {
-                                hashBruter.setIsDone(true);
-                                hashBruter.setFound(true);
-                                break;
-                            }
-                        }
-
-                        // Display the result
-                        if (doStop[0]) {
-                            result.append("\n\n*** Aborted\n");
-                        } else if (hashBruter.isFound()) {
-                            result.append("\n\nFound hash:\n"
-                                    + hashBruter.getGeneratedHash() + "\n"
-                                    + "String: " + hashBruter.getPassword());
-                            
-                            InjectionModel.LOGGER.info("Found hash:");
-                            InjectionModel.LOGGER.info(hashBruter.getGeneratedHash());
-                            InjectionModel.LOGGER.info("String: " + hashBruter.getPassword());
-                        } else if (hashBruter.isDone()) {
-                            result.append("\n\n*** Hash not found");
-                        }
-                        
-                        doStop[0] = false;
-                        loader.setVisible(false);
-                        run.setText("Start");
-                        run.setEnabled(true);
-                    }
-                }, "Start brute force").start();
-
-            }
-        }
     }
 }

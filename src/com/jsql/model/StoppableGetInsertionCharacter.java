@@ -7,6 +7,8 @@ import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.view.GUIMediator;
@@ -17,25 +19,29 @@ import com.jsql.view.GUIMediator;
  * this class/function tries to find the working one by searching a special error message
  * in the source page.
  */
-//    private class StoppableGetInsertionCharacter extends Stoppable {
 public class StoppableGetInsertionCharacter extends AbstractSuspendable {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(StoppableGetInsertionCharacter.class);
+
     @Override
     public String action(Object... args) throws PreparationException, StoppableException {
         // Has the url a query string?
-        if (GUIMediator.model().method.equalsIgnoreCase("GET") && (GUIMediator.model().getData == null || GUIMediator.model().getData.equals(""))) {
+        if ("GET".equalsIgnoreCase(GUIMediator.model().method) && (GUIMediator.model().getData == null || "".equals(GUIMediator.model().getData))) {
             throw new PreparationException("No query string");
             // Is the query string well formed?
-        } else if (GUIMediator.model().method.equalsIgnoreCase("GET") && GUIMediator.model().getData.matches("[^\\w]*=.*")) {
+        } else if ("GET".equalsIgnoreCase(GUIMediator.model().method) && GUIMediator.model().getData.matches("[^\\w]*=.*")) {
             throw new PreparationException("Incorrect query string");
-        } else if (GUIMediator.model().method.equalsIgnoreCase("POST") && GUIMediator.model().postData.indexOf("=") < 0) {
+        } else if ("POST".equalsIgnoreCase(GUIMediator.model().method) && GUIMediator.model().postData.indexOf("=") < 0) {
             throw new PreparationException("Incorrect POST datas");
-        } else if (GUIMediator.model().method.equalsIgnoreCase("COOKIE") && GUIMediator.model().cookieData.indexOf("=") < 0) {
+        } else if ("COOKIE".equalsIgnoreCase(GUIMediator.model().method) && GUIMediator.model().cookieData.indexOf("=") < 0) {
             throw new PreparationException("Incorrect COOKIE datas");
         } else if (!GUIMediator.model().headerData.equals("") && GUIMediator.model().headerData.indexOf(":") < 0) {
             throw new PreparationException("Incorrect HEADER datas");
             // Parse query information: url=>everything before the sign '=',
             // start of query string=>everything after '='
-        } else if (GUIMediator.model().method.equalsIgnoreCase("GET") && !GUIMediator.model().getData.matches(".*=$")) {
+        } else if ("GET".equalsIgnoreCase(GUIMediator.model().method) && !GUIMediator.model().getData.matches(".*=$")) {
             Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(GUIMediator.model().getData);
             regexSearch.find();
             try {
@@ -45,7 +51,7 @@ public class StoppableGetInsertionCharacter extends AbstractSuspendable {
                 throw new PreparationException("Incorrect GET format");
             }
             // Parse post information
-        } else if (GUIMediator.model().method.equalsIgnoreCase("POST") && !GUIMediator.model().postData.matches(".*=$")) {
+        } else if ("POST".equalsIgnoreCase(GUIMediator.model().method) && !GUIMediator.model().postData.matches(".*=$")) {
             Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(GUIMediator.model().postData);
             regexSearch.find();
             try {
@@ -55,7 +61,7 @@ public class StoppableGetInsertionCharacter extends AbstractSuspendable {
                 throw new PreparationException("Incorrect POST format");
             }
             // Parse cookie information
-        } else if (GUIMediator.model().method.equalsIgnoreCase("COOKIE") && !GUIMediator.model().cookieData.matches(".*=$")) {
+        } else if ("COOKIE".equalsIgnoreCase(GUIMediator.model().method) && !GUIMediator.model().cookieData.matches(".*=$")) {
             Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(GUIMediator.model().cookieData);
             regexSearch.find();
             try {
@@ -65,7 +71,7 @@ public class StoppableGetInsertionCharacter extends AbstractSuspendable {
                 throw new PreparationException("Incorrect Cookie format");
             }
             // Parse header information
-        } else if (GUIMediator.model().method.equalsIgnoreCase("HEADER") && !GUIMediator.model().headerData.matches(".*:$")) {
+        } else if ("HEADER".equalsIgnoreCase(GUIMediator.model().method) && !GUIMediator.model().headerData.matches(".*:$")) {
             Matcher regexSearch = Pattern.compile("(.*:)(.*)").matcher(GUIMediator.model().headerData);
             regexSearch.find();
             try {
@@ -90,23 +96,22 @@ public class StoppableGetInsertionCharacter extends AbstractSuspendable {
         int total = 7;
         while (0 < total) {
             // The user need to stop the job
-            //                if (this.shouldStop()) {
-            if (this.pauseShouldStopPause()) {
+            if (this.stopOrPause()) {
                 throw new StoppableException();
             }
             try {
                 SourceCodeCallable currentCallable = taskCompletionService.take().get();
                 total--;
-                String pageSource = currentCallable.content;
+                String pageSource = currentCallable.getContent();
                 if (Pattern.compile(".*Unknown column '1337' in 'order clause'.*", Pattern.DOTALL).matcher(pageSource).matches() 
                         || Pattern.compile(".*supplied argument is not a valid MySQL result resource.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     // the correct character
-                    return currentCallable.insertionCharacter;
+                    return currentCallable.getInsertionCharacter();
                 }
             } catch (InterruptedException e) {
-                InjectionModel.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             } catch (ExecutionException e) {
-                InjectionModel.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             }
         }
 

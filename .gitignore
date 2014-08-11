@@ -4,3 +4,4 @@ target/
 target/
 .settings/
 .sonar/
+/sonar-project.properties

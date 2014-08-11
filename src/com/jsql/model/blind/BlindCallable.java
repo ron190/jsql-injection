@@ -3,17 +3,21 @@ package com.jsql.model.blind;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.jsql.model.blind.diff_match_patch.Diff;
+
 /**
  * Define a call HTTP to the server, require the associated url, character
  * position and bit. Opcodes represents the differences between
  * the TRUE page, and the resulting page.
  */
-public class BlindCallable extends AbstractBlindCallable {
+public class BlindCallable extends AbstractBlindCallable<BlindCallable> {
     /**
      * List of differences found between the TRUE page, and the present page.
      */
-    private LinkedList<diff_match_patch.Diff> opcodes;
+    private LinkedList<Diff> opcodes;
     
+    private static final diff_match_patch DIFFMATCHPATCH = new diff_match_patch();
+
     /**
      * Constructor for preparation and blind confirmation.
      * @param urlTest
@@ -53,7 +57,7 @@ public class BlindCallable extends AbstractBlindCallable {
      */
     @Override
     public boolean isTrue() {
-        for (diff_match_patch.Diff falseDiff: ConcreteBlindInjection.getConstantFalseMark()) {
+        for (Diff falseDiff: ConcreteBlindInjection.getConstantFalseMark()) {
             if (this.opcodes.contains(falseDiff)) {
                 return false;
             }
@@ -69,13 +73,12 @@ public class BlindCallable extends AbstractBlindCallable {
     @Override
     public BlindCallable call() throws Exception {
         String ctnt = ConcreteBlindInjection.callUrl(this.blindUrl);
-        opcodes = new diff_match_patch().diff_main(ConcreteBlindInjection.getBlankTrueMark(), ctnt, true);
-        new diff_match_patch().diff_cleanupEfficiency(this.opcodes);
+        this.opcodes = DIFFMATCHPATCH.diff_main(ConcreteBlindInjection.getBlankTrueMark(), ctnt, true);
+        DIFFMATCHPATCH.diff_cleanupEfficiency(this.opcodes);
         return this;
     }
-
-    @Override
-    public List<diff_match_patch.Diff> getOpcodes() {
+    
+    public List<Diff> getOpcodes() {
         return this.opcodes;
     }
 }

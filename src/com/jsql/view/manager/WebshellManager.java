@@ -32,10 +32,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.InjectionModel;
-import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 import com.jsql.view.list.dnd.DnDList;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
@@ -46,6 +47,11 @@ import com.jsql.view.textcomponent.JPopupTextField;
  */
 @SuppressWarnings("serial")
 public class WebshellManager extends AbstractListManager {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(WebshellManager.class);
+
     /**
      * Build the manager panel.
      */
@@ -64,7 +70,7 @@ public class WebshellManager extends AbstractListManager {
             }
             reader.close();
         } catch (IOException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         this.listPaths = new DnDList(pathsList);
@@ -73,17 +79,11 @@ public class WebshellManager extends AbstractListManager {
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
 
-//        JPanel urlLine = new JPanel(new BorderLayout());
-        
         JLabel label = new JLabel("[Optional] URL to the web shell directory:");
         label.setHorizontalAlignment(SwingConstants.CENTER);
         
-//        urlLine.setBorder(BorderFactory.createCompoundBorder(
-//                BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER),
-//                BorderFactory.createEmptyBorder(1, 1, 1, 1)));
-        
         final JTextField shellURL = new JPopupTextField("[Optional] URL to the webshell directory").getProxy();
-//        final JTextField shellURL = new HintTextField("[Optional] URL to the web shell directory");
+        
         String tooltip = "<html><b>How to use optional shell URL</b><br>" +
                 "- Leave blank if the file from URL is in selected folder, shell will be created in this folder.<br>" +
                 "<i>E.g Address bar is set with http://127.0.0.1/simulate_get.php?lib=, file simulate_get.php<br>" +
@@ -91,14 +91,13 @@ public class WebshellManager extends AbstractListManager {
                 "- Or force a URL for selected folder.<br>" +
                 "<i>E.g Shell is created in selected '/var/www/site/folder/' ; corresponding URL for this folder<br>" +
                 "is http://site.com/another/path/ (because of alias or url rewriting for example).</i></html>";
+        
         shellURL.setToolTipText(tooltip);
         shellURL.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
                         BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER),
                         BorderFactory.createMatteBorder(1, 1, 0, 1, GUITools.DEFAULT_BACKGROUND)),
                         GUITools.BLU_ROUND_BORDER));
-//        urlLine.add(shellURL);
-//        urlLine.add(label, BorderLayout.NORTH);
 
         JPanel lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
@@ -119,7 +118,7 @@ public class WebshellManager extends AbstractListManager {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (WebshellManager.this.listPaths.getSelectedValuesList().isEmpty()) {
-                    InjectionModel.LOGGER.warn("Select at least one directory");
+                    LOGGER.warn("Select at least one directory");
                     return;
                 }
 
@@ -127,7 +126,7 @@ public class WebshellManager extends AbstractListManager {
                     try {
                         new URL(shellURL.getText());
                     } catch (MalformedURLException e) {
-                        InjectionModel.LOGGER.warn("URL is malformed: no protocol");
+                        LOGGER.warn("URL is malformed: no protocol");
                         return;
                     }
                 }
@@ -137,11 +136,11 @@ public class WebshellManager extends AbstractListManager {
                         @Override
                         public void run() {
                             try {
-                                GUIMediator.model().rao.getShell(path.toString(), shellURL.getText());
+                                InjectionModel.RAO.getShell(path.toString(), shellURL.getText());
                             } catch (PreparationException e) {
-                                InjectionModel.LOGGER.warn("Problem writing into " + path);
+                                LOGGER.warn("Problem writing into " + path);
                             } catch (StoppableException e) {
-                                InjectionModel.LOGGER.warn("Problem writing into " + path);
+                                LOGGER.warn("Problem writing into " + path);
                             }
                         }
                     }, "getShell").start();

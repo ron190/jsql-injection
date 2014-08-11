@@ -10,17 +10,10 @@
  ******************************************************************************/
 package com.jsql.view.menubar;
 
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.prefs.Preferences;
@@ -36,6 +29,8 @@ import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.MenuSelectionManager;
 import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
+
+import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
@@ -72,6 +67,11 @@ public class Menubar extends JMenuBar {
     public JCheckBoxMenuItem javaDebugMenu;
 
     /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Menubar.class);
+
+    /**
      * Create a menubar on main frame.
      */
     public Menubar() {
@@ -85,7 +85,7 @@ public class Menubar extends JMenuBar {
         itemNewWindows.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                InjectionModel.LOGGER.info("Starting new window.");
+                LOGGER.info("Starting new window.");
                 String separator = System.getProperty("file.separator");
                 String classpath = System.getProperty("java.class.path");
                 String path = System.getProperty("java.home") + separator + "bin" + separator + "java";
@@ -96,7 +96,7 @@ public class Menubar extends JMenuBar {
                 try {
                     processBuilder.start();
                 } catch (IOException e1) {
-                    InjectionModel.LOGGER.error("Error opening new window.");
+                    LOGGER.error("Error opening new window.");
                 }
             }
         });
@@ -291,7 +291,7 @@ public class Menubar extends JMenuBar {
                     prefDiag.setLocationRelativeTo(GUIMediator.gui());
                     // needed here for button focus
                     prefDiag.setVisible(true);
-                    prefDiag.okButton.requestFocusInWindow();
+                    prefDiag.requestButtonFocus();
                 }
                 prefDiag.setVisible(true);
             }
@@ -316,56 +316,12 @@ public class Menubar extends JMenuBar {
                     aboutDiag.reinit();
                     // needed here for button focus
                     aboutDiag.setVisible(true);
-                    aboutDiag.close.requestFocusInWindow();
+                    aboutDiag.requestButtonFocus();
                 }
                 aboutDiag.setVisible(true);
             }
         });
-        itemUpdate.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            InjectionModel.LOGGER.info("Checking updates...");
-                            URLConnection con = new URL("http://jsql-injection.googlecode.com/git/.version").openConnection();
-                            con.setReadTimeout(60000);
-                            con.setConnectTimeout(60000);
-
-                            BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                            String line, pageSource = "";
-                            while ((line = reader.readLine()) != null) {
-                                pageSource += line + "\n";
-                            }
-                            reader.close();
-
-                            Float gitVersion = Float.parseFloat(pageSource);
-                            GUIMediator.model();
-                            if (gitVersion <= Float.parseFloat(InjectionModel.JSQLVERSION)) {
-                                InjectionModel.LOGGER.info("jSQL Injection is up to date.");
-                            } else {
-                                InjectionModel.LOGGER.warn("A new version of jSQL Injection is available.");
-                                Desktop.getDesktop().browse(new URI("http://code.google.com/p/jsql-injection/downloads/list"));
-                            }
-                        } catch (NumberFormatException e) {
-                            InjectionModel.LOGGER.warn("An error occured while checking updates, download the latest version from official website :");
-                            InjectionModel.LOGGER.warn("http://code.google.com/p/jsql-injection/downloads/list");
-                            InjectionModel.LOGGER.error(e, e);
-                        } catch (IOException e) {
-                            InjectionModel.LOGGER.warn("An error occured while checking updates, download the latest version from official website :");
-                            InjectionModel.LOGGER.warn("http://code.google.com/p/jsql-injection/downloads/list");
-                            InjectionModel.LOGGER.error(e, e);
-                        } catch (URISyntaxException e) {
-                            InjectionModel.LOGGER.warn("An error occured while checking updates, download the latest version from official website :");
-                            InjectionModel.LOGGER.warn("http://code.google.com/p/jsql-injection/downloads/list");
-                            InjectionModel.LOGGER.error(e, e);
-                        }
-
-                    }
-                }, "Menubar - Check update").start();
-            }
-        });
+        itemUpdate.addActionListener(new ActionCheckUpdate());
         menuHelp.add(itemUpdate);
         menuHelp.add(new JSeparator());
         menuHelp.add(itemHelp);

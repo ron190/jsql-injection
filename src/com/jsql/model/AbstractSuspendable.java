@@ -1,5 +1,7 @@
 package com.jsql.model;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.view.GUIMediator;
@@ -29,12 +31,17 @@ public abstract class AbstractSuspendable implements Runnable{
     private String threadResponse = "";
     
     /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(AbstractSuspendable.class);
+
+    /**
      * Thread's states Pause and Stop are processed by this method.
      * - Pause action in infinite loop if invoked while pauseFlag is set to true,<br>
      * - Return stop state.
      * @return Stop state
      */
-    public boolean pauseShouldStopPause() {
+    public boolean stopOrPause() {
         synchronized (this) {
             
             // Make application loop until pauseFlag is set to true
@@ -42,7 +49,7 @@ public abstract class AbstractSuspendable implements Runnable{
                 try {
                     this.wait();
                 } catch (InterruptedException e) {
-                    InjectionModel.LOGGER.error(e, e);
+                    LOGGER.error(e, e);
                 }
             }
             
@@ -80,7 +87,7 @@ public abstract class AbstractSuspendable implements Runnable{
         try {
             t.join();
         } catch (InterruptedException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
         
         if (this.errorResponse != null) {

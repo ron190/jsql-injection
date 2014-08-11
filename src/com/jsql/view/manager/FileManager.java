@@ -30,6 +30,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.InjectionModel;
@@ -43,6 +45,11 @@ import com.jsql.view.scrollpane.JScrollPanePixelBorder;
  */
 @SuppressWarnings("serial")
 public class FileManager extends AbstractListManager {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(FileManager.class);
+
     /**
      * Create the manager panel to read a file.
      */
@@ -60,7 +67,7 @@ public class FileManager extends AbstractListManager {
             }
             reader.close();
         } catch (IOException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         final DnDList listFile = new DnDList(pathList);
@@ -89,7 +96,7 @@ public class FileManager extends AbstractListManager {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (listFile.getSelectedValuesList().isEmpty()) {
-                    InjectionModel.LOGGER.warn("Select at least one file");
+                    LOGGER.warn("Select at least one file");
                     return;
                 }
 
@@ -102,15 +109,15 @@ public class FileManager extends AbstractListManager {
                                 GUIMediator.left().shellManager.clearSelection();
                                 GUIMediator.left().sqlShellManager.clearSelection();
                                 loader.setVisible(true);
-                                GUIMediator.model().rao.getFile(listFile.getSelectedValuesList());
+                                InjectionModel.RAO.getFile(listFile.getSelectedValuesList());
                             } catch (PreparationException e) {
-                                InjectionModel.LOGGER.warn("Problem reading file");
+                                LOGGER.warn("Problem reading file");
                             } catch (StoppableException e) {
-                                InjectionModel.LOGGER.warn("Problem reading file");
+                                LOGGER.warn("Problem reading file");
                             }
 
                         } else {
-                            GUIMediator.model().rao.endFileSearch = true;
+                            InjectionModel.RAO.endFileSearch = true;
                             run.setEnabled(false);
                         }
                     }

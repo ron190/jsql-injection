@@ -26,7 +26,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreePath;
 
-import com.jsql.model.InjectionModel;
+import org.apache.log4j.Logger;
+
 import com.jsql.view.GUIMediator;
 
 /**
@@ -44,6 +45,11 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
      * Returned by getCellEditorValue().
      */
     private AbstractNodeModel nodeData;
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(NodeEditor.class);
 
     /**
      * Build editor, add tree and mouse listener.
@@ -69,7 +75,7 @@ public class NodeEditor extends AbstractCellEditor implements TreeCellEditor, Tr
                 ((JCheckBox) componentRenderer).addActionListener(new ActionCheckUncheck(this.nodeData, currentNode));
             }
         } catch (Exception e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         return componentRenderer;

@@ -22,7 +22,8 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 
-import com.jsql.model.InjectionModel;
+import org.apache.log4j.Logger;
+
 import com.jsql.view.popupmenu.JPopupTextMenu;
 
 /**
@@ -31,6 +32,11 @@ import com.jsql.view.popupmenu.JPopupTextMenu;
  */
 @SuppressWarnings("serial")
 public class JPopupTextComponent<T extends JTextComponent> extends JPopupComponent<T> implements DecoratorJComponent<T> {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(JPopupTextComponent.class);
+
     /**
      * Save the component to decorate, add the Undo/Redo.
      * @param proxy Swing component to decorate
@@ -61,7 +67,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
                             undo.undo();
                         }
                     } catch (CannotUndoException e) {
-                        InjectionModel.LOGGER.error(e, e);
+                        LOGGER.error(e, e);
                     }
                 }
            }
@@ -79,7 +85,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
                             undo.redo();
                         }
                     } catch (CannotRedoException e) {
-                        InjectionModel.LOGGER.error(e, e);
+                        LOGGER.error(e, e);
                     }
                 }
             }

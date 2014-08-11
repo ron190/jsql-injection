@@ -16,6 +16,9 @@ import com.jsql.view.GUITools;
  * Mouse adapter for radio link effect (hover and click).
  */
 public class RadioMouseAdapter extends MouseAdapter {
+    /**
+     * Font to display on mouse exit: underline or bold. 
+     */
     private Font original;
 
     @Override

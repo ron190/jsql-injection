@@ -43,6 +43,8 @@ import javax.swing.KeyStroke;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
@@ -58,12 +60,17 @@ public class AboutDialog extends JDialog {
     /**
      * Button receiving focus.
      */
-    public JButton close = null;
+    private JButton close = null;
     
     /**
      * Dialog scroller.
      */
     private JScrollPanePixelBorder scrollPane;
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(AboutDialog.class);
 
     /**
      * Create a dialog for general information on project jsql.
@@ -104,9 +111,9 @@ public class AboutDialog extends JDialog {
                 try {
                     Desktop.getDesktop().browse(new URI("http://code.google.com/p/jsql-injection/"));
                 } catch (IOException e) {
-                    InjectionModel.LOGGER.error(e, e);
+                    LOGGER.error(e, e);
                 } catch (URISyntaxException e) {
-                    InjectionModel.LOGGER.error(e, e);
+                    LOGGER.error(e, e);
                 }
             }
         });
@@ -135,7 +142,7 @@ public class AboutDialog extends JDialog {
 
             text[0].setText(result.replace("%JSQLVERSION%", InjectionModel.JSQLVERSION));
         } catch (IOException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         text[0].setComponentPopupMenu(new JPopupTextMenu(text[0]));
@@ -166,9 +173,9 @@ public class AboutDialog extends JDialog {
                     try {
                         Desktop.getDesktop().browse(hle.getURL().toURI());
                     } catch (IOException e) {
-                        InjectionModel.LOGGER.warn(e.getMessage());
+                        LOGGER.warn(e.getMessage());
                     } catch (URISyntaxException e) {
-                        InjectionModel.LOGGER.error(e, e);
+                        LOGGER.error(e, e);
                     }
                 }
             }
@@ -189,5 +196,9 @@ public class AboutDialog extends JDialog {
         this.setLocationRelativeTo(GUIMediator.gui());
         this.close.requestFocusInWindow();
         this.getRootPane().setDefaultButton(this.close);
+    }
+
+    public void requestButtonFocus() {
+        this.close.requestFocusInWindow();
     }
 }

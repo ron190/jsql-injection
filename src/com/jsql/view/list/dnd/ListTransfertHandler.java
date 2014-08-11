@@ -25,7 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
 
-import com.jsql.model.InjectionModel;
+import org.apache.log4j.Logger;
 
 /**
  * Handler for processing cut/copy/paste/drag/drop action on a JList items.
@@ -37,6 +37,11 @@ public class ListTransfertHandler extends TransferHandler {
      */
     private List<ListItem> dragPaths = null;
     
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ListTransfertHandler.class);
+
     @Override
     public int getSourceActions(JComponent c) {
         return TransferHandler.COPY_OR_MOVE;
@@ -113,9 +118,9 @@ public class ListTransfertHandler extends TransferHandler {
                             }
                         }
                     } catch (UnsupportedFlavorException e) {
-                        InjectionModel.LOGGER.error(e, e);
+                        LOGGER.error(e, e);
                     } catch (IOException e) {
-                        InjectionModel.LOGGER.error(e, e);
+                        LOGGER.error(e, e);
                     }
                 }
 
@@ -134,9 +139,9 @@ public class ListTransfertHandler extends TransferHandler {
                 try {
                     list.dropPasteFile((List<File>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor), childIndex);
                 } catch (UnsupportedFlavorException e) {
-                    InjectionModel.LOGGER.error(e, e);
+                    LOGGER.error(e, e);
                 } catch (IOException e) {
-                    InjectionModel.LOGGER.error(e, e);
+                    LOGGER.error(e, e);
                 }
             }
         //This is a paste
@@ -175,9 +180,9 @@ public class ListTransfertHandler extends TransferHandler {
                                         )
                                 );
                     } catch (UnsupportedFlavorException e) {
-                        InjectionModel.LOGGER.error(e, e);
+                        LOGGER.error(e, e);
                     } catch (IOException e) {
-                        InjectionModel.LOGGER.error(e, e);
+                        LOGGER.error(e, e);
                     }
                 } else if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                     try {
@@ -189,9 +194,9 @@ public class ListTransfertHandler extends TransferHandler {
 
                         list.dropPasteFile((List<File>) transferableFromClipboard.getTransferData(DataFlavor.javaFileListFlavor), y);
                     } catch (UnsupportedFlavorException e) {
-                        InjectionModel.LOGGER.error(e, e);
+                        LOGGER.error(e, e);
                     } catch (IOException e) {
-                        InjectionModel.LOGGER.error(e, e);
+                        LOGGER.error(e, e);
                     }
                 }
             }

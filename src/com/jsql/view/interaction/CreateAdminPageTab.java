@@ -29,10 +29,10 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultEditorKit;
 
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import com.jsql.model.InjectionModel;
 import com.jsql.view.GUIMediator;
 import com.jsql.view.GUITools;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
@@ -46,6 +46,11 @@ public class CreateAdminPageTab implements IInteractionCommand {
      * Url for the administration webpage.
      */
     private final String url;
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(CreateAdminPageTab.class);
 
     /**
      * @param interactionParams Url of the webpage
@@ -71,7 +76,7 @@ public class CreateAdminPageTab implements IInteractionCommand {
                     //              .addEnforcedAttribute("input", "disabled", "disabled")
                     );
         } catch (IOException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         final JTextPane browser = new JTextPane();

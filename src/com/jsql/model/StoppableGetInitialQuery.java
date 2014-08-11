@@ -7,6 +7,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.view.GUIMediator;
@@ -16,6 +18,11 @@ import com.jsql.view.GUIMediator;
  * Parallelizes the search, provides the stop capability
  */
 public class StoppableGetInitialQuery extends AbstractSuspendable {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(StoppableGetInitialQuery.class);
+
     @Override
     public String action(Object... args) throws PreparationException, StoppableException {
         // Parallelize the search
@@ -39,16 +46,16 @@ public class StoppableGetInitialQuery extends AbstractSuspendable {
             // Starting up with 10 requests, loop until 100
             while (!requestFound && total < 99) {
                 // Breaks the loop if the user needs
-                if (this.pauseShouldStopPause()) {
+                if (this.stopOrPause()) {
                     throw new StoppableException();
                 }
 
                 SourceCodeCallable currentCallable = taskCompletionService.take().get();
 
                 // Found a correct mark 1337[index]7331 in the source
-                if (Pattern.compile(".*1337\\d+7331.*", Pattern.DOTALL).matcher(currentCallable.content).matches()) {
-                    GUIMediator.model().firstSuccessPageSource = currentCallable.content;
-                    initialQuery = currentCallable.url.replaceAll("0%2b1", "1");
+                if (Pattern.compile(".*1337\\d+7331.*", Pattern.DOTALL).matcher(currentCallable.getContent()).matches()) {
+                    GUIMediator.model().firstSuccessPageSource = currentCallable.getContent();
+                    initialQuery = currentCallable.getUrl().replaceAll("0%2b1", "1");
                     requestFound = true;
                     // Else add a new index
                 } else {
@@ -61,9 +68,9 @@ public class StoppableGetInitialQuery extends AbstractSuspendable {
             taskExecutor.shutdown();
             taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         } catch (ExecutionException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         if (requestFound) {

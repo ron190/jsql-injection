@@ -197,11 +197,6 @@ public class StatusbarPanel extends JPanel {
         this.labelBlind.setIcon(GUITools.SQUARE_GREY);
         this.labelTimeBased.setIcon(GUITools.SQUARE_GREY);
         
-//        this.labelNormal.removeFont();
-//        this.labelErrorBased.removeFont();
-//        this.labelBlind.removeFont();
-//        this.labelTimeBased.removeFont();
-        
         this.labelNormal.setFont(GUITools.MYFONT);
         this.labelErrorBased.setFont(GUITools.MYFONT);
         this.labelBlind.setFont(GUITools.MYFONT);

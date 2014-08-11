@@ -1,8 +1,9 @@
 package com.jsql.model.pattern.strategy;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.exception.StoppableException;
 import com.jsql.model.AbstractSuspendable;
-import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.Request;
 import com.jsql.view.GUIMediator;
 
@@ -10,9 +11,14 @@ import com.jsql.view.GUIMediator;
  * Injection strategy using error attack.
  */
 public class ErrorbasedStrategy extends AbstractInjectionStrategy {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ErrorbasedStrategy.class);
+
     @Override
     public void checkApplicability() {
-        InjectionModel.LOGGER.info("Error based test...");
+        LOGGER.info("Error based test...");
         
         String performanceSourcePage = GUIMediator.model().inject(
             GUIMediator.model().insertionCharacter + "+and(" +
@@ -97,7 +103,7 @@ public class ErrorbasedStrategy extends AbstractInjectionStrategy {
 
     @Override
     public void applyStrategy() {
-        InjectionModel.LOGGER.info("Using error based injection...");
+        LOGGER.info("Using error based injection...");
         GUIMediator.model().applyStrategy(this);
         
         Request request = new Request();

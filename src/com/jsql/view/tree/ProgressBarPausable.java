@@ -17,7 +17,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JProgressBar;
 
-import com.jsql.model.InjectionModel;
+import org.apache.log4j.Logger;
+
 import com.jsql.view.GUITools;
 
 /**
@@ -29,6 +30,11 @@ public class ProgressBarPausable extends JProgressBar {
      * True if icon should be displayed, false otherwise.
      */
     private boolean showIcon = false;
+
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ProgressBarPausable.class);
 
     /**
      * Create progress bar with a Pause icon over it.
@@ -46,7 +52,7 @@ public class ProgressBarPausable extends JProgressBar {
                 BufferedImage im2 = ImageIO.read(NodePanel.class.getResource(GUITools.PATH_PAUSE));
                 g.drawImage(im2, (this.getWidth() - im2.getWidth()) / 2, (this.getHeight() - im2.getHeight()) / 2, null);
             } catch (IOException e) {
-                InjectionModel.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             }
         }
     }

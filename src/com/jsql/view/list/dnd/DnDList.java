@@ -39,7 +39,7 @@ import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
 
-import com.jsql.model.InjectionModel;
+import org.apache.log4j.Logger;
 
 /**
  * A list supporting drag and drop.
@@ -56,6 +56,11 @@ public class DnDList extends JList<ListItem> {
      */
     public List<String> defaultList;
     
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(DnDList.class);
+
     /**
      * Compatibility method for java 6.
      */
@@ -205,7 +210,7 @@ public class DnDList extends JList<ListItem> {
                 File fileToImport = it.next();
 
                 if (Files.probeContentType(fileToImport.toPath()) == null
-                        || !Files.probeContentType(fileToImport.toPath()).equals("text/plain")) {
+                        || !"text/plain".equals(Files.probeContentType(fileToImport.toPath()))) {
                     JOptionPane.showMessageDialog(this.getTopLevelAncestor(),
                             "Unsupported file format.\nPlease import only text/plain files.",
                             "Import Error",
@@ -215,7 +220,7 @@ public class DnDList extends JList<ListItem> {
                 }
             }
         } catch (IOException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
 
         String[] options = {"Replace", "Add", "Cancel"};
@@ -247,14 +252,14 @@ public class DnDList extends JList<ListItem> {
                 fileReader = new BufferedReader(new FileReader(iterator.next()));
                 String line;
                 while ((line = fileReader.readLine()) != null) {
-                    if (!line.equals("")) {
+                    if (!"".equals(line)) {
                         listModel.add(endPosition++, new ListItem(line.replace("\\", "/")));
                     }
                 }
             } catch (FileNotFoundException e) {
-                InjectionModel.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             } catch (IOException e) {
-                InjectionModel.LOGGER.error(e, e);
+                LOGGER.error(e, e);
             }
         }
         

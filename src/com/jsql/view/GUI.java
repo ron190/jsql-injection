@@ -29,6 +29,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.model.bean.Request;
@@ -55,20 +57,12 @@ public class GUI extends JFrame implements Observer {
      * Main center panel, composed by left and right tabs.
      * @return Center panel
      */
-    private LeftRightBottomPanel outputPanel;
+    public LeftRightBottomPanel outputPanel;
 
     /**
      * List of terminal by unique identifier.
      */
     private Map<UUID, AbstractTerminal> consoles = new HashMap<UUID, AbstractTerminal>();
-
-    /**
-     * Get list of terminal by unique identifier.
-     * @return Map of key/value UUID => Terminal
-     */
-    public final Map<UUID, AbstractTerminal> getConsoles() {
-        return consoles;
-    }
 
     /**
      *  Map a database element with the corresponding tree node.<br>
@@ -79,13 +73,9 @@ public class GUI extends JFrame implements Observer {
                 = new HashMap<AbstractElementDatabase, DefaultMutableTreeNode>();
     
     /**
-     *  Get the database tree model.
-     *  @return Tree model
+     * Log4j logger sent to view.
      */
-    public final Map<AbstractElementDatabase, DefaultMutableTreeNode>
-                    getTreeNodeModels() {
-        return treeNodeModels;
-    }
+    private static final Logger LOGGER = Logger.getLogger(GUI.class);
 
     /**
      * Build the GUI: add app icon, tree icons, the 3 main panels.
@@ -118,16 +108,16 @@ public class GUI extends JFrame implements Observer {
 
         // Main panel for tree ans tables in the middle
         JPanel mainPanel = new JPanel(new GridLayout(1, 0));
-        outputPanel = new LeftRightBottomPanel();
-        mainPanel.add(outputPanel);
+        this.outputPanel = new LeftRightBottomPanel();
+        mainPanel.add(this.outputPanel);
         this.add(mainPanel);
 
         GUIMediator.gui().addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-                prefs.putInt(LeftRightBottomPanel.VERTICALSPLITTER_PREFNAME, outputPanel.leftRight.getDividerLocation());
-                prefs.putInt(LeftRightBottomPanel.HORIZONTALSPLITTER_PREFNAME, outputPanel.getHeight() - outputPanel.getDividerLocation());
+                prefs.putInt(LeftRightBottomPanel.VERTICALSPLITTER_PREFNAME, GUI.this.outputPanel.leftRight.getDividerLocation());
+                prefs.putInt(LeftRightBottomPanel.HORIZONTALSPLITTER_PREFNAME, GUI.this.outputPanel.getHeight() - GUI.this.outputPanel.getDividerLocation());
                 
                 prefs.putBoolean(GUITools.BINARY_VISIBLE, false);
                 prefs.putBoolean(GUITools.CHUNK_VISIBLE, false);
@@ -135,13 +125,13 @@ public class GUI extends JFrame implements Observer {
                 prefs.putBoolean(GUITools.JAVA_VISIBLE, false);
                 
                 for (int i = 0; i < GUIMediator.bottom().getTabCount(); i++) {
-                    if (GUIMediator.bottom().getTitleAt(i).equals("Binary")) {
+                    if ("Binary".equals(GUIMediator.bottom().getTitleAt(i))) {
                         prefs.putBoolean(GUITools.BINARY_VISIBLE, true);
-                    } else if (GUIMediator.bottom().getTitleAt(i).equals("Chunk")) {
+                    } else if ("Chunk".equals(GUIMediator.bottom().getTitleAt(i))) {
                         prefs.putBoolean(GUITools.CHUNK_VISIBLE, true);
-                    } else if (GUIMediator.bottom().getTitleAt(i).equals("Network")) {
+                    } else if ("Network".equals(GUIMediator.bottom().getTitleAt(i))) {
                         prefs.putBoolean(GUITools.NETWORK_VISIBLE, true);
-                    } else if (GUIMediator.bottom().getTitleAt(i).equals("Java")) {
+                    } else if ("Java".equals(GUIMediator.bottom().getTitleAt(i))) {
                         prefs.putBoolean(GUITools.JAVA_VISIBLE, true);
                     }
                 }
@@ -157,7 +147,6 @@ public class GUI extends JFrame implements Observer {
 
         // Size of window
         this.setSize(1024, 768);
-//        GUIMediator.top().submitAddressBar.requestFocusInWindow();
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -187,19 +176,19 @@ public class GUI extends JFrame implements Observer {
             IInteractionCommand o2 = (IInteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
             o2.execute();
         } catch (ClassNotFoundException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         } catch (InstantiationException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         } catch (IllegalAccessException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         } catch (NoSuchMethodException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         } catch (SecurityException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         } catch (IllegalArgumentException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         } catch (InvocationTargetException e) {
-            InjectionModel.LOGGER.error(e, e);
+            LOGGER.error(e, e);
         }
     }
 
@@ -249,5 +238,22 @@ public class GUI extends JFrame implements Observer {
         GUIMediator.left().fileManager.changePrivilegeIcon(GUITools.SQUARE_GREY);
         GUIMediator.left().shellManager.changePrivilegeIcon(GUITools.SQUARE_GREY);
         GUIMediator.left().sqlShellManager.changePrivilegeIcon(GUITools.SQUARE_GREY);
+    }
+
+    /**
+     * Get list of terminal by unique identifier.
+     * @return Map of key/value UUID => Terminal
+     */
+    public final Map<UUID, AbstractTerminal> getConsoles() {
+        return consoles;
+    }
+    
+    /**
+     *  Get the database tree model.
+     *  @return Tree model
+     */
+    public final Map<AbstractElementDatabase, DefaultMutableTreeNode>
+                    getTreeNodeModels() {
+        return treeNodeModels;
     }
 }
