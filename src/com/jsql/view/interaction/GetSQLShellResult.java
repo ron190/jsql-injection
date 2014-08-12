@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 import com.jsql.view.terminal.AbstractTerminal;
 
 /**
@@ -48,7 +48,7 @@ public class GetSQLShellResult implements IInteractionCommand {
 
     @Override
     public void execute() {
-        AbstractTerminal terminal = GUIMediator.gui().getConsoles().get(this.terminalID);
+        AbstractTerminal terminal = MediatorGUI.gui().getConsoles().get(this.terminalID);
         
         if (this.result.indexOf("<SQLr>") > -1) {
             List<List<String>> listRows = new ArrayList<List<String>>();

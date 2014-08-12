@@ -19,7 +19,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import com.jsql.model.bean.HTTPHeader;
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * Append a text to the tab Header.
@@ -47,13 +47,13 @@ public class MessageHeader implements IInteractionCommand {
 
     @Override
     public void execute() {
-        GUIMediator.bottomPanel().listHTTPHeader.add(new HTTPHeader(url, cookie, post, header, response));
-        DefaultTableModel model = (DefaultTableModel) ((JTable) ((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().getView()).getModel();
+        MediatorGUI.bottomPanel().listHTTPHeader.add(new HTTPHeader(url, cookie, post, header, response));
+        DefaultTableModel model = (DefaultTableModel) ((JTable) ((JScrollPane) MediatorGUI.bottomPanel().network.getLeftComponent()).getViewport().getView()).getModel();
         model.addRow(new Object[]{response.get("Method"), url, response.get("Content-Length"), response.get("Content-Type")});
         
-        Rectangle rect = ((JTable) ((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().getView()).getCellRect(((JTable) ((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().getView()).getRowCount() - 1, 0 /* col */, true);
-        Point pt = ((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().getViewPosition();
+        Rectangle rect = ((JTable) ((JScrollPane) MediatorGUI.bottomPanel().network.getLeftComponent()).getViewport().getView()).getCellRect(((JTable) ((JScrollPane) MediatorGUI.bottomPanel().network.getLeftComponent()).getViewport().getView()).getRowCount() - 1, 0 /* col */, true);
+        Point pt = ((JScrollPane) MediatorGUI.bottomPanel().network.getLeftComponent()).getViewport().getViewPosition();
         rect.translate(-pt.x, -pt.y);
-        ((JScrollPane) GUIMediator.bottomPanel().network.getLeftComponent()).getViewport().scrollRectToVisible(rect);
+        ((JScrollPane) MediatorGUI.bottomPanel().network.getLeftComponent()).getViewport().scrollRectToVisible(rect);
     }
 }

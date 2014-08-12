@@ -16,7 +16,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import com.jsql.view.GUITools;
+import com.jsql.view.ToolsGUI;
 
 /**
  * A button displayed in address.
@@ -105,7 +105,7 @@ public class ButtonAddressBar extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(false);
-        this.setIcon(GUITools.LOADER_GIF);
+        this.setIcon(ToolsGUI.LOADER_GIF);
         this.setEnabled(false);
     }
 }

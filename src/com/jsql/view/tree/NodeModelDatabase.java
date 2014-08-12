@@ -17,7 +17,7 @@ import javax.swing.SwingWorker;
 import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.Database;
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * Database model displaying the database icon on the label.
@@ -48,7 +48,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
 
                 @Override
                 protected Object doInBackground() throws Exception {
-                    GUIMediator.model().DAO.listTables(selectedDatabase);
+                    MediatorGUI.model().DAO.listTables(selectedDatabase);
                     return null;
                 }
                 

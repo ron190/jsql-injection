@@ -24,8 +24,8 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.Table;
-import com.jsql.view.GUIMediator;
-import com.jsql.view.GUITools;
+import com.jsql.view.MediatorGUI;
+import com.jsql.view.ToolsGUI;
 
 /**
  * Table model displaying the table icon on the label.
@@ -44,18 +44,18 @@ public class NodeModelTable extends AbstractNodeModel {
         if (leaf) {
             return new ImageIcon(getClass().getResource("/com/jsql/view/images/tableGo.png"));
         } else {
-            return GUITools.TABLE_ICON;
+            return ToolsGUI.TABLE_ICON;
         }
     }
 
     @Override
-    protected void displayProgress(NodePanel panel, DefaultMutableTreeNode currentNode) {
+    protected void displayProgress(PanelNode panel, DefaultMutableTreeNode currentNode) {
         if ("information_schema".equals(this.getParent().toString())) {
             panel.showLoader();
 
-            if (GUIMediator.model().suspendables.get(this.dataObject).isPaused()) {
-                ImageIcon animatedGIFPaused = new IconOverlap(GUITools.PATH_PROGRESSBAR, GUITools.PATH_PAUSE);
-                animatedGIFPaused.setImageObserver(new AnimatedObserver(GUIMediator.databaseTree(), currentNode));
+            if (MediatorGUI.model().suspendables.get(this.dataObject).isPaused()) {
+                ImageIcon animatedGIFPaused = new ImageOverlap(ToolsGUI.PATH_PROGRESSBAR, ToolsGUI.PATH_PAUSE);
+                animatedGIFPaused.setImageObserver(new ImageObserverAnimated(MediatorGUI.databaseTree(), currentNode));
                 panel.setLoaderIcon(animatedGIFPaused);
             }
         } else {
@@ -71,7 +71,7 @@ public class NodeModelTable extends AbstractNodeModel {
 
                 @Override
                 protected Object doInBackground() throws Exception {
-                    GUIMediator.model().DAO.listColumns(selectedTable);
+                    MediatorGUI.model().DAO.listColumns(selectedTable);
                     return null;
                 }
                 
@@ -85,8 +85,8 @@ public class NodeModelTable extends AbstractNodeModel {
         JMenuItem mnCheckAll = new JMenuItem("Check All", 'C');
         JMenuItem mnUncheckAll = new JMenuItem("Uncheck All", 'U');
 
-        mnCheckAll.setIcon(GUITools.EMPTY);
-        mnUncheckAll.setIcon(GUITools.EMPTY);
+        mnCheckAll.setIcon(ToolsGUI.EMPTY);
+        mnUncheckAll.setIcon(ToolsGUI.EMPTY);
 
         if (!this.hasBeenSearched) {
             mnCheckAll.setEnabled(false);
@@ -109,7 +109,7 @@ public class NodeModelTable extends AbstractNodeModel {
                 final DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
                 final AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
                 
-                DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
+                DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGUI.databaseTree().getModel();
 
                 int tableChildCount = treeModel.getChildCount(currentTableNode);
                 for (int i = 0; i < tableChildCount; i++) {
@@ -140,8 +140,8 @@ public class NodeModelTable extends AbstractNodeModel {
         mnCheckAll.addActionListener(new CheckAll());
         mnUncheckAll.addActionListener(new UncheckAll());
 
-        mnCheckAll.setIcon(GUITools.EMPTY);
-        mnUncheckAll.setIcon(GUITools.EMPTY);
+        mnCheckAll.setIcon(ToolsGUI.EMPTY);
+        mnUncheckAll.setIcon(ToolsGUI.EMPTY);
 
         tablePopupMenu.add(mnCheckAll);
         tablePopupMenu.add(mnUncheckAll);

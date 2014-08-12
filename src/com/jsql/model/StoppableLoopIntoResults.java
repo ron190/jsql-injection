@@ -6,8 +6,8 @@ import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.model.bean.Request;
-import com.jsql.model.pattern.strategy.AbstractInjectionStrategy;
-import com.jsql.view.GUIMediator;
+import com.jsql.model.pattern.strategy.AbstractStrategyInjection;
+import com.jsql.view.MediatorGUI;
 
 /**
  * Get all data from a SQL request (remember that data will often been cut, we need to reach ALL the data)
@@ -26,12 +26,12 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
         boolean useLimit = (Boolean) args[2];
         int numberToFind = (Integer) args[3];
         AbstractElementDatabase searchName = (AbstractElementDatabase) args[4];
-        GUIMediator.model().suspendables.remove(searchName);
-        GUIMediator.model().suspendables.put(searchName, this);
+        MediatorGUI.model().suspendables.remove(searchName);
+        MediatorGUI.model().suspendables.put(searchName, this);
 
         String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", "");
 
-        AbstractInjectionStrategy istrategy = GUIMediator.model().getInjectionStrategy();
+        AbstractStrategyInjection istrategy = MediatorGUI.model().getInjectionStrategy();
         /*
          * As we know the expected number of rows (numberToFind), then it stops injection if all rows are found,
          * keep track of rows we have reached (limitSQLResult) and use these to skip entire rows,
@@ -68,7 +68,7 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
                         Request request = new Request();
                         request.setMessage("UpdateProgress");
                         request.setParameters(searchName, numberToFind);
-                        GUIMediator.model().interact(request);
+                        MediatorGUI.model().interact(request);
                     }
                     break;
                 }
@@ -84,14 +84,14 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
                 Request request = new Request();
                 request.setMessage("MessageChunk");
                 request.setParameters(regexSearch.group(1) + " ");
-                GUIMediator.model().interact(request);
+                MediatorGUI.model().interact(request);
             } catch (IllegalStateException e) {
                 // if it's not the root (empty tree)
                 if (searchName != null) {
                     Request request = new Request();
                     request.setMessage("EndProgress");
                     request.setParameters(searchName);
-                    GUIMediator.model().interact(request);
+                    MediatorGUI.model().interact(request);
                 }
                 throw new PreparationException("Fetching fails: no data to parse for " + searchName);
             }
@@ -113,7 +113,7 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
                     Request request = new Request();
                     request.setMessage("UpdateProgress");
                     request.setParameters(searchName, limitSQLResult + nbResult);
-                    GUIMediator.model().interact(request);
+                    MediatorGUI.model().interact(request);
                 }
                 //                    System.out.println("Request " + i + ", data collected "+(limitSQLResult + nbResult) + (numberToFind>0?"/"+numberToFind:"") + " << " + currentResultSource.length() + " bytes" );
             }
@@ -178,7 +178,7 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
                         Request request = new Request();
                         request.setMessage("UpdateProgress");
                         request.setParameters(searchName, limitSQLResult);
-                        GUIMediator.model().interact(request);
+                        MediatorGUI.model().interact(request);
                     }
 
                     /*
@@ -191,7 +191,7 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
                             Request request = new Request();
                             request.setMessage("UpdateProgress");
                             request.setParameters(searchName, numberToFind);
-                            GUIMediator.model().interact(request);
+                            MediatorGUI.model().interact(request);
                         }
                         break;
                     }
@@ -213,7 +213,7 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
                         Request request = new Request();
                         request.setMessage("UpdateProgress");
                         request.setParameters(searchName, numberToFind);
-                        GUIMediator.model().interact(request);
+                        MediatorGUI.model().interact(request);
                     }
                     break;
                 }

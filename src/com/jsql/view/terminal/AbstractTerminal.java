@@ -76,7 +76,7 @@ public abstract class AbstractTerminal extends JTextPane {
         try {
             u = new URL(shellURL);
         } catch (MalformedURLException e) {
-            LOGGER.warn("URL is malformed: no protocol");
+            LOGGER.warn("URL is malformed: no protocol", e);
         }
         host = u.getHost();
 
@@ -95,7 +95,7 @@ public abstract class AbstractTerminal extends JTextPane {
         this.setHighlighter(null);
 
         this.addMouseListener(new EmptyFocus());
-        this.addKeyListener(new TerminalKeyAdapter(this));
+        this.addKeyListener(new KeyAdapterTerminal(this));
     }
 
     /**

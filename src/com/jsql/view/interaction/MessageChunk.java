@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * Append text to the tab Chunk.
@@ -30,7 +30,7 @@ public class MessageChunk implements IInteractionCommand {
 
     @Override
     public void execute() {
-        GUIMediator.bottomPanel().chunks.append(text);
-        GUIMediator.bottomPanel().chunks.setCaretPosition(GUIMediator.bottomPanel().chunks.getDocument().getLength());
+        MediatorGUI.bottomPanel().chunks.append(text);
+        MediatorGUI.bottomPanel().chunks.setCaretPosition(MediatorGUI.bottomPanel().chunks.getDocument().getLength());
     }
 }

@@ -15,7 +15,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * Action to pause and unpause injection process.
@@ -31,20 +31,20 @@ public class ActionPauseUnpause implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (GUIMediator.model().suspendables.get(this.nodeData.dataObject).isPaused()) {
-            GUIMediator.model().suspendables.get(this.nodeData.dataObject).unPause();
+        if (MediatorGUI.model().suspendables.get(this.nodeData.dataObject).isPaused()) {
+            MediatorGUI.model().suspendables.get(this.nodeData.dataObject).unPause();
         } else {
-            GUIMediator.model().suspendables.get(this.nodeData.dataObject).pause();
+            MediatorGUI.model().suspendables.get(this.nodeData.dataObject).pause();
         }
 
         // Restart the action after an unpause
-        if (!GUIMediator.model().suspendables.get(this.nodeData.dataObject).isPaused()) {
-            GUIMediator.model().suspendables.get(this.nodeData.dataObject).resume();
+        if (!MediatorGUI.model().suspendables.get(this.nodeData.dataObject).isPaused()) {
+            MediatorGUI.model().suspendables.get(this.nodeData.dataObject).resume();
         }
 
         // !!important!!
-        GUIMediator.databaseTree().getCellEditor().stopCellEditing();
+        MediatorGUI.databaseTree().getCellEditor().stopCellEditing();
         // reload stucked GIF loader
-        GUIMediator.databaseTree().repaint();
+        MediatorGUI.databaseTree().repaint();
     }
 }

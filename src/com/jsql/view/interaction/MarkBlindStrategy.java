@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * Mark the injection as invulnerable to a blind injection.
@@ -25,6 +25,6 @@ public class MarkBlindStrategy implements IInteractionCommand {
 
     @Override
     public void execute() {
-        GUIMediator.status().labelBlind.setUnderlined();
+        MediatorGUI.status().labelBlind.setUnderlined();
     }
 }

@@ -10,8 +10,8 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUIMediator;
-import com.jsql.view.GUITools;
+import com.jsql.view.MediatorGUI;
+import com.jsql.view.ToolsGUI;
 
 /**
  * Mark the injection as vulnerable to a error-based injection.
@@ -26,6 +26,6 @@ public class MarkErrorbasedVulnerable implements IInteractionCommand {
 
     @Override
     public void execute() {
-        GUIMediator.status().setErrorBasedIcon(GUITools.TICK);
+        MediatorGUI.status().setErrorBasedIcon(ToolsGUI.TICK);
     }
 }

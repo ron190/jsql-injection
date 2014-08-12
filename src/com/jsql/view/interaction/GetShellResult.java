@@ -12,7 +12,7 @@ package com.jsql.view.interaction;
 
 import java.util.UUID;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 import com.jsql.view.terminal.AbstractTerminal;
 
 /**
@@ -46,9 +46,9 @@ public class GetShellResult implements IInteractionCommand {
 
     @Override
     public void execute() {
-        AbstractTerminal terminal = GUIMediator.gui().getConsoles().get(terminalID);
+        AbstractTerminal terminal = MediatorGUI.gui().getConsoles().get(terminalID);
         
-        if (!result.equals("")) {
+        if (!"".equals(result)) {
             terminal.append(result);
         } else {
             terminal.append("No result.\nTry " + cmd.trim() + " 2>&1 to get error messages.\n");

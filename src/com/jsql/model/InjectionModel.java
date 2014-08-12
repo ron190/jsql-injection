@@ -39,14 +39,14 @@ import com.jsql.model.ao.DataAccessObject;
 import com.jsql.model.ao.RessourceAccessObject;
 import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.model.bean.Request;
-import com.jsql.model.pattern.strategy.AbstractInjectionStrategy;
-import com.jsql.model.pattern.strategy.BlindStrategy;
-import com.jsql.model.pattern.strategy.ErrorbasedStrategy;
-import com.jsql.model.pattern.strategy.NormalStrategy;
-import com.jsql.model.pattern.strategy.TimeStrategy;
-import com.jsql.tool.StringTool;
+import com.jsql.model.pattern.strategy.AbstractStrategyInjection;
+import com.jsql.model.pattern.strategy.StrategyBlind;
+import com.jsql.model.pattern.strategy.StrategyErrorbased;
+import com.jsql.model.pattern.strategy.StrategyNormal;
+import com.jsql.model.pattern.strategy.StrategyTime;
+import com.jsql.tool.ToolsString;
 import com.jsql.view.GUI;
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * Model in charge of injection.<br>
@@ -156,27 +156,27 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Current injection strategy.
      */
-    private AbstractInjectionStrategy injectionStrategy;
+    private AbstractStrategyInjection injectionStrategy;
     
     /**
      * Strategy for blind attack injection.
      */
-    private BlindStrategy blindStrategy = new BlindStrategy();
+    private StrategyBlind blindStrategy = new StrategyBlind();
     
     /**
      * Strategy for error attack injection.
      */
-    private ErrorbasedStrategy errorbasedStrategy = new ErrorbasedStrategy();
+    private StrategyErrorbased errorbasedStrategy = new StrategyErrorbased();
     
     /**
      * Strategy for time attack injection.
      */
-    private NormalStrategy normalStrategy = new NormalStrategy();
+    private StrategyNormal normalStrategy = new StrategyNormal();
     
     /**
      * Strategy for time attack injection.
      */
-    private TimeStrategy timeStrategy = new TimeStrategy();
+    private StrategyTime timeStrategy = new StrategyTime();
 
     /**
      * Allow to directly start an injection after a failed one
@@ -352,9 +352,9 @@ public class InjectionModel extends AbstractModelObservable {
             LOGGER.info("Done.");
             isInjectionBuilt = true;
         } catch (PreparationException e) {
-            LOGGER.warn(e.getMessage());
+            LOGGER.warn(e.getMessage(), e);
         } catch (StoppableException e) {
-            LOGGER.warn(e.getMessage());
+            LOGGER.warn(e.getMessage(), e);
         } finally {
             Request request = new Request();
             request.setMessage("EndPreparation");
@@ -380,7 +380,7 @@ public class InjectionModel extends AbstractModelObservable {
         String[] indexes = foundIndexes.toArray(new String[foundIndexes.size()]);
 
         // Make url shorter, replace useless indexes from 1337[index]7331 to 1
-        this.initialQuery = this.initialQuery.replaceAll("1337(?!" + StringTool.join(indexes, "|") + "7331)\\d*7331", "1");
+        this.initialQuery = this.initialQuery.replaceAll("1337(?!" + ToolsString.join(indexes, "|") + "7331)\\d*7331", "1");
         if (indexes.length == 1) {
             return indexes[0];
         }
@@ -391,7 +391,7 @@ public class InjectionModel extends AbstractModelObservable {
         // Search for index that displays the most #
         String performanceQuery =
                 this.initialQuery.replaceAll(
-                    "1337(" + StringTool.join(indexes, "|") + ")7331",
+                    "1337(" + ToolsString.join(indexes, "|") + ")7331",
                     "(select+concat(0x53514c69,$1,repeat(0xb8,1024),0x694c5153))"
                 );
 
@@ -465,7 +465,7 @@ public class InjectionModel extends AbstractModelObservable {
         try {
             urlObject = new URL(urlUltimate);
         } catch (MalformedURLException e) {
-            LOGGER.warn("Malformed URL " + e.getMessage());
+            LOGGER.warn("Malformed URL " + e.getMessage(), e);
         }
 
         /**
@@ -511,7 +511,7 @@ public class InjectionModel extends AbstractModelObservable {
                 //                System.out.println(new Date() + " " + urlUltimate);
                 urlObject = new URL(urlUltimate);
             } catch (MalformedURLException e) {
-                LOGGER.warn("Malformed URL " + e.getMessage());
+                LOGGER.warn("Malformed URL " + e.getMessage(), e);
             }
         }
 
@@ -521,7 +521,7 @@ public class InjectionModel extends AbstractModelObservable {
             connection.setReadTimeout(15000);
             connection.setConnectTimeout(15000);
         } catch (IOException e) {
-            LOGGER.warn("Error during connection: " + e.getMessage());
+            LOGGER.warn("Error during connection: " + e.getMessage(), e);
         }
 
         Map<String, Object> msgHeader = new HashMap<String, Object>();
@@ -546,7 +546,7 @@ public class InjectionModel extends AbstractModelObservable {
                 try {
                     connection.addRequestProperty(s.split(":", 2)[0], URLDecoder.decode(s.split(":", 2)[1], "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
-                    LOGGER.warn("Unsupported header encoding " + e.getMessage());
+                    LOGGER.warn("Unsupported header encoding " + e.getMessage(), e);
                 }
             }
             
@@ -571,11 +571,11 @@ public class InjectionModel extends AbstractModelObservable {
                 msgHeader.put("Post", this.buildQuery("POST", postData, useVisibleIndex, dataInjection));
             } catch (IOException e) {
                 LOGGER.warn(
-                        "Error during POST connection " + e.getMessage());
+                        "Error during POST connection " + e.getMessage(), e);
             }
         }
 
-        msgHeader.put("Response", StringTool.getHTTPHeaders(connection));
+        msgHeader.put("Response", ToolsString.getHTTPHeaders(connection));
 
         // Inform the view about the log infos
         Request request = new Request();
@@ -592,10 +592,10 @@ public class InjectionModel extends AbstractModelObservable {
             }
             reader.close();
         } catch (MalformedURLException e) {
-            LOGGER.warn("Malformed URL " + e.getMessage());
+            LOGGER.warn("Malformed URL " + e.getMessage(), e);
         } catch (IOException e) {
             /* lot of timeout in local use */
-            LOGGER.warn("Read error " + e.getMessage());
+            LOGGER.warn("Read error " + e.getMessage(), e);
         }
 
         // return the source code of the page
@@ -640,7 +640,7 @@ public class InjectionModel extends AbstractModelObservable {
      * Set injection strategy.
      * @param injectionStrategy Strategy for injection
      */
-    public void applyStrategy(AbstractInjectionStrategy injectionStrategy) {
+    public void applyStrategy(AbstractStrategyInjection injectionStrategy) {
         this.injectionStrategy = injectionStrategy; 
     }
 
@@ -698,9 +698,9 @@ public class InjectionModel extends AbstractModelObservable {
             }, "InjectionController - controlInput").start();
             
             // Erase everything in the view from a previous injection
-            GUIMediator.gui().resetInterface();
+            MediatorGUI.gui().resetInterface();
         } catch (MalformedURLException e) {
-            LOGGER.warn(e.getMessage());
+            LOGGER.warn(e.getMessage(), e);
         }
     }
     
@@ -711,8 +711,8 @@ public class InjectionModel extends AbstractModelObservable {
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                GUIMediator.register(new InjectionModel());
-                GUIMediator.register(new GUI());
+                MediatorGUI.register(new InjectionModel());
+                MediatorGUI.register(new GUI());
             }
         });
     }
@@ -720,7 +720,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Get current injection strategy.
      */
-    public AbstractInjectionStrategy getInjectionStrategy() {
+    public AbstractStrategyInjection getInjectionStrategy() {
         return injectionStrategy;
     }
 }

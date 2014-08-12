@@ -75,7 +75,7 @@ public class MenuActionNewValue implements ActionListener {
 
             int firstIndex = lastIndex;
             for (String newItem: textarea.getText().split("\\n")) {
-                if (!newItem.equals("")) {
+                if (!"".equals(newItem)) {
                     ((DefaultListModel<ListItem>) myList.getModel()).add(lastIndex++, new ListItem(newItem.replace("\\", "/")));
                 }
             }

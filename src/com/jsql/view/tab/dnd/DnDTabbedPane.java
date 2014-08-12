@@ -22,14 +22,25 @@ import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 import javax.swing.TransferHandler;
 
-import com.jsql.view.GUITools;
+import com.jsql.view.ToolsGUI;
 import com.jsql.view.tab.CustomMetalTabbedPaneUI;
 
 @SuppressWarnings("serial")
 public class DnDTabbedPane extends JTabbedPane {
+    
     private static final int LINEWIDTH = 3;
+    
+    public static final Rectangle RBACKWARD = new Rectangle();
+    
+    public static final Rectangle RFORWARD  = new Rectangle();
+    
     private final Rectangle lineRect = new Rectangle();
+    
     public int dragTabIndex = -1;
+
+    private static final int rwh = 20;
+    
+    private static final int buttonsize = 30; //XXX 30 is magic number of scroll button size
 
     public static final class DropLocation extends TransferHandler.DropLocation {
         private final int index;
@@ -64,23 +75,20 @@ public class DnDTabbedPane extends JTabbedPane {
             }
         }
     }
-    public static Rectangle rBackward = new Rectangle();
-    public static Rectangle rForward  = new Rectangle();
-    private static int rwh = 20;
-    private static int buttonsize = 30; //XXX 30 is magic number of scroll button size
+    
     public void autoScrollTest(Point pt) {
         Rectangle r = getTabAreaBounds();
         int tabPlacement = getTabPlacement();
         if (tabPlacement == TOP || tabPlacement == BOTTOM) {
-            rBackward.setBounds(r.x, r.y, rwh, r.height);
-            rForward.setBounds(r.x + r.width - rwh - buttonsize, r.y, rwh + buttonsize, r.height);
+            RBACKWARD.setBounds(r.x, r.y, rwh, r.height);
+            RFORWARD.setBounds(r.x + r.width - rwh - buttonsize, r.y, rwh + buttonsize, r.height);
         } else if (tabPlacement == LEFT || tabPlacement == RIGHT) {
-            rBackward.setBounds(r.x, r.y, r.width, rwh);
-            rForward.setBounds(r.x, r.y + r.height - rwh - buttonsize, r.width, rwh + buttonsize);
+            RBACKWARD.setBounds(r.x, r.y, r.width, rwh);
+            RFORWARD.setBounds(r.x, r.y + r.height - rwh - buttonsize, r.width, rwh + buttonsize);
         }
-        if (rBackward.contains(pt)) {
+        if (RBACKWARD.contains(pt)) {
             clickArrowButton("scrollTabsBackwardAction");
-        } else if (rForward.contains(pt)) {
+        } else if (RFORWARD.contains(pt)) {
             clickArrowButton("scrollTabsForwardAction");
         }
     }
@@ -107,7 +115,7 @@ public class DnDTabbedPane extends JTabbedPane {
         addPropertyChangeListener(h);
         // UIManager.put() is not sufficient
         setUI(new CustomMetalTabbedPaneUI());
-        setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, GUITools.COMPONENT_BORDER));
+        setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, ToolsGUI.COMPONENT_BORDER));
     }
     private DropMode dropMode = DropMode.INSERT;
     public DropLocation dropLocationForPointLocal(Point p) {

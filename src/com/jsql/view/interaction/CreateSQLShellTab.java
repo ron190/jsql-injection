@@ -18,9 +18,9 @@ import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 
 import com.jsql.model.ao.RessourceAccessObject;
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 import com.jsql.view.tab.TabHeader;
-import com.jsql.view.terminal.SQLTerminal;
+import com.jsql.view.terminal.TerminalSQL;
 
 /**
  * Create a new tab for the terminal.
@@ -49,29 +49,29 @@ public class CreateSQLShellTab implements IInteractionCommand {
     @Override
     public void execute() {
         UUID terminalID = UUID.randomUUID();
-        SQLTerminal terminal = new SQLTerminal(terminalID, url, user, pass);
-        GUIMediator.gui().getConsoles().put(terminalID, terminal);
+        TerminalSQL terminal = new TerminalSQL(terminalID, url, user, pass);
+        MediatorGUI.gui().getConsoles().put(terminalID, terminal);
 
         JScrollPane scroller = new JScrollPane(terminal);
         Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
         scroller.setViewportBorder(border);
         scroller.setBorder(border);
         
-        GUIMediator.right().addTab("SQL shell ", scroller);
+        MediatorGUI.right().addTab("SQL shell ", scroller);
 
         // Focus on the new tab
-        GUIMediator.right().setSelectedComponent(scroller);
+        MediatorGUI.right().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
         TabHeader header = new TabHeader(new ImageIcon(getClass().getResource("/com/jsql/view/images/shell.png")));
 
-        GUIMediator.right().setToolTipTextAt(
-                GUIMediator.right().indexOfComponent(scroller),
+        MediatorGUI.right().setToolTipTextAt(
+                MediatorGUI.right().indexOfComponent(scroller),
                 "<html><b>URL</b><br>" + url + RessourceAccessObject.SQLSHELL_FILENAME
                 + "<br><b>Path</b><br>" + path + RessourceAccessObject.SQLSHELL_FILENAME + "</html>");
 
         // Apply the custom header to the tab
-        GUIMediator.right().setTabComponentAt(GUIMediator.right().indexOfComponent(scroller), header);
+        MediatorGUI.right().setTabComponentAt(MediatorGUI.right().indexOfComponent(scroller), header);
 
         terminal.requestFocusInWindow();
     }

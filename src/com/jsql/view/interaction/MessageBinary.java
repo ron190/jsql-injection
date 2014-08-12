@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * Append text to the tab Binary.
@@ -30,7 +30,7 @@ public class MessageBinary implements IInteractionCommand {
 
     @Override
     public void execute() {
-        GUIMediator.bottomPanel().binaryArea.append(text);
-        GUIMediator.bottomPanel().binaryArea.setCaretPosition(GUIMediator.bottomPanel().binaryArea.getDocument().getLength());
+        MediatorGUI.bottomPanel().binaryArea.append(text);
+        MediatorGUI.bottomPanel().binaryArea.setCaretPosition(MediatorGUI.bottomPanel().binaryArea.getDocument().getLength());
     }
 }

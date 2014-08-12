@@ -12,12 +12,12 @@ import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.model.blind.diff_match_patch.Diff;
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * A blind attack class using thread asynchronisation.
  */
-public class ConcreteBlindInjection extends AbstractBlindInjection<BlindCallable> {
+public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind> {
     /**
      * Source code of the TRUE web page (usually ?id=1).
      */
@@ -59,7 +59,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<BlindCallable
         String[] trueTest = {"true=true", "false=false", "true%21=false", "1=1", "2=2", "1%21=2"};
 
         // Check if the user wants to stop the preparation
-        if (GUIMediator.model().stopFlag) {
+        if (MediatorGUI.model().stopFlag) {
             return;
         }
 
@@ -68,13 +68,13 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<BlindCallable
          *  it will use inject() from the model
          */
         ExecutorService executorFalseMark = Executors.newCachedThreadPool();
-        Collection<BlindCallable> listCallableFalse = new ArrayList<BlindCallable>();
+        Collection<CallableBlind> listCallableFalse = new ArrayList<CallableBlind>();
         for (String urlTest: falseTest) {
-            listCallableFalse.add(new BlindCallable(urlTest));
+            listCallableFalse.add(new CallableBlind(urlTest));
         }
         
         // Begin the url requests
-        List<Future<BlindCallable>> listFalseMark;
+        List<Future<CallableBlind>> listFalseMark;
         try {
             listFalseMark = executorFalseMark.invokeAll(listCallableFalse);
         } catch (InterruptedException e) {
@@ -90,8 +90,8 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<BlindCallable
          */
         try {
             constantFalseMark = listFalseMark.get(0).get().getOpcodes();
-            for (Future<BlindCallable> falseMark: listFalseMark) {
-                if (GUIMediator.model().stopFlag) {
+            for (Future<CallableBlind> falseMark: listFalseMark) {
+                if (MediatorGUI.model().stopFlag) {
                     return;
                 }
                 constantFalseMark.retainAll(falseMark.get().getOpcodes());
@@ -102,7 +102,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<BlindCallable
             LOGGER.error(e, e);
         }
 
-        if (GUIMediator.model().stopFlag) {
+        if (MediatorGUI.model().stopFlag) {
             return;
         }
 
@@ -111,13 +111,13 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<BlindCallable
          *  it will use inject() from the model.
          */
         ExecutorService executorTrueMark = Executors.newCachedThreadPool();
-        Collection<BlindCallable> listCallableTrue = new ArrayList<BlindCallable>();
+        Collection<CallableBlind> listCallableTrue = new ArrayList<CallableBlind>();
         for (String urlTest: trueTest) {
-            listCallableTrue.add(new BlindCallable(urlTest));
+            listCallableTrue.add(new CallableBlind(urlTest));
         }
         
         // Begin the url requests
-        List<Future<BlindCallable>> listTrueMark;
+        List<Future<CallableBlind>> listTrueMark;
         try {
             listTrueMark = executorTrueMark.invokeAll(listCallableTrue);
         } catch (InterruptedException e) {
@@ -132,8 +132,8 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<BlindCallable
          * Allow the user to stop the loop.
          */
         try {
-            for (Future<BlindCallable> trueMark: listTrueMark) {
-                if (GUIMediator.model().stopFlag) {
+            for (Future<CallableBlind> trueMark: listTrueMark) {
+                if (MediatorGUI.model().stopFlag) {
                     return;
                 }
                 ConcreteBlindInjection.constantFalseMark.removeAll(trueMark.get().getOpcodes());
@@ -146,13 +146,13 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<BlindCallable
     }
 
     @Override
-    public BlindCallable getCallable(String string, int indexCharacter, boolean isLengthTest) {
-        return new BlindCallable(string, indexCharacter, isLengthTest);
+    public CallableBlind getCallable(String string, int indexCharacter, boolean isLengthTest) {
+        return new CallableBlind(string, indexCharacter, isLengthTest);
     }
 
     @Override
-    public BlindCallable getCallable(String string, int indexCharacter, int bit) {
-        return new BlindCallable(string, indexCharacter, bit);
+    public CallableBlind getCallable(String string, int indexCharacter, int bit) {
+        return new CallableBlind(string, indexCharacter, bit);
     }
 
     /**
@@ -161,11 +161,11 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<BlindCallable
      * @throws PreparationException
      */
     public boolean isInjectable() throws PreparationException {
-        if (GUIMediator.model().stopFlag) {
+        if (MediatorGUI.model().stopFlag) {
             throw new PreparationException();
         }
 
-        BlindCallable blindTest = new BlindCallable("0%2b1=1");
+        CallableBlind blindTest = new CallableBlind("0%2b1=1");
         try {
             blindTest.call();
         } catch (Exception e) {

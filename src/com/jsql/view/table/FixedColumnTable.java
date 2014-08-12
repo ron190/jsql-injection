@@ -31,8 +31,7 @@ import javax.swing.table.TableColumnModel;
  *  reflected in the fixed model. However, you cannot change the structure
  *  of the model.
  */
-public class FixedColumnTable implements ChangeListener, PropertyChangeListener
-{
+public class FixedColumnTable implements ChangeListener, PropertyChangeListener {
     private JTable main;
     private JTable fixed;
     private JScrollPane scrollPane;
@@ -42,8 +41,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener
      *  containing the table.
      */
     @SuppressWarnings("serial")
-    public FixedColumnTable(int fixedColumns, JScrollPane scrollPane)
-    {
+    public FixedColumnTable(int fixedColumns, JScrollPane scrollPane) {
         this.scrollPane = scrollPane;
 
         main = ((JTable)scrollPane.getViewport().getView());
@@ -87,8 +85,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener
         //  Remove the fixed columns from the main table
         //  and add them to the fixed table
 
-        for (int i = 0; i < fixedColumns; i++)
-        {
+        for (int i = 0; i < fixedColumns; i++) {
             TableColumnModel columnModel = main.getColumnModel();
             TableColumn column = columnModel.getColumn( 0 );
             columnModel.removeColumn( column );
@@ -109,15 +106,13 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener
     /*
      *  Return the table being used in the row header
      */
-    public JTable getFixedTable()
-    {
+    public JTable getFixedTable() {
         return fixed;
     }
 //
 //  Implement the ChangeListener
 //
-    public void stateChanged(ChangeEvent e)
-    {
+    public void stateChanged(ChangeEvent e) {
         //  Sync the scroll pane scrollbar with the row header
 
         JViewport viewport = (JViewport) e.getSource();
@@ -126,17 +121,14 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener
 //
 //  Implement the PropertyChangeListener
 //
-    public void propertyChange(PropertyChangeEvent e)
-    {
+    public void propertyChange(PropertyChangeEvent e) {
         //  Keep the fixed table in sync with the main table
 
-        if ("selectionModel".equals(e.getPropertyName()))
-        {
+        if ("selectionModel".equals(e.getPropertyName())) {
             fixed.setSelectionModel( main.getSelectionModel() );
         }
 
-        if ("model".equals(e.getPropertyName()))
-        {
+        if ("model".equals(e.getPropertyName())) {
             fixed.setModel( main.getModel() );
         }
     }

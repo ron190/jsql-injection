@@ -33,8 +33,8 @@ import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import com.jsql.view.GUIMediator;
-import com.jsql.view.GUITools;
+import com.jsql.view.MediatorGUI;
+import com.jsql.view.ToolsGUI;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.tab.TabHeader;
 
@@ -87,17 +87,17 @@ public class CreateAdminPageTab implements IInteractionCommand {
         final JPopupMenu menu = new JPopupMenu();
         
         JMenuItem item = new JMenuItem("Copy page URL");
-        item.setIcon(GUITools.EMPTY);
+        item.setIcon(ToolsGUI.EMPTY);
         
         JMenuItem copyItem = new JMenuItem();
         copyItem.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         copyItem.setMnemonic('C');
         copyItem.setText("Copy");
-        copyItem.setIcon(GUITools.EMPTY);
+        copyItem.setIcon(ToolsGUI.EMPTY);
         
         JMenuItem itemSelectAll = new JMenuItem("Select All");
-        itemSelectAll.setIcon(GUITools.EMPTY);
+        itemSelectAll.setIcon(ToolsGUI.EMPTY);
         itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
         itemSelectAll.setText("Select All");
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
@@ -139,18 +139,18 @@ public class CreateAdminPageTab implements IInteractionCommand {
         });
 
         final JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 0, 0, 0, browser);
-        GUIMediator.right().addTab(url.replaceAll(".*/", "") + " ", scroller);
+        MediatorGUI.right().addTab(url.replaceAll(".*/", "") + " ", scroller);
 
         // Focus on the new tab
-        GUIMediator.right().setSelectedComponent(scroller);
+        MediatorGUI.right().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
         TabHeader header = new TabHeader(new ImageIcon(getClass().getResource("/com/jsql/view/images/admin.png")));
 
-        GUIMediator.right().setToolTipTextAt(GUIMediator.right().indexOfComponent(scroller), "<html>" + url + "</html>");
+        MediatorGUI.right().setToolTipTextAt(MediatorGUI.right().indexOfComponent(scroller), "<html>" + url + "</html>");
 
         // Apply the custom header to the tab
-        GUIMediator.right().setTabComponentAt(GUIMediator.right().indexOfComponent(scroller), header);
+        MediatorGUI.right().setTabComponentAt(MediatorGUI.right().indexOfComponent(scroller), header);
 
         browser.requestFocusInWindow();
 

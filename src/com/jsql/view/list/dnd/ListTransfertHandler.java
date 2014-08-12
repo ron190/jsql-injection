@@ -52,7 +52,7 @@ public class ListTransfertHandler extends TransferHandler {
         DnDList list = (DnDList) c;
         dragPaths = list.getSelectedValuesList();
 
-        StringBuffer buff = new StringBuffer();
+        StringBuilder buff = new StringBuilder();
         for (ListItem t: dragPaths) {
             buff.append(t + "\n");
         }
@@ -100,7 +100,7 @@ public class ListTransfertHandler extends TransferHandler {
                 // DnD from list
                 if (dragPaths != null && !dragPaths.isEmpty()) {
                     for (ListItem value: dragPaths) {
-                        if (!value.toString().equals("")) {
+                        if (!"".equals(value.toString())) {
                             //! FUUuu
                             ListItem newValue = new ListItem(value.toString().replace("\\", "/"));
                             selectAfterDrop.add(childIndex);
@@ -112,7 +112,7 @@ public class ListTransfertHandler extends TransferHandler {
                     try {
                         String importString = (String) (support.getTransferable().getTransferData(DataFlavor.stringFlavor));
                         for (String value: importString.split("\\n")) {
-                            if (!value.equals("")) {
+                            if (!"".equals(value)) {
                                 selectAfterDrop.add(childIndex);
                                 model.add(childIndex++, new ListItem(value.replace("\\", "/")));
                             }
@@ -160,7 +160,7 @@ public class ListTransfertHandler extends TransferHandler {
 
                         List<Integer> k = new ArrayList<Integer>();
                         for (String f: clipboardText.split("\\n")) {
-                            if (!f.equals("")) {
+                            if (!"".equals(f)) {
                                 ListItem c = new ListItem(f.replace("\\", "/"));
                                 k.add(y);
                                 model.add(y++, c);

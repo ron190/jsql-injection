@@ -13,7 +13,7 @@ package com.jsql.view.textcomponent;
 import javax.swing.BorderFactory;
 import javax.swing.JTextField;
 
-import com.jsql.view.GUITools;
+import com.jsql.view.ToolsGUI;
 
 /**
  * A JTextField decorated with popup menu and border.
@@ -44,7 +44,7 @@ public class JPopupTextField extends JPopupTextComponent<JTextField> implements 
         super(proxy);
 
         this.getProxy().setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(GUITools.DEFAULT_BACKGROUND, 2),
-                GUITools.BLU_ROUND_BORDER));
+                BorderFactory.createLineBorder(ToolsGUI.DEFAULT_BACKGROUND, 2),
+                ToolsGUI.BLU_ROUND_BORDER));
     }
 }

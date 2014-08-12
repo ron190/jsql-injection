@@ -15,12 +15,12 @@ import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.AbstractSuspendable;
 import com.jsql.model.bean.Request;
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  *
  */
-public abstract class AbstractBlindInjection<T extends AbstractBlindCallable<T>> {
+public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>> {
     /**
      * Constant linked to a URL, true if that url
      * checks the end of the SQL result, false otherwise.
@@ -121,12 +121,12 @@ public abstract class AbstractBlindInjection<T extends AbstractBlindCallable<T>>
                      */
                     try {
                         int charCode = Integer.parseInt(new String(e), 2);
-                        String str = new Character((char) charCode).toString();
+                        String str = Character.toString((char) charCode);
 
                         Request interaction = new Request();
                         interaction.setMessage("MessageBinary");
                         interaction.setParameters("\t" + new String(e) + "=" + str);
-                        GUIMediator.model().interact(interaction);
+                        MediatorGUI.model().interact(interaction);
                     // byte string not fully constructed : 0x1x010x
                     } catch (NumberFormatException err) {
                         // Ignore
@@ -151,7 +151,7 @@ public abstract class AbstractBlindInjection<T extends AbstractBlindCallable<T>>
         String result = "";
         for (char[] c: bytes) {
             int charCode = Integer.parseInt(new String(c), 2);
-            String str = new Character((char) charCode).toString();
+            String str = Character.toString((char) charCode);
             result += str;
         }
         
@@ -167,7 +167,7 @@ public abstract class AbstractBlindInjection<T extends AbstractBlindCallable<T>>
      * @return Source code
      */
     public static String callUrl(String urlString) {
-        return GUIMediator.model().inject(GUIMediator.model().insertionCharacter + urlString);
+        return MediatorGUI.model().inject(MediatorGUI.model().insertionCharacter + urlString);
     }
     
     /**

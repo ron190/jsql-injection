@@ -11,7 +11,7 @@ import java.net.URL;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * Action performing a IP localisation test.
@@ -30,14 +30,14 @@ public class ActionCheckIP implements ActionListener, Runnable {
     @Override
     public void run() {
         // Test if proxy is available then apply settings
-        if (GUIMediator.model().isProxyfied && !"".equals(GUIMediator.model().proxyAddress) && !"".equals(GUIMediator.model().proxyPort)) {
+        if (MediatorGUI.model().isProxyfied && !"".equals(MediatorGUI.model().proxyAddress) && !"".equals(MediatorGUI.model().proxyPort)) {
             try {
                 LOGGER.info("Testing proxy...");
-                new Socket(GUIMediator.model().proxyAddress, Integer.parseInt(GUIMediator.model().proxyPort)).close();
+                new Socket(MediatorGUI.model().proxyAddress, Integer.parseInt(MediatorGUI.model().proxyPort)).close();
             } catch (Exception e) {
                 LOGGER.warn("Proxy connection failed: " 
-                        + GUIMediator.model().proxyAddress + ":" + GUIMediator.model().proxyPort
-                        + "\nVerify your proxy informations or disable proxy setting.");
+                        + MediatorGUI.model().proxyAddress + ":" + MediatorGUI.model().proxyPort
+                        + "\nVerify your proxy informations or disable proxy setting.", e);
                 return;
             }
             LOGGER.info("Proxy is responding.");
@@ -71,9 +71,9 @@ public class ActionCheckIP implements ActionListener, Runnable {
             ip2 = in.readLine();
             LOGGER.info("Your IP information (freegeoip): " + ip2);
         } catch (MalformedURLException e) {
-            LOGGER.warn("Malformed URL: " + e.getMessage());
+            LOGGER.warn("Malformed URL: " + e.getMessage(), e);
         } catch (IOException e) {
-            LOGGER.warn("Error during proxy test: " + e.getMessage());
+            LOGGER.warn("Error during proxy test: " + e.getMessage(), e);
             LOGGER.warn("Use your browser to verify your proxy is working.");
         } finally {
             if (in != null) {
@@ -81,7 +81,7 @@ public class ActionCheckIP implements ActionListener, Runnable {
                     LOGGER.info("Checking IP done.");
                     in.close();
                 } catch (IOException e) {
-                    LOGGER.warn("Error during proxy test: " + e.getMessage());
+                    LOGGER.warn("Error during proxy test: " + e.getMessage(), e);
                     LOGGER.warn("Use your browser to verify your proxy is working.");
                 }
             }

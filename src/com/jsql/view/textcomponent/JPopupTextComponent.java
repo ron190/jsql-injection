@@ -24,7 +24,7 @@ import javax.swing.undo.UndoManager;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.popupmenu.JPopupTextMenu;
+import com.jsql.view.popupmenu.JPopupMenuText;
 
 /**
  * A swing JTextComponent with Undo/Redo functionality.
@@ -44,7 +44,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
     public JPopupTextComponent(final T proxy) {
         super(proxy);
 
-        this.getProxy().setComponentPopupMenu(new JPopupTextMenu(this.getProxy()));
+        this.getProxy().setComponentPopupMenu(new JPopupMenuText(this.getProxy()));
 
         this.getProxy().setDragEnabled(true);
 

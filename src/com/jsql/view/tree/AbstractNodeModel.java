@@ -24,8 +24,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.AbstractElementDatabase;
-import com.jsql.view.GUIMediator;
-import com.jsql.view.GUITools;
+import com.jsql.view.MediatorGUI;
+import com.jsql.view.ToolsGUI;
 import com.jsql.view.ui.RoundBorder;
 
 /**
@@ -117,8 +117,8 @@ public abstract class AbstractNodeModel {
 
         JMenuItem mnLoad = new JMenuItem("Load/Stop", 'o');
         JMenuItem mnPause = new JMenuItem("Pause/Resume", 's');
-        mnLoad.setIcon(GUITools.EMPTY);
-        mnPause.setIcon(GUITools.EMPTY);
+        mnLoad.setIcon(ToolsGUI.EMPTY);
+        mnPause.setIcon(ToolsGUI.EMPTY);
 
         if (!this.hasChildChecked && !this.isRunning) {
             mnLoad.setEnabled(false);
@@ -134,10 +134,10 @@ public abstract class AbstractNodeModel {
         tablePopupMenu.add(mnLoad);
         tablePopupMenu.add(mnPause);
 
-        mnLoad.setIcon(GUITools.EMPTY);
-        mnPause.setIcon(GUITools.EMPTY);
+        mnLoad.setIcon(ToolsGUI.EMPTY);
+        mnPause.setIcon(ToolsGUI.EMPTY);
 
-        tablePopupMenu.show(GUIMediator.databaseTree(), x, y);
+        tablePopupMenu.show(MediatorGUI.databaseTree(), x, y);
     }
 
     /**
@@ -156,7 +156,7 @@ public abstract class AbstractNodeModel {
             boolean hasFocus) {
 
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
-        final NodePanel panel = new NodePanel(tree, currentNode);
+        final PanelNode panel = new PanelNode(tree, currentNode);
 
         panel.label.setText(this.toString());
         panel.label.setVisible(true);
@@ -167,7 +167,7 @@ public abstract class AbstractNodeModel {
         panel.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent arg0) {
-                panel.label.setBackground(GUITools.SELECTION_BACKGROUND);
+                panel.label.setBackground(ToolsGUI.SELECTION_BACKGROUND);
                 panel.label.setBorder(new RoundBorder(4, 1, true));
                 System.out.println("b");
             }
@@ -208,7 +208,7 @@ public abstract class AbstractNodeModel {
 //            renderer.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         
         if (isSelected) {
-            panel.label.setBackground(GUITools.SELECTION_BACKGROUND);
+            panel.label.setBackground(ToolsGUI.SELECTION_BACKGROUND);
         } else {
             panel.label.setBackground(Color.WHITE);
             panel.label.setBorder(new RoundBorder(4, 1, false));
@@ -221,9 +221,9 @@ public abstract class AbstractNodeModel {
             panel.showLoader();
             panel.hideIcon();
 
-            if (GUIMediator.model().suspendables.get(AbstractNodeModel.this.dataObject).isPaused()) {
-                ImageIcon animatedGIFPaused = new IconOverlap(GUITools.PATH_PROGRESSBAR, GUITools.PATH_PAUSE);
-                animatedGIFPaused.setImageObserver(new AnimatedObserver(GUIMediator.databaseTree(), currentNode));
+            if (MediatorGUI.model().suspendables.get(AbstractNodeModel.this.dataObject).isPaused()) {
+                ImageIcon animatedGIFPaused = new ImageOverlap(ToolsGUI.PATH_PROGRESSBAR, ToolsGUI.PATH_PAUSE);
+                animatedGIFPaused.setImageObserver(new ImageObserverAnimated(MediatorGUI.databaseTree(), currentNode));
                 panel.setLoaderIcon(animatedGIFPaused);
             }
         }
@@ -236,13 +236,13 @@ public abstract class AbstractNodeModel {
      * @param panel Panel that contains the bar to update
      * @param currentNode Functional node model object
      */
-    protected void displayProgress(NodePanel panel, DefaultMutableTreeNode currentNode) {
+    protected void displayProgress(PanelNode panel, DefaultMutableTreeNode currentNode) {
         int dataCount = this.dataObject.getCount();
         panel.progressBar.setMaximum(dataCount);
         panel.progressBar.setValue(this.childUpgradeCount);
         panel.progressBar.setVisible(true);
         
-        if (GUIMediator.model().suspendables.get(this.dataObject).isPaused()) {
+        if (MediatorGUI.model().suspendables.get(this.dataObject).isPaused()) {
             panel.progressBar.pause();
         }
     }

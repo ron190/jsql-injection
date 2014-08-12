@@ -13,7 +13,6 @@ package com.jsql.view.menubar;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.prefs.Preferences;
@@ -30,16 +29,15 @@ import javax.swing.KeyStroke;
 import javax.swing.MenuSelectionManager;
 import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 
-import org.apache.log4j.Logger;
-
 import com.jsql.model.InjectionModel;
-import com.jsql.view.GUIMediator;
-import com.jsql.view.GUITools;
+import com.jsql.view.MediatorGUI;
+import com.jsql.view.ToolsGUI;
 import com.jsql.view.action.ActionHandler;
-import com.jsql.view.action.SaveTabAction;
-import com.jsql.view.dialog.AboutDialog;
-import com.jsql.view.dialog.PreferenceDialog;
-import com.jsql.view.table.TablePanel;
+import com.jsql.view.action.ActionNewWindow;
+import com.jsql.view.action.ActionSaveTab;
+import com.jsql.view.dialog.DialogAbout;
+import com.jsql.view.dialog.DialogPreference;
+import com.jsql.view.table.PanelTable;
 
 /**
  * Application main menubar.
@@ -67,11 +65,6 @@ public class Menubar extends JMenuBar {
     public JCheckBoxMenuItem javaDebugMenu;
 
     /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getLogger(Menubar.class);
-
-    /**
      * Create a menubar on main frame.
      */
     public Menubar() {
@@ -79,39 +72,16 @@ public class Menubar extends JMenuBar {
         JMenu menuFile = new JMenu("File");
         menuFile.setMnemonic('F');
 
-        JMenuItem itemNewWindows = new JMenuItem("New Window", 'N');
-        itemNewWindows.setIcon(GUITools.EMPTY);
-        itemNewWindows.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-        itemNewWindows.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                LOGGER.info("Starting new window.");
-                String separator = System.getProperty("file.separator");
-                String classpath = System.getProperty("java.class.path");
-                String path = System.getProperty("java.home") + separator + "bin" + separator + "java";
-                ProcessBuilder processBuilder = 
-                        new ProcessBuilder(path, "-cp",
-                        classpath, 
-                        InjectionModel.class.getName());
-                try {
-                    processBuilder.start();
-                } catch (IOException e1) {
-                    LOGGER.error("Error opening new window.");
-                }
-            }
-        });
+        JMenuItem itemNewWindows = new JMenuItem(new ActionNewWindow());
 
-        JMenuItem itemSave = new JMenuItem("Save Tab As...", 'S');
-        itemSave.setIcon(GUITools.EMPTY);
-        itemSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-        itemSave.addActionListener(new SaveTabAction());
+        JMenuItem itemSave = new JMenuItem(new ActionSaveTab());
 
         JMenuItem itemExit = new JMenuItem("Exit", 'x');
-        itemExit.setIcon(GUITools.EMPTY);
+        itemExit.setIcon(ToolsGUI.EMPTY);
         itemExit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                GUIMediator.gui().dispose();
+                MediatorGUI.gui().dispose();
             }
         });
 
@@ -128,31 +98,31 @@ public class Menubar extends JMenuBar {
         menuEdit.setMnemonic('E');
 
         JMenuItem itemCopy = new JMenuItem("Copy", 'C');
-        itemCopy.setIcon(GUITools.EMPTY);
+        itemCopy.setIcon(ToolsGUI.EMPTY);
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         itemCopy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (GUIMediator.right().getSelectedComponent() instanceof TablePanel) {
-                    ((TablePanel) GUIMediator.right().getSelectedComponent()).copyTable();
-                } else if (GUIMediator.right().getSelectedComponent() instanceof JScrollPane) {
-                    ((JTextArea) ((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport().getView()).copy();
+                if (MediatorGUI.right().getSelectedComponent() instanceof PanelTable) {
+                    ((PanelTable) MediatorGUI.right().getSelectedComponent()).copyTable();
+                } else if (MediatorGUI.right().getSelectedComponent() instanceof JScrollPane) {
+                    ((JTextArea) ((JScrollPane) MediatorGUI.right().getSelectedComponent()).getViewport().getView()).copy();
                 }
             }
         });
 
         JMenuItem itemSelectAll = new JMenuItem("Select All", 'A');
-        itemSelectAll.setIcon(GUITools.EMPTY);
+        itemSelectAll.setIcon(ToolsGUI.EMPTY);
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (GUIMediator.right().getSelectedComponent() instanceof TablePanel) {
-                    ((TablePanel) GUIMediator.right().getSelectedComponent()).selectTable();
+                if (MediatorGUI.right().getSelectedComponent() instanceof PanelTable) {
+                    ((PanelTable) MediatorGUI.right().getSelectedComponent()).selectTable();
                 // Textarea need focus to select all
-                } else if (GUIMediator.right().getSelectedComponent() instanceof JScrollPane) {
-                    ((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport().getView().requestFocusInWindow();
-                    ((JTextArea) ((JScrollPane) GUIMediator.right().getSelectedComponent()).getViewport().getView()).selectAll();
+                } else if (MediatorGUI.right().getSelectedComponent() instanceof JScrollPane) {
+                    ((JScrollPane) MediatorGUI.right().getSelectedComponent()).getViewport().getView().requestFocusInWindow();
+                    ((JTextArea) ((JScrollPane) MediatorGUI.right().getSelectedComponent()).getViewport().getView()).selectAll();
                 }
             }
         });
@@ -165,25 +135,25 @@ public class Menubar extends JMenuBar {
         JMenu menuTools = new JMenu("Windows");
         menuTools.setMnemonic('W');
         JMenuItem preferences = new JMenuItem("Preferences", 'P');
-        preferences.setIcon(GUITools.EMPTY);
+        preferences.setIcon(ToolsGUI.EMPTY);
 
         JMenu menuView = new JMenu("Show View");
         menuView.setMnemonic('V');
-        JMenuItem database = new JMenuItem("Database", GUITools.DATABASE_SERVER_ICON);
+        JMenuItem database = new JMenuItem("Database", ToolsGUI.DATABASE_SERVER_ICON);
         menuView.add(database);
-        JMenuItem adminPage = new JMenuItem("Admin page", GUITools.ADMIN_SERVER_ICON);
+        JMenuItem adminPage = new JMenuItem("Admin page", ToolsGUI.ADMIN_SERVER_ICON);
         menuView.add(adminPage);
-        JMenuItem file = new JMenuItem("File", GUITools.FILE_SERVER_ICON);
+        JMenuItem file = new JMenuItem("File", ToolsGUI.FILE_SERVER_ICON);
         menuView.add(file);
-        JMenuItem webshell = new JMenuItem("Web shell", GUITools.SHELL_SERVER_ICON);
+        JMenuItem webshell = new JMenuItem("Web shell", ToolsGUI.SHELL_SERVER_ICON);
         menuView.add(webshell);
-        JMenuItem sqlshell = new JMenuItem("SQL shell", GUITools.SHELL_SERVER_ICON);
+        JMenuItem sqlshell = new JMenuItem("SQL shell", ToolsGUI.SHELL_SERVER_ICON);
         menuView.add(sqlshell);
-        JMenuItem upload = new JMenuItem("Upload", GUITools.UPLOAD_ICON);
+        JMenuItem upload = new JMenuItem("Upload", ToolsGUI.UPLOAD_ICON);
         menuView.add(upload);
-        JMenuItem bruteforce = new JMenuItem("Brute force", GUITools.BRUTER_ICON);
+        JMenuItem bruteforce = new JMenuItem("Brute force", ToolsGUI.BRUTER_ICON);
         menuView.add(bruteforce);
-        JMenuItem coder = new JMenuItem("Coder", GUITools.CODER_ICON);
+        JMenuItem coder = new JMenuItem("Coder", ToolsGUI.CODER_ICON);
         menuView.add(coder);
         menuTools.add(menuView);
 
@@ -191,13 +161,13 @@ public class Menubar extends JMenuBar {
 
         JMenu menuPanel = new JMenu("Show Panel");
         menuView.setMnemonic('V');
-        chunkMenu = new JCheckBoxMenuItem("Chunk", new ImageIcon(getClass().getResource("/com/jsql/view/images/chunk.gif")), prefs.getBoolean(GUITools.CHUNK_VISIBLE, true));
+        chunkMenu = new JCheckBoxMenuItem("Chunk", new ImageIcon(getClass().getResource("/com/jsql/view/images/chunk.gif")), prefs.getBoolean(ToolsGUI.CHUNK_VISIBLE, true));
         menuPanel.add(chunkMenu);
-        binaryMenu = new JCheckBoxMenuItem("Binary", new ImageIcon(getClass().getResource("/com/jsql/view/images/binary.gif")), prefs.getBoolean(GUITools.BINARY_VISIBLE, true));
+        binaryMenu = new JCheckBoxMenuItem("Binary", new ImageIcon(getClass().getResource("/com/jsql/view/images/binary.gif")), prefs.getBoolean(ToolsGUI.BINARY_VISIBLE, true));
         menuPanel.add(binaryMenu);
-        networkMenu = new JCheckBoxMenuItem("Network", new ImageIcon(getClass().getResource("/com/jsql/view/images/header.gif")), prefs.getBoolean(GUITools.NETWORK_VISIBLE, true));
+        networkMenu = new JCheckBoxMenuItem("Network", new ImageIcon(getClass().getResource("/com/jsql/view/images/header.gif")), prefs.getBoolean(ToolsGUI.NETWORK_VISIBLE, true));
         menuPanel.add(networkMenu);
-        javaDebugMenu = new JCheckBoxMenuItem("Java", new ImageIcon(GUITools.class.getResource("/com/jsql/view/images/cup.png")), prefs.getBoolean(GUITools.JAVA_VISIBLE, false));
+        javaDebugMenu = new JCheckBoxMenuItem("Java", new ImageIcon(ToolsGUI.class.getResource("/com/jsql/view/images/cup.png")), prefs.getBoolean(ToolsGUI.JAVA_VISIBLE, false));
 
         class StayOpenCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI {
             @Override
@@ -214,9 +184,9 @@ public class Menubar extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (chunkMenu.isSelected()) {
-                    GUIMediator.bottomPanel().insertChunkTab();
+                    MediatorGUI.bottomPanel().insertChunkTab();
                 } else {
-                    GUIMediator.bottom().remove(GUIMediator.bottomPanel().chunks.getParent().getParent());
+                    MediatorGUI.bottom().remove(MediatorGUI.bottomPanel().chunks.getParent().getParent());
                 }
             }
         });
@@ -224,9 +194,9 @@ public class Menubar extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (binaryMenu.isSelected()) {
-                    GUIMediator.bottomPanel().insertBinaryTab();
+                    MediatorGUI.bottomPanel().insertBinaryTab();
                 } else {
-                    GUIMediator.bottom().remove(GUIMediator.bottomPanel().binaryArea.getParent().getParent());
+                    MediatorGUI.bottom().remove(MediatorGUI.bottomPanel().binaryArea.getParent().getParent());
                 }
             }
         });
@@ -234,9 +204,9 @@ public class Menubar extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (networkMenu.isSelected()) {
-                    GUIMediator.bottomPanel().insertNetworkTab();
+                    MediatorGUI.bottomPanel().insertNetworkTab();
                 } else {
-                    GUIMediator.bottom().remove(GUIMediator.bottomPanel().network);
+                    MediatorGUI.bottom().remove(MediatorGUI.bottomPanel().network);
                 }
             }
         });
@@ -244,9 +214,9 @@ public class Menubar extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (javaDebugMenu.isSelected()) {
-                    GUIMediator.bottomPanel().insertJavaDebugTab();
+                    MediatorGUI.bottomPanel().insertJavaDebugTab();
                 } else {
-                    GUIMediator.bottom().remove(GUIMediator.bottomPanel().javaDebug.getParent().getParent());
+                    MediatorGUI.bottom().remove(MediatorGUI.bottomPanel().javaDebug.getParent().getParent());
                 }
             }
         });
@@ -276,19 +246,19 @@ public class Menubar extends JMenuBar {
             m.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                    GUIMediator.left().setSelectedIndex(p.get(m));
+                    MediatorGUI.left().setSelectedIndex(p.get(m));
                 }
             });
         }
 
         // Render the Preferences dialog behind scene
-        final PreferenceDialog prefDiag = new PreferenceDialog();
+        final DialogPreference prefDiag = new DialogPreference();
         preferences.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 // Center the dialog
                 if (!prefDiag.isVisible()) {
-                    prefDiag.setLocationRelativeTo(GUIMediator.gui());
+                    prefDiag.setLocationRelativeTo(MediatorGUI.gui());
                     // needed here for button focus
                     prefDiag.setVisible(true);
                     prefDiag.requestButtonFocus();
@@ -302,12 +272,12 @@ public class Menubar extends JMenuBar {
         JMenu menuHelp = new JMenu("Help");
         menuHelp.setMnemonic('H');
         JMenuItem itemHelp = new JMenuItem("About jSQL Injection", 'A');
-        itemHelp.setIcon(GUITools.EMPTY);
+        itemHelp.setIcon(ToolsGUI.EMPTY);
         JMenuItem itemUpdate = new JMenuItem("Check for Updates", 'U');
-        itemUpdate.setIcon(GUITools.EMPTY);
+        itemUpdate.setIcon(ToolsGUI.EMPTY);
 
         // Render the About dialog behind scene
-        final AboutDialog aboutDiag = new AboutDialog();
+        final DialogAbout aboutDiag = new DialogAbout();
         itemHelp.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {

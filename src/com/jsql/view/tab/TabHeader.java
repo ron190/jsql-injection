@@ -22,7 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * Panel displayed as a header for tabs.
@@ -48,9 +48,9 @@ public class TabHeader extends JPanel implements MouseListener {
         // Set the text of tab
         JLabel tabTitleLabel = new JLabel() {
             public String getText() {
-                int i = GUIMediator.right().indexOfTabComponent(TabHeader.this);
+                int i = MediatorGUI.right().indexOfTabComponent(TabHeader.this);
                 if (i != -1) {
-                    return GUIMediator.right().getTitleAt(i);
+                    return MediatorGUI.right().getTitleAt(i);
                 }
                 return null;
             }
@@ -84,8 +84,8 @@ public class TabHeader extends JPanel implements MouseListener {
         if (SwingUtilities.isRightMouseButton(e)) {
             return;
         }
-        int closeTabNumber = GUIMediator.right().indexOfTabComponent(TabHeader.this);
-        GUIMediator.right().removeTabAt(closeTabNumber);
+        int closeTabNumber = MediatorGUI.right().indexOfTabComponent(TabHeader.this);
+        MediatorGUI.right().removeTabAt(closeTabNumber);
     }
 
     @Override public void mouseEntered(MouseEvent e) {

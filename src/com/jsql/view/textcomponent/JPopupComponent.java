@@ -16,7 +16,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
-import com.jsql.view.popupmenu.JPopupComponentMenu;
+import com.jsql.view.popupmenu.JPopupMenuComponent;
 
 /**
  * Add a popup menu to Decorated component.
@@ -38,7 +38,7 @@ public class JPopupComponent<T extends JComponent> extends JComponent implements
 
         this.proxy = proxy;
 
-        this.proxy.setComponentPopupMenu(new JPopupComponentMenu(this.proxy));
+        this.proxy.setComponentPopupMenu(new JPopupMenuComponent(this.proxy));
 
         this.proxy.addMouseListener(new MouseAdapter() {
             @Override

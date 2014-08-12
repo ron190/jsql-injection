@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * Update the general information in status bar.
@@ -25,11 +25,11 @@ public class MessageInfo implements IInteractionCommand {
 
     @Override
     public void execute() {
-        GUIMediator.status().setInfos(
-            GUIMediator.model().versionDatabase,
-            GUIMediator.model().currentDatabase,
-            GUIMediator.model().currentUser,
-            GUIMediator.model().authenticatedUser
+        MediatorGUI.status().setInfos(
+            MediatorGUI.model().versionDatabase,
+            MediatorGUI.model().currentDatabase,
+            MediatorGUI.model().currentUser,
+            MediatorGUI.model().authenticatedUser
         );
     }
 }

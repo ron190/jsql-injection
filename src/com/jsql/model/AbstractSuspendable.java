@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * A thread used to inject database ; stoppable and pausable.
@@ -54,7 +54,7 @@ public abstract class AbstractSuspendable implements Runnable{
             }
             
             // Return true if stop requested, return false otherwise
-            return stopFlag || GUIMediator.model().stopFlag;
+            return stopFlag || MediatorGUI.model().stopFlag;
         }
     }
     

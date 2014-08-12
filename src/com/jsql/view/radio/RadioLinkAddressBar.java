@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.JLabel;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * Radio label for HTTP method (GET, POST, etc).
@@ -45,7 +45,7 @@ public class RadioLinkAddressBar extends AbstractRadioLink {
 
     @Override
     void action() {
-        GUIMediator.top().setSendMethod(RadioLinkAddressBar.this.getText());
+        MediatorGUI.top().setSendMethod(RadioLinkAddressBar.this.getText());
     }
 
     @Override

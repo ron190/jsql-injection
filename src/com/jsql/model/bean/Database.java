@@ -51,7 +51,11 @@ public class Database extends AbstractElementDatabase {
      */
     @Override
     public String getLabel() {
-        return this.elementValue 
-                + " (" + tableCount + " table" + (Integer.parseInt(tableCount) > 0 ? "s" : "") + ")";
+        String sPlural = "";
+        if (Integer.parseInt(tableCount) > 1) {
+            sPlural = "s";
+        }
+
+        return this.elementValue + " (" + tableCount + " table" + sPlural + ")";
     }
 }

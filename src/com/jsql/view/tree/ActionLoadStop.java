@@ -20,7 +20,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import com.jsql.model.bean.Column;
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * Action to start and stop injection process.
@@ -36,7 +36,7 @@ public class ActionLoadStop implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGUI.databaseTree().getModel();
         DefaultMutableTreeNode tableNode = currentTableNode;
         final List<Column> columnsToSearch = new ArrayList<Column>();
 
@@ -60,22 +60,22 @@ public class ActionLoadStop implements ActionListener {
 
                 @Override
                 protected Object doInBackground() throws Exception {
-                    GUIMediator.model().DAO.listValues(columnsToSearch);
+                    MediatorGUI.model().DAO.listValues(columnsToSearch);
                     return null;
                 }
 
             }.execute();
         } else {
-            GUIMediator.model().suspendables.get(this.nodeData.dataObject).stop();
-            GUIMediator.model().suspendables.get(this.nodeData.dataObject).unPause();
+            MediatorGUI.model().suspendables.get(this.nodeData.dataObject).stop();
+            MediatorGUI.model().suspendables.get(this.nodeData.dataObject).unPause();
             this.nodeData.childUpgradeCount = 0;
             this.nodeData.hasIndeterminatedProgress = false;
             this.nodeData.hasProgress = false;
-            GUIMediator.model().suspendables.get(this.nodeData.dataObject).resume();
+            MediatorGUI.model().suspendables.get(this.nodeData.dataObject).resume();
         }
         this.nodeData.isRunning = !this.nodeData.isRunning;
 
         // !!important!!
-        GUIMediator.databaseTree().getCellEditor().stopCellEditing();
+        MediatorGUI.databaseTree().getCellEditor().stopCellEditing();
     }
 }

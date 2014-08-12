@@ -14,7 +14,7 @@ import java.net.URLConnection;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 public class ActionCheckUpdate implements ActionListener, Runnable {
     /**
@@ -38,7 +38,7 @@ public class ActionCheckUpdate implements ActionListener, Runnable {
             reader.close();
 
             Float gitVersion = Float.parseFloat(pageSource);
-            GUIMediator.model();
+            MediatorGUI.model();
             if (gitVersion <= Float.parseFloat(InjectionModel.JSQLVERSION)) {
                 LOGGER.info("jSQL Injection is up to date.");
             } else {

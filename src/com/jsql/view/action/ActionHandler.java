@@ -32,7 +32,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 import com.jsql.view.menubar.Menubar;
 import com.jsql.view.textcomponent.JPopupLabel;
 
@@ -152,8 +152,8 @@ public final class ActionHandler {
         actionMap.put("actionString-previousTab", previousTab);
         
         // TODO : replace directly by "for (int j = 0; j < GUIMediator.left().getTabCount(); j++)"
-        int[] i = new int[GUIMediator.left().getTabCount()];
-        for (int j = 0; j < GUIMediator.left().getTabCount(); j++) {
+        int[] i = new int[MediatorGUI.left().getTabCount()];
+        for (int j = 0; j < MediatorGUI.left().getTabCount(); j++) {
             i[j] = j + 1;
         }
         for (final int j: i) {
@@ -162,10 +162,13 @@ public final class ActionHandler {
             actionMap.put("actionString-selectTab" + j, new AbstractAction(){
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    GUIMediator.left().setSelectedIndex(j - 1);
+                    MediatorGUI.left().setSelectedIndex(j - 1);
                 }
             });
         }
+        
+        inputMap.put(KeyStroke.getKeyStroke("ctrl S"), "actionString-saveTab");
+        actionMap.put("actionString-saveTab", new ActionSaveTab());
     }
 
     /**
@@ -190,7 +193,7 @@ public final class ActionHandler {
             public boolean dispatchKeyEvent(KeyEvent e) {
                   if (e.isAltDown()
                           && e.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D)) {
-                      GUIMediator.top().addressBar.requestFocusInWindow();
+                      MediatorGUI.top().addressBar.requestFocusInWindow();
                       return true;
                   } else if (e.getKeyCode() == KeyEvent.VK_ALT
                           && e.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)) {

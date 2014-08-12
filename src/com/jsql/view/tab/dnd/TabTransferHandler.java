@@ -25,26 +25,34 @@ public class TabTransferHandler extends TransferHandler {
     private static final Logger LOGGER = Logger.getLogger(TabTransferHandler.class);
 
     private final DataFlavor localObjectFlavor;
+    
     public TabTransferHandler() {
 //        System.out.println("TabTransferHandler");
         localObjectFlavor = new ActivationDataFlavor(AdapterRightTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "RightPaneAdapter");
     }
+    
     private DnDTabbedPane source = null;
-    @Override protected Transferable createTransferable(JComponent c) {
+    
+    @Override 
+    protected Transferable createTransferable(JComponent c) {
 //        System.out.println("createTransferable");
-        if(c instanceof DnDTabbedPane) source = (DnDTabbedPane)c;
+        if (c instanceof DnDTabbedPane) {
+            source = (DnDTabbedPane) c;
+        }
         return new DataHandler(c, localObjectFlavor.getMimeType());
     }
-    @Override public boolean canImport(TransferSupport support) {
+    
+    @Override 
+    public boolean canImport(TransferSupport support) {
         //System.out.println("canImport");
-        if(!support.isDrop() || !support.isDataFlavorSupported(localObjectFlavor)) {
+        if (!support.isDrop() || !support.isDataFlavorSupported(localObjectFlavor)) {
 //            System.out.println("canImport:"+support.isDrop()+" "+support.isDataFlavorSupported(localObjectFlavor));
             return false;
         }
         support.setDropAction(MOVE);
         DropLocation tdl = support.getDropLocation();
         Point pt = tdl.getDropPoint();
-        DnDTabbedPane target = (DnDTabbedPane)support.getComponent();
+        DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
         target.autoScrollTest(pt);
         DnDTabbedPane.DropLocation dl = target.dropLocationForPointLocal(pt);
         int idx = dl.getIndex();
@@ -58,25 +66,26 @@ public class TabTransferHandler extends TransferHandler {
 //                 ex.printStackTrace();
 //             }
 //         }
-        if(target==source) {
+        if (target == source) {
             //System.out.println("target==source");
-            isDropable = target.getTabAreaBounds().contains(pt) && idx>=0 && idx!=target.dragTabIndex && idx!=target.dragTabIndex+1;
+            isDropable = target.getTabAreaBounds().contains(pt) && idx >= 0 && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
         } else {
             //System.out.format("target!=source%n  target: %s%n  source: %s", target.getName(), source.getName());
-            if(source!=null && target!=source.getComponentAt(source.dragTabIndex)) {
-                isDropable = target.getTabAreaBounds().contains(pt) && idx>=0;
+            if (source != null && target != source.getComponentAt(source.dragTabIndex)) {
+                isDropable = target.getTabAreaBounds().contains(pt) && idx >= 0;
             }
         }
+        
         glassPane.setVisible(false);
         target.getRootPane().setGlassPane(glassPane);
         //Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation
         //http://bugs.sun.com/view_bug.do?bug_id=6700748
-        glassPane.setCursor(isDropable?DragSource.DefaultMoveDrop:DragSource.DefaultMoveNoDrop);
+        glassPane.setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
         glassPane.setVisible(true);
-        target.setCursor(isDropable?DragSource.DefaultMoveDrop:DragSource.DefaultMoveNoDrop);
+        target.setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
         //Component c = target.getRootPane().getGlassPane();
         //c.setCursor(isDropable?DragSource.DefaultMoveDrop:DragSource.DefaultMoveNoDrop);
-        if(isDropable) {
+        if (isDropable) {
             support.setShowDropLocation(true);
             dl.setDropable(true);
             target.setDropLocationLocal(dl, null, true);
@@ -119,13 +128,18 @@ public class TabTransferHandler extends TransferHandler {
 //    }
 
     private static GhostGlassPane glassPane;
-    @Override public int getSourceActions(JComponent c) {
+    
+    @Override 
+    public int getSourceActions(JComponent c) {
 //        System.out.println("getSourceActions");
-        DnDTabbedPane src = (DnDTabbedPane)c;
-        if(glassPane==null) {
+        DnDTabbedPane src = (DnDTabbedPane) c;
+        if (glassPane == null) {
             c.getRootPane().setGlassPane(glassPane = new GhostGlassPane(src));
         }
-        if(src.dragTabIndex<0) return NONE;
+        
+        if (src.dragTabIndex < 0) {
+            return NONE;
+        }
 //*
 //        glassPane.setImage(makeDragTabImage(src));
 //        setDragImage(makeDragTabImage(src));
@@ -133,31 +147,36 @@ public class TabTransferHandler extends TransferHandler {
         c.getRootPane().getGlassPane().setVisible(true);
         return MOVE;
     }
-    @Override public boolean importData(TransferSupport support) {
+    
+    @Override 
+    public boolean importData(TransferSupport support) {
 //        System.out.println("importData");
-        if(!canImport(support)) return false;
+        if (!canImport(support)) {
+            return false;
+        }
 
-        DnDTabbedPane target = (DnDTabbedPane)support.getComponent();
+        DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
         DnDTabbedPane.DropLocation dl = target.getDropLocation();
-        try{
-            DnDTabbedPane source = (DnDTabbedPane)support.getTransferable().getTransferData(localObjectFlavor);
+        try {
+            DnDTabbedPane source = (DnDTabbedPane) support.getTransferable().getTransferData(localObjectFlavor);
             int index = dl.getIndex(); //boolean insert = dl.isInsert();
-            if(target==source) {
+            if (target == source) {
                 source.convertTab(source.dragTabIndex, index); //getTargetTabIndex(e.getLocation()));
             } else {
                 source.exportTab(source.dragTabIndex, target, index);
             }
             return true;
-        }catch(UnsupportedFlavorException e) {
+        } catch (UnsupportedFlavorException e) {
             LOGGER.error(e, e);
-        }catch(IOException e) {
+        } catch (IOException e) {
             LOGGER.error(e, e);
         }
         return false;
     }
+    
     @Override protected void exportDone(JComponent c, Transferable data, int action) {
 //        System.out.println("exportDone");
-        DnDTabbedPane src = (DnDTabbedPane)c;
+        DnDTabbedPane src = (DnDTabbedPane) c;
         src.setDropLocationLocal(null, null, false);
         src.repaint();
         glassPane.setVisible(false);

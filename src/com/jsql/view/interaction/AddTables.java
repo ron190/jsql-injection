@@ -17,7 +17,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.Table;
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 import com.jsql.view.tree.AbstractNodeModel;
 import com.jsql.view.tree.NodeModelTable;
 
@@ -41,7 +41,7 @@ public class AddTables implements IInteractionCommand {
     @Override
     public void execute() {
         // Tree model, update the tree (refresh, add node, etc)
-        DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGUI.databaseTree().getModel();
 
         // The database to update
         DefaultMutableTreeNode databaseNode = null;
@@ -53,17 +53,17 @@ public class AddTables implements IInteractionCommand {
             // Create the node
             DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(newTreeNodeModel);
             // Save the node
-            GUIMediator.gui().getTreeNodeModels().put(table, newNode);
+            MediatorGUI.gui().getTreeNodeModels().put(table, newNode);
 
             // Get the parent database
-            databaseNode = GUIMediator.gui().getTreeNodeModels().get(table.getParent());
+            databaseNode = MediatorGUI.gui().getTreeNodeModels().get(table.getParent());
             // Add the table to the database
             treeModel.insertNodeInto(newNode, databaseNode, databaseNode.getChildCount());
         }
 
         if (databaseNode != null) {
             // Open the database node
-            GUIMediator.databaseTree().expandPath(new TreePath(databaseNode.getPath()));
+            MediatorGUI.databaseTree().expandPath(new TreePath(databaseNode.getPath()));
             // The database has just been search (avoid double check)
             ((AbstractNodeModel) databaseNode.getUserObject()).hasBeenSearched = true;
         }

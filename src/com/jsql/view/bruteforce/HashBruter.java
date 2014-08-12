@@ -10,7 +10,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.tool.StringTool;
+import com.jsql.tool.ToolsString;
 
 public class HashBruter extends Bruter {
     /*
@@ -149,7 +149,7 @@ public class HashBruter extends Bruter {
         } catch (NoSuchAlgorithmException e1) {
             JOptionPane.showMessageDialog(null, "No such algorithm for hashes exists", "Error", JOptionPane.ERROR_MESSAGE);
         }
-        String passwordString2 = new String(StringTool.hexstr(encodedPasswordInString).toCharArray());
+        String passwordString2 = new String(ToolsString.hexstr(encodedPasswordInString).toCharArray());
         byte[] passwordByte2 = passwordString2.getBytes();
         md2.update(passwordByte2, 0, passwordByte2.length);
         byte[] encodedPassword2 = md2.digest();
@@ -176,8 +176,8 @@ public class HashBruter extends Bruter {
     private void byte2hex(byte b, StringBuffer buf) {
         char[] hexChars = {'0', '1', '2', '3', '4', '5', '6', '7', '8',
             '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-        int high = ((b & 0xf0) >> 4);
-        int low = (b & 0x0f);
+        int high = (b & 0xf0) >> 4;
+        int low = b & 0x0f;
         buf.append(hexChars[high]);
         buf.append(hexChars[low]);
     }

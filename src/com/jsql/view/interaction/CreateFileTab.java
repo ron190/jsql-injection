@@ -13,7 +13,7 @@ package com.jsql.view.interaction;
 import javax.swing.ImageIcon;
 import javax.swing.JTextArea;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.tab.TabHeader;
 import com.jsql.view.textcomponent.JPopupTextArea;
@@ -53,22 +53,22 @@ public class CreateFileTab implements IInteractionCommand {
         JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 0, 0, 0, fileText);
 
         fileText.setCaretPosition(0);
-        GUIMediator.right().addTab(name + " ", scroller);
+        MediatorGUI.right().addTab(name + " ", scroller);
 
         // Focus on the new tab
-        GUIMediator.right().setSelectedComponent(scroller);
+        MediatorGUI.right().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
         TabHeader header = new TabHeader(new ImageIcon(getClass().getResource("/com/jsql/view/images/file.png")));
 
-        GUIMediator.right().setToolTipTextAt(GUIMediator.right().indexOfComponent(scroller), path);
+        MediatorGUI.right().setToolTipTextAt(MediatorGUI.right().indexOfComponent(scroller), path);
 
         // Apply the custom header to the tab
-        GUIMediator.right().setTabComponentAt(GUIMediator.right().indexOfComponent(scroller), header);
+        MediatorGUI.right().setTabComponentAt(MediatorGUI.right().indexOfComponent(scroller), header);
 
         // Add the path String to the list of files only if there is no same StringObject value already
-        GUIMediator.left().shellManager.addToList(path.replace(name, ""));
-        GUIMediator.left().uploadManager.addToList(path.replace(name, ""));
-        GUIMediator.left().sqlShellManager.addToList(path.replace(name, ""));
+        MediatorGUI.left().shellManager.addToList(path.replace(name, ""));
+        MediatorGUI.left().uploadManager.addToList(path.replace(name, ""));
+        MediatorGUI.left().sqlShellManager.addToList(path.replace(name, ""));
     }
 }

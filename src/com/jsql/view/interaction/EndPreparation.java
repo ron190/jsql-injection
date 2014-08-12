@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * End the refreshing of the main Start injection button.
@@ -25,14 +25,14 @@ public class EndPreparation implements IInteractionCommand {
 
     @Override
     public void execute() {
-        GUIMediator.top().submitAddressBar.setInjectionReady();
-        GUIMediator.top().loader.setVisible(false);
+        MediatorGUI.top().submitAddressBar.setInjectionReady();
+        MediatorGUI.top().loader.setVisible(false);
 
-        if (GUIMediator.model().isInjectionBuilt) {
-            GUIMediator.left().fileManager.setButtonEnable(true);
-            GUIMediator.left().shellManager.setButtonEnable(true);
-            GUIMediator.left().sqlShellManager.setButtonEnable(true);
-            GUIMediator.left().uploadManager.setButtonEnable(true);
+        if (MediatorGUI.model().isInjectionBuilt) {
+            MediatorGUI.left().fileManager.setButtonEnable(true);
+            MediatorGUI.left().shellManager.setButtonEnable(true);
+            MediatorGUI.left().sqlShellManager.setButtonEnable(true);
+            MediatorGUI.left().uploadManager.setButtonEnable(true);
         }
     }
 }

@@ -13,7 +13,7 @@ package com.jsql.view.interaction;
 import javax.swing.tree.DefaultTreeModel;
 
 import com.jsql.model.bean.AbstractElementDatabase;
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 import com.jsql.view.tree.AbstractNodeModel;
 
 /**
@@ -36,17 +36,17 @@ public class EndIndeterminateProgress implements IInteractionCommand {
     @Override
     public void execute() {
         // Tree model, update the tree (refresh, add node, etc)
-        DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGUI.databaseTree().getModel();
 
         // Get the node
         AbstractNodeModel progressingTreeNodeModel =
-                (AbstractNodeModel) GUIMediator.gui().getTreeNodeModels().get(dataElementDatabase).getUserObject();
+                (AbstractNodeModel) MediatorGUI.gui().getTreeNodeModels().get(dataElementDatabase).getUserObject();
         // Mark the node model as 'no loading bar'
         progressingTreeNodeModel.hasIndeterminatedProgress = false;
         // Mark the node model as 'no stop/pause/resume button'
         progressingTreeNodeModel.isRunning = false;
 
         // Update the node
-        treeModel.nodeChanged(GUIMediator.gui().getTreeNodeModels().get(dataElementDatabase));
+        treeModel.nodeChanged(MediatorGUI.gui().getTreeNodeModels().get(dataElementDatabase));
     }
 }

@@ -9,7 +9,7 @@ import javax.swing.text.SimpleAttributeSet;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * A JTextPane which displays colored strings.
@@ -31,6 +31,7 @@ public class JColoredConsole extends JTextPane {
      * @param newTabName Text name of tab
      */
     public JColoredConsole(final String newTabName) {
+        super();
         this.tabName = newTabName;
         // this.setAutoscrolls(true);    // does not work
     }
@@ -48,10 +49,10 @@ public class JColoredConsole extends JTextPane {
                 attribut
             );
 
-            int tabIndex = GUIMediator.bottom().indexOfTab(tabName);
+            int tabIndex = MediatorGUI.bottom().indexOfTab(tabName);
             Component tabHeader
-                    = GUIMediator.bottom().getTabComponentAt(tabIndex);
-            if (GUIMediator.bottom().getSelectedIndex() != tabIndex) {
+                    = MediatorGUI.bottom().getTabComponentAt(tabIndex);
+            if (MediatorGUI.bottom().getSelectedIndex() != tabIndex) {
                 tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
             }
         } catch (BadLocationException e) {

@@ -21,19 +21,19 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
-import com.jsql.view.GUIMediator;
-import com.jsql.view.GUITools;
-import com.jsql.view.manager.AdminPageManager;
-import com.jsql.view.manager.BruteForceManager;
-import com.jsql.view.manager.CoderManager;
-import com.jsql.view.manager.FileManager;
-import com.jsql.view.manager.SQLShellManager;
-import com.jsql.view.manager.UploadManager;
-import com.jsql.view.manager.WebshellManager;
+import com.jsql.view.MediatorGUI;
+import com.jsql.view.ToolsGUI;
+import com.jsql.view.manager.ManagerAdminPage;
+import com.jsql.view.manager.ManagerBruteForce;
+import com.jsql.view.manager.ManagerCoder;
+import com.jsql.view.manager.ManagerFile;
+import com.jsql.view.manager.ManagerSQLShell;
+import com.jsql.view.manager.ManagerUpload;
+import com.jsql.view.manager.ManagerWebshell;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
-import com.jsql.view.tree.NodeEditor;
+import com.jsql.view.tree.CellEditorNode;
+import com.jsql.view.tree.CellRendererNode;
 import com.jsql.view.tree.NodeModelEmpty;
-import com.jsql.view.tree.NodeRenderer;
 
 /**
  * Panel on the left with functionalities like webshell, file reading and admin page finder.
@@ -43,27 +43,27 @@ public class AdapterLeftTabbedPane extends MouseTabbedPane {
     /**
      * Panel for executing system commands.
      */
-    public WebshellManager shellManager = new WebshellManager();
+    public ManagerWebshell shellManager = new ManagerWebshell();
 
     /**
      * Panel for testing backoffice admin pages.
      */
-    public AdminPageManager adminPageManager = new AdminPageManager();
+    public ManagerAdminPage adminPageManager = new ManagerAdminPage();
 
     /**
      * Panel for reading files source.
      */
-    public FileManager fileManager = new FileManager();
+    public ManagerFile fileManager = new ManagerFile();
 
     /**
      * Panel for uploading files.
      */
-    public UploadManager uploadManager = new UploadManager();
+    public ManagerUpload uploadManager = new ManagerUpload();
 
     /**
      * Panel for sending SQL requests.
      */
-    public SQLShellManager sqlShellManager = new SQLShellManager();
+    public ManagerSQLShell sqlShellManager = new ManagerSQLShell();
 
     /**
      * Create manager panel.
@@ -77,13 +77,13 @@ public class AdapterLeftTabbedPane extends MouseTabbedPane {
         // First node in tree
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(new NodeModelEmpty("No database"));
         final JTree tree = new JTree(root);
-        GUIMediator.register(tree);
+        MediatorGUI.register(tree);
 
         // Graphic manager for components
-        tree.setCellRenderer(new NodeRenderer());
+        tree.setCellRenderer(new CellRendererNode());
 
         // Action manager for components
-        tree.setCellEditor(new NodeEditor());
+        tree.setCellEditor(new CellEditorNode());
 
         // Tree setting
         // allows repaint nodes
@@ -127,14 +127,14 @@ public class AdapterLeftTabbedPane extends MouseTabbedPane {
 
         JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 1, 0, 0, tree);
 
-        this.addTab("Database", GUITools.DATABASE_SERVER_ICON, scroller, "Explore databases from remote host");
-        this.addTab("Admin page", GUITools.ADMIN_SERVER_ICON, adminPageManager, "Test admin pages on remote host");
-        this.addTab("File", GUITools.FILE_SERVER_ICON, fileManager, "Read files from remote host");
-        this.addTab("Web shell", GUITools.SHELL_SERVER_ICON, shellManager, "<html>Create a web shell to remote host and open a terminal<br><i>Allows system commands like ipconfig/ifconfig</i></html>");
-        this.addTab("SQL shell", GUITools.SHELL_SERVER_ICON, sqlShellManager, "<html>Create a SQL shell to remote host and open a terminal<br><i>Allows SQL commands like update/grant</i></html>");
-        this.addTab("Upload", GUITools.UPLOAD_ICON, uploadManager, "Upload a file to host");
-        this.addTab("Brute force", GUITools.BRUTER_ICON, new BruteForceManager(), "Brute force hashes");
-        this.addTab("Coder", GUITools.CODER_ICON, new CoderManager(), "Encode or decode a string");
+        this.addTab("Database", ToolsGUI.DATABASE_SERVER_ICON, scroller, "Explore databases from remote host");
+        this.addTab("Admin page", ToolsGUI.ADMIN_SERVER_ICON, adminPageManager, "Test admin pages on remote host");
+        this.addTab("File", ToolsGUI.FILE_SERVER_ICON, fileManager, "Read files from remote host");
+        this.addTab("Web shell", ToolsGUI.SHELL_SERVER_ICON, shellManager, "<html>Create a web shell to remote host and open a terminal<br><i>Allows system commands like ipconfig/ifconfig</i></html>");
+        this.addTab("SQL shell", ToolsGUI.SHELL_SERVER_ICON, sqlShellManager, "<html>Create a SQL shell to remote host and open a terminal<br><i>Allows SQL commands like update/grant</i></html>");
+        this.addTab("Upload", ToolsGUI.UPLOAD_ICON, uploadManager, "Upload a file to host");
+        this.addTab("Brute force", ToolsGUI.BRUTER_ICON, new ManagerBruteForce(), "Brute force hashes");
+        this.addTab("Coder", ToolsGUI.CODER_ICON, new ManagerCoder(), "Encode or decode a string");
 
         this.fileManager.setButtonEnable(false);
         this.shellManager.setButtonEnable(false);

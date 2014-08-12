@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * End the refreshing of administration page search button.
@@ -25,8 +25,8 @@ public class EndAdminSearch implements IInteractionCommand {
 
     @Override
     public void execute() {
-        GUIMediator.left().adminPageManager.restoreButtonText();
-        GUIMediator.left().adminPageManager.setButtonEnable(true);
-        GUIMediator.left().adminPageManager.hideLoader();
+        MediatorGUI.left().adminPageManager.restoreButtonText();
+        MediatorGUI.left().adminPageManager.setButtonEnable(true);
+        MediatorGUI.left().adminPageManager.hideLoader();
     }
 }

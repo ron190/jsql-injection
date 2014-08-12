@@ -136,7 +136,7 @@ public class DnDList extends JList<ListItem> {
         listActionMap.put(TransferHandler.getPasteAction().getValue(Action.NAME),
                 TransferHandler.getPasteAction());
 
-        ListCellRenderer<ListItem> renderer = new ComplexCellRenderer(mouseOver);
+        ListCellRenderer<ListItem> renderer = new RendererComplexCell(mouseOver);
         this.setCellRenderer(renderer);
 
         // Allows color change when list loses/gains focus

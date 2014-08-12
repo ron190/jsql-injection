@@ -11,12 +11,12 @@ import java.util.concurrent.Future;
 import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * A time attack class using thread asynchronisation.
  */
-public class ConcreteTimeInjection extends AbstractBlindInjection<TimeCallable> {
+public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> {
     /**
      * Waiting time in seconds, if response time is above
      * then the SQL query is false.
@@ -53,7 +53,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<TimeCallable> 
         String[] trueTest = {"true=true", "false=false", "true%21=false", "1=1", "2=2", "1%21=2"};
 
         // Check if the user wants to stop the preparation
-        if (GUIMediator.model().stopFlag) {
+        if (MediatorGUI.model().stopFlag) {
             return;
         }
 
@@ -62,13 +62,13 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<TimeCallable> 
          *  it will use inject() from the model
          */
         ExecutorService executorFalseMark = Executors.newCachedThreadPool();
-        Collection<TimeCallable> listCallableFalse = new ArrayList<TimeCallable>();
+        Collection<CallableTime> listCallableFalse = new ArrayList<CallableTime>();
         for (String urlTest: falseTest) {
-            listCallableFalse.add(new TimeCallable(urlTest));
+            listCallableFalse.add(new CallableTime(urlTest));
         }
         
         // Begin the url requests
-        List<Future<TimeCallable>> listFalseMark = null;
+        List<Future<CallableTime>> listFalseMark = null;
         try {
             listFalseMark = executorFalseMark.invokeAll(listCallableFalse);
         } catch (InterruptedException e) {
@@ -82,8 +82,8 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<TimeCallable> 
          * Allow the user to stop the loop
          */
         try {
-            for (Future<TimeCallable> falseMark: listFalseMark) {
-                if (GUIMediator.model().stopFlag) {
+            for (Future<CallableTime> falseMark: listFalseMark) {
+                if (MediatorGUI.model().stopFlag) {
                     return;
                 }
                 if (falseMark.get().isTrue()) {
@@ -102,13 +102,13 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<TimeCallable> 
          *  it will use inject() from the model
          */
         ExecutorService executorTrueMark = Executors.newCachedThreadPool();
-        Collection<TimeCallable> listCallableTrue = new ArrayList<TimeCallable>();
+        Collection<CallableTime> listCallableTrue = new ArrayList<CallableTime>();
         for (String urlTest: trueTest) {
-            listCallableTrue.add(new TimeCallable(urlTest));
+            listCallableTrue.add(new CallableTime(urlTest));
         }
         
         // Begin the url requests
-        List<Future<TimeCallable>> listTrueMark;
+        List<Future<CallableTime>> listTrueMark;
         try {
             listTrueMark = executorTrueMark.invokeAll(listCallableTrue);
         } catch (InterruptedException e) {
@@ -123,8 +123,8 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<TimeCallable> 
          * Allow the user to stop the loop
          */
         try {
-            for (Future<TimeCallable> falseMark: listTrueMark) {
-                if (GUIMediator.model().stopFlag) {
+            for (Future<CallableTime> falseMark: listTrueMark) {
+                if (MediatorGUI.model().stopFlag) {
                     return;
                 }
                 if (!falseMark.get().isTrue()) {
@@ -140,22 +140,22 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<TimeCallable> 
     }
     
     @Override
-    public TimeCallable getCallable(String string, int indexCharacter, boolean isLengthTest) {
-        return new TimeCallable(string, indexCharacter, isLengthTest);
+    public CallableTime getCallable(String string, int indexCharacter, boolean isLengthTest) {
+        return new CallableTime(string, indexCharacter, isLengthTest);
     }
 
     @Override
-    public TimeCallable getCallable(String string, int indexCharacter, int bit) {
-        return new TimeCallable(string, indexCharacter, bit);
+    public CallableTime getCallable(String string, int indexCharacter, int bit) {
+        return new CallableTime(string, indexCharacter, bit);
     }
 
     @Override
     public boolean isInjectable() throws PreparationException {
-        if (GUIMediator.model().stopFlag) {
+        if (MediatorGUI.model().stopFlag) {
             throw new PreparationException();
         }
 
-        TimeCallable blindTest = new TimeCallable("0%2b1=1");
+        CallableTime blindTest = new CallableTime("0%2b1=1");
         try {
             blindTest.call();
         } catch (Exception e) {

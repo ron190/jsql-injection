@@ -60,8 +60,17 @@ public class Table extends AbstractElementDatabase {
      */
     @Override
     public String getLabel() {
-        return this.elementValue + " (" +
-                (parentDatabase.toString().equals("information_schema") ? "?" : rowCount)
-            + " row" + (Integer.parseInt(rowCount) > 1 ? "s" : "") + ")";
+        String nbRow = "";
+        if ("information_schema".equals(parentDatabase.toString())) {
+            nbRow = "?";
+        } else {
+            nbRow = rowCount;
+        }
+        
+        String sPlural = "";
+        if (Integer.parseInt(rowCount) > 1) {
+            sPlural = "s";
+        }
+        return this.elementValue + " (" + nbRow + " row" + sPlural + ")";
     }
 }

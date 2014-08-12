@@ -11,7 +11,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * Runnable class, define insertionCharacter that will be used by all futures requests,
@@ -28,54 +28,54 @@ public class StoppableGetInsertionCharacter extends AbstractSuspendable {
     @Override
     public String action(Object... args) throws PreparationException, StoppableException {
         // Has the url a query string?
-        if ("GET".equalsIgnoreCase(GUIMediator.model().method) && (GUIMediator.model().getData == null || "".equals(GUIMediator.model().getData))) {
+        if ("GET".equalsIgnoreCase(MediatorGUI.model().method) && (MediatorGUI.model().getData == null || "".equals(MediatorGUI.model().getData))) {
             throw new PreparationException("No query string");
             // Is the query string well formed?
-        } else if ("GET".equalsIgnoreCase(GUIMediator.model().method) && GUIMediator.model().getData.matches("[^\\w]*=.*")) {
+        } else if ("GET".equalsIgnoreCase(MediatorGUI.model().method) && MediatorGUI.model().getData.matches("[^\\w]*=.*")) {
             throw new PreparationException("Incorrect query string");
-        } else if ("POST".equalsIgnoreCase(GUIMediator.model().method) && GUIMediator.model().postData.indexOf("=") < 0) {
+        } else if ("POST".equalsIgnoreCase(MediatorGUI.model().method) && MediatorGUI.model().postData.indexOf("=") < 0) {
             throw new PreparationException("Incorrect POST datas");
-        } else if ("COOKIE".equalsIgnoreCase(GUIMediator.model().method) && GUIMediator.model().cookieData.indexOf("=") < 0) {
+        } else if ("COOKIE".equalsIgnoreCase(MediatorGUI.model().method) && MediatorGUI.model().cookieData.indexOf("=") < 0) {
             throw new PreparationException("Incorrect COOKIE datas");
-        } else if (!GUIMediator.model().headerData.equals("") && GUIMediator.model().headerData.indexOf(":") < 0) {
+        } else if (!"".equals(MediatorGUI.model().headerData) && MediatorGUI.model().headerData.indexOf(":") < 0) {
             throw new PreparationException("Incorrect HEADER datas");
             // Parse query information: url=>everything before the sign '=',
             // start of query string=>everything after '='
-        } else if ("GET".equalsIgnoreCase(GUIMediator.model().method) && !GUIMediator.model().getData.matches(".*=$")) {
-            Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(GUIMediator.model().getData);
+        } else if ("GET".equalsIgnoreCase(MediatorGUI.model().method) && !MediatorGUI.model().getData.matches(".*=$")) {
+            Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(MediatorGUI.model().getData);
             regexSearch.find();
             try {
-                GUIMediator.model().getData = regexSearch.group(1);
+                MediatorGUI.model().getData = regexSearch.group(1);
                 return regexSearch.group(2);
             } catch (IllegalStateException e) {
                 throw new PreparationException("Incorrect GET format");
             }
             // Parse post information
-        } else if ("POST".equalsIgnoreCase(GUIMediator.model().method) && !GUIMediator.model().postData.matches(".*=$")) {
-            Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(GUIMediator.model().postData);
+        } else if ("POST".equalsIgnoreCase(MediatorGUI.model().method) && !MediatorGUI.model().postData.matches(".*=$")) {
+            Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(MediatorGUI.model().postData);
             regexSearch.find();
             try {
-                GUIMediator.model().postData = regexSearch.group(1);
+                MediatorGUI.model().postData = regexSearch.group(1);
                 return regexSearch.group(2);
             } catch (IllegalStateException e) {
                 throw new PreparationException("Incorrect POST format");
             }
             // Parse cookie information
-        } else if ("COOKIE".equalsIgnoreCase(GUIMediator.model().method) && !GUIMediator.model().cookieData.matches(".*=$")) {
-            Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(GUIMediator.model().cookieData);
+        } else if ("COOKIE".equalsIgnoreCase(MediatorGUI.model().method) && !MediatorGUI.model().cookieData.matches(".*=$")) {
+            Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(MediatorGUI.model().cookieData);
             regexSearch.find();
             try {
-                GUIMediator.model().cookieData = regexSearch.group(1);
+                MediatorGUI.model().cookieData = regexSearch.group(1);
                 return regexSearch.group(2);
             } catch (IllegalStateException e) {
                 throw new PreparationException("Incorrect Cookie format");
             }
             // Parse header information
-        } else if ("HEADER".equalsIgnoreCase(GUIMediator.model().method) && !GUIMediator.model().headerData.matches(".*:$")) {
-            Matcher regexSearch = Pattern.compile("(.*:)(.*)").matcher(GUIMediator.model().headerData);
+        } else if ("HEADER".equalsIgnoreCase(MediatorGUI.model().method) && !MediatorGUI.model().headerData.matches(".*:$")) {
+            Matcher regexSearch = Pattern.compile("(.*:)(.*)").matcher(MediatorGUI.model().headerData);
             regexSearch.find();
             try {
-                GUIMediator.model().headerData = regexSearch.group(1);
+                MediatorGUI.model().headerData = regexSearch.group(1);
                 return regexSearch.group(2);
             } catch (IllegalStateException e) {
                 throw new PreparationException("Incorrect Header format");
@@ -88,9 +88,9 @@ public class StoppableGetInsertionCharacter extends AbstractSuspendable {
         //         Unknown column '1337' in 'order clause'
         // or   supplied argument is not a valid MySQL result resource
         ExecutorService taskExecutor = Executors.newCachedThreadPool();
-        CompletionService<SourceCodeCallable> taskCompletionService = new ExecutorCompletionService<SourceCodeCallable>(taskExecutor);
+        CompletionService<CallableSourceCode> taskCompletionService = new ExecutorCompletionService<CallableSourceCode>(taskExecutor);
         for (String insertionCharacter : new String[] {"0", "0'", "'", "-1", "1", "\"", "-1)"}) {
-            taskCompletionService.submit(new SourceCodeCallable(insertionCharacter + "+order+by+1337--+", insertionCharacter));
+            taskCompletionService.submit(new CallableSourceCode(insertionCharacter + "+order+by+1337--+", insertionCharacter));
         }
 
         int total = 7;
@@ -100,7 +100,7 @@ public class StoppableGetInsertionCharacter extends AbstractSuspendable {
                 throw new StoppableException();
             }
             try {
-                SourceCodeCallable currentCallable = taskCompletionService.take().get();
+                CallableSourceCode currentCallable = taskCompletionService.take().get();
                 total--;
                 String pageSource = currentCallable.getContent();
                 if (Pattern.compile(".*Unknown column '1337' in 'order clause'.*", Pattern.DOTALL).matcher(pageSource).matches() 

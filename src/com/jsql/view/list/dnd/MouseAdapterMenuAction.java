@@ -27,8 +27,8 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
-import com.jsql.view.GUIMediator;
-import com.jsql.view.GUITools;
+import com.jsql.view.MediatorGUI;
+import com.jsql.view.ToolsGUI;
 
 /**
  * A Mouse action to display a popupmenu on a JList.
@@ -75,15 +75,15 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             JMenuItem mnRestoreDefault = new JMenuItem("Restore default");
             JMenuItem mnSelectAll = new JMenuItem("Select All");
             
-            mnImport.setIcon(GUITools.EMPTY);
-            mnExport.setIcon(GUITools.EMPTY);
-            mnCut.setIcon(GUITools.EMPTY);
-            mnCopy.setIcon(GUITools.EMPTY);
-            mnPaste.setIcon(GUITools.EMPTY);
-            mnDelete.setIcon(GUITools.EMPTY);
-            mnNew.setIcon(GUITools.EMPTY);
-            mnRestoreDefault.setIcon(GUITools.EMPTY);
-            mnSelectAll.setIcon(GUITools.EMPTY);
+            mnImport.setIcon(ToolsGUI.EMPTY);
+            mnExport.setIcon(ToolsGUI.EMPTY);
+            mnCut.setIcon(ToolsGUI.EMPTY);
+            mnCopy.setIcon(ToolsGUI.EMPTY);
+            mnPaste.setIcon(ToolsGUI.EMPTY);
+            mnDelete.setIcon(ToolsGUI.EMPTY);
+            mnNew.setIcon(ToolsGUI.EMPTY);
+            mnRestoreDefault.setIcon(ToolsGUI.EMPTY);
+            mnSelectAll.setIcon(ToolsGUI.EMPTY);
 
             mnCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
             mnCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
@@ -91,7 +91,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             mnSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
             
             //Create a file chooser
-            final JFileChooser importFileDialog = new JFileChooser(GUIMediator.model().prefPathFile);
+            final JFileChooser importFileDialog = new JFileChooser(MediatorGUI.model().prefPathFile);
             importFileDialog.setDialogTitle("Import a list of file paths");
             importFileDialog.setMultiSelectionEnabled(true);
 

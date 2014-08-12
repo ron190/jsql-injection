@@ -17,7 +17,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.Column;
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 import com.jsql.view.tree.AbstractNodeModel;
 import com.jsql.view.tree.NodeModelColumn;
 
@@ -42,7 +42,7 @@ public class AddColumns implements IInteractionCommand {
     @Override
     public void execute() {
         // Tree model, update the tree (refresh, add node, etc)
-        DefaultTreeModel treeModel = (DefaultTreeModel) GUIMediator.databaseTree().getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGUI.databaseTree().getModel();
 
         // The table to update
         DefaultMutableTreeNode tableNode = null;
@@ -55,14 +55,14 @@ public class AddColumns implements IInteractionCommand {
             // Create the node
             DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(newTreeNodeModel);
             // Get the parent table
-            tableNode = GUIMediator.gui().getTreeNodeModels().get(column.getParent());
+            tableNode = MediatorGUI.gui().getTreeNodeModels().get(column.getParent());
             // Add the column to the table
             treeModel.insertNodeInto(newNode, tableNode, tableNode.getChildCount());
         }
 
         if (tableNode != null) {
             // Open the table node
-            GUIMediator.databaseTree().expandPath(new TreePath(tableNode.getPath()));
+            MediatorGUI.databaseTree().expandPath(new TreePath(tableNode.getPath()));
             // The table has just been search (avoid double check)
             ((AbstractNodeModel) tableNode.getUserObject()).hasBeenSearched = true;
         }

@@ -12,15 +12,15 @@ import java.util.Arrays;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringEscapeUtils;
 
-import com.jsql.tool.StringTool;
+import com.jsql.tool.ToolsString;
 
 /**
  * Action runned when this.coderManager.encoding.
  */
 public class ActionCoder implements ActionListener {
-    private CoderManager coderManager;
+    private ManagerCoder coderManager;
     
-    public ActionCoder(CoderManager coderManager) {
+    public ActionCoder(ManagerCoder coderManager) {
         super();
         this.coderManager = coderManager;
     }
@@ -56,7 +56,7 @@ public class ActionCoder implements ActionListener {
             byte[] hashSHA1 = md.digest();
             String stringSHA1 = this.coderManager.digestToHexString(hashSHA1);
 
-            String passwordSHA1 = new String(StringTool.hexstr(stringSHA1).toCharArray());
+            String passwordSHA1 = new String(ToolsString.hexstr(stringSHA1).toCharArray());
             byte[] passwordSHA1Bytes = passwordSHA1.getBytes();
             md.update(passwordSHA1Bytes, 0, passwordSHA1Bytes.length);
             byte[] hashSHA1SH1 = md.digest();

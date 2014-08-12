@@ -22,7 +22,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import com.jsql.view.GUITools;
+import com.jsql.view.ToolsGUI;
 import com.jsql.view.ui.RoundBorder;
 
 /**
@@ -48,7 +48,7 @@ public class NodeModelEmpty extends AbstractNodeModel {
         text.setBorder(new RoundBorder(4, 1, false));
         if (currentNode != null) {
             if (selected) {
-                emptyPanel.setBackground(GUITools.SELECTION_BACKGROUND);
+                emptyPanel.setBackground(ToolsGUI.SELECTION_BACKGROUND);
                 text.setBorder(new RoundBorder(4, 1, true));
             } else {
                 emptyPanel.setBackground(Color.WHITE);

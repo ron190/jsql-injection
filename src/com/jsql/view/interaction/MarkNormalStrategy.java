@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
-import com.jsql.view.GUIMediator;
+import com.jsql.view.MediatorGUI;
 
 /**
  * Mark the injection as invulnerable to a normal injection.
@@ -25,6 +25,6 @@ public class MarkNormalStrategy implements IInteractionCommand {
 
     @Override
     public void execute() {
-        GUIMediator.status().labelNormal.setUnderlined();
+        MediatorGUI.status().labelNormal.setUnderlined();
     }
 }
