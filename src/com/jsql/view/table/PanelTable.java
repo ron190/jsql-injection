@@ -46,6 +46,9 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
+import net.coderazzi.filters.gui.AutoChoices;
+import net.coderazzi.filters.gui.TableFilterHeader;
+
 import org.apache.log4j.Logger;
 
 import com.jsql.view.popupmenu.JPopupMenuTable;
@@ -86,6 +89,8 @@ public class PanelTable extends JPanel {
 //                return getPreferredSize().height < getParent().getHeight();
 //            }
         };
+        
+        new TableFilterHeader(table, AutoChoices.ENABLED);
 
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -152,8 +157,10 @@ public class PanelTable extends JPanel {
                     DefaultListSelectionModel  model = (DefaultListSelectionModel) table.getSelectionModel();
                     DefaultListSelectionModel  model2 = (DefaultListSelectionModel) table.getColumnModel().getSelectionModel();
 
-                    model.moveLeadSelectionIndex(rowNumber);
-                    model2.moveLeadSelectionIndex(colNumber);
+//                    model.moveLeadSelectionIndex(rowNumber);
+//                    model2.moveLeadSelectionIndex(colNumber);
+//                    
+                    table.changeSelection(table.rowAtPoint(p), table.columnAtPoint(p), false, false);
                 }
             }
         });

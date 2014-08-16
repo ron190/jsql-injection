@@ -53,6 +53,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import net.coderazzi.filters.gui.AutoChoices;
+import net.coderazzi.filters.gui.TableFilterHeader;
+
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.HTTPHeader;
 import com.jsql.view.MediatorGUI;
@@ -136,6 +139,9 @@ public class PanelBottom extends JPanel {
                 return false;
             }
         };
+        
+        new TableFilterHeader(this.networkTable, AutoChoices.ENABLED);
+
         this.networkTable.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
         this.networkTable.setRowSelectionAllowed(true);
         this.networkTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);

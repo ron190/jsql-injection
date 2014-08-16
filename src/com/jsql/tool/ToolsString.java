@@ -53,8 +53,7 @@ public final class ToolsString {
         for (int i = 0; i < bytes.length; i++) {
             bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
         }
-        String multi = new String(bytes);
-        return multi;
+        return new String(bytes);
     }
 
     /**

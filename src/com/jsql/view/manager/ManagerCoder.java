@@ -17,6 +17,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -25,15 +29,18 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicComboPopup;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 
 import com.jsql.view.ToolsGUI;
+import com.jsql.view.dropshadow.ShadowPopupBorder;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.textcomponent.JPopupTextArea;
@@ -51,7 +58,8 @@ public class ManagerCoder extends JPanel {
     /**
      * Encoding user has choosed. 
      */
-    JComboBox<String> encoding;
+//    JComboBox<String> encoding;
+    DisableItemComboBox<ComboItem> encoding;
 
     /**
      * JTextArea displaying result of encoding/decoding.
@@ -74,29 +82,42 @@ public class ManagerCoder extends JPanel {
         middleLine.setLayout(new BoxLayout(middleLine, BoxLayout.X_AXIS));
         middleLine.setBorder(BorderFactory.createEmptyBorder(1, 0, 1, 1));
 
-        encoding = new JComboBox<String>(new String[]{
-                "base64 < encode",
-                "base64 > decode",
-                "hex < encode",
-                "hex > decode",
-                "url < encode",
-                "url > decode",
-                "html < encode",
-                "html > decode",
-                "base64(zipped) < encode",
-                "base64(zipped) > decode",
-                "hex(zipped) < encode",
-                "hex(zipped) > decode",
-                "md2 < hash",
-                "md5 < hash",
-                "sha-1 < hash",
-                "sha-256 < hash",
-                "sha-384 < hash",
-                "sha-512 < hash",
-                "mysql < hash"
+        encoding = new DisableItemComboBox<ComboItem>(new ComboItem[]{
+                new ComboItem("Encode"),
+                new ComboItem("Base64",         "Base64 encode"),
+                new ComboItem("Hex",            "Hex encode"),
+                new ComboItem("Url",            "Url encode"),
+                new ComboItem("Html",           "Html encode"),
+                new ComboItem("Base64(zipped)", "Base64(zipped) encode"),
+                new ComboItem("Hex(zipped)",    "Hex(zipped) encode"),
+                new ComboItem("----"),
+                new ComboItem("Decode"),
+                new ComboItem("Base64",         "Base64 decode"),
+                new ComboItem("Hex",            "Hex decode"),
+                new ComboItem("Url",            "Url decode"),
+                new ComboItem("Html",           "Html decode"),
+                new ComboItem("Base64(zipped)", "Base64(zipped) decode"),
+                new ComboItem("Hex(zipped)",    "Hex(zipped) decode"),
+                new ComboItem("----"),
+                new ComboItem("Hash"),
+                new ComboItem("Md2"),
+                new ComboItem("Md5"),
+                new ComboItem("Sha-1"),
+                new ComboItem("Sha-256"),
+                new ComboItem("Sha-384"),
+                new ComboItem("Sha-512"),
+                new ComboItem("Mysql")
         });
-
-        encoding.setSelectedItem("base64 > decode");
+        
+        Set<Integer> set = new HashSet<Integer>();
+        set.addAll((Collection<Integer>)Arrays.asList(new Integer[]{0, 8, 16}));
+        encoding.setSelectedIndex(1);
+        encoding.setDisableIndex(set);
+        encoding.setMaximumRowCount(10);
+        
+        Object child = encoding.getAccessibleContext().getAccessibleChild(0);
+        BasicComboPopup popup = (BasicComboPopup) child;
+        popup.setBorder(BorderFactory.createCompoundBorder(ShadowPopupBorder.getInstance(), (Border) UIManager.get("PopupMenu.border")));
 
         JButton run = new JButton("Run", new ImageIcon(getClass().getResource("/com/jsql/view/images/tick.png")));
         run.setBorder(ToolsGUI.BLU_ROUND_BORDER);
@@ -171,8 +192,9 @@ public class ManagerCoder extends JPanel {
         if (str == null || str.length() == 0) {
             return str;
         }
-        GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(str.getBytes("ISO-8859-1")));
-        BufferedReader bf = new BufferedReader(new InputStreamReader(gis, "ISO-8859-1"));
+        final String encoding = "ISO-8859-1";
+        GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(str.getBytes(encoding)));
+        BufferedReader bf = new BufferedReader(new InputStreamReader(gis, encoding));
 
         char[] buff = new char[1024];
         int read;

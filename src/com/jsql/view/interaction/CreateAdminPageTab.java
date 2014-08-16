@@ -33,6 +33,7 @@ import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
+import com.jsql.i18n.I18n;
 import com.jsql.view.MediatorGUI;
 import com.jsql.view.ToolsGUI;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
@@ -86,21 +87,21 @@ public class CreateAdminPageTab implements IInteractionCommand {
 
         final JPopupMenu menu = new JPopupMenu();
         
-        JMenuItem item = new JMenuItem("Copy page URL");
+        JMenuItem item = new JMenuItem(I18n.copyPageURL);
         item.setIcon(ToolsGUI.EMPTY);
         
         JMenuItem copyItem = new JMenuItem();
         copyItem.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         copyItem.setMnemonic('C');
-        copyItem.setText("Copy");
+        copyItem.setText(I18n.copy);
         copyItem.setIcon(ToolsGUI.EMPTY);
         
-        JMenuItem itemSelectAll = new JMenuItem("Select All");
+        JMenuItem itemSelectAll = new JMenuItem();
         itemSelectAll.setIcon(ToolsGUI.EMPTY);
         itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
-        itemSelectAll.setText("Select All");
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+        itemSelectAll.setText(I18n.selectAll);
         itemSelectAll.setMnemonic('A');
         
         menu.add(item);

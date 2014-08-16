@@ -171,10 +171,10 @@ public class PanelTop extends JPanel {
         this.textHeader.setPreferredSize(new Dimension(0, 27));
         this.textHeader.setFont(this.textHeader.getFont().deriveFont(Font.PLAIN, this.textHeader.getFont().getSize() + 2));
 
-        this.addressBar.addActionListener(new ActionStart());
-        this.textPOST.addActionListener(new ActionStart());
-        this.textCookie.addActionListener(new ActionStart());
-        this.textHeader.addActionListener(new ActionStart());
+        this.addressBar.addActionListener(new ActionEnterAddressBar());
+        this.textPOST.addActionListener(new ActionEnterAddressBar());
+        this.textCookie.addActionListener(new ActionEnterAddressBar());
+        this.textHeader.addActionListener(new ActionEnterAddressBar());
 
         this.submitAddressBar.setToolTipText("<html>Start injection</html>");
         this.submitAddressBar.addActionListener(new ActionStart());
@@ -275,31 +275,49 @@ public class PanelTop extends JPanel {
         public void actionPerformed(ActionEvent e) {
             // No injection running
             if ("Connect".equals(PanelTop.this.submitAddressBar.getState())) {
-                int option = 0;
-                // Ask the user confirmation if injection already built
-                if (MediatorGUI.model().isInjectionBuilt) {
-                    option = JOptionPane.showConfirmDialog(null, "Start a new injection?", "New injection", JOptionPane.OK_CANCEL_OPTION);
-                }
-
-                // Then start injection
-                if (!MediatorGUI.model().isInjectionBuilt || option == JOptionPane.OK_OPTION) {
-                    PanelTop.this.submitAddressBar.setInjectionRunning();
-                    PanelTop.this.loader.setVisible(true);
-
-                    MediatorGUI.model().controlInput(
-                        PanelTop.this.addressBar.getText(),
-                        PanelTop.this.textPOST.getText(),
-                        PanelTop.this.textCookie.getText(),
-                        PanelTop.this.textHeader.getText(),
-                        PanelTop.this.sendMethod
-                    );
-                }
+                this.startInjection();
 
             // Injection currently running, stop the process
             } else if ("Stop".equals(submitAddressBar.getState())) {
-                PanelTop.this.loader.setVisible(false);
-                PanelTop.this.submitAddressBar.setInjectionStopping();
-                MediatorGUI.model().stop();
+                stopInjection();
+            }
+        }
+        
+        protected void startInjection() {
+            int option = 0;
+            // Ask the user confirmation if injection already built
+            if (MediatorGUI.model().isInjectionBuilt) {
+                option = JOptionPane.showConfirmDialog(null, "Start a new injection?", "New injection", JOptionPane.OK_CANCEL_OPTION);
+            }
+
+            // Then start injection
+            if (!MediatorGUI.model().isInjectionBuilt || option == JOptionPane.OK_OPTION) {
+                PanelTop.this.submitAddressBar.setInjectionRunning();
+                PanelTop.this.loader.setVisible(true);
+
+                MediatorGUI.model().controlInput(
+                    PanelTop.this.addressBar.getText(),
+                    PanelTop.this.textPOST.getText(),
+                    PanelTop.this.textCookie.getText(),
+                    PanelTop.this.textHeader.getText(),
+                    PanelTop.this.sendMethod
+                );
+            }
+        }
+        
+        private void stopInjection() {
+            PanelTop.this.loader.setVisible(false);
+            PanelTop.this.submitAddressBar.setInjectionStopping();
+            MediatorGUI.model().stop();
+        }
+    }
+    
+    private class ActionEnterAddressBar extends ActionStart {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // No injection running
+            if ("Connect".equals(PanelTop.this.submitAddressBar.getState())) {
+                this.startInjection();
             }
         }
     }
