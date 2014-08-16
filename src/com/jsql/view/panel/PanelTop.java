@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
+import com.jsql.i18n.I18n;
 import com.jsql.view.MediatorGUI;
 import com.jsql.view.ToolsGUI;
 import com.jsql.view.radio.RadioLinkAddressBar;
@@ -121,31 +122,15 @@ public class PanelTop extends JPanel {
         this.radioHeader.setBorder(BorderFactory.createEmptyBorder(6, 0, 0, 3));
 
         // Tooltip setting
-        this.addressBar.setToolTipText(
-            "<html><b>Website URL</b><br>"
-            + "jSQL <u>always</u> injects the last parameter (in any mode: default/GET, POST, Cookie or Header).<br>" 
-            + "Leave last parameter blank to let jSQL search for the best value automatically:<br>"
-            + "<i>Example: <<b>http://hostname/path?paramN=valueN&injectMe=</b></i><br>"
-            + "Or force last parameter with your own value (use working id or well known string like 0' or -1):<br>"
-            + "<i>Example: <b>http://hostname/path?paramN=valueN&injectMe=0'</b></i></html>"
-        );
-        this.textPOST.setToolTipText("<html><b>POST parameters</b><br>" +
-                "jSQL <u>always</u> injects the last parameter (in any mode selected).<br>" +
-                "<i>Automatic search for best value: <b>paramN=valueN&injectMe=</b><br>" +
-                "Force your own value, example: <b>paramN=valueN&injectMe=0'</b></i></html>");
-        this.textCookie.setToolTipText("<html><b>Cookie parameters</b><br>" +
-                "jSQL <u>always</u> injects the last parameter (in any mode selected).<br>" +
-                "<i>Automatic search for best value: <b>paramN=valueN;injectMe=</b><br>" +
-                "Force your own value, example: <b>paramN=valueN;injectMe=0'</b></i></html>");
-        this.textHeader.setToolTipText("<html><b>Header parameters</b><br>" +
-                "jSQL <u>always</u> injects the last parameter (in any mode selected).<br>" +
-                "<i>Automatic search for best value: <b>paramN:valueN\\r\\ninjectMe:</b><br>" +
-                "Force your own value, example: <b>paramN:valueN\\r\\ninjectMe:0'</b></i></html>");
+        this.addressBar.setToolTipText(I18n.GET_TOOLTIP);
+        this.textPOST.setToolTipText(I18n.POST_TOOLTIP);
+        this.textCookie.setToolTipText(I18n.COOKIE_TOOLTIP);
+        this.textHeader.setToolTipText(I18n.HEADER_TOOLTIP);
 
-        this.radioGET.setToolTipText("Injection using GET parameters");
-        this.radioPOST.setToolTipText("Injection using POST parameters");
-        this.radioCookie.setToolTipText("Injection using Cookie parameters");
-        this.radioHeader.setToolTipText("Injection using Header parameters");
+        this.radioGET.setToolTipText(I18n.GET_METHOD);
+        this.radioPOST.setToolTipText(I18n.POST_METHOD);
+        this.radioCookie.setToolTipText(I18n.COOKIE_METHOD);
+        this.radioHeader.setToolTipText(I18n.HEADER_METHOD);
 
         /**
          * Define UI and the left padding for addressBar
@@ -176,7 +161,7 @@ public class PanelTop extends JPanel {
         this.textCookie.addActionListener(new ActionEnterAddressBar());
         this.textHeader.addActionListener(new ActionEnterAddressBar());
 
-        this.submitAddressBar.setToolTipText("<html>Start injection</html>");
+        this.submitAddressBar.setToolTipText(I18n.BUTTON_START_INJECTION);
         this.submitAddressBar.addActionListener(new ActionStart());
         new ComponentBorder(this.submitAddressBar, 17, 0).install(this.addressBar);
 
@@ -245,7 +230,7 @@ public class PanelTop extends JPanel {
         this.textHeader.setVisible(false);
         this.radioHeader.setVisible(false);
 
-        advancedButton.setToolTipText("Advanced");
+        advancedButton.setToolTipText(I18n.BUTTON_ADVANCED);
         advancedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -287,7 +272,8 @@ public class PanelTop extends JPanel {
             int option = 0;
             // Ask the user confirmation if injection already built
             if (MediatorGUI.model().isInjectionBuilt) {
-                option = JOptionPane.showConfirmDialog(null, "Start a new injection?", "New injection", JOptionPane.OK_CANCEL_OPTION);
+                option = JOptionPane.showConfirmDialog(null, I18n.DIALOG_NEW_INJECTION_TEXT,
+                        I18n.DIALOG_NEW_INJECTION_TITLE, JOptionPane.OK_CANCEL_OPTION);
             }
 
             // Then start injection

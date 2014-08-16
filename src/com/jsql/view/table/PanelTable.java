@@ -31,7 +31,6 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListSelectionModel;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -83,11 +82,6 @@ public class PanelTable extends JPanel {
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
-
-//            @Override
-//            public boolean getScrollableTracksViewportHeight() {
-//                return getPreferredSize().height < getParent().getHeight();
-//            }
         };
         
         new TableFilterHeader(table, AutoChoices.ENABLED);
@@ -150,16 +144,6 @@ public class PanelTable extends JPanel {
                 if (SwingUtilities.isRightMouseButton(e)) {
                     Point p = e.getPoint();
 
-                    // get the row index that contains that coordinate
-                    int rowNumber = table.rowAtPoint(p);
-                    int colNumber = table.columnAtPoint(p);
-                    // Get the ListSelectionModel of the JTable
-                    DefaultListSelectionModel  model = (DefaultListSelectionModel) table.getSelectionModel();
-                    DefaultListSelectionModel  model2 = (DefaultListSelectionModel) table.getColumnModel().getSelectionModel();
-
-//                    model.moveLeadSelectionIndex(rowNumber);
-//                    model2.moveLeadSelectionIndex(colNumber);
-//                    
                     table.changeSelection(table.rowAtPoint(p), table.columnAtPoint(p), false, false);
                 }
             }

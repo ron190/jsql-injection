@@ -111,7 +111,6 @@ public class DisableItemComboBox<E> extends JComboBox<E> {
         if ("----".equals(this.getItemAt(index).toString()) || disableIndexSet.contains(index)) {
             isDisableIndex = true;
         } else {
-            //isDisableIndex = false;
             super.setSelectedIndex(index);
         }
     }

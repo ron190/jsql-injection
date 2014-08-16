@@ -20,6 +20,7 @@ import javax.swing.JTable;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
+import com.jsql.i18n.I18n;
 import com.jsql.view.ToolsGUI;
 
 /**
@@ -43,7 +44,7 @@ public class JPopupMenuTable extends JPopupMenu {
 
         JMenuItem copyItem = new JMenuItem();
         copyItem.setAction(new ActionCopy());
-        copyItem.setText("Copy");
+        copyItem.setText(I18n.COPY);
         copyItem.setMnemonic('C');
         copyItem.setIcon(ToolsGUI.EMPTY);
         this.add(copyItem);
@@ -52,7 +53,7 @@ public class JPopupMenuTable extends JPopupMenu {
 
         JMenuItem selectAllItem = new JMenuItem();
         selectAllItem.setAction(new ActionSelectAll());
-        selectAllItem.setText("Select All");
+        selectAllItem.setText(I18n.SELECT_ALL);
         selectAllItem.setMnemonic('A');
         selectAllItem.setIcon(ToolsGUI.EMPTY);
         this.add(selectAllItem);

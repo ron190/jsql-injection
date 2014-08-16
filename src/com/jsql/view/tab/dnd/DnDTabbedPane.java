@@ -92,6 +92,7 @@ public class DnDTabbedPane extends JTabbedPane {
             clickArrowButton("scrollTabsForwardAction");
         }
     }
+    
     public DnDTabbedPane() {
         super();
         Handler h = new Handler();
@@ -117,7 +118,9 @@ public class DnDTabbedPane extends JTabbedPane {
         setUI(new CustomMetalTabbedPaneUI());
         setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, ToolsGUI.COMPONENT_BORDER));
     }
+    
     private DropMode dropMode = DropMode.INSERT;
+    
     public DropLocation dropLocationForPointLocal(Point p) {
 //        boolean isTB = getTabPlacement()==JTabbedPane.TOP || getTabPlacement()==JTabbedPane.BOTTOM;
         switch(dropMode) {
@@ -135,10 +138,13 @@ public class DnDTabbedPane extends JTabbedPane {
         }
         return new DropLocation(p, -1);
     }
+    
     private transient DropLocation dropLocation;
+    
     public final DropLocation getDropLocation() {
         return dropLocation;
     }
+    
     public Object setDropLocationLocal(TransferHandler.DropLocation location, Object state, boolean forDrop) {
         DropLocation old = dropLocation;
         if (location == null || !forDrop) {
@@ -149,6 +155,7 @@ public class DnDTabbedPane extends JTabbedPane {
         firePropertyChange("dropLocation", old, dropLocation);
         return null;
     }
+    
     public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {
         //        System.out.println("exportTab");
         if(targetIndex<0) return;
@@ -198,6 +205,7 @@ public class DnDTabbedPane extends JTabbedPane {
         //pointed out by Daniel Dario Morales Salas
         setTabComponentAt(tgtindex, tab);
     }
+    
     public Rectangle getDropLineRect() {
         DropLocation loc = getDropLocation();
         if(loc == null || !loc.isDropable()) return null;
@@ -216,6 +224,7 @@ public class DnDTabbedPane extends JTabbedPane {
         }
         return lineRect;
     }
+    
     public Rectangle getTabAreaBounds() {
         Rectangle tabbedRect = getBounds();
         int xx = tabbedRect.x;
@@ -251,16 +260,20 @@ public class DnDTabbedPane extends JTabbedPane {
                 glassPane.repaint();
             }
         }
+        
         // PropertyChangeListener
-        @Override public void propertyChange(PropertyChangeEvent e) {
+        @Override 
+        public void propertyChange(PropertyChangeEvent e) {
             String propertyName = e.getPropertyName();
             if ("dropLocation".equals(propertyName)) {
                 //System.out.println("propertyChange: dropLocation");
                 repaintDropLocation(getDropLocation());
             }
         }
+        
         // MouseListener
-        @Override public void mousePressed(MouseEvent e) {
+        @Override 
+        public void mousePressed(MouseEvent e) {
             DnDTabbedPane src = (DnDTabbedPane)e.getSource();
             if (src.getTabCount() <= 1) {
                 startPt = null;
@@ -273,10 +286,14 @@ public class DnDTabbedPane extends JTabbedPane {
             boolean flag = idx < 0 || !src.isEnabledAt(idx) || src.getComponentAt(idx) == null;
             startPt = flag ? null : tabPt;
         }
+        
         private Point startPt;
+        
         int gestureMotionThreshold = DragSource.getDragThreshold();
         //private final Integer gestureMotionThreshold = (Integer)Toolkit.getDefaultToolkit().getDesktopProperty("DnD.gestureMotionThreshold");
-        @Override public void mouseDragged(MouseEvent e)  {
+        
+        @Override 
+        public void mouseDragged(MouseEvent e)  {
             Point tabPt = e.getPoint(); //e.getDragOrigin();
             if (startPt != null && Math.sqrt(Math.pow(tabPt.x - startPt.x, 2) + Math.pow(tabPt.y - startPt.y, 2)) > gestureMotionThreshold) {
                 DnDTabbedPane src = (DnDTabbedPane)e.getSource();

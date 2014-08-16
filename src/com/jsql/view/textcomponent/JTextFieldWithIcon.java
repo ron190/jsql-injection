@@ -28,6 +28,8 @@ import javax.swing.border.Border;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.i18n.I18n;
+
 /**
  * A JTextField with globe icon displayed on the left. 
  */
@@ -72,7 +74,7 @@ public class JTextFieldWithIcon extends JTextField {
             int c2 = ((c0 & m) >>> 1) + ((c1 & m) >>> 1);
             g.setColor(new Color(c2, true));
             g.setFont(this.getFont().deriveFont(Font.ITALIC));
-            g.drawString("Enter address", ins.left, h / 2 + fm.getAscent() / 2 - 1);
+            g.drawString(I18n.ENTER_ADDRESS, ins.left, h / 2 + fm.getAscent() / 2 - 1);
         }
     }
 }

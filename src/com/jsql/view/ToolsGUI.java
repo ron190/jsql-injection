@@ -134,7 +134,6 @@ public final class ToolsGUI {
         // No bold for menu + round corner
         UIManager.put("Menu.font", MYFONT);
         UIManager.put("PopupMenu.font", MYFONT);
-//        UIManager.put("PopupMenu.border", BorderFactory.createLineBorder(ToolsGUI.COMPONENT_BORDER));
         UIManager.put("Menu.selectionBackground", SELECTION_BACKGROUND);
         UIManager.put("MenuItem.selectionBackground", SELECTION_BACKGROUND);
         UIManager.put("MenuItem.font", MYFONT);

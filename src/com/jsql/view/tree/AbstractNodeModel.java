@@ -23,6 +23,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import com.jsql.i18n.I18n;
 import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.view.MediatorGUI;
 import com.jsql.view.ToolsGUI;
@@ -115,8 +116,8 @@ public abstract class AbstractNodeModel {
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, int x, int y) {
         JPopupMenu tablePopupMenu = new JPopupMenu();
 
-        JMenuItem mnLoad = new JMenuItem("Load/Stop", 'o');
-        JMenuItem mnPause = new JMenuItem("Pause/Resume", 's');
+        JMenuItem mnLoad = new JMenuItem(I18n.LOAD_STOP, 'o');
+        JMenuItem mnPause = new JMenuItem(I18n.PAUSE_RESUME, 's');
         mnLoad.setIcon(ToolsGUI.EMPTY);
         mnPause.setIcon(ToolsGUI.EMPTY);
 

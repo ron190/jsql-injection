@@ -29,7 +29,6 @@ import com.jsql.view.MediatorGUI;
  */
 @SuppressWarnings("serial")
 public class TabHeader extends JPanel implements MouseListener {
-
     /**
      * Tab header with default tab icon.
      */

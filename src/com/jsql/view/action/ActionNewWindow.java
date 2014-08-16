@@ -20,6 +20,7 @@ import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.ToolsGUI;
 
@@ -36,7 +37,7 @@ public class ActionNewWindow extends AbstractAction {
     public ActionNewWindow() {
         super();
 
-        this.putValue(Action.NAME, "New Window");
+        this.putValue(Action.NAME, I18n.NEW_WINDOW);
         this.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_N));
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
         this.putValue(Action.SMALL_ICON, ToolsGUI.EMPTY);
@@ -44,7 +45,7 @@ public class ActionNewWindow extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        LOGGER.info("Starting new window.");
+        LOGGER.info(I18n.STARTING_NEW_WINDOW);
         String separator = System.getProperty("file.separator");
         String classpath = System.getProperty("java.class.path");
         String path = System.getProperty("java.home") + separator + "bin" + separator + "java";
@@ -53,7 +54,7 @@ public class ActionNewWindow extends AbstractAction {
         try {
             processBuilder.start();
         } catch (IOException e1) {
-            LOGGER.error("Error opening new window.");
+            LOGGER.error(I18n.ERROR_OPENING_NEW_WINDOW);
         }        
     }
 }

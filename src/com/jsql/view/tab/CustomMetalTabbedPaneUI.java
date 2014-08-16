@@ -18,7 +18,6 @@ import javax.swing.plaf.metal.MetalTabbedPaneUI;
  * Tab UI to remove inner borders on empty tabbedpane and force header height on Linux.
  */
 public class CustomMetalTabbedPaneUI extends MetalTabbedPaneUI {
-
     @Override
     protected void paintContentBorderLeftEdge(Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) {
         // Do nothing

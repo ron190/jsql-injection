@@ -23,6 +23,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import com.jsql.i18n.I18n;
 import com.jsql.model.bean.Table;
 import com.jsql.view.MediatorGUI;
 import com.jsql.view.ToolsGUI;
@@ -82,8 +83,8 @@ public class NodeModelTable extends AbstractNodeModel {
 
     @Override
     void displayMenu(JPopupMenu tablePopupMenu, final TreePath path) {
-        JMenuItem mnCheckAll = new JMenuItem("Check All", 'C');
-        JMenuItem mnUncheckAll = new JMenuItem("Uncheck All", 'U');
+        JMenuItem mnCheckAll = new JMenuItem(I18n.CHECK_ALL, 'C');
+        JMenuItem mnUncheckAll = new JMenuItem(I18n.UNCHECK_ALL, 'U');
 
         mnCheckAll.setIcon(ToolsGUI.EMPTY);
         mnUncheckAll.setIcon(ToolsGUI.EMPTY);

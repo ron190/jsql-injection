@@ -21,6 +21,7 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
+import com.jsql.i18n.I18n;
 import com.jsql.view.MediatorGUI;
 import com.jsql.view.ToolsGUI;
 import com.jsql.view.manager.ManagerAdminPage;
@@ -75,7 +76,7 @@ public class AdapterLeftTabbedPane extends MouseTabbedPane {
         this.activateMenu();
 
         // First node in tree
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(new NodeModelEmpty("No database"));
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(new NodeModelEmpty(I18n.NO_DATABASE));
         final JTree tree = new JTree(root);
         MediatorGUI.register(tree);
 
@@ -127,14 +128,14 @@ public class AdapterLeftTabbedPane extends MouseTabbedPane {
 
         JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 1, 0, 0, tree);
 
-        this.addTab("Database", ToolsGUI.DATABASE_SERVER_ICON, scroller, "Explore databases from remote host");
-        this.addTab("Admin page", ToolsGUI.ADMIN_SERVER_ICON, adminPageManager, "Test admin pages on remote host");
-        this.addTab("File", ToolsGUI.FILE_SERVER_ICON, fileManager, "Read files from remote host");
-        this.addTab("Web shell", ToolsGUI.SHELL_SERVER_ICON, shellManager, "<html>Create a web shell to remote host and open a terminal<br><i>Allows system commands like ipconfig/ifconfig</i></html>");
-        this.addTab("SQL shell", ToolsGUI.SHELL_SERVER_ICON, sqlShellManager, "<html>Create a SQL shell to remote host and open a terminal<br><i>Allows SQL commands like update/grant</i></html>");
-        this.addTab("Upload", ToolsGUI.UPLOAD_ICON, uploadManager, "Upload a file to host");
-        this.addTab("Brute force", ToolsGUI.BRUTER_ICON, new ManagerBruteForce(), "Brute force hashes");
-        this.addTab("Coder", ToolsGUI.CODER_ICON, new ManagerCoder(), "Encode or decode a string");
+        this.addTab(I18n.DATABASE, ToolsGUI.DATABASE_SERVER_ICON, scroller, I18n.DATABASE_TOOLTIP);
+        this.addTab(I18n.ADMINPAGE, ToolsGUI.ADMIN_SERVER_ICON, adminPageManager, I18n.ADMINPAGE_TOOLTIP);
+        this.addTab(I18n.FILE, ToolsGUI.FILE_SERVER_ICON, fileManager, I18n.FILE_TOOLTIP);
+        this.addTab(I18n.WEBSHELL, ToolsGUI.SHELL_SERVER_ICON, shellManager, I18n.WEBSHELL_TOOLTIP);
+        this.addTab(I18n.SQLSHELL, ToolsGUI.SHELL_SERVER_ICON, sqlShellManager, I18n.SQLSHELL_TOOLTIP);
+        this.addTab(I18n.UPLOAD, ToolsGUI.UPLOAD_ICON, uploadManager, I18n.UPLOAD_TOOLTIP);
+        this.addTab(I18n.BRUTEFORCE, ToolsGUI.BRUTER_ICON, new ManagerBruteForce(), I18n.BRUTEFORCE_TOOLTIP);
+        this.addTab(I18n.CODER, ToolsGUI.CODER_ICON, new ManagerCoder(), I18n.CODER_TOOLTIP);
 
         this.fileManager.setButtonEnable(false);
         this.shellManager.setButtonEnable(false);

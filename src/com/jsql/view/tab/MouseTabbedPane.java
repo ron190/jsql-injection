@@ -32,7 +32,9 @@ import com.jsql.view.action.ActionHandler;
  */
 @SuppressWarnings("serial")
 public class MouseTabbedPane extends JTabbedPane {
-
+    /**
+     * Create tabs with ctrl-TAB, mousewheel and new UI.
+     */
     public MouseTabbedPane() {
         this.addMouseWheelListener(new TabbedPaneMouseWheelScroller());
         // UIManager.put() is not sufficient

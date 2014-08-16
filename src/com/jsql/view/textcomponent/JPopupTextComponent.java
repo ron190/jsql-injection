@@ -59,8 +59,9 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
         });
 
         // Create an undo action and add it to the text component
-        this.getProxy().getActionMap().put("Undo",
-            new AbstractAction("Undo") {
+        final String undoIdentifier = "Undo";
+        this.getProxy().getActionMap().put(undoIdentifier,
+            new AbstractAction(undoIdentifier) {
                 public void actionPerformed(ActionEvent evt) {
                     try {
                         if (undo.canUndo()) {
@@ -74,11 +75,12 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
         );
 
         // Bind the undo action to ctl-Z
-        this.getProxy().getInputMap().put(KeyStroke.getKeyStroke("control Z"), "Undo");
+        this.getProxy().getInputMap().put(KeyStroke.getKeyStroke("control Z"), undoIdentifier);
 
         // Create a redo action and add it to the text component
-        this.getProxy().getActionMap().put("Redo",
-            new AbstractAction("Redo") {
+        final String redoIdentifier = "Redo";
+        this.getProxy().getActionMap().put(redoIdentifier,
+            new AbstractAction(redoIdentifier) {
                 public void actionPerformed(ActionEvent evt) {
                     try {
                         if (undo.canRedo()) {
@@ -92,6 +94,6 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
         );
 
         // Bind the redo action to ctl-Y
-        this.getProxy().getInputMap().put(KeyStroke.getKeyStroke("control Y"), "Redo");
+        this.getProxy().getInputMap().put(KeyStroke.getKeyStroke("control Y"), redoIdentifier);
     }
 }

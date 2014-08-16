@@ -22,6 +22,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.text.DefaultEditorKit;
 
+import com.jsql.i18n.I18n;
 import com.jsql.view.ToolsGUI;
 
 /**
@@ -38,14 +39,14 @@ public class JPopupMenuComponent extends JPopupMenu {
         copyItem.setAction(component.getActionMap().get(DefaultEditorKit.copyAction));
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         copyItem.setMnemonic('C');
-        copyItem.setText("Copy");
+        copyItem.setText(I18n.COPY);
         copyItem.setIcon(ToolsGUI.EMPTY);
         this.setLightWeightPopupEnabled(false);
 
         JMenuItem selectAllItem = new JMenuItem();
         selectAllItem.setIcon(ToolsGUI.EMPTY);
         selectAllItem.setAction(component.getActionMap().get(DefaultEditorKit.selectAllAction));
-        selectAllItem.setText("Select All");
+        selectAllItem.setText(I18n.SELECT_ALL);
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         selectAllItem.setMnemonic('A');
 

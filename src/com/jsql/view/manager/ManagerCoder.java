@@ -58,7 +58,6 @@ public class ManagerCoder extends JPanel {
     /**
      * Encoding user has choosed. 
      */
-//    JComboBox<String> encoding;
     DisableItemComboBox<ComboItem> encoding;
 
     /**
@@ -192,9 +191,9 @@ public class ManagerCoder extends JPanel {
         if (str == null || str.length() == 0) {
             return str;
         }
-        final String encoding = "ISO-8859-1";
-        GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(str.getBytes(encoding)));
-        BufferedReader bf = new BufferedReader(new InputStreamReader(gis, encoding));
+        final String encode = "ISO-8859-1";
+        GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(str.getBytes(encode)));
+        BufferedReader bf = new BufferedReader(new InputStreamReader(gis, encode));
 
         char[] buff = new char[1024];
         int read;

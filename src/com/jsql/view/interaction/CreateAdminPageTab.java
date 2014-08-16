@@ -87,21 +87,21 @@ public class CreateAdminPageTab implements IInteractionCommand {
 
         final JPopupMenu menu = new JPopupMenu();
         
-        JMenuItem item = new JMenuItem(I18n.copyPageURL);
+        JMenuItem item = new JMenuItem(I18n.COPY_PAGE_URL);
         item.setIcon(ToolsGUI.EMPTY);
         
         JMenuItem copyItem = new JMenuItem();
         copyItem.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         copyItem.setMnemonic('C');
-        copyItem.setText(I18n.copy);
+        copyItem.setText(I18n.COPY);
         copyItem.setIcon(ToolsGUI.EMPTY);
         
         JMenuItem itemSelectAll = new JMenuItem();
         itemSelectAll.setIcon(ToolsGUI.EMPTY);
         itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-        itemSelectAll.setText(I18n.selectAll);
+        itemSelectAll.setText(I18n.SELECT_ALL);
         itemSelectAll.setMnemonic('A');
         
         menu.add(item);
