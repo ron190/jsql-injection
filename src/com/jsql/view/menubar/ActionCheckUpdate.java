@@ -13,6 +13,7 @@ import java.net.URLConnection;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.MediatorGUI;
 
@@ -25,7 +26,7 @@ public class ActionCheckUpdate implements ActionListener, Runnable {
     @Override
     public void run() {
         try {
-            LOGGER.info("Checking updates...");
+            LOGGER.info(I18n.UPDATE_LOADING);
             URLConnection con = new URL("http://jsql-injection.googlecode.com/git/.version").openConnection();
             con.setReadTimeout(60000);
             con.setConnectTimeout(60000);
@@ -40,22 +41,19 @@ public class ActionCheckUpdate implements ActionListener, Runnable {
             Float gitVersion = Float.parseFloat(pageSource);
             MediatorGUI.model();
             if (gitVersion <= Float.parseFloat(InjectionModel.JSQLVERSION)) {
-                LOGGER.info("jSQL Injection is up to date.");
+                LOGGER.info(I18n.UPDATE_UPTODATE);
             } else {
-                LOGGER.warn("A new version of jSQL Injection is available.");
+                LOGGER.warn(I18n.UPDATE_NEW_VERSION_AVAILABLE);
                 Desktop.getDesktop().browse(new URI("http://code.google.com/p/jsql-injection/downloads/list"));
             }
         } catch (NumberFormatException e) {
-            LOGGER.warn("An error occured while checking updates, download the latest version from official website :");
-            LOGGER.warn("http://code.google.com/p/jsql-injection/downloads/list");
+            LOGGER.warn(I18n.UPDATE_EXCEPTION);
             LOGGER.error(e, e);
         } catch (IOException e) {
-            LOGGER.warn("An error occured while checking updates, download the latest version from official website :");
-            LOGGER.warn("http://code.google.com/p/jsql-injection/downloads/list");
+            LOGGER.warn(I18n.UPDATE_EXCEPTION);
             LOGGER.error(e, e);
         } catch (URISyntaxException e) {
-            LOGGER.warn("An error occured while checking updates, download the latest version from official website :");
-            LOGGER.warn("http://code.google.com/p/jsql-injection/downloads/list");
+            LOGGER.warn(I18n.UPDATE_EXCEPTION);
             LOGGER.error(e, e);
         }
     }

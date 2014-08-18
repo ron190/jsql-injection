@@ -29,6 +29,7 @@ import javax.swing.KeyStroke;
 import javax.swing.MenuSelectionManager;
 import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 
+import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.MediatorGUI;
 import com.jsql.view.ToolsGUI;
@@ -69,14 +70,14 @@ public class Menubar extends JMenuBar {
      */
     public Menubar() {
         // File Menu > save tab | exit
-        JMenu menuFile = new JMenu("File");
+        JMenu menuFile = new JMenu(I18n.MENU_FILE);
         menuFile.setMnemonic('F');
 
         JMenuItem itemNewWindows = new JMenuItem(new ActionNewWindow());
 
         JMenuItem itemSave = new JMenuItem(new ActionSaveTab());
 
-        JMenuItem itemExit = new JMenuItem("Exit", 'x');
+        JMenuItem itemExit = new JMenuItem(I18n.ITEM_EXIT, 'x');
         itemExit.setIcon(ToolsGUI.EMPTY);
         itemExit.addActionListener(new ActionListener() {
             @Override
@@ -94,10 +95,10 @@ public class Menubar extends JMenuBar {
         menuFile.add(itemExit);
 
         // Edit Menu > copy | select all
-        JMenu menuEdit = new JMenu("Edit");
+        JMenu menuEdit = new JMenu(I18n.MENU_EDIT);
         menuEdit.setMnemonic('E');
 
-        JMenuItem itemCopy = new JMenuItem("Copy", 'C');
+        JMenuItem itemCopy = new JMenuItem(I18n.COPY, 'C');
         itemCopy.setIcon(ToolsGUI.EMPTY);
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         itemCopy.addActionListener(new ActionListener() {
@@ -111,7 +112,7 @@ public class Menubar extends JMenuBar {
             }
         });
 
-        JMenuItem itemSelectAll = new JMenuItem("Select All", 'A');
+        JMenuItem itemSelectAll = new JMenuItem(I18n.SELECT_ALL, 'A');
         itemSelectAll.setIcon(ToolsGUI.EMPTY);
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.addActionListener(new ActionListener() {
@@ -132,42 +133,42 @@ public class Menubar extends JMenuBar {
         menuEdit.add(itemSelectAll);
 
         // Window Menu > Preferences
-        JMenu menuTools = new JMenu("Windows");
+        JMenu menuTools = new JMenu(I18n.MENU_WINDOWS);
         menuTools.setMnemonic('W');
-        JMenuItem preferences = new JMenuItem("Preferences", 'P');
+        JMenuItem preferences = new JMenuItem(I18n.MENU_PREFERENCES, 'P');
         preferences.setIcon(ToolsGUI.EMPTY);
 
-        JMenu menuView = new JMenu("Show View");
+        JMenu menuView = new JMenu(I18n.MENU_VIEW);
         menuView.setMnemonic('V');
-        JMenuItem database = new JMenuItem("Database", ToolsGUI.DATABASE_SERVER_ICON);
+        JMenuItem database = new JMenuItem(I18n.DATABASE, ToolsGUI.DATABASE_SERVER_ICON);
         menuView.add(database);
-        JMenuItem adminPage = new JMenuItem("Admin page", ToolsGUI.ADMIN_SERVER_ICON);
+        JMenuItem adminPage = new JMenuItem(I18n.ADMINPAGE, ToolsGUI.ADMIN_SERVER_ICON);
         menuView.add(adminPage);
-        JMenuItem file = new JMenuItem("File", ToolsGUI.FILE_SERVER_ICON);
+        JMenuItem file = new JMenuItem(I18n.FILE, ToolsGUI.FILE_SERVER_ICON);
         menuView.add(file);
-        JMenuItem webshell = new JMenuItem("Web shell", ToolsGUI.SHELL_SERVER_ICON);
+        JMenuItem webshell = new JMenuItem(I18n.WEBSHELL, ToolsGUI.SHELL_SERVER_ICON);
         menuView.add(webshell);
-        JMenuItem sqlshell = new JMenuItem("SQL shell", ToolsGUI.SHELL_SERVER_ICON);
+        JMenuItem sqlshell = new JMenuItem(I18n.SQLSHELL, ToolsGUI.SHELL_SERVER_ICON);
         menuView.add(sqlshell);
-        JMenuItem upload = new JMenuItem("Upload", ToolsGUI.UPLOAD_ICON);
+        JMenuItem upload = new JMenuItem(I18n.UPLOAD, ToolsGUI.UPLOAD_ICON);
         menuView.add(upload);
-        JMenuItem bruteforce = new JMenuItem("Brute force", ToolsGUI.BRUTER_ICON);
+        JMenuItem bruteforce = new JMenuItem(I18n.BRUTEFORCE, ToolsGUI.BRUTER_ICON);
         menuView.add(bruteforce);
-        JMenuItem coder = new JMenuItem("Coder", ToolsGUI.CODER_ICON);
+        JMenuItem coder = new JMenuItem(I18n.CODER, ToolsGUI.CODER_ICON);
         menuView.add(coder);
         menuTools.add(menuView);
 
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
 
-        JMenu menuPanel = new JMenu("Show Panel");
+        JMenu menuPanel = new JMenu(I18n.MENU_PANEL);
         menuView.setMnemonic('V');
-        chunkMenu = new JCheckBoxMenuItem("Chunk", new ImageIcon(getClass().getResource("/com/jsql/view/images/chunk.gif")), prefs.getBoolean(ToolsGUI.CHUNK_VISIBLE, true));
+        chunkMenu = new JCheckBoxMenuItem(I18n.CHUNK_TAB_LABEL, new ImageIcon(getClass().getResource("/com/jsql/view/images/chunk.gif")), prefs.getBoolean(ToolsGUI.CHUNK_VISIBLE, true));
         menuPanel.add(chunkMenu);
-        binaryMenu = new JCheckBoxMenuItem("Binary", new ImageIcon(getClass().getResource("/com/jsql/view/images/binary.gif")), prefs.getBoolean(ToolsGUI.BINARY_VISIBLE, true));
+        binaryMenu = new JCheckBoxMenuItem(I18n.BINARY_TAB_LABEL, new ImageIcon(getClass().getResource("/com/jsql/view/images/binary.gif")), prefs.getBoolean(ToolsGUI.BINARY_VISIBLE, true));
         menuPanel.add(binaryMenu);
-        networkMenu = new JCheckBoxMenuItem("Network", new ImageIcon(getClass().getResource("/com/jsql/view/images/header.gif")), prefs.getBoolean(ToolsGUI.NETWORK_VISIBLE, true));
+        networkMenu = new JCheckBoxMenuItem(I18n.NETWORK_TAB_LABEL, new ImageIcon(getClass().getResource("/com/jsql/view/images/header.gif")), prefs.getBoolean(ToolsGUI.NETWORK_VISIBLE, true));
         menuPanel.add(networkMenu);
-        javaDebugMenu = new JCheckBoxMenuItem("Java", new ImageIcon(ToolsGUI.class.getResource("/com/jsql/view/images/cup.png")), prefs.getBoolean(ToolsGUI.JAVA_VISIBLE, false));
+        javaDebugMenu = new JCheckBoxMenuItem(I18n.JAVA_TAB_LABEL, new ImageIcon(ToolsGUI.class.getResource("/com/jsql/view/images/cup.png")), prefs.getBoolean(ToolsGUI.JAVA_VISIBLE, false));
 
         class StayOpenCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI {
             @Override
@@ -269,11 +270,11 @@ public class Menubar extends JMenuBar {
         menuTools.add(preferences);
 
         // Help Menu > about
-        JMenu menuHelp = new JMenu("Help");
+        JMenu menuHelp = new JMenu(I18n.MENU_HELP);
         menuHelp.setMnemonic('H');
-        JMenuItem itemHelp = new JMenuItem("About jSQL Injection", 'A');
+        JMenuItem itemHelp = new JMenuItem(I18n.ITEM_ABOUT, 'A');
         itemHelp.setIcon(ToolsGUI.EMPTY);
-        JMenuItem itemUpdate = new JMenuItem("Check for Updates", 'U');
+        JMenuItem itemUpdate = new JMenuItem(I18n.ITEM_UPDATE, 'U');
         itemUpdate.setIcon(ToolsGUI.EMPTY);
 
         // Render the About dialog behind scene

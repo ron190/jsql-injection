@@ -56,6 +56,7 @@ import javax.swing.table.TableCellRenderer;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 
+import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.HTTPHeader;
 import com.jsql.view.MediatorGUI;
@@ -171,7 +172,12 @@ public class PanelBottom extends JPanel {
         });
 
         this.networkTable.setModel(new DefaultTableModel() {
-            private String[] columns = {"Method", "Url", "Size", "Type"};
+            private String[] columns = {
+                I18n.NETWORK_TAB_METHOD_COLUMN, 
+                I18n.NETWORK_TAB_URL_COLUMN, 
+                I18n.NETWORK_TAB_SIZE_COLUMN, 
+                I18n.NETWORK_TAB_TYPE_COLUMN
+            };
 
             @Override
             public int getColumnCount() {
@@ -225,12 +231,12 @@ public class PanelBottom extends JPanel {
         });
         
         MouseTabbedPane networkDetailTabs = new MouseTabbedPane();
-        networkDetailTabs.addTab("Headers", new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
-        networkDetailTabs.addTab("Cookies", new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
-        networkDetailTabs.addTab("Params", new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
-        networkDetailTabs.addTab("Response", new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
-        networkDetailTabs.addTab("Timing", new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
-        networkDetailTabs.addTab("Preview", new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_HEADERS_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_COOKIES_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_PARAMS_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_RESPONSE_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_TIMING_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_PREVIEW_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
 
         this.networkTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
@@ -250,10 +256,10 @@ public class PanelBottom extends JPanel {
         MediatorGUI.bottom().addTab("Console",
                 new ImageIcon(getClass().getResource("/com/jsql/view/images/console.gif")),
                 new JScrollPanePixelBorder(1, 1, 0, 0, this.consoleArea),
-                "General information");
+                I18n.CONSOLE_TAB_TOOLTIP);
         MediatorGUI.bottom().setTabComponentAt(
                 MediatorGUI.bottom().indexOfTab("Console"),
-                new JLabel("Console", new ImageIcon(getClass().getResource("/com/jsql/view/images/chunk.gif")),
+                new JLabel(I18n.CONSOLE_TAB_LABEL, new ImageIcon(getClass().getResource("/com/jsql/view/images/chunk.gif")),
                 SwingConstants.CENTER));
 
         // Order is important
@@ -323,11 +329,11 @@ public class PanelBottom extends JPanel {
             "Chunk",
             new ImageIcon(PanelBottom.class.getResource("/com/jsql/view/images/chunk.gif")),
             new JScrollPanePixelBorder(1, 1, 0, 0, PanelBottom.this.chunks),
-            "Hexadecimal data recovered",
+            I18n.CHUNK_TAB_TOOLTIP,
             1
         );
 
-        MediatorGUI.bottom().setTabComponentAt(MediatorGUI.bottom().indexOfTab("Chunk"), new JLabel("Chunk",
+        MediatorGUI.bottom().setTabComponentAt(MediatorGUI.bottom().indexOfTab("Chunk"), new JLabel(I18n.CHUNK_TAB_LABEL,
                 new ImageIcon(AdapterBottomTabbedPane.class.getResource("/com/jsql/view/images/chunk.gif")), SwingConstants.CENTER));
     }
 
@@ -339,11 +345,11 @@ public class PanelBottom extends JPanel {
             "Binary",
             new ImageIcon(PanelBottom.class.getResource("/com/jsql/view/images/binary.gif")),
             new JScrollPanePixelBorder(1, 1, 0, 0, PanelBottom.this.binaryArea),
-            "Time/Blind bytes",
+            I18n.BINARY_TAB_TOOLTIP,
             1 + (MediatorGUI.menubar().chunkMenu.isSelected() ? 1 : 0)
         );
 
-        MediatorGUI.bottom().setTabComponentAt(MediatorGUI.bottom().indexOfTab("Binary"), new JLabel("Binary",
+        MediatorGUI.bottom().setTabComponentAt(MediatorGUI.bottom().indexOfTab("Binary"), new JLabel(I18n.BINARY_TAB_LABEL,
                 new ImageIcon(AdapterBottomTabbedPane.class.getResource("/com/jsql/view/images/binary.gif")), SwingConstants.CENTER));
     }
 
@@ -355,11 +361,11 @@ public class PanelBottom extends JPanel {
             "Network",
             new ImageIcon(PanelBottom.class.getResource("/com/jsql/view/images/header.gif")),
             PanelBottom.this.network,
-            "URL calls information",
+            I18n.NETWORK_TAB_TOOLTIP,
             MediatorGUI.bottom().getTabCount() - (MediatorGUI.menubar().javaDebugMenu.isSelected() ? 1 : 0)
         );
 
-        MediatorGUI.bottom().setTabComponentAt(MediatorGUI.bottom().indexOfTab("Network"), new JLabel("Network",
+        MediatorGUI.bottom().setTabComponentAt(MediatorGUI.bottom().indexOfTab("Network"), new JLabel(I18n.NETWORK_TAB_LABEL,
                 new ImageIcon(AdapterBottomTabbedPane.class.getResource("/com/jsql/view/images/header.gif")), SwingConstants.CENTER));
     }
 
@@ -371,11 +377,11 @@ public class PanelBottom extends JPanel {
             "Java",
             new ImageIcon(PanelBottom.class.getResource("/com/jsql/view/images/cup.png")),
             new JScrollPanePixelBorder(1, 1, 0, 0, PanelBottom.this.javaDebug),
-            "Java console",
+            I18n.JAVA_TAB_TOOLTIP,
             MediatorGUI.bottom().getTabCount()
         );
 
-        MediatorGUI.bottom().setTabComponentAt(MediatorGUI.bottom().indexOfTab("Java"), new JLabel("Java",
+        MediatorGUI.bottom().setTabComponentAt(MediatorGUI.bottom().indexOfTab("Java"), new JLabel(I18n.JAVA_TAB_LABEL,
                 new ImageIcon(AdapterBottomTabbedPane.class.getResource("/com/jsql/view/images/cup.png")), SwingConstants.CENTER));
     }
 }

@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
+import com.jsql.i18n.I18n;
 import com.jsql.view.ToolsGUI;
 import com.jsql.view.radio.AbstractRadioLink;
 import com.jsql.view.radio.RadioLinkStatusbar;
@@ -83,10 +84,10 @@ public class PanelStatusbar extends JPanel {
      * Create status panel on south of frame.
      */
     public PanelStatusbar() {
-        this.labelNormal = new RadioLinkStatusbar("Normal");
-        this.labelErrorBased = new RadioLinkStatusbar("ErrorBased");
-        this.labelBlind = new RadioLinkStatusbar("Blind");
-        this.labelTimeBased = new RadioLinkStatusbar("TimeBased");
+        this.labelNormal = new RadioLinkStatusbar(I18n.LABEL_NORMAL);
+        this.labelErrorBased = new RadioLinkStatusbar(I18n.LABEL_ERRORBASED);
+        this.labelBlind = new RadioLinkStatusbar(I18n.LABEL_BLIND);
+        this.labelTimeBased = new RadioLinkStatusbar(I18n.LABEL_TIMEBASED);
 
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         this.setBorder(
@@ -124,10 +125,10 @@ public class PanelStatusbar extends JPanel {
         this.labelAuthenticatedUser.setEditable(false);
         this.labelAuthenticatedUser.setBackground(this.getBackground());
 
-        JLabel titleDatabaseVersion = new JLabel("Database version");
-        JLabel titleCurrentDB = new JLabel("Current db");
-        JLabel titleCurrentUser = new JLabel("Current user");
-        JLabel titleAuthenticatedUser = new JLabel("Authenticated user");
+        JLabel titleDatabaseVersion = new JLabel(I18n.TITLE_DATABASEVERSION);
+        JLabel titleCurrentDB = new JLabel(I18n.TITLE_CURRENTDB);
+        JLabel titleCurrentUser = new JLabel(I18n.TITLE_CURRENTUSER);
+        JLabel titleAuthenticatedUser = new JLabel(I18n.TITLE_AUTHENTICATEDUSER);
 
         JPanel types = new JPanel();
         types.setLayout(new BoxLayout(types, BoxLayout.PAGE_AXIS));
@@ -139,16 +140,10 @@ public class PanelStatusbar extends JPanel {
         // Add pixels to the right to compensate width when strategy is selected
         this.labelTimeBased.setPreferredSize(new Dimension(this.labelTimeBased.getPreferredSize().width + 3, this.labelTimeBased.getPreferredSize().height));
         
-        this.labelTimeBased.setToolTipText("<html><b>Slowest and less reliable method</b><br>"
-                + "Boolean SQL test generates a 5s delay for false SQL statement.<br>"
-                + "<i>Read each bit of encoded characters (16 URL calls by character).</i></html>");
-        this.labelBlind.setToolTipText("<html><b>Slow and reliable method</b><br>"
-                + "Boolean SQL test generates pageA for true SQL statement, pageB for false.<br>"
-                + "<i>Read each bit of encoded characters (16 URL calls by character).</i></html>");
-        this.labelErrorBased.setToolTipText("<html><b>Fast and accurate method</b><br>"
-                + "<i>Read encoded data directly from source page.</i></html>");
-        this.labelNormal.setToolTipText("<html><b>Fastest and accurate method</b><br>"
-                + "<i>Read large encoded data directly from source page.</i></html>");
+        this.labelTimeBased.setToolTipText(I18n.LABEL_TIMEBASED_TOOLTIP);
+        this.labelBlind.setToolTipText(I18n.LABEL_BLIND_TOOLTIP);
+        this.labelErrorBased.setToolTipText(I18n.LABEL_ERRORBASED_TOOLTIP);
+        this.labelNormal.setToolTipText(I18n.LABEL_NORMAL_TOOLTIP);
 
         this.add(types);
 
