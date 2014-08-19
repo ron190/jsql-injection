@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.i18n.I18n;
 import com.jsql.view.MediatorGUI;
 
 /**
@@ -58,7 +59,7 @@ public class MenuActionExport implements ActionListener {
                     if (getDialogType() == SAVE_DIALOG) {
                         if (file.exists()) {
                             int replace = JOptionPane.showConfirmDialog(this,
-                                    file.getName() + " already exists.\nDo you want to replace it?", "Confirm Export",
+                                    file.getName() + " " +I18n.LIST_CONFIRM_REPLACE, I18n.LIST_CONFIRM_EXPORT,
                                     JOptionPane.YES_NO_OPTION);
                             switch (replace) {
                                 case JOptionPane.YES_OPTION:
@@ -78,7 +79,7 @@ public class MenuActionExport implements ActionListener {
                     }
                 }
             };
-            importFileDialog.setDialogTitle("Export list to a file");
+            importFileDialog.setDialogTitle(I18n.LIST_EXPORT);
             int choice = importFileDialog.showSaveDialog(myList.getTopLevelAncestor());
             if (choice != JFileChooser.APPROVE_OPTION) {
                 return;

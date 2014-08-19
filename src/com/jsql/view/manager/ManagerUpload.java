@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
+import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.MediatorGUI;
 import com.jsql.view.ToolsGUI;
@@ -55,7 +56,7 @@ public class ManagerUpload extends ManagerAbstractList {
     public ManagerUpload() {
         this.setLayout(new BorderLayout());
 
-        this.setDefaultText("Choose a file");
+        this.setDefaultText(I18n.UPLOAD_RUN_BUTTON);
 
         List<String> pathsList = new ArrayList<String>();
         pathsList.add("/var/www/html/defaut/");
@@ -71,19 +72,10 @@ public class ManagerUpload extends ManagerAbstractList {
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
 
-        JLabel label = new JLabel("[Optional] URL to the upload directory:");
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-
-        final JTextField shellURL = new JPopupTextField("[Optional] URL to the upload directory").getProxy();
-        String tooltip = "<html><b>How to use</b><br>" +
-                "- Leave blank if the file from address bar is located in selected folder(s), webshell will also be in it.<br>" +
-                "<i>E.g Address bar is set with http://127.0.0.1/simulate_get.php?lib=, file simulate_get.php<br>" +
-                "is located in selected '/var/www/', then uploader will be created in that folder.</i><br>" +
-                "- Or force URL for the selected folder.<br>" +
-                "<i>E.g Uploader is created in selected '/var/www/site/folder/' ; corresponding URL for this folder<br>" +
-                "is http://site.com/another/path/ (because of alias or url rewriting for example).</i></html>";
+        final JTextField shellURL = new JPopupTextField(I18n.UPLOAD_URL_LABEL).getProxy();
+        String urlTooltip = I18n.UPLOAD_URL_TOOLTIP;
         
-        shellURL.setToolTipText(tooltip);
+        shellURL.setToolTipText(urlTooltip);
         shellURL.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
                         BorderFactory.createMatteBorder(0, 1, 0, 0, ToolsGUI.COMPONENT_BORDER),
@@ -96,11 +88,8 @@ public class ManagerUpload extends ManagerAbstractList {
                 BorderFactory.createMatteBorder(0, 1, 0, 0, ToolsGUI.COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)));
 
-        this.run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/add.png")));
-        this.run.setToolTipText("<html><b>Select folder(s) in which uploader is created, then choose a file to upload</b><br>" +
-                "Path must be correct and correspond to a PHP folder, gives no result otherwise.<br>" +
-                "<i>If necessary, you must set the URL of uploader directory (see note on text component).</i>" +
-                "</html>");
+        this.run = new JButton(I18n.UPLOAD_DIALOG_TEXT, new ImageIcon(getClass().getResource("/com/jsql/view/images/add.png")));
+        this.run.setToolTipText(I18n.UPLOAD_RUN_BUTTON_TOOLTIP);
         this.run.setEnabled(false);
         
         this.run.setBorder(ToolsGUI.BLU_ROUND_BORDER);
@@ -114,7 +103,7 @@ public class ManagerUpload extends ManagerAbstractList {
                 }
 
                 final JFileChooser filechooser = new JFileChooser(MediatorGUI.model().prefPathFile);
-                filechooser.setDialogTitle("Choose file to upload");
+                filechooser.setDialogTitle(I18n.UPLOAD_DIALOG_TEXT);
                 
                 int returnVal = filechooser.showOpenDialog(MediatorGUI.gui());
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -138,10 +127,9 @@ public class ManagerUpload extends ManagerAbstractList {
             }
         });
 
-        this.privilege = new JLabel("File privilege", ToolsGUI.SQUARE_GREY, SwingConstants.LEFT);
+        this.privilege = new JLabel(I18n.PRIVILEGE_LABEL, ToolsGUI.SQUARE_GREY, SwingConstants.LEFT);
         this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, ToolsGUI.DEFAULT_BACKGROUND));
-        this.privilege.setToolTipText("<html><b>Needs the file privilege to work</b><br>" +
-                "Shows if the privilege FILE is granted to current user</html>");
+        this.privilege.setToolTipText(I18n.PRIVILEGE_TOOLTIP);
 
         this.loader.setVisible(false);
 

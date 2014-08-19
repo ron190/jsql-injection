@@ -39,6 +39,7 @@ import javax.swing.plaf.basic.BasicComboPopup;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 
+import com.jsql.i18n.I18n;
 import com.jsql.view.ToolsGUI;
 import com.jsql.view.dropshadow.ShadowPopupBorder;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
@@ -118,7 +119,7 @@ public class ManagerCoder extends JPanel {
         BasicComboPopup popup = (BasicComboPopup) child;
         popup.setBorder(BorderFactory.createCompoundBorder(ShadowPopupBorder.getInstance(), (Border) UIManager.get("PopupMenu.border")));
 
-        JButton run = new JButton("Run", new ImageIcon(getClass().getResource("/com/jsql/view/images/tick.png")));
+        JButton run = new JButton(I18n.CODER_RUN_BUTTON, new ImageIcon(getClass().getResource("/com/jsql/view/images/tick.png")));
         run.setBorder(ToolsGUI.BLU_ROUND_BORDER);
 
         middleLine.add(encoding);

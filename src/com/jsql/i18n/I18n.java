@@ -132,4 +132,121 @@ public class I18n {
     public static final String UPDATE_NEW_VERSION_AVAILABLE = (String) labels.getObject("updateNewVersionAvailable");
     public static final String UPDATE_UPTODATE = (String) labels.getObject("updateUpToDate");
     public static final String UPDATE_LOADING = (String) labels.getObject("updateLoading");
+    
+    /**
+     * Webshell
+     */
+    public static final String PRIVILEGE_LABEL = (String) labels.getObject("privilegeLabel");
+    public static final String PRIVILEGE_TOOLTIP = (String) labels.getObject("privilegeToolTip");
+    public static final String SHELL_URL_LABEL = (String) labels.getObject("shellURLLabel");
+    public static final String SHELL_URL_TOOLTIP = (String) labels.getObject("shellURLTooltip");
+    public static final String SHELL_RUN_BUTTON = (String) labels.getObject("shellRunButton");
+    public static final String SHELL_RUN_BUTTON_TOOLTIP = (String) labels.getObject("shellRunButtonTooltip");
+    
+    /**
+     * Upload
+     */
+    public static final String UPLOAD_DIALOG_TEXT = (String) labels.getObject("uploadDialogText");
+    public static final String UPLOAD_URL_LABEL = (String) labels.getObject("uploadURLLabel");
+    public static final String UPLOAD_URL_TOOLTIP = (String) labels.getObject("uploadURLTooltip");
+    public static final String UPLOAD_RUN_BUTTON = (String) labels.getObject("uploadRunButton");
+    public static final String UPLOAD_RUN_BUTTON_TOOLTIP = (String) labels.getObject("uploadRunButtonTooltip");
+    
+    /**
+     * SQL shell
+     */
+    public static final String SQL_SHELL_RUN_BUTTON = (String) labels.getObject("sqlShellRunButton");
+    public static final String SQL_SHELL_USERNAME_LABEL = (String) labels.getObject("sqlShellUsernameLabel");
+    public static final String SQL_SHELL_PASSWORD_LABEL = (String) labels.getObject("sqlShellPasswordLabel");
+    public static final String SQL_SHELL_USERNAME_TOOLTIP = (String) labels.getObject("sqlShellUsernameTooltip");
+    public static final String SQL_SHELL_PASSWORD_TOOLTIP = (String) labels.getObject("sqlShellPasswordTooltip");
+    
+    /**
+     * File
+     */
+    public static final String FILE_RUN_BUTTON = (String) labels.getObject("fileRunButton");
+    public static final String FILE_RUN_BUTTON_TOOLTIP = (String) labels.getObject("fileRunButtonTooltip");
+    
+    /**
+     * Coder
+     */
+    public static final String CODER_RUN_BUTTON = (String) labels.getObject("coderRunButton");
+    
+    /**
+     * Bruteforce
+     */
+    public static final String BRUTEFORCE_HASH = (String) labels.getObject("bruteForceHash");
+    public static final String BRUTEFORCE_HASH_TOOLTIP = (String) labels.getObject("bruteForceHashTooltip");
+    public static final String BRUTEFORCE_HASH_TYPE_TOOLTIP = (String) labels.getObject("bruteForceHashTypeTooltip");
+    public static final String BRUTEFORCE_LCASE_TOOLTIP = (String) labels.getObject("bruteForceLCaseTooltip");
+    public static final String BRUTEFORCE_UCASE_TOOLTIP = (String) labels.getObject("bruteForceUCaseTooltip");
+    public static final String BRUTEFORCE_NUM_TOOLTIP = (String) labels.getObject("bruteForceNumTooltip");
+    public static final String BRUTEFORCE_SPEC_TOOLTIP = (String) labels.getObject("bruteForceSpecTooltip");
+    public static final String BRUTEFORCE_EXCLUDE_LABEL = (String) labels.getObject("bruteForceExcludeLabel");
+    public static final String BRUTEFORCE_EXCLUDE_TOOLTIP = (String) labels.getObject("bruteForceExcludeTooltip");
+    public static final String BRUTEFORCE_MIN_LABEL = (String) labels.getObject("bruteForceMinLabel");
+    public static final String BRUTEFORCE_MAX_LABEL = (String) labels.getObject("bruteForceMaxLabel");
+    public static final String BRUTEFORCE_MIN_TOOLTIP = (String) labels.getObject("bruteForceMinTooltip");
+    public static final String BRUTEFORCE_MAX_TOOLTIP = (String) labels.getObject("bruteForceMaxTooltip");
+    public static final String BRUTEFORCE_RUN_BUTTON = (String) labels.getObject("bruteForceRunButton");
+    public static final String BRUTEFORCE_RUN_BUTTON_TOOLTIP = (String) labels.getObject("bruteForceRunButtonTooltip");
+
+    /**
+     * Bruteforce action
+     */
+    public static final String BRUTEFORCE_INCORRECT_LENGTH = (String) labels.getObject("bruteForceIncorrectLength");
+    public static final String BRUTEFORCE_CHARACTER_RANGE = (String) labels.getObject("bruteForceCharacterRange");
+    public static final String BRUTEFORCE_INCORRECT_MIN_MAX_LENGTH = (String) labels.getObject("bruteForceIncorrectMinMaxLength");
+    public static final String BRUTEFORCE_STOP = (String) labels.getObject("bruteForceStop");
+    public static final String BRUTEFORCE_EMPTY_HASH = (String) labels.getObject("bruteForceEmptyHash");
+    public static final String BRUTEFORCE_CURRENT_STRING = (String) labels.getObject("bruteForceCurrentString");
+    public static final String BRUTEFORCE_CURRENT_HASH = (String) labels.getObject("bruteForceCurrentHash");
+    public static final String BRUTEFORCE_POSSIBILITIES = (String) labels.getObject("bruteForcePossibilities");
+    public static final String BRUTEFORCE_CHECKED_HASHES = (String) labels.getObject("bruteForceCheckedHashes");
+    public static final String BRUTEFORCE_ESTIMATED = (String) labels.getObject("bruteForceEstimated");
+    public static final String BRUTEFORCE_PERSECOND = (String) labels.getObject("bruteForcePerSecond");
+    public static final String BRUTEFORCE_TRAVERSING_REMAINING = (String) labels.getObject("bruteForceTraversingRemaining");
+    public static final String BRUTEFORCE_DAYS = (String) labels.getObject("bruteForceDays");
+    public static final String BRUTEFORCE_HOURS = (String) labels.getObject("bruteForceHours");
+    public static final String BRUTEFORCE_MINUTES = (String) labels.getObject("bruteForceMinutes");
+    public static final String BRUTEFORCE_SECONDS = (String) labels.getObject("bruteForceSeconds");
+    public static final String BRUTEFORCE_PERCENT_DONE = (String) labels.getObject("bruteForcePercentDone");
+    public static final String BRUTEFORCE_ABORTED = (String) labels.getObject("bruteForceAborted");
+    public static final String BRUTEFORCE_FOUND_HASH = (String) labels.getObject("bruteForceFoundHash");
+    public static final String BRUTEFORCE_STRING = (String) labels.getObject("bruteForceString");
+    public static final String BRUTEFORCE_HASH_NOT_FOUND = (String) labels.getObject("bruteForceHashNotFound");
+    public static final String BRUTEFORCE_START = (String) labels.getObject("bruteForceStart");
+
+    /**
+     * Admin page
+     */
+    public static final String ADMIN_PAGE_RUN_BUTTON = (String) labels.getObject("adminPageRunButton");
+    public static final String ADMIN_PAGE_RUN_BUTTON_TOOLTIP = (String) labels.getObject("adminPageRunButtonTooltip");
+    
+    /**
+     * List menu
+     */
+    public static final String IMPORT = (String) labels.getObject("import");
+    public static final String EXPORT = (String) labels.getObject("export");
+    public static final String CUT = (String) labels.getObject("cut");
+    public static final String PASTE = (String) labels.getObject("paste");
+    public static final String DELETE = (String) labels.getObject("delete");
+    public static final String NEW_VALUE = (String) labels.getObject("newValue");
+    public static final String RESTORE_DEFAULT = (String) labels.getObject("restoreDefault");
+    
+    public static final String OK = (String) labels.getObject("ok");
+    public static final String CANCEL = (String) labels.getObject("cancel");
+    public static final String LIST_ADD_VALUE = (String) labels.getObject("listAddValue");
+    public static final String LIST_ADD_VALUE_LABEL = (String) labels.getObject("listAddValueLabel");
+    
+    public static final String LIST_EXPORT = (String) labels.getObject("listExport");
+    public static final String LIST_CONFIRM_REPLACE = (String) labels.getObject("listConfirmReplace");
+    public static final String LIST_CONFIRM_EXPORT = (String) labels.getObject("listConfirmExport");
+    
+    public static final String REPLACE = (String) labels.getObject("replace");
+    public static final String ADD = (String) labels.getObject("add");
+    public static final String LIST_IMPORT_REPLACE = (String) labels.getObject("listImportReplace");
+    public static final String LIST_IMPORT = (String) labels.getObject("listImport");
+    public static final String LIST_IMPORT_ERROR = (String) labels.getObject("listImportError");
+    public static final String LIST_IMPORT_ERROR_TEXT = (String) labels.getObject("listImportErrorText");
 }

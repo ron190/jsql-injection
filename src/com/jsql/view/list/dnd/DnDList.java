@@ -41,6 +41,8 @@ import javax.swing.TransferHandler;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.i18n.I18n;
+
 /**
  * A list supporting drag and drop.
  */
@@ -211,11 +213,13 @@ public class DnDList extends JList<ListItem> {
 
                 if (Files.probeContentType(fileToImport.toPath()) == null
                         || !"text/plain".equals(Files.probeContentType(fileToImport.toPath()))) {
-                    JOptionPane.showMessageDialog(this.getTopLevelAncestor(),
-                            "Unsupported file format.\nPlease import only text/plain files.",
-                            "Import Error",
-                            JOptionPane.ERROR_MESSAGE,
-                            new ImageIcon(getClass().getResource("/com/jsql/view/images/error.png")));
+                    JOptionPane.showMessageDialog(
+                        this.getTopLevelAncestor(),
+                        I18n.LIST_IMPORT_ERROR_TEXT,
+                        I18n.LIST_IMPORT_ERROR,
+                        JOptionPane.ERROR_MESSAGE,
+                        new ImageIcon(getClass().getResource("/com/jsql/view/images/error.png"))
+                    );
                     return;
                 }
             }
@@ -223,15 +227,17 @@ public class DnDList extends JList<ListItem> {
             LOGGER.error(e, e);
         }
 
-        String[] options = {"Replace", "Add", "Cancel"};
-        int answer = JOptionPane.showOptionDialog(this.getTopLevelAncestor(),
-                "Replace list or add to current location?",
-                "Import file",
-                JOptionPane.YES_NO_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                options,
-                options[2]);
+        String[] options = {I18n.REPLACE, I18n.ADD, I18n.CANCEL};
+        int answer = JOptionPane.showOptionDialog(
+            this.getTopLevelAncestor(),
+            I18n.LIST_IMPORT_REPLACE,
+            I18n.LIST_IMPORT,
+            JOptionPane.YES_NO_CANCEL_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            options,
+            options[2]
+        );
         
         int startPosition = position;
         int endPosition = startPosition;

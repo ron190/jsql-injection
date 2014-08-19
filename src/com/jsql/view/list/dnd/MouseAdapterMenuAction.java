@@ -27,6 +27,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
+import com.jsql.i18n.I18n;
 import com.jsql.view.MediatorGUI;
 import com.jsql.view.ToolsGUI;
 
@@ -65,15 +66,15 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 
             JPopupMenu tablePopupMenu = new JPopupMenu();
 
-            JMenuItem mnImport = new JMenuItem("Import...");
-            JMenuItem mnExport = new JMenuItem("Export...");
-            JMenuItem mnCut = new JMenuItem("Cut");
-            JMenuItem mnCopy = new JMenuItem("Copy");
-            JMenuItem mnPaste = new JMenuItem("Paste");
-            JMenuItem mnDelete = new JMenuItem("Delete");
-            JMenuItem mnNew = new JMenuItem("New Value(s)...");
-            JMenuItem mnRestoreDefault = new JMenuItem("Restore default");
-            JMenuItem mnSelectAll = new JMenuItem("Select All");
+            JMenuItem mnImport = new JMenuItem(I18n.IMPORT);
+            JMenuItem mnExport = new JMenuItem(I18n.EXPORT);
+            JMenuItem mnCut = new JMenuItem(I18n.CUT);
+            JMenuItem mnCopy = new JMenuItem(I18n.COPY);
+            JMenuItem mnPaste = new JMenuItem(I18n.PASTE);
+            JMenuItem mnDelete = new JMenuItem(I18n.DELETE);
+            JMenuItem mnNew = new JMenuItem(I18n.NEW_VALUE);
+            JMenuItem mnRestoreDefault = new JMenuItem(I18n.RESTORE_DEFAULT);
+            JMenuItem mnSelectAll = new JMenuItem(I18n.SELECT_ALL);
             
             mnImport.setIcon(ToolsGUI.EMPTY);
             mnExport.setIcon(ToolsGUI.EMPTY);

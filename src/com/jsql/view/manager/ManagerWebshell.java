@@ -36,6 +36,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
+import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.ToolsGUI;
 import com.jsql.view.list.dnd.DnDList;
@@ -58,7 +59,7 @@ public class ManagerWebshell extends ManagerAbstractList {
     public ManagerWebshell() {
         this.setLayout(new BorderLayout());
 
-        this.setDefaultText("Create web shell");
+        this.setDefaultText(I18n.SHELL_RUN_BUTTON);
         
         List<String> pathsList = new ArrayList<String>();
         try {
@@ -79,20 +80,11 @@ public class ManagerWebshell extends ManagerAbstractList {
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
 
-        JLabel label = new JLabel("[Optional] URL to the web shell directory:");
-        label.setHorizontalAlignment(SwingConstants.CENTER);
+        final JTextField shellURL = new JPopupTextField(I18n.SHELL_URL_LABEL).getProxy();
         
-        final JTextField shellURL = new JPopupTextField("[Optional] URL to the webshell directory").getProxy();
+        String urlTooltip = I18n.SHELL_URL_TOOLTIP;
         
-        String tooltip = "<html><b>How to use optional shell URL</b><br>" +
-                "- Leave blank if the file from URL is in selected folder, shell will be created in this folder.<br>" +
-                "<i>E.g Address bar is set with http://127.0.0.1/simulate_get.php?lib=, file simulate_get.php<br>" +
-                "is located in selected '/var/www/', then shell will be created in that folder.</i><br>" +
-                "- Or force a URL for selected folder.<br>" +
-                "<i>E.g Shell is created in selected '/var/www/site/folder/' ; corresponding URL for this folder<br>" +
-                "is http://site.com/another/path/ (because of alias or url rewriting for example).</i></html>";
-        
-        shellURL.setToolTipText(tooltip);
+        shellURL.setToolTipText(urlTooltip);
         shellURL.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
                         BorderFactory.createMatteBorder(0, 1, 0, 0, ToolsGUI.COMPONENT_BORDER),
@@ -105,11 +97,8 @@ public class ManagerWebshell extends ManagerAbstractList {
                 BorderFactory.createMatteBorder(0, 1, 0, 0, ToolsGUI.COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)));
         
-        this.run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/shellSearch.png")));
-        this.run.setToolTipText("<html><b>Select folder(s) in which shell is created</b><br>" +
-                "Path must be correct and correspond to a PHP folder, gives no result otherwise.<br>" +
-                "<i>If necessary, you must set the URL of shell directory (see note on optional URL).</i>" +
-                "</html>");
+        this.run = new JButton(I18n.SHELL_RUN_BUTTON, new ImageIcon(getClass().getResource("/com/jsql/view/images/shellSearch.png")));
+        this.run.setToolTipText(I18n.SHELL_RUN_BUTTON_TOOLTIP);
         this.run.setEnabled(false);
 
         this.run.setBorder(ToolsGUI.BLU_ROUND_BORDER);
@@ -149,12 +138,12 @@ public class ManagerWebshell extends ManagerAbstractList {
             }
         });
 
-        this.privilege = new JLabel("File privilege", ToolsGUI.SQUARE_GREY, SwingConstants.LEFT);
+        this.privilege = new JLabel(I18n.PRIVILEGE_LABEL, ToolsGUI.SQUARE_GREY, SwingConstants.LEFT);
         this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, ToolsGUI.DEFAULT_BACKGROUND));
-        this.privilege.setToolTipText("<html><b>Needs the file privilege to work</b><br>"
-                + "Shows if the privilege FILE is granted to current user</html>");
+        this.privilege.setToolTipText(I18n.PRIVILEGE_TOOLTIP);
 
         lastLine.add(this.privilege);
+        lastLine.add(Box.createHorizontalStrut(5));
         lastLine.add(Box.createHorizontalGlue());
         lastLine.add(this.run);
 

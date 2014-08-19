@@ -30,6 +30,7 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.MediatorGUI;
 import com.jsql.view.ToolsGUI;
@@ -51,7 +52,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
      */
     public ManagerAdminPage() {
         this.setLayout(new BorderLayout());
-        this.setDefaultText("Find admin page(s)");
+        this.setDefaultText(I18n.ADMIN_PAGE_RUN_BUTTON);
 
         List<String> pathList = new ArrayList<String>();
         try {
@@ -80,12 +81,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
         
         run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/adminSearch.png")));
 
-        run.setToolTipText("<html><b>Select admin page(s) to find</b><br>" +
-                "Page file must exist, gives no result otherwise.<br>" +
-                "<i>Default list contains well known names of administration pages ; login and password are<br>" +
-                "generally required by them (see Database and Brute force).<br>" +
-                "If main URL is http://website.com/folder/page.php?arg=value, then it searches for both<br>" +
-                "http://website.com/[admin pages] and http://website.com/folder/[admin pages]</i></html>");
+        run.setToolTipText(I18n.ADMIN_PAGE_RUN_BUTTON_TOOLTIP);
         run.setBorder(ToolsGUI.BLU_ROUND_BORDER);
 
         run.addActionListener(new ActionListener() {

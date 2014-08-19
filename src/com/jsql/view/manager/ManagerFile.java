@@ -34,6 +34,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
+import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.MediatorGUI;
 import com.jsql.view.ToolsGUI;
@@ -55,7 +56,7 @@ public class ManagerFile extends ManagerAbstractList {
      */
     public ManagerFile() {
         this.setLayout(new BorderLayout());
-        this.setDefaultText("Read file(s)");
+        this.setDefaultText(I18n.FILE_RUN_BUTTON);
         
         List<String> pathList = new ArrayList<String>();
         try {
@@ -83,12 +84,7 @@ public class ManagerFile extends ManagerAbstractList {
         
         run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/fileSearch.png")));
 
-        run.setToolTipText("<html><b>Select file(s) to read</b><br>" +
-                "Path must be correct, gives no result otherwise.<br>" +
-                "<i>Default list contains well known file paths. Use a Full Path Disclosure tool to obtain an existing path<br>" +
-                "from remote host, or in your browser try to output an error containing an existing file path as simply<br>" +
-                "as followed: if remote host can be requested like http://site.com/index.php?page=about, then try to<br>" +
-                "browse instead http://site.com/index.php?page[]=about, an error may show a complete file path.</i></html>");
+        run.setToolTipText(I18n.FILE_RUN_BUTTON_TOOLTIP);
         run.setEnabled(false);
         run.setBorder(ToolsGUI.BLU_ROUND_BORDER);
         
@@ -125,10 +121,9 @@ public class ManagerFile extends ManagerAbstractList {
             }
         });
 
-        privilege = new JLabel("File privilege", ToolsGUI.SQUARE_GREY, SwingConstants.LEFT);
+        privilege = new JLabel(I18n.PRIVILEGE_LABEL, ToolsGUI.SQUARE_GREY, SwingConstants.LEFT);
         privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, ToolsGUI.DEFAULT_BACKGROUND));
-        privilege.setToolTipText("<html><b>Needs the file privilege to work</b><br>" +
-                "Shows if the privilege FILE is granted to current user</html>");
+        privilege.setToolTipText(I18n.PRIVILEGE_TOOLTIP);
 
         loader.setVisible(false);
 

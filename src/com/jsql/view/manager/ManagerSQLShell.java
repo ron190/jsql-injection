@@ -38,6 +38,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
+import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.ToolsGUI;
 import com.jsql.view.list.dnd.DnDList;
@@ -59,7 +60,7 @@ public class ManagerSQLShell extends ManagerAbstractList {
      */
     public ManagerSQLShell() {
         this.setLayout(new BorderLayout());
-        this.setDefaultText("Create SQL shell");
+        this.setDefaultText(I18n.SQL_SHELL_RUN_BUTTON);
 
         this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, ToolsGUI.COMPONENT_BORDER));
         
@@ -68,37 +69,31 @@ public class ManagerSQLShell extends ManagerAbstractList {
         GroupLayout layout = new GroupLayout(infos);
         infos.setLayout(layout);
         infos.setAlignmentX(Component.LEFT_ALIGNMENT);
-        infos.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        infos.setBorder(BorderFactory.createEmptyBorder(1, 0, 1, 1));
         
-        JLabel userLabel = new JLabel(" [Optional] User ");
-        JLabel passLabel = new JLabel(" [Optional] Pass ");
-        final JTextField user = new JPopupTextField("[Optional] User").getProxy();
-        final JTextField pass = new JPopupTextField("[Optional] Pass").getProxy();
+//        JLabel userLabel = new JLabel(" [Optional] User ");
+//        JLabel passLabel = new JLabel(" [Optional] Pass ");
+        final JTextField user = new JPopupTextField(I18n.SQL_SHELL_USERNAME_LABEL).getProxy();
+        final JTextField pass = new JPopupTextField(I18n.SQL_SHELL_PASSWORD_LABEL).getProxy();
         
-        user.setToolTipText("<html><b>MySQL username</b><br>" +
-                "Users are stored in table <i>user</i> of database <i>mysql</i>.<br>" +
-                "Can be left empty if no user has been defined.<br>" +
-                "<i>Try to read an existing php file to get plaintext database credentials.</i></html>");
-        pass.setToolTipText("<html><b>MySQL password</b><br>" +
-                "Password hashes are stored in table <i>user</i> of database <i>mysql</i>.<br>" +
-                "You can brute force the hash with type <i>mysql</i>.<br>" +
-                "Can be left empty if no password has been defined.<br>" +
-                "<i>Try to read an existing php file to get plaintext database credentials.</i></html>");
+        user.setToolTipText(I18n.SQL_SHELL_USERNAME_TOOLTIP);
+        pass.setToolTipText(I18n.SQL_SHELL_PASSWORD_TOOLTIP);
         
         user.setBorder(ToolsGUI.BLU_ROUND_BORDER);
         JPanel m = new JPanel(new BorderLayout());
         m.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
         m.add(pass);
-        JPanel mm = new JPanel(new BorderLayout());
-        mm.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
-        mm.add(passLabel);
+//        JPanel mm = new JPanel(new BorderLayout());
+//        mm.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
+//        mm.add(passLabel);
         pass.setBorder(ToolsGUI.BLU_ROUND_BORDER);
         
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
                     .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(userLabel)
-                            .addComponent(mm))
+//                            .addComponent(userLabel)
+//                            .addComponent(mm)
+                            )
                     .addGroup(layout.createParallelGroup()
                             .addComponent(user)
                             .addComponent(m))
@@ -107,11 +102,12 @@ public class ManagerSQLShell extends ManagerAbstractList {
             layout.setVerticalGroup(
                 layout.createSequentialGroup()
                     .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(userLabel)
+//                            .addComponent(userLabel)
                             .addComponent(user))
                     .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                            .addComponent(mm)
-                            .addComponent(m))
+//                            .addComponent(mm)
+                            .addComponent(m)
+                            )
             );
         
         this.add(infos, BorderLayout.NORTH);
@@ -135,20 +131,11 @@ public class ManagerSQLShell extends ManagerAbstractList {
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
 
-        JLabel label = new JLabel("[Optional] URL to the SQL shell directory:");
-        label.setHorizontalAlignment(SwingConstants.CENTER);
+        final JTextField shellURL = new JPopupTextField(I18n.SHELL_URL_LABEL).getProxy();
         
-        final JTextField shellURL = new JPopupTextField("[Optional] URL to the SQL shell directory").getProxy();
+        String urlTooltip = I18n.SHELL_URL_TOOLTIP;
         
-        String tooltip = "<html><b>How to use optional shell URL</b><br>" +
-                "- Leave blank if the file from URL is in selected folder, shell will be created in this folder.<br>" +
-                "<i>E.g Address bar is set with http://127.0.0.1/simulate_get.php?lib=, file simulate_get.php<br>" +
-                "is located in selected '/var/www/', then shell will be created in that folder.</i><br>" +
-                "- Or force a URL for selected folder.<br>" +
-                "<i>E.g Shell is created in selected '/var/www/site/folder/' ; corresponding URL for this folder<br>" +
-                "is http://site.com/another/path/ (because of alias or url rewriting for example).</i></html>";
-        
-        shellURL.setToolTipText(tooltip);
+        shellURL.setToolTipText(urlTooltip);
         shellURL.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
                         BorderFactory.createMatteBorder(0, 1, 0, 0, ToolsGUI.COMPONENT_BORDER),
@@ -161,11 +148,8 @@ public class ManagerSQLShell extends ManagerAbstractList {
                 BorderFactory.createMatteBorder(0, 1, 0, 0, ToolsGUI.COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)));
 
-        this.run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/shellSearch.png")));
-        this.run.setToolTipText("<html><b>Select folder(s) in which shell is created</b><br>" +
-                "Path must be correct and correspond to a PHP folder, gives no result otherwise.<br>" +
-                "<i>If necessary, you must set the URL of shell directory (see note on optional URL).</i>" +
-                "</html>");
+        this.run = new JButton(I18n.SHELL_RUN_BUTTON, new ImageIcon(getClass().getResource("/com/jsql/view/images/shellSearch.png")));
+        this.run.setToolTipText(I18n.SHELL_RUN_BUTTON_TOOLTIP);
         this.run.setEnabled(false);
         
         this.run.setBorder(ToolsGUI.BLU_ROUND_BORDER);
@@ -205,10 +189,9 @@ public class ManagerSQLShell extends ManagerAbstractList {
             }
         });
 
-        this.privilege = new JLabel("File privilege", ToolsGUI.SQUARE_GREY, SwingConstants.LEFT);
+        this.privilege = new JLabel(I18n.PRIVILEGE_LABEL, ToolsGUI.SQUARE_GREY, SwingConstants.LEFT);
         this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, ToolsGUI.DEFAULT_BACKGROUND));
-        this.privilege.setToolTipText("<html><b>Needs the file privilege to work</b><br>" +
-                "Shows if the privilege FILE is granted to current user</html>");
+        this.privilege.setToolTipText(I18n.PRIVILEGE_TOOLTIP);
 
         lastLine.add(this.privilege);
         lastLine.add(Box.createHorizontalGlue());

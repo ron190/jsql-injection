@@ -22,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import com.jsql.i18n.I18n;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.textcomponent.JPopupTextArea;
 
@@ -47,7 +48,7 @@ public class MenuActionNewValue implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
         JPanel panel = new JPanel(new BorderLayout());
         final JTextArea textarea = new JPopupTextArea(new JTextArea(6, 50)).getProxy();
-        panel.add(new JLabel("Add new value(s) to the list:"), BorderLayout.NORTH);
+        panel.add(new JLabel(I18n.LIST_ADD_VALUE_LABEL + ":"), BorderLayout.NORTH);
         panel.add(new JScrollPanePixelBorder(1, 1, 1, 1, textarea));
         
         textarea.addMouseListener(new MouseAdapter() {
@@ -58,14 +59,16 @@ public class MenuActionNewValue implements ActionListener {
             }
         });
 
-        int result = JOptionPane.showOptionDialog(myList.getTopLevelAncestor(),
-                panel,
-                "Add Value(s)",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                new String[]{"Ok", "Cancel"}, // this is the array
-                "Cancel");
+        int result = JOptionPane.showOptionDialog(
+            myList.getTopLevelAncestor(),
+            panel,
+            I18n.LIST_ADD_VALUE,
+            JOptionPane.OK_CANCEL_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            new String[]{I18n.OK, I18n.CANCEL},
+            I18n.CANCEL
+        );
 
         if (!"".equals(textarea.getText()) && result == JOptionPane.YES_OPTION) {
             int lastIndex = 0;
@@ -82,11 +85,11 @@ public class MenuActionNewValue implements ActionListener {
 
             myList.setSelectionInterval(firstIndex, lastIndex - 1);
             myList.scrollRectToVisible(
-                    myList.getCellBounds(
-                            myList.getMinSelectionIndex(),
-                            myList.getMaxSelectionIndex()
-                            )
-                    );
+                myList.getCellBounds(
+                    myList.getMinSelectionIndex(),
+                    myList.getMaxSelectionIndex()
+                )
+            );
 
             textarea.setText(null);
         }
