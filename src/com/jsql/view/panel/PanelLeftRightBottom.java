@@ -21,9 +21,9 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.plaf.basic.BasicArrowButton;
 
-import com.jsql.model.InjectionModel;
+import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.tab.AdapterLeftTabbedPane;
 import com.jsql.view.tab.AdapterRightTabbedPane;
@@ -81,7 +81,7 @@ public class PanelLeftRightBottom extends JSplitPaneWithZeroSizeDivider {
         this.leftRight.setRightComponent(MediatorGUI.right());
         this.leftRight.setDividerLocation(verticalSplitter);
         this.leftRight.setDividerSize(0);
-        this.leftRight.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, ToolsGUI.COMPONENT_BORDER));
+        this.leftRight.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperGUI.COMPONENT_BORDER));
 
         this.setDividerSize(0);
         this.setBorder(null);
@@ -100,7 +100,7 @@ public class PanelLeftRightBottom extends JSplitPaneWithZeroSizeDivider {
         hideBottomButton.addActionListener(PanelLeftRightBottom.HIDESHOWPANEL);
         ERSATZARROWPANEL.add(Box.createHorizontalGlue());
         ERSATZARROWPANEL.add(hideBottomButton, BorderLayout.EAST);
-        ERSATZARROWPANEL.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, ToolsGUI.COMPONENT_BORDER));
+        ERSATZARROWPANEL.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperGUI.COMPONENT_BORDER));
         ERSATZARROWPANEL.setVisible(false);
 
         leftRightBottomPanel.add(ERSATZARROWPANEL, BorderLayout.SOUTH);

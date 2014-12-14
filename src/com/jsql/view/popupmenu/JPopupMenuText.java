@@ -18,7 +18,7 @@ import javax.swing.KeyStroke;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 
 /**
  * Default popup menu for textfield and texteditor.
@@ -34,14 +34,14 @@ public class JPopupMenuText extends JPopupMenuComponent {
 
         if (component.isEditable()) {
             JMenuItem cutItem = new JMenuItem();
-            cutItem.setIcon(ToolsGUI.EMPTY);
+            cutItem.setIcon(HelperGUI.EMPTY);
             cutItem.setAction(component.getActionMap().get(DefaultEditorKit.cutAction));
             cutItem.setText("Cut");
             cutItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
             cutItem.setMnemonic('t');
 
             JMenuItem pasteItem = new JMenuItem();
-            pasteItem.setIcon(ToolsGUI.EMPTY);
+            pasteItem.setIcon(HelperGUI.EMPTY);
             pasteItem.setAction(component.getActionMap().get(DefaultEditorKit.pasteAction));
             pasteItem.setText("Paste");
             pasteItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));

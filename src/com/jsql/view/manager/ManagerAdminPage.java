@@ -31,9 +31,9 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.InjectionModel;
+import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.list.dnd.DnDList;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 
@@ -76,13 +76,13 @@ public class ManagerAdminPage extends ManagerAbstractList {
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
 
         lastLine.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, ToolsGUI.COMPONENT_BORDER), 
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)));
         
         run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/adminSearch.png")));
 
         run.setToolTipText(I18n.ADMIN_PAGE_RUN_BUTTON_TOOLTIP);
-        run.setBorder(ToolsGUI.BLU_ROUND_BORDER);
+        run.setBorder(HelperGUI.BLU_ROUND_BORDER);
 
         run.addActionListener(new ActionListener() {
             @Override
@@ -97,9 +97,9 @@ public class ManagerAdminPage extends ManagerAbstractList {
                         if (run.getText().equals(defaultText)) {
                             run.setText("Stop");
                             loader.setVisible(true);
-                            InjectionModel.RAO.getAdminPage(MediatorGUI.top().addressBar.getText(), listFile.getSelectedValuesList());
+                            InjectionModel.ressourceAccessObject.getAdminPage(MediatorGUI.top().addressBar.getText(), listFile.getSelectedValuesList());
                         } else {
-                            InjectionModel.RAO.endAdminSearch = true;
+                            InjectionModel.ressourceAccessObject.endAdminSearch = true;
                             run.setEnabled(false);
                         }
                     }

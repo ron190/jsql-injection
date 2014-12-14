@@ -14,7 +14,7 @@ import java.net.URLConnection;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.InjectionModel;
+import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.MediatorGUI;
 
 public class ActionCheckUpdate implements ActionListener, Runnable {

@@ -17,7 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 
-import com.jsql.model.ao.RessourceAccessObject;
+import com.jsql.model.access.object.RessourceAccessObject;
 import com.jsql.view.MediatorGUI;
 import com.jsql.view.tab.TabHeader;
 import com.jsql.view.terminal.TerminalSQL;

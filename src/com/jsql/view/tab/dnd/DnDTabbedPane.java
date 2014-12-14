@@ -22,7 +22,7 @@ import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 import javax.swing.TransferHandler;
 
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.tab.CustomMetalTabbedPaneUI;
 
 @SuppressWarnings("serial")
@@ -116,7 +116,7 @@ public class DnDTabbedPane extends JTabbedPane {
         addPropertyChangeListener(h);
         // UIManager.put() is not sufficient
         setUI(new CustomMetalTabbedPaneUI());
-        setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, ToolsGUI.COMPONENT_BORDER));
+        setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER));
     }
     
     private DropMode dropMode = DropMode.INSERT;

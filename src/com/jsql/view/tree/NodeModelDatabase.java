@@ -48,7 +48,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
 
                 @Override
                 protected Object doInBackground() throws Exception {
-                    MediatorGUI.model().DAO.listTables(selectedDatabase);
+                    MediatorGUI.model().dataAccessObject.listTables(selectedDatabase);
                     return null;
                 }
                 

@@ -11,7 +11,7 @@
 package com.jsql.view.interaction;
 
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 
 /**
  * Mark the injection as invulnerable to a normal injection.
@@ -26,6 +26,6 @@ public class MarkNormalInvulnerable implements IInteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.status().setNormalIcon(ToolsGUI.SQUARE_RED);
+        MediatorGUI.status().setNormalIcon(HelperGUI.SQUARE_RED);
     }
 }

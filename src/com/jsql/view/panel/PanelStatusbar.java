@@ -25,7 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import com.jsql.i18n.I18n;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.radio.AbstractRadioLink;
 import com.jsql.view.radio.RadioLinkStatusbar;
 import com.jsql.view.textcomponent.JPopupLabel;
@@ -92,7 +92,7 @@ public class PanelStatusbar extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         this.setBorder(
                 BorderFactory.createCompoundBorder(
-                        BorderFactory.createMatteBorder(1, 0, 0, 0, ToolsGUI.COMPONENT_BORDER),
+                        BorderFactory.createMatteBorder(1, 0, 0, 0, HelperGUI.COMPONENT_BORDER),
                         BorderFactory.createEmptyBorder(0, 5, 2, 5)));
 
         this.reset();
@@ -187,15 +187,15 @@ public class PanelStatusbar extends JPanel {
         this.labelCurrentUser.setText(PanelStatusbar.INFO_DEFAULT_VALUE);
         this.labelAuthenticatedUser.setText(PanelStatusbar.INFO_DEFAULT_VALUE);
         
-        this.labelNormal.setIcon(ToolsGUI.SQUARE_GREY);
-        this.labelErrorBased.setIcon(ToolsGUI.SQUARE_GREY);
-        this.labelBlind.setIcon(ToolsGUI.SQUARE_GREY);
-        this.labelTimeBased.setIcon(ToolsGUI.SQUARE_GREY);
+        this.labelNormal.setIcon(HelperGUI.SQUARE_GREY);
+        this.labelErrorBased.setIcon(HelperGUI.SQUARE_GREY);
+        this.labelBlind.setIcon(HelperGUI.SQUARE_GREY);
+        this.labelTimeBased.setIcon(HelperGUI.SQUARE_GREY);
         
-        this.labelNormal.setFont(ToolsGUI.MYFONT);
-        this.labelErrorBased.setFont(ToolsGUI.MYFONT);
-        this.labelBlind.setFont(ToolsGUI.MYFONT);
-        this.labelTimeBased.setFont(ToolsGUI.MYFONT);
+        this.labelNormal.setFont(HelperGUI.MYFONT);
+        this.labelErrorBased.setFont(HelperGUI.MYFONT);
+        this.labelBlind.setFont(HelperGUI.MYFONT);
+        this.labelTimeBased.setFont(HelperGUI.MYFONT);
     }
 
     /**

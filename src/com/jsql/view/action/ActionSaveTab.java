@@ -29,9 +29,9 @@ import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.InjectionModel;
+import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.dialog.ReplaceFileChooser;
 import com.jsql.view.table.PanelTable;
 
@@ -51,7 +51,7 @@ public class ActionSaveTab extends AbstractAction {
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         this.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_S));
         this.putValue(Action.NAME, "Save Tab As...");
-        this.putValue(Action.SMALL_ICON, ToolsGUI.EMPTY);
+        this.putValue(Action.SMALL_ICON, HelperGUI.EMPTY);
     }
 
     final ReplaceFileChooser filechooser = new ReplaceFileChooser(MediatorGUI.model().prefPathFile);

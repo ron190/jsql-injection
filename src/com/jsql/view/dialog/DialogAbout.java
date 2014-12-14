@@ -45,9 +45,9 @@ import javax.swing.event.HyperlinkListener;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.InjectionModel;
+import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.popupmenu.JPopupMenuText;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.ui.RoundBorder;
@@ -81,7 +81,7 @@ public class DialogAbout extends JDialog {
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         // Define a small and large app icon
-        this.setIconImages(ToolsGUI.getIcons());
+        this.setIconImages(HelperGUI.getIcons());
 
         // Action for ESCAPE key
         ActionListener escapeListener = new ActionListener() {

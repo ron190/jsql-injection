@@ -16,7 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.list.dnd.DnDList;
 import com.jsql.view.list.dnd.ListItem;
 
@@ -49,7 +49,7 @@ abstract class ManagerAbstractList extends JPanel {
     /**
      * A animated GIF displayed during processing.
      */
-    protected JLabel loader = new JLabel(ToolsGUI.LOADER_GIF);
+    protected JLabel loader = new JLabel(HelperGUI.LOADER_GIF);
 
     /**
      * Add a new string to the list if it's not a duplicate.

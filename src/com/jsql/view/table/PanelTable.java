@@ -31,6 +31,7 @@ import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -141,10 +142,21 @@ public class PanelTable extends JPanel {
         table.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 table.requestFocusInWindow();
+                
                 if (SwingUtilities.isRightMouseButton(e)) {
+                    /*
+                     * Keep selection when multiple cells are selected and only move focus
+                     */
                     Point p = e.getPoint();
 
-                    table.changeSelection(table.rowAtPoint(p), table.columnAtPoint(p), false, false);
+                    int rowNumber = table.rowAtPoint(p);
+                    int colNumber = table.columnAtPoint(p);
+                    
+                    DefaultListSelectionModel  modelRow = (DefaultListSelectionModel) table.getSelectionModel();
+                    DefaultListSelectionModel  modelColumn = (DefaultListSelectionModel) table.getColumnModel().getSelectionModel();
+
+                    modelRow.moveLeadSelectionIndex(rowNumber);
+                    modelColumn.moveLeadSelectionIndex(colNumber);
                 }
             }
         });

@@ -23,7 +23,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import com.jsql.i18n.I18n;
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.manager.ManagerAdminPage;
 import com.jsql.view.manager.ManagerBruteForce;
 import com.jsql.view.manager.ManagerCoder;
@@ -128,14 +128,14 @@ public class AdapterLeftTabbedPane extends MouseTabbedPane {
 
         JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 1, 0, 0, tree);
 
-        this.addTab(I18n.DATABASE, ToolsGUI.DATABASE_SERVER_ICON, scroller, I18n.DATABASE_TOOLTIP);
-        this.addTab(I18n.ADMINPAGE, ToolsGUI.ADMIN_SERVER_ICON, adminPageManager, I18n.ADMINPAGE_TOOLTIP);
-        this.addTab(I18n.FILE, ToolsGUI.FILE_SERVER_ICON, fileManager, I18n.FILE_TOOLTIP);
-        this.addTab(I18n.WEBSHELL, ToolsGUI.SHELL_SERVER_ICON, shellManager, I18n.WEBSHELL_TOOLTIP);
-        this.addTab(I18n.SQLSHELL, ToolsGUI.SHELL_SERVER_ICON, sqlShellManager, I18n.SQLSHELL_TOOLTIP);
-        this.addTab(I18n.UPLOAD, ToolsGUI.UPLOAD_ICON, uploadManager, I18n.UPLOAD_TOOLTIP);
-        this.addTab(I18n.BRUTEFORCE, ToolsGUI.BRUTER_ICON, new ManagerBruteForce(), I18n.BRUTEFORCE_TOOLTIP);
-        this.addTab(I18n.CODER, ToolsGUI.CODER_ICON, new ManagerCoder(), I18n.CODER_TOOLTIP);
+        this.addTab(I18n.DATABASE, HelperGUI.DATABASE_SERVER_ICON, scroller, I18n.DATABASE_TOOLTIP);
+        this.addTab(I18n.ADMINPAGE, HelperGUI.ADMIN_SERVER_ICON, adminPageManager, I18n.ADMINPAGE_TOOLTIP);
+        this.addTab(I18n.FILE, HelperGUI.FILE_SERVER_ICON, fileManager, I18n.FILE_TOOLTIP);
+        this.addTab(I18n.WEBSHELL, HelperGUI.SHELL_SERVER_ICON, shellManager, I18n.WEBSHELL_TOOLTIP);
+        this.addTab(I18n.SQLSHELL, HelperGUI.SHELL_SERVER_ICON, sqlShellManager, I18n.SQLSHELL_TOOLTIP);
+        this.addTab(I18n.UPLOAD, HelperGUI.UPLOAD_ICON, uploadManager, I18n.UPLOAD_TOOLTIP);
+        this.addTab(I18n.BRUTEFORCE, HelperGUI.BRUTER_ICON, new ManagerBruteForce(), I18n.BRUTEFORCE_TOOLTIP);
+        this.addTab(I18n.CODER, HelperGUI.CODER_ICON, new ManagerCoder(), I18n.CODER_TOOLTIP);
 
         this.fileManager.setButtonEnable(false);
         this.shellManager.setButtonEnable(false);

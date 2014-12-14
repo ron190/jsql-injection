@@ -26,7 +26,7 @@ import javax.swing.tree.TreePath;
 import com.jsql.i18n.I18n;
 import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.ui.RoundBorder;
 
 /**
@@ -118,8 +118,8 @@ public abstract class AbstractNodeModel {
 
         JMenuItem mnLoad = new JMenuItem(I18n.LOAD_STOP, 'o');
         JMenuItem mnPause = new JMenuItem(I18n.PAUSE_RESUME, 's');
-        mnLoad.setIcon(ToolsGUI.EMPTY);
-        mnPause.setIcon(ToolsGUI.EMPTY);
+        mnLoad.setIcon(HelperGUI.EMPTY);
+        mnPause.setIcon(HelperGUI.EMPTY);
 
         if (!this.hasChildChecked && !this.isRunning) {
             mnLoad.setEnabled(false);
@@ -135,8 +135,8 @@ public abstract class AbstractNodeModel {
         tablePopupMenu.add(mnLoad);
         tablePopupMenu.add(mnPause);
 
-        mnLoad.setIcon(ToolsGUI.EMPTY);
-        mnPause.setIcon(ToolsGUI.EMPTY);
+        mnLoad.setIcon(HelperGUI.EMPTY);
+        mnPause.setIcon(HelperGUI.EMPTY);
 
         tablePopupMenu.show(MediatorGUI.databaseTree(), x, y);
     }
@@ -168,7 +168,7 @@ public abstract class AbstractNodeModel {
         panel.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent arg0) {
-                panel.label.setBackground(ToolsGUI.SELECTION_BACKGROUND);
+                panel.label.setBackground(HelperGUI.SELECTION_BACKGROUND);
                 panel.label.setBorder(new RoundBorder(4, 1, true));
                 System.out.println("b");
             }
@@ -209,7 +209,7 @@ public abstract class AbstractNodeModel {
 //            renderer.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         
         if (isSelected) {
-            panel.label.setBackground(ToolsGUI.SELECTION_BACKGROUND);
+            panel.label.setBackground(HelperGUI.SELECTION_BACKGROUND);
         } else {
             panel.label.setBackground(Color.WHITE);
             panel.label.setBorder(new RoundBorder(4, 1, false));
@@ -223,7 +223,7 @@ public abstract class AbstractNodeModel {
             panel.hideIcon();
 
             if (MediatorGUI.model().suspendables.get(AbstractNodeModel.this.dataObject).isPaused()) {
-                ImageIcon animatedGIFPaused = new ImageOverlap(ToolsGUI.PATH_PROGRESSBAR, ToolsGUI.PATH_PAUSE);
+                ImageIcon animatedGIFPaused = new ImageOverlap(HelperGUI.PATH_PROGRESSBAR, HelperGUI.PATH_PAUSE);
                 animatedGIFPaused.setImageObserver(new ImageObserverAnimated(MediatorGUI.databaseTree(), currentNode));
                 panel.setLoaderIcon(animatedGIFPaused);
             }

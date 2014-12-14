@@ -16,6 +16,7 @@ import java.util.Map;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JViewport;
 import javax.swing.table.DefaultTableModel;
 
 import com.jsql.model.bean.HTTPHeader;
@@ -48,12 +49,16 @@ public class MessageHeader implements IInteractionCommand {
     @Override
     public void execute() {
         MediatorGUI.bottomPanel().listHTTPHeader.add(new HTTPHeader(url, cookie, post, header, response));
-        DefaultTableModel model = (DefaultTableModel) ((JTable) ((JScrollPane) MediatorGUI.bottomPanel().network.getLeftComponent()).getViewport().getView()).getModel();
+        
+        JViewport viewport = ((JScrollPane) MediatorGUI.bottomPanel().network.getLeftComponent()).getViewport();
+        JTable table = (JTable) viewport.getView();
+        
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.addRow(new Object[]{response.get("Method"), url, response.get("Content-Length"), response.get("Content-Type")});
         
-        Rectangle rect = ((JTable) ((JScrollPane) MediatorGUI.bottomPanel().network.getLeftComponent()).getViewport().getView()).getCellRect(((JTable) ((JScrollPane) MediatorGUI.bottomPanel().network.getLeftComponent()).getViewport().getView()).getRowCount() - 1, 0 /* col */, true);
-        Point pt = ((JScrollPane) MediatorGUI.bottomPanel().network.getLeftComponent()).getViewport().getViewPosition();
+        Rectangle rect = table.getCellRect(table.getRowCount() - 1, 0, true);
+        Point pt = viewport.getViewPosition();
         rect.translate(-pt.x, -pt.y);
-        ((JScrollPane) MediatorGUI.bottomPanel().network.getLeftComponent()).getViewport().scrollRectToVisible(rect);
+        viewport.scrollRectToVisible(rect);
     }
 }

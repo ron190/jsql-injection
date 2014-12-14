@@ -4,13 +4,9 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class I18n {
-    private I18n() {
-        // Disable constructor
-    }
-    
-    static {
+//    static {
 //        Locale.setDefault(Locale.FRENCH);
-    }
+//    }
     
     private static final ResourceBundle labels = ResourceBundle.getBundle("com.jsql.i18n.jsql", Locale.getDefault());
     
@@ -249,4 +245,14 @@ public class I18n {
     public static final String LIST_IMPORT = (String) labels.getObject("listImport");
     public static final String LIST_IMPORT_ERROR = (String) labels.getObject("listImportError");
     public static final String LIST_IMPORT_ERROR_TEXT = (String) labels.getObject("listImportErrorText");
+    
+    /**
+     * Dialog replace file
+     */
+    public static final String DIALOG_REPLACE_FILE_CONFIRM = (String) labels.getObject("dialogReplaceFileConfirm");
+    public static final String DIALOG_REPLACE_FILE_TITLE = (String) labels.getObject("dialogReplaceFileTitle");
+    
+    private I18n() {
+        // Disable constructor
+    }
 }

@@ -57,11 +57,11 @@ import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.HTTPHeader;
+import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.MediatorGUI;
 import com.jsql.view.SwingAppender;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.console.AdapterDefaultColoredConsole;
 import com.jsql.view.console.AdapterJavaConsole;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
@@ -134,7 +134,7 @@ public class PanelBottom extends JPanel {
         this.network.setResizeWeight(1);
         this.network.setDividerSize(0);
         this.network.setDividerLocation(600);
-        this.network.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, ToolsGUI.COMPONENT_BORDER));
+        this.network.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperGUI.COMPONENT_BORDER));
         this.networkTable = new JTable(0, 4) {
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -264,16 +264,16 @@ public class PanelBottom extends JPanel {
 
         // Order is important
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-        if (prefs.getBoolean(ToolsGUI.JAVA_VISIBLE, false)) {
+        if (prefs.getBoolean(HelperGUI.JAVA_VISIBLE, false)) {
             this.insertJavaDebugTab();
         }
-        if (prefs.getBoolean(ToolsGUI.NETWORK_VISIBLE, true)) {
+        if (prefs.getBoolean(HelperGUI.NETWORK_VISIBLE, true)) {
             this.insertNetworkTab();
         }
-        if (prefs.getBoolean(ToolsGUI.CHUNK_VISIBLE, true)) {
+        if (prefs.getBoolean(HelperGUI.CHUNK_VISIBLE, true)) {
             this.insertChunkTab();
         }
-        if (prefs.getBoolean(ToolsGUI.BINARY_VISIBLE, true)) {
+        if (prefs.getBoolean(HelperGUI.BINARY_VISIBLE, true)) {
             this.insertBinaryTab();
         }
 

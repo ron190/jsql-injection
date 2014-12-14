@@ -31,9 +31,9 @@ import javax.swing.tree.DefaultTreeModel;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.model.bean.Request;
+import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.action.ActionHandler;
 import com.jsql.view.dropshadow.ShadowPopupFactory;
 import com.jsql.view.interaction.IInteractionCommand;
@@ -86,10 +86,10 @@ public class GUI extends JFrame implements Observer {
         MediatorGUI.register(this);
 
         // Define a small and large app icon
-        this.setIconImages(ToolsGUI.getIcons());
+        this.setIconImages(HelperGUI.getIcons());
 
         // Load UI before any component
-        ToolsGUI.prepareGUI();
+        HelperGUI.prepareGUI();
         ShadowPopupFactory.install();
         
         // Register the view to the model
@@ -119,20 +119,20 @@ public class GUI extends JFrame implements Observer {
                 prefs.putInt(PanelLeftRightBottom.VERTICALSPLITTER_PREFNAME, GUI.this.outputPanel.leftRight.getDividerLocation());
                 prefs.putInt(PanelLeftRightBottom.HORIZONTALSPLITTER_PREFNAME, GUI.this.outputPanel.getHeight() - GUI.this.outputPanel.getDividerLocation());
                 
-                prefs.putBoolean(ToolsGUI.BINARY_VISIBLE, false);
-                prefs.putBoolean(ToolsGUI.CHUNK_VISIBLE, false);
-                prefs.putBoolean(ToolsGUI.NETWORK_VISIBLE, false);
-                prefs.putBoolean(ToolsGUI.JAVA_VISIBLE, false);
+                prefs.putBoolean(HelperGUI.BINARY_VISIBLE, false);
+                prefs.putBoolean(HelperGUI.CHUNK_VISIBLE, false);
+                prefs.putBoolean(HelperGUI.NETWORK_VISIBLE, false);
+                prefs.putBoolean(HelperGUI.JAVA_VISIBLE, false);
                 
                 for (int i = 0; i < MediatorGUI.bottom().getTabCount(); i++) {
                     if ("Binary".equals(MediatorGUI.bottom().getTitleAt(i))) {
-                        prefs.putBoolean(ToolsGUI.BINARY_VISIBLE, true);
+                        prefs.putBoolean(HelperGUI.BINARY_VISIBLE, true);
                     } else if ("Chunk".equals(MediatorGUI.bottom().getTitleAt(i))) {
-                        prefs.putBoolean(ToolsGUI.CHUNK_VISIBLE, true);
+                        prefs.putBoolean(HelperGUI.CHUNK_VISIBLE, true);
                     } else if ("Network".equals(MediatorGUI.bottom().getTitleAt(i))) {
-                        prefs.putBoolean(ToolsGUI.NETWORK_VISIBLE, true);
+                        prefs.putBoolean(HelperGUI.NETWORK_VISIBLE, true);
                     } else if ("Java".equals(MediatorGUI.bottom().getTitleAt(i))) {
-                        prefs.putBoolean(ToolsGUI.JAVA_VISIBLE, true);
+                        prefs.putBoolean(HelperGUI.JAVA_VISIBLE, true);
                     }
                 }
             }
@@ -235,9 +235,9 @@ public class GUI extends JFrame implements Observer {
         // Default status info
         MediatorGUI.status().reset();
 
-        MediatorGUI.left().fileManager.changePrivilegeIcon(ToolsGUI.SQUARE_GREY);
-        MediatorGUI.left().shellManager.changePrivilegeIcon(ToolsGUI.SQUARE_GREY);
-        MediatorGUI.left().sqlShellManager.changePrivilegeIcon(ToolsGUI.SQUARE_GREY);
+        MediatorGUI.left().fileManager.changePrivilegeIcon(HelperGUI.SQUARE_GREY);
+        MediatorGUI.left().shellManager.changePrivilegeIcon(HelperGUI.SQUARE_GREY);
+        MediatorGUI.left().sqlShellManager.changePrivilegeIcon(HelperGUI.SQUARE_GREY);
     }
 
     /**

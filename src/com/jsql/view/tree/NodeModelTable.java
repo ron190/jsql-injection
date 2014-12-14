@@ -26,7 +26,7 @@ import javax.swing.tree.TreePath;
 import com.jsql.i18n.I18n;
 import com.jsql.model.bean.Table;
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 
 /**
  * Table model displaying the table icon on the label.
@@ -45,7 +45,7 @@ public class NodeModelTable extends AbstractNodeModel {
         if (leaf) {
             return new ImageIcon(getClass().getResource("/com/jsql/view/images/tableGo.png"));
         } else {
-            return ToolsGUI.TABLE_ICON;
+            return HelperGUI.TABLE_ICON;
         }
     }
 
@@ -55,7 +55,7 @@ public class NodeModelTable extends AbstractNodeModel {
             panel.showLoader();
 
             if (MediatorGUI.model().suspendables.get(this.dataObject).isPaused()) {
-                ImageIcon animatedGIFPaused = new ImageOverlap(ToolsGUI.PATH_PROGRESSBAR, ToolsGUI.PATH_PAUSE);
+                ImageIcon animatedGIFPaused = new ImageOverlap(HelperGUI.PATH_PROGRESSBAR, HelperGUI.PATH_PAUSE);
                 animatedGIFPaused.setImageObserver(new ImageObserverAnimated(MediatorGUI.databaseTree(), currentNode));
                 panel.setLoaderIcon(animatedGIFPaused);
             }
@@ -72,7 +72,7 @@ public class NodeModelTable extends AbstractNodeModel {
 
                 @Override
                 protected Object doInBackground() throws Exception {
-                    MediatorGUI.model().DAO.listColumns(selectedTable);
+                    MediatorGUI.model().dataAccessObject.listColumns(selectedTable);
                     return null;
                 }
                 
@@ -86,8 +86,8 @@ public class NodeModelTable extends AbstractNodeModel {
         JMenuItem mnCheckAll = new JMenuItem(I18n.CHECK_ALL, 'C');
         JMenuItem mnUncheckAll = new JMenuItem(I18n.UNCHECK_ALL, 'U');
 
-        mnCheckAll.setIcon(ToolsGUI.EMPTY);
-        mnUncheckAll.setIcon(ToolsGUI.EMPTY);
+        mnCheckAll.setIcon(HelperGUI.EMPTY);
+        mnUncheckAll.setIcon(HelperGUI.EMPTY);
 
         if (!this.hasBeenSearched) {
             mnCheckAll.setEnabled(false);
@@ -141,8 +141,8 @@ public class NodeModelTable extends AbstractNodeModel {
         mnCheckAll.addActionListener(new CheckAll());
         mnUncheckAll.addActionListener(new UncheckAll());
 
-        mnCheckAll.setIcon(ToolsGUI.EMPTY);
-        mnUncheckAll.setIcon(ToolsGUI.EMPTY);
+        mnCheckAll.setIcon(HelperGUI.EMPTY);
+        mnUncheckAll.setIcon(HelperGUI.EMPTY);
 
         tablePopupMenu.add(mnCheckAll);
         tablePopupMenu.add(mnUncheckAll);

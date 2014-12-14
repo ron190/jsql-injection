@@ -40,7 +40,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 
 import com.jsql.i18n.I18n;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.dropshadow.ShadowPopupBorder;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.splitpane.JSplitPaneWithZeroSizeDivider;
@@ -120,7 +120,7 @@ public class ManagerCoder extends JPanel {
         popup.setBorder(BorderFactory.createCompoundBorder(ShadowPopupBorder.getInstance(), (Border) UIManager.get("PopupMenu.border")));
 
         JButton run = new JButton(I18n.CODER_RUN_BUTTON, new ImageIcon(getClass().getResource("/com/jsql/view/images/tick.png")));
-        run.setBorder(ToolsGUI.BLU_ROUND_BORDER);
+        run.setBorder(HelperGUI.BLU_ROUND_BORDER);
 
         middleLine.add(encoding);
         middleLine.add(Box.createRigidArea(new Dimension(1, 0)));

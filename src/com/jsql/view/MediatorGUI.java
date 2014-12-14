@@ -2,7 +2,7 @@ package com.jsql.view;
 
 import javax.swing.JTree;
 
-import com.jsql.model.InjectionModel;
+import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.manager.ManagerAdminPage;
 import com.jsql.view.manager.ManagerFile;
 import com.jsql.view.manager.ManagerSQLShell;

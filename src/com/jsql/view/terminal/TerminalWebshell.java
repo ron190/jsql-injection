@@ -12,7 +12,7 @@ package com.jsql.view.terminal;
 
 import java.util.UUID;
 
-import com.jsql.model.InjectionModel;
+import com.jsql.model.injection.InjectionModel;
 
 /**
  * A terminal for web shell injection.
@@ -30,6 +30,6 @@ public class TerminalWebshell extends AbstractTerminal {
 
     @Override
     void action(String cmd, UUID terminalID, String shellURL, String... arg) {
-        InjectionModel.RAO.executeShell(cmd, terminalID, shellURL);
+        InjectionModel.ressourceAccessObject.executeShell(cmd, terminalID, shellURL);
     }
 }

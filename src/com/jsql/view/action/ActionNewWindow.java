@@ -21,8 +21,8 @@ import javax.swing.KeyStroke;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.InjectionModel;
-import com.jsql.view.ToolsGUI;
+import com.jsql.model.injection.InjectionModel;
+import com.jsql.view.HelperGUI;
 
 /**
  * Open another jSQL instance in new process. 
@@ -40,7 +40,7 @@ public class ActionNewWindow extends AbstractAction {
         this.putValue(Action.NAME, I18n.NEW_WINDOW);
         this.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_N));
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-        this.putValue(Action.SMALL_ICON, ToolsGUI.EMPTY);
+        this.putValue(Action.SMALL_ICON, HelperGUI.EMPTY);
     }
 
     @Override

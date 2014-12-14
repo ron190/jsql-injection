@@ -28,7 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import com.jsql.i18n.I18n;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.textcomponent.JPopupTextArea;
 import com.jsql.view.textcomponent.JPopupTextField;
@@ -104,7 +104,7 @@ public class ManagerBruteForce extends JPanel {
     public ManagerBruteForce() {
         super(new BorderLayout());
 
-        this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, ToolsGUI.COMPONENT_BORDER));
+//        this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, ToolsGUI.COMPONENT_BORDER));
 
         JPanel options = new JPanel(new BorderLayout());
 
@@ -114,8 +114,8 @@ public class ManagerBruteForce extends JPanel {
         hash.setToolTipText(I18n.BRUTEFORCE_HASH_TOOLTIP);
         firstLine.add(hash, BorderLayout.CENTER);
         hash.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 0, 1, 1, ToolsGUI.DEFAULT_BACKGROUND),
-                ToolsGUI.BLU_ROUND_BORDER));
+                BorderFactory.createMatteBorder(0, 0, 1, 1, HelperGUI.DEFAULT_BACKGROUND),
+                HelperGUI.BLU_ROUND_BORDER));
 
         final JPanel secondLine = new JPanel();
         secondLine.setLayout(new BoxLayout(secondLine, BoxLayout.X_AXIS));
@@ -131,16 +131,17 @@ public class ManagerBruteForce extends JPanel {
                 "sha-512", "mysql" /*,"crc16","crc32","crc64","adler32"*/});
         
         hashTypes.setSelectedIndex(1);
-        hashTypes.setMaximumSize(new Dimension((int) hashTypes.getPreferredSize().getWidth(), 22));
+//        hashTypes.setMaximumSize(new Dimension((int) hashTypes.getPreferredSize().getWidth(), 22));
         hashTypes.setToolTipText(I18n.BRUTEFORCE_HASH_TYPE_TOOLTIP);
 
+//        secondLine.add(Box.createGlue());
         secondLine.add(hashTypes);
 
         secondLine.add(lowerCaseCharacters);
         secondLine.add(upperCaseCharacters);
         secondLine.add(numericCharacters);
         secondLine.add(specialCharacters);
-        secondLine.add(Box.createGlue());
+//        secondLine.add(Box.createGlue());
 
         lowerCaseCharacters.setToolTipText(I18n.BRUTEFORCE_LCASE_TOOLTIP);
         upperCaseCharacters.setToolTipText(I18n.BRUTEFORCE_UCASE_TOOLTIP);
@@ -149,6 +150,9 @@ public class ManagerBruteForce extends JPanel {
 
         JPanel thirdLine = new JPanel();
         thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));
+//        thirdLine.setBorder(BorderFactory.createCompoundBorder(
+//                BorderFactory.createEmptyBorder(1, 1, 1, 1),
+//                BorderFactory.createEmptyBorder(1, 1, 1, 1)));
         
 //        thirdLine.add(new JLabel(" Exclude ", SwingConstants.RIGHT));
         exclude = new JPopupTextField(I18n.BRUTEFORCE_EXCLUDE_LABEL).getProxy();
@@ -158,25 +162,27 @@ public class ManagerBruteForce extends JPanel {
         minimumLength = new JPopupTextField("min", "1").getProxy();
         maximumLength = new JPopupTextField("max", "5").getProxy();
         
-        thirdLine.add(new JLabel(I18n.BRUTEFORCE_MIN_LABEL, SwingConstants.RIGHT));
-        thirdLine.add(minimumLength);
-        thirdLine.add(new JLabel(I18n.BRUTEFORCE_MAX_LABEL, SwingConstants.RIGHT));
-        thirdLine.add(maximumLength);
-
         minimumLength.setToolTipText(I18n.BRUTEFORCE_MIN_TOOLTIP);
         maximumLength.setToolTipText(I18n.BRUTEFORCE_MAX_TOOLTIP);
         
         minimumLength.setHorizontalAlignment(JTextField.RIGHT);
         maximumLength.setHorizontalAlignment(JTextField.RIGHT);
 
-        exclude.setMaximumSize(new Dimension(120, (int) exclude.getPreferredSize().getHeight()));
-        exclude.setMinimumSize(new Dimension(120, (int) exclude.getPreferredSize().getHeight()));
-
+//        exclude.setMaximumSize(new Dimension(120, (int) exclude.getPreferredSize().getHeight()));
+//        exclude.setMinimumSize(new Dimension(120, (int) exclude.getPreferredSize().getHeight()));
+//
+        minimumLength.setPreferredSize(new Dimension(30, (int) minimumLength.getPreferredSize().getHeight()));
+        maximumLength.setPreferredSize(new Dimension(30, (int) maximumLength.getPreferredSize().getHeight()));
         minimumLength.setMaximumSize(new Dimension(30, (int) minimumLength.getPreferredSize().getHeight()));
         maximumLength.setMaximumSize(new Dimension(30, (int) maximumLength.getPreferredSize().getHeight()));
         minimumLength.setMinimumSize(new Dimension(30, (int) minimumLength.getPreferredSize().getHeight()));
         maximumLength.setMinimumSize(new Dimension(30, (int) maximumLength.getPreferredSize().getHeight()));
 
+        thirdLine.add(new JLabel(I18n.BRUTEFORCE_MIN_LABEL, SwingConstants.RIGHT));
+        thirdLine.add(minimumLength);
+        thirdLine.add(new JLabel(I18n.BRUTEFORCE_MAX_LABEL, SwingConstants.RIGHT));
+        thirdLine.add(maximumLength);
+        
         final JPanel secondAndThirdLine = new JPanel(new BorderLayout());
         secondAndThirdLine.add(secondLine, BorderLayout.NORTH);
         secondAndThirdLine.add(thirdLine, BorderLayout.SOUTH);
@@ -193,14 +199,14 @@ public class ManagerBruteForce extends JPanel {
         lastLine.setOpaque(false);
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, ToolsGUI.COMPONENT_BORDER),
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)));
         
         run = new JButton(I18n.BRUTEFORCE_RUN_BUTTON, new ImageIcon(getClass().getResource("/com/jsql/view/images/key.png")));
         run.setToolTipText(I18n.BRUTEFORCE_RUN_BUTTON_TOOLTIP);
-        run.setBorder(ToolsGUI.BLU_ROUND_BORDER);
+        run.setBorder(HelperGUI.BLU_ROUND_BORDER);
 
-        loader = new JLabel(ToolsGUI.LOADER_GIF);
+        loader = new JLabel(HelperGUI.LOADER_GIF);
         loader.setVisible(false);
 
         lastLine.add(Box.createHorizontalGlue());

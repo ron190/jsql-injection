@@ -35,9 +35,9 @@ import org.apache.log4j.Logger;
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.i18n.I18n;
-import com.jsql.model.InjectionModel;
+import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.list.dnd.DnDList;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 
@@ -79,14 +79,14 @@ public class ManagerFile extends ManagerAbstractList {
         lastLine.setOpaque(false);
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, ToolsGUI.COMPONENT_BORDER),
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)));
         
         run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/images/fileSearch.png")));
 
         run.setToolTipText(I18n.FILE_RUN_BUTTON_TOOLTIP);
         run.setEnabled(false);
-        run.setBorder(ToolsGUI.BLU_ROUND_BORDER);
+        run.setBorder(HelperGUI.BLU_ROUND_BORDER);
         
         run.addActionListener(new ActionListener() {
             @Override
@@ -105,7 +105,7 @@ public class ManagerFile extends ManagerAbstractList {
                                 MediatorGUI.left().shellManager.clearSelection();
                                 MediatorGUI.left().sqlShellManager.clearSelection();
                                 loader.setVisible(true);
-                                InjectionModel.RAO.getFile(listFile.getSelectedValuesList());
+                                InjectionModel.ressourceAccessObject.getFile(listFile.getSelectedValuesList());
                             } catch (PreparationException e) {
                                 LOGGER.warn("Problem reading file", e);
                             } catch (StoppableException e) {
@@ -113,7 +113,7 @@ public class ManagerFile extends ManagerAbstractList {
                             }
 
                         } else {
-                            InjectionModel.RAO.endFileSearch = true;
+                            InjectionModel.ressourceAccessObject.endFileSearch = true;
                             run.setEnabled(false);
                         }
                     }
@@ -121,8 +121,8 @@ public class ManagerFile extends ManagerAbstractList {
             }
         });
 
-        privilege = new JLabel(I18n.PRIVILEGE_LABEL, ToolsGUI.SQUARE_GREY, SwingConstants.LEFT);
-        privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, ToolsGUI.DEFAULT_BACKGROUND));
+        privilege = new JLabel(I18n.PRIVILEGE_LABEL, HelperGUI.SQUARE_GREY, SwingConstants.LEFT);
+        privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperGUI.DEFAULT_BACKGROUND));
         privilege.setToolTipText(I18n.PRIVILEGE_TOOLTIP);
 
         loader.setVisible(false);

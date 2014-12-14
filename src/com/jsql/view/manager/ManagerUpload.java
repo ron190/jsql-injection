@@ -33,9 +33,9 @@ import org.apache.log4j.Logger;
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.i18n.I18n;
-import com.jsql.model.InjectionModel;
+import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.list.dnd.DnDList;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.textcomponent.JPopupTextField;
@@ -78,21 +78,21 @@ public class ManagerUpload extends ManagerAbstractList {
         shellURL.setToolTipText(urlTooltip);
         shellURL.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
-                        BorderFactory.createMatteBorder(0, 1, 0, 0, ToolsGUI.COMPONENT_BORDER),
-                        BorderFactory.createMatteBorder(1, 1, 0, 1, ToolsGUI.DEFAULT_BACKGROUND)),
-                        ToolsGUI.BLU_ROUND_BORDER));
+                        BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER),
+                        BorderFactory.createMatteBorder(1, 1, 0, 1, HelperGUI.DEFAULT_BACKGROUND)),
+                        HelperGUI.BLU_ROUND_BORDER));
 
         JPanel lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, ToolsGUI.COMPONENT_BORDER), 
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)));
 
         this.run = new JButton(I18n.UPLOAD_DIALOG_TEXT, new ImageIcon(getClass().getResource("/com/jsql/view/images/add.png")));
         this.run.setToolTipText(I18n.UPLOAD_RUN_BUTTON_TOOLTIP);
         this.run.setEnabled(false);
         
-        this.run.setBorder(ToolsGUI.BLU_ROUND_BORDER);
+        this.run.setBorder(HelperGUI.BLU_ROUND_BORDER);
         
         this.run.addActionListener(new ActionListener() {
             @Override
@@ -114,7 +114,7 @@ public class ManagerUpload extends ManagerAbstractList {
                                 File file = filechooser.getSelectedFile();
                                 try {
                                     ManagerUpload.this.loader.setVisible(true);
-                                    InjectionModel.RAO.upload(path.toString(), shellURL.getText(), file);
+                                    InjectionModel.ressourceAccessObject.upload(path.toString(), shellURL.getText(), file);
                                 } catch (PreparationException e) {
                                     LOGGER.warn("Can't upload file " + file.getName() + " to " + path, e);
                                 } catch (StoppableException e) {
@@ -127,8 +127,8 @@ public class ManagerUpload extends ManagerAbstractList {
             }
         });
 
-        this.privilege = new JLabel(I18n.PRIVILEGE_LABEL, ToolsGUI.SQUARE_GREY, SwingConstants.LEFT);
-        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, ToolsGUI.DEFAULT_BACKGROUND));
+        this.privilege = new JLabel(I18n.PRIVILEGE_LABEL, HelperGUI.SQUARE_GREY, SwingConstants.LEFT);
+        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperGUI.DEFAULT_BACKGROUND));
         this.privilege.setToolTipText(I18n.PRIVILEGE_TOOLTIP);
 
         this.loader.setVisible(false);

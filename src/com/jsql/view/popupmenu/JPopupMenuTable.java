@@ -21,7 +21,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import com.jsql.i18n.I18n;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 
 /**
  * Default popup menu and shortcuts for a table.
@@ -46,7 +46,7 @@ public class JPopupMenuTable extends JPopupMenu {
         copyItem.setAction(new ActionCopy());
         copyItem.setText(I18n.COPY);
         copyItem.setMnemonic('C');
-        copyItem.setIcon(ToolsGUI.EMPTY);
+        copyItem.setIcon(HelperGUI.EMPTY);
         this.add(copyItem);
 
         this.addSeparator();
@@ -55,7 +55,7 @@ public class JPopupMenuTable extends JPopupMenu {
         selectAllItem.setAction(new ActionSelectAll());
         selectAllItem.setText(I18n.SELECT_ALL);
         selectAllItem.setMnemonic('A');
-        selectAllItem.setIcon(ToolsGUI.EMPTY);
+        selectAllItem.setIcon(HelperGUI.EMPTY);
         this.add(selectAllItem);
 
         // Show menu next mouse pointer

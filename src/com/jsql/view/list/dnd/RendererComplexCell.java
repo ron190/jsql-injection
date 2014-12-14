@@ -24,7 +24,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
 
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 
 /**
  * Item renderer for JList.
@@ -57,7 +57,7 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
         renderer.setFont(new Font("Segoe UI", Font.PLAIN, renderer.getFont().getSize()));
 
         if (isSelected && list.isFocusOwner()) {
-            renderer.setBackground(ToolsGUI.SELECTION_BACKGROUND);
+            renderer.setBackground(HelperGUI.SELECTION_BACKGROUND);
         } else if (indexMouseOver[0] == index) {
             renderer.setBackground(new Color(237, 245, 255));
         } else if (isSelected && !list.isFocusOwner()) {

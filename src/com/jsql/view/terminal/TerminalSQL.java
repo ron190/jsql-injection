@@ -12,7 +12,7 @@ package com.jsql.view.terminal;
 
 import java.util.UUID;
 
-import com.jsql.model.InjectionModel;
+import com.jsql.model.injection.InjectionModel;
 
 /**
  * A terminal for SQL shell injection.
@@ -32,6 +32,6 @@ public class TerminalSQL extends AbstractTerminal {
 
     @Override
     void action(String cmd, UUID terminalID, String wbhPath, String... arg) {
-        InjectionModel.RAO.executeSQLShell(cmd, terminalID, wbhPath, arg[0], arg[1]);
+        InjectionModel.ressourceAccessObject.executeSQLShell(cmd, terminalID, wbhPath, arg[0], arg[1]);
     }
 }

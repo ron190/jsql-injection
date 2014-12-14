@@ -10,14 +10,20 @@
  *******************************************************************************/
 package com.jsql.view.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.metal.MetalScrollBarUI;
+
+import com.jsql.view.HelperGUI;
 
 /**
  * UI for scrollbars without click button, cleaner and smaller track.
@@ -55,7 +61,17 @@ public class CleanMetalScrollBarUI extends MetalScrollBarUI {
     public Dimension getPreferredSize(JComponent c) {
         return new Dimension(12, 12);
     }
-
+    
+    @Override
+    protected void paintThumb(Graphics g, JComponent c, Rectangle r) {
+        Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setPaint(HelperGUI.SELECTION_BACKGROUND);
+        g2.fillRoundRect(r.x,r.y,r.width,r.height, 7,7);
+        g2.dispose();
+    }        
+    
     /**
      * Allows to load Custom ScrollBar UI by UIManager.put("ScrollBarUI", class).
      * @param c Component to customize

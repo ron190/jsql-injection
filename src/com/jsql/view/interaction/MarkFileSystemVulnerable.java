@@ -11,7 +11,7 @@
 package com.jsql.view.interaction;
 
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 
 /**
  * Mark the injection as using a user profile vulnerable to file I/O.
@@ -26,9 +26,9 @@ public class MarkFileSystemVulnerable implements IInteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.left().fileManager.changePrivilegeIcon(ToolsGUI.TICK);
-        MediatorGUI.left().shellManager.changePrivilegeIcon(ToolsGUI.TICK);
-        MediatorGUI.left().sqlShellManager.changePrivilegeIcon(ToolsGUI.TICK);
-        MediatorGUI.left().uploadManager.changePrivilegeIcon(ToolsGUI.TICK);
+        MediatorGUI.left().fileManager.changePrivilegeIcon(HelperGUI.TICK);
+        MediatorGUI.left().shellManager.changePrivilegeIcon(HelperGUI.TICK);
+        MediatorGUI.left().sqlShellManager.changePrivilegeIcon(HelperGUI.TICK);
+        MediatorGUI.left().uploadManager.changePrivilegeIcon(HelperGUI.TICK);
     }
 }

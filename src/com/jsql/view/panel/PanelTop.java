@@ -28,7 +28,7 @@ import javax.swing.plaf.basic.BasicArrowButton;
 
 import com.jsql.i18n.I18n;
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.radio.RadioLinkAddressBar;
 import com.jsql.view.textcomponent.JAddressBar;
 import com.jsql.view.textcomponent.JPopupTextField;
@@ -90,7 +90,7 @@ public class PanelTop extends JPanel {
     /**
      * Animated GIF displayed during injection.
      */
-    public JLabel loader = new JLabel(ToolsGUI.LOADER_GIF);
+    public JLabel loader = new JLabel(HelperGUI.LOADER_GIF);
 
     /**
      * Connection button.
@@ -136,18 +136,18 @@ public class PanelTop extends JPanel {
          * Define UI and the left padding for addressBar
          */
         this.addressBar.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(4, 2, 3, 0, ToolsGUI.DEFAULT_BACKGROUND),
+                BorderFactory.createMatteBorder(4, 2, 3, 0, HelperGUI.DEFAULT_BACKGROUND),
                 new RoundBorder(24, 3, true)));
 
         this.textPOST.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 0, 0, ToolsGUI.DEFAULT_BACKGROUND),
-                ToolsGUI.BLU_ROUND_BORDER));
+                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperGUI.DEFAULT_BACKGROUND),
+                HelperGUI.BLU_ROUND_BORDER));
         this.textCookie.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 0, 0, ToolsGUI.DEFAULT_BACKGROUND),
-                ToolsGUI.BLU_ROUND_BORDER));
+                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperGUI.DEFAULT_BACKGROUND),
+                HelperGUI.BLU_ROUND_BORDER));
         this.textHeader.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 0, 0, ToolsGUI.DEFAULT_BACKGROUND),
-                ToolsGUI.BLU_ROUND_BORDER));
+                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperGUI.DEFAULT_BACKGROUND),
+                HelperGUI.BLU_ROUND_BORDER));
 
         this.textPOST.setPreferredSize(new Dimension(0, 27));
         this.textPOST.setFont(this.textPOST.getFont().deriveFont(Font.PLAIN, this.textPOST.getFont().getSize() + 2));

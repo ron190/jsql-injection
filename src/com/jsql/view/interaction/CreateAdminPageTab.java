@@ -35,7 +35,7 @@ import org.jsoup.safety.Whitelist;
 
 import com.jsql.i18n.I18n;
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.tab.TabHeader;
 
@@ -88,17 +88,17 @@ public class CreateAdminPageTab implements IInteractionCommand {
         final JPopupMenu menu = new JPopupMenu();
         
         JMenuItem item = new JMenuItem(I18n.COPY_PAGE_URL);
-        item.setIcon(ToolsGUI.EMPTY);
+        item.setIcon(HelperGUI.EMPTY);
         
         JMenuItem copyItem = new JMenuItem();
         copyItem.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         copyItem.setMnemonic('C');
         copyItem.setText(I18n.COPY);
-        copyItem.setIcon(ToolsGUI.EMPTY);
+        copyItem.setIcon(HelperGUI.EMPTY);
         
         JMenuItem itemSelectAll = new JMenuItem();
-        itemSelectAll.setIcon(ToolsGUI.EMPTY);
+        itemSelectAll.setIcon(HelperGUI.EMPTY);
         itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.setText(I18n.SELECT_ALL);

@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 
 /**
  * Radio label used to change injection strategy (normal, blind, etc).
@@ -59,7 +59,7 @@ public class RadioLinkStatusbar extends AbstractRadioLink {
 
     @Override
     protected boolean isActivable() {
-        return RadioLinkStatusbar.this.getIcon() == ToolsGUI.TICK
+        return RadioLinkStatusbar.this.getIcon() == HelperGUI.TICK
             && !RadioLinkStatusbar.this.getFont().getAttributes().containsValue(TextAttribute.WEIGHT_BOLD);
     }
 }

@@ -11,7 +11,7 @@
 package com.jsql.view.interaction;
 
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 
 /**
  * Mark the injection as invulnerable to a error based injection.
@@ -26,6 +26,6 @@ public class MarkErrorbasedInvulnerable implements IInteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.status().setErrorBasedIcon(ToolsGUI.SQUARE_RED);
+        MediatorGUI.status().setErrorBasedIcon(HelperGUI.SQUARE_RED);
     }
 }

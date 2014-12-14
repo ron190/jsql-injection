@@ -23,7 +23,7 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.text.DefaultEditorKit;
 
 import com.jsql.i18n.I18n;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 
 /**
  * Popup menu for editable text component.
@@ -40,11 +40,11 @@ public class JPopupMenuComponent extends JPopupMenu {
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         copyItem.setMnemonic('C');
         copyItem.setText(I18n.COPY);
-        copyItem.setIcon(ToolsGUI.EMPTY);
+        copyItem.setIcon(HelperGUI.EMPTY);
         this.setLightWeightPopupEnabled(false);
 
         JMenuItem selectAllItem = new JMenuItem();
-        selectAllItem.setIcon(ToolsGUI.EMPTY);
+        selectAllItem.setIcon(HelperGUI.EMPTY);
         selectAllItem.setAction(component.getActionMap().get(DefaultEditorKit.selectAllAction));
         selectAllItem.setText(I18n.SELECT_ALL);
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));

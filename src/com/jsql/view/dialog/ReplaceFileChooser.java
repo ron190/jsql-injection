@@ -15,6 +15,8 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import com.jsql.i18n.I18n;
+
 /**
  * File chooser for supporting 'file already exists'.
  */
@@ -30,11 +32,12 @@ public class ReplaceFileChooser extends JFileChooser {
     
     @Override
     public void approveSelection() {
-        File f = getSelectedFile();
-        if (getDialogType() == SAVE_DIALOG) {
+        File f = this.getSelectedFile();
+        if (this.getDialogType() == SAVE_DIALOG) {
             if (f.exists()) {
-                int result = JOptionPane.showConfirmDialog(this, getSelectedFile().getName()
-                        + " already exists.\nDo you want to replace it ?", "Confirm Save As",
+                int result = JOptionPane.showConfirmDialog(this,
+                        this.getSelectedFile().getName() + " " + I18n.DIALOG_REPLACE_FILE_CONFIRM,
+                        I18n.DIALOG_REPLACE_FILE_TITLE,
                         JOptionPane.YES_NO_OPTION);
                 switch (result) {
                     case JOptionPane.YES_OPTION:
@@ -45,7 +48,7 @@ public class ReplaceFileChooser extends JFileChooser {
                     case JOptionPane.CLOSED_OPTION:
                         return;
                     case JOptionPane.CANCEL_OPTION:
-                        cancelSelection();
+                        this.cancelSelection();
                         return;
                     default:
                         break;

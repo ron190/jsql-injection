@@ -13,14 +13,28 @@ import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.AbstractSuspendable;
 import com.jsql.model.bean.Request;
-import com.jsql.view.MediatorGUI;
+import com.jsql.model.injection.AbstractSuspendable;
+import com.jsql.model.injection.MediatorModel;
 
 /**
  *
  */
 public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>> {
+    /**
+     * Every FALSE SQL statements will be checked,
+     * more statements means a more robust application
+     */
+//    protected String[] falseTest = {"true=false", "true%21=true", "false%21=false", "1=2", "1%21=1", "2%21=2"};
+    protected String[] falseTest = MediatorModel.model().sqlStrategy.getListFalseTest();
+
+    /**
+     * Every TRUE SQL statements will be checked,
+     * more statements means a more robust application
+     */
+//    protected String[] trueTest = {"true=true", "false=false", "true%21=false", "1=1", "2=2", "1%21=2"};
+    protected String[] trueTest = MediatorModel.model().sqlStrategy.getListTrueTest();
+
     /**
      * Constant linked to a URL, true if that url
      * checks the end of the SQL result, false otherwise.
@@ -126,7 +140,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
                         Request interaction = new Request();
                         interaction.setMessage("MessageBinary");
                         interaction.setParameters("\t" + new String(e) + "=" + str);
-                        MediatorGUI.model().interact(interaction);
+                        MediatorModel.model().interact(interaction);
                     // byte string not fully constructed : 0x1x010x
                     } catch (NumberFormatException err) {
                         // Ignore
@@ -167,7 +181,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
      * @return Source code
      */
     public static String callUrl(String urlString) {
-        return MediatorGUI.model().inject(MediatorGUI.model().insertionCharacter + urlString);
+        return MediatorModel.model().inject(MediatorModel.model().insertionCharacter + urlString);
     }
     
     /**
@@ -189,7 +203,9 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
     public abstract T getCallable(String string, int indexCharacter, int bit);
     
     /**
-     * 
+     * Start one test to verify if blind works.
+     * @return true if blind method is confirmed
+     * @throws PreparationException
      */
     public abstract boolean isInjectable() throws PreparationException;
     

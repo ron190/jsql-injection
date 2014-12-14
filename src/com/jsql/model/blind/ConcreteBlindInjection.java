@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.model.blind.diff_match_patch.Diff;
-import com.jsql.view.MediatorGUI;
+import com.jsql.model.injection.MediatorModel;
 
 /**
  * A blind attack class using thread asynchronisation.
@@ -46,20 +46,8 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
         // Call the SQL request which must be TRUE (usually ?id=1)
         ConcreteBlindInjection.blankTrueMark = ConcreteBlindInjection.callUrl("");
 
-        /*
-         * Every FALSE SQL statements will be checked,
-         * more statements means a more robust application
-         */
-        String[] falseTest = {"true=false", "true%21=true", "false%21=false", "1=2", "1%21=1", "2%21=2"};
-
-        /*
-         * Every TRUE SQL statements will be checked,
-         * more statements means a more robust application
-         */
-        String[] trueTest = {"true=true", "false=false", "true%21=false", "1=1", "2=2", "1%21=2"};
-
         // Check if the user wants to stop the preparation
-        if (MediatorGUI.model().stopFlag) {
+        if (MediatorModel.model().stopFlag) {
             return;
         }
 
@@ -91,7 +79,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
         try {
             constantFalseMark = listFalseMark.get(0).get().getOpcodes();
             for (Future<CallableBlind> falseMark: listFalseMark) {
-                if (MediatorGUI.model().stopFlag) {
+                if (MediatorModel.model().stopFlag) {
                     return;
                 }
                 constantFalseMark.retainAll(falseMark.get().getOpcodes());
@@ -102,7 +90,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
             LOGGER.error(e, e);
         }
 
-        if (MediatorGUI.model().stopFlag) {
+        if (MediatorModel.model().stopFlag) {
             return;
         }
 
@@ -133,7 +121,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
          */
         try {
             for (Future<CallableBlind> trueMark: listTrueMark) {
-                if (MediatorGUI.model().stopFlag) {
+                if (MediatorModel.model().stopFlag) {
                     return;
                 }
                 ConcreteBlindInjection.constantFalseMark.removeAll(trueMark.get().getOpcodes());
@@ -155,17 +143,14 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
         return new CallableBlind(string, indexCharacter, bit);
     }
 
-    /**
-     * Start one test to verify if blind works.
-     * @return true if blind method is confirmed
-     * @throws PreparationException
-     */
+    @Override
     public boolean isInjectable() throws PreparationException {
-        if (MediatorGUI.model().stopFlag) {
+        if (MediatorModel.model().stopFlag) {
             throw new PreparationException();
         }
 
-        CallableBlind blindTest = new CallableBlind("0%2b1=1");
+//        CallableBlind blindTest = new CallableBlind("0%2b1=1");
+        CallableBlind blindTest = new CallableBlind(MediatorModel.model().sqlStrategy.getBlindFirstTest());
         try {
             blindTest.call();
         } catch (Exception e) {

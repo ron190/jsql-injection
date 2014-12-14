@@ -29,7 +29,7 @@ import javax.swing.TransferHandler;
 
 import com.jsql.i18n.I18n;
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 
 /**
  * A Mouse action to display a popupmenu on a JList.
@@ -76,15 +76,15 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             JMenuItem mnRestoreDefault = new JMenuItem(I18n.RESTORE_DEFAULT);
             JMenuItem mnSelectAll = new JMenuItem(I18n.SELECT_ALL);
             
-            mnImport.setIcon(ToolsGUI.EMPTY);
-            mnExport.setIcon(ToolsGUI.EMPTY);
-            mnCut.setIcon(ToolsGUI.EMPTY);
-            mnCopy.setIcon(ToolsGUI.EMPTY);
-            mnPaste.setIcon(ToolsGUI.EMPTY);
-            mnDelete.setIcon(ToolsGUI.EMPTY);
-            mnNew.setIcon(ToolsGUI.EMPTY);
-            mnRestoreDefault.setIcon(ToolsGUI.EMPTY);
-            mnSelectAll.setIcon(ToolsGUI.EMPTY);
+            mnImport.setIcon(HelperGUI.EMPTY);
+            mnExport.setIcon(HelperGUI.EMPTY);
+            mnCut.setIcon(HelperGUI.EMPTY);
+            mnCopy.setIcon(HelperGUI.EMPTY);
+            mnPaste.setIcon(HelperGUI.EMPTY);
+            mnDelete.setIcon(HelperGUI.EMPTY);
+            mnNew.setIcon(HelperGUI.EMPTY);
+            mnRestoreDefault.setIcon(HelperGUI.EMPTY);
+            mnSelectAll.setIcon(HelperGUI.EMPTY);
 
             mnCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
             mnCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));

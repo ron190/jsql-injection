@@ -11,7 +11,7 @@
 package com.jsql.view.interaction;
 
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 
 /**
  * Mark the injection as using a user profile invulnerable to file I/O.
@@ -26,20 +26,20 @@ public class MarkFileSystemInvulnerable implements IInteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.left().fileManager.changePrivilegeIcon(ToolsGUI.SQUARE_RED);
+        MediatorGUI.left().fileManager.changePrivilegeIcon(HelperGUI.SQUARE_RED);
         MediatorGUI.left().fileManager.setButtonEnable(true);
         MediatorGUI.left().fileManager.restoreButtonText();
         MediatorGUI.left().fileManager.hideLoader();
         
-        MediatorGUI.left().shellManager.changePrivilegeIcon(ToolsGUI.SQUARE_RED);
+        MediatorGUI.left().shellManager.changePrivilegeIcon(HelperGUI.SQUARE_RED);
         MediatorGUI.left().shellManager.setButtonEnable(true);
         MediatorGUI.left().shellManager.restoreButtonText();
         
-        MediatorGUI.left().uploadManager.changePrivilegeIcon(ToolsGUI.SQUARE_RED);
+        MediatorGUI.left().uploadManager.changePrivilegeIcon(HelperGUI.SQUARE_RED);
         MediatorGUI.left().uploadManager.setButtonEnable(true);
         MediatorGUI.left().uploadManager.restoreButtonText();
         
-        MediatorGUI.left().sqlShellManager.changePrivilegeIcon(ToolsGUI.SQUARE_RED);
+        MediatorGUI.left().sqlShellManager.changePrivilegeIcon(HelperGUI.SQUARE_RED);
         MediatorGUI.left().sqlShellManager.setButtonEnable(true);
         MediatorGUI.left().sqlShellManager.restoreButtonText();
     }

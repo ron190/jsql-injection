@@ -41,9 +41,9 @@ import javax.swing.border.TitledBorder;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.InjectionModel;
+import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.MediatorGUI;
-import com.jsql.view.ToolsGUI;
+import com.jsql.view.HelperGUI;
 import com.jsql.view.textcomponent.JPopupTextField;
 import com.jsql.view.ui.RoundBorder;
 
@@ -72,7 +72,7 @@ public class DialogPreference extends JDialog {
         this.setResizable(false);
 
         // Define a small and large app icon
-        this.setIconImages(ToolsGUI.getIcons());
+        this.setIconImages(HelperGUI.getIcons());
 
         // Action for ESCAPE key
         ActionListener escListener = new ActionListener() {
@@ -100,8 +100,8 @@ public class DialogPreference extends JDialog {
         this.setLayout(new BorderLayout());
         Container contentPane = this.getContentPane();
 
-        JButton checkIPButton = new JButton("Check your IP", new ImageIcon(ToolsGUI.class.getResource("/com/jsql/view/images/wrench.png")));
-        checkIPButton.setBorder(ToolsGUI.BLU_ROUND_BORDER);
+        JButton checkIPButton = new JButton("Check your IP", new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/images/wrench.png")));
+        checkIPButton.setBorder(HelperGUI.BLU_ROUND_BORDER);
         checkIPButton.addActionListener(new ActionCheckIP());
         checkIPButton.setToolTipText("<html><b>Verify public IP address used by jSQL</b><br>"
                 + "Address is your own public IP if you don't use a proxy. If you use a proxy<br>"

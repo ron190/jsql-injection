@@ -11,7 +11,7 @@ import java.util.concurrent.Future;
 import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
-import com.jsql.view.MediatorGUI;
+import com.jsql.model.injection.MediatorModel;
 
 /**
  * A time attack class using thread asynchronisation.
@@ -40,20 +40,9 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
      * then time attack is confirmed. 
      */
     public ConcreteTimeInjection() {
-        /*
-         * Every FALSE SQL statements will be checked,
-         * more statements means a more robust application
-         */
-        String[] falseTest = {"true=false", "true%21=true", "false%21=false", "1=2", "1%21=1", "2%21=2"};
-
-        /*
-         * Every TRUE SQL statements will be checked,
-         * more statements means a more robust application
-         */
-        String[] trueTest = {"true=true", "false=false", "true%21=false", "1=1", "2=2", "1%21=2"};
 
         // Check if the user wants to stop the preparation
-        if (MediatorGUI.model().stopFlag) {
+        if (MediatorModel.model().stopFlag) {
             return;
         }
 
@@ -83,7 +72,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
          */
         try {
             for (Future<CallableTime> falseMark: listFalseMark) {
-                if (MediatorGUI.model().stopFlag) {
+                if (MediatorModel.model().stopFlag) {
                     return;
                 }
                 if (falseMark.get().isTrue()) {
@@ -124,7 +113,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
          */
         try {
             for (Future<CallableTime> falseMark: listTrueMark) {
-                if (MediatorGUI.model().stopFlag) {
+                if (MediatorModel.model().stopFlag) {
                     return;
                 }
                 if (!falseMark.get().isTrue()) {
@@ -151,11 +140,12 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
 
     @Override
     public boolean isInjectable() throws PreparationException {
-        if (MediatorGUI.model().stopFlag) {
+        if (MediatorModel.model().stopFlag) {
             throw new PreparationException();
         }
 
-        CallableTime blindTest = new CallableTime("0%2b1=1");
+//        CallableTime blindTest = new CallableTime("0%2b1=1");
+        CallableTime blindTest = new CallableTime(MediatorModel.model().sqlStrategy.getBlindFirstTest());
         try {
             blindTest.call();
         } catch (Exception e) {
