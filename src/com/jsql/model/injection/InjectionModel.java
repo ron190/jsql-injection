@@ -46,7 +46,9 @@ import com.jsql.model.strategy.NormalStrategy;
 import com.jsql.model.strategy.TimeStrategy;
 import com.jsql.model.vendor.ISQLStrategy;
 import com.jsql.model.vendor.MySQLStrategy;
+import com.jsql.model.vendor.OracleStrategy;
 import com.jsql.model.vendor.PostgreSQLStrategy;
+import com.jsql.model.vendor.SQLServerStrategy;
 import com.jsql.tool.ToolsString;
 
 /**
@@ -155,7 +157,9 @@ public class InjectionModel extends AbstractModelObservable {
     public boolean isProxyfied = false;
     
 //    public ISQLStrategy sqlStrategy = new MySQLStrategy();
-    public ISQLStrategy sqlStrategy = new PostgreSQLStrategy();
+//    public ISQLStrategy sqlStrategy = new PostgreSQLStrategy();
+//    public ISQLStrategy sqlStrategy = new OracleStrategy();
+    public ISQLStrategy sqlStrategy = new SQLServerStrategy();
     
     /**
      * Current injection strategy.
@@ -292,6 +296,7 @@ public class InjectionModel extends AbstractModelObservable {
             // Define insertionCharacter, i.e, -1 in "[...].php?id=-1 union select[...]",
             LOGGER.info("Get insertion character...");
             
+            new StoppableGetSQLVendor().beginSynchrone();
             this.insertionCharacter = new StoppableGetInsertionCharacter().beginSynchrone();
 
             // Test each injection methods: time, blind, error, normal
@@ -627,7 +632,11 @@ public class InjectionModel extends AbstractModelObservable {
         } else {
             return newData
                     + this.initialQuery.replaceAll("1337" + visibleIndex + "7331",
-                            "(" + urlPremiere + ")");
+                            /**
+                             * Oracle column often contains $, which is reserved for regex.
+                             * => need to be escape with quoteReplacement()
+                             */
+                            "(" + Matcher.quoteReplacement(urlPremiere) + ")");
         }
     }
 

@@ -33,4 +33,6 @@ public interface ISQLStrategy {
     String performanceQuery(String[] indexes);
     String initialQuery(Integer nbFields);
     String insertionCharacterQuery();
+    
+    String getLimit(Integer limitSQLResult);
 }

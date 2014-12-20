@@ -288,6 +288,9 @@ public class MySQLStrategy implements ISQLStrategy {
     public String normalStrategy(String sqlQuery, String startPosition) {
         return 
             "select+" +
+                /**
+                 * If reach end of string (concat(SQLi+NULL)) then concat nullifies the result
+                 */
                 "concat(" +
                     "0x53514c69," +
                     "mid(" +
@@ -335,6 +338,11 @@ public class MySQLStrategy implements ISQLStrategy {
     @Override
     public String insertionCharacterQuery() {
         return "+order+by+1337--+";
+    }
+
+    @Override
+    public String getLimit(Integer limitSQLResult) {
+        return "+limit+" + limitSQLResult + ",65536";
     }
 
 }

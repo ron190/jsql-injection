@@ -115,16 +115,16 @@ public class AdapterLeftTabbedPane extends MouseTabbedPane {
             }
         });
 
-        tree.addFocusListener(new FocusListener() {
-            @Override
-            public void focusLost(FocusEvent arg0) {
-                System.out.println("x");
-            }
-            @Override
-            public void focusGained(FocusEvent arg0) {
-                System.out.println("y");
-            }
-        });
+//        tree.addFocusListener(new FocusListener() {
+//            @Override
+//            public void focusLost(FocusEvent arg0) {
+//                System.out.println("x");
+//            }
+//            @Override
+//            public void focusGained(FocusEvent arg0) {
+//                System.out.println("y");
+//            }
+//        });
 
         JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 1, 0, 0, tree);
 

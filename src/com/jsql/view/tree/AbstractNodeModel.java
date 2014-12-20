@@ -165,20 +165,20 @@ public abstract class AbstractNodeModel {
 
         panel.setIcon(this.getLeafIcon(isLeaf));
 
-        panel.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent arg0) {
-                panel.label.setBackground(HelperGUI.SELECTION_BACKGROUND);
-                panel.label.setBorder(new RoundBorder(4, 1, true));
-                System.out.println("b");
-            }
-            @Override
-            public void focusLost(FocusEvent arg0) {
-                panel.label.setBackground(new Color(248, 249, 249));
-                panel.label.setBorder(new RoundBorder(4, 1, new Color(218, 218, 218)));
-                System.out.println("a");
-            }
-        });
+//        panel.addFocusListener(new FocusListener() {
+//            @Override
+//            public void focusGained(FocusEvent arg0) {
+//                panel.label.setBackground(HelperGUI.SELECTION_BACKGROUND);
+//                panel.label.setBorder(new RoundBorder(4, 1, true));
+//                System.out.println("b");
+//            }
+//            @Override
+//            public void focusLost(FocusEvent arg0) {
+//                panel.label.setBackground(new Color(248, 249, 249));
+//                panel.label.setBorder(new RoundBorder(4, 1, new Color(218, 218, 218)));
+//                System.out.println("a");
+//            }
+//        });
 
 //        if(isSelected && list.isFocusOwner())
 //            renderer.setBackground(GUITools.SELECTION_BACKGROUND);

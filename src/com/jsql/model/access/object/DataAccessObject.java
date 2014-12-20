@@ -72,14 +72,10 @@ public class DataAccessObject {
             throw new PreparationException();
         }
 
-        MediatorModel.model().versionDatabase =
-                ToolsString.hexstr(hexResult).split("\\{%\\}")[0];
-        MediatorModel.model().currentDatabase =
-                ToolsString.hexstr(hexResult).split("\\{%\\}")[1];
-        MediatorModel.model().currentUser =
-                ToolsString.hexstr(hexResult).split("\\{%\\}")[2];
-        MediatorModel.model().authenticatedUser =
-                ToolsString.hexstr(hexResult).split("\\{%\\}")[3];
+        MediatorModel.model().versionDatabase   = ToolsString.hexstr(hexResult).split("\\{%\\}")[0].replaceAll("\\s+"," ");
+        MediatorModel.model().currentDatabase   = ToolsString.hexstr(hexResult).split("\\{%\\}")[1];
+        MediatorModel.model().currentUser       = ToolsString.hexstr(hexResult).split("\\{%\\}")[2];
+        MediatorModel.model().authenticatedUser = ToolsString.hexstr(hexResult).split("\\{%\\}")[3];
 
         // Inform the view that info should be displayed
         Request request = new Request();

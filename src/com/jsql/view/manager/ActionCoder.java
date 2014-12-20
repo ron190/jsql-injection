@@ -125,7 +125,7 @@ public class ActionCoder implements ActionListener {
             }
         } else if ("url decode".equalsIgnoreCase(((ComboItem) this.coderManager.encoding.getSelectedItem()).getValue())) {
             try {
-                this.coderManager.result.setText(URLDecoder.decode(this.coderManager.entry.getText(), "UTF-8"));
+                this.coderManager.result.setText(URLDecoder.decode(this.coderManager.entry.getText().replace("%", "%25"), "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 this.coderManager.result.setText("Decoding error: " + e.getMessage());
             }

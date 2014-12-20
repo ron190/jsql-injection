@@ -202,7 +202,10 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
                     sqlQuery = Pattern.compile(
                             "\\{limit\\}",
                             Pattern.CASE_INSENSITIVE | Pattern.DOTALL
-                            ).matcher(initialSQLQuery).replaceAll("+limit+" + limitSQLResult + ",65536");
+                            ).matcher(initialSQLQuery).replaceAll(
+//                                    "+limit+" + limitSQLResult + ",65536"
+                                    MediatorModel.model().sqlStrategy.getLimit(limitSQLResult)
+                            );
                     startPosition = 1;
                     currentResultSource = "";
                 } else {

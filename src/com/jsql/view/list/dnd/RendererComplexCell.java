@@ -30,18 +30,18 @@ import com.jsql.view.HelperGUI;
  * Item renderer for JList.
  */
 public class RendererComplexCell implements ListCellRenderer<ListItem> {
-    /**
-     * Index of current item hovered.
-     */
-    int[] indexMouseOver;
+//    /**
+//     * Index of current item hovered.
+//     */
+//    int[] indexMouseOver;
     
-    /**
-     * Create renderer for list items.
-     * @param mouseOver
-     */
-    public RendererComplexCell(int[] mouseOver) {
-        this.indexMouseOver = mouseOver;
-    }
+//    /**
+//     * Create renderer for list items.
+//     * @param mouseOver
+//     */
+//    public RendererComplexCell(int[] mouseOver) {
+//        this.indexMouseOver = mouseOver;
+//    }
     
     /**
      * List component renderer.
@@ -58,8 +58,8 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
 
         if (isSelected && list.isFocusOwner()) {
             renderer.setBackground(HelperGUI.SELECTION_BACKGROUND);
-        } else if (indexMouseOver[0] == index) {
-            renderer.setBackground(new Color(237, 245, 255));
+//        } else if (indexMouseOver[0] == index) {
+//            renderer.setBackground(new Color(237, 245, 255));
         } else if (isSelected && !list.isFocusOwner()) {
             renderer.setBackground(new Color(248, 249, 249));
         } else {
@@ -68,8 +68,8 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
 
         if (isSelected && list.isFocusOwner()) {
             renderer.setBorder(new LineBorder(new Color(132, 172, 221), 1, true));
-        } else if (indexMouseOver[0] == index) {
-            renderer.setBorder(new LineBorder(new Color(185, 215, 252), 1, true));
+//        } else if (indexMouseOver[0] == index) {
+//            renderer.setBorder(new LineBorder(new Color(185, 215, 252), 1, true));
         } else if (isSelected && !list.isFocusOwner()) {
             renderer.setBorder(new LineBorder(new Color(218, 218, 218), 1, true));
         } else if (cellHasFocus) {
