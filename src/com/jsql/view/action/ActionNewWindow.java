@@ -20,6 +20,7 @@ import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.Application;
 import com.jsql.i18n.I18n;
 import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.HelperGUI;
@@ -50,7 +51,7 @@ public class ActionNewWindow extends AbstractAction {
         String classpath = System.getProperty("java.class.path");
         String path = System.getProperty("java.home") + separator + "bin" + separator + "java";
         ProcessBuilder processBuilder = 
-                new ProcessBuilder(path, "-cp", classpath, InjectionModel.class.getName());
+                new ProcessBuilder(path, "-cp", classpath, Application.class.getName());
         try {
             processBuilder.start();
         } catch (IOException e1) {

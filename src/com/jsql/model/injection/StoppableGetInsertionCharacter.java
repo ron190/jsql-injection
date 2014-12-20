@@ -15,7 +15,7 @@ import com.jsql.model.vendor.ISQLStrategy;
 import com.jsql.model.vendor.MySQLStrategy;
 import com.jsql.model.vendor.OracleStrategy;
 import com.jsql.model.vendor.PostgreSQLStrategy;
-import com.jsql.model.vendor.SQLServerStrategy;
+import com.jsql.model.vendor.MSSQLServerStrategy;
 
 /**
  * Runnable class, define insertionCharacter that will be used by all futures requests,

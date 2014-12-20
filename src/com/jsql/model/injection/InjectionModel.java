@@ -48,7 +48,7 @@ import com.jsql.model.vendor.ISQLStrategy;
 import com.jsql.model.vendor.MySQLStrategy;
 import com.jsql.model.vendor.OracleStrategy;
 import com.jsql.model.vendor.PostgreSQLStrategy;
-import com.jsql.model.vendor.SQLServerStrategy;
+import com.jsql.model.vendor.MSSQLServerStrategy;
 import com.jsql.tool.ToolsString;
 
 /**
@@ -159,7 +159,7 @@ public class InjectionModel extends AbstractModelObservable {
 //    public ISQLStrategy sqlStrategy = new MySQLStrategy();
 //    public ISQLStrategy sqlStrategy = new PostgreSQLStrategy();
 //    public ISQLStrategy sqlStrategy = new OracleStrategy();
-    public ISQLStrategy sqlStrategy = new SQLServerStrategy();
+    public ISQLStrategy sqlStrategy = new MSSQLServerStrategy();
     
     /**
      * Current injection strategy.

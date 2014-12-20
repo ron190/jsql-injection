@@ -28,7 +28,8 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
         MediatorModel.model().suspendables.remove(searchName);
         MediatorModel.model().suspendables.put(searchName, this);
 
-        String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", "");
+//        String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", "");
+        String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", MediatorModel.model().sqlStrategy.getLimit(0));
 
         AbstractInjectionStrategy injectionStrategy = MediatorModel.model().getInjectionStrategy();
         /*

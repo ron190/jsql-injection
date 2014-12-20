@@ -11,11 +11,12 @@ import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
+import com.jsql.model.vendor.DB2Strategy;
 import com.jsql.model.vendor.ISQLStrategy;
 import com.jsql.model.vendor.MySQLStrategy;
 import com.jsql.model.vendor.OracleStrategy;
 import com.jsql.model.vendor.PostgreSQLStrategy;
-import com.jsql.model.vendor.SQLServerStrategy;
+import com.jsql.model.vendor.MSSQLServerStrategy;
 
 /**
  * Runnable class, define insertionCharacter that will be used by all futures requests,
@@ -72,8 +73,12 @@ public class StoppableGetSQLVendor extends AbstractSuspendable {
                     System.out.println("OracleStrategy");
                 }
                 if (Pattern.compile(".*SQL Server.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-                    MediatorModel.model().sqlStrategy = new SQLServerStrategy();
+                    MediatorModel.model().sqlStrategy = new MSSQLServerStrategy();
                     System.out.println("SQLServerStrategy");
+                }
+                if (Pattern.compile(".*function\\.db2.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                    MediatorModel.model().sqlStrategy = new DB2Strategy();
+                    System.out.println("DB2Strategy");
                 }
             } catch (InterruptedException e) {
                 LOGGER.error(e, e);

