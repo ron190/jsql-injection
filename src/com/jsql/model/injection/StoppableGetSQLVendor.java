@@ -4,7 +4,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
@@ -12,11 +11,13 @@ import org.apache.log4j.Logger;
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.vendor.DB2Strategy;
-import com.jsql.model.vendor.ISQLStrategy;
+import com.jsql.model.vendor.IngresStrategy;
+import com.jsql.model.vendor.MSSQLServerStrategy;
+import com.jsql.model.vendor.MaxDbStrategy;
 import com.jsql.model.vendor.MySQLStrategy;
 import com.jsql.model.vendor.OracleStrategy;
 import com.jsql.model.vendor.PostgreSQLStrategy;
-import com.jsql.model.vendor.MSSQLServerStrategy;
+import com.jsql.model.vendor.SybaseStrategy;
 
 /**
  * Runnable class, define insertionCharacter that will be used by all futures requests,
@@ -79,6 +80,18 @@ public class StoppableGetSQLVendor extends AbstractSuspendable {
                 if (Pattern.compile(".*function\\.db2.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     MediatorModel.model().sqlStrategy = new DB2Strategy();
                     System.out.println("DB2Strategy");
+                }
+                if (Pattern.compile(".*Non-terminated string.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                    MediatorModel.model().sqlStrategy = new IngresStrategy();
+                    System.out.println("IngresStrategy");
+                }
+                if (Pattern.compile(".*function\\.sybase.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                    MediatorModel.model().sqlStrategy = new SybaseStrategy();
+                    System.out.println("SybaseStrategy");
+                }
+                if (Pattern.compile(".*maxdb\\.query.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                    MediatorModel.model().sqlStrategy = new MaxDbStrategy();
+                    System.out.println("MaxDbStrategy");
                 }
             } catch (InterruptedException e) {
                 LOGGER.error(e, e);

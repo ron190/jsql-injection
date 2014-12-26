@@ -233,12 +233,14 @@ public class OracleStrategy implements ISQLStrategy {
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
         return 
+            "(" +
             "select+*+from(select+" +
                 "replace('SQLi'||substr(" +
                     "(" + sqlQuery + ")," +
                     startPosition + "," +
                     "3996" +
-                "),'SQLii','')from+dual)x";
+                "),'SQLii','')from+dual)x" +
+            ")";
     }
 
     @Override

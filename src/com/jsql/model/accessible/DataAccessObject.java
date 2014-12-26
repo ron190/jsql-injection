@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.model.access.object;
+package com.jsql.model.accessible;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,19 +47,6 @@ public class DataAccessObject {
         String[] sourcePage = {""};
 
         String hexResult = new StoppableLoopIntoResults().action(
-//            "concat(" +
-//                "hex(" +
-//                    "concat_ws(" +
-//                        "0x7b257d," +
-//                        "version()," +
-//                        "database()," +
-//                        "user()," +
-//                        "CURRENT_USER" +
-//                    ")" +
-//                ")" +
-//                "," +
-//                "0x69" +
-//            ")",
             MediatorModel.model().sqlStrategy.getSchemaInfos(),
             sourcePage,
             false,
@@ -96,27 +83,6 @@ public class DataAccessObject {
         
         String[] sourcePage = {""};
         String hexResult = new StoppableLoopIntoResults().action(
-//            "select+" +
-//                "concat(" +
-//                    "group_concat(" +
-//                        "0x6868," +
-//                        "r," +
-//                        "0x6a6a," +
-//                        "hex(cast(q+as+char))," +
-//                        "0x6868" +
-//                        "+order+by+r+" +
-//                        "separator+0x6767" +
-//                    ")," +
-//                    "0x69" +
-//                ")" +
-//            "from(" +
-//                "select+" +
-//                    "hex(cast(TABLE_SCHEMA+as+char))r," +
-//                    "count(TABLE_NAME)q+" +
-//                "from+" +
-//                    "INFORMATION_SCHEMA.tables+" +
-//                "group+by+r{limit}" +
-//            ")x",
             MediatorModel.model().sqlStrategy.getSchemaList(),
             sourcePage,
             true,
@@ -173,29 +139,6 @@ public class DataAccessObject {
 
         String[] pageSource = {""};
         String hexResult = new StoppableLoopIntoResults().action(
-//            "select+" +
-//                "concat(" +
-//                    "group_concat(" +
-//                        "0x6868," +
-//                        "hex(cast(r+as+char))," +
-//                        "0x6a6a," +
-//                        "hex(cast(ifnull(q,0x30)+as+char))," +
-//                        "0x6868+" +
-//                        "order+by+r+" +
-//                        "separator+0x6767" +
-//                    ")," +
-//                    "0x69" +
-//                ")" +
-//            "from(" +
-//                "select+" +
-//                    "TABLE_NAME+r," +
-//                    "table_rows+q+" +
-//                "from+" +
-//                    "information_schema.tables+" +
-//                "where+" +
-//                    "TABLE_SCHEMA=0x" + ToolsString.strhex(database.toString())  + "+" +
-//                "order+by+r{limit}" +
-//            ")x"
             MediatorModel.model().sqlStrategy.getTableList(database),
             pageSource,
             true,
@@ -257,30 +200,6 @@ public class DataAccessObject {
 
         String[] pageSource = {""};
         String hexResult = new StoppableLoopIntoResults().action(
-//            "select+" +
-//                "concat(" +
-//                    "group_concat(" +
-//                        "0x6868," +
-//                        "hex(cast(n+as+char))," +
-//                        "0x6a6a," +
-//                        "0x3331," +
-//                        "0x6868+" +
-//                        "order+by+n+" +
-//                        "separator+0x6767" +
-//                    ")," +
-//                    "0x69" +
-//                ")" +
-//            "from(" +
-//                "select+" +
-//                    "COLUMN_NAME+n+" +
-//                "from+" +
-//                    "information_schema.columns+" +
-//                "where+" +
-//                    "TABLE_SCHEMA=0x" + ToolsString.strhex(table.getParent().toString()) + "+" +
-//                    "and+" +
-//                    "TABLE_NAME=0x" + ToolsString.strhex(table.toString()) + "+" +
-//                "order+by+n{limit}" +
-//            ")x",
             MediatorModel.model().sqlStrategy.getColumnList(table),
             pageSource,
             true,
@@ -353,37 +272,9 @@ public class DataAccessObject {
          * ==> trim(ifnull(`col1`,0x00)),0x7f,trim(ifnull(`Col2`,0x00))...
          */
         String[] arrayColumns = columnsName.toArray(new String[columnsName.size()]);
-//        String formatListColumn = ToolsString.join(arrayColumns, "{%}");
-//        
-//        // 7f caractère d'effacement, dernier code hexa supporté par mysql, donne 3f=>? à partir de 80
-//        //        formatListColumn = formatListColumn.replace("{%}", "`),0x7f,trim(`" );
-//        
-//        // 7f caractère d'effacement, dernier code hexa supporté par mysql, donne 3f=>? à partir de 80
-//        formatListColumn = formatListColumn.replace("{%}", "`,0x00)),0x7f,trim(ifnull(`");
-//        
-//        //        formatListColumn = "trim(`" + formatListColumn + "`)" ;
-//        formatListColumn = "trim(ifnull(`" + formatListColumn + "`,0x00))";
 
         String[] pageSource = {""};
         String hexResult = new StoppableLoopIntoResults().action(
-//            "select+concat(" +
-//                "group_concat(" +
-//                    "0x6868," +
-//                    "r," +
-//                    "0x6a6a," +
-//                    "hex(cast(q+as+char))," +
-//                    "0x6868" +
-//                    "+order+by+r+separator+0x6767" +
-//                ")," +
-//                "0x69" +
-//            ")from(" +
-//                "select+" +
-//                    "hex(cast(concat(" + formatListColumn + ")as+char))r," +
-//                    "count(*)q+" +
-//                "from+" +
-//                    "`" + database + "`.`" + table + "`+" +
-//                "group+by+r{limit}" +
-//            ")x"
             MediatorModel.model().sqlStrategy.getValues(arrayColumns, database, table),
             pageSource, true, rowCount, table
         );

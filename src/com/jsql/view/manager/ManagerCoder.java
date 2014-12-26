@@ -17,10 +17,17 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -29,6 +36,8 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
@@ -41,6 +50,7 @@ import org.apache.commons.codec.binary.StringUtils;
 
 import com.jsql.i18n.I18n;
 import com.jsql.view.HelperGUI;
+import com.jsql.view.combomenu.ComboMenuBar;
 import com.jsql.view.dropshadow.ShadowPopupBorder;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.splitpane.JSplitPaneWithZeroSizeDivider;
@@ -57,9 +67,9 @@ public class ManagerCoder extends JPanel {
     JTextArea entry;
 
     /**
-     * Encoding user has choosed. 
+     * Encoding choosed by user. 
      */
-    DisableItemComboBox<ComboItem> encoding;
+    JMenuItem encoding;
 
     /**
      * JTextArea displaying result of encoding/decoding.
@@ -79,52 +89,59 @@ public class ManagerCoder extends JPanel {
         JPanel topMixed = new JPanel(new BorderLayout());
 
         final JPanel middleLine = new JPanel();
-        middleLine.setLayout(new BoxLayout(middleLine, BoxLayout.X_AXIS));
+        middleLine.setLayout(new BorderLayout());
         middleLine.setBorder(BorderFactory.createEmptyBorder(1, 0, 1, 1));
 
-        encoding = new DisableItemComboBox<ComboItem>(new ComboItem[]{
-                new ComboItem("Encode"),
-                new ComboItem("Base64",         "Base64 encode"),
-                new ComboItem("Hex",            "Hex encode"),
-                new ComboItem("Url",            "Url encode"),
-                new ComboItem("Html",           "Html encode"),
-                new ComboItem("Base64(zipped)", "Base64(zipped) encode"),
-                new ComboItem("Hex(zipped)",    "Hex(zipped) encode"),
-                new ComboItem("----"),
-                new ComboItem("Decode"),
-                new ComboItem("Base64",         "Base64 decode"),
-                new ComboItem("Hex",            "Hex decode"),
-                new ComboItem("Url",            "Url decode"),
-                new ComboItem("Html",           "Html decode"),
-                new ComboItem("Base64(zipped)", "Base64(zipped) decode"),
-                new ComboItem("Hex(zipped)",    "Hex(zipped) decode"),
-                new ComboItem("----"),
-                new ComboItem("Hash"),
-                new ComboItem("Md2"),
-                new ComboItem("Md5"),
-                new ComboItem("Sha-1"),
-                new ComboItem("Sha-256"),
-                new ComboItem("Sha-384"),
-                new ComboItem("Sha-512"),
-                new ComboItem("Mysql")
-        });
+        Map<String, JMenu> menus = new LinkedHashMap<String, JMenu>();
+        menus.put("Base64", new JMenu("Base64"));
+        menus.put("Hex", new JMenu("Hex"));
+        menus.put("Url", new JMenu("Url"));
+        menus.put("Html", new JMenu("Html"));
+        menus.put("Base64(zipped)", new JMenu("Base64(zipped)"));
+        menus.put("Hex(zipped)", new JMenu("Hex(zipped)"));
+
+        for (String s: menus.keySet()) {
+            menus.get(s).add(new JMenuItem("Encode to " + s));
+            menus.get(s).add(new JMenuItem("Decode from " + s));
+        }
+
+        menus.put("Hash", new JMenu("Hash"));
+        menus.get("Hash").add(new JMenuItem("Hash to Md2"));
+        menus.get("Hash").add(new JMenuItem("Hash to Md5"));
+        menus.get("Hash").add(new JMenuItem("Hash to Sha-1"));
+        menus.get("Hash").add(new JMenuItem("Hash to Sha-256"));
+        menus.get("Hash").add(new JMenuItem("Hash to Sha-384"));
+        menus.get("Hash").add(new JMenuItem("Hash to Sha-512"));
+        menus.get("Hash").add(new JMenuItem("Hash to Mysql"));
+
+        JMenu menu = ComboMenuBar.createMenu("Choose method...");
+        encoding = menu;
+        menu.setMaximumSize(middleLine.getMaximumSize());
+        menu.setMinimumSize(middleLine.getMinimumSize());
+        
+        for (JMenu m: menus.values()) {
+            menu.add(m);
+        }
+
+        ComboMenuBar comboMenu = new ComboMenuBar(menu);
         
         Set<Integer> set = new HashSet<Integer>();
-        set.addAll((Collection<Integer>)Arrays.asList(new Integer[]{0, 8, 16}));
-        encoding.setSelectedIndex(1);
-        encoding.setDisableIndex(set);
-        encoding.setMaximumRowCount(10);
+        set.addAll((Collection<Integer>)Arrays.asList(new Integer[]{0, 7, 14}));
+//        encoding.setSelectedIndex(1);
+//        encoding.setDisableIndex(set);
+//        encoding.setMaximumRowCount(30);
         
-        Object child = encoding.getAccessibleContext().getAccessibleChild(0);
-        BasicComboPopup popup = (BasicComboPopup) child;
-        popup.setBorder(BorderFactory.createCompoundBorder(ShadowPopupBorder.getInstance(), (Border) UIManager.get("PopupMenu.border")));
+//        Object child = encoding.getAccessibleContext().getAccessibleChild(0);
+//        BasicComboPopup popup = (BasicComboPopup) child;
+//        popup.setBorder(BorderFactory.createCompoundBorder(ShadowPopupBorder.getInstance(), (Border) UIManager.get("PopupMenu.border")));
 
         JButton run = new JButton(I18n.CODER_RUN_BUTTON, new ImageIcon(getClass().getResource("/com/jsql/view/images/tick.png")));
         run.setBorder(HelperGUI.BLU_ROUND_BORDER);
 
-        middleLine.add(encoding);
-        middleLine.add(Box.createRigidArea(new Dimension(1, 0)));
-        middleLine.add(run);
+        middleLine.add(comboMenu);
+//        middleLine.add(encoding);
+//        middleLine.add(Box.createRigidArea(new Dimension(1, 0)));
+        middleLine.add(run, BorderLayout.EAST);
 
         topMixed.add(new JScrollPanePixelBorder(1, 1, 1, 0, entry), BorderLayout.CENTER);
         topMixed.add(middleLine, BorderLayout.SOUTH);

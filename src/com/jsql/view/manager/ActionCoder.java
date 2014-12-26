@@ -37,10 +37,12 @@ public class ActionCoder implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        if (Arrays.asList(new String[]{ "Md2", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512" } ).contains(((ComboItem) this.coderManager.encoding.getSelectedItem()).getValue().replace(" hash", ""))) {
+        String choice = this.coderManager.encoding.getText().replace("Hash to ", "");
+        
+        if (Arrays.asList(new String[]{ "Md2", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512" } ).contains(choice)) {
             MessageDigest md = null;
             try {
-                md = MessageDigest.getInstance(((ComboItem) this.coderManager.encoding.getSelectedItem()).getValue().replace(" hash", ""));
+                md = MessageDigest.getInstance(choice);
             } catch (NoSuchAlgorithmException e1) {
                 this.coderManager.result.setText("No such algorithm for hashes exists");
             }
@@ -52,7 +54,7 @@ public class ActionCoder implements ActionListener {
             String encodedPasswordInString = this.coderManager.digestToHexString(encodedPassword);
 
             this.coderManager.result.setText(encodedPasswordInString);
-        } else if ("Mysql".equals(((ComboItem) this.coderManager.encoding.getSelectedItem()).getValue().replace(" hash", ""))) {
+        } else if ("Mysql".equals(choice)) {
             MessageDigest md = null;
             try {
                 md = MessageDigest.getInstance("sha-1");
@@ -73,57 +75,57 @@ public class ActionCoder implements ActionListener {
             String mysqlHash = this.coderManager.digestToHexString(hashSHA1SH1);
 
             this.coderManager.result.setText(mysqlHash);
-        } else if ("hex encode".equalsIgnoreCase(((ComboItem) this.coderManager.encoding.getSelectedItem()).getValue())) {
+        } else if ("Encode to Hex".equalsIgnoreCase(choice)) {
             try {
                 this.coderManager.result.setText(Hex.encodeHexString(this.coderManager.entry.getText().getBytes("UTF-8")).trim());
             } catch (UnsupportedEncodingException e) {
                 this.coderManager.result.setText("this.coderManager.encoding error: " + e.getMessage());
             }
-        } else if ("hex decode".equalsIgnoreCase(((ComboItem) this.coderManager.encoding.getSelectedItem()).getValue())) {
+        } else if ("Decode from Hex".equalsIgnoreCase(choice)) {
             try {
                 this.coderManager.result.setText(new String(Hex.decodeHex(this.coderManager.entry.getText().toCharArray()), "UTF-8"));
             } catch (Exception e) {
                 this.coderManager.result.setText("Decoding error: " + e.getMessage());
             }
-        } else if ("hex(zipped) encode".equalsIgnoreCase(((ComboItem) this.coderManager.encoding.getSelectedItem()).getValue())) {
+        } else if ("Encode to Hex(zipped)".equalsIgnoreCase(choice)) {
             try {
                 this.coderManager.result.setText(Hex.encodeHexString(this.coderManager.compress(this.coderManager.entry.getText()).getBytes("UTF-8")).trim());
             } catch (Exception e) {
                 this.coderManager.result.setText("this.coderManager.encoding error: " + e.getMessage());
             }
-        } else if ("hex(zipped) decode".equalsIgnoreCase(((ComboItem) this.coderManager.encoding.getSelectedItem()).getValue())) {
+        } else if ("Decode from Hex(zipped)".equalsIgnoreCase(choice)) {
             try {
                 this.coderManager.result.setText(this.coderManager.decompress(new String(Hex.decodeHex(this.coderManager.entry.getText().toCharArray()), "UTF-8")));
             } catch (Exception e) {
                 this.coderManager.result.setText("Decoding error: " + e.getMessage());
             }
-        } else if ("base64(zipped) encode".equalsIgnoreCase(((ComboItem) this.coderManager.encoding.getSelectedItem()).getValue())) {
+        } else if ("Encode to Base64(zipped)".equalsIgnoreCase(choice)) {
             try {
                 this.coderManager.result.setText(this.coderManager.base64Encode(this.coderManager.compress(this.coderManager.entry.getText())));
             } catch (IOException e) {
                 this.coderManager.result.setText("this.coderManager.encoding error: " + e.getMessage());
             }
-        } else if ("base64(zipped) decode".equalsIgnoreCase(((ComboItem) this.coderManager.encoding.getSelectedItem()).getValue())) {
+        } else if ("Decode from Base64(zipped)".equalsIgnoreCase(choice)) {
             try {
                 this.coderManager.result.setText(this.coderManager.decompress(this.coderManager.base64Decode(this.coderManager.entry.getText())));
             } catch (IOException e) {
                 this.coderManager.result.setText("Decoding error: " + e.getMessage());
             }
-        } else if ("base64 encode".equalsIgnoreCase(((ComboItem) this.coderManager.encoding.getSelectedItem()).getValue())) {
+        } else if ("Encode to Base64".equalsIgnoreCase(choice)) {
             this.coderManager.result.setText(this.coderManager.base64Encode(this.coderManager.entry.getText()));
-        } else if ("base64 decode".equalsIgnoreCase(((ComboItem) this.coderManager.encoding.getSelectedItem()).getValue())) {
+        } else if ("Decode from Base64".equalsIgnoreCase(choice)) {
             this.coderManager.result.setText(this.coderManager.base64Decode(this.coderManager.entry.getText()));
-        } else if ("html encode".equalsIgnoreCase(((ComboItem) this.coderManager.encoding.getSelectedItem()).getValue())) {
+        } else if ("Encode to Html".equalsIgnoreCase(choice)) {
             this.coderManager.result.setText(StringEscapeUtils.escapeHtml3(this.coderManager.entry.getText()));
-        } else if ("html decode".equalsIgnoreCase(((ComboItem) this.coderManager.encoding.getSelectedItem()).getValue())) {
+        } else if ("Decode from Html".equalsIgnoreCase(choice)) {
             this.coderManager.result.setText(StringEscapeUtils.unescapeHtml3(this.coderManager.entry.getText()));
-        } else if ("url encode".equalsIgnoreCase(((ComboItem) this.coderManager.encoding.getSelectedItem()).getValue())) {
+        } else if ("Encode to Url".equalsIgnoreCase(choice)) {
             try {
                 this.coderManager.result.setText(URLEncoder.encode(this.coderManager.entry.getText(), "UTF-8"));
             } catch (UnsupportedEncodingException e) {
                 this.coderManager.result.setText("this.coderManager.encoding error: " + e.getMessage());
             }
-        } else if ("url decode".equalsIgnoreCase(((ComboItem) this.coderManager.encoding.getSelectedItem()).getValue())) {
+        } else if ("Decode from Url".equalsIgnoreCase(choice)) {
             try {
                 this.coderManager.result.setText(URLDecoder.decode(this.coderManager.entry.getText().replace("%", "%25"), "UTF-8"));
             } catch (UnsupportedEncodingException e) {

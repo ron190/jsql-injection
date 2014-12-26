@@ -35,7 +35,6 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
      * @param bit
      */
     public CallableBlind(String inj, int indexCharacter, int bit) {
-//        this.blindUrl = "+and+ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + "--+";
         this.blindUrl = MediatorModel.model().sqlStrategy.blindBitTest(inj, indexCharacter, bit);
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
@@ -48,7 +47,6 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
      * @param isLengthTest
      */
     public CallableBlind(String inj, int indexCharacter, boolean isLengthTest) {
-//        this.blindUrl = "+and+char_length(" + inj + ")>" + indexCharacter + "--+";
         this.blindUrl = MediatorModel.model().sqlStrategy.blindLengthTest(inj, indexCharacter);
         this.isLengthTest = isLengthTest;
     }

@@ -29,7 +29,6 @@ public class StoppableGetInitialQuery extends AbstractSuspendable {
         CompletionService<CallableSourceCode> taskCompletionService = new ExecutorCompletionService<CallableSourceCode>(taskExecutor);
 
         boolean requestFound = false;
-//        String selectFields = "133717330%2b1";
         String initialQuery = "";
         int nbIndex;
 
@@ -37,22 +36,16 @@ public class StoppableGetInitialQuery extends AbstractSuspendable {
         // Search if the source contains 1337[index]7331, this notation allows to exclude
         // pages that display our own url in the source
         for (nbIndex = 1; nbIndex <= 10; nbIndex++) {
-//            taskCompletionService.submit(new CallableSourceCode(MediatorModel.model().insertionCharacter + "+union+select+" + selectFields + "--+"));
-//            selectFields += ",1337" + nbIndex + "7330%2b1";
             taskCompletionService.submit(
                 new CallableSourceCode(
                     MediatorModel.model().insertionCharacter + 
                     MediatorModel.model().sqlStrategy.initialQuery(nbIndex)
                 )
             );
-//            selectFields += ",1337" + nbIndex + "7330%2b1";
         }
-
-//        int total = 10;
 
         try {
             // Starting up with 10 requests, loop until 100
-//            while (!requestFound && total < 99) {
             while (!requestFound && nbIndex <= 100) {
                 // Breaks the loop if the user needs
                 if (this.stopOrPause()) {
@@ -66,10 +59,8 @@ public class StoppableGetInitialQuery extends AbstractSuspendable {
                     MediatorModel.model().firstSuccessPageSource = currentCallable.getContent();
                     initialQuery = currentCallable.getUrl().replaceAll("0%2b1", "1");
                     requestFound = true;
-                    // Else add a new index
+                // Else add a new index
                 } else {
-//                    selectFields += ",1337" + nbIndex + "7330%2b1";
-//                    taskCompletionService.submit(new CallableSourceCode(MediatorModel.model().insertionCharacter + "+union+select+" + selectFields + "--+"));
                     taskCompletionService.submit(
                         new CallableSourceCode(
                             MediatorModel.model().insertionCharacter + 

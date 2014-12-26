@@ -35,8 +35,8 @@ import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.access.object.DataAccessObject;
-import com.jsql.model.access.object.RessourceAccessObject;
+import com.jsql.model.accessible.DataAccessObject;
+import com.jsql.model.accessible.RessourceAccessObject;
 import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.model.bean.Request;
 import com.jsql.model.strategy.AbstractInjectionStrategy;
@@ -156,10 +156,7 @@ public class InjectionModel extends AbstractModelObservable {
      */
     public boolean isProxyfied = false;
     
-//    public ISQLStrategy sqlStrategy = new MySQLStrategy();
-//    public ISQLStrategy sqlStrategy = new PostgreSQLStrategy();
-//    public ISQLStrategy sqlStrategy = new OracleStrategy();
-    public ISQLStrategy sqlStrategy = new MSSQLServerStrategy();
+    public ISQLStrategy sqlStrategy = new MySQLStrategy();
     
     /**
      * Current injection strategy.
@@ -398,13 +395,7 @@ public class InjectionModel extends AbstractModelObservable {
         //     (select concat('SQLi',[index],repeat('#',1024),'iLQS'))
         // ==> SQLi[index]######...######iLQS
         // Search for index that displays the most #
-        String performanceQuery =
-//                this.initialQuery.replaceAll(
-//                    "1337(" + ToolsString.join(indexes, "|") + ")7331",
-//                    "(select+concat(0x53514c69,$1,repeat(0xb8,1024),0x694c5153))"
-//                );
-                MediatorModel.model().sqlStrategy.performanceQuery(indexes);
-
+        String performanceQuery = MediatorModel.model().sqlStrategy.performanceQuery(indexes);
         String performanceSourcePage = this.inject(performanceQuery);
 
         // Build a 2D array of string with:
@@ -432,7 +423,8 @@ public class InjectionModel extends AbstractModelObservable {
             @Override
             public int compare(Integer[] s1, Integer[] s2) {
                 Integer t1 = s1[0];
-                Integer t2 = s2[1];
+//                Integer t2 = s2[1];
+                Integer t2 = s2[0];
                 return t1.compareTo(t2);
             }
         });
@@ -630,13 +622,12 @@ public class InjectionModel extends AbstractModelObservable {
         } else if (!useVisibleIndex) {
             return newData + urlPremiere;
         } else {
-            return newData
-                    + this.initialQuery.replaceAll("1337" + visibleIndex + "7331",
-                            /**
-                             * Oracle column often contains $, which is reserved for regex.
-                             * => need to be escape with quoteReplacement()
-                             */
-                            "(" + Matcher.quoteReplacement(urlPremiere) + ")");
+            return newData + this.initialQuery.replaceAll("1337" + visibleIndex + "7331",
+                /**
+                 * Oracle column often contains $, which is reserved for regex.
+                 * => need to be escape with quoteReplacement()
+                 */
+                Matcher.quoteReplacement(urlPremiere));
         }
     }
 

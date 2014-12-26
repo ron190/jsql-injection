@@ -149,7 +149,6 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
             throw new PreparationException();
         }
 
-//        CallableBlind blindTest = new CallableBlind("0%2b1=1");
         CallableBlind blindTest = new CallableBlind(MediatorModel.model().sqlStrategy.getBlindFirstTest());
         try {
             blindTest.call();

@@ -1,4 +1,4 @@
-package com.jsql.model.access.object;
+package com.jsql.model.accessible;
 import java.util.concurrent.Callable;
 
 import com.jsql.exception.PreparationException;

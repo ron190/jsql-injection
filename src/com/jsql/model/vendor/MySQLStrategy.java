@@ -287,6 +287,7 @@ public class MySQLStrategy implements ISQLStrategy {
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
         return 
+        "(" +
             "select+" +
                 /**
                  * If reach end of string (concat(SQLi+NULL)) then concat nullifies the result
@@ -298,7 +299,8 @@ public class MySQLStrategy implements ISQLStrategy {
                         startPosition + "," +
                         "65536" +
                     ")" +
-                ")";
+                ")" +
+        ")";
     }
 
     @Override
@@ -322,7 +324,7 @@ public class MySQLStrategy implements ISQLStrategy {
         return 
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
-                "(select+concat(0x53514c69,$1,repeat(0xb8,1024),0x694c5153))"
+                "(select+concat(0x53514c69,$1,repeat(0x23,1024),0x694c5153))"
             );
     }
 

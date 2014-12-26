@@ -25,14 +25,12 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
      * Every FALSE SQL statements will be checked,
      * more statements means a more robust application
      */
-//    protected String[] falseTest = {"true=false", "true%21=true", "false%21=false", "1=2", "1%21=1", "2%21=2"};
     protected String[] falseTest = MediatorModel.model().sqlStrategy.getListFalseTest();
 
     /**
      * Every TRUE SQL statements will be checked,
      * more statements means a more robust application
      */
-//    protected String[] trueTest = {"true=true", "false=false", "true%21=false", "1=1", "2=2", "1%21=2"};
     protected String[] trueTest = MediatorModel.model().sqlStrategy.getListTrueTest();
 
     /**

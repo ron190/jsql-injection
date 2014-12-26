@@ -62,8 +62,8 @@ import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.MediatorGUI;
 import com.jsql.view.SwingAppender;
 import com.jsql.view.HelperGUI;
-import com.jsql.view.console.AdapterDefaultColoredConsole;
-import com.jsql.view.console.AdapterJavaConsole;
+import com.jsql.view.console.SimpleConsoleAdapter;
+import com.jsql.view.console.JavaConsoleAdapter;
 import com.jsql.view.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.tab.AdapterBottomTabbedPane;
@@ -78,7 +78,7 @@ public class PanelBottom extends JPanel {
     /**
      * Console for default application messages.
      */
-    public AdapterDefaultColoredConsole consoleArea;
+    public SimpleConsoleAdapter consoleArea;
 
     /**
      * Console for raw SQL results.
@@ -98,7 +98,7 @@ public class PanelBottom extends JPanel {
     /**
      * Console for java exception messages.
      */
-    public AdapterJavaConsole javaDebug;
+    public JavaConsoleAdapter javaDebug;
 
     /**
      * Log4j appender to displays log message to consoles.
@@ -120,14 +120,14 @@ public class PanelBottom extends JPanel {
      */
     public PanelBottom() {
         // Object creation after customization
-        this.consoleArea = new AdapterDefaultColoredConsole("Console");
+        this.consoleArea = new SimpleConsoleAdapter("Console");
         this.logAppender.register(this.consoleArea);
         
         this.chunks = new JPopupTextArea().getProxy();
         this.chunks.setEditable(false);
         this.binaryArea = new JPopupTextArea().getProxy();
         this.binaryArea.setEditable(false);
-        this.javaDebug = new AdapterJavaConsole("Java");
+        this.javaDebug = new JavaConsoleAdapter("Java");
         this.logAppender.register(this.javaDebug);
         
         this.network = new JSplitPaneWithZeroSizeDivider();

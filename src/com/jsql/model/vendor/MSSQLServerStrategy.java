@@ -248,7 +248,7 @@ public class MSSQLServerStrategy implements ISQLStrategy {
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
         return 
-            "select'SQLi'%2Bsubstring((" + sqlQuery + ")," + startPosition + ",65536)";
+            "(select'SQLi'%2Bsubstring((" + sqlQuery + ")," + startPosition + ",65536))";
     }
 
     @Override

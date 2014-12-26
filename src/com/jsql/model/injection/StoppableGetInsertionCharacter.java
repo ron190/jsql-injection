@@ -97,7 +97,6 @@ public class StoppableGetInsertionCharacter extends AbstractSuspendable {
             taskCompletionService.submit(
                 new CallableSourceCode(
                     insertionCharacter + 
-//                    "+order+by+1337--+",
                     MediatorModel.model().sqlStrategy.insertionCharacterQuery(),
                     insertionCharacter
                 )
@@ -114,23 +113,6 @@ public class StoppableGetInsertionCharacter extends AbstractSuspendable {
                 CallableSourceCode currentCallable = taskCompletionService.take().get();
                 total--;
                 String pageSource = currentCallable.getContent();
-                
-//                if (Pattern.compile(".*MySQL.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-//                    MediatorModel.model().sqlStrategy = new MySQLStrategy();
-//                    System.out.println("MySQLStrategy");
-//                }
-//                if (Pattern.compile(".*function\\.pg.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-//                    MediatorModel.model().sqlStrategy = new PostgreSQLStrategy();
-//                    System.out.println("PostgreSQLStrategy");
-//                }
-//                if (Pattern.compile(".*function\\.oci.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-//                    MediatorModel.model().sqlStrategy = new OracleStrategy();
-//                    System.out.println("OracleStrategy");
-//                }
-//                if (Pattern.compile(".*SQL Server.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-//                    MediatorModel.model().sqlStrategy = new SQLServerStrategy();
-//                    System.out.println("SQLServerStrategy");
-//                }
                 
                 if (Pattern.compile(".*Unknown column '1337' in 'order clause'.*", Pattern.DOTALL).matcher(pageSource).matches() 
                         || Pattern.compile(".*supplied argument is not a valid MySQL result resource.*", Pattern.DOTALL).matcher(pageSource).matches()) {
