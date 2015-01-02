@@ -23,7 +23,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>com.jsql.model.InjectionModel</mainClass>
+              <mainClass>com.jsql.Application</mainClass>
             </manifest>
           </archive>
         </configuration>

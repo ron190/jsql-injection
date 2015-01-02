@@ -73,4 +73,9 @@ public class NormalStrategy extends AbstractInjectionStrategy {
         request.setMessage("MarkNormalStrategy");
         MediatorModel.model().interact(request);
     }
+    
+    @Override
+    public String getPerformanceLength() {
+        return MediatorModel.model().performanceLength;
+    }
 }

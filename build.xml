@@ -18,7 +18,7 @@
         <pathelement location="target/classes"/>
         <path refid="Maven Dependencies.libraryclasspath"/>
     </path>
-    <path id="run.InjectionModel.classpath">
+    <path id="run.Application.classpath">
         <path refid="jsql-injection.classpath"/>
         <path refid="Maven Dependencies.libraryclasspath"/>
     </path>
@@ -59,9 +59,9 @@
         <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         <antcall target="build"/>
     </target>
-    <target name="InjectionModel">
-        <java classname="com.jsql.model.InjectionModel" failonerror="true" fork="yes">
-            <classpath refid="run.InjectionModel.classpath"/>
+    <target name="Application">
+        <java classname="com.jsql.Application" failonerror="true" fork="yes">
+            <classpath refid="run.Application.classpath"/>
         </java>
     </target>
 </project>

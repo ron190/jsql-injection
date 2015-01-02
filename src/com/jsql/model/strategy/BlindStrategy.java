@@ -7,6 +7,7 @@ import com.jsql.exception.StoppableException;
 import com.jsql.model.bean.Request;
 import com.jsql.model.blind.ConcreteBlindInjection;
 import com.jsql.model.injection.AbstractSuspendable;
+import com.jsql.model.injection.InjectionModel;
 import com.jsql.model.injection.MediatorModel;
 
 /**
@@ -84,5 +85,10 @@ public class BlindStrategy extends AbstractInjectionStrategy {
         Request request2 = new Request();
         request2.setMessage("MarkBlindStrategy");
         MediatorModel.model().interact(request2);
+    }
+    
+    @Override
+    public String getPerformanceLength() {
+        return MediatorModel.model().performanceLength;
     }
 }

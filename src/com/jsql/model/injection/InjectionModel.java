@@ -85,6 +85,7 @@ public class InjectionModel extends AbstractModelObservable {
      * i.e, 2 in "[...]union select 1,2,[...]", if 2 is found in HTML source.
      */
     public String visibleIndex;
+    public String performanceLength = "0";
     
     /**
      * initialUrl transformed to a correct injection url.
@@ -99,22 +100,22 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Get data submitted by user.
      */
-    public String getData;
+    public String getData = "";
     
     /**
      * Post data submitted by user.
      */
-    public String postData;
+    public String postData = "";
     
     /**
      * Cookie data submitted by user.
      */
-    public String cookieData;
+    public String cookieData = "";
     
     /**
      * Header data submitted by user.
      */
-    public String headerData;
+    public String headerData = "";
 
     /**
      * Current version of database.
@@ -161,12 +162,17 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Current injection strategy.
      */
-    private AbstractInjectionStrategy injectionStrategy;
+    public AbstractInjectionStrategy injectionStrategy;
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    public static final Logger LOGGER = Logger.getLogger(InjectionModel.class);
     
     /**
      * Strategy for blind attack injection.
      */
-    private BlindStrategy blindStrategy = new BlindStrategy();
+    public BlindStrategy blindStrategy = new BlindStrategy();
     
     /**
      * Strategy for error attack injection.
@@ -181,7 +187,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Strategy for time attack injection.
      */
-    private TimeStrategy timeStrategy = new TimeStrategy();
+    public TimeStrategy timeStrategy = new TimeStrategy();
 
     /**
      * Allow to directly start an injection after a failed one
@@ -192,12 +198,12 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Object to load file information.
      */
-    public final static RessourceAccessObject ressourceAccessObject = new RessourceAccessObject();
+    public RessourceAccessObject ressourceAccessObject = new RessourceAccessObject();
     
     /**
      * Object to load database information. 
      */
-    public final static DataAccessObject dataAccessObject = new DataAccessObject();
+    public DataAccessObject dataAccessObject = new DataAccessObject();
     
     /**
      * Current evasion step, 0 is 'no evasion'
@@ -205,23 +211,9 @@ public class InjectionModel extends AbstractModelObservable {
     public int securitySteps = 0;
 
     /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getLogger(InjectionModel.class);
-
-    /**
      * Create injection process.
      */
     public InjectionModel() {
-        LOGGER.info("jSQL Injection version " + JSQLVERSION);
-
-        String sVersion = System.getProperty("java.version");
-        sVersion = sVersion.substring(0, 3);
-        Float fVersion = Float.valueOf(sVersion);
-        if (fVersion.floatValue() < (float) 1.7) {
-            LOGGER.warn("You are running an old version of Java, please install the latest version from java.com.");
-        }
-
         // Use Preferences API to persist proxy configuration
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
 
@@ -237,6 +229,17 @@ public class InjectionModel extends AbstractModelObservable {
         if (isProxyfied) {
             System.setProperty("http.proxyHost", proxyAddress);
             System.setProperty("http.proxyPort", proxyPort);
+        }
+    }
+    
+    public void instanciationDone() {
+        LOGGER.info("jSQL Injection version " + JSQLVERSION);
+        
+        String sVersion = System.getProperty("java.version");
+        sVersion = sVersion.substring(0, 3);
+        Float fVersion = Float.valueOf(sVersion);
+        if (fVersion.floatValue() < (float) 1.7) {
+            LOGGER.warn("You are running an old version of Java, please install the latest version from java.com.");
         }
     }
 
@@ -259,7 +262,7 @@ public class InjectionModel extends AbstractModelObservable {
         
         this.injectionStrategy = null;
         
-        InjectionModel.ressourceAccessObject.hasFileRight = false;
+        this.ressourceAccessObject.hasFileRight = false;
 
         try {
             // Test if proxy is available then apply settings
@@ -293,8 +296,8 @@ public class InjectionModel extends AbstractModelObservable {
             // Define insertionCharacter, i.e, -1 in "[...].php?id=-1 union select[...]",
             LOGGER.info("Get insertion character...");
             
-            new StoppableGetSQLVendor().beginSynchrone();
             this.insertionCharacter = new StoppableGetInsertionCharacter().beginSynchrone();
+            new StoppableGetSQLVendor().beginSynchrone();
 
             // Test each injection methods: time, blind, error, normal
             timeStrategy.checkApplicability();
@@ -387,12 +390,11 @@ public class InjectionModel extends AbstractModelObservable {
 
         // Make url shorter, replace useless indexes from 1337[index]7331 to 1
         this.initialQuery = this.initialQuery.replaceAll("1337(?!" + ToolsString.join(indexes, "|") + "7331)\\d*7331", "1");
-        if (indexes.length == 1) {
-            return indexes[0];
-        }
+//        if (indexes.length == 1) {
+//            return indexes[0];
+//        }
 
         // Replace correct indexes from 1337[index]7331 to
-        //     (select concat('SQLi',[index],repeat('#',1024),'iLQS'))
         // ==> SQLi[index]######...######iLQS
         // Search for index that displays the most #
         String performanceQuery = MediatorModel.model().sqlStrategy.performanceQuery(indexes);
@@ -419,15 +421,18 @@ public class InjectionModel extends AbstractModelObservable {
         }
 
         // Sort by length of #######...#######
-        Arrays.sort(lengthFields, new Comparator<Integer[]>() {
-            @Override
-            public int compare(Integer[] s1, Integer[] s2) {
-                Integer t1 = s1[0];
-//                Integer t2 = s2[1];
-                Integer t2 = s2[0];
-                return t1.compareTo(t2);
-            }
-        });
+//        if(lengthFields.length > 1)
+            Arrays.sort(lengthFields, new Comparator<Integer[]>() {
+                @Override
+                public int compare(Integer[] s1, Integer[] s2) {
+                    Integer t1 = s1[0];
+    //                Integer t2 = s2[1];
+                    Integer t2 = s2[0];
+                    return t1.compareTo(t2);
+                }
+            });
+        
+        performanceLength = lengthFields[lengthFields.length - 1][0].toString();
 
         // Replace all others indexes by 1
         this.initialQuery =
@@ -462,7 +467,8 @@ public class InjectionModel extends AbstractModelObservable {
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
         String urlUltimate = this.initialUrl;
         // escape crazy characters, like \
-        String dataInjection = newDataInjection.replace("\\", "\\\\");
+//        String dataInjection = newDataInjection.replace("\\", "\\\\");
+        String dataInjection = newDataInjection;
 
         try {
             urlObject = new URL(urlUltimate);
@@ -590,7 +596,8 @@ public class InjectionModel extends AbstractModelObservable {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             while ((line = reader.readLine()) != null) {
-                pageSource += line;
+//                pageSource += line;
+                pageSource += line + "\r\n";
             }
             reader.close();
         } catch (MalformedURLException e) {

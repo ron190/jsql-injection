@@ -34,7 +34,7 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
 
     @Override
     public CallableAdminPage call() throws Exception {
-        if (!InjectionModel.ressourceAccessObject.endAdminSearch) {
+        if (!MediatorModel.model().ressourceAccessObject.endAdminSearch) {
             URL targetUrl = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) targetUrl.openConnection();
             connection.setRequestMethod("HEAD");

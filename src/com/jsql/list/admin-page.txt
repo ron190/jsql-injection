@@ -6,6 +6,8 @@ http://127.0.0.1/db2_simulate_get.php?lib=0
 http://127.0.0.1:81/ingres/ingres_simulate_get.php?lib=0
 http://127.0.0.1:82/sybase/sybase_simulate_get.php?lib=0
 http://127.0.0.1:83/maxdb/maxdb_simulate_get.php?lib=0
+http://127.0.0.1/informix_simulate_get.php?lib=0
+http://127.0.0.1:83/firebird/firebird_simulate_get.php?lib=0
 _admin
 backoffice
 account.asp

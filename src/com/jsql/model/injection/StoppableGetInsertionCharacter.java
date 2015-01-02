@@ -11,11 +11,6 @@ import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.vendor.ISQLStrategy;
-import com.jsql.model.vendor.MySQLStrategy;
-import com.jsql.model.vendor.OracleStrategy;
-import com.jsql.model.vendor.PostgreSQLStrategy;
-import com.jsql.model.vendor.MSSQLServerStrategy;
 
 /**
  * Runnable class, define insertionCharacter that will be used by all futures requests,
@@ -35,11 +30,11 @@ public class StoppableGetInsertionCharacter extends AbstractSuspendable {
         if ("GET".equalsIgnoreCase(MediatorModel.model().method) && (MediatorModel.model().getData == null || "".equals(MediatorModel.model().getData))) {
             throw new PreparationException("No query string");
             // Is the query string well formed?
-        } else if ("GET".equalsIgnoreCase(MediatorModel.model().method) && MediatorModel.model().getData.matches("[^\\w]*=.*")) {
+        } else if (!"".equals(MediatorModel.model().getData) && MediatorModel.model().getData.matches("[^\\w]*=.*")) {
             throw new PreparationException("Incorrect query string");
-        } else if ("POST".equalsIgnoreCase(MediatorModel.model().method) && MediatorModel.model().postData.indexOf("=") < 0) {
+        } else if (!"".equals(MediatorModel.model().postData) && MediatorModel.model().postData.indexOf("=") < 0) {
             throw new PreparationException("Incorrect POST datas");
-        } else if ("COOKIE".equalsIgnoreCase(MediatorModel.model().method) && MediatorModel.model().cookieData.indexOf("=") < 0) {
+        } else if (!"".equals(MediatorModel.model().cookieData) && MediatorModel.model().cookieData.indexOf("=") < 0) {
             throw new PreparationException("Incorrect COOKIE datas");
         } else if (!"".equals(MediatorModel.model().headerData) && MediatorModel.model().headerData.indexOf(":") < 0) {
             throw new PreparationException("Incorrect HEADER datas");

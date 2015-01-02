@@ -4,6 +4,7 @@ import java.util.concurrent.Callable;
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.injection.InjectionModel;
+import com.jsql.model.injection.MediatorModel;
 import com.jsql.model.injection.StoppableLoopIntoResults;
 import com.jsql.tool.ToolsString;
 
@@ -31,13 +32,13 @@ public class CallableFile implements Callable<CallableFile> {
 
     @Override
     public CallableFile call() throws Exception {
-        if (!InjectionModel.ressourceAccessObject.endFileSearch) {
+        if (!MediatorModel.model().ressourceAccessObject.endFileSearch) {
             String[] sourcePage = {""};
 
             String hexResult = "";
             try {
                 hexResult = new StoppableLoopIntoResults().action(
-                        "concat(hex(load_file(0x" + ToolsString.strhex(filePath) + ")),0x69)",
+                        MediatorModel.model().sqlStrategy.readTextFile(filePath),
                         sourcePage,
                         false,
                         1,

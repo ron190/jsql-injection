@@ -48,4 +48,9 @@ public abstract class AbstractInjectionStrategy {
      * Change the strategy of the model to current strategy.
      */
     protected abstract void applyStrategy();
+    
+    /**
+     * Get number of characters you can obtain from the strategy.
+     */
+    public abstract String getPerformanceLength();
 }

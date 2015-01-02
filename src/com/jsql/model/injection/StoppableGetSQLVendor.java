@@ -11,6 +11,8 @@ import org.apache.log4j.Logger;
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.vendor.DB2Strategy;
+import com.jsql.model.vendor.FirebirdStrategy;
+import com.jsql.model.vendor.InformixStrategy;
 import com.jsql.model.vendor.IngresStrategy;
 import com.jsql.model.vendor.MSSQLServerStrategy;
 import com.jsql.model.vendor.MaxDbStrategy;
@@ -92,6 +94,14 @@ public class StoppableGetSQLVendor extends AbstractSuspendable {
                 if (Pattern.compile(".*maxdb\\.query.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     MediatorModel.model().sqlStrategy = new MaxDbStrategy();
                     System.out.println("MaxDbStrategy");
+                }
+                if (Pattern.compile(".*Informix.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                    MediatorModel.model().sqlStrategy = new InformixStrategy();
+                    System.out.println("InformixStrategy");
+                }
+                if (Pattern.compile(".*function\\.ibase-query.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                    MediatorModel.model().sqlStrategy = new FirebirdStrategy();
+                    System.out.println("FirebirdStrategy");
                 }
             } catch (InterruptedException e) {
                 LOGGER.error(e, e);

@@ -7,6 +7,7 @@ import com.jsql.exception.StoppableException;
 import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.model.bean.Request;
 import com.jsql.model.strategy.AbstractInjectionStrategy;
+import com.jsql.tool.ToolsString;
 
 /**
  * Get all data from a SQL request (remember that data will often been cut, we need to reach ALL the data)
@@ -36,8 +37,8 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
          * keep track of rows we have reached (limitSQLResult) and use these to skip entire rows,
          * keep track of characters we have reached (startPosition) and use these to skip characters,
          */
-        String finalResultSource = "", currentResultSource = "";
-        for (int limitSQLResult = 0, startPosition = 1/*, i=1*/;; startPosition = currentResultSource.length() + 1/*, i++*/) {
+        String finalResultSourcea2 = "", currentResultSourcea2 = "";
+        for (int limitSQLResult = 0, startPosition = 1;; startPosition = currentResultSourcea2.length() + 1) {
 
             // try {
             //     Thread.sleep(500);
@@ -48,19 +49,39 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
             if (this.stopOrPause()) {
                 break;
             }
-
+            
             sourcePage[0] = injectionStrategy.inject(sqlQuery, startPosition + "", this);
-
+            
+            /**
+             * on prend entre 1 et maxPerf caractères après le marqueur SQLi
+             * performanceQuery() trouve le max 65536 ou moins
+             * SQLiblahblah1337      ] : fin ou limit+1
+             * SQLiblahblah      blah] : continue substr()
+             */
             // Parse all the data we have retrieved
-            Matcher regexSearch = Pattern.compile("SQLi([0-9A-Fghij]+)", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(sourcePage[0]);
-
+            Matcher regexSearcha2 = Pattern.compile("SQLi(.{1,"+ injectionStrategy.getPerformanceLength() +"})", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(sourcePage[0]);
+            
+            Matcher regexSearch = Pattern.compile("SQLi\\x01\\x03\\x03\\x07", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(sourcePage[0]);
+            if (regexSearch.find()) {
+                if (useLimit && !"".equals(finalResultSourcea2)) {
+                    //                        model.sendMessage("A");
+                    // Update the view only if there are value to find, and if it's not the root (empty tree)
+                    if (numberToFind > 0 && searchName != null) {
+                        Request request = new Request();
+                        request.setMessage("UpdateProgress");
+                        request.setParameters(searchName, numberToFind);
+                        MediatorModel.model().interact(request);
+                    }
+                    break;
+                }
+            }
             /*
              * Ending condition:
              * One row could be very long, longer than the database can provide
              * #Need verification
              */
-            if (!regexSearch.find()) {
-                if (useLimit && !"".equals(finalResultSource)) {
+            if (!regexSearcha2.find()) {
+                if (useLimit && !"".equals(finalResultSourcea2)) {
                     //                        model.sendMessage("A");
                     // Update the view only if there are value to find, and if it's not the root (empty tree)
                     if (numberToFind > 0 && searchName != null) {
@@ -78,11 +99,11 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
              * If throws exception, inform the view about the failure.
              */
             try {
-                currentResultSource += regexSearch.group(1);
+                currentResultSourcea2 += regexSearcha2.group(1);
 
                 Request request = new Request();
                 request.setMessage("MessageChunk");
-                request.setParameters(regexSearch.group(1) + " ");
+                request.setParameters(regexSearcha2.group(1) + " ");
                 MediatorModel.model().interact(request);
             } catch (IllegalStateException e) {
                 // if it's not the root (empty tree)
@@ -98,10 +119,10 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
             /*
              * Check how many rows we have collected from the beginning of that chunk
              */
-            regexSearch = Pattern.compile("(h[0-9A-F]*jj[0-9A-F]*c?h)", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSource);
-            int nbResult = 0;
-            while (regexSearch.find()) {
-                nbResult++;
+            regexSearcha2 = Pattern.compile("(\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?\\x04)", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSourcea2);
+            int nbResult2 = 0;
+            while (regexSearcha2.find()) {
+                nbResult2++;
             }
 
             /*
@@ -111,7 +132,7 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
                 if (numberToFind > 0 && searchName != null) {
                     Request request = new Request();
                     request.setMessage("UpdateProgress");
-                    request.setParameters(searchName, limitSQLResult + nbResult);
+                    request.setParameters(searchName, limitSQLResult + nbResult2);
                     MediatorModel.model().interact(request);
                 }
                 //                    System.out.println("Request " + i + ", data collected "+(limitSQLResult + nbResult) + (numberToFind>0?"/"+numberToFind:"") + " << " + currentResultSource.length() + " bytes" );
@@ -122,54 +143,58 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
              * => hhxxxxxxxxjj00hhgghh...hiLQS
              */
             /* Design Pattern: State? */
-            if (currentResultSource.contains("i")) {
+            if (nbResult2>0 || currentResultSourcea2.matches("(?s).*\\x01\\x03\\x03\\x07.*")) {
                 /*
                  * Remove everything after our result
                  * => hhxxxxxxxxjj00hhgghh...h |-> iLQSjunk
                  */
-                finalResultSource += currentResultSource = Pattern.compile("i.*", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSource).replaceAll("");
+                finalResultSourcea2 += currentResultSourcea2 = Pattern.compile("\\x01\\x03\\x03\\x07.*", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSourcea2).replaceAll("");
                 if (useLimit) {
                     /*
                      * Remove everything not properly attached to the last row:
                      * 1. very start of a new row: XXXXXhhg[ghh]$
                      * 2. very end of the last row: XXXXX[jj00]$
                      */
-                    finalResultSource = Pattern.compile("(gh+|j+\\d*)$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(finalResultSource).replaceAll("");
-                    currentResultSource = Pattern.compile("(gh+|j+\\d*)$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSource).replaceAll("");
+                    finalResultSourcea2 = Pattern.compile("(\\x06\\x04|\\x05\\d*)$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(finalResultSourcea2).replaceAll("");
+                    currentResultSourcea2 = Pattern.compile("(\\x06\\x04|\\x05\\d*)$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSourcea2).replaceAll("");
 
                     /*
                      * Check either if there is more than 1 row and if there is less than 1 complete row
                      */
-                    regexSearch = Pattern.compile("[0-9A-F]hhgghh[0-9A-F]+$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSource);
-                    Matcher regexSearch2 = Pattern.compile("h[0-9A-F]+$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSource);
+                    regexSearcha2 = Pattern.compile("[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]\\x04\\x06\\x04[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSourcea2);
+                    Matcher regexSearch2a2 = Pattern.compile("\\x04[^\\x01-\\x03\\x05-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSourcea2);
 
                     /*
                      * If there is more than 1 row, delete the last incomplete one in order to restart properly from it at the next loop,
                      * else if there is 1 row but incomplete, mark it as cut with the letter c
                      */
-                    if (regexSearch.find()) {
-                        finalResultSource = Pattern.compile(
-                                "hh[0-9A-F]+$",
-                                Pattern.CASE_INSENSITIVE | Pattern.DOTALL
-                                ).matcher(finalResultSource).replaceAll("");
-                    } else if (regexSearch2.find()) {
-                        finalResultSource += "jj31chh";
+                    if (regexSearcha2.find()) {
+                        finalResultSourcea2 = Pattern.compile(
+                            "\\x04[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$",
+                            Pattern.CASE_INSENSITIVE | Pattern.DOTALL
+                        ).matcher(finalResultSourcea2).replaceAll("");
+                    } else if (regexSearch2a2.find()) {
+                        finalResultSourcea2 += ToolsString.hexstr("05") + "1" + ToolsString.hexstr("0804");
                     }
 
                     /*
                      * Check how many rows we have collected from the very beginning of the query,
                      * then skip every rows we have already found via LIMIT
                      */
-                    regexSearch = Pattern.compile(
-                            "(h[0-9A-F]*jj[0-9A-F]*c?h)",
+                    regexSearcha2 = Pattern.compile(
+                            /*
+                             * Regex \\x{08}? not supported on Kali
+                             * => \\x08? seems ok though
+                             */
+                            "(\\x04[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x05[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?\\x04)",
                             Pattern.CASE_INSENSITIVE | Pattern.DOTALL
-                            ).matcher(finalResultSource);
+                            ).matcher(finalResultSourcea2);
 
-                    nbResult = 0;
-                    while (regexSearch.find()) {
-                        nbResult++;
+                    nbResult2 = 0;
+                    while (regexSearcha2.find()) {
+                        nbResult2++;
                     }
-                    limitSQLResult = nbResult;
+                    limitSQLResult = nbResult2;
 
                     // Inform the view about the progression
                     //                        System.out.println("Request " + i + ", data collected " + limitSQLResult + (numberToFind>0 ? "/"+numberToFind : "" ));
@@ -203,11 +228,10 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
                             "\\{limit\\}",
                             Pattern.CASE_INSENSITIVE | Pattern.DOTALL
                             ).matcher(initialSQLQuery).replaceAll(
-//                                    "+limit+" + limitSQLResult + ",65536"
-                                    MediatorModel.model().sqlStrategy.getLimit(limitSQLResult)
+                                MediatorModel.model().sqlStrategy.getLimit(limitSQLResult)
                             );
                     startPosition = 1;
-                    currentResultSource = "";
+                    currentResultSourcea2 = "";
                 } else {
                     // Inform the view about the progression
                     //                        model.sendMessage("C");
@@ -219,18 +243,12 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
                     }
                     break;
                 }
-                /*
-                 * Check if the line is odd or even, make it even.
-                 * Every character must be on 2 char, e.g A is 41, if we only have 4, then delete the 4.
-                 * #Need verification
-                 */
-            } else if (currentResultSource.length() % 2 == 0) {
-                currentResultSource = currentResultSource.substring(0, currentResultSource.length() - 1);
+                
             }
 
         }
 
-        return finalResultSource;
+        return finalResultSourcea2;
     }
 }
 

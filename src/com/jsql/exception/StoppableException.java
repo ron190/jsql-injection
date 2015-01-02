@@ -19,6 +19,7 @@ package com.jsql.exception;
 public class StoppableException extends Exception {
     
     public StoppableException() {
-        super("Execution stopped by user.");
+//        super("Execution stopped by user.");
+        super("Execution stopped.");
     }
 }
