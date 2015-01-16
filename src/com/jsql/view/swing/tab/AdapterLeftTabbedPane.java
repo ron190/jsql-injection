@@ -11,8 +11,6 @@
 package com.jsql.view.swing.tab;
 
 import java.awt.Dimension;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JTree;
@@ -92,7 +90,7 @@ public class AdapterLeftTabbedPane extends MouseTabbedPane {
         tree.setShowsRootHandles(true);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-        // Dirty trick that allows to repaint progressbar
+        // TODO Dirty trick that allows to repaint GIF progressbar
         tree.getModel().addTreeModelListener(new TreeModelListener() {
             @Override
             public void treeNodesChanged(TreeModelEvent arg0) {
@@ -114,17 +112,6 @@ public class AdapterLeftTabbedPane extends MouseTabbedPane {
                 // Do nothing
             }
         });
-
-//        tree.addFocusListener(new FocusListener() {
-//            @Override
-//            public void focusLost(FocusEvent arg0) {
-//                System.out.println("x");
-//            }
-//            @Override
-//            public void focusGained(FocusEvent arg0) {
-//                System.out.println("y");
-//            }
-//        });
 
         JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 1, 0, 0, tree);
 

@@ -101,9 +101,6 @@ public class DnDList extends JList<ListItem> {
 
         this.setModel(listModel);
         
-//        final int[] mouseOver = {-1};
-        
-//        this.addMouseListener(new MouseAdapterMenuAction(this, mouseOver));
         this.addMouseListener(new MouseAdapterMenuAction(this));
 
         // Transform Cut, selects next value
@@ -139,7 +136,6 @@ public class DnDList extends JList<ListItem> {
         listActionMap.put(TransferHandler.getPasteAction().getValue(Action.NAME),
                 TransferHandler.getPasteAction());
 
-//        ListCellRenderer<ListItem> renderer = new RendererComplexCell(mouseOver);
         ListCellRenderer<ListItem> renderer = new RendererComplexCell();
         this.setCellRenderer(renderer);
 

@@ -64,17 +64,6 @@ public class TimeStrategy extends AbstractInjectionStrategy {
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable) throws StoppableException {
         return this.timeInjection.inject(
-//                "(" 
-//                    + "select+"
-//                        + "concat("
-//                            + "0x53514c69,"
-//                            + "mid("
-//                                + "(" + sqlQuery + "),"
-//                                + startPosition + ","
-//                                + "65536"
-//                            + ")"
-//                        + ")"
-//                + ")",
             MediatorModel.model().sqlStrategy.timeStrategy(sqlQuery, startPosition),
             stoppable
         );

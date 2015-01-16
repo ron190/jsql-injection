@@ -11,29 +11,21 @@
 package com.jsql.view.swing.manager;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JMenu;
@@ -41,9 +33,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
-import javax.swing.UIManager;
-import javax.swing.border.Border;
-import javax.swing.plaf.basic.BasicComboPopup;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
@@ -51,7 +40,6 @@ import org.apache.commons.codec.binary.StringUtils;
 import com.jsql.i18n.I18n;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.combomenu.ComboMenuBar;
-import com.jsql.view.swing.dropshadow.ShadowPopupBorder;
 import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.text.JPopupTextArea;
@@ -127,20 +115,11 @@ public class ManagerCoder extends JPanel {
         
         Set<Integer> set = new HashSet<Integer>();
         set.addAll((Collection<Integer>)Arrays.asList(new Integer[]{0, 7, 14}));
-//        encoding.setSelectedIndex(1);
-//        encoding.setDisableIndex(set);
-//        encoding.setMaximumRowCount(30);
         
-//        Object child = encoding.getAccessibleContext().getAccessibleChild(0);
-//        BasicComboPopup popup = (BasicComboPopup) child;
-//        popup.setBorder(BorderFactory.createCompoundBorder(ShadowPopupBorder.getInstance(), (Border) UIManager.get("PopupMenu.border")));
-
         JButton run = new JButton(I18n.CODER_RUN_BUTTON, new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/tick.png")));
         run.setBorder(HelperGUI.BLU_ROUND_BORDER);
 
         middleLine.add(comboMenu);
-//        middleLine.add(encoding);
-//        middleLine.add(Box.createRigidArea(new Dimension(1, 0)));
         middleLine.add(run, BorderLayout.EAST);
 
         topMixed.add(new JScrollPanePixelBorder(1, 1, 1, 0, entry), BorderLayout.CENTER);

@@ -48,6 +48,10 @@ public class StoppableGetInitialQuery extends AbstractSuspendable {
             // Starting up with 10 requests, loop until 100
             while (!requestFound && nbIndex <= 100) {
                 // Breaks the loop if the user needs
+                /**
+                 * TODO pauseOnUserDemand()
+                 * stop()
+                 */
                 if (this.stopOrPause()) {
                     throw new StoppableException();
                 }

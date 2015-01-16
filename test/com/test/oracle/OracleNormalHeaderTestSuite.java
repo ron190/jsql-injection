@@ -1,9 +1,7 @@
-package mysql;
+package com.test.oracle;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.BeforeClass;
-
-import suite.AbstractTestSuite;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.model.injection.InjectionModel;
@@ -11,31 +9,21 @@ import com.jsql.model.injection.MediatorModel;
 import com.jsql.model.strategy.NormalStrategy;
 import com.jsql.view.println.SystemOutTerminal;
 
-public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
-    // pour chaque vendor/méthode/strategy
-    /**
-     * liste db, table, colonne, value
-     * valeur à rallonge
-     * caractère spécial \
-     * @throws PreparationException 
-     */
+public class OracleNormalHeaderTestSuite extends ConcreteOracleTestSuite {
     
     @BeforeClass
     public static void initialize() throws PreparationException {
-        PropertyConfigurator.configure("test/log4j.properties");
-        
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);
         model.instanciationDone();
         new SystemOutTerminal();
         
-        MediatorModel.model().initialUrl = "http://127.0.0.1/simulate_header.php";
-        MediatorModel.model().headerData = "lib:0";
-        MediatorModel.model().method = "HEADER";
+        MediatorModel.model().initialUrl = "http://127.0.0.1/oracle_simulate_get.php";
+        MediatorModel.model().getData = "?lib=0";
+        MediatorModel.model().method = "GET";
 
         MediatorModel.model().inputValidation();
         
         MediatorModel.model().injectionStrategy = new NormalStrategy();
     }
-
 }

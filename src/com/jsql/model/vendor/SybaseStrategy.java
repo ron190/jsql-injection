@@ -65,19 +65,6 @@ public class SybaseStrategy implements ISQLStrategy {
     @Override
     public String getPrivilege() {
         return "";
-//            "concat(" +
-//                "(" +
-//                    "select+" +
-//                        "hex(" +
-//                            "if(count(*)=1,0x" + ToolsString.strhex("true") + ",0x" + ToolsString.strhex("false") + ")" +
-//                        ")" +
-//                    "from+INFORMATION_SCHEMA.USER_PRIVILEGES+" +
-//                    "where+" +
-//                        "grantee=concat(0x27,replace(cast(current_user+as+char),0x40,0x274027),0x27)" +
-//                        "and+PRIVILEGE_TYPE=0x46494c45" +
-//                ")," +
-//                "0x69" +
-//            ")";
     }
 
     @Override
@@ -251,5 +238,9 @@ public class SybaseStrategy implements ISQLStrategy {
         return 
             "+having+count(*)+between+" + (limitSQLResult+1) + "+and+" + (limitSQLResult+1);
     }
-
+    
+    @Override
+    public String getDbLabel() {
+        return "Sybase";
+    }
 }

@@ -22,7 +22,6 @@ import org.apache.log4j.Logger;
 
 import com.jsql.MainApplication;
 import com.jsql.i18n.I18n;
-import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.swing.HelperGUI;
 
 /**

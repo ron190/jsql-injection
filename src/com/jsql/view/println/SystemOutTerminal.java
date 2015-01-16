@@ -10,7 +10,6 @@ package com.jsql.view.println;
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
 
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Observable;

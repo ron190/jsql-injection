@@ -22,7 +22,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -54,7 +53,6 @@ public final class HelperGUI {
      */
     private static final Logger LOGGER = Logger.getLogger(HelperGUI.class);
 
-//    public static final Color SELECTION_BACKGROUND = new Color(211, 230, 255);
     public static Color SELECTION_BACKGROUND = (Color) UIManager.get("TabbedPane.selected");
     
     static {

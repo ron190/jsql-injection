@@ -32,13 +32,17 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
         String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", MediatorModel.model().sqlStrategy.getLimit(0));
 
         AbstractInjectionStrategy injectionStrategy = MediatorModel.model().getInjectionStrategy();
+        
         /*
          * As we know the expected number of rows (numberToFind), then it stops injection if all rows are found,
          * keep track of rows we have reached (limitSQLResult) and use these to skip entire rows,
          * keep track of characters we have reached (startPosition) and use these to skip characters,
          */
-        String finalResultSourcea2 = "", currentResultSourcea2 = "";
-        for (int limitSQLResult = 0, startPosition = 1;; startPosition = currentResultSourcea2.length() + 1) {
+        String slidingWindowAllRows = "", slidingWindowCurrentRow = "";
+        /**
+         * TODO simpler loop
+         */
+        for (int sqlLimit = 0, charPositionInCurrentRow = 1;; charPositionInCurrentRow = slidingWindowCurrentRow.length() + 1) {
 
             // try {
             //     Thread.sleep(500);
@@ -50,7 +54,7 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
                 break;
             }
             
-            sourcePage[0] = injectionStrategy.inject(sqlQuery, startPosition + "", this);
+            sourcePage[0] = injectionStrategy.inject(sqlQuery, charPositionInCurrentRow + "", this);
             
             /**
              * on prend entre 1 et maxPerf caractères après le marqueur SQLi
@@ -59,11 +63,11 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
              * SQLiblahblah      blah] : continue substr()
              */
             // Parse all the data we have retrieved
-            Matcher regexSearcha2 = Pattern.compile("SQLi(.{1,"+ injectionStrategy.getPerformanceLength() +"})", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(sourcePage[0]);
+            Matcher regexAllLine = Pattern.compile("SQLi(.{1,"+ injectionStrategy.getPerformanceLength() +"})", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(sourcePage[0]);
             
-            Matcher regexSearch = Pattern.compile("SQLi\\x01\\x03\\x03\\x07", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(sourcePage[0]);
-            if (regexSearch.find()) {
-                if (useLimit && !"".equals(finalResultSourcea2)) {
+            Matcher regexEndOfLine = Pattern.compile("SQLi\\x01\\x03\\x03\\x07", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(sourcePage[0]);
+            if (regexEndOfLine.find()) {
+                if (useLimit && !"".equals(slidingWindowAllRows)) {
                     //                        model.sendMessage("A");
                     // Update the view only if there are value to find, and if it's not the root (empty tree)
                     if (numberToFind > 0 && searchName != null) {
@@ -80,8 +84,8 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
              * One row could be very long, longer than the database can provide
              * #Need verification
              */
-            if (!regexSearcha2.find()) {
-                if (useLimit && !"".equals(finalResultSourcea2)) {
+            if (!regexAllLine.find()) {
+                if (useLimit && !"".equals(slidingWindowAllRows)) {
                     //                        model.sendMessage("A");
                     // Update the view only if there are value to find, and if it's not the root (empty tree)
                     if (numberToFind > 0 && searchName != null) {
@@ -99,11 +103,11 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
              * If throws exception, inform the view about the failure.
              */
             try {
-                currentResultSourcea2 += regexSearcha2.group(1);
+                slidingWindowCurrentRow += regexAllLine.group(1);
 
                 Request request = new Request();
                 request.setMessage("MessageChunk");
-                request.setParameters(regexSearcha2.group(1) + " ");
+                request.setParameters(regexAllLine.group(1) + " ");
                 MediatorModel.model().interact(request);
             } catch (IllegalStateException e) {
                 // if it's not the root (empty tree)
@@ -113,16 +117,19 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
                     request.setParameters(searchName);
                     MediatorModel.model().interact(request);
                 }
+                /**
+                 * TODO Injection Exception
+                 */
                 throw new PreparationException("Fetching fails: no data to parse for " + searchName);
             }
 
             /*
              * Check how many rows we have collected from the beginning of that chunk
              */
-            regexSearcha2 = Pattern.compile("(\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?\\x04)", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSourcea2);
-            int nbResult2 = 0;
-            while (regexSearcha2.find()) {
-                nbResult2++;
+            regexAllLine = Pattern.compile("(\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?\\x04)", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(slidingWindowCurrentRow);
+            int nbCompleteLine = 0;
+            while (regexAllLine.find()) {
+                nbCompleteLine++;
             }
 
             /*
@@ -132,7 +139,7 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
                 if (numberToFind > 0 && searchName != null) {
                     Request request = new Request();
                     request.setMessage("UpdateProgress");
-                    request.setParameters(searchName, limitSQLResult + nbResult2);
+                    request.setParameters(searchName, sqlLimit + nbCompleteLine);
                     MediatorModel.model().interact(request);
                 }
                 //                    System.out.println("Request " + i + ", data collected "+(limitSQLResult + nbResult) + (numberToFind>0?"/"+numberToFind:"") + " << " + currentResultSource.length() + " bytes" );
@@ -143,65 +150,65 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
              * => hhxxxxxxxxjj00hhgghh...hiLQS
              */
             /* Design Pattern: State? */
-            if (nbResult2>0 || currentResultSourcea2.matches("(?s).*\\x01\\x03\\x03\\x07.*")) {
+            if (nbCompleteLine>0 || slidingWindowCurrentRow.matches("(?s).*\\x01\\x03\\x03\\x07.*")) {
                 /*
                  * Remove everything after our result
                  * => hhxxxxxxxxjj00hhgghh...h |-> iLQSjunk
                  */
-                finalResultSourcea2 += currentResultSourcea2 = Pattern.compile("\\x01\\x03\\x03\\x07.*", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSourcea2).replaceAll("");
+                slidingWindowAllRows += slidingWindowCurrentRow = Pattern.compile("\\x01\\x03\\x03\\x07.*", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(slidingWindowCurrentRow).replaceAll("");
                 if (useLimit) {
                     /*
                      * Remove everything not properly attached to the last row:
                      * 1. very start of a new row: XXXXXhhg[ghh]$
                      * 2. very end of the last row: XXXXX[jj00]$
                      */
-                    finalResultSourcea2 = Pattern.compile("(\\x06\\x04|\\x05\\d*)$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(finalResultSourcea2).replaceAll("");
-                    currentResultSourcea2 = Pattern.compile("(\\x06\\x04|\\x05\\d*)$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSourcea2).replaceAll("");
+                    slidingWindowAllRows = Pattern.compile("(\\x06\\x04|\\x05\\d*)$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(slidingWindowAllRows).replaceAll("");
+                    slidingWindowCurrentRow = Pattern.compile("(\\x06\\x04|\\x05\\d*)$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(slidingWindowCurrentRow).replaceAll("");
 
                     /*
                      * Check either if there is more than 1 row and if there is less than 1 complete row
                      */
-                    regexSearcha2 = Pattern.compile("[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]\\x04\\x06\\x04[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSourcea2);
-                    Matcher regexSearch2a2 = Pattern.compile("\\x04[^\\x01-\\x03\\x05-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(currentResultSourcea2);
+                    regexAllLine = Pattern.compile("[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]\\x04\\x06\\x04[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(slidingWindowCurrentRow);
+                    Matcher regexSearch2a2 = Pattern.compile("\\x04[^\\x01-\\x03\\x05-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(slidingWindowCurrentRow);
 
                     /*
                      * If there is more than 1 row, delete the last incomplete one in order to restart properly from it at the next loop,
                      * else if there is 1 row but incomplete, mark it as cut with the letter c
                      */
-                    if (regexSearcha2.find()) {
-                        finalResultSourcea2 = Pattern.compile(
+                    if (regexAllLine.find()) {
+                        slidingWindowAllRows = Pattern.compile(
                             "\\x04[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$",
                             Pattern.CASE_INSENSITIVE | Pattern.DOTALL
-                        ).matcher(finalResultSourcea2).replaceAll("");
+                        ).matcher(slidingWindowAllRows).replaceAll("");
                     } else if (regexSearch2a2.find()) {
-                        finalResultSourcea2 += ToolsString.hexstr("05") + "1" + ToolsString.hexstr("0804");
+                        slidingWindowAllRows += ToolsString.hexstr("05") + "1" + ToolsString.hexstr("0804");
                     }
 
                     /*
                      * Check how many rows we have collected from the very beginning of the query,
                      * then skip every rows we have already found via LIMIT
                      */
-                    regexSearcha2 = Pattern.compile(
+                    regexAllLine = Pattern.compile(
                             /*
                              * Regex \\x{08}? not supported on Kali
                              * => \\x08? seems ok though
                              */
                             "(\\x04[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x05[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?\\x04)",
                             Pattern.CASE_INSENSITIVE | Pattern.DOTALL
-                            ).matcher(finalResultSourcea2);
+                            ).matcher(slidingWindowAllRows);
 
-                    nbResult2 = 0;
-                    while (regexSearcha2.find()) {
-                        nbResult2++;
+                    nbCompleteLine = 0;
+                    while (regexAllLine.find()) {
+                        nbCompleteLine++;
                     }
-                    limitSQLResult = nbResult2;
+                    sqlLimit = nbCompleteLine;
 
                     // Inform the view about the progression
                     //                        System.out.println("Request " + i + ", data collected " + limitSQLResult + (numberToFind>0 ? "/"+numberToFind : "" ));
                     if (numberToFind > 0 && searchName != null) {
                         Request request = new Request();
                         request.setMessage("UpdateProgress");
-                        request.setParameters(searchName, limitSQLResult);
+                        request.setParameters(searchName, sqlLimit);
                         MediatorModel.model().interact(request);
                     }
 
@@ -209,7 +216,7 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
                      * Ending condition: every expected rows have been retrieved.
                      * Inform the view about the progression
                      */
-                    if (limitSQLResult == numberToFind) {
+                    if (sqlLimit == numberToFind) {
                         //                            model.sendMessage("B");
                         if (numberToFind > 0 && searchName != null) {
                             Request request = new Request();
@@ -228,10 +235,10 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
                             "\\{limit\\}",
                             Pattern.CASE_INSENSITIVE | Pattern.DOTALL
                             ).matcher(initialSQLQuery).replaceAll(
-                                MediatorModel.model().sqlStrategy.getLimit(limitSQLResult)
+                                MediatorModel.model().sqlStrategy.getLimit(sqlLimit)
                             );
-                    startPosition = 1;
-                    currentResultSourcea2 = "";
+                    charPositionInCurrentRow = 1;
+                    slidingWindowCurrentRow = "";
                 } else {
                     // Inform the view about the progression
                     //                        model.sendMessage("C");
@@ -248,7 +255,7 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
 
         }
 
-        return finalResultSourcea2;
+        return slidingWindowAllRows;
     }
 }
 

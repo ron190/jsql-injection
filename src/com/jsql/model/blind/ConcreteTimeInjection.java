@@ -141,6 +141,9 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
     @Override
     public boolean isInjectable() throws PreparationException {
         if (MediatorModel.model().stopFlag) {
+            /**
+             * TODO Stoppable Exception
+             */
             throw new PreparationException();
         }
 

@@ -72,6 +72,7 @@ public class CreateValuesTab implements IInteractionCommand {
         TableRowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>();
         newTableJPanel.table.setRowSorter(rowSorter);
 
+        // TODO No more applied (filter lib in cause)
         Comparator<Object> c1 = new ComparatorColumn();
 
         rowSorter.setModel(newTableJPanel.table.getModel());

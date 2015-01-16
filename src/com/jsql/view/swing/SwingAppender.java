@@ -5,8 +5,6 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -16,12 +14,10 @@ import javax.swing.text.StyleConstants;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.PatternLayout;
-import org.apache.log4j.SimpleLayout;
 import org.apache.log4j.WriterAppender;
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.ThrowableInformation;
 
-import com.jsql.tool.ToolsString;
 import com.jsql.view.swing.console.JColoredConsole;
 import com.jsql.view.swing.console.JavaConsoleAdapter;
 import com.jsql.view.swing.console.SimpleConsoleAdapter;
@@ -33,8 +29,8 @@ public class SwingAppender extends WriterAppender {
     /**
      * Main console textfield.
      */
-    
     private static JColoredConsole consoleColored;
+    
     /**
      * Java console textfield.
      */
@@ -42,23 +38,12 @@ public class SwingAppender extends WriterAppender {
 
     private static final SimpleAttributeSet ERROR = new SimpleAttributeSet();
     private static final SimpleAttributeSet INFO = new SimpleAttributeSet();
-//    private static final SimpleAttributeSet ALL = new SimpleAttributeSet();
-//    private static final SimpleAttributeSet FATAL = new SimpleAttributeSet();
     private static final SimpleAttributeSet WARN = new SimpleAttributeSet();
-//    private static final SimpleAttributeSet DEBUG = new SimpleAttributeSet();
 
-    // Best to reuse attribute sets as much as possible.
     static {
-//        StyleConstants.setForeground(ALL, Color.green);
-//        StyleConstants.setForeground(FATAL, Color.red);
-        //        StyleConstants.setItalic(ERROR, true);
-        GraphicsEnvironment ge = 
-                GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             try {
-//                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("Untitled1.ttf")));
-//                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("/src/UbuntuMono-Regular.ttf")));
-//                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new BufferedInputStream(SwingAppender.class.getResourceAsStream("/jsql-font.ttf"))));
-                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new BufferedInputStream(SwingAppender.class.getResourceAsStream("/UbuntuMono-R.ttf"))));
+                ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new BufferedInputStream(SwingAppender.class.getResourceAsStream("/com/jsql/UbuntuMono-R.ttf"))));
             } catch (FontFormatException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -71,18 +56,9 @@ public class SwingAppender extends WriterAppender {
             StyleConstants.setFontFamily(ERROR, "Ubuntu Mono");
             StyleConstants.setFontSize(INFO, 14);
             StyleConstants.setFontSize(ERROR, 14);
-
-//        StyleConstants.setFontFamily(INFO, "jsql font");
-        StyleConstants.setForeground(ERROR, Color.red);
-//        StyleConstants.setFontSize(INFO, 24);
-        //        StyleConstants.setBold(ERROR, true);
-
-//        StyleConstants.setForeground(WARN, Color.yellow);
-        StyleConstants.setForeground(WARN, Color.red);
-
-        //        StyleConstants.setForeground(INFO, Color.blue);
-//        StyleConstants.setForeground(DEBUG, Color.green);
-//        StyleConstants.setItalic(DEBUG, true);
+            
+            StyleConstants.setForeground(ERROR, Color.red);
+            StyleConstants.setForeground(WARN, Color.red);
     }
 
     public SwingAppender() {
@@ -92,7 +68,6 @@ public class SwingAppender extends WriterAppender {
 
     /**
      * Method from Log4j AppenderSkeleton that gets a call for all Log4J events.
-     *
      * @param event A logging event.
      * @see org.apache.log4j.AppenderSkeleton
      */
@@ -149,7 +124,6 @@ public class SwingAppender extends WriterAppender {
                 break;
             case Level.INFO_INT:
                 consoleColored.append(message,INFO);
-//                consoleColored.appendHex(ToolsString.hexstr("000102030405"), INFO);
                 consoleColored.setCaretPosition(consoleColored.getDocument().getLength());
                 break;
             case Level.DEBUG_INT:
@@ -171,7 +145,6 @@ public class SwingAppender extends WriterAppender {
      * Register the default console.
      * @param consoleColored
      */
-//    public void register(SimpleConsoleAdapter consoleColored) {
     public static void register(SimpleConsoleAdapter consoleColored) {
         SwingAppender.consoleColored = consoleColored;
     }

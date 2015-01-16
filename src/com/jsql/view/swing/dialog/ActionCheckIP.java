@@ -1,4 +1,5 @@
 package com.jsql.view.swing.dialog;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;

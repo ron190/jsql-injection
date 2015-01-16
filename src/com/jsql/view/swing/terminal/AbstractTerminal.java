@@ -80,10 +80,7 @@ public abstract class AbstractTerminal extends JTextPane {
         }
         host = u.getHost();
 
-//        this.setFont(new Font("monospaced", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize() + 1));
-//        .setFont(new Font("Ubuntu Mono", Font.PLAIN, 14));
-//        this.setFont(new Font("Ubuntu Mono", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize() + 1));
-        this.setFont(new Font("Ubuntu Mono", Font.PLAIN, 14));
+        this.setFont(new Font("Ubuntu Mono", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize() + 2));
         this.setCaret(new BlockCaret());
         this.setBackground(Color.BLACK);
         this.setForeground(Color.LIGHT_GRAY);

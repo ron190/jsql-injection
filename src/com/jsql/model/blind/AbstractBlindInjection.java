@@ -76,6 +76,9 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
         while (submittedTasks > 0) {
             // stop/pause/resume if user needs that
             if (stoppable.stopOrPause()) {
+                /**
+                 * TODO log stopping/free memory...
+                 */
                 taskExecutor.shutdown();
 
                 // Wait for termination
@@ -90,6 +93,9 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
                     taskExecutor.shutdownNow();
                 }
 
+                /**
+                 * TODO InjectionStopped
+                 */
                 throw new StoppableException();
             }
             try {

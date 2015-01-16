@@ -12,7 +12,6 @@ package com.jsql.view.swing.terminal;
 
 import java.util.UUID;
 
-import com.jsql.model.injection.InjectionModel;
 import com.jsql.model.injection.MediatorModel;
 
 /**

@@ -1,7 +1,8 @@
 bin/
 .metadata
 target/
-target/
+test-output/
 .settings/
 .sonar/
-/sonar-project.properties
+sonar-project.properties
+.checkstyle

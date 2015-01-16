@@ -373,4 +373,8 @@ public class MySQLStrategy implements ISQLStrategy {
         return "+limit+" + limitSQLResult + ",65536";
     }
 
+    @Override
+    public String getDbLabel() {
+        return null;
+    }
 }

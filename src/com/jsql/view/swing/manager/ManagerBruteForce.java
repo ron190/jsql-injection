@@ -104,8 +104,6 @@ public class ManagerBruteForce extends JPanel {
     public ManagerBruteForce() {
         super(new BorderLayout());
 
-//        this.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, ToolsGUI.COMPONENT_BORDER));
-
         JPanel options = new JPanel(new BorderLayout());
 
         JPanel firstLine = new JPanel(new BorderLayout());
@@ -125,23 +123,18 @@ public class ManagerBruteForce extends JPanel {
         numericCharacters = new JCheckBox("0-9", true);
         specialCharacters = new JCheckBox("Special", true);
 
-//        secondLine.add(new JLabel(" Type ", SwingConstants.RIGHT));
-
         hashTypes = new JComboBox<String>(new String[]{"md2", "md5", "sha-1", "sha-256", "sha-384",
                 "sha-512", "mysql" /*,"crc16","crc32","crc64","adler32"*/});
         
         hashTypes.setSelectedIndex(1);
-//        hashTypes.setMaximumSize(new Dimension((int) hashTypes.getPreferredSize().getWidth(), 22));
         hashTypes.setToolTipText(I18n.BRUTEFORCE_HASH_TYPE_TOOLTIP);
 
-//        secondLine.add(Box.createGlue());
         secondLine.add(hashTypes);
 
         secondLine.add(lowerCaseCharacters);
         secondLine.add(upperCaseCharacters);
         secondLine.add(numericCharacters);
         secondLine.add(specialCharacters);
-//        secondLine.add(Box.createGlue());
 
         lowerCaseCharacters.setToolTipText(I18n.BRUTEFORCE_LCASE_TOOLTIP);
         upperCaseCharacters.setToolTipText(I18n.BRUTEFORCE_UCASE_TOOLTIP);
@@ -150,11 +143,7 @@ public class ManagerBruteForce extends JPanel {
 
         JPanel thirdLine = new JPanel();
         thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));
-//        thirdLine.setBorder(BorderFactory.createCompoundBorder(
-//                BorderFactory.createEmptyBorder(1, 1, 1, 1),
-//                BorderFactory.createEmptyBorder(1, 1, 1, 1)));
         
-//        thirdLine.add(new JLabel(" Exclude ", SwingConstants.RIGHT));
         exclude = new JPopupTextField(I18n.BRUTEFORCE_EXCLUDE_LABEL).getProxy();
         exclude.setToolTipText(I18n.BRUTEFORCE_EXCLUDE_TOOLTIP);
         thirdLine.add(exclude);
@@ -167,9 +156,6 @@ public class ManagerBruteForce extends JPanel {
         
         minimumLength.setHorizontalAlignment(JTextField.RIGHT);
         maximumLength.setHorizontalAlignment(JTextField.RIGHT);
-
-//        exclude.setMaximumSize(new Dimension(120, (int) exclude.getPreferredSize().getHeight()));
-//        exclude.setMinimumSize(new Dimension(120, (int) exclude.getPreferredSize().getHeight()));
 //
         minimumLength.setPreferredSize(new Dimension(30, (int) minimumLength.getPreferredSize().getHeight()));
         maximumLength.setPreferredSize(new Dimension(30, (int) maximumLength.getPreferredSize().getHeight()));

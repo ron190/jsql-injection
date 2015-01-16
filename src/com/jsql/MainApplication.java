@@ -1,8 +1,6 @@
 package com.jsql;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
-import org.apache.log4j.xml.DOMConfigurator;
 
 import com.jsql.model.injection.InjectionModel;
 import com.jsql.model.injection.MediatorModel;
@@ -10,6 +8,9 @@ import com.jsql.view.swing.JFrameGUI;
 import com.jsql.view.swing.MediatorGUI;
 
 public class MainApplication {
+    /**
+     * Using default log4j.properties from root /
+     */
     public static final Logger LOGGER = Logger.getLogger(MainApplication.class);
     
     public static class ExceptionHandler implements Thread.UncaughtExceptionHandler {
@@ -39,8 +40,6 @@ public class MainApplication {
             public void run() {
                 Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
                 System.setProperty("sun.awt.exception.handler", ExceptionHandler.class.getName());
-                
-                PropertyConfigurator.configure("src/log4j.properties");
                 
                 InjectionModel model = new InjectionModel();
                 MediatorModel.register(model);

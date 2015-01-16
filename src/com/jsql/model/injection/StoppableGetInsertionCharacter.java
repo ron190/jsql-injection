@@ -28,6 +28,9 @@ public class StoppableGetInsertionCharacter extends AbstractSuspendable {
     public String action(Object... args) throws PreparationException, StoppableException {
         // Has the url a query string?
         if ("GET".equalsIgnoreCase(MediatorModel.model().method) && (MediatorModel.model().getData == null || "".equals(MediatorModel.model().getData))) {
+            /**
+             * TODO Preparation Format Exception
+             */
             throw new PreparationException("No query string");
             // Is the query string well formed?
         } else if (!"".equals(MediatorModel.model().getData) && MediatorModel.model().getData.matches("[^\\w]*=.*")) {
@@ -101,6 +104,10 @@ public class StoppableGetInsertionCharacter extends AbstractSuspendable {
         int total = 7;
         while (0 < total) {
             // The user need to stop the job
+            /**
+             * TODO pauseOnUserDemand()
+             * stop()
+             */
             if (this.stopOrPause()) {
                 throw new StoppableException();
             }

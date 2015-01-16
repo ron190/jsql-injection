@@ -12,7 +12,6 @@ package com.jsql.view.swing.manager;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.injection.InjectionModel;
 import com.jsql.model.injection.MediatorModel;
 
 /**

@@ -1,9 +1,7 @@
-package mysql;
+package com.test.mysql;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.BeforeClass;
-
-import suite.AbstractTestSuite;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.model.injection.InjectionModel;
@@ -12,18 +10,9 @@ import com.jsql.model.strategy.ErrorbasedStrategy;
 import com.jsql.view.println.SystemOutTerminal;
 
 public class MysqlErrobasedHeaderTestSuite extends ConcreteMysqlTestSuite {
-    // pour chaque vendor/méthode/strategy
-    /**
-     * liste db, table, colonne, value
-     * valeur à rallonge
-     * caractère spécial \
-     * @throws PreparationException 
-     */
     
     @BeforeClass
     public static void initialize() throws PreparationException {
-        PropertyConfigurator.configure("test/log4j.properties");
-        
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);
         model.instanciationDone();
@@ -37,5 +26,4 @@ public class MysqlErrobasedHeaderTestSuite extends ConcreteMysqlTestSuite {
         
         MediatorModel.model().injectionStrategy = new ErrorbasedStrategy();
     }
-
 }

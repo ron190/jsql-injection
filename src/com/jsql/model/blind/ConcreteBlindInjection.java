@@ -146,6 +146,9 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
     @Override
     public boolean isInjectable() throws PreparationException {
         if (MediatorModel.model().stopFlag) {
+            /**
+             * TODO Stoppable Exception
+             */
             throw new PreparationException();
         }
 

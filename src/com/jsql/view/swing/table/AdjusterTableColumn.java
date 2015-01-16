@@ -64,7 +64,6 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
                     int row, int column) {
                 JLabel lbl = (JLabel) tcrOs.getTableCellRendererComponent(table,
                         value, isSelected, hasFocus, row, column);
-//                lbl.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.LIGHT_GRAY));
                 lbl.setBackground(new Color(230,230,230));
                 return lbl;
             }

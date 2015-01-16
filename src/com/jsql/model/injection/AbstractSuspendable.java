@@ -90,6 +90,9 @@ public abstract class AbstractSuspendable implements Runnable{
         }
         
         if (this.errorResponse != null) {
+            /**
+             * TODO Injection Empty Response Exception
+             */
             throw new PreparationException(this.errorResponse);
         } else {
             return this.threadResponse;

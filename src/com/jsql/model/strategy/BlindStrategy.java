@@ -55,17 +55,6 @@ public class BlindStrategy extends AbstractInjectionStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable) throws StoppableException {
-//        return blind.inject("(" +
-//                "select+" +
-//                    "concat(" +
-//                        "0x53514c69," +
-//                        "mid(" +
-//                            "(" + sqlQuery + ")," +
-//                            startPosition + "," +
-//                            "65536" +
-//                        ")" +
-//                    ")" +
-//                ")", stoppable);
         return blind.inject(
             MediatorModel.model().sqlStrategy.blindStrategy(sqlQuery, startPosition),
             stoppable

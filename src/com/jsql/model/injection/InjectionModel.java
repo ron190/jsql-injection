@@ -44,6 +44,8 @@ import com.jsql.model.strategy.BlindStrategy;
 import com.jsql.model.strategy.ErrorbasedStrategy;
 import com.jsql.model.strategy.NormalStrategy;
 import com.jsql.model.strategy.TimeStrategy;
+import com.jsql.model.vendor.H2Strategy;
+import com.jsql.model.vendor.HSQLDBStrategy;
 import com.jsql.model.vendor.ISQLStrategy;
 import com.jsql.model.vendor.MySQLStrategy;
 import com.jsql.model.vendor.OracleStrategy;
@@ -157,6 +159,7 @@ public class InjectionModel extends AbstractModelObservable {
      */
     public boolean isProxyfied = false;
     
+    // TODO Fix vendor before release
     public ISQLStrategy sqlStrategy = new MySQLStrategy();
     
     /**
@@ -271,6 +274,9 @@ public class InjectionModel extends AbstractModelObservable {
                     LOGGER.info("Testing proxy...");
                     new Socket(proxyAddress, Integer.parseInt(proxyPort)).close();
                 } catch (Exception e) {
+                    /**
+                     * TODO Preparation Proxy Exception
+                     */
                     throw new PreparationException("Proxy connection failed: " + proxyAddress + ":" + proxyPort
                             + "\nVerify your proxy informations or disable proxy setting.");
                 }
@@ -658,18 +664,25 @@ public class InjectionModel extends AbstractModelObservable {
 
     /**
      * Set injection strategy.
-     * @param text Strategy used by user
+     * @param strategy Strategy used by user
      */
-    public void applyStrategy(String text) {
-        if ("timebased".equalsIgnoreCase(text)) {
+    public void applyStrategy(String strategy) {
+        if ("timebased".equalsIgnoreCase(strategy)) {
             this.injectionStrategy = timeStrategy;
-        } else if ("blind".equalsIgnoreCase(text)) {
+        } else if ("blind".equalsIgnoreCase(strategy)) {
             this.injectionStrategy = blindStrategy;
-        } else if ("errorbased".equalsIgnoreCase(text)) {
+        } else if ("errorbased".equalsIgnoreCase(strategy)) {
             this.injectionStrategy = errorbasedStrategy;
-        } else if ("normal".equalsIgnoreCase(text)) {
+        } else if ("normal".equalsIgnoreCase(strategy)) {
             this.injectionStrategy = normalStrategy;
         }
+    }
+    
+    /**
+     * Get current injection strategy.
+     */
+    public AbstractInjectionStrategy getInjectionStrategy() {
+        return injectionStrategy;
     }
     
     /**
@@ -716,12 +729,5 @@ public class InjectionModel extends AbstractModelObservable {
         } catch (MalformedURLException e) {
             LOGGER.warn(e.getMessage(), e);
         }
-    }
-    
-    /**
-     * Get current injection strategy.
-     */
-    public AbstractInjectionStrategy getInjectionStrategy() {
-        return injectionStrategy;
     }
 }

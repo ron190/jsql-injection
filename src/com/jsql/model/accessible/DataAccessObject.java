@@ -56,17 +56,21 @@ public class DataAccessObject {
 
         if ("".equals(hexResult)) {
             MediatorModel.model().sendResponseFromSite("Show db info failed", sourcePage[0].trim());
+            /**
+             * TODO Extraction Exception
+             */
             throw new PreparationException();
         }
 
-        MediatorModel.model().versionDatabase   = hexResult.split("\\{%\\}")[0].replaceAll("\\s+"," ");
+        String dbType = "";
+        if(MediatorModel.model().sqlStrategy.getDbLabel() != null) {
+            dbType = MediatorModel.model().sqlStrategy.getDbLabel() + " ";
+        }
+        
+        MediatorModel.model().versionDatabase   = dbType + hexResult.split("\\{%\\}")[0].replaceAll("\\s+"," ");
         MediatorModel.model().currentDatabase   = hexResult.split("\\{%\\}")[1];
         MediatorModel.model().currentUser       = hexResult.split("\\{%\\}")[2];
         MediatorModel.model().authenticatedUser = hexResult.split("\\{%\\}")[3];
-//        MediatorModel.model().versionDatabase   = ToolsString.hexstr(hexResult).split("\\{%\\}")[0].replaceAll("\\s+"," ");
-//        MediatorModel.model().currentDatabase   = ToolsString.hexstr(hexResult).split("\\{%\\}")[1];
-//        MediatorModel.model().currentUser       = ToolsString.hexstr(hexResult).split("\\{%\\}")[2];
-//        MediatorModel.model().authenticatedUser = ToolsString.hexstr(hexResult).split("\\{%\\}")[3];
 
         // Inform the view that info should be displayed
         Request request = new Request();
@@ -102,6 +106,9 @@ public class DataAccessObject {
         ).matcher(hexResult);
 
         if (!regexSearch.find()) {
+            /**
+             * TODO Extraction Exception
+             */
             MediatorModel.model().sendResponseFromSite("Fetching databases fails", sourcePage[0].trim());
             throw new PreparationException();
         }

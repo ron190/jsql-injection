@@ -6,16 +6,12 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
 import javax.swing.JTextPane;
-import javax.swing.UIManager;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.tool.ToolsString;
 import com.jsql.view.swing.MediatorGUI;
-import com.jsql.view.swing.text.JPopupTextArea;
 
 /**
  * A JTextPane which displays colored strings.
@@ -56,8 +52,6 @@ public class JColoredConsole extends JTextPane {
      * @param attribut Font
      */
     public void append(String message, SimpleAttributeSet attribut) {
-//        StyleConstants.setFontFamily(attribut, "jsql font");
-//        StyleConstants.setFontSize(attribut, 14);
         try {
             this.getDocument().insertString(
                 this.getDocument().getLength(),
@@ -75,22 +69,4 @@ public class JColoredConsole extends JTextPane {
             LOGGER.fatal(message);
         }
     }
-    
-//    public void appendHex(String message, SimpleAttributeSet attribut) {
-//        StyleConstants.setFontFamily(attribut, "jsql font");
-//        int defaultSize = StyleConstants.getFontSize(attribut);
-////        StyleConstants.setBold(attribut, true);
-//        try {
-//            this.getDocument().insertString(
-//                this.getDocument().getLength(),
-//                message,
-//                attribut
-//            );
-//        } catch (BadLocationException e) {
-//            LOGGER.fatal(message);
-//        }
-////        StyleConstants.setFontSize(attribut, defaultSize);
-////        StyleConstants.setFontFamily(attribut, "monospaced");
-////        new Font("monospaced", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize())
-//    }
 }

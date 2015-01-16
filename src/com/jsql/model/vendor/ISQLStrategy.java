@@ -4,6 +4,8 @@ import com.jsql.model.bean.Database;
 import com.jsql.model.bean.Table;
 
 public interface ISQLStrategy {
+    String getDbLabel();
+    
     String getSchemaInfos();
     String getSchemaList();
     String getTableList(Database database);
