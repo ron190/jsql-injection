@@ -44,13 +44,8 @@ import com.jsql.model.strategy.BlindStrategy;
 import com.jsql.model.strategy.ErrorbasedStrategy;
 import com.jsql.model.strategy.NormalStrategy;
 import com.jsql.model.strategy.TimeStrategy;
-import com.jsql.model.vendor.H2Strategy;
-import com.jsql.model.vendor.HSQLDBStrategy;
-import com.jsql.model.vendor.ISQLStrategy;
+import com.jsql.model.vendor.ASQLStrategy;
 import com.jsql.model.vendor.MySQLStrategy;
-import com.jsql.model.vendor.OracleStrategy;
-import com.jsql.model.vendor.PostgreSQLStrategy;
-import com.jsql.model.vendor.MSSQLServerStrategy;
 import com.jsql.tool.ToolsString;
 
 /**
@@ -160,7 +155,7 @@ public class InjectionModel extends AbstractModelObservable {
     public boolean isProxyfied = false;
     
     // TODO Fix vendor before release
-    public ISQLStrategy sqlStrategy = new MySQLStrategy();
+    public ASQLStrategy sqlStrategy = new MySQLStrategy();
     
     /**
      * Current injection strategy.

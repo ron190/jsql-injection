@@ -8,7 +8,7 @@ import com.jsql.model.bean.Table;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class PostgreSQLStrategy implements ISQLStrategy {
+public class PostgreSQLStrategy extends ASQLStrategy {
 
     @Override
     public String getSchemaInfos() {
@@ -121,94 +121,6 @@ public class PostgreSQLStrategy implements ISQLStrategy {
     }
 
     @Override
-    public String getPrivilege() {
-        // TODO Auto-generated method stub
-        return "";
-    }
-
-    @Override
-    public String readTextFile(String filePath) {
-        // TODO Auto-generated method stub
-        return "";
-    }
-
-    @Override
-    public String writeTextFile(String content, String filePath) {
-        // TODO Auto-generated method stub
-        return "";
-    }
-
-    @Override
-    public String[] getListFalseTest() {
-        return new String[]{"true=false", "true%21=true", "false%21=false", "1=2", "1%21=1", "2%21=2"};
-    }
-
-    @Override
-    public String[] getListTrueTest() {
-        return new String[]{"true=true", "false=false", "true%21=false", "1=1", "2=2", "1%21=2"};
-    }
-
-    @Override
-    public String getBlindFirstTest() {
-        // TODO Auto-generated method stub
-        return "";
-    }
-
-    @Override
-    public String blindCheck(String check) {
-        // TODO Auto-generated method stub
-        return "";
-    }
-
-    @Override
-    public String blindBitTest(String inj, int indexCharacter, int bit) {
-        // TODO Auto-generated method stub
-        return "";
-    }
-
-    @Override
-    public String blindLengthTest(String inj, int indexCharacter) {
-        // TODO Auto-generated method stub
-        return "";
-    }
-
-    @Override
-    public String timeCheck(String check) {
-        // TODO Auto-generated method stub
-        return "";
-    }
-
-    @Override
-    public String timeBitTest(String inj, int indexCharacter, int bit) {
-        // TODO Auto-generated method stub
-        return "";
-    }
-
-    @Override
-    public String timeLengthTest(String inj, int indexCharacter) {
-        // TODO Auto-generated method stub
-        return "";
-    }
-
-    @Override
-    public String blindStrategy(String sqlQuery, String startPosition) {
-        // TODO Auto-generated method stub
-        return "";
-    }
-
-    @Override
-    public String getErrorBasedStrategyCheck() {
-        // TODO Auto-generated method stub
-        return "";
-    }
-
-    @Override
-    public String errorBasedStrategy(String sqlQuery, String startPosition) {
-        // TODO Auto-generated method stub
-        return "";
-    }
-
-    @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
         return 
             "select+" +
@@ -220,12 +132,6 @@ public class PostgreSQLStrategy implements ISQLStrategy {
                     startPosition + "," +
                     "65536" +
                 "),'%01%03%03%07')";
-    }
-
-    @Override
-    public String timeStrategy(String sqlQuery, String startPosition) {
-        // TODO Auto-generated method stub
-        return "";
     }
 
     @Override

@@ -10,7 +10,7 @@ import com.jsql.model.blind.ConcreteTimeInjection;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class MySQLStrategy implements ISQLStrategy {
+public class MySQLStrategy extends ASQLStrategy {
 
     @Override
     public String getSchemaInfos() {
