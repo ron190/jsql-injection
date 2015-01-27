@@ -1,4 +1,4 @@
-package com.test.mysql;
+package com.test.postgre;
 
 import org.junit.BeforeClass;
 import org.junit.Ignore;
@@ -10,7 +10,7 @@ import com.jsql.model.injection.InjectionModel;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.println.SystemOutTerminal;
 
-public class MysqlTimeHeaderTestSuite extends ConcreteMysqlTestSuite {
+public class PostgreTimeGetTestSuite extends ConcretePostgreTestSuite {
 
     @BeforeClass
     public static void initialize() throws PreparationException {
@@ -19,9 +19,9 @@ public class MysqlTimeHeaderTestSuite extends ConcreteMysqlTestSuite {
         model.instanciationDone();
         new SystemOutTerminal();
 
-        MediatorModel.model().initialUrl = "http://127.0.0.1/simulate_header.php";
-        MediatorModel.model().headerData = "lib:1";
-        MediatorModel.model().method = "HEADER";
+        MediatorModel.model().initialUrl = "http://127.0.0.1/pg_simulate_get.php";
+        MediatorModel.model().getData = "?lib=1";
+        MediatorModel.model().method = "GET";
 
         MediatorModel.model().inputValidation();
 
@@ -31,7 +31,7 @@ public class MysqlTimeHeaderTestSuite extends ConcreteMysqlTestSuite {
     @Override
     @Test
     @Ignore
-    public void listDatabases() throws PreparationException, StoppableException {
+    public void listColumns() throws PreparationException, StoppableException {
         // Empty on purpose
     }
 

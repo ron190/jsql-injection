@@ -22,7 +22,7 @@ public class ComparatorColumn implements Comparator<Object> {
      * Strings as strings, with numbers ordered before strings.
      * @param o1
      * @param o2
-     * @return 
+     * @return
      */
     @Override
     public int compare(Object oo1, Object oo2) {

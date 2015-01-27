@@ -138,7 +138,7 @@ select '"'"'
                 /**
                  * Fatal error: Uncaught exception 'PDOException' with message 'SQLSTATE[42000]: [Microsoft][SQL Server Native Client 11.0][SQL Server]An object or column name is missing or empty. For SELECT INTO statements, verify each column has a name. For other statements, look for empty alias names. Aliases defined as "" or [] are not allowed. Change the alias to a valid name.'
                  * or
-                 * Fatal error: Uncaught exception 'PDOException' with message 'SQLSTATE[42000]: [Microsoft][SQL Server Native Client 11.0][SQL Server]Unclosed quotation mark after the character string 
+                 * Fatal error: Uncaught exception 'PDOException' with message 'SQLSTATE[42000]: [Microsoft][SQL Server Native Client 11.0][SQL Server]Unclosed quotation mark after the character string
                  * 
                  * jdbc
                  * Unclosed quotation mark after the character string '''. [SQL State=S0001, DB Errorcode=105] 
@@ -218,7 +218,7 @@ select '"'"'
                 /**
                  * 
 Warning: ibase_query() [function.ibase-query]: Dynamic SQL Error SQL error code = -104 as approximate floating-point values in SQL dialect 1, but as 64-bit in E:\Dev\xampp-win32-1.6.8\htdocs\firebird\firebird_simulate_get.php on line 27
-Dynamic SQL Error SQL error code = -104 as approximate floating-point values in SQL dialect 1, but as 64-bit 
+Dynamic SQL Error SQL error code = -104 as approximate floating-point values in SQL dialect 1, but as 64-bit
 
 jdbc
 GDS Exception. 335544569. Dynamic SQL Error

@@ -51,7 +51,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
     
     /**
      * Displays a popup menu for JList.
-     * @param e Mouse event 
+     * @param e Mouse event
      */
     @SuppressWarnings("unchecked")
     public void showPopup(final MouseEvent e) {

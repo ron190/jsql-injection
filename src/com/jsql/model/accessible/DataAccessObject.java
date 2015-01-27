@@ -278,7 +278,7 @@ public class DataAccessObject {
      * unreachable data.<br>
      * The process can be interrupted by the user (stop/pause).
      * @param values columns selected by user
-     * @return 
+     * @return
      */
     public String[][] listValues(List<Column> argsElementDatabase) throws PreparationException, StoppableException {
         Database database = (Database) argsElementDatabase.get(0).getParent().getParent();

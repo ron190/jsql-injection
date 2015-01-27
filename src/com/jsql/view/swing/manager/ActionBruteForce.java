@@ -103,7 +103,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
         // Begin the unhashing process
         Thread thread = new Thread(new Runnable() { 
-            @Override 
+            @Override
             public void run() { 
                 hashBruter.tryBruteForce(); 
             } 

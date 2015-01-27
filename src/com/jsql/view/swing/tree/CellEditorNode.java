@@ -166,7 +166,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
         }
     }
 
-    @Override 
+    @Override
     public void mousePressed(MouseEvent e) {
         maybeShowPopup(e);
     }

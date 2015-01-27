@@ -158,7 +158,7 @@ public class RessourceAccessObject {
     
     /**
      * Create a webshell in the server.
-     * @param path Remote path othe file 
+     * @param path Remote path othe file
      * @param url
      * @throws PreparationException
      * @throws StoppableException
@@ -206,7 +206,7 @@ public class RessourceAccessObject {
     
     /**
      * Upload a file to the server.
-     * @param path Remote path of the file to upload 
+     * @param path Remote path of the file to upload
      * @param url URL of uploaded file
      * @param file File to upload
      * @throws PreparationException

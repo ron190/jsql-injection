@@ -32,28 +32,32 @@ public class MessageHeader implements IInteractionCommand {
     private String post;
     private String header;
     private Map<String, String> response;
+    private String source;
 
+    Map<String, Object> params;
     /**
      * @param interactionParams Text to append
      */
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
-        Map<String, Object> params = (Map<String, Object>) interactionParams[0];
+        params = (Map<String, Object>) interactionParams[0];
         url = (String) params.get("Url");
         cookie = (String) params.get("Cookie");
         post = (String) params.get("Post");
         header = (String) params.get("Header");
         response = (Map<String, String>) params.get("Response");
+        source = (String) params.get("Source");
     }
 
     @Override
     public void execute() {
-        MediatorGUI.bottomPanel().listHTTPHeader.add(new HTTPHeader(url, cookie, post, header, response));
+        MediatorGUI.bottomPanel().listHTTPHeader.add(new HTTPHeader(url, cookie, post, header, response, source));
         
         JViewport viewport = ((JScrollPane) MediatorGUI.bottomPanel().network.getLeftComponent()).getViewport();
         JTable table = (JTable) viewport.getView();
         
         DefaultTableModel model = (DefaultTableModel) table.getModel();
+//        model.addRow(new Object[]{response.get("Method"), url, response.get("Content-Length"), response.get("Content-Type")});
         model.addRow(new Object[]{response.get("Method"), url, response.get("Content-Length"), response.get("Content-Type")});
         
         Rectangle rect = table.getCellRect(table.getRowCount() - 1, 0, true);

@@ -6,6 +6,6 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
     SpecialTest.class,
 })
-public class SpecialTestSuite {   
+public class SpecialTestSuite {
     // Empty on purpose
 }

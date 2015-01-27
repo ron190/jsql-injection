@@ -104,8 +104,8 @@ public class ManagerCoder extends JPanel {
 
         JMenu menu = ComboMenuBar.createMenu("Choose method...");
         encoding = menu;
-        menu.setMaximumSize(middleLine.getMaximumSize());
-        menu.setMinimumSize(middleLine.getMinimumSize());
+//        menu.setMaximumSize(middleLine.getMaximumSize());
+//        menu.setMinimumSize(middleLine.getMinimumSize());
         
         for (JMenu m: menus.values()) {
             menu.add(m);

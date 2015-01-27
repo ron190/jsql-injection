@@ -11,40 +11,39 @@ public class SpecialTest {
     public void specialCharacterDatabase() throws PreparationException, StoppableException {
 
     }
-    
+
     @Test
     public void specialCharacterTable() throws PreparationException, StoppableException {
-        
+
     }
-    
+
     @Test
     public void specialCharacterColumn() throws PreparationException, StoppableException {
-        
+
     }
-    
+
     @Test
     public void specialCharacterValue() throws PreparationException, StoppableException {
-        
+
     }
-    
+
     @Test
     public void longNameDatabase() throws PreparationException, StoppableException {
-        
+
     }
-    
+
     @Test
     public void longNameTable() throws PreparationException, StoppableException {
-        
+
     }
-    
+
     @Test
     public void longNameColumn() throws PreparationException, StoppableException {
-        
+
     }
-    
+
     @Test
     public void longLineValue() throws PreparationException, StoppableException {
-        
+
     }
-    
 }

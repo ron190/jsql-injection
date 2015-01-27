@@ -1,12 +1,10 @@
 package com.jsql.model.vendor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.jsql.model.bean.Database;
 import com.jsql.model.bean.Table;
-import com.jsql.model.blind.ConcreteTimeInjection;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
@@ -14,7 +12,7 @@ public class H2Strategy extends ASQLStrategy {
 
     @Override
     public String getSchemaInfos() {
-        return 
+        return
             "concat(" +
                 "" +
                     "concat_ws(" +
@@ -32,7 +30,7 @@ public class H2Strategy extends ASQLStrategy {
 
     @Override
     public String getSchemaList() {
-        return 
+        return
             "select+" +
                 "concat(" +
                     "group_concat(" +
@@ -58,7 +56,7 @@ public class H2Strategy extends ASQLStrategy {
 
     @Override
     public String getTableList(Database database) {
-        return 
+        return
             "select+" +
                 "concat(" +
                     "group_concat(" +
@@ -83,7 +81,7 @@ public class H2Strategy extends ASQLStrategy {
 
     @Override
     public String getColumnList(Table table) {
-        return 
+        return
             "select+" +
                 "concat(" +
                     "group_concat(" +
@@ -117,7 +115,7 @@ public class H2Strategy extends ASQLStrategy {
         
         formatListColumn = "trim(ifnull(`" + formatListColumn + "`,'%00'))";
         
-        return 
+        return
             "select+concat(" +
                 "group_concat(" +
                     "'%04'||" +
@@ -140,7 +138,7 @@ public class H2Strategy extends ASQLStrategy {
 
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
-        return 
+        return
         "(" +
             "select+" +
                 /**
@@ -162,7 +160,7 @@ public class H2Strategy extends ASQLStrategy {
 
     @Override
     public String performanceQuery(String[] indexes) {
-        return 
+        return
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
                 "(select+concat('SQLi',$1,repeat('%23',65536),'%01%03%03%07'))"

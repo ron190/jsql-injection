@@ -100,6 +100,7 @@ public class I18n {
     public static final String NETWORK_TAB_PARAMS_LABEL   = (String) labels.getObject("networkTabParamsLabel");
     public static final String NETWORK_TAB_RESPONSE_LABEL = (String) labels.getObject("networkTabResponseLabel");
     public static final String NETWORK_TAB_TIMING_LABEL   = (String) labels.getObject("networkTabTimingLabel");
+    public static final String NETWORK_TAB_SOURCE_LABEL  = (String) labels.getObject("networkTabSourceLabel");
     public static final String NETWORK_TAB_PREVIEW_LABEL  = (String) labels.getObject("networkTabPreviewLabel");
                                                                                                            
     public static final String NETWORK_TAB_METHOD_COLUMN  = (String) labels.getObject("networkTabMethodColumn");

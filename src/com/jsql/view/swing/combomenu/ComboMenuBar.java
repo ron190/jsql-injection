@@ -13,11 +13,11 @@ public class ComboMenuBar extends JMenuBar {
     public ComboMenuBar(JMenu menu) {
         this.menu = menu;
 
-        this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 1));
-        this.setBorderPainted(false);
-        UIManager.put("Menu.selectionBackground",
-                UIManager.getColor("Menu.background"));
-        menu.updateUI();
+//        this.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 1));
+//        this.setBorderPainted(false);
+//        UIManager.put("Menu.selectionBackground",
+//                UIManager.getColor("Menu.background"));
+//        menu.updateUI();
 
         MenuItemListener listener = new MenuItemListener();
         this.setListener(menu, listener);
@@ -55,11 +55,11 @@ public class ComboMenuBar extends JMenuBar {
         public ComboMenu(String label) {
             super(label);
             iconRenderer = new ArrowIcon(SwingConstants.SOUTH, true);
-            this.setBorder(new EtchedBorder());
+//            this.setBorder(new EtchedBorder());
             this.setBorderPainted(false);
             this.setIcon(new BlankIcon(null, 11));
             this.setHorizontalTextPosition(JButton.LEFT);
-            this.setFocusPainted(true);
+//            this.setFocusPainted(true);
         }
 
         public void paintComponent(Graphics g) {

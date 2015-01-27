@@ -12,7 +12,7 @@ public class TeradataStrategy extends ASQLStrategy {
 
     @Override
     public String getSchemaInfos() {
-        return 
+        return
             "select'-'||'{%}'||" +
             "database||'{%}'||" +
             "user||'{%}'||" +
@@ -23,7 +23,7 @@ public class TeradataStrategy extends ASQLStrategy {
 
     @Override
     public String getSchemaList() {
-        return 
+        return
             "select+'%04'||DatabaseName||'%050%04%01%03%03%07'FROM" +
             "(select+DatabaseName,ROW_NUMBER()over(ORDER+BY+DatabaseName)AS+rnum+from+DBC.DBASE)x+where+1=1+{limit}";
     }
@@ -59,7 +59,7 @@ public class TeradataStrategy extends ASQLStrategy {
 
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
-        return 
+        return
             "select+" +
                 /**
                  * If reach end of string (SQLii) then NULLIF nullifies the result
@@ -72,7 +72,7 @@ public class TeradataStrategy extends ASQLStrategy {
 
      @Override
      public String performanceQuery(String[] indexes) {
-         return 
+         return
              MediatorModel.model().initialQuery.replaceAll(
                  "1337(" + ToolsString.join(indexes, "|") + ")7331",
                  "(select+'SQLi$1'||cast(rpad('%23',1024,'%23')as+varchar(1024)))"

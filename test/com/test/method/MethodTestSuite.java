@@ -10,6 +10,6 @@ import org.junit.runners.Suite;
     CookieTest.class,
     HeaderTest.class
 })
-public class MethodTestSuite {   
+public class MethodTestSuite {
     // Empty on purpose
 }

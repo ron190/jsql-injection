@@ -19,7 +19,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -283,9 +282,10 @@ public class InjectionModel extends AbstractModelObservable {
                 LOGGER.info("Starting new injection");
                 LOGGER.info("Connection test...");
 
-                URLConnection con = new URL(this.initialUrl).openConnection();
+                HttpURLConnection con = (HttpURLConnection) new URL(this.initialUrl).openConnection();
                 con.setReadTimeout(15000);
                 con.setConnectTimeout(15000);
+                con.setInstanceFollowRedirects(false);
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
                 reader.readLine();
@@ -523,12 +523,13 @@ public class InjectionModel extends AbstractModelObservable {
                 LOGGER.warn("Malformed URL " + e.getMessage(), e);
             }
         }
-
+        
         // Define the connection
         try {
             connection = (HttpURLConnection) urlObject.openConnection();
             connection.setReadTimeout(15000);
             connection.setConnectTimeout(15000);
+            connection.setInstanceFollowRedirects(false);
         } catch (IOException e) {
             LOGGER.warn("Error during connection: " + e.getMessage(), e);
         }
@@ -586,12 +587,6 @@ public class InjectionModel extends AbstractModelObservable {
 
         msgHeader.put("Response", ToolsString.getHTTPHeaders(connection));
 
-        // Inform the view about the log infos
-        Request request = new Request();
-        request.setMessage("MessageHeader");
-        request.setParameters(msgHeader);
-        this.interact(request);
-
         // Request the web page to the server
         String line, pageSource = "";
         try {
@@ -607,6 +602,14 @@ public class InjectionModel extends AbstractModelObservable {
             /* lot of timeout in local use */
             LOGGER.warn("Read error " + e.getMessage(), e);
         }
+
+        msgHeader.put("Source", pageSource);
+        
+        // Inform the view about the log infos
+        Request request = new Request();
+        request.setMessage("MessageHeader");
+        request.setParameters(msgHeader);
+        this.interact(request);
 
         // return the source code of the page
         return pageSource;

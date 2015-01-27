@@ -1,71 +1,34 @@
 package com.test.mysql;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.Assert;
-import org.junit.Test;
+import java.sql.SQLException;
 
 import com.jsql.exception.PreparationException;
-import com.jsql.exception.StoppableException;
 import com.test.AbstractTestSuite;
 
 public class ConcreteMysqlTestSuite extends AbstractTestSuite {
-    
-    @Override
-    @Test
-    public void listDatabases() throws PreparationException, StoppableException {
-        List<String> databaseToFind = Arrays.asList(
-            "como",
-            "information_schema",
-            "mysql",
-            "perf-test",
-            "performance_schema",
-            "phpmyadmin",
-            "test",
-            "test_hibernate",
-            "test_jdbc",
-            "wsnguest",
-            "zend-ajax",
-            "zf2tutorial"
-        );
+    public ConcreteMysqlTestSuite () {
+        DB_URL = "jdbc:mysql://localhost:3306/perf-test";
+        USER = "root";
+        PASS = "";
+        DATABASE = "perf-test";
+        TABLE = "table-perf5";
+        COLUMN = "libelle1";
+        PROTECT = "`";
         
-        Assert.assertTrue(compareDatabases(databaseToFind));
-    }
-    
-    @Override
-    @Test
-    public void listTables() throws PreparationException, StoppableException {
-        List<String> tablesToFind = Arrays.asList(
-            "table-perf",
-            "table-perf2",
-            "table-perf3",
-            "table-perf5",
-            "table-perf4"
-        );
+        CONF_DATABASE = "INFORMATION_SCHEMA";
+        CONF_DBNAME = "TABLE_SCHEMA";
+        CONF_DBTABLE = "tables";
+        CONF_TABNAME = "TABLE_NAME";
+        CONF_TABTABLE = "tables";
+        CONF_COLNAME = "COLUMN_NAME";
+        CONF_COLTABLE = "columns";
         
-        Assert.assertTrue(compareTables("perf-test", tablesToFind));
-    }
-    
-    @Override
-    @Test
-    public void listColumns() throws PreparationException, StoppableException {
-        List<String> columnsToFind = Arrays.asList(
-            "libelle1",
-            "libelle2"
-        );
-        
-        Assert.assertTrue(compareColumns("perf-test", "table-perf", columnsToFind));
-    }
-    
-    @Override
-    @Test
-    public void listValues() throws PreparationException, StoppableException {
-        List<String> valuesToFind = Arrays.asList(
-            "a",
-            "b"
-        );
-        
-        Assert.assertTrue(compareValues("perf-test", "table-perf5", "libelle1", valuesToFind));
+        try {
+            initializer();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (PreparationException e) {
+            e.printStackTrace();
+        }
     }
 }

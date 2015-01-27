@@ -1,4 +1,5 @@
 package com.test.mysql;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -9,6 +10,6 @@ import org.junit.runners.Suite;
     MysqlErrobasedHeaderTestSuite.class,
     MysqlTimeHeaderTestSuite.class,
 })
-public class MysqlTestSuite {   
+public class MysqlTestSuite {
     // Empty on purpose
 }

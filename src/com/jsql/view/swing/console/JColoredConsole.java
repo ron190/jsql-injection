@@ -1,6 +1,7 @@
 package com.jsql.view.swing.console;
 
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -44,6 +45,8 @@ public class JColoredConsole extends JTextPane {
             }
         });
         // this.setAutoscrolls(true);    // does not work
+
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
     }
 
     /**

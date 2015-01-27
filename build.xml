@@ -8,9 +8,7 @@
                 <attribute name="Main-Class" value="com.jsql.MainApplication"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
-            <fileset dir="target/classes"/>
-            <zipfileset excludes="META-INF/*.SF" src="E:/selenium/eclipse-x64/plugins/org.junit_4.11.0.v201303080030/junit.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="E:/selenium/eclipse-x64/plugins/org.hamcrest.core_1.3.0.v201303031735.jar"/>
+            <fileset dir="target/classes" excludes="**/test/**"/>
             <zipfileset excludes="META-INF/*.SF" src="E:/Dev/maven-repo/commons-codec/commons-codec/1.9/commons-codec-1.9.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="E:/Dev/maven-repo/org/jsoup/jsoup/1.7.3/jsoup-1.7.3.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="E:/Dev/maven-repo/org/apache/commons/commons-lang3/3.3.2/commons-lang3-3.3.2.jar"/>

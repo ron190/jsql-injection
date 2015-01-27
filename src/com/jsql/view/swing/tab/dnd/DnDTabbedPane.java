@@ -262,7 +262,7 @@ public class DnDTabbedPane extends JTabbedPane {
         }
         
         // PropertyChangeListener
-        @Override 
+        @Override
         public void propertyChange(PropertyChangeEvent e) {
             String propertyName = e.getPropertyName();
             if ("dropLocation".equals(propertyName)) {
@@ -272,7 +272,7 @@ public class DnDTabbedPane extends JTabbedPane {
         }
         
         // MouseListener
-        @Override 
+        @Override
         public void mousePressed(MouseEvent e) {
             DnDTabbedPane src = (DnDTabbedPane)e.getSource();
             if (src.getTabCount() <= 1) {
@@ -292,7 +292,7 @@ public class DnDTabbedPane extends JTabbedPane {
         int gestureMotionThreshold = DragSource.getDragThreshold();
         //private final Integer gestureMotionThreshold = (Integer)Toolkit.getDefaultToolkit().getDesktopProperty("DnD.gestureMotionThreshold");
         
-        @Override 
+        @Override
         public void mouseDragged(MouseEvent e)  {
             Point tabPt = e.getPoint(); //e.getDragOrigin();
             if (startPt != null && Math.sqrt(Math.pow(tabPt.x - startPt.x, 2) + Math.pow(tabPt.y - startPt.y, 2)) > gestureMotionThreshold) {

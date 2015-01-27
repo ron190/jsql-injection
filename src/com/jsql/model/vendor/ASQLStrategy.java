@@ -24,7 +24,7 @@ public abstract class ASQLStrategy {
     abstract public String getLimit(Integer limitSQLResult);
     
     public String getPrivilege() {
-        return 
+        return
             /**
              * error base mysql remplace 0x01030307 en \x01\x03\x03\x07
              * => forcage en charactère
@@ -46,7 +46,7 @@ public abstract class ASQLStrategy {
     }
 
     public String readTextFile(String filePath) {
-        return 
+        return
             /**
              * error base mysql remplace 0x01030307 en \x01\x03\x03\x07
              * => forcage en charactère
@@ -57,7 +57,7 @@ public abstract class ASQLStrategy {
     }
 
     public String writeTextFile(String content, String filePath) {
-        return 
+        return
             MediatorModel.model().initialQuery
                 .replaceAll(
                     "1337" + MediatorModel.model().visibleIndex + "7331",
@@ -104,7 +104,7 @@ public abstract class ASQLStrategy {
     }
 
     public String blindStrategy(String sqlQuery, String startPosition) {
-        return 
+        return
             "(" +
                 "select+" +
                 "concat(" +
@@ -119,7 +119,7 @@ public abstract class ASQLStrategy {
     }
 
     public String getErrorBasedStrategyCheck() {
-        return 
+        return
             "+and(" +
                 "select+1+" +
                 "from(" +
@@ -134,7 +134,7 @@ public abstract class ASQLStrategy {
     }
 
     public String errorBasedStrategy(String sqlQuery, String startPosition) {
-        return 
+        return
             "+and" +
                 "(" +
                 "select+" +
@@ -173,7 +173,7 @@ public abstract class ASQLStrategy {
     }
 
     public String timeStrategy(String sqlQuery, String startPosition) {
-        return 
+        return
             "(" +
                 "select+" +
                     "concat(" +

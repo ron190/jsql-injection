@@ -56,7 +56,7 @@ public final class ActionHandler {
     public static void addTextFieldShortcutSelectAll() {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
             public void propertyChange(final PropertyChangeEvent e) {
-                if (e.getNewValue() instanceof JTextField 
+                if (e.getNewValue() instanceof JTextField
                         || e.getNewValue() instanceof JPopupLabel) {
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {

@@ -31,6 +31,10 @@ public class HTTPHeader {
      */
     private Map<String, String> response;
     
+    private String params;
+    private String timing;
+    public String source;
+    
     /**
      * Create object containing HTTP data to display in Network panel.
      * @param url URL called
@@ -40,12 +44,13 @@ public class HTTPHeader {
      * @param response RESPONSE header sent by url
      */
     public HTTPHeader(String url, String cookie, String post, String header,
-            Map<String, String> response) {
+            Map<String, String> response, String source) {
         this.url = url;
         this.cookie = cookie;
         this.post = post;
         this.header = header;
         this.response = response;
+        this.source = source;
     }
     
     /**

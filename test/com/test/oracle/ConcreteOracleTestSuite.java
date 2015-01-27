@@ -1,68 +1,33 @@
 package com.test.oracle;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.Assert;
-import org.junit.Test;
+import java.sql.SQLException;
 
 import com.jsql.exception.PreparationException;
-import com.jsql.exception.StoppableException;
 import com.test.AbstractTestSuite;
 
 public class ConcreteOracleTestSuite extends AbstractTestSuite {
-    
-    @Test
-    public void listDatabases() throws PreparationException, StoppableException {
-        List<String> databasesToFind = Arrays.asList(
-            "APEX_040000",
-            "CTXSYS",
-            "FLOWS_FILES",
-            "HR",
-            "MDSYS",
-            "OUTLN",
-            "SYS",
-            "SYSTEM",
-            "XDB"
-        );
+    public ConcreteOracleTestSuite () {
+        DB_URL = "jdbc:oracle:thin:@localhost:1521:xe";
+        USER = "system";
+        PASS = "test";
+        DATABASE = "HR";
+        TABLE = "REGIONS";
+        COLUMN = "REGION_NAME";
         
-        Assert.assertTrue(compareDatabases(databasesToFind));
-    }
-    
-    @Test
-    public void listTables() throws PreparationException, StoppableException {
-        List<String> tablesToFind = Arrays.asList(
-            "COUNTRIES",
-            "DEPARTMENTS",
-            "EMPLOYEES",
-            "JOBS",
-            "JOB_HISTORY",
-            "LOCATIONS",
-            "REGIONS"
-        );
-        
-        Assert.assertTrue(compareTables("HR", tablesToFind));
-    }
-    
-    @Test
-    public void listColumns() throws PreparationException, StoppableException {
-        List<String> columnsToFind = Arrays.asList(
-            "REGION_ID",
-            "REGION_NAME"
-        );
-        
-        Assert.assertTrue(compareColumns("HR", "REGIONS", columnsToFind));
-    }
-    
-    @Test
-    public void listValues() throws PreparationException, StoppableException {
-        List<String> valuesToFind = Arrays.asList(
-            "Europe",
-            "Americas",
-            "Asia",
-            "Middle East and Africa"
-        );
-        
-        Assert.assertTrue(compareValues("HR", "REGIONS", "REGION_NAME", valuesToFind));
+        CONF_DATABASE = "sys";
+        CONF_DBNAME = "owner";
+        CONF_DBTABLE = "all_tables";
+        CONF_TABNAME = "table_name";
+        CONF_TABTABLE = "all_tables";
+        CONF_COLNAME = "column_name";
+        CONF_COLTABLE = "all_tab_columns";
+
+        try {
+            initializer();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (PreparationException e) {
+            e.printStackTrace();
+        }
     }
 }

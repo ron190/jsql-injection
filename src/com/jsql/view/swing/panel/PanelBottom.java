@@ -38,6 +38,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.OverlayLayout;
@@ -115,6 +116,14 @@ public class PanelBottom extends JPanel {
      */
     public JTable networkTable;
 
+    JTextArea networkTabHeader = new JPopupTextArea().getProxy();
+    JTextArea networkTabCookie = new JPopupTextArea().getProxy();
+    JTextArea networkTabParam = new JPopupTextArea().getProxy();
+    JTextArea networkTabResponse = new JPopupTextArea().getProxy();
+    JTextArea networkTabTiming = new JPopupTextArea().getProxy();
+    JTextArea networkTabSource = new JPopupTextArea().getProxy();
+    JTextPane networkTabPreview = new JTextPane();
+    
     /**
      * Create panel at the bottom with differents consoles to report injection process.
      */
@@ -238,18 +247,43 @@ public class PanelBottom extends JPanel {
         });
         
         MouseTabbedPane networkDetailTabs = new MouseTabbedPane();
-        networkDetailTabs.addTab(I18n.NETWORK_TAB_HEADERS_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
-        networkDetailTabs.addTab(I18n.NETWORK_TAB_COOKIES_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
-        networkDetailTabs.addTab(I18n.NETWORK_TAB_PARAMS_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
-        networkDetailTabs.addTab(I18n.NETWORK_TAB_RESPONSE_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
-        networkDetailTabs.addTab(I18n.NETWORK_TAB_TIMING_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
-        networkDetailTabs.addTab(I18n.NETWORK_TAB_PREVIEW_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JPanel()));
-
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_RESPONSE_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabResponse)));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_SOURCE_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabSource)));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_PREVIEW_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabPreview)));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_HEADERS_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabHeader)));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_COOKIES_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabCookie)));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_PARAMS_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabParam)));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_TIMING_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabTiming)));
+        
+        networkTabHeader.setLineWrap(true);
+        networkTabCookie.setLineWrap(true);
+        networkTabParam.setLineWrap(true);
+        networkTabResponse.setLineWrap(true);
+        networkTabTiming.setLineWrap(true);
+        networkTabSource.setLineWrap(true);
+        
+        networkTabPreview.setContentType("text/html");
+        networkTabPreview.setEditable(false);
+        
         this.networkTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
                 // prevent double event
                 if (!event.getValueIsAdjusting() && PanelBottom.this.networkTable.getSelectedRow() > -1) {
-                    System.out.println(listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).getUrl());
+//                    System.out.println(listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).getUrl());
+                    
+                    networkTabHeader.setText(listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).getHeader());
+                    networkTabCookie.setText(listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).getCookie());
+                    networkTabParam.setText(listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).getPost());
+                    
+                    networkTabResponse.setText("");
+                    for(String key: listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).getResponse().keySet()) {
+                        networkTabResponse.append(key + ": " + listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).getResponse().get(key));
+                        networkTabResponse.append("\n");
+                    }
+                    
+                    networkTabTiming.setText("?");
+                    networkTabSource.setText(listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).source);
+                    networkTabPreview.setText("<html>" + listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).source + "</html>");
                 }
             }
         });
