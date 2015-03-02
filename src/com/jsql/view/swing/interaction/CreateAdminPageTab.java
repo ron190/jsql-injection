@@ -15,6 +15,8 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -38,6 +40,7 @@ import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.swing.tab.TabHeader;
+import com.jsql.view.swing.text.JPopupTextArea;
 
 /**
  * Create a new tab for an administration webpage.
@@ -125,6 +128,14 @@ public class CreateAdminPageTab implements IInteractionCommand {
             }
         });
         
+        browser.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent arg0) {
+                browser.getCaret().setVisible(true);
+                browser.getCaret().setSelectionVisible(true);
+            }
+        });
+        
         browser.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
@@ -153,7 +164,7 @@ public class CreateAdminPageTab implements IInteractionCommand {
         // Apply the custom header to the tab
         MediatorGUI.right().setTabComponentAt(MediatorGUI.right().indexOfComponent(scroller), header);
 
-        browser.requestFocusInWindow();
+//        browser.requestFocusInWindow();
 
         // Get back to the top
         SwingUtilities.invokeLater(new Runnable() {

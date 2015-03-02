@@ -107,7 +107,7 @@ public class StoppableLoopIntoResults extends AbstractSuspendable {
 
                 Request request = new Request();
                 request.setMessage("MessageChunk");
-                request.setParameters(regexAllLine.group(1) + " ");
+                request.setParameters(regexAllLine.group(1).replaceAll("\\x01\\x03\\x03\\x07.*", "\n"));
                 MediatorModel.model().interact(request);
             } catch (IllegalStateException e) {
                 // if it's not the root (empty tree)

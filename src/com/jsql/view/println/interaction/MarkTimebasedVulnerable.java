@@ -28,5 +28,6 @@ public class MarkTimebasedVulnerable implements IInteractionCommand {
     @Override
     public void execute() {
         System.out.println("MarkTimebasedVulnerable");
+        System.out.println();
     }
 }

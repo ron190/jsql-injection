@@ -28,5 +28,6 @@ public class MarkBlindVulnerable implements IInteractionCommand {
     @Override
     public void execute() {
         System.out.println("MarkBlindVulnerable");
+        System.out.println();
     }
 }

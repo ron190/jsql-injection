@@ -54,8 +54,10 @@ public class SwingAppender extends WriterAppender {
 
             StyleConstants.setFontFamily(INFO, "Ubuntu Mono");
             StyleConstants.setFontFamily(ERROR, "Ubuntu Mono");
+            StyleConstants.setFontFamily(WARN, "Ubuntu Mono");
             StyleConstants.setFontSize(INFO, 14);
             StyleConstants.setFontSize(ERROR, 14);
+            StyleConstants.setFontSize(WARN, 14);
             
             StyleConstants.setForeground(ERROR, Color.red);
             StyleConstants.setForeground(WARN, Color.red);
@@ -110,7 +112,7 @@ public class SwingAppender extends WriterAppender {
                 break;
             case Level.ERROR_INT:
                 javaConsole.append(message, WARN);
-                javaConsole.setCaretPosition(javaConsole.getDocument().getLength());
+                javaConsole.getProxy().setCaretPosition(javaConsole.getProxy().getDocument().getLength());
                 
                 if (throwableInformation.getThrowableStrRep() != null) {
                     for (String rep: throwableInformation.getThrowableStrRep()) {
@@ -120,11 +122,11 @@ public class SwingAppender extends WriterAppender {
                 break;
             case Level.WARN_INT:
                 consoleColored.append(message,WARN);
-                consoleColored.setCaretPosition(consoleColored.getDocument().getLength());
+                consoleColored.getProxy().setCaretPosition(consoleColored.getProxy().getDocument().getLength());
                 break;
             case Level.INFO_INT:
                 consoleColored.append(message,INFO);
-                consoleColored.setCaretPosition(consoleColored.getDocument().getLength());
+                consoleColored.getProxy().setCaretPosition(consoleColored.getProxy().getDocument().getLength());
                 break;
             case Level.DEBUG_INT:
                 break;

@@ -109,7 +109,7 @@ public class DialogAbout extends JDialog {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 try {
-                    Desktop.getDesktop().browse(new URI("http://code.google.com/p/jsql-injection/"));
+                    Desktop.getDesktop().browse(new URI("https://github.com/ron190/jsql-injection"));
                 } catch (IOException e) {
                     LOGGER.error(e, e);
                 } catch (URISyntaxException e) {
@@ -145,8 +145,6 @@ public class DialogAbout extends JDialog {
             LOGGER.error(e, e);
         }
 
-        text[0].setComponentPopupMenu(new JPopupMenuText(text[0]));
-
         text[0].addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -166,6 +164,8 @@ public class DialogAbout extends JDialog {
         text[0].setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         text[0].setDragEnabled(true);
         text[0].setEditable(false);
+
+        text[0].setComponentPopupMenu(new JPopupMenuText(text[0]));
 
         text[0].addHyperlinkListener(new HyperlinkListener() {
             public void hyperlinkUpdate(HyperlinkEvent hle) {
@@ -192,7 +192,7 @@ public class DialogAbout extends JDialog {
      */
     public final void reinit() {
         this.scrollPane.getViewport().setViewPosition(new Point(0, 0));
-        this.setSize(400, 300);
+        this.setSize(460, 300);
         this.setLocationRelativeTo(MediatorGUI.gui());
         this.close.requestFocusInWindow();
         this.getRootPane().setDefaultButton(this.close);

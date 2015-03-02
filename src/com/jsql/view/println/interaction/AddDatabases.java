@@ -39,5 +39,6 @@ public class AddDatabases implements IInteractionCommand {
         for (Database database: databases) {
             System.out.println(database);
         }
+        System.out.println();
     }
 }

@@ -48,7 +48,7 @@ public class CreateValuesTab implements IInteractionCommand {
 
     @Override
     public void execute() {
-        // Loop into the list of tables
         System.out.println(Arrays.deepToString(data));
+        System.out.println();
     }
 }

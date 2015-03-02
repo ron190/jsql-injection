@@ -177,10 +177,15 @@ public abstract class AbstractNodeModel {
             panel.showLoader();
             panel.hideIcon();
 
-            if (MediatorGUI.model().suspendables.get(AbstractNodeModel.this.dataObject).isPaused()) {
-                ImageIcon animatedGIFPaused = new ImageOverlap(HelperGUI.PATH_PROGRESSBAR, HelperGUI.PATH_PAUSE);
-                animatedGIFPaused.setImageObserver(new ImageObserverAnimated(MediatorGUI.databaseTree(), currentNode));
-                panel.setLoaderIcon(animatedGIFPaused);
+            try {
+                if (MediatorGUI.model().suspendables.get(AbstractNodeModel.this.dataObject).isPaused()) {
+                    ImageIcon animatedGIFPaused = new ImageOverlap(HelperGUI.PATH_PROGRESSBAR, HelperGUI.PATH_PAUSE);
+                    animatedGIFPaused.setImageObserver(new ImageObserverAnimated(MediatorGUI.databaseTree(), currentNode));
+                    panel.setLoaderIcon(animatedGIFPaused);
+                }
+            } catch (NullPointerException e) {
+                System.err.println("NullPointerException: " + AbstractNodeModel.this.dataObject);
+                System.err.println(e);
             }
         }
         

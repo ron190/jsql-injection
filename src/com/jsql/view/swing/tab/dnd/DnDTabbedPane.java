@@ -23,7 +23,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.TransferHandler;
 
 import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.tab.CustomMetalTabbedPaneUI;
+import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
 @SuppressWarnings("serial")
 public class DnDTabbedPane extends JTabbedPane {

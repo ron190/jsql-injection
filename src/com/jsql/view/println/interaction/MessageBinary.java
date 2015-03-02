@@ -31,5 +31,6 @@ public class MessageBinary implements IInteractionCommand {
     @Override
     public void execute() {
         System.out.println(text);
+        System.out.println();
     }
 }

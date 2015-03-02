@@ -26,6 +26,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.jsql.view.swing.action.ActionHandler;
+import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
 /**
  * Tabs with mousewheel and right click action.

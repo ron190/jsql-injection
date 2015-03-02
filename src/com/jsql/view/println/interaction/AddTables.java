@@ -38,5 +38,6 @@ public class AddTables implements IInteractionCommand {
         for (Table table: tables) {
             System.out.println(table);
         }
+        System.out.println();
     }
 }

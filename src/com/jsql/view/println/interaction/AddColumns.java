@@ -39,5 +39,6 @@ public class AddColumns implements IInteractionCommand {
         for (Column column: columns) {
             System.out.println(column);
         }
+        System.out.println();
     }
 }

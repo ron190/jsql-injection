@@ -30,6 +30,7 @@ import com.jsql.view.swing.manager.ManagerSQLShell;
 import com.jsql.view.swing.manager.ManagerUpload;
 import com.jsql.view.swing.manager.ManagerWebshell;
 import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tree.CellEditorNode;
 import com.jsql.view.swing.tree.CellRendererNode;
 import com.jsql.view.swing.tree.NodeModelEmpty;
@@ -113,7 +114,8 @@ public class AdapterLeftTabbedPane extends MouseTabbedPane {
             }
         });
 
-        JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 1, 0, 0, tree);
+        LightScrollPane scroller = new LightScrollPane(1, 1, 0, 0, tree);
+//        JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 1, 0, 0, tree);
 
         this.addTab(I18n.DATABASE, HelperGUI.DATABASE_SERVER_ICON, scroller, I18n.DATABASE_TOOLTIP);
         this.addTab(I18n.ADMINPAGE, HelperGUI.ADMIN_SERVER_ICON, adminPageManager, I18n.ADMINPAGE_TOOLTIP);

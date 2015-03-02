@@ -84,7 +84,7 @@ public class OracleStrategy extends ASQLStrategy {
 
     @Override
     public String getValues(String[] columns, Database database, Table table) {
-        String formatListColumn = ToolsString.join(columns, "))||chr(127)||trim(to_char(");
+        String formatListColumn = ToolsString.join(columns, "))||'%7f'||trim(to_char(");
         formatListColumn = "trim(to_char(" + formatListColumn + "))";
         
         return

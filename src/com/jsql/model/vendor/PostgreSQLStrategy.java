@@ -98,7 +98,7 @@ public class PostgreSQLStrategy extends ASQLStrategy {
 
     @Override
     public String getValues(String[] columns, Database database, Table table) {
-        String formatListColumn = ToolsString.join(columns, "::text,''))||chr(127)||trim(coalesce(");
+        String formatListColumn = ToolsString.join(columns, "::text,''))||'%7f'||trim(coalesce(");
         formatListColumn = "trim(coalesce(" + formatListColumn + "::text,''))";
         
         return

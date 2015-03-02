@@ -23,8 +23,10 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
 import com.jsql.i18n.I18n;
@@ -81,12 +83,12 @@ public class ManagerBruteForce extends JPanel {
     /**
      * Minimum length of string to attack.
      */
-    JTextField minimumLength;
+    JSpinner minimumLength;
     
     /**
      * Maximum length of string to attack.
      */
-    JTextField maximumLength;
+    JSpinner maximumLength;
     
     /**
      * Textarea displaying result.
@@ -146,23 +148,47 @@ public class ManagerBruteForce extends JPanel {
         
         exclude = new JPopupTextField(I18n.BRUTEFORCE_EXCLUDE_LABEL).getProxy();
         exclude.setToolTipText(I18n.BRUTEFORCE_EXCLUDE_TOOLTIP);
+        exclude.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(1, 0, 1, 1, HelperGUI.DEFAULT_BACKGROUND),
+                HelperGUI.BLU_ROUND_BORDER));
         thirdLine.add(exclude);
 
-        minimumLength = new JPopupTextField("min", "1").getProxy();
-        maximumLength = new JPopupTextField("max", "5").getProxy();
+        minimumLength = new JSpinner(new SpinnerNumberModel(
+                new Integer(1),
+                new Integer(1),
+                new Integer(10000),
+//                null,
+                new Integer(1)
+        ));
+        maximumLength = new JSpinner(new SpinnerNumberModel(
+                new Integer(5),
+                new Integer(1),
+                new Integer(10000),
+//                null,
+                new Integer(1)
+        ));
         
+//        minimumLength.setBorder(BorderFactory.createCompoundBorder(
+//                BorderFactory.createLineBorder(HelperGUI.DEFAULT_BACKGROUND, 2),
+//                HelperGUI.BLU_ROUND_BORDER));
+//        maximumLength.setBorder(BorderFactory.createCompoundBorder(
+//                BorderFactory.createLineBorder(HelperGUI.DEFAULT_BACKGROUND, 2),
+//                HelperGUI.BLU_ROUND_BORDER));
+//        minimumLength = new JPopupTextField("min", "1").getProxy();
+//        maximumLength = new JPopupTextField("max", "5").getProxy();
+//        
         minimumLength.setToolTipText(I18n.BRUTEFORCE_MIN_TOOLTIP);
         maximumLength.setToolTipText(I18n.BRUTEFORCE_MAX_TOOLTIP);
         
-        minimumLength.setHorizontalAlignment(JTextField.RIGHT);
-        maximumLength.setHorizontalAlignment(JTextField.RIGHT);
+//        minimumLength.setHorizontalAlignment(JTextField.RIGHT);
+//        maximumLength.setHorizontalAlignment(JTextField.RIGHT);
 //
-        minimumLength.setPreferredSize(new Dimension(30, (int) minimumLength.getPreferredSize().getHeight()));
-        maximumLength.setPreferredSize(new Dimension(30, (int) maximumLength.getPreferredSize().getHeight()));
-        minimumLength.setMaximumSize(new Dimension(30, (int) minimumLength.getPreferredSize().getHeight()));
-        maximumLength.setMaximumSize(new Dimension(30, (int) maximumLength.getPreferredSize().getHeight()));
-        minimumLength.setMinimumSize(new Dimension(30, (int) minimumLength.getPreferredSize().getHeight()));
-        maximumLength.setMinimumSize(new Dimension(30, (int) maximumLength.getPreferredSize().getHeight()));
+        minimumLength.setPreferredSize(new Dimension(38, (int) minimumLength.getPreferredSize().getHeight()));
+        maximumLength.setPreferredSize(new Dimension(38, (int) maximumLength.getPreferredSize().getHeight()));
+        minimumLength.setMaximumSize(new Dimension(38, (int) minimumLength.getPreferredSize().getHeight()));
+        maximumLength.setMaximumSize(new Dimension(38, (int) maximumLength.getPreferredSize().getHeight()));
+        minimumLength.setMinimumSize(new Dimension(38, (int) minimumLength.getPreferredSize().getHeight()));
+        maximumLength.setMinimumSize(new Dimension(38, (int) maximumLength.getPreferredSize().getHeight()));
 
         thirdLine.add(new JLabel(I18n.BRUTEFORCE_MIN_LABEL, SwingConstants.RIGHT));
         thirdLine.add(minimumLength);

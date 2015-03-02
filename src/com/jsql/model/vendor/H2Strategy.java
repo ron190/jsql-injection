@@ -111,9 +111,9 @@ public class H2Strategy extends ASQLStrategy {
         String formatListColumn = ToolsString.join(columns, "{%}");
         
         // 7f caractère d'effacement, dernier code hexa supporté par mysql, donne 3f=>? à partir de 80
-        formatListColumn = formatListColumn.replace("{%}", "`,'%00')),'%7f',trim(ifnull(`");
+        formatListColumn = formatListColumn.replace("{%}", "`,'')),'%7f',trim(ifnull(`");
         
-        formatListColumn = "trim(ifnull(`" + formatListColumn + "`,'%00'))";
+        formatListColumn = "trim(ifnull(`" + formatListColumn + "`,''))";
         
         return
             "select+concat(" +

@@ -13,12 +13,13 @@ import javax.swing.text.SimpleAttributeSet;
 import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.text.JPopupTextPane;
 
 /**
  * A JTextPane which displays colored strings.
  */
 @SuppressWarnings("serial")
-public class JColoredConsole extends JTextPane {
+public class JColoredConsole extends JPopupTextPane {
     /**
      * Text name of tab.
      */
@@ -40,8 +41,8 @@ public class JColoredConsole extends JTextPane {
         this.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent arg0) {
-                JColoredConsole.this.getCaret().setVisible(true);
-                JColoredConsole.this.getCaret().setSelectionVisible(true);
+                JColoredConsole.this.getProxy().getCaret().setVisible(true);
+                JColoredConsole.this.getProxy().getCaret().setSelectionVisible(true);
             }
         });
         // this.setAutoscrolls(true);    // does not work
@@ -56,9 +57,9 @@ public class JColoredConsole extends JTextPane {
      */
     public void append(String message, SimpleAttributeSet attribut) {
         try {
-            this.getDocument().insertString(
-                this.getDocument().getLength(),
-                (this.getDocument().getLength() == 0 ? "" : "\n") + message,
+            this.getProxy().getDocument().insertString(
+                this.getProxy().getDocument().getLength(),
+                (this.getProxy().getDocument().getLength() == 0 ? "" : "\n") + message,
                 attribut
             );
 

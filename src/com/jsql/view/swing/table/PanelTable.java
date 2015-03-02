@@ -108,18 +108,18 @@ public class PanelTable extends JPanel {
         });
 
         table.getColumnModel().getColumn(0).setResizable(false);
-        table.getColumnModel().getColumn(0).setPreferredWidth(34);
-        table.getColumnModel().getColumn(0).setMinWidth(34);
-        table.getColumnModel().getColumn(0).setMaxWidth(34);
+        table.getColumnModel().getColumn(0).setPreferredWidth(38);
+//        table.getColumnModel().getColumn(0).setMinWidth(34);
+//        table.getColumnModel().getColumn(0).setMaxWidth(34);
 
-        table.getColumnModel().getColumn(1).setResizable(false);
-        table.getColumnModel().getColumn(1).setPreferredWidth(70);
-        table.getColumnModel().getColumn(1).setMinWidth(70);
-        table.getColumnModel().getColumn(1).setMaxWidth(70);
+//        table.getColumnModel().getColumn(1).setResizable(false);
+//        table.getColumnModel().getColumn(1).setPreferredWidth(70);
+//        table.getColumnModel().getColumn(1).setMinWidth(70);
+//        table.getColumnModel().getColumn(1).setMaxWidth(70);
 
         DefaultTableCellRenderer centerHorizontalAlignment = new CenterRenderer();
         table.getColumnModel().getColumn(0).setCellRenderer(centerHorizontalAlignment);
-        table.getColumnModel().getColumn(1).setCellRenderer(centerHorizontalAlignment);
+//        table.getColumnModel().getColumn(1).setCellRenderer(centerHorizontalAlignment);
 
         table.getTableHeader().setReorderingAllowed(false);
 
@@ -128,17 +128,17 @@ public class PanelTable extends JPanel {
 
         table.setDragEnabled(true);
 
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        URL url = getClass().getResource("/com/jsql/view/swing/images/excel.png");
-
-        Image image = null;
-        try {
-            image = ImageIO.read(url.openStream());
-        } catch (IOException e) {
-            LOGGER.error(e, e);
-        }
-
-        table.setCursor(toolkit.createCustomCursor(image, new Point(12, 12), "Hand"));
+//        Toolkit toolkit = Toolkit.getDefaultToolkit();
+//        URL url = getClass().getResource("/com/jsql/view/swing/images/excel.png");
+//
+//        Image image = null;
+//        try {
+//            image = ImageIO.read(url.openStream());
+//        } catch (IOException e) {
+//            LOGGER.error(e, e);
+//        }
+//
+//        table.setCursor(toolkit.createCustomCursor(image, new Point(12, 12), "Hand"));
         table.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 table.requestFocusInWindow();

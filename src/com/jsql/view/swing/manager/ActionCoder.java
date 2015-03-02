@@ -9,6 +9,7 @@
  *      ron190 at ymail dot com - initial implementation
  *******************************************************************************/
 package com.jsql.view.swing.manager;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -131,6 +132,8 @@ public class ActionCoder implements ActionListener {
             } catch (UnsupportedEncodingException e) {
                 this.coderManager.result.setText("Decoding error: " + e.getMessage());
             }
+        } else {
+            this.coderManager.result.setText("*** Unrecognized search");
         }
     }
 }

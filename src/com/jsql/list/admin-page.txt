@@ -1,4 +1,4 @@
-http://127.0.0.1/simulate_get.php?lib=
+http://127.0.0.1/simulate_get.php?lib=0
 http://127.0.0.1/pg_simulate_get.php?lib=0
 http://127.0.0.1/oracle_simulate_get.php?lib=0
 http://127.0.0.1/sqlserver_simulate_get.php?lib=0

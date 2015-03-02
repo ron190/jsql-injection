@@ -119,8 +119,6 @@ public class DataAccessObject {
         while (regexSearch.find()) {
             String databaseName = regexSearch.group(1);
             String tableCount = regexSearch.group(2);
-//            String databaseName = ToolsString.hexstr(regexSearch.group(1));
-//            String tableCount = ToolsString.hexstr(regexSearch.group(2));
 
             Database newDatabase = new Database(databaseName, tableCount.toString());
             databases.add(newDatabase);
@@ -182,8 +180,6 @@ public class DataAccessObject {
             while (regexSearch.find()) {
                 String tableName = regexSearch.group(1);
                 String rowCount  = regexSearch.group(2);
-//                String tableName = ToolsString.hexstr(regexSearch.group(1));
-//                String rowCount  = ToolsString.hexstr(regexSearch.group(2));
 
                 Table newTable = new Table(tableName, rowCount, database);
                 tables.add(newTable);
@@ -333,8 +329,8 @@ public class DataAccessObject {
                 cutted++;*/
 
             listValues.add(new ArrayList<String>());
-            listValues.get(rowsFound).add("" + (rowsFound + 1));
-            listValues.get(rowsFound).add("" + instances);
+            listValues.get(rowsFound).add("" + (rowsFound + 1) + " x" + instances);
+//            listValues.get(rowsFound).add("" + instances);
             for (String cellValue: values.split("\\x7F", -1)) {
                 listValues.get(rowsFound).add(cellValue);
             }
@@ -346,7 +342,7 @@ public class DataAccessObject {
         //        System.out.println( "# Results: "+ duplicates +" duplicates, "+ rowsFound +" distinct values, " /*+ (rowCount-rowsFound-duplicates) +" unreachables duplicates, "*/ + cutted + " rows truncated\n");
 
         // Add the default title to the columns: row number, occurrence
-        columnsName.add(0, "duplicate");
+//        columnsName.add(0, "duplicate");
         columnsName.add(0, "");
 
         // Build a proper 2D array from the data

@@ -28,5 +28,6 @@ public class MarkTimebasedInvulnerable implements IInteractionCommand {
     @Override
     public void execute() {
         System.out.println("MarkTimebasedInvulnerable");
+        System.out.println();
     }
 }

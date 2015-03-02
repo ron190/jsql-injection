@@ -30,5 +30,6 @@ public class MessageInfo implements IInteractionCommand {
         System.out.println(MediatorModel.model().currentDatabase);
         System.out.println(MediatorModel.model().currentUser);
         System.out.println(MediatorModel.model().authenticatedUser);
+        System.out.println();
     }
 }

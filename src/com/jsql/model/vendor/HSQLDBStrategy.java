@@ -113,9 +113,9 @@ public class HSQLDBStrategy extends ASQLStrategy {
         String formatListColumn = ToolsString.join(columns, "{%}");
         
         // 7f caractère d'effacement, dernier code hexa supporté par mysql, donne 3f=>? à partir de 80
-        formatListColumn = formatListColumn.replace("{%}", ",SQL_VARCHAR),'%00')),'%7f',trim(ifnull(convert(");
+        formatListColumn = formatListColumn.replace("{%}", ",SQL_VARCHAR),'')),'%7f',trim(ifnull(convert(");
         
-        formatListColumn = "trim(ifnull(convert(" + formatListColumn + ",SQL_VARCHAR),'%00'))";
+        formatListColumn = "trim(ifnull(convert(" + formatListColumn + ",SQL_VARCHAR),''))";
         
         return
             "select+concat(" +

@@ -13,6 +13,7 @@ package com.jsql.view.swing;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -38,9 +39,10 @@ import javax.swing.plaf.ColorUIResource;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.tab.CustomMetalTabbedPaneUI;
 import com.jsql.view.swing.ui.CleanMetalScrollBarUI;
 import com.jsql.view.swing.ui.CustomBasicComboBoxUI;
+import com.jsql.view.swing.ui.CustomBasicSpinnerUI;
+import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 import com.jsql.view.swing.ui.RoundBorder;
 
 /**
@@ -195,11 +197,14 @@ public final class HelperGUI {
         // margin around tab name
         UIManager.put("TabbedPane.tabInsets", new Insets(2, 3 + 5, 2, 3));
         
-//        UIManager.put("ScrollBar.squareButtons", true);
+        // lighter unselected tab border
+        UIManager.put("TabbedPane.darkShadow", new Color(190,198,205));
         
         UIManager.put("TextField.font", new Font(((Font) UIManager.get("TextField.font")).getName(), Font.PLAIN, ((Font) UIManager.get("TextField.font")).getSize()));
-        UIManager.put("TextArea.font", new Font("monospaced", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize()));
-        UIManager.put("TextPane.font", new Font("monospaced", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize()));
+        UIManager.put("TextArea.font", new Font("Ubuntu Mono", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize() + 2));
+//        UIManager.put("TextArea.font", new Font("monospaced", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize()));
+        UIManager.put("TextPane.font", new Font("Ubuntu Mono", Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize()));
+//        UIManager.put("TextPane.font", new Font("monospaced", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize()));
         UIManager.put("ComboBox.font", MYFONT);
         UIManager.put("Button.font", MYFONT);
         UIManager.put("Label.font", MYFONT);
@@ -211,6 +216,13 @@ public final class HelperGUI {
         UIManager.put("TitledBorder.font", MYFONT);
         UIManager.put("FileChooser.listFont", MYFONT);
 
+//        UIManager.put("Spinner.arrowButtonSize", new Dimension(10, 10));
+//        UIManager.put("Spinner.arrowButtonInsets", new Insets(0, 0, 0, 0));
+        UIManager.put("Spinner.arrowButtonBorder", HelperGUI.BLU_ROUND_BORDER);
+        UIManager.put("Spinner.border", BorderFactory.createCompoundBorder(
+                new RoundBorder(2, 2, true),
+                BorderFactory.createMatteBorder(1, 1, 1, 1, Color.WHITE)
+                ));
         UIManager.put("ComboBox.border", HelperGUI.BLU_ROUND_BORDER);
         UIManager.put("TextField.border", HelperGUI.BLU_ROUND_BORDER);
         
@@ -254,6 +266,7 @@ public final class HelperGUI {
         UIManager.put("TabbedPaneUI", CustomMetalTabbedPaneUI.class.getName());
         UIManager.put("ScrollBarUI", CleanMetalScrollBarUI.class.getName());
         UIManager.put("ComboBoxUI", CustomBasicComboBoxUI.class.getName());
+        UIManager.put("SpinnerUI", CustomBasicSpinnerUI.class.getName());
     }
 
     /**
@@ -264,7 +277,9 @@ public final class HelperGUI {
         List<Image> images = new ArrayList<Image>();
         URL urlSmall = HelperGUI.class.getResource("/com/jsql/view/swing/images/app-16x16.png");
         URL urlBig = HelperGUI.class.getResource("/com/jsql/view/swing/images/app-32x32.png");
+        URL urlBig2 = HelperGUI.class.getResource("/com/jsql/view/swing/images/app-96x96.png");
         try {
+            images.add(ImageIO.read(urlBig2));
             images.add(ImageIO.read(urlBig));
             images.add(ImageIO.read(urlSmall));
         } catch (IOException e) {

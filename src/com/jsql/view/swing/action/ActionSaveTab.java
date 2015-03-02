@@ -58,7 +58,7 @@ public class ActionSaveTab extends AbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        filechooser.setDialogTitle("Save As");
+        filechooser.setDialogTitle("Save Tab As");
 
         if (MediatorGUI.right().getSelectedComponent() instanceof PanelTable) {
             saveTablePanel();

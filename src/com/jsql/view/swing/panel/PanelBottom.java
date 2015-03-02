@@ -53,6 +53,7 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.text.DefaultCaret;
 
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
@@ -130,20 +131,20 @@ public class PanelBottom extends JPanel {
     public PanelBottom() {
         // Object creation after customization
 //        this.consoleArea = new SimpleConsoleAdapter("Console");
-        this.consoleTab.setEditable(false);
+        this.consoleTab.getProxy().setEditable(false);
         this.logAppender.register(this.consoleTab);
 //        SwingAppender.register(this.consoleArea);
         
         this.chunkTab = new JPopupTextArea().getProxy();
         this.chunkTab.setEditable(false);
-        this.chunkTab.setFont(new Font("Ubuntu Mono", Font.PLAIN, 14));
+//        this.chunkTab.setFont(new Font("Ubuntu Mono", Font.PLAIN, 14));
         
         this.binaryTab = new JPopupTextArea().getProxy();
         this.binaryTab.setEditable(false);
-        this.binaryTab.setFont(new Font("Ubuntu Mono", Font.PLAIN, 14));
+//        this.binaryTab.setFont(new Font("Ubuntu Mono", Font.PLAIN, 14));
         
 //        this.javaDebug = new JavaConsoleAdapter("Java");
-        this.javaTab.setEditable(false);
+        this.javaTab.getProxy().setEditable(false);
         this.logAppender.register(this.javaTab);
         
         this.network = new JSplitPaneWithZeroSizeDivider();
@@ -247,13 +248,28 @@ public class PanelBottom extends JPanel {
         });
         
         MouseTabbedPane networkDetailTabs = new MouseTabbedPane();
-        networkDetailTabs.addTab(I18n.NETWORK_TAB_RESPONSE_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabResponse)));
-        networkDetailTabs.addTab(I18n.NETWORK_TAB_SOURCE_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabSource)));
-        networkDetailTabs.addTab(I18n.NETWORK_TAB_PREVIEW_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabPreview)));
-        networkDetailTabs.addTab(I18n.NETWORK_TAB_HEADERS_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabHeader)));
-        networkDetailTabs.addTab(I18n.NETWORK_TAB_COOKIES_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabCookie)));
-        networkDetailTabs.addTab(I18n.NETWORK_TAB_PARAMS_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabParam)));
-        networkDetailTabs.addTab(I18n.NETWORK_TAB_TIMING_LABEL, new JScrollPanePixelBorder(1, 0, 0, 0, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabTiming)));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_RESPONSE_LABEL, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabResponse));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_SOURCE_LABEL, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabSource));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_PREVIEW_LABEL, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabPreview));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_HEADERS_LABEL, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabHeader));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_COOKIES_LABEL, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabCookie));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_PARAMS_LABEL, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabParam));
+        networkDetailTabs.addTab(I18n.NETWORK_TAB_TIMING_LABEL, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabTiming));
+        
+        DefaultCaret caret = (DefaultCaret) networkTabResponse.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+        caret = (DefaultCaret) networkTabSource.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+        caret = (DefaultCaret) networkTabPreview.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+        caret = (DefaultCaret) networkTabHeader.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+        caret = (DefaultCaret) networkTabCookie.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+        caret = (DefaultCaret) networkTabParam.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+        caret = (DefaultCaret) networkTabTiming.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
         
         networkTabHeader.setLineWrap(true);
         networkTabCookie.setLineWrap(true);
@@ -265,12 +281,25 @@ public class PanelBottom extends JPanel {
         networkTabPreview.setContentType("text/html");
         networkTabPreview.setEditable(false);
         
+        this.networkTable.getColumnModel().getColumn(0).setResizable(false);
+        this.networkTable.getColumnModel().getColumn(0).setPreferredWidth(120);
+        this.networkTable.getColumnModel().getColumn(0).setMinWidth(120);
+        this.networkTable.getColumnModel().getColumn(0).setMaxWidth(120);
+
+        this.networkTable.getColumnModel().getColumn(2).setResizable(false);
+        this.networkTable.getColumnModel().getColumn(2).setPreferredWidth(45);
+        this.networkTable.getColumnModel().getColumn(2).setMinWidth(45);
+        this.networkTable.getColumnModel().getColumn(2).setMaxWidth(45);
+        
+        this.networkTable.getColumnModel().getColumn(3).setResizable(false);
+        this.networkTable.getColumnModel().getColumn(3).setPreferredWidth(85);
+        this.networkTable.getColumnModel().getColumn(3).setMinWidth(85);
+        this.networkTable.getColumnModel().getColumn(3).setMaxWidth(85);
+        
         this.networkTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
                 // prevent double event
                 if (!event.getValueIsAdjusting() && PanelBottom.this.networkTable.getSelectedRow() > -1) {
-//                    System.out.println(listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).getUrl());
-                    
                     networkTabHeader.setText(listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).getHeader());
                     networkTabCookie.setText(listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).getCookie());
                     networkTabParam.setText(listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).getPost());
@@ -296,11 +325,11 @@ public class PanelBottom extends JPanel {
 
         MediatorGUI.bottom().addTab("Console",
                 new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/console.gif")),
-                new JScrollPanePixelBorder(1, 1, 0, 0, this.consoleTab),
+                new JScrollPanePixelBorder(1, 1, 0, 0, this.consoleTab.getProxy()),
                 I18n.CONSOLE_TAB_TOOLTIP);
         MediatorGUI.bottom().setTabComponentAt(
                 MediatorGUI.bottom().indexOfTab("Console"),
-                new JLabel(I18n.CONSOLE_TAB_LABEL, new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/chunk.gif")),
+                new JLabel(I18n.CONSOLE_TAB_LABEL, new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/console.gif")),
                 SwingConstants.CENTER));
 
         // Order is important
@@ -417,7 +446,7 @@ public class PanelBottom extends JPanel {
         MediatorGUI.bottom().insertTab(
             "Java",
             new ImageIcon(PanelBottom.class.getResource("/com/jsql/view/swing/images/cup.png")),
-            new JScrollPanePixelBorder(1, 1, 0, 0, PanelBottom.this.javaTab),
+            new JScrollPanePixelBorder(1, 1, 0, 0, PanelBottom.this.javaTab.getProxy()),
             I18n.JAVA_TAB_TOOLTIP,
             MediatorGUI.bottom().getTabCount()
         );

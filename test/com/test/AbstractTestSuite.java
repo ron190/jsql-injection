@@ -50,12 +50,17 @@ public abstract class AbstractTestSuite {
     protected String DB_URL = null;
     protected String USER = null;
     protected String PASS = null;
-    protected String DATABASE = null;
-    protected String TABLE = null;
-    protected String COLUMN = null;
+    protected String TEST_DATABASE = null;
+    protected String TEST_TABLE = null;
+    protected String TEST_COLUMN = null;
     protected String PROTECT = "";
     protected String SCHEMA_OR_CATALOG = "SCHEMA";
     protected String SYSTEM_OR_TABLE = "TABLE";
+    
+    protected String SQL_DATABASES = "";
+    protected String SQL_TABLES = "";
+    protected String SQL_COLUMNS = "";
+    protected String SQL_VALUES = "";
     
     protected String CONF_DATABASE = "";
     protected String CONF_DBNAME = "";
@@ -80,8 +85,9 @@ public abstract class AbstractTestSuite {
             ResultSet res = null;
             
             stmt = conn.createStatement();
-            res = stmt.executeQuery("SELECT " + CONF_DBNAME + " FROM " + CONF_DATABASE + "." + PROTECT + CONF_DBTABLE + PROTECT + " where 1=1 " + CONF_FILTERDB);
-
+//            res = stmt.executeQuery("SELECT " + CONF_DBNAME + " FROM " + CONF_DATABASE + "." + PROTECT + CONF_DBTABLE + PROTECT + " where 1=1 " + CONF_FILTERDB);
+            res = stmt.executeQuery(SQL_DATABASES);
+                    
             while (res.next()) {
                 String tableName = res.getString(CONF_DBNAME);
                 databaseToFind.add(tableName);
@@ -90,8 +96,9 @@ public abstract class AbstractTestSuite {
             stmt.close();
             
             stmt = conn.createStatement();
-            res = stmt.executeQuery("SELECT " + CONF_TABNAME + " FROM " + CONF_DATABASE + "." + PROTECT + CONF_TABTABLE + PROTECT +
-                    " where " + CONF_DBNAME + "='" + DATABASE + "' " + CONF_FILTERTB );
+//            res = stmt.executeQuery("SELECT " + CONF_TABNAME + " FROM " + CONF_DATABASE + "." + PROTECT + CONF_TABTABLE + PROTECT +
+//                    " where " + CONF_DBNAME + "='" + TEST_DATABASE + "' " + CONF_FILTERTB );
+            res = stmt.executeQuery(SQL_TABLES);
 
             while (res.next()) {
                 String tableName = res.getString(CONF_TABNAME);
@@ -101,8 +108,9 @@ public abstract class AbstractTestSuite {
             stmt.close();
             
             stmt = conn.createStatement();
-            res = stmt.executeQuery("SELECT " + CONF_COLNAME + " FROM " + CONF_DATABASE + "." + PROTECT + CONF_COLTABLE + PROTECT +
-                    " where " + CONF_TABNAME + "='" + TABLE + "' and " + CONF_DBNAME + "='" + DATABASE + "'" + " " + CONF_FILTERCOL );
+//            res = stmt.executeQuery("SELECT " + CONF_COLNAME + " FROM " + CONF_DATABASE + "." + PROTECT + CONF_COLTABLE + PROTECT +
+//                    " where " + CONF_TABNAME + "='" + TEST_TABLE + "' and " + CONF_DBNAME + "='" + TEST_DATABASE + "'" + " " + CONF_FILTERCOL );
+            res = stmt.executeQuery(SQL_COLUMNS);
 
             while (res.next()) {
                 String tableName = res.getString(CONF_COLNAME);
@@ -112,10 +120,11 @@ public abstract class AbstractTestSuite {
             stmt.close();
 
             stmt = conn.createStatement();
-            res = stmt.executeQuery("SELECT " + COLUMN + " FROM " + PROTECT + DATABASE + PROTECT + "." + PROTECT + TABLE + PROTECT + " where 1=1 " + CONF_FILTERVAL);
+//            res = stmt.executeQuery("SELECT " + TEST_COLUMN + " FROM " + PROTECT + TEST_DATABASE + PROTECT + "." + PROTECT + TEST_TABLE + PROTECT + " where 1=1 " + CONF_FILTERVAL);
+            res = stmt.executeQuery(SQL_VALUES);
 
             while (res.next()) {
-                String tableName = res.getString(COLUMN);
+                String tableName = res.getString(TEST_COLUMN);
                 valueToFind.add(tableName);
             }
             res.close();
@@ -175,7 +184,7 @@ public abstract class AbstractTestSuite {
         Set<Object> set2 = new HashSet<Object>();
 
         try{
-            List<Table> ts = MediatorModel.model().dataAccessObject.listTables(new Database(DATABASE, "0"));
+            List<Table> ts = MediatorModel.model().dataAccessObject.listTables(new Database(TEST_DATABASE, "0"));
             List<String> tablesFound = new ArrayList<String>();
             for (Table t: ts) {
                 tablesFound.add(t.toString());
@@ -205,7 +214,7 @@ public abstract class AbstractTestSuite {
 
         try{
 
-            List<Column> cs = MediatorModel.model().dataAccessObject.listColumns(new Table(TABLE, "0", new Database(DATABASE, "0")));
+            List<Column> cs = MediatorModel.model().dataAccessObject.listColumns(new Table(TEST_TABLE, "0", new Database(TEST_DATABASE, "0")));
             List<String> columnsFound = new ArrayList<String>();
             for (Column c: cs) {
                 columnsFound.add(c.toString());
@@ -234,10 +243,10 @@ public abstract class AbstractTestSuite {
         Set<Object> set2 = new HashSet<Object>();
 
         try{
-            String[][] vs = MediatorModel.model().dataAccessObject.listValues(Arrays.asList(new Column(COLUMN, new Table(TABLE, "0", new Database(DATABASE, "0")))));
+            String[][] vs = MediatorModel.model().dataAccessObject.listValues(Arrays.asList(new Column(TEST_COLUMN, new Table(TEST_TABLE, "0", new Database(TEST_DATABASE, "0")))));
             List<String> valuesFound = new ArrayList<String>();
             for (String[] v: vs) {
-                valuesFound.add(v[2]);
+                valuesFound.add(v[1]);
             }
 
             set1.addAll(valuesFound);

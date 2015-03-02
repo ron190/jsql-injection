@@ -18,7 +18,7 @@ import com.jsql.model.vendor.H2Strategy;
 import com.jsql.model.vendor.HSQLDBStrategy;
 import com.jsql.model.vendor.InformixStrategy;
 import com.jsql.model.vendor.IngresStrategy;
-import com.jsql.model.vendor.MSSQLServerStrategy;
+import com.jsql.model.vendor.SQLServerStrategy;
 import com.jsql.model.vendor.MariaDBStrategy;
 import com.jsql.model.vendor.MaxDbStrategy;
 import com.jsql.model.vendor.MySQLStrategy;
@@ -80,7 +80,7 @@ public class StoppableGetSQLVendor extends AbstractSuspendable {
                         + "MySQL"
                 + ").*")) {
                     MediatorModel.model().sqlStrategy = new MySQLStrategy();
-                    System.out.println("MySQLStrategy");
+//                    System.out.println("MySQLStrategy");
                 }
                 
                 if (pageSource.matches("(?si).*("
@@ -90,7 +90,7 @@ public class StoppableGetSQLVendor extends AbstractSuspendable {
                         + "MariaDB"
                         + ").*")) {
                     MediatorModel.model().sqlStrategy = new MariaDBStrategy();
-                    System.out.println("MariaDBStrategy");
+//                    System.out.println("MariaDBStrategy");
                 }
                 
                 if (pageSource.matches("(?si).*("
@@ -98,7 +98,7 @@ public class StoppableGetSQLVendor extends AbstractSuspendable {
                         + "HSQLDB"
                         + ").*")) {
                     MediatorModel.model().sqlStrategy = new HSQLDBStrategy();
-                    System.out.println("HSQLDBStrategy");
+//                    System.out.println("HSQLDBStrategy");
                 }
                 
                 if (pageSource.matches("(?si).*("
@@ -114,7 +114,7 @@ public class StoppableGetSQLVendor extends AbstractSuspendable {
                         + "PostgreSQL"
                 + ").*")) {
                     MediatorModel.model().sqlStrategy = new PostgreSQLStrategy();
-                    System.out.println("PostgreSQLStrategy");
+//                    System.out.println("PostgreSQLStrategy");
                 }
                 
                 /**
@@ -132,7 +132,7 @@ select '"'"'
                  */
                 if (Pattern.compile(".*function\\.oci.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     MediatorModel.model().sqlStrategy = new OracleStrategy();
-                    System.out.println("OracleStrategy");
+//                    System.out.println("OracleStrategy");
                 }
                 
                 /**
@@ -144,8 +144,8 @@ select '"'"'
                  * Unclosed quotation mark after the character string '''. [SQL State=S0001, DB Errorcode=105] 
                  */
                 if (Pattern.compile(".*SQL Server.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-                    MediatorModel.model().sqlStrategy = new MSSQLServerStrategy();
-                    System.out.println("SQLServerStrategy");
+                    MediatorModel.model().sqlStrategy = new SQLServerStrategy();
+//                    System.out.println("SQLServerStrategy");
                 }
                 
                 /**
@@ -159,7 +159,7 @@ Next: DB2 SQL Error: SQLCODE=-727, SQLSTATE=56098, SQLERRMC=2;-10;42603;"', DRIV
                  */
                 if (Pattern.compile(".*function\\.db2.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     MediatorModel.model().sqlStrategy = new DB2Strategy();
-                    System.out.println("DB2Strategy");
+//                    System.out.println("DB2Strategy");
                 }
                 
                 /**
@@ -170,7 +170,7 @@ Next: DB2 SQL Error: SQLCODE=-727, SQLSTATE=56098, SQLERRMC=2;-10;42603;"', DRIV
                  */
                 if (Pattern.compile(".*Non-terminated string.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     MediatorModel.model().sqlStrategy = new IngresStrategy();
-                    System.out.println("IngresStrategy");
+//                    System.out.println("IngresStrategy");
                 }
                 
                 /**
@@ -187,7 +187,7 @@ Invalid SQL statement or JDBC escape, terminating '"' not found. [SQL State=2202
                  */
                 if (Pattern.compile(".*function\\.sybase.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     MediatorModel.model().sqlStrategy = new SybaseStrategy();
-                    System.out.println("SybaseStrategy");
+//                    System.out.println("SybaseStrategy");
                 }
                 
                 /**
@@ -201,7 +201,7 @@ select '"'"'
                  */
                 if (Pattern.compile(".*maxdb\\.query.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     MediatorModel.model().sqlStrategy = new MaxDbStrategy();
-                    System.out.println("MaxDbStrategy");
+//                    System.out.println("MaxDbStrategy");
                 }
                 
                 /**
@@ -212,7 +212,7 @@ select '"'"'
                  */
                 if (Pattern.compile(".*Informix.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     MediatorModel.model().sqlStrategy = new InformixStrategy();
-                    System.out.println("InformixStrategy");
+//                    System.out.println("InformixStrategy");
                 }
                 
                 /**
@@ -229,27 +229,27 @@ select '"'"'
                  */
                 if (Pattern.compile(".*function\\.ibase-query.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     MediatorModel.model().sqlStrategy = new FirebirdStrategy();
-                    System.out.println("FirebirdStrategy");
+//                    System.out.println("FirebirdStrategy");
                 }
                 if (Pattern.compile(".*h2.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     MediatorModel.model().sqlStrategy = new H2Strategy();
-                    System.out.println("H2Strategy");
+//                    System.out.println("H2Strategy");
                 }
                 if (Pattern.compile(".*hsqldb.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     MediatorModel.model().sqlStrategy = new HSQLDBStrategy();
-                    System.out.println("HSQLDBStrategy");
+//                    System.out.println("HSQLDBStrategy");
                 }
                 if (Pattern.compile(".*derby.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     MediatorModel.model().sqlStrategy = new DerbyStrategy();
-                    System.out.println("DerbyStrategy");
+//                    System.out.println("DerbyStrategy");
                 }
                 if (Pattern.compile(".*cubrid.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     MediatorModel.model().sqlStrategy = new CubridStrategy();
-                    System.out.println("CubridStrategy");
+//                    System.out.println("CubridStrategy");
                 }
                 if (Pattern.compile(".*teradata.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     MediatorModel.model().sqlStrategy = new TeradataStrategy();
-                    System.out.println("TeradataStrategy");
+//                    System.out.println("TeradataStrategy");
                 }
             } catch (InterruptedException e) {
                 LOGGER.error(e, e);

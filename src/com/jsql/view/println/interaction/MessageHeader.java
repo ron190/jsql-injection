@@ -49,13 +49,13 @@ public class MessageHeader implements IInteractionCommand {
 
     @Override
     public void execute() {
-        System.out.println(response.get("Method"));
-        System.out.println(url);
-        System.out.println(cookie);
-        System.out.println(post);
-        System.out.println(header);
-        System.out.println(response.get("Content-Length"));
-        System.out.println(response.get("Content-Type"));
+        System.out.println("Method: " + response.get("Method"));
+        System.out.println("Url: " + url);
+        System.out.println("Cookie: " + cookie);
+        System.out.println("Post: " + post);
+        System.out.println("Header: " + header);
+        System.out.println("Content-Length: " + response.get("Content-Length"));
+        System.out.println("Content-Type: " + response.get("Content-Type"));
         System.out.println();
     }
 }
