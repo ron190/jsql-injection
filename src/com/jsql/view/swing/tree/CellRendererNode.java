@@ -16,6 +16,8 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
+import com.jsql.view.swing.tree.model.AbstractNodeModel;
+
 /**
  * Render a tree node based on node model.
  * Can render default tree node, or node for database, table or column.

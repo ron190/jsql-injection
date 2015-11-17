@@ -6,7 +6,7 @@ import com.jsql.exception.PreparationException;
 import com.jsql.model.injection.InjectionModel;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.model.strategy.NormalStrategy;
-import com.jsql.view.println.SystemOutTerminal;
+import com.jsql.view.junit.SystemOutTerminal;
 
 public class SQLServerNormalGetTestSuite extends ConcreteSQLServerTestSuite {
 

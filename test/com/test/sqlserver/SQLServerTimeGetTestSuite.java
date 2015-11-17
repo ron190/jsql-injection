@@ -8,7 +8,7 @@ import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.injection.InjectionModel;
 import com.jsql.model.injection.MediatorModel;
-import com.jsql.view.println.SystemOutTerminal;
+import com.jsql.view.junit.SystemOutTerminal;
 import com.test.postgre.ConcretePostgreTestSuite;
 
 public class SQLServerTimeGetTestSuite extends ConcreteSQLServerTestSuite {

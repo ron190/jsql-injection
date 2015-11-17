@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
 
 import javax.swing.ImageIcon;
@@ -17,6 +18,7 @@ import javax.swing.JTextArea;
 
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.text.JPopupTextArea;
 
@@ -53,8 +55,9 @@ public class CreateFileTab implements IInteractionCommand {
         JTextArea fileText = new JPopupTextArea().getProxy();
         fileText.setText(content);
         fileText.setFont(new Font("Ubuntu Mono", Font.PLAIN, 14));
-        JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 0, 0, 0, fileText);
-
+//        JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 0, 0, 0, fileText);
+        LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, fileText);
+        
         fileText.setCaretPosition(0);
         MediatorGUI.right().addTab(name + " ", scroller);
 

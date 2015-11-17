@@ -42,8 +42,10 @@ import com.jsql.exception.StoppableException;
 import com.jsql.model.bean.Request;
 import com.jsql.model.injection.InjectionModel;
 import com.jsql.model.injection.MediatorModel;
-import com.jsql.model.injection.StoppableLoopIntoResults;
+import com.jsql.model.injection.suspendable.SuspendableGetRows;
 import com.jsql.tool.ToolsString;
+import com.jsql.view.scan.ScanListTerminal;
+import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.list.ListItem;
 
 /**
@@ -51,6 +53,11 @@ import com.jsql.view.swing.list.ListItem;
  * Get informations from file system, commands, webpage.
  */
 public class RessourceAccessObject {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(RessourceAccessObject.class);
+
     /**
      * File name for web shell.
      */
@@ -75,6 +82,11 @@ public class RessourceAccessObject {
     public boolean endAdminSearch = false;
     
     /**
+     * True if scan list sould stop, false otherwise.
+     */
+    public boolean endScanList = false;
+    
+    /**
      * True if current user has right to read file. 
      */
     public boolean hasFileRight = false;
@@ -83,11 +95,6 @@ public class RessourceAccessObject {
      * True if file search must stop, false otherwise.
      */
     public boolean endFileSearch = false;
-
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getLogger(RessourceAccessObject.class);
 
     /**
      * Check if every page in the list responds 200 OK.
@@ -149,7 +156,11 @@ public class RessourceAccessObject {
 
         this.endAdminSearch = false;
 
-        LOGGER.info("Admin page(s) found: " + nb + "/" + submittedTasks);
+        if (nb > 0) {
+            LOGGER.debug("Admin page(s) found: " + nb + "/" + submittedTasks);
+        } else {
+            LOGGER.trace("Admin page(s) found: " + nb + "/" + submittedTasks);
+        }
 
         Request request = new Request();
         request.setMessage("EndAdminSearch");
@@ -174,12 +185,13 @@ public class RessourceAccessObject {
         );
 
         String[] sourcePage = {""};
-        String hexResult = new StoppableLoopIntoResults().action(
-                MediatorModel.model().sqlStrategy.readTextFile(path + WEBSHELL_FILENAME),
-                sourcePage,
-                false,
-                1,
-                null);
+        String hexResult = new SuspendableGetRows().action(
+            MediatorModel.model().sqlStrategy.readTextFile(path + WEBSHELL_FILENAME),
+            sourcePage,
+            false,
+            1,
+            null
+        );
 
         if ("".equals(hexResult)) {
             MediatorModel.model().sendResponseFromSite("Can't find web shell at " + path + WEBSHELL_FILENAME, sourcePage[0].trim());
@@ -224,12 +236,13 @@ public class RessourceAccessObject {
         );
 
         String[] sourcePage = {""};
-        String hexResult = new StoppableLoopIntoResults().action(
-                MediatorModel.model().sqlStrategy.readTextFile(path + UPLOAD_FILENAME),
-                sourcePage,
-                false,
-                1,
-                null);
+        String hexResult = new SuspendableGetRows().action(
+            MediatorModel.model().sqlStrategy.readTextFile(path + UPLOAD_FILENAME),
+            sourcePage,
+            false,
+            1,
+            null
+        );
 
         if ("".equals(hexResult)) {
             MediatorModel.model().sendResponseFromSite("Can't find upload file at " + path + UPLOAD_FILENAME, sourcePage[0].trim());
@@ -304,7 +317,7 @@ public class RessourceAccessObject {
                 imgIs.close();
                 
                 if (result.indexOf("SQLiy") > -1) {
-                    LOGGER.info("Upload successful.");
+                    LOGGER.debug("Upload successful.");
                 } else {
                     LOGGER.warn("Upload failed.");
                 }
@@ -352,12 +365,13 @@ public class RessourceAccessObject {
     public boolean checkFilePrivilege() throws PreparationException, StoppableException {
         String[] sourcePage = {""};
 
-        String hexResult = new StoppableLoopIntoResults().action(
-                MediatorModel.model().sqlStrategy.getPrivilege(),
-                sourcePage,
-                false,
-                1,
-                null);
+        String hexResult = new SuspendableGetRows().action(
+            MediatorModel.model().sqlStrategy.getPrivilege(),
+            sourcePage,
+            false,
+            1,
+            null
+        );
 
         if ("".equals(hexResult)) {
             MediatorModel.model().sendResponseFromSite("Can't read privilege", sourcePage[0].trim());
@@ -416,9 +430,7 @@ public class RessourceAccessObject {
                     MediatorModel.model().interact(request);
 
                     if (!duplicate.contains(path.replace(name, ""))) {
-                        LOGGER.info(
-                                "Shell might be possible in folder "
-                                + path.replace(name, ""));
+                        LOGGER.info("Shell might be possible in folder "+ path.replace(name, ""));
                     }
                     duplicate.add(path.replace(name, ""));
 
@@ -440,7 +452,11 @@ public class RessourceAccessObject {
 
         endFileSearch = false;
 
-        LOGGER.info("File(s) found: " + nb + "/" + submittedTasks);
+        if (nb > 0) {
+            LOGGER.debug("File(s) found: " + nb + "/" + submittedTasks);
+        } else {
+            LOGGER.trace("File(s) found: " + nb + "/" + submittedTasks);
+        }
         Request request = new Request();
         request.setMessage("EndFileSearch");
         MediatorModel.model().interact(request);
@@ -525,12 +541,13 @@ public class RessourceAccessObject {
         );
 
         String[] sourcePage = {""};
-        String hexResult = new StoppableLoopIntoResults().action(
-                MediatorModel.model().sqlStrategy.readTextFile(path + SQLSHELL_FILENAME),
-                sourcePage,
-                false,
-                1,
-                null);
+        String hexResult = new SuspendableGetRows().action(
+            MediatorModel.model().sqlStrategy.readTextFile(path + SQLSHELL_FILENAME),
+            sourcePage,
+            false,
+            1,
+            null
+        );
 
         if ("".equals(hexResult)) {
             MediatorModel.model().sendResponseFromSite("Can't find SQL shell at " + path + SQLSHELL_FILENAME, sourcePage[0].trim());
@@ -606,5 +623,62 @@ public class RessourceAccessObject {
             request.setParameters(terminalID, result, cmd);
             MediatorModel.model().interact(request);
         }
+    }
+
+    public void scanList(List<ListItem> list) {
+        // Erase everything in the view from a previous injection
+        Request requests = new Request();
+        requests.setMessage("ResetInterface");
+        MediatorModel.model().interact(requests);
+        
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        MediatorModel.model().deleteObservers();
+        ScanListTerminal sc = new ScanListTerminal();
+        
+        for (ListItem s: list) {
+//            taskCompletionService.submit(new CallableAdminPage(debut + progressURL + s.toString()));
+            
+//            InjectionModel model = new InjectionModel();
+//            MediatorModel.register(model);
+//            model.instanciationDone();
+
+//            MediatorModel.model().initialUrl = s.toString();
+            
+//            model.inputValidation();
+            LOGGER.info("Scanning " + s);
+            MediatorModel.model().controlInput(
+                s.toString(),
+                "","","","GET",
+                true
+            );
+            
+            
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            
+        }
+        
+//
+//        this.endAdminSearch = false;
+//
+//        if (nb > 0) {
+//            LOGGER.debug("Admin page(s) found: " + nb + "/" + submittedTasks);
+//        } else {
+//            LOGGER.trace("Admin page(s) found: " + nb + "/" + submittedTasks);
+//        }
+
+        Request request = new Request();
+        request.setMessage("EndScanList");
+        MediatorModel.model().interact(request);
     }
 }

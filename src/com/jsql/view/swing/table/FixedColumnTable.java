@@ -86,18 +86,18 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         //  and add them to the fixed table
         for (int i = 0; i < fixedColumns; i++) {
             TableColumnModel columnModel = main.getColumnModel();
-            TableColumn column = columnModel.getColumn( 0 );
-            columnModel.removeColumn( column );
-            fixed.getColumnModel().addColumn( column );
+            TableColumn column = columnModel.getColumn(0);
+            columnModel.removeColumn(column);
+            fixed.getColumnModel().addColumn(column);
         }
 
         //  Add the fixed table to the scroll pane
         fixed.setPreferredScrollableViewportSize(fixed.getPreferredSize());
-        scrollPane.setRowHeaderView( fixed );
+        scrollPane.setRowHeaderView(fixed);
         scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, fixed.getTableHeader());
 
         // Synchronize scrolling of the row header with the main table
-        scrollPane.getRowHeader().addChangeListener( this );
+        scrollPane.getRowHeader().addChangeListener(this);
     }
 
     /**
@@ -122,11 +122,11 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
     public void propertyChange(PropertyChangeEvent e) {
         //  Keep the fixed table in sync with the main table
         if ("selectionModel".equals(e.getPropertyName())) {
-            fixed.setSelectionModel( main.getSelectionModel() );
+            fixed.setSelectionModel(main.getSelectionModel());
         }
 
         if ("model".equals(e.getPropertyName())) {
-            fixed.setModel( main.getModel() );
+            fixed.setModel(main.getModel());
         }
     }
 }

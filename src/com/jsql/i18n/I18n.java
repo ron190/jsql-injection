@@ -44,6 +44,8 @@ public class I18n {
     public static final String DATABASE_TOOLTIP = (String) labels.getObject("databaseTooltip");
     public static final String ADMINPAGE = (String) labels.getObject("adminPage");
     public static final String ADMINPAGE_TOOLTIP = (String) labels.getObject("adminPageTooltip");
+    public static final String SCANLIST = (String) labels.getObject("scanList");
+    public static final String SCANLIST_TOOLTIP = (String) labels.getObject("scanListTooltip");
     public static final String FILE = (String) labels.getObject("file");
     public static final String FILE_TOOLTIP = (String) labels.getObject("fileTooltip");
     
@@ -219,6 +221,12 @@ public class I18n {
      */
     public static final String ADMIN_PAGE_RUN_BUTTON = (String) labels.getObject("adminPageRunButton");
     public static final String ADMIN_PAGE_RUN_BUTTON_TOOLTIP = (String) labels.getObject("adminPageRunButtonTooltip");
+    
+    /**
+     * Bulk Test
+     */
+    public static final String SCANLIST_RUN_BUTTON = (String) labels.getObject("scanListRunButton");
+    public static final String SCANLIST_RUN_BUTTON_TOOLTIP = (String) labels.getObject("scanListRunButtonTooltip");
     
     /**
      * List menu

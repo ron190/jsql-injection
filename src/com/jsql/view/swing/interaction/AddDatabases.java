@@ -18,8 +18,8 @@ import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.Database;
 import com.jsql.view.swing.MediatorGUI;
-import com.jsql.view.swing.tree.AbstractNodeModel;
-import com.jsql.view.swing.tree.NodeModelDatabase;
+import com.jsql.view.swing.tree.model.AbstractNodeModel;
+import com.jsql.view.swing.tree.model.NodeModelDatabase;
 
 /**
  * Add the databases to current injection panel.

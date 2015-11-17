@@ -29,7 +29,7 @@ import com.jsql.model.injection.MediatorModel;
 
 public abstract class AbstractTestSuite {
     static {
-        PropertyConfigurator.configure("test/com/test/log4j.properties");
+        PropertyConfigurator.configure("test/log4j.properties");
     }
 
     @Rule

@@ -21,6 +21,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import com.jsql.model.bean.Column;
 import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**
  * Action to start and stop injection process.
@@ -67,7 +68,7 @@ public class ActionLoadStop implements ActionListener {
             }.execute();
         } else {
             MediatorGUI.model().suspendables.get(this.nodeData.dataObject).stop();
-            MediatorGUI.model().suspendables.get(this.nodeData.dataObject).unPause();
+            MediatorGUI.model().suspendables.get(this.nodeData.dataObject).unpause();
             this.nodeData.childUpgradeCount = 0;
             this.nodeData.hasIndeterminatedProgress = false;
             this.nodeData.hasProgress = false;

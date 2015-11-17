@@ -1,13 +1,16 @@
 package com.jsql.model.strategy;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.bean.Request;
-import com.jsql.model.injection.AbstractSuspendable;
 import com.jsql.model.injection.MediatorModel;
-import com.jsql.model.injection.StoppableGetInitialQuery;
+import com.jsql.model.injection.suspendable.AbstractSuspendable;
+import com.jsql.model.injection.suspendable.SuspendableGetSQLIndices;
 
 /**
  * Injection strategy using normal attack.
@@ -19,9 +22,10 @@ public class NormalStrategy extends AbstractInjectionStrategy {
     private static final Logger LOGGER = Logger.getLogger(NormalStrategy.class);
 
     @Override
-    public void checkApplicability() throws PreparationException {
-        LOGGER.info("Normal test...");
-        MediatorModel.model().initialQuery = new StoppableGetInitialQuery().beginSynchrone();
+    public void checkApplicability() throws PreparationException, StoppableException {
+        LOGGER.trace("Normal test...");
+//        MediatorModel.model().initialQuery = new SuspendableGetSQLIndices().beginSynchrone();
+        MediatorModel.model().initialQuery = new SuspendableGetSQLIndices().action();
 
         this.isApplicable = !"".equals(MediatorModel.model().initialQuery);
         
@@ -36,6 +40,11 @@ public class NormalStrategy extends AbstractInjectionStrategy {
     public void allow() {
         Request request = new Request();
         request.setMessage("MarkNormalVulnerable");
+        
+        Map<String, Object> msgHeader = new HashMap<String, Object>();
+        msgHeader.put("Url", MediatorModel.model().initialUrl + MediatorModel.model().getData + MediatorModel.model().insertionCharacter);
+
+        request.setParameters(msgHeader);
         MediatorModel.model().interact(request);
     }
 
@@ -48,16 +57,12 @@ public class NormalStrategy extends AbstractInjectionStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable) throws StoppableException {
-        return MediatorModel.model().inject(
-            MediatorModel.model().sqlStrategy.normalStrategy(sqlQuery, startPosition),
-            null,
-            true
-        );
+        return MediatorModel.model().inject(MediatorModel.model().sqlStrategy.normalStrategy(sqlQuery, startPosition), true);
     }
 
     @Override
     public void applyStrategy() {
-        LOGGER.info("Using normal injection...");
+//        LOGGER.info("Using normal injection...");
         MediatorModel.model().applyStrategy(this);
         
         Request request = new Request();

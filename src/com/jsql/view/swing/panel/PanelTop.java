@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.panel;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -97,6 +98,8 @@ public class PanelTop extends JPanel {
      */
     public ButtonAddressBar submitAddressBar = new ButtonAddressBar();
 
+    public boolean isExpanded = false;
+    
     /**
      * Create panel at the top with textfields and radio.
      */
@@ -135,9 +138,10 @@ public class PanelTop extends JPanel {
         /**
          * Define UI and the left padding for addressBar
          */
-        this.addressBar.setBorder(BorderFactory.createCompoundBorder(
+        this.addressBar.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(4, 2, 3, 0, HelperGUI.DEFAULT_BACKGROUND),
-                new RoundBorder(24, 3, true)));
+                BorderFactory.createLineBorder(new Color(132, 172, 221))),BorderFactory.createEmptyBorder(2, 23, 2, 23)));
+//                new RoundBorder(24, 3, true))));
 
         this.textPOST.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 2, 0, 0, HelperGUI.DEFAULT_BACKGROUND),
@@ -246,6 +250,9 @@ public class PanelTop extends JPanel {
 
                 PanelTop.this.textHeader.setVisible(toggleVisibility);
                 PanelTop.this.radioHeader.setVisible(toggleVisibility);
+                
+                isExpanded = toggleVisibility;
+                MediatorGUI.menubar().setVisible(toggleVisibility);
 
                 advancedButton.setDirection(toggleVisibility ? BasicArrowButton.NORTH : BasicArrowButton.SOUTH);
             }
@@ -269,6 +276,11 @@ public class PanelTop extends JPanel {
         }
         
         protected void startInjection() {
+            // Register the view to the model
+            // Used by manual injection and batch query
+            MediatorGUI.model().deleteObservers();
+            MediatorGUI.model().addObserver(MediatorGUI.gui());
+            
             int option = 0;
             // Ask the user confirmation if injection already built
             if (MediatorGUI.model().isInjectionBuilt) {
@@ -286,7 +298,8 @@ public class PanelTop extends JPanel {
                     PanelTop.this.textPOST.getText(),
                     PanelTop.this.textCookie.getText(),
                     PanelTop.this.textHeader.getText(),
-                    PanelTop.this.sendMethod
+                    PanelTop.this.sendMethod,
+                    false
                 );
             }
         }

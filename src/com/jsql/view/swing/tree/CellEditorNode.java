@@ -29,6 +29,7 @@ import javax.swing.tree.TreePath;
 import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**
  * Tree cell editor responsible for mouse action on nodes.

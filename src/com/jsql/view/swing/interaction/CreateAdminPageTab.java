@@ -39,6 +39,7 @@ import com.jsql.i18n.I18n;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.text.JPopupTextArea;
 
@@ -150,7 +151,8 @@ public class CreateAdminPageTab implements IInteractionCommand {
             }
         });
 
-        final JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 0, 0, 0, browser);
+//        final JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 0, 0, 0, browser);
+        final LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, browser);
         MediatorGUI.right().addTab(url.replaceAll(".*/", "") + " ", scroller);
 
         // Focus on the new tab
@@ -167,10 +169,10 @@ public class CreateAdminPageTab implements IInteractionCommand {
 //        browser.requestFocusInWindow();
 
         // Get back to the top
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                scroller.getViewport().setViewPosition(new java.awt.Point(0, 0));
-            }
-        });
+//        SwingUtilities.invokeLater(new Runnable() {
+//            public void run() {
+//                scroller.getViewport().setViewPosition(new java.awt.Point(0, 0));
+//            }
+//        });
     }
 }

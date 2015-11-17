@@ -50,11 +50,16 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
         } else {
             renderer.setBackground(Color.WHITE);
         }
+        
+        if (value.isValidated) {
+            renderer.setForeground(new Color(0, 128, 0));
+            renderer.setFont(new Font("Segoe UI", Font.BOLD, renderer.getFont().getSize()));
+        }
 
         if (isSelected && list.isFocusOwner()) {
-            renderer.setBorder(new LineBorder(new Color(132, 172, 221), 1, true));
+            renderer.setBorder(new LineBorder(new Color(132, 172, 221), 1, false));
         } else if (isSelected && !list.isFocusOwner()) {
-            renderer.setBorder(new LineBorder(new Color(218, 218, 218), 1, true));
+            renderer.setBorder(new LineBorder(new Color(218, 218, 218), 1, false));
         } else if (cellHasFocus) {
             renderer.setBorder(BorderFactory.createCompoundBorder( new AbstractBorder() {
                 @Override

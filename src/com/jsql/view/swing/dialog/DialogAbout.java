@@ -11,6 +11,7 @@
 package com.jsql.view.swing.dialog;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dialog;
@@ -50,6 +51,7 @@ import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
 import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.ui.RoundBorder;
 
 /**
@@ -65,7 +67,7 @@ public class DialogAbout extends JDialog {
     /**
      * Dialog scroller.
      */
-    private JScrollPanePixelBorder scrollPane;
+    private LightScrollPane scrollPane;
 
     /**
      * Log4j logger sent to view.
@@ -98,13 +100,19 @@ public class DialogAbout extends JDialog {
         lastLine.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         this.close = new JButton("Close");
-        this.close.setBorder(new RoundBorder(20, 3, true));
+//        this.close.setBorder(new RoundBorder(20, 3, true));
+        this.close.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
+                BorderFactory.createEmptyBorder(2, 20, 2, 20)));
         this.close.addActionListener(escapeListener);
 
         this.setLayout(new BorderLayout());
         Container dialogPane = this.getContentPane();
         JButton webpage = new JButton("Webpage");
-        webpage.setBorder(new RoundBorder(20, 3, true));
+//        webpage.setBorder(new RoundBorder(20, 3, true));
+        webpage.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
+                BorderFactory.createEmptyBorder(2, 20, 2, 20)));
         webpage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -181,7 +189,8 @@ public class DialogAbout extends JDialog {
             }
         });
 
-        this.scrollPane = new JScrollPanePixelBorder(1, 1, 1, 0, text[0]);
+//        this.scrollPane = new JScrollPanePixelBorder(1, 1, 1, 0, text[0]);
+        this.scrollPane = new LightScrollPane(1, 1, 1, 0, text[0]);
         dialogPane.add(this.scrollPane, BorderLayout.CENTER);
 
         reinit();
@@ -191,7 +200,7 @@ public class DialogAbout extends JDialog {
      * Set back default setting for About frame.
      */
     public final void reinit() {
-        this.scrollPane.getViewport().setViewPosition(new Point(0, 0));
+        this.scrollPane.scrollPane.getViewport().setViewPosition(new Point(0, 0));
         this.setSize(460, 300);
         this.setLocationRelativeTo(MediatorGUI.gui());
         this.close.requestFocusInWindow();

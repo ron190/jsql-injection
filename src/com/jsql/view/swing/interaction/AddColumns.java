@@ -18,8 +18,8 @@ import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.Column;
 import com.jsql.view.swing.MediatorGUI;
-import com.jsql.view.swing.tree.AbstractNodeModel;
-import com.jsql.view.swing.tree.NodeModelColumn;
+import com.jsql.view.swing.tree.model.AbstractNodeModel;
+import com.jsql.view.swing.tree.model.NodeModelColumn;
 
 /**
  * Add the columns to corresponding table.

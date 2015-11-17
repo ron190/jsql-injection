@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**
  * Action to pause and unpause injection process.
@@ -32,7 +33,7 @@ public class ActionPauseUnpause implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (MediatorGUI.model().suspendables.get(this.nodeData.dataObject).isPaused()) {
-            MediatorGUI.model().suspendables.get(this.nodeData.dataObject).unPause();
+            MediatorGUI.model().suspendables.get(this.nodeData.dataObject).unpause();
         } else {
             MediatorGUI.model().suspendables.get(this.nodeData.dataObject).pause();
         }

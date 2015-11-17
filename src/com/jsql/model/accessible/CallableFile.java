@@ -5,7 +5,7 @@ import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.injection.InjectionModel;
 import com.jsql.model.injection.MediatorModel;
-import com.jsql.model.injection.StoppableLoopIntoResults;
+import com.jsql.model.injection.suspendable.SuspendableGetRows;
 import com.jsql.tool.ToolsString;
 
 /**
@@ -37,12 +37,13 @@ public class CallableFile implements Callable<CallableFile> {
 
             String hexResult = "";
             try {
-                hexResult = new StoppableLoopIntoResults().action(
-                        MediatorModel.model().sqlStrategy.readTextFile(filePath),
-                        sourcePage,
-                        false,
-                        1,
-                        null);
+                hexResult = new SuspendableGetRows().action(
+                    MediatorModel.model().sqlStrategy.readTextFile(filePath),
+                    sourcePage,
+                    false,
+                    1,
+                    null
+                );
             } catch (PreparationException e) {
                 // User cancels the search, probably
             } catch (StoppableException e) {

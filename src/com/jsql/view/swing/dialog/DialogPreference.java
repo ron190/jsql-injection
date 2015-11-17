@@ -89,23 +89,30 @@ public class DialogPreference extends JDialog {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
         okButton = new JButton("Apply");
-        okButton.setBorder(new RoundBorder(7, 3, true));
+        okButton.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
+                BorderFactory.createEmptyBorder(2, 7, 2, 7)));
+//        okButton.setBorder(new RoundBorder(7, 3, true));
 
         JButton cancelButton = new JButton("Close");
-        cancelButton.setBorder(new RoundBorder(7, 3, true));
+        cancelButton.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
+                BorderFactory.createEmptyBorder(2, 7, 2, 7)));
+//        cancelButton.setBorder(new RoundBorder(7, 3, true));
         cancelButton.addActionListener(escListener);
 
         this.getRootPane().setDefaultButton(okButton);
 
         this.setLayout(new BorderLayout());
         Container contentPane = this.getContentPane();
+//        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
         JButton checkIPButton = new JButton("Check your IP", new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/images/wrench.png")));
         checkIPButton.setBorder(HelperGUI.BLU_ROUND_BORDER);
         checkIPButton.addActionListener(new ActionCheckIP());
         checkIPButton.setToolTipText("<html><b>Verify public IP address used by jSQL</b><br>"
                 + "Address is your own public IP if you don't use a proxy. If you use a proxy<br>"
-                + "like TOR, your public IP is hidden and another IP is used, provided by the proxy.</html>");
+                + "like TOR, your public IP is hidden and another IP is used.</html>");
 
         mainPanel.add(checkIPButton);
         mainPanel.add(Box.createGlue());
@@ -114,9 +121,42 @@ public class DialogPreference extends JDialog {
         mainPanel.add(cancelButton);
         contentPane.add(mainPanel, BorderLayout.SOUTH);
 
-        LineBorder roundedLineBorder = new LineBorder(Color.LIGHT_GRAY, 1, true);
-        TitledBorder roundedTitledBorder = new TitledBorder(roundedLineBorder, "Proxy Setting");
+        // Second panel hidden by default, contain proxy setting
+//        final JPanel settingPanel2 = new JPanel();
+//        GroupLayout settingLayout2 = new GroupLayout(settingPanel2);
+//        settingPanel2.setLayout(settingLayout2);
+//        settingPanel2.setBorder(
+//                BorderFactory.createCompoundBorder(
+//                        BorderFactory.createCompoundBorder(
+//                                BorderFactory.createEmptyBorder(5, 5, 5, 5),
+//                                roundedTitledBorder2
+//                                ), BorderFactory.createEmptyBorder(5, 5, 5, 5)
+//                        ));
+        final JCheckBox checkboxIsProxy2 = new JCheckBox("", MediatorGUI.model().updateAtStartup);
+        JLabel labelUseProxy2 = new JLabel("<html><div style=\"text-align:right\">Check update<br>at startup</div></html>");
+        final JCheckBox checkboxIsProxy3 = new JCheckBox("", MediatorGUI.model().reportBugs);
+        JLabel labelUseProxy3 = new JLabel("<html><div style=\"text-align:right\">Report bugs<br>automatically</div></html>");
+//        // Proxy settings, Horizontal column rules
+//        settingLayout2.setHorizontalGroup(
+//                settingLayout2.createSequentialGroup()
+//                .addGroup(settingLayout2.createParallelGroup(GroupLayout.Alignment.TRAILING)
+//                        .addComponent(labelUseProxy2)
+//                        .addGroup(settingLayout2.createParallelGroup()
+//                                .addComponent(checkboxIsProxy2))
+//                )
+//        );
+//
+//        // Proxy settings, Vertical line rules
+//        settingLayout2.setVerticalGroup(
+//                settingLayout2.createSequentialGroup()
+//                .addGroup(settingLayout2.createParallelGroup(GroupLayout.Alignment.BASELINE)
+//                        .addComponent(labelUseProxy2)
+//                        .addComponent(checkboxIsProxy2))
+//                );
 
+        LineBorder roundedLineBorder = new LineBorder(Color.LIGHT_GRAY, 1, true);
+        TitledBorder roundedTitledBorder = new TitledBorder(roundedLineBorder, "General");
+        
         // Second panel hidden by default, contain proxy setting
         final JPanel settingPanel = new JPanel();
         GroupLayout settingLayout = new GroupLayout(settingPanel);
@@ -149,11 +189,15 @@ public class DialogPreference extends JDialog {
             public void actionPerformed(ActionEvent arg0) {
                 // Define proxy settings
                 MediatorGUI.model().isProxyfied = checkboxIsProxy.isSelected();
+                MediatorGUI.model().updateAtStartup = checkboxIsProxy2.isSelected();
+                MediatorGUI.model().reportBugs = checkboxIsProxy3.isSelected();
                 MediatorGUI.model().proxyAddress = textProxyAddress.getText();
                 MediatorGUI.model().proxyPort = textProxyPort.getText();
 
                 Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
                 prefs.putBoolean("isProxyfied", MediatorGUI.model().isProxyfied);
+                prefs.putBoolean("updateAtStartup", MediatorGUI.model().updateAtStartup);
+                prefs.putBoolean("reportBugs", MediatorGUI.model().reportBugs);
                 prefs.put("proxyAddress", MediatorGUI.model().proxyAddress);
                 prefs.put("proxyPort", MediatorGUI.model().proxyPort);
 
@@ -177,6 +221,8 @@ public class DialogPreference extends JDialog {
                 textProxyAddress.setText(MediatorGUI.model().proxyAddress);
                 textProxyPort.setText(MediatorGUI.model().proxyPort);
                 checkboxIsProxy.setSelected(MediatorGUI.model().isProxyfied);
+                checkboxIsProxy2.setSelected(MediatorGUI.model().updateAtStartup);
+                checkboxIsProxy3.setSelected(MediatorGUI.model().reportBugs);
             }
         });
 
@@ -186,11 +232,15 @@ public class DialogPreference extends JDialog {
                 .addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                         .addComponent(labelUseProxy)
                         .addComponent(labelProxyAddress)
-                        .addComponent(labelProxyPort))
-                        .addGroup(settingLayout.createParallelGroup()
-                                .addComponent(checkboxIsProxy)
-                                .addComponent(textProxyAddress)
-                                .addComponent(textProxyPort))
+                        .addComponent(labelProxyPort)
+                        .addComponent(labelUseProxy2)
+                        .addComponent(labelUseProxy3))
+                .addGroup(settingLayout.createParallelGroup()
+                        .addComponent(checkboxIsProxy)
+                        .addComponent(textProxyAddress)
+                        .addComponent(textProxyPort)
+                        .addComponent(checkboxIsProxy2)
+                        .addComponent(checkboxIsProxy3))
                 );
 
         // Proxy settings, Vertical line rules
@@ -199,18 +249,27 @@ public class DialogPreference extends JDialog {
                 .addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(labelUseProxy)
                         .addComponent(checkboxIsProxy))
-                        .addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                .addComponent(labelProxyAddress)
-                                .addComponent(textProxyAddress))
-                                .addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(labelProxyPort)
-                                        .addComponent(textProxyPort))
+                .addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelProxyAddress)
+                        .addComponent(textProxyAddress))
+                .addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelProxyPort)
+                        .addComponent(textProxyPort))
+                .addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelUseProxy2)
+                        .addComponent(checkboxIsProxy2))
+                .addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelUseProxy3)
+                        .addComponent(checkboxIsProxy3))
                 );
 
         contentPane.add(settingPanel, BorderLayout.CENTER);
+//        contentPane.add(settingPanel);
+//        contentPane.add(settingPanel2);
 
         this.pack();
-        this.setSize(300, 180);
+        this.setSize(300, 240);
+//        this.setMinimumSize(new Dimension(300, 180));
         this.getRootPane().setDefaultButton(okButton);
         cancelButton.requestFocusInWindow();
         this.setLocationRelativeTo(MediatorGUI.gui());

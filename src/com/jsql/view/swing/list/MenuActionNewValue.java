@@ -11,6 +11,7 @@
 package com.jsql.view.swing.list;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -24,6 +25,7 @@ import javax.swing.JTextArea;
 
 import com.jsql.i18n.I18n;
 import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 
 /**
@@ -47,9 +49,14 @@ public class MenuActionNewValue implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent arg0) {
         JPanel panel = new JPanel(new BorderLayout());
-        final JTextArea textarea = new JPopupTextArea(new JTextArea(6, 50)).getProxy();
+        final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
         panel.add(new JLabel(I18n.LIST_ADD_VALUE_LABEL + ":"), BorderLayout.NORTH);
-        panel.add(new JScrollPanePixelBorder(1, 1, 1, 1, textarea));
+//        panel.add(new JScrollPanePixelBorder(1, 1, 1, 1, textarea));
+//        panel.add(new LightScrollPane(1, 1, 0, 0, textarea));
+        panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
+        
+        panel.setPreferredSize(new Dimension(300, 200));
+        panel.setMinimumSize(new Dimension(300, 200));
         
         textarea.addMouseListener(new MouseAdapter() {
             @Override

@@ -36,9 +36,13 @@ public class SwingAppender extends WriterAppender {
      */
     private static JavaConsoleAdapter javaConsole;
 
+    private static final SimpleAttributeSet FATAL = new SimpleAttributeSet();
     private static final SimpleAttributeSet ERROR = new SimpleAttributeSet();
-    private static final SimpleAttributeSet INFO = new SimpleAttributeSet();
     private static final SimpleAttributeSet WARN = new SimpleAttributeSet();
+    private static final SimpleAttributeSet INFO = new SimpleAttributeSet();
+    private static final SimpleAttributeSet DEBUG = new SimpleAttributeSet();
+    private static final SimpleAttributeSet TRACE = new SimpleAttributeSet();
+    private static final SimpleAttributeSet ALL = new SimpleAttributeSet();
 
     static {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -52,15 +56,29 @@ public class SwingAppender extends WriterAppender {
                 e.printStackTrace();
             }
 
-            StyleConstants.setFontFamily(INFO, "Ubuntu Mono");
+            StyleConstants.setFontFamily(FATAL, "Ubuntu Mono");
             StyleConstants.setFontFamily(ERROR, "Ubuntu Mono");
             StyleConstants.setFontFamily(WARN, "Ubuntu Mono");
-            StyleConstants.setFontSize(INFO, 14);
+            StyleConstants.setFontFamily(INFO, "Ubuntu Mono");
+            StyleConstants.setFontFamily(DEBUG, "Ubuntu Mono");
+            StyleConstants.setFontFamily(TRACE, "Ubuntu Mono");
+            StyleConstants.setFontFamily(ALL, "Ubuntu Mono");
+            
+            StyleConstants.setFontSize(FATAL, 14);
             StyleConstants.setFontSize(ERROR, 14);
             StyleConstants.setFontSize(WARN, 14);
+            StyleConstants.setFontSize(INFO, 14);
+            StyleConstants.setFontSize(DEBUG, 14);
+            StyleConstants.setFontSize(TRACE, 14);
+            StyleConstants.setFontSize(ALL, 14);
             
+            StyleConstants.setForeground(FATAL, Color.blue);
             StyleConstants.setForeground(ERROR, Color.red);
             StyleConstants.setForeground(WARN, Color.red);
+            StyleConstants.setForeground(INFO, Color.blue);
+            StyleConstants.setForeground(DEBUG, new Color(0, 128, 0));
+            StyleConstants.setForeground(TRACE, Color.black);
+            StyleConstants.setForeground(ALL, Color.black);
     }
 
     public SwingAppender() {
@@ -106,31 +124,43 @@ public class SwingAppender extends WriterAppender {
     private void insertText(String message, Level level, ThrowableInformation throwableInformation) {
 
         switch (level.toInt()) {
+            case Level.TRACE_INT:
+                consoleColored.append(message, TRACE);
+                consoleColored.getProxy().setCaretPosition(consoleColored.getProxy().getDocument().getLength());
+                break;
             case Level.ALL_INT:
+                consoleColored.append(message, ALL);
+                consoleColored.getProxy().setCaretPosition(consoleColored.getProxy().getDocument().getLength());
                 break;
             case Level.FATAL_INT:
+                consoleColored.append(message, FATAL);
+                consoleColored.getProxy().setCaretPosition(consoleColored.getProxy().getDocument().getLength());
                 break;
             case Level.ERROR_INT:
                 javaConsole.append(message, WARN);
                 javaConsole.getProxy().setCaretPosition(javaConsole.getProxy().getDocument().getLength());
                 
-                if (throwableInformation.getThrowableStrRep() != null) {
+                if (throwableInformation != null && throwableInformation.getThrowableStrRep() != null) {
                     for (String rep: throwableInformation.getThrowableStrRep()) {
                         javaConsole.append(rep, ERROR);
                     }
                 }
                 break;
             case Level.WARN_INT:
-                consoleColored.append(message,WARN);
+                consoleColored.append(message, WARN);
                 consoleColored.getProxy().setCaretPosition(consoleColored.getProxy().getDocument().getLength());
                 break;
             case Level.INFO_INT:
-                consoleColored.append(message,INFO);
+                consoleColored.append(message, INFO);
                 consoleColored.getProxy().setCaretPosition(consoleColored.getProxy().getDocument().getLength());
                 break;
             case Level.DEBUG_INT:
+                consoleColored.append(message, DEBUG);
+                consoleColored.getProxy().setCaretPosition(consoleColored.getProxy().getDocument().getLength());
                 break;
             default:
+                consoleColored.append(message, ALL);
+                consoleColored.getProxy().setCaretPosition(consoleColored.getProxy().getDocument().getLength());
                 break;
         }
     }

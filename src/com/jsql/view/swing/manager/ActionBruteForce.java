@@ -162,13 +162,9 @@ public class ActionBruteForce implements ActionListener, Runnable {
         if (ActionBruteForce.this.doStop) {
             this.bruteForceManager.result.append("\n\n*** " + I18n.BRUTEFORCE_ABORTED + "\n");
         } else if (hashBruter.isFound()) {
-            this.bruteForceManager.result.append("\n\n" + I18n.BRUTEFORCE_FOUND_HASH + ":\n"
-                    + hashBruter.getGeneratedHash() + "\n"
-                    + I18n.BRUTEFORCE_STRING + ": " + hashBruter.getPassword());
+            this.bruteForceManager.result.append("\n\n" + I18n.BRUTEFORCE_FOUND_HASH + ":\n" + hashBruter.getGeneratedHash() + " => " + hashBruter.getPassword());
 
-            LOGGER.info(I18n.BRUTEFORCE_FOUND_HASH + ":");
-            LOGGER.info(hashBruter.getGeneratedHash());
-            LOGGER.info(I18n.BRUTEFORCE_STRING + ": " + hashBruter.getPassword());
+            LOGGER.debug(I18n.BRUTEFORCE_FOUND_HASH + ": " + hashBruter.getGeneratedHash() + " => " + hashBruter.getPassword());
         } else if (hashBruter.isDone()) {
             this.bruteForceManager.result.append("\n\n*** " + I18n.BRUTEFORCE_HASH_NOT_FOUND);
         }

@@ -181,7 +181,9 @@ public final class ActionHandler {
             public void propertyChange(final PropertyChangeEvent e) {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
-                        menubar.setVisible(false);
+                        if (!MediatorGUI.top().isExpanded) {
+                            menubar.setVisible(false);
+                        }
                     }
                 });
             }
@@ -197,7 +199,9 @@ public final class ActionHandler {
                       return true;
                   } else if (e.getKeyCode() == KeyEvent.VK_ALT
                           && e.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)) {
-                      menubar.setVisible(!menubar.isVisible());
+                      if (!MediatorGUI.top().isExpanded) {
+                          menubar.setVisible(!menubar.isVisible());
+                      }
                       return true;
                   }
                   return false;

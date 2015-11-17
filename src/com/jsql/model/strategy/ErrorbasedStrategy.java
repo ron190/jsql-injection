@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 
 import com.jsql.exception.StoppableException;
 import com.jsql.model.bean.Request;
-import com.jsql.model.injection.AbstractSuspendable;
 import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.injection.suspendable.AbstractSuspendable;
 
 /**
  * Injection strategy using error attack.
@@ -18,7 +18,7 @@ public class ErrorbasedStrategy extends AbstractInjectionStrategy {
 
     @Override
     public void checkApplicability() {
-        LOGGER.info("Error based test...");
+        LOGGER.trace("Error based test...");
         
         String performanceSourcePage = MediatorModel.model().inject(
             MediatorModel.model().insertionCharacter + 

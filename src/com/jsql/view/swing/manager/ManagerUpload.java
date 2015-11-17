@@ -38,6 +38,7 @@ import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextField;
 
 /**
@@ -67,8 +68,9 @@ public class ManagerUpload extends ManagerAbstractList {
         pathsList.add("E:/Outils/EasyPHP-5.3.9/www/");
 
         this.listPaths = new DnDList(pathsList);
-        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, this.listPaths), BorderLayout.CENTER);
-
+//        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, this.listPaths), BorderLayout.CENTER);
+        this.add(new LightScrollPane(1, 1, 0, 0, this.listPaths), BorderLayout.CENTER);
+        
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
 

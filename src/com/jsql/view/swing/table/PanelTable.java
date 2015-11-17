@@ -52,6 +52,8 @@ import net.coderazzi.filters.gui.TableFilterHeader;
 import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.popupmenu.JPopupMenuTable;
+import com.jsql.view.swing.scrollpane.JScrollIndicator;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 
 /**
  * Display a table for database values.
@@ -177,19 +179,22 @@ public class PanelTable extends JPanel {
         columnAdjuster.adjustColumns();
 
         Border border = BorderFactory.createEmptyBorder();
-        JScrollPane scroller = new JScrollPane(table);
-        scroller.setViewportBorder(border);
-        scroller.setBorder(border);
+//        JScrollPane scroller = new JScrollPane(table);
+        JScrollIndicator scroller = new JScrollIndicator(table);
+        scroller.scrollPane.setBorder(BorderFactory.createEmptyBorder(0,0,-1,-1));
+        scroller.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0,0,-1,-1));
+//        scroller.setViewportBorder(border);
+//        scroller.setBorder(border);
+//
+//        scroller.setColumnHeader(new JViewport() {
+//            @Override public Dimension getPreferredSize() {
+//                Dimension d = super.getPreferredSize();
+//                d.height = 21;
+//                return d;
+//            }
+//        });
 
-        scroller.setColumnHeader(new JViewport() {
-            @Override public Dimension getPreferredSize() {
-                Dimension d = super.getPreferredSize();
-                d.height = 21;
-                return d;
-            }
-        });
-
-        new FixedColumnTable(1, scroller);
+        new FixedColumnTable(1, scroller.scrollPane);
         this.add(scroller);
     }
 

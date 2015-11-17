@@ -19,6 +19,7 @@ import java.util.prefs.Preferences;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -156,6 +157,8 @@ public class Menubar extends JMenuBar {
         menuView.add(bruteforce);
         JMenuItem coder = new JMenuItem(I18n.CODER, HelperGUI.CODER_ICON);
         menuView.add(coder);
+        JMenuItem scanList = new JMenuItem(I18n.SCANLIST, HelperGUI.SCANLIST_ICON);
+        menuView.add(scanList);
         menuTools.add(menuView);
 
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
@@ -170,15 +173,13 @@ public class Menubar extends JMenuBar {
         menuPanel.add(networkMenu);
         javaDebugMenu = new JCheckBoxMenuItem(I18n.JAVA_TAB_LABEL, new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/images/cup.png")), prefs.getBoolean(HelperGUI.JAVA_VISIBLE, false));
 
-        class StayOpenCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI {
-            @Override
-            protected void doClick(MenuSelectionManager msm) {
-                menuItem.doClick(0);
-            }
-        }
-
         for (JCheckBoxMenuItem i: new JCheckBoxMenuItem[]{chunkMenu, binaryMenu, networkMenu, javaDebugMenu}) {
-            i.setUI(new StayOpenCheckBoxMenuItemUI());
+            i.setUI(new BasicCheckBoxMenuItemUI() {
+                @Override
+                protected void doClick(MenuSelectionManager msm) {
+                    menuItem.doClick(0);
+                }
+            });
         }
 
         chunkMenu.addActionListener(new ActionListener() {
@@ -187,7 +188,7 @@ public class Menubar extends JMenuBar {
                 if (chunkMenu.isSelected()) {
                     MediatorGUI.bottomPanel().insertChunkTab();
                 } else {
-                    MediatorGUI.bottom().remove(MediatorGUI.bottomPanel().chunkTab.getParent().getParent());
+                    MediatorGUI.bottom().remove(MediatorGUI.bottom().indexOfTab(chunkMenu.getText()));
                 }
             }
         });
@@ -197,7 +198,7 @@ public class Menubar extends JMenuBar {
                 if (binaryMenu.isSelected()) {
                     MediatorGUI.bottomPanel().insertBinaryTab();
                 } else {
-                    MediatorGUI.bottom().remove(MediatorGUI.bottomPanel().binaryTab.getParent().getParent());
+                    MediatorGUI.bottom().remove(MediatorGUI.bottom().indexOfTab(binaryMenu.getText()));
                 }
             }
         });
@@ -207,7 +208,7 @@ public class Menubar extends JMenuBar {
                 if (networkMenu.isSelected()) {
                     MediatorGUI.bottomPanel().insertNetworkTab();
                 } else {
-                    MediatorGUI.bottom().remove(MediatorGUI.bottomPanel().network);
+                    MediatorGUI.bottom().remove(MediatorGUI.bottom().indexOfTab(networkMenu.getText()));
                 }
             }
         });
@@ -217,7 +218,7 @@ public class Menubar extends JMenuBar {
                 if (javaDebugMenu.isSelected()) {
                     MediatorGUI.bottomPanel().insertJavaDebugTab();
                 } else {
-                    MediatorGUI.bottom().remove(MediatorGUI.bottomPanel().javaTab.getParent().getParent());
+                    MediatorGUI.bottom().remove(MediatorGUI.bottom().indexOfTab(javaDebugMenu.getText()));
                 }
             }
         });
@@ -234,6 +235,7 @@ public class Menubar extends JMenuBar {
         upload.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_6, ActionEvent.CTRL_MASK));
         bruteforce.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_7, ActionEvent.CTRL_MASK));
         coder.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_8, ActionEvent.CTRL_MASK));
+        scanList.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_9, ActionEvent.CTRL_MASK));
 
         final Map<JMenuItem, Integer> p = new HashMap<JMenuItem, Integer>();
         p.put(database, 0);
@@ -241,8 +243,10 @@ public class Menubar extends JMenuBar {
         p.put(file, 2);
         p.put(webshell, 3);
         p.put(sqlshell, 4);
-        p.put(bruteforce, 5);
-        p.put(coder, 6);
+        p.put(upload, 5);
+        p.put(bruteforce, 6);
+        p.put(coder, 7);
+        p.put(scanList, 8);
         for (final JMenuItem m: p.keySet()) {
             m.addActionListener(new ActionListener() {
                 @Override

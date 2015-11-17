@@ -13,7 +13,6 @@ package com.jsql.view.swing;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -39,7 +38,6 @@ import javax.swing.plaf.ColorUIResource;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.ui.CleanMetalScrollBarUI;
 import com.jsql.view.swing.ui.CustomBasicComboBoxUI;
 import com.jsql.view.swing.ui.CustomBasicSpinnerUI;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
@@ -76,6 +74,7 @@ public final class HelperGUI {
     public static final Icon CODER_ICON = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/images/coder.png"));
     public static final Icon UPLOAD_ICON = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/images/server_add.png"));
     public static final Icon TABLE_ICON = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/images/table.png"));
+    public static final Icon SCANLIST_ICON = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/images/application_cascade.png"));
 
     public static final Icon EMPTY = new ImageIcon(new BufferedImage(16, 16, BufferedImage.TRANSLUCENT));
     public static final Icon ZEROSIZE = new ImageIcon() {
@@ -87,7 +86,10 @@ public final class HelperGUI {
     public static final String PATH_PAUSE = "/com/jsql/view/swing/images/pause.png";
     public static final String PATH_PROGRESSBAR = "/com/jsql/view/swing/images/progressBar.gif";
 
-    public static final Border BLU_ROUND_BORDER = new RoundBorder(3, 3, true);
+//    public static final Border BLU_ROUND_BORDER = new RoundBorder(3, 3, true);
+    public static final Border BLU_ROUND_BORDER = BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
+        BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
     public static final Font MYFONT = new Font("Segoe UI", Font.PLAIN, UIManager.getDefaults().getFont("TextPane.font").getSize());
 
@@ -120,7 +122,10 @@ public final class HelperGUI {
         UIManager.put("ToolTip.foregroundInactive", Color.BLACK);
         
         // Change border of button in default Save as, Confirm dialogs
-        UIManager.put("Button.border", new RoundBorder(7, 3, true));
+//        UIManager.put("Button.border", new RoundBorder(7, 3, true));
+        UIManager.put("Button.border", BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
+                BorderFactory.createEmptyBorder(2, 2, 2, 2)));
         UIManager.put("Button.darkShadow", Color.RED);
 //        UIManager.put("Button.background", Color.RED);
 //        UIManager.put("Button.focus", Color.RED);
@@ -154,7 +159,10 @@ public final class HelperGUI {
 //        UIManager.put("Button.gradient", a);
         
         // Change border of button in Save as dialog
-        UIManager.put("ToggleButton.border", new RoundBorder(7, 3, true));
+//        UIManager.put("ToggleButton.border", new RoundBorder(7, 3, true));
+        UIManager.put("ToggleButton.border", BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
+                BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 
         // Use ColorUIResource to preserve the background color for arrow
         UIManager.put("ComboBox.background", new ColorUIResource(Color.WHITE));
@@ -202,9 +210,7 @@ public final class HelperGUI {
         
         UIManager.put("TextField.font", new Font(((Font) UIManager.get("TextField.font")).getName(), Font.PLAIN, ((Font) UIManager.get("TextField.font")).getSize()));
         UIManager.put("TextArea.font", new Font("Ubuntu Mono", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize() + 2));
-//        UIManager.put("TextArea.font", new Font("monospaced", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize()));
         UIManager.put("TextPane.font", new Font("Ubuntu Mono", Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize()));
-//        UIManager.put("TextPane.font", new Font("monospaced", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize()));
         UIManager.put("ComboBox.font", MYFONT);
         UIManager.put("Button.font", MYFONT);
         UIManager.put("Label.font", MYFONT);
@@ -220,13 +226,19 @@ public final class HelperGUI {
 //        UIManager.put("Spinner.arrowButtonInsets", new Insets(0, 0, 0, 0));
         UIManager.put("Spinner.arrowButtonBorder", HelperGUI.BLU_ROUND_BORDER);
         UIManager.put("Spinner.border", BorderFactory.createCompoundBorder(
-                new RoundBorder(2, 2, true),
-                BorderFactory.createMatteBorder(1, 1, 1, 1, Color.WHITE)
-                ));
+                BorderFactory.createLineBorder(new Color(132, 172, 221)),
+//            new RoundBorder(2, 2, true),
+            BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE)
+        ));
         UIManager.put("ComboBox.border", HelperGUI.BLU_ROUND_BORDER);
         UIManager.put("TextField.border", HelperGUI.BLU_ROUND_BORDER);
         
-        UIManager.put("FileChooser.listViewBorder", new RoundBorder(2, 2, true));
+        UIManager.put("FileChooser.listViewBorder", BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(132, 172, 221)),
+//            new RoundBorder(2, 2, true),
+            BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE)
+        ));
+//        UIManager.put("FileChooser.listViewBorder", new RoundBorder(2, 2, true));
         
         UIManager.put("ComboBox.selectionBackground", SELECTION_BACKGROUND);
         UIManager.put("TextField.selectionBackground", SELECTION_BACKGROUND);
@@ -258,13 +270,18 @@ public final class HelperGUI {
 
         // Custom progress bar
         UIManager.put("ProgressBar.border", BorderFactory.createCompoundBorder(
-                BorderFactory.createEmptyBorder(3, 0, 4, 0),
-                new RoundBorder(2, 2, Color.GRAY)));
+            BorderFactory.createEmptyBorder(3, 0, 4, 0),
+            BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(Color.GRAY),
+//                new RoundBorder(2, 2, true),
+                BorderFactory.createLineBorder(Color.WHITE)
+            )
+//            new RoundBorder(2, 2, Color.GRAY)
+        ));
         UIManager.put("ProgressBar.foreground", new Color(136, 183, 104));
         UIManager.put("ProgressBar.background", UIManager.get("Tree.background"));
         
         UIManager.put("TabbedPaneUI", CustomMetalTabbedPaneUI.class.getName());
-        UIManager.put("ScrollBarUI", CleanMetalScrollBarUI.class.getName());
         UIManager.put("ComboBoxUI", CustomBasicComboBoxUI.class.getName());
         UIManager.put("SpinnerUI", CustomBasicSpinnerUI.class.getName());
     }

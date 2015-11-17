@@ -41,6 +41,7 @@ import com.jsql.i18n.I18n;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.combomenu.ComboMenuBar;
 import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.text.JPopupTextArea;
 
@@ -122,13 +123,15 @@ public class ManagerCoder extends JPanel {
         middleLine.add(comboMenu);
         middleLine.add(run, BorderLayout.EAST);
 
-        topMixed.add(new JScrollPanePixelBorder(1, 1, 1, 0, entry), BorderLayout.CENTER);
+//        topMixed.add(new JScrollPanePixelBorder(1, 1, 1, 0, entry), BorderLayout.CENTER);
+        topMixed.add(new LightScrollPane(1, 1, 1, 0, entry), BorderLayout.CENTER);
         topMixed.add(middleLine, BorderLayout.SOUTH);
 
         JPanel bottom = new JPanel(new BorderLayout());
         result = new JPopupTextArea().getProxy();
         result.setLineWrap(true);
-        bottom.add(new JScrollPanePixelBorder(1, 1, 0, 0, result), BorderLayout.CENTER);
+//        bottom.add(new JScrollPanePixelBorder(1, 1, 0, 0, result), BorderLayout.CENTER);
+        bottom.add(new LightScrollPane(1, 1, 0, 0, result), BorderLayout.CENTER);
 
         run.addActionListener(new ActionCoder(this));
 

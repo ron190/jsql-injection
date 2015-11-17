@@ -17,7 +17,8 @@ public class ListItem {
     /**
      * Text displayed on item.
      */
-    private String internalString;
+    public String internalString;
+    public Boolean isValidated = false;
     
     /**
      * Create a JList item.

@@ -161,7 +161,7 @@ public class CubridStrategy extends ASQLStrategy {
     }
 
     @Override
-    public String performanceQuery(String[] indexes) {
+    public String getIndicesCapacity(String[] indexes) {
         return
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
@@ -170,7 +170,7 @@ public class CubridStrategy extends ASQLStrategy {
     }
 
     @Override
-    public String initialQuery(Integer nbFields) {
+    public String getIndices(Integer nbFields) {
         List<String> fields = new ArrayList<String>(); 
         for (int i = 1 ; i <= nbFields ; i++) {
             fields.add("''||1337"+ i +"7330%2b1");
@@ -179,7 +179,7 @@ public class CubridStrategy extends ASQLStrategy {
     }
 
     @Override
-    public String insertionCharacterQuery() {
+    public String getOrderBy() {
         return "+order+by+1337--+";
     }
 

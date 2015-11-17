@@ -10,12 +10,17 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import org.apache.log4j.Logger;
+
+import com.jsql.view.scan.interaction.AddDatabases;
 import com.jsql.view.swing.MediatorGUI;
 
 /**
  * Mark the injection as invulnerable to a normal injection.
  */
 public class MarkNormalStrategy implements IInteractionCommand {
+    public static final Logger LOGGER = Logger.getLogger(MarkNormalStrategy.class);
+
     /**
      * @param interactionParams
      */
@@ -25,6 +30,8 @@ public class MarkNormalStrategy implements IInteractionCommand {
 
     @Override
     public void execute() {
+        LOGGER.info("Using normal injection...");
+
         MediatorGUI.status().labelNormal.setUnderlined();
     }
 }

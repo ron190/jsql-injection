@@ -22,7 +22,7 @@ import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.table.ComparatorColumn;
 import com.jsql.view.swing.table.PanelTable;
-import com.jsql.view.swing.tree.AbstractNodeModel;
+import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**
  * Create a new tab for the values.

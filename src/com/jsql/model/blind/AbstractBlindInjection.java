@@ -14,8 +14,8 @@ import org.apache.log4j.Logger;
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.bean.Request;
-import com.jsql.model.injection.AbstractSuspendable;
 import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.injection.suspendable.AbstractSuspendable;
 
 /**
  *
@@ -75,7 +75,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
          */
         while (submittedTasks > 0) {
             // stop/pause/resume if user needs that
-            if (stoppable.stopOrPause()) {
+            if (stoppable.shouldSuspend()) {
                 /**
                  * TODO log stopping/free memory...
                  */

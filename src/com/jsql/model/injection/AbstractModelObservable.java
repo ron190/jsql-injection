@@ -24,17 +24,17 @@ import com.jsql.model.bean.Request;
  */
 public abstract class AbstractModelObservable extends Observable {
     /**
-     * Simple boolean state, true if user wants to stop preparation.<br>
+     * True if user wants to stop preparation.<br>
      * During the preparation, several methods will
      * check if the execution must be stopped.
      */
-    public boolean stopFlag = false;
+    public boolean shouldStopAll = false;
 
     /**
-     * 
+     * Make all process to stop
      */
     public void stop() {
-        this.stopFlag = true;
+        this.shouldStopAll = true;
     }
 
     /**
@@ -45,7 +45,7 @@ public abstract class AbstractModelObservable extends Observable {
      *  return source page after the HTTP call.
      */
     public abstract String inject(String dataInjection);
-    public abstract String inject(String dataInjection, String[] responseHeader, boolean useVisibleIndex);
+    public abstract String inject(String dataInjection, boolean useVisibleIndex);
 
     /**
      * Send an interaction message to registered views.

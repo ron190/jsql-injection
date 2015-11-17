@@ -14,7 +14,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.view.swing.MediatorGUI;
-import com.jsql.view.swing.tree.AbstractNodeModel;
+import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**
  * Stop the refreshing of progress bar.

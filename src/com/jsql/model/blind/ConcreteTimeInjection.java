@@ -43,7 +43,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
     public ConcreteTimeInjection() {
 
         // Check if the user wants to stop the preparation
-        if (MediatorModel.model().stopFlag) {
+        if (MediatorModel.model().shouldStopAll) {
             return;
         }
 
@@ -73,7 +73,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
          */
         try {
             for (Future<CallableTime> falseMark: listFalseMark) {
-                if (MediatorModel.model().stopFlag) {
+                if (MediatorModel.model().shouldStopAll) {
                     return;
                 }
                 if (falseMark.get().isTrue()) {
@@ -114,7 +114,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
          */
         try {
             for (Future<CallableTime> falseMark: listTrueMark) {
-                if (MediatorModel.model().stopFlag) {
+                if (MediatorModel.model().shouldStopAll) {
                     return;
                 }
                 if (!falseMark.get().isTrue()) {
@@ -141,7 +141,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
 
     @Override
     public boolean isInjectable() throws PreparationException {
-        if (MediatorModel.model().stopFlag) {
+        if (MediatorModel.model().shouldStopAll) {
             /**
              * TODO Stoppable Exception
              */

@@ -24,6 +24,7 @@ import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.manager.ManagerAdminPage;
 import com.jsql.view.swing.manager.ManagerBruteForce;
+import com.jsql.view.swing.manager.ManagerScanList;
 import com.jsql.view.swing.manager.ManagerCoder;
 import com.jsql.view.swing.manager.ManagerFile;
 import com.jsql.view.swing.manager.ManagerSQLShell;
@@ -33,7 +34,7 @@ import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tree.CellEditorNode;
 import com.jsql.view.swing.tree.CellRendererNode;
-import com.jsql.view.swing.tree.NodeModelEmpty;
+import com.jsql.view.swing.tree.model.NodeModelEmpty;
 
 /**
  * Panel on the left with functionalities like webshell, file reading and admin page finder.
@@ -46,10 +47,15 @@ public class AdapterLeftTabbedPane extends MouseTabbedPane {
     public ManagerWebshell shellManager = new ManagerWebshell();
 
     /**
+     * Panel for testing multiple URLs.
+     */
+    public ManagerScanList scanListManager = new ManagerScanList();
+
+    /**
      * Panel for testing backoffice admin pages.
      */
     public ManagerAdminPage adminPageManager = new ManagerAdminPage();
-
+    
     /**
      * Panel for reading files source.
      */
@@ -125,6 +131,7 @@ public class AdapterLeftTabbedPane extends MouseTabbedPane {
         this.addTab(I18n.UPLOAD, HelperGUI.UPLOAD_ICON, uploadManager, I18n.UPLOAD_TOOLTIP);
         this.addTab(I18n.BRUTEFORCE, HelperGUI.BRUTER_ICON, new ManagerBruteForce(), I18n.BRUTEFORCE_TOOLTIP);
         this.addTab(I18n.CODER, HelperGUI.CODER_ICON, new ManagerCoder(), I18n.CODER_TOOLTIP);
+        this.addTab(I18n.SCANLIST, HelperGUI.SCANLIST_ICON, scanListManager, I18n.SCANLIST_TOOLTIP);
 
         this.fileManager.setButtonEnable(false);
         this.shellManager.setButtonEnable(false);

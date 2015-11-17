@@ -16,8 +16,8 @@ import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.bean.Request;
 import com.jsql.model.blind.ConcreteTimeInjection;
-import com.jsql.model.injection.AbstractSuspendable;
 import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.injection.suspendable.AbstractSuspendable;
 
 /**
  * Injection strategy using time attack.
@@ -35,9 +35,10 @@ public class TimeStrategy extends AbstractInjectionStrategy {
 
     @Override
     public void checkApplicability() throws PreparationException {
-        LOGGER.info("Time based test...");
+        LOGGER.trace("Time based test...");
         
         this.timeInjection = new ConcreteTimeInjection();
+        
         this.isApplicable = this.timeInjection.isInjectable();
         
         if (this.isApplicable) {

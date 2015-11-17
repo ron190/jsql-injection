@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -66,7 +67,8 @@ public class PanelNode extends JPanel {
         this.progressBar.setUI(new BasicProgressBarUI());
         this.label.setOpaque(true);
 
-        this.label.setBorder(new RoundBorder(4, 1, true));
+        this.label.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)));
+//        this.label.setBorder(new RoundBorder(4, 1, true));
 
         this.setBackground(Color.WHITE);
 

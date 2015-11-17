@@ -28,7 +28,7 @@ abstract class ManagerAbstractList extends JPanel {
     /**
      * Contains the paths of webshell.
      */
-    protected DnDList listPaths;
+    public DnDList listPaths;
 
     /**
      * Starts the upload process.

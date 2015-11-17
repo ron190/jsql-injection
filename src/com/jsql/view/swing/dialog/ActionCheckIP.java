@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
@@ -42,7 +43,7 @@ public class ActionCheckIP implements ActionListener, Runnable {
                         + "\nVerify your proxy informations or disable proxy setting.", e);
                 return;
             }
-            LOGGER.info("Proxy is responding.");
+            LOGGER.trace("Proxy is responding.");
         }
 
         BufferedReader in = null;
@@ -61,7 +62,7 @@ public class ActionCheckIP implements ActionListener, Runnable {
 
             in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
             String ip2 = in.readLine();
-            LOGGER.info("Your IP information (AWS): " + ip2);
+            LOGGER.trace("Your IP information (AWS): " + ip2);
         } catch (MalformedURLException e) {
             LOGGER.warn("Malformed URL: " + e.getMessage(), e);
         } catch (IOException e) {
@@ -92,14 +93,15 @@ public class ActionCheckIP implements ActionListener, Runnable {
             String ip2 = in.readLine();
             
             JSONObject jsonObject = new JSONObject(ip2);
+            
             String ip = jsonObject.getString("ip");
             String continent_code = jsonObject.getString("continent_code");
             String country = jsonObject.getString("country");
-            String region = jsonObject.getString("region");
-            String city = jsonObject.getString("city");
-            String postal_code = jsonObject.getString("postal_code");
+            String region = ArrayUtils.contains(jsonObject.names().join("%#%%#%").split("%#%%#%"), "region") ? ","+jsonObject.getString("region") : "";
+            String city = ArrayUtils.contains(jsonObject.names().join("%#%%#%").split("%#%%#%"), "city") ? ","+jsonObject.getString("city") : "";
+            String postal_code = ArrayUtils.contains(jsonObject.names().join("%#%%#%").split("%#%%#%"), "postal_code") ? ","+jsonObject.getString("postal_code") : "";
             
-            LOGGER.info("Your IP information (Telize): " + ip + " [" + continent_code + "," + country + "," + region + "," + city + "," + postal_code + "]");
+            LOGGER.trace("Your IP information (Telize): " + ip + " [" + continent_code + "," + country + region + city + postal_code + "]");
         } catch (MalformedURLException e) {
             LOGGER.warn("Malformed URL: " + e.getMessage(), e);
         } catch (IOException e) {
@@ -107,7 +109,7 @@ public class ActionCheckIP implements ActionListener, Runnable {
         } finally {
             if (in != null) {
                 try {
-                    LOGGER.info("Checking IP done.");
+                    LOGGER.trace("Checking IP done.");
                     in.close();
                 } catch (IOException e) {
                     LOGGER.warn("Error closing Telize proxy test: " + e.getMessage(), e);

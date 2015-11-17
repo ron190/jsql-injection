@@ -32,6 +32,7 @@ import javax.swing.SwingConstants;
 import com.jsql.i18n.I18n;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JPopupTextField;
 
@@ -205,7 +206,8 @@ public class ManagerBruteForce extends JPanel {
 
         result = new JPopupTextArea().getProxy();
         result.setLineWrap(true);
-        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, result), BorderLayout.CENTER);
+//        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, result), BorderLayout.CENTER);
+        this.add(new LightScrollPane(1, 1, 0, 0, result), BorderLayout.CENTER);
         
         JPanel lastLine = new JPanel();
         lastLine.setOpaque(false);

@@ -54,6 +54,11 @@ import com.jsql.view.swing.terminal.AbstractTerminal;
 @SuppressWarnings("serial")
 public class JFrameGUI extends JFrame implements Observer {
     /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(JFrameGUI.class);
+
+    /**
      * Main center panel, composed by left and right tabs.
      * @return Center panel
      */
@@ -73,11 +78,6 @@ public class JFrameGUI extends JFrame implements Observer {
                 = new HashMap<AbstractElementDatabase, DefaultMutableTreeNode>();
     
     /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getLogger(JFrameGUI.class);
-
-    /**
      * Build the GUI: add app icon, tree icons, the 3 main panels.
      */
     public JFrameGUI() {
@@ -91,9 +91,6 @@ public class JFrameGUI extends JFrame implements Observer {
         // Load UI before any component
         HelperGUI.prepareGUI();
         ShadowPopupFactory.install();
-        
-        // Register the view to the model
-        MediatorGUI.model().addObserver(this);
         
         // Save controller
         MediatorGUI.register(new Menubar());
@@ -238,6 +235,7 @@ public class JFrameGUI extends JFrame implements Observer {
         MediatorGUI.left().fileManager.changePrivilegeIcon(HelperGUI.SQUARE_GREY);
         MediatorGUI.left().shellManager.changePrivilegeIcon(HelperGUI.SQUARE_GREY);
         MediatorGUI.left().sqlShellManager.changePrivilegeIcon(HelperGUI.SQUARE_GREY);
+        MediatorGUI.left().uploadManager.changePrivilegeIcon(HelperGUI.SQUARE_GREY);
     }
 
     /**

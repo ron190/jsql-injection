@@ -150,7 +150,7 @@ public class HSQLDBStrategy extends ASQLStrategy {
     }
 
     @Override
-    public String performanceQuery(String[] indexes) {
+    public String getIndicesCapacity(String[] indexes) {
         return
             MediatorModel.model().initialQuery.replaceAll(
                 "1337(" + ToolsString.join(indexes, "|") + ")7331",
@@ -159,7 +159,7 @@ public class HSQLDBStrategy extends ASQLStrategy {
     }
 
     @Override
-    public String initialQuery(Integer nbFields) {
+    public String getIndices(Integer nbFields) {
         String replaceTag = "";
         List<String> fields = new ArrayList<String>(); 
         for (int i = 1 ; i <= nbFields ; i++) {
@@ -170,7 +170,7 @@ public class HSQLDBStrategy extends ASQLStrategy {
     }
 
     @Override
-    public String insertionCharacterQuery() {
+    public String getOrderBy() {
         return "+order+by+1337--+";
     }
 

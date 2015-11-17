@@ -47,7 +47,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
         ConcreteBlindInjection.blankTrueMark = ConcreteBlindInjection.callUrl("");
 
         // Check if the user wants to stop the preparation
-        if (MediatorModel.model().stopFlag) {
+        if (MediatorModel.model().shouldStopAll) {
             return;
         }
 
@@ -79,7 +79,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
         try {
             constantFalseMark = listFalseMark.get(0).get().getOpcodes();
             for (Future<CallableBlind> falseMark: listFalseMark) {
-                if (MediatorModel.model().stopFlag) {
+                if (MediatorModel.model().shouldStopAll) {
                     return;
                 }
                 constantFalseMark.retainAll(falseMark.get().getOpcodes());
@@ -90,7 +90,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
             LOGGER.error(e, e);
         }
 
-        if (MediatorModel.model().stopFlag) {
+        if (MediatorModel.model().shouldStopAll) {
             return;
         }
 
@@ -121,7 +121,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
          */
         try {
             for (Future<CallableBlind> trueMark: listTrueMark) {
-                if (MediatorModel.model().stopFlag) {
+                if (MediatorModel.model().shouldStopAll) {
                     return;
                 }
                 ConcreteBlindInjection.constantFalseMark.removeAll(trueMark.get().getOpcodes());
@@ -145,7 +145,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
 
     @Override
     public boolean isInjectable() throws PreparationException {
-        if (MediatorModel.model().stopFlag) {
+        if (MediatorModel.model().shouldStopAll) {
             /**
              * TODO Stoppable Exception
              */

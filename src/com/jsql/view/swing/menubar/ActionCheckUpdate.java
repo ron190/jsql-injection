@@ -44,15 +44,11 @@ public class ActionCheckUpdate implements ActionListener, Runnable {
                 LOGGER.info(I18n.UPDATE_UPTODATE);
             } else {
                 LOGGER.warn(I18n.UPDATE_NEW_VERSION_AVAILABLE);
-                Desktop.getDesktop().browse(new URI("http://code.google.com/p/jsql-injection/downloads/list"));
             }
         } catch (NumberFormatException e) {
             LOGGER.warn(I18n.UPDATE_EXCEPTION);
             LOGGER.error(e, e);
         } catch (IOException e) {
-            LOGGER.warn(I18n.UPDATE_EXCEPTION);
-            LOGGER.error(e, e);
-        } catch (URISyntaxException e) {
             LOGGER.warn(I18n.UPDATE_EXCEPTION);
             LOGGER.error(e, e);
         }

@@ -5,7 +5,7 @@ import org.junit.BeforeClass;
 import com.jsql.exception.PreparationException;
 import com.jsql.model.injection.InjectionModel;
 import com.jsql.model.injection.MediatorModel;
-import com.jsql.view.println.SystemOutTerminal;
+import com.jsql.view.junit.SystemOutTerminal;
 
 public class MysqlBlindHeaderTestSuite extends ConcreteMysqlTestSuite {
 

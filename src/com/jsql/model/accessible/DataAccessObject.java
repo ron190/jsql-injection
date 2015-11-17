@@ -25,7 +25,7 @@ import com.jsql.model.bean.Database;
 import com.jsql.model.bean.Request;
 import com.jsql.model.bean.Table;
 import com.jsql.model.injection.MediatorModel;
-import com.jsql.model.injection.StoppableLoopIntoResults;
+import com.jsql.model.injection.suspendable.SuspendableGetRows;
 import com.jsql.tool.ToolsString;
 
 /**
@@ -42,11 +42,11 @@ public class DataAccessObject {
      * => version{%}database{%}user{%}CURRENT_USER
      */
     public void getDatabaseInfos() throws PreparationException, StoppableException {
-        LOGGER.info("Fetching informations...");
+        LOGGER.trace("Fetching informations...");
         
         String[] sourcePage = {""};
 
-        String hexResult = new StoppableLoopIntoResults().action(
+        String hexResult = new SuspendableGetRows().action(
             MediatorModel.model().sqlStrategy.getSchemaInfos(),
             sourcePage,
             false,
@@ -87,10 +87,10 @@ public class DataAccessObject {
      * The process can be stopped by the user.
      */
     public List<Database> listDatabases() throws PreparationException, StoppableException {
-        LOGGER.info("Fetching databases...");
+        LOGGER.trace("Fetching databases...");
         
         String[] sourcePage = {""};
-        String hexResult = new StoppableLoopIntoResults().action(
+        String hexResult = new SuspendableGetRows().action(
             MediatorModel.model().sqlStrategy.getSchemaList(),
             sourcePage,
             true,
@@ -154,7 +154,7 @@ public class DataAccessObject {
         String tableCount = Integer.toString(database.getCount());
 
         String[] pageSource = {""};
-        String hexResult = new StoppableLoopIntoResults().action(
+        String hexResult = new SuspendableGetRows().action(
             MediatorModel.model().sqlStrategy.getTableList(database),
             pageSource,
             true,
@@ -220,7 +220,7 @@ public class DataAccessObject {
         MediatorModel.model().interact(request);
 
         String[] pageSource = {""};
-        String hexResult = new StoppableLoopIntoResults().action(
+        String hexResult = new SuspendableGetRows().action(
             MediatorModel.model().sqlStrategy.getColumnList(table),
             pageSource,
             true,
@@ -301,9 +301,12 @@ public class DataAccessObject {
         String[] arrayColumns = columnsName.toArray(new String[columnsName.size()]);
 
         String[] pageSource = {""};
-        String hexResult = new StoppableLoopIntoResults().action(
+        String hexResult = new SuspendableGetRows().action(
             MediatorModel.model().sqlStrategy.getValues(arrayColumns, database, table),
-            pageSource, true, rowCount, table
+            pageSource, 
+            true, 
+            rowCount, 
+            table
         );
 
         // Parse all the data we have retrieved

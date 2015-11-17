@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import java.awt.Color;
 import java.util.UUID;
 
 import javax.swing.BorderFactory;
@@ -18,7 +19,9 @@ import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 
 import com.jsql.model.accessible.RessourceAccessObject;
+import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.terminal.TerminalWebshell;
 
@@ -49,11 +52,21 @@ public class CreateShellTab implements IInteractionCommand {
         UUID terminalID = UUID.randomUUID();
         TerminalWebshell terminal = new TerminalWebshell(terminalID, url);
         MediatorGUI.gui().getConsoles().put(terminalID, terminal);
-
-        JScrollPane scroller = new JScrollPane(terminal);
-        Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
-        scroller.setViewportBorder(border);
-        scroller.setBorder(border);
+        
+//        JScrollPane scroller = new JScrollPane(terminal);
+        LightScrollPane scroller = new LightScrollPane(terminal);
+        scroller.THUMB_COLOR = HelperGUI.SELECTION_BACKGROUND;
+        scroller.SCROLL_BAR_ALPHA_ROLLOVER = 175;
+        scroller.SCROLL_BAR_ALPHA = 100;
+        
+//        terminal.setBorder(BorderFactory.createEmptyBorder(1,1,0,0));
+//        scroller.setBorder(BorderFactory.createEmptyBorder(00,0,-2,-2));
+////        Border border = BorderFactory.createEmptyBorder(0, 0, -5, -5);
+//        scroller.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0-5, 0-5, -5, -5));
+        scroller.setBorder(BorderFactory.createMatteBorder(0,0,1,1,Color.BLACK));
+//        Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
+//        scroller.setViewportBorder(border);
+//        scroller.setBorder(border);
 
         MediatorGUI.right().addTab("Web shell ", scroller);
 

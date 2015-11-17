@@ -17,9 +17,9 @@ public abstract class ASQLStrategy {
 
     abstract public String normalStrategy(String sqlQuery, String startPosition);
     
-    abstract public String performanceQuery(String[] indexes);
-    abstract public String initialQuery(Integer nbFields);
-    abstract public String insertionCharacterQuery();
+    abstract public String getIndicesCapacity(String[] indexes);
+    abstract public String getIndices(Integer nbFields);
+    abstract public String getOrderBy();
     
     abstract public String getLimit(Integer limitSQLResult);
     

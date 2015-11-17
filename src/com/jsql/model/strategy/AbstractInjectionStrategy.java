@@ -2,7 +2,7 @@ package com.jsql.model.strategy;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.injection.AbstractSuspendable;
+import com.jsql.model.injection.suspendable.AbstractSuspendable;
 
 /**
  * Define a strategy to inject SQL with methods like errorbased or timebased.
@@ -25,8 +25,9 @@ public abstract class AbstractInjectionStrategy {
      * Test if this strategy can be used to inject SQL.
      * @return
      * @throws PreparationException
+     * @throws StoppableException 
      */
-    protected abstract void checkApplicability() throws PreparationException;
+    protected abstract void checkApplicability() throws PreparationException, StoppableException;
     
     /**
      * Inform the view that this strategy can be used.
