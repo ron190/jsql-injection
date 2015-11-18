@@ -24,15 +24,15 @@ import com.jsql.model.injection.suspendable.AbstractSuspendable;
  */
 public class TimeStrategy extends AbstractInjectionStrategy {
     /**
-     * Injection method using time attack.
-     */
-    private ConcreteTimeInjection timeInjection;
-    
-    /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getLogger(TimeStrategy.class);
 
+    /**
+     * Injection method using time attack.
+     */
+    private ConcreteTimeInjection timeInjection;
+    
     @Override
     public void checkApplicability() throws PreparationException {
         LOGGER.trace("Time based test...");

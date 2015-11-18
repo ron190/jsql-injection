@@ -19,6 +19,11 @@ import com.jsql.model.injection.MediatorModel;
  */
 public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind> {
     /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ConcreteBlindInjection.class);
+
+    /**
      * Source code of the TRUE web page (usually ?id=1).
      */
     private static String blankTrueMark;
@@ -30,11 +35,6 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
      *  the TRUE queries.
      */
     private static List<Diff> constantFalseMark = new ArrayList<Diff>();
-
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getLogger(ConcreteBlindInjection.class);
 
     /**
      * Create blind attack initialisation.

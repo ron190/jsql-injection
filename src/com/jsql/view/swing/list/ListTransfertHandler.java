@@ -33,15 +33,15 @@ import org.apache.log4j.Logger;
 @SuppressWarnings("serial")
 public class ListTransfertHandler extends TransferHandler {
     /**
-     * List of cut/copy/paste/drag/drop items.
-     */
-    private List<ListItem> dragPaths = null;
-    
-    /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getLogger(ListTransfertHandler.class);
 
+    /**
+     * List of cut/copy/paste/drag/drop items.
+     */
+    private List<ListItem> dragPaths = null;
+    
     @Override
     public int getSourceActions(JComponent c) {
         return TransferHandler.COPY_OR_MOVE;

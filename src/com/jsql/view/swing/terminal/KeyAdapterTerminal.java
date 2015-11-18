@@ -25,6 +25,11 @@ import org.apache.log4j.Logger;
  */
 public class KeyAdapterTerminal extends KeyAdapter {
     /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(KeyAdapterTerminal.class);
+
+    /**
      * Terminal where keys are processed.
      */
     private AbstractTerminal terminal;
@@ -38,11 +43,6 @@ public class KeyAdapterTerminal extends KeyAdapter {
      * Current position in array of past commands.
      */
     private int cmdsIndex = 0;
-
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getLogger(KeyAdapterTerminal.class);
 
     /**
      * Create a keyboard processor for a terminal.

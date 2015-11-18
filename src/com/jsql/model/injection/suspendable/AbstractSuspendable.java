@@ -25,16 +25,6 @@ public abstract class AbstractSuspendable /*implements Runnable*/ {
      */
     private boolean shouldPauseThread = false;
 
-    // /**
-    //  * Error message.
-    //  */
-    // private String errorResponse;
-    // 
-    // /**
-    //  * PAge source code as Hex string.
-    //  */
-    // private String threadResponse = "";
-    
     /**
      * Thread's states Pause and Stop are processed by this method.
      * - Pause action in infinite loop if invoked while shouldPauseThread is set to true,<br>
@@ -58,67 +48,6 @@ public abstract class AbstractSuspendable /*implements Runnable*/ {
         }
     }
     
-    // /**
-    //  * Runnable default job.
-    //  * Run action() defined by subclass,
-    //  * Start the runnable by method start() invocation (Thread/Runnable pattern).
-    //  * Doesn't called directly.
-    //  * Take care of result and error coming from action()
-    //  */
-    // @Override
-    // public void run() {
-    //     try {
-    //         this.threadResponse = this.action();
-    //     } catch (PreparationException e) {
-    //         this.errorResponse = e.getMessage();
-    //     } catch (StoppableException e) {
-    //         this.errorResponse = e.getMessage();
-    //     }
-    // }
-    
-    // /**
-    //  * Start the job defined by action(), and wait for it to finish.
-    //  * @return source page
-    //  * @throws PreparationException if action throws exception
-    //  * @throws StoppableException 
-    //  */
-    // public String beginSynchrone() throws PreparationException, StoppableException {
-    //     // Thread t = new Thread(this, "Stoppable - begin");
-    //     // t.start();
-    //     // try {
-    //     //     t.join();
-    //     // } catch (InterruptedException e) {
-    //     //     LOGGER.error(e, e);
-    //     // }
-    //     // 
-    //     // if (this.errorResponse != null) {
-    //     //     /**
-    //     //      * TODO Injection Empty Response Exception
-    //     //      */
-    //     //     throw new PreparationException(this.errorResponse);
-    //     // } else {
-    //     //     return this.threadResponse;
-    //     // }
-    //     
-    //     //try {
-    //     //    this.threadResponse = this.action();
-    //     //} catch (PreparationException e) {
-    //     //    this.errorResponse = e.getMessage();
-    //     //} catch (StoppableException e) {
-    //     //    this.errorResponse = e.getMessage();
-    //     //}
-    //     //if (this.errorResponse != null) {
-    //     //    /**
-    //     //     * TODO Injection Empty Response Exception
-    //     //     */
-    //     //    throw new PreparationException(this.errorResponse);
-    //     //} else {
-    //     //    return this.threadResponse;
-    //     //}
-    //     
-    //     return this.action();
-    // }
-
     /**
      * Mark as stopped.
      */

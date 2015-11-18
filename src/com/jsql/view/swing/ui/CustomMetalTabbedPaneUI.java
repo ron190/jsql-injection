@@ -11,7 +11,6 @@
 package com.jsql.view.swing.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 
 import javax.swing.BorderFactory;
@@ -23,7 +22,6 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.plaf.metal.MetalTabbedPaneUI;
 
 import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.panel.ButtonAddressBar;
 
 /**
  * Tab UI to remove inner borders on empty tabbedpane and force header height on Linux.
@@ -64,9 +62,8 @@ public class CustomMetalTabbedPaneUI extends MetalTabbedPaneUI {
          return new ScrollableTabButton(direction);
     }
     
+    @SuppressWarnings("serial")
     private class ScrollableTabButton extends BasicArrowButton implements UIResource, SwingConstants {
-        private static final long serialVersionUID = 7558888683881388988L;
-
         public ScrollableTabButton(int direction) {
             super(direction,
                 HelperGUI.DEFAULT_BACKGROUND,

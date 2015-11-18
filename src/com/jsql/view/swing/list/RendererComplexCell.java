@@ -9,6 +9,7 @@
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
 package com.jsql.view.swing.list;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;

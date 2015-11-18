@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import java.awt.Color;
 import java.util.UUID;
 
 import javax.swing.BorderFactory;
@@ -18,7 +19,9 @@ import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 
 import com.jsql.model.accessible.RessourceAccessObject;
+import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.terminal.TerminalSQL;
 
@@ -52,10 +55,12 @@ public class CreateSQLShellTab implements IInteractionCommand {
         TerminalSQL terminal = new TerminalSQL(terminalID, url, user, pass);
         MediatorGUI.gui().getConsoles().put(terminalID, terminal);
 
-        JScrollPane scroller = new JScrollPane(terminal);
-        Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
-        scroller.setViewportBorder(border);
-        scroller.setBorder(border);
+        LightScrollPane scroller = new LightScrollPane(terminal);
+        scroller.THUMB_COLOR = HelperGUI.SELECTION_BACKGROUND;
+        scroller.SCROLL_BAR_ALPHA_ROLLOVER = 175;
+        scroller.SCROLL_BAR_ALPHA = 100;
+        
+        scroller.setBorder(BorderFactory.createMatteBorder(1,0,1,1,Color.BLACK));
         
         MediatorGUI.right().addTab("SQL shell ", scroller);
 

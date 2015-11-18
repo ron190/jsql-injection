@@ -41,7 +41,6 @@ import org.apache.log4j.Logger;
 import com.jsql.view.swing.ui.CustomBasicComboBoxUI;
 import com.jsql.view.swing.ui.CustomBasicSpinnerUI;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
-import com.jsql.view.swing.ui.RoundBorder;
 
 /**
  * Build default component appearence, keyboard shortcuts and icons.
@@ -86,10 +85,10 @@ public final class HelperGUI {
     public static final String PATH_PAUSE = "/com/jsql/view/swing/images/pause.png";
     public static final String PATH_PROGRESSBAR = "/com/jsql/view/swing/images/progressBar.gif";
 
-//    public static final Border BLU_ROUND_BORDER = new RoundBorder(3, 3, true);
     public static final Border BLU_ROUND_BORDER = BorderFactory.createCompoundBorder(
         BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
-        BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        BorderFactory.createEmptyBorder(2, 2, 2, 2)
+    );
 
     public static final Font MYFONT = new Font("Segoe UI", Font.PLAIN, UIManager.getDefaults().getFont("TextPane.font").getSize());
 
@@ -122,10 +121,10 @@ public final class HelperGUI {
         UIManager.put("ToolTip.foregroundInactive", Color.BLACK);
         
         // Change border of button in default Save as, Confirm dialogs
-//        UIManager.put("Button.border", new RoundBorder(7, 3, true));
         UIManager.put("Button.border", BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
-                BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+            BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
+            BorderFactory.createEmptyBorder(2, 2, 2, 2))
+        );
         UIManager.put("Button.darkShadow", Color.RED);
 //        UIManager.put("Button.background", Color.RED);
 //        UIManager.put("Button.focus", Color.RED);
@@ -159,10 +158,10 @@ public final class HelperGUI {
 //        UIManager.put("Button.gradient", a);
         
         // Change border of button in Save as dialog
-//        UIManager.put("ToggleButton.border", new RoundBorder(7, 3, true));
         UIManager.put("ToggleButton.border", BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
-                BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+            BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
+            BorderFactory.createEmptyBorder(2, 2, 2, 2))
+        );
 
         // Use ColorUIResource to preserve the background color for arrow
         UIManager.put("ComboBox.background", new ColorUIResource(Color.WHITE));
@@ -226,19 +225,16 @@ public final class HelperGUI {
 //        UIManager.put("Spinner.arrowButtonInsets", new Insets(0, 0, 0, 0));
         UIManager.put("Spinner.arrowButtonBorder", HelperGUI.BLU_ROUND_BORDER);
         UIManager.put("Spinner.border", BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(132, 172, 221)),
-//            new RoundBorder(2, 2, true),
+            BorderFactory.createLineBorder(new Color(132, 172, 221)),
             BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE)
         ));
         UIManager.put("ComboBox.border", HelperGUI.BLU_ROUND_BORDER);
         UIManager.put("TextField.border", HelperGUI.BLU_ROUND_BORDER);
         
         UIManager.put("FileChooser.listViewBorder", BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(132, 172, 221)),
-//            new RoundBorder(2, 2, true),
+            BorderFactory.createLineBorder(new Color(132, 172, 221)),
             BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE)
         ));
-//        UIManager.put("FileChooser.listViewBorder", new RoundBorder(2, 2, true));
         
         UIManager.put("ComboBox.selectionBackground", SELECTION_BACKGROUND);
         UIManager.put("TextField.selectionBackground", SELECTION_BACKGROUND);
@@ -272,11 +268,9 @@ public final class HelperGUI {
         UIManager.put("ProgressBar.border", BorderFactory.createCompoundBorder(
             BorderFactory.createEmptyBorder(3, 0, 4, 0),
             BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(Color.GRAY),
-//                new RoundBorder(2, 2, true),
+                BorderFactory.createLineBorder(Color.GRAY),
                 BorderFactory.createLineBorder(Color.WHITE)
             )
-//            new RoundBorder(2, 2, Color.GRAY)
         ));
         UIManager.put("ProgressBar.foreground", new Color(136, 183, 104));
         UIManager.put("ProgressBar.background", UIManager.get("Tree.background"));

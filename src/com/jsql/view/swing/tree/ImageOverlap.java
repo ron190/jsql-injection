@@ -26,14 +26,14 @@ import org.apache.log4j.Logger;
 @SuppressWarnings("serial")
 public class ImageOverlap extends ImageIcon {
     /**
-     * The path of icon displayed on the bottom right corner.
-     */
-    private String iconPathOverlap;
-
-    /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getLogger(ImageOverlap.class);
+
+    /**
+     * The path of icon displayed on the bottom right corner.
+     */
+    private String iconPathOverlap;
 
     /**
      * Create icon with tiny icon on top layer.

@@ -27,14 +27,14 @@ import com.jsql.view.swing.HelperGUI;
 @SuppressWarnings("serial")
 public class ProgressBarPausable extends JProgressBar {
     /**
-     * True if icon should be displayed, false otherwise.
-     */
-    private boolean showIcon = false;
-
-    /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getLogger(ProgressBarPausable.class);
+
+    /**
+     * True if icon should be displayed, false otherwise.
+     */
+    private boolean showIcon = false;
 
     /**
      * Create progress bar with a Pause icon over it.

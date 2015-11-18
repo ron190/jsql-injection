@@ -1,4 +1,5 @@
 package com.jsql.model.accessible;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;

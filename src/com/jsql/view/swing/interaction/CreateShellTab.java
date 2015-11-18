@@ -53,20 +53,12 @@ public class CreateShellTab implements IInteractionCommand {
         TerminalWebshell terminal = new TerminalWebshell(terminalID, url);
         MediatorGUI.gui().getConsoles().put(terminalID, terminal);
         
-//        JScrollPane scroller = new JScrollPane(terminal);
         LightScrollPane scroller = new LightScrollPane(terminal);
         scroller.THUMB_COLOR = HelperGUI.SELECTION_BACKGROUND;
         scroller.SCROLL_BAR_ALPHA_ROLLOVER = 175;
         scroller.SCROLL_BAR_ALPHA = 100;
         
-//        terminal.setBorder(BorderFactory.createEmptyBorder(1,1,0,0));
-//        scroller.setBorder(BorderFactory.createEmptyBorder(00,0,-2,-2));
-////        Border border = BorderFactory.createEmptyBorder(0, 0, -5, -5);
-//        scroller.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0-5, 0-5, -5, -5));
-        scroller.setBorder(BorderFactory.createMatteBorder(0,0,1,1,Color.BLACK));
-//        Border border = BorderFactory.createEmptyBorder(0, 0, 0, 0);
-//        scroller.setViewportBorder(border);
-//        scroller.setBorder(border);
+        scroller.setBorder(BorderFactory.createMatteBorder(1,0,1,1,Color.BLACK));
 
         MediatorGUI.right().addTab("Web shell ", scroller);
 

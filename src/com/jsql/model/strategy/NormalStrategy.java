@@ -24,7 +24,6 @@ public class NormalStrategy extends AbstractInjectionStrategy {
     @Override
     public void checkApplicability() throws PreparationException, StoppableException {
         LOGGER.trace("Normal test...");
-//        MediatorModel.model().initialQuery = new SuspendableGetSQLIndices().beginSynchrone();
         MediatorModel.model().initialQuery = new SuspendableGetSQLIndices().action();
 
         this.isApplicable = !"".equals(MediatorModel.model().initialQuery);
@@ -62,7 +61,6 @@ public class NormalStrategy extends AbstractInjectionStrategy {
 
     @Override
     public void applyStrategy() {
-//        LOGGER.info("Using normal injection...");
         MediatorModel.model().applyStrategy(this);
         
         Request request = new Request();

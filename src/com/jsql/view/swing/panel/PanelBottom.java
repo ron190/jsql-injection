@@ -43,7 +43,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.OverlayLayout;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -77,11 +76,6 @@ import com.jsql.view.swing.text.JPopupTextArea;
  */
 @SuppressWarnings("serial")
 public class PanelBottom extends JPanel {
-    /**
-     * Log4j appender to displays log message to consoles.
-     */
-    private SwingAppender logAppender = new SwingAppender();
-    
     /**
      * Console for default application messages.
      */
@@ -130,22 +124,17 @@ public class PanelBottom extends JPanel {
      */
     public PanelBottom() {
         // Object creation after customization
-//        this.consoleArea = new SimpleConsoleAdapter("Console");
         this.consoleTab.getProxy().setEditable(false);
-        this.logAppender.register(this.consoleTab);
-//        SwingAppender.register(this.consoleArea);
+        SwingAppender.register(this.consoleTab);
         
         this.chunkTab = new JPopupTextArea().getProxy();
         this.chunkTab.setEditable(false);
-//        this.chunkTab.setFont(new Font("Ubuntu Mono", Font.PLAIN, 14));
         
         this.binaryTab = new JPopupTextArea().getProxy();
         this.binaryTab.setEditable(false);
-//        this.binaryTab.setFont(new Font("Ubuntu Mono", Font.PLAIN, 14));
         
-//        this.javaDebug = new JavaConsoleAdapter("Java");
         this.javaTab.getProxy().setEditable(false);
-        this.logAppender.register(this.javaTab);
+        SwingAppender.register(this.javaTab);
         
         this.network = new JSplitPaneWithZeroSizeDivider();
         this.network.setResizeWeight(1);
@@ -240,28 +229,13 @@ public class PanelBottom extends JPanel {
                 return lbl;
             }
         });
-//        this.network.setLeftComponent(new JScrollPane(this.networkTable) {
         
-        JScrollIndicator j = new JScrollIndicator(this.networkTable);
-        j.scrollPane.setBorder(BorderFactory.createEmptyBorder(0,0,-1,-1));
-        j.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0,0,-1,-1));
-        this.network.setLeftComponent(j 
-//        this.network.setLeftComponent(new JScrollIndicator(this.networkTable) {
-//            @Override
-//            public void setBorder(Border border) {
-//                // Do nothing
-//            }
-        );
-//        });
+        JScrollIndicator scroller = new JScrollIndicator(this.networkTable);
+        scroller.scrollPane.setBorder(BorderFactory.createEmptyBorder(0,0,-1,-1));
+        scroller.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0,0,-1,-1));
+        this.network.setLeftComponent(scroller);
         
         MouseTabbedPane networkDetailTabs = new MouseTabbedPane();
-//        networkDetailTabs.addTab(I18n.NETWORK_TAB_RESPONSE_LABEL, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabResponse));
-//        networkDetailTabs.addTab(I18n.NETWORK_TAB_SOURCE_LABEL, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabSource));
-//        networkDetailTabs.addTab(I18n.NETWORK_TAB_PREVIEW_LABEL, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabPreview));
-//        networkDetailTabs.addTab(I18n.NETWORK_TAB_HEADERS_LABEL, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabHeader));
-//        networkDetailTabs.addTab(I18n.NETWORK_TAB_COOKIES_LABEL, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabCookie));
-//        networkDetailTabs.addTab(I18n.NETWORK_TAB_PARAMS_LABEL, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabParam));
-//        networkDetailTabs.addTab(I18n.NETWORK_TAB_TIMING_LABEL, new JScrollPanePixelBorder(1, 1, 0, 0, networkTabTiming));
         networkDetailTabs.addTab(I18n.NETWORK_TAB_RESPONSE_LABEL, new LightScrollPane(1, 1, 0, 0, networkTabResponse));
         networkDetailTabs.addTab(I18n.NETWORK_TAB_SOURCE_LABEL, new LightScrollPane(1, 1, 0, 0, networkTabSource));
         networkDetailTabs.addTab(I18n.NETWORK_TAB_PREVIEW_LABEL, new LightScrollPane(1, 1, 0, 0, networkTabPreview));
@@ -339,7 +313,6 @@ public class PanelBottom extends JPanel {
 
         MediatorGUI.bottom().addTab("Console",
                 new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/console.gif")),
-//                new JScrollPanePixelBorder(1, 1, 0, 0, this.consoleTab.getProxy()),
                 new LightScrollPane(1, 1, 0, 0, this.consoleTab.getProxy()),
                 I18n.CONSOLE_TAB_TOOLTIP);
         MediatorGUI.bottom().setTabComponentAt(
@@ -413,7 +386,6 @@ public class PanelBottom extends JPanel {
         MediatorGUI.bottom().insertTab(
             "Chunk",
             new ImageIcon(PanelBottom.class.getResource("/com/jsql/view/swing/images/chunk.gif")),
-//            new JScrollPanePixelBorder(1, 1, 0, 0, PanelBottom.this.chunkTab),
             new LightScrollPane(1, 1, 0, 0, PanelBottom.this.chunkTab),
             I18n.CHUNK_TAB_TOOLTIP,
             1
@@ -430,7 +402,6 @@ public class PanelBottom extends JPanel {
         MediatorGUI.bottom().insertTab(
             "Binary",
             new ImageIcon(PanelBottom.class.getResource("/com/jsql/view/swing/images/binary.gif")),
-//            new JScrollPanePixelBorder(1, 1, 0, 0, PanelBottom.this.binaryTab),
             new LightScrollPane(1, 1, 0, 0, PanelBottom.this.binaryTab),
             I18n.BINARY_TAB_TOOLTIP,
             1 + (MediatorGUI.menubar().chunkMenu.isSelected() ? 1 : 0)
@@ -463,7 +434,6 @@ public class PanelBottom extends JPanel {
         MediatorGUI.bottom().insertTab(
             "Java",
             new ImageIcon(PanelBottom.class.getResource("/com/jsql/view/swing/images/cup.png")),
-//            new JScrollPanePixelBorder(1, 1, 0, 0, PanelBottom.this.javaTab.getProxy()),
             new LightScrollPane(1, 1, 0, 0, PanelBottom.this.javaTab.getProxy()),
             I18n.JAVA_TAB_TOOLTIP,
             MediatorGUI.bottom().getTabCount()

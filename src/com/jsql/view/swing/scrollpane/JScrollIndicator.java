@@ -1,4 +1,5 @@
 package com.jsql.view.swing.scrollpane;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,8 +23,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.ScrollBarUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-import com.jsql.view.swing.HelperGUI;
-
 /**
  * A scrollpane like component, where the scroll bars are floating over the
  * scrollable view to indicate the current scroll positions.
@@ -36,24 +35,16 @@ import com.jsql.view.swing.HelperGUI;
  *
  * @author Jolly Littlebottom
  */
+@SuppressWarnings("serial")
 public class JScrollIndicator extends JLayeredPane {
 
     public static final int SCROLL_BAR_ALPHA_ROLLOVER = 100;
     public static final int SCROLL_BAR_ALPHA = 25;
-//    private static final int SCROLL_BAR_ALPHA_ROLLOVER = 200;
-//    private static final int SCROLL_BAR_ALPHA = 100;
 
-//    private static final Color THUMB_COLOR = HelperGUI.SELECTION_BACKGROUND;
-//    private static final Color THUMB_COLOR = Color.DARK_GRAY;
     private static final Color THUMB_COLOR = Color.DARK_GRAY;
-    private static final Color THUMB_BORDER_COLOR = Color.LIGHT_GRAY;
-    private static final float MAX_ALPHA = 1.0f;
     private static final int THUMB_THICKNESS = 11;
     private static final int THUMB_MIN_SIZE = 48;
     private static final int THUMB_MARGIN = 0;
-    private static final int FADE_IN_TIME = 0;
-    private static final int STAY_TIME = 0;
-    private static final int FADE_OUT_TIME = 0;
 
 
     public final JScrollPane scrollPane;
@@ -206,14 +197,11 @@ public class JScrollIndicator extends JLayeredPane {
     }
 
     public class MyScrollBarUI extends BasicScrollBarUI {
-
         private JMyScrollBar scrollBar;
         private float alpha = 0.0f;
-//        private FadeAnimation fadeAnimation;
 
         private MyScrollBarUI(JMyScrollBar scrollBar) {
             this.scrollBar = scrollBar;
-//            fadeAnimation = new FadeAnimation(this);
         }
 
         @Override
@@ -223,8 +211,7 @@ public class JScrollIndicator extends JLayeredPane {
             if (scrollBar.getOrientation() == JScrollBar.HORIZONTAL) {
                 int size = THUMB_THICKNESS + THUMB_MARGIN; // let lower right corner empty
                 incrButton.setPreferredSize(new Dimension(size, size));
-            }
-            else {
+            } else {
                 incrButton.setPreferredSize(new Dimension(THUMB_MARGIN, THUMB_MARGIN));
             }
             decrButton.setPreferredSize(new Dimension(THUMB_MARGIN, THUMB_MARGIN));
@@ -239,29 +226,18 @@ public class JScrollIndicator extends JLayeredPane {
             int h = minimumThumbSize.height;
             if (scrollBar.getOrientation() == JScrollBar.VERTICAL) {
                 h = Math.max(h, Math.min(maximumThumbSize.height, THUMB_MIN_SIZE));
-            }
-            else {
+            } else {
                 w = Math.max(w, Math.min(maximumThumbSize.width, THUMB_MIN_SIZE));
             }
             minimumThumbSize = new Dimension(w, h);
         }
 
         private void paintThumb(Graphics g, JComponent c) {
-
-//            if (alpha == 0.0f) {
-//                return; // don't paint anything
-//            }
-//            int SCROLL_BAR_ALPHA_ROLLOVER = 100;
-//            int SCROLL_BAR_ALPHA = 25;
-
             int alpha = isThumbRollover() ? SCROLL_BAR_ALPHA_ROLLOVER : SCROLL_BAR_ALPHA;
 
-//            g.setColor(getAlphaColor(THUMB_COLOR));
             g.setColor(new Color(getAlphaColor(THUMB_COLOR).getRed(),
                     getAlphaColor(THUMB_COLOR).getGreen(), getAlphaColor(THUMB_COLOR).getBlue(), alpha));
             
-            int radius = THUMB_THICKNESS >>> 1; // half width
-
             Rectangle thumbBounds = getThumbBounds();
 
             int x = thumbBounds.x;
@@ -271,15 +247,11 @@ public class JScrollIndicator extends JLayeredPane {
 
             if (scrollBar.getOrientation() == JScrollBar.VERTICAL) {
                 w -= THUMB_MARGIN;
-            }
-            else {
+            } else {
                 h -= THUMB_MARGIN;
             }
 
-//            g.fillRoundRect(x, y, w, h, radius, radius);
             g.fillRect(x, y, w, h);
-//            g.setColor(getAlphaColor(THUMB_BORDER_COLOR));
-//            g.drawRoundRect(x, y, w, h, radius, radius);
         }
 
         private Color getAlphaColor(Color color) {
@@ -297,125 +269,7 @@ public class JScrollIndicator extends JLayeredPane {
         }
 
         public void setVisible(boolean visible, boolean mouseOver) {
-//            fadeAnimation.fadeIn(mouseOver);
-//            if (visible) {
-//                fadeAnimation.fadeIn(mouseOver);
-//            }
-//            else {
-//                fadeAnimation.fadeOut();
-//            }
             scrollBar.repaint(getThumbBounds());
         }
     }
-
-//    private class FadeAnimation {
-//
-//        private final MyScrollBarUI scrollUI;
-//        private Animator fadeAnimator;
-//        private Timer fadeOutTimer;
-//        private boolean isFadeIn;
-//
-//        private FadeAnimation(MyScrollBarUI scrollUI) {
-//            this.scrollUI = scrollUI;
-//        }
-//
-//        public synchronized void fadeIn(boolean mouseOver) {
-//
-//            if (mouseOver) {
-//                cancelTimer();
-//            }
-//
-//            if (!isFadeIn) {
-//                isFadeIn = true;
-//                cancelAnimationAndTimer();
-//
-//                fadeAnimator = PropertySetter.createAnimator(
-//                    FADE_IN_TIME, scrollUI, "alpha",
-//                    new KeyFrames(KeyValues.create(scrollUI.alpha, MAX_ALPHA),
-//                    new KeyTimes(0.0f, 1.0f)));
-//                fadeAnimator.start();
-//
-//                if (!mouseOver) {
-//                    fadeOutTimer = new Timer(FADE_IN_TIME + STAY_TIME,
-//                        new ActionListener() {
-//                            @Override
-//                            public void actionPerformed(ActionEvent e) {
-//                                FadeAnimation.this.fadeOut();
-//                            }
-//                        });
-//                    fadeOutTimer.start();
-//                }
-//            }
-//        }
-//
-//        public synchronized void fadeOut() {
-//            cancelAnimationAndTimer();
-//            if (isFadeIn) {
-//                isFadeIn = false;
-//                fadeAnimator = PropertySetter.createAnimator(
-//                    FADE_OUT_TIME, scrollUI, "alpha",
-//                    new KeyFrames(KeyValues.create(scrollUI.alpha, 0.0f),
-//                    new KeyTimes(0.0f, 1.0f)));
-//                fadeAnimator.start();
-//            }
-//        }
-//
-//        private void cancelAnimationAndTimer() {
-//            if (fadeAnimator != null && fadeAnimator.isRunning()) {
-//                fadeAnimator.cancel();
-//                fadeAnimator = null;
-//            }
-//            cancelTimer();
-//        }
-//
-//        private void cancelTimer() {
-//            if (fadeOutTimer != null) {
-//                fadeOutTimer.stop();
-//                fadeOutTimer = null;
-//            }
-//        }
-//    }
-
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                JFrame frame = new JFrame();
-//                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//                String text = "";
-//                for (int i = 0; i < 100; i++) {
-//                    for (int j = 0; j < 100; j++) {
-//                        text += i + " - " + j;
-//                    }
-//                    text += "\n";
-//                }
-//                Object [][] two_dimensional_array =
-//                    {
-//                      { "a","a","a" },
-//                      { "a","a","a" },
-//                      { "a","a","a" },
-//                      { "a","a","a" },
-//                      { "a","a","a" },
-//                      { "a","a","a" },
-//                      { "a","a","a" },
-//                      { "a","a","a" },
-//                      { "a","a","a" },
-//                      { "a","a","a" },
-//                      { "a","a","a" },
-//                      { "a","a","a" },
-//                      { "a","a","a" },
-//                      { "a","a","a" },
-//                      { "a","a","a" },
-//                      { "a","a","a" },
-//                    };
-//                JTable area = new JTable(two_dimensional_array,new String[]{"a","b","c"});
-////                JTextArea area = new JTextArea(text);
-//                JScrollIndicator scrollIndicator = new JScrollIndicator(area);
-//                frame.getContentPane().add(scrollIndicator);
-//                frame.setBounds(100, 100, 200, 300);
-//                frame.setVisible(true);
-//            }
-//        });
-//    }
 }

@@ -41,10 +41,8 @@ public class AddDatabases implements IInteractionCommand {
         // Loop into the list of databases
         int i = 1;
         for (Database database: databases) {
-//            System.out.println(database);
             LOGGER.trace("\t" + i + ". " + database);
             i++;
         }
-//        System.out.println();
     }
 }

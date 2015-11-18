@@ -30,15 +30,15 @@ import com.jsql.view.swing.MediatorGUI;
  */
 public class MenuActionExport implements ActionListener {
     /**
-     * List to export.
-     */
-    private DnDList myList;
-    
-    /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getLogger(MenuActionExport.class);
 
+    /**
+     * List to export.
+     */
+    private DnDList myList;
+    
     /**
      * Create action to export a list.
      * @param myList List to export.

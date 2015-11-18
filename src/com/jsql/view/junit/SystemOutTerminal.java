@@ -29,7 +29,6 @@ import com.jsql.view.swing.interaction.IInteractionCommand;
  * - at the center: tree on the left, table on the right,<br>
  * - at the bottom: information labels.
  */
-@SuppressWarnings("serial")
 public class SystemOutTerminal implements Observer {
     /**
      * Log4j logger sent to view.
@@ -62,7 +61,7 @@ public class SystemOutTerminal implements Observer {
             IInteractionCommand o2 = (IInteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
             o2.execute();
         } catch (ClassNotFoundException e) {
-//            LOGGER.error(e, e);
+            // Ignore unused interaction message
         } catch (InstantiationException e) {
             LOGGER.error(e, e);
         } catch (IllegalAccessException e) {

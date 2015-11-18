@@ -68,7 +68,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Current version of application.
      */
-    public static final String JSQLVERSION = "0.6";
+    public static final String JSQLVERSION = "0.7";
 
     /**
      * i.e, -1 in "[...].php?id=-1 union select[...]"
@@ -312,8 +312,6 @@ public class InjectionModel extends AbstractModelObservable {
             // Define insertionCharacter, i.e, -1 in "[...].php?id=-1 union select[...]",
             LOGGER.trace("Get insertion character...");
             
-//            this.insertionCharacter = new SuspendableGetInsertionCharacter().beginSynchrone();
-//            new SuspendableGetDbVendor().beginSynchrone();
             this.insertionCharacter = new SuspendableGetInsertionCharacter().action();
             new SuspendableGetDbVendor().action();
 
@@ -408,9 +406,6 @@ public class InjectionModel extends AbstractModelObservable {
 
         // Make url shorter, replace useless indexes from 1337[index]7331 to 1
         this.initialQuery = this.initialQuery.replaceAll("1337(?!" + ToolsString.join(indexes, "|") + "7331)\\d*7331", "1");
-//        if (indexes.length == 1) {
-//            return indexes[0];
-//        }
 
         // Replace correct indexes from 1337[index]7331 to
         // ==> SQLi[index]######...######iLQS
@@ -439,16 +434,14 @@ public class InjectionModel extends AbstractModelObservable {
         }
 
         // Sort by length of #######...#######
-//        if(lengthFields.length > 1)
-            Arrays.sort(lengthFields, new Comparator<Integer[]>() {
-                @Override
-                public int compare(Integer[] s1, Integer[] s2) {
-                    Integer t1 = s1[0];
-    //                Integer t2 = s2[1];
-                    Integer t2 = s2[0];
-                    return t1.compareTo(t2);
-                }
-            });
+        Arrays.sort(lengthFields, new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] s1, Integer[] s2) {
+                Integer t1 = s1[0];
+                Integer t2 = s2[0];
+                return t1.compareTo(t2);
+            }
+        });
         
         performanceLength = lengthFields[lengthFields.length - 1][0].toString();
 
@@ -484,7 +477,6 @@ public class InjectionModel extends AbstractModelObservable {
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
         String urlUltimate = this.initialUrl;
         // escape crazy characters, like \
-//        String dataInjection = newDataInjection.replace("\\", "\\\\");
         String dataInjection = newDataInjection;
 
         try {
@@ -541,7 +533,7 @@ public class InjectionModel extends AbstractModelObservable {
                     default:
                         break;
                 }
-                //                System.out.println(new Date() + " " + urlUltimate);
+
                 urlObject = new URL(urlUltimate);
             } catch (MalformedURLException e) {
                 LOGGER.warn("Malformed URL " + e.getMessage(), e);
@@ -604,8 +596,7 @@ public class InjectionModel extends AbstractModelObservable {
                 
                 msgHeader.put("Post", this.buildQuery("POST", postData, useVisibleIndex, dataInjection));
             } catch (IOException e) {
-                LOGGER.warn(
-                        "Error during POST connection " + e.getMessage(), e);
+                LOGGER.warn("Error during POST connection " + e.getMessage(), e);
             }
         }
 
@@ -616,7 +607,6 @@ public class InjectionModel extends AbstractModelObservable {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             while ((line = reader.readLine()) != null) {
-//                pageSource += line;
                 pageSource += line + "\r\n";
             }
             reader.close();

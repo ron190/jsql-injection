@@ -18,22 +18,21 @@ import com.jsql.model.injection.MediatorModel;
  */
 public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> {
     /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ConcreteTimeInjection.class);
+
+    /**
      * Waiting time in seconds, if response time is above
      * then the SQL query is false.
      */
     public static final long SLEEP = 5;
-//    public static final long SLEEP = 4;
 
     /**
      *  Time based works by default, many tests will
      *  change it to false if it isn't confirmed.
      */
     private boolean isTimeInjectable = true;
-
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getLogger(ConcreteTimeInjection.class);
 
     /**
      * Create time attack initialisation.

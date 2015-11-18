@@ -244,7 +244,6 @@ public class PostgreSQLStrategy extends ASQLStrategy {
 
     @Override
     public String getLimit(Integer limitSQLResult) {
-//        return "+limit+" + limitSQLResult + ",65536";
         return "+limit+65536+offset+" + limitSQLResult;
     }
     

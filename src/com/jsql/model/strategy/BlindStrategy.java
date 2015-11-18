@@ -16,7 +16,6 @@ import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.bean.Request;
 import com.jsql.model.blind.ConcreteBlindInjection;
-import com.jsql.model.injection.InjectionModel;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.model.injection.suspendable.AbstractSuspendable;
 
@@ -25,15 +24,15 @@ import com.jsql.model.injection.suspendable.AbstractSuspendable;
  */
 public class BlindStrategy extends AbstractInjectionStrategy {
     /**
-     * Blind injection object.
-     */
-    private ConcreteBlindInjection blind;
-    
-    /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getLogger(BlindStrategy.class);
 
+    /**
+     * Blind injection object.
+     */
+    private ConcreteBlindInjection blind;
+    
     @Override
     public void checkApplicability() throws PreparationException {
         LOGGER.trace("Blind test...");

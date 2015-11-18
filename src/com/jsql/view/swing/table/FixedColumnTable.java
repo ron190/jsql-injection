@@ -50,9 +50,6 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
 
         //  Use the existing table to create a new table sharing
         //  the DataModel and ListSelectionModel
-
-//        int totalColumns = main.getColumnCount();
-
         fixed = new JTable() {
             public boolean isCellEditable(int row,int column) {
                 return false;

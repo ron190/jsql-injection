@@ -24,7 +24,6 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.TreeNode;
 
 import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.ui.RoundBorder;
 
 /**
  * A tree Node composed of an icon, a GIF loader, a progress bar, a label.
@@ -68,7 +67,6 @@ public class PanelNode extends JPanel {
         this.label.setOpaque(true);
 
         this.label.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)));
-//        this.label.setBorder(new RoundBorder(4, 1, true));
 
         this.setBackground(Color.WHITE);
 

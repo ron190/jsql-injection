@@ -24,7 +24,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.ui.RoundBorder;
 
 /**
  * Model for default item used on an empty tree.
@@ -47,18 +46,14 @@ public class NodeModelEmpty extends AbstractNodeModel {
         JLabel text = new JLabel(currentNode.getUserObject().toString());
         emptyPanel.add(text);
         text.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-//        text.setBorder(new RoundBorder(4, 1, false));
         if (currentNode != null) {
             if (selected) {
                 emptyPanel.setBackground(HelperGUI.SELECTION_BACKGROUND);
-//                text.setBorder(new RoundBorder(4, 1, true));
                 text.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)));
             } else {
                 emptyPanel.setBackground(Color.WHITE);
                 text.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
             }
-//            text.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1)));
-//            text.setBorder(new RoundBorder(4, 1, hasFocus));
         }
         return emptyPanel;
     }

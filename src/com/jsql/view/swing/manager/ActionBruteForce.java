@@ -22,15 +22,15 @@ import com.jsql.view.swing.bruteforce.HashBruter;
  * Run a brute force attack.
  */
 public class ActionBruteForce implements ActionListener, Runnable {
-    private ManagerBruteForce bruteForceManager;
-    
-    private Boolean doStop = false;
-    
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getLogger(ManagerBruteForce.class);
 
+    private ManagerBruteForce bruteForceManager;
+    
+    private Boolean doStop = false;
+    
     public ActionBruteForce(ManagerBruteForce bruteForceManager) {
         super();
         this.bruteForceManager = bruteForceManager;

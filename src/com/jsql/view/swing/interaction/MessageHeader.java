@@ -53,12 +53,10 @@ public class MessageHeader implements IInteractionCommand {
     public void execute() {
         MediatorGUI.bottomPanel().listHTTPHeader.add(new HTTPHeader(url, cookie, post, header, response, source));
         
-//        JViewport viewport = ((JScrollPane) MediatorGUI.bottomPanel().network.getLeftComponent()).getViewport();
         JViewport viewport = ((JScrollIndicator) MediatorGUI.bottomPanel().network.getLeftComponent()).scrollPane.getViewport();
         JTable table = (JTable) viewport.getView();
         
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-//        model.addRow(new Object[]{response.get("Method"), url, response.get("Content-Length"), response.get("Content-Type")});
         model.addRow(new Object[]{response.get("Method"), url, response.get("Content-Length"), response.get("Content-Type")});
         
         Rectangle rect = table.getCellRect(table.getRowCount() - 1, 0, true);

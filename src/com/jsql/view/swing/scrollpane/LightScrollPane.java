@@ -2,7 +2,6 @@ package com.jsql.view.swing.scrollpane;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -23,18 +22,13 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import com.jsql.view.swing.HelperGUI;
 
+@SuppressWarnings("serial")
 public class LightScrollPane extends JComponent {
-
-//    private static final int SCROLL_BAR_ALPHA_ROLLOVER = 200;
-//    private static final int SCROLL_BAR_ALPHA = 100;
     public  int SCROLL_BAR_ALPHA_ROLLOVER = 100;
     public  int SCROLL_BAR_ALPHA = 25;
     private static final int THUMB_BORDER_SIZE = 0;
     private static final int THUMB_SIZE = 11;
-//    private static final Color THUMB_COLOR = HelperGUI.SELECTION_BACKGROUND;
     public  Color THUMB_COLOR = Color.DARK_GRAY;
-//    public  Color THUMB_COLOR = Color.BLACK;
-//    private static final Color THUMB_COLOR = HelperGUI.SELECTION_BACKGROUND;
 
     public final JScrollPane scrollPane;
     private final JScrollBar verticalScrollBar;
@@ -43,17 +37,6 @@ public class LightScrollPane extends JComponent {
     /**
      * Create a scrollpane with top and left border for default component and a slide one.
      * A component slided to the right will normaly hide the left border, JScrollPanePixelBorder fix this.
-     * @param c Component to decorate with a scroll
-     */
-//    public LightScrollPane(Component c) {
-//        super(c);
-//
-//        this.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperGUI.COMPONENT_BORDER));
-//        this.setViewportBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperGUI.COMPONENT_BORDER));
-//    }
-
-    /**
-     * A scrollpane with custom borders
      * @param top Border top size
      * @param left Border left size
      * @param bottom Border bottom size
@@ -64,9 +47,6 @@ public class LightScrollPane extends JComponent {
         this(c);
 
         this.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, HelperGUI.COMPONENT_BORDER));
-//        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-//        this.setViewportBorder(BorderFactory.createMatteBorder(0, left, 0, right, HelperGUI.COMPONENT_BORDER));
-//        scrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
     }
     
     public LightScrollPane(JComponent component) {
@@ -126,10 +106,6 @@ public class LightScrollPane extends JComponent {
         });
         add(layeredPane, BorderLayout.CENTER);
         layeredPane.setBackground(Color.BLUE);
-//        layeredPane.setBorder(BorderFactory.createEmptyBorder());
-        
-//        this.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperGUI.COMPONENT_BORDER));
-//        this.setViewportBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperGUI.COMPONENT_BORDER));
     }
 
     private void displayScrollBarsIfNecessary(JViewport viewPort) {
@@ -187,7 +163,6 @@ public class LightScrollPane extends JComponent {
         protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
             int alpha = isThumbRollover() ? SCROLL_BAR_ALPHA_ROLLOVER : SCROLL_BAR_ALPHA;
             int orientation = scrollbar.getOrientation();
-//            int arc = THUMB_SIZE;
             int x = thumbBounds.x + THUMB_BORDER_SIZE;
             int y = thumbBounds.y + THUMB_BORDER_SIZE;
 
@@ -200,7 +175,6 @@ public class LightScrollPane extends JComponent {
             Graphics2D graphics2D = (Graphics2D) g.create();
             graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             graphics2D.setColor(new Color(THUMB_COLOR.getRed(), THUMB_COLOR.getGreen(), THUMB_COLOR.getBlue(), alpha));
-//            graphics2D.fillRoundRect(x, y, width, height, arc, arc);
             graphics2D.fillRect(x, y, width, height);
             graphics2D.dispose();
         }

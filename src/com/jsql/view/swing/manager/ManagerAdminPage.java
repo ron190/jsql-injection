@@ -35,7 +35,6 @@ import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.list.DnDList;
-import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 
 /**
@@ -71,7 +70,6 @@ public class ManagerAdminPage extends ManagerAbstractList {
         final DnDList listFile = new DnDList(pathList);
 
         this.add(new LightScrollPane(1, 1, 0, 0, listFile), BorderLayout.CENTER);
-//        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, listFile), BorderLayout.CENTER);
 
         JPanel lastLine = new JPanel();
         lastLine.setOpaque(false);

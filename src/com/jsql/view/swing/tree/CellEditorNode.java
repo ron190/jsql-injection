@@ -37,6 +37,11 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
 @SuppressWarnings("serial")
 public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor, TreeSelectionListener, MouseListener {
     /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(CellEditorNode.class);
+
+    /**
      * Renderer for nodes included JPanel, button, checkbox, icons...
      */
     private CellRendererNode defaultTreeRenderer;
@@ -46,11 +51,6 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
      * Returned by getCellEditorValue().
      */
     private AbstractNodeModel nodeData;
-
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getLogger(CellEditorNode.class);
 
     /**
      * Build editor, add tree and mouse listener.
@@ -124,8 +124,6 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
 
             AbstractNodeModel nodeUserObject = (AbstractNodeModel) tableNode.getUserObject();
             nodeUserObject.hasChildChecked = isOneChildSelected;
-            // !!important!!
-//            NodeEditor.this.stopCellEditing();
         }
     }
 

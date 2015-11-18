@@ -24,7 +24,6 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
      * @param inj
      */
     public CallableBlind(String inj) {
-//        this.blindUrl = "+and+" + inj + "--+";
         this.blindUrl = MediatorModel.model().sqlStrategy.blindCheck(inj);
     }
     

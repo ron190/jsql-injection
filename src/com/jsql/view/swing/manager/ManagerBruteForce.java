@@ -31,7 +31,6 @@ import javax.swing.SwingConstants;
 
 import com.jsql.i18n.I18n;
 import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JPopupTextField;
@@ -155,35 +154,21 @@ public class ManagerBruteForce extends JPanel {
         thirdLine.add(exclude);
 
         minimumLength = new JSpinner(new SpinnerNumberModel(
-                new Integer(1),
-                new Integer(1),
-                new Integer(10000),
-//                null,
-                new Integer(1)
+            new Integer(1),
+            new Integer(1),
+            new Integer(10000),
+            new Integer(1)
         ));
         maximumLength = new JSpinner(new SpinnerNumberModel(
-                new Integer(5),
-                new Integer(1),
-                new Integer(10000),
-//                null,
-                new Integer(1)
+            new Integer(5),
+            new Integer(1),
+            new Integer(10000),
+            new Integer(1)
         ));
         
-//        minimumLength.setBorder(BorderFactory.createCompoundBorder(
-//                BorderFactory.createLineBorder(HelperGUI.DEFAULT_BACKGROUND, 2),
-//                HelperGUI.BLU_ROUND_BORDER));
-//        maximumLength.setBorder(BorderFactory.createCompoundBorder(
-//                BorderFactory.createLineBorder(HelperGUI.DEFAULT_BACKGROUND, 2),
-//                HelperGUI.BLU_ROUND_BORDER));
-//        minimumLength = new JPopupTextField("min", "1").getProxy();
-//        maximumLength = new JPopupTextField("max", "5").getProxy();
-//        
         minimumLength.setToolTipText(I18n.BRUTEFORCE_MIN_TOOLTIP);
         maximumLength.setToolTipText(I18n.BRUTEFORCE_MAX_TOOLTIP);
         
-//        minimumLength.setHorizontalAlignment(JTextField.RIGHT);
-//        maximumLength.setHorizontalAlignment(JTextField.RIGHT);
-//
         minimumLength.setPreferredSize(new Dimension(38, (int) minimumLength.getPreferredSize().getHeight()));
         maximumLength.setPreferredSize(new Dimension(38, (int) maximumLength.getPreferredSize().getHeight()));
         minimumLength.setMaximumSize(new Dimension(38, (int) minimumLength.getPreferredSize().getHeight()));
@@ -206,7 +191,6 @@ public class ManagerBruteForce extends JPanel {
 
         result = new JPopupTextArea().getProxy();
         result.setLineWrap(true);
-//        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, result), BorderLayout.CENTER);
         this.add(new LightScrollPane(1, 1, 0, 0, result), BorderLayout.CENTER);
         
         JPanel lastLine = new JPanel();

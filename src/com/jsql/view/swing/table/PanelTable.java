@@ -13,36 +13,27 @@ package com.jsql.view.swing.table;
 import java.awt.AWTKeyStroke;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.JViewport;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
@@ -53,7 +44,6 @@ import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.popupmenu.JPopupMenuTable;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
 
 /**
  * Display a table for database values.
@@ -62,14 +52,14 @@ import com.jsql.view.swing.scrollpane.LightScrollPane;
 @SuppressWarnings("serial")
 public class PanelTable extends JPanel {
     /**
-     * Table to display in the panel.
-     */
-    public JTable table;
-
-    /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getLogger(PanelTable.class);
+
+    /**
+     * Table to display in the panel.
+     */
+    public JTable table;
 
     /**
      * Create a panel containing a table to display injection values.
@@ -111,17 +101,9 @@ public class PanelTable extends JPanel {
 
         table.getColumnModel().getColumn(0).setResizable(false);
         table.getColumnModel().getColumn(0).setPreferredWidth(38);
-//        table.getColumnModel().getColumn(0).setMinWidth(34);
-//        table.getColumnModel().getColumn(0).setMaxWidth(34);
-
-//        table.getColumnModel().getColumn(1).setResizable(false);
-//        table.getColumnModel().getColumn(1).setPreferredWidth(70);
-//        table.getColumnModel().getColumn(1).setMinWidth(70);
-//        table.getColumnModel().getColumn(1).setMaxWidth(70);
 
         DefaultTableCellRenderer centerHorizontalAlignment = new CenterRenderer();
         table.getColumnModel().getColumn(0).setCellRenderer(centerHorizontalAlignment);
-//        table.getColumnModel().getColumn(1).setCellRenderer(centerHorizontalAlignment);
 
         table.getTableHeader().setReorderingAllowed(false);
 
@@ -130,17 +112,6 @@ public class PanelTable extends JPanel {
 
         table.setDragEnabled(true);
 
-//        Toolkit toolkit = Toolkit.getDefaultToolkit();
-//        URL url = getClass().getResource("/com/jsql/view/swing/images/excel.png");
-//
-//        Image image = null;
-//        try {
-//            image = ImageIO.read(url.openStream());
-//        } catch (IOException e) {
-//            LOGGER.error(e, e);
-//        }
-//
-//        table.setCursor(toolkit.createCustomCursor(image, new Point(12, 12), "Hand"));
         table.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 table.requestFocusInWindow();
@@ -178,21 +149,9 @@ public class PanelTable extends JPanel {
         AdjusterTableColumn columnAdjuster = new AdjusterTableColumn(table);
         columnAdjuster.adjustColumns();
 
-        Border border = BorderFactory.createEmptyBorder();
-//        JScrollPane scroller = new JScrollPane(table);
         JScrollIndicator scroller = new JScrollIndicator(table);
         scroller.scrollPane.setBorder(BorderFactory.createEmptyBorder(0,0,-1,-1));
         scroller.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0,0,-1,-1));
-//        scroller.setViewportBorder(border);
-//        scroller.setBorder(border);
-//
-//        scroller.setColumnHeader(new JViewport() {
-//            @Override public Dimension getPreferredSize() {
-//                Dimension d = super.getPreferredSize();
-//                d.height = 21;
-//                return d;
-//            }
-//        });
 
         new FixedColumnTable(1, scroller.scrollPane);
         this.add(scroller);

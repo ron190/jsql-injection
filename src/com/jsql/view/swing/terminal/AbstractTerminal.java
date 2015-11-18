@@ -38,6 +38,11 @@ import sun.swing.SwingUtilities2;
 @SuppressWarnings("serial")
 public abstract class AbstractTerminal extends JTextPane {
     /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(AbstractTerminal.class);
+
+    /**
      * True if terminal is processing command.
      */
     public boolean[] isEdited = {false};
@@ -54,11 +59,6 @@ public abstract class AbstractTerminal extends JTextPane {
 
     UUID terminalID;
     String wbhPath;
-
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getLogger(AbstractTerminal.class);
 
     /**
      * Build a shell instance.

@@ -34,7 +34,6 @@ import com.jsql.view.swing.radio.RadioLinkAddressBar;
 import com.jsql.view.swing.text.JAddressBar;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.ui.ComponentBorder;
-import com.jsql.view.swing.ui.RoundBorder;
 
 /**
  * Create panel at the top of the window.
@@ -138,10 +137,12 @@ public class PanelTop extends JPanel {
         /**
          * Define UI and the left padding for addressBar
          */
-        this.addressBar.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createCompoundBorder(
+        this.addressBar.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(4, 2, 3, 0, HelperGUI.DEFAULT_BACKGROUND),
-                BorderFactory.createLineBorder(new Color(132, 172, 221))),BorderFactory.createEmptyBorder(2, 23, 2, 23)));
-//                new RoundBorder(24, 3, true))));
+                BorderFactory.createLineBorder(new Color(132, 172, 221))
+            ),BorderFactory.createEmptyBorder(2, 23, 2, 23))
+        );
 
         this.textPOST.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 2, 0, 0, HelperGUI.DEFAULT_BACKGROUND),

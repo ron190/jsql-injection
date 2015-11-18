@@ -29,12 +29,6 @@ public class MessageInfo implements IInteractionCommand {
 
     @Override
     public void execute() {
-//        System.out.println(MediatorModel.model().versionDatabase);
-//        System.out.println(MediatorModel.model().currentDatabase);
-//        System.out.println(MediatorModel.model().currentUser);
-//        System.out.println(MediatorModel.model().authenticatedUser);
-//        System.out.println();
-        
         LOGGER.trace(MediatorModel.model().versionDatabase + ", Database: " + MediatorModel.model().currentDatabase + ", User: " + MediatorModel.model().currentUser);
     }
 }

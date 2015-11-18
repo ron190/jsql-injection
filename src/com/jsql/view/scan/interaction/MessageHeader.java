@@ -43,14 +43,6 @@ public class MessageHeader implements IInteractionCommand {
 
     @Override
     public void execute() {
-//        System.out.println("Method: " + response.get("Method"));
-//        System.out.println("Url: " + url);
-//        System.out.println("Cookie: " + cookie);
-//        System.out.println("Post: " + post);
-//        System.out.println("Header: " + header);
-//        System.out.println("Content-Length: " + response.get("Content-Length"));
-//        System.out.println("Content-Type: " + response.get("Content-Type"));
-//        System.out.println();
         MediatorGUI.bottomPanel().listHTTPHeader.add(new HTTPHeader(url, cookie, post, header, response, source));
     }
 }

@@ -38,24 +38,22 @@ import org.jsoup.safety.Whitelist;
 import com.jsql.i18n.I18n;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
-import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.TabHeader;
-import com.jsql.view.swing.text.JPopupTextArea;
 
 /**
  * Create a new tab for an administration webpage.
  */
 public class CreateAdminPageTab implements IInteractionCommand {
     /**
-     * Url for the administration webpage.
-     */
-    private final String url;
-
-    /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getLogger(CreateAdminPageTab.class);
+
+    /**
+     * Url for the administration webpage.
+     */
+    private final String url;
 
     /**
      * @param interactionParams Url of the webpage
@@ -139,6 +137,7 @@ public class CreateAdminPageTab implements IInteractionCommand {
         
         browser.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent evt) {
+                browser.requestFocusInWindow();
                 if (evt.isPopupTrigger()) {
                     menu.show(evt.getComponent(), evt.getX(), evt.getY());
                 }
@@ -151,7 +150,6 @@ public class CreateAdminPageTab implements IInteractionCommand {
             }
         });
 
-//        final JScrollPanePixelBorder scroller = new JScrollPanePixelBorder(1, 0, 0, 0, browser);
         final LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, browser);
         MediatorGUI.right().addTab(url.replaceAll(".*/", "") + " ", scroller);
 
@@ -166,13 +164,14 @@ public class CreateAdminPageTab implements IInteractionCommand {
         // Apply the custom header to the tab
         MediatorGUI.right().setTabComponentAt(MediatorGUI.right().indexOfComponent(scroller), header);
 
-//        browser.requestFocusInWindow();
+        // Give focus to the admin page
+        browser.requestFocusInWindow();
 
         // Get back to the top
-//        SwingUtilities.invokeLater(new Runnable() {
-//            public void run() {
-//                scroller.getViewport().setViewPosition(new java.awt.Point(0, 0));
-//            }
-//        });
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                scroller.scrollPane.getViewport().setViewPosition(new java.awt.Point(0, 0));
+            }
+        });
     }
 }

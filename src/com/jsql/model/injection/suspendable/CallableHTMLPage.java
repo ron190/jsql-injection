@@ -1,4 +1,5 @@
 package com.jsql.model.injection.suspendable;
+
 import java.util.concurrent.Callable;
 
 import com.jsql.model.injection.MediatorModel;

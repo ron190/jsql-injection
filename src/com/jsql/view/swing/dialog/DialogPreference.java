@@ -45,7 +45,6 @@ import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.text.JPopupTextField;
-import com.jsql.view.swing.ui.RoundBorder;
 
 /**
  * A dialog for saving application settings.
@@ -53,14 +52,14 @@ import com.jsql.view.swing.ui.RoundBorder;
 @SuppressWarnings("serial")
 public class DialogPreference extends JDialog {
     /**
-     * Button getting focus.
-     */
-    private JButton okButton;
-
-    /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getLogger(DialogPreference.class);
+
+    /**
+     * Button getting focus.
+     */
+    private JButton okButton;
 
     /**
      * Create Preferences panel to save jSQL settings.
@@ -90,22 +89,21 @@ public class DialogPreference extends JDialog {
 
         okButton = new JButton("Apply");
         okButton.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
-                BorderFactory.createEmptyBorder(2, 7, 2, 7)));
-//        okButton.setBorder(new RoundBorder(7, 3, true));
+            BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
+            BorderFactory.createEmptyBorder(2, 7, 2, 7))
+        );
 
         JButton cancelButton = new JButton("Close");
         cancelButton.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
-                BorderFactory.createEmptyBorder(2, 7, 2, 7)));
-//        cancelButton.setBorder(new RoundBorder(7, 3, true));
+            BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
+            BorderFactory.createEmptyBorder(2, 7, 2, 7))
+        );
         cancelButton.addActionListener(escListener);
 
         this.getRootPane().setDefaultButton(okButton);
 
         this.setLayout(new BorderLayout());
         Container contentPane = this.getContentPane();
-//        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
 
         JButton checkIPButton = new JButton("Check your IP", new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/images/wrench.png")));
         checkIPButton.setBorder(HelperGUI.BLU_ROUND_BORDER);
@@ -121,38 +119,10 @@ public class DialogPreference extends JDialog {
         mainPanel.add(cancelButton);
         contentPane.add(mainPanel, BorderLayout.SOUTH);
 
-        // Second panel hidden by default, contain proxy setting
-//        final JPanel settingPanel2 = new JPanel();
-//        GroupLayout settingLayout2 = new GroupLayout(settingPanel2);
-//        settingPanel2.setLayout(settingLayout2);
-//        settingPanel2.setBorder(
-//                BorderFactory.createCompoundBorder(
-//                        BorderFactory.createCompoundBorder(
-//                                BorderFactory.createEmptyBorder(5, 5, 5, 5),
-//                                roundedTitledBorder2
-//                                ), BorderFactory.createEmptyBorder(5, 5, 5, 5)
-//                        ));
         final JCheckBox checkboxIsProxy2 = new JCheckBox("", MediatorGUI.model().updateAtStartup);
         JLabel labelUseProxy2 = new JLabel("<html><div style=\"text-align:right\">Check update<br>at startup</div></html>");
         final JCheckBox checkboxIsProxy3 = new JCheckBox("", MediatorGUI.model().reportBugs);
         JLabel labelUseProxy3 = new JLabel("<html><div style=\"text-align:right\">Report bugs<br>automatically</div></html>");
-//        // Proxy settings, Horizontal column rules
-//        settingLayout2.setHorizontalGroup(
-//                settingLayout2.createSequentialGroup()
-//                .addGroup(settingLayout2.createParallelGroup(GroupLayout.Alignment.TRAILING)
-//                        .addComponent(labelUseProxy2)
-//                        .addGroup(settingLayout2.createParallelGroup()
-//                                .addComponent(checkboxIsProxy2))
-//                )
-//        );
-//
-//        // Proxy settings, Vertical line rules
-//        settingLayout2.setVerticalGroup(
-//                settingLayout2.createSequentialGroup()
-//                .addGroup(settingLayout2.createParallelGroup(GroupLayout.Alignment.BASELINE)
-//                        .addComponent(labelUseProxy2)
-//                        .addComponent(checkboxIsProxy2))
-//                );
 
         LineBorder roundedLineBorder = new LineBorder(Color.LIGHT_GRAY, 1, true);
         TitledBorder roundedTitledBorder = new TitledBorder(roundedLineBorder, "General");
@@ -264,12 +234,9 @@ public class DialogPreference extends JDialog {
                 );
 
         contentPane.add(settingPanel, BorderLayout.CENTER);
-//        contentPane.add(settingPanel);
-//        contentPane.add(settingPanel2);
 
         this.pack();
         this.setSize(300, 240);
-//        this.setMinimumSize(new Dimension(300, 180));
         this.getRootPane().setDefaultButton(okButton);
         cancelButton.requestFocusInWindow();
         this.setLocationRelativeTo(MediatorGUI.gui());

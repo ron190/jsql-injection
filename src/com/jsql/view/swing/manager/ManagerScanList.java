@@ -33,9 +33,7 @@ import org.apache.log4j.Logger;
 import com.jsql.i18n.I18n;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.list.DnDList;
-import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 
 /**
@@ -72,7 +70,6 @@ public class ManagerScanList extends ManagerAbstractList {
         this.listPaths = listFile;
 
         this.add(new LightScrollPane(1, 1, 0, 0, listFile), BorderLayout.CENTER);
-//        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, listFile), BorderLayout.CENTER);
 
         JPanel lastLine = new JPanel();
         lastLine.setOpaque(false);

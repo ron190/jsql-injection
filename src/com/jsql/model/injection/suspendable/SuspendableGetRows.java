@@ -1,4 +1,5 @@
 package com.jsql.model.injection.suspendable;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

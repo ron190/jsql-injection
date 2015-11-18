@@ -66,53 +66,13 @@ public class ActionCheckIP implements ActionListener, Runnable {
         } catch (MalformedURLException e) {
             LOGGER.warn("Malformed URL: " + e.getMessage(), e);
         } catch (IOException e) {
-            LOGGER.warn("Error during AWS proxy test: " + e.getMessage(), e);
+            LOGGER.warn("Error during AWS test: " + e.getMessage(), e);
         } finally {
             if (in != null) {
                 try {
                     in.close();
                 } catch (IOException e) {
-                    LOGGER.warn("Error closing AWS proxy test: " + e.getMessage(), e);
-                }
-            }
-        }
-        
-        in = null;
-        try {
-            URL amazonUrl = new URL("http://www.telize.com/geoip");
-            HttpURLConnection connection = (HttpURLConnection) amazonUrl.openConnection();
-            connection.setDefaultUseCaches(false);
-            connection.setUseCaches(false);
-            connection.setRequestProperty("Pragma", "no-cache");
-            connection.setRequestProperty("Cache-Control", "no-cache");
-            connection.setRequestProperty("Expires", "-1");
-            connection.setReadTimeout(15000);
-            connection.setConnectTimeout(15000);
-            
-            in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"));
-            String ip2 = in.readLine();
-            
-            JSONObject jsonObject = new JSONObject(ip2);
-            
-            String ip = jsonObject.getString("ip");
-            String continent_code = jsonObject.getString("continent_code");
-            String country = jsonObject.getString("country");
-            String region = ArrayUtils.contains(jsonObject.names().join("%#%%#%").split("%#%%#%"), "region") ? ","+jsonObject.getString("region") : "";
-            String city = ArrayUtils.contains(jsonObject.names().join("%#%%#%").split("%#%%#%"), "city") ? ","+jsonObject.getString("city") : "";
-            String postal_code = ArrayUtils.contains(jsonObject.names().join("%#%%#%").split("%#%%#%"), "postal_code") ? ","+jsonObject.getString("postal_code") : "";
-            
-            LOGGER.trace("Your IP information (Telize): " + ip + " [" + continent_code + "," + country + region + city + postal_code + "]");
-        } catch (MalformedURLException e) {
-            LOGGER.warn("Malformed URL: " + e.getMessage(), e);
-        } catch (IOException e) {
-            LOGGER.warn("Error during Telize proxy test: " + e.getMessage(), e);
-        } finally {
-            if (in != null) {
-                try {
-                    LOGGER.trace("Checking IP done.");
-                    in.close();
-                } catch (IOException e) {
-                    LOGGER.warn("Error closing Telize proxy test: " + e.getMessage(), e);
+                    LOGGER.warn("Error closing AWS test: " + e.getMessage(), e);
                 }
             }
         }

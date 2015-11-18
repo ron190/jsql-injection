@@ -100,7 +100,6 @@ public class DataAccessObject {
 
         // Parse all data we have retrieved
         Matcher regexSearch = Pattern.compile(
-//                "hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh",
                 "\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?\\x04",
                 Pattern.CASE_INSENSITIVE | Pattern.DOTALL
         ).matcher(hexResult);
@@ -166,7 +165,6 @@ public class DataAccessObject {
         Matcher regexSearch =
                 Pattern.compile(
                         "\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?\\x04",
-//                        "hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh",
                         Pattern.CASE_INSENSITIVE | Pattern.DOTALL
                 ).matcher(hexResult);
 
@@ -176,7 +174,6 @@ public class DataAccessObject {
             regexSearch.reset();
 
             // Build an array of Table objects from the data we have parsed
-//            List<Table> tables = new ArrayList<Table>();
             while (regexSearch.find()) {
                 String tableName = regexSearch.group(1);
                 String rowCount  = regexSearch.group(2);
@@ -231,7 +228,6 @@ public class DataAccessObject {
         // Parse all the data we have retrieved
         Matcher regexSearch = Pattern.compile(
                 "\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?\\x04",
-//                "hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh",
                 Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
 
         if (!regexSearch.find()) {
@@ -240,7 +236,6 @@ public class DataAccessObject {
             regexSearch.reset();
 
             // Build an array of Column objects from the data we have parsed
-//            List<Column> columns = new ArrayList<Column>();
             while (regexSearch.find()) {
                 String columnName = regexSearch.group(1);
 
@@ -312,7 +307,6 @@ public class DataAccessObject {
         // Parse all the data we have retrieved
         Matcher regexSearch = Pattern.compile(
                 "\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?\\x04",
-//                "hh([0-9A-F]*)jj([0-9A-F]*)(c)?hh",
                 Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
 
         if (!regexSearch.find()) {

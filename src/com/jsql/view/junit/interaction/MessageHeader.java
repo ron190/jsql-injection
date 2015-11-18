@@ -10,17 +10,8 @@
  ******************************************************************************/
 package com.jsql.view.junit.interaction;
 
-import java.awt.Point;
-import java.awt.Rectangle;
 import java.util.Map;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JViewport;
-import javax.swing.table.DefaultTableModel;
-
-import com.jsql.model.bean.HTTPHeader;
-import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.interaction.IInteractionCommand;
 
 /**

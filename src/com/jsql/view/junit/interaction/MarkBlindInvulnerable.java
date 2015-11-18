@@ -10,8 +10,6 @@
  ******************************************************************************/
 package com.jsql.view.junit.interaction;
 
-import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.interaction.IInteractionCommand;
 
 /**

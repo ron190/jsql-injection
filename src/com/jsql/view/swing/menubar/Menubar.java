@@ -10,9 +10,24 @@
  ******************************************************************************/
 package com.jsql.view.swing.menubar;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.Socket;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.prefs.Preferences;
@@ -23,12 +38,16 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.MenuSelectionManager;
 import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
+
+import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.injection.InjectionModel;
@@ -39,13 +58,20 @@ import com.jsql.view.swing.action.ActionNewWindow;
 import com.jsql.view.swing.action.ActionSaveTab;
 import com.jsql.view.swing.dialog.DialogAbout;
 import com.jsql.view.swing.dialog.DialogPreference;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.table.PanelTable;
+import com.jsql.view.swing.text.JPopupTextArea;
 
 /**
  * Application main menubar.
  */
 @SuppressWarnings("serial")
 public class Menubar extends JMenuBar {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Menubar.class);
+
     /**
      * Checkbox item to show/hide chunk console.
      */
@@ -188,7 +214,8 @@ public class Menubar extends JMenuBar {
                 if (chunkMenu.isSelected()) {
                     MediatorGUI.bottomPanel().insertChunkTab();
                 } else {
-                    MediatorGUI.bottom().remove(MediatorGUI.bottom().indexOfTab(chunkMenu.getText()));
+                    // Works even with i18n label
+                    MediatorGUI.bottom().remove(MediatorGUI.bottom().indexOfTab("Chunk"));
                 }
             }
         });
@@ -198,7 +225,8 @@ public class Menubar extends JMenuBar {
                 if (binaryMenu.isSelected()) {
                     MediatorGUI.bottomPanel().insertBinaryTab();
                 } else {
-                    MediatorGUI.bottom().remove(MediatorGUI.bottom().indexOfTab(binaryMenu.getText()));
+                    // Works even with i18n label
+                    MediatorGUI.bottom().remove(MediatorGUI.bottom().indexOfTab("Binary"));
                 }
             }
         });
@@ -208,7 +236,8 @@ public class Menubar extends JMenuBar {
                 if (networkMenu.isSelected()) {
                     MediatorGUI.bottomPanel().insertNetworkTab();
                 } else {
-                    MediatorGUI.bottom().remove(MediatorGUI.bottom().indexOfTab(networkMenu.getText()));
+                    // Works even with i18n label
+                    MediatorGUI.bottom().remove(MediatorGUI.bottom().indexOfTab("Network"));
                 }
             }
         });
@@ -218,7 +247,8 @@ public class Menubar extends JMenuBar {
                 if (javaDebugMenu.isSelected()) {
                     MediatorGUI.bottomPanel().insertJavaDebugTab();
                 } else {
-                    MediatorGUI.bottom().remove(MediatorGUI.bottom().indexOfTab(javaDebugMenu.getText()));
+                    // Works even with i18n label
+                    MediatorGUI.bottom().remove(MediatorGUI.bottom().indexOfTab("Java"));
                 }
             }
         });
@@ -280,6 +310,8 @@ public class Menubar extends JMenuBar {
         itemHelp.setIcon(HelperGUI.EMPTY);
         JMenuItem itemUpdate = new JMenuItem(I18n.ITEM_UPDATE, 'U');
         itemUpdate.setIcon(HelperGUI.EMPTY);
+        JMenuItem itemReportIssue = new JMenuItem(I18n.ITEM_REPORTISSUE, 'R');
+        itemReportIssue.setIcon(HelperGUI.EMPTY);
 
         // Render the About dialog behind scene
         final DialogAbout aboutDiag = new DialogAbout();
@@ -297,6 +329,102 @@ public class Menubar extends JMenuBar {
             }
         });
         itemUpdate.addActionListener(new ActionCheckUpdate());
+        itemReportIssue.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                JPanel panel = new JPanel(new BorderLayout());
+                final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
+                textarea.setText("Reporter: Anonymous\n\nSubject: \n\nDescription: ");
+                panel.add(new JLabel("Describe your issue or the bug you encountered " + ":"), BorderLayout.NORTH);
+                panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
+                
+                panel.setPreferredSize(new Dimension(400, 250));
+                panel.setMinimumSize(new Dimension(400, 250));
+                
+                textarea.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        super.mousePressed(e);
+                        textarea.requestFocusInWindow();
+                    }
+                });
+
+                int result = JOptionPane.showOptionDialog(
+                    MediatorGUI.gui(),
+                    panel,
+                    "Report an issue or a bug",
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    new String[]{"Report", I18n.CANCEL},
+                    I18n.CANCEL
+                );
+
+                if (!"".equals(textarea.getText()) && result == JOptionPane.YES_OPTION) {
+                    // Test if proxy is available then apply settings
+                    if (MediatorGUI.model().isProxyfied && !"".equals(MediatorGUI.model().proxyAddress) && !"".equals(MediatorGUI.model().proxyPort)) {
+                        try {
+                            LOGGER.info("Testing proxy...");
+                            new Socket(MediatorGUI.model().proxyAddress, Integer.parseInt(MediatorGUI.model().proxyPort)).close();
+                        } catch (Exception e) {
+                            LOGGER.warn("Proxy connection failed: " 
+                                    + MediatorGUI.model().proxyAddress + ":" + MediatorGUI.model().proxyPort
+                                    + "\nVerify your proxy informations or disable proxy setting.", e);
+                            return;
+                        }
+                        LOGGER.trace("Proxy is responding.");
+                    }
+
+                    HttpURLConnection connection = null;
+                    try {
+                        LOGGER.info("Sending report...");
+                        URL githubUrl = new URL("https://api.github.com/repos/ron190/jsql-injection/issues");
+                        connection = (HttpURLConnection) githubUrl.openConnection();
+                        connection.setDefaultUseCaches(false);
+                        connection.setUseCaches(false);
+                        connection.setRequestProperty("Pragma", "no-cache");
+                        connection.setRequestProperty("Cache-Control", "no-cache");
+                        connection.setRequestProperty("Expires", "-1");
+                        connection.setRequestProperty("Content-Type", "application/json");
+                        connection.setRequestProperty("Authorization", "token f96eec3e1d02ed5139da531b9a7495e40c1a3a83");
+                        connection.setReadTimeout(15000);
+                        connection.setConnectTimeout(15000);
+                        connection.setDoOutput(true);
+    
+                        DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
+                        dataOut.writeBytes(
+                                "{\"title\": \"Report\", \"body\": \""+ 
+                                textarea.getText().replaceAll("(\\r|\\n)+", "\\\\n") +"\"}");
+                        dataOut.flush();
+                        dataOut.close();
+                    } catch (IOException e) {
+                        LOGGER.warn("Error during JSON connection " + e.getMessage(), e);
+                    }
+    
+                    // Request the web page to the server
+                    String line, pageSource = "";
+                    try {
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                        while ((line = reader.readLine()) != null) {
+                            pageSource += line + "\r\n";
+                        }
+                        reader.close();
+                        
+                        LOGGER.debug("Report sent successfully.");
+                        System.out.println(pageSource);
+                    } catch (MalformedURLException e) {
+                        LOGGER.warn("Malformed URL " + e.getMessage(), e);
+                    } catch (IOException e) {
+                        /* lot of timeout in local use */
+                        LOGGER.warn("Read error " + e.getMessage(), e);
+                    }
+                    
+                }
+            }
+        });
+        
+        menuHelp.add(itemReportIssue);
+        menuHelp.add(new JSeparator());
         menuHelp.add(itemUpdate);
         menuHelp.add(new JSeparator());
         menuHelp.add(itemHelp);

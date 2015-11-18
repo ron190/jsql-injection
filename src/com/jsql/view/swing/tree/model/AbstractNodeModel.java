@@ -31,7 +31,6 @@ import com.jsql.view.swing.tree.ActionPauseUnpause;
 import com.jsql.view.swing.tree.ImageObserverAnimated;
 import com.jsql.view.swing.tree.ImageOverlap;
 import com.jsql.view.swing.tree.PanelNode;
-import com.jsql.view.swing.ui.RoundBorder;
 
 /**
  * Model adding functional layer to the node ; used by renderer and editor.
@@ -173,7 +172,6 @@ public abstract class AbstractNodeModel {
             panel.label.setBackground(HelperGUI.SELECTION_BACKGROUND);
         } else {
             panel.label.setBackground(Color.WHITE);
-//            panel.label.setBorder(new RoundBorder(4, 1, false));
             panel.label.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         }
 

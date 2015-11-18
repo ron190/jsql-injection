@@ -24,7 +24,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import com.jsql.i18n.I18n;
-import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 
@@ -51,8 +50,6 @@ public class MenuActionNewValue implements ActionListener {
         JPanel panel = new JPanel(new BorderLayout());
         final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
         panel.add(new JLabel(I18n.LIST_ADD_VALUE_LABEL + ":"), BorderLayout.NORTH);
-//        panel.add(new JScrollPanePixelBorder(1, 1, 1, 1, textarea));
-//        panel.add(new LightScrollPane(1, 1, 0, 0, textarea));
         panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
         
         panel.setPreferredSize(new Dimension(300, 200));

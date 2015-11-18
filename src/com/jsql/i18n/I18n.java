@@ -113,6 +113,7 @@ public class I18n {
     /**
      * Menubar
      */
+    public static final String ITEM_REPORTISSUE = (String) labels.getObject("itemReportIssue");
     public static final String ITEM_UPDATE = (String) labels.getObject("itemUpdate");
     public static final String ITEM_ABOUT = (String) labels.getObject("itemAbout");
     public static final String MENU_HELP = (String) labels.getObject("menuHelp");

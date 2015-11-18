@@ -642,15 +642,6 @@ public class RessourceAccessObject {
         ScanListTerminal sc = new ScanListTerminal();
         
         for (ListItem s: list) {
-//            taskCompletionService.submit(new CallableAdminPage(debut + progressURL + s.toString()));
-            
-//            InjectionModel model = new InjectionModel();
-//            MediatorModel.register(model);
-//            model.instanciationDone();
-
-//            MediatorModel.model().initialUrl = s.toString();
-            
-//            model.inputValidation();
             LOGGER.info("Scanning " + s);
             MediatorModel.model().controlInput(
                 s.toString(),
@@ -658,24 +649,13 @@ public class RessourceAccessObject {
                 true
             );
             
-            
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            
         }
-        
-//
-//        this.endAdminSearch = false;
-//
-//        if (nb > 0) {
-//            LOGGER.debug("Admin page(s) found: " + nb + "/" + submittedTasks);
-//        } else {
-//            LOGGER.trace("Admin page(s) found: " + nb + "/" + submittedTasks);
-//        }
 
         Request request = new Request();
         request.setMessage("EndScanList");

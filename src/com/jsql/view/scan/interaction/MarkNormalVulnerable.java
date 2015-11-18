@@ -45,8 +45,6 @@ public class MarkNormalVulnerable implements IInteractionCommand {
                 ((DefaultListModel) MediatorGUI.left().scanListManager.listPaths.getModel()).setElementAt(
                         MediatorGUI.left().scanListManager.listPaths.getModel().getElementAt(i), 
                         i);
-//                MediatorGUI.left().scanListManager.listPaths.getModel().getElementAt(i).internalString = "##=> " + 
-//                        MediatorGUI.left().scanListManager.listPaths.getModel().getElementAt(i).internalString;
             }
         }
     }

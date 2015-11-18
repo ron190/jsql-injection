@@ -39,7 +39,6 @@ import com.jsql.exception.StoppableException;
 import com.jsql.i18n.I18n;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.list.DnDList;
-import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextField;
 
@@ -77,7 +76,6 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
         }
 
         this.listPaths = new DnDList(pathsList);
-//        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, this.listPaths), BorderLayout.CENTER);
         this.add(new LightScrollPane(1, 1, 0, 0, this.listPaths), BorderLayout.CENTER);
         
         JPanel southPanel = new JPanel();

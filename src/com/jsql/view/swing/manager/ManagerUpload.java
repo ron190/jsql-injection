@@ -13,7 +13,11 @@ package com.jsql.view.swing.manager;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +41,6 @@ import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.list.DnDList;
-import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextField;
 
@@ -60,15 +63,19 @@ public class ManagerUpload extends ManagerAbstractList {
         this.setDefaultText(I18n.UPLOAD_RUN_BUTTON);
 
         List<String> pathsList = new ArrayList<String>();
-        pathsList.add("/var/www/html/defaut/");
-        pathsList.add("/var/www/html/default/");
-        pathsList.add("/var/www/html/");
-        pathsList.add("/var/www/");
-        pathsList.add("/home/www/");
-        pathsList.add("E:/Outils/EasyPHP-5.3.9/www/");
+        try {
+            InputStream in = this.getClass().getResourceAsStream("/com/jsql/list/upload.txt");
+            String line;
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            while ((line = reader.readLine()) != null) {
+                pathsList.add(line);
+            }
+            reader.close();
+        } catch (IOException e) {
+            LOGGER.error(e, e);
+        }
 
         this.listPaths = new DnDList(pathsList);
-//        this.add(new JScrollPanePixelBorder(1, 1, 0, 0, this.listPaths), BorderLayout.CENTER);
         this.add(new LightScrollPane(1, 1, 0, 0, this.listPaths), BorderLayout.CENTER);
         
         JPanel southPanel = new JPanel();

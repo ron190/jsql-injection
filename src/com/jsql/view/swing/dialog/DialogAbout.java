@@ -50,15 +50,18 @@ import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
-import com.jsql.view.swing.scrollpane.JScrollPanePixelBorder;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
-import com.jsql.view.swing.ui.RoundBorder;
 
 /**
  * A dialog displaying information on jSQL.
  */
 @SuppressWarnings("serial")
 public class DialogAbout extends JDialog {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(DialogAbout.class);
+
     /**
      * Button receiving focus.
      */
@@ -68,11 +71,6 @@ public class DialogAbout extends JDialog {
      * Dialog scroller.
      */
     private LightScrollPane scrollPane;
-
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getLogger(DialogAbout.class);
 
     /**
      * Create a dialog for general information on project jsql.
@@ -100,19 +98,19 @@ public class DialogAbout extends JDialog {
         lastLine.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         this.close = new JButton("Close");
-//        this.close.setBorder(new RoundBorder(20, 3, true));
         this.close.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
-                BorderFactory.createEmptyBorder(2, 20, 2, 20)));
+            BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
+            BorderFactory.createEmptyBorder(2, 20, 2, 20))
+        );
         this.close.addActionListener(escapeListener);
 
         this.setLayout(new BorderLayout());
         Container dialogPane = this.getContentPane();
         JButton webpage = new JButton("Webpage");
-//        webpage.setBorder(new RoundBorder(20, 3, true));
         webpage.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
-                BorderFactory.createEmptyBorder(2, 20, 2, 20)));
+            BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
+            BorderFactory.createEmptyBorder(2, 20, 2, 20))
+        );
         webpage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -189,11 +187,10 @@ public class DialogAbout extends JDialog {
             }
         });
 
-//        this.scrollPane = new JScrollPanePixelBorder(1, 1, 1, 0, text[0]);
         this.scrollPane = new LightScrollPane(1, 1, 1, 0, text[0]);
         dialogPane.add(this.scrollPane, BorderLayout.CENTER);
 
-        reinit();
+        this.reinit();
     }
 
     /**
