@@ -41,7 +41,7 @@ public class ActionCheckUpdate implements ActionListener, Runnable {
             Float gitVersion = Float.parseFloat(pageSource);
             MediatorGUI.model();
             if (gitVersion <= Float.parseFloat(InjectionModel.JSQLVERSION)) {
-                LOGGER.info(I18n.UPDATE_UPTODATE);
+                LOGGER.debug(I18n.UPDATE_UPTODATE);
             } else {
                 LOGGER.warn(I18n.UPDATE_NEW_VERSION_AVAILABLE);
             }

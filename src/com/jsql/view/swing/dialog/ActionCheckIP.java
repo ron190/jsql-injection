@@ -10,9 +10,7 @@ import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 
 import com.jsql.view.swing.MediatorGUI;
 

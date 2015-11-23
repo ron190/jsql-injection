@@ -33,6 +33,7 @@ import com.jsql.model.injection.InjectionModel;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.dialog.ReplaceFileChooser;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.table.PanelTable;
 
 /**
@@ -62,8 +63,12 @@ public class ActionSaveTab extends AbstractAction {
 
         if (MediatorGUI.right().getSelectedComponent() instanceof PanelTable) {
             saveTablePanel();
-        } else if (MediatorGUI.right().getSelectedComponent() instanceof JScrollPane) {
-            if ((((JScrollPane) MediatorGUI.right().getSelectedComponent()).getViewport()).getView() instanceof JTextComponent) {
+//        } else if (MediatorGUI.right().getSelectedComponent() instanceof JScrollPane) {
+//            if ((((JScrollPane) MediatorGUI.right().getSelectedComponent()).getViewport()).getView() instanceof JTextComponent) {
+//                saveJTextComponent();
+//            }
+        } else if (MediatorGUI.right().getSelectedComponent() instanceof LightScrollPane) {
+            if ((((LightScrollPane) MediatorGUI.right().getSelectedComponent()).scrollPane.getViewport()).getView() instanceof JTextComponent) {
                 saveJTextComponent();
             }
         }
@@ -121,8 +126,11 @@ public class ActionSaveTab extends AbstractAction {
     private void saveJTextComponent() {
         JTextComponent textArea = null;
         
-        if ((JTextComponent) (((JScrollPane) MediatorGUI.right().getSelectedComponent()).getViewport()).getView() != null) {
-            textArea = (JTextComponent) (((JScrollPane) MediatorGUI.right().getSelectedComponent()).getViewport()).getView();
+//        if ((JTextComponent) (((JScrollPane) MediatorGUI.right().getSelectedComponent()).getViewport()).getView() != null) {
+//            textArea = (JTextComponent) (((JScrollPane) MediatorGUI.right().getSelectedComponent()).getViewport()).getView();
+//        }
+        if ((JTextComponent) (((LightScrollPane) MediatorGUI.right().getSelectedComponent()).scrollPane.getViewport()).getView() != null) {
+            textArea = (JTextComponent) (((LightScrollPane) MediatorGUI.right().getSelectedComponent()).scrollPane.getViewport()).getView();
         }
         
         if (textArea == null) {

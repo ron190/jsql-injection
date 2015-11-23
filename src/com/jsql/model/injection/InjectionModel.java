@@ -19,6 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,8 +33,10 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.MainApplication.ExceptionHandler;
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
+import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.DataAccessObject;
 import com.jsql.model.accessible.RessourceAccessObject;
 import com.jsql.model.bean.AbstractElementDatabase;
@@ -49,6 +52,8 @@ import com.jsql.model.strategy.TimeStrategy;
 import com.jsql.model.vendor.ASQLStrategy;
 import com.jsql.model.vendor.MySQLStrategy;
 import com.jsql.tool.ToolsString;
+import com.jsql.view.swing.JFrameGUI;
+import com.jsql.view.swing.MediatorGUI;
 
 /**
  * Model in charge of injection.<br>
@@ -253,6 +258,39 @@ public class InjectionModel extends AbstractModelObservable {
         if (fVersion.floatValue() < (float) 1.7) {
             LOGGER.warn("You are running an old version of Java, please install the latest version from java.com.");
         }
+        
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                
+                if (InjectionModel.this.updateAtStartup) {
+                    try {
+                        URLConnection con = new URL("http://jsql-injection.googlecode.com/git/.version").openConnection();
+                        con.setReadTimeout(60000);
+                        con.setConnectTimeout(60000);
+            
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                        String line, pageSource = "";
+                        while ((line = reader.readLine()) != null) {
+                            pageSource += line + "\n";
+                        }
+                        reader.close();
+            
+                        Float gitVersion = Float.parseFloat(pageSource);
+                        MediatorGUI.model();
+                        if (gitVersion > Float.parseFloat(InjectionModel.JSQLVERSION)) {
+                            LOGGER.warn(I18n.UPDATE_NEW_VERSION_AVAILABLE);
+                        }
+                    } catch (NumberFormatException e) {
+                        LOGGER.warn(I18n.UPDATE_EXCEPTION);
+                        LOGGER.error(e, e);
+                    } catch (IOException e) {
+                        LOGGER.warn(I18n.UPDATE_EXCEPTION);
+                        LOGGER.error(e, e);
+                    }
+                }
+        
+            }
+        });
     }
 
     /**

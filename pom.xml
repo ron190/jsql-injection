@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>jsql-injection</groupId>
   <artifactId>jsql-injection</artifactId>
-  <version>v0.6</version>
+  <version>v0.7</version>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>

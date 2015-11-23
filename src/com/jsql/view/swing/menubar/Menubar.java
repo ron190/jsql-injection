@@ -47,6 +47,9 @@ import javax.swing.KeyStroke;
 import javax.swing.MenuSelectionManager;
 import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.StringUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
@@ -334,7 +337,7 @@ public class Menubar extends JMenuBar {
             public void actionPerformed(ActionEvent arg0) {
                 JPanel panel = new JPanel(new BorderLayout());
                 final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
-                textarea.setText("Reporter: Anonymous\n\nSubject: \n\nDescription: ");
+                textarea.setText("Reporter: -\n\nSubject: -\n\nDescription: -");
                 panel.add(new JLabel("Describe your issue or the bug you encountered " + ":"), BorderLayout.NORTH);
                 panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
                 
@@ -386,7 +389,7 @@ public class Menubar extends JMenuBar {
                         connection.setRequestProperty("Cache-Control", "no-cache");
                         connection.setRequestProperty("Expires", "-1");
                         connection.setRequestProperty("Content-Type", "application/json");
-                        connection.setRequestProperty("Authorization", "token f96eec3e1d02ed5139da531b9a7495e40c1a3a83");
+                        connection.setRequestProperty("Authorization", "token " + StringUtils.newStringUtf8(Base64.decodeBase64("NGQ1YzdkYWE1NDQwYzdkNTk1YTZlODQzYzFlODlkZmMzNzQ1NDhlNg==")));
                         connection.setReadTimeout(15000);
                         connection.setConnectTimeout(15000);
                         connection.setDoOutput(true);
@@ -394,7 +397,7 @@ public class Menubar extends JMenuBar {
                         DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
                         dataOut.writeBytes(
                                 "{\"title\": \"Report\", \"body\": \""+ 
-                                textarea.getText().replaceAll("(\\r|\\n)+", "\\\\n") +"\"}");
+                                StringEscapeUtils.escapeJson(textarea.getText()).replaceAll("(\\r|\\n)+", "\\\\n") +"\"}");
                         dataOut.flush();
                         dataOut.close();
                     } catch (IOException e) {
@@ -411,7 +414,7 @@ public class Menubar extends JMenuBar {
                         reader.close();
                         
                         LOGGER.debug("Report sent successfully.");
-                        System.out.println(pageSource);
+//                        System.out.println(pageSource);
                     } catch (MalformedURLException e) {
                         LOGGER.warn("Malformed URL " + e.getMessage(), e);
                     } catch (IOException e) {

@@ -3,7 +3,7 @@
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
     <target name="create_run_jar">
-        <jar destfile="target/jsql-injection-v0.6.jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="target/jsql-injection-v0.7.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="com.jsql.MainApplication"/>
                 <attribute name="Class-Path" value="."/>

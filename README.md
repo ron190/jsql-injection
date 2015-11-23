@@ -7,9 +7,11 @@ jSQL is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS
 
 jSQL is also included in [Black Hat Sec](http://www.blackhat-sec.com/), [ArchAssault Project](https://archassault.org/), [BlackArch Linux](http://www.blackarch.org/) and [Cyborg Hawk Linux](http://cyborg.ztrela.com/).
 
-## Screenshot of alpha v0.6 [[download here](https://github.com/ron190/jsql-injection/releases)]
-[![jSQL alpha v0.6](https://sites.google.com/site/jsqlinjection/home/images/alpha-v0.6-mini.png "jSQL alpha v0.6")](https://sites.google.com/site/jsqlinjection/home/images/alpha-v0.6.png)
+## Screenshot of alpha v0.7 [[download here](https://github.com/ron190/jsql-injection/releases)]
+[![jSQL alpha v0.7](https://sites.google.com/site/jsqlinjection/home/images/v0.7-mini.png "jSQL v0.7")](https://sites.google.com/site/jsqlinjection/home/images/v0.7.png)
 ## Change log
+**v0.7** `Batch scan, Github issue reporter, support for 16 db engines, optimized GUI`
+
 **alpha-v0.6** `Speed x 2 (no more hex encoding), 10 db vendors supported: MySQL Oracle SQLServer PostgreSQL DB2 Firebird Informix Ingres MaxDb Sybase. JUnit tests, log4j, i18n integration and more.`
 
 **Coming...** `JUnit tests with Hibernate, Github issues with OAuth, i18n arabic russian chinese integration, next rdbms already implemented: Cubrid Derby H2 HSQLDB MariaDb Teradata, TODO: SQLite Access MSDE...`

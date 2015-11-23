@@ -3,4 +3,3 @@
 /var/www/html/
 /var/www/
 /home/www/
-E:/Outils/EasyPHP-5.3.9/www/

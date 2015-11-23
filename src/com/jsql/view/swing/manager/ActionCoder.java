@@ -133,7 +133,7 @@ public class ActionCoder implements ActionListener {
                 this.coderManager.result.setText("Decoding error: " + e.getMessage());
             }
         } else {
-            this.coderManager.result.setText("*** Unrecognized search");
+            this.coderManager.result.setText("*** Choose the encoding or decoding method");
         }
     }
 }

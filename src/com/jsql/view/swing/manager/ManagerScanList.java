@@ -100,6 +100,7 @@ public class ManagerScanList extends ManagerAbstractList {
                             MediatorModel.model().ressourceAccessObject.scanList(listFile.getSelectedValuesList());
                         } else {
                             MediatorModel.model().ressourceAccessObject.endScanList = true;
+                            MediatorModel.model().shouldStopAll = true;
                             run.setEnabled(false);
                         }
                     }

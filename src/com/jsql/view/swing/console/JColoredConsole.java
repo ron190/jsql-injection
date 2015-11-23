@@ -64,10 +64,12 @@ public class JColoredConsole extends JPopupTextPane {
             );
 
             int tabIndex = MediatorGUI.bottom().indexOfTab(tabName);
-            Component tabHeader
-                    = MediatorGUI.bottom().getTabComponentAt(tabIndex);
-            if (MediatorGUI.bottom().getSelectedIndex() != tabIndex) {
-                tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
+            if (0 <= tabIndex && tabIndex < MediatorGUI.bottom().getTabCount()) {
+                Component tabHeader
+                        = MediatorGUI.bottom().getTabComponentAt(tabIndex);
+                if (MediatorGUI.bottom().getSelectedIndex() != tabIndex) {
+                    tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
+                }
             }
         } catch (BadLocationException e) {
             LOGGER.fatal(message);
