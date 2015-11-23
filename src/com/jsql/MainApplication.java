@@ -88,8 +88,11 @@ public class MainApplication {
     
                     DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
                     dataOut.writeBytes(
-                        "{\"title\": \"Report\", \"body\": \""+ 
-                        StringEscapeUtils.escapeJson(("Exception http://azezae.azeeza.aze/test-url? on " + tname +"\n"+ ExceptionUtils.getStackTrace(thrown)).replaceAll("(http://[.a-zA-Z_0-9]*)+", "").replaceAll("(\\r|\\n)+", "\\\\n")) +"\"}");
+                        "{\"title\": \"Report\", \"body\": \""+ StringEscapeUtils.escapeJson(
+                            ("Exception on " + tname +"\n"+ ExceptionUtils.getStackTrace(thrown))
+                                .replaceAll("(http://[.a-zA-Z_0-9]*)+", "")
+                                .replaceAll("(\\r|\\n)+", "\\\\n")
+                    ) +"\"}");
                     dataOut.flush();
                     dataOut.close();
                 } catch (IOException e) {
