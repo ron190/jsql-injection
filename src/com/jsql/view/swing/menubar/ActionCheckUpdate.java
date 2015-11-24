@@ -27,7 +27,7 @@ public class ActionCheckUpdate implements ActionListener, Runnable {
     public void run() {
         try {
             LOGGER.info(I18n.UPDATE_LOADING);
-            URLConnection con = new URL("http://jsql-injection.googlecode.com/git/.version").openConnection();
+            URLConnection con = new URL("https://raw.githubusercontent.com/ron190/jsql-injection/master/.version").openConnection();
             con.setReadTimeout(60000);
             con.setConnectTimeout(60000);
 

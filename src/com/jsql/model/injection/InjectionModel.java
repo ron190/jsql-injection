@@ -264,7 +264,7 @@ public class InjectionModel extends AbstractModelObservable {
                 
                 if (InjectionModel.this.updateAtStartup) {
                     try {
-                        URLConnection con = new URL("http://jsql-injection.googlecode.com/git/.version").openConnection();
+                        URLConnection con = new URL("https://raw.githubusercontent.com/ron190/jsql-injection/master/.version").openConnection();
                         con.setReadTimeout(60000);
                         con.setConnectTimeout(60000);
             
