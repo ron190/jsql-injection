@@ -73,7 +73,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Current version of application.
      */
-    public static final String JSQLVERSION = "0.71"; // Please edit file .version when changed
+    public static final String JSQLVERSION = "0.7"; // Please edit file .version when changed
 
     /**
      * i.e, -1 in "[...].php?id=-1 union select[...]"
@@ -342,7 +342,9 @@ public class InjectionModel extends AbstractModelObservable {
                 
                 // Add headers if exists (Authorization:Basic, etc)
                 for (String s: headerData.split("\\\\r\\\\n")) {
-                    con.addRequestProperty(s.split(":", 2)[0], s.split(":", 2)[1]);
+                    if (s.split(":", 2).length > 0) {
+                        con.addRequestProperty(s.split(":", 2)[0], s.split(":", 2)[1]);
+                    }
                 }
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
