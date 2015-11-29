@@ -73,7 +73,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Current version of application.
      */
-    public static final String JSQLVERSION = "0.7"; // Please edit file .version when changed
+    public static final String JSQLVERSION = "0.71"; // Please edit file .version when changed
 
     /**
      * i.e, -1 in "[...].php?id=-1 union select[...]"
@@ -342,8 +342,9 @@ public class InjectionModel extends AbstractModelObservable {
                 
                 // Add headers if exists (Authorization:Basic, etc)
                 for (String s: headerData.split("\\\\r\\\\n")) {
-                    if (s.split(":", 2).length > 0) {
-                        con.addRequestProperty(s.split(":", 2)[0], s.split(":", 2)[1]);
+                    Matcher regexSearch = Pattern.compile("(.*):(.*)", Pattern.DOTALL).matcher(s);
+                    if (regexSearch.find()) {
+                        con.addRequestProperty(regexSearch.group(1).trim(), URLDecoder.decode(regexSearch.group(2).trim(), "UTF-8"));
                     }
                 }
 
@@ -614,10 +615,13 @@ public class InjectionModel extends AbstractModelObservable {
          */
         if (!"".equals(this.headerData)) {
             for (String s: this.buildQuery("HEADER", headerData, useVisibleIndex, dataInjection).split("\\\\r\\\\n")) {
-                try {
-                    connection.addRequestProperty(s.split(":", 2)[0], URLDecoder.decode(s.split(":", 2)[1], "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    LOGGER.warn("Unsupported header encoding " + e.getMessage(), e);
+                Matcher regexSearch = Pattern.compile("(.*):(.*)", Pattern.DOTALL).matcher(s);
+                if (regexSearch.find()) {
+                    try {
+                        connection.addRequestProperty(regexSearch.group(1).trim(), URLDecoder.decode(regexSearch.group(2).trim(), "UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        LOGGER.warn("Unsupported header encoding " + e.getMessage(), e);
+                    }
                 }
             }
             
