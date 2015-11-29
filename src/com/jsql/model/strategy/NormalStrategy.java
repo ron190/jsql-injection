@@ -72,4 +72,9 @@ public class NormalStrategy extends AbstractInjectionStrategy {
     public String getPerformanceLength() {
         return MediatorModel.model().performanceLength;
     }
+    
+    @Override
+    public String getName() {
+        return "Normal";
+    }
 }

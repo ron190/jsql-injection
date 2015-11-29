@@ -125,7 +125,7 @@ public class ManagerBruteForce extends JPanel {
         numericCharacters = new JCheckBox("0-9", true);
         specialCharacters = new JCheckBox("Special", true);
 
-        hashTypes = new JComboBox<String>(new String[]{"md2", "md5", "sha-1", "sha-256", "sha-384",
+        hashTypes = new JComboBox<String>(new String[]{"Adler32", "Crc16", "Crc32", "Crc64", "Md2", "Md5", "Sha-1", "Sha-256", "Sha-384",
                 "sha-512", "mysql" /*,"crc16","crc32","crc64","adler32"*/});
         
         hashTypes.setSelectedIndex(1);

@@ -93,4 +93,9 @@ public class ErrorbasedStrategy extends AbstractInjectionStrategy {
          */
         return "60" ;
     }
+    
+    @Override
+    public String getName() {
+        return "Error based";
+    }
 }

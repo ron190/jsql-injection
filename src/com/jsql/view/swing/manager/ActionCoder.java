@@ -19,11 +19,14 @@ import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.zip.CRC32;
+import java.util.zip.Checksum;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.jsql.tool.ToolsString;
+import com.jsql.view.swing.bruteforce.HashBruter;
 
 /**
  * Action runned when this.coderManager.encoding.
@@ -55,6 +58,18 @@ public class ActionCoder implements ActionListener {
             String encodedPasswordInString = this.coderManager.digestToHexString(encodedPassword);
 
             this.coderManager.result.setText(encodedPasswordInString);
+        } else if ("Adler32".contains(choice)) {
+            this.coderManager.result.setText(HashBruter.generateAdler32(this.coderManager.entry.getText()));
+        } else if ("Crc16".contains(choice)) {
+            this.coderManager.result.setText(HashBruter.generateCRC16(this.coderManager.entry.getText()));
+        } else if ("Crc32".contains(choice)) {
+            byte bytes[] = this.coderManager.entry.getText().getBytes();
+            Checksum checksum = new CRC32();
+            checksum.update(bytes,0,bytes.length);
+            long lngChecksum = checksum.getValue();
+            this.coderManager.result.setText(lngChecksum+"");
+        } else if ("Crc64".contains(choice)) {
+            this.coderManager.result.setText(HashBruter.generateCRC64(this.coderManager.entry.getText().getBytes()));
         } else if ("Mysql".equals(choice)) {
             MessageDigest md = null;
             try {

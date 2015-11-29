@@ -73,7 +73,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Current version of application.
      */
-    public static final String JSQLVERSION = "0.7";
+    public static final String JSQLVERSION = "0.71"; // Please edit file .version when changed
 
     /**
      * i.e, -1 in "[...].php?id=-1 union select[...]"
@@ -339,6 +339,11 @@ public class InjectionModel extends AbstractModelObservable {
                 con.setReadTimeout(15000);
                 con.setConnectTimeout(15000);
                 con.setInstanceFollowRedirects(false);
+                
+                // Add headers if exists (Authorization:Basic, etc)
+                for (String s: headerData.split("\\\\r\\\\n")) {
+                    con.addRequestProperty(s.split(":", 2)[0], s.split(":", 2)[1]);
+                }
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
                 reader.readLine();
@@ -606,7 +611,7 @@ public class InjectionModel extends AbstractModelObservable {
          * #Need primary evasion
          */
         if (!"".equals(this.headerData)) {
-            for (String s: this.buildQuery("HEADER", headerData, useVisibleIndex, dataInjection).split(";")) {
+            for (String s: this.buildQuery("HEADER", headerData, useVisibleIndex, dataInjection).split("\\\\r\\\\n")) {
                 try {
                     connection.addRequestProperty(s.split(":", 2)[0], URLDecoder.decode(s.split(":", 2)[1], "UTF-8"));
                 } catch (UnsupportedEncodingException e) {

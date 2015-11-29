@@ -86,13 +86,22 @@ public class MainApplication {
                     connection.setConnectTimeout(15000);
                     connection.setDoOutput(true);
     
+                    MediatorGUI.model();
+                    String clientDescription = 
+                              "```\n"
+                            + "jSQL version: " + InjectionModel.JSQLVERSION +"\n"
+                            + "Java version: " + System.getProperty("java.version").substring(0, 3) +"\n"
+                            + "Operating system: " + System.getProperty("os.name") +"\n"
+                            + "Strategy: " + MediatorGUI.model().injectionStrategy.getName() +"\n"
+                            + "Db engine: " + MediatorGUI.model().sqlStrategy.getDbLabel() +"\n"
+                            + "```";
+                    
                     DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
-                    dataOut.writeBytes(
-                        "{\"title\": \"Report\", \"body\": \""+ StringEscapeUtils.escapeJson(
-                            ("Exception on " + tname +"\n"+ ExceptionUtils.getStackTrace(thrown))
-                                .replaceAll("(http://[.a-zA-Z_0-9]*)+", "")
-                                .replaceAll("(\\r|\\n)+", "\\\\n")
-                    ) +"\"}");
+                    dataOut.writeBytes("{\"title\": \"Report\", \"body\": \""+ 
+                        StringEscapeUtils.escapeJson((clientDescription + "\n```\nException on " + tname +"\n"+ ExceptionUtils.getStackTrace(thrown).trim() +"\n```")
+                            .replaceAll("(http://[.a-zA-Z_0-9]*)+", ""))
+                            .replaceAll("(\\r|\\n)+", "\\\\n")
+                    +"\"}");
                     dataOut.flush();
                     dataOut.close();
                 } catch (IOException e) {

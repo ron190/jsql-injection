@@ -54,4 +54,9 @@ public abstract class AbstractInjectionStrategy {
      * Get number of characters you can obtain from the strategy.
      */
     public abstract String getPerformanceLength();
+    
+    /**
+     * Get the injection strategy name.
+     */
+    public abstract String getName();
 }

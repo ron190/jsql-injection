@@ -94,6 +94,10 @@ public class ManagerCoder extends JPanel {
         }
 
         menus.put("Hash", new JMenu("Hash"));
+        menus.get("Hash").add(new JMenuItem("Hash to Adler32"));
+        menus.get("Hash").add(new JMenuItem("Hash to Crc16"));
+        menus.get("Hash").add(new JMenuItem("Hash to Crc32"));
+        menus.get("Hash").add(new JMenuItem("Hash to Crc64"));
         menus.get("Hash").add(new JMenuItem("Hash to Md2"));
         menus.get("Hash").add(new JMenuItem("Hash to Md5"));
         menus.get("Hash").add(new JMenuItem("Hash to Sha-1"));
