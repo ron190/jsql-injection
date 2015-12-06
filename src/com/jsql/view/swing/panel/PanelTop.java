@@ -28,6 +28,7 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
 import com.jsql.i18n.I18n;
+import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.radio.RadioLinkAddressBar;
@@ -279,22 +280,22 @@ public class PanelTop extends JPanel {
         protected void startInjection() {
             // Register the view to the model
             // Used by manual injection and batch query
-            MediatorGUI.model().deleteObservers();
-            MediatorGUI.model().addObserver(MediatorGUI.gui());
+            MediatorModel.model().deleteObservers();
+            MediatorModel.model().addObserver(MediatorGUI.gui());
             
             int option = 0;
             // Ask the user confirmation if injection already built
-            if (MediatorGUI.model().isInjectionBuilt) {
+            if (MediatorModel.model().isInjectionBuilt) {
                 option = JOptionPane.showConfirmDialog(null, I18n.DIALOG_NEW_INJECTION_TEXT,
                         I18n.DIALOG_NEW_INJECTION_TITLE, JOptionPane.OK_CANCEL_OPTION);
             }
 
             // Then start injection
-            if (!MediatorGUI.model().isInjectionBuilt || option == JOptionPane.OK_OPTION) {
+            if (!MediatorModel.model().isInjectionBuilt || option == JOptionPane.OK_OPTION) {
                 PanelTop.this.submitAddressBar.setInjectionRunning();
                 PanelTop.this.loader.setVisible(true);
 
-                MediatorGUI.model().controlInput(
+                MediatorModel.model().controlInput(
                     PanelTop.this.addressBar.getText(),
                     PanelTop.this.textPOST.getText(),
                     PanelTop.this.textCookie.getText(),
@@ -308,7 +309,7 @@ public class PanelTop extends JPanel {
         private void stopInjection() {
             PanelTop.this.loader.setVisible(false);
             PanelTop.this.submitAddressBar.setInjectionStopping();
-            MediatorGUI.model().stop();
+            MediatorModel.model().stop();
         }
     }
     

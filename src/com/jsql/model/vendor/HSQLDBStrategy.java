@@ -145,7 +145,8 @@ public class HSQLDBStrategy extends ASQLStrategy {
                 /**
                  * Minus 'SQLi' should apply
                  */
-                MediatorModel.model().performanceLength +
+                MediatorModel.model().normalStrategy.getPerformanceLength() +
+//                MediatorModel.model().performanceLength +
             ")from(" + sqlQuery + ")x";
     }
 

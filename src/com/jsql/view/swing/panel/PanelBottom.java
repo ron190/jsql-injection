@@ -64,6 +64,7 @@ import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.SwingAppender;
 import com.jsql.view.swing.console.JavaConsoleAdapter;
 import com.jsql.view.swing.console.SimpleConsoleAdapter;
+import com.jsql.view.swing.popupmenu.JPopupMenuTable;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
@@ -111,13 +112,13 @@ public class PanelBottom extends JPanel {
      */
     public JTable networkTable;
 
-    JTextArea networkTabHeader = new JPopupTextArea().getProxy();
-    JTextArea networkTabCookie = new JPopupTextArea().getProxy();
-    JTextArea networkTabParam = new JPopupTextArea().getProxy();
-    JTextArea networkTabResponse = new JPopupTextArea().getProxy();
-    JTextArea networkTabTiming = new JPopupTextArea().getProxy();
-    JTextArea networkTabSource = new JPopupTextArea().getProxy();
-    JTextPane networkTabPreview = new JTextPane();
+    public JTextArea networkTabHeader = new JPopupTextArea().getProxy();
+    public JTextArea networkTabCookie = new JPopupTextArea().getProxy();
+    public JTextArea networkTabParam = new JPopupTextArea().getProxy();
+    public JTextArea networkTabResponse = new JPopupTextArea().getProxy();
+    public JTextArea networkTabTiming = new JPopupTextArea().getProxy();
+    public JTextArea networkTabSource = new JPopupTextArea().getProxy();
+    public JTextPane networkTabPreview = new JTextPane();
     
     /**
      * Create panel at the bottom with differents consoles to report injection process.
@@ -142,13 +143,34 @@ public class PanelBottom extends JPanel {
         this.network.setDividerLocation(600);
         this.network.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperGUI.COMPONENT_BORDER));
         this.networkTable = new JTable(0, 4) {
+            @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
+            }
+            
+            @Override
+            public String getToolTipText(MouseEvent e) {
+                String tip = null;
+                java.awt.Point p = e.getPoint();
+                int rowIndex = rowAtPoint(p);
+                int colIndex = columnAtPoint(p);
+
+                try {
+                    //comment row, exclude heading
+                    if(rowIndex != 0 && colIndex == 1){
+                        tip = getValueAt(rowIndex, colIndex).toString();
+                    }
+                } catch (RuntimeException e1) {
+                    //catch null pointer exception if mouse is over an empty line
+                }
+
+                return "<html><p width=\"1024\">" +tip+"</p></html>";
             }
         };
         
         new TableFilterHeader(this.networkTable, AutoChoices.ENABLED);
 
+        this.networkTable.setComponentPopupMenu(new JPopupMenuTable(this.networkTable));
         this.networkTable.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
         this.networkTable.setRowSelectionAllowed(true);
         this.networkTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);

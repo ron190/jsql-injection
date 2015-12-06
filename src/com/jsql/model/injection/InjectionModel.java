@@ -19,7 +19,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,23 +26,22 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.log4j.Logger;
 
-import com.jsql.MainApplication.ExceptionHandler;
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.DataAccessObject;
 import com.jsql.model.accessible.RessourceAccessObject;
 import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.model.bean.Request;
 import com.jsql.model.injection.suspendable.AbstractSuspendable;
-import com.jsql.model.injection.suspendable.SuspendableGetInsertionCharacter;
 import com.jsql.model.injection.suspendable.SuspendableGetDbVendor;
+import com.jsql.model.injection.suspendable.SuspendableGetInsertionCharacter;
 import com.jsql.model.strategy.AbstractInjectionStrategy;
 import com.jsql.model.strategy.BlindStrategy;
 import com.jsql.model.strategy.ErrorbasedStrategy;
@@ -51,9 +49,8 @@ import com.jsql.model.strategy.NormalStrategy;
 import com.jsql.model.strategy.TimeStrategy;
 import com.jsql.model.vendor.ASQLStrategy;
 import com.jsql.model.vendor.MySQLStrategy;
+import com.jsql.tool.GitTools;
 import com.jsql.tool.ToolsString;
-import com.jsql.view.swing.JFrameGUI;
-import com.jsql.view.swing.MediatorGUI;
 
 /**
  * Model in charge of injection.<br>
@@ -73,7 +70,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Current version of application.
      */
-    public static final String JSQLVERSION = "0.71"; // Please edit file .version when changed
+    public static final String JSQLVERSION = "0.72"; // Please edit file .version when changed
 
     /**
      * i.e, -1 in "[...].php?id=-1 union select[...]"
@@ -90,11 +87,10 @@ public class InjectionModel extends AbstractModelObservable {
      * Url entered by user.
      */
     public String initialUrl;
-    /**
-     * i.e, 2 in "[...]union select 1,2,[...]", if 2 is found in HTML source.
-     */
-    public String visibleIndex;
-    public String performanceLength = "0";
+//    /**
+//     * i.e, 2 in "[...]union select 1,2,[...]", if 2 is found in HTML source.
+//     */
+//    public String visibleIndex;
     
     /**
      * initialUrl transformed to a correct injection url.
@@ -169,7 +165,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * True if connection is proxified.
      */
-    public boolean updateAtStartup = true;
+    public boolean checkUpdateAtStartup = true;
     
     /**
      * True if connection is proxified.
@@ -197,7 +193,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Strategy for time attack injection.
      */
-    private NormalStrategy normalStrategy = new NormalStrategy();
+    public NormalStrategy normalStrategy = new NormalStrategy();
     
     /**
      * Strategy for time attack injection.
@@ -225,30 +221,6 @@ public class InjectionModel extends AbstractModelObservable {
      */
     public int securitySteps = 0;
 
-    /**
-     * Create injection process.
-     */
-    public InjectionModel() {
-        // Use Preferences API to persist proxy configuration
-        Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-
-        // Default proxy disabled
-        this.isProxyfied = prefs.getBoolean("isProxyfied", false);
-        this.updateAtStartup = prefs.getBoolean("updateAtStartup", true);
-        this.reportBugs = prefs.getBoolean("reportBugs", true);
-
-        // Default TOR config
-        this.proxyAddress = prefs.get("proxyAddress", "127.0.0.1");
-        this.proxyPort = prefs.get("proxyPort", "8118");
-        
-        this.prefPathFile = prefs.get("pathFile", System.getProperty("user.dir"));
-
-        if (isProxyfied) {
-            System.setProperty("http.proxyHost", proxyAddress);
-            System.setProperty("http.proxyPort", proxyPort);
-        }
-    }
-    
     public void instanciationDone() {
         LOGGER.trace("jSQL Injection version " + JSQLVERSION);
         
@@ -258,39 +230,6 @@ public class InjectionModel extends AbstractModelObservable {
         if (fVersion.floatValue() < (float) 1.7) {
             LOGGER.warn("You are running an old version of Java, please install the latest version from java.com.");
         }
-        
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                
-                if (InjectionModel.this.updateAtStartup) {
-                    try {
-                        URLConnection con = new URL("https://raw.githubusercontent.com/ron190/jsql-injection/master/.version").openConnection();
-                        con.setReadTimeout(60000);
-                        con.setConnectTimeout(60000);
-            
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                        String line, pageSource = "";
-                        while ((line = reader.readLine()) != null) {
-                            pageSource += line + "\n";
-                        }
-                        reader.close();
-            
-                        Float gitVersion = Float.parseFloat(pageSource);
-                        MediatorGUI.model();
-                        if (gitVersion > Float.parseFloat(InjectionModel.JSQLVERSION)) {
-                            LOGGER.warn(I18n.UPDATE_NEW_VERSION_AVAILABLE);
-                        }
-                    } catch (NumberFormatException e) {
-                        LOGGER.warn(I18n.UPDATE_EXCEPTION);
-                        LOGGER.error(e, e);
-                    } catch (IOException e) {
-                        LOGGER.warn(I18n.UPDATE_EXCEPTION);
-                        LOGGER.error(e, e);
-                    }
-                }
-        
-            }
-        });
     }
 
     /**
@@ -299,7 +238,8 @@ public class InjectionModel extends AbstractModelObservable {
      */
     public void inputValidation() {
         insertionCharacter = null;
-        visibleIndex = null;
+//        visibleIndex = null;
+        this.normalStrategy.visibleIndex = null;
         initialQuery = null;
 
         versionDatabase = null;
@@ -341,6 +281,9 @@ public class InjectionModel extends AbstractModelObservable {
                 con.setInstanceFollowRedirects(false);
                 
                 // Add headers if exists (Authorization:Basic, etc)
+                if (!"".equals(cookieData)) {
+                    con.addRequestProperty("Cookie", cookieData);
+                }
                 for (String s: headerData.split("\\\\r\\\\n")) {
                     Matcher regexSearch = Pattern.compile("(.*):(.*)", Pattern.DOTALL).matcher(s);
                     if (regexSearch.find()) {
@@ -368,8 +311,10 @@ public class InjectionModel extends AbstractModelObservable {
             normalStrategy.checkApplicability();
 
             // Choose the most efficient method: normal > error > blind > time
-            if (!this.normalStrategy.isApplicable()) {
-                if (this.errorbasedStrategy.isApplicable()) {
+//            if (!this.normalStrategy.isApplicable()) {
+                if (this.normalStrategy.isApplicable()) {
+                    normalStrategy.applyStrategy();
+                } else if (this.errorbasedStrategy.isApplicable()) {
                     errorbasedStrategy.applyStrategy();
                 } else if (this.blindStrategy.isApplicable()) {
                     blindStrategy.applyStrategy();
@@ -388,26 +333,26 @@ public class InjectionModel extends AbstractModelObservable {
                         throw new PreparationException("Injection not possible, work stopped");
                     }
                 }
-            } else {
-                normalStrategy.applyStrategy();
-
-                try {
-                    // Define visibleIndex, i.e, 2 in "[...]union select 1,2,[...]", if 2 is found in HTML source
-                    this.visibleIndex = this.getVisibleIndex(this.firstSuccessPageSource);
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    // Rare situation where injection fails after being validated, try with some evasion
-                    securitySteps++;
-                    if (securitySteps <= 3) {
-                        LOGGER.warn("Injection not possible, testing evasion n°" + securitySteps + "...");
-                        // sinon perte de insertionCharacter entre 2 injections
-                        getData += insertionCharacter;
-                        inputValidation();
-                        return;
-                    } else {
-                        throw new PreparationException("Injection not possible, work stopped");
-                    }
-                }
-            }
+//            } else {
+//                normalStrategy.applyStrategy();
+//
+//                try {
+//                    // Define visibleIndex, i.e, 2 in "[...]union select 1,2,[...]", if 2 is found in HTML source
+//                    this.visibleIndex = this.getVisibleIndex(this.firstSuccessPageSource);
+//                } catch (ArrayIndexOutOfBoundsException e) {
+//                    // Rare situation where injection fails after being validated, try with some evasion
+//                    securitySteps++;
+//                    if (securitySteps <= 3) {
+//                        LOGGER.warn("Injection not possible, testing evasion n°" + securitySteps + "...");
+//                        // sinon perte de insertionCharacter entre 2 injections
+//                        getData += insertionCharacter;
+//                        inputValidation();
+//                        return;
+//                    } else {
+//                        throw new PreparationException("Injection not possible, work stopped");
+//                    }
+//                }
+//            }
 
             // Get the initial informations from database
             dataAccessObject.getDatabaseInfos();
@@ -440,7 +385,7 @@ public class InjectionModel extends AbstractModelObservable {
      * find the one that display the most of characters.
      * @return Integer index with most efficiency and visible in source code
      */
-    private String getVisibleIndex(String firstSuccessPageSource) {
+    public String getVisibleIndex(String firstSuccessPageSource) {
         // Parse all indexes found
         Matcher regexSearch = Pattern.compile("1337(\\d+?)7331", Pattern.DOTALL).matcher(firstSuccessPageSource);
         List<String> foundIndexes = new ArrayList<String>();
@@ -462,12 +407,18 @@ public class InjectionModel extends AbstractModelObservable {
         // Build a 2D array of string with:
         //     column 1: index
         //     column 2: # found, so #######...#######
-        regexSearch = Pattern.compile("SQLi(\\d+)(#*)", Pattern.DOTALL).matcher(performanceSourcePage);
+        regexSearch = Pattern.compile("SQLi(\\d+)(#+)", Pattern.DOTALL).matcher(performanceSourcePage);
         List<String[]> performanceResults = new ArrayList<String[]>();
         while (regexSearch.find()) {
             performanceResults.add(new String[]{regexSearch.group(1), regexSearch.group(2)});
         }
 
+        if (performanceResults.size() == 0) {
+//            this.performanceLength = "0";
+            this.normalStrategy.performanceLength = "0";
+            return null;
+        }
+        
         // Switch from previous array to 2D integer array
         //     column 1: length of #######...#######
         //     column 2: index
@@ -489,7 +440,8 @@ public class InjectionModel extends AbstractModelObservable {
             }
         });
         
-        performanceLength = lengthFields[lengthFields.length - 1][0].toString();
+//        this.performanceLength = lengthFields[lengthFields.length - 1][0].toString();
+        this.normalStrategy.performanceLength = lengthFields[lengthFields.length - 1][0].toString();
 
         // Replace all others indexes by 1
         this.initialQuery =
@@ -696,7 +648,8 @@ public class InjectionModel extends AbstractModelObservable {
         } else if (!useVisibleIndex) {
             return newData + urlPremiere;
         } else {
-            return newData + this.initialQuery.replaceAll("1337" + visibleIndex + "7331",
+            return newData + this.initialQuery.replaceAll("1337" + this.normalStrategy.visibleIndex + "7331",
+//            return newData + this.initialQuery.replaceAll("1337" + visibleIndex + "7331",
                 /**
                  * Oracle column often contains $, which is reserved for regex.
                  * => need to be escape with quoteReplacement()
@@ -711,8 +664,8 @@ public class InjectionModel extends AbstractModelObservable {
      * @param source Text to display in console
      */
     public void sendResponseFromSite(String message, String source) {
-        LOGGER.info(message + ", response from site:");
-        LOGGER.info(">>>" + source);
+        LOGGER.warn(message + ", response from site:");
+        LOGGER.warn(">>>" + source);
     }
 
     /**

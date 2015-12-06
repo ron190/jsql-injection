@@ -21,7 +21,6 @@ import java.util.prefs.Preferences;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFileChooser;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.table.TableModel;
@@ -30,6 +29,7 @@ import javax.swing.text.JTextComponent;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.injection.InjectionModel;
+import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.dialog.ReplaceFileChooser;
@@ -55,7 +55,7 @@ public class ActionSaveTab extends AbstractAction {
         this.putValue(Action.SMALL_ICON, HelperGUI.EMPTY);
     }
 
-    final ReplaceFileChooser filechooser = new ReplaceFileChooser(MediatorGUI.model().prefPathFile);
+    final ReplaceFileChooser filechooser = new ReplaceFileChooser(MediatorModel.model().prefPathFile);
     
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -84,9 +84,9 @@ public class ActionSaveTab extends AbstractAction {
         int returnVal = filechooser.showSaveDialog(MediatorGUI.gui());
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = filechooser.getSelectedFile();
-            MediatorGUI.model().prefPathFile = filechooser.getCurrentDirectory().toString();
+            MediatorModel.model().prefPathFile = filechooser.getCurrentDirectory().toString();
             Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-            prefs.put("pathFile", MediatorGUI.model().prefPathFile);
+            prefs.put("pathFile", MediatorModel.model().prefPathFile);
 
             try {
                 TableModel model = table.getModel();
@@ -140,9 +140,9 @@ public class ActionSaveTab extends AbstractAction {
         int returnVal = filechooser.showSaveDialog(MediatorGUI.gui());
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = filechooser.getSelectedFile();
-            MediatorGUI.model().prefPathFile = filechooser.getCurrentDirectory().toString();
-            Preferences prefs = Preferences.userRoot().node(MediatorGUI.model().getClass().getName());
-            prefs.put("pathFile", MediatorGUI.model().prefPathFile);
+            MediatorModel.model().prefPathFile = filechooser.getCurrentDirectory().toString();
+            Preferences prefs = Preferences.userRoot().node(MediatorModel.model().getClass().getName());
+            prefs.put("pathFile", MediatorModel.model().prefPathFile);
             
             try {
                 BufferedWriter fileOut = new BufferedWriter(new FileWriter(file));

@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.model.injection.MediatorModel;
 
 /**
  * Action to export a JList.
@@ -52,7 +52,7 @@ public class MenuActionExport implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
         try {
             @SuppressWarnings("serial")
-            final JFileChooser importFileDialog = new JFileChooser(MediatorGUI.model().prefPathFile) {
+            final JFileChooser importFileDialog = new JFileChooser(MediatorModel.model().prefPathFile) {
                 @Override
                 public void approveSelection() {
                     File file = this.getSelectedFile();

@@ -28,8 +28,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
 import com.jsql.i18n.I18n;
+import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
 
 /**
  * A Mouse action to display a popupmenu on a JList.
@@ -86,7 +86,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             mnSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
             
             //Create a file chooser
-            final JFileChooser importFileDialog = new JFileChooser(MediatorGUI.model().prefPathFile);
+            final JFileChooser importFileDialog = new JFileChooser(MediatorModel.model().prefPathFile);
             importFileDialog.setDialogTitle("Import a list of file paths");
             importFileDialog.setMultiSelectionEnabled(true);
 

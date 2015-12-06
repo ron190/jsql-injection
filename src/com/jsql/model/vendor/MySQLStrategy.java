@@ -182,7 +182,8 @@ public class MySQLStrategy extends ASQLStrategy {
         return
             MediatorModel.model().initialQuery
                 .replaceAll(
-                    "1337" + MediatorModel.model().visibleIndex + "7331",
+//                    "1337" + MediatorModel.model().visibleIndex + "7331",
+                    "1337" + MediatorModel.model().normalStrategy.visibleIndex + "7331",
                     "(select+0x" + ToolsString.strhex(content) + ")"
                 )
                 .replaceAll("--++", "")
@@ -244,7 +245,8 @@ public class MySQLStrategy extends ASQLStrategy {
                     "mid(" +
                         "(" + sqlQuery + ")," +
                         startPosition + "," +
-                        MediatorModel.model().performanceLength +
+//                        MediatorModel.model().performanceLength +
+                        MediatorModel.model().blindStrategy.getPerformanceLength() +
                     ")" +
                 ")" +
             ")";
@@ -260,7 +262,8 @@ public class MySQLStrategy extends ASQLStrategy {
                         "mid(" +
                             "(" + sqlQuery + ")," +
                             startPosition + "," +
-                            "65536" +
+//                            "65536" +
+                            MediatorModel.model().timeStrategy.getPerformanceLength() +
                         ")" +
                     ")" +
             ")";
@@ -338,7 +341,8 @@ public class MySQLStrategy extends ASQLStrategy {
                             /**
                              * Minus 'SQLi' should apply
                              */
-                            MediatorModel.model().performanceLength +
+                            MediatorModel.model().normalStrategy.getPerformanceLength() +
+//                            MediatorModel.model().performanceLength +
                         ")" +
                     ")" +
             ")";

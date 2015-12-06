@@ -146,7 +146,8 @@ public class OracleStrategy extends ASQLStrategy {
                     "substr(" +
                         "(" + sqlQuery + ")," +
                         startPosition + "," +
-                        MediatorModel.model().performanceLength +
+                        MediatorModel.model().blindStrategy.getPerformanceLength() +
+//                        MediatorModel.model().performanceLength +
                     ")from+dual" +
                 "" +
             ")";

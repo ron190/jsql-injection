@@ -21,8 +21,10 @@ public class I18n {
     public static final String CHECK_ALL = (String) labels.getObject("checkAll");
     public static final String UNCHECK_ALL = (String) labels.getObject("uncheckAll");
     
-    public static final String LOAD_STOP = (String) labels.getObject("loadStop");
-    public static final String PAUSE_RESUME = (String) labels.getObject("pauseResume");
+    public static final String LOAD = (String) labels.getObject("load");
+    public static final String STOP = (String) labels.getObject("stop");
+    public static final String PAUSE = (String) labels.getObject("pause");
+    public static final String RESUME = (String) labels.getObject("resume");
     
     public static final String ENTER_ADDRESS = (String) labels.getObject("enterAddress");
     

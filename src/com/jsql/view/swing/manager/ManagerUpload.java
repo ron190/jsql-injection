@@ -111,7 +111,7 @@ public class ManagerUpload extends ManagerAbstractList {
                     return;
                 }
 
-                final JFileChooser filechooser = new JFileChooser(MediatorGUI.model().prefPathFile);
+                final JFileChooser filechooser = new JFileChooser(MediatorModel.model().prefPathFile);
                 filechooser.setDialogTitle(I18n.UPLOAD_DIALOG_TEXT);
                 
                 int returnVal = filechooser.showOpenDialog(MediatorGUI.gui());

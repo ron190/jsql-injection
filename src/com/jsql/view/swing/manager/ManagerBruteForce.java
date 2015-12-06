@@ -128,7 +128,7 @@ public class ManagerBruteForce extends JPanel {
         hashTypes = new JComboBox<String>(new String[]{"Adler32", "Crc16", "Crc32", "Crc64", "Md2", "Md5", "Sha-1", "Sha-256", "Sha-384",
                 "sha-512", "mysql" /*,"crc16","crc32","crc64","adler32"*/});
         
-        hashTypes.setSelectedIndex(1);
+        hashTypes.setSelectedIndex(5);
         hashTypes.setToolTipText(I18n.BRUTEFORCE_HASH_TYPE_TOOLTIP);
 
         secondLine.add(hashTypes);

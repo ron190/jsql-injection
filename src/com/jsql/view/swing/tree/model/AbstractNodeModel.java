@@ -24,6 +24,7 @@ import javax.swing.tree.TreePath;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.bean.AbstractElementDatabase;
+import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.tree.ActionLoadStop;
@@ -119,8 +120,8 @@ public abstract class AbstractNodeModel {
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, int x, int y) {
         JPopupMenu tablePopupMenu = new JPopupMenu();
 
-        JMenuItem mnLoad = new JMenuItem(I18n.LOAD_STOP, 'o');
-        JMenuItem mnPause = new JMenuItem(I18n.PAUSE_RESUME, 's');
+        JMenuItem mnLoad = new JMenuItem(this.isRunning ? I18n.STOP : I18n.LOAD, 'o');
+        JMenuItem mnPause = new JMenuItem(MediatorModel.model().suspendables.get(this.dataObject).isPaused() ? I18n.RESUME : I18n.PAUSE, 's');
         mnLoad.setIcon(HelperGUI.EMPTY);
         mnPause.setIcon(HelperGUI.EMPTY);
 
@@ -183,7 +184,7 @@ public abstract class AbstractNodeModel {
             panel.hideIcon();
 
             try {
-                if (MediatorGUI.model().suspendables.get(AbstractNodeModel.this.dataObject).isPaused()) {
+                if (MediatorModel.model().suspendables.get(AbstractNodeModel.this.dataObject).isPaused()) {
                     ImageIcon animatedGIFPaused = new ImageOverlap(HelperGUI.PATH_PROGRESSBAR, HelperGUI.PATH_PAUSE);
                     animatedGIFPaused.setImageObserver(new ImageObserverAnimated(MediatorGUI.databaseTree(), currentNode));
                     panel.setLoaderIcon(animatedGIFPaused);
@@ -208,7 +209,7 @@ public abstract class AbstractNodeModel {
         panel.progressBar.setValue(this.childUpgradeCount);
         panel.progressBar.setVisible(true);
         
-        if (MediatorGUI.model().suspendables.get(this.dataObject).isPaused()) {
+        if (MediatorModel.model().suspendables.get(this.dataObject).isPaused()) {
             panel.progressBar.pause();
         }
     }

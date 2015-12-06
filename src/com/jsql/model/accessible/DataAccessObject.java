@@ -56,6 +56,7 @@ public class DataAccessObject {
 
         if ("".equals(hexResult)) {
             MediatorModel.model().sendResponseFromSite("Show db info failed", sourcePage[0].trim());
+            
             /**
              * TODO Extraction Exception
              */
@@ -67,11 +68,20 @@ public class DataAccessObject {
             dbType = MediatorModel.model().sqlStrategy.getDbLabel() + " ";
         }
         
-        MediatorModel.model().versionDatabase   = dbType + hexResult.split("\\{%\\}")[0].replaceAll("\\s+"," ");
-        MediatorModel.model().currentDatabase   = hexResult.split("\\{%\\}")[1];
-        MediatorModel.model().currentUser       = hexResult.split("\\{%\\}")[2];
-        MediatorModel.model().authenticatedUser = hexResult.split("\\{%\\}")[3];
-
+        try {
+            MediatorModel.model().versionDatabase   = dbType + hexResult.split("\\{%\\}")[0].replaceAll("\\s+"," ");
+            MediatorModel.model().currentDatabase   = hexResult.split("\\{%\\}")[1];
+            MediatorModel.model().currentUser       = hexResult.split("\\{%\\}")[2];
+            MediatorModel.model().authenticatedUser = hexResult.split("\\{%\\}")[3];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            LOGGER.warn("Incorrect database info: "+ hexResult);
+            
+            /**
+             * TODO Extraction Exception
+             */
+            throw new PreparationException();
+        }
+        
         // Inform the view that info should be displayed
         Request request = new Request();
         request.setMessage("MessageInfo");

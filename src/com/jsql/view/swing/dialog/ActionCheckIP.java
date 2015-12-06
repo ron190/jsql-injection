@@ -12,7 +12,7 @@ import java.net.URL;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.model.injection.MediatorModel;
 
 /**
  * Action performing a IP localisation test.
@@ -31,13 +31,13 @@ public class ActionCheckIP implements ActionListener, Runnable {
     @Override
     public void run() {
         // Test if proxy is available then apply settings
-        if (MediatorGUI.model().isProxyfied && !"".equals(MediatorGUI.model().proxyAddress) && !"".equals(MediatorGUI.model().proxyPort)) {
+        if (MediatorModel.model().isProxyfied && !"".equals(MediatorModel.model().proxyAddress) && !"".equals(MediatorModel.model().proxyPort)) {
             try {
                 LOGGER.info("Testing proxy...");
-                new Socket(MediatorGUI.model().proxyAddress, Integer.parseInt(MediatorGUI.model().proxyPort)).close();
+                new Socket(MediatorModel.model().proxyAddress, Integer.parseInt(MediatorModel.model().proxyPort)).close();
             } catch (Exception e) {
                 LOGGER.warn("Proxy connection failed: " 
-                        + MediatorGUI.model().proxyAddress + ":" + MediatorGUI.model().proxyPort
+                        + MediatorModel.model().proxyAddress + ":" + MediatorModel.model().proxyPort
                         + "\nVerify your proxy informations or disable proxy setting.", e);
                 return;
             }

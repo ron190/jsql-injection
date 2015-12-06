@@ -60,7 +60,8 @@ public abstract class ASQLStrategy {
         return
             MediatorModel.model().initialQuery
                 .replaceAll(
-                    "1337" + MediatorModel.model().visibleIndex + "7331",
+//                    "1337" + MediatorModel.model().visibleIndex + "7331",
+                    "1337" + MediatorModel.model().normalStrategy.visibleIndex + "7331",
                     "(select+0x" + ToolsString.strhex(content) + ")"
                 )
                 .replaceAll("--++", "")
@@ -112,7 +113,8 @@ public abstract class ASQLStrategy {
                     "mid(" +
                         "(" + sqlQuery + ")," +
                         startPosition + "," +
-                        MediatorModel.model().performanceLength +
+                        MediatorModel.model().blindStrategy.getPerformanceLength() +
+//                        MediatorModel.model().performanceLength +
                     ")" +
                 ")" +
             ")";

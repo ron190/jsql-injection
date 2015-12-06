@@ -154,7 +154,8 @@ public class CubridStrategy extends ASQLStrategy {
                         /**
                          * Minus 'SQLi' should apply
                          */
-                        MediatorModel.model().performanceLength +
+                        MediatorModel.model().normalStrategy.getPerformanceLength() +
+//                        MediatorModel.model().performanceLength +
                     ")" +
                 ")" +
         ")";

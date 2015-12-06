@@ -20,6 +20,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import com.jsql.model.bean.Column;
+import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
@@ -61,18 +62,18 @@ public class ActionLoadStop implements ActionListener {
 
                 @Override
                 protected Object doInBackground() throws Exception {
-                    MediatorGUI.model().dataAccessObject.listValues(columnsToSearch);
+                    MediatorModel.model().dataAccessObject.listValues(columnsToSearch);
                     return null;
                 }
 
             }.execute();
         } else {
-            MediatorGUI.model().suspendables.get(this.nodeData.dataObject).stop();
-            MediatorGUI.model().suspendables.get(this.nodeData.dataObject).unpause();
+            MediatorModel.model().suspendables.get(this.nodeData.dataObject).stop();
+            MediatorModel.model().suspendables.get(this.nodeData.dataObject).unpause();
             this.nodeData.childUpgradeCount = 0;
             this.nodeData.hasIndeterminatedProgress = false;
             this.nodeData.hasProgress = false;
-            MediatorGUI.model().suspendables.get(this.nodeData.dataObject).resume();
+            MediatorModel.model().suspendables.get(this.nodeData.dataObject).resume();
         }
         this.nodeData.isRunning = !this.nodeData.isRunning;
 

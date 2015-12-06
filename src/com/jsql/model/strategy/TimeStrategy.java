@@ -81,13 +81,14 @@ public class TimeStrategy extends AbstractInjectionStrategy {
         MediatorModel.model().interact(request);
         
         Request request2 = new Request();
-        request2.setMessage("MarkTimeStrategy");
+        request2.setMessage("MarkTimebasedStrategy");
         MediatorModel.model().interact(request2);
     }
     
     @Override
     public String getPerformanceLength() {
-        return MediatorModel.model().performanceLength;
+        return "65565";
+//        return MediatorModel.model().performanceLength;
     }
     
     @Override

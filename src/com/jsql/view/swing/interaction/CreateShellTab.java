@@ -15,8 +15,6 @@ import java.util.UUID;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JScrollPane;
-import javax.swing.border.Border;
 
 import com.jsql.model.accessible.RessourceAccessObject;
 import com.jsql.view.swing.HelperGUI;

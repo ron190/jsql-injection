@@ -257,7 +257,10 @@ public class DnDList extends JList<ListItem> {
                 String line;
                 while ((line = fileReader.readLine()) != null) {
                     if (!"".equals(line)) {
-                        listModel.add(endPosition++, new ListItem(line.replace("\\", "/")));
+                        // Fix Report #60 
+                        if (0 <= endPosition && endPosition < listModel.size()) {
+                            listModel.add(endPosition++, new ListItem(line.replace("\\", "/")));
+                        }
                     }
                 }
             } catch (FileNotFoundException e) {

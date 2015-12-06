@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.swing.MediatorGUI;
 
 /**
@@ -26,10 +27,10 @@ public class MessageInfo implements IInteractionCommand {
     @Override
     public void execute() {
         MediatorGUI.status().setInfos(
-            MediatorGUI.model().versionDatabase,
-            MediatorGUI.model().currentDatabase,
-            MediatorGUI.model().currentUser,
-            MediatorGUI.model().authenticatedUser
+            MediatorModel.model().versionDatabase,
+            MediatorModel.model().currentDatabase,
+            MediatorModel.model().currentUser,
+            MediatorModel.model().authenticatedUser
         );
     }
 }

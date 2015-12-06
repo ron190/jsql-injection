@@ -24,7 +24,6 @@ public final class MediatorGUI {
     private static AdapterRightTabbedPane right;
     private static AdapterLeftTabbedPane left;
     
-    private static InjectionModel model;
     private static JFrameGUI gui;
     private static Menubar menubar;
     private static PanelTop top;
@@ -55,9 +54,6 @@ public final class MediatorGUI {
         return left;
     }
      
-    public static InjectionModel model() {
-        return model;
-    }
     public static JFrameGUI gui() {
         return gui;
     }
@@ -91,11 +87,6 @@ public final class MediatorGUI {
     }
     public static ManagerSQLShell sqlShellManager() {
         return sqlShellManager;
-    }
-    
-    // Registering Model
-    public static void register(InjectionModel model) {
-        MediatorGUI.model = model;
     }
     
     // Registering GUI components

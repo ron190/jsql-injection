@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.jsql.view.swing;
 
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -25,6 +27,8 @@ import java.util.prefs.Preferences;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -42,6 +46,7 @@ import com.jsql.view.swing.panel.PanelLeftRightBottom;
 import com.jsql.view.swing.panel.PanelStatusbar;
 import com.jsql.view.swing.panel.PanelTop;
 import com.jsql.view.swing.terminal.AbstractTerminal;
+import com.jsql.view.swing.text.JPopupTextArea;
 
 /**
  * View in the MVC pattern, defines all the components
@@ -95,7 +100,7 @@ public class JFrameGUI extends JFrame implements Observer {
         // Save controller
         MediatorGUI.register(new Menubar());
         this.setJMenuBar(MediatorGUI.menubar());
-
+        
         // Define the default panel: each component on a vertical line
         this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
 
@@ -222,9 +227,24 @@ public class JFrameGUI extends JFrame implements Observer {
 
         // Empty infos tabs
         MediatorGUI.bottomPanel().chunkTab.setText("");
-        ((DefaultTableModel) MediatorGUI.bottomPanel().networkTable.getModel()).setRowCount(0);
         MediatorGUI.bottomPanel().binaryTab.setText("");
-
+        ((DefaultTableModel) MediatorGUI.bottomPanel().networkTable.getModel()).setRowCount(0);
+        MediatorGUI.bottomPanel().javaTab.getProxy().setText("");
+        
+        MediatorGUI.bottomPanel().networkTabHeader.setText("");
+        MediatorGUI.bottomPanel().networkTabCookie.setText("");
+        MediatorGUI.bottomPanel().networkTabParam.setText("");
+        MediatorGUI.bottomPanel().networkTabResponse.setText("");
+        MediatorGUI.bottomPanel().networkTabTiming.setText("");
+        MediatorGUI.bottomPanel().networkTabSource.setText("");
+        MediatorGUI.bottomPanel().networkTabPreview.setText("");
+        
+        int tabIndex = MediatorGUI.bottom().indexOfTab("Java");
+        if (0 <= tabIndex && tabIndex < MediatorGUI.bottom().getTabCount()) {
+            Component tabHeader = MediatorGUI.bottom().getTabComponentAt(tabIndex);
+            tabHeader.setFont(tabHeader.getFont().deriveFont(Font.PLAIN));
+        }
+        
         MediatorGUI.left().fileManager.setButtonEnable(false);
         MediatorGUI.left().shellManager.setButtonEnable(false);
         MediatorGUI.left().sqlShellManager.setButtonEnable(false);

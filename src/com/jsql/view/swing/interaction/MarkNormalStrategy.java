@@ -12,7 +12,6 @@ package com.jsql.view.swing.interaction;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.scan.interaction.AddDatabases;
 import com.jsql.view.swing.MediatorGUI;
 
 /**

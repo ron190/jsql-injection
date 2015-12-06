@@ -87,7 +87,8 @@ public class BlindStrategy extends AbstractInjectionStrategy {
     
     @Override
     public String getPerformanceLength() {
-        return MediatorModel.model().performanceLength;
+        return "65565";
+//        return MediatorModel.model().performanceLength;
     }
     
     @Override

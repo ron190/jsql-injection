@@ -109,7 +109,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
                 Request request = new Request();
                 request.setMessage("MessageChunk");
-                request.setParameters(regexAllLine.group(1).replaceAll("\\x01\\x03\\x03\\x07.*", "\n"));
+                request.setParameters(Pattern.compile("\\x01\\x03\\x03\\x07.*", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(regexAllLine.group(1)).replaceAll("\n"));
                 MediatorModel.model().interact(request);
             } catch (IllegalStateException e) {
                 // if it's not the root (empty tree)
@@ -122,7 +122,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 /**
                  * TODO Injection Exception
                  */
-                throw new PreparationException("Fetching fails: no data to parse for " + searchName);
+                throw new PreparationException("Fetching fails: no data to parse for " + searchName + "\nSource page : " + sourcePage[0]);
             }
 
             /*

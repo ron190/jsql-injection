@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
@@ -32,15 +33,15 @@ public class ActionPauseUnpause implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (MediatorGUI.model().suspendables.get(this.nodeData.dataObject).isPaused()) {
-            MediatorGUI.model().suspendables.get(this.nodeData.dataObject).unpause();
+        if (MediatorModel.model().suspendables.get(this.nodeData.dataObject).isPaused()) {
+            MediatorModel.model().suspendables.get(this.nodeData.dataObject).unpause();
         } else {
-            MediatorGUI.model().suspendables.get(this.nodeData.dataObject).pause();
+            MediatorModel.model().suspendables.get(this.nodeData.dataObject).pause();
         }
 
         // Restart the action after an unpause
-        if (!MediatorGUI.model().suspendables.get(this.nodeData.dataObject).isPaused()) {
-            MediatorGUI.model().suspendables.get(this.nodeData.dataObject).resume();
+        if (!MediatorModel.model().suspendables.get(this.nodeData.dataObject).isPaused()) {
+            MediatorModel.model().suspendables.get(this.nodeData.dataObject).resume();
         }
 
         // !!important!!

@@ -183,7 +183,8 @@ public class PostgreSQLStrategy extends ASQLStrategy {
                     "substr(" +
                         "(" + sqlQuery + ")," +
                         startPosition + "," +
-                        MediatorModel.model().performanceLength +
+                        MediatorModel.model().blindStrategy.getPerformanceLength() +
+//                        MediatorModel.model().performanceLength +
                     ")" +
                 "" +
             ")";
@@ -199,7 +200,8 @@ public class PostgreSQLStrategy extends ASQLStrategy {
                         "substr(" +
                             "(" + sqlQuery + ")," +
                             startPosition + "," +
-                            MediatorModel.model().performanceLength +
+//                            MediatorModel.model().performanceLength +
+                            MediatorModel.model().timeStrategy.getPerformanceLength() +
                         ")" +
                     "" +
             ")";

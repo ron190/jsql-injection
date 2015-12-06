@@ -152,7 +152,8 @@ public class H2Strategy extends ASQLStrategy {
                         /**
                          * Minus 'SQLi' should apply
                          */
-                        MediatorModel.model().performanceLength +
+                        MediatorModel.model().normalStrategy.getPerformanceLength() +
+//                        MediatorModel.model().performanceLength +
                     ")" +
                 ")" +
         ")";

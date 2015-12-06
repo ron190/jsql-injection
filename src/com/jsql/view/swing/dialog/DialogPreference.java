@@ -42,6 +42,8 @@ import javax.swing.border.TitledBorder;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.injection.InjectionModel;
+import com.jsql.model.injection.MediatorModel;
+import com.jsql.tool.ProxyTools;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.text.JPopupTextField;
@@ -119,9 +121,9 @@ public class DialogPreference extends JDialog {
         mainPanel.add(cancelButton);
         contentPane.add(mainPanel, BorderLayout.SOUTH);
 
-        final JCheckBox checkboxIsProxy2 = new JCheckBox("", MediatorGUI.model().updateAtStartup);
+        final JCheckBox checkboxIsProxy2 = new JCheckBox("", MediatorModel.model().checkUpdateAtStartup);
         JLabel labelUseProxy2 = new JLabel("<html><div style=\"text-align:right\">Check update<br>at startup</div></html>");
-        final JCheckBox checkboxIsProxy3 = new JCheckBox("", MediatorGUI.model().reportBugs);
+        final JCheckBox checkboxIsProxy3 = new JCheckBox("", MediatorModel.model().reportBugs);
         JLabel labelUseProxy3 = new JLabel("<html><div style=\"text-align:right\">Report bugs<br>automatically</div></html>");
 
         LineBorder roundedLineBorder = new LineBorder(Color.LIGHT_GRAY, 1, true);
@@ -145,9 +147,9 @@ public class DialogPreference extends JDialog {
         JLabel labelUseProxy = new JLabel("Use proxy  ");
 
         // Proxy setting: IP, port, checkbox to activate proxy
-        final JTextField textProxyAddress = new JPopupTextField("e.g Tor address: 127.0.0.1", MediatorGUI.model().proxyAddress).getProxy();
-        final JTextField textProxyPort = new JPopupTextField("e.g Tor port: 8118", MediatorGUI.model().proxyPort).getProxy();
-        final JCheckBox checkboxIsProxy = new JCheckBox("", MediatorGUI.model().isProxyfied);
+        final JTextField textProxyAddress = new JPopupTextField("e.g Tor address: 127.0.0.1", MediatorModel.model().proxyAddress).getProxy();
+        final JTextField textProxyPort = new JPopupTextField("e.g Tor port: 8118", MediatorModel.model().proxyPort).getProxy();
+        final JCheckBox checkboxIsProxy = new JCheckBox("", MediatorModel.model().isProxyfied);
 
         textProxyAddress.setPreferredSize(new Dimension(0, 27));
         textProxyAddress.setFont(textProxyAddress.getFont().deriveFont(Font.PLAIN, textProxyAddress.getFont().getSize() + 2));
@@ -158,26 +160,28 @@ public class DialogPreference extends JDialog {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 // Define proxy settings
-                MediatorGUI.model().isProxyfied = checkboxIsProxy.isSelected();
-                MediatorGUI.model().updateAtStartup = checkboxIsProxy2.isSelected();
-                MediatorGUI.model().reportBugs = checkboxIsProxy3.isSelected();
-                MediatorGUI.model().proxyAddress = textProxyAddress.getText();
-                MediatorGUI.model().proxyPort = textProxyPort.getText();
+//                MediatorModel.model().isProxyfied = checkboxIsProxy.isSelected();
+                MediatorModel.model().checkUpdateAtStartup = checkboxIsProxy2.isSelected();
+                MediatorModel.model().reportBugs = checkboxIsProxy3.isSelected();
+//                MediatorModel.model().proxyAddress = textProxyAddress.getText();
+//                MediatorModel.model().proxyPort = textProxyPort.getText();
 
                 Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-                prefs.putBoolean("isProxyfied", MediatorGUI.model().isProxyfied);
-                prefs.putBoolean("updateAtStartup", MediatorGUI.model().updateAtStartup);
-                prefs.putBoolean("reportBugs", MediatorGUI.model().reportBugs);
-                prefs.put("proxyAddress", MediatorGUI.model().proxyAddress);
-                prefs.put("proxyPort", MediatorGUI.model().proxyPort);
-
-                if (MediatorGUI.model().isProxyfied) {
-                    System.setProperty("http.proxyHost", MediatorGUI.model().proxyAddress);
-                    System.setProperty("http.proxyPort", MediatorGUI.model().proxyPort);
-                } else {
-                    System.setProperty("http.proxyHost", "");
-                    System.setProperty("http.proxyPort", "");
-                }
+//                prefs.putBoolean("isProxyfied", MediatorModel.model().isProxyfied);
+                prefs.putBoolean("updateAtStartup", MediatorModel.model().checkUpdateAtStartup);
+                prefs.putBoolean("reportBugs", MediatorModel.model().reportBugs);
+//                prefs.put("proxyAddress", MediatorModel.model().proxyAddress);
+//                prefs.put("proxyPort", MediatorModel.model().proxyPort);
+//
+//                if (MediatorModel.model().isProxyfied) {
+//                    System.setProperty("http.proxyHost", MediatorModel.model().proxyAddress);
+//                    System.setProperty("http.proxyPort", MediatorModel.model().proxyPort);
+//                } else {
+//                    System.setProperty("http.proxyHost", "");
+//                    System.setProperty("http.proxyPort", "");
+//                }
+                
+                ProxyTools.set(checkboxIsProxy.isSelected(), textProxyAddress.getText(), textProxyPort.getText());
 
                 LOGGER.info("Preferences saved.");
             }
@@ -188,11 +192,11 @@ public class DialogPreference extends JDialog {
             public void windowClosed(WindowEvent e) {
                 super.windowClosed(e);
 
-                textProxyAddress.setText(MediatorGUI.model().proxyAddress);
-                textProxyPort.setText(MediatorGUI.model().proxyPort);
-                checkboxIsProxy.setSelected(MediatorGUI.model().isProxyfied);
-                checkboxIsProxy2.setSelected(MediatorGUI.model().updateAtStartup);
-                checkboxIsProxy3.setSelected(MediatorGUI.model().reportBugs);
+                textProxyAddress.setText(MediatorModel.model().proxyAddress);
+                textProxyPort.setText(MediatorModel.model().proxyPort);
+                checkboxIsProxy.setSelected(MediatorModel.model().isProxyfied);
+                checkboxIsProxy2.setSelected(MediatorModel.model().checkUpdateAtStartup);
+                checkboxIsProxy3.setSelected(MediatorModel.model().reportBugs);
             }
         });
 

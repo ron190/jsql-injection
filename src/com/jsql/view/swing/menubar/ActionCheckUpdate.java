@@ -1,13 +1,10 @@
 package com.jsql.view.swing.menubar;
 
-import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -15,7 +12,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.injection.InjectionModel;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.model.injection.MediatorModel;
 
 public class ActionCheckUpdate implements ActionListener, Runnable {
     /**
@@ -39,7 +36,7 @@ public class ActionCheckUpdate implements ActionListener, Runnable {
             reader.close();
 
             Float gitVersion = Float.parseFloat(pageSource);
-            MediatorGUI.model();
+            MediatorModel.model();
             if (gitVersion <= Float.parseFloat(InjectionModel.JSQLVERSION)) {
                 LOGGER.debug(I18n.UPDATE_UPTODATE);
             } else {

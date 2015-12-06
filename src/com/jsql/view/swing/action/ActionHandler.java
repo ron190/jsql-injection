@@ -176,6 +176,9 @@ public final class ActionHandler {
      * @param menubar The menubar to display
      */
     public static void addShortcut(final Menubar menubar) {
+        final boolean[] wasAltDPressed = {false};
+        final boolean[] wasAltPressed = {false};
+        
         /* Hide Menubar when focusing any component */
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
             public void propertyChange(final PropertyChangeEvent e) {
@@ -193,18 +196,29 @@ public final class ActionHandler {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
             @Override
             public boolean dispatchKeyEvent(KeyEvent e) {
-                  if (e.isAltDown()
-                          && e.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D)) {
-                      MediatorGUI.top().addressBar.requestFocusInWindow();
-                      return true;
-                  } else if (e.getKeyCode() == KeyEvent.VK_ALT
-                          && e.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)) {
-                      if (!MediatorGUI.top().isExpanded) {
-                          menubar.setVisible(!menubar.isVisible());
-                      }
-                      return true;
-                  }
-                  return false;
+                if (e.isAltDown() && e.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D)) {
+                    MediatorGUI.top().addressBar.requestFocusInWindow();
+                    MediatorGUI.top().addressBar.selectAll();
+                    wasAltDPressed[0] = true;
+                    return true;
+                } else if (e.getKeyCode() == KeyEvent.VK_ALT && e.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)) {
+                    if (!wasAltDPressed[0] && !wasAltPressed[0]) {
+                        if (!MediatorGUI.top().isExpanded) {
+                            menubar.setVisible(!menubar.isVisible());
+                        }
+                    } else {
+                        wasAltDPressed[0] = false;
+                        wasAltPressed[0] = false;
+                    }
+                    return true;
+                } else if (e.isAltDown() && e.getKeyCode() == KeyEvent.VK_ALT) {
+                    if (!MediatorGUI.top().isExpanded && menubar.isVisible()) {
+                        menubar.setVisible(!menubar.isVisible());
+                        wasAltPressed[0] = true;
+                    }
+                    return true;
+                }
+                return false;
             }
         });
     }

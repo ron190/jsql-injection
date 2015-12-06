@@ -25,6 +25,7 @@ import javax.swing.tree.TreePath;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.bean.Table;
+import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.tree.ImageObserverAnimated;
@@ -57,7 +58,7 @@ public class NodeModelTable extends AbstractNodeModel {
         if ("information_schema".equals(this.getParent().toString())) {
             panel.showLoader();
 
-            if (MediatorGUI.model().suspendables.get(this.dataObject).isPaused()) {
+            if (MediatorModel.model().suspendables.get(this.dataObject).isPaused()) {
                 ImageIcon animatedGIFPaused = new ImageOverlap(HelperGUI.PATH_PROGRESSBAR, HelperGUI.PATH_PAUSE);
                 animatedGIFPaused.setImageObserver(new ImageObserverAnimated(MediatorGUI.databaseTree(), currentNode));
                 panel.setLoaderIcon(animatedGIFPaused);
@@ -75,7 +76,7 @@ public class NodeModelTable extends AbstractNodeModel {
 
                 @Override
                 protected Object doInBackground() throws Exception {
-                    MediatorGUI.model().dataAccessObject.listColumns(selectedTable);
+                    MediatorModel.model().dataAccessObject.listColumns(selectedTable);
                     return null;
                 }
                 
