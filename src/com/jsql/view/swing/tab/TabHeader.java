@@ -58,7 +58,7 @@ public class TabHeader extends JPanel implements MouseListener {
         this.add(tabTitleLabel);
 
         // Icon for closing tab
-        Icon closeIcon = new ImageIcon(this.getClass().getResource("/com/jsql/view/swing/images/close.png"));
+        Icon closeIcon = new ImageIcon(TabHeader.class.getResource("/com/jsql/view/swing/images/close.png"));
         Dimension closeButtonSize = new Dimension(closeIcon.getIconWidth(), closeIcon.getIconHeight());
 
         JButton tabCloseButton = new JButton(closeIcon);
@@ -68,8 +68,8 @@ public class TabHeader extends JPanel implements MouseListener {
         tabCloseButton.setBorderPainted(false);
         // turn on before rollovers work
         tabCloseButton.setRolloverEnabled(true);
-        tabCloseButton.setRolloverIcon(new ImageIcon(this.getClass().getResource("/com/jsql/view/swing/images/closeRollover.png")));
-        tabCloseButton.setPressedIcon(new ImageIcon(this.getClass().getResource("/com/jsql/view/swing/images/closePressed.png")));
+        tabCloseButton.setRolloverIcon(new ImageIcon(TabHeader.class.getResource("/com/jsql/view/swing/images/closeRollover.png")));
+        tabCloseButton.setPressedIcon(new ImageIcon(TabHeader.class.getResource("/com/jsql/view/swing/images/closePressed.png")));
         tabCloseButton.addMouseListener(this);
 
         this.add(tabCloseButton);

@@ -155,7 +155,6 @@ public class CubridStrategy extends ASQLStrategy {
                          * Minus 'SQLi' should apply
                          */
                         MediatorModel.model().normalStrategy.getPerformanceLength() +
-//                        MediatorModel.model().performanceLength +
                     ")" +
                 ")" +
         ")";
@@ -191,6 +190,6 @@ public class CubridStrategy extends ASQLStrategy {
 
     @Override
     public String getDbLabel() {
-        return "CUBRID";
+        return "Cubrid";
     }
 }

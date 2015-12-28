@@ -81,7 +81,7 @@ public class LightScrollPane extends JComponent {
                 });
             }
         });
-
+        
         layeredPane.add(horizontalScrollBar);
         layeredPane.add(verticalScrollBar);
         layeredPane.add(scrollPane);
@@ -166,10 +166,18 @@ public class LightScrollPane extends JComponent {
             int x = thumbBounds.x + THUMB_BORDER_SIZE;
             int y = thumbBounds.y + THUMB_BORDER_SIZE;
 
-            int width = orientation == JScrollBar.VERTICAL ? THUMB_SIZE : thumbBounds.width - (THUMB_BORDER_SIZE * 2);
+            int width = 
+                orientation == JScrollBar.VERTICAL 
+                ? THUMB_SIZE 
+                : thumbBounds.width - (THUMB_BORDER_SIZE * 2)
+            ;
             width = Math.max(width, THUMB_SIZE);
 
-            int height = orientation == JScrollBar.VERTICAL ? thumbBounds.height - (THUMB_BORDER_SIZE * 2) : THUMB_SIZE;
+            int height = 
+                orientation == JScrollBar.VERTICAL 
+                ? thumbBounds.height - (THUMB_BORDER_SIZE * 2) 
+                : THUMB_SIZE
+            ;
             height = Math.max(height, THUMB_SIZE);
 
             Graphics2D graphics2D = (Graphics2D) g.create();

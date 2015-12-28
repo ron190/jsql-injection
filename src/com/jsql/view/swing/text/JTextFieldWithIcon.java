@@ -44,7 +44,7 @@ public class JTextFieldWithIcon extends JTextField {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        URL url = JAddressBar.class.getResource("/com/jsql/view/swing/images/globe.png");
+        URL url = JTextFieldWithIcon.class.getResource("/com/jsql/view/swing/images/globe.png");
         BufferedImage image = null;
         try {
             image = ImageIO.read(url);
@@ -55,7 +55,11 @@ public class JTextFieldWithIcon extends JTextField {
         Border border = UIManager.getBorder("TextField.border");
 
         int x = border.getBorderInsets(this).left;
-        int y = (getHeight() - image.getHeight()) / 2;
+        // Report #223: ignore if icon is missing
+        int y = 0;
+        if (image != null) {
+            y = (getHeight() - image.getHeight()) / 2;
+        }
 
         g.drawImage(image, x + 4, y + 1, this);
     }

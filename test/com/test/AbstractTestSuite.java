@@ -14,7 +14,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.apache.log4j.PropertyConfigurator;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -89,8 +88,8 @@ public abstract class AbstractTestSuite {
             res = stmt.executeQuery(SQL_DATABASES);
                     
             while (res.next()) {
-                String tableName = res.getString(CONF_DBNAME);
-                databaseToFind.add(tableName);
+                String dbName = res.getString(CONF_DBNAME);
+                databaseToFind.add(dbName);
             }
             res.close();
             stmt.close();
@@ -113,8 +112,8 @@ public abstract class AbstractTestSuite {
             res = stmt.executeQuery(SQL_COLUMNS);
 
             while (res.next()) {
-                String tableName = res.getString(CONF_COLNAME);
-                columnToFind.add(tableName);
+                String colName = res.getString(CONF_COLNAME);
+                columnToFind.add(colName);
             }
             res.close();
             stmt.close();
@@ -124,8 +123,8 @@ public abstract class AbstractTestSuite {
             res = stmt.executeQuery(SQL_VALUES);
 
             while (res.next()) {
-                String tableName = res.getString(TEST_COLUMN);
-                valueToFind.add(tableName);
+                String value = res.getString(TEST_COLUMN);
+                valueToFind.add(value);
             }
             res.close();
 
@@ -239,20 +238,20 @@ public abstract class AbstractTestSuite {
 
     @Test
     public void listValues() throws PreparationException, StoppableException {
-        Set<Object> set1 = new HashSet<Object>();
-        Set<Object> set2 = new HashSet<Object>();
+        Set<Object> set1 = new TreeSet<Object>();
+        Set<Object> set2 = new TreeSet<Object>();
 
         try{
             String[][] vs = MediatorModel.model().dataAccessObject.listValues(Arrays.asList(new Column(TEST_COLUMN, new Table(TEST_TABLE, "0", new Database(TEST_DATABASE, "0")))));
             List<String> valuesFound = new ArrayList<String>();
             for (String[] v: vs) {
-                valuesFound.add(v[1]);
+                valuesFound.add(v[1].replaceAll("\r\n", "\n"));
             }
 
             set1.addAll(valuesFound);
             set2.addAll(valueToFind);
 
-            System.out.println("listValues: found " + set1 + "\nto find " + set2 + "\n");
+            System.out.println("<<listValues: found " + set1.toString().replaceAll("\n", "[n]").replaceAll("\r", "[r]") + "\nto find " + set2.toString().replaceAll("\n", "[n]").replaceAll("\r", "[r]") + ">>\n");
             Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
         }catch(AssertionError e){
             Set<Object> tmp = new TreeSet<Object>();

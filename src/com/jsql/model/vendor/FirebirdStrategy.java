@@ -14,7 +14,7 @@ public class FirebirdStrategy extends ASQLStrategy {
     public String getSchemaInfos() {
         return
             "SELECT+rdb$get_context('SYSTEM','ENGINE_VERSION')||'{%}'||rdb$get_context('SYSTEM','DB_NAME')"
-            + "||'{%}'||rdb$get_context('SYSTEM','CURRENT_USER')||'{%}?%01%03%03%07'from+rdb$database";
+            + "||'{%}'||rdb$get_context('SYSTEM','CURRENT_USER')||'{%}-%01%03%03%07'from+rdb$database";
     }
 
     @Override
@@ -94,6 +94,6 @@ public class FirebirdStrategy extends ASQLStrategy {
     
     @Override
     public String getDbLabel() {
-        return null;
+        return "Firebird";
     }
 }

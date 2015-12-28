@@ -27,8 +27,6 @@ import java.util.prefs.Preferences;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -38,6 +36,7 @@ import org.apache.log4j.Logger;
 import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.model.bean.Request;
 import com.jsql.model.injection.InjectionModel;
+import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.dropshadow.ShadowPopupFactory;
 import com.jsql.view.swing.interaction.IInteractionCommand;
@@ -46,7 +45,6 @@ import com.jsql.view.swing.panel.PanelLeftRightBottom;
 import com.jsql.view.swing.panel.PanelStatusbar;
 import com.jsql.view.swing.panel.PanelTop;
 import com.jsql.view.swing.terminal.AbstractTerminal;
-import com.jsql.view.swing.text.JPopupTextArea;
 
 /**
  * View in the MVC pattern, defines all the components
@@ -89,6 +87,7 @@ public class JFrameGUI extends JFrame implements Observer {
         super("jSQL Injection");
         
         MediatorGUI.register(this);
+        MediatorModel.model().addObserver(this);
 
         // Define a small and large app icon
         this.setIconImages(HelperGUI.getIcons());
@@ -118,8 +117,14 @@ public class JFrameGUI extends JFrame implements Observer {
             @Override
             public void windowClosing(WindowEvent e) {
                 Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-                prefs.putInt(PanelLeftRightBottom.VERTICALSPLITTER_PREFNAME, JFrameGUI.this.outputPanel.leftRight.getDividerLocation());
-                prefs.putInt(PanelLeftRightBottom.HORIZONTALSPLITTER_PREFNAME, JFrameGUI.this.outputPanel.getHeight() - JFrameGUI.this.outputPanel.getDividerLocation());
+                prefs.putInt(
+                    PanelLeftRightBottom.VERTICALSPLITTER_PREFNAME, 
+                    JFrameGUI.this.outputPanel.leftRight.getDividerLocation()
+                );
+                prefs.putInt(
+                    PanelLeftRightBottom.HORIZONTALSPLITTER_PREFNAME, 
+                    JFrameGUI.this.outputPanel.getHeight() - JFrameGUI.this.outputPanel.getDividerLocation()
+                );
                 
                 prefs.putBoolean(HelperGUI.BINARY_VISIBLE, false);
                 prefs.putBoolean(HelperGUI.CHUNK_VISIBLE, false);
@@ -232,17 +237,17 @@ public class JFrameGUI extends JFrame implements Observer {
         MediatorGUI.bottomPanel().javaTab.getProxy().setText("");
         
         MediatorGUI.bottomPanel().networkTabHeader.setText("");
-        MediatorGUI.bottomPanel().networkTabCookie.setText("");
         MediatorGUI.bottomPanel().networkTabParam.setText("");
         MediatorGUI.bottomPanel().networkTabResponse.setText("");
         MediatorGUI.bottomPanel().networkTabTiming.setText("");
         MediatorGUI.bottomPanel().networkTabSource.setText("");
         MediatorGUI.bottomPanel().networkTabPreview.setText("");
         
-        int tabIndex = MediatorGUI.bottom().indexOfTab("Java");
-        if (0 <= tabIndex && tabIndex < MediatorGUI.bottom().getTabCount()) {
-            Component tabHeader = MediatorGUI.bottom().getTabComponentAt(tabIndex);
-            tabHeader.setFont(tabHeader.getFont().deriveFont(Font.PLAIN));
+        for (int i = 0; i < MediatorGUI.bottom().getTabCount(); i++) {
+            Component tabComponent = MediatorGUI.bottom().getTabComponentAt(i);
+            if (tabComponent != null) {
+                tabComponent.setFont(tabComponent.getFont().deriveFont(Font.PLAIN));
+            }
         }
         
         MediatorGUI.left().fileManager.setButtonEnable(false);

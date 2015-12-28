@@ -1,8 +1,11 @@
 package com.jsql.view.swing.combomenu;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.plaf.basic.*;
+import java.awt.Component;
+import java.awt.Graphics;
+
+import javax.swing.Icon;
+import javax.swing.SwingConstants;
+import javax.swing.plaf.basic.BasicArrowButton;
 
 public class ArrowIcon implements Icon, SwingConstants {
     private static final int DEFAULT_SIZE = 11;

@@ -127,7 +127,7 @@ public class DialogAbout extends JDialog {
         lastLine.add(Box.createGlue());
         lastLine.add(this.close);
 
-        JLabel iconJSQL = new JLabel(new ImageIcon(MediatorGUI.gui().getClass().getResource("/com/jsql/view/swing/images/app-32x32.png")));
+        JLabel iconJSQL = new JLabel(new ImageIcon(DialogAbout.class.getResource("/com/jsql/view/swing/images/app-32x32.png")));
         iconJSQL.setBorder(BorderFactory.createEmptyBorder(2, 15, 2, 15));
         dialogPane.add(iconJSQL, BorderLayout.WEST);
         dialogPane.add(lastLine, BorderLayout.SOUTH);

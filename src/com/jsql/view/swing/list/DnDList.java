@@ -37,6 +37,7 @@ import javax.swing.JOptionPane;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
 import org.apache.log4j.Logger;
@@ -201,7 +202,7 @@ public class DnDList extends JList<ListItem> {
      * @param filesToImport
      * @param position
      */
-    void dropPasteFile(List<File> filesToImport, int position) {
+    void dropPasteFile(final List<File> filesToImport, int position) {
         if (filesToImport.isEmpty()) {
             return;
         }
@@ -216,7 +217,7 @@ public class DnDList extends JList<ListItem> {
                         I18n.LIST_IMPORT_ERROR_TEXT,
                         I18n.LIST_IMPORT_ERROR,
                         JOptionPane.ERROR_MESSAGE,
-                        new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/error.png"))
+                        new ImageIcon(DnDList.class.getResource("/com/jsql/view/swing/images/error.png"))
                     );
                     return;
                 }
@@ -237,8 +238,8 @@ public class DnDList extends JList<ListItem> {
             options[2]
         );
         
-        int startPosition = position;
-        int endPosition = startPosition;
+        final int startPosition[] = {position};
+        final int endPosition[] = {startPosition[0]};
 
         if (answer != JOptionPane.YES_OPTION && answer != JOptionPane.NO_OPTION) {
             return;
@@ -246,37 +247,43 @@ public class DnDList extends JList<ListItem> {
         
         if (answer == JOptionPane.YES_OPTION) {
             listModel.clear();
-            startPosition = 0;
-            endPosition = 0;
+            startPosition[0] = 0;
+            endPosition[0] = 0;
         }
         
-        for (Iterator<File> iterator = (filesToImport).iterator(); iterator.hasNext();) {
-            BufferedReader fileReader;
-            try {
-                fileReader = new BufferedReader(new FileReader(iterator.next()));
-                String line;
-                while ((line = fileReader.readLine()) != null) {
-                    if (!"".equals(line)) {
-                        // Fix Report #60 
-                        if (0 <= endPosition && endPosition < listModel.size()) {
-                            listModel.add(endPosition++, new ListItem(line.replace("\\", "/")));
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                
+                for (Iterator<File> iterator = (filesToImport).iterator(); iterator.hasNext();) {
+                    BufferedReader fileReader;
+                    try {
+                        fileReader = new BufferedReader(new FileReader(iterator.next()));
+                        String line;
+                        while ((line = fileReader.readLine()) != null) {
+                            if (!"".equals(line)) {
+                                // Fix Report #60 
+                                if (0 <= endPosition[0] && endPosition[0] <= listModel.size()) {
+                                    listModel.add(endPosition[0]++, new ListItem(line.replace("\\", "/")));
+                                }
+                            }
                         }
+                    } catch (FileNotFoundException e) {
+                        LOGGER.error(e, e);
+                    } catch (IOException e) {
+                        LOGGER.error(e, e);
                     }
                 }
-            } catch (FileNotFoundException e) {
-                LOGGER.error(e, e);
-            } catch (IOException e) {
-                LOGGER.error(e, e);
+                
+                if (!listModel.isEmpty()) {
+                    DnDList.this.setSelectionInterval(startPosition[0], endPosition[0] - 1);
+                }
+                
+                DnDList.this.scrollRectToVisible(
+                        DnDList.this.getCellBounds(DnDList.this.getMinSelectionIndex(), DnDList.this.getMaxSelectionIndex())
+                        );
             }
-        }
-        
-        if (!listModel.isEmpty()) {
-            this.setSelectionInterval(startPosition, endPosition - 1);
-        }
-        
-        this.scrollRectToVisible(
-            this.getCellBounds(this.getMinSelectionIndex(), this.getMaxSelectionIndex())
-        );
+        });
         
     }
 }

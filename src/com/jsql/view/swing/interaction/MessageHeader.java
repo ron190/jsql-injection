@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import java.awt.Component;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.Map;
@@ -28,7 +30,6 @@ import com.jsql.view.swing.scrollpane.JScrollIndicator;
 public class MessageHeader implements IInteractionCommand {
     // The text to append to the tab
     private String url;
-    private String cookie;
     private String post;
     private String header;
     private Map<String, String> response;
@@ -42,7 +43,6 @@ public class MessageHeader implements IInteractionCommand {
     public MessageHeader(Object[] interactionParams) {
         params = (Map<String, Object>) interactionParams[0];
         url = (String) params.get("Url");
-        cookie = (String) params.get("Cookie");
         post = (String) params.get("Post");
         header = (String) params.get("Header");
         response = (Map<String, String>) params.get("Response");
@@ -51,7 +51,7 @@ public class MessageHeader implements IInteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.bottomPanel().listHTTPHeader.add(new HTTPHeader(url, cookie, post, header, response, source));
+        MediatorGUI.bottomPanel().listHTTPHeader.add(new HTTPHeader(url, post, header, response, source));
         
         JViewport viewport = ((JScrollIndicator) MediatorGUI.bottomPanel().network.getLeftComponent()).scrollPane.getViewport();
         JTable table = (JTable) viewport.getView();
@@ -63,5 +63,13 @@ public class MessageHeader implements IInteractionCommand {
         Point pt = viewport.getViewPosition();
         rect.translate(-pt.x, -pt.y);
         viewport.scrollRectToVisible(rect);
+        
+        int tabIndex = MediatorGUI.bottom().indexOfTab("Network");
+        if (0 <= tabIndex && tabIndex < MediatorGUI.bottom().getTabCount()) {
+            Component tabHeader = MediatorGUI.bottom().getTabComponentAt(tabIndex);
+            if (MediatorGUI.bottom().getSelectedIndex() != tabIndex) {
+                tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
+            }
+        }
     }
 }

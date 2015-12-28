@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
 import com.jsql.tool.ToolsString;
+import com.jsql.view.swing.manager.MD4;
 
 public class HashBruter extends Bruter {
     /*
@@ -112,6 +113,8 @@ public class HashBruter extends Bruter {
                     generatedHash = generateCRC64(baseString.getBytes());
                 } else if(type.equalsIgnoreCase("mysql")) {
                     generatedHash = generateMySQL(baseString.toCharArray());
+                } else if(type.equalsIgnoreCase("md4")) {
+                    generatedHash = generateMd4(baseString);
                 } else {
                     generatedHash = generateHash(baseString.toCharArray());
                 }
@@ -350,5 +353,44 @@ public class HashBruter extends Bruter {
             sum = (sum >>> 8) ^ LOOKUPTABLE[lookupidx];
         }
         return String.valueOf(sum);
+    }
+    
+    private String generateMd4(String passwordString) {
+        MessageDigest md = new MD4();
+
+        byte[] passwordByte = passwordString.getBytes();
+        md.update(passwordByte, 0, passwordByte.length);
+        byte[] encodedPassword = md.digest();
+        String encodedPasswordInString = digestToHexString(encodedPassword);
+
+        return encodedPasswordInString;
+    }
+    
+    /**
+     * Convert a digest hash to a string representation.
+     * @param block Digest array
+     * @return Hash as a string
+     */
+    String digestToHexString(byte[] block) {
+        StringBuilder  buf = new StringBuilder();
+        int len = block.length;
+        for (int i = 0; i < len; i++) {
+            this.byte2hex(block[i], buf);
+        }
+        return buf.toString();
+    }
+    
+    /**
+     * Convert byte character to hexadecimal StringBuffer character.
+     * @param b Byte character to convert
+     * @param buf Hexadecimal converted character
+     */
+    private void byte2hex(byte b, StringBuilder buf) {
+        char[] hexChars = {'0', '1', '2', '3', '4', '5', '6', '7', '8',
+                '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+        int high = (b & 0xf0) >> 4;
+        int low = b & 0x0f;
+        buf.append(hexChars[high]);
+        buf.append(hexChars[low]);
     }
 }

@@ -26,7 +26,8 @@ public class ImageObserverAnimated implements ImageObserver {
     private JTree tree;
     private DefaultTreeModel treeModel;
     private TreeNode node;
-
+    private TreePath path;
+    
     /**
      * Build GIF animator for tree node.
      * @param tree Tree containing GIF node
@@ -36,12 +37,12 @@ public class ImageObserverAnimated implements ImageObserver {
         this.tree = tree;
         this.treeModel = (DefaultTreeModel) tree.getModel();
         this.node = node;
+        this.path = new TreePath(this.treeModel.getPathToRoot(this.node));
     }
 
     @Override
     public boolean imageUpdate(Image img, int flags, int x, int y, int w, int h) {
         if ((flags & (FRAMEBITS | ALLBITS)) != 0) {
-            TreePath path = new TreePath(this.treeModel.getPathToRoot(this.node));
             Rectangle rect = this.tree.getPathBounds(path);
             if (rect != null) {
                 this.tree.repaint(rect);

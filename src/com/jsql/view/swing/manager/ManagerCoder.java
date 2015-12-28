@@ -99,6 +99,7 @@ public class ManagerCoder extends JPanel {
         menus.get("Hash").add(new JMenuItem("Hash to Crc32"));
         menus.get("Hash").add(new JMenuItem("Hash to Crc64"));
         menus.get("Hash").add(new JMenuItem("Hash to Md2"));
+        menus.get("Hash").add(new JMenuItem("Hash to Md4"));
         menus.get("Hash").add(new JMenuItem("Hash to Md5"));
         menus.get("Hash").add(new JMenuItem("Hash to Sha-1"));
         menus.get("Hash").add(new JMenuItem("Hash to Sha-256"));
@@ -114,11 +115,15 @@ public class ManagerCoder extends JPanel {
         }
 
         ComboMenuBar comboMenu = new ComboMenuBar(menu);
+        this.encoding.setText("Decode from Base64");
         
         Set<Integer> set = new HashSet<Integer>();
         set.addAll((Collection<Integer>)Arrays.asList(new Integer[]{0, 7, 14}));
         
-        JButton run = new JButton(I18n.CODER_RUN_BUTTON, new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/tick.png")));
+        JButton run = new JButton(
+            I18n.CODER_RUN_BUTTON, 
+            new ImageIcon(ManagerCoder.class.getResource("/com/jsql/view/swing/images/tick.png"))
+        );
         run.setBorder(HelperGUI.BLU_ROUND_BORDER);
 
         middleLine.add(comboMenu);

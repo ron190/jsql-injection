@@ -47,7 +47,7 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
         if (isSelected && list.isFocusOwner()) {
             renderer.setBackground(HelperGUI.SELECTION_BACKGROUND);
         } else if (isSelected && !list.isFocusOwner()) {
-            renderer.setBackground(new Color(248, 249, 249));
+            renderer.setBackground(HelperGUI.FOCUS_LOST);
         } else {
             renderer.setBackground(Color.WHITE);
         }

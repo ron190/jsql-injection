@@ -34,9 +34,9 @@ public class NodeModelDatabase extends AbstractNodeModel {
     @Override
     Icon getLeafIcon(boolean leaf) {
         if (leaf) {
-            return new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/databaseGo.png"));
+            return new ImageIcon(NodeModelDatabase.class.getResource("/com/jsql/view/swing/images/databaseGo.png"));
         } else {
-            return new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/database.png"));
+            return new ImageIcon(NodeModelDatabase.class.getResource("/com/jsql/view/swing/images/database.png"));
         }
     }
 

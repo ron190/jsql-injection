@@ -64,7 +64,7 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
         
         List<String> pathsList = new ArrayList<String>();
         try {
-            InputStream in = this.getClass().getResourceAsStream("/com/jsql/list/shell.txt");
+            InputStream in = ManagerAbstractShell.class.getResourceAsStream("/com/jsql/list/shell.txt");
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
@@ -96,7 +96,10 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
                 BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)));
         
-        this.run = new JButton(I18n.SHELL_RUN_BUTTON, new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/shellSearch.png")));
+        this.run = new JButton(
+            I18n.SHELL_RUN_BUTTON, 
+            new ImageIcon(ManagerAbstractShell.class.getResource("/com/jsql/view/swing/images/shellSearch.png"))
+        );
         this.run.setToolTipText(I18n.SHELL_RUN_BUTTON_TOOLTIP);
         this.run.setEnabled(false);
 

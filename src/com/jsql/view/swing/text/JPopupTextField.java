@@ -24,16 +24,16 @@ public class JPopupTextField extends JPopupTextComponent<JTextField> implements 
      * Build new instance of JTextField to decorate with default text.
      * @param string Text to display
      */
-    public JPopupTextField(String hint) {
-        this(new PlaceholderTextField(hint));
+    public JPopupTextField(String placeholder) {
+        this(new JTextFieldPlaceholder(placeholder));
     }
 
     /**
      * Build new instance of JTextField to decorate with default text.
      * @param string Text to display
      */
-    public JPopupTextField(String hint, String value) {
-        this(new PlaceholderTextField(hint, value));
+    public JPopupTextField(String placeholder, String value) {
+        this(new JTextFieldPlaceholder(placeholder, value));
     }
 
     /**
@@ -44,7 +44,7 @@ public class JPopupTextField extends JPopupTextComponent<JTextField> implements 
         super(proxy);
 
         this.getProxy().setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(HelperGUI.DEFAULT_BACKGROUND, 2),
-                HelperGUI.BLU_ROUND_BORDER));
+            BorderFactory.createLineBorder(HelperGUI.DEFAULT_BACKGROUND, 2),
+            HelperGUI.BLU_ROUND_BORDER));
     }
 }

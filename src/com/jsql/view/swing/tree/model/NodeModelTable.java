@@ -47,7 +47,7 @@ public class NodeModelTable extends AbstractNodeModel {
     @Override
     Icon getLeafIcon(boolean leaf) {
         if (leaf) {
-            return new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/tableGo.png"));
+            return new ImageIcon(NodeModelTable.class.getResource("/com/jsql/view/swing/images/tableGo.png"));
         } else {
             return HelperGUI.TABLE_ICON;
         }

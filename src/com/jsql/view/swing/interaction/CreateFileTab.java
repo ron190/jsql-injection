@@ -62,7 +62,7 @@ public class CreateFileTab implements IInteractionCommand {
         MediatorGUI.right().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/file.png")));
+        TabHeader header = new TabHeader(new ImageIcon(CreateFileTab.class.getResource("/com/jsql/view/swing/images/file.png")));
 
         MediatorGUI.right().setToolTipTextAt(MediatorGUI.right().indexOfComponent(scroller), path);
 

@@ -16,7 +16,7 @@ import com.jsql.model.injection.MediatorModel;
 
 /**
  * Runnable class, define insertionCharacter that will be used by all futures requests,
- * i.e -1 in "[...].php?id=-1 union select[...]", sometimes it's -1, 0', 0, etc,
+ * i.e -1 in "[..].php?id=-1 union select[..]", sometimes it's -1, 0', 0, etc,
  * this class/function tries to find the working one by searching a special error message
  * in the source page.
  */
@@ -34,17 +34,19 @@ public class SuspendableGetInsertionCharacter extends AbstractSuspendable {
              * TODO Preparation Format Exception
              */
             throw new PreparationException("No query string");
-            // Is the query string well formed?
+            
+        // Is the query string well formed?
         } else if (!"".equals(MediatorModel.model().getData) && MediatorModel.model().getData.matches("[^\\w]*=.*")) {
             throw new PreparationException("Incorrect query string");
+            
         } else if (!"".equals(MediatorModel.model().postData) && MediatorModel.model().postData.indexOf("=") < 0) {
             throw new PreparationException("Incorrect POST datas");
-        } else if (!"".equals(MediatorModel.model().cookieData) && MediatorModel.model().cookieData.indexOf("=") < 0) {
-            throw new PreparationException("Incorrect COOKIE datas");
+            
         } else if (!"".equals(MediatorModel.model().headerData) && MediatorModel.model().headerData.indexOf(":") < 0) {
             throw new PreparationException("Incorrect HEADER datas");
-            // Parse query information: url=>everything before the sign '=',
-            // start of query string=>everything after '='
+            
+        // Parse query information: url=>everything before the sign '=',
+        // start of query string=>everything after '='
         } else if ("GET".equalsIgnoreCase(MediatorModel.model().method) && !MediatorModel.model().getData.matches(".*=$")) {
             Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(MediatorModel.model().getData);
             regexSearch.find();
@@ -54,7 +56,8 @@ public class SuspendableGetInsertionCharacter extends AbstractSuspendable {
             } catch (IllegalStateException e) {
                 throw new PreparationException("Incorrect GET format");
             }
-            // Parse post information
+            
+        // Parse post information
         } else if ("POST".equalsIgnoreCase(MediatorModel.model().method) && !MediatorModel.model().postData.matches(".*=$")) {
             Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(MediatorModel.model().postData);
             regexSearch.find();
@@ -64,17 +67,8 @@ public class SuspendableGetInsertionCharacter extends AbstractSuspendable {
             } catch (IllegalStateException e) {
                 throw new PreparationException("Incorrect POST format");
             }
-            // Parse cookie information
-        } else if ("COOKIE".equalsIgnoreCase(MediatorModel.model().method) && !MediatorModel.model().cookieData.matches(".*=$")) {
-            Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(MediatorModel.model().cookieData);
-            regexSearch.find();
-            try {
-                MediatorModel.model().cookieData = regexSearch.group(1);
-                return regexSearch.group(2);
-            } catch (IllegalStateException e) {
-                throw new PreparationException("Incorrect Cookie format");
-            }
-            // Parse header information
+            
+        // Parse header information
         } else if ("HEADER".equalsIgnoreCase(MediatorModel.model().method) && !MediatorModel.model().headerData.matches(".*:$")) {
             Matcher regexSearch = Pattern.compile("(.*:)(.*)").matcher(MediatorModel.model().headerData);
             regexSearch.find();

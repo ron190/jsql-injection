@@ -4,10 +4,8 @@ import java.util.concurrent.Callable;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
-import com.jsql.model.injection.InjectionModel;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.model.injection.suspendable.SuspendableGetRows;
-import com.jsql.tool.ToolsString;
 
 /**
  * Callable to read file source code.

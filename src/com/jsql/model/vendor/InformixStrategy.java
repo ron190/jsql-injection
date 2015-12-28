@@ -95,6 +95,6 @@ public class InformixStrategy extends ASQLStrategy {
     
     @Override
     public String getDbLabel() {
-        return null;
+        return "Informix";
     }
 }

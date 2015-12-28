@@ -31,7 +31,7 @@ public class ActionCheckIP implements ActionListener, Runnable {
     @Override
     public void run() {
         // Test if proxy is available then apply settings
-        if (MediatorModel.model().isProxyfied && !"".equals(MediatorModel.model().proxyAddress) && !"".equals(MediatorModel.model().proxyPort)) {
+        if (MediatorModel.model().useProxy && !"".equals(MediatorModel.model().proxyAddress) && !"".equals(MediatorModel.model().proxyPort)) {
             try {
                 LOGGER.info("Testing proxy...");
                 new Socket(MediatorModel.model().proxyAddress, Integer.parseInt(MediatorModel.model().proxyPort)).close();

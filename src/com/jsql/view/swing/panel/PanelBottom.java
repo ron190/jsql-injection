@@ -71,6 +71,7 @@ import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.tab.AdapterBottomTabbedPane;
 import com.jsql.view.swing.tab.MouseTabbedPane;
 import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.text.JTextPanePlaceholder;
 
 /**
  * A panel with different consoles displayed on the bottom.
@@ -80,12 +81,12 @@ public class PanelBottom extends JPanel {
     /**
      * Console for default application messages.
      */
-    public SimpleConsoleAdapter consoleTab = new SimpleConsoleAdapter("Console");
+    public SimpleConsoleAdapter consoleTab = new SimpleConsoleAdapter("Console", "You should not see that!!");
 
     /**
      * Console for java exception messages.
      */
-    public JavaConsoleAdapter javaTab = new JavaConsoleAdapter("Java");
+    public JavaConsoleAdapter javaTab = new JavaConsoleAdapter("Java", "Java unhandled exception");
     
     /**
      * Console for raw SQL results.
@@ -112,13 +113,12 @@ public class PanelBottom extends JPanel {
      */
     public JTable networkTable;
 
-    public JTextArea networkTabHeader = new JPopupTextArea().getProxy();
-    public JTextArea networkTabCookie = new JPopupTextArea().getProxy();
-    public JTextArea networkTabParam = new JPopupTextArea().getProxy();
-    public JTextArea networkTabResponse = new JPopupTextArea().getProxy();
-    public JTextArea networkTabTiming = new JPopupTextArea().getProxy();
-    public JTextArea networkTabSource = new JPopupTextArea().getProxy();
-    public JTextPane networkTabPreview = new JTextPane();
+    public JTextArea networkTabResponse = new JPopupTextArea("Header server response").getProxy();
+    public JTextArea networkTabSource = new JPopupTextArea("Raw page source").getProxy();
+    public JTextPane networkTabPreview = new JTextPanePlaceholder("Web browser rendering");
+    public JTextArea networkTabHeader = new JPopupTextArea("Header client request").getProxy();
+    public JTextArea networkTabParam = new JPopupTextArea("HTTP POST parameters").getProxy();
+    public JTextArea networkTabTiming = new JPopupTextArea("Response time duration").getProxy();
     
     /**
      * Create panel at the bottom with differents consoles to report injection process.
@@ -128,10 +128,10 @@ public class PanelBottom extends JPanel {
         this.consoleTab.getProxy().setEditable(false);
         SwingAppender.register(this.consoleTab);
         
-        this.chunkTab = new JPopupTextArea().getProxy();
+        this.chunkTab = new JPopupTextArea("Raw data extracted during injection.").getProxy();
         this.chunkTab.setEditable(false);
         
-        this.binaryTab = new JPopupTextArea().getProxy();
+        this.binaryTab = new JPopupTextArea("Characters extracted during blind or time based injection.").getProxy();
         this.binaryTab.setEditable(false);
         
         this.javaTab.getProxy().setEditable(false);
@@ -146,25 +146,6 @@ public class PanelBottom extends JPanel {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
-            }
-            
-            @Override
-            public String getToolTipText(MouseEvent e) {
-                String tip = null;
-                java.awt.Point p = e.getPoint();
-                int rowIndex = rowAtPoint(p);
-                int colIndex = columnAtPoint(p);
-
-                try {
-                    //comment row, exclude heading
-                    if(rowIndex != 0 && colIndex == 1){
-                        tip = getValueAt(rowIndex, colIndex).toString();
-                    }
-                } catch (RuntimeException e1) {
-                    //catch null pointer exception if mouse is over an empty line
-                }
-
-                return "<html><p width=\"1024\">" +tip+"</p></html>";
             }
         };
         
@@ -247,7 +228,12 @@ public class PanelBottom extends JPanel {
                     Object value, boolean isSelected, boolean hasFocus,
                     int row, int column) {
                 JLabel lbl = (JLabel) tcrOs.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                lbl.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 1, Color.LIGHT_GRAY), BorderFactory.createEmptyBorder(0, 5, 0, 5)));
+                lbl.setBorder(
+                    BorderFactory.createCompoundBorder(
+                        BorderFactory.createMatteBorder(0, 0, 1, 1, Color.LIGHT_GRAY), 
+                        BorderFactory.createEmptyBorder(0, 5, 0, 5)
+                    )
+                );
                 return lbl;
             }
         });
@@ -262,10 +248,9 @@ public class PanelBottom extends JPanel {
         networkDetailTabs.addTab(I18n.NETWORK_TAB_SOURCE_LABEL, new LightScrollPane(1, 1, 0, 0, networkTabSource));
         networkDetailTabs.addTab(I18n.NETWORK_TAB_PREVIEW_LABEL, new LightScrollPane(1, 1, 0, 0, networkTabPreview));
         networkDetailTabs.addTab(I18n.NETWORK_TAB_HEADERS_LABEL, new LightScrollPane(1, 1, 0, 0, networkTabHeader));
-        networkDetailTabs.addTab(I18n.NETWORK_TAB_COOKIES_LABEL, new LightScrollPane(1, 1, 0, 0, networkTabCookie));
         networkDetailTabs.addTab(I18n.NETWORK_TAB_PARAMS_LABEL, new LightScrollPane(1, 1, 0, 0, networkTabParam));
         networkDetailTabs.addTab(I18n.NETWORK_TAB_TIMING_LABEL, new LightScrollPane(1, 1, 0, 0, networkTabTiming));
-
+        
         DefaultCaret caret = (DefaultCaret) networkTabResponse.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
         caret = (DefaultCaret) networkTabSource.getCaret();
@@ -274,15 +259,12 @@ public class PanelBottom extends JPanel {
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
         caret = (DefaultCaret) networkTabHeader.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) networkTabCookie.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
         caret = (DefaultCaret) networkTabParam.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
         caret = (DefaultCaret) networkTabTiming.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
         
         networkTabHeader.setLineWrap(true);
-        networkTabCookie.setLineWrap(true);
         networkTabParam.setLineWrap(true);
         networkTabResponse.setLineWrap(true);
         networkTabTiming.setLineWrap(true);
@@ -311,7 +293,6 @@ public class PanelBottom extends JPanel {
                 // prevent double event
                 if (!event.getValueIsAdjusting() && PanelBottom.this.networkTable.getSelectedRow() > -1) {
                     networkTabHeader.setText(listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).getHeader());
-                    networkTabCookie.setText(listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).getCookie());
                     networkTabParam.setText(listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).getPost());
                     
                     networkTabResponse.setText("");
@@ -334,13 +315,13 @@ public class PanelBottom extends JPanel {
         MediatorGUI.bottom().setMinimumSize(new Dimension());
 
         MediatorGUI.bottom().addTab("Console",
-                new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/console.gif")),
-                new LightScrollPane(1, 1, 0, 0, this.consoleTab.getProxy()),
-                I18n.CONSOLE_TAB_TOOLTIP);
+            new ImageIcon(PanelBottom.class.getResource("/com/jsql/view/swing/images/console.gif")),
+            new LightScrollPane(1, 1, 0, 0, this.consoleTab.getProxy()),
+            I18n.CONSOLE_TAB_TOOLTIP);
         MediatorGUI.bottom().setTabComponentAt(
-                MediatorGUI.bottom().indexOfTab("Console"),
-                new JLabel(I18n.CONSOLE_TAB_LABEL, new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/console.gif")),
-                SwingConstants.CENTER));
+            MediatorGUI.bottom().indexOfTab("Console"),
+            new JLabel(I18n.CONSOLE_TAB_LABEL, new ImageIcon(PanelBottom.class.getResource("/com/jsql/view/swing/images/console.gif")),
+            SwingConstants.CENTER));
 
         // Order is important
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
@@ -414,7 +395,7 @@ public class PanelBottom extends JPanel {
         );
 
         MediatorGUI.bottom().setTabComponentAt(MediatorGUI.bottom().indexOfTab("Chunk"), new JLabel(I18n.CHUNK_TAB_LABEL,
-                new ImageIcon(AdapterBottomTabbedPane.class.getResource("/com/jsql/view/swing/images/chunk.gif")), SwingConstants.CENTER));
+                new ImageIcon(PanelBottom.class.getResource("/com/jsql/view/swing/images/chunk.gif")), SwingConstants.CENTER));
     }
 
     /**
@@ -430,7 +411,7 @@ public class PanelBottom extends JPanel {
         );
 
         MediatorGUI.bottom().setTabComponentAt(MediatorGUI.bottom().indexOfTab("Binary"), new JLabel(I18n.BINARY_TAB_LABEL,
-                new ImageIcon(AdapterBottomTabbedPane.class.getResource("/com/jsql/view/swing/images/binary.gif")), SwingConstants.CENTER));
+                new ImageIcon(PanelBottom.class.getResource("/com/jsql/view/swing/images/binary.gif")), SwingConstants.CENTER));
     }
 
     /**
@@ -446,7 +427,7 @@ public class PanelBottom extends JPanel {
         );
 
         MediatorGUI.bottom().setTabComponentAt(MediatorGUI.bottom().indexOfTab("Network"), new JLabel(I18n.NETWORK_TAB_LABEL,
-                new ImageIcon(AdapterBottomTabbedPane.class.getResource("/com/jsql/view/swing/images/header.gif")), SwingConstants.CENTER));
+                new ImageIcon(PanelBottom.class.getResource("/com/jsql/view/swing/images/header.gif")), SwingConstants.CENTER));
     }
 
     /**
@@ -462,6 +443,6 @@ public class PanelBottom extends JPanel {
         );
 
         MediatorGUI.bottom().setTabComponentAt(MediatorGUI.bottom().indexOfTab("Java"), new JLabel(I18n.JAVA_TAB_LABEL,
-                new ImageIcon(AdapterBottomTabbedPane.class.getResource("/com/jsql/view/swing/images/cup.png")), SwingConstants.CENTER));
+                new ImageIcon(PanelBottom.class.getResource("/com/jsql/view/swing/images/cup.png")), SwingConstants.CENTER));
     }
 }

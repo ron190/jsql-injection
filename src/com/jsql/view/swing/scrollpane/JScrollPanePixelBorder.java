@@ -29,7 +29,7 @@ public class JScrollPanePixelBorder extends JScrollPane {
      */
     public JScrollPanePixelBorder(Component c) {
         super(c);
-
+        
         this.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperGUI.COMPONENT_BORDER));
         this.setViewportBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperGUI.COMPONENT_BORDER));
     }

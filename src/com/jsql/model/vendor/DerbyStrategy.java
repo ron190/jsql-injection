@@ -106,6 +106,6 @@ public class DerbyStrategy extends ASQLStrategy {
     
     @Override
     public String getDbLabel() {
-        return null;
+        return "Derby";
     }
 }

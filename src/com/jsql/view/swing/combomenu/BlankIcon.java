@@ -1,7 +1,10 @@
 package com.jsql.view.swing.combomenu;
 
-import java.awt. *;
-import javax.swing. *;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+
+import javax.swing.Icon;
 
 public class BlankIcon implements Icon {
     private Color fillColor;

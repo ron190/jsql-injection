@@ -125,10 +125,10 @@ public class ManagerBruteForce extends JPanel {
         numericCharacters = new JCheckBox("0-9", true);
         specialCharacters = new JCheckBox("Special", true);
 
-        hashTypes = new JComboBox<String>(new String[]{"Adler32", "Crc16", "Crc32", "Crc64", "Md2", "Md5", "Sha-1", "Sha-256", "Sha-384",
-                "sha-512", "mysql" /*,"crc16","crc32","crc64","adler32"*/});
+        hashTypes = new JComboBox<String>(new String[]{"Adler32", "Crc16", "Crc32", "Crc64", "Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384",
+                "sha-512", "mysql"});
         
-        hashTypes.setSelectedIndex(5);
+        hashTypes.setSelectedIndex(6);
         hashTypes.setToolTipText(I18n.BRUTEFORCE_HASH_TYPE_TOOLTIP);
 
         secondLine.add(hashTypes);
@@ -176,9 +176,9 @@ public class ManagerBruteForce extends JPanel {
         minimumLength.setMinimumSize(new Dimension(38, (int) minimumLength.getPreferredSize().getHeight()));
         maximumLength.setMinimumSize(new Dimension(38, (int) maximumLength.getPreferredSize().getHeight()));
 
-        thirdLine.add(new JLabel(I18n.BRUTEFORCE_MIN_LABEL, SwingConstants.RIGHT));
+        thirdLine.add(new JLabel(" "+I18n.BRUTEFORCE_MIN_LABEL, SwingConstants.RIGHT));
         thirdLine.add(minimumLength);
-        thirdLine.add(new JLabel(I18n.BRUTEFORCE_MAX_LABEL, SwingConstants.RIGHT));
+        thirdLine.add(new JLabel(" "+I18n.BRUTEFORCE_MAX_LABEL, SwingConstants.RIGHT));
         thirdLine.add(maximumLength);
         
         final JPanel secondAndThirdLine = new JPanel(new BorderLayout());
@@ -200,7 +200,10 @@ public class ManagerBruteForce extends JPanel {
                 BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)));
         
-        run = new JButton(I18n.BRUTEFORCE_RUN_BUTTON, new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/key.png")));
+        run = new JButton(
+            I18n.BRUTEFORCE_RUN_BUTTON, 
+            new ImageIcon(ManagerBruteForce.class.getResource("/com/jsql/view/swing/images/key.png"))
+        );
         run.setToolTipText(I18n.BRUTEFORCE_RUN_BUTTON_TOOLTIP);
         run.setBorder(HelperGUI.BLU_ROUND_BORDER);
 

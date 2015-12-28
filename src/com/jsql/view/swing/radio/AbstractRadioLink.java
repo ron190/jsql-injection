@@ -30,8 +30,6 @@ public abstract class AbstractRadioLink extends JLabel {
      */
     public AbstractRadioLink(String string) {
         super(string);
-
-        this.addMouseListener(new RadioMouseAdapter());
     }
 
     /**

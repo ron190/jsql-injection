@@ -60,7 +60,7 @@ public class ManagerFile extends ManagerAbstractList {
         
         List<String> pathList = new ArrayList<String>();
         try {
-            InputStream in = this.getClass().getResourceAsStream("/com/jsql/list/file.txt");
+            InputStream in = ManagerFile.class.getResourceAsStream("/com/jsql/list/file.txt");
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
@@ -82,7 +82,7 @@ public class ManagerFile extends ManagerAbstractList {
                 BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)));
         
-        run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/fileSearch.png")));
+        run = new JButton(defaultText, new ImageIcon(ManagerFile.class.getResource("/com/jsql/view/swing/images/fileSearch.png")));
 
         run.setToolTipText(I18n.FILE_RUN_BUTTON_TOOLTIP);
         run.setEnabled(false);

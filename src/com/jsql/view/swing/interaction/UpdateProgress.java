@@ -41,16 +41,19 @@ public class UpdateProgress implements IInteractionCommand {
 
     @Override
     public void execute() {
-        // Get the node
-        AbstractNodeModel progressingTreeNodeModel =
-                (AbstractNodeModel) MediatorGUI.gui().getTreeNodeModels().get(dataElementDatabase).getUserObject();
-        // Update the progress value of the model
-        progressingTreeNodeModel.childUpgradeCount = dataCount;
-
-        // Tree model, update the tree (refresh, add node, etc)
-        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGUI.databaseTree().getModel();
-
-        // Update the node
-        treeModel.nodeChanged(MediatorGUI.gui().getTreeNodeModels().get(dataElementDatabase));
+        // Fix Report #1368: ignore if no element database
+        if (MediatorGUI.gui().getTreeNodeModels().get(dataElementDatabase) != null) {
+            // Get the node
+            AbstractNodeModel progressingTreeNodeModel =
+                    (AbstractNodeModel) MediatorGUI.gui().getTreeNodeModels().get(dataElementDatabase).getUserObject();
+            // Update the progress value of the model
+            progressingTreeNodeModel.childUpgradeCount = dataCount;
+            
+            // Tree model, update the tree (refresh, add node, etc)
+            DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGUI.databaseTree().getModel();
+            
+            // Update the node
+            treeModel.nodeChanged(MediatorGUI.gui().getTreeNodeModels().get(dataElementDatabase));
+        }
     }
 }

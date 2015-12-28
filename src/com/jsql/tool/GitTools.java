@@ -25,7 +25,7 @@ public class GitTools {
      */
     private static final Logger LOGGER = Logger.getLogger(GitTools.class);
     
-    public enum DisplayLog {YES, NO}; 
+    public enum ShowOnConsole {YES, NO}; 
 
     /**
      * Utility class.
@@ -64,9 +64,11 @@ public class GitTools {
         String clientDescription = 
               "```\n"
             + "jSQL version: " + InjectionModel.JSQLVERSION +"\n"
-            + "Java version: " + System.getProperty("java.version").substring(0, 3) +"\n"
+            + "Java version: " + System.getProperty("java.version") +"\n"
             + "Operating system: " + System.getProperty("os.name") +"\n"
-            + "Strategy: " + MediatorModel.model().injectionStrategy.getName() +"\n"
+            + "Operating system version: " + System.getProperty("os.version") +"\n"
+            + "Desktop: " + System.getProperty("sun.desktop") +"\n"
+            + "Strategy: " +( MediatorModel.model().injectionStrategy != null ? MediatorModel.model().injectionStrategy.getName() : null )+"\n"
             + "Db engine: " + MediatorModel.model().sqlStrategy.getDbLabel() +"\n"
             + "```\n"
             + "```\n"
@@ -74,40 +76,40 @@ public class GitTools {
             + ExceptionUtils.getStackTrace(thrown).trim() +"\n"
             + "```";
         
-        clientDescription = clientDescription.replaceAll("(http://[.a-zA-Z_0-9]*)+", "");
+        clientDescription = clientDescription.replaceAll("(https?://[.a-zA-Z_0-9]*)+", "");
           
-        GitTools.sendReport(clientDescription, DisplayLog.NO);
+        GitTools.sendReport(clientDescription, ShowOnConsole.NO, thrown.getClass().getSimpleName());
     }
     
     public static void sendReport(String reportBody) {
-        GitTools.sendReport(reportBody, DisplayLog.YES);
+        GitTools.sendReport(reportBody, ShowOnConsole.YES, "");
     }
     
-    public static void sendReport(String reportBody, DisplayLog shouldDisplayLog) {
+    public static void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
         // Test if proxy is available then apply settings
-        if (MediatorModel.model().isProxyfied && !"".equals(MediatorModel.model().proxyAddress) && !"".equals(MediatorModel.model().proxyPort)) {
+        if (MediatorModel.model().useProxy && !"".equals(MediatorModel.model().proxyAddress) && !"".equals(MediatorModel.model().proxyPort)) {
             try {
-                if (shouldDisplayLog == DisplayLog.YES) {
+                if (showOnConsole == ShowOnConsole.YES) {
                     LOGGER.info("Testing proxy...");
                 }
                 
                 new Socket(MediatorModel.model().proxyAddress, Integer.parseInt(MediatorModel.model().proxyPort)).close();
             } catch (Exception e) {
-                if (shouldDisplayLog == DisplayLog.YES) {
+                if (showOnConsole == ShowOnConsole.YES) {
                     LOGGER.warn("Proxy connection failed: " 
                         + MediatorModel.model().proxyAddress + ":" + MediatorModel.model().proxyPort
                         + "\nVerify your proxy informations or disable proxy setting.", e);
                 }
                 return;
             }
-            if (shouldDisplayLog == DisplayLog.YES) {
+            if (showOnConsole == ShowOnConsole.YES) {
                 LOGGER.trace("Proxy is responding.");
             }
         }
 
         HttpURLConnection connection = null;
         try {
-            if (shouldDisplayLog == DisplayLog.YES) {
+            if (showOnConsole == ShowOnConsole.YES) {
                 LOGGER.info("Sending report...");
             }
             
@@ -128,14 +130,14 @@ public class GitTools {
             DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
             dataOut.writeBytes(
                 new JSONObject()
-                    .put("title", "Report")
+                    .put("title", "Report" + (!"".equals(reportTitle) ? " "+reportTitle : ""))
                     .put("body", new String(reportBody.getBytes("UTF-8")))
                     .toString()
             );
             dataOut.flush();
             dataOut.close();
             
-            if (shouldDisplayLog == DisplayLog.YES) {
+            if (showOnConsole == ShowOnConsole.YES) {
                 LOGGER.debug("Report sent successfully.");
             }
             
@@ -143,14 +145,13 @@ public class GitTools {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 while (reader.readLine() != null);
                 reader.close();
-//                System.out.println(pageSource);
             } catch (IOException e) {
-                if (shouldDisplayLog == DisplayLog.YES) {
+                if (showOnConsole == ShowOnConsole.YES) {
                     LOGGER.warn("Read error " + e.getMessage(), e);
                 }
             }
         } catch (IOException e) {
-            if (shouldDisplayLog == DisplayLog.YES) {
+            if (showOnConsole == ShowOnConsole.YES) {
                 LOGGER.warn("Error during Git report connection " + e.getMessage(), e);
             }
         }

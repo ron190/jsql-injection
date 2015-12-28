@@ -94,7 +94,12 @@ public class PanelTable extends JPanel {
                     Object value, boolean isSelected, boolean hasFocus,
                     int row, int column) {
                 JLabel lbl = (JLabel) tcrOs.getTableCellRendererComponent(table, " " + value + " ", isSelected, hasFocus, row, column);
-                lbl.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.LIGHT_GRAY), BorderFactory.createEmptyBorder(0, 5, 0, 5)));
+                lbl.setBorder(
+                    BorderFactory.createCompoundBorder(
+                        BorderFactory.createMatteBorder(1, 0, 1, 1, Color.LIGHT_GRAY), 
+                        BorderFactory.createEmptyBorder(0, 5, 0, 5)
+                    )
+                );
                 return lbl;
             }
         });
@@ -183,7 +188,10 @@ public class PanelTable extends JPanel {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             setBackground(new Color(230, 230, 230));
-            setText(value.toString());
+            // Report #218: ignore if value is null
+            if (value != null) {
+                setText(value.toString());
+            }
             return this;
         }
     }

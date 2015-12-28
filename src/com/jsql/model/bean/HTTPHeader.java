@@ -12,11 +12,6 @@ public class HTTPHeader {
     private String url;
     
     /**
-     * Cookie request.
-     */
-    private String cookie;
-    
-    /**
      * POST request.
      */
     private String post;
@@ -38,15 +33,13 @@ public class HTTPHeader {
     /**
      * Create object containing HTTP data to display in Network panel.
      * @param url URL called
-     * @param cookie COOKIE text sent with url
      * @param post POST text sent with url
      * @param header HEADER text sent with url
      * @param response RESPONSE header sent by url
      */
-    public HTTPHeader(String url, String cookie, String post, String header,
+    public HTTPHeader(String url, String post, String header,
             Map<String, String> response, String source) {
         this.url = url;
-        this.cookie = cookie;
         this.post = post;
         this.header = header;
         this.response = response;
@@ -59,14 +52,6 @@ public class HTTPHeader {
      */
     public String getUrl() {
         return url;
-    }
-
-    /**
-     * Get Cookie request.
-     * @return Cookie text
-     */
-    public String getCookie() {
-        return cookie;
     }
 
     /**

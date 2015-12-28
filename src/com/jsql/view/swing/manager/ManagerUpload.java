@@ -64,7 +64,7 @@ public class ManagerUpload extends ManagerAbstractList {
 
         List<String> pathsList = new ArrayList<String>();
         try {
-            InputStream in = this.getClass().getResourceAsStream("/com/jsql/list/upload.txt");
+            InputStream in = ManagerUpload.class.getResourceAsStream("/com/jsql/list/upload.txt");
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
@@ -97,7 +97,7 @@ public class ManagerUpload extends ManagerAbstractList {
                 BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)));
 
-        this.run = new JButton(I18n.UPLOAD_DIALOG_TEXT, new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/add.png")));
+        this.run = new JButton(I18n.UPLOAD_DIALOG_TEXT, new ImageIcon(ManagerUpload.class.getResource("/com/jsql/view/swing/images/add.png")));
         this.run.setToolTipText(I18n.UPLOAD_RUN_BUTTON_TOOLTIP);
         this.run.setEnabled(false);
         

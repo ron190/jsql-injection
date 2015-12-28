@@ -74,9 +74,11 @@ public class KeyAdapterTerminal extends KeyAdapter {
         // Get user input
         final String[] cmd = {""};
         try {
-            cmd[0] = terminal.getText(root.getElement(linenum).getStartOffset(),
-                    root.getElement(linenum).getEndOffset() - root.getElement(linenum).getStartOffset())
-                    .replace(terminal.prompt, "");
+            cmd[0] = 
+                terminal.getText(
+                    root.getElement(linenum).getStartOffset(),
+                    root.getElement(linenum).getEndOffset() - root.getElement(linenum).getStartOffset()
+                ).replace(terminal.prompt, "");
         } catch (BadLocationException e) {
             LOGGER.error(e, e);
         }
@@ -121,7 +123,10 @@ public class KeyAdapterTerminal extends KeyAdapter {
                 }
 
                 try {
-                    terminal.getDocument().remove(root.getElement(linenum).getStartOffset() + terminal.prompt.length(), cmd[0].length() - 1);
+                    terminal.getDocument().remove(
+                        root.getElement(linenum).getStartOffset() + terminal.prompt.length(), 
+                        cmd[0].length() - 1
+                    );
                 } catch (BadLocationException e) {
                     LOGGER.error(e, e);
                 }
@@ -140,7 +145,10 @@ public class KeyAdapterTerminal extends KeyAdapter {
 
             if (!this.cmds.isEmpty() && this.cmdsIndex < this.cmds.size()) {
                 try {
-                    terminal.getDocument().remove(root.getElement(linenum).getStartOffset() + terminal.prompt.length(), cmd[0].length() - 1);
+                    terminal.getDocument().remove(
+                        root.getElement(linenum).getStartOffset() + terminal.prompt.length(), 
+                        cmd[0].length() - 1
+                    );
                 } catch (BadLocationException e) {
                     LOGGER.error(e, e);
                 }

@@ -51,17 +51,12 @@ public class PanelTop extends JPanel {
     /**
      * Used by POST method.
      */
-    private JTextField textPOST = new JPopupTextField("e.g. paramN=valueN&injectMe=").getProxy();
-    
-    /**
-     * Used by COOKIE method.
-     */
-    private JTextField textCookie = new JPopupTextField("e.g. paramN=valueN;injectMe=").getProxy();
+    private JTextField textPOST = new JPopupTextField("e.g. key=value&injectMe=").getProxy();
     
     /**
      * Used by HEADER method.
      */
-    private JTextField textHeader = new JPopupTextField("e.g. paramN:valueN\\r\\ninjectMe:").getProxy();
+    private JTextField textHeader = new JPopupTextField("e.g. key:value\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\nCookie:cKey=cValue&injectMe=").getProxy();
 
     /**
      * Radio selected for GET injection.
@@ -72,11 +67,6 @@ public class PanelTop extends JPanel {
      * Radio selected for POST injection.
      */
     private RadioLinkAddressBar radioPOST;
-    
-    /**
-     * Radio selected for COOKIE injection.
-     */
-    private RadioLinkAddressBar radioCookie;
     
     /**
      * Radio selected for HEADER injection.
@@ -106,7 +96,6 @@ public class PanelTop extends JPanel {
     public PanelTop() {
         radioGET = new RadioLinkAddressBar("GET", true);
         radioPOST = new RadioLinkAddressBar("POST");
-        radioCookie = new RadioLinkAddressBar("Cookie");
         radioHeader = new RadioLinkAddressBar("Header");
 
         // Vertical positioning for components
@@ -121,18 +110,15 @@ public class PanelTop extends JPanel {
 
         this.radioGET.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 3));
         this.radioPOST.setBorder(BorderFactory.createEmptyBorder(6, 0, 0, 3));
-        this.radioCookie.setBorder(BorderFactory.createEmptyBorder(6, 0, 0, 3));
         this.radioHeader.setBorder(BorderFactory.createEmptyBorder(6, 0, 0, 3));
 
         // Tooltip setting
         this.addressBar.setToolTipText(I18n.GET_TOOLTIP);
         this.textPOST.setToolTipText(I18n.POST_TOOLTIP);
-        this.textCookie.setToolTipText(I18n.COOKIE_TOOLTIP);
         this.textHeader.setToolTipText(I18n.HEADER_TOOLTIP);
 
         this.radioGET.setToolTipText(I18n.GET_METHOD);
         this.radioPOST.setToolTipText(I18n.POST_METHOD);
-        this.radioCookie.setToolTipText(I18n.COOKIE_METHOD);
         this.radioHeader.setToolTipText(I18n.HEADER_METHOD);
 
         /**
@@ -148,23 +134,17 @@ public class PanelTop extends JPanel {
         this.textPOST.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 2, 0, 0, HelperGUI.DEFAULT_BACKGROUND),
                 HelperGUI.BLU_ROUND_BORDER));
-        this.textCookie.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperGUI.DEFAULT_BACKGROUND),
-                HelperGUI.BLU_ROUND_BORDER));
         this.textHeader.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 2, 0, 0, HelperGUI.DEFAULT_BACKGROUND),
                 HelperGUI.BLU_ROUND_BORDER));
 
         this.textPOST.setPreferredSize(new Dimension(0, 27));
         this.textPOST.setFont(this.textPOST.getFont().deriveFont(Font.PLAIN, this.textPOST.getFont().getSize() + 2));
-        this.textCookie.setPreferredSize(new Dimension(0, 27));
-        this.textCookie.setFont(this.textCookie.getFont().deriveFont(Font.PLAIN, this.textCookie.getFont().getSize() + 2));
         this.textHeader.setPreferredSize(new Dimension(0, 27));
         this.textHeader.setFont(this.textHeader.getFont().deriveFont(Font.PLAIN, this.textHeader.getFont().getSize() + 2));
 
         this.addressBar.addActionListener(new ActionEnterAddressBar());
         this.textPOST.addActionListener(new ActionEnterAddressBar());
-        this.textCookie.addActionListener(new ActionEnterAddressBar());
         this.textHeader.addActionListener(new ActionEnterAddressBar());
 
         this.submitAddressBar.setToolTipText(I18n.BUTTON_START_INJECTION);
@@ -189,49 +169,38 @@ public class PanelTop extends JPanel {
             layout.createSequentialGroup()
                 // Label width fixed
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(this.radioGET)
-                        .addComponent(this.radioPOST)
-                        .addComponent(this.radioCookie)
-                        .addComponent(this.radioHeader))
+                    .addComponent(this.radioGET)
+                    .addComponent(this.radioPOST)
+                    .addComponent(this.radioHeader)
                 // Resizable textfields
-                .addGroup(layout.createParallelGroup()
-                        .addComponent(this.addressBar)
-                        .addComponent(this.textPOST)
-                        .addComponent(this.textCookie)
-                        .addComponent(this.textHeader))
+                ).addGroup(layout.createParallelGroup()
+                    .addComponent(this.addressBar)
+                    .addComponent(this.textPOST)
+                    .addComponent(this.textHeader)
                 // Radio width fixed
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                        .addComponent(advancedButton))
-                );
+                ).addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                    .addComponent(advancedButton)
+        ));
 
         // Vertical line rules
         layout.setVerticalGroup(
             layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER, false)
-                        .addComponent(this.radioGET)
-                        .addComponent(this.addressBar)
-                        .addComponent(advancedButton))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(this.radioPOST)
-                        .addComponent(this.textPOST)
-                        )
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(this.radioCookie)
-                        .addComponent(this.textCookie)
-                        )
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(this.radioHeader)
-                        .addComponent(this.textHeader)
-                        )
-                );
+                    .addComponent(this.radioGET)
+                    .addComponent(this.addressBar)
+                    .addComponent(advancedButton)
+                ).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(this.radioPOST)
+                    .addComponent(this.textPOST)
+                ).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(this.radioHeader)
+                    .addComponent(this.textHeader)
+        ));
 
         this.radioGET.setVisible(false);
 
         this.textPOST.setVisible(false);
         this.radioPOST.setVisible(false);
-
-        this.textCookie.setVisible(false);
-        this.radioCookie.setVisible(false);
 
         this.textHeader.setVisible(false);
         this.radioHeader.setVisible(false);
@@ -246,9 +215,6 @@ public class PanelTop extends JPanel {
 
                 PanelTop.this.textPOST.setVisible(toggleVisibility);
                 PanelTop.this.radioPOST.setVisible(toggleVisibility);
-
-                PanelTop.this.textCookie.setVisible(toggleVisibility);
-                PanelTop.this.radioCookie.setVisible(toggleVisibility);
 
                 PanelTop.this.textHeader.setVisible(toggleVisibility);
                 PanelTop.this.radioHeader.setVisible(toggleVisibility);
@@ -298,7 +264,6 @@ public class PanelTop extends JPanel {
                 MediatorModel.model().controlInput(
                     PanelTop.this.addressBar.getText(),
                     PanelTop.this.textPOST.getText(),
-                    PanelTop.this.textCookie.getText(),
                     PanelTop.this.textHeader.getText(),
                     PanelTop.this.sendMethod,
                     false

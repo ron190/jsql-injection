@@ -33,7 +33,6 @@ public class CreateValuesTab implements IInteractionCommand {
 
     @Override
     public void execute() {
-        System.out.println(Arrays.deepToString(data));
-        System.out.println();
+        System.out.println("CreateValuesTab: " + Arrays.deepToString(data) +"\n");
     }
 }

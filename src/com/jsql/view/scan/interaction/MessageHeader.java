@@ -21,7 +21,6 @@ import com.jsql.view.swing.MediatorGUI;
 public class MessageHeader implements IInteractionCommand {
     // The text to append to the tab
     private String url;
-    private String cookie;
     private String post;
     private String header;
     private Map<String, String> response;
@@ -34,7 +33,6 @@ public class MessageHeader implements IInteractionCommand {
     public MessageHeader(Object[] interactionParams) {
         Map<String, Object> params = (Map<String, Object>) interactionParams[0];
         url = (String) params.get("Url");
-        cookie = (String) params.get("Cookie");
         post = (String) params.get("Post");
         header = (String) params.get("Header");
         response = (Map<String, String>) params.get("Response");
@@ -43,6 +41,6 @@ public class MessageHeader implements IInteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.bottomPanel().listHTTPHeader.add(new HTTPHeader(url, cookie, post, header, response, source));
+        MediatorGUI.bottomPanel().listHTTPHeader.add(new HTTPHeader(url, post, header, response, source));
     }
 }

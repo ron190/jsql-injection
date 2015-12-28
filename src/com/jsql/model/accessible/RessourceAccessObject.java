@@ -45,7 +45,6 @@ import com.jsql.model.injection.MediatorModel;
 import com.jsql.model.injection.suspendable.SuspendableGetRows;
 import com.jsql.tool.ToolsString;
 import com.jsql.view.scan.ScanListTerminal;
-import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.list.ListItem;
 
 /**
@@ -115,7 +114,8 @@ public class RessourceAccessObject {
 
         int nb = 0;
         String progressURL = "";
-        ExecutorService taskExecutor = Executors.newFixedThreadPool(10);
+//        ExecutorService taskExecutor = Executors.newFixedThreadPool(10);
+        ExecutorService taskExecutor = Executors.newSingleThreadExecutor();
         CompletionService<CallableAdminPage> taskCompletionService
             = new ExecutorCompletionService<CallableAdminPage>(taskExecutor);
         for (String segment: cheminArray) {
@@ -324,7 +324,6 @@ public class RessourceAccessObject {
                 
                 Map<String, Object> msgHeader = new HashMap<String, Object>();
                 msgHeader.put("Url", url);
-                msgHeader.put("Cookie", "");
                 msgHeader.put("Post", "");
                 msgHeader.put("Header", "");
                 msgHeader.put("Response", ToolsString.getHTTPHeaders(conn));
@@ -491,7 +490,6 @@ public class RessourceAccessObject {
             
             Map<String, Object> msgHeader = new HashMap<String, Object>();
             msgHeader.put("Url", url);
-            msgHeader.put("Cookie", "");
             msgHeader.put("Post", "");
             msgHeader.put("Header", "");
             msgHeader.put("Response", ToolsString.getHTTPHeaders(connection));
@@ -603,7 +601,6 @@ public class RessourceAccessObject {
             
             Map<String, Object> msgHeader = new HashMap<String, Object>();
             msgHeader.put("Url", url);
-            msgHeader.put("Cookie", "");
             msgHeader.put("Post", "");
             msgHeader.put("Header", "");
             msgHeader.put("Response", ToolsString.getHTTPHeaders(connection));
@@ -625,7 +622,7 @@ public class RessourceAccessObject {
         }
     }
 
-    public void scanList(List<ListItem> list) {
+    public void scanList(List<ListItem> urlList) {
         // Erase everything in the view from a previous injection
         Request requests = new Request();
         requests.setMessage("ResetInterface");
@@ -639,21 +636,18 @@ public class RessourceAccessObject {
         }
 
         MediatorModel.model().deleteObservers();
-        ScanListTerminal sc = new ScanListTerminal();
         
-        for (ListItem s: list) {
-            LOGGER.info("Scanning " + s);
-            MediatorModel.model().controlInput(
-                s.toString(),
-                "","","","GET",
-                true
-            );
+        // Display result in console (view definition in model #TODO)
+        new ScanListTerminal();
+        
+        for (ListItem url: urlList) {
+            LOGGER.info("Scanning " + url);
+            MediatorModel.model().controlInput(url.toString(), "", "", "GET", true);
             
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                // nothing
             }
         }
 

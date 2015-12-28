@@ -66,6 +66,7 @@ public abstract class AbstractTerminal extends JTextPane {
      * @param shellURL URL of current shell
      * @param shellLabel Type of shell to display on prompt
      */
+    @SuppressWarnings("restriction")
     public AbstractTerminal(UUID terminalID, String shellURL, String shellLabel) {
         this.terminalID = terminalID;
         this.wbhPath = shellURL;
@@ -81,7 +82,6 @@ public abstract class AbstractTerminal extends JTextPane {
         host = u.getHost();
 
         this.setFont(new Font("Ubuntu Mono", Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize() + 2));
-//        this.setFont(new Font("Ubuntu Mono", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize() + 2));
         this.setCaret(new BlockCaret());
         this.setBackground(Color.BLACK);
         this.setForeground(Color.LIGHT_GRAY);

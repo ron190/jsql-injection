@@ -15,7 +15,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 
 /**
@@ -25,9 +24,10 @@ import javax.swing.JTextPane;
 public class JPopupTextPane extends JPopupTextComponent<JTextPane> implements DecoratorJComponent<JTextPane> {
     /**
      * Build new instance of JTextField to decorate.
+     * @param placeholder 
      */
-    public JPopupTextPane() {
-        this(new JTextPane() {
+    public JPopupTextPane(String placeholder) {
+        this(new JTextPanePlaceholder(placeholder) {
             @Override
             public boolean isEditable() {
                 return false;

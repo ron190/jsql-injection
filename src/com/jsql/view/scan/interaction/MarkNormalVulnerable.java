@@ -16,7 +16,6 @@ import javax.swing.DefaultListModel;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.MediatorGUI;
 
 /**
@@ -30,11 +29,13 @@ public class MarkNormalVulnerable implements IInteractionCommand {
     /**
      * @param nullParam
      */
+    @SuppressWarnings("unchecked")
     public MarkNormalVulnerable(Object[] interactionParams) {
         Map<String, Object> params = (Map<String, Object>) interactionParams[0];
         url = (String) params.get("Url");
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void execute() {
         LOGGER.debug("Vulnerable to Normal injection.");

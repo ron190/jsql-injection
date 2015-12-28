@@ -32,7 +32,8 @@ public class ExceptionTools {
         protected void handleException(String tname, Throwable thrown) {
             LOGGER.error("Exception on " + tname, thrown);
             
-            if (MediatorModel.model().reportBugs) {
+            //  Report #214: ignore if OutOfMemoryError: Java heap space 
+            if (MediatorModel.model().reportBugs && !"OutOfMemoryError".equals(thrown.getClass().getSimpleName())) {
                 GitTools.sendUnhandledException(tname, thrown);
             }
         }

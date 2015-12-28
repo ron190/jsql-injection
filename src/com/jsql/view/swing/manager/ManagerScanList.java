@@ -55,7 +55,7 @@ public class ManagerScanList extends ManagerAbstractList {
 
         List<String> pathList = new ArrayList<String>();
         try {
-            InputStream in = this.getClass().getResourceAsStream("/com/jsql/list/scan-page.txt");
+            InputStream in = ManagerScanList.class.getResourceAsStream("/com/jsql/list/scan-page.txt");
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
@@ -79,7 +79,7 @@ public class ManagerScanList extends ManagerAbstractList {
                 BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)));
         
-        run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/find.png")));
+        run = new JButton(defaultText, new ImageIcon(ManagerScanList.class.getResource("/com/jsql/view/swing/images/find.png")));
 
         run.setToolTipText(I18n.SCANLIST_RUN_BUTTON_TOOLTIP);
         run.setBorder(HelperGUI.BLU_ROUND_BORDER);

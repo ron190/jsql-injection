@@ -24,7 +24,7 @@ public class NormalStrategy extends AbstractInjectionStrategy {
     public String performanceLength = "0";
     
     /**
-     * i.e, 2 in "[...]union select 1,2,[...]", if 2 is found in HTML source.
+     * i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML source.
      */
     public String visibleIndex;
     
@@ -35,16 +35,13 @@ public class NormalStrategy extends AbstractInjectionStrategy {
 
         // If there is no page source defined then there is no injection possible
         if (MediatorModel.model().firstSuccessPageSource != null) {
-            // Define visibleIndex, i.e, 2 in "[...]union select 1,2,[...]", if 2 is found in HTML source
+            // Define visibleIndex, i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML source
             this.visibleIndex = MediatorModel.model().getVisibleIndex(MediatorModel.model().firstSuccessPageSource);
-//            MediatorModel.model().visibleIndex = MediatorModel.model().getVisibleIndex(MediatorModel.model().firstSuccessPageSource);
         }
         
         this.isApplicable = (!"".equals(MediatorModel.model().initialQuery)) 
                 && new Integer(MediatorModel.model().normalStrategy.getPerformanceLength()) > 0 
-//                && new Integer(MediatorModel.model().performanceLength) > 0 
                 && this.visibleIndex != null
-//                && MediatorModel.model().visibleIndex != null
                 && MediatorModel.model().firstSuccessPageSource != null;
         
         if (this.isApplicable) {
@@ -90,8 +87,6 @@ public class NormalStrategy extends AbstractInjectionStrategy {
     @Override
     public String getPerformanceLength() {
         return this.performanceLength;
-//        return MediatorModel.model().injectionStrategy.getPerformanceLength();
-//        return MediatorModel.model().performanceLength;
     }
     
     @Override

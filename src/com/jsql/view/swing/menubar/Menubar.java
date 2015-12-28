@@ -174,13 +174,29 @@ public class Menubar extends JMenuBar {
 
         JMenu menuPanel = new JMenu(I18n.MENU_PANEL);
         menuView.setMnemonic('V');
-        chunkMenu = new JCheckBoxMenuItem(I18n.CHUNK_TAB_LABEL, new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/chunk.gif")), prefs.getBoolean(HelperGUI.CHUNK_VISIBLE, true));
+        chunkMenu = new JCheckBoxMenuItem(
+            I18n.CHUNK_TAB_LABEL, 
+            new ImageIcon(Menubar.class.getResource("/com/jsql/view/swing/images/chunk.gif")), 
+            prefs.getBoolean(HelperGUI.CHUNK_VISIBLE, true)
+        );
         menuPanel.add(chunkMenu);
-        binaryMenu = new JCheckBoxMenuItem(I18n.BINARY_TAB_LABEL, new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/binary.gif")), prefs.getBoolean(HelperGUI.BINARY_VISIBLE, true));
+        binaryMenu = new JCheckBoxMenuItem(
+            I18n.BINARY_TAB_LABEL, 
+            new ImageIcon(Menubar.class.getResource("/com/jsql/view/swing/images/binary.gif")), 
+            prefs.getBoolean(HelperGUI.BINARY_VISIBLE, true)
+        );
         menuPanel.add(binaryMenu);
-        networkMenu = new JCheckBoxMenuItem(I18n.NETWORK_TAB_LABEL, new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/header.gif")), prefs.getBoolean(HelperGUI.NETWORK_VISIBLE, true));
+        networkMenu = new JCheckBoxMenuItem(
+            I18n.NETWORK_TAB_LABEL, 
+            new ImageIcon(Menubar.class.getResource("/com/jsql/view/swing/images/header.gif")), 
+            prefs.getBoolean(HelperGUI.NETWORK_VISIBLE, true)
+        );
         menuPanel.add(networkMenu);
-        javaDebugMenu = new JCheckBoxMenuItem(I18n.JAVA_TAB_LABEL, new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/images/cup.png")), prefs.getBoolean(HelperGUI.JAVA_VISIBLE, false));
+        javaDebugMenu = new JCheckBoxMenuItem(
+            I18n.JAVA_TAB_LABEL, 
+            new ImageIcon(Menubar.class.getResource("/com/jsql/view/swing/images/cup.png")), 
+            prefs.getBoolean(HelperGUI.JAVA_VISIBLE, false)
+        );
 
         for (JCheckBoxMenuItem i: new JCheckBoxMenuItem[]{chunkMenu, binaryMenu, networkMenu, javaDebugMenu}) {
             i.setUI(new BasicCheckBoxMenuItemUI() {
@@ -276,6 +292,7 @@ public class Menubar extends JMenuBar {
             public void actionPerformed(ActionEvent arg0) {
                 // Center the dialog
                 if (!prefDiag.isVisible()) {
+                    prefDiag.setSize(prefDiag.width, prefDiag.height);
                     prefDiag.setLocationRelativeTo(MediatorGUI.gui());
                     // needed here for button focus
                     prefDiag.setVisible(true);

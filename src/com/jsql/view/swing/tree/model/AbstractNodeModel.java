@@ -121,7 +121,13 @@ public abstract class AbstractNodeModel {
         JPopupMenu tablePopupMenu = new JPopupMenu();
 
         JMenuItem mnLoad = new JMenuItem(this.isRunning ? I18n.STOP : I18n.LOAD, 'o');
-        JMenuItem mnPause = new JMenuItem(MediatorModel.model().suspendables.get(this.dataObject).isPaused() ? I18n.RESUME : I18n.PAUSE, 's');
+        JMenuItem mnPause = new JMenuItem(
+            // Report #133: ignore if thread not found
+            (MediatorModel.model().suspendables.get(this.dataObject) != null && 
+            MediatorModel.model().suspendables.get(this.dataObject).isPaused())
+            ? I18n.RESUME 
+            : I18n.PAUSE
+        , 's');
         mnLoad.setIcon(HelperGUI.EMPTY);
         mnPause.setIcon(HelperGUI.EMPTY);
 
@@ -209,7 +215,8 @@ public abstract class AbstractNodeModel {
         panel.progressBar.setValue(this.childUpgradeCount);
         panel.progressBar.setVisible(true);
         
-        if (MediatorModel.model().suspendables.get(this.dataObject).isPaused()) {
+        // Report #135: ignore if thread not found
+        if (MediatorModel.model().suspendables.get(this.dataObject) != null && MediatorModel.model().suspendables.get(this.dataObject).isPaused()) {
             panel.progressBar.pause();
         }
     }

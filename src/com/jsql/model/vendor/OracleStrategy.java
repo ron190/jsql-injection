@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.jsql.model.bean.Database;
 import com.jsql.model.bean.Table;
-import com.jsql.model.blind.ConcreteTimeInjection;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
@@ -147,7 +146,6 @@ public class OracleStrategy extends ASQLStrategy {
                         "(" + sqlQuery + ")," +
                         startPosition + "," +
                         MediatorModel.model().blindStrategy.getPerformanceLength() +
-//                        MediatorModel.model().performanceLength +
                     ")from+dual" +
                 "" +
             ")";

@@ -20,6 +20,10 @@ import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.PrivilegedActionException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -29,9 +33,13 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.SwingUtilities;
+import javax.security.auth.login.LoginException;
 
+import net.sourceforge.spnego.SpnegoHttpURLConnection;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.ietf.jgss.GSSException;
 
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
@@ -49,7 +57,7 @@ import com.jsql.model.strategy.NormalStrategy;
 import com.jsql.model.strategy.TimeStrategy;
 import com.jsql.model.vendor.ASQLStrategy;
 import com.jsql.model.vendor.MySQLStrategy;
-import com.jsql.tool.GitTools;
+import com.jsql.model.vendor.Vendor;
 import com.jsql.tool.ToolsString;
 
 /**
@@ -70,16 +78,16 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Current version of application.
      */
-    public static final String JSQLVERSION = "0.72"; // Please edit file .version when changed
+    public static final String JSQLVERSION = "0.73"; // Please edit file .version when changed
 
     /**
-     * i.e, -1 in "[...].php?id=-1 union select[...]"
+     * i.e, -1 in "[..].php?id=-1 union select[..]"
      */
     public String insertionCharacter;
     
     /**
      * HTML source of page successfully responding to
-     * multiple fileds selection (select 1,2,3,...).
+     * multiple fileds selection (select 1,2,3,..).
      */
     public String firstSuccessPageSource;
     
@@ -87,10 +95,6 @@ public class InjectionModel extends AbstractModelObservable {
      * Url entered by user.
      */
     public String initialUrl;
-//    /**
-//     * i.e, 2 in "[...]union select 1,2,[...]", if 2 is found in HTML source.
-//     */
-//    public String visibleIndex;
     
     /**
      * initialUrl transformed to a correct injection url.
@@ -98,7 +102,7 @@ public class InjectionModel extends AbstractModelObservable {
     public String initialQuery;
 
     /**
-     * GET, POST, COOKIE, HEADER (State/Strategy pattern).
+     * GET, POST, HEADER (State/Strategy pattern).
      */
     public String method;
     
@@ -111,11 +115,6 @@ public class InjectionModel extends AbstractModelObservable {
      * Post data submitted by user.
      */
     public String postData = "";
-    
-    /**
-     * Cookie data submitted by user.
-     */
-    public String cookieData = "";
     
     /**
      * Header data submitted by user.
@@ -160,12 +159,22 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * True if connection is proxified.
      */
-    public boolean isProxyfied = false;
+    public boolean useProxy = false;
     
     /**
      * True if connection is proxified.
      */
     public boolean checkUpdateAtStartup = true;
+
+    /**
+     * True if evasion techniques should be used.
+     */
+    public boolean enableEvasion = false;
+
+    /**
+     * True to follow HTTP 302 redirection.
+     */
+    public boolean followRedirection = false;
     
     /**
      * True if connection is proxified.
@@ -174,6 +183,8 @@ public class InjectionModel extends AbstractModelObservable {
     
     // TODO Fix vendor before release
     public ASQLStrategy sqlStrategy = new MySQLStrategy();
+    
+    public Vendor selectedVendor = Vendor.Undefined;
     
     /**
      * Current injection strategy.
@@ -221,6 +232,18 @@ public class InjectionModel extends AbstractModelObservable {
      */
     public int securitySteps = 0;
 
+    public String digestUsername;
+
+    public String digestPassword;
+
+    public boolean enableDigestAuthentication = false;
+
+    public String kerberosLoginConf;
+
+    public String kerberosKrb5Conf;
+
+    public boolean enableKerberos = false;
+
     public void instanciationDone() {
         LOGGER.trace("jSQL Injection version " + JSQLVERSION);
         
@@ -228,7 +251,7 @@ public class InjectionModel extends AbstractModelObservable {
         sVersion = sVersion.substring(0, 3);
         Float fVersion = Float.valueOf(sVersion);
         if (fVersion.floatValue() < (float) 1.7) {
-            LOGGER.warn("You are running an old version of Java, please install the latest version from java.com.");
+            LOGGER.warn("You are running an old version of Java ("+ sVersion +"), you can install the latest version from java.com.");
         }
     }
 
@@ -236,9 +259,9 @@ public class InjectionModel extends AbstractModelObservable {
      * Prepare the injection process, can be interrupted by the user (via shouldStopAll).
      * Erase all attributes eventually defined in a previous injection.
      */
+    @SuppressWarnings("unchecked")
     public void inputValidation() {
         insertionCharacter = null;
-//        visibleIndex = null;
         this.normalStrategy.visibleIndex = null;
         initialQuery = null;
 
@@ -256,7 +279,7 @@ public class InjectionModel extends AbstractModelObservable {
 
         try {
             // Test if proxy is available then apply settings
-            if (isProxyfied && !"".equals(proxyAddress) && !"".equals(proxyPort)) {
+            if (useProxy && !"".equals(proxyAddress) && !"".equals(proxyPort)) {
                 try {
                     LOGGER.info("Testing proxy...");
                     new Socket(proxyAddress, Integer.parseInt(proxyPort)).close();
@@ -271,34 +294,54 @@ public class InjectionModel extends AbstractModelObservable {
             }
 
             // Test the HTTP connection
+            HttpURLConnection connection = null;
             try {
                 LOGGER.info("Starting new injection");
                 LOGGER.trace("Connection test...");
 
-                HttpURLConnection con = (HttpURLConnection) new URL(this.initialUrl).openConnection();
-                con.setReadTimeout(15000);
-                con.setConnectTimeout(15000);
-                con.setInstanceFollowRedirects(false);
+                if (this.enableKerberos) {
+                    String a = Pattern.compile("\\{.*", Pattern.DOTALL).matcher(StringUtils.join(Files.readAllLines(Paths.get(this.kerberosLoginConf), Charset.defaultCharset()), "")).replaceAll("").trim();
+                    
+                    SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(a);
+                    connection = spnego.connect(new URL(this.initialUrl));
+                } else {
+                    connection = (HttpURLConnection) new URL(this.initialUrl).openConnection();
+                }
+                    
+                connection.setReadTimeout(15000);
+                connection.setConnectTimeout(15000);
+                connection.setDefaultUseCaches(false);
+                HttpURLConnection.setFollowRedirects(this.followRedirection);
                 
                 // Add headers if exists (Authorization:Basic, etc)
-                if (!"".equals(cookieData)) {
-                    con.addRequestProperty("Cookie", cookieData);
-                }
-                for (String s: headerData.split("\\\\r\\\\n")) {
-                    Matcher regexSearch = Pattern.compile("(.*):(.*)", Pattern.DOTALL).matcher(s);
+                for (String header: headerData.split("\\\\r\\\\n")) {
+                    Matcher regexSearch = Pattern.compile("(.*):(.*)", Pattern.DOTALL).matcher(header);
                     if (regexSearch.find()) {
-                        con.addRequestProperty(regexSearch.group(1).trim(), URLDecoder.decode(regexSearch.group(2).trim(), "UTF-8"));
+                        String keyHeader = regexSearch.group(1).trim();
+                        String valueHeader = regexSearch.group(2).trim();
+                        try {
+                            if (keyHeader.equalsIgnoreCase("Cookie")) {
+                                connection.addRequestProperty(keyHeader, valueHeader);
+                            } else {
+                                connection.addRequestProperty(keyHeader, URLDecoder.decode(valueHeader, "UTF-8"));
+                            }
+                        } catch (UnsupportedEncodingException e) {
+                            LOGGER.warn("Unsupported header encoding " + e.getMessage(), e);
+                        }
                     }
                 }
 
-                BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                reader.readLine();
-                reader.close();
+                ToolsString.sendMessageHeader(connection, this.initialUrl);
+                
+                // Disable caching of authentication like Kerberos
+                connection.disconnect();
             } catch (IOException e) {
                 throw new PreparationException("Connection problem: " + e.getMessage());
+            } catch (Exception e) {
+                throw new PreparationException("Connection problem: " + e.getMessage());
             }
-
-            // Define insertionCharacter, i.e, -1 in "[...].php?id=-1 union select[...]",
+            
+            // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
             LOGGER.trace("Get insertion character...");
             
             this.insertionCharacter = new SuspendableGetInsertionCharacter().action();
@@ -311,56 +354,40 @@ public class InjectionModel extends AbstractModelObservable {
             normalStrategy.checkApplicability();
 
             // Choose the most efficient method: normal > error > blind > time
-//            if (!this.normalStrategy.isApplicable()) {
-                if (this.normalStrategy.isApplicable()) {
-                    normalStrategy.applyStrategy();
-                } else if (this.errorbasedStrategy.isApplicable()) {
-                    errorbasedStrategy.applyStrategy();
-                } else if (this.blindStrategy.isApplicable()) {
-                    blindStrategy.applyStrategy();
-                } else if (this.timeStrategy.isApplicable()) {
-                    timeStrategy.applyStrategy();
-                } else {
-                    // No injection possible, increase evasion level and restart whole process
-                    securitySteps++;
-                    if (securitySteps <= 3) {
-                        LOGGER.warn("Injection not possible, testing evasion n°" + securitySteps + "...");
-                        // sinon perte de insertionCharacter entre 2 injections
-                        getData += insertionCharacter;
-                        inputValidation();
-                        return;
-                    } else {
-                        throw new PreparationException("Injection not possible, work stopped");
-                    }
-                }
-//            } else {
-//                normalStrategy.applyStrategy();
-//
-//                try {
-//                    // Define visibleIndex, i.e, 2 in "[...]union select 1,2,[...]", if 2 is found in HTML source
-//                    this.visibleIndex = this.getVisibleIndex(this.firstSuccessPageSource);
-//                } catch (ArrayIndexOutOfBoundsException e) {
-//                    // Rare situation where injection fails after being validated, try with some evasion
-//                    securitySteps++;
-//                    if (securitySteps <= 3) {
-//                        LOGGER.warn("Injection not possible, testing evasion n°" + securitySteps + "...");
-//                        // sinon perte de insertionCharacter entre 2 injections
-//                        getData += insertionCharacter;
-//                        inputValidation();
-//                        return;
-//                    } else {
-//                        throw new PreparationException("Injection not possible, work stopped");
-//                    }
-//                }
-//            }
+            if (this.normalStrategy.isApplicable()) {
+                normalStrategy.applyStrategy();
+            } else if (this.errorbasedStrategy.isApplicable()) {
+                errorbasedStrategy.applyStrategy();
+            } else if (this.blindStrategy.isApplicable()) {
+                blindStrategy.applyStrategy();
+            } else if (this.timeStrategy.isApplicable()) {
+                timeStrategy.applyStrategy();
+            } else if (this.enableEvasion && securitySteps < 3) {
+                // No injection possible, increase evasion level and restart whole process
+                securitySteps++;
+
+                LOGGER.warn("Injection not possible, testing evasion n°" + securitySteps + "...");
+                
+                Request request = new Request();
+                request.setMessage("ResetStrategyLabel");
+                this.interact(request);
+                
+                // sinon perte de insertionCharacter entre 2 injections
+                getData += insertionCharacter;
+                inputValidation();
+                
+                return;
+            } else {
+                throw new PreparationException("Injection failed.");
+            }
 
             // Get the initial informations from database
             dataAccessObject.getDatabaseInfos();
 
-            // Stop injection if database is too old
-            if (versionDatabase.charAt(0) == '4' || versionDatabase.charAt(0) == '3') {
-                throw new PreparationException("Old database, automatic search is not possible");
-            }
+//            // Stop injection if database is too old
+//            if (versionDatabase.charAt(0) == '4' || versionDatabase.charAt(0) == '3') {
+//                throw new PreparationException("Old database, automatic search is not possible");
+//            }
 
             // Get the databases
             dataAccessObject.listDatabases();
@@ -414,7 +441,6 @@ public class InjectionModel extends AbstractModelObservable {
         }
 
         if (performanceResults.size() == 0) {
-//            this.performanceLength = "0";
             this.normalStrategy.performanceLength = "0";
             return null;
         }
@@ -440,7 +466,6 @@ public class InjectionModel extends AbstractModelObservable {
             }
         });
         
-//        this.performanceLength = lengthFields[lengthFields.length - 1][0].toString();
         this.normalStrategy.performanceLength = lengthFields[lengthFields.length - 1][0].toString();
 
         // Replace all others indexes by 1
@@ -494,15 +519,16 @@ public class InjectionModel extends AbstractModelObservable {
                  * Evasion
                  */
                 switch (securitySteps) {
-                    /*
-                     * Case evasion
+                    /**
+                     * 'Plus' character evasion
                      */
                     case 1:
                         urlUltimate = urlUltimate
                             .replaceAll("--\\+", "--")
                             .replaceAll("7330%2b1", "7331");
                     break;
-                    /*
+                    
+                    /**
                      * Case evasion
                      */
                     case 2:
@@ -514,8 +540,9 @@ public class InjectionModel extends AbstractModelObservable {
                             .replaceAll("where\\+", "wHeRe+")
                             .replaceAll("([AE])=0x", "$1+lIkE+0x");
                     break;
+                    
                     /**
-                     * Case + Space evasion
+                     * Case and Space evasion
                      */
                     case 3:
                         urlUltimate = urlUltimate
@@ -528,6 +555,7 @@ public class InjectionModel extends AbstractModelObservable {
                         urlUltimate = urlUltimate.replaceAll("--\\+", "--")
                             .replaceAll("\\+", "/**/");
                     break;
+                    
                     default:
                         break;
                 }
@@ -540,11 +568,26 @@ public class InjectionModel extends AbstractModelObservable {
         
         // Define the connection
         try {
-            connection = (HttpURLConnection) urlObject.openConnection();
+            if (this.enableKerberos) {
+                String a = Pattern.compile("\\{.*", Pattern.DOTALL).matcher(StringUtils.join(Files.readAllLines(Paths.get(this.kerberosLoginConf), Charset.defaultCharset()), "")).replaceAll("").trim();
+                
+                SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(a);
+                connection = spnego.connect(urlObject);
+            } else {
+                connection = (HttpURLConnection) urlObject.openConnection();
+            }
+            
             connection.setReadTimeout(15000);
             connection.setConnectTimeout(15000);
-            connection.setInstanceFollowRedirects(false);
+            connection.setDefaultUseCaches(false);
+            HttpURLConnection.setFollowRedirects(this.followRedirection);
         } catch (IOException e) {
+            LOGGER.warn("Error during connection: " + e.getMessage(), e);
+        } catch (LoginException e) {
+            LOGGER.warn("Error during connection: " + e.getMessage(), e);
+        } catch (GSSException e) {
+            LOGGER.warn("Error during connection: " + e.getMessage(), e);
+        } catch (PrivilegedActionException e) {
             LOGGER.warn("Error during connection: " + e.getMessage(), e);
         }
 
@@ -552,25 +595,21 @@ public class InjectionModel extends AbstractModelObservable {
         msgHeader.put("Url", urlUltimate);
         
         /**
-         * Build the COOKIE and logs infos
-         * #Need primary evasion
-         */
-        if (!"".equals(this.cookieData)) {
-            connection.addRequestProperty("Cookie", this.buildQuery("COOKIE", cookieData, useVisibleIndex, dataInjection));
-            
-            msgHeader.put("Cookie", this.buildQuery("COOKIE", cookieData, useVisibleIndex, dataInjection));
-        }
-
-        /**
          * Build the HEADER and logs infos
          * #Need primary evasion
          */
         if (!"".equals(this.headerData)) {
-            for (String s: this.buildQuery("HEADER", headerData, useVisibleIndex, dataInjection).split("\\\\r\\\\n")) {
-                Matcher regexSearch = Pattern.compile("(.*):(.*)", Pattern.DOTALL).matcher(s);
+            for (String header: this.buildQuery("HEADER", headerData, useVisibleIndex, dataInjection).split("\\\\r\\\\n")) {
+                Matcher regexSearch = Pattern.compile("(.*):(.*)", Pattern.DOTALL).matcher(header);
                 if (regexSearch.find()) {
+                    String keyHeader = regexSearch.group(1).trim();
+                    String valueHeader = regexSearch.group(2).trim();
                     try {
-                        connection.addRequestProperty(regexSearch.group(1).trim(), URLDecoder.decode(regexSearch.group(2).trim(), "UTF-8"));
+                        if (keyHeader.equalsIgnoreCase("Cookie")) {
+                            connection.addRequestProperty(keyHeader, valueHeader);
+                        } else {
+                            connection.addRequestProperty(keyHeader, URLDecoder.decode(valueHeader, "UTF-8"));
+                        }
                     } catch (UnsupportedEncodingException e) {
                         LOGGER.warn("Unsupported header encoding " + e.getMessage(), e);
                     }
@@ -617,7 +656,10 @@ public class InjectionModel extends AbstractModelObservable {
             /* lot of timeout in local use */
             LOGGER.warn("Read error " + e.getMessage(), e);
         }
-
+        
+        // Disable caching of authentication like Kerberos
+        connection.disconnect();
+        
         msgHeader.put("Source", pageSource);
         
         // Inform the view about the log infos
@@ -631,7 +673,7 @@ public class InjectionModel extends AbstractModelObservable {
     }
 
     /**
-     * Build a correct data for GET, POST, COOKIE, HEADER.<br>
+     * Build correct data for GET, POST, HEADER.<br>
      * Each can be:<br>
      *  - raw data (no injection)<br>
      *  - SQL query without index requirement<br>
@@ -649,7 +691,6 @@ public class InjectionModel extends AbstractModelObservable {
             return newData + urlPremiere;
         } else {
             return newData + this.initialQuery.replaceAll("1337" + this.normalStrategy.visibleIndex + "7331",
-//            return newData + this.initialQuery.replaceAll("1337" + visibleIndex + "7331",
                 /**
                  * Oracle column often contains $, which is reserved for regex.
                  * => need to be escape with quoteReplacement()
@@ -704,7 +745,7 @@ public class InjectionModel extends AbstractModelObservable {
      * start the preparation of injection, the injection process is
      * started in a new thread via model function inputValidation().
      */
-    public void controlInput(String getData, String postData, String cookieData, String headerData, String method, Boolean isSynchronized) {
+    public void controlInput(String getData, String postData, String headerData, String method, Boolean isSynchronized) {
         try {
             // Parse url and GET query string
             this.getData = "";
@@ -721,7 +762,6 @@ public class InjectionModel extends AbstractModelObservable {
             
             // Define other methods
             this.postData = postData;
-            this.cookieData = cookieData;
             this.headerData = headerData;
             this.method = method;
             

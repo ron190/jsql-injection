@@ -10,6 +10,9 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import java.awt.Component;
+import java.awt.Font;
+
 import com.jsql.view.swing.MediatorGUI;
 
 /**
@@ -32,5 +35,13 @@ public class MessageChunk implements IInteractionCommand {
     public void execute() {
         MediatorGUI.bottomPanel().chunkTab.append(text);
         MediatorGUI.bottomPanel().chunkTab.setCaretPosition(MediatorGUI.bottomPanel().chunkTab.getDocument().getLength());
+        
+        int tabIndex = MediatorGUI.bottom().indexOfTab("Chunk");
+        if (0 <= tabIndex && tabIndex < MediatorGUI.bottom().getTabCount()) {
+            Component tabHeader = MediatorGUI.bottom().getTabComponentAt(tabIndex);
+            if (MediatorGUI.bottom().getSelectedIndex() != tabIndex) {
+                tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
+            }
+        }
     }
 }

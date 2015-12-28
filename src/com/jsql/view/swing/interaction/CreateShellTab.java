@@ -64,7 +64,7 @@ public class CreateShellTab implements IInteractionCommand {
         MediatorGUI.right().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/shell.png")));
+        TabHeader header = new TabHeader(new ImageIcon(CreateShellTab.class.getResource("/com/jsql/view/swing/images/shell.png")));
 
         MediatorGUI.right().setToolTipTextAt(
                 MediatorGUI.right().indexOfComponent(scroller),

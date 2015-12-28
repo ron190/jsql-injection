@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 
@@ -34,8 +33,8 @@ public class JColoredConsole extends JPopupTextPane {
      * Create a JTextPane which displays colored strings.
      * @param newTabName Text name of tab
      */
-    public JColoredConsole(final String newTabName) {
-        super();
+    public JColoredConsole(final String newTabName, String placeholder) {
+        super(placeholder);
         this.tabName = newTabName;
         
         this.addFocusListener(new FocusAdapter() {
@@ -45,7 +44,6 @@ public class JColoredConsole extends JPopupTextPane {
                 JColoredConsole.this.getProxy().getCaret().setSelectionVisible(true);
             }
         });
-        // this.setAutoscrolls(true);    // does not work
 
         this.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
     }
@@ -56,6 +54,7 @@ public class JColoredConsole extends JPopupTextPane {
      * @param attribut Font
      */
     public void append(String message, SimpleAttributeSet attribut) {
+        // Report #863: avoid exception during report of exception
         try {
             this.getProxy().getDocument().insertString(
                 this.getProxy().getDocument().getLength(),
@@ -65,8 +64,7 @@ public class JColoredConsole extends JPopupTextPane {
 
             int tabIndex = MediatorGUI.bottom().indexOfTab(tabName);
             if (0 <= tabIndex && tabIndex < MediatorGUI.bottom().getTabCount()) {
-                Component tabHeader
-                        = MediatorGUI.bottom().getTabComponentAt(tabIndex);
+                Component tabHeader = MediatorGUI.bottom().getTabComponentAt(tabIndex);
                 if (MediatorGUI.bottom().getSelectedIndex() != tabIndex) {
                     tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
                 }

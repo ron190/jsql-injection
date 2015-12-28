@@ -188,6 +188,6 @@ public class SQLServerStrategy extends ASQLStrategy {
 
     @Override
     public String getDbLabel() {
-        return null;
+        return "SQLServer";
     }
 }

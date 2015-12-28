@@ -20,18 +20,19 @@ import com.jsql.model.vendor.H2Strategy;
 import com.jsql.model.vendor.HSQLDBStrategy;
 import com.jsql.model.vendor.InformixStrategy;
 import com.jsql.model.vendor.IngresStrategy;
-import com.jsql.model.vendor.SQLServerStrategy;
 import com.jsql.model.vendor.MariaDBStrategy;
 import com.jsql.model.vendor.MaxDbStrategy;
 import com.jsql.model.vendor.MySQLStrategy;
 import com.jsql.model.vendor.OracleStrategy;
 import com.jsql.model.vendor.PostgreSQLStrategy;
+import com.jsql.model.vendor.SQLServerStrategy;
 import com.jsql.model.vendor.SybaseStrategy;
 import com.jsql.model.vendor.TeradataStrategy;
+import com.jsql.model.vendor.Vendor;
 
 /**
  * Runnable class, define insertionCharacter that will be used by all futures requests,
- * i.e -1 in "[...].php?id=-1 union select[...]", sometimes it's -1, 0', 0, etc,
+ * i.e -1 in "[..].php?id=-1 union select[..]", sometimes it's -1, 0', 0, etc,
  * this class/function tries to find the working one by searching a special error message
  * in the source page.
  */
@@ -44,6 +45,43 @@ public class SuspendableGetDbVendor extends AbstractSuspendable {
     @Override
     public String action(Object... args) throws PreparationException, StoppableException {
 
+        if (MediatorModel.model().selectedVendor != Vendor.Undefined) {
+            if (MediatorModel.model().selectedVendor == Vendor.Cubrid) {
+                MediatorModel.model().sqlStrategy = new CubridStrategy();
+            } else if (MediatorModel.model().selectedVendor == Vendor.DB2) {
+                MediatorModel.model().sqlStrategy = new DB2Strategy();
+            } else if (MediatorModel.model().selectedVendor == Vendor.Derby) {
+                MediatorModel.model().sqlStrategy = new DerbyStrategy();
+            } else if (MediatorModel.model().selectedVendor == Vendor.Firebird) {
+                MediatorModel.model().sqlStrategy = new FirebirdStrategy();
+            } else if (MediatorModel.model().selectedVendor == Vendor.H2) {
+                MediatorModel.model().sqlStrategy = new H2Strategy();
+            } else if (MediatorModel.model().selectedVendor == Vendor.HSQLDB) {
+                MediatorModel.model().sqlStrategy = new HSQLDBStrategy();
+            } else if (MediatorModel.model().selectedVendor == Vendor.Informix) {
+                MediatorModel.model().sqlStrategy = new InformixStrategy();
+            } else if (MediatorModel.model().selectedVendor == Vendor.Ingres) {
+                MediatorModel.model().sqlStrategy = new IngresStrategy();
+            } else if (MediatorModel.model().selectedVendor == Vendor.MariaDB) {
+                MediatorModel.model().sqlStrategy = new MariaDBStrategy();
+            } else if (MediatorModel.model().selectedVendor == Vendor.MaxDb) {
+                MediatorModel.model().sqlStrategy = new MaxDbStrategy();
+            } else if (MediatorModel.model().selectedVendor == Vendor.MySQL) {
+                MediatorModel.model().sqlStrategy = new MySQLStrategy();
+            } else if (MediatorModel.model().selectedVendor == Vendor.Oracle) {
+                MediatorModel.model().sqlStrategy = new OracleStrategy();
+            } else if (MediatorModel.model().selectedVendor == Vendor.PostgreSQL) {
+                MediatorModel.model().sqlStrategy = new PostgreSQLStrategy();
+            } else if (MediatorModel.model().selectedVendor == Vendor.SQLServer) {
+                MediatorModel.model().sqlStrategy = new SQLServerStrategy();
+            } else if (MediatorModel.model().selectedVendor == Vendor.Sybase) {
+                MediatorModel.model().sqlStrategy = new SybaseStrategy();
+            } else if (MediatorModel.model().selectedVendor == Vendor.Teradata) {
+                MediatorModel.model().sqlStrategy = new TeradataStrategy();
+            }
+            return null;
+        }
+        
         // Parallelize the search and let the user stops the process if needed.
         // SQL: force a wrong ORDER BY clause with an inexistent column, order by 1337,
         // and check if a correct error message is sent back by the server:
@@ -233,10 +271,6 @@ select '"'"'
                     MediatorModel.model().sqlStrategy = new FirebirdStrategy();
 //                    System.out.println("FirebirdStrategy");
                 }
-                if (Pattern.compile(".*h2.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-                    MediatorModel.model().sqlStrategy = new H2Strategy();
-//                    System.out.println("H2Strategy");
-                }
                 if (Pattern.compile(".*hsqldb.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     MediatorModel.model().sqlStrategy = new HSQLDBStrategy();
 //                    System.out.println("HSQLDBStrategy");
@@ -252,6 +286,10 @@ select '"'"'
                 if (Pattern.compile(".*teradata.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     MediatorModel.model().sqlStrategy = new TeradataStrategy();
 //                    System.out.println("TeradataStrategy");
+                }
+                if (Pattern.compile(".*h2.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                    MediatorModel.model().sqlStrategy = new H2Strategy();
+//                    System.out.println("H2Strategy");
                 }
             } catch (InterruptedException e) {
                 LOGGER.error(e, e);

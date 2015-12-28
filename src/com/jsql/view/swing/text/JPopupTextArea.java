@@ -23,10 +23,14 @@ import javax.swing.JTextArea;
 @SuppressWarnings("serial")
 public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements DecoratorJComponent<JTextArea> {
     /**
-     * Build new instance of JTextField to decorate.
+     * Build new instance of readonly JTextArea to decorate.
      */
     public JPopupTextArea() {
-        this(new JTextArea() {
+        this("");
+    }
+    
+    public JPopupTextArea(String p) {
+        this(new JTextAreaPlaceholder(p) {
             @Override
             public boolean isEditable() {
                 return false;

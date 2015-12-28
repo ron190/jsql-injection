@@ -49,7 +49,7 @@ public class ProgressBarPausable extends JProgressBar {
 
         if (this.showIcon) {
             try {
-                BufferedImage im2 = ImageIO.read(PanelNode.class.getResource(HelperGUI.PATH_PAUSE));
+                BufferedImage im2 = ImageIO.read(ProgressBarPausable.class.getResource(HelperGUI.PATH_PAUSE));
                 g.drawImage(im2, (this.getWidth() - im2.getWidth()) / 2, (this.getHeight() - im2.getHeight()) / 2, null);
             } catch (IOException e) {
                 LOGGER.error(e, e);

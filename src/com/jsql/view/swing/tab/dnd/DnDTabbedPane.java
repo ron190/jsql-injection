@@ -58,12 +58,6 @@ public class DnDTabbedPane extends JTabbedPane {
         public boolean isDropable() {
             return dropable;
         }
-        //         public String toString() {
-        //             return getClass().getName()
-        //                    + "[dropPoint=" + getDropPoint() + ","
-        //                    + "index=" + index + ","
-        //                    + "insert=" + isInsert + "]";
-        //         }
     }
 
     private void clickArrowButton(String actionKey) {
@@ -122,7 +116,6 @@ public class DnDTabbedPane extends JTabbedPane {
     private DropMode dropMode = DropMode.INSERT;
     
     public DropLocation dropLocationForPointLocal(Point p) {
-//        boolean isTB = getTabPlacement()==JTabbedPane.TOP || getTabPlacement()==JTabbedPane.BOTTOM;
         switch(dropMode) {
         case INSERT:
             for (int i = 0; i < getTabCount(); i++) {
@@ -157,7 +150,6 @@ public class DnDTabbedPane extends JTabbedPane {
     }
     
     public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {
-        //        System.out.println("exportTab");
         if(targetIndex<0) return;
 
         Component cmp    = getComponentAt(dragIndex);
@@ -175,8 +167,7 @@ public class DnDTabbedPane extends JTabbedPane {
         remove(dragIndex);
         target.insertTab(str, icon, cmp, tip, targetIndex);
         target.setEnabledAt(targetIndex, flg);
-        ////ButtonTabComponent
-        //if(tab instanceof ButtonTabComponent) tab = new ButtonTabComponent(target);
+
         target.setTabComponentAt(targetIndex, tab);
         target.setSelectedIndex(targetIndex);
         if(tab!=null && tab instanceof JComponent)
@@ -184,7 +175,6 @@ public class DnDTabbedPane extends JTabbedPane {
     }
 
     public void convertTab(int prev, int next) {
-        //        System.out.println("convertTab");
         if(next<0 || prev==next) {
             return;
         }
@@ -247,7 +237,6 @@ public class DnDTabbedPane extends JTabbedPane {
             tabbedRect.width = tabbedRect.width - compRect.width;
         }
         tabbedRect.translate(-xx, -yy);
-        //tabbedRect.grow(2, 2);
         return tabbedRect;
     }
 
@@ -290,7 +279,6 @@ public class DnDTabbedPane extends JTabbedPane {
         private Point startPt;
         
         int gestureMotionThreshold = DragSource.getDragThreshold();
-        //private final Integer gestureMotionThreshold = (Integer)Toolkit.getDefaultToolkit().getDesktopProperty("DnD.gestureMotionThreshold");
         
         @Override
         public void mouseDragged(MouseEvent e)  {
@@ -306,11 +294,6 @@ public class DnDTabbedPane extends JTabbedPane {
                 startPt = null;
             }
         }
-        //         @Override public void mouseClicked(MouseEvent e)  {}
-        //         @Override public void mouseEntered(MouseEvent e)  {}
-        //         @Override public void mouseExited(MouseEvent e)   {}
-        //         @Override public void mouseMoved(MouseEvent e)    {}
-        //         @Override public void mouseReleased(MouseEvent e) {}
 
         @Override
         public void mouseClicked(MouseEvent e) {

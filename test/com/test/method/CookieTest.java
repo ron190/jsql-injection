@@ -5,7 +5,6 @@ import org.junit.BeforeClass;
 import com.jsql.exception.PreparationException;
 import com.jsql.model.injection.InjectionModel;
 import com.jsql.model.injection.MediatorModel;
-import com.jsql.model.strategy.NormalStrategy;
 import com.jsql.view.junit.SystemOutTerminal;
 import com.test.mysql.ConcreteMysqlTestSuite;
 
@@ -26,11 +25,11 @@ public class CookieTest extends ConcreteMysqlTestSuite {
         new SystemOutTerminal();
 
         MediatorModel.model().initialUrl = "http://127.0.0.1/simulate_cookie.php";
-        MediatorModel.model().cookieData = "lib=0";
-        MediatorModel.model().method = "COOKIE";
+        MediatorModel.model().headerData = "Cookie:lib=0";
+        MediatorModel.model().method = "HEADER";
 
         MediatorModel.model().inputValidation();
 
-        MediatorModel.model().injectionStrategy = new NormalStrategy();
+        MediatorModel.model().injectionStrategy = MediatorModel.model().normalStrategy;
     }
 }

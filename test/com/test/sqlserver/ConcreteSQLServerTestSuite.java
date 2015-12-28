@@ -1,6 +1,5 @@
 package com.test.sqlserver;
 
-import java.net.URLEncoder;
 import java.sql.SQLException;
 
 import com.jsql.exception.PreparationException;

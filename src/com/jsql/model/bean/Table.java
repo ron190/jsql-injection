@@ -10,11 +10,18 @@
  ******************************************************************************/
 package com.jsql.model.bean;
 
+import org.apache.log4j.Logger;
+
 /**
  * Define a Table, e.g is sent to the view by the model after injection.
  * Allow to traverse upward to its corresponding database.
  */
 public class Table extends AbstractElementDatabase {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Table.class);
+
     /**
      * The database that contains the current column.
      */
@@ -67,9 +74,15 @@ public class Table extends AbstractElementDatabase {
             nbRow = rowCount;
         }
         
+        // Report #138: detect incorrect number of rows
         String sPlural = "";
-        if (Integer.parseInt(rowCount) > 1) {
-            sPlural = "s";
+        try {
+            if (Integer.parseInt(rowCount) > 1) {
+                sPlural = "s";
+            }
+        } catch (NumberFormatException err) {
+            rowCount = "0";
+            LOGGER.warn("Incorrect number of rows.");
         }
         return this.elementValue + " (" + nbRow + " row" + sPlural + ")";
     }

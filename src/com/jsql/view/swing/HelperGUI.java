@@ -59,6 +59,7 @@ public final class HelperGUI {
     }
     public static final Color DEFAULT_BACKGROUND = UIManager.getColor("Panel.background");
     public static final Color COMPONENT_BORDER = UIManager.getColor("controlShadow");
+    public static final Color FOCUS_LOST = new Color(248, 249, 249);
     
     public static final Icon TICK = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/images/check.png"));
     public static final Icon SQUARE_RED = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/images/squareRed.png"));
@@ -125,7 +126,7 @@ public final class HelperGUI {
             BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(132, 172, 221)),
             BorderFactory.createEmptyBorder(2, 2, 2, 2))
         );
-        UIManager.put("Button.darkShadow", Color.RED);
+//        UIManager.put("Button.darkShadow", Color.RED);
 //        UIManager.put("Button.background", Color.RED);
 //        UIManager.put("Button.focus", Color.RED);
 //        UIManager.put("Button.foreground", Color.RED);
@@ -134,28 +135,6 @@ public final class HelperGUI {
         UIManager.put("Button.select", SELECTION_BACKGROUND);
 //        UIManager.put("Button.shadow", Color.RED);
 //        UIManager.put("Button.toolBarBorderBackground", Color.RED);
-        
-//        SELECTION_BACKGROUND = (Color) UIManager.get("TabbedPane.selected");
-//        int red = (int) 
-//                Math
-//                .round(
-//                        Math
-//                        .min(255, 
-//                                SELECTION_BACKGROUND
-//                                .getRed()
-//                                + 255 * 0.05f));
-//        int green = (int) Math.round(Math.min(255, SELECTION_BACKGROUND.getGreen() + 255 * 0.05f));
-//        int blue = (int) Math.round(Math.min(255, SELECTION_BACKGROUND.getBlue() + 255 * 0.05f));
-//
-//        int alpha = SELECTION_BACKGROUND.getAlpha();
-//
-//        LinkedList<Object> a=new LinkedList<Object>();  
-//        a.add(0.3);  
-//        a.add(0.3);  
-//        a.add(SELECTION_BACKGROUND);  
-//        a.add(new Color(red, green, blue, alpha));  
-//        a.add(SELECTION_BACKGROUND);  
-//        UIManager.put("Button.gradient", a);
         
         // Change border of button in Save as dialog
         UIManager.put("ToggleButton.border", BorderFactory.createCompoundBorder(
@@ -209,7 +188,7 @@ public final class HelperGUI {
         
         UIManager.put("TextField.font", new Font(((Font) UIManager.get("TextField.font")).getName(), Font.PLAIN, ((Font) UIManager.get("TextField.font")).getSize()));
         UIManager.put("TextArea.font", new Font("Ubuntu Mono", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize() + 2));
-        UIManager.put("TextPane.font", new Font("Ubuntu Mono", Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize()));
+        UIManager.put("TextPane.font", new Font("Ubuntu Mono", Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize() + 2));
         UIManager.put("ComboBox.font", MYFONT);
         UIManager.put("Button.font", MYFONT);
         UIManager.put("Label.font", MYFONT);
@@ -276,6 +255,7 @@ public final class HelperGUI {
         UIManager.put("ProgressBar.background", UIManager.get("Tree.background"));
         
         UIManager.put("TabbedPaneUI", CustomMetalTabbedPaneUI.class.getName());
+//        UIManager.put("TabbedPaneUI", BasicTabbedPaneUI.class.getName());
         UIManager.put("ComboBoxUI", CustomBasicComboBoxUI.class.getName());
         UIManager.put("SpinnerUI", CustomBasicSpinnerUI.class.getName());
     }

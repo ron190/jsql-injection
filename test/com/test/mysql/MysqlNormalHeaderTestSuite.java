@@ -5,7 +5,6 @@ import org.junit.BeforeClass;
 import com.jsql.exception.PreparationException;
 import com.jsql.model.injection.InjectionModel;
 import com.jsql.model.injection.MediatorModel;
-import com.jsql.model.strategy.NormalStrategy;
 import com.jsql.view.junit.SystemOutTerminal;
 
 public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
@@ -22,6 +21,6 @@ public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
 
         MediatorModel.model().inputValidation();
 
-        MediatorModel.model().injectionStrategy = new NormalStrategy();
+        MediatorModel.model().injectionStrategy = MediatorModel.model().normalStrategy;
     }
 }

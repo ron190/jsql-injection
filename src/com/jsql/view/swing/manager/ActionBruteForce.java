@@ -45,8 +45,6 @@ public class ActionBruteForce implements ActionListener, Runnable {
             try {
                 Integer.parseInt(this.bruteForceManager.maximumLength.getValue().toString());
                 Integer.parseInt(this.bruteForceManager.minimumLength.getValue().toString());
-//                Integer.parseInt(this.bruteForceManager.maximumLength.getText());
-//                Integer.parseInt(this.bruteForceManager.minimumLength.getText());
             } catch (NumberFormatException e) {
                 this.bruteForceManager.result.setText("*** " + I18n.BRUTEFORCE_INCORRECT_LENGTH);
                 return;

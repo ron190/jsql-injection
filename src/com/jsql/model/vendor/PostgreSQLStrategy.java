@@ -174,7 +174,7 @@ public class PostgreSQLStrategy extends ASQLStrategy {
     public String blindStrategy(String sqlQuery, String startPosition) {
         return
             /**
-             * Enclosing '(' and ')' used for internal query, i.e [...]char_length((select ...))[...]
+             * Enclosing '(' and ')' used for internal query, i.e [..]char_length((select ...))[..]
              */
             "(" +
                 "select+" +
@@ -184,7 +184,6 @@ public class PostgreSQLStrategy extends ASQLStrategy {
                         "(" + sqlQuery + ")," +
                         startPosition + "," +
                         MediatorModel.model().blindStrategy.getPerformanceLength() +
-//                        MediatorModel.model().performanceLength +
                     ")" +
                 "" +
             ")";
@@ -200,7 +199,6 @@ public class PostgreSQLStrategy extends ASQLStrategy {
                         "substr(" +
                             "(" + sqlQuery + ")," +
                             startPosition + "," +
-//                            MediatorModel.model().performanceLength +
                             MediatorModel.model().timeStrategy.getPerformanceLength() +
                         ")" +
                     "" +
@@ -251,6 +249,6 @@ public class PostgreSQLStrategy extends ASQLStrategy {
     
     @Override
     public String getDbLabel() {
-        return null;
+        return "PostgreSQL";
     }
 }

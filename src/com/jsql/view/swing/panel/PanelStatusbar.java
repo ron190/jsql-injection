@@ -13,18 +13,23 @@ package com.jsql.view.swing.panel;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.Icon;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import com.jsql.i18n.I18n;
+import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.vendor.Vendor;
 import com.jsql.view.swing.HelperGUI;
 import com.jsql.view.swing.radio.AbstractRadioLink;
 import com.jsql.view.swing.radio.RadioLinkStatusbar;
@@ -125,7 +130,18 @@ public class PanelStatusbar extends JPanel {
         this.labelAuthenticatedUser.setEditable(false);
         this.labelAuthenticatedUser.setBackground(this.getBackground());
 
-        JLabel titleDatabaseVersion = new JLabel(I18n.TITLE_DATABASEVERSION);
+        final JComboBox<Vendor> vendorsCombo = new JComboBox<Vendor>(Vendor.values());
+        vendorsCombo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MediatorModel.model().selectedVendor = (Vendor) vendorsCombo.getSelectedItem();
+            }
+        });
+        ((JLabel) vendorsCombo.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
+        vendorsCombo.setToolTipText("<html>"
+                + "Choose <b>&lt;auto&gt;</b> if you don't know the type of database.<br>"
+                + "</html>");
+        
         JLabel titleCurrentDB = new JLabel(I18n.TITLE_CURRENTDB);
         JLabel titleCurrentUser = new JLabel(I18n.TITLE_CURRENTUSER);
         JLabel titleAuthenticatedUser = new JLabel(I18n.TITLE_AUTHENTICATEDUSER);
@@ -149,32 +165,32 @@ public class PanelStatusbar extends JPanel {
 
         layout.setHorizontalGroup(
             layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(titleDatabaseVersion)
-                        .addComponent(titleCurrentDB)
-                        .addComponent(titleCurrentUser)
-                        .addComponent(titleAuthenticatedUser))
-                .addGroup(layout.createParallelGroup()
-                        .addComponent(this.labelDBVersion)
-                        .addComponent(this.labelCurrentDB)
-                        .addComponent(this.labelCurrentUser)
-                        .addComponent(this.labelAuthenticatedUser))
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                .addComponent(vendorsCombo)
+                .addComponent(titleCurrentDB)
+                .addComponent(titleCurrentUser)
+                .addComponent(titleAuthenticatedUser))
+            .addGroup(layout.createParallelGroup()
+                .addComponent(this.labelDBVersion)
+                .addComponent(this.labelCurrentDB)
+                .addComponent(this.labelCurrentUser)
+                .addComponent(this.labelAuthenticatedUser))
         );
 
         layout.setVerticalGroup(
             layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(titleDatabaseVersion)
-                        .addComponent(this.labelDBVersion))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(titleCurrentDB)
-                        .addComponent(this.labelCurrentDB))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(titleCurrentUser)
-                        .addComponent(this.labelCurrentUser))
-                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(titleAuthenticatedUser)
-                        .addComponent(this.labelAuthenticatedUser))
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(vendorsCombo)
+                .addComponent(this.labelDBVersion))
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(titleCurrentDB)
+                .addComponent(this.labelCurrentDB))
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(titleCurrentUser)
+                .addComponent(this.labelCurrentUser))
+            .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(titleAuthenticatedUser)
+                .addComponent(this.labelAuthenticatedUser))
         );
     }
 

@@ -65,8 +65,8 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
     public Component getTreeCellEditorComponent(JTree tree, Object nodeRenderer,
             boolean selected, boolean expanded, boolean leaf, int row) {
 
-        Component componentRenderer = defaultTreeRenderer.getTreeCellRendererComponent(tree, nodeRenderer, true, expanded, leaf,
-                row, true);
+        Component componentRenderer = 
+            defaultTreeRenderer.getTreeCellRendererComponent(tree, nodeRenderer, true, expanded, leaf, row, true);
 
         final DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         Object userObject = currentNode.getUserObject();

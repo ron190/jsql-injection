@@ -26,6 +26,7 @@ import com.jsql.model.bean.Request;
 import com.jsql.model.bean.Table;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.model.injection.suspendable.SuspendableGetRows;
+import com.jsql.model.vendor.Vendor;
 import com.jsql.tool.ToolsString;
 
 /**
@@ -69,7 +70,8 @@ public class DataAccessObject {
         }
         
         try {
-            MediatorModel.model().versionDatabase   = dbType + hexResult.split("\\{%\\}")[0].replaceAll("\\s+"," ");
+            MediatorModel.model().versionDatabase   = 
+                    (MediatorModel.model().selectedVendor == Vendor.Undefined ? dbType : "")+ hexResult.split("\\{%\\}")[0].replaceAll("\\s+"," ");
             MediatorModel.model().currentDatabase   = hexResult.split("\\{%\\}")[1];
             MediatorModel.model().currentUser       = hexResult.split("\\{%\\}")[2];
             MediatorModel.model().authenticatedUser = hexResult.split("\\{%\\}")[3];

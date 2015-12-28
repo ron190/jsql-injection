@@ -30,7 +30,9 @@ import com.jsql.view.swing.text.JPopupTextField;
  */
 @SuppressWarnings("serial")
 public class ManagerSQLShell extends ManagerAbstractShell {
+    
     final JTextField user = new JPopupTextField(I18n.SQL_SHELL_USERNAME_LABEL).getProxy();
+    
     final JTextField pass = new JPopupTextField(I18n.SQL_SHELL_PASSWORD_LABEL).getProxy();
     
     /**
@@ -57,19 +59,32 @@ public class ManagerSQLShell extends ManagerAbstractShell {
         m.add(pass);
         
         userPassLayout.setHorizontalGroup(
-            userPassLayout.createSequentialGroup()
-                .addGroup(userPassLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false))
-                .addGroup(userPassLayout.createParallelGroup()
-                        .addComponent(user)
-                        .addComponent(m))
+            userPassLayout
+            .createSequentialGroup()
+            .addGroup(
+                userPassLayout
+                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+            )
+            .addGroup(
+                userPassLayout.createParallelGroup()
+                .addComponent(user)
+                .addComponent(m)
+            )
         );
 
         userPassLayout.setVerticalGroup(
-            userPassLayout.createSequentialGroup()
-                .addGroup(userPassLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(user))
-                .addGroup(userPassLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(m))
+            userPassLayout
+            .createSequentialGroup()
+            .addGroup(
+                userPassLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(user)
+            )
+            .addGroup(
+                userPassLayout
+                .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addComponent(m)
+            )
         );
         
         this.add(userPassPanel, BorderLayout.NORTH);

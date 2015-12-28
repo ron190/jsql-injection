@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import com.jsql.model.bean.Request;
-import com.jsql.model.injection.InjectionModel;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
@@ -43,12 +42,9 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
 
             Map<String, Object> msgHeader = new HashMap<String, Object>();
             msgHeader.put("Url", url);
-            msgHeader.put("Cookie", "");
             msgHeader.put("Post", "");
             msgHeader.put("Header", "");
             msgHeader.put("Response", ToolsString.getHTTPHeaders(connection));
-
-            connection.disconnect();
 
             Request request = new Request();
             request.setMessage("MessageHeader");

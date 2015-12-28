@@ -20,7 +20,6 @@ import com.jsql.view.swing.interaction.IInteractionCommand;
 public class MessageHeader implements IInteractionCommand {
     // The text to append to the tab
     private String url;
-    private String cookie;
     private String post;
     private String header;
     private Map<String, String> response;
@@ -32,7 +31,6 @@ public class MessageHeader implements IInteractionCommand {
     public MessageHeader(Object[] interactionParams) {
         Map<String, Object> params = (Map<String, Object>) interactionParams[0];
         url = (String) params.get("Url");
-        cookie = (String) params.get("Cookie");
         post = (String) params.get("Post");
         header = (String) params.get("Header");
         response = (Map<String, String>) params.get("Response");
@@ -42,7 +40,6 @@ public class MessageHeader implements IInteractionCommand {
     public void execute() {
         System.out.println("Method: " + response.get("Method"));
         System.out.println("Url: " + url);
-        System.out.println("Cookie: " + cookie);
         System.out.println("Post: " + post);
         System.out.println("Header: " + header);
         System.out.println("Content-Length: " + response.get("Content-Length"));

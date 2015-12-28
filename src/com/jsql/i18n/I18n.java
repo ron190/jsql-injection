@@ -56,11 +56,9 @@ public class I18n {
      */
     public static final String GET_TOOLTIP = (String) labels.getObject("getTooltip");
     public static final String POST_TOOLTIP = (String) labels.getObject("postTooltip");
-    public static final String COOKIE_TOOLTIP = (String) labels.getObject("cookieTooltip");
     public static final String HEADER_TOOLTIP = (String) labels.getObject("headerTooltip");
     public static final String GET_METHOD = (String) labels.getObject("getMethod");
     public static final String POST_METHOD = (String) labels.getObject("postMethod");
-    public static final String COOKIE_METHOD = (String) labels.getObject("cookieMethod");
     public static final String HEADER_METHOD = (String) labels.getObject("headerMethod");
     public static final String BUTTON_START_INJECTION = (String) labels.getObject("buttonStartInjection");
     public static final String BUTTON_ADVANCED = (String) labels.getObject("buttonAdvanced");
@@ -100,7 +98,6 @@ public class I18n {
     public static final String CONSOLE_TAB_TOOLTIP = (String) labels.getObject("consoleTabTooltip");
     
     public static final String NETWORK_TAB_HEADERS_LABEL  = (String) labels.getObject("networkTabHeadersLabel");
-    public static final String NETWORK_TAB_COOKIES_LABEL  = (String) labels.getObject("networkTabCookiesLabel");
     public static final String NETWORK_TAB_PARAMS_LABEL   = (String) labels.getObject("networkTabParamsLabel");
     public static final String NETWORK_TAB_RESPONSE_LABEL = (String) labels.getObject("networkTabResponseLabel");
     public static final String NETWORK_TAB_TIMING_LABEL   = (String) labels.getObject("networkTabTimingLabel");

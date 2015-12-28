@@ -40,6 +40,7 @@ public class RadioLinkAddressBar extends AbstractRadioLink {
      * Add radio to the radio group.
      */
     private void init() {
+        this.addMouseListener(new RadioAddressBarMouseAdapter());
         RadioLinkAddressBar.groupAddressBar.add(this);
     }
 

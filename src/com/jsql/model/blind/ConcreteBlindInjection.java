@@ -42,7 +42,11 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
      * true test, then blind attack is confirmed.
      */
     public ConcreteBlindInjection() {
-
+        // No blind
+        if (this.falseTest.length == 0) {
+            return;
+        }
+        
         // Call the SQL request which must be TRUE (usually ?id=1)
         ConcreteBlindInjection.blankTrueMark = ConcreteBlindInjection.callUrl("");
 
@@ -57,7 +61,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
          */
         ExecutorService executorFalseMark = Executors.newCachedThreadPool();
         Collection<CallableBlind> listCallableFalse = new ArrayList<CallableBlind>();
-        for (String urlTest: falseTest) {
+        for (String urlTest: this.falseTest) {
             listCallableFalse.add(new CallableBlind(urlTest));
         }
         
@@ -151,7 +155,11 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
              */
             throw new PreparationException();
         }
-
+        
+        if (MediatorModel.model().sqlStrategy.getBlindFirstTest() == null) {
+            return false;
+        }
+        
         CallableBlind blindTest = new CallableBlind(MediatorModel.model().sqlStrategy.getBlindFirstTest());
         try {
             blindTest.call();

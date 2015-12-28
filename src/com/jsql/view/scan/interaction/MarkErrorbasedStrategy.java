@@ -12,8 +12,6 @@ package com.jsql.view.scan.interaction;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.MediatorGUI;
-
 /**
  * Mark the injection as invulnerable to a error based injection.
  */

@@ -43,6 +43,7 @@ public class RadioLinkStatusbar extends AbstractRadioLink {
      * Add radio to the radio group.
      */
     private void init() {
+        this.addMouseListener(new RadioStatusBarMouseAdapter());
         RadioLinkStatusbar.group.add(this);
         this.setHorizontalAlignment(SwingConstants.LEFT);
     }

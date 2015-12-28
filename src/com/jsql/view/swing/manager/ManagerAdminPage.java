@@ -56,7 +56,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
 
         List<String> pathList = new ArrayList<String>();
         try {
-            InputStream in = this.getClass().getResourceAsStream("/com/jsql/list/admin-page.txt");
+            InputStream in = ManagerAdminPage.class.getResourceAsStream("/com/jsql/list/admin-page.txt");
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
@@ -79,7 +79,10 @@ public class ManagerAdminPage extends ManagerAbstractList {
                 BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)));
         
-        run = new JButton(defaultText, new ImageIcon(getClass().getResource("/com/jsql/view/swing/images/adminSearch.png")));
+        run = new JButton(
+            defaultText, 
+            new ImageIcon(ManagerAdminPage.class.getResource("/com/jsql/view/swing/images/adminSearch.png"))
+        );
 
         run.setToolTipText(I18n.ADMIN_PAGE_RUN_BUTTON_TOOLTIP);
         run.setBorder(HelperGUI.BLU_ROUND_BORDER);
@@ -88,16 +91,23 @@ public class ManagerAdminPage extends ManagerAbstractList {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (listFile.getSelectedValuesList().isEmpty()) {
-                    LOGGER.warn("Select at least one admin page");
+                    LOGGER.warn("Select at least one admin page.");
                     return;
                 }
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         if (run.getText().equals(defaultText)) {
-                            run.setText("Stop");
-                            loader.setVisible(true);
-                            MediatorModel.model().ressourceAccessObject.getAdminPage(MediatorGUI.top().addressBar.getText(), listFile.getSelectedValuesList());
+                            if ("".equals(MediatorGUI.top().addressBar.getText())) {
+                                LOGGER.warn("Please define the site URL first.");
+                            } else {
+                                run.setText("Stop");
+                                loader.setVisible(true);
+                                MediatorModel.model().ressourceAccessObject.getAdminPage(
+                                    MediatorGUI.top().addressBar.getText(), 
+                                    listFile.getSelectedValuesList()
+                                );
+                            }
                         } else {
                             MediatorModel.model().ressourceAccessObject.endAdminSearch = true;
                             run.setEnabled(false);
