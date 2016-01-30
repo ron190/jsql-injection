@@ -3,12 +3,12 @@
 
 jSQL is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X, Solaris).
 
-![Kali Linux logo](https://github.com/ron190/jsql-injection/tree/master/web/kali_favicon.png "Kali Linux logo") jSQL is part of **[Kali Linux](http://www.kali.org/)**, the official new [BackTrack](http://www.backtrack-linux.org/) penetration distribution.
+![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/kali_favicon.png "Kali Linux logo") jSQL is part of **[Kali Linux](http://www.kali.org/)**, the official new [BackTrack](http://www.backtrack-linux.org/) penetration distribution.
 
 jSQL is also included in [ArchStrike](https://archstrike.org/), [BlackArch](http://www.blackarch.org/), [Black Hat Sec](http://www.blackhatsec.org/) and [Cyborg Hawk](http://cyborg.ztrela.com/).
 
 ## Screenshot of v0.73 [[download here](https://github.com/ron190/jsql-injection/releases)]
-[![jSQL v0.73](https://github.com/ron190/jsql-injection/tree/master/web/v0.73-mini.png "jSQL v0.7")](https://github.com/ron190/jsql-injection/tree/master/web/v0.73.png)
+[![jSQL v0.73](https://github.com/ron190/jsql-injection/raw/master/web/v0.73-mini.png "jSQL v0.7")](https://github.com/ron190/jsql-injection/raw/master/web/v0.73.png)
 ## Change log
 **Coming...** `i18n arabic russian chinese integration, next db engines: SQLite Access MSDE...`
 
@@ -19,14 +19,14 @@ jSQL is also included in [ArchStrike](https://archstrike.org/), [BlackArch](http
 **alpha-v0.6** `Speed x 2 (no more hex encoding), 10 db vendors supported: MySQL Oracle SQLServer PostgreSQL DB2 Firebird Informix Ingres MaxDb Sybase. JUnit tests, log4j, i18n integration and more.`
 
 ## Screenshots of v0.5 [[download here](https://code.google.com/p/jsql-injection/downloads/list)]
-[![Database reader](https://github.com/ron190/jsql-injection/tree/master/web/201309272136-screenshot-database-mini.png "Database reader")](https://github.com/ron190/jsql-injection/tree/master/web/201309272136-screenshot-database.png)
-[![Admin page finder](https://github.com/ron190/jsql-injection/tree/master/web/201309272136-screenshot-admin-mini.png "Admin page finder")](https://github.com/ron190/jsql-injection/tree/master/web/201309272136-screenshot-admin.png)
-[![File reader](https://github.com/ron190/jsql-injection/tree/master/web/201309272136-screenshot-file-mini.png "File reader")](https://github.com/ron190/jsql-injection/tree/master/web/201309272136-screenshot-file.png)
-[![Webshell execution](https://github.com/ron190/jsql-injection/tree/master/web/201309272136-screenshot-webshell-mini.png "Webshell execution")](https://github.com/ron190/jsql-injection/tree/master/web/201309272136-screenshot-webshell.png)
-[![SQLshell execution](https://github.com/ron190/jsql-injection/tree/master/web/201309272136-screenshot-sqlshell-mini.png "SQLshell execution")](https://github.com/ron190/jsql-injection/tree/master/web/201309272136-screenshot-sqlshell.png)
-[![Upload file](https://github.com/ron190/jsql-injection/tree/master/web/201309272136-screenshot-upload-mini.png "Upload file")](https://github.com/ron190/jsql-injection/tree/master/web/201309272136-screenshot-upload.png)
-[![Bruteforce hash](https://github.com/ron190/jsql-injection/tree/master/web/201309272136-screenshot-bruteforce-mini.png "Bruteforce hash")](https://github.com/ron190/jsql-injection/tree/master/web/201309272136-screenshot-bruteforce.png)
-[![Code/Encode string](https://github.com/ron190/jsql-injection/tree/master/web/201309272136-screenshot-coder-mini.png "Code/Encode string")](https://github.com/ron190/jsql-injection/tree/master/web/201309272136-screenshot-coder.png)
+[![Database reader](https://github.com/ron190/jsql-injection/raw/master/web/201309272136-screenshot-database-mini.png "Database reader")](https://github.com/ron190/jsql-injection/raw/master/web/201309272136-screenshot-database.png)
+[![Admin page finder](https://github.com/ron190/jsql-injection/raw/master/web/201309272136-screenshot-admin-mini.png "Admin page finder")](https://github.com/ron190/jsql-injection/raw/master/web/201309272136-screenshot-admin.png)
+[![File reader](https://github.com/ron190/jsql-injection/raw/master/web/201309272136-screenshot-file-mini.png "File reader")](https://github.com/ron190/jsql-injection/raw/master/web/201309272136-screenshot-file.png)
+[![Webshell execution](https://github.com/ron190/jsql-injection/raw/master/web/201309272136-screenshot-webshell-mini.png "Webshell execution")](https://github.com/ron190/jsql-injection/raw/master/web/201309272136-screenshot-webshell.png)
+[![SQLshell execution](https://github.com/ron190/jsql-injection/raw/master/web/201309272136-screenshot-sqlshell-mini.png "SQLshell execution")](https://github.com/ron190/jsql-injection/raw/master/web/201309272136-screenshot-sqlshell.png)
+[![Upload file](https://github.com/ron190/jsql-injection/raw/master/web/201309272136-screenshot-upload-mini.png "Upload file")](https://github.com/ron190/jsql-injection/raw/master/web/201309272136-screenshot-upload.png)
+[![Bruteforce hash](https://github.com/ron190/jsql-injection/raw/master/web/201309272136-screenshot-bruteforce-mini.png "Bruteforce hash")](https://github.com/ron190/jsql-injection/raw/master/web/201309272136-screenshot-bruteforce.png)
+[![Code/Encode string](https://github.com/ron190/jsql-injection/raw/master/web/201309272136-screenshot-coder-mini.png "Code/Encode string")](https://github.com/ron190/jsql-injection/raw/master/web/201309272136-screenshot-coder.png)
 ## Change log
 **0.5** `SQL shell, Uploader.`
 
