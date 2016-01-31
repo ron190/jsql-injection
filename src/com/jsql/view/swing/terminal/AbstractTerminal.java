@@ -35,7 +35,7 @@ import sun.swing.SwingUtilities2;
 /**
  * A Terminal completely built from swing text pane.
  */
-@SuppressWarnings("serial")
+@SuppressWarnings({ "serial", "restriction" })
 public abstract class AbstractTerminal extends JTextPane {
     /**
      * Log4j logger sent to view.
@@ -58,8 +58,29 @@ public abstract class AbstractTerminal extends JTextPane {
     protected String[] loginPassword = null;
 
     UUID terminalID;
+    
     String wbhPath;
 
+    /**
+     * Document used to append colored text.
+     */
+    private StyledDocument styledDocument = this.getStyledDocument();
+
+    /**
+     * Style used for coloring text.
+     */
+    private Style style = this.addStyle("Necrophagist's next album is 2014.", null);
+
+    /**
+     *  Length of prompt.
+     */
+    String prompt = "";
+
+    /**
+     * Text to display next caret.
+     */
+    private String shellLabel;
+    
     /**
      * Build a shell instance.
      * @param terminalID Unique identifier to discriminate beyond multiple opened terminals
@@ -161,14 +182,11 @@ public abstract class AbstractTerminal extends JTextPane {
     }
     
     /**
-     * Document used to append colored text.
+     * Simply display colored prompt.
      */
-    private StyledDocument styledDocument = this.getStyledDocument();
-
-    /**
-     * Style used for coloring text.
-     */
-    private Style style = this.addStyle("Necrophagist's next album is 2014.", null);
+    public void displayPrompt() {
+        displayPrompt(false);
+    }
 
     /**
      * Style getter.
@@ -177,24 +195,7 @@ public abstract class AbstractTerminal extends JTextPane {
     public Style getStyle() {
         return style;
     }
-
-    /**
-     *  Length of prompt.
-     */
-    String prompt = "";
-
-    /**
-     * Simply display colored prompt.
-     */
-    public void displayPrompt() {
-        displayPrompt(false);
-    }
-
-    /**
-     * Text to display next caret.
-     */
-    private String shellLabel;
-
+    
     /**
      * Append prompt to textpane, measure prompt the first time is used.
      * @param measurePrompt Should we measure prompt length?

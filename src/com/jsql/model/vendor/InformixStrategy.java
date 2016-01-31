@@ -8,7 +8,7 @@ import com.jsql.model.bean.Table;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class InformixStrategy extends ASQLStrategy {
+public class InformixStrategy extends AbstractVendorStrategy {
 
     @Override
     public String getSchemaInfos() {
@@ -91,10 +91,5 @@ public class InformixStrategy extends ASQLStrategy {
     @Override
     public String getLimit(Integer limitSQLResult) {
         return "+having+count(*)+between+" + (limitSQLResult+1) + "+and+" + (limitSQLResult+1);
-    }
-    
-    @Override
-    public String getDbLabel() {
-        return "Informix";
     }
 }

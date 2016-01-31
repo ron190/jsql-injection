@@ -8,7 +8,7 @@ import com.jsql.model.bean.Table;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class DB2Strategy extends ASQLStrategy {
+public class DB2Strategy extends AbstractVendorStrategy {
 
     @Override
     public String getSchemaInfos() {
@@ -144,10 +144,5 @@ public class DB2Strategy extends ASQLStrategy {
     @Override
     public String getLimit(Integer limitSQLResult) {
         return "+limit+" + limitSQLResult + ",5";
-    }
-    
-    @Override
-    public String getDbLabel() {
-        return "DB2";
     }
 }

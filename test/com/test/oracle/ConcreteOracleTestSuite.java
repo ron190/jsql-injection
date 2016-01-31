@@ -2,37 +2,40 @@ package com.test.oracle;
 
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.exception.PreparationException;
 import com.test.AbstractTestSuite;
 
 public class ConcreteOracleTestSuite extends AbstractTestSuite {
-    public ConcreteOracleTestSuite () {
-        DB_URL = "jdbc:oracle:thin:@localhost:1521:xe";
-        USER = "system";
-        PASS = "test";
-        TEST_DATABASE = "HR";
-        TEST_TABLE = "REGIONS";
-        TEST_COLUMN = "REGION_NAME";
-        
-//        CONF_DATABASE = "sys";
-        CONF_DBNAME = "owner";
-//        CONF_DBTABLE = "all_tables";
-        CONF_TABNAME = "table_name";
-//        CONF_TABTABLE = "all_tables";
-        CONF_COLNAME = "column_name";
-//        CONF_COLTABLE = "all_tab_columns";
+    /**
+     * Using default log4j.properties from root /
+     */
+    private static final Logger LOGGER = Logger.getLogger(ConcreteOracleTestSuite.class);
 
-        SQL_DATABASES = "SELECT owner FROM all_tables";
-        SQL_TABLES = "SELECT table_name FROM all_tables where owner='HR'";   
-        SQL_COLUMNS = "SELECT column_name FROM all_tab_columns where owner='HR' and table_name='REGIONS'";  
-        SQL_VALUES = "SELECT REGION_NAME FROM HR.REGIONS";   
+    public ConcreteOracleTestSuite () {
+        this.jdbcURL = "jdbc:oracle:thin:@localhost:1521:xe";
+        this.jdbcUser = "system";
+        this.jdbcPassword = "test";
+        this.jsqlDatabaseName = "HR";
+        this.jsqlTableName = "REGIONS";
+        this.jsqlColumnName = "REGION_NAME";
+        
+        this.jdbcColumnForDatabaseName = "owner";
+        this.jdbcColumnForTableName = "table_name";
+        this.jdbcColumnForColumnName = "column_name";
+        
+        this.jdbcQueryForDatabaseNames = "SELECT owner FROM all_tables";
+        this.jdbcQueryForTableNames = "SELECT table_name FROM all_tables where owner='HR'";   
+        this.jdbcQueryForColumnNames = "SELECT column_name FROM all_tab_columns where owner='HR' and table_name='REGIONS'";  
+        this.jdbcQueryForValues = "SELECT REGION_NAME FROM HR.REGIONS";   
         
         try {
             initializer();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.warn(e);
         } catch (PreparationException e) {
-            e.printStackTrace();
+            LOGGER.warn(e);
         }
     }
 }

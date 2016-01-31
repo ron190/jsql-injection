@@ -10,12 +10,19 @@
  ******************************************************************************/
 package com.jsql.view.junit.interaction;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.view.swing.interaction.IInteractionCommand;
 
 /**
  * Mark the injection as invulnerable to a blind injection.
  */
 public class MarkBlindInvulnerable implements IInteractionCommand {
+    /**
+     * Using default log4j.properties from root /
+     */
+    private static final Logger LOGGER = Logger.getLogger(MarkBlindInvulnerable.class);
+
     /**
      * @param interactionParams
      */
@@ -25,7 +32,7 @@ public class MarkBlindInvulnerable implements IInteractionCommand {
 
     @Override
     public void execute() {
-        System.out.println("MarkBlindInvulnerable");
-        System.out.println();
+        LOGGER.info("MarkBlindInvulnerable");
+        LOGGER.info("\n");
     }
 }

@@ -12,12 +12,19 @@ package com.jsql.view.junit.interaction;
 
 import java.util.Arrays;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.view.swing.interaction.IInteractionCommand;
 
 /**
  * Create a new tab for the values.
  */
 public class CreateValuesTab implements IInteractionCommand {
+    /**
+     * Using default log4j.properties from root /
+     */
+    private static final Logger LOGGER = Logger.getLogger(CreateValuesTab.class);
+
     /**
      * 2D array of values.
      */
@@ -33,6 +40,7 @@ public class CreateValuesTab implements IInteractionCommand {
 
     @Override
     public void execute() {
-        System.out.println("CreateValuesTab: " + Arrays.deepToString(data) +"\n");
+        LOGGER.info("CreateValuesTab: " + Arrays.deepToString(data) +"\n");
+        LOGGER.info("\n");
     }
 }

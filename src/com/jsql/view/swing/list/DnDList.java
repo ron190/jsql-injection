@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -40,6 +41,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
@@ -50,6 +52,11 @@ import com.jsql.i18n.I18n;
 @SuppressWarnings("serial")
 public class DnDList extends JList<ListItem> {
     /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(DnDList.class);
+    
+    /**
      * Model for the JList.
      */
     public DefaultListModel<ListItem> listModel;
@@ -58,34 +65,6 @@ public class DnDList extends JList<ListItem> {
      * List of default items.
      */
     public List<String> defaultList;
-    
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getLogger(DnDList.class);
-
-    /**
-     * Compatibility method for java 6.
-     */
-    public List<ListItem> getSelectedValuesList() {
-        ListSelectionModel sm = getSelectionModel();
-        ListModel<ListItem> dm = getModel();
-
-        int iMin = sm.getMinSelectionIndex();
-        int iMax = sm.getMaxSelectionIndex();
-
-        if ((iMin < 0) || (iMax < 0)) {
-            return Collections.emptyList();
-        }
-
-        List<ListItem> selectedItems = new ArrayList<ListItem>();
-        for (int i = iMin; i <= iMax; i++) {
-            if (sm.isSelectedIndex(i)) {
-                selectedItems.add(dm.getElementAt(i));
-            }
-        }
-        return selectedItems;
-    }
     
     /**
      * Create a JList decorated with drag/drop features.
@@ -187,13 +166,16 @@ public class DnDList extends JList<ListItem> {
                 this.setSelectedIndex(l);
             }
         }
-        if (this.getMinSelectionIndex() > -1 && this.getMaxSelectionIndex() > -1) {
+        
+        try {
             this.scrollRectToVisible(
                 this.getCellBounds(
                     this.getMinSelectionIndex(),
                     this.getMaxSelectionIndex()
                 )
             );
+        } catch (NullPointerException err) {
+            // Report NullPointerException #1571 : manual scroll elsewhere then run action
         }
     }
 
@@ -206,24 +188,21 @@ public class DnDList extends JList<ListItem> {
         if (filesToImport.isEmpty()) {
             return;
         }
-        try {
-            for (Iterator<File> it = filesToImport.iterator(); it.hasNext();) {
-                File fileToImport = it.next();
+        
+        for (Iterator<File> it = filesToImport.iterator(); it.hasNext();) {
+            File fileToImport = it.next();
 
-                if (Files.probeContentType(fileToImport.toPath()) == null
-                        || !"text/plain".equals(Files.probeContentType(fileToImport.toPath()))) {
-                    JOptionPane.showMessageDialog(
-                        this.getTopLevelAncestor(),
-                        I18n.LIST_IMPORT_ERROR_TEXT,
-                        I18n.LIST_IMPORT_ERROR,
-                        JOptionPane.ERROR_MESSAGE,
-                        new ImageIcon(DnDList.class.getResource("/com/jsql/view/swing/images/error.png"))
-                    );
-                    return;
-                }
+            // Report NoSuchMethodError #1617
+            if (!"txt".equals(FilenameUtils.getExtension(fileToImport.getPath()))) {
+                JOptionPane.showMessageDialog(
+                    this.getTopLevelAncestor(),
+                    I18n.LIST_IMPORT_ERROR_TEXT,
+                    I18n.LIST_IMPORT_ERROR,
+                    JOptionPane.ERROR_MESSAGE,
+                    new ImageIcon(DnDList.class.getResource("/com/jsql/view/swing/images/error.png"))
+                );
+                return;
             }
-        } catch (IOException e) {
-            LOGGER.error(e, e);
         }
 
         String[] options = {I18n.REPLACE, I18n.ADD, I18n.CANCEL};
@@ -238,8 +217,8 @@ public class DnDList extends JList<ListItem> {
             options[2]
         );
         
-        final int startPosition[] = {position};
-        final int endPosition[] = {startPosition[0]};
+        final int[] startPosition = {position};
+        final int[] endPosition = {startPosition[0]};
 
         if (answer != JOptionPane.YES_OPTION && answer != JOptionPane.NO_OPTION) {
             return;
@@ -262,7 +241,7 @@ public class DnDList extends JList<ListItem> {
                         String line;
                         while ((line = fileReader.readLine()) != null) {
                             if (!"".equals(line)) {
-                                // Fix Report #60 
+                                // Fix Report #60
                                 if (0 <= endPosition[0] && endPosition[0] <= listModel.size()) {
                                     listModel.add(endPosition[0]++, new ListItem(line.replace("\\", "/")));
                                 }
@@ -279,11 +258,41 @@ public class DnDList extends JList<ListItem> {
                     DnDList.this.setSelectionInterval(startPosition[0], endPosition[0] - 1);
                 }
                 
-                DnDList.this.scrollRectToVisible(
-                        DnDList.this.getCellBounds(DnDList.this.getMinSelectionIndex(), DnDList.this.getMaxSelectionIndex())
-                        );
+                try {
+                    DnDList.this.scrollRectToVisible(
+                        DnDList.this.getCellBounds(
+                            DnDList.this.getMinSelectionIndex(), 
+                            DnDList.this.getMaxSelectionIndex()
+                        )
+                    );
+                } catch (NullPointerException err) {
+                    // Report NullPointerException #1571 : manual scroll elsewhere then run action
+                }
             }
         });
         
+    }
+    
+    /**
+     * Compatibility method for java 6.
+     */
+    public List<ListItem> getSelectedValuesList() {
+        ListSelectionModel sm = getSelectionModel();
+        ListModel<ListItem> dm = getModel();
+
+        int iMin = sm.getMinSelectionIndex();
+        int iMax = sm.getMaxSelectionIndex();
+
+        if ((iMin < 0) || (iMax < 0)) {
+            return Collections.emptyList();
+        }
+
+        List<ListItem> selectedItems = new ArrayList<ListItem>();
+        for (int i = iMin; i <= iMax; i++) {
+            if (sm.isSelectedIndex(i)) {
+                selectedItems.add(dm.getElementAt(i));
+            }
+        }
+        return selectedItems;
     }
 }

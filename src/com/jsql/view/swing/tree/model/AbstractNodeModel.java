@@ -125,7 +125,7 @@ public abstract class AbstractNodeModel {
             // Report #133: ignore if thread not found
             (MediatorModel.model().suspendables.get(this.dataObject) != null && 
             MediatorModel.model().suspendables.get(this.dataObject).isPaused())
-            ? I18n.RESUME 
+            ? I18n.RESUME
             : I18n.PAUSE
         , 's');
         mnLoad.setIcon(HelperGUI.EMPTY);
@@ -189,15 +189,11 @@ public abstract class AbstractNodeModel {
             panel.showLoader();
             panel.hideIcon();
 
-            try {
-                if (MediatorModel.model().suspendables.get(AbstractNodeModel.this.dataObject).isPaused()) {
-                    ImageIcon animatedGIFPaused = new ImageOverlap(HelperGUI.PATH_PROGRESSBAR, HelperGUI.PATH_PAUSE);
-                    animatedGIFPaused.setImageObserver(new ImageObserverAnimated(MediatorGUI.databaseTree(), currentNode));
-                    panel.setLoaderIcon(animatedGIFPaused);
-                }
-            } catch (NullPointerException e) {
-                System.err.println("NullPointerException: " + AbstractNodeModel.this.dataObject);
-                System.err.println(e);
+            if (MediatorModel.model().suspendables.get(AbstractNodeModel.this.dataObject) != null
+                    && MediatorModel.model().suspendables.get(AbstractNodeModel.this.dataObject).isPaused()) {
+                ImageIcon animatedGIFPaused = new ImageOverlap(HelperGUI.PATH_PROGRESSBAR, HelperGUI.PATH_PAUSE);
+                animatedGIFPaused.setImageObserver(new ImageObserverAnimated(MediatorGUI.databaseTree(), currentNode));
+                panel.setLoaderIcon(animatedGIFPaused);
             }
         }
         

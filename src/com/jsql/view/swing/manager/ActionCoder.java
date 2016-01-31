@@ -79,7 +79,7 @@ public class ActionCoder implements ActionListener {
             this.coderManager.result.setText(HashBruter.generateCRC16(this.coderManager.entry.getText()));
             
         } else if ("Crc32".contains(choice)) {
-            byte bytes[] = this.coderManager.entry.getText().getBytes();
+            byte[] bytes = this.coderManager.entry.getText().getBytes();
             Checksum checksum = new CRC32();
             checksum.update(bytes,0,bytes.length);
             long lngChecksum = checksum.getValue();

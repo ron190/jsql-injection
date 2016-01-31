@@ -10,12 +10,19 @@
  ******************************************************************************/
 package com.jsql.view.junit.interaction;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.view.swing.interaction.IInteractionCommand;
 
 /**
  * Mark the injection as invulnerable to a time based injection.
  */
 public class MarkTimebasedInvulnerable implements IInteractionCommand {
+    /**
+     * Using default log4j.properties from root /
+     */
+    private static final Logger LOGGER = Logger.getLogger(MarkTimebasedInvulnerable.class);
+
     /**
      * @param interactionParams
      */
@@ -25,7 +32,7 @@ public class MarkTimebasedInvulnerable implements IInteractionCommand {
 
     @Override
     public void execute() {
-        System.out.println("MarkTimebasedInvulnerable");
-        System.out.println();
+        LOGGER.info("MarkTimebasedInvulnerable");
+        LOGGER.info("\n");
     }
 }

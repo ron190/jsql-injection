@@ -8,6 +8,7 @@ import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.junit.SystemOutTerminal;
 
 public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
+    
     @BeforeClass
     public static void initialize() throws PreparationException {
         InjectionModel model = new InjectionModel();

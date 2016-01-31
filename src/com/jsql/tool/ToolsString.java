@@ -101,13 +101,13 @@ public final class ToolsString {
     }
 
     @SuppressWarnings("unchecked")
-    public static void sendMessageHeader(HttpURLConnection connection, String url) throws Exception {
+    public static void sendMessageHeader(HttpURLConnection connection, String url) throws IOException {
         Map<String, Object> msgHeader = new HashMap<String, Object>();
         msgHeader.put("Url", url);
         msgHeader.put("Response", ToolsString.getHTTPHeaders(connection));
 
         if (
-            !MediatorModel.model().followRedirection 
+            !MediatorModel.model().followRedirection
             && Pattern.matches("3\\d\\d", ""+connection.getResponseCode())
         ) {
             LOGGER.warn("HTTP 3XX Redirection detected. Please test again with option 'Follow HTTP redirection' enabled.");
@@ -116,7 +116,7 @@ public final class ToolsString {
         if (
             Pattern.matches("4\\d\\d", ""+connection.getResponseCode()) 
             && ((Map<String, String>) msgHeader.get("Response")).containsKey("WWW-Authenticate") 
-            && ((Map<String, String>) msgHeader.get("Response")).get("WWW-Authenticate") != null 
+            && ((Map<String, String>) msgHeader.get("Response")).get("WWW-Authenticate") != null
             && ((Map<String, String>) msgHeader.get("Response")).get("WWW-Authenticate").toString().startsWith("Basic ")
         ) {
             LOGGER.warn("Basic Authentication detected.\n"
@@ -135,7 +135,7 @@ public final class ToolsString {
         } else if (
             Pattern.matches("4\\d\\d", ""+connection.getResponseCode()) 
             && ((Map<String, String>) msgHeader.get("Response")).containsKey("WWW-Authenticate") 
-            && ((Map<String, String>) msgHeader.get("Response")).get("WWW-Authenticate") != null 
+            && ((Map<String, String>) msgHeader.get("Response")).get("WWW-Authenticate") != null
             && ((Map<String, String>) msgHeader.get("Response")).get("WWW-Authenticate").toString().startsWith("Digest ")
         ) {
             LOGGER.warn("Digest Authentication detected.\n"
@@ -172,7 +172,7 @@ public final class ToolsString {
         MediatorModel.model().interact(request);
         
         if (err != null) {
-            throw new Exception(err);
+            throw new IOException(err);
         }
     }
 }

@@ -37,9 +37,9 @@ public class ArrowIcon implements Icon, SwingConstants {
             case NORTH:
             case SOUTH: return iconSize;
             case EAST:
-            case WEST: return size;
+            case WEST: 
+            default: return size;
         }
-        return iconSize;
     }
 
     public int getIconHeight() {
@@ -47,8 +47,8 @@ public class ArrowIcon implements Icon, SwingConstants {
             case NORTH:
             case SOUTH: return size;
             case EAST:
-            case WEST: return iconSize;
+            case WEST: 
+            default: return iconSize;
         }
-        return size;
     }
 }

@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.jsql.view.junit.interaction;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.swing.interaction.IInteractionCommand;
 
@@ -17,6 +19,11 @@ import com.jsql.view.swing.interaction.IInteractionCommand;
  * Update the general information in status bar.
  */
 public class MessageInfo implements IInteractionCommand {
+    /**
+     * Using default log4j.properties from root /
+     */
+    private static final Logger LOGGER = Logger.getLogger(MessageInfo.class);
+
     /**
      * @param nullParam
      */
@@ -26,10 +33,10 @@ public class MessageInfo implements IInteractionCommand {
 
     @Override
     public void execute() {
-        System.out.println(MediatorModel.model().versionDatabase);
-        System.out.println(MediatorModel.model().currentDatabase);
-        System.out.println(MediatorModel.model().currentUser);
-        System.out.println(MediatorModel.model().authenticatedUser);
-        System.out.println();
+        LOGGER.info(MediatorModel.model().versionDatabase);
+        LOGGER.info(MediatorModel.model().currentDatabase);
+        LOGGER.info(MediatorModel.model().currentUser);
+        LOGGER.info(MediatorModel.model().authenticatedUser);
+        LOGGER.info("\n");
     }
 }

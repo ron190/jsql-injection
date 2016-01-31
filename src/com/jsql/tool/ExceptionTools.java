@@ -8,7 +8,7 @@ public class ExceptionTools {
     /**
      * Using default log4j.properties from root /
      */
-    public static final Logger LOGGER = Logger.getLogger(ExceptionTools.class);
+    private static final Logger LOGGER = Logger.getLogger(ExceptionTools.class);
     
     /**
      * Utility class.
@@ -32,7 +32,7 @@ public class ExceptionTools {
         protected void handleException(String tname, Throwable thrown) {
             LOGGER.error("Exception on " + tname, thrown);
             
-            //  Report #214: ignore if OutOfMemoryError: Java heap space 
+            //  Report #214: ignore if OutOfMemoryError: Java heap space
             if (MediatorModel.model().reportBugs && !"OutOfMemoryError".equals(thrown.getClass().getSimpleName())) {
                 GitTools.sendUnhandledException(tname, thrown);
             }

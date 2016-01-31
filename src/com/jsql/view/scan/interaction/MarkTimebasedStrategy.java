@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  * Mark the injection as invulnerable to a time based injection.
  */
 public class MarkTimebasedStrategy implements IInteractionCommand {
-    public static final Logger LOGGER = Logger.getLogger(MarkTimebasedStrategy.class);
+    private static final Logger LOGGER = Logger.getLogger(MarkTimebasedStrategy.class);
 
     /**
      * @param interactionParams

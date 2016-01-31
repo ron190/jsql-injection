@@ -25,13 +25,13 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
      * Every FALSE SQL statements will be checked,
      * more statements means a more robust application
      */
-    protected String[] falseTest = MediatorModel.model().sqlStrategy.getListFalseTest();
+    protected String[] falseTest = MediatorModel.model().currentVendor.getStrategy().getListFalseTest();
 
     /**
      * Every TRUE SQL statements will be checked,
      * more statements means a more robust application
      */
-    protected String[] trueTest = MediatorModel.model().sqlStrategy.getListTrueTest();
+    protected String[] trueTest = MediatorModel.model().currentVendor.getStrategy().getListTrueTest();
 
     /**
      * Constant linked to a URL, true if that url

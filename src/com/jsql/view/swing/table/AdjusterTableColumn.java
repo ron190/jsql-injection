@@ -173,16 +173,17 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
             return;
         }
 
-        width += spacing;
+        int calculatedWidth = width;
+        calculatedWidth += spacing;
 
         //  Don't shrink the column width
         if (isOnlyAdjustLarger) {
-            width = Math.max(width, tableColumn.getPreferredWidth());
+            calculatedWidth = Math.max(calculatedWidth, tableColumn.getPreferredWidth());
         }
 
         columnSizes.put(tableColumn, Integer.valueOf(tableColumn.getWidth()));
         table.getTableHeader().setResizingColumn(tableColumn);
-        tableColumn.setWidth(width);
+        tableColumn.setWidth(calculatedWidth);
     }
 
     /**

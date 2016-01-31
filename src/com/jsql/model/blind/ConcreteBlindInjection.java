@@ -156,11 +156,11 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
             throw new PreparationException();
         }
         
-        if (MediatorModel.model().sqlStrategy.getBlindFirstTest() == null) {
+        if (MediatorModel.model().currentVendor.getStrategy().getBlindFirstTest() == null) {
             return false;
         }
         
-        CallableBlind blindTest = new CallableBlind(MediatorModel.model().sqlStrategy.getBlindFirstTest());
+        CallableBlind blindTest = new CallableBlind(MediatorModel.model().currentVendor.getStrategy().getBlindFirstTest());
         try {
             blindTest.call();
         } catch (Exception e) {

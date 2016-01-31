@@ -16,6 +16,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.bean.Table;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
@@ -25,6 +27,11 @@ import com.jsql.view.swing.tree.model.NodeModelTable;
  * Add the tables to the corresponding database.
  */
 public class AddTables implements IInteractionCommand {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(AddTables.class);
+
     /**
      * Tables retreived by the view.
      */
@@ -57,8 +64,14 @@ public class AddTables implements IInteractionCommand {
 
             // Get the parent database
             databaseNode = MediatorGUI.gui().getTreeNodeModels().get(table.getParent());
-            // Add the table to the database
-            treeModel.insertNodeInto(newNode, databaseNode, databaseNode.getChildCount());
+            
+            // Report NullPointerException #1670 
+            if (databaseNode != null) {
+                // Add the table to the database
+                treeModel.insertNodeInto(newNode, databaseNode, databaseNode.getChildCount());
+            } else {
+                LOGGER.warn("Missing database for table "+ table.toString() +".");
+            }
         }
 
         if (databaseNode != null) {

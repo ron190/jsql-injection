@@ -45,6 +45,8 @@ public class ActionSaveTab extends AbstractAction {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getLogger(ActionSaveTab.class);
+    
+    final ReplaceFileChooser filechooser = new ReplaceFileChooser(MediatorModel.model().prefPathFile);
 
     public ActionSaveTab() {
         super();
@@ -54,8 +56,6 @@ public class ActionSaveTab extends AbstractAction {
         this.putValue(Action.NAME, "Save Tab As...");
         this.putValue(Action.SMALL_ICON, HelperGUI.EMPTY);
     }
-
-    final ReplaceFileChooser filechooser = new ReplaceFileChooser(MediatorModel.model().prefPathFile);
     
     @Override
     public void actionPerformed(ActionEvent e) {

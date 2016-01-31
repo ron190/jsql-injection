@@ -3,7 +3,7 @@
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
     <target name="create_run_jar">
-        <jar destfile="target/jsql-injection-v0.73.jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="target/jsql-injection-v0.74.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="com.jsql.MainApplication"/>
                 <attribute name="Class-Path" value="."/>
@@ -12,6 +12,7 @@
             <zipfileset excludes="META-INF/*.SF" src="E:/Dev/maven-repo/commons-codec/commons-codec/1.9/commons-codec-1.9.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="E:/Dev/maven-repo/org/jsoup/jsoup/1.7.3/jsoup-1.7.3.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="E:/Dev/maven-repo/org/apache/commons/commons-lang3/3.3.2/commons-lang3-3.3.2.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="E:/Dev/maven-repo/commons-io/commons-io/1.3.2/commons-io-1.3.2.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="E:/Dev/maven-repo/log4j/log4j/1.2.17/log4j-1.2.17.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="E:/Dev/maven-repo/net/coderazzi/tablefilter-swing/5.1.1/tablefilter-swing-5.1.1.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="E:/Dev/maven-repo/org/json/json/20140107/json-20140107.jar"/>

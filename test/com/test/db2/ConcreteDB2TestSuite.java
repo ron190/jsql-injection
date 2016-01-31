@@ -2,37 +2,40 @@ package com.test.db2;
 
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.exception.PreparationException;
 import com.test.AbstractTestSuite;
 
 public class ConcreteDB2TestSuite extends AbstractTestSuite {
-    public ConcreteDB2TestSuite () {
-        DB_URL = "jdbc:db2://localhost:50000/sample";
-        USER = "db2admin";
-        PASS = "ec3-benjo";
-        TEST_DATABASE = "SYSTOOLS";
-        TEST_TABLE = "POLICY";
-        TEST_COLUMN = "NAME";
-        
-//        CONF_DATABASE = "sys";
-        CONF_DBNAME = "schemaname";
-//        CONF_DBTABLE = "all_tables";
-        CONF_TABNAME = "name";
-//        CONF_TABTABLE = "all_tables";
-        CONF_COLNAME = "name";
-//        CONF_COLTABLE = "all_tab_columns";
+    /**
+     * Using default log4j.properties from root /
+     */
+    private static final Logger LOGGER = Logger.getLogger(ConcreteDB2TestSuite.class);
 
-        SQL_DATABASES = "select trim(schemaname) schemaname from syscat.schemata";
-        SQL_TABLES = "select trim(name) name from sysibm.systables where creator='SYSTOOLS'";   
-        SQL_COLUMNS = "select trim(name) name from sysibm.syscolumns where coltype!='BLOB'and tbcreator='SYSTOOLS'and tbname='POLICY'";  
-        SQL_VALUES = "SELECT trim(NAME) name FROM SYSTOOLS.POLICY";   
+    public ConcreteDB2TestSuite () {
+        this.jdbcURL = "jdbc:db2://localhost:50000/sample";
+        this.jdbcUser = "db2admin";
+        this.jdbcPassword = "ec3-benjo";
+        this.jsqlDatabaseName = "SYSTOOLS";
+        this.jsqlTableName = "POLICY";
+        this.jsqlColumnName = "NAME";
+        
+        this.jdbcColumnForDatabaseName = "schemaname";
+        this.jdbcColumnForTableName = "name";
+        this.jdbcColumnForColumnName = "name";
+        
+        this.jdbcQueryForDatabaseNames = "select trim(schemaname) schemaname from syscat.schemata";
+        this.jdbcQueryForTableNames = "select trim(name) name from sysibm.systables where creator='SYSTOOLS'";   
+        this.jdbcQueryForColumnNames = "select trim(name) name from sysibm.syscolumns where coltype!='BLOB'and tbcreator='SYSTOOLS'and tbname='POLICY'";  
+        this.jdbcQueryForValues = "SELECT trim(NAME) name FROM SYSTOOLS.POLICY";   
         
         try {
             initializer();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.warn(e);
         } catch (PreparationException e) {
-            e.printStackTrace();
+            LOGGER.warn(e);
         }
     }
 }

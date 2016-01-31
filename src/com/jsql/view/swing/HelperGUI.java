@@ -52,11 +52,8 @@ public final class HelperGUI {
      */
     private static final Logger LOGGER = Logger.getLogger(HelperGUI.class);
 
-    public static Color SELECTION_BACKGROUND = (Color) UIManager.get("TabbedPane.selected");
+    public static final Color SELECTION_BACKGROUND = (Color) UIManager.get("TabbedPane.selected");
     
-    static {
-        SELECTION_BACKGROUND = (Color) UIManager.get("TabbedPane.selected");
-    }
     public static final Color DEFAULT_BACKGROUND = UIManager.getColor("Panel.background");
     public static final Color COMPONENT_BORDER = UIManager.getColor("controlShadow");
     public static final Color FOCUS_LOST = new Color(248, 249, 249);

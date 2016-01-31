@@ -8,7 +8,7 @@ import com.jsql.model.bean.Table;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class DerbyStrategy extends ASQLStrategy {
+public class DerbyStrategy extends AbstractVendorStrategy {
 
     @Override
     public String getSchemaInfos() {
@@ -102,10 +102,5 @@ public class DerbyStrategy extends ASQLStrategy {
     @Override
     public String getLimit(Integer limitSQLResult) {
         return "+OFFSET+" + limitSQLResult + "+ROWS+FETCH+NEXT+1+ROWS+ONLY";
-    }
-    
-    @Override
-    public String getDbLabel() {
-        return "Derby";
     }
 }

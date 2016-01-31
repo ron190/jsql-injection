@@ -22,34 +22,35 @@ public class ErrorbasedStrategy extends AbstractInjectionStrategy {
         
         String performanceSourcePage = MediatorModel.model().inject(
             MediatorModel.model().insertionCharacter + 
-            MediatorModel.model().sqlStrategy.getErrorBasedStrategyCheck()
+            MediatorModel.model().currentVendor.getStrategy().getErrorBasedStrategyCheck()
         );
 
-        isApplicable = 
-                    performanceSourcePage.indexOf("Duplicate entry '1' for key ") != -1
-                 || performanceSourcePage.indexOf("Like verdier '1' for ") != -1
-                 || performanceSourcePage.indexOf("Like verdiar '1' for ") != -1
-                 || performanceSourcePage.indexOf("Kattuv väärtus '1' võtmele ") != -1
-                 || performanceSourcePage.indexOf("Opakovaný kµúè '1' (èíslo kµúèa ") != -1
-                 || performanceSourcePage.indexOf("pienie '1' dla klucza ") != -1
-                 || performanceSourcePage.indexOf("Duplikalt bejegyzes '1' a ") != -1
-                 || performanceSourcePage.indexOf("Ens værdier '1' for indeks ") != -1
-                 || performanceSourcePage.indexOf("Dubbel nyckel '1' för nyckel ") != -1
-                 || performanceSourcePage.indexOf("klíè '1' (èíslo klíèe ") != -1
-                 || performanceSourcePage.indexOf("Duplicata du champ '1' pour la clef ") != -1
-                 || performanceSourcePage.indexOf("Entrada duplicada '1' para la clave ") != -1
-                 || performanceSourcePage.indexOf("Cimpul '1' e duplicat pentru cheia ") != -1
-                 || performanceSourcePage.indexOf("Dubbele ingang '1' voor zoeksleutel ") != -1
-                 || performanceSourcePage.indexOf("Valore duplicato '1' per la chiave ") != -1
-                 /*jp missing*/
-                 /*kr grk ukr rss missing*/
-                 || performanceSourcePage.indexOf("Dupliran unos '1' za klju") != -1
-                 || performanceSourcePage.indexOf("Entrada '1' duplicada para a chave ") != -1;
+        isApplicable = performanceSourcePage.matches(
+            "(?s).*(Duplicate entry '1' for key "
+            + "|Like verdier '1' for "
+            + "|Like verdiar '1' for "
+            + "|Kattuv väärtus '1' võtmele "
+            + "|Opakovaný kµúè '1' \\(èíslo kµúèa "
+            + "|pienie '1' dla klucza "
+            + "|Duplikalt bejegyzes '1' a "
+            + "|Ens værdier '1' for indeks "
+            + "|Dubbel nyckel '1' för nyckel "
+            + "|klíè '1' \\(èíslo klíèe "
+            + "|Duplicata du champ '1' pour la clef "
+            + "|Entrada duplicada '1' para la clave "
+            + "|Cimpul '1' e duplicat pentru cheia "
+            + "|Dubbele ingang '1' voor zoeksleutel "
+            + "|Valore duplicato '1' per la chiave "
+            /*jp missing*/
+            /*kr grk ukr rss missing*/
+            + "|Dupliran unos '1' za klju"        
+            + "|Entrada '1' duplicada para a chave ).*"
+        );
         
         if (this.isApplicable) {
-            allow();
+            this.allow();
         } else {
-            unallow();
+            this.unallow();
         }
     }
 
@@ -71,7 +72,7 @@ public class ErrorbasedStrategy extends AbstractInjectionStrategy {
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable) throws StoppableException {
         return MediatorModel.model().inject(
             MediatorModel.model().insertionCharacter +
-            MediatorModel.model().sqlStrategy.errorBasedStrategy(sqlQuery, startPosition)
+            MediatorModel.model().currentVendor.getStrategy().errorBasedStrategy(sqlQuery, startPosition)
         );
     }
 

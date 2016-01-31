@@ -25,7 +25,10 @@ public class GitTools {
      */
     private static final Logger LOGGER = Logger.getLogger(GitTools.class);
     
-    public enum ShowOnConsole {YES, NO}; 
+    public enum ShowOnConsole {
+        YES,
+        NO;
+    }; 
 
     /**
      * Utility class.
@@ -61,28 +64,30 @@ public class GitTools {
     }
     
     public static void sendUnhandledException(String tname, Throwable thrown) {
+        String javaVersion = System.getProperty("java.version");
+        String osArch = System.getProperty("os.arch");
+        
         String clientDescription = 
               "```\n"
-            + "jSQL version: " + InjectionModel.JSQLVERSION +"\n"
-            + "Java version: " + System.getProperty("java.version") +"\n"
-            + "Operating system: " + System.getProperty("os.name") +"\n"
-            + "Operating system version: " + System.getProperty("os.version") +"\n"
-            + "Desktop: " + System.getProperty("sun.desktop") +"\n"
-            + "Strategy: " +( MediatorModel.model().injectionStrategy != null ? MediatorModel.model().injectionStrategy.getName() : null )+"\n"
-            + "Db engine: " + MediatorModel.model().sqlStrategy.getDbLabel() +"\n"
+            + "jSQL: v"+ InjectionModel.JSQLVERSION +"\n"
+            + "Java: v"+ javaVersion +"-"+ osArch +"\n"
+            + "OS: "+ System.getProperty("os.name") +" (v"+ System.getProperty("os.version") +")\n"
+            + "Desktop: "+( System.getProperty("sun.desktop") != null ? System.getProperty("sun.desktop") : "undefined" )+"\n"
+            + "Strategy: "+( MediatorModel.model().injectionStrategy != null ? MediatorModel.model().injectionStrategy.getName() : "undefined" )+"\n"
+            + "Db engine: "+ MediatorModel.model().currentVendor.toString() +"\n"
             + "```\n"
             + "```\n"
-            + "Exception on " + tname +"\n"
+            + "Exception on "+ tname +"\n"
             + ExceptionUtils.getStackTrace(thrown).trim() +"\n"
             + "```";
         
         clientDescription = clientDescription.replaceAll("(https?://[.a-zA-Z_0-9]*)+", "");
           
-        GitTools.sendReport(clientDescription, ShowOnConsole.NO, thrown.getClass().getSimpleName());
+        GitTools.sendReport(clientDescription, ShowOnConsole.NO, "Unhandled "+thrown.getClass().getSimpleName());
     }
     
     public static void sendReport(String reportBody) {
-        GitTools.sendReport(reportBody, ShowOnConsole.YES, "");
+        GitTools.sendReport(reportBody, ShowOnConsole.YES, "Report");
     }
     
     public static void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
@@ -130,7 +135,7 @@ public class GitTools {
             DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
             dataOut.writeBytes(
                 new JSONObject()
-                    .put("title", "Report" + (!"".equals(reportTitle) ? " "+reportTitle : ""))
+                    .put("title", reportTitle)
                     .put("body", new String(reportBody.getBytes("UTF-8")))
                     .toString()
             );
@@ -143,7 +148,9 @@ public class GitTools {
             
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                while (reader.readLine() != null);
+                while (reader.readLine() != null) {
+                    // nothing
+                }
                 reader.close();
             } catch (IOException e) {
                 if (showOnConsole == ShowOnConsole.YES) {

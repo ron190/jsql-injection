@@ -25,7 +25,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ManagerBruteForce.class);
+    private static final Logger LOGGER = Logger.getLogger(ActionBruteForce.class);
 
     private ManagerBruteForce bruteForceManager;
     

@@ -26,8 +26,6 @@ public class HTTPHeader {
      */
     private Map<String, String> response;
     
-    private String params;
-    private String timing;
     public String source;
     
     /**

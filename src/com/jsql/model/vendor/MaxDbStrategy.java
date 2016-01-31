@@ -8,7 +8,7 @@ import com.jsql.model.bean.Table;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class MaxDbStrategy extends ASQLStrategy {
+public class MaxDbStrategy extends AbstractVendorStrategy {
 
     @Override
     public String getSchemaInfos() {
@@ -92,10 +92,5 @@ public class MaxDbStrategy extends ASQLStrategy {
     @Override
     public String getLimit(Integer limitSQLResult) {
         return "+having+count(*)+between+" + (limitSQLResult+1) + "+and+" + (limitSQLResult+1);
-    }
-    
-    @Override
-    public String getDbLabel() {
-        return "MaxDb";
     }
 }

@@ -10,12 +10,19 @@
  ******************************************************************************/
 package com.jsql.view.junit.interaction;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.view.swing.interaction.IInteractionCommand;
 
 /**
  * Append text to the tab Binary.
  */
 public class MessageBinary implements IInteractionCommand {
+    /**
+     * Using default log4j.properties from root /
+     */
+    private static final Logger LOGGER = Logger.getLogger(MessageBinary.class);
+
     /**
      * Text to append to the Binary log area.
      */
@@ -30,7 +37,7 @@ public class MessageBinary implements IInteractionCommand {
 
     @Override
     public void execute() {
-        System.out.println(text);
-        System.out.println();
+        LOGGER.info(text);
+        LOGGER.info("\n");
     }
 }

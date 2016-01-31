@@ -71,6 +71,8 @@ public class JColoredConsole extends JPopupTextPane {
             }
         } catch (BadLocationException e) {
             LOGGER.fatal(message);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            LOGGER.fatal(message);
         }
     }
 }

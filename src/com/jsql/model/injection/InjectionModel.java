@@ -55,8 +55,6 @@ import com.jsql.model.strategy.BlindStrategy;
 import com.jsql.model.strategy.ErrorbasedStrategy;
 import com.jsql.model.strategy.NormalStrategy;
 import com.jsql.model.strategy.TimeStrategy;
-import com.jsql.model.vendor.ASQLStrategy;
-import com.jsql.model.vendor.MySQLStrategy;
 import com.jsql.model.vendor.Vendor;
 import com.jsql.tool.ToolsString;
 
@@ -68,7 +66,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Log4j logger sent to view.
      */
-    public static final Logger LOGGER = Logger.getLogger(InjectionModel.class);
+    private static final Logger LOGGER = Logger.getLogger(InjectionModel.class);
     
     /**
      * List of running jobs.
@@ -78,7 +76,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Current version of application.
      */
-    public static final String JSQLVERSION = "0.73"; // Please edit file .version when changed
+    public static final String JSQLVERSION = "0.74"; // Please edit file .version when changed
 
     /**
      * i.e, -1 in "[..].php?id=-1 union select[..]"
@@ -181,10 +179,17 @@ public class InjectionModel extends AbstractModelObservable {
      */
     public boolean reportBugs = true;
     
-    // TODO Fix vendor before release
-    public ASQLStrategy sqlStrategy = new MySQLStrategy();
+    /**
+     * Database vendor currently used.
+     * It can be switched to another vendor by automatic detection or manual selection.
+     */
+    public Vendor currentVendor = Vendor.MYSQL;
     
-    public Vendor selectedVendor = Vendor.Undefined;
+    /**
+     * Database vendor selected by user (default UNDEFINED).
+     * If not UNDEFINED then the next injection will be forced to use the selected vendor. 
+     */
+    public Vendor selectedVendor = Vendor.UNDEFINED;
     
     /**
      * Current injection strategy.
@@ -245,14 +250,10 @@ public class InjectionModel extends AbstractModelObservable {
     public boolean enableKerberos = false;
 
     public void instanciationDone() {
-        LOGGER.trace("jSQL Injection version " + JSQLVERSION);
+        String javaVersion = System.getProperty("java.version");
+        String osArch = System.getProperty("os.arch");
         
-        String sVersion = System.getProperty("java.version");
-        sVersion = sVersion.substring(0, 3);
-        Float fVersion = Float.valueOf(sVersion);
-        if (fVersion.floatValue() < (float) 1.7) {
-            LOGGER.warn("You are running an old version of Java ("+ sVersion +"), you can install the latest version from java.com.");
-        }
+        LOGGER.trace("jSQL Injection v" + JSQLVERSION + " on java "+ javaVersion +"-"+ osArch +"");
     }
 
     /**
@@ -300,7 +301,12 @@ public class InjectionModel extends AbstractModelObservable {
                 LOGGER.trace("Connection test...");
 
                 if (this.enableKerberos) {
-                    String a = Pattern.compile("\\{.*", Pattern.DOTALL).matcher(StringUtils.join(Files.readAllLines(Paths.get(this.kerberosLoginConf), Charset.defaultCharset()), "")).replaceAll("").trim();
+                    String a = 
+                            Pattern
+                            .compile("(?s)\\{.*")
+                            .matcher(StringUtils.join(Files.readAllLines(Paths.get(this.kerberosLoginConf), Charset.defaultCharset()), ""))
+                            .replaceAll("")
+                            .trim();
                     
                     SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(a);
                     connection = spnego.connect(new URL(this.initialUrl));
@@ -315,12 +321,12 @@ public class InjectionModel extends AbstractModelObservable {
                 
                 // Add headers if exists (Authorization:Basic, etc)
                 for (String header: headerData.split("\\\\r\\\\n")) {
-                    Matcher regexSearch = Pattern.compile("(.*):(.*)", Pattern.DOTALL).matcher(header);
+                    Matcher regexSearch = Pattern.compile("(?s)(.*):(.*)").matcher(header);
                     if (regexSearch.find()) {
                         String keyHeader = regexSearch.group(1).trim();
                         String valueHeader = regexSearch.group(2).trim();
                         try {
-                            if (keyHeader.equalsIgnoreCase("Cookie")) {
+                            if ("Cookie".equalsIgnoreCase(keyHeader)) {
                                 connection.addRequestProperty(keyHeader, valueHeader);
                             } else {
                                 connection.addRequestProperty(keyHeader, URLDecoder.decode(valueHeader, "UTF-8"));
@@ -335,8 +341,6 @@ public class InjectionModel extends AbstractModelObservable {
                 
                 // Disable caching of authentication like Kerberos
                 connection.disconnect();
-            } catch (IOException e) {
-                throw new PreparationException("Connection problem: " + e.getMessage());
             } catch (Exception e) {
                 throw new PreparationException("Connection problem: " + e.getMessage());
             }
@@ -414,7 +418,7 @@ public class InjectionModel extends AbstractModelObservable {
      */
     public String getVisibleIndex(String firstSuccessPageSource) {
         // Parse all indexes found
-        Matcher regexSearch = Pattern.compile("1337(\\d+?)7331", Pattern.DOTALL).matcher(firstSuccessPageSource);
+        Matcher regexSearch = Pattern.compile("(?s)1337(\\d+?)7331").matcher(firstSuccessPageSource);
         List<String> foundIndexes = new ArrayList<String>();
         while (regexSearch.find()) {
             foundIndexes.add(regexSearch.group(1));
@@ -428,19 +432,19 @@ public class InjectionModel extends AbstractModelObservable {
         // Replace correct indexes from 1337[index]7331 to
         // ==> SQLi[index]######...######iLQS
         // Search for index that displays the most #
-        String performanceQuery = MediatorModel.model().sqlStrategy.getIndicesCapacity(indexes);
+        String performanceQuery = MediatorModel.model().currentVendor.getStrategy().getIndicesCapacity(indexes);
         String performanceSourcePage = this.inject(performanceQuery);
 
         // Build a 2D array of string with:
         //     column 1: index
         //     column 2: # found, so #######...#######
-        regexSearch = Pattern.compile("SQLi(\\d+)(#+)", Pattern.DOTALL).matcher(performanceSourcePage);
+        regexSearch = Pattern.compile("(?s)SQLi(\\d+)(#+)").matcher(performanceSourcePage);
         List<String[]> performanceResults = new ArrayList<String[]>();
         while (regexSearch.find()) {
             performanceResults.add(new String[]{regexSearch.group(1), regexSearch.group(2)});
         }
 
-        if (performanceResults.size() == 0) {
+        if (performanceResults.isEmpty()) {
             this.normalStrategy.performanceLength = "0";
             return null;
         }
@@ -569,7 +573,12 @@ public class InjectionModel extends AbstractModelObservable {
         // Define the connection
         try {
             if (this.enableKerberos) {
-                String a = Pattern.compile("\\{.*", Pattern.DOTALL).matcher(StringUtils.join(Files.readAllLines(Paths.get(this.kerberosLoginConf), Charset.defaultCharset()), "")).replaceAll("").trim();
+                String a = 
+                        Pattern
+                        .compile("(?s)\\{.*")
+                        .matcher(StringUtils.join(Files.readAllLines(Paths.get(this.kerberosLoginConf), Charset.defaultCharset()), ""))
+                        .replaceAll("")
+                        .trim();
                 
                 SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(a);
                 connection = spnego.connect(urlObject);
@@ -600,12 +609,12 @@ public class InjectionModel extends AbstractModelObservable {
          */
         if (!"".equals(this.headerData)) {
             for (String header: this.buildQuery("HEADER", headerData, useVisibleIndex, dataInjection).split("\\\\r\\\\n")) {
-                Matcher regexSearch = Pattern.compile("(.*):(.*)", Pattern.DOTALL).matcher(header);
+                Matcher regexSearch = Pattern.compile("(?s)(.*):(.*)").matcher(header);
                 if (regexSearch.find()) {
                     String keyHeader = regexSearch.group(1).trim();
                     String valueHeader = regexSearch.group(2).trim();
                     try {
-                        if (keyHeader.equalsIgnoreCase("Cookie")) {
+                        if ("Cookie".equalsIgnoreCase(keyHeader)) {
                             connection.addRequestProperty(keyHeader, valueHeader);
                         } else {
                             connection.addRequestProperty(keyHeader, URLDecoder.decode(valueHeader, "UTF-8"));

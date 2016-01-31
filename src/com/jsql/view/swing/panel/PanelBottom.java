@@ -304,6 +304,8 @@ public class PanelBottom extends JPanel {
                     networkTabTiming.setText("?");
                     networkTabSource.setText(listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).source);
                     networkTabPreview.setText("<html>" + listHTTPHeader.get(PanelBottom.this.networkTable.getSelectedRow()).source + "</html>");
+                    // ^^^^ Report EmptyStackException #1551 
+                    // To avoid this, create a new document, getEditorKit().createDefaultDocument(), and replace the existing Document with the new one.
                 }
             }
         });

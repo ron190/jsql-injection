@@ -126,28 +126,36 @@ public class SwingAppender extends WriterAppender {
         switch (level.toInt()) {
             case Level.TRACE_INT:
                 // Avoid errors which might occur in headless mode
-                if (consoleColored == null) return;
+                if (consoleColored == null) {
+                    return;
+                }
                 
                 consoleColored.append(message, TRACE);
                 consoleColored.getProxy().setCaretPosition(consoleColored.getProxy().getDocument().getLength());
                 break;
             case Level.ALL_INT:
                 // Avoid errors which might occur in headless mode
-                if (consoleColored == null) return;
+                if (consoleColored == null) {
+                    return;
+                }
                 
                 consoleColored.append(message, ALL);
                 consoleColored.getProxy().setCaretPosition(consoleColored.getProxy().getDocument().getLength());
                 break;
             case Level.FATAL_INT:
                 // Avoid errors which might occur in headless mode
-                if (consoleColored == null) return;
+                if (consoleColored == null) {
+                    return;
+                }
                 
                 consoleColored.append(message, FATAL);
                 consoleColored.getProxy().setCaretPosition(consoleColored.getProxy().getDocument().getLength());
                 break;
             case Level.ERROR_INT:
                 // Avoid errors which might occur in headless mode
-                if (javaConsole == null) return;
+                if (javaConsole == null) {
+                    return;
+                }
                 
                 javaConsole.append(message, WARN);
                 javaConsole.getProxy().setCaretPosition(javaConsole.getProxy().getDocument().getLength());
@@ -160,28 +168,36 @@ public class SwingAppender extends WriterAppender {
                 break;
             case Level.WARN_INT:
                 // Avoid errors which might occur in headless mode
-                if (consoleColored == null) return;
+                if (consoleColored == null) {
+                    return;
+                }
                 
                 consoleColored.append(message, WARN);
                 consoleColored.getProxy().setCaretPosition(consoleColored.getProxy().getDocument().getLength());
                 break;
             case Level.INFO_INT:
                 // Avoid errors which might occur in headless mode
-                if (consoleColored == null) return;
+                if (consoleColored == null) {
+                    return;
+                }
                 
                 consoleColored.append(message, INFO);
                 consoleColored.getProxy().setCaretPosition(consoleColored.getProxy().getDocument().getLength());
                 break;
             case Level.DEBUG_INT:
                 // Avoid errors which might occur in headless mode
-                if (consoleColored == null) return;
+                if (consoleColored == null) {
+                    return;
+                }
                 
                 consoleColored.append(message, DEBUG);
                 consoleColored.getProxy().setCaretPosition(consoleColored.getProxy().getDocument().getLength());
                 break;
             default:
                 // Avoid errors which might occur in headless mode
-                if (consoleColored == null) return;
+                if (consoleColored == null) {
+                    return;
+                }
                 
                 consoleColored.append(message, ALL);
                 consoleColored.getProxy().setCaretPosition(consoleColored.getProxy().getDocument().getLength());

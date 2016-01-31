@@ -103,22 +103,24 @@ public class HashBruter extends Bruter {
         }
         if (!found || !done) {
             if (baseString.length() == length) {
-                if(type.equalsIgnoreCase("adler32")) {
+                if("adler32".equalsIgnoreCase(type)) {
                     generatedHash = generateAdler32(baseString);
-                } else if(type.equalsIgnoreCase("crc16")) {
+                } else if("crc16".equalsIgnoreCase(type)) {
                     generatedHash = generateCRC16(baseString);
-                } else if(type.equalsIgnoreCase("crc32")) {
+                } else if("crc32".equalsIgnoreCase(type)) {
                     generatedHash = generateCRC32(baseString);
-                } else if(type.equalsIgnoreCase("crc64")) {
+                } else if("crc64".equalsIgnoreCase(type)) {
                     generatedHash = generateCRC64(baseString.getBytes());
-                } else if(type.equalsIgnoreCase("mysql")) {
+                } else if("mysql".equalsIgnoreCase(type)) {
                     generatedHash = generateMySQL(baseString.toCharArray());
-                } else if(type.equalsIgnoreCase("md4")) {
+                } else if("md4".equalsIgnoreCase(type)) {
                     generatedHash = generateMd4(baseString);
                 } else {
                     generatedHash = generateHash(baseString.toCharArray());
                 }
-                    password = baseString;
+                
+                password = baseString;
+                
                 if (hash.equals(generatedHash)) {
                     password = baseString;
                     found = true;
@@ -144,7 +146,7 @@ public class HashBruter extends Bruter {
         byte[] passwordByte = passwordString.getBytes();
         md.update(passwordByte, 0, passwordByte.length);
         byte[] encodedPassword = md.digest();
-        String encodedPasswordInString = toHexString(encodedPassword);
+        String encodedPasswordInString = digestToHexString(encodedPassword);
         
         MessageDigest md2 = null;
         try {
@@ -156,7 +158,7 @@ public class HashBruter extends Bruter {
         byte[] passwordByte2 = passwordString2.getBytes();
         md2.update(passwordByte2, 0, passwordByte2.length);
         byte[] encodedPassword2 = md2.digest();
-        String encodedPasswordInString2 = toHexString(encodedPassword2);
+        String encodedPasswordInString2 = digestToHexString(encodedPassword2);
         
         return encodedPasswordInString2;
     }
@@ -172,26 +174,8 @@ public class HashBruter extends Bruter {
         byte[] passwordByte = passwordString.getBytes();
         md.update(passwordByte, 0, passwordByte.length);
         byte[] encodedPassword = md.digest();
-        String encodedPasswordInString = toHexString(encodedPassword);
+        String encodedPasswordInString = digestToHexString(encodedPassword);
         return encodedPasswordInString;
-    }
-
-    private void byte2hex(byte b, StringBuffer buf) {
-        char[] hexChars = {'0', '1', '2', '3', '4', '5', '6', '7', '8',
-            '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-        int high = (b & 0xf0) >> 4;
-        int low = b & 0x0f;
-        buf.append(hexChars[high]);
-        buf.append(hexChars[low]);
-    }
-
-    private String toHexString(byte[] block) {
-        StringBuffer buf = new StringBuffer();
-        int len = block.length;
-        for (int i = 0; i < len; i++) {
-            byte2hex(block[i], buf);
-        }
-        return buf.toString();
     }
 
     private String generateCRC32(String baseString) {

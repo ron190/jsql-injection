@@ -41,7 +41,7 @@ public class SuspendableGetSQLIndices extends AbstractSuspendable {
             taskCompletionService.submit(
                 new CallableHTMLPage(
                     MediatorModel.model().insertionCharacter + 
-                    MediatorModel.model().sqlStrategy.getIndices(nbIndex)
+                    MediatorModel.model().currentVendor.getStrategy().getIndices(nbIndex)
                 )
             );
         }
@@ -61,7 +61,7 @@ public class SuspendableGetSQLIndices extends AbstractSuspendable {
                 CallableHTMLPage currentCallable = taskCompletionService.take().get();
 
                 // Found a correct mark 1337[index]7331 in the source
-                if (Pattern.compile(".*1337\\d+7331.*", Pattern.DOTALL).matcher(currentCallable.getContent()).matches()) {
+                if (Pattern.compile("(?s).*1337\\d+7331.*").matcher(currentCallable.getContent()).matches()) {
                     MediatorModel.model().firstSuccessPageSource = currentCallable.getContent();
                     initialQuery = currentCallable.getUrl().replaceAll("0%2b1", "1");
                     requestFound = true;
@@ -70,7 +70,7 @@ public class SuspendableGetSQLIndices extends AbstractSuspendable {
                     taskCompletionService.submit(
                         new CallableHTMLPage(
                             MediatorModel.model().insertionCharacter + 
-                            MediatorModel.model().sqlStrategy.getIndices(nbIndex)
+                            MediatorModel.model().currentVendor.getStrategy().getIndices(nbIndex)
                         )
                     );
                     nbIndex++;

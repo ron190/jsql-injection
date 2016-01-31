@@ -8,7 +8,7 @@ import com.jsql.model.bean.Table;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class IngresStrategy extends ASQLStrategy {
+public class IngresStrategy extends AbstractVendorStrategy {
 
     @Override
     public String getSchemaInfos() {
@@ -91,10 +91,5 @@ public class IngresStrategy extends ASQLStrategy {
     @Override
     public String getLimit(Integer limitSQLResult) {
         return "+having+count(*)+between+" + (limitSQLResult+1) + "+and+" + (limitSQLResult+1);
-    }
-    
-    @Override
-    public String getDbLabel() {
-        return "Ingres";
     }
 }

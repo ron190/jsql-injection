@@ -2,26 +2,22 @@ package com.jsql.model.vendor;
 
 import com.jsql.model.bean.Database;
 import com.jsql.model.bean.Table;
-import com.jsql.model.blind.ConcreteTimeInjection;
-import com.jsql.model.injection.MediatorModel;
-import com.jsql.tool.ToolsString;
 
-public abstract class ASQLStrategy {    
-    abstract public String getDbLabel();
+public abstract class AbstractVendorStrategy {    
     
-    abstract public String getSchemaInfos();
-    abstract public String getSchemaList();
-    abstract public String getTableList(Database database);
-    abstract public String getColumnList(Table table);
-    abstract public String getValues(String[] arrayColumns, Database database, Table table);
+    public abstract String getSchemaInfos();
+    public abstract String getSchemaList();
+    public abstract String getTableList(Database database);
+    public abstract String getColumnList(Table table);
+    public abstract String getValues(String[] arrayColumns, Database database, Table table);
 
-    abstract public String normalStrategy(String sqlQuery, String startPosition);
+    public abstract String normalStrategy(String sqlQuery, String startPosition);
     
-    abstract public String getIndicesCapacity(String[] indexes);
-    abstract public String getIndices(Integer nbFields);
-    abstract public String getOrderBy();
+    public abstract String getIndicesCapacity(String[] indexes);
+    public abstract String getIndices(Integer nbFields);
+    public abstract String getOrderBy();
     
-    abstract public String getLimit(Integer limitSQLResult);
+    public abstract String getLimit(Integer limitSQLResult);
     
     public String getPrivilege() {
         return "";
@@ -85,10 +81,5 @@ public abstract class ASQLStrategy {
 
     public String timeStrategy(String sqlQuery, String startPosition) {
         return "";
-    }
-    
-    @Override
-    public String toString() {
-        return this.getDbLabel();
     }
 }

@@ -175,10 +175,12 @@ public class JScrollIndicator extends JLayeredPane {
 
         @Override
         public void setUI(ScrollBarUI ui) {
+            // nothing
         }
 
         @Override
         public void updateUI() {
+            // nothing
         }
 
         @Override
@@ -233,10 +235,10 @@ public class JScrollIndicator extends JLayeredPane {
         }
 
         private void paintThumb(Graphics g, JComponent c) {
-            int alpha = isThumbRollover() ? SCROLL_BAR_ALPHA_ROLLOVER : SCROLL_BAR_ALPHA;
+            int alphaThumb = isThumbRollover() ? SCROLL_BAR_ALPHA_ROLLOVER : SCROLL_BAR_ALPHA;
 
             g.setColor(new Color(getAlphaColor(THUMB_COLOR).getRed(),
-                    getAlphaColor(THUMB_COLOR).getGreen(), getAlphaColor(THUMB_COLOR).getBlue(), alpha));
+                    getAlphaColor(THUMB_COLOR).getGreen(), getAlphaColor(THUMB_COLOR).getBlue(), alphaThumb));
             
             Rectangle thumbBounds = getThumbBounds();
 

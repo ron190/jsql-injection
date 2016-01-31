@@ -8,7 +8,7 @@ import com.jsql.model.bean.Table;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class H2Strategy extends ASQLStrategy {
+public class H2Strategy extends AbstractVendorStrategy {
 
     @Override
     public String getSchemaInfos() {
@@ -184,10 +184,5 @@ public class H2Strategy extends ASQLStrategy {
     @Override
     public String getLimit(Integer limitSQLResult) {
         return "+limit+" + limitSQLResult + ",65536";
-    }
-
-    @Override
-    public String getDbLabel() {
-        return "H2";
     }
 }

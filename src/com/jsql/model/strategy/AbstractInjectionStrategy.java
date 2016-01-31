@@ -25,7 +25,7 @@ public abstract class AbstractInjectionStrategy {
      * Test if this strategy can be used to inject SQL.
      * @return
      * @throws PreparationException
-     * @throws StoppableException 
+     * @throws StoppableException
      */
     protected abstract void checkApplicability() throws PreparationException, StoppableException;
     

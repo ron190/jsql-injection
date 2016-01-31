@@ -73,8 +73,9 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
                 JLabel lbl = (JLabel) tcrOs.getTableCellRendererComponent(table,
                         value, isSelected, hasFocus, row, column);
                 lbl.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.LIGHT_GRAY));
-                if(column == 1)
+                if (column == 1) {
                     lbl.setBackground(new Color(230,230,230));
+                }
                 return lbl;
             }
         });

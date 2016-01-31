@@ -12,6 +12,8 @@ package com.jsql.view.junit.interaction;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.bean.Database;
 import com.jsql.view.swing.interaction.IInteractionCommand;
 
@@ -19,6 +21,11 @@ import com.jsql.view.swing.interaction.IInteractionCommand;
  * Add the databases to current injection panel.
  */
 public class AddDatabases implements IInteractionCommand {
+    /**
+     * Using default log4j.properties from root /
+     */
+    private static final Logger LOGGER = Logger.getLogger(AddDatabases.class);
+
     /**
      * Databases retreived by the view.
      */
@@ -37,8 +44,8 @@ public class AddDatabases implements IInteractionCommand {
     public void execute() {
         // Loop into the list of databases
         for (Database database: databases) {
-            System.out.println(database);
+            LOGGER.info(database);
         }
-        System.out.println();
+        LOGGER.info("\n");
     }
 }

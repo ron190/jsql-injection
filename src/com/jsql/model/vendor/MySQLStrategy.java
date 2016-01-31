@@ -9,7 +9,7 @@ import com.jsql.model.blind.ConcreteTimeInjection;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class MySQLStrategy extends ASQLStrategy {
+public class MySQLStrategy extends AbstractVendorStrategy {
 
     @Override
     public String getSchemaInfos() {
@@ -375,10 +375,5 @@ public class MySQLStrategy extends ASQLStrategy {
     @Override
     public String getLimit(Integer limitSQLResult) {
         return "+limit+" + limitSQLResult + ",65536";
-    }
-
-    @Override
-    public String getDbLabel() {
-        return "MySQL";
     }
 }

@@ -35,8 +35,8 @@ import java.security.MessageDigest;
  * <p><b>$Revision: 1.2 $</b>
  * @author  Raif S. Naffah
  */
-public class MD4 extends MessageDigest implements Cloneable
-{
+public class MD4 extends MessageDigest implements Cloneable {
+    
 // MD4 specific object variables
 //...........................................................................
 
@@ -69,7 +69,7 @@ public class MD4 extends MessageDigest implements Cloneable
 // Constructors
 //...........................................................................
 
-    public MD4 () {
+    public MD4() {
         super("MD4");
         engineReset();
     }
@@ -77,10 +77,10 @@ public class MD4 extends MessageDigest implements Cloneable
     /**
      *    This constructor is here to implement cloneability of this class.
      */
-    private MD4 (MD4 md) {
+    private MD4(MD4 md) {
         this();
-        context = (int[])md.context.clone();
-        buffer = (byte[])md.buffer.clone();
+        context = (int[]) md.context.clone();
+        buffer = (byte[]) md.buffer.clone();
         count = md.count;
     }
 
@@ -91,7 +91,9 @@ public class MD4 extends MessageDigest implements Cloneable
     /**
      * Returns a copy of this MD object.
      */
-    public Object clone() { return new MD4(this); }
+    public Object clone() { 
+        return new MD4(this); 
+    }
 
 
 // JCE methods
@@ -101,7 +103,7 @@ public class MD4 extends MessageDigest implements Cloneable
      * Resets this object disregarding any temporary data present at the
      * time of the invocation of this call.
      */
-    public void engineReset () {
+    public void engineReset() {
         // initial values of MD4 i.e. A, B, C, D
         // as per rfc-1320; they are low-order byte first
         context[0] = 0x67452301;
@@ -109,20 +111,22 @@ public class MD4 extends MessageDigest implements Cloneable
         context[2] = 0x98BADCFE;
         context[3] = 0x10325476;
         count = 0L;
-        for (int i = 0; i < BLOCK_LENGTH; i++)
+        for (int i = 0; i < BLOCK_LENGTH; i++) {
             buffer[i] = 0;
+        }
     }
 
     /**
      * Continues an MD4 message digest using the input byte.
      */
-    public void engineUpdate (byte b) {
+    public void engineUpdate(byte b) {
         // compute number of bytes still unhashed; ie. present in buffer
         int i = (int)(count % BLOCK_LENGTH);
         count++;                                        // update number of bytes
         buffer[i] = b;
-        if (i == BLOCK_LENGTH - 1)
+        if (i == BLOCK_LENGTH - 1) {
             transform(buffer, 0);
+        }
     }
 
     /**
@@ -137,11 +141,12 @@ public class MD4 extends MessageDigest implements Cloneable
      * @param    offset    start of meaningful bytes in input
      * @param    len        count of bytes in input block to consider
      */
-    public void engineUpdate (byte[] input, int offset, int len) {
+    public void engineUpdate(byte[] input, int offset, int len) {
         // make sure we don't exceed input's allocated size/length
-        if (offset < 0 || len < 0 || (long)offset + len > input.length)
+        if (offset < 0 || len < 0 || (long)offset + len > input.length) {
             throw new ArrayIndexOutOfBoundsException();
-
+        }
+        
         // compute number of bytes still unhashed; ie. present in buffer
         int bufferNdx = (int)(count % BLOCK_LENGTH);
         count += len;                                        // update number of bytes
@@ -150,16 +155,17 @@ public class MD4 extends MessageDigest implements Cloneable
         if (len >= partLen) {
             System.arraycopy(input, offset, buffer, bufferNdx, partLen);
 
-
             transform(buffer, 0);
 
-            for (i = partLen; i + BLOCK_LENGTH - 1 < len; i+= BLOCK_LENGTH)
+            for (i = partLen; i + BLOCK_LENGTH - 1 < len; i+= BLOCK_LENGTH) {
                 transform(input, offset + i);
+            }
             bufferNdx = 0;
         }
         // buffer remaining input
-        if (i < len)
+        if (i < len) {
             System.arraycopy(input, offset + i, buffer, bufferNdx, len - i);
+        }
     }
 
     /**
@@ -169,10 +175,10 @@ public class MD4 extends MessageDigest implements Cloneable
      *
      * @return the array of bytes for the resulting hash value.
      */
-    public byte[] engineDigest () {
+    public byte[] engineDigest() {
         // pad output to 56 mod 64; as RFC1320 puts it: congruent to 448 mod 512
         int bufferNdx = (int)(count % BLOCK_LENGTH);
-        int padLen = (bufferNdx < 56) ? (56 - bufferNdx) : (120 - bufferNdx);
+        int padLen = bufferNdx < 56 ? 56 - bufferNdx : 120 - bufferNdx;
 
         // padding is alwas binary 1 followed by binary 0s
         byte[] tail = new byte[padLen + 8];
@@ -181,17 +187,20 @@ public class MD4 extends MessageDigest implements Cloneable
         // append length before final transform:
         // save number of bits, casting the long to an array of 8 bytes
         // save low-order byte first.
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 8; i++) {
             tail[padLen + i] = (byte)((count * 8) >>> (8 * i));
-
+        }
+        
         engineUpdate(tail, 0, tail.length);
 
         byte[] result = new byte[16];
         // cast this MD4's context (array of 4 ints) into an array of 16 bytes.
-        for (int i = 0; i < 4; i++)
-            for (int j = 0; j < 4; j++)
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
                 result[i * 4 + j] = (byte)(context[i] >>> (8 * j));
-
+            }
+        }
+    
         // reset the engine
         engineReset();
         return result;
@@ -210,16 +219,16 @@ public class MD4 extends MessageDigest implements Cloneable
      *    @param    block    input sub-array.
      *    @param    offset    starting position of sub-array.
      */
-    private void transform (byte[] block, int offset) {
+    private void transform(byte[] block, int offset) {
 
         // encodes 64 bytes from input block into an array of 16 32-bit
         // entities. Use A as a temp var.
-        for (int i = 0; i < 16; i++)
+        for (int i = 0; i < 16; i++) {
             X[i] = (block[offset++] & 0xFF)       |
                    (block[offset++] & 0xFF) <<  8 |
                    (block[offset++] & 0xFF) << 16 |
                    (block[offset++] & 0xFF) << 24;
-
+        }
 
         int A = context[0];
         int B = context[1];
@@ -285,55 +294,16 @@ public class MD4 extends MessageDigest implements Cloneable
 
     // The basic MD4 atomic functions.
 
-    private int FF (int a, int b, int c, int d, int x, int s) {
+    private int FF(int a, int b, int c, int d, int x, int s) {
         int t = a + ((b & c) | (~b & d)) + x;
         return t << s | t >>> (32 - s);
     }
-    private int GG (int a, int b, int c, int d, int x, int s) {
+    private int GG(int a, int b, int c, int d, int x, int s) {
         int t = a + ((b & (c | d)) | (c & d)) + x + 0x5A827999;
         return t << s | t >>> (32 - s);
     }
-    private int HH (int a, int b, int c, int d, int x, int s) {
+    private int HH(int a, int b, int c, int d, int x, int s) {
         int t = a + (b ^ c ^ d) + x + 0x6ED9EBA1;
         return t << s | t >>> (32 - s);
     }
-    
-//    public static void main(String[] args) {
-//        MessageDigest md = new MD4();
-//
-//        String passwordString = new String("test");
-//        byte[] passwordByte = passwordString.getBytes();
-//        md.update(passwordByte, 0, passwordByte.length);
-//        byte[] encodedPassword = md.digest();
-//        String encodedPasswordInString = digestToHexString(encodedPassword);
-//        System.out.println(encodedPasswordInString);
-//    }
-//    
-//    /**
-//     * Convert byte character to hexadecimal StringBuffer character.
-//     * @param b Byte character to convert
-//     * @param buf Hexadecimal converted character
-//     */
-//    static private void byte2hex(byte b, StringBuilder buf) {
-//        char[] hexChars = {'0', '1', '2', '3', '4', '5', '6', '7', '8',
-//                '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-//        int high = (b & 0xf0) >> 4;
-//        int low = b & 0x0f;
-//        buf.append(hexChars[high]);
-//        buf.append(hexChars[low]);
-//    }
-//
-//    /**
-//     * Convert a digest hash to a string representation.
-//     * @param block Digest array
-//     * @return Hash as a string
-//     */
-//    static String digestToHexString(byte[] block) {
-//        StringBuilder  buf = new StringBuilder();
-//        int len = block.length;
-//        for (int i = 0; i < len; i++) {
-//            MD4.byte2hex(block[i], buf);
-//        }
-//        return buf.toString();
-//    }
 }

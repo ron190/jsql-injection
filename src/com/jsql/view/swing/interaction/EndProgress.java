@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import com.jsql.model.bean.AbstractElementDatabase;
@@ -37,17 +38,21 @@ public class EndProgress implements IInteractionCommand {
         // Tree model, update the tree (refresh, add node, etc)
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGUI.databaseTree().getModel();
 
-        // Get the node
-        AbstractNodeModel progressingTreeNodeModel =
-                (AbstractNodeModel) MediatorGUI.gui().getTreeNodeModels().get(dataElementDatabase).getUserObject();
-        // Mark the node model as 'no progress bar'
-        progressingTreeNodeModel.hasProgress = false;
-        // Mark the node model as 'no stop/pause/resume button'
-        progressingTreeNodeModel.isRunning = false;
-        // Reset the progress value of the model
-        progressingTreeNodeModel.childUpgradeCount = 0;
-
-        // Update the node and progressbar
-        treeModel.nodeChanged(MediatorGUI.gui().getTreeNodeModels().get(dataElementDatabase)); 
+        // Report NullPointerException #1671 
+        DefaultMutableTreeNode node = MediatorGUI.gui().getTreeNodeModels().get(dataElementDatabase);
+        
+        if (node != null) {
+            // Get the node
+            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
+            // Mark the node model as 'no progress bar'
+            progressingTreeNodeModel.hasProgress = false;
+            // Mark the node model as 'no stop/pause/resume button'
+            progressingTreeNodeModel.isRunning = false;
+            // Reset the progress value of the model
+            progressingTreeNodeModel.childUpgradeCount = 0;
+            
+            // Update the node and progressbar
+            treeModel.nodeChanged(node); 
+        }
     }
 }

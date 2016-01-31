@@ -152,6 +152,7 @@ public class LightScrollPane extends JComponent {
 
         @Override
         protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
+            // nothing
         }
 
         @Override
@@ -167,14 +168,14 @@ public class LightScrollPane extends JComponent {
             int y = thumbBounds.y + THUMB_BORDER_SIZE;
 
             int width = 
-                orientation == JScrollBar.VERTICAL 
-                ? THUMB_SIZE 
+                orientation == JScrollBar.VERTICAL
+                ? THUMB_SIZE
                 : thumbBounds.width - (THUMB_BORDER_SIZE * 2)
             ;
             width = Math.max(width, THUMB_SIZE);
 
             int height = 
-                orientation == JScrollBar.VERTICAL 
+                orientation == JScrollBar.VERTICAL
                 ? thumbBounds.height - (THUMB_BORDER_SIZE * 2) 
                 : THUMB_SIZE
             ;

@@ -5,13 +5,19 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.bean.Database;
 import com.jsql.model.bean.Table;
 import com.jsql.model.blind.ConcreteTimeInjection;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class SQLServerStrategy extends ASQLStrategy {
+public class SQLServerStrategy extends AbstractVendorStrategy {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(SQLServerStrategy.class);
 
     @Override
     public String getSchemaInfos() {
@@ -69,7 +75,7 @@ public class SQLServerStrategy extends ASQLStrategy {
                         ")" +
                     ",1,1,''),2))%2B'%01%03%03%07',',','%06')";
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOGGER.warn("Encoding to UTF-8 is not supported on your system.");
         }
         return null;
     }
@@ -184,10 +190,5 @@ public class SQLServerStrategy extends ASQLStrategy {
     @Override
     public String getLimit(Integer limitSQLResult) {
         return "and+rnum+BETWEEN+" + (limitSQLResult+1) + "+AND+65536";
-    }
-
-    @Override
-    public String getDbLabel() {
-        return "SQLServer";
     }
 }

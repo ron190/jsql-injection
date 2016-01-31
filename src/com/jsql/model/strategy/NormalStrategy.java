@@ -40,7 +40,7 @@ public class NormalStrategy extends AbstractInjectionStrategy {
         }
         
         this.isApplicable = (!"".equals(MediatorModel.model().initialQuery)) 
-                && new Integer(MediatorModel.model().normalStrategy.getPerformanceLength()) > 0 
+                && new Integer(MediatorModel.model().normalStrategy.getPerformanceLength()) > 0
                 && this.visibleIndex != null
                 && MediatorModel.model().firstSuccessPageSource != null;
         
@@ -72,7 +72,7 @@ public class NormalStrategy extends AbstractInjectionStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable) throws StoppableException {
-        return MediatorModel.model().inject(MediatorModel.model().sqlStrategy.normalStrategy(sqlQuery, startPosition), true);
+        return MediatorModel.model().inject(MediatorModel.model().currentVendor.getStrategy().normalStrategy(sqlQuery, startPosition), true);
     }
 
     @Override

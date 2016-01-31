@@ -8,7 +8,7 @@ import com.jsql.model.bean.Table;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class CubridStrategy extends ASQLStrategy {
+public class CubridStrategy extends AbstractVendorStrategy {
 
     @Override
     public String getSchemaInfos() {
@@ -186,10 +186,5 @@ public class CubridStrategy extends ASQLStrategy {
     @Override
     public String getLimit(Integer limitSQLResult) {
         return "+limit+" + limitSQLResult + ",65536";
-    }
-
-    @Override
-    public String getDbLabel() {
-        return "Cubrid";
     }
 }

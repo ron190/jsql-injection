@@ -40,8 +40,6 @@ import javax.swing.table.TableCellRenderer;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 
-import org.apache.log4j.Logger;
-
 import com.jsql.view.swing.popupmenu.JPopupMenuTable;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
 
@@ -51,11 +49,6 @@ import com.jsql.view.swing.scrollpane.JScrollIndicator;
  */
 @SuppressWarnings("serial")
 public class PanelTable extends JPanel {
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getLogger(PanelTable.class);
-
     /**
      * Table to display in the panel.
      */

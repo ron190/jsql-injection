@@ -12,6 +12,8 @@ package com.jsql.view.junit.interaction;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.bean.Table;
 import com.jsql.view.swing.interaction.IInteractionCommand;
 
@@ -19,6 +21,11 @@ import com.jsql.view.swing.interaction.IInteractionCommand;
  * Add the tables to the corresponding database.
  */
 public class AddTables implements IInteractionCommand {
+    /**
+     * Using default log4j.properties from root /
+     */
+    private static final Logger LOGGER = Logger.getLogger(AddTables.class);
+
     /**
      * Tables retreived by the view.
      */
@@ -36,8 +43,8 @@ public class AddTables implements IInteractionCommand {
     public void execute() {
         // Loop into the list of tables
         for (Table table: tables) {
-            System.out.println(table);
+            LOGGER.info(table);
         }
-        System.out.println();
+        LOGGER.info("\n");
     }
 }

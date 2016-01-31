@@ -65,7 +65,7 @@ public class TimeStrategy extends AbstractInjectionStrategy {
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable) throws StoppableException {
         return this.timeInjection.inject(
-            MediatorModel.model().sqlStrategy.timeStrategy(sqlQuery, startPosition),
+            MediatorModel.model().currentVendor.getStrategy().timeStrategy(sqlQuery, startPosition),
             stoppable
         );
     }

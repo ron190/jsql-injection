@@ -64,11 +64,11 @@ public class JPopupMenuTable extends JPopupMenu {
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
                 JPopupMenuTable.this.setLocation(MouseInfo.getPointerInfo().getLocation());
             }
-            @Override 
+            @Override
             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
                 // Do nothing
             }
-            @Override 
+            @Override
             public void popupMenuCanceled(PopupMenuEvent e) {
                 // Do nothing
             }

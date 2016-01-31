@@ -20,7 +20,7 @@ import com.jsql.model.bean.Database;
  * Add the databases to current injection panel.
  */
 public class AddDatabases implements IInteractionCommand {
-    public static final Logger LOGGER = Logger.getLogger(AddDatabases.class);
+    private static final Logger LOGGER = Logger.getLogger(AddDatabases.class);
     
     /**
      * Databases retreived by the view.

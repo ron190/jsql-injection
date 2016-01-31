@@ -8,7 +8,7 @@ import com.jsql.model.bean.Table;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class FirebirdStrategy extends ASQLStrategy {
+public class FirebirdStrategy extends AbstractVendorStrategy {
 
     @Override
     public String getSchemaInfos() {
@@ -90,10 +90,5 @@ public class FirebirdStrategy extends ASQLStrategy {
     @Override
     public String getLimit(Integer limitSQLResult) {
         return "+ROWS+" + (limitSQLResult+1) + "+TO+" + (limitSQLResult+1) + "";
-    }
-    
-    @Override
-    public String getDbLabel() {
-        return "Firebird";
     }
 }

@@ -8,7 +8,7 @@ import com.jsql.model.bean.Table;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class OracleStrategy extends ASQLStrategy {
+public class OracleStrategy extends AbstractVendorStrategy {
 
     @Override
     public String getSchemaInfos() {
@@ -210,10 +210,5 @@ public class OracleStrategy extends ASQLStrategy {
     @Override
     public String getLimit(Integer limitSQLResult) {
         return "+having+count(*)between+" + (limitSQLResult+1) + "+and+65536";
-    }
-    
-    @Override
-    public String getDbLabel() {
-        return "Oracle";
     }
 }

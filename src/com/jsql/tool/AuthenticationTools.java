@@ -17,6 +17,7 @@ import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.action.ActionNewWindow;
 
+@SuppressWarnings("restriction")
 public class AuthenticationTools {
     /**
      * Log4j logger sent to view.
@@ -30,12 +31,11 @@ public class AuthenticationTools {
         //not called
     }
     
-    @SuppressWarnings("restriction")
     public static void set(boolean enableDigestAuthentication, String digestUsername, String digestPassword,
             boolean enableKerberos, String kerberosKrb5Conf, String kerberosLoginConf) {
         
         boolean shouldRestart = false;
-        if (MediatorModel.model().enableKerberos 
+        if (MediatorModel.model().enableKerberos
                 && !new File(MediatorModel.model().kerberosKrb5Conf).exists()
                 && !kerberosKrb5Conf.equals(MediatorModel.model().kerberosKrb5Conf)) {
             shouldRestart = true;
@@ -107,7 +107,6 @@ public class AuthenticationTools {
         }
     }
     
-    @SuppressWarnings("restriction")
     public static void init() {
         // Use Preferences API to persist proxy configuration
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());

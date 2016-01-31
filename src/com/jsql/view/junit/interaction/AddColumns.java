@@ -12,6 +12,8 @@ package com.jsql.view.junit.interaction;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.bean.Column;
 import com.jsql.view.swing.interaction.IInteractionCommand;
 
@@ -19,6 +21,11 @@ import com.jsql.view.swing.interaction.IInteractionCommand;
  * Add the columns to corresponding table.
  */
 public class AddColumns implements IInteractionCommand {
+    /**
+     * Using default log4j.properties from root /
+     */
+    private static final Logger LOGGER = Logger.getLogger(AddColumns.class);
+
     /**
      * Columns retreived by the view.
      */
@@ -37,8 +44,8 @@ public class AddColumns implements IInteractionCommand {
     public void execute() {
         // Loop into the list of columns
         for (Column column: columns) {
-            System.out.println(column);
+            LOGGER.info(column);
         }
-        System.out.println();
+        LOGGER.info("\n");
     }
 }

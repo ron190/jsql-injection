@@ -9,6 +9,7 @@ import com.jsql.model.strategy.NormalStrategy;
 import com.jsql.view.junit.SystemOutTerminal;
 
 public class PostgreNormalGetTestSuite extends ConcretePostgreTestSuite {
+    
     @BeforeClass
     public static void initialize() throws PreparationException {
         InjectionModel model = new InjectionModel();

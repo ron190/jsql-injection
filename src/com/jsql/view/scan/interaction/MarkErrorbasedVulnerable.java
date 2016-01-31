@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  * Mark the injection as vulnerable to a error-based injection.
  */
 public class MarkErrorbasedVulnerable implements IInteractionCommand {
-    public static final Logger LOGGER = Logger.getLogger(MarkErrorbasedVulnerable.class);
+    private static final Logger LOGGER = Logger.getLogger(MarkErrorbasedVulnerable.class);
 
     /**
      * @param interactionParams

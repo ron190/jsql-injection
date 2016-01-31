@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  * Mark the injection as vulnerable to a blind injection.
  */
 public class MarkBlindVulnerable implements IInteractionCommand {
-    public static final Logger LOGGER = Logger.getLogger(MarkBlindVulnerable.class);
+    private static final Logger LOGGER = Logger.getLogger(MarkBlindVulnerable.class);
 
     /**
      * @param interactionParams

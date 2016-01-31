@@ -18,7 +18,11 @@ public class MainApplication {
     /**
      * Using default log4j.properties from root /
      */
-    public static final Logger LOGGER = Logger.getLogger(MainApplication.class);
+    private static final Logger LOGGER = Logger.getLogger(MainApplication.class);
+    
+    private MainApplication() {
+        // nothing
+    }
     
     /**
      * Application starting point.

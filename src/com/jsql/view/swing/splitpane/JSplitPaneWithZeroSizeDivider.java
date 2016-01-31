@@ -43,13 +43,6 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
      */
     private int dividerDragSize = 9;
     
-    public void disableDragSize() {
-        dividerDragSize = 0;
-    }
-    public void enableDragSize() {
-        dividerDragSize = 9;
-    }
-
     /**
      * The offset of the transparent drag area relative to the visible divider line.
      * Positive offset moves the drag area left/top to the divider line.
@@ -58,6 +51,14 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
      * Default is centered.
      */
     private int dividerDragOffset = 4;
+    
+    public void disableDragSize() {
+        dividerDragSize = 0;
+    }
+    
+    public void enableDragSize() {
+        dividerDragSize = 9;
+    }
 
     public JSplitPaneWithZeroSizeDivider() {
         this(HORIZONTAL_SPLIT);

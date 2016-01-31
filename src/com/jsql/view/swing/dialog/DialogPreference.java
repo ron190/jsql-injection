@@ -64,6 +64,9 @@ public class DialogPreference extends JDialog {
      */
     private JButton okButton;
 
+    public int width = 350;
+    public int height = 520;
+
     /**
      * Create Preferences panel to save jSQL settings.
      */
@@ -495,9 +498,6 @@ public class DialogPreference extends JDialog {
         this.setLocationRelativeTo(MediatorGUI.gui());
     }
     
-    public int width = 350;
-    public int height = 520;
-
     public void requestButtonFocus() {
         this.okButton.requestFocusInWindow();
     }

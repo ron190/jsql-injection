@@ -18,7 +18,7 @@ import com.jsql.model.injection.MediatorModel;
  * Update the general information in status bar.
  */
 public class MessageInfo implements IInteractionCommand {
-    public static final Logger LOGGER = Logger.getLogger(MessageInfo.class);
+    private static final Logger LOGGER = Logger.getLogger(MessageInfo.class);
     
     /**
      * @param nullParam

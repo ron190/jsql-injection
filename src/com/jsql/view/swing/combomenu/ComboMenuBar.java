@@ -35,10 +35,10 @@ public class ComboMenuBar extends JMenuBar {
 
     private void setListener(JMenuItem item,ActionListener listener) {
         if (item instanceof JMenu) {
-            JMenu menu = (JMenu)item;
-            int n = menu.getItemCount();
-            for (int i=0;i<n;i++) {
-                setListener(menu.getItem(i), listener);
+            JMenu menuContainingItems = (JMenu) item;
+            int n = menuContainingItems.getItemCount();
+            for (int i = 0 ; i < n ; i++) {
+                setListener(menuContainingItems.getItem(i), listener);
             }
         } else if (item != null) { // null means separator
             item.addActionListener(listener);

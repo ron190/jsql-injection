@@ -65,7 +65,7 @@ public class BlindStrategy extends AbstractInjectionStrategy {
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable stoppable) throws StoppableException {
         return blind.inject(
-            MediatorModel.model().sqlStrategy.blindStrategy(sqlQuery, startPosition),
+            MediatorModel.model().currentVendor.getStrategy().blindStrategy(sqlQuery, startPosition),
             stoppable
         );
     }

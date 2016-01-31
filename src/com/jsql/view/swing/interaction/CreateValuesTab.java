@@ -15,6 +15,7 @@ import java.util.Comparator;
 
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.tool.ToolsString;
@@ -57,43 +58,47 @@ public class CreateValuesTab implements IInteractionCommand {
 
     @Override
     public void execute() {
-        // Get the node
-        AbstractNodeModel progressingTreeNodeModel =
-                (AbstractNodeModel) MediatorGUI.gui().getTreeNodeModels().get(table).getUserObject();
-
-        // Update the progress value of the model, end the progress
-        progressingTreeNodeModel.childUpgradeCount = table.getCount();
-        // Mark the node model as 'no stop/pause/resume button'
-        progressingTreeNodeModel.isRunning = false;
-
-        // Create a new table to display the values
-        PanelTable newTableJPanel = new PanelTable(data, columnNames, MediatorGUI.right());
-
-        TableRowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>();
-        newTableJPanel.table.setRowSorter(rowSorter);
-
-        // TODO No more applied (filter lib in cause)
-        Comparator<Object> c1 = new ComparatorColumn();
-
-        rowSorter.setModel(newTableJPanel.table.getModel());
-        for (int i = 2; i < newTableJPanel.table.getColumnCount(); i++) {
-            rowSorter.setComparator(i, c1);
+        // Report NullPointerException #1683 
+        DefaultMutableTreeNode node = MediatorGUI.gui().getTreeNodeModels().get(table);
+        
+        if (node != null) {
+            // Get the node
+            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
+            
+            // Update the progress value of the model, end the progress
+            progressingTreeNodeModel.childUpgradeCount = table.getCount();
+            // Mark the node model as 'no stop/pause/resume button'
+            progressingTreeNodeModel.isRunning = false;
+            
+            // Create a new table to display the values
+            PanelTable newTableJPanel = new PanelTable(data, columnNames, MediatorGUI.right());
+            
+            TableRowSorter<TableModel> rowSorter = new TableRowSorter<TableModel>();
+            newTableJPanel.table.setRowSorter(rowSorter);
+            
+            // TODO No more applied (filter lib in cause)
+            Comparator<Object> c1 = new ComparatorColumn();
+            
+            rowSorter.setModel(newTableJPanel.table.getModel());
+            for (int i = 2; i < newTableJPanel.table.getColumnCount(); i++) {
+                rowSorter.setComparator(i, c1);
+            }
+            
+            // Create a new tab: add header and table
+            MediatorGUI.right().addTab(table + " ", newTableJPanel);
+            // Focus on the new tab
+            MediatorGUI.right().setSelectedComponent(newTableJPanel);
+            
+            // Create a custom tab header with close button
+            TabHeader header = new TabHeader();
+            
+            MediatorGUI.right().setToolTipTextAt(
+                    MediatorGUI.right().indexOfComponent(newTableJPanel),
+                    "<html><b>" + table.getParent() + "." + table + "</b><br>"
+                            + "<i>" + ToolsString.join(Arrays.copyOfRange(columnNames, 2, columnNames.length), "<br>") + "</i></html>");
+            
+            // Apply the custom header to the tab
+            MediatorGUI.right().setTabComponentAt(MediatorGUI.right().indexOfComponent(newTableJPanel), header);
         }
-
-        // Create a new tab: add header and table
-        MediatorGUI.right().addTab(table + " ", newTableJPanel);
-        // Focus on the new tab
-        MediatorGUI.right().setSelectedComponent(newTableJPanel);
-
-        // Create a custom tab header with close button
-        TabHeader header = new TabHeader();
-
-        MediatorGUI.right().setToolTipTextAt(
-                MediatorGUI.right().indexOfComponent(newTableJPanel),
-                "<html><b>" + table.getParent() + "." + table + "</b><br>"
-                + "<i>" + ToolsString.join(Arrays.copyOfRange(columnNames, 2, columnNames.length), "<br>") + "</i></html>");
-
-        // Apply the custom header to the tab
-        MediatorGUI.right().setTabComponentAt(MediatorGUI.right().indexOfComponent(newTableJPanel), header);
     }
 }

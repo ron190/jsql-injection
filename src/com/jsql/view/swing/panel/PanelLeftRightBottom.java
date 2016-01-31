@@ -111,7 +111,7 @@ public class PanelLeftRightBottom extends JSplitPaneWithZeroSizeDivider {
         MediatorGUI.register(new PanelBottom());
 
         this.setBottomComponent(MediatorGUI.bottomPanel());
-        this.setDividerLocation(601 - horizontalSplitter);
+        this.setDividerLocation(594 - horizontalSplitter);
 
         // defines left and bottom pane
         this.setResizeWeight(1);

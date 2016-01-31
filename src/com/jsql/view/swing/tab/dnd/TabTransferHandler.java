@@ -30,12 +30,12 @@ public class TabTransferHandler extends TransferHandler {
         localObjectFlavor = new ActivationDataFlavor(AdapterRightTabbedPane.class, DataFlavor.javaJVMLocalObjectMimeType, "RightPaneAdapter");
     }
     
-    private DnDTabbedPane source = null;
+    private DnDTabbedPane srcDnDTabbedPane = null;
     
     @Override
     protected Transferable createTransferable(JComponent c) {
         if (c instanceof DnDTabbedPane) {
-            source = (DnDTabbedPane) c;
+            srcDnDTabbedPane = (DnDTabbedPane) c;
         }
         return new DataHandler(c, localObjectFlavor.getMimeType());
     }
@@ -54,10 +54,10 @@ public class TabTransferHandler extends TransferHandler {
         int idx = dl.getIndex();
         boolean isDropable = false;
 
-        if (target == source) {
+        if (target == srcDnDTabbedPane) {
             isDropable = target.getTabAreaBounds().contains(pt) && idx >= 0 && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
         } else {
-            if (source != null && target != source.getComponentAt(source.dragTabIndex)) {
+            if (srcDnDTabbedPane != null && target != srcDnDTabbedPane.getComponentAt(srcDnDTabbedPane.dragTabIndex)) {
                 isDropable = target.getTabAreaBounds().contains(pt) && idx >= 0;
             }
         }
@@ -89,7 +89,8 @@ public class TabTransferHandler extends TransferHandler {
     public int getSourceActions(JComponent c) {
         DnDTabbedPane src = (DnDTabbedPane) c;
         if (glassPane == null) {
-            c.getRootPane().setGlassPane(glassPane = new GhostGlassPane(src));
+            glassPane = new GhostGlassPane(src);
+            c.getRootPane().setGlassPane(glassPane);
         }
         
         if (src.dragTabIndex < 0) {
@@ -109,12 +110,12 @@ public class TabTransferHandler extends TransferHandler {
         DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
         DnDTabbedPane.DropLocation dl = target.getDropLocation();
         try {
-            DnDTabbedPane source = (DnDTabbedPane) support.getTransferable().getTransferData(localObjectFlavor);
+            DnDTabbedPane src = (DnDTabbedPane) support.getTransferable().getTransferData(localObjectFlavor);
             int index = dl.getIndex();
-            if (target == source) {
-                source.convertTab(source.dragTabIndex, index);
+            if (target == src) {
+                src.convertTab(src.dragTabIndex, index);
             } else {
-                source.exportTab(source.dragTabIndex, target, index);
+                src.exportTab(src.dragTabIndex, target, index);
             }
             return true;
         } catch (UnsupportedFlavorException e) {

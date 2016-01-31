@@ -52,11 +52,11 @@ public class GetSQLShellResult implements IInteractionCommand {
         
         if (this.result.indexOf("<SQLr>") > -1) {
             List<List<String>> listRows = new ArrayList<List<String>>();
-            Matcher rowsMatcher = Pattern.compile("<tr>(<td>.*?</td>)</tr>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(this.result);
+            Matcher rowsMatcher = Pattern.compile("(?si)<tr>(<td>.*?</td>)</tr>").matcher(this.result);
             while (rowsMatcher.find()) {
                 String values = rowsMatcher.group(1);
                 
-                Matcher fieldsMatcher = Pattern.compile("<td>(.*?)</td>", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(values);
+                Matcher fieldsMatcher = Pattern.compile("(?si)<td>(.*?)</td>").matcher(values);
                 List<String> listFields = new ArrayList<String>();
                 listRows.add(listFields);
                 while (fieldsMatcher.find()) {

@@ -8,7 +8,7 @@ import com.jsql.model.bean.Table;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class TeradataStrategy extends ASQLStrategy {
+public class TeradataStrategy extends AbstractVendorStrategy {
 
     @Override
     public String getSchemaInfos() {
@@ -96,10 +96,5 @@ public class TeradataStrategy extends ASQLStrategy {
     @Override
     public String getLimit(Integer limitSQLResult) {
         return "and+rnum+BETWEEN+" + (limitSQLResult+1) + "+AND+" + (limitSQLResult+1) + "";
-    }
-    
-    @Override
-    public String getDbLabel() {
-        return "Teradata";
     }
 }

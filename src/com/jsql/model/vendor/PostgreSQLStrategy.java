@@ -9,7 +9,7 @@ import com.jsql.model.blind.ConcreteTimeInjection;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class PostgreSQLStrategy extends ASQLStrategy {
+public class PostgreSQLStrategy extends AbstractVendorStrategy {
 
     @Override
     public String getSchemaInfos() {
@@ -245,10 +245,5 @@ public class PostgreSQLStrategy extends ASQLStrategy {
     @Override
     public String getLimit(Integer limitSQLResult) {
         return "+limit+65536+offset+" + limitSQLResult;
-    }
-    
-    @Override
-    public String getDbLabel() {
-        return "PostgreSQL";
     }
 }

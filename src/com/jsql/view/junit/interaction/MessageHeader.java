@@ -12,12 +12,19 @@ package com.jsql.view.junit.interaction;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.view.swing.interaction.IInteractionCommand;
 
 /**
  * Append a text to the tab Header.
  */
 public class MessageHeader implements IInteractionCommand {
+    /**
+     * Using default log4j.properties from root /
+     */
+    private static final Logger LOGGER = Logger.getLogger(MessageHeader.class);
+
     // The text to append to the tab
     private String url;
     private String post;
@@ -38,12 +45,12 @@ public class MessageHeader implements IInteractionCommand {
 
     @Override
     public void execute() {
-        System.out.println("Method: " + response.get("Method"));
-        System.out.println("Url: " + url);
-        System.out.println("Post: " + post);
-        System.out.println("Header: " + header);
-        System.out.println("Content-Length: " + response.get("Content-Length"));
-        System.out.println("Content-Type: " + response.get("Content-Type"));
-        System.out.println();
+        LOGGER.info("Method: " + response.get("Method"));
+        LOGGER.info("Url: " + url);
+        LOGGER.info("Post: " + post);
+        LOGGER.info("Header: " + header);
+        LOGGER.info("Content-Length: " + response.get("Content-Length"));
+        LOGGER.info("Content-Type: " + response.get("Content-Type"));
+        LOGGER.info("\n");
     }
 }

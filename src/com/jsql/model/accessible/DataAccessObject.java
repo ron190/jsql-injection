@@ -26,7 +26,6 @@ import com.jsql.model.bean.Request;
 import com.jsql.model.bean.Table;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.model.injection.suspendable.SuspendableGetRows;
-import com.jsql.model.vendor.Vendor;
 import com.jsql.tool.ToolsString;
 
 /**
@@ -48,7 +47,7 @@ public class DataAccessObject {
         String[] sourcePage = {""};
 
         String hexResult = new SuspendableGetRows().action(
-            MediatorModel.model().sqlStrategy.getSchemaInfos(),
+            MediatorModel.model().currentVendor.getStrategy().getSchemaInfos(),
             sourcePage,
             false,
             0,
@@ -65,13 +64,12 @@ public class DataAccessObject {
         }
 
         String dbType = "";
-        if(MediatorModel.model().sqlStrategy.getDbLabel() != null) {
-            dbType = MediatorModel.model().sqlStrategy.getDbLabel() + " ";
+        if (MediatorModel.model().selectedVendor != MediatorModel.model().currentVendor) {
+            dbType = MediatorModel.model().currentVendor.toString();
         }
         
         try {
-            MediatorModel.model().versionDatabase   = 
-                    (MediatorModel.model().selectedVendor == Vendor.Undefined ? dbType : "")+ hexResult.split("\\{%\\}")[0].replaceAll("\\s+"," ");
+            MediatorModel.model().versionDatabase   = dbType + hexResult.split("\\{%\\}")[0].replaceAll("\\s+"," ");
             MediatorModel.model().currentDatabase   = hexResult.split("\\{%\\}")[1];
             MediatorModel.model().currentUser       = hexResult.split("\\{%\\}")[2];
             MediatorModel.model().authenticatedUser = hexResult.split("\\{%\\}")[3];
@@ -103,7 +101,7 @@ public class DataAccessObject {
         
         String[] sourcePage = {""};
         String hexResult = new SuspendableGetRows().action(
-            MediatorModel.model().sqlStrategy.getSchemaList(),
+            MediatorModel.model().currentVendor.getStrategy().getSchemaList(),
             sourcePage,
             true,
             0,
@@ -111,10 +109,10 @@ public class DataAccessObject {
         );
 
         // Parse all data we have retrieved
-        Matcher regexSearch = Pattern.compile(
-                "\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?\\x04",
-                Pattern.CASE_INSENSITIVE | Pattern.DOTALL
-        ).matcher(hexResult);
+        Matcher regexSearch = 
+                Pattern
+                .compile("(?si)\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?\\x04")
+                .matcher(hexResult);
 
         if (!regexSearch.find()) {
             /**
@@ -166,7 +164,7 @@ public class DataAccessObject {
 
         String[] pageSource = {""};
         String hexResult = new SuspendableGetRows().action(
-            MediatorModel.model().sqlStrategy.getTableList(database),
+            MediatorModel.model().currentVendor.getStrategy().getTableList(database),
             pageSource,
             true,
             Integer.parseInt(tableCount),
@@ -175,10 +173,9 @@ public class DataAccessObject {
 
         // Parse all the data we have retrieved
         Matcher regexSearch =
-                Pattern.compile(
-                        "\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?\\x04",
-                        Pattern.CASE_INSENSITIVE | Pattern.DOTALL
-                ).matcher(hexResult);
+                Pattern
+                .compile("(?si)\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?\\x04")
+                .matcher(hexResult);
 
         if (!regexSearch.find()) {
             MediatorModel.model().sendResponseFromSite("Fetching tables fails", pageSource[0].trim());
@@ -230,7 +227,7 @@ public class DataAccessObject {
 
         String[] pageSource = {""};
         String hexResult = new SuspendableGetRows().action(
-            MediatorModel.model().sqlStrategy.getColumnList(table),
+            MediatorModel.model().currentVendor.getStrategy().getColumnList(table),
             pageSource,
             true,
             0,
@@ -238,9 +235,10 @@ public class DataAccessObject {
         );
 
         // Parse all the data we have retrieved
-        Matcher regexSearch = Pattern.compile(
-                "\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?\\x04",
-                Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
+        Matcher regexSearch = 
+                Pattern
+                .compile("(?si)\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?\\x04")
+                .matcher(hexResult);
 
         if (!regexSearch.find()) {
             MediatorModel.model().sendResponseFromSite("Fetching columns fails", pageSource[0].trim());
@@ -309,7 +307,7 @@ public class DataAccessObject {
 
         String[] pageSource = {""};
         String hexResult = new SuspendableGetRows().action(
-            MediatorModel.model().sqlStrategy.getValues(arrayColumns, database, table),
+            MediatorModel.model().currentVendor.getStrategy().getValues(arrayColumns, database, table),
             pageSource, 
             true, 
             rowCount, 
@@ -317,9 +315,10 @@ public class DataAccessObject {
         );
 
         // Parse all the data we have retrieved
-        Matcher regexSearch = Pattern.compile(
-                "\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?\\x04",
-                Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(hexResult);
+        Matcher regexSearch = 
+                Pattern
+                .compile("(?si)\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?\\x04")
+                .matcher(hexResult);
 
         if (!regexSearch.find()) {
             MediatorModel.model().sendResponseFromSite("Fetching values fails (row count can be inaccurate)", pageSource[0].trim());

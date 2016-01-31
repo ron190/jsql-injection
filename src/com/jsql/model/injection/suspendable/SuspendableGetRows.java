@@ -21,6 +21,7 @@ import com.jsql.tool.ToolsString;
  * The process can be interrupted by the user (stop/pause).
  */
 public class SuspendableGetRows extends AbstractSuspendable {
+    
     @Override
     public String action(Object... args) throws PreparationException, StoppableException {
         String initialSQLQuery = (String) args[0];
@@ -30,7 +31,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
         AbstractElementDatabase searchName = (AbstractElementDatabase) args[4];
         MediatorModel.model().suspendables.put(searchName, this);
 
-        String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", MediatorModel.model().sqlStrategy.getLimit(0));
+        String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", MediatorModel.model().currentVendor.getStrategy().getLimit(0));
 
         AbstractInjectionStrategy injectionStrategy = MediatorModel.model().getInjectionStrategy();
         
@@ -39,17 +40,13 @@ public class SuspendableGetRows extends AbstractSuspendable {
          * keep track of rows we have reached (limitSQLResult) and use these to skip entire rows,
          * keep track of characters we have reached (startPosition) and use these to skip characters,
          */
-        String slidingWindowAllRows = "", slidingWindowCurrentRow = "";
         /**
          * TODO simpler loop
          */
-        for (int sqlLimit = 0, charPositionInCurrentRow = 1;; charPositionInCurrentRow = slidingWindowCurrentRow.length() + 1) {
-
-            // try {
-            //     Thread.sleep(500);
-            // } catch (InterruptedException e) {
-            //     this.model.sendDebugMessage(e);
-            // }
+        String slidingWindowAllRows = "", slidingWindowCurrentRow = "";
+        int sqlLimit = 0, charPositionInCurrentRow = 1;
+        
+        while (true) {
 
             if (this.shouldSuspend()) {
                 break;
@@ -64,39 +61,40 @@ public class SuspendableGetRows extends AbstractSuspendable {
              * SQLiblahblah      blah] : continue substr()
              */
             // Parse all the data we have retrieved
-            Matcher regexAllLine = Pattern.compile("SQLi(.{1,"+ injectionStrategy.getPerformanceLength() +"})", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(sourcePage[0]);
+            Matcher regexAllLine = 
+                    Pattern
+                    .compile("(?si)SQLi(.{1,"+ injectionStrategy.getPerformanceLength() +"})")
+                    .matcher(sourcePage[0]);
             
-            Matcher regexEndOfLine = Pattern.compile("SQLi\\x01\\x03\\x03\\x07", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(sourcePage[0]);
-            if (regexEndOfLine.find()) {
-                if (useLimit && !"".equals(slidingWindowAllRows)) {
-                    //                        model.sendMessage("A");
-                    // Update the view only if there are value to find, and if it's not the root (empty tree)
-                    if (numberToFind > 0 && searchName != null) {
-                        Request request = new Request();
-                        request.setMessage("UpdateProgress");
-                        request.setParameters(searchName, numberToFind);
-                        MediatorModel.model().interact(request);
-                    }
-                    break;
+            Matcher regexEndOfLine = 
+                    Pattern
+                    .compile("(?si)SQLi\\x01\\x03\\x03\\x07")
+                    .matcher(sourcePage[0]);
+            
+            if (regexEndOfLine.find() && useLimit && !"".equals(slidingWindowAllRows)) {
+                // Update the view only if there are value to find, and if it's not the root (empty tree)
+                if (numberToFind > 0 && searchName != null) {
+                    Request request = new Request();
+                    request.setMessage("UpdateProgress");
+                    request.setParameters(searchName, numberToFind);
+                    MediatorModel.model().interact(request);
                 }
+                break;
             }
             /*
              * Ending condition:
              * One row could be very long, longer than the database can provide
              * #Need verification
              */
-            if (!regexAllLine.find()) {
-                if (useLimit && !"".equals(slidingWindowAllRows)) {
-                    //                        model.sendMessage("A");
-                    // Update the view only if there are value to find, and if it's not the root (empty tree)
-                    if (numberToFind > 0 && searchName != null) {
-                        Request request = new Request();
-                        request.setMessage("UpdateProgress");
-                        request.setParameters(searchName, numberToFind);
-                        MediatorModel.model().interact(request);
-                    }
-                    break;
+            if (!regexAllLine.find() && useLimit && !"".equals(slidingWindowAllRows)) {
+                // Update the view only if there are value to find, and if it's not the root (empty tree)
+                if (numberToFind > 0 && searchName != null) {
+                    Request request = new Request();
+                    request.setMessage("UpdateProgress");
+                    request.setParameters(searchName, numberToFind);
+                    MediatorModel.model().interact(request);
                 }
+                break;
             }
 
             /*
@@ -108,7 +106,12 @@ public class SuspendableGetRows extends AbstractSuspendable {
 
                 Request request = new Request();
                 request.setMessage("MessageChunk");
-                request.setParameters(Pattern.compile("\\x01\\x03\\x03\\x07.*", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(regexAllLine.group(1)).replaceAll("\n"));
+                request.setParameters(
+                    Pattern
+                    .compile("(?si)\\x01\\x03\\x03\\x07.*")
+                    .matcher(regexAllLine.group(1))
+                    .replaceAll("\n")
+                );
                 MediatorModel.model().interact(request);
             } catch (IllegalStateException e) {
                 // if it's not the root (empty tree)
@@ -127,7 +130,10 @@ public class SuspendableGetRows extends AbstractSuspendable {
             /*
              * Check how many rows we have collected from the beginning of that chunk
              */
-            regexAllLine = Pattern.compile("(\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?\\x04)", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(slidingWindowCurrentRow);
+            regexAllLine = 
+                    Pattern
+                    .compile("(?si)(\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?\\x04)")
+                    .matcher(slidingWindowCurrentRow);
             int nbCompleteLine = 0;
             while (regexAllLine.find()) {
                 nbCompleteLine++;
@@ -136,14 +142,11 @@ public class SuspendableGetRows extends AbstractSuspendable {
             /*
              * Inform the view about the progression
              */
-            if (useLimit) {
-                if (numberToFind > 0 && searchName != null) {
-                    Request request = new Request();
-                    request.setMessage("UpdateProgress");
-                    request.setParameters(searchName, sqlLimit + nbCompleteLine);
-                    MediatorModel.model().interact(request);
-                }
-                //                    System.out.println("Request " + i + ", data collected "+(limitSQLResult + nbResult) + (numberToFind>0?"/"+numberToFind:"") + " << " + currentResultSource.length() + " bytes" );
+            if (useLimit && numberToFind > 0 && searchName != null) {
+                Request request = new Request();
+                request.setMessage("UpdateProgress");
+                request.setParameters(searchName, sqlLimit + nbCompleteLine);
+                MediatorModel.model().interact(request);
             }
 
             /*
@@ -156,31 +159,51 @@ public class SuspendableGetRows extends AbstractSuspendable {
                  * Remove everything after our result
                  * => hhxxxxxxxxjj00hhgghh...h |-> iLQSjunk
                  */
-                slidingWindowAllRows += slidingWindowCurrentRow = Pattern.compile("\\x01\\x03\\x03\\x07.*", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(slidingWindowCurrentRow).replaceAll("");
+                slidingWindowCurrentRow = 
+                        Pattern
+                        .compile("(?si)\\x01\\x03\\x03\\x07.*")
+                        .matcher(slidingWindowCurrentRow)
+                        .replaceAll("");
+                slidingWindowAllRows += slidingWindowCurrentRow;
                 if (useLimit) {
                     /*
                      * Remove everything not properly attached to the last row:
                      * 1. very start of a new row: XXXXXhhg[ghh]$
                      * 2. very end of the last row: XXXXX[jj00]$
                      */
-                    slidingWindowAllRows = Pattern.compile("(\\x06\\x04|\\x05\\d*)$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(slidingWindowAllRows).replaceAll("");
-                    slidingWindowCurrentRow = Pattern.compile("(\\x06\\x04|\\x05\\d*)$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(slidingWindowCurrentRow).replaceAll("");
+                    slidingWindowAllRows = 
+                            Pattern
+                            .compile("(?si)(\\x06\\x04|\\x05\\d*)$")
+                            .matcher(slidingWindowAllRows)
+                            .replaceAll("");
+                    slidingWindowCurrentRow = 
+                            Pattern
+                            .compile("(?si)(\\x06\\x04|\\x05\\d*)$")
+                            .matcher(slidingWindowCurrentRow)
+                            .replaceAll("");
 
                     /*
                      * Check either if there is more than 1 row and if there is less than 1 complete row
                      */
-                    regexAllLine = Pattern.compile("[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]\\x04\\x06\\x04[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(slidingWindowCurrentRow);
-                    Matcher regexSearch2a2 = Pattern.compile("\\x04[^\\x01-\\x03\\x05-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$", Pattern.CASE_INSENSITIVE | Pattern.DOTALL).matcher(slidingWindowCurrentRow);
+                    regexAllLine = 
+                            Pattern
+                            .compile("(?si)[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]\\x04\\x06\\x04[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$")
+                            .matcher(slidingWindowCurrentRow);
+                    Matcher regexSearch2a2 = 
+                            Pattern
+                            .compile("(?si)\\x04[^\\x01-\\x03\\x05-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$")
+                            .matcher(slidingWindowCurrentRow);
 
                     /*
                      * If there is more than 1 row, delete the last incomplete one in order to restart properly from it at the next loop,
                      * else if there is 1 row but incomplete, mark it as cut with the letter c
                      */
                     if (regexAllLine.find()) {
-                        slidingWindowAllRows = Pattern.compile(
-                            "\\x04[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$",
-                            Pattern.CASE_INSENSITIVE | Pattern.DOTALL
-                        ).matcher(slidingWindowAllRows).replaceAll("");
+                        slidingWindowAllRows = 
+                                Pattern
+                                .compile("(?si)\\x04[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$")
+                                .matcher(slidingWindowAllRows)
+                                .replaceAll("");
                     } else if (regexSearch2a2.find()) {
                         slidingWindowAllRows += ToolsString.hexstr("05") + "1" + ToolsString.hexstr("0804");
                     }
@@ -189,14 +212,14 @@ public class SuspendableGetRows extends AbstractSuspendable {
                      * Check how many rows we have collected from the very beginning of the query,
                      * then skip every rows we have already found via LIMIT
                      */
-                    regexAllLine = Pattern.compile(
+                    regexAllLine = 
                             /*
                              * Regex \\x{08}? not supported on Kali
                              * => \\x08? seems ok though
                              */
-                            "(\\x04[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x05[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?\\x04)",
-                            Pattern.CASE_INSENSITIVE | Pattern.DOTALL
-                            ).matcher(slidingWindowAllRows);
+                            Pattern
+                            .compile("(?si)(\\x04[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x05[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?\\x04)")
+                            .matcher(slidingWindowAllRows);
 
                     nbCompleteLine = 0;
                     while (regexAllLine.find()) {
@@ -205,7 +228,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
                     sqlLimit = nbCompleteLine;
 
                     // Inform the view about the progression
-                    //                        System.out.println("Request " + i + ", data collected " + limitSQLResult + (numberToFind>0 ? "/"+numberToFind : "" ));
                     if (numberToFind > 0 && searchName != null) {
                         Request request = new Request();
                         request.setMessage("UpdateProgress");
@@ -218,7 +240,6 @@ public class SuspendableGetRows extends AbstractSuspendable {
                      * Inform the view about the progression
                      */
                     if (sqlLimit == numberToFind) {
-                        //                            model.sendMessage("B");
                         if (numberToFind > 0 && searchName != null) {
                             Request request = new Request();
                             request.setMessage("UpdateProgress");
@@ -232,17 +253,14 @@ public class SuspendableGetRows extends AbstractSuspendable {
                      *  Add the LIMIT statement to the next SQL query and reset variables.
                      *  Put the character cursor to the beginning of the line, and reset the result of the current query
                      */
-                    sqlQuery = Pattern.compile(
-                            "\\{limit\\}",
-                            Pattern.CASE_INSENSITIVE | Pattern.DOTALL
-                            ).matcher(initialSQLQuery).replaceAll(
-                                MediatorModel.model().sqlStrategy.getLimit(sqlLimit)
-                            );
+                    sqlQuery = Pattern
+                        .compile("(?si)\\{limit\\}")
+                        .matcher(initialSQLQuery)
+                        .replaceAll(MediatorModel.model().currentVendor.getStrategy().getLimit(sqlLimit));
                     charPositionInCurrentRow = 1;
                     slidingWindowCurrentRow = "";
                 } else {
                     // Inform the view about the progression
-                    //                        model.sendMessage("C");
                     if (numberToFind > 0 && searchName != null) {
                         Request request = new Request();
                         request.setMessage("UpdateProgress");
@@ -254,6 +272,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 
             }
 
+            charPositionInCurrentRow = slidingWindowCurrentRow.length() + 1;
         }
 
         return slidingWindowAllRows;

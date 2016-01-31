@@ -10,10 +10,17 @@
  ******************************************************************************/
 package com.jsql.model.bean;
 
+import org.apache.log4j.Logger;
+
 /**
  * Define a Database, e.g is sent to the view by the model after injection.
  */
 public class Database extends AbstractElementDatabase {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Database.class);
+
     /**
      * The number of tables in the database.
      */
@@ -51,11 +58,17 @@ public class Database extends AbstractElementDatabase {
      */
     @Override
     public String getLabel() {
+        // Report #1500: detect incorrect number of tables
         String sPlural = "";
-        if (Integer.parseInt(tableCount) > 1) {
-            sPlural = "s";
+        try {
+            if (Integer.parseInt(tableCount) > 1) {
+                sPlural = "s";
+            }
+        } catch (NumberFormatException err) {
+            tableCount = "0";
+            LOGGER.warn("Incorrect number of tables.");
         }
-
+        
         return this.elementValue + " (" + tableCount + " table" + sPlural + ")";
     }
 }

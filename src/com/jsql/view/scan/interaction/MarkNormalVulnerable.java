@@ -22,7 +22,7 @@ import com.jsql.view.swing.MediatorGUI;
  * Mark the injection as vulnerable to a basic injection.
  */
 public class MarkNormalVulnerable implements IInteractionCommand {
-    public static final Logger LOGGER = Logger.getLogger(MarkNormalVulnerable.class);
+    private static final Logger LOGGER = Logger.getLogger(MarkNormalVulnerable.class);
 
     private String url;
 

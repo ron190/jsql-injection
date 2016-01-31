@@ -24,7 +24,7 @@ import javax.swing.JTextPane;
 public class JPopupTextPane extends JPopupTextComponent<JTextPane> implements DecoratorJComponent<JTextPane> {
     /**
      * Build new instance of JTextField to decorate.
-     * @param placeholder 
+     * @param placeholder
      */
     public JPopupTextPane(String placeholder) {
         this(new JTextPanePlaceholder(placeholder) {

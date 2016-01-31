@@ -8,7 +8,7 @@ import com.jsql.model.bean.Table;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.tool.ToolsString;
 
-public class HSQLDBStrategy extends ASQLStrategy {
+public class HSQLDBStrategy extends AbstractVendorStrategy {
 
     @Override
     public String getSchemaInfos() {
@@ -177,10 +177,5 @@ public class HSQLDBStrategy extends ASQLStrategy {
     @Override
     public String getLimit(Integer limitSQLResult) {
         return "+limit+" + limitSQLResult + ",65536";
-    }
-    
-    @Override
-    public String getDbLabel() {
-        return "HSQLDB";
     }
 }

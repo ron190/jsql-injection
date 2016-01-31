@@ -23,7 +23,7 @@ public class GhostGlassPane extends JPanel {
         tabbedPane = tab;
     }
     
-    @Override 
+    @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
         Rectangle rect = tabbedPane.getDropLineRect();

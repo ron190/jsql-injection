@@ -37,7 +37,7 @@ public class CallableFile implements Callable<CallableFile> {
             String hexResult = "";
             try {
                 hexResult = new SuspendableGetRows().action(
-                    MediatorModel.model().sqlStrategy.readTextFile(filePath),
+                    MediatorModel.model().currentVendor.getStrategy().readTextFile(filePath),
                     sourcePage,
                     false,
                     1,

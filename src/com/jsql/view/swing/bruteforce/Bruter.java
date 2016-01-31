@@ -1,10 +1,11 @@
 package com.jsql.view.swing.bruteforce;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Bruter {
 
-    public ArrayList<String> characters = new ArrayList<String>();
+    public List<String> characters = new ArrayList<String>();
     public boolean found = false;
     public int maxLength;
     public int minLength;
@@ -105,7 +106,6 @@ public class Bruter {
             return 0;
         }
         return i;
-
     }
 
     public String calculateTimeElapsed() {
@@ -145,15 +145,12 @@ public class Bruter {
 
     public boolean excludeChars(String s) {
         char[] arrayChars = s.toCharArray();
+        
         for (int i = 0; i < arrayChars.length; i++) {
             characters.remove(arrayChars[i] + "");
         }
-        if (characters.size() < maxLength) {
-            return false;
-        } else {
-            return true;
-
-        }
+        
+        return characters.size() >= maxLength;
     }
 
     public int getMaxLength() {

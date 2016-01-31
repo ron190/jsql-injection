@@ -12,22 +12,6 @@ import org.apache.log4j.Logger;
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.model.injection.MediatorModel;
-import com.jsql.model.vendor.CubridStrategy;
-import com.jsql.model.vendor.DB2Strategy;
-import com.jsql.model.vendor.DerbyStrategy;
-import com.jsql.model.vendor.FirebirdStrategy;
-import com.jsql.model.vendor.H2Strategy;
-import com.jsql.model.vendor.HSQLDBStrategy;
-import com.jsql.model.vendor.InformixStrategy;
-import com.jsql.model.vendor.IngresStrategy;
-import com.jsql.model.vendor.MariaDBStrategy;
-import com.jsql.model.vendor.MaxDbStrategy;
-import com.jsql.model.vendor.MySQLStrategy;
-import com.jsql.model.vendor.OracleStrategy;
-import com.jsql.model.vendor.PostgreSQLStrategy;
-import com.jsql.model.vendor.SQLServerStrategy;
-import com.jsql.model.vendor.SybaseStrategy;
-import com.jsql.model.vendor.TeradataStrategy;
 import com.jsql.model.vendor.Vendor;
 
 /**
@@ -45,40 +29,9 @@ public class SuspendableGetDbVendor extends AbstractSuspendable {
     @Override
     public String action(Object... args) throws PreparationException, StoppableException {
 
-        if (MediatorModel.model().selectedVendor != Vendor.Undefined) {
-            if (MediatorModel.model().selectedVendor == Vendor.Cubrid) {
-                MediatorModel.model().sqlStrategy = new CubridStrategy();
-            } else if (MediatorModel.model().selectedVendor == Vendor.DB2) {
-                MediatorModel.model().sqlStrategy = new DB2Strategy();
-            } else if (MediatorModel.model().selectedVendor == Vendor.Derby) {
-                MediatorModel.model().sqlStrategy = new DerbyStrategy();
-            } else if (MediatorModel.model().selectedVendor == Vendor.Firebird) {
-                MediatorModel.model().sqlStrategy = new FirebirdStrategy();
-            } else if (MediatorModel.model().selectedVendor == Vendor.H2) {
-                MediatorModel.model().sqlStrategy = new H2Strategy();
-            } else if (MediatorModel.model().selectedVendor == Vendor.HSQLDB) {
-                MediatorModel.model().sqlStrategy = new HSQLDBStrategy();
-            } else if (MediatorModel.model().selectedVendor == Vendor.Informix) {
-                MediatorModel.model().sqlStrategy = new InformixStrategy();
-            } else if (MediatorModel.model().selectedVendor == Vendor.Ingres) {
-                MediatorModel.model().sqlStrategy = new IngresStrategy();
-            } else if (MediatorModel.model().selectedVendor == Vendor.MariaDB) {
-                MediatorModel.model().sqlStrategy = new MariaDBStrategy();
-            } else if (MediatorModel.model().selectedVendor == Vendor.MaxDb) {
-                MediatorModel.model().sqlStrategy = new MaxDbStrategy();
-            } else if (MediatorModel.model().selectedVendor == Vendor.MySQL) {
-                MediatorModel.model().sqlStrategy = new MySQLStrategy();
-            } else if (MediatorModel.model().selectedVendor == Vendor.Oracle) {
-                MediatorModel.model().sqlStrategy = new OracleStrategy();
-            } else if (MediatorModel.model().selectedVendor == Vendor.PostgreSQL) {
-                MediatorModel.model().sqlStrategy = new PostgreSQLStrategy();
-            } else if (MediatorModel.model().selectedVendor == Vendor.SQLServer) {
-                MediatorModel.model().sqlStrategy = new SQLServerStrategy();
-            } else if (MediatorModel.model().selectedVendor == Vendor.Sybase) {
-                MediatorModel.model().sqlStrategy = new SybaseStrategy();
-            } else if (MediatorModel.model().selectedVendor == Vendor.Teradata) {
-                MediatorModel.model().sqlStrategy = new TeradataStrategy();
-            }
+        if (MediatorModel.model().selectedVendor != Vendor.UNDEFINED) {
+//            MediatorModel.model().vendorStrategy = MediatorModel.model().selectedVendor.getStrategy();
+            MediatorModel.model().currentVendor = MediatorModel.model().selectedVendor;
             return null;
         }
         
@@ -101,10 +54,6 @@ public class SuspendableGetDbVendor extends AbstractSuspendable {
         int total = 1;
         while (0 < total) {
             // The user need to stop the job
-            /**
-             * TODO pauseOnUserDemand()
-             * stop()
-             */
             if (this.shouldSuspend()) {
                 throw new StoppableException();
             }
@@ -119,8 +68,7 @@ public class SuspendableGetDbVendor extends AbstractSuspendable {
                         + "|"
                         + "MySQL"
                 + ").*")) {
-                    MediatorModel.model().sqlStrategy = new MySQLStrategy();
-//                    System.out.println("MySQLStrategy");
+                    MediatorModel.model().currentVendor = Vendor.MYSQL;
                 }
                 
                 if (pageSource.matches("(?si).*("
@@ -129,16 +77,14 @@ public class SuspendableGetDbVendor extends AbstractSuspendable {
                         + "|"
                         + "MariaDB"
                         + ").*")) {
-                    MediatorModel.model().sqlStrategy = new MariaDBStrategy();
-//                    System.out.println("MariaDBStrategy");
+                    MediatorModel.model().currentVendor = Vendor.MARIADB;
                 }
                 
                 if (pageSource.matches("(?si).*("
                         // JDBC + php : same error
                         + "HSQLDB"
                         + ").*")) {
-                    MediatorModel.model().sqlStrategy = new HSQLDBStrategy();
-//                    System.out.println("HSQLDBStrategy");
+                    MediatorModel.model().currentVendor = Vendor.HSQLDB;
                 }
                 
                 if (pageSource.matches("(?si).*("
@@ -153,8 +99,7 @@ public class SuspendableGetDbVendor extends AbstractSuspendable {
                         + "|"
                         + "PostgreSQL"
                 + ").*")) {
-                    MediatorModel.model().sqlStrategy = new PostgreSQLStrategy();
-//                    System.out.println("PostgreSQLStrategy");
+                    MediatorModel.model().currentVendor = Vendor.POSTGRESQL;
                 }
                 
                 /**
@@ -171,8 +116,7 @@ select '"'"'
           ^
                  */
                 if (Pattern.compile(".*function\\.oci.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-                    MediatorModel.model().sqlStrategy = new OracleStrategy();
-//                    System.out.println("OracleStrategy");
+                    MediatorModel.model().currentVendor = Vendor.ORACLE;
                 }
                 
                 /**
@@ -184,8 +128,7 @@ select '"'"'
                  * Unclosed quotation mark after the character string '''. [SQL State=S0001, DB Errorcode=105] 
                  */
                 if (Pattern.compile(".*SQL Server.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-                    MediatorModel.model().sqlStrategy = new SQLServerStrategy();
-//                    System.out.println("SQLServerStrategy");
+                    MediatorModel.model().currentVendor = Vendor.SQLSERVER;
                 }
                 
                 /**
@@ -198,8 +141,7 @@ Warning: db2_fetch_array() [function.db2-fetch-array]: Column information cannot
 Next: DB2 SQL Error: SQLCODE=-727, SQLSTATE=56098, SQLERRMC=2;-10;42603;"', DRIVER=3.69.24 [SQL State=56098, DB Errorcode=-727] 
                  */
                 if (Pattern.compile(".*function\\.db2.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-                    MediatorModel.model().sqlStrategy = new DB2Strategy();
-//                    System.out.println("DB2Strategy");
+                    MediatorModel.model().currentVendor = Vendor.DB2;
                 }
                 
                 /**
@@ -209,8 +151,7 @@ Next: DB2 SQL Error: SQLCODE=-727, SQLSTATE=56098, SQLERRMC=2;-10;42603;"', DRIV
                  * Unmatched quote, parenthesis, bracket or brace. [SQL State=42000, DB Errorcode=802835] 
                  */
                 if (Pattern.compile(".*Non-terminated string.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-                    MediatorModel.model().sqlStrategy = new IngresStrategy();
-//                    System.out.println("IngresStrategy");
+                    MediatorModel.model().currentVendor = Vendor.INGRES;
                 }
                 
                 /**
@@ -226,8 +167,7 @@ jdbc
 Invalid SQL statement or JDBC escape, terminating '"' not found. [SQL State=22025] 
                  */
                 if (Pattern.compile(".*function\\.sybase.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-                    MediatorModel.model().sqlStrategy = new SybaseStrategy();
-//                    System.out.println("SybaseStrategy");
+                    MediatorModel.model().currentVendor = Vendor.SYBASE;
                 }
                 
                 /**
@@ -240,8 +180,7 @@ select '"'"'
            ^
                  */
                 if (Pattern.compile(".*maxdb\\.query.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-                    MediatorModel.model().sqlStrategy = new MaxDbStrategy();
-//                    System.out.println("MaxDbStrategy");
+                    MediatorModel.model().currentVendor = Vendor.MAXDB;
                 }
                 
                 /**
@@ -251,8 +190,7 @@ select '"'"'
                  * Found a quote for which there is no matching quote. [SQL State=IX000, DB Errorcode=-282] 
                  */
                 if (Pattern.compile(".*Informix.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-                    MediatorModel.model().sqlStrategy = new InformixStrategy();
-//                    System.out.println("InformixStrategy");
+                    MediatorModel.model().currentVendor = Vendor.INFORMIX;
                 }
                 
                 /**
@@ -268,28 +206,19 @@ Unexpected end of command - line 1, column 11
 select '"'"'
                  */
                 if (Pattern.compile(".*function\\.ibase-query.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-                    MediatorModel.model().sqlStrategy = new FirebirdStrategy();
-//                    System.out.println("FirebirdStrategy");
-                }
-                if (Pattern.compile(".*hsqldb.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-                    MediatorModel.model().sqlStrategy = new HSQLDBStrategy();
-//                    System.out.println("HSQLDBStrategy");
+                    MediatorModel.model().currentVendor = Vendor.FIREBIRD;
                 }
                 if (Pattern.compile(".*derby.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-                    MediatorModel.model().sqlStrategy = new DerbyStrategy();
-//                    System.out.println("DerbyStrategy");
+                    MediatorModel.model().currentVendor = Vendor.DERBY;
                 }
                 if (Pattern.compile(".*cubrid.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-                    MediatorModel.model().sqlStrategy = new CubridStrategy();
-//                    System.out.println("CubridStrategy");
+                    MediatorModel.model().currentVendor = Vendor.CUBRID;
                 }
                 if (Pattern.compile(".*teradata.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-                    MediatorModel.model().sqlStrategy = new TeradataStrategy();
-//                    System.out.println("TeradataStrategy");
+                    MediatorModel.model().currentVendor = Vendor.TERADATA;
                 }
                 if (Pattern.compile(".*h2.*", Pattern.DOTALL).matcher(pageSource).matches()) {
-                    MediatorModel.model().sqlStrategy = new H2Strategy();
-//                    System.out.println("H2Strategy");
+                    MediatorModel.model().currentVendor = Vendor.H2;
                 }
             } catch (InterruptedException e) {
                 LOGGER.error(e, e);

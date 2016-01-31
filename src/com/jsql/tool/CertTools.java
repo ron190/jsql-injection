@@ -21,13 +21,15 @@ public class CertTools {
         TrustManager[] trustAllCerts = new TrustManager[]{
             new X509TrustManager() {
                 public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return null;
+                    return new java.security.cert.X509Certificate[0];
                 }
                 public void checkClientTrusted(
                     java.security.cert.X509Certificate[] certs, String authType) {
+                    // nothing
                 }
                 public void checkServerTrusted(
                     java.security.cert.X509Certificate[] certs, String authType) {
+                    // nothing
                 }
             }
         };
@@ -38,6 +40,7 @@ public class CertTools {
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
         } catch (Exception e) {
+            // nothing
         }
         
         // Ignore CertificateException: No subject alternative names present

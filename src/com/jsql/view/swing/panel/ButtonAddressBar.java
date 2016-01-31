@@ -29,14 +29,6 @@ public class ButtonAddressBar extends JButton {
     private String state = "Connect";
 
     /**
-     * Return the current state of current process.
-     * @return State of process
-     */
-    public String getState() {
-        return this.state;
-    }
-    
-    /**
      * Icon for loading process.
      */
     private static final Icon ARROWDEFAULT = new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/swing/images/arrowDefault.png"));
@@ -51,6 +43,14 @@ public class ButtonAddressBar extends JButton {
      */
     private static final Icon ARROWPRESSED = new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/swing/images/arrowPressed.png"));
 
+    /**
+     * Return the current state of current process.
+     * @return State of process
+     */
+    public String getState() {
+        return this.state;
+    }
+    
     /**
      * Create a button in address bar.
      */
