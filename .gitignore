@@ -1,8 +1,15 @@
-bin/
-.metadata
-target/
-test-output/
+# project configuration
+.classpath
+.project
 .settings/
-.sonar/
-sonar-project.properties
+target/
+
+# code quality plugin properties
 .checkstyle
+.pmd
+sonar-project.properties
+test-output/
+.codepro/
+.sonar/
+dependency-reduced-pom.xml
+build.xml

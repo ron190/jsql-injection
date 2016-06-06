@@ -3,12 +3,12 @@
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
     <target name="create_run_jar">
-        <jar destfile="target/jsql-injection-v0.74.jar" filesetmanifest="mergewithoutmain">
+        <jar destfile="target/jsql-injection-v0.75.jar" filesetmanifest="mergewithoutmain">
             <manifest>
                 <attribute name="Main-Class" value="com.jsql.MainApplication"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
-            <fileset dir="target/classes" excludes="**/test/**"/>
+            <fileset dir="target/classes" excludes="**/test/**,**/main/**"/>
             <zipfileset excludes="META-INF/*.SF" src="E:/Dev/maven-repo/commons-codec/commons-codec/1.9/commons-codec-1.9.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="E:/Dev/maven-repo/org/jsoup/jsoup/1.7.3/jsoup-1.7.3.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="E:/Dev/maven-repo/org/apache/commons/commons-lang3/3.3.2/commons-lang3-3.3.2.jar"/>
