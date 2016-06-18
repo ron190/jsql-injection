@@ -1,16 +1,28 @@
 ## Description
 **jSQL Injection** is a lightweight application used to find database information from a distant server.
 
-jSQL is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X, Solaris).
+jSQL is **free**, **open source** under GPLv2, and **cross-platform** (Windows, Linux, Mac OS X).
 
-![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/kali_favicon.png "Kali Linux logo") jSQL is part of **[Kali Linux](http://www.kali.org/)**, the official new [BackTrack](http://www.backtrack-linux.org/) penetration distribution.
+![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/kali_favicon.png "Kali Linux logo") jSQL is part of **[Kali Linux](http://www.kali.org/)**, the official penetration testing distribution.
 
-jSQL is also included in [ArchStrike](https://archstrike.org/), [BlackArch](http://www.blackarch.org/), [Black Hat Sec](http://www.blackhatsec.org/) and [Cyborg Hawk](http://cyborg.ztrela.com/).
+jSQL is also included in [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/), [BlackArch](http://www.blackarch.org/) and [Black Hat Sec](http://www.blackhatsec.org/).
 
-## Screenshot of v0.74 [[download here](https://github.com/ron190/jsql-injection/releases)]
-[![jSQL v0.74](https://github.com/ron190/jsql-injection/raw/master/web/v0.74-mini.png "jSQL v0.74")](https://github.com/ron190/jsql-injection/raw/master/web/v0.74.png)
+[![License: GPLv2](https://img.shields.io/badge/License-GPLv2-blue.svg?maxAge=2592000)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+[![Java](https://img.shields.io/badge/Java-7-orange.svg?maxAge=2592000)](http://www.oracle.com/technetwork/java/javase/jdk7-relnotes-418459.html#changes)
+[![SonarQube](https://img.shields.io/badge/SonarQube-5.6-000000.svg?maxAge=2592000)](http://www.sonarqube.org/)
+[![JUnit](https://img.shields.io/badge/JUnit-4.11-4E9A06.svg?maxAge=2592000)](http://junit.org)
+[![Maven](https://img.shields.io/badge/Maven-3.2-AB215A.svg?maxAge=2592000)](https://maven.apache.org/)
+
+## Installation
+First install [Java](http://java.com), then download the last [release](https://github.com/ron190/jsql-injection/releases/download/v0.74/jsql-injection-v0.74.jar) and double-click on the .jar to launch the software.
+Alternatively you can type `java -jar jsql-injection-v0.74.jar` in your terminal.
+
+## Screenshot of next release v0.75 [[download here](https://github.com/ron190/jsql-injection/releases)]
+[![jSQL v0.75](https://github.com/ron190/jsql-injection/raw/master/web/v0.75-mini.png "jSQL v0.75")](https://github.com/ron190/jsql-injection/raw/master/web/v0.75.png)
 ## Change log
-**Coming...** `i18n arabic russian chinese integration, next db engines: SQLite Access MSDE...`
+**Roadmap** `New database, Command-line interface, Translation`
+
+**Coming v0.75** `URI injection point, WAF tamper, HTTP auth brute force, mavenify sources and upgrade Java from 6 to 7`
 
 **v0.73** `Authentication Basic Digest Negotiate NTLM and Kerberos, database type selection`
 

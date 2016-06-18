@@ -1,0 +1,5 @@
+/var/www/html/defaut/
+/var/www/html/default/
+/var/www/html/
+/var/www/
+/home/www/
