@@ -76,7 +76,6 @@ public class ProxyUtil {
         ProxyUtil.proxyAddress = prefs.get("proxyAddress", "127.0.0.1");
         ProxyUtil.proxyPort = prefs.get("proxyPort", "8118");
         
-
         if (ProxyUtil.useProxy) {
             System.setProperty("http.proxyHost", ProxyUtil.proxyAddress);
             System.setProperty("http.proxyPort", ProxyUtil.proxyPort);
@@ -93,8 +92,10 @@ public class ProxyUtil {
                 /**
                  * TODO Preparation Proxy Exception
                  */
-                throw new PreparationException("Proxy connection failed: " + proxyAddress + ":" + proxyPort
-                        + ". Please check your proxy informations or disable proxy setting.");
+                throw new PreparationException(
+                    "Proxy connection failed: " + proxyAddress + ":" + proxyPort
+                    + ". Please check your proxy informations or disable proxy setting."
+                );
             }
             LOGGER.debug("Proxy is responding.");
         }

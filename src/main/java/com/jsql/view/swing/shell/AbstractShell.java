@@ -35,7 +35,7 @@ import sun.swing.SwingUtilities2;
 /**
  * A Terminal completely built from swing text pane.
  */
-@SuppressWarnings({ "serial", "restriction" })
+@SuppressWarnings("serial")
 public abstract class AbstractShell extends JTextPane {
     /**
      * Log4j logger sent to view.
@@ -122,11 +122,11 @@ public abstract class AbstractShell extends JTextPane {
      * Update terminal and use default behavior.
      */
     public void reset() {
-        AbstractShell.this.isEdited[0] = false;
-        AbstractShell.this.setEditable(true);
-        AbstractShell.this.displayPrompt();
-        AbstractShell.this.setCaretPosition(AbstractShell.this.getDocument().getLength());
-        AbstractShell.this.setCursor(null);
+        this.isEdited[0] = false;
+        this.setEditable(true);
+        this.displayPrompt();
+        this.setCaretPosition(this.getDocument().getLength());
+        this.setCursor(null);
     }
 
     /**
@@ -155,11 +155,11 @@ public abstract class AbstractShell extends JTextPane {
      * @throws BadLocationException
      */
     public int getLineStartOffset(int line) throws BadLocationException {
-        Element map = AbstractShell.this.getDocument().getDefaultRootElement();
+        Element map = this.getDocument().getDefaultRootElement();
         if (line < 0) {
             throw new BadLocationException("Negative line", -1);
         } else if (line >= map.getElementCount()) {
-            throw new BadLocationException("No such line", AbstractShell.this.getDocument().getLength() + 1);
+            throw new BadLocationException("No such line", this.getDocument().getLength() + 1);
         } else {
             Element lineElem = map.getElement(line);
             return lineElem.getStartOffset();
@@ -239,16 +239,24 @@ public abstract class AbstractShell extends JTextPane {
             AbstractShell.this.requestFocusInWindow();
             AbstractShell.this.setCaretPosition(AbstractShell.this.getDocument().getLength());
         }
-        @Override public void mouseReleased(MouseEvent e) {
+        
+        @Override 
+        public void mouseReleased(MouseEvent e) {
             e.consume();
         }
-        @Override public void mouseExited(MouseEvent e) {
+        
+        @Override 
+        public void mouseExited(MouseEvent e) {
             e.consume();
         }
-        @Override public void mouseEntered(MouseEvent e) {
+        
+        @Override 
+        public void mouseEntered(MouseEvent e) {
             e.consume();
         }
-        @Override public void mouseClicked(MouseEvent e) {
+        
+        @Override 
+        public void mouseClicked(MouseEvent e) {
             e.consume();
         }
     }

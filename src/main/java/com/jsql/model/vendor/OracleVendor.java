@@ -146,7 +146,6 @@ public class OracleVendor extends AbstractVendor {
                     "substr(" +
                         "(" + sqlQuery + ")," +
                         startPosition + "," +
-//                        MediatorModel.model().blindStrategy.getPerformanceLength() +
                         Strategy.BLIND.getValue().getPerformanceLength() +
                     ")from+dual" +
                 "" +

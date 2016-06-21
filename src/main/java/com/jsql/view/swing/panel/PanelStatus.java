@@ -31,7 +31,7 @@ import com.jsql.i18n.I18n;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.model.strategy.Strategy;
 import com.jsql.model.vendor.Vendor;
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.radio.AbstractRadioLink;
 import com.jsql.view.swing.radio.RadioLinkStrategy;
 import com.jsql.view.swing.text.JPopupLabel;
@@ -40,7 +40,7 @@ import com.jsql.view.swing.text.JPopupLabel;
  * Panel for statusbar.
  */
 @SuppressWarnings("serial")
-public class PanelStatusbar extends JPanel {
+public class PanelStatus extends JPanel {
     /**
      * Default string in place of database infos.
      */
@@ -49,12 +49,12 @@ public class PanelStatusbar extends JPanel {
     /**
      * Textfield not editable for database version.
      */
-    private JTextField labelDBVersion = new JPopupLabel().getProxy();
+    private JTextField labelDbVersion = new JPopupLabel().getProxy();
     
     /**
      * Textfield not editable for database name.
      */
-    private JTextField labelCurrentDB = new JPopupLabel().getProxy();
+    private JTextField labelCurrentDb = new JPopupLabel().getProxy();
     
     /**
      * Textfield not editable for current user in database.
@@ -89,17 +89,23 @@ public class PanelStatusbar extends JPanel {
     /**
      * Create status panel on south of frame.
      */
-    public PanelStatusbar() {
+    public PanelStatus() {
         this.labelNormal = new RadioLinkStrategy(I18n.LABEL_NORMAL, Strategy.NORMAL);
+        I18n.components.get("LABEL_NORMAL").add(labelNormal);
         this.labelErrorBased = new RadioLinkStrategy(I18n.LABEL_ERRORBASED, Strategy.ERRORBASED);
+        I18n.components.get("LABEL_ERRORBASED").add(labelErrorBased);
         this.labelBlind = new RadioLinkStrategy(I18n.LABEL_BLIND, Strategy.BLIND);
+        I18n.components.get("LABEL_BLIND").add(labelBlind);
         this.labelTimeBased = new RadioLinkStrategy(I18n.LABEL_TIMEBASED, Strategy.TIME);
+        I18n.components.get("LABEL_TIMEBASED").add(labelTimeBased);
 
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         this.setBorder(
-                BorderFactory.createCompoundBorder(
-                        BorderFactory.createMatteBorder(1, 0, 0, 0, HelperGUI.COMPONENT_BORDER),
-                        BorderFactory.createEmptyBorder(0, 5, 2, 5)));
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(1, 0, 0, 0, HelperGui.COMPONENT_BORDER),
+                BorderFactory.createEmptyBorder(0, 5, 2, 5)
+            )
+        );
 
         this.reset();
 
@@ -113,17 +119,17 @@ public class PanelStatusbar extends JPanel {
         this.add(Box.createHorizontalGlue());
 
         Font boldFont = new Font(((Font) UIManager.get("Label.font")).getName(), Font.BOLD, ((Font) UIManager.get("Label.font")).getSize());
-        this.labelDBVersion.setFont(boldFont);
-        this.labelCurrentDB.setFont(boldFont);
+        this.labelDbVersion.setFont(boldFont);
+        this.labelCurrentDb.setFont(boldFont);
         this.labelCurrentUser.setFont(boldFont);
         this.labelAuthenticatedUser.setFont(boldFont);
         
-        this.labelDBVersion.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
-        this.labelDBVersion.setEditable(false);
-        this.labelDBVersion.setBackground(this.getBackground());
-        this.labelCurrentDB.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
-        this.labelCurrentDB.setEditable(false);
-        this.labelCurrentDB.setBackground(this.getBackground());
+        this.labelDbVersion.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+        this.labelDbVersion.setEditable(false);
+        this.labelDbVersion.setBackground(this.getBackground());
+        this.labelCurrentDb.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
+        this.labelCurrentDb.setEditable(false);
+        this.labelCurrentDb.setBackground(this.getBackground());
         this.labelCurrentUser.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
         this.labelCurrentUser.setEditable(false);
         this.labelCurrentUser.setBackground(this.getBackground());
@@ -139,13 +145,18 @@ public class PanelStatusbar extends JPanel {
             }
         });
         ((JLabel) vendorsCombo.getRenderer()).setHorizontalAlignment(JLabel.RIGHT);
-        vendorsCombo.setToolTipText("<html>"
+        vendorsCombo.setToolTipText(
+            "<html>"
             + "Choose <b>&lt;auto&gt;</b> if you don't know the type of database.<br>"
-            + "</html>");
+            + "</html>"
+        );
         
         JLabel titleCurrentDB = new JLabel(I18n.TITLE_CURRENTDB);
+        I18n.components.get("TITLE_CURRENTDB").add(titleCurrentDB);
         JLabel titleCurrentUser = new JLabel(I18n.TITLE_CURRENTUSER);
+        I18n.components.get("TITLE_CURRENTUSER").add(titleCurrentUser);
         JLabel titleAuthenticatedUser = new JLabel(I18n.TITLE_AUTHENTICATEDUSER);
+        I18n.components.get("TITLE_AUTHENTICATEDUSER").add(titleAuthenticatedUser);
 
         JPanel types = new JPanel();
         types.setLayout(new BoxLayout(types, BoxLayout.PAGE_AXIS));
@@ -172,8 +183,8 @@ public class PanelStatusbar extends JPanel {
                 .addComponent(titleCurrentUser)
                 .addComponent(titleAuthenticatedUser))
             .addGroup(layout.createParallelGroup()
-                .addComponent(this.labelDBVersion)
-                .addComponent(this.labelCurrentDB)
+                .addComponent(this.labelDbVersion)
+                .addComponent(this.labelCurrentDb)
                 .addComponent(this.labelCurrentUser)
                 .addComponent(this.labelAuthenticatedUser))
         );
@@ -182,10 +193,10 @@ public class PanelStatusbar extends JPanel {
             layout.createSequentialGroup()
             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(vendorsCombo)
-                .addComponent(this.labelDBVersion))
+                .addComponent(this.labelDbVersion))
             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(titleCurrentDB)
-                .addComponent(this.labelCurrentDB))
+                .addComponent(this.labelCurrentDb))
             .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addComponent(titleCurrentUser)
                 .addComponent(this.labelCurrentUser))
@@ -199,20 +210,20 @@ public class PanelStatusbar extends JPanel {
      * Set default values for database information. 
      */
     public final void reset() {
-        this.labelDBVersion.setText(PanelStatusbar.INFO_DEFAULT_VALUE);
-        this.labelCurrentDB.setText(PanelStatusbar.INFO_DEFAULT_VALUE);
-        this.labelCurrentUser.setText(PanelStatusbar.INFO_DEFAULT_VALUE);
-        this.labelAuthenticatedUser.setText(PanelStatusbar.INFO_DEFAULT_VALUE);
+        this.labelDbVersion.setText(PanelStatus.INFO_DEFAULT_VALUE);
+        this.labelCurrentDb.setText(PanelStatus.INFO_DEFAULT_VALUE);
+        this.labelCurrentUser.setText(PanelStatus.INFO_DEFAULT_VALUE);
+        this.labelAuthenticatedUser.setText(PanelStatus.INFO_DEFAULT_VALUE);
         
-        this.labelNormal.setIcon(HelperGUI.SQUARE_GREY);
-        this.labelErrorBased.setIcon(HelperGUI.SQUARE_GREY);
-        this.labelBlind.setIcon(HelperGUI.SQUARE_GREY);
-        this.labelTimeBased.setIcon(HelperGUI.SQUARE_GREY);
+        this.labelNormal.setIcon(HelperGui.SQUARE_GREY);
+        this.labelErrorBased.setIcon(HelperGui.SQUARE_GREY);
+        this.labelBlind.setIcon(HelperGui.SQUARE_GREY);
+        this.labelTimeBased.setIcon(HelperGui.SQUARE_GREY);
         
-        this.labelNormal.setFont(HelperGUI.SEGOE_FONT);
-        this.labelErrorBased.setFont(HelperGUI.SEGOE_FONT);
-        this.labelBlind.setFont(HelperGUI.SEGOE_FONT);
-        this.labelTimeBased.setFont(HelperGUI.SEGOE_FONT);
+        this.labelNormal.setFont(HelperGui.SEGOE_FONT);
+        this.labelErrorBased.setFont(HelperGui.SEGOE_FONT);
+        this.labelBlind.setFont(HelperGui.SEGOE_FONT);
+        this.labelTimeBased.setFont(HelperGui.SEGOE_FONT);
     }
 
     /**
@@ -223,8 +234,8 @@ public class PanelStatusbar extends JPanel {
      * @param authenticatedUser User authenticated
      */
     public void setInfos(String version, String database, String user, String authenticatedUser) {
-        this.labelDBVersion.setText(version);
-        this.labelCurrentDB.setText(database);
+        this.labelDbVersion.setText(version);
+        this.labelCurrentDb.setText(database);
         this.labelCurrentUser.setText(user);
         this.labelAuthenticatedUser.setText(authenticatedUser);
     }

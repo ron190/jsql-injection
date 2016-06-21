@@ -36,8 +36,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import com.jsql.i18n.I18n;
-import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.TabHeader;
 
@@ -88,20 +88,23 @@ public class CreateAdminPageTab implements InteractionCommand {
         final JPopupMenu menu = new JPopupMenu();
         
         JMenuItem item = new JMenuItem(I18n.COPY_PAGE_URL);
-        item.setIcon(HelperGUI.EMPTY);
+        I18n.components.get("COPY_PAGE_URL").add(item);
+        item.setIcon(HelperGui.EMPTY);
         
         JMenuItem copyItem = new JMenuItem();
         copyItem.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         copyItem.setMnemonic('C');
         copyItem.setText(I18n.COPY);
-        copyItem.setIcon(HelperGUI.EMPTY);
+        I18n.components.get("COPY").add(copyItem);
+        copyItem.setIcon(HelperGui.EMPTY);
         
         JMenuItem itemSelectAll = new JMenuItem();
-        itemSelectAll.setIcon(HelperGUI.EMPTY);
+        itemSelectAll.setIcon(HelperGui.EMPTY);
         itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.setText(I18n.SELECT_ALL);
+        I18n.components.get("SELECT_ALL").add(itemSelectAll);
         itemSelectAll.setMnemonic('A');
         
         menu.add(item);
@@ -151,18 +154,18 @@ public class CreateAdminPageTab implements InteractionCommand {
         });
 
         final LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, browser);
-        MediatorGUI.tabResults().addTab(url.replaceAll(".*/", "") + " ", scroller);
+        MediatorGui.tabResults().addTab(url.replaceAll(".*/", "") + " ", scroller);
 
         // Focus on the new tab
-        MediatorGUI.tabResults().setSelectedComponent(scroller);
+        MediatorGui.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
         TabHeader header = new TabHeader(new ImageIcon(CreateAdminPageTab.class.getResource("/com/jsql/view/swing/resources/images/admin.png")));
 
-        MediatorGUI.tabResults().setToolTipTextAt(MediatorGUI.tabResults().indexOfComponent(scroller), "<html>" + url + "</html>");
+        MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), "<html>"+ url +"</html>");
 
         // Apply the custom header to the tab
-        MediatorGUI.tabResults().setTabComponentAt(MediatorGUI.tabResults().indexOfComponent(scroller), header);
+        MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(scroller), header);
 
         // Give focus to the admin page
         browser.requestFocusInWindow();

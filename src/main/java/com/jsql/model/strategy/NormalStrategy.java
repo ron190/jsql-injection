@@ -47,10 +47,12 @@ public class NormalStrategy extends AbstractStrategy {
             this.visibleIndex = this.getVisibleIndex(MediatorModel.model().firstSuccessPageSource);
         }
         
-        this.isApplicable = (!"".equals(MediatorModel.model().sqlIndexes)) 
-                && new Integer(Strategy.NORMAL.getValue().getPerformanceLength()) > 0
-                && this.visibleIndex != null
-                && MediatorModel.model().firstSuccessPageSource != null;
+        this.isApplicable = 
+            (!"".equals(MediatorModel.model().sqlIndexes)) 
+            && new Integer(Strategy.NORMAL.getValue().getPerformanceLength()) > 0
+            && this.visibleIndex != null
+            && MediatorModel.model().firstSuccessPageSource != null
+        ;
         
         if (this.isApplicable) {
             allow();
@@ -171,10 +173,11 @@ public class NormalStrategy extends AbstractStrategy {
 
         // Replace all others indexes by 1
         MediatorModel.model().sqlIndexes =
-                MediatorModel.model().sqlIndexes.replaceAll(
-                    "1337(?!" + lengthFields[lengthFields.length - 1][1] + "7331)\\d*7331",
-                    "1"
-                );
+            MediatorModel.model().sqlIndexes.replaceAll(
+                "1337(?!" + lengthFields[lengthFields.length - 1][1] + "7331)\\d*7331",
+                "1"
+            )
+        ;
         return Integer.toString(lengthFields[lengthFields.length - 1][1]);
     }
 }

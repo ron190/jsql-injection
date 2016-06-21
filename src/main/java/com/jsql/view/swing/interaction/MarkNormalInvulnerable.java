@@ -10,8 +10,8 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * Mark the injection as invulnerable to a normal injection.
@@ -26,6 +26,6 @@ public class MarkNormalInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.panelStatus().setNormalIcon(HelperGUI.SQUARE_RED);
+        MediatorGui.panelStatus().setNormalIcon(HelperGui.SQUARE_RED);
     }
 }

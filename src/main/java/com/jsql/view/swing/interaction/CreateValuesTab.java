@@ -11,17 +11,13 @@
 package com.jsql.view.swing.interaction;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.util.StringUtil;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tab.TabHeader;
-import com.jsql.view.swing.table.ComparatorColumn;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
@@ -59,7 +55,7 @@ public class CreateValuesTab implements InteractionCommand {
     @Override
     public void execute() {
         // Report NullPointerException #1683 
-        DefaultMutableTreeNode node = MediatorGUI.jFrame().getTreeNodeModels().get(table);
+        DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(table);
         
         if (node != null) {
             // Get the node
@@ -71,35 +67,29 @@ public class CreateValuesTab implements InteractionCommand {
             progressingTreeNodeModel.isRunning = false;
             
             // Create a new table to display the values
-            PanelTable newTableJPanel = new PanelTable(data, columnNames, MediatorGUI.tabResults());
-            
-//            TableRowSorter<TableModel> rowSorter = new TableRowSorter<>();
-//            newTableJPanel.table.setRowSorter(rowSorter);
-//            
-//            // TODO No more applied (filter lib in cause)
-//            Comparator<Object> c1 = new ComparatorColumn();
-//            
-//            rowSorter.setModel(newTableJPanel.table.getModel());
-//            for (int i = 2; i < newTableJPanel.table.getColumnCount(); i++) {
-//                rowSorter.setComparator(i, c1);
-//            }
+            PanelTable newTableJPanel = new PanelTable(data, columnNames);
             
             // Create a new tab: add header and table
-            MediatorGUI.tabResults().addTab(table + " ", newTableJPanel);
+            MediatorGui.tabResults().addTab(table + " ", newTableJPanel);
             // Focus on the new tab
-            MediatorGUI.tabResults().setSelectedComponent(newTableJPanel);
+            MediatorGui.tabResults().setSelectedComponent(newTableJPanel);
             
             // Create a custom tab header with close button
             TabHeader header = new TabHeader();
             
-            MediatorGUI.tabResults().setToolTipTextAt(
-                MediatorGUI.tabResults().indexOfComponent(newTableJPanel),
-                "<html><b>"+ table.getParent() +"."+ table +"</b><br>"+ 
-                "<i>"+ StringUtil.join(Arrays.copyOfRange(columnNames, 2, columnNames.length), "<br>") +"</i></html>"
+            MediatorGui.tabResults().setToolTipTextAt(
+                MediatorGui.tabResults().indexOfComponent(newTableJPanel),
+                "<html><b>"
+                + table.getParent() +"."+ table +"</b><br>"
+                + "<i>"+ StringUtil.join(Arrays.copyOfRange(columnNames, 2, columnNames.length), "<br>") 
+                + "</i></html>"
             );
             
             // Apply the custom header to the tab
-            MediatorGUI.tabResults().setTabComponentAt(MediatorGUI.tabResults().indexOfComponent(newTableJPanel), header);
+            MediatorGui.tabResults().setTabComponentAt(
+                MediatorGui.tabResults().indexOfComponent(newTableJPanel), 
+                header
+            );
         }
     }
 }

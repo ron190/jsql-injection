@@ -41,25 +41,35 @@ public class NodeModelColumn extends AbstractNodeModel {
             boolean selected, boolean expanded, boolean leaf, int row,
             boolean hasFocus) {
         JCheckBox checkbox = new JCheckBox(this.toString(), this.isChecked);
-        checkbox.setFont(checkbox.getFont().deriveFont(Font.PLAIN | Font.ITALIC, checkbox.getFont().getSize()));
+        checkbox.setFont(
+            checkbox.getFont().deriveFont(
+                Font.PLAIN | Font.ITALIC, 
+                checkbox.getFont().getSize()
+            )
+        );
         checkbox.setBackground(Color.WHITE);
         return checkbox;
     }
 
-    @Override Icon getLeafIcon(boolean leaf) {
+    @Override 
+    Icon getLeafIcon(boolean leaf) {
         // Do nothing
         return null;
     }
-    @Override public void runAction() {
+    @Override 
+    public void runAction() {
         // Do nothing
     }
-    @Override void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {
+    @Override 
+    void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {
         // Do nothing
     }
-    @Override public void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j) {
+    @Override 
+    public void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j) {
         // Do nothing
     }
-    @Override public boolean verifyShowPopup() {
+    @Override 
+    public boolean isPopupDisplayable() {
         // Do nothing
         return false; 
     }

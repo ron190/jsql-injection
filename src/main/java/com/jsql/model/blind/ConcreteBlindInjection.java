@@ -168,10 +168,12 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
 
     @Override
     public String getInfoMessage() {
-        return "A blind SQL request is true if the diff between "
-                + "a correct page (e.g existing id) and current page "
-                + "is not as the following: "
-                + ConcreteBlindInjection.constantFalseMark + "\n";
+        return 
+            "A blind SQL request is true if the diff between "
+            + "a correct page (e.g existing id) and current page "
+            + "is not as the following: "
+            + ConcreteBlindInjection.constantFalseMark + "\n"
+        ;
     }
 
     /**

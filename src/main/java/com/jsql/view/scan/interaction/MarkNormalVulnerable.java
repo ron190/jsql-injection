@@ -13,10 +13,12 @@ package com.jsql.view.scan.interaction;
 import java.util.Map;
 
 import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.list.ListItem;
 
 /**
  * Mark the injection as vulnerable to a basic injection.
@@ -40,13 +42,11 @@ public class MarkNormalVulnerable implements InteractionCommand {
     public void execute() {
         LOGGER.debug("Vulnerable to Normal injection.");
         
-        for (int i = 0 ; i < MediatorGUI.tabManagers().scanListManager.listPaths.getModel().getSize() ; i++) {
-            if (MediatorGUI.tabManagers().scanListManager.listPaths.getModel().getElementAt(i).internalString.equals(url)) {
-                MediatorGUI.tabManagers().scanListManager.listPaths.getModel().getElementAt(i).isValidated = true;
-                ((DefaultListModel) MediatorGUI.tabManagers().scanListManager.listPaths.getModel()).setElementAt(
-                    MediatorGUI.tabManagers().scanListManager.listPaths.getModel().getElementAt(i), 
-                    i
-                );
+        ListModel<ListItem> listModel = MediatorGui.tabManagers().scanListManager.listPaths.getModel();
+        for (int i = 0 ; i < listModel.getSize() ; i++) {
+            if (listModel.getElementAt(i).internalString.equals(url)) {
+                listModel.getElementAt(i).isValidated = true;
+                ((DefaultListModel) listModel).setElementAt(listModel.getElementAt(i), i);
             }
         }
     }

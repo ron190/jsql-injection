@@ -11,7 +11,7 @@ import javax.swing.text.SimpleAttributeSet;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.text.JPopupTextPane;
 
 /**
@@ -62,10 +62,10 @@ public class JColoredConsole extends JPopupTextPane {
                 attribut
             );
 
-            int tabIndex = MediatorGUI.tabConsoles().indexOfTab(tabName);
-            if (0 <= tabIndex && tabIndex < MediatorGUI.tabConsoles().getTabCount()) {
-                Component tabHeader = MediatorGUI.tabConsoles().getTabComponentAt(tabIndex);
-                if (MediatorGUI.tabConsoles().getSelectedIndex() != tabIndex) {
+            int tabIndex = MediatorGui.tabConsoles().indexOfTab(tabName);
+            if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
+                Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
+                if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
                     tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
                 }
             }

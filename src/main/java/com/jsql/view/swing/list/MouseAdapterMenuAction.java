@@ -29,7 +29,7 @@ import javax.swing.TransferHandler;
 
 import com.jsql.i18n.I18n;
 import com.jsql.util.ConfigurationUtil;
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 
 /**
  * A Mouse action to display a popupmenu on a JList.
@@ -61,24 +61,33 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             JPopupMenu tablePopupMenu = new JPopupMenu();
 
             JMenuItem mnImport = new JMenuItem(I18n.IMPORT);
+            I18n.components.get("IMPORT").add(mnImport);
             JMenuItem mnExport = new JMenuItem(I18n.EXPORT);
+            I18n.components.get("EXPORT").add(mnExport);
             JMenuItem mnCut = new JMenuItem(I18n.CUT);
+            I18n.components.get("CUT").add(mnCut);
             JMenuItem mnCopy = new JMenuItem(I18n.COPY);
+            I18n.components.get("COPY").add(mnCopy);
             JMenuItem mnPaste = new JMenuItem(I18n.PASTE);
+            I18n.components.get("PASTE").add(mnPaste);
             JMenuItem mnDelete = new JMenuItem(I18n.DELETE);
+            I18n.components.get("DELETE").add(mnDelete);
             JMenuItem mnNew = new JMenuItem(I18n.NEW_VALUE);
+            I18n.components.get("NEW_VALUE").add(mnNew);
             JMenuItem mnRestoreDefault = new JMenuItem(I18n.RESTORE_DEFAULT);
+            I18n.components.get("RESTORE_DEFAULT").add(mnRestoreDefault);
             JMenuItem mnSelectAll = new JMenuItem(I18n.SELECT_ALL);
+            I18n.components.get("SELECT_ALL").add(mnSelectAll);
             
-            mnImport.setIcon(HelperGUI.EMPTY);
-            mnExport.setIcon(HelperGUI.EMPTY);
-            mnCut.setIcon(HelperGUI.EMPTY);
-            mnCopy.setIcon(HelperGUI.EMPTY);
-            mnPaste.setIcon(HelperGUI.EMPTY);
-            mnDelete.setIcon(HelperGUI.EMPTY);
-            mnNew.setIcon(HelperGUI.EMPTY);
-            mnRestoreDefault.setIcon(HelperGUI.EMPTY);
-            mnSelectAll.setIcon(HelperGUI.EMPTY);
+            mnImport.setIcon(HelperGui.EMPTY);
+            mnExport.setIcon(HelperGui.EMPTY);
+            mnCut.setIcon(HelperGui.EMPTY);
+            mnCopy.setIcon(HelperGui.EMPTY);
+            mnPaste.setIcon(HelperGui.EMPTY);
+            mnDelete.setIcon(HelperGui.EMPTY);
+            mnNew.setIcon(HelperGui.EMPTY);
+            mnRestoreDefault.setIcon(HelperGui.EMPTY);
+            mnSelectAll.setIcon(HelperGui.EMPTY);
 
             mnCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
             mnCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
@@ -97,7 +106,10 @@ public class MouseAdapterMenuAction extends MouseAdapter {
                 public void actionPerformed(ActionEvent arg0) {
                     int choice = importFileDialog.showOpenDialog(myList.getTopLevelAncestor());
                     if (choice == JFileChooser.APPROVE_OPTION) {
-                        myList.dropPasteFile(Arrays.asList(importFileDialog.getSelectedFiles()), myList.locationToIndex(e.getPoint()));
+                        myList.dropPasteFile(
+                            Arrays.asList(importFileDialog.getSelectedFiles()), 
+                            myList.locationToIndex(e.getPoint())
+                        );
                     }
                 }
             });
@@ -105,9 +117,11 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             mnCopy.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Action a = myList.getActionMap().get(TransferHandler.getCopyAction().getValue(Action.NAME));
-                    if (a != null) {
-                        a.actionPerformed(new ActionEvent(myList, ActionEvent.ACTION_PERFORMED, null));
+                    Action action = myList.getActionMap().get(TransferHandler.getCopyAction().getValue(Action.NAME));
+                    if (action != null) {
+                        action.actionPerformed(
+                            new ActionEvent(myList, ActionEvent.ACTION_PERFORMED, null)
+                        );
                     }
                 }
             });
@@ -117,7 +131,9 @@ public class MouseAdapterMenuAction extends MouseAdapter {
                 public void actionPerformed(ActionEvent e) {
                     Action action = myList.getActionMap().get(TransferHandler.getCutAction().getValue(Action.NAME));
                     if (action != null) {
-                        action.actionPerformed(new ActionEvent(myList, ActionEvent.ACTION_PERFORMED, null));
+                        action.actionPerformed(
+                            new ActionEvent(myList, ActionEvent.ACTION_PERFORMED, null)
+                        );
                     }
                 }
             });
@@ -127,7 +143,9 @@ public class MouseAdapterMenuAction extends MouseAdapter {
                 public void actionPerformed(ActionEvent e) {
                     Action action = myList.getActionMap().get(TransferHandler.getPasteAction().getValue(Action.NAME));
                     if (action != null) {
-                        action.actionPerformed(new ActionEvent(myList, ActionEvent.ACTION_PERFORMED, null));
+                        action.actionPerformed(
+                            new ActionEvent(myList, ActionEvent.ACTION_PERFORMED, null)
+                        );
                     }
                 }
             });

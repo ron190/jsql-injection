@@ -13,7 +13,7 @@ package com.jsql.view.swing.interaction;
 import java.awt.Component;
 import java.awt.Font;
 
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * Append text to the tab Binary.
@@ -33,13 +33,13 @@ public class MessageBinary implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.panelConsoles().binaryTab.append(text);
-        MediatorGUI.panelConsoles().binaryTab.setCaretPosition(MediatorGUI.panelConsoles().binaryTab.getDocument().getLength());
+        MediatorGui.panelConsoles().binaryTab.append(text);
+        MediatorGui.panelConsoles().binaryTab.setCaretPosition(MediatorGui.panelConsoles().binaryTab.getDocument().getLength());
         
-        int tabIndex = MediatorGUI.tabConsoles().indexOfTab("Binary");
-        if (0 <= tabIndex && tabIndex < MediatorGUI.tabConsoles().getTabCount()) {
-            Component tabHeader = MediatorGUI.tabConsoles().getTabComponentAt(tabIndex);
-            if (MediatorGUI.tabConsoles().getSelectedIndex() != tabIndex) {
+        int tabIndex = MediatorGui.tabConsoles().indexOfTab("Binary");
+        if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
+            Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
+            if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
                 tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
             }
         }

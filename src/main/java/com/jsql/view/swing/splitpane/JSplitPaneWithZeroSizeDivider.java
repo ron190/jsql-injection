@@ -30,7 +30,7 @@ import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 
 /**
  * A JSplitPane that uses a 1 pixel thin visible divider,
@@ -126,7 +126,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
         public ZeroSizeDivider(BasicSplitPaneUI ui) {
             super(ui);
             super.setBorder(null);
-            setBackground(HelperGUI.COMPONENT_BORDER);
+            setBackground(HelperGui.COMPONENT_BORDER);
         }
 
         @Override
@@ -138,9 +138,19 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
         public void paint(Graphics g) {
             g.setColor(getBackground());
             if (orientation == HORIZONTAL_SPLIT) {
-                g.drawLine(dividerDragOffset, 0, dividerDragOffset, getHeight() - 1);
+                g.drawLine(
+                    dividerDragOffset,
+                    0,
+                    dividerDragOffset,
+                    getHeight() - 1
+                );
             } else {
-                g.drawLine(0, dividerDragOffset, getWidth() - 1, dividerDragOffset);
+                g.drawLine(
+                    0,
+                    dividerDragOffset,
+                    getWidth() - 1,
+                    dividerDragOffset
+                );
             }
         }
 

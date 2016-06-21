@@ -14,6 +14,6 @@ package com.jsql.view.swing.tab;
  * Adapt MouseTabbedPane to another class in order to ease Mediator registering.
  */
 @SuppressWarnings("serial")
-public class TabbedPaneConsoles extends MouseTabbedPane {
+public class TabConsoles extends MouseTabbedPane {
     // Nothing more
 }

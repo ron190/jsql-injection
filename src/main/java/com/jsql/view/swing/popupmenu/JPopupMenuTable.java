@@ -23,7 +23,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import com.jsql.i18n.I18n;
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 
 /**
  * Default popup menu and shortcuts for a table.
@@ -47,8 +47,9 @@ public class JPopupMenuTable extends JPopupMenu {
         JMenuItem copyItem = new JMenuItem();
         copyItem.setAction(new ActionCopy());
         copyItem.setText(I18n.COPY);
+        I18n.components.get("COPY").add(copyItem);
         copyItem.setMnemonic('C');
-        copyItem.setIcon(HelperGUI.EMPTY);
+        copyItem.setIcon(HelperGui.EMPTY);
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         this.add(copyItem);
 
@@ -57,18 +58,24 @@ public class JPopupMenuTable extends JPopupMenu {
         JMenuItem selectAllItem = new JMenuItem();
         selectAllItem.setAction(new ActionSelectAll());
         selectAllItem.setText(I18n.SELECT_ALL);
+        I18n.components.get("SELECT_ALL").add(selectAllItem);
         selectAllItem.setMnemonic('A');
-        selectAllItem.setIcon(HelperGUI.EMPTY);
+        selectAllItem.setIcon(HelperGui.EMPTY);
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         this.add(selectAllItem);
         
         this.addSeparator();
         
         JMenuItem search = new JMenuItem();
-//        search.setAction(new ActionSelectAll());
+        search.setAction(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO
+            }
+        });
         search.setText("Search...");
         search.setMnemonic('S');
-        search.setIcon(HelperGUI.EMPTY);
+        search.setIcon(HelperGui.EMPTY);
         search.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
         this.add(search);
 
@@ -105,7 +112,11 @@ public class JPopupMenuTable extends JPopupMenu {
     private class ActionCopy extends AbstractAction {
         @Override
         public void actionPerformed(ActionEvent e) {
-            ActionEvent copyEvent = new ActionEvent(JPopupMenuTable.this.table, ActionEvent.ACTION_PERFORMED, "copy");
+            ActionEvent copyEvent = new ActionEvent(
+                JPopupMenuTable.this.table, 
+                ActionEvent.ACTION_PERFORMED, 
+                "copy"
+            );
             JPopupMenuTable.this.table.getActionMap().get(copyEvent.getActionCommand()).actionPerformed(copyEvent);
         }
     }

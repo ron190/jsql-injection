@@ -29,6 +29,10 @@ public class MessageInfo implements InteractionCommand {
 
     @Override
     public void execute() {
-        LOGGER.trace(MediatorModel.model().versionDatabase + ", Database: " + MediatorModel.model().currentDatabase + ", User: " + MediatorModel.model().currentUser);
+        LOGGER.trace(
+            MediatorModel.model().versionDatabase 
+            + ", Database: " + MediatorModel.model().currentDatabase 
+            + ", User: " + MediatorModel.model().currentUser
+        );
     }
 }

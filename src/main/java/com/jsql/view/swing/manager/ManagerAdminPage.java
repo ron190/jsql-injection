@@ -32,8 +32,8 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 
@@ -75,9 +75,12 @@ public class ManagerAdminPage extends ManagerAbstractList {
         lastLine.setOpaque(false);
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
 
-        lastLine.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER), 
-                BorderFactory.createEmptyBorder(1, 0, 1, 1)));
+        lastLine.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGui.COMPONENT_BORDER), 
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)
+            )
+        );
         
         run = new JButton(
             defaultText, 
@@ -85,7 +88,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
         );
 
         run.setToolTipText(I18n.ADMIN_PAGE_RUN_BUTTON_TOOLTIP);
-        run.setBorder(HelperGUI.BLU_ROUND_BORDER);
+        run.setBorder(HelperGui.BLU_ROUND_BORDER);
 
         run.addActionListener(new ActionListener() {
             @Override
@@ -98,13 +101,13 @@ public class ManagerAdminPage extends ManagerAbstractList {
                     @Override
                     public void run() {
                         if (run.getText().equals(defaultText)) {
-                            if ("".equals(MediatorGUI.panelAddress().urlTextField.getText())) {
+                            if ("".equals(MediatorGui.panelAddress().urlTextField.getText())) {
                                 LOGGER.warn("Please define the site URL first.");
                             } else {
                                 run.setText("Stop");
                                 loader.setVisible(true);
                                 RessourceAccess.createAdminPages(
-                                    MediatorGUI.panelAddress().urlTextField.getText(), 
+                                    MediatorGui.panelAddress().urlTextField.getText(), 
                                     listFile.getSelectedValuesList()
                                 );
                             }

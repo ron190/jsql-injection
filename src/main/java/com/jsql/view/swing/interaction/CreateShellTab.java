@@ -17,8 +17,8 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.shell.ShellWeb;
 import com.jsql.view.swing.tab.TabHeader;
@@ -49,30 +49,31 @@ public class CreateShellTab implements InteractionCommand {
     public void execute() {
         UUID terminalID = UUID.randomUUID();
         ShellWeb terminal = new ShellWeb(terminalID, url);
-        MediatorGUI.jFrame().getConsoles().put(terminalID, terminal);
+        MediatorGui.frame().getConsoles().put(terminalID, terminal);
         
         LightScrollPane scroller = new LightScrollPane(terminal);
-        scroller.THUMB_COLOR = HelperGUI.SELECTION_BACKGROUND;
+        scroller.THUMB_COLOR = HelperGui.SELECTION_BACKGROUND;
         scroller.SCROLL_BAR_ALPHA_ROLLOVER = 175;
         scroller.SCROLL_BAR_ALPHA = 100;
         
-        scroller.setBorder(BorderFactory.createMatteBorder(1,0,1,1,Color.BLACK));
+        scroller.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.BLACK));
 
-        MediatorGUI.tabResults().addTab("Web shell ", scroller);
+        MediatorGui.tabResults().addTab("Web shell ", scroller);
 
         // Focus on the new tab
-        MediatorGUI.tabResults().setSelectedComponent(scroller);
+        MediatorGui.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
         TabHeader header = new TabHeader(new ImageIcon(CreateShellTab.class.getResource("/com/jsql/view/swing/resources/images/shell.png")));
 
-        MediatorGUI.tabResults().setToolTipTextAt(
-            MediatorGUI.tabResults().indexOfComponent(scroller),
+        MediatorGui.tabResults().setToolTipTextAt(
+            MediatorGui.tabResults().indexOfComponent(scroller),
             "<html><b>URL</b><br>" + url + RessourceAccess.WEBSHELL_FILENAME
-            + "<br><b>Path</b><br>" + path + RessourceAccess.WEBSHELL_FILENAME + "</html>");
+            + "<br><b>Path</b><br>" + path + RessourceAccess.WEBSHELL_FILENAME + "</html>"
+        );
 
         // Apply the custom header to the tab
-        MediatorGUI.tabResults().setTabComponentAt(MediatorGUI.tabResults().indexOfComponent(scroller), header);
+        MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(scroller), header);
 
         terminal.requestFocusInWindow();
     }

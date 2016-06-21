@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * End the refreshing of administration page search button.
@@ -25,8 +25,8 @@ public class EndAdminSearch implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.tabManagers().adminPageManager.restoreButtonText();
-        MediatorGUI.tabManagers().adminPageManager.setButtonEnable(true);
-        MediatorGUI.tabManagers().adminPageManager.hideLoader();
+        MediatorGui.tabManagers().adminPageManager.restoreButtonText();
+        MediatorGui.tabManagers().adminPageManager.setButtonEnable(true);
+        MediatorGui.tabManagers().adminPageManager.hideLoader();
     }
 }

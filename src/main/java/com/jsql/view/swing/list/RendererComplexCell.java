@@ -25,7 +25,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.LineBorder;
 
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 
 /**
  * Item renderer for JList.
@@ -37,17 +37,19 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
     private static DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 
     @SuppressWarnings("serial")
-    public Component getListCellRendererComponent(JList<? extends ListItem> list, ListItem value, int index,
-            boolean isSelected, boolean cellHasFocus) {
-        JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index,
-                isSelected, cellHasFocus);
+    public Component getListCellRendererComponent(
+        JList<? extends ListItem> list, ListItem value, int index, boolean isSelected, boolean cellHasFocus
+    ) {
+        JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(
+            list, value, index, isSelected, cellHasFocus
+        );
 
         renderer.setFont(new Font("Segoe UI", Font.PLAIN, renderer.getFont().getSize()));
 
         if (isSelected && list.isFocusOwner()) {
-            renderer.setBackground(HelperGUI.SELECTION_BACKGROUND);
+            renderer.setBackground(HelperGui.SELECTION_BACKGROUND);
         } else if (isSelected && !list.isFocusOwner()) {
-            renderer.setBackground(HelperGUI.FOCUS_LOST);
+            renderer.setBackground(HelperGui.FOCUS_LOST);
         } else {
             renderer.setBackground(Color.WHITE);
         }
@@ -58,7 +60,7 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
         }
 
         if (isSelected && list.isFocusOwner()) {
-            renderer.setBorder(new LineBorder(HelperGUI.BLU_COLOR, 1, false));
+            renderer.setBorder(new LineBorder(HelperGui.BLU_COLOR, 1, false));
         } else if (isSelected && !list.isFocusOwner()) {
             renderer.setBorder(new LineBorder(new Color(218, 218, 218), 1, false));
         } else if (cellHasFocus) {
@@ -67,7 +69,16 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
                 public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
                     Graphics2D gg = (Graphics2D) g;
                     gg.setColor(Color.GRAY);
-                    gg.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{1}, 0));
+                    gg.setStroke(
+                        new BasicStroke(
+                            1, 
+                            BasicStroke.CAP_BUTT, 
+                            BasicStroke.JOIN_BEVEL, 
+                            0, 
+                            new float[]{1}, 
+                            0
+                        )
+                    );
                     gg.drawRect(x, y, w - 1, h - 1);
                 }
             }, BorderFactory.createEmptyBorder(0, 1, 0, 0)));

@@ -28,8 +28,8 @@ import javax.swing.text.JTextComponent;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.ConfigurationUtil;
-import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.dialog.ReplaceFileChooser;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.table.PanelTable;
@@ -52,30 +52,30 @@ public class ActionSaveTab extends AbstractAction {
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         this.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_S));
         this.putValue(Action.NAME, "Save Tab As...");
-        this.putValue(Action.SMALL_ICON, HelperGUI.EMPTY);
+        this.putValue(Action.SMALL_ICON, HelperGui.EMPTY);
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
         filechooser.setDialogTitle("Save Tab As");
 
-        if (MediatorGUI.tabResults().getSelectedComponent() instanceof PanelTable) {
+        if (MediatorGui.tabResults().getSelectedComponent() instanceof PanelTable) {
             saveTablePanel();
-        } else if (MediatorGUI.tabResults().getSelectedComponent() instanceof LightScrollPane) {
-            if ((((LightScrollPane) MediatorGUI.tabResults().getSelectedComponent()).scrollPane.getViewport()).getView() instanceof JTextComponent) {
+        } else if (MediatorGui.tabResults().getSelectedComponent() instanceof LightScrollPane) {
+            if ((((LightScrollPane) MediatorGui.tabResults().getSelectedComponent()).scrollPane.getViewport()).getView() instanceof JTextComponent) {
                 saveJTextComponent();
             }
         }
     }
     
     private void saveTablePanel() {
-        JTable table = ((PanelTable) MediatorGUI.tabResults().getSelectedComponent()).table;
+        JTable table = ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).table;
         
         if (table == null) {
             return;
         }
 
-        int returnVal = filechooser.showSaveDialog(MediatorGUI.jFrame());
+        int returnVal = filechooser.showSaveDialog(MediatorGui.frame());
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = filechooser.getSelectedFile();
             
@@ -117,17 +117,14 @@ public class ActionSaveTab extends AbstractAction {
     }
     
     private void saveJTextComponent() {
-        JTextComponent textArea = null;
-        
-        if ((JTextComponent) (((LightScrollPane) MediatorGUI.tabResults().getSelectedComponent()).scrollPane.getViewport()).getView() != null) {
-            textArea = (JTextComponent) (((LightScrollPane) MediatorGUI.tabResults().getSelectedComponent()).scrollPane.getViewport()).getView();
-        }
+        JTextComponent textArea = 
+            (JTextComponent) (((LightScrollPane) MediatorGui.tabResults().getSelectedComponent()).scrollPane.getViewport()).getView();
         
         if (textArea == null) {
             return;
         }
         
-        int returnVal = filechooser.showSaveDialog(MediatorGUI.jFrame());
+        int returnVal = filechooser.showSaveDialog(MediatorGui.frame());
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = filechooser.getSelectedFile();
             

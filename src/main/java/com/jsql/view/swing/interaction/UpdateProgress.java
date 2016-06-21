@@ -10,10 +10,11 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import com.jsql.model.bean.AbstractElementDatabase;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**
@@ -41,19 +42,19 @@ public class UpdateProgress implements InteractionCommand {
 
     @Override
     public void execute() {
+        DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(dataElementDatabase);
         // Fix Report #1368: ignore if no element database
-        if (MediatorGUI.jFrame().getTreeNodeModels().get(dataElementDatabase) != null) {
+        if (node != null) {
             // Get the node
-            AbstractNodeModel progressingTreeNodeModel =
-                (AbstractNodeModel) MediatorGUI.jFrame().getTreeNodeModels().get(dataElementDatabase).getUserObject();
+            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
             // Update the progress value of the model
             progressingTreeNodeModel.childUpgradeCount = dataCount;
             
             // Tree model, update the tree (refresh, add node, etc)
-            DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGUI.databaseTree().getModel();
+            DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
             
             // Update the node
-            treeModel.nodeChanged(MediatorGUI.jFrame().getTreeNodeModels().get(dataElementDatabase));
+            treeModel.nodeChanged(node);
         }
     }
 }

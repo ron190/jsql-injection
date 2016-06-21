@@ -15,7 +15,7 @@ import javax.swing.TransferHandler;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.tab.TabbedPaneResults;
+import com.jsql.view.swing.tab.TabResults;
 
 @SuppressWarnings("serial")
 public class TabTransferHandler extends TransferHandler {
@@ -27,7 +27,7 @@ public class TabTransferHandler extends TransferHandler {
     private final DataFlavor localObjectFlavor;
     
     public TabTransferHandler() {
-        localObjectFlavor = new ActivationDataFlavor(TabbedPaneResults.class, DataFlavor.javaJVMLocalObjectMimeType, "RightPaneAdapter");
+        localObjectFlavor = new ActivationDataFlavor(TabResults.class, DataFlavor.javaJVMLocalObjectMimeType, "RightPaneAdapter");
     }
     
     private DnDTabbedPane srcDnDTabbedPane = null;
@@ -55,9 +55,17 @@ public class TabTransferHandler extends TransferHandler {
         boolean isDropable = false;
 
         if (target == srcDnDTabbedPane) {
-            isDropable = target.getTabAreaBounds().contains(pt) && idx >= 0 && idx != target.dragTabIndex && idx != target.dragTabIndex + 1;
+            isDropable = 
+                target.getTabAreaBounds().contains(pt) && 
+                idx >= 0 && 
+                idx != target.dragTabIndex && 
+                idx != target.dragTabIndex + 1
+            ;
         } else {
-            if (srcDnDTabbedPane != null && target != srcDnDTabbedPane.getComponentAt(srcDnDTabbedPane.dragTabIndex)) {
+            if (
+                srcDnDTabbedPane != null && 
+                target != srcDnDTabbedPane.getComponentAt(srcDnDTabbedPane.dragTabIndex)
+            ) {
                 isDropable = target.getTabAreaBounds().contains(pt) && idx >= 0;
             }
         }

@@ -30,7 +30,7 @@ public class GhostGlassPane extends JPanel {
         if(rect!=null) {
             Rectangle r = SwingUtilities.convertRectangle(tabbedPane, rect, this);
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-            g2.setColor(new Color(34,177,76));
+            g2.setColor(new Color(34, 177, 76));
             g2.fill(r);
         }
     }

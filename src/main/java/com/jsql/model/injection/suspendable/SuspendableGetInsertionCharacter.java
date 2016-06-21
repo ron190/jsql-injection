@@ -138,8 +138,10 @@ public class SuspendableGetInsertionCharacter extends AbstractSuspendable {
                 total--;
                 String pageSource = currentCallable.getContent();
                 
-                if (Pattern.compile(".*Unknown column '1337' in 'order clause'.*", Pattern.DOTALL).matcher(pageSource).matches() 
-                        || Pattern.compile(".*supplied argument is not a valid MySQL result resource.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                if (
+                    Pattern.compile(".*Unknown column '1337' in 'order clause'.*", Pattern.DOTALL).matcher(pageSource).matches() || 
+                    Pattern.compile(".*supplied argument is not a valid MySQL result resource.*", Pattern.DOTALL).matcher(pageSource).matches()
+                ) {
                     // the correct character: mysql
                     return currentCallable.getInsertionCharacter();
                 } else if (Pattern.compile(".*ORDER BY position 1337 is not in select list.*", Pattern.DOTALL).matcher(pageSource).matches()) {

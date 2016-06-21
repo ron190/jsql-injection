@@ -20,10 +20,11 @@ import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 
 @SuppressWarnings("serial")
 public class LightScrollPane extends JComponent {
+    
     public  int SCROLL_BAR_ALPHA_ROLLOVER = 100;
     public  int SCROLL_BAR_ALPHA = 25;
     private static final int THUMB_BORDER_SIZE = 0;
@@ -46,7 +47,7 @@ public class LightScrollPane extends JComponent {
     public LightScrollPane(int top, int left, int bottom, int right, JComponent c) {
         this(c);
 
-        this.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, HelperGUI.COMPONENT_BORDER));
+        this.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, HelperGui.COMPONENT_BORDER));
     }
     
     public LightScrollPane(JComponent component) {
@@ -97,10 +98,20 @@ public class LightScrollPane extends JComponent {
                 int scrollBarSize = 12;
                 int cornerOffset = verticalScrollBar.isVisible() && horizontalScrollBar.isVisible() ? scrollBarSize : 0;
                 if (verticalScrollBar.isVisible()) {
-                    verticalScrollBar.setBounds(width - scrollBarSize, 0, scrollBarSize, height - cornerOffset);
+                    verticalScrollBar.setBounds(
+                        width - scrollBarSize, 
+                        0, 
+                        scrollBarSize, 
+                        height - cornerOffset
+                    );
                 }
                 if (horizontalScrollBar.isVisible()) {
-                    horizontalScrollBar.setBounds(0, height - scrollBarSize, width - cornerOffset, scrollBarSize);
+                    horizontalScrollBar.setBounds(
+                        0, 
+                        height - scrollBarSize, 
+                        width - cornerOffset, 
+                        scrollBarSize
+                    );
                 }
             }
         });

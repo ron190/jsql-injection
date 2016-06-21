@@ -22,14 +22,14 @@ import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.text.JPopupTextField;
 
 /**
  * Manager for uploading PHP SQL shell to the host and send queries.
  */
 @SuppressWarnings("serial")
-public class ManagerSqlShell extends ManagerAbstractShell {
+public class ManagerSqlshell extends ManagerAbstractShell {
     
     final JTextField username = new JPopupTextField(I18n.SQL_SHELL_USERNAME_LABEL).getProxy();
     
@@ -38,7 +38,7 @@ public class ManagerSqlShell extends ManagerAbstractShell {
     /**
      * Build the manager panel.
      */
-    public ManagerSqlShell() {
+    public ManagerSqlshell() {
         super();
         
         JPanel userPassPanel = new JPanel();
@@ -51,40 +51,40 @@ public class ManagerSqlShell extends ManagerAbstractShell {
         username.setToolTipText(I18n.SQL_SHELL_USERNAME_TOOLTIP);
         password.setToolTipText(I18n.SQL_SHELL_PASSWORD_TOOLTIP);
         
-        username.setBorder(HelperGUI.BLU_ROUND_BORDER);
-        password.setBorder(HelperGUI.BLU_ROUND_BORDER);
+        username.setBorder(HelperGui.BLU_ROUND_BORDER);
+        password.setBorder(HelperGui.BLU_ROUND_BORDER);
         
-        JPanel m = new JPanel(new BorderLayout());
-        m.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
-        m.add(password);
+        JPanel panelPassword = new JPanel(new BorderLayout());
+        panelPassword.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
+        panelPassword.add(password);
         
         userPassLayout.setHorizontalGroup(
             userPassLayout
-            .createSequentialGroup()
-            .addGroup(
-                userPassLayout
-                .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-            )
-            .addGroup(
-                userPassLayout.createParallelGroup()
-                .addComponent(username)
-                .addComponent(m)
-            )
+                .createSequentialGroup()
+                .addGroup(
+                    userPassLayout
+                        .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                )
+                .addGroup(
+                    userPassLayout.createParallelGroup()
+                        .addComponent(username)
+                        .addComponent(panelPassword)
+                )
         );
 
         userPassLayout.setVerticalGroup(
             userPassLayout
-            .createSequentialGroup()
-            .addGroup(
-                userPassLayout
-                .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(username)
-            )
-            .addGroup(
-                userPassLayout
-                .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(m)
-            )
+                .createSequentialGroup()
+                .addGroup(
+                    userPassLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(username)
+                )
+                .addGroup(
+                    userPassLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(panelPassword)
+                )
         );
         
         this.add(userPassPanel, BorderLayout.NORTH);

@@ -23,7 +23,7 @@ import javax.swing.JTree;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.TreeNode;
 
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 
 /**
  * A tree Node composed of an icon, a GIF loader, a progress bar, a label.
@@ -58,7 +58,7 @@ public class PanelNode extends JPanel {
     public PanelNode(final JTree tree, final TreeNode currentNode) {
         super();
 
-        ImageIcon animatedGIF = new ImageIcon(PanelNode.class.getResource(HelperGUI.PATH_PROGRESSBAR));
+        ImageIcon animatedGIF = new ImageIcon(PanelNode.class.getResource(HelperGui.PATH_PROGRESSBAR));
         animatedGIF.setImageObserver(new ImageObserverAnimated(tree, currentNode));
         this.loader.setIcon(animatedGIF);
 
@@ -66,7 +66,7 @@ public class PanelNode extends JPanel {
         this.progressBar.setUI(new BasicProgressBarUI());
         this.label.setOpaque(true);
 
-        this.label.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGUI.BLU_COLOR));
+        this.label.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGui.BLU_COLOR));
 
         this.setBackground(Color.WHITE);
 
@@ -77,9 +77,9 @@ public class PanelNode extends JPanel {
         this.add(this.label);
 
         this.progressBar.setVisible(false);
-             this.loader.setVisible(false);
-              this.label.setVisible(false);
-               this.icon.setVisible(false);
+        this.loader.setVisible(false);
+        this.label.setVisible(false);
+        this.icon.setVisible(false);
     }
 
     /**

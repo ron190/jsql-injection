@@ -17,7 +17,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.model.injection.suspendable.AbstractSuspendable;
-import com.jsql.view.swing.MediatorGUI;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**
@@ -36,20 +35,18 @@ public class ActionPauseUnpause implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         AbstractSuspendable suspendableTask = MediatorModel.model().suspendables.get(this.nodeData.dataObject);
         
-        if (suspendableTask.isPaused()) {
-            suspendableTask.unpause();
-        } else {
-            suspendableTask.pause();
+        // Exception encountered : NullPointerException
+        if (suspendableTask != null) {
+            if (suspendableTask.isPaused()) {
+                suspendableTask.unpause();
+            } else {
+                suspendableTask.pause();
+            }
+    
+            // Restart the action after an unpause
+            if (!suspendableTask.isPaused()) {
+                suspendableTask.resume();
+            }
         }
-
-        // Restart the action after an unpause
-        if (!suspendableTask.isPaused()) {
-            suspendableTask.resume();
-        }
-
-        // !!important!!
-        MediatorGUI.databaseTree().getCellEditor().stopCellEditing();
-        // reload stucked GIF loader
-        MediatorGUI.databaseTree().repaint();
     }
 }

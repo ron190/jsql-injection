@@ -15,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 
@@ -53,21 +54,21 @@ public class KeyAdapterTerminal extends KeyAdapter {
     }
 
     @Override
-    public void keyPressed(KeyEvent ke) {
+    public void keyPressed(KeyEvent keyEvent) {
         final Element root = terminal.getDocument().getDefaultRootElement();
-        final int caretpos = terminal.getCaretPosition();
+        final int caretPosition = terminal.getCaretPosition();
 
         // Get current line
-        int linenum = 0;
+        int lineNumber = 0;
         try {
-            linenum = terminal.getLineOfOffset(caretpos);
+            lineNumber = terminal.getLineOfOffset(caretPosition);
         } catch (BadLocationException e) {
             LOGGER.error(e, e);
         }
 
         // Cancel every user keyboard input if another command has just been send
         if (terminal.isEdited[0]) {
-            ke.consume();
+            keyEvent.consume();
             return;
         }
 
@@ -76,17 +77,17 @@ public class KeyAdapterTerminal extends KeyAdapter {
         try {
             cmd[0] = 
                 terminal.getText(
-                    root.getElement(linenum).getStartOffset(),
-                    root.getElement(linenum).getEndOffset() - root.getElement(linenum).getStartOffset()
+                    root.getElement(lineNumber).getStartOffset(),
+                    root.getElement(lineNumber).getEndOffset() - root.getElement(lineNumber).getStartOffset()
                 ).replace(terminal.prompt, "");
         } catch (BadLocationException e) {
             LOGGER.error(e, e);
         }
 
         // Validate user input ; disable text editing
-        if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
+        if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
             terminal.isEdited[0] = true;
-            ke.consume();
+            keyEvent.consume();
             terminal.setEditable(false);
 
             // Populate cmd list for key up/down
@@ -96,7 +97,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
             }
 
             // SwingUtilities instead of Thread to avoid some flickering
-            javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
                     // Inside Swing thread to avoid flickering
@@ -110,22 +111,26 @@ public class KeyAdapterTerminal extends KeyAdapter {
                 }
             });
 
-            // Get previous command
-        } else if (ke.getKeyCode() == KeyEvent.VK_UP) {
-            ke.consume();
+        // Get previous command
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_UP) {
+            keyEvent.consume();
 
             if (this.cmdsIndex > 0) {
                 this.cmdsIndex--;
             }
 
             if (!this.cmds.isEmpty()) {
-                if (this.cmds.size() > 1 && this.cmdsIndex == this.cmds.size() - 1 && !"".equals(cmd[0].trim())) {
+                if (
+                    this.cmds.size() > 1 && 
+                    this.cmdsIndex == this.cmds.size() - 1 && 
+                    !"".equals(cmd[0].trim())
+                ) {
                     this.cmdsIndex--;
                 }
 
                 try {
                     terminal.getDocument().remove(
-                        root.getElement(linenum).getStartOffset() + terminal.prompt.length(), 
+                        root.getElement(lineNumber).getStartOffset() + terminal.prompt.length(), 
                         cmd[0].length() - 1
                     );
                 } catch (BadLocationException e) {
@@ -136,9 +141,9 @@ public class KeyAdapterTerminal extends KeyAdapter {
                 terminal.setCaretPosition(terminal.getDocument().getLength());
             }
 
-            // Get next command
-        } else if (ke.getKeyCode() == KeyEvent.VK_DOWN) {
-            ke.consume();
+        // Get next command
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_DOWN) {
+            keyEvent.consume();
 
             if (this.cmdsIndex < this.cmds.size()) {
                 this.cmdsIndex++;
@@ -147,7 +152,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
             if (!this.cmds.isEmpty() && this.cmdsIndex < this.cmds.size()) {
                 try {
                     terminal.getDocument().remove(
-                        root.getElement(linenum).getStartOffset() + terminal.prompt.length(), 
+                        root.getElement(lineNumber).getStartOffset() + terminal.prompt.length(), 
                         cmd[0].length() - 1
                     );
                 } catch (BadLocationException e) {
@@ -158,57 +163,59 @@ public class KeyAdapterTerminal extends KeyAdapter {
                 terminal.setCaretPosition(terminal.getDocument().getLength());
             }
 
-            // Simply cancel text shortcuts
-        } else if (ke.getKeyCode() == KeyEvent.VK_PAGE_UP
-                || ke.getKeyCode() == KeyEvent.VK_PAGE_DOWN
-                || ke.getKeyCode() == KeyEvent.VK_TAB) {
-            ke.consume();
+        // Simply cancel text shortcuts
+        } else if (
+            keyEvent.getKeyCode() == KeyEvent.VK_PAGE_UP ||
+            keyEvent.getKeyCode() == KeyEvent.VK_PAGE_DOWN ||
+            keyEvent.getKeyCode() == KeyEvent.VK_TAB
+        ) {
+            keyEvent.consume();
 
-            // Go to the left until prompt
-        } else if (ke.getKeyCode() == KeyEvent.VK_LEFT) {
+        // Go to the left until prompt
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {
             int columnnum = 1;
             try {
-                columnnum = caretpos - terminal.getLineStartOffset(linenum);
+                columnnum = caretPosition - terminal.getLineStartOffset(lineNumber);
             } catch (BadLocationException e) {
                 LOGGER.error(e, e);
             }
             if (columnnum <= terminal.prompt.length()) {
-                ke.consume();
+                keyEvent.consume();
             }
 
-            // Delete to the left until prompt
-        } else if (ke.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+        // Delete to the left until prompt
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
             try {
-                int columnnum = caretpos - terminal.getLineStartOffset(linenum);
+                int columnnum = caretPosition - terminal.getLineStartOffset(lineNumber);
                 if (columnnum <= terminal.prompt.length()) {
-                    ke.consume();
+                    keyEvent.consume();
                 }
             } catch (BadLocationException e) {
                 LOGGER.error(e, e);
             }
 
-            // Get to the beginning of the line
-        } else if (ke.getKeyCode() == KeyEvent.VK_HOME) {
-            ke.consume();
+        // Get to the beginning of the line
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_HOME) {
+            keyEvent.consume();
             try {
-                terminal.setCaretPosition(terminal.getLineStartOffset(linenum) + terminal.prompt.length());
+                terminal.setCaretPosition(terminal.getLineStartOffset(lineNumber) + terminal.prompt.length());
             } catch (BadLocationException e) {
                 LOGGER.error(e, e);
             }
 
-            // Cancel the select all shortcut Ctrl+A
-        } else if ((ke.getKeyCode() == KeyEvent.VK_A) && ((ke.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
-            ke.consume();
+        // Cancel the select all shortcut Ctrl+A
+        } else if ((keyEvent.getKeyCode() == KeyEvent.VK_A) && ((keyEvent.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
+            keyEvent.consume();
 
-            // Cancel the *ting* sound if deleting while at the end of line
-        } else if (ke.getKeyCode() == KeyEvent.VK_DELETE && caretpos == terminal.getDocument().getLength()) {
-            ke.consume();
+        // Cancel the *ting* sound if deleting while at the end of line
+        } else if (keyEvent.getKeyCode() == KeyEvent.VK_DELETE && caretPosition == terminal.getDocument().getLength()) {
+            keyEvent.consume();
 
-        } else if (((ke.getModifiers() & KeyEvent.CTRL_MASK) != 0) && ((ke.getModifiers() & KeyEvent.SHIFT_MASK) != 0)) {
-            ke.consume();
+        } else if (((keyEvent.getModifiers() & KeyEvent.CTRL_MASK) != 0) && ((keyEvent.getModifiers() & KeyEvent.SHIFT_MASK) != 0)) {
+            keyEvent.consume();
 
-        } else if ((ke.getKeyCode() == KeyEvent.VK_C) && ((ke.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
-            ke.consume();
+        } else if ((keyEvent.getKeyCode() == KeyEvent.VK_C) && ((keyEvent.getModifiers() & KeyEvent.CTRL_MASK) != 0)) {
+            keyEvent.consume();
 
             terminal.append("\n");
             terminal.reset();

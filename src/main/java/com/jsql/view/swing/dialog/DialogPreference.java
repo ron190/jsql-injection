@@ -43,8 +43,8 @@ import org.apache.log4j.Logger;
 import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.ConfigurationUtil;
 import com.jsql.util.ProxyUtil;
-import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.text.JPopupTextField;
 
 /**
@@ -69,12 +69,12 @@ public class DialogPreference extends JDialog {
      * Create Preferences panel to save jSQL settings.
      */
     public DialogPreference() {
-        super(MediatorGUI.jFrame(), "Preferences", Dialog.ModalityType.MODELESS);
+        super(MediatorGui.frame(), "Preferences", Dialog.ModalityType.MODELESS);
 
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         // Define a small and large app icon
-        this.setIconImages(HelperGUI.getIcons());
+        this.setIconImages(HelperGui.getIcons());
 
         // Action for ESCAPE key
         ActionListener escListener = new ActionListener() {
@@ -84,22 +84,30 @@ public class DialogPreference extends JDialog {
             }
         };
 
-        this.getRootPane().registerKeyboardAction(escListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+        this.getRootPane().registerKeyboardAction(
+            escListener, 
+            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), 
+            JComponent.WHEN_IN_FOCUSED_WINDOW
+        );
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.LINE_AXIS));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
         okButton = new JButton("Apply");
-        okButton.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGUI.BLU_COLOR),
-            BorderFactory.createEmptyBorder(2, 7, 2, 7))
+        okButton.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGui.BLU_COLOR),
+                BorderFactory.createEmptyBorder(2, 7, 2, 7)
+            )
         );
 
         JButton cancelButton = new JButton("Close");
-        cancelButton.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGUI.BLU_COLOR),
-            BorderFactory.createEmptyBorder(2, 7, 2, 7))
+        cancelButton.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGui.BLU_COLOR),
+                BorderFactory.createEmptyBorder(2, 7, 2, 7)
+            )
         );
         cancelButton.addActionListener(escListener);
 
@@ -109,11 +117,13 @@ public class DialogPreference extends JDialog {
         Container contentPane = this.getContentPane();
 
         JButton checkIPButton = new JButton("Check your IP", new ImageIcon(DialogPreference.class.getResource("/com/jsql/view/swing/resources/images/wrench.png")));
-        checkIPButton.setBorder(HelperGUI.BLU_ROUND_BORDER);
+        checkIPButton.setBorder(HelperGui.BLU_ROUND_BORDER);
         checkIPButton.addActionListener(new ActionCheckIP());
-        checkIPButton.setToolTipText("<html><b>Verify what public IP address is used by jSQL</b><br>"
+        checkIPButton.setToolTipText(
+            "<html><b>Verify what public IP address is used by jSQL</b><br>"
             + "Usually it's your own public IP if you don't use a proxy. If you use a proxy<br>"
-            + "like TOR then your public IP is hidden and another one is used instead.</html>");
+            + "like TOR then your public IP is hidden and another one is used instead.</html>"
+        );
 
         mainPanel.add(checkIPButton);
         mainPanel.add(Box.createGlue());
@@ -183,8 +193,10 @@ public class DialogPreference extends JDialog {
                 BorderFactory.createCompoundBorder(
                     BorderFactory.createEmptyBorder(5, 5, 5, 5),
                     roundedTitledBorder
-                ), BorderFactory.createEmptyBorder(5, 5, 5, 5)
-        ));
+                ), 
+                BorderFactory.createEmptyBorder(5, 5, 5, 5)
+            )
+        );
 
         // Proxy label
         JLabel labelProxyAddress = new JLabel("Proxy address  ");
@@ -395,94 +407,133 @@ public class DialogPreference extends JDialog {
         // Proxy settings, Horizontal column rules
         settingLayout.setHorizontalGroup(
             settingLayout.createSequentialGroup()
-            .addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                .addComponent(proxyField)
-                .addComponent(checkboxUseProxy)
-                .addComponent(labelProxyAddress)
-                .addComponent(labelProxyPort)
-                .addComponent(authenticationField)
-                .addComponent(checkboxUseDigestAuthentication)
-                .addComponent(labelDigestAuthenticationUsername)
-                .addComponent(labelDigestAuthenticationPassword)
-                .addComponent(checkboxUseKerberos)
-                .addComponent(labelKerberosLoginConf)
-                .addComponent(labelKerberosKrb5Conf)
-                .addComponent(preferencesField)
-                .addComponent(checkboxCheckUpdateAtStartup)
-                .addComponent(checkboxReportBugs)
-                .addComponent(checkboxEnableEvasion)
-                .addComponent(checkboxFollowRedirection)
-            ).addGroup(settingLayout.createParallelGroup()
-                .addComponent(proxyInfo)
-                .addComponent(labelUseProxy)
-                .addComponent(textProxyAddress)
-                .addComponent(textProxyPort)
-                .addComponent(authenticationInfo)
-                .addComponent(labelUseDigestAuthentication)
-                .addComponent(textDigestAuthenticationUsername)
-                .addComponent(textDigestAuthenticationPassword)
-                .addComponent(labelUseKerberos)
-                .addComponent(textKerberosLoginConf)
-                .addComponent(textKerberosKrb5Conf)
-                .addComponent(preferencesInfo)
-                .addComponent(labelUseCheckUpdateAtStartup)
-                .addComponent(labelReportBugs)
-                .addComponent(labelEnableEvasion)
-                .addComponent(labelFollowRedirection)
+            .addGroup(
+                settingLayout
+                    .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(proxyField)
+                    .addComponent(checkboxUseProxy)
+                    .addComponent(labelProxyAddress)
+                    .addComponent(labelProxyPort)
+                    .addComponent(authenticationField)
+                    .addComponent(checkboxUseDigestAuthentication)
+                    .addComponent(labelDigestAuthenticationUsername)
+                    .addComponent(labelDigestAuthenticationPassword)
+                    .addComponent(checkboxUseKerberos)
+                    .addComponent(labelKerberosLoginConf)
+                    .addComponent(labelKerberosKrb5Conf)
+                    .addComponent(preferencesField)
+                    .addComponent(checkboxCheckUpdateAtStartup)
+                    .addComponent(checkboxReportBugs)
+                    .addComponent(checkboxEnableEvasion)
+                    .addComponent(checkboxFollowRedirection)
+            ).addGroup(
+                settingLayout
+                    .createParallelGroup()
+                    .addComponent(proxyInfo)
+                    .addComponent(labelUseProxy)
+                    .addComponent(textProxyAddress)
+                    .addComponent(textProxyPort)
+                    .addComponent(authenticationInfo)
+                    .addComponent(labelUseDigestAuthentication)
+                    .addComponent(textDigestAuthenticationUsername)
+                    .addComponent(textDigestAuthenticationPassword)
+                    .addComponent(labelUseKerberos)
+                    .addComponent(textKerberosLoginConf)
+                    .addComponent(textKerberosKrb5Conf)
+                    .addComponent(preferencesInfo)
+                    .addComponent(labelUseCheckUpdateAtStartup)
+                    .addComponent(labelReportBugs)
+                    .addComponent(labelEnableEvasion)
+                    .addComponent(labelFollowRedirection)
         ));
 
         // Proxy settings, Vertical line rules
         settingLayout.setVerticalGroup(
-            settingLayout.createSequentialGroup()
-            .addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(proxyInfo)
-                .addComponent(proxyField)
-            ).addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(checkboxUseProxy)
-                .addComponent(labelUseProxy)
-            ).addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(labelProxyAddress)
-                .addComponent(textProxyAddress)
-            ).addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(labelProxyPort)
-                .addComponent(textProxyPort)
-            ).addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(authenticationInfo)
-                .addComponent(authenticationField)
-            ).addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(checkboxUseDigestAuthentication)
-                .addComponent(labelUseDigestAuthentication)
-            ).addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(labelDigestAuthenticationUsername)
-                .addComponent(textDigestAuthenticationUsername)
-            ).addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(labelDigestAuthenticationPassword)
-                .addComponent(textDigestAuthenticationPassword)
-            ).addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(checkboxUseKerberos)
-                .addComponent(labelUseKerberos)
-            ).addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(labelKerberosLoginConf)
-                .addComponent(textKerberosLoginConf)
-            ).addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(labelKerberosKrb5Conf)
-                .addComponent(textKerberosKrb5Conf)
-            ).addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(preferencesInfo)
-                .addComponent(preferencesField)
-            ).addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(checkboxCheckUpdateAtStartup)
-                .addComponent(labelUseCheckUpdateAtStartup)
-            ).addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(checkboxReportBugs)
-                .addComponent(labelReportBugs)
-            ).addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(checkboxEnableEvasion)
-                .addComponent(labelEnableEvasion)
-            ).addGroup(settingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                .addComponent(checkboxFollowRedirection)
-                .addComponent(labelFollowRedirection)
-        ));
+            settingLayout
+                .createSequentialGroup()
+                .addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(proxyInfo)
+                        .addComponent(proxyField)
+                ).addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(checkboxUseProxy)
+                        .addComponent(labelUseProxy)
+                ).addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelProxyAddress)
+                        .addComponent(textProxyAddress)
+                ).addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelProxyPort)
+                        .addComponent(textProxyPort)
+                ).addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(authenticationInfo)
+                        .addComponent(authenticationField)
+                ).addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(checkboxUseDigestAuthentication)
+                        .addComponent(labelUseDigestAuthentication)
+                ).addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelDigestAuthenticationUsername)
+                        .addComponent(textDigestAuthenticationUsername)
+                ).addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelDigestAuthenticationPassword)
+                        .addComponent(textDigestAuthenticationPassword)
+                ).addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(checkboxUseKerberos)
+                        .addComponent(labelUseKerberos)
+                ).addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelKerberosLoginConf)
+                        .addComponent(textKerberosLoginConf)
+                ).addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelKerberosKrb5Conf)
+                        .addComponent(textKerberosKrb5Conf)
+                ).addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(preferencesInfo)
+                        .addComponent(preferencesField)
+                ).addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(checkboxCheckUpdateAtStartup)
+                        .addComponent(labelUseCheckUpdateAtStartup)
+                ).addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(checkboxReportBugs)
+                        .addComponent(labelReportBugs)
+                ).addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(checkboxEnableEvasion)
+                        .addComponent(labelEnableEvasion)
+                ).addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(checkboxFollowRedirection)
+                        .addComponent(labelFollowRedirection)
+                    )
+                )
+        ;
 
         contentPane.add(settingPanel, BorderLayout.CENTER);
 
@@ -491,7 +542,7 @@ public class DialogPreference extends JDialog {
         this.setMinimumSize(new Dimension(this.width, this.height));
         this.getRootPane().setDefaultButton(okButton);
         cancelButton.requestFocusInWindow();
-        this.setLocationRelativeTo(MediatorGUI.jFrame());
+        this.setLocationRelativeTo(MediatorGui.frame());
     }
     
     public void requestButtonFocus() {

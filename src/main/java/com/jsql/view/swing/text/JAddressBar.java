@@ -28,6 +28,11 @@ public class JAddressBar extends JPopupTextField implements DecoratorJComponent<
         super(new JTextFieldWithIcon());
 
         this.getProxy().setPreferredSize(new Dimension(0, 27));
-        this.getProxy().setFont(this.getProxy().getFont().deriveFont(Font.PLAIN, this.getProxy().getFont().getSize() + 2));
+        this.getProxy().setFont(
+            this.getProxy().getFont().deriveFont(
+                Font.PLAIN, 
+                this.getProxy().getFont().getSize() + 2
+            )
+        );
     }
 }

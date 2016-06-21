@@ -44,11 +44,11 @@ import com.jsql.view.swing.ui.CustomBasicComboBoxUI;
  * Build default component appearence, keyboard shortcuts and icons.
  */
 @SuppressWarnings("serial")
-public final class HelperGUI {
+public final class HelperGui {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(HelperGUI.class);
+    private static final Logger LOGGER = Logger.getLogger(HelperGui.class);
 
     public static final Color SELECTION_BACKGROUND = (Color) UIManager.get("TabbedPane.selected");
     
@@ -56,21 +56,45 @@ public final class HelperGUI {
     public static final Color COMPONENT_BORDER = UIManager.getColor("controlShadow");
     public static final Color FOCUS_LOST = new Color(248, 249, 249);
     
-    public static final Icon TICK = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/check.png"));
-    public static final Icon SQUARE_RED = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/squareRed.png"));
-    public static final Icon SQUARE_GREY = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/squareGrey.png"));
-    public static final Icon LOADER_GIF = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/spinner.gif"));
+    public static final Icon TICK = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/check.png"));
+    public static final Icon SQUARE_RED = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/squareRed.png"));
+    public static final Icon SQUARE_GREY = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/squareGrey.png"));
+    public static final Icon LOADER_GIF = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/spinner.gif"));
 
-    public static final Icon ADMIN_SERVER_ICON = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/adminServer.png"));
-    public static final Icon SHELL_SERVER_ICON = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/shellServer.png"));
-    public static final Icon DATABASE_SERVER_ICON = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/databaseServer.png"));
-    public static final Icon FILE_SERVER_ICON = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/fileServer.png"));
-    public static final Icon BRUTER_ICON = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/lock.png"));
-    public static final Icon CODER_ICON = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/coder.png"));
-    public static final Icon UPLOAD_ICON = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/server_add.png"));
-    public static final Icon TABLE_ICON = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/table.png"));
-    public static final Icon SCANLIST_ICON = new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/application_cascade.png"));
+    public static final Icon ADMIN_SERVER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/adminServer.png"));
+    public static final Icon SHELL_SERVER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/shellServer.png"));
+    public static final Icon DATABASE_SERVER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/databaseServer.png"));
+    public static final Icon FILE_SERVER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/fileServer.png"));
+    public static final Icon BRUTER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/lock.png"));
+    public static final Icon CODER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/coder.png"));
+    public static final Icon UPLOAD_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/server_add.png"));
+    public static final Icon SCANLIST_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/application_cascade.png"));
 
+    public static final Icon TABLE_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/table.png"));
+    public static final Icon TABLE_ICON_GO = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/tableGo.png"));
+    public static final Icon DATABASE_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/database.png"));
+    public static final Icon DATABASE_ICON_GO = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/databaseGo.png"));
+    
+    public static final Icon CONSOLE_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/console.gif"));
+    public static final Icon HEADER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/header.gif"));
+    public static final Icon CHUNK_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/chunk.gif"));
+    public static final Icon BINARY_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/binary.gif"));
+    public static final Icon CUP_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/cup.png"));
+    
+    public static final Icon CLOSE_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/close.png"));
+    public static final Icon CLOSE_ROLLOVER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/closeRollover.png"));
+    public static final Icon CLOSE_PRESSED_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/closePressed.png"));
+
+    public static final Icon ARROWDEFAULT = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/arrowDefault.png"));
+    public static final Icon ARROWROLLOVER = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/arrowRollover.png"));
+    public static final Icon ARROWPRESSED = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/arrowPressed.png"));
+
+    public static final Icon FLAG_US = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/flags/us.png"));
+    public static final Icon FLAG_FR = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/flags/fr.png"));
+    public static final Icon FLAG_CN = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/flags/cn.png"));
+    public static final Icon FLAG_RU = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/flags/ru.png"));
+    public static final Icon FLAG_TR = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/flags/tr.png"));
+    
     public static final Icon EMPTY = new ImageIcon(new BufferedImage(16, 16, BufferedImage.TRANSLUCENT));
     public static final Icon ZEROSIZE = new ImageIcon() {
         @Override
@@ -85,7 +109,7 @@ public final class HelperGUI {
     public static final Color BLU_COLOR = new Color(132, 172, 221);
 
     public static final Border BLU_ROUND_BORDER = BorderFactory.createCompoundBorder(
-        BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGUI.BLU_COLOR),
+        BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGui.BLU_COLOR),
         BorderFactory.createEmptyBorder(2, 2, 2, 2)
     );
 
@@ -99,7 +123,7 @@ public final class HelperGUI {
     /**
      * Utility class.
      */
-    private HelperGUI() {
+    private HelperGui() {
         //not called
     }
     
@@ -143,7 +167,7 @@ public final class HelperGUI {
         UIManager.put("CheckBoxMenuItem.selectionBackground", SELECTION_BACKGROUND);
         UIManager.put("CheckBoxMenuItem.font", SEGOE_FONT);
         UIManager.put("CheckBoxMenuItem.borderPainted", false);
-        UIManager.put("CheckBoxMenuItem.checkIcon", new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/check.png")) {
+        UIManager.put("CheckBoxMenuItem.checkIcon", new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/check.png")) {
             @Override
             public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
                 ButtonModel m = ((AbstractButton) c).getModel();
@@ -168,15 +192,15 @@ public final class HelperGUI {
         UIManager.put("CheckBox.font", SEGOE_FONT);
         UIManager.put("TitledBorder.font", SEGOE_FONT);
 
-        UIManager.put("Spinner.arrowButtonBorder", HelperGUI.BLU_ROUND_BORDER);
+        UIManager.put("Spinner.arrowButtonBorder", HelperGui.BLU_ROUND_BORDER);
         UIManager.put("Spinner.border", BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(HelperGUI.BLU_COLOR),
+            BorderFactory.createLineBorder(HelperGui.BLU_COLOR),
             BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE)
         ));
         
         UIManager.put("FileChooser.listFont", SEGOE_FONT);
         UIManager.put("FileChooser.listViewBorder", BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(HelperGUI.BLU_COLOR),
+            BorderFactory.createLineBorder(HelperGui.BLU_COLOR),
             BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE)
         ));
 
@@ -187,7 +211,7 @@ public final class HelperGUI {
         UIManager.put("TextPane.selectionBackground", SELECTION_BACKGROUND);
         
         UIManager.put("TextField.font", new Font(((Font) UIManager.get("TextField.font")).getName(), Font.PLAIN, ((Font) UIManager.get("TextField.font")).getSize()));
-        UIManager.put("TextField.border", HelperGUI.BLU_ROUND_BORDER);
+        UIManager.put("TextField.border", HelperGui.BLU_ROUND_BORDER);
         UIManager.put("TextField.selectionBackground", SELECTION_BACKGROUND);
         
         UIManager.put("EditorPane.selectionBackground", SELECTION_BACKGROUND);
@@ -219,8 +243,8 @@ public final class HelperGUI {
         );
         
         // Custom tree
-        UIManager.put("Tree.expandedIcon", new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/expanded.png")));
-        UIManager.put("Tree.collapsedIcon", new ImageIcon(HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/collapsed.png")));
+        UIManager.put("Tree.expandedIcon", new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/expanded.png")));
+        UIManager.put("Tree.collapsedIcon", new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/collapsed.png")));
         UIManager.put("Tree.lineTypeDashed", true);
         // No default icon for tree nodes
         UIManager.put("Tree.leafIcon", new ImageIcon());
@@ -243,7 +267,7 @@ public final class HelperGUI {
         UIManager.put("ComboBox.selectionBackground", SELECTION_BACKGROUND);
         // Use ColorUIResource to preserve the background color for arrow
         UIManager.put("ComboBox.background", new ColorUIResource(Color.WHITE));
-        UIManager.put("ComboBox.border", HelperGUI.BLU_ROUND_BORDER);
+        UIManager.put("ComboBox.border", HelperGui.BLU_ROUND_BORDER);
         UIManager.put("ComboBoxUI", CustomBasicComboBoxUI.class.getName());
         
         UIManager.put("swing.boldMetal", Boolean.FALSE);
@@ -255,9 +279,9 @@ public final class HelperGUI {
      */
     public static List<Image> getIcons() {
         List<Image> images = new ArrayList<>();
-        URL url16x16 = HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/app-16x16.png");
-        URL url32x32 = HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/app-32x32.png");
-        URL url96x96 = HelperGUI.class.getResource("/com/jsql/view/swing/resources/images/app-96x96.png");
+        URL url16x16 = HelperGui.class.getResource("/com/jsql/view/swing/resources/images/app-16x16.png");
+        URL url32x32 = HelperGui.class.getResource("/com/jsql/view/swing/resources/images/app-32x32.png");
+        URL url96x96 = HelperGui.class.getResource("/com/jsql/view/swing/resources/images/app-96x96.png");
         try {
             images.add(ImageIO.read(url96x96));
             images.add(ImageIO.read(url32x32));

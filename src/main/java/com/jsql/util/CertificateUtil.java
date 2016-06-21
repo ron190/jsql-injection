@@ -26,12 +26,14 @@ public class CertificateUtil {
                 }
                 @Override
                 public void checkClientTrusted(
-                    java.security.cert.X509Certificate[] certs, String authType) {
+                    java.security.cert.X509Certificate[] certs, String authType
+                ) {
                     // nothing
                 }
                 @Override
                 public void checkServerTrusted(
-                    java.security.cert.X509Certificate[] certs, String authType) {
+                    java.security.cert.X509Certificate[] certs, String authType
+                ) {
                     // nothing
                 }
             }

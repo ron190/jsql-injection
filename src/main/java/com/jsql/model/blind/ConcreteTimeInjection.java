@@ -26,7 +26,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
      * Waiting time in seconds, if response time is above
      * then the SQL query is false.
      */
-    public static final long SLEEP = 5;
+    public static final long SLEEP_TIME = 5;
 
     /**
      *  Time based works by default, many tests will

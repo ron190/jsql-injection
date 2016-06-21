@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * Mark the injection as invulnerable to a error based injection.
@@ -25,6 +25,6 @@ public class MarkErrorbasedStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.panelStatus().labelErrorBased.setUnderlined();
+        MediatorGui.panelStatus().labelErrorBased.setUnderlined();
     }
 }

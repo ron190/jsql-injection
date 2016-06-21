@@ -13,10 +13,9 @@ import sun.net.www.protocol.http.AuthCacheImpl;
 import sun.net.www.protocol.http.AuthCacheValue;
 
 import com.jsql.model.injection.InjectionModel;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionNewWindow;
 
-@SuppressWarnings("restriction")
 public class AuthenticationUtil {
     /**
      * Log4j logger sent to view.
@@ -42,13 +41,16 @@ public class AuthenticationUtil {
         //not called
     }
     
-    public static void set(boolean enableDigestAuthentication, String digestUsername, String digestPassword,
-            boolean enableKerberos, String kerberosKrb5Conf, String kerberosLoginConf) {
+    public static void set(
+        boolean enableDigestAuthentication, String digestUsername, String digestPassword,
+        boolean enableKerberos, String kerberosKrb5Conf, String kerberosLoginConf
+    ) {
         
         boolean shouldRestart = false;
         if (AuthenticationUtil.enableKerberos
-                && !new File(AuthenticationUtil.kerberosKrb5Conf).exists()
-                && !kerberosKrb5Conf.equals(AuthenticationUtil.kerberosKrb5Conf)) {
+            && !new File(AuthenticationUtil.kerberosKrb5Conf).exists()
+            && !kerberosKrb5Conf.equals(AuthenticationUtil.kerberosKrb5Conf)
+        ) {
             shouldRestart = true;
         }
         
@@ -96,8 +98,12 @@ public class AuthenticationUtil {
         
         if (AuthenticationUtil.enableKerberos) {
             if (System.getProperty("java.protocol.handler.pkgs") != null) {
-                System.setProperty("java.protocol.handler.pkgs", 
-                        System.getProperty("java.protocol.handler.pkgs").replace("|jcifs", "").replace("jcifs", ""));
+                System.setProperty(
+                    "java.protocol.handler.pkgs", 
+                    System.getProperty("java.protocol.handler.pkgs")
+                        .replace("|jcifs", "")
+                        .replace("jcifs", "")
+                );
             }
             System.setProperty("java.security.krb5.conf", AuthenticationUtil.kerberosKrb5Conf);
             System.setProperty("java.security.auth.login.config", AuthenticationUtil.kerberosLoginConf);
@@ -113,7 +119,15 @@ public class AuthenticationUtil {
             jcifs.Config.registerSmbURLHandler();
         }
         
-        if (shouldRestart && JOptionPane.showConfirmDialog(MediatorGUI.jFrame(), "File krb5.conf has changed, please restart.", "Restart", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+        if (
+            shouldRestart && 
+            JOptionPane.showConfirmDialog(
+                MediatorGui.frame(), 
+                "File krb5.conf has changed, please restart.", 
+                "Restart", 
+                JOptionPane.YES_NO_OPTION
+            ) == JOptionPane.YES_OPTION
+        ) {
             new ActionNewWindow().actionPerformed(null);
         }
     }
@@ -150,8 +164,12 @@ public class AuthenticationUtil {
         
         if (AuthenticationUtil.enableKerberos) {
             if (System.getProperty("java.protocol.handler.pkgs") != null) {
-                System.setProperty("java.protocol.handler.pkgs", 
-                        System.getProperty("java.protocol.handler.pkgs").replace("|jcifs", "").replace("jcifs", ""));
+                System.setProperty(
+                    "java.protocol.handler.pkgs", 
+                    System.getProperty("java.protocol.handler.pkgs")
+                        .replace("|jcifs", "")
+                        .replace("jcifs", "")
+                );
             }
             System.setProperty("java.security.krb5.conf", AuthenticationUtil.kerberosKrb5Conf);
             System.setProperty("java.security.auth.login.config", AuthenticationUtil.kerberosLoginConf);

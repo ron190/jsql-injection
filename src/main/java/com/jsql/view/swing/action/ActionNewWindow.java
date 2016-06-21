@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.MainApplication;
 import com.jsql.i18n.I18n;
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 
 /**
  * Open another jSQL instance in new process. 
@@ -40,7 +40,7 @@ public class ActionNewWindow extends AbstractAction {
         this.putValue(Action.NAME, I18n.NEW_WINDOW);
         this.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_N));
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-        this.putValue(Action.SMALL_ICON, HelperGUI.EMPTY);
+        this.putValue(Action.SMALL_ICON, HelperGui.EMPTY);
     }
 
     @Override
@@ -50,7 +50,13 @@ public class ActionNewWindow extends AbstractAction {
         String classpath = System.getProperty("java.class.path");
         String path = System.getProperty("java.home") + separator + "bin" + separator + "java";
         ProcessBuilder processBuilder = 
-                new ProcessBuilder(path, "-cp", classpath, MainApplication.class.getName());
+            new ProcessBuilder(
+                path, 
+                "-cp", 
+                classpath, 
+                MainApplication.class.getName()
+            )
+        ;
         try {
             processBuilder.start();
         } catch (IOException e1) {

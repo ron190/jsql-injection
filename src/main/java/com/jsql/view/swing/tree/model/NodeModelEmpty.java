@@ -23,7 +23,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 
 /**
  * Model for default item used on an empty tree.
@@ -48,8 +48,8 @@ public class NodeModelEmpty extends AbstractNodeModel {
         text.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         if (currentNode != null) {
             if (selected) {
-                emptyPanel.setBackground(HelperGUI.SELECTION_BACKGROUND);
-                text.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGUI.BLU_COLOR));
+                emptyPanel.setBackground(HelperGui.SELECTION_BACKGROUND);
+                text.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGui.BLU_COLOR));
             } else {
                 emptyPanel.setBackground(Color.WHITE);
                 text.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -58,20 +58,29 @@ public class NodeModelEmpty extends AbstractNodeModel {
         return emptyPanel;
     }
 
-    @Override Icon getLeafIcon(boolean leaf) {
+    @Override 
+    Icon getLeafIcon(boolean leaf) {
         // No icon for default node
         return null;
     }
-    @Override public void runAction() {
+    
+    @Override 
+    public void runAction() {
         // Not used
     }
-    @Override void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {
+    
+    @Override 
+    void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {
         // Not used
     }
-    @Override public void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j) {
+    
+    @Override 
+    public void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j) {
         // Not used
     }
-    @Override public boolean verifyShowPopup() {
+    
+    @Override 
+    public boolean isPopupDisplayable() {
         // Not used
         return false;
     }

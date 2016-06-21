@@ -1,7 +1,6 @@
 package com.jsql.model.vendor;
 
 public enum Vendor {
-    
     UNDEFINED("<auto>", null),
     CUBRID("Cubrid", new CubridVendor()),
     DB2("DB2", new DB2Vendor()),

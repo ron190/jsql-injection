@@ -39,8 +39,8 @@ import com.jsql.exception.StoppableException;
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.util.ConfigurationUtil;
-import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextField;
@@ -86,23 +86,31 @@ public class ManagerUpload extends ManagerAbstractList {
         String urlTooltip = I18n.UPLOAD_URL_TOOLTIP;
         
         shellURL.setToolTipText(urlTooltip);
-        shellURL.setBorder(BorderFactory.createCompoundBorder(
+        shellURL.setBorder(
+            BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
-                        BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER),
-                        BorderFactory.createMatteBorder(1, 1, 0, 1, HelperGUI.DEFAULT_BACKGROUND)),
-                        HelperGUI.BLU_ROUND_BORDER));
+                    BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGui.COMPONENT_BORDER),
+                    BorderFactory.createMatteBorder(1, 1, 0, 1, HelperGui.DEFAULT_BACKGROUND)
+                ),
+                HelperGui.BLU_ROUND_BORDER
+            )
+        );
 
         JPanel lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
-        lastLine.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER), 
-                BorderFactory.createEmptyBorder(1, 0, 1, 1)));
+        lastLine.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGui.COMPONENT_BORDER), 
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)
+            )
+        );
 
         this.run = new JButton(I18n.UPLOAD_DIALOG_TEXT, new ImageIcon(ManagerUpload.class.getResource("/com/jsql/view/swing/resources/images/add.png")));
+        I18n.components.get("UPLOAD_DIALOG_TEXT").add(this.run);
         this.run.setToolTipText(I18n.UPLOAD_RUN_BUTTON_TOOLTIP);
         this.run.setEnabled(false);
         
-        this.run.setBorder(HelperGUI.BLU_ROUND_BORDER);
+        this.run.setBorder(HelperGui.BLU_ROUND_BORDER);
         
         this.run.addActionListener(new ActionListener() {
             @Override
@@ -115,7 +123,7 @@ public class ManagerUpload extends ManagerAbstractList {
                 final JFileChooser filechooser = new JFileChooser(ConfigurationUtil.prefPathFile);
                 filechooser.setDialogTitle(I18n.UPLOAD_DIALOG_TEXT);
                 
-                int returnVal = filechooser.showOpenDialog(MediatorGUI.jFrame());
+                int returnVal = filechooser.showOpenDialog(MediatorGui.frame());
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     for (final Object path: ManagerUpload.this.listPaths.getSelectedValuesList()) {
                         new Thread(new Runnable() {
@@ -135,8 +143,9 @@ public class ManagerUpload extends ManagerAbstractList {
             }
         });
 
-        this.privilege = new JLabel(I18n.PRIVILEGE_LABEL, HelperGUI.SQUARE_GREY, SwingConstants.LEFT);
-        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperGUI.DEFAULT_BACKGROUND));
+        this.privilege = new JLabel(I18n.PRIVILEGE_LABEL, HelperGui.SQUARE_GREY, SwingConstants.LEFT);
+        I18n.components.get("PRIVILEGE_LABEL").add(this.privilege);
+        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperGui.DEFAULT_BACKGROUND));
         this.privilege.setToolTipText(I18n.PRIVILEGE_TOOLTIP);
 
         this.loader.setVisible(false);

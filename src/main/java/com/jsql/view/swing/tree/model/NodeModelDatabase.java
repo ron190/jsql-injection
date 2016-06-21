@@ -11,13 +11,13 @@
 package com.jsql.view.swing.tree.model;
 
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingWorker;
 import javax.swing.tree.TreePath;
 
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.Database;
+import com.jsql.view.swing.HelperGui;
 
 /**
  * Database model displaying the database icon on the label.
@@ -34,9 +34,9 @@ public class NodeModelDatabase extends AbstractNodeModel {
     @Override
     Icon getLeafIcon(boolean leaf) {
         if (leaf) {
-            return new ImageIcon(NodeModelDatabase.class.getResource("/com/jsql/view/swing/resources/images/databaseGo.png"));
+            return HelperGui.DATABASE_ICON_GO;
         } else {
-            return new ImageIcon(NodeModelDatabase.class.getResource("/com/jsql/view/swing/resources/images/database.png"));
+            return HelperGui.DATABASE_ICON;
         }
     }
 
@@ -55,11 +55,13 @@ public class NodeModelDatabase extends AbstractNodeModel {
         }
     }
 
-    @Override public boolean verifyShowPopup() {
+    @Override 
+    public boolean isPopupDisplayable() {
         return !this.hasBeenSearched && this.isRunning;
     }
 
-    @Override void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {
+    @Override 
+    void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {
         // Do nothing
     }
 }

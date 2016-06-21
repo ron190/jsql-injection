@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
 import com.jsql.exception.PreparationException;
 import com.jsql.exception.StoppableException;
 import com.jsql.i18n.I18n;
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextField;
@@ -84,31 +84,40 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
         String urlTooltip = I18n.SHELL_URL_TOOLTIP;
         
         urlShell.setToolTipText(urlTooltip);
-        urlShell.setBorder(BorderFactory.createCompoundBorder(
+        urlShell.setBorder(
+            BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
-                        BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER),
-                        BorderFactory.createMatteBorder(1, 1, 0, 1, HelperGUI.DEFAULT_BACKGROUND)),
-                        HelperGUI.BLU_ROUND_BORDER));
+                    BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGui.COMPONENT_BORDER),
+                    BorderFactory.createMatteBorder(1, 1, 0, 1, HelperGui.DEFAULT_BACKGROUND)
+                ),
+                HelperGui.BLU_ROUND_BORDER
+            )
+        );
 
         JPanel lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
-        lastLine.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER),
-                BorderFactory.createEmptyBorder(1, 0, 1, 1)));
+        lastLine.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGui.COMPONENT_BORDER),
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)
+            )
+        );
         
         this.run = new JButton(
             I18n.SHELL_RUN_BUTTON, 
             new ImageIcon(ManagerAbstractShell.class.getResource("/com/jsql/view/swing/resources/images/shellSearch.png"))
         );
+        I18n.components.get("SHELL_RUN_BUTTON").add(this.run);
         this.run.setToolTipText(I18n.SHELL_RUN_BUTTON_TOOLTIP);
         this.run.setEnabled(false);
 
-        this.run.setBorder(HelperGUI.BLU_ROUND_BORDER);
+        this.run.setBorder(HelperGui.BLU_ROUND_BORDER);
 
         this.run.addActionListener(new ActionRunShell());
 
-        this.privilege = new JLabel(I18n.PRIVILEGE_LABEL, HelperGUI.SQUARE_GREY, SwingConstants.LEFT);
-        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperGUI.DEFAULT_BACKGROUND));
+        this.privilege = new JLabel(I18n.PRIVILEGE_LABEL, HelperGui.SQUARE_GREY, SwingConstants.LEFT);
+        I18n.components.get("PRIVILEGE_LABEL").add(this.privilege);
+        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperGui.DEFAULT_BACKGROUND));
         this.privilege.setToolTipText(I18n.PRIVILEGE_TOOLTIP);
 
         lastLine.add(this.privilege);

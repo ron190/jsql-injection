@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * Mark the injection as invulnerable to a blind injection.
@@ -25,6 +25,6 @@ public class MarkBlindStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.panelStatus().labelBlind.setUnderlined();
+        MediatorGui.panelStatus().labelBlind.setUnderlined();
     }
 }

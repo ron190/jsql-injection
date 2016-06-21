@@ -14,7 +14,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import com.jsql.model.bean.AbstractElementDatabase;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**
@@ -37,9 +37,9 @@ public class EndIndeterminateProgress implements InteractionCommand {
     @Override
     public void execute() {
         // Tree model, update the tree (refresh, add node, etc)
-        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGUI.databaseTree().getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
 
-        DefaultMutableTreeNode nodeModel = MediatorGUI.jFrame().getTreeNodeModels().get(dataElementDatabase);
+        DefaultMutableTreeNode nodeModel = MediatorGui.frame().getTreeNodeModels().get(dataElementDatabase);
         
         // Fix #1806 : NullPointerException on ...odels().get(dataElementDatabase).getUserObject()
         if (nodeModel != null) {
@@ -51,7 +51,7 @@ public class EndIndeterminateProgress implements InteractionCommand {
             progressingTreeNodeModel.isRunning = false;
             
             // Update the node
-            treeModel.nodeChanged(MediatorGUI.jFrame().getTreeNodeModels().get(dataElementDatabase));
+            treeModel.nodeChanged(nodeModel);
         }
     }
 }

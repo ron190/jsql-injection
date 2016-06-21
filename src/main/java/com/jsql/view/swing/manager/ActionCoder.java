@@ -112,42 +112,80 @@ public class ActionCoder implements ActionListener {
             
         } else if ("Encode to Hex".equalsIgnoreCase(choice)) {
             try {
-                this.coderManager.result.setText(Hex.encodeHexString(this.coderManager.entry.getText().getBytes("UTF-8")).trim());
+                this.coderManager.result.setText(
+                    Hex.encodeHexString(
+                        this.coderManager.entry.getText().getBytes("UTF-8")
+                    ).trim()
+                );
             } catch (UnsupportedEncodingException e) {
                 this.coderManager.result.setText("this.coderManager.encoding error: " + e.getMessage());
             }
             
         } else if ("Decode from Hex".equalsIgnoreCase(choice)) {
             try {
-                this.coderManager.result.setText(new String(Hex.decodeHex(this.coderManager.entry.getText().toCharArray()), "UTF-8"));
+                this.coderManager.result.setText(
+                    new String(
+                        Hex.decodeHex(
+                            this.coderManager.entry.getText().toCharArray()
+                        ), 
+                        "UTF-8"
+                    )
+                );
             } catch (Exception e) {
                 this.coderManager.result.setText("Decoding error: " + e.getMessage());
             }
             
         } else if ("Encode to Hex(zipped)".equalsIgnoreCase(choice)) {
             try {
-                this.coderManager.result.setText(Hex.encodeHexString(this.coderManager.compress(this.coderManager.entry.getText()).getBytes("UTF-8")).trim());
+                this.coderManager.result.setText(
+                    Hex.encodeHexString(
+                        this.coderManager.compress(
+                            this.coderManager.entry.getText()
+                        ).getBytes("UTF-8")
+                    ).trim()
+                );
             } catch (Exception e) {
                 this.coderManager.result.setText("this.coderManager.encoding error: " + e.getMessage());
             }
             
         } else if ("Decode from Hex(zipped)".equalsIgnoreCase(choice)) {
             try {
-                this.coderManager.result.setText(this.coderManager.decompress(new String(Hex.decodeHex(this.coderManager.entry.getText().toCharArray()), "UTF-8")));
+                this.coderManager.result.setText(
+                    this.coderManager.decompress(
+                        new String(
+                            Hex.decodeHex(
+                                this.coderManager.entry.getText().toCharArray()
+                            ), 
+                            "UTF-8"
+                        )
+                    )
+                );
             } catch (Exception e) {
                 this.coderManager.result.setText("Decoding error: " + e.getMessage());
             }
             
         } else if ("Encode to Base64(zipped)".equalsIgnoreCase(choice)) {
             try {
-                this.coderManager.result.setText(this.coderManager.base64Encode(this.coderManager.compress(this.coderManager.entry.getText())));
+                this.coderManager.result.setText(
+                    this.coderManager.base64Encode(
+                        this.coderManager.compress(
+                            this.coderManager.entry.getText()
+                        )
+                    )
+                );
             } catch (IOException e) {
                 this.coderManager.result.setText("this.coderManager.encoding error: " + e.getMessage());
             }
             
         } else if ("Decode from Base64(zipped)".equalsIgnoreCase(choice)) {
             try {
-                this.coderManager.result.setText(this.coderManager.decompress(this.coderManager.base64Decode(this.coderManager.entry.getText())));
+                this.coderManager.result.setText(
+                    this.coderManager.decompress(
+                        this.coderManager.base64Decode(
+                            this.coderManager.entry.getText()
+                        )
+                    )
+                );
             } catch (IOException e) {
                 this.coderManager.result.setText("Decoding error: " + e.getMessage());
             }
@@ -166,14 +204,24 @@ public class ActionCoder implements ActionListener {
             
         } else if ("Encode to Url".equalsIgnoreCase(choice)) {
             try {
-                this.coderManager.result.setText(URLEncoder.encode(this.coderManager.entry.getText(), "UTF-8"));
+                this.coderManager.result.setText(
+                    URLEncoder.encode(
+                        this.coderManager.entry.getText(), 
+                        "UTF-8"
+                    )
+                );
             } catch (UnsupportedEncodingException e) {
                 this.coderManager.result.setText("this.coderManager.encoding error: " + e.getMessage());
             }
             
         } else if ("Decode from Url".equalsIgnoreCase(choice)) {
             try {
-                this.coderManager.result.setText(URLDecoder.decode(this.coderManager.entry.getText().replace("%", "%25"), "UTF-8"));
+                this.coderManager.result.setText(
+                    URLDecoder.decode(
+                        this.coderManager.entry.getText().replace("%", "%25"),
+                        "UTF-8"
+                    )
+                );
             } catch (UnsupportedEncodingException e) {
                 this.coderManager.result.setText("Decoding error: " + e.getMessage());
             }

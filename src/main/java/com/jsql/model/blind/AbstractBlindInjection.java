@@ -37,7 +37,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
      * Constant linked to a URL, true if that url
      * checks the end of the SQL result, false otherwise.
      */
-    protected static final boolean ISLENGTHTEST = true;
+    protected static final boolean IS_LENGTH_TEST = true;
     
     /**
      * Log4j logger sent to view.
@@ -65,7 +65,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
         CompletionService<T> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         // Send the first binary question: is the SQL result empty?
-        taskCompletionService.submit(getCallable(inj, 0, ISLENGTHTEST));
+        taskCompletionService.submit(getCallable(inj, 0, IS_LENGTH_TEST));
         // Increment the number of active tasks
         int submittedTasks = 1;
 
@@ -115,7 +115,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
                         // New undefined bits of the next character
                         bytes.add(new char[]{'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'});
                         // Test if it's the end of the line
-                        taskCompletionService.submit(getCallable(inj, indexCharacter, ISLENGTHTEST));
+                        taskCompletionService.submit(getCallable(inj, indexCharacter, IS_LENGTH_TEST));
                         // Test the 8 bits for the next character, save its position and current bit for later
                         for (int bit: new int[]{1, 2, 4, 8, 16, 32, 64, 128}) {
                             taskCompletionService.submit(getCallable(inj, indexCharacter, bit));

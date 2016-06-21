@@ -191,12 +191,16 @@ public class InjectionModel extends AbstractModelObservable {
             // Choose the most efficient method: normal > error > blind > time
             if (Strategy.NORMAL.getValue().isApplicable()) {
                 Strategy.NORMAL.getValue().activateStrategy();
+                
             } else if (Strategy.ERRORBASED.getValue().isApplicable()) {
                 Strategy.ERRORBASED.getValue().activateStrategy();
+                
             } else if (Strategy.BLIND.getValue().isApplicable()) {
                 Strategy.BLIND.getValue().activateStrategy();
+                
             } else if (Strategy.TIME.getValue().isApplicable()) {
                 Strategy.TIME.getValue().activateStrategy();
+                
             } else if (ConfigurationUtil.enableEvasion && securitySteps < 3) {
                 // No injection possible, increase evasion level and restart whole process
                 securitySteps++;
@@ -407,12 +411,10 @@ public class InjectionModel extends AbstractModelObservable {
 
         // Request the web page to the server
         String line, pageSource = "";
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
             while ((line = reader.readLine()) != null) {
                 pageSource += line + "\r\n";
             }
-            reader.close();
         } catch (MalformedURLException e) {
             LOGGER.warn("Malformed URL " + e.getMessage(), e);
         } catch (IOException e) {
@@ -452,14 +454,18 @@ public class InjectionModel extends AbstractModelObservable {
             if (!useVisibleIndex) {
                 return paramLead.replace("*", sqlTrail);
             } else {
-                return paramLead.replace("*", 
-                    this.sqlIndexes.replaceAll("1337" + ((NormalStrategy) Strategy.NORMAL.getValue()).visibleIndex + "7331",
-                    /**
-                     * Oracle column often contains $, which is reserved for regex.
-                     * => need to be escape with quoteReplacement()
-                     */
-                    Matcher.quoteReplacement(sqlTrail))
-                );
+                return 
+                    paramLead.replace("*", 
+                        this.sqlIndexes.replaceAll(
+                            "1337" + ((NormalStrategy) Strategy.NORMAL.getValue()).visibleIndex + "7331",
+                            /**
+                             * Oracle column often contains $, which is reserved for regex.
+                             * => need to be escape with quoteReplacement()
+                             */
+                            Matcher.quoteReplacement(sqlTrail)
+                        )
+                    )
+                ;
             }
         }
         return paramLead;
@@ -472,25 +478,34 @@ public class InjectionModel extends AbstractModelObservable {
             if (!useVisibleIndex) {
                 return paramLead.replace("*", sqlTrail);
             } else {
-                return paramLead.replace("*", 
-                    this.sqlIndexes.replaceAll("1337" + ((NormalStrategy) Strategy.NORMAL.getValue()).visibleIndex + "7331",
-                    /**
-                     * Oracle column often contains $, which is reserved for regex.
-                     * => need to be escape with quoteReplacement()
-                     */
-                    Matcher.quoteReplacement(sqlTrail))
-                );
+                return 
+                    paramLead.replace("*", 
+                        this.sqlIndexes.replaceAll(
+                            "1337" + ((NormalStrategy) Strategy.NORMAL.getValue()).visibleIndex + "7331",
+                            /**
+                             * Oracle column often contains $, which is reserved for regex.
+                             * => need to be escape with quoteReplacement()
+                             */
+                            Matcher.quoteReplacement(sqlTrail)
+                        )
+                    )
+                ;
             }
         } else {
             if (!useVisibleIndex) {
                 return paramLead + sqlTrail;
             } else {
-                return paramLead + this.sqlIndexes.replaceAll("1337" + ((NormalStrategy) Strategy.NORMAL.getValue()).visibleIndex + "7331",
-                    /**
-                     * Oracle column often contains $, which is reserved for regex.
-                     * => need to be escape with quoteReplacement()
-                     */
-                    Matcher.quoteReplacement(sqlTrail));
+                return 
+                    paramLead 
+                    + this.sqlIndexes.replaceAll(
+                        "1337" + ((NormalStrategy) Strategy.NORMAL.getValue()).visibleIndex + "7331",
+                        /**
+                         * Oracle column often contains $, which is reserved for regex.
+                         * => need to be escape with quoteReplacement()
+                         */
+                        Matcher.quoteReplacement(sqlTrail)
+                    )
+                ;
             }
         }
     }

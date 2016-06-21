@@ -42,7 +42,7 @@ public class JTextPanePlaceholder extends JTextPane {
     public void paint(Graphics g) {
         super.paint(g);
         if (getText().length() == 110 || getText().length() == 0) {
-            ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             Insets ins = getInsets();
             FontMetrics fm = g.getFontMetrics();
             int c0 = getBackground().getRGB();

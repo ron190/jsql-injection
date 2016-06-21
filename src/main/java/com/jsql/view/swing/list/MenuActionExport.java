@@ -58,9 +58,11 @@ public class MenuActionExport implements ActionListener {
                     File file = this.getSelectedFile();
                     if (getDialogType() == SAVE_DIALOG) {
                         if (file.exists()) {
-                            int replace = JOptionPane.showConfirmDialog(this,
-                                    file.getName() + " " +I18n.LIST_CONFIRM_REPLACE, I18n.LIST_CONFIRM_EXPORT,
-                                    JOptionPane.YES_NO_OPTION);
+                            int replace = JOptionPane.showConfirmDialog(
+                                this,
+                                file.getName() + " " +I18n.LIST_CONFIRM_REPLACE, I18n.LIST_CONFIRM_EXPORT,
+                                JOptionPane.YES_NO_OPTION
+                            );
                             switch (replace) {
                                 case JOptionPane.YES_OPTION:
                                     super.approveSelection();

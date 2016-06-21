@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * End the refreshing of File search button.
@@ -25,8 +25,8 @@ public class EndUpload implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.tabManagers().uploadManager.restoreButtonText();
-        MediatorGUI.tabManagers().uploadManager.setButtonEnable(true);
-        MediatorGUI.tabManagers().uploadManager.hideLoader();
+        MediatorGui.tabManagers().uploadManager.restoreButtonText();
+        MediatorGui.tabManagers().uploadManager.setButtonEnable(true);
+        MediatorGui.tabManagers().uploadManager.hideLoader();
     }
 }

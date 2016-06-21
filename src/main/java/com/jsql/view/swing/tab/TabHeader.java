@@ -10,19 +10,18 @@
  ******************************************************************************/
 package com.jsql.view.swing.tab;
 
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * Panel displayed as a header for tabs.
@@ -33,7 +32,7 @@ public class TabHeader extends JPanel implements MouseListener {
      * Tab header with default tab icon.
      */
     public TabHeader() {
-        this(new ImageIcon(TabHeader.class.getResource("/com/jsql/view/swing/resources/images/table.png")));
+        this((ImageIcon) HelperGui.TABLE_ICON);
     }
 
     /**
@@ -48,9 +47,9 @@ public class TabHeader extends JPanel implements MouseListener {
         JLabel tabTitleLabel = new JLabel() {
             @Override
             public String getText() {
-                int i = MediatorGUI.tabResults().indexOfTabComponent(TabHeader.this);
+                int i = MediatorGui.tabResults().indexOfTabComponent(TabHeader.this);
                 if (i != -1) {
-                    return MediatorGUI.tabResults().getTitleAt(i);
+                    return MediatorGui.tabResults().getTitleAt(i);
                 }
                 return null;
             }
@@ -72,8 +71,8 @@ public class TabHeader extends JPanel implements MouseListener {
         if (SwingUtilities.isRightMouseButton(e)) {
             return;
         }
-        int closeTabNumber = MediatorGUI.tabResults().indexOfTabComponent(TabHeader.this);
-        MediatorGUI.tabResults().removeTabAt(closeTabNumber);
+        int closeTabNumber = MediatorGui.tabResults().indexOfTabComponent(TabHeader.this);
+        MediatorGui.tabResults().removeTabAt(closeTabNumber);
     }
 
     @Override public void mouseEntered(MouseEvent e) {

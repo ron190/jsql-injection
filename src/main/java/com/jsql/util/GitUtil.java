@@ -65,7 +65,7 @@ public class GitUtil {
         String osArch = System.getProperty("os.arch");
         
         String clientDescription = 
-              "```\n"
+            "```\n"
             + "jSQL: v"+ InjectionModel.JSQLVERSION +"\n"
             + "Java: v"+ javaVersion +"-"+ osArch +"\n"
             + "OS: "+ System.getProperty("os.name") +" (v"+ System.getProperty("os.version") +")\n"
@@ -98,9 +98,12 @@ public class GitUtil {
                 new Socket(ProxyUtil.proxyAddress, Integer.parseInt(ProxyUtil.proxyPort)).close();
             } catch (Exception e) {
                 if (showOnConsole == ShowOnConsole.YES) {
-                    LOGGER.warn("Proxy connection failed: " 
+                    LOGGER.warn(
+                        "Proxy connection failed: " 
                         + ProxyUtil.proxyAddress + ":" + ProxyUtil.proxyPort
-                        + ". Please check your proxy informations or disable proxy setting.", e);
+                        + ". Please check your proxy informations or disable proxy setting.",
+                        e
+                    );
                 }
                 return;
             }
@@ -123,7 +126,10 @@ public class GitUtil {
             connection.setRequestProperty("Cache-Control", "no-cache");
             connection.setRequestProperty("Expires", "-1");
             connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Authorization", "token " + StringUtils.newStringUtf8(Base64.decodeBase64("NGQ1YzdkYWE1NDQwYzdkNTk1YTZlODQzYzFlODlkZmMzNzQ1NDhlNg==")));
+            connection.setRequestProperty(
+                "Authorization", 
+                "token " + StringUtils.newStringUtf8(Base64.decodeBase64("NGQ1YzdkYWE1NDQwYzdkNTk1YTZlODQzYzFlODlkZmMzNzQ1NDhlNg=="))
+            );
             connection.setReadTimeout(15000);
             connection.setConnectTimeout(15000);
             connection.setDoOutput(true);
@@ -142,12 +148,10 @@ public class GitUtil {
                 LOGGER.debug("Report sent successfully.");
             }
             
-            try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                 while (reader.readLine() != null) {
                     // nothing
                 }
-                reader.close();
             } catch (IOException e) {
                 if (showOnConsole == ShowOnConsole.YES) {
                     LOGGER.warn("Read error " + e.getMessage(), e);

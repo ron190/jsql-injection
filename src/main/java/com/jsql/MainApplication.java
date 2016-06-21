@@ -14,8 +14,8 @@ import com.jsql.util.ConfigurationUtil;
 import com.jsql.util.ExceptionUtil;
 import com.jsql.util.GitUtil;
 import com.jsql.util.ProxyUtil;
-import com.jsql.view.swing.JFrameGUI;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.FrameJSql;
+import com.jsql.view.swing.MediatorGui;
 
 public class MainApplication {
     /**
@@ -45,8 +45,8 @@ public class MainApplication {
         MediatorModel.register(model);
         
         try {
-            JFrameGUI gui = new JFrameGUI();
-            MediatorGUI.register(gui);
+            FrameJSql gui = new FrameJSql();
+            MediatorGui.register(gui);
             model.addObserver(gui);
         } catch (HeadlessException e) {
             LOGGER.error("HeadlessException: command line execution in jSQL not supported yet.");

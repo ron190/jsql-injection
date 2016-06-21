@@ -23,7 +23,7 @@ import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.Column;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.model.injection.suspendable.AbstractSuspendable;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**
@@ -40,7 +40,7 @@ public class ActionLoadStop implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGUI.databaseTree().getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
         DefaultMutableTreeNode tableNode = currentTableNode;
         final List<Column> columnsToSearch = new ArrayList<>();
 
@@ -80,8 +80,5 @@ public class ActionLoadStop implements ActionListener {
             MediatorModel.model().suspendables.remove(this.nodeData.dataObject);
         }
         this.nodeData.isRunning = !this.nodeData.isRunning;
-
-        // !!important!!
-        MediatorGUI.databaseTree().getCellEditor().stopCellEditing();
     }
 }

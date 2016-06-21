@@ -51,7 +51,7 @@ public class CallableTime extends CallableAbstractBlind<CallableTime> {
     }
     
     public boolean isTrue() {
-        return this.diffSeconds < ConcreteTimeInjection.SLEEP;
+        return this.diffSeconds < ConcreteTimeInjection.SLEEP_TIME;
     }
 
     /**

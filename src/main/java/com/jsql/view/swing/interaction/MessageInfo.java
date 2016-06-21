@@ -11,7 +11,7 @@
 package com.jsql.view.swing.interaction;
 
 import com.jsql.model.injection.MediatorModel;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * Update the general information in status bar.
@@ -26,7 +26,7 @@ public class MessageInfo implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.panelStatus().setInfos(
+        MediatorGui.panelStatus().setInfos(
             MediatorModel.model().versionDatabase,
             MediatorModel.model().currentDatabase,
             MediatorModel.model().currentUser,

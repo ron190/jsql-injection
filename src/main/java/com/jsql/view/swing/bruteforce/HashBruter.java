@@ -14,6 +14,11 @@ import com.jsql.util.StringUtil;
 import com.jsql.view.swing.manager.MD4;
 
 public class HashBruter extends Bruter {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(HashBruter.class);
+
     /*
      * public static void main(String[] args) {
      *
@@ -48,11 +53,6 @@ public class HashBruter extends Bruter {
 
     public String hash, generatedHash, password;
     public String type;
-
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getLogger(HashBruter.class);
 
     public String getType() {
         return type;
@@ -179,49 +179,49 @@ public class HashBruter extends Bruter {
     }
 
     private String generateCRC32(String baseString) {
-               
-                //Convert string to bytes
-                byte[] bytes = baseString.getBytes();
-               
-                Checksum checksum = new CRC32();
-               
-                /*
-                 * To compute the CRC32 checksum for byte array, use
-                 *
-                 * void update(bytes[] b, int start, int length)
-                 * method of CRC32 class.
-                 */
-                 
-                checksum.update(bytes,0,bytes.length);
-               
-                /*
-                 * Get the generated checksum using
-                 * getValue method of CRC32 class.
-                 */
-                return String.valueOf(checksum.getValue());
+        //Convert string to bytes
+        byte[] bytes = baseString.getBytes();
+       
+        Checksum checksum = new CRC32();
+       
+        /*
+         * To compute the CRC32 checksum for byte array, use
+         *
+         * void update(bytes[] b, int start, int length)
+         * method of CRC32 class.
+         */
+         
+        checksum.update(bytes,0,bytes.length);
+       
+        /*
+         * Get the generated checksum using
+         * getValue method of CRC32 class.
+         */
+        return String.valueOf(checksum.getValue());
     }   
+    
     public static String generateAdler32(String baseString) {
-               
-                //Convert string to bytes
-                byte[] bytes = baseString.getBytes();
-               
-                Checksum checksum = new Adler32();
-               
-                /*
-                 * To compute the CRC32 checksum for byte array, use
-                 *
-                 * void update(bytes[] b, int start, int length)
-                 * method of CRC32 class.
-                 */
-                 
-                checksum.update(bytes,0,bytes.length);
-               
-                /*
-                 * Get the generated checksum using
-                 * getValue method of CRC32 class.
-                 */
-                return String.valueOf(checksum.getValue());
+        //Convert string to bytes
+        byte[] bytes = baseString.getBytes();
+       
+        Checksum checksum = new Adler32();
+       
+        /*
+         * To compute the CRC32 checksum for byte array, use
+         *
+         * void update(bytes[] b, int start, int length)
+         * method of CRC32 class.
+         */
+         
+        checksum.update(bytes,0,bytes.length);
+       
+        /*
+         * Get the generated checksum using
+         * getValue method of CRC32 class.
+         */
+        return String.valueOf(checksum.getValue());
     }
+    
 /*************************************************************************
  *  Compilation:  javac CRC16.java
  *  Execution:    java CRC16 s
@@ -239,7 +239,7 @@ public class HashBruter extends Bruter {
  *
  *************************************************************************/
     public static String generateCRC16(String baseString) {
-                int[] table = {
+        int[] table = {
             0x0000, 0xC0C1, 0xC181, 0x0140, 0xC301, 0x03C0, 0x0280, 0xC241,
             0xC601, 0x06C0, 0x0780, 0xC741, 0x0500, 0xC5C1, 0xC481, 0x0440,
             0xCC01, 0x0CC0, 0x0D80, 0xCD41, 0x0F00, 0xCFC1, 0xCE81, 0x0E40,
@@ -283,7 +283,8 @@ public class HashBruter extends Bruter {
 
         return Integer.toHexString(crc);
     }
-    /*******************************************************************************
+    
+/*******************************************************************************
  * Copyright (c) 2009, 2012 Mountainminds GmbH & Co. KG and Contributors
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0

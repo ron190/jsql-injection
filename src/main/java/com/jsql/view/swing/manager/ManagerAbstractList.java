@@ -16,7 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ListItem;
 
@@ -49,7 +49,7 @@ abstract class ManagerAbstractList extends JPanel {
     /**
      * A animated GIF displayed during processing.
      */
-    protected JLabel loader = new JLabel(HelperGUI.LOADER_GIF);
+    protected JLabel loader = new JLabel(HelperGui.LOADER_GIF);
 
     /**
      * Add a new string to the list if it's not a duplicate.
@@ -57,14 +57,15 @@ abstract class ManagerAbstractList extends JPanel {
      */
     public void addToList(String element) {
         boolean found = false;
-        for (int i = 0; i < ((DefaultListModel<ListItem>) listPaths.getModel()).size(); i++) {
-            if (((DefaultListModel<ListItem>) listPaths.getModel()).get(i).toString().equals(element)) {
+        DefaultListModel<ListItem> listModel = (DefaultListModel<ListItem>) listPaths.getModel();
+        for (int i = 0; i < listModel.size(); i++) {
+            if (listModel.get(i).toString().equals(element)) {
                 found = true;
             }
         }
         if (!found) {
             ListItem v = new ListItem(element);
-            ((DefaultListModel<ListItem>) listPaths.getModel()).addElement(v);
+            listModel.addElement(v);
         }
     }
 

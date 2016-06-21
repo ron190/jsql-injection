@@ -11,7 +11,7 @@
 package com.jsql.view.swing.interaction;
 
 import com.jsql.model.injection.MediatorModel;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * End the refreshing of the main Start injection button.
@@ -26,14 +26,14 @@ public class EndPreparation implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.panelAddress().buttonAddressBar.setInjectionReady();
-        MediatorGUI.panelAddress().loader.setVisible(false);
+        MediatorGui.panelAddress().buttonAddressBar.setInjectionReady();
+        MediatorGui.panelAddress().loader.setVisible(false);
 
         if (MediatorModel.model().isInjectionBuilt) {
-            MediatorGUI.tabManagers().fileManager.setButtonEnable(true);
-            MediatorGUI.tabManagers().shellManager.setButtonEnable(true);
-            MediatorGUI.tabManagers().sqlShellManager.setButtonEnable(true);
-            MediatorGUI.tabManagers().uploadManager.setButtonEnable(true);
+            MediatorGui.tabManagers().fileManager.setButtonEnable(true);
+            MediatorGui.tabManagers().shellManager.setButtonEnable(true);
+            MediatorGui.tabManagers().sqlShellManager.setButtonEnable(true);
+            MediatorGui.tabManagers().uploadManager.setButtonEnable(true);
         }
     }
 }

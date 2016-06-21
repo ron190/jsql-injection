@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * Erase the screen.
@@ -25,6 +25,6 @@ public class ResetInterface implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.jFrame().resetInterface();
+        MediatorGui.frame().resetInterface();
     }
 }

@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.shell.AbstractShell;
 
 /**
@@ -48,7 +48,7 @@ public class GetSQLShellResult implements InteractionCommand {
 
     @Override
     public void execute() {
-        AbstractShell terminal = MediatorGUI.jFrame().getConsoles().get(this.terminalID);
+        AbstractShell terminal = MediatorGui.frame().getConsoles().get(this.terminalID);
         
         if (this.result.indexOf("<SQLr>") > -1) {
             List<List<String>> listRows = new ArrayList<>();
@@ -69,13 +69,20 @@ public class GetSQLShellResult implements InteractionCommand {
                 terminal.append("Empty result.\n");
             } else {
                 List<Integer> listFieldsLength = new ArrayList<>();
-                for (final int[] indexLongestRowSearch = {0}; indexLongestRowSearch[0] < listRows.get(0).size(); indexLongestRowSearch[0]++) {
-                    Collections.sort(listRows, new Comparator<List<String>>() {
-                        @Override
-                        public int compare(List<String> firstRow, List<String> secondRow) {
-                            return secondRow.get(indexLongestRowSearch[0]).length() - firstRow.get(indexLongestRowSearch[0]).length();
+                for (
+                    final int[] indexLongestRowSearch = {0}; 
+                    indexLongestRowSearch[0] < listRows.get(0).size(); 
+                    indexLongestRowSearch[0]++
+                ) {
+                    Collections.sort(
+                        listRows, 
+                        new Comparator<List<String>>() {
+                            @Override
+                            public int compare(List<String> firstRow, List<String> secondRow) {
+                                return secondRow.get(indexLongestRowSearch[0]).length() - firstRow.get(indexLongestRowSearch[0]).length();
+                            }
                         }
-                    });
+                    );
                     
                     listFieldsLength.add(listRows.get(0).get(indexLongestRowSearch[0]).length());
                 }

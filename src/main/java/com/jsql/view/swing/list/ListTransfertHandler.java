@@ -52,12 +52,12 @@ public class ListTransfertHandler extends TransferHandler {
         DnDList list = (DnDList) c;
         dragPaths = list.getSelectedValuesList();
 
-        StringBuilder buff = new StringBuilder();
-        for (ListItem t: dragPaths) {
-            buff.append(t + "\n");
+        StringBuilder stringTransferable = new StringBuilder();
+        for (ListItem itemPath: dragPaths) {
+            stringTransferable.append(itemPath + "\n");
         }
 
-        return new StringSelection(buff.toString().trim());
+        return new StringSelection(stringTransferable.toString().trim());
     }
 
     @SuppressWarnings("unchecked")
@@ -66,8 +66,8 @@ public class ListTransfertHandler extends TransferHandler {
         if (action == TransferHandler.MOVE) {
             JList<ListItem> list = (JList<ListItem>) c;
             DefaultListModel<ListItem> model = (DefaultListModel<ListItem>) list.getModel();
-            for (ListItem t: dragPaths) {
-                model.remove(model.indexOf(t));
+            for (ListItem itemPath: dragPaths) {
+                model.remove(model.indexOf(itemPath));
             }
             
             dragPaths = null;
@@ -76,8 +76,10 @@ public class ListTransfertHandler extends TransferHandler {
 
     @Override
     public boolean canImport(TransferSupport support) {
-        return support.isDataFlavorSupported(DataFlavor.stringFlavor)
-                || support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
+        return 
+            support.isDataFlavorSupported(DataFlavor.stringFlavor) || 
+            support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)
+        ;
     }
 
     @SuppressWarnings("unchecked")
@@ -135,7 +137,10 @@ public class ListTransfertHandler extends TransferHandler {
                 int childIndex = dl.getIndex();
 
                 try {
-                    list.dropPasteFile((List<File>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor), childIndex);
+                    list.dropPasteFile(
+                        (List<File>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor), 
+                        childIndex
+                    );
                 } catch (UnsupportedFlavorException | IOException e) {
                     LOGGER.error(e, e);
                 }
@@ -181,13 +186,16 @@ public class ListTransfertHandler extends TransferHandler {
                     }
                 } else if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                     try {
-                        int y = 0;
+                        int selectedIndex = 0;
                         if (list.getSelectedIndex() > 0) {
-                            y = list.getSelectedIndex();
+                            selectedIndex = list.getSelectedIndex();
                         }
                         list.clearSelection();
 
-                        list.dropPasteFile((List<File>) transferableFromClipboard.getTransferData(DataFlavor.javaFileListFlavor), y);
+                        list.dropPasteFile(
+                            (List<File>) transferableFromClipboard.getTransferData(DataFlavor.javaFileListFlavor),
+                            selectedIndex
+                        );
                     } catch (UnsupportedFlavorException | IOException e) {
                         LOGGER.error(e, e);
                     }

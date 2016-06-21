@@ -11,7 +11,6 @@
 package com.jsql.view.swing.dialog;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dialog;
@@ -47,8 +46,8 @@ import javax.swing.event.HyperlinkListener;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.injection.InjectionModel;
-import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 
@@ -76,12 +75,12 @@ public class DialogAbout extends JDialog {
      * Create a dialog for general information on project jsql.
      */
     public DialogAbout() {
-        super(MediatorGUI.jFrame(), "About jSQL Injection", Dialog.ModalityType.MODELESS);
+        super(MediatorGui.frame(), "About jSQL Injection", Dialog.ModalityType.MODELESS);
 
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         // Define a small and large app icon
-        this.setIconImages(HelperGUI.getIcons());
+        this.setIconImages(HelperGui.getIcons());
 
         // Action for ESCAPE key
         ActionListener escapeListener = new ActionListener() {
@@ -91,7 +90,11 @@ public class DialogAbout extends JDialog {
             }
         };
 
-        this.getRootPane().registerKeyboardAction(escapeListener, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_IN_FOCUSED_WINDOW);
+        this.getRootPane().registerKeyboardAction(
+            escapeListener, 
+            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), 
+            JComponent.WHEN_IN_FOCUSED_WINDOW
+        );
 
         JPanel lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));
@@ -99,7 +102,7 @@ public class DialogAbout extends JDialog {
 
         this.close = new JButton("Close");
         this.close.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGUI.BLU_COLOR),
+            BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGui.BLU_COLOR),
             BorderFactory.createEmptyBorder(2, 20, 2, 20))
         );
         this.close.addActionListener(escapeListener);
@@ -108,7 +111,7 @@ public class DialogAbout extends JDialog {
         Container dialogPane = this.getContentPane();
         JButton webpage = new JButton("Webpage");
         webpage.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGUI.BLU_COLOR),
+            BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGui.BLU_COLOR),
             BorderFactory.createEmptyBorder(2, 20, 2, 20))
         );
         webpage.addActionListener(new ActionListener() {
@@ -198,7 +201,7 @@ public class DialogAbout extends JDialog {
     public final void reinit() {
         this.scrollPane.scrollPane.getViewport().setViewPosition(new Point(0, 0));
         this.setSize(460, 300);
-        this.setLocationRelativeTo(MediatorGUI.jFrame());
+        this.setLocationRelativeTo(MediatorGui.frame());
         this.close.requestFocusInWindow();
         this.getRootPane().setDefaultButton(this.close);
     }

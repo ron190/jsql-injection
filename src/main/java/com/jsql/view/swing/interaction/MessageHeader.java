@@ -21,7 +21,7 @@ import javax.swing.JViewport;
 import javax.swing.table.DefaultTableModel;
 
 import com.jsql.model.bean.HttpHeader;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
 
 /**
@@ -51,9 +51,9 @@ public class MessageHeader implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.panelConsoles().listHttpHeader.add(new HttpHeader(url, post, header, response, source));
+        MediatorGui.panelConsoles().listHttpHeader.add(new HttpHeader(url, post, header, response, source));
         
-        JViewport viewport = ((JScrollIndicator) MediatorGUI.panelConsoles().network.getLeftComponent()).scrollPane.getViewport();
+        JViewport viewport = ((JScrollIndicator) MediatorGui.panelConsoles().network.getLeftComponent()).scrollPane.getViewport();
         JTable table = (JTable) viewport.getView();
         
         DefaultTableModel model = (DefaultTableModel) table.getModel();
@@ -64,10 +64,10 @@ public class MessageHeader implements InteractionCommand {
         rect.translate(-pt.x, -pt.y);
         viewport.scrollRectToVisible(rect);
         
-        int tabIndex = MediatorGUI.tabConsoles().indexOfTab("Network");
-        if (0 <= tabIndex && tabIndex < MediatorGUI.tabConsoles().getTabCount()) {
-            Component tabHeader = MediatorGUI.tabConsoles().getTabComponentAt(tabIndex);
-            if (MediatorGUI.tabConsoles().getSelectedIndex() != tabIndex) {
+        int tabIndex = MediatorGui.tabConsoles().indexOfTab("Network");
+        if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
+            Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
+            if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
                 tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
             }
         }

@@ -19,7 +19,6 @@ import org.apache.log4j.WriterAppender;
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.ThrowableInformation;
 
-import com.jsql.view.swing.console.JColoredConsole;
 import com.jsql.view.swing.console.JavaConsoleAdapter;
 import com.jsql.view.swing.console.SimpleConsoleAdapter;
 

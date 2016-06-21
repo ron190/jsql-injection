@@ -10,10 +10,8 @@
  ******************************************************************************/
 package com.jsql.view.swing.panel;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,8 +35,8 @@ import javax.swing.plaf.basic.BasicArrowButton;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.injection.MediatorModel;
-import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.radio.RadioLinkMethod;
 import com.jsql.view.swing.text.JAddressBar;
 import com.jsql.view.swing.text.JPopupTextField;
@@ -76,7 +74,7 @@ public class PanelAddressBar extends JPanel {
     /**
      * Animated GIF displayed during injection.
      */
-    public JLabel loader = new JLabel(HelperGUI.LOADER_GIF);
+    public JLabel loader = new JLabel(HelperGui.LOADER_GIF);
 
     /**
      * Connection button.
@@ -157,19 +155,28 @@ public class PanelAddressBar extends JPanel {
         /**
          * Define UI and the left padding for addressBar
          */
-        this.urlTextField.setBorder(BorderFactory.createCompoundBorder(
+        this.urlTextField.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(4, 2, 3, 0, HelperGUI.DEFAULT_BACKGROUND),
-                BorderFactory.createLineBorder(HelperGUI.BLU_COLOR)
-            ),BorderFactory.createEmptyBorder(2, 23, 2, 23))
+                BorderFactory.createCompoundBorder(
+                    BorderFactory.createMatteBorder(4, 2, 3, 0, HelperGui.DEFAULT_BACKGROUND),
+                    BorderFactory.createLineBorder(HelperGui.BLU_COLOR)
+                ),
+                BorderFactory.createEmptyBorder(2, 23, 2, 23)
+            )
         );
 
-        this.requestTextField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperGUI.DEFAULT_BACKGROUND),
-                HelperGUI.BLU_ROUND_BORDER));
-        this.headerTextField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperGUI.DEFAULT_BACKGROUND),
-                HelperGUI.BLU_ROUND_BORDER));
+        this.requestTextField.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperGui.DEFAULT_BACKGROUND),
+                HelperGui.BLU_ROUND_BORDER
+            )
+        );
+        this.headerTextField.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperGui.DEFAULT_BACKGROUND),
+                HelperGui.BLU_ROUND_BORDER
+            )
+        );
 
         this.requestTextField.setPreferredSize(new Dimension(0, 27));
         this.requestTextField.setFont(this.requestTextField.getFont().deriveFont(Font.PLAIN, this.requestTextField.getFont().getSize() + 2));
@@ -203,34 +210,43 @@ public class PanelAddressBar extends JPanel {
         layoutTextFields.setHorizontalGroup(
             layoutTextFields.createSequentialGroup()
                 // Label width fixed
-                .addGroup(layoutTextFields.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(radioURL)
-                    .addComponent(panelHttpProtocol)
-                    .addComponent(radioHeader)
+                .addGroup(
+                    layoutTextFields.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(radioURL)
+                        .addComponent(panelHttpProtocol)
+                        .addComponent(radioHeader)
                 // Resizable textfields
-                ).addGroup(layoutTextFields.createParallelGroup()
-                    .addComponent(this.urlTextField)
-                    .addComponent(this.requestTextField)
-                    .addComponent(this.headerTextField)
+                ).addGroup(
+                    layoutTextFields.createParallelGroup()
+                        .addComponent(this.urlTextField)
+                        .addComponent(this.requestTextField)
+                        .addComponent(this.headerTextField)
                 // Radio width fixed
-                ).addGroup(layoutTextFields.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                    .addComponent(advancedButton)
-        ));
+                ).addGroup(
+                    layoutTextFields.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                        .addComponent(advancedButton)
+                )
+        );
 
         // Vertical line rules
         layoutTextFields.setVerticalGroup(
             layoutTextFields.createSequentialGroup()
-                .addGroup(layoutTextFields.createParallelGroup(GroupLayout.Alignment.CENTER, false)
-                    .addComponent(radioURL)
-                    .addComponent(this.urlTextField)
-                    .addComponent(advancedButton)
-                ).addGroup(layoutTextFields.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(panelHttpProtocol)
-                    .addComponent(this.requestTextField)
-                ).addGroup(layoutTextFields.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(radioHeader)
-                    .addComponent(this.headerTextField)
-        ));
+                .addGroup(
+                    layoutTextFields.createParallelGroup(GroupLayout.Alignment.CENTER, false)
+                        .addComponent(radioURL)
+                        .addComponent(this.urlTextField)
+                        .addComponent(advancedButton)
+                ).addGroup(
+                    layoutTextFields.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(panelHttpProtocol)
+                        .addComponent(this.requestTextField)
+                ).addGroup(
+                    layoutTextFields
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(radioHeader)
+                        .addComponent(this.headerTextField)
+                )
+        );
 
         radioURL.setVisible(false);
 
@@ -255,7 +271,7 @@ public class PanelAddressBar extends JPanel {
                 radioHeader.setVisible(toggleVisibility);
                 
                 isExpanded = toggleVisibility;
-                MediatorGUI.menubar().setVisible(toggleVisibility);
+                MediatorGui.menubar().setVisible(toggleVisibility);
 
                 advancedButton.setDirection(toggleVisibility ? BasicArrowButton.NORTH : BasicArrowButton.SOUTH);
             }
@@ -282,13 +298,17 @@ public class PanelAddressBar extends JPanel {
             // Register the view to the model
             // Used by manual injection and batch query
             MediatorModel.model().deleteObservers();
-            MediatorModel.model().addObserver(MediatorGUI.jFrame());
+            MediatorModel.model().addObserver(MediatorGui.frame());
             
             int option = 0;
             // Ask the user confirmation if injection already built
             if (MediatorModel.model().isInjectionBuilt) {
-                option = JOptionPane.showConfirmDialog(null, I18n.DIALOG_NEW_INJECTION_TEXT,
-                        I18n.DIALOG_NEW_INJECTION_TITLE, JOptionPane.OK_CANCEL_OPTION);
+                option = JOptionPane.showConfirmDialog(
+                    null, 
+                    I18n.DIALOG_NEW_INJECTION_TEXT,
+                    I18n.DIALOG_NEW_INJECTION_TITLE, 
+                    JOptionPane.OK_CANCEL_OPTION
+                );
             }
 
             // Then start injection

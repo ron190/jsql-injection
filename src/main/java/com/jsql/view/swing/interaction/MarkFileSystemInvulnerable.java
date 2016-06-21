@@ -10,8 +10,8 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * Mark the injection as using a user profile invulnerable to file I/O.
@@ -26,21 +26,21 @@ public class MarkFileSystemInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.tabManagers().fileManager.changePrivilegeIcon(HelperGUI.SQUARE_RED);
-        MediatorGUI.tabManagers().fileManager.setButtonEnable(true);
-        MediatorGUI.tabManagers().fileManager.restoreButtonText();
-        MediatorGUI.tabManagers().fileManager.hideLoader();
+        MediatorGui.tabManagers().fileManager.changePrivilegeIcon(HelperGui.SQUARE_RED);
+        MediatorGui.tabManagers().fileManager.setButtonEnable(true);
+        MediatorGui.tabManagers().fileManager.restoreButtonText();
+        MediatorGui.tabManagers().fileManager.hideLoader();
         
-        MediatorGUI.tabManagers().shellManager.changePrivilegeIcon(HelperGUI.SQUARE_RED);
-        MediatorGUI.tabManagers().shellManager.setButtonEnable(true);
-        MediatorGUI.tabManagers().shellManager.restoreButtonText();
+        MediatorGui.tabManagers().shellManager.changePrivilegeIcon(HelperGui.SQUARE_RED);
+        MediatorGui.tabManagers().shellManager.setButtonEnable(true);
+        MediatorGui.tabManagers().shellManager.restoreButtonText();
         
-        MediatorGUI.tabManagers().uploadManager.changePrivilegeIcon(HelperGUI.SQUARE_RED);
-        MediatorGUI.tabManagers().uploadManager.setButtonEnable(true);
-        MediatorGUI.tabManagers().uploadManager.restoreButtonText();
+        MediatorGui.tabManagers().uploadManager.changePrivilegeIcon(HelperGui.SQUARE_RED);
+        MediatorGui.tabManagers().uploadManager.setButtonEnable(true);
+        MediatorGui.tabManagers().uploadManager.restoreButtonText();
         
-        MediatorGUI.tabManagers().sqlShellManager.changePrivilegeIcon(HelperGUI.SQUARE_RED);
-        MediatorGUI.tabManagers().sqlShellManager.setButtonEnable(true);
-        MediatorGUI.tabManagers().sqlShellManager.restoreButtonText();
+        MediatorGui.tabManagers().sqlShellManager.changePrivilegeIcon(HelperGui.SQUARE_RED);
+        MediatorGui.tabManagers().sqlShellManager.setButtonEnable(true);
+        MediatorGui.tabManagers().sqlShellManager.restoreButtonText();
     }
 }

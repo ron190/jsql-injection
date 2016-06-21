@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.scan.interaction;
 
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * End the refreshing of administration page search button.
@@ -25,8 +25,8 @@ public class EndScanList implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.tabManagers().scanListManager.restoreButtonText();
-        MediatorGUI.tabManagers().scanListManager.setButtonEnable(true);
-        MediatorGUI.tabManagers().scanListManager.hideLoader();
+        MediatorGui.tabManagers().scanListManager.restoreButtonText();
+        MediatorGui.tabManagers().scanListManager.setButtonEnable(true);
+        MediatorGui.tabManagers().scanListManager.hideLoader();
     }
 }

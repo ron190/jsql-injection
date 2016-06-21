@@ -9,7 +9,7 @@ import javax.swing.SwingConstants;
 
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.model.strategy.Strategy;
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 
 /**
  * Radio label used to change injection strategy (normal, blind, etc).
@@ -49,7 +49,8 @@ public class RadioLinkStrategy extends AbstractRadioLink {
 
     @Override
     protected boolean isActivable() {
-        return RadioLinkStrategy.this.getIcon() == HelperGUI.TICK
-            && !RadioLinkStrategy.this.getFont().getAttributes().containsValue(TextAttribute.WEIGHT_BOLD);
+        return 
+            RadioLinkStrategy.this.getIcon() == HelperGui.TICK && 
+            !RadioLinkStrategy.this.getFont().getAttributes().containsValue(TextAttribute.WEIGHT_BOLD);
     }
 }

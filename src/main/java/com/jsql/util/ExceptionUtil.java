@@ -27,7 +27,10 @@ public class ExceptionUtil {
             LOGGER.error("Exception on " + tname, thrown);
             
             //  Report #214: ignore if OutOfMemoryError: Java heap space
-            if (ConfigurationUtil.reportBugs && !"OutOfMemoryError".equals(thrown.getClass().getSimpleName())) {
+            if (
+                ConfigurationUtil.reportBugs && 
+                !"OutOfMemoryError".equals(thrown.getClass().getSimpleName())
+            ) {
                 GitUtil.sendUnhandledException(tname, thrown);
             }
         }

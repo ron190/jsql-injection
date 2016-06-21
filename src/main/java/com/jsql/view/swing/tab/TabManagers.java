@@ -20,14 +20,14 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 
 import com.jsql.i18n.I18n;
-import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.ManagerAdminPage;
 import com.jsql.view.swing.manager.ManagerBruteForce;
 import com.jsql.view.swing.manager.ManagerCoder;
 import com.jsql.view.swing.manager.ManagerFile;
-import com.jsql.view.swing.manager.ManagerSqlShell;
 import com.jsql.view.swing.manager.ManagerScanList;
+import com.jsql.view.swing.manager.ManagerSqlshell;
 import com.jsql.view.swing.manager.ManagerUpload;
 import com.jsql.view.swing.manager.ManagerWebshell;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -39,50 +39,52 @@ import com.jsql.view.swing.tree.model.NodeModelEmpty;
  * Panel on the left with functionalities like webshell, file reading and admin page finder.
  */
 @SuppressWarnings("serial")
-public class TabbedPaneManagers extends MouseTabbedPane {
+public class TabManagers extends MouseTabbedPane {
     /**
      * Panel for executing system commands.
      */
-    public ManagerWebshell shellManager = new ManagerWebshell();
+    public final ManagerWebshell shellManager = new ManagerWebshell();
 
     /**
      * Panel for testing multiple URLs.
      */
-    public ManagerScanList scanListManager = new ManagerScanList();
+    public final ManagerScanList scanListManager = new ManagerScanList();
 
     /**
      * Panel for testing backoffice admin pages.
      */
-    public ManagerAdminPage adminPageManager = new ManagerAdminPage();
+    public final ManagerAdminPage adminPageManager = new ManagerAdminPage();
     
     /**
      * Panel for reading files source.
      */
-    public ManagerFile fileManager = new ManagerFile();
+    public final ManagerFile fileManager = new ManagerFile();
 
     /**
      * Panel for uploading files.
      */
-    public ManagerUpload uploadManager = new ManagerUpload();
+    public final ManagerUpload uploadManager = new ManagerUpload();
 
     /**
      * Panel for sending SQL requests.
      */
-    public ManagerSqlShell sqlShellManager = new ManagerSqlShell();
+    public final ManagerSqlshell sqlShellManager = new ManagerSqlshell();
 
     /**
      * Create manager panel.
      */
-    public TabbedPaneManagers() {
+    public TabManagers() {
         this.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
+        
         // Allows to resize to zero
         this.setMinimumSize(new Dimension());
+        
         this.activateMenu();
 
         // First node in tree
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(new NodeModelEmpty(I18n.NO_DATABASE));
         final JTree tree = new JTree(root);
-        MediatorGUI.register(tree);
+        MediatorGui.register(tree);
 
         // Graphic manager for components
         tree.setCellRenderer(new CellRendererNode());
@@ -106,6 +108,7 @@ public class TabbedPaneManagers extends MouseTabbedPane {
                         !tree.isRootVisible(),
                         tree.isRootVisible()
                     );
+                    tree.treeDidChange();
                 }
             }
             @Override public void treeStructureChanged(TreeModelEvent arg0) {
@@ -121,15 +124,15 @@ public class TabbedPaneManagers extends MouseTabbedPane {
 
         LightScrollPane scroller = new LightScrollPane(1, 1, 0, 0, tree);
 
-        this.addTab(I18n.DATABASE, HelperGUI.DATABASE_SERVER_ICON, scroller, I18n.DATABASE_TOOLTIP);
-        this.addTab(I18n.ADMINPAGE, HelperGUI.ADMIN_SERVER_ICON, adminPageManager, I18n.ADMINPAGE_TOOLTIP);
-        this.addTab(I18n.FILE, HelperGUI.FILE_SERVER_ICON, fileManager, I18n.FILE_TOOLTIP);
-        this.addTab(I18n.WEBSHELL, HelperGUI.SHELL_SERVER_ICON, shellManager, I18n.WEBSHELL_TOOLTIP);
-        this.addTab(I18n.SQLSHELL, HelperGUI.SHELL_SERVER_ICON, sqlShellManager, I18n.SQLSHELL_TOOLTIP);
-        this.addTab(I18n.UPLOAD, HelperGUI.UPLOAD_ICON, uploadManager, I18n.UPLOAD_TOOLTIP);
-        this.addTab(I18n.BRUTEFORCE, HelperGUI.BRUTER_ICON, new ManagerBruteForce(), I18n.BRUTEFORCE_TOOLTIP);
-        this.addTab(I18n.CODER, HelperGUI.CODER_ICON, new ManagerCoder(), I18n.CODER_TOOLTIP);
-        this.addTab(I18n.SCANLIST, HelperGUI.SCANLIST_ICON, scanListManager, I18n.SCANLIST_TOOLTIP);
+        this.addTab(I18n.DATABASE, HelperGui.DATABASE_SERVER_ICON, scroller, I18n.DATABASE_TOOLTIP);
+        this.addTab(I18n.ADMINPAGE, HelperGui.ADMIN_SERVER_ICON, adminPageManager, I18n.ADMINPAGE_TOOLTIP);
+        this.addTab(I18n.FILE, HelperGui.FILE_SERVER_ICON, fileManager, I18n.FILE_TOOLTIP);
+        this.addTab(I18n.WEBSHELL, HelperGui.SHELL_SERVER_ICON, shellManager, I18n.WEBSHELL_TOOLTIP);
+        this.addTab(I18n.SQLSHELL, HelperGui.SHELL_SERVER_ICON, sqlShellManager, I18n.SQLSHELL_TOOLTIP);
+        this.addTab(I18n.UPLOAD, HelperGui.UPLOAD_ICON, uploadManager, I18n.UPLOAD_TOOLTIP);
+        this.addTab(I18n.BRUTEFORCE, HelperGui.BRUTER_ICON, new ManagerBruteForce(), I18n.BRUTEFORCE_TOOLTIP);
+        this.addTab(I18n.CODER, HelperGui.CODER_ICON, new ManagerCoder(), I18n.CODER_TOOLTIP);
+        this.addTab(I18n.SCANLIST, HelperGui.SCANLIST_ICON, scanListManager, I18n.SCANLIST_TOOLTIP);
 
         this.fileManager.setButtonEnable(false);
         this.shellManager.setButtonEnable(false);

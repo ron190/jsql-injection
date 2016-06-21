@@ -28,8 +28,8 @@ import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.Table;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.model.injection.suspendable.AbstractSuspendable;
-import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.ImageObserverAnimated;
 import com.jsql.view.swing.tree.ImageOverlap;
 import com.jsql.view.swing.tree.PanelNode;
@@ -49,9 +49,9 @@ public class NodeModelTable extends AbstractNodeModel {
     @Override
     Icon getLeafIcon(boolean leaf) {
         if (leaf) {
-            return new ImageIcon(NodeModelTable.class.getResource("/com/jsql/view/swing/resources/images/tableGo.png"));
+            return HelperGui.TABLE_ICON_GO;
         } else {
-            return HelperGUI.TABLE_ICON;
+            return HelperGui.TABLE_ICON;
         }
     }
 
@@ -62,9 +62,9 @@ public class NodeModelTable extends AbstractNodeModel {
             
             AbstractSuspendable suspendableTask = MediatorModel.model().suspendables.get(this.dataObject);
             if (suspendableTask != null && suspendableTask.isPaused()) {
-                ImageIcon animatedGIFPaused = new ImageOverlap(HelperGUI.PATH_PROGRESSBAR, HelperGUI.PATH_PAUSE);
-                animatedGIFPaused.setImageObserver(new ImageObserverAnimated(MediatorGUI.databaseTree(), currentNode));
-                panel.setLoaderIcon(animatedGIFPaused);
+                ImageIcon animatedGifPaused = new ImageOverlap(HelperGui.PATH_PROGRESSBAR, HelperGui.PATH_PAUSE);
+                animatedGifPaused.setImageObserver(new ImageObserverAnimated(MediatorGui.treeDatabase(), currentNode));
+                panel.setLoaderIcon(animatedGifPaused);
             }
         } else {
             super.displayProgress(panel, currentNode);
@@ -79,7 +79,6 @@ public class NodeModelTable extends AbstractNodeModel {
 
                 @Override
                 protected Object doInBackground() throws Exception {
-//                    MediatorModel.model().dataAccessObject.listColumns(selectedTable);
                     DataAccess.listColumns(selectedTable);
                     return null;
                 }
@@ -92,10 +91,12 @@ public class NodeModelTable extends AbstractNodeModel {
     @Override
     void displayMenu(JPopupMenu tablePopupMenu, final TreePath path) {
         JMenuItem mnCheckAll = new JMenuItem(I18n.CHECK_ALL, 'C');
+        I18n.components.get("CHECK_ALL").add(mnCheckAll);
         JMenuItem mnUncheckAll = new JMenuItem(I18n.UNCHECK_ALL, 'U');
+        I18n.components.get("UNCHECK_ALL").add(mnCheckAll);
 
-        mnCheckAll.setIcon(HelperGUI.EMPTY);
-        mnUncheckAll.setIcon(HelperGUI.EMPTY);
+        mnCheckAll.setIcon(HelperGui.EMPTY);
+        mnUncheckAll.setIcon(HelperGui.EMPTY);
 
         if (!this.hasBeenSearched) {
             mnCheckAll.setEnabled(false);
@@ -118,7 +119,7 @@ public class NodeModelTable extends AbstractNodeModel {
                 final DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
                 final AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
                 
-                DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGUI.databaseTree().getModel();
+                DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
 
                 int tableChildCount = treeModel.getChildCount(currentTableNode);
                 for (int i = 0; i < tableChildCount; i++) {
@@ -149,15 +150,16 @@ public class NodeModelTable extends AbstractNodeModel {
         mnCheckAll.addActionListener(new CheckAll());
         mnUncheckAll.addActionListener(new UncheckAll());
 
-        mnCheckAll.setIcon(HelperGUI.EMPTY);
-        mnUncheckAll.setIcon(HelperGUI.EMPTY);
+        mnCheckAll.setIcon(HelperGui.EMPTY);
+        mnUncheckAll.setIcon(HelperGui.EMPTY);
 
         tablePopupMenu.add(mnCheckAll);
         tablePopupMenu.add(mnUncheckAll);
         tablePopupMenu.add(new JSeparator());
     }
     
-    @Override public boolean verifyShowPopup() {
+    @Override 
+    public boolean isPopupDisplayable() {
         return this.hasBeenSearched || !this.hasBeenSearched && this.isRunning;
     }
 }

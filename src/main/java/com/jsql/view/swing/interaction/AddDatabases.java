@@ -17,7 +17,7 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import com.jsql.model.bean.Database;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.tree.model.NodeModelDatabase;
 
@@ -42,7 +42,7 @@ public class AddDatabases implements InteractionCommand {
     @Override
     public void execute() {
         // Tree model, update the tree (refresh, add node, etc)
-        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGUI.databaseTree().getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
 
         // First node in tree
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
@@ -54,7 +54,7 @@ public class AddDatabases implements InteractionCommand {
             // Create the node
             DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(newTreeNodeModel);
             // Save the node
-            MediatorGUI.jFrame().getTreeNodeModels().put(database, newNode);
+            MediatorGui.frame().getTreeNodeModels().put(database, newNode);
             // Add the node to the tree
             root.add(newNode);
         }
@@ -62,7 +62,7 @@ public class AddDatabases implements InteractionCommand {
         // Refresh the tree
         treeModel.reload(root);
         // Open the root node
-        MediatorGUI.databaseTree().expandPath(new TreePath(root.getPath()));
-        MediatorGUI.databaseTree().setRootVisible(false);
+        MediatorGui.treeDatabase().expandPath(new TreePath(root.getPath()));
+        MediatorGui.treeDatabase().setRootVisible(false);
     }
 }

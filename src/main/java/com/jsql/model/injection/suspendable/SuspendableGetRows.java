@@ -254,10 +254,11 @@ public class SuspendableGetRows extends AbstractSuspendable {
                      *  Add the LIMIT statement to the next SQL query and reset variables.
                      *  Put the character cursor to the beginning of the line, and reset the result of the current query
                      */
-                    sqlQuery = Pattern
-                        .compile("(?si)\\{limit\\}")
-                        .matcher(initialSQLQuery)
-                        .replaceAll(MediatorModel.model().currentVendor.getValue().getSqlLimit(sqlLimit));
+                    sqlQuery = 
+                        Pattern
+                            .compile("(?si)\\{limit\\}")
+                            .matcher(initialSQLQuery)
+                            .replaceAll(MediatorModel.model().currentVendor.getValue().getSqlLimit(sqlLimit));
                     charPositionInCurrentRow = 1;
                     slidingWindowCurrentRow = "";
                 } else {

@@ -16,7 +16,7 @@ import java.util.Comparator;
  * Comporator for table column values ; column with only int data is sorted like 3 < 20 < 100,
  * column with string will sort like 100 < 20 < 3.
  */
-public class ComparatorColumn implements Comparator<Object> {
+public class ComparatorColumn<T> implements Comparator<T> {
     /**
      * Custom compare to sort numbers as numbers.
      * Strings as strings, with numbers ordered before strings.
@@ -25,7 +25,7 @@ public class ComparatorColumn implements Comparator<Object> {
      * @return
      */
     @Override
-    public int compare(Object object1, Object object2) {
+    public int compare(T object1, T object2) {
         boolean isFirstNumeric = true;
         boolean isSecondNumeric = true;
         

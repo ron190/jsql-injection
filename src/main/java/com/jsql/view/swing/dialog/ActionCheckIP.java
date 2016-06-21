@@ -37,9 +37,12 @@ public class ActionCheckIP implements ActionListener, Runnable {
                 LOGGER.info("Testing proxy...");
                 new Socket(ProxyUtil.proxyAddress, Integer.parseInt(ProxyUtil.proxyPort)).close();
             } catch (Exception e) {
-                LOGGER.warn("Proxy connection failed: " 
-                        + ProxyUtil.proxyAddress + ":" + ProxyUtil.proxyPort
-                        + ". Please check your proxy informations or disable proxy setting.", e);
+                LOGGER.warn(
+                    "Proxy connection failed: " 
+                    + ProxyUtil.proxyAddress + ":" + ProxyUtil.proxyPort
+                    + ". Please check your proxy informations or disable proxy setting.", 
+                    e
+                );
                 return;
             }
             LOGGER.trace("Proxy is responding.");

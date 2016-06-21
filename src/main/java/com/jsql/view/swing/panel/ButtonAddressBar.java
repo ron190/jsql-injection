@@ -12,11 +12,10 @@ package com.jsql.view.swing.panel;
 
 import java.awt.Dimension;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 
 /**
  * A button displayed in address.
@@ -27,21 +26,6 @@ public class ButtonAddressBar extends JButton {
      * State of current injection.
      */
     private String state = "Connect";
-
-    /**
-     * Icon for loading process.
-     */
-    private static final Icon ARROWDEFAULT = new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/swing/resources/images/arrowDefault.png"));
-
-    /**
-     * Icon rollover for loading process.
-     */
-    private static final Icon ARROWROLLOVER = new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/swing/resources/images/arrowRollover.png"));
-
-    /**
-     * Icon pressed for loading process.
-     */
-    private static final Icon ARROWPRESSED = new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/swing/resources/images/arrowPressed.png"));
 
     /**
      * Return the current state of current process.
@@ -63,9 +47,9 @@ public class ButtonAddressBar extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(true);
-        this.setIcon(ButtonAddressBar.ARROWDEFAULT);
-        this.setRolloverIcon(ButtonAddressBar.ARROWROLLOVER);
-        this.setPressedIcon(ButtonAddressBar.ARROWPRESSED);
+        this.setIcon(HelperGui.ARROWDEFAULT);
+        this.setRolloverIcon(HelperGui.ARROWROLLOVER);
+        this.setPressedIcon(HelperGui.ARROWPRESSED);
     }
 
     /**
@@ -77,9 +61,9 @@ public class ButtonAddressBar extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(true);
-        this.setIcon(ButtonAddressBar.ARROWDEFAULT);
-        this.setRolloverIcon(ButtonAddressBar.ARROWROLLOVER);
-        this.setPressedIcon(ButtonAddressBar.ARROWPRESSED);
+        this.setIcon(HelperGui.ARROWDEFAULT);
+        this.setRolloverIcon(HelperGui.ARROWROLLOVER);
+        this.setPressedIcon(HelperGui.ARROWPRESSED);
     }
 
     /**
@@ -105,7 +89,7 @@ public class ButtonAddressBar extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(false);
-        this.setIcon(HelperGUI.LOADER_GIF);
+        this.setIcon(HelperGui.LOADER_GIF);
         this.setEnabled(false);
     }
 }

@@ -13,7 +13,7 @@ package com.jsql.view.swing.interaction;
 import java.awt.Component;
 import java.awt.Font;
 
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * Append text to the tab Chunk.
@@ -33,13 +33,13 @@ public class MessageChunk implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.panelConsoles().chunkTab.append(text);
-        MediatorGUI.panelConsoles().chunkTab.setCaretPosition(MediatorGUI.panelConsoles().chunkTab.getDocument().getLength());
+        MediatorGui.panelConsoles().chunkTab.append(text);
+        MediatorGui.panelConsoles().chunkTab.setCaretPosition(MediatorGui.panelConsoles().chunkTab.getDocument().getLength());
         
-        int tabIndex = MediatorGUI.tabConsoles().indexOfTab("Chunk");
-        if (0 <= tabIndex && tabIndex < MediatorGUI.tabConsoles().getTabCount()) {
-            Component tabHeader = MediatorGUI.tabConsoles().getTabComponentAt(tabIndex);
-            if (MediatorGUI.tabConsoles().getSelectedIndex() != tabIndex) {
+        int tabIndex = MediatorGui.tabConsoles().indexOfTab("Chunk");
+        if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
+            Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
+            if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
                 tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
             }
         }

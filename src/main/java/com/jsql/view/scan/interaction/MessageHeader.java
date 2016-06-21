@@ -13,7 +13,7 @@ package com.jsql.view.scan.interaction;
 import java.util.Map;
 
 import com.jsql.model.bean.HttpHeader;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * Append a text to the tab Header.
@@ -41,6 +41,6 @@ public class MessageHeader implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.panelConsoles().listHttpHeader.add(new HttpHeader(url, post, header, response, source));
+        MediatorGui.panelConsoles().listHttpHeader.add(new HttpHeader(url, post, header, response, source));
     }
 }

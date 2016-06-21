@@ -46,7 +46,6 @@ public class JScrollIndicator extends JLayeredPane {
     private static final int THUMB_MIN_SIZE = 48;
     private static final int THUMB_MARGIN = 0;
 
-
     public final JScrollPane scrollPane;
     private final ControlPanel controlPanel;
 
@@ -81,7 +80,6 @@ public class JScrollIndicator extends JLayeredPane {
      * @param hsbPolicy an integer that specifies the horizontal scrollbar policy
      */
     public JScrollIndicator(final JComponent view, int vsbPolicy, int hsbPolicy) {
-
         scrollPane = new JScrollPane(view, vsbPolicy, hsbPolicy);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         add(scrollPane, JLayeredPane.DEFAULT_LAYER);
@@ -89,17 +87,18 @@ public class JScrollIndicator extends JLayeredPane {
         controlPanel = new ControlPanel(scrollPane);
         add(controlPanel, JLayeredPane.PALETTE_LAYER);
 
-        addComponentListener(new ComponentAdapter() {
-
-            @Override
-            public void componentResized(ComponentEvent e) {
-                // listen to changes of JLayeredPane size
-                scrollPane.setSize(getSize());
-                scrollPane.getViewport().revalidate();
-                controlPanel.setSize(getSize());
-                controlPanel.revalidate();
+        addComponentListener(
+            new ComponentAdapter() {
+                @Override
+                public void componentResized(ComponentEvent e) {
+                    // listen to changes of JLayeredPane size
+                    scrollPane.setSize(getSize());
+                    scrollPane.getViewport().revalidate();
+                    controlPanel.setSize(getSize());
+                    controlPanel.revalidate();
+                }
             }
-        });
+        );
     }
 
     /**
@@ -120,7 +119,6 @@ public class JScrollIndicator extends JLayeredPane {
         private final JMyScrollBar hScrollBar;
 
         private ControlPanel(JScrollPane scrollPane) {
-
             setLayout(new BorderLayout());
             setOpaque(false);
 

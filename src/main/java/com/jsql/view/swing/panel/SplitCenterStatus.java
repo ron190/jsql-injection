@@ -22,17 +22,17 @@ import javax.swing.JSplitPane;
 import javax.swing.plaf.basic.BasicArrowButton;
 
 import com.jsql.model.injection.InjectionModel;
-import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
-import com.jsql.view.swing.tab.TabbedPaneManagers;
-import com.jsql.view.swing.tab.TabbedPaneResults;
+import com.jsql.view.swing.tab.TabManagers;
+import com.jsql.view.swing.tab.TabResults;
 
 /**
  * SplitPane composed of tree and tabs on top, and info tabs on bottom.
  */
 @SuppressWarnings("serial")
-public class SplitPaneCenter extends JSplitPaneWithZeroSizeDivider {
+public class SplitCenterStatus extends JSplitPaneWithZeroSizeDivider {
     /**
      * Name of preference for splitter vertical.
      * Reset divider position for current application version.
@@ -48,7 +48,7 @@ public class SplitPaneCenter extends JSplitPaneWithZeroSizeDivider {
     /**
      * SplitPane containing Manager panels on the left and result tabs on the right.
      */
-    public JSplitPaneWithZeroSizeDivider leftRight;
+    public JSplitPaneWithZeroSizeDivider splitManagerResult;
 
     private static final JPanel PANEL_HIDDEN_CONSOLES = new JPanel();
     
@@ -62,52 +62,52 @@ public class SplitPaneCenter extends JSplitPaneWithZeroSizeDivider {
      * Create main panel with Manager panels on the left, result tabs on the right,
      * and consoles in the bottom. 
      */
-    public SplitPaneCenter() {
+    public SplitCenterStatus() {
         super(JSplitPane.VERTICAL_SPLIT, true);
 
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-        int verticalSplitter = prefs.getInt(SplitPaneCenter.NAME_V_SPLITPANE, 300);
-        int horizontalSplitter = prefs.getInt(SplitPaneCenter.NAME_H_SPLITPANE, 200);
+        int verticalSplitter = prefs.getInt(SplitCenterStatus.NAME_V_SPLITPANE, 300);
+        int horizontalSplitter = prefs.getInt(SplitCenterStatus.NAME_H_SPLITPANE, 200);
 
-        MediatorGUI.register(new TabbedPaneManagers());
-        MediatorGUI.register(new TabbedPaneResults());
+        MediatorGui.register(new TabManagers());
+        MediatorGui.register(new TabResults());
 
         // Tree and tabs on top
-        this.leftRight = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT, true);
-        this.leftRight.setLeftComponent(MediatorGUI.tabManagers());
-        this.leftRight.setRightComponent(MediatorGUI.tabResults());
-        this.leftRight.setDividerLocation(verticalSplitter);
-        this.leftRight.setDividerSize(0);
-        this.leftRight.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperGUI.COMPONENT_BORDER));
+        this.splitManagerResult = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT, true);
+        this.splitManagerResult.setLeftComponent(MediatorGui.tabManagers());
+        this.splitManagerResult.setRightComponent(MediatorGui.tabResults());
+        this.splitManagerResult.setDividerLocation(verticalSplitter);
+        this.splitManagerResult.setDividerSize(0);
+        this.splitManagerResult.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperGui.COMPONENT_BORDER));
 
         this.setDividerSize(0);
         this.setBorder(null);
 
-        JPanel leftRightBottomPanel = new JPanel(new BorderLayout());
-        leftRightBottomPanel.add(leftRight, BorderLayout.CENTER);
+        JPanel panelManagerResult = new JPanel(new BorderLayout());
+        panelManagerResult.add(splitManagerResult, BorderLayout.CENTER);
 
         PANEL_HIDDEN_CONSOLES.setLayout(new BorderLayout());
         PANEL_HIDDEN_CONSOLES.setOpaque(false);
         PANEL_HIDDEN_CONSOLES.setPreferredSize(new Dimension(17, 22));
         PANEL_HIDDEN_CONSOLES.setMaximumSize(new Dimension(17, 22));
-        JButton hideBottomButton = new BasicArrowButton(BasicArrowButton.NORTH);
-        hideBottomButton.setBorderPainted(false);
-        hideBottomButton.setOpaque(false);
+        JButton buttonHideConsoles = new BasicArrowButton(BasicArrowButton.NORTH);
+        buttonHideConsoles.setBorderPainted(false);
+        buttonHideConsoles.setOpaque(false);
 
-        hideBottomButton.addActionListener(SplitPaneCenter.ACTION_HIDE_SHOW_CONSOLE);
+        buttonHideConsoles.addActionListener(SplitCenterStatus.ACTION_HIDE_SHOW_CONSOLE);
         PANEL_HIDDEN_CONSOLES.add(Box.createHorizontalGlue());
-        PANEL_HIDDEN_CONSOLES.add(hideBottomButton, BorderLayout.EAST);
-        PANEL_HIDDEN_CONSOLES.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperGUI.COMPONENT_BORDER));
+        PANEL_HIDDEN_CONSOLES.add(buttonHideConsoles, BorderLayout.EAST);
+        PANEL_HIDDEN_CONSOLES.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperGui.COMPONENT_BORDER));
         PANEL_HIDDEN_CONSOLES.setVisible(false);
 
-        leftRightBottomPanel.add(PANEL_HIDDEN_CONSOLES, BorderLayout.SOUTH);
+        panelManagerResult.add(PANEL_HIDDEN_CONSOLES, BorderLayout.SOUTH);
 
         // Setting for top and bottom components
-        this.setTopComponent(leftRightBottomPanel);
+        this.setTopComponent(panelManagerResult);
 
-        MediatorGUI.register(new PanelConsoles());
+        MediatorGui.register(new PanelConsoles());
 
-        this.setBottomComponent(MediatorGUI.panelConsoles());
+        this.setBottomComponent(MediatorGui.panelConsoles());
         this.setDividerLocation(594 - horizontalSplitter);
 
         // defines left and bottom pane

@@ -22,7 +22,7 @@ import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 import javax.swing.TransferHandler;
 
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
 @SuppressWarnings("serial")
@@ -74,11 +74,31 @@ public class DnDTabbedPane extends JTabbedPane {
         Rectangle r = getTabAreaBounds();
         int tabPlacement = getTabPlacement();
         if (tabPlacement == TOP || tabPlacement == BOTTOM) {
-            RBACKWARD.setBounds(r.x, r.y, RWH, r.height);
-            RFORWARD.setBounds(r.x + r.width - RWH - BUTTON_SIZE, r.y, RWH + BUTTON_SIZE, r.height);
+            RBACKWARD.setBounds(
+                r.x,
+                r.y,
+                RWH,
+                r.height
+            );
+            RFORWARD.setBounds(
+                r.x + r.width - RWH - BUTTON_SIZE,
+                r.y,
+                RWH + BUTTON_SIZE,
+                r.height
+            );
         } else if (tabPlacement == LEFT || tabPlacement == RIGHT) {
-            RBACKWARD.setBounds(r.x, r.y, r.width, RWH);
-            RFORWARD.setBounds(r.x, r.y + r.height - RWH - BUTTON_SIZE, r.width, RWH + BUTTON_SIZE);
+            RBACKWARD.setBounds(
+                r.x,
+                r.y,
+                r.width,
+                RWH
+            );
+            RFORWARD.setBounds(
+                r.x,
+                r.y + r.height - RWH - BUTTON_SIZE,
+                r.width,
+                RWH + BUTTON_SIZE
+            );
         }
         if (RBACKWARD.contains(pt)) {
             clickArrowButton("scrollTabsBackwardAction");
@@ -112,7 +132,7 @@ public class DnDTabbedPane extends JTabbedPane {
         addPropertyChangeListener(h);
         // UIManager.put() is not sufficient
         setUI(new CustomMetalTabbedPaneUI());
-        setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER));
+        setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGui.COMPONENT_BORDER));
     }
     
     private DropMode dropMode = DropMode.INSERT;
@@ -149,7 +169,7 @@ public class DnDTabbedPane extends JTabbedPane {
         if (location == null || !forDrop) {
             dropLocation = new DropLocation(new Point(), -1);
         } else if (location instanceof DropLocation) {
-            dropLocation = (DropLocation)location;
+            dropLocation = (DropLocation) location;
         }
         firePropertyChange("dropLocation", old, dropLocation);
         return null;
@@ -160,7 +180,7 @@ public class DnDTabbedPane extends JTabbedPane {
             return;
         }
 
-        Component cmp    = getComponentAt(dragIndex);
+        Component cmp = getComponentAt(dragIndex);
         Container parent = target;
         while (parent != null) {
             if (cmp == parent) {
@@ -170,10 +190,10 @@ public class DnDTabbedPane extends JTabbedPane {
         }
 
         Component tab = getTabComponentAt(dragIndex);
-        String str    = getTitleAt(dragIndex);
-        Icon icon     = getIconAt(dragIndex);
-        String tip    = getToolTipTextAt(dragIndex);
-        boolean flg   = isEnabledAt(dragIndex);
+        String str = getTitleAt(dragIndex);
+        Icon icon = getIconAt(dragIndex);
+        String tip = getToolTipTextAt(dragIndex);
+        boolean flg = isEnabledAt(dragIndex);
         remove(dragIndex);
         target.insertTab(str, icon, cmp, tip, targetIndex);
         target.setEnabledAt(targetIndex, flg);
@@ -181,7 +201,7 @@ public class DnDTabbedPane extends JTabbedPane {
         target.setTabComponentAt(targetIndex, tab);
         target.setSelectedIndex(targetIndex);
         if (tab != null && tab instanceof JComponent) {
-            ((JComponent)tab).scrollRectToVisible(tab.getBounds());
+            ((JComponent) tab).scrollRectToVisible(tab.getBounds());
         }
     }
 
@@ -191,11 +211,11 @@ public class DnDTabbedPane extends JTabbedPane {
         }
         Component cmp = getComponentAt(prev);
         Component tab = getTabComponentAt(prev);
-        String str    = getTitleAt(prev);
-        Icon icon     = getIconAt(prev);
-        String tip    = getToolTipTextAt(prev);
-        boolean flg   = isEnabledAt(prev);
-        int tgtindex  = prev>next ? next : next-1;
+        String str = getTitleAt(prev);
+        Icon icon = getIconAt(prev);
+        String tip = getToolTipTextAt(prev);
+        boolean flg = isEnabledAt(prev);
+        int tgtindex = prev>next ? next : next-1;
         remove(prev);
         insertTab(str, icon, cmp, tip, tgtindex);
         setEnabledAt(tgtindex, flg);
@@ -217,15 +237,25 @@ public class DnDTabbedPane extends JTabbedPane {
 
         int index = loc.getIndex();
         if (index < 0) {
-            lineRect.setRect(0,0,0,0);
+            lineRect.setRect(0, 0, 0, 0);
             return null;
         }
         boolean isZero = index==0;
         Rectangle r = getBoundsAt(isZero?0:index-1);
-        if (getTabPlacement()==TOP || getTabPlacement()==BOTTOM) {
-            lineRect.setRect(r.x-LINEWIDTH/2+r.width*(isZero?0:1), r.y,LINEWIDTH,r.height);
+        if (getTabPlacement() == TOP || getTabPlacement() == BOTTOM) {
+            lineRect.setRect(
+                r.x - LINEWIDTH / 2 + r.width * (isZero ? 0 : 1),
+                r.y,
+                LINEWIDTH,
+                r.height
+            );
         } else {
-            lineRect.setRect(r.x,r.y-LINEWIDTH/2+r.height*(isZero?0:1), r.width,LINEWIDTH);
+            lineRect.setRect(
+                r.x,
+                r.y - LINEWIDTH / 2 + r.height * (isZero ? 0 : 1),
+                r.width,
+                LINEWIDTH
+            );
         }
         return lineRect;
     }
@@ -303,7 +333,7 @@ public class DnDTabbedPane extends JTabbedPane {
                 TransferHandler th = src.getTransferHandler();
                 dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
                 th.exportAsDrag(src, e, TransferHandler.MOVE);
-                lineRect.setRect(0,0,0,0);
+                lineRect.setRect(0, 0, 0, 0);
                 src.getRootPane().getGlassPane().setVisible(true);
                 src.setDropLocationLocal(new DropLocation(tabPt, -1), null, true);
                 startPt = null;

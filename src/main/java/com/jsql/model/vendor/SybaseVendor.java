@@ -15,7 +15,8 @@ public class SybaseVendor extends AbstractVendor {
         return
             "select+" +
                 "@@version%2B'{%}'%2Bdb_name()%2B'{%}'%2Buser_name()%2B'{%}'%2Bsuser_name()" +
-            "%2B'%01%03%03%07'r";
+                "%2B'%01%03%03%07'r"
+        ;
     }
 
     @Override

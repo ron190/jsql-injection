@@ -86,7 +86,7 @@ public final class StringUtil {
      * @return Map of HTTP headers <name, value>
      */
     public static Map<String, String> getHTTPHeaders(URLConnection conn) {
-        Map<String, String> msgResponse = new HashMap<>();
+        Map<String, String> mapResponse = new HashMap<>();
         
         for (int i = 0;; i++) {
             String headerName = conn.getHeaderFieldKey(i);
@@ -94,10 +94,10 @@ public final class StringUtil {
             if (headerName == null && headerValue == null) {
                 break;
             }
-            msgResponse.put(headerName == null ? "Method" : headerName, headerValue);
+            mapResponse.put(headerName == null ? "Method" : headerName, headerValue);
         }
 
-        return msgResponse;
+        return mapResponse;
     }
 
     @SuppressWarnings("unchecked")
@@ -113,54 +113,61 @@ public final class StringUtil {
             LOGGER.warn("HTTP 3XX Redirection detected. Please test again with option 'Follow HTTP redirection' enabled.");
         }
         
+        Map<String, String> mapResponse = (Map<String, String>) msgHeader.get("Response");
         if (
             Pattern.matches("4\\d\\d", ""+connection.getResponseCode()) 
-            && ((Map<String, String>) msgHeader.get("Response")).containsKey("WWW-Authenticate") 
-            && ((Map<String, String>) msgHeader.get("Response")).get("WWW-Authenticate") != null
-            && ((Map<String, String>) msgHeader.get("Response")).get("WWW-Authenticate").toString().startsWith("Basic ")
+            && mapResponse.containsKey("WWW-Authenticate") 
+            && mapResponse.get("WWW-Authenticate") != null
+            && mapResponse.get("WWW-Authenticate").toString().startsWith("Basic ")
         ) {
-            LOGGER.warn("Basic Authentication detected.\n"
-                    + "Please define and enable authentication information in the panel Preferences.\n"
-                    + "Or open Advanced panel, add 'Authorization: Basic b3N..3Jk' to the Header, replace b3N..3Jk with the string 'osUserName:osPassword' encoded in Base64. You can use the Coder in jSQL to encode the string.");
+            LOGGER.warn(
+                "Basic Authentication detected.\n"
+                + "Please define and enable authentication information in the panel Preferences.\n"
+                + "Or open Advanced panel, add 'Authorization: Basic b3N..3Jk' to the Header, replace b3N..3Jk with the string 'osUserName:osPassword' encoded in Base64. You can use the Coder in jSQL to encode the string."
+            );
         
         } else if (
             Pattern.matches("4\\d\\d", ""+connection.getResponseCode()) 
-            && ((Map<String, String>) msgHeader.get("Response")).containsKey("WWW-Authenticate") 
-            && "NTLM".equals(((Map<String, String>) msgHeader.get("Response")).get("WWW-Authenticate"))
+            && mapResponse.containsKey("WWW-Authenticate") 
+            && "NTLM".equals(mapResponse.get("WWW-Authenticate"))
         ) {
-            LOGGER.warn("NTLM Authentication detected.\n"
-                    + "Please define and enable authentication information in the panel Preferences.\n"
-                    + "Or add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]");
+            LOGGER.warn(
+                "NTLM Authentication detected.\n"
+                + "Please define and enable authentication information in the panel Preferences.\n"
+                + "Or add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
+            );
         
         } else if (
             Pattern.matches("4\\d\\d", ""+connection.getResponseCode()) 
-            && ((Map<String, String>) msgHeader.get("Response")).containsKey("WWW-Authenticate") 
-            && ((Map<String, String>) msgHeader.get("Response")).get("WWW-Authenticate") != null
-            && ((Map<String, String>) msgHeader.get("Response")).get("WWW-Authenticate").toString().startsWith("Digest ")
+            && mapResponse.containsKey("WWW-Authenticate") 
+            && mapResponse.get("WWW-Authenticate") != null
+            && mapResponse.get("WWW-Authenticate").toString().startsWith("Digest ")
         ) {
-            LOGGER.warn("Digest Authentication detected.\n"
-                    + "Please define and enable authentication information in the panel Preferences.");
+            LOGGER.warn(
+                "Digest Authentication detected.\n"
+                + "Please define and enable authentication information in the panel Preferences."
+            );
         
         } else if (
             Pattern.matches("4\\d\\d", ""+connection.getResponseCode()) 
-            && ((Map<String, String>) msgHeader.get("Response")).containsKey("WWW-Authenticate") 
-            && "Negotiate".equals(((Map<String, String>) msgHeader.get("Response")).get("WWW-Authenticate"))
+            && mapResponse.containsKey("WWW-Authenticate") 
+            && "Negotiate".equals(mapResponse.get("WWW-Authenticate"))
         ) {
-            LOGGER.warn("Negotiate Authentication detected.\n"
-                    + "Please add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]");
+            LOGGER.warn(
+                "Negotiate Authentication detected.\n"
+                + "Please add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
+            );
         }
         
         // Request the web page to the server
         String line, pageSource = "";
-        Exception err = null;
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        Exception exception = null;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
             while ((line = reader.readLine()) != null) {
                 pageSource += line + "\r\n";
             }
-            reader.close();
         } catch(IOException e) {
-            err = e;
+            exception = e;
         }
 
         msgHeader.put("Source", pageSource);
@@ -171,8 +178,8 @@ public final class StringUtil {
         request.setParameters(msgHeader);
         MediatorModel.model().interact(request);
         
-        if (err != null) {
-            throw new IOException(err);
+        if (exception != null) {
+            throw new IOException(exception);
         }
     }
 }

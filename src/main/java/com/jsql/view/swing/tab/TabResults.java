@@ -21,11 +21,11 @@ import com.jsql.view.swing.tab.dnd.TabTransferHandler;
  * TabbedPane containing result injection panels.
  */
 @SuppressWarnings("serial")
-public class TabbedPaneResults extends DnDTabbedPane {
+public class TabResults extends DnDTabbedPane {
     /**
      * Create the panel containing injection results.
      */
-    public TabbedPaneResults() {
+    public TabResults() {
         this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
         TransferHandler handler = new TabTransferHandler();

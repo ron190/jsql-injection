@@ -28,7 +28,7 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**
@@ -57,16 +57,17 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
      */
     public CellEditorNode() {
         this.defaultTreeRenderer = new CellRendererNode();
-        MediatorGUI.databaseTree().addTreeSelectionListener(this);
-        MediatorGUI.databaseTree().addMouseListener(this);
+        MediatorGui.treeDatabase().addTreeSelectionListener(this);
+        MediatorGui.treeDatabase().addMouseListener(this);
     }
 
     @Override
     public Component getTreeCellEditorComponent(JTree tree, Object nodeRenderer,
             boolean selected, boolean expanded, boolean leaf, int row) {
 
-        Component componentRenderer = 
-            defaultTreeRenderer.getTreeCellRendererComponent(tree, nodeRenderer, true, expanded, leaf, row, true);
+        Component componentRenderer = defaultTreeRenderer.getTreeCellRendererComponent(
+            tree, nodeRenderer, true, expanded, leaf, row, true
+        );
 
         final DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         Object userObject = currentNode.getUserObject();
@@ -86,7 +87,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
     public Object getCellEditorValue() {
         return this.nodeData;
     }
-
+    
     /**
      * Check and unckeck column as checkbox.
      */
@@ -106,7 +107,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
             JCheckBox columnCheckBox = (JCheckBox) source;
             this.nodeData.isChecked = columnCheckBox.isSelected();
 
-            DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGUI.databaseTree().getModel();
+            DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
             DefaultMutableTreeNode tableNode = (DefaultMutableTreeNode) this.currentTableNode.getParent();
 
             int tableChildCount = treeModel.getChildCount(tableNode);
@@ -129,7 +130,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
 
     @Override
     public void valueChanged(TreeSelectionEvent arg0) {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) MediatorGUI.databaseTree().getLastSelectedPathComponent();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) MediatorGui.treeDatabase().getLastSelectedPathComponent();
 
         // Get rid of java.lang.NullPointerException
         if (node == null) {
@@ -146,7 +147,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
      * Fix compatibility issue with right click on Linux.
      * @param e Mouse event
      */
-    private void maybeShowPopup(MouseEvent e) {
+    private void showPopup(MouseEvent e) {
         if (e.isPopupTrigger()) {
             JTree tree = (JTree) e.getSource();
             TreePath path = tree.getPathForLocation(e.getX(), e.getY());
@@ -158,7 +159,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
 
             if (currentTableNode.getUserObject() instanceof AbstractNodeModel) {
                 AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
-                if (currentTableModel.verifyShowPopup()) {
+                if (currentTableModel.isPopupDisplayable()) {
                     currentTableModel.showPopup(currentTableNode, path, e.getX(), e.getY());
                 }
             }
@@ -167,12 +168,12 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
 
     @Override
     public void mousePressed(MouseEvent e) {
-        maybeShowPopup(e);
+        showPopup(e);
     }
     
     @Override
     public void mouseReleased(MouseEvent e) {
-        maybeShowPopup(e);
+        showPopup(e);
     }
 
     @Override

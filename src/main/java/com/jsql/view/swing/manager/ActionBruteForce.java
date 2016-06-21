@@ -60,7 +60,10 @@ public class ActionBruteForce implements ActionListener, Runnable {
                     && !this.bruteForceManager.numericCharacters.isSelected()) {
                 this.bruteForceManager.result.setText("*** " + I18n.BRUTEFORCE_CHARACTER_RANGE);
                 return;
-            } else if (Integer.parseInt(this.bruteForceManager.maximumLength.getValue().toString()) < Integer.parseInt(this.bruteForceManager.minimumLength.getValue().toString())) {
+            } else if (
+                Integer.parseInt(this.bruteForceManager.maximumLength.getValue().toString()) < 
+                Integer.parseInt(this.bruteForceManager.minimumLength.getValue().toString())
+            ) {
                 this.bruteForceManager.result.setText("*** " + I18n.BRUTEFORCE_INCORRECT_MIN_MAX_LENGTH);
                 return;
             }
@@ -74,6 +77,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
     public void run() {
         // Reset the panel
         this.bruteForceManager.run.setText(I18n.BRUTEFORCE_STOP);
+        I18n.components.get("BRUTEFORCE_STOP").add(this.bruteForceManager);
         this.bruteForceManager.loader.setVisible(true);
         this.bruteForceManager.result.setText(null);
 
@@ -135,16 +139,20 @@ public class ActionBruteForce implements ActionListener, Runnable {
             if (hashBruter.getPerSecond() != 0) {
                 Float remainingDuration = Float.parseFloat(Long.toString(hashBruter.getRemainder())) / (float) hashBruter.getPerSecond();
                 this.bruteForceManager.result.append(
-                    I18n.BRUTEFORCE_TRAVERSING_REMAINING + ": " +
-                    Math.round(Math.floor(remainingDuration / 60f / 60.0f / 24f))   + I18n.BRUTEFORCE_DAYS + " " +
-                    Math.round(Math.floor(remainingDuration / 60f / 60f % 24))      + I18n.BRUTEFORCE_HOURS + " " +
-                    Math.round(Math.floor(remainingDuration / 60f % 60))            + I18n.BRUTEFORCE_MINUTES + " " +
-                    Math.round(remainingDuration % 60)                              + I18n.BRUTEFORCE_SECONDS + "\n"
+                    I18n.BRUTEFORCE_TRAVERSING_REMAINING + ": "
+                    + Math.round(Math.floor(remainingDuration / 60f / 60.0f / 24f))   + I18n.BRUTEFORCE_DAYS + " "
+                    + Math.round(Math.floor(remainingDuration / 60f / 60f % 24))      + I18n.BRUTEFORCE_HOURS + " "
+                    + Math.round(Math.floor(remainingDuration / 60f % 60))            + I18n.BRUTEFORCE_MINUTES + " "
+                    + Math.round(remainingDuration % 60)                              + I18n.BRUTEFORCE_SECONDS + "\n"
                 ); 
             }
 
-            this.bruteForceManager.result.append(I18n.BRUTEFORCE_PERCENT_DONE
-                    + ": " + (100 * (float) hashBruter.getCounter() / hashBruter.getNumberOfPossibilities()) + "%");
+            this.bruteForceManager.result.append(
+                I18n.BRUTEFORCE_PERCENT_DONE
+                + ": " 
+                + (100 * (float) hashBruter.getCounter() / hashBruter.getNumberOfPossibilities()) 
+                + "%"
+            );
 
             this.bruteForceManager.result.setSelectionStart(selectionStart);
             this.bruteForceManager.result.setSelectionEnd(selectionEnd);
@@ -170,6 +178,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
         ActionBruteForce.this.doStop = false;
         this.bruteForceManager.loader.setVisible(false);
         this.bruteForceManager.run.setText(I18n.BRUTEFORCE_START);
+        I18n.components.get("BRUTEFORCE_START").add(this.bruteForceManager);
         this.bruteForceManager.run.setEnabled(true);
     }
 }

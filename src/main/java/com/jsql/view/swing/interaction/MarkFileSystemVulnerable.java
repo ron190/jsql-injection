@@ -10,8 +10,8 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * Mark the injection as using a user profile vulnerable to file I/O.
@@ -26,9 +26,9 @@ public class MarkFileSystemVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGUI.tabManagers().fileManager.changePrivilegeIcon(HelperGUI.TICK);
-        MediatorGUI.tabManagers().shellManager.changePrivilegeIcon(HelperGUI.TICK);
-        MediatorGUI.tabManagers().sqlShellManager.changePrivilegeIcon(HelperGUI.TICK);
-        MediatorGUI.tabManagers().uploadManager.changePrivilegeIcon(HelperGUI.TICK);
+        MediatorGui.tabManagers().fileManager.changePrivilegeIcon(HelperGui.TICK);
+        MediatorGui.tabManagers().shellManager.changePrivilegeIcon(HelperGui.TICK);
+        MediatorGui.tabManagers().sqlShellManager.changePrivilegeIcon(HelperGui.TICK);
+        MediatorGui.tabManagers().uploadManager.changePrivilegeIcon(HelperGui.TICK);
     }
 }

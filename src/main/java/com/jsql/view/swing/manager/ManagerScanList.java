@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.injection.MediatorModel;
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 
@@ -76,14 +76,17 @@ public class ManagerScanList extends ManagerAbstractList {
         lastLine.setOpaque(false);
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
 
-        lastLine.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGUI.COMPONENT_BORDER), 
-                BorderFactory.createEmptyBorder(1, 0, 1, 1)));
+        lastLine.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGui.COMPONENT_BORDER), 
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)
+            )
+        );
         
         run = new JButton(defaultText, new ImageIcon(ManagerScanList.class.getResource("/com/jsql/view/swing/resources/images/find.png")));
 
         run.setToolTipText(I18n.SCANLIST_RUN_BUTTON_TOOLTIP);
-        run.setBorder(HelperGUI.BLU_ROUND_BORDER);
+        run.setBorder(HelperGui.BLU_ROUND_BORDER);
 
         run.addActionListener(new ActionListener() {
             @Override

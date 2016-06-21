@@ -49,7 +49,9 @@ public class MenuActionNewValue implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
         JPanel panel = new JPanel(new BorderLayout());
         final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
-        panel.add(new JLabel(I18n.LIST_ADD_VALUE_LABEL + ":"), BorderLayout.NORTH);
+        JLabel labelAddValue = new JLabel(I18n.LIST_ADD_VALUE_LABEL + ":");
+        panel.add(labelAddValue, BorderLayout.NORTH);
+        I18n.components.get("SELECT_ALL").add(labelAddValue);
         panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
         
         panel.setPreferredSize(new Dimension(300, 200));
@@ -83,7 +85,10 @@ public class MenuActionNewValue implements ActionListener {
             int firstIndex = lastIndex;
             for (String newItem: textarea.getText().split("\\n")) {
                 if (!"".equals(newItem)) {
-                    ((DefaultListModel<ListItem>) myList.getModel()).add(lastIndex++, new ListItem(newItem.replace("\\", "/")));
+                    ((DefaultListModel<ListItem>) myList.getModel()).add(
+                        lastIndex++, 
+                        new ListItem(newItem.replace("\\", "/")
+                    ));
                 }
             }
 

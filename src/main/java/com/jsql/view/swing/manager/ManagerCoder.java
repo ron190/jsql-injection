@@ -16,12 +16,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -38,7 +34,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 
 import com.jsql.i18n.I18n;
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.combomenu.ComboMenuBar;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
@@ -88,9 +84,9 @@ public class ManagerCoder extends JPanel {
         menus.put("Base64(zipped)", new JMenu("Base64(zipped)"));
         menus.put("Hex(zipped)", new JMenu("Hex(zipped)"));
 
-        for (String s: menus.keySet()) {
-            menus.get(s).add(new JMenuItem("Encode to " + s));
-            menus.get(s).add(new JMenuItem("Decode from " + s));
+        for (String key: menus.keySet()) {
+            menus.get(key).add(new JMenuItem("Encode to " + key));
+            menus.get(key).add(new JMenuItem("Decode from " + key));
         }
 
         menus.put("Hash", new JMenu("Hash"));
@@ -107,26 +103,24 @@ public class ManagerCoder extends JPanel {
         menus.get("Hash").add(new JMenuItem("Hash to Sha-512"));
         menus.get("Hash").add(new JMenuItem("Hash to Mysql"));
 
-        JMenu menu = ComboMenuBar.createMenu("Choose method...");
-        encoding = menu;
+        JMenu comboMenu = ComboMenuBar.createMenu("Choose method...");
+        encoding = comboMenu;
         
-        for (JMenu m: menus.values()) {
-            menu.add(m);
+        for (JMenu menu: menus.values()) {
+            comboMenu.add(menu);
         }
 
-        ComboMenuBar comboMenu = new ComboMenuBar(menu);
+        ComboMenuBar comboMenubar = new ComboMenuBar(comboMenu);
         this.encoding.setText("Decode from Base64");
-        
-        Set<Integer> set = new HashSet<>();
-        set.addAll((Collection<Integer>)Arrays.asList(new Integer[]{0, 7, 14}));
         
         JButton run = new JButton(
             I18n.CODER_RUN_BUTTON, 
             new ImageIcon(ManagerCoder.class.getResource("/com/jsql/view/swing/resources/images/tick.png"))
         );
-        run.setBorder(HelperGUI.BLU_ROUND_BORDER);
+        I18n.components.get("CODER_RUN_BUTTON").add(run);
+        run.setBorder(HelperGui.BLU_ROUND_BORDER);
 
-        middleLine.add(comboMenu);
+        middleLine.add(comboMenubar);
         middleLine.add(run, BorderLayout.EAST);
 
         topMixed.add(new LightScrollPane(1, 1, 1, 0, entry), BorderLayout.CENTER);

@@ -437,12 +437,11 @@ public class RessourceAccess {
             OutputStream os = null;
             InputStream is = null;
 
-            try {
+            try (InputStream imgIs = new FileInputStream(file)) {
                 URL url2 = new URL(url +"/"+ UPLOAD_FILENAME);
                 conn = url2.openConnection();
                 conn.setDoOutput(true);
 
-                InputStream imgIs = new FileInputStream(file);
                 byte[] imgData = new byte[imgIs.available()];
                 imgIs.read(imgData);
                 
@@ -488,8 +487,6 @@ public class RessourceAccess {
                     }
                 } while (len > 0);
 
-                imgIs.close();
-                
                 if (result.indexOf("SQLiy") > -1) {
                     LOGGER.debug("Upload successful.");
                 } else {
@@ -639,7 +636,7 @@ public class RessourceAccess {
         requests.setMessage("ResetInterface");
         MediatorModel.model().interact(requests);
         
-        // wait for ending of ongoing interraction between two injections
+        // wait for ending of ongoing interaction between two injections
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {

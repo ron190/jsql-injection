@@ -41,9 +41,9 @@ import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.dropshadow.ShadowPopupFactory;
 import com.jsql.view.swing.interaction.InteractionCommand;
 import com.jsql.view.swing.menubar.Menubar;
-import com.jsql.view.swing.panel.SplitPaneCenter;
-import com.jsql.view.swing.panel.PanelStatusbar;
 import com.jsql.view.swing.panel.PanelAddressBar;
+import com.jsql.view.swing.panel.PanelStatus;
+import com.jsql.view.swing.panel.SplitCenterStatus;
 import com.jsql.view.swing.shell.AbstractShell;
 
 /**
@@ -55,17 +55,17 @@ import com.jsql.view.swing.shell.AbstractShell;
  * - at the bottom: information labels.
  */
 @SuppressWarnings("serial")
-public class JFrameGUI extends JFrame implements Observer {
+public class FrameJSql extends JFrame implements Observer {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(JFrameGUI.class);
+    private static final Logger LOGGER = Logger.getLogger(FrameJSql.class);
 
     /**
      * Main center panel, composed by left and right tabs.
      * @return Center panel
      */
-    public SplitPaneCenter splitPaneCenter;
+    public SplitCenterStatus splitPaneCenter;
 
     /**
      * List of terminal by unique identifier.
@@ -82,22 +82,22 @@ public class JFrameGUI extends JFrame implements Observer {
     /**
      * Build the GUI: add app icon, tree icons, the 3 main panels.
      */
-    public JFrameGUI() {
+    public FrameJSql() {
         super("jSQL Injection");
         
-        MediatorGUI.register(this);
+        MediatorGui.register(this);
         
         // Define a small and large app icon
-        this.setIconImages(HelperGUI.getIcons());
+        this.setIconImages(HelperGui.getIcons());
 
         // Load UI before any component
-        HelperGUI.prepareGUI();
+        HelperGui.prepareGUI();
         ShadowPopupFactory.install();
         
         // Save controller
         Menubar menubar = new Menubar();
         this.setJMenuBar(menubar);
-        MediatorGUI.register(menubar);
+        MediatorGui.register(menubar);
         
         // Define the default panel: each component on a vertical line
         this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
@@ -105,11 +105,11 @@ public class JFrameGUI extends JFrame implements Observer {
         // Textfields at the top
         PanelAddressBar panelAddressBar = new PanelAddressBar();
         this.add(panelAddressBar);
-        MediatorGUI.register(panelAddressBar);
+        MediatorGui.register(panelAddressBar);
 
         // Main panel for tree ans tables in the middle
         JPanel mainPanel = new JPanel(new GridLayout(1, 0));
-        this.splitPaneCenter = new SplitPaneCenter();
+        this.splitPaneCenter = new SplitCenterStatus();
         mainPanel.add(this.splitPaneCenter);
         this.add(mainPanel);
 
@@ -118,37 +118,37 @@ public class JFrameGUI extends JFrame implements Observer {
             public void windowClosing(WindowEvent e) {
                 Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
                 prefs.putInt(
-                    SplitPaneCenter.NAME_V_SPLITPANE, 
-                    JFrameGUI.this.splitPaneCenter.leftRight.getDividerLocation()
+                    SplitCenterStatus.NAME_V_SPLITPANE, 
+                    FrameJSql.this.splitPaneCenter.splitManagerResult.getDividerLocation()
                 );
                 prefs.putInt(
-                    SplitPaneCenter.NAME_H_SPLITPANE, 
-                    JFrameGUI.this.splitPaneCenter.getHeight() - JFrameGUI.this.splitPaneCenter.getDividerLocation()
+                    SplitCenterStatus.NAME_H_SPLITPANE, 
+                    FrameJSql.this.splitPaneCenter.getHeight() - FrameJSql.this.splitPaneCenter.getDividerLocation()
                 );
                 
-                prefs.putBoolean(HelperGUI.BINARY_VISIBLE, false);
-                prefs.putBoolean(HelperGUI.CHUNK_VISIBLE, false);
-                prefs.putBoolean(HelperGUI.NETWORK_VISIBLE, false);
-                prefs.putBoolean(HelperGUI.JAVA_VISIBLE, false);
+                prefs.putBoolean(HelperGui.BINARY_VISIBLE, false);
+                prefs.putBoolean(HelperGui.CHUNK_VISIBLE, false);
+                prefs.putBoolean(HelperGui.NETWORK_VISIBLE, false);
+                prefs.putBoolean(HelperGui.JAVA_VISIBLE, false);
                 
-                for (int i = 0; i < MediatorGUI.tabConsoles().getTabCount(); i++) {
-                    if ("Binary".equals(MediatorGUI.tabConsoles().getTitleAt(i))) {
-                        prefs.putBoolean(HelperGUI.BINARY_VISIBLE, true);
-                    } else if ("Chunk".equals(MediatorGUI.tabConsoles().getTitleAt(i))) {
-                        prefs.putBoolean(HelperGUI.CHUNK_VISIBLE, true);
-                    } else if ("Network".equals(MediatorGUI.tabConsoles().getTitleAt(i))) {
-                        prefs.putBoolean(HelperGUI.NETWORK_VISIBLE, true);
-                    } else if ("Java".equals(MediatorGUI.tabConsoles().getTitleAt(i))) {
-                        prefs.putBoolean(HelperGUI.JAVA_VISIBLE, true);
+                for (int i = 0; i < MediatorGui.tabConsoles().getTabCount(); i++) {
+                    if ("Binary".equals(MediatorGui.tabConsoles().getTitleAt(i))) {
+                        prefs.putBoolean(HelperGui.BINARY_VISIBLE, true);
+                    } else if ("Chunk".equals(MediatorGui.tabConsoles().getTitleAt(i))) {
+                        prefs.putBoolean(HelperGui.CHUNK_VISIBLE, true);
+                    } else if ("Network".equals(MediatorGui.tabConsoles().getTitleAt(i))) {
+                        prefs.putBoolean(HelperGui.NETWORK_VISIBLE, true);
+                    } else if ("Java".equals(MediatorGui.tabConsoles().getTitleAt(i))) {
+                        prefs.putBoolean(HelperGui.JAVA_VISIBLE, true);
                     }
                 }
             }
         });
         
         // Info on the bottom
-        PanelStatusbar panelStatusBar = new PanelStatusbar();
+        PanelStatus panelStatusBar = new PanelStatus();
         this.add(panelStatusBar);
-        MediatorGUI.register(panelStatusBar);
+        MediatorGui.register(panelStatusBar);
 
         // Reduce size of components
         this.pack(); // nécessaire après le masquage des param proxy
@@ -162,7 +162,7 @@ public class JFrameGUI extends JFrame implements Observer {
         this.setLocationRelativeTo(null);
 
         // Define the keyword shortcuts for tabs #Need to work even if the focus is not on tabs
-        ActionHandler.addShortcut(this.getRootPane(), MediatorGUI.tabResults());
+        ActionHandler.addShortcut(this.getRootPane(), MediatorGui.tabResults());
         ActionHandler.addTextFieldShortcutSelectAll();
     }
 
@@ -206,54 +206,54 @@ public class JFrameGUI extends JFrame implements Observer {
         this.mapNodes.clear();
         this.mapShells.clear();
         
-        MediatorGUI.panelConsoles().listHttpHeader.clear();
+        MediatorGui.panelConsoles().listHttpHeader.clear();
         
         // Tree model for refreshing the tree
-        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGUI.databaseTree().getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
         // The tree root
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
 
         // Delete tabs
-        MediatorGUI.tabResults().removeAll();
+        MediatorGui.tabResults().removeAll();
         // Remove tree nodes
         root.removeAllChildren();
         // Refresh the root
         treeModel.nodeChanged(root);
         // Refresh the tree
         treeModel.reload();
-        MediatorGUI.databaseTree().setRootVisible(true);
+        MediatorGui.treeDatabase().setRootVisible(true);
 
         // Empty infos tabs
-        MediatorGUI.panelConsoles().chunkTab.setText("");
-        MediatorGUI.panelConsoles().binaryTab.setText("");
-        ((DefaultTableModel) MediatorGUI.panelConsoles().networkTable.getModel()).setRowCount(0);
-        MediatorGUI.panelConsoles().javaTab.getProxy().setText("");
+        MediatorGui.panelConsoles().chunkTab.setText("");
+        MediatorGui.panelConsoles().binaryTab.setText("");
+        ((DefaultTableModel) MediatorGui.panelConsoles().networkTable.getModel()).setRowCount(0);
+        MediatorGui.panelConsoles().javaTab.getProxy().setText("");
         
-        MediatorGUI.panelConsoles().networkTabHeader.setText("");
-        MediatorGUI.panelConsoles().networkTabParam.setText("");
-        MediatorGUI.panelConsoles().networkTabResponse.setText("");
-        MediatorGUI.panelConsoles().networkTabTiming.setText("");
-        MediatorGUI.panelConsoles().networkTabSource.setText("");
-        MediatorGUI.panelConsoles().networkTabPreview.setText("");
+        MediatorGui.panelConsoles().networkTabHeader.setText("");
+        MediatorGui.panelConsoles().networkTabParam.setText("");
+        MediatorGui.panelConsoles().networkTabResponse.setText("");
+        MediatorGui.panelConsoles().networkTabTiming.setText("");
+        MediatorGui.panelConsoles().networkTabSource.setText("");
+        MediatorGui.panelConsoles().networkTabPreview.setText("");
         
-        for (int i = 0; i < MediatorGUI.tabConsoles().getTabCount(); i++) {
-            Component tabComponent = MediatorGUI.tabConsoles().getTabComponentAt(i);
+        for (int i = 0; i < MediatorGui.tabConsoles().getTabCount(); i++) {
+            Component tabComponent = MediatorGui.tabConsoles().getTabComponentAt(i);
             if (tabComponent != null) {
                 tabComponent.setFont(tabComponent.getFont().deriveFont(Font.PLAIN));
             }
         }
         
-        MediatorGUI.tabManagers().fileManager.setButtonEnable(false);
-        MediatorGUI.tabManagers().shellManager.setButtonEnable(false);
-        MediatorGUI.tabManagers().sqlShellManager.setButtonEnable(false);
+        MediatorGui.tabManagers().fileManager.setButtonEnable(false);
+        MediatorGui.tabManagers().shellManager.setButtonEnable(false);
+        MediatorGui.tabManagers().sqlShellManager.setButtonEnable(false);
 
         // Default status info
-        MediatorGUI.panelStatus().reset();
+        MediatorGui.panelStatus().reset();
 
-        MediatorGUI.tabManagers().fileManager.changePrivilegeIcon(HelperGUI.SQUARE_GREY);
-        MediatorGUI.tabManagers().shellManager.changePrivilegeIcon(HelperGUI.SQUARE_GREY);
-        MediatorGUI.tabManagers().sqlShellManager.changePrivilegeIcon(HelperGUI.SQUARE_GREY);
-        MediatorGUI.tabManagers().uploadManager.changePrivilegeIcon(HelperGUI.SQUARE_GREY);
+        MediatorGui.tabManagers().fileManager.changePrivilegeIcon(HelperGui.SQUARE_GREY);
+        MediatorGui.tabManagers().shellManager.changePrivilegeIcon(HelperGui.SQUARE_GREY);
+        MediatorGui.tabManagers().sqlShellManager.changePrivilegeIcon(HelperGui.SQUARE_GREY);
+        MediatorGui.tabManagers().uploadManager.changePrivilegeIcon(HelperGui.SQUARE_GREY);
     }
 
     /**

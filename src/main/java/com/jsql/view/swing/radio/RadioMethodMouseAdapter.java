@@ -11,7 +11,7 @@ import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
-import com.jsql.view.swing.HelperGUI;
+import com.jsql.view.swing.HelperGui;
 
 /**
  * Mouse adapter for radio link effect (hover and click).
@@ -31,7 +31,7 @@ public class RadioMethodMouseAdapter extends MouseAdapter {
         if (radio.isActivable() && SwingUtilities.isLeftMouseButton(e)) {
             for (JLabel label: radio.getGroup()) {
                 if (((JLabel) e.getComponent()) != label) {
-                    label.setFont(HelperGUI.SEGOE_FONT);
+                    label.setFont(HelperGui.SEGOE_FONT);
                 } else {
                     radio.action();
                 }

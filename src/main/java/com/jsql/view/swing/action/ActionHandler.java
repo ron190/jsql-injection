@@ -32,7 +32,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.menubar.Menubar;
 import com.jsql.view.swing.text.JPopupLabel;
 
@@ -54,21 +54,26 @@ public final class ActionHandler {
      * Select all textfield content when focused.
      */
     public static void addTextFieldShortcutSelectAll() {
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
-            @Override
-            public void propertyChange(final PropertyChangeEvent e) {
-                if (e.getNewValue() instanceof JTextField
-                        || e.getNewValue() instanceof JPopupLabel) {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            JTextField textField = (JTextField) e.getNewValue();
-                            textField.selectAll();
-                        }
-                    });
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(
+            "permanentFocusOwner", 
+            new PropertyChangeListener() {
+                @Override
+                public void propertyChange(final PropertyChangeEvent e) {
+                    if (
+                        e.getNewValue() instanceof JTextField ||
+                        e.getNewValue() instanceof JPopupLabel
+                    ) {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                JTextField textField = (JTextField) e.getNewValue();
+                                textField.selectAll();
+                            }
+                        });
+                    }
                 }
             }
-        });
+        );
     }
     
     /**
@@ -157,8 +162,8 @@ public final class ActionHandler {
         actionMap.put("actionString-previousTab", previousTab);
         
         // TODO : replace directly by "for (int j = 0; j < GUIMediator.left().getTabCount(); j++)"
-        int[] i = new int[MediatorGUI.tabManagers().getTabCount()];
-        for (int j = 0; j < MediatorGUI.tabManagers().getTabCount(); j++) {
+        int[] i = new int[MediatorGui.tabManagers().getTabCount()];
+        for (int j = 0; j < MediatorGui.tabManagers().getTabCount(); j++) {
             i[j] = j + 1;
         }
         for (final int j: i) {
@@ -167,7 +172,7 @@ public final class ActionHandler {
             actionMap.put("actionString-selectTab" + j, new AbstractAction(){
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    MediatorGUI.tabManagers().setSelectedIndex(j - 1);
+                    MediatorGui.tabManagers().setSelectedIndex(j - 1);
                 }
             });
         }
@@ -185,31 +190,37 @@ public final class ActionHandler {
         final boolean[] wasAltPressed = {false};
         
         /* Hide Menubar when focusing any component */
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", new PropertyChangeListener() {
-            public void propertyChange(final PropertyChangeEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!MediatorGUI.panelAddress().isExpanded) {
-                            menubar.setVisible(false);
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(
+            "permanentFocusOwner", 
+            new PropertyChangeListener() {
+                public void propertyChange(final PropertyChangeEvent e) {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!MediatorGui.panelAddress().isExpanded) {
+                                menubar.setVisible(false);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
-        });
+        );
         
         /* Show/Hide the Menubar with Alt key */
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
             @Override
             public boolean dispatchKeyEvent(KeyEvent e) {
                 if (e.isAltDown() && e.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D)) {
-                    MediatorGUI.panelAddress().urlTextField.requestFocusInWindow();
-                    MediatorGUI.panelAddress().urlTextField.selectAll();
+                    MediatorGui.panelAddress().urlTextField.requestFocusInWindow();
+                    MediatorGui.panelAddress().urlTextField.selectAll();
                     wasAltDPressed[0] = true;
                     return true;
-                } else if (e.getKeyCode() == KeyEvent.VK_ALT && e.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)) {
+                } else if (
+                    e.getKeyCode() == KeyEvent.VK_ALT && 
+                    e.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)
+                ) {
                     if (!wasAltDPressed[0] && !wasAltPressed[0]) {
-                        if (!MediatorGUI.panelAddress().isExpanded) {
+                        if (!MediatorGui.panelAddress().isExpanded) {
                             menubar.setVisible(!menubar.isVisible());
                         }
                     } else {
@@ -218,7 +229,7 @@ public final class ActionHandler {
                     }
                     return true;
                 } else if (e.isAltDown() && e.getKeyCode() == KeyEvent.VK_ALT) {
-                    if (!MediatorGUI.panelAddress().isExpanded && menubar.isVisible()) {
+                    if (!MediatorGui.panelAddress().isExpanded && menubar.isVisible()) {
                         menubar.setVisible(!menubar.isVisible());
                         wasAltPressed[0] = true;
                     }

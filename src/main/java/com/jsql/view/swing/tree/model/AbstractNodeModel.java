@@ -26,8 +26,8 @@ import com.jsql.i18n.I18n;
 import com.jsql.model.bean.AbstractElementDatabase;
 import com.jsql.model.injection.MediatorModel;
 import com.jsql.model.injection.suspendable.AbstractSuspendable;
-import com.jsql.view.swing.HelperGUI;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.ActionLoadStop;
 import com.jsql.view.swing.tree.ActionPauseUnpause;
 import com.jsql.view.swing.tree.ImageObserverAnimated;
@@ -129,8 +129,8 @@ public abstract class AbstractNodeModel {
             ? I18n.RESUME
             : I18n.PAUSE
         , 's');
-        mnLoad.setIcon(HelperGUI.EMPTY);
-        mnPause.setIcon(HelperGUI.EMPTY);
+        mnLoad.setIcon(HelperGui.EMPTY);
+        mnPause.setIcon(HelperGui.EMPTY);
 
         if (!this.hasChildChecked && !this.isRunning) {
             mnLoad.setEnabled(false);
@@ -146,10 +146,10 @@ public abstract class AbstractNodeModel {
         tablePopupMenu.add(mnLoad);
         tablePopupMenu.add(mnPause);
 
-        mnLoad.setIcon(HelperGUI.EMPTY);
-        mnPause.setIcon(HelperGUI.EMPTY);
+        mnLoad.setIcon(HelperGui.EMPTY);
+        mnPause.setIcon(HelperGui.EMPTY);
 
-        tablePopupMenu.show(MediatorGUI.databaseTree(), x, y);
+        tablePopupMenu.show(MediatorGui.treeDatabase(), x, y);
     }
 
     /**
@@ -177,7 +177,7 @@ public abstract class AbstractNodeModel {
         panel.setIcon(this.getLeafIcon(isLeaf));
 
         if (isSelected) {
-            panel.label.setBackground(HelperGUI.SELECTION_BACKGROUND);
+            panel.label.setBackground(HelperGui.SELECTION_BACKGROUND);
         } else {
             panel.label.setBackground(Color.WHITE);
             panel.label.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -192,8 +192,13 @@ public abstract class AbstractNodeModel {
 
             AbstractSuspendable suspendableTask = MediatorModel.model().suspendables.get(this.dataObject);
             if (suspendableTask != null && suspendableTask.isPaused()) {
-                ImageIcon animatedGIFPaused = new ImageOverlap(HelperGUI.PATH_PROGRESSBAR, HelperGUI.PATH_PAUSE);
-                animatedGIFPaused.setImageObserver(new ImageObserverAnimated(MediatorGUI.databaseTree(), currentNode));
+                ImageIcon animatedGIFPaused = new ImageOverlap(HelperGui.PATH_PROGRESSBAR, HelperGui.PATH_PAUSE);
+                animatedGIFPaused.setImageObserver(
+                    new ImageObserverAnimated(
+                        MediatorGui.treeDatabase(), 
+                        currentNode
+                    )
+                );
                 panel.setLoaderIcon(animatedGIFPaused);
             }
         }
@@ -231,7 +236,7 @@ public abstract class AbstractNodeModel {
      * i.e: does not show menu on database except during injection.
      * @return True if popupup should be opened, false otherwise
      */
-    public abstract boolean verifyShowPopup();
+    public abstract boolean isPopupDisplayable();
     
     /**
      * Get icon displayed next to the node text. 

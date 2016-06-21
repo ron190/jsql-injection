@@ -12,9 +12,11 @@ public class Bruter {
     public int count;
     long starttime, endtime;
     public int minutes, seconds, hours, days;
-    public char[] specialCharacters = {'~', '`', '!', '@', '#', '$', '%', '^',
+    public char[] specialCharacters = {
+        '~', '`', '!', '@', '#', '$', '%', '^',
         '&', '*', '(', ')', '_', '-', '+', '=', '{', '}', '[', ']', '|', '\\',
-        ';', ':', '\'', '"', '<', '.', ',', '>', '/', '?', ' '};
+        ';', ':', '\'', '"', '<', '.', ',', '>', '/', '?', ' '
+    };
     public boolean done = false;
     public boolean paused = false;
 

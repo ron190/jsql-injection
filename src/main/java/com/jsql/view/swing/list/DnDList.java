@@ -108,25 +108,32 @@ public class DnDList extends JList<ListItem> {
 
         });
 
-        listActionMap.put(TransferHandler.getCopyAction().getValue(Action.NAME),
-                TransferHandler.getCopyAction());
-        listActionMap.put(TransferHandler.getPasteAction().getValue(Action.NAME),
-                TransferHandler.getPasteAction());
+        listActionMap.put(
+            TransferHandler.getCopyAction().getValue(Action.NAME),
+            TransferHandler.getCopyAction()
+        );
+        listActionMap.put(
+            TransferHandler.getPasteAction().getValue(Action.NAME),
+            TransferHandler.getPasteAction()
+        );
 
         ListCellRenderer<ListItem> renderer = new RendererComplexCell();
         this.setCellRenderer(renderer);
 
         // Allows color change when list loses/gains focus
-        this.addFocusListener(new FocusListener() {
-            @Override
-            public void focusLost(FocusEvent arg0) {
-                DnDList.this.repaint();
+        this.addFocusListener(
+            new FocusListener() {
+                @Override
+                public void focusLost(FocusEvent arg0) {
+                    DnDList.this.repaint();
+                }
+                
+                @Override
+                public void focusGained(FocusEvent arg0) {
+                    DnDList.this.repaint();
+                }
             }
-            @Override
-            public void focusGained(FocusEvent arg0) {
-                DnDList.this.repaint();
-            }
-        });
+        );
 
         this.setDragEnabled(true);
         this.setDropMode(DropMode.INSERT);
@@ -154,9 +161,9 @@ public class DnDList extends JList<ListItem> {
         }
 
         List<ListItem> selectedValues = this.getSelectedValuesList();
-        for (ListItem i: selectedValues) {
-            int l = listModel.indexOf(i);
-            listModel.removeElement(i);
+        for (ListItem itemSelected: selectedValues) {
+            int l = listModel.indexOf(itemSelected);
+            listModel.removeElement(itemSelected);
             if (l == listModel.getSize()) {
                 this.setSelectedIndex(l - 1);
             } else {

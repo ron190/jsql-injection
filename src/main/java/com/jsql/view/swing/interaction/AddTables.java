@@ -19,7 +19,7 @@ import javax.swing.tree.TreePath;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.bean.Table;
-import com.jsql.view.swing.MediatorGUI;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.tree.model.NodeModelTable;
 
@@ -48,7 +48,7 @@ public class AddTables implements InteractionCommand {
     @Override
     public void execute() {
         // Tree model, update the tree (refresh, add node, etc)
-        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGUI.databaseTree().getModel();
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
 
         // The database to update
         DefaultMutableTreeNode databaseNode = null;
@@ -60,10 +60,10 @@ public class AddTables implements InteractionCommand {
             // Create the node
             DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(newTreeNodeModel);
             // Save the node
-            MediatorGUI.jFrame().getTreeNodeModels().put(table, newNode);
+            MediatorGui.frame().getTreeNodeModels().put(table, newNode);
 
             // Get the parent database
-            databaseNode = MediatorGUI.jFrame().getTreeNodeModels().get(table.getParent());
+            databaseNode = MediatorGui.frame().getTreeNodeModels().get(table.getParent());
             
             // Report NullPointerException #1670 
             if (databaseNode != null) {
@@ -76,7 +76,7 @@ public class AddTables implements InteractionCommand {
 
         if (databaseNode != null) {
             // Open the database node
-            MediatorGUI.databaseTree().expandPath(new TreePath(databaseNode.getPath()));
+            MediatorGui.treeDatabase().expandPath(new TreePath(databaseNode.getPath()));
             // The database has just been search (avoid double check)
             ((AbstractNodeModel) databaseNode.getUserObject()).hasBeenSearched = true;
         }
