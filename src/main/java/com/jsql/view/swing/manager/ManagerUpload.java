@@ -34,11 +34,11 @@ import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.exception.PreparationException;
-import com.jsql.exception.StoppableException;
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.util.ConfigurationUtil;
+import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.StoppableException;
+import com.jsql.util.PreferencesUtil;
 import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
@@ -61,7 +61,7 @@ public class ManagerUpload extends ManagerAbstractList {
     public ManagerUpload() {
         this.setLayout(new BorderLayout());
 
-        this.setDefaultText(I18n.UPLOAD_RUN_BUTTON);
+        this.setDefaultText(I18n.get("UPLOAD_RUN_BUTTON"));
 
         List<String> pathsList = new ArrayList<>();
         try {
@@ -82,8 +82,8 @@ public class ManagerUpload extends ManagerAbstractList {
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
 
-        final JTextField shellURL = new JPopupTextField(I18n.UPLOAD_URL_LABEL).getProxy();
-        String urlTooltip = I18n.UPLOAD_URL_TOOLTIP;
+        final JTextField shellURL = new JPopupTextField(I18n.get("UPLOAD_URL_LABEL")).getProxy();
+        String urlTooltip = I18n.get("UPLOAD_URL_TOOLTIP");
         
         shellURL.setToolTipText(urlTooltip);
         shellURL.setBorder(
@@ -105,9 +105,9 @@ public class ManagerUpload extends ManagerAbstractList {
             )
         );
 
-        this.run = new JButton(I18n.UPLOAD_DIALOG_TEXT, new ImageIcon(ManagerUpload.class.getResource("/com/jsql/view/swing/resources/images/add.png")));
-        I18n.components.get("UPLOAD_DIALOG_TEXT").add(this.run);
-        this.run.setToolTipText(I18n.UPLOAD_RUN_BUTTON_TOOLTIP);
+        this.run = new JButton(I18n.get("UPLOAD_DIALOG_TEXT"), new ImageIcon(ManagerUpload.class.getResource("/com/jsql/view/swing/resources/images/icons/add.png")));
+        I18n.add("UPLOAD_DIALOG_TEXT", this.run);
+        this.run.setToolTipText(I18n.get("UPLOAD_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
         
         this.run.setBorder(HelperGui.BLU_ROUND_BORDER);
@@ -120,8 +120,8 @@ public class ManagerUpload extends ManagerAbstractList {
                     return;
                 }
 
-                final JFileChooser filechooser = new JFileChooser(ConfigurationUtil.prefPathFile);
-                filechooser.setDialogTitle(I18n.UPLOAD_DIALOG_TEXT);
+                final JFileChooser filechooser = new JFileChooser(PreferencesUtil.pathFile);
+                filechooser.setDialogTitle(I18n.get("UPLOAD_DIALOG_TEXT"));
                 
                 int returnVal = filechooser.showOpenDialog(MediatorGui.frame());
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -143,10 +143,10 @@ public class ManagerUpload extends ManagerAbstractList {
             }
         });
 
-        this.privilege = new JLabel(I18n.PRIVILEGE_LABEL, HelperGui.SQUARE_GREY, SwingConstants.LEFT);
-        I18n.components.get("PRIVILEGE_LABEL").add(this.privilege);
+        this.privilege = new JLabel(I18n.get("PRIVILEGE_LABEL"), HelperGui.SQUARE_GREY, SwingConstants.LEFT);
+        I18n.add("PRIVILEGE_LABEL", this.privilege);
         this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperGui.DEFAULT_BACKGROUND));
-        this.privilege.setToolTipText(I18n.PRIVILEGE_TOOLTIP);
+        this.privilege.setToolTipText(I18n.get("PRIVILEGE_TOOLTIP"));
 
         this.loader.setVisible(false);
 

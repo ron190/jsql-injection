@@ -22,8 +22,8 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.bean.Request;
-import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.MediatorModel;
+import com.jsql.model.accessible.bean.Request;
 
 /**
  * String operations missing like join().
@@ -107,7 +107,7 @@ public final class StringUtil {
         msgHeader.put("Response", StringUtil.getHTTPHeaders(connection));
 
         if (
-            !ConfigurationUtil.followRedirection
+            !PreferencesUtil.isFollowingRedirection
             && Pattern.matches("3\\d\\d", ""+connection.getResponseCode())
         ) {
             LOGGER.warn("HTTP 3XX Redirection detected. Please test again with option 'Follow HTTP redirection' enabled.");

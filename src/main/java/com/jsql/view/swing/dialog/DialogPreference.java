@@ -41,7 +41,7 @@ import javax.swing.border.TitledBorder;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.AuthenticationUtil;
-import com.jsql.util.ConfigurationUtil;
+import com.jsql.util.PreferencesUtil;
 import com.jsql.util.ProxyUtil;
 import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.MediatorGui;
@@ -116,7 +116,7 @@ public class DialogPreference extends JDialog {
         this.setLayout(new BorderLayout());
         Container contentPane = this.getContentPane();
 
-        JButton checkIPButton = new JButton("Check your IP", new ImageIcon(DialogPreference.class.getResource("/com/jsql/view/swing/resources/images/wrench.png")));
+        JButton checkIPButton = new JButton("Check your IP", new ImageIcon(DialogPreference.class.getResource("/com/jsql/view/swing/resources/images/icons/wrench.png")));
         checkIPButton.setBorder(HelperGui.BLU_ROUND_BORDER);
         checkIPButton.addActionListener(new ActionCheckIP());
         checkIPButton.setToolTipText(
@@ -132,52 +132,52 @@ public class DialogPreference extends JDialog {
         mainPanel.add(cancelButton);
         contentPane.add(mainPanel, BorderLayout.SOUTH);
 
-        final JCheckBox checkboxCheckUpdateAtStartup = new JCheckBox("", ConfigurationUtil.checkUpdateAtStartup);
-        checkboxCheckUpdateAtStartup.setFocusable(false);
-        JButton labelUseCheckUpdateAtStartup = new JButton("Check update at startup");
-        labelUseCheckUpdateAtStartup.addActionListener(new ActionListener() {
+        final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", PreferencesUtil.isCheckingUpdate);
+        checkboxIsCheckingUpdate.setFocusable(false);
+        JButton labelIsCheckingUpdate = new JButton("Check update at startup");
+        labelIsCheckingUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                checkboxCheckUpdateAtStartup.setSelected(!checkboxCheckUpdateAtStartup.isSelected());
+                checkboxIsCheckingUpdate.setSelected(!checkboxIsCheckingUpdate.isSelected());
             }
         });
         
-        String tooltipReportBugs = "Send unhandled exception to developer in order to fix issues.";
-        final JCheckBox checkboxReportBugs = new JCheckBox("", ConfigurationUtil.reportBugs);
-        checkboxReportBugs.setToolTipText(tooltipReportBugs);
-        checkboxReportBugs.setFocusable(false);
-        JButton labelReportBugs = new JButton("Report unhandled exception");
-        labelReportBugs.setToolTipText(tooltipReportBugs);
-        labelReportBugs.addActionListener(new ActionListener() {
+        String tooltipIsReportingBugs = "Send unhandled exception to developer in order to fix issues.";
+        final JCheckBox checkboxIsReportingBugs = new JCheckBox("", PreferencesUtil.isReportingBugs);
+        checkboxIsReportingBugs.setToolTipText(tooltipIsReportingBugs);
+        checkboxIsReportingBugs.setFocusable(false);
+        JButton labelIsReportingBugs = new JButton("Report unhandled exception");
+        labelIsReportingBugs.setToolTipText(tooltipIsReportingBugs);
+        labelIsReportingBugs.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                checkboxReportBugs.setSelected(!checkboxReportBugs.isSelected());
+                checkboxIsReportingBugs.setSelected(!checkboxIsReportingBugs.isSelected());
             }
         });
         
-        String tooltipEnableEvasion = "Use complex SQL syntaxes to bypass protection (slower).";
-        final JCheckBox checkboxEnableEvasion = new JCheckBox("", ConfigurationUtil.enableEvasion);
-        checkboxEnableEvasion.setToolTipText(tooltipEnableEvasion);
-        checkboxEnableEvasion.setFocusable(false);
-        JButton labelEnableEvasion = new JButton("Enable evasion");
-        labelEnableEvasion.setToolTipText(tooltipEnableEvasion);
-        labelEnableEvasion.addActionListener(new ActionListener() {
+        String tooltipIsEvading = "Use complex SQL syntaxes to bypass protection (slower).";
+        final JCheckBox checkboxIsEvading = new JCheckBox("", PreferencesUtil.isEvading);
+        checkboxIsEvading.setToolTipText(tooltipIsEvading);
+        checkboxIsEvading.setFocusable(false);
+        JButton labelIsEvading = new JButton("Enable evasion");
+        labelIsEvading.setToolTipText(tooltipIsEvading);
+        labelIsEvading.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                checkboxEnableEvasion.setSelected(!checkboxEnableEvasion.isSelected());
+                checkboxIsEvading.setSelected(!checkboxIsEvading.isSelected());
             }
         });
         
-        String tooltipFollowRedirection = "Force redirection when the page has moved (e.g. HTTP/1.1 302 Found).";
-        final JCheckBox checkboxFollowRedirection = new JCheckBox("", ConfigurationUtil.followRedirection);
-        checkboxFollowRedirection.setToolTipText(tooltipFollowRedirection);
-        checkboxFollowRedirection.setFocusable(false);
-        JButton labelFollowRedirection = new JButton("Follow HTTP redirection");
-        labelFollowRedirection.setToolTipText(tooltipFollowRedirection);
-        labelFollowRedirection.addActionListener(new ActionListener() {
+        String tooltipIsFollowingRedirection = "Force redirection when the page has moved (e.g. HTTP/1.1 302 Found).";
+        final JCheckBox checkboxIsFollowingRedirection = new JCheckBox("", PreferencesUtil.isFollowingRedirection);
+        checkboxIsFollowingRedirection.setToolTipText(tooltipIsFollowingRedirection);
+        checkboxIsFollowingRedirection.setFocusable(false);
+        JButton labelIsFollowingRedirection = new JButton("Follow HTTP redirection");
+        labelIsFollowingRedirection.setToolTipText(tooltipIsFollowingRedirection);
+        labelIsFollowingRedirection.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                checkboxFollowRedirection.setSelected(!checkboxFollowRedirection.isSelected());
+                checkboxIsFollowingRedirection.setSelected(!checkboxIsFollowingRedirection.isSelected());
             }
         });
 
@@ -201,21 +201,21 @@ public class DialogPreference extends JDialog {
         // Proxy label
         JLabel labelProxyAddress = new JLabel("Proxy address  ");
         JLabel labelProxyPort = new JLabel("Proxy port  ");
-        JButton labelUseProxy = new JButton("Use a proxy");
-        String tooltipUseProxy = "Enable proxy communication (e.g. TOR with Privoxy or Burp).";
-        labelUseProxy.setToolTipText(tooltipUseProxy);
+        JButton labelIsUsingProxy = new JButton("Use a proxy");
+        String tooltipIsUsingProxy = "Enable proxy communication (e.g. TOR with Privoxy or Burp).";
+        labelIsUsingProxy.setToolTipText(tooltipIsUsingProxy);
 
         // Proxy setting: IP, port, checkbox to activate proxy
         final JTextField textProxyAddress = new JPopupTextField("e.g Tor address: 127.0.0.1", ProxyUtil.proxyAddress).getProxy();
         final JTextField textProxyPort = new JPopupTextField("e.g Tor port: 8118", ProxyUtil.proxyPort).getProxy();
-        final JCheckBox checkboxUseProxy = new JCheckBox("", ProxyUtil.useProxy);
-        checkboxUseProxy.setToolTipText(tooltipUseProxy);
-        checkboxUseProxy.setFocusable(false);
+        final JCheckBox checkboxIsUsingProxy = new JCheckBox("", ProxyUtil.isUsingProxy);
+        checkboxIsUsingProxy.setToolTipText(tooltipIsUsingProxy);
+        checkboxIsUsingProxy.setFocusable(false);
 
-        labelUseProxy.addActionListener(new ActionListener() {
+        labelIsUsingProxy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                checkboxUseProxy.setSelected(!checkboxUseProxy.isSelected());
+                checkboxIsUsingProxy.setSelected(!checkboxIsUsingProxy.isSelected());
             }
         });
         
@@ -232,9 +232,9 @@ public class DialogPreference extends JDialog {
         labelUseDigestAuthentication.setToolTipText(tooltipUseDigestAuthentication);
         
         // Proxy setting: IP, port, checkbox to activate proxy
-        final JTextField textDigestAuthenticationUsername = new JPopupTextField("Host system user", AuthenticationUtil.digestUsername).getProxy();
-        final JTextField textDigestAuthenticationPassword = new JPopupTextField("Host system password", AuthenticationUtil.digestPassword).getProxy();
-        final JCheckBox checkboxUseDigestAuthentication = new JCheckBox("", AuthenticationUtil.enableDigestAuthentication);
+        final JTextField textDigestAuthenticationUsername = new JPopupTextField("Host system user", AuthenticationUtil.usernameDigest).getProxy();
+        final JTextField textDigestAuthenticationPassword = new JPopupTextField("Host system password", AuthenticationUtil.passwordDigest).getProxy();
+        final JCheckBox checkboxUseDigestAuthentication = new JCheckBox("", AuthenticationUtil.isDigestAuthentication);
         checkboxUseDigestAuthentication.setToolTipText(tooltipUseDigestAuthentication);
         checkboxUseDigestAuthentication.setFocusable(false);
         
@@ -252,9 +252,9 @@ public class DialogPreference extends JDialog {
         labelUseKerberos.setToolTipText(tooltipUseKerberos);
         
         // Proxy setting: IP, port, checkbox to activate proxy
-        final JTextField textKerberosLoginConf = new JPopupTextField("Path to login.conf", AuthenticationUtil.kerberosLoginConf).getProxy();
-        final JTextField textKerberosKrb5Conf = new JPopupTextField("Path to krb5.conf", AuthenticationUtil.kerberosKrb5Conf).getProxy();
-        final JCheckBox checkboxUseKerberos = new JCheckBox("", AuthenticationUtil.enableKerberos);
+        final JTextField textKerberosLoginConf = new JPopupTextField("Path to login.conf", AuthenticationUtil.pathKerberosLogin).getProxy();
+        final JTextField textKerberosKrb5Conf = new JPopupTextField("Path to krb5.conf", AuthenticationUtil.pathKerberosKrb5).getProxy();
+        final JCheckBox checkboxUseKerberos = new JCheckBox("", AuthenticationUtil.isKerberos);
         textKerberosLoginConf.setToolTipText(
             "<html>"
             + "Define the path to <b>login.conf</b>. Sample :<br>"
@@ -322,15 +322,15 @@ public class DialogPreference extends JDialog {
         okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                ConfigurationUtil.set(
-                    checkboxCheckUpdateAtStartup.isSelected(), 
-                    checkboxReportBugs.isSelected(), 
-                    checkboxEnableEvasion.isSelected(), 
-                    checkboxFollowRedirection.isSelected()
+                PreferencesUtil.set(
+                    checkboxIsCheckingUpdate.isSelected(), 
+                    checkboxIsReportingBugs.isSelected(), 
+                    checkboxIsEvading.isSelected(), 
+                    checkboxIsFollowingRedirection.isSelected()
                 );
                 
                 ProxyUtil.set(
-                    checkboxUseProxy.isSelected(), 
+                    checkboxIsUsingProxy.isSelected(), 
                     textProxyAddress.getText(), 
                     textProxyPort.getText()
                 );
@@ -355,34 +355,34 @@ public class DialogPreference extends JDialog {
 
                 textProxyAddress.setText(ProxyUtil.proxyAddress);
                 textProxyPort.setText(ProxyUtil.proxyPort);
-                checkboxUseProxy.setSelected(ProxyUtil.useProxy);
+                checkboxIsUsingProxy.setSelected(ProxyUtil.isUsingProxy);
 
-                checkboxCheckUpdateAtStartup.setSelected(ConfigurationUtil.checkUpdateAtStartup);
-                checkboxReportBugs.setSelected(ConfigurationUtil.reportBugs);
-                checkboxEnableEvasion.setSelected(ConfigurationUtil.enableEvasion);
-                checkboxFollowRedirection.setSelected(ConfigurationUtil.followRedirection);
+                checkboxIsCheckingUpdate.setSelected(PreferencesUtil.isCheckingUpdate);
+                checkboxIsReportingBugs.setSelected(PreferencesUtil.isReportingBugs);
+                checkboxIsEvading.setSelected(PreferencesUtil.isEvading);
+                checkboxIsFollowingRedirection.setSelected(PreferencesUtil.isFollowingRedirection);
             }
         });
 
-        labelUseCheckUpdateAtStartup.setHorizontalAlignment(JButton.LEFT);
-        labelUseCheckUpdateAtStartup.setBorderPainted(false);
-        labelUseCheckUpdateAtStartup.setContentAreaFilled(false); 
+        labelIsCheckingUpdate.setHorizontalAlignment(JButton.LEFT);
+        labelIsCheckingUpdate.setBorderPainted(false);
+        labelIsCheckingUpdate.setContentAreaFilled(false); 
         
-        labelReportBugs.setHorizontalAlignment(JButton.LEFT);
-        labelReportBugs.setBorderPainted(false);
-        labelReportBugs.setContentAreaFilled(false); 
+        labelIsReportingBugs.setHorizontalAlignment(JButton.LEFT);
+        labelIsReportingBugs.setBorderPainted(false);
+        labelIsReportingBugs.setContentAreaFilled(false); 
         
-        labelEnableEvasion.setHorizontalAlignment(JButton.LEFT);
-        labelEnableEvasion.setBorderPainted(false);
-        labelEnableEvasion.setContentAreaFilled(false); 
+        labelIsEvading.setHorizontalAlignment(JButton.LEFT);
+        labelIsEvading.setBorderPainted(false);
+        labelIsEvading.setContentAreaFilled(false); 
         
-        labelFollowRedirection.setHorizontalAlignment(JButton.LEFT);
-        labelFollowRedirection.setBorderPainted(false);
-        labelFollowRedirection.setContentAreaFilled(false); 
+        labelIsFollowingRedirection.setHorizontalAlignment(JButton.LEFT);
+        labelIsFollowingRedirection.setBorderPainted(false);
+        labelIsFollowingRedirection.setContentAreaFilled(false); 
         
-        labelUseProxy.setHorizontalAlignment(JButton.LEFT);
-        labelUseProxy.setBorderPainted(false);
-        labelUseProxy.setContentAreaFilled(false); 
+        labelIsUsingProxy.setHorizontalAlignment(JButton.LEFT);
+        labelIsUsingProxy.setBorderPainted(false);
+        labelIsUsingProxy.setContentAreaFilled(false); 
         
         labelUseDigestAuthentication.setHorizontalAlignment(JButton.LEFT);
         labelUseDigestAuthentication.setBorderPainted(false);
@@ -411,7 +411,7 @@ public class DialogPreference extends JDialog {
                 settingLayout
                     .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                     .addComponent(proxyField)
-                    .addComponent(checkboxUseProxy)
+                    .addComponent(checkboxIsUsingProxy)
                     .addComponent(labelProxyAddress)
                     .addComponent(labelProxyPort)
                     .addComponent(authenticationField)
@@ -422,15 +422,15 @@ public class DialogPreference extends JDialog {
                     .addComponent(labelKerberosLoginConf)
                     .addComponent(labelKerberosKrb5Conf)
                     .addComponent(preferencesField)
-                    .addComponent(checkboxCheckUpdateAtStartup)
-                    .addComponent(checkboxReportBugs)
-                    .addComponent(checkboxEnableEvasion)
-                    .addComponent(checkboxFollowRedirection)
+                    .addComponent(checkboxIsCheckingUpdate)
+                    .addComponent(checkboxIsReportingBugs)
+                    .addComponent(checkboxIsEvading)
+                    .addComponent(checkboxIsFollowingRedirection)
             ).addGroup(
                 settingLayout
                     .createParallelGroup()
                     .addComponent(proxyInfo)
-                    .addComponent(labelUseProxy)
+                    .addComponent(labelIsUsingProxy)
                     .addComponent(textProxyAddress)
                     .addComponent(textProxyPort)
                     .addComponent(authenticationInfo)
@@ -441,10 +441,10 @@ public class DialogPreference extends JDialog {
                     .addComponent(textKerberosLoginConf)
                     .addComponent(textKerberosKrb5Conf)
                     .addComponent(preferencesInfo)
-                    .addComponent(labelUseCheckUpdateAtStartup)
-                    .addComponent(labelReportBugs)
-                    .addComponent(labelEnableEvasion)
-                    .addComponent(labelFollowRedirection)
+                    .addComponent(labelIsCheckingUpdate)
+                    .addComponent(labelIsReportingBugs)
+                    .addComponent(labelIsEvading)
+                    .addComponent(labelIsFollowingRedirection)
         ));
 
         // Proxy settings, Vertical line rules
@@ -459,8 +459,8 @@ public class DialogPreference extends JDialog {
                 ).addGroup(
                     settingLayout
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(checkboxUseProxy)
-                        .addComponent(labelUseProxy)
+                        .addComponent(checkboxIsUsingProxy)
+                        .addComponent(labelIsUsingProxy)
                 ).addGroup(
                     settingLayout
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -514,23 +514,23 @@ public class DialogPreference extends JDialog {
                 ).addGroup(
                     settingLayout
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(checkboxCheckUpdateAtStartup)
-                        .addComponent(labelUseCheckUpdateAtStartup)
+                        .addComponent(checkboxIsCheckingUpdate)
+                        .addComponent(labelIsCheckingUpdate)
                 ).addGroup(
                     settingLayout
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(checkboxReportBugs)
-                        .addComponent(labelReportBugs)
+                        .addComponent(checkboxIsReportingBugs)
+                        .addComponent(labelIsReportingBugs)
                 ).addGroup(
                     settingLayout
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(checkboxEnableEvasion)
-                        .addComponent(labelEnableEvasion)
+                        .addComponent(checkboxIsEvading)
+                        .addComponent(labelIsEvading)
                 ).addGroup(
                     settingLayout
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(checkboxFollowRedirection)
-                        .addComponent(labelFollowRedirection)
+                        .addComponent(checkboxIsFollowingRedirection)
+                        .addComponent(labelIsFollowingRedirection)
                     )
                 )
         ;

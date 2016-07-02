@@ -28,7 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.MediatorModel;
 import com.jsql.model.strategy.Strategy;
 import com.jsql.model.vendor.Vendor;
 import com.jsql.view.swing.HelperGui;
@@ -90,14 +90,14 @@ public class PanelStatus extends JPanel {
      * Create status panel on south of frame.
      */
     public PanelStatus() {
-        this.labelNormal = new RadioLinkStrategy(I18n.LABEL_NORMAL, Strategy.NORMAL);
-        I18n.components.get("LABEL_NORMAL").add(labelNormal);
-        this.labelErrorBased = new RadioLinkStrategy(I18n.LABEL_ERRORBASED, Strategy.ERRORBASED);
-        I18n.components.get("LABEL_ERRORBASED").add(labelErrorBased);
-        this.labelBlind = new RadioLinkStrategy(I18n.LABEL_BLIND, Strategy.BLIND);
-        I18n.components.get("LABEL_BLIND").add(labelBlind);
-        this.labelTimeBased = new RadioLinkStrategy(I18n.LABEL_TIMEBASED, Strategy.TIME);
-        I18n.components.get("LABEL_TIMEBASED").add(labelTimeBased);
+        this.labelNormal = new RadioLinkStrategy(I18n.get("LABEL_NORMAL"), Strategy.NORMAL);
+        I18n.add("LABEL_NORMAL", labelNormal);
+        this.labelErrorBased = new RadioLinkStrategy(I18n.get("LABEL_ERRORBASED"), Strategy.ERRORBASED);
+        I18n.add("LABEL_ERRORBASED", labelErrorBased);
+        this.labelBlind = new RadioLinkStrategy(I18n.get("LABEL_BLIND"), Strategy.BLIND);
+        I18n.add("LABEL_BLIND", labelBlind);
+        this.labelTimeBased = new RadioLinkStrategy(I18n.get("LABEL_TIMEBASED"), Strategy.TIME);
+        I18n.add("LABEL_TIMEBASED", labelTimeBased);
 
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         this.setBorder(
@@ -151,12 +151,12 @@ public class PanelStatus extends JPanel {
             + "</html>"
         );
         
-        JLabel titleCurrentDB = new JLabel(I18n.TITLE_CURRENTDB);
-        I18n.components.get("TITLE_CURRENTDB").add(titleCurrentDB);
-        JLabel titleCurrentUser = new JLabel(I18n.TITLE_CURRENTUSER);
-        I18n.components.get("TITLE_CURRENTUSER").add(titleCurrentUser);
-        JLabel titleAuthenticatedUser = new JLabel(I18n.TITLE_AUTHENTICATEDUSER);
-        I18n.components.get("TITLE_AUTHENTICATEDUSER").add(titleAuthenticatedUser);
+        JLabel titleCurrentDB = new JLabel(I18n.get("TITLE_CURRENTDB"));
+        I18n.add("TITLE_CURRENTDB", titleCurrentDB);
+        JLabel titleCurrentUser = new JLabel(I18n.get("TITLE_CURRENTUSER"));
+        I18n.add("TITLE_CURRENTUSER", titleCurrentUser);
+        JLabel titleAuthenticatedUser = new JLabel(I18n.get("TITLE_AUTHENTICATEDUSER"));
+        I18n.add("TITLE_AUTHENTICATEDUSER", titleAuthenticatedUser);
 
         JPanel types = new JPanel();
         types.setLayout(new BoxLayout(types, BoxLayout.PAGE_AXIS));
@@ -168,10 +168,10 @@ public class PanelStatus extends JPanel {
         // Add pixels to the right to compensate width when strategy is selected
         this.labelTimeBased.setPreferredSize(new Dimension(this.labelTimeBased.getPreferredSize().width + 3, this.labelTimeBased.getPreferredSize().height));
         
-        this.labelTimeBased.setToolTipText(I18n.LABEL_TIMEBASED_TOOLTIP);
-        this.labelBlind.setToolTipText(I18n.LABEL_BLIND_TOOLTIP);
-        this.labelErrorBased.setToolTipText(I18n.LABEL_ERRORBASED_TOOLTIP);
-        this.labelNormal.setToolTipText(I18n.LABEL_NORMAL_TOOLTIP);
+        this.labelTimeBased.setToolTipText(I18n.get("LABEL_TIMEBASED_TOOLTIP"));
+        this.labelBlind.setToolTipText(I18n.get("LABEL_BLIND_TOOLTIP"));
+        this.labelErrorBased.setToolTipText(I18n.get("LABEL_ERRORBASED_TOOLTIP"));
+        this.labelNormal.setToolTipText(I18n.get("LABEL_NORMAL_TOOLTIP"));
 
         this.add(types);
 

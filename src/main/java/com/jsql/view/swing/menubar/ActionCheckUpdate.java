@@ -11,8 +11,8 @@ import java.net.URLConnection;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.injection.InjectionModel;
-import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.InjectionModel;
+import com.jsql.model.MediatorModel;
 
 public class ActionCheckUpdate implements ActionListener, Runnable {
     /**
@@ -23,7 +23,7 @@ public class ActionCheckUpdate implements ActionListener, Runnable {
     @Override
     public void run() {
         try {
-            LOGGER.info(I18n.UPDATE_LOADING);
+            LOGGER.info(I18n.get("UPDATE_LOADING"));
             URLConnection con = new URL("https://raw.githubusercontent.com/ron190/jsql-injection/master/.version").openConnection();
             con.setReadTimeout(60000);
             con.setConnectTimeout(60000);
@@ -37,13 +37,13 @@ public class ActionCheckUpdate implements ActionListener, Runnable {
 
             Float gitVersion = Float.parseFloat(pageSource);
             MediatorModel.model();
-            if (gitVersion <= Float.parseFloat(InjectionModel.JSQLVERSION)) {
-                LOGGER.debug(I18n.UPDATE_UPTODATE);
+            if (gitVersion <= Float.parseFloat(InjectionModel.VERSION_JSQL)) {
+                LOGGER.debug(I18n.get("UPDATE_UPTODATE"));
             } else {
-                LOGGER.warn(I18n.UPDATE_NEW_VERSION_AVAILABLE);
+                LOGGER.warn(I18n.get("UPDATE_NEW_VERSION_AVAILABLE"));
             }
         } catch (NumberFormatException | IOException e) {
-            LOGGER.warn(I18n.UPDATE_EXCEPTION);
+            LOGGER.warn(I18n.get("UPDATE_EXCEPTION"));
             LOGGER.error(e, e);
         }
     }

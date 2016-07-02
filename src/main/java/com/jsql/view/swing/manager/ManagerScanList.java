@@ -31,8 +31,8 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
+import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.model.injection.MediatorModel;
 import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -52,7 +52,7 @@ public class ManagerScanList extends ManagerAbstractList {
      */
     public ManagerScanList() {
         this.setLayout(new BorderLayout());
-        this.setDefaultText(I18n.SCANLIST_RUN_BUTTON);
+        this.setDefaultText(I18n.get("SCANLIST_RUN_BUTTON"));
 
         List<String> pathList = new ArrayList<>();
         try {
@@ -83,9 +83,9 @@ public class ManagerScanList extends ManagerAbstractList {
             )
         );
         
-        run = new JButton(defaultText, new ImageIcon(ManagerScanList.class.getResource("/com/jsql/view/swing/resources/images/find.png")));
+        run = new JButton(defaultText, new ImageIcon(ManagerScanList.class.getResource("/com/jsql/view/swing/resources/images/icons/find.png")));
 
-        run.setToolTipText(I18n.SCANLIST_RUN_BUTTON_TOOLTIP);
+        run.setToolTipText(I18n.get("SCANLIST_RUN_BUTTON_TOOLTIP"));
         run.setBorder(HelperGui.BLU_ROUND_BORDER);
 
         run.addActionListener(new ActionListener() {
@@ -103,8 +103,8 @@ public class ManagerScanList extends ManagerAbstractList {
                             loader.setVisible(true);
                             RessourceAccess.scanList(listFile.getSelectedValuesList());
                         } else {
-                            RessourceAccess.endScanList = true;
-                            MediatorModel.model().shouldStopAll = true;
+                            RessourceAccess.isScanStopped = true;
+                            MediatorModel.model().isProcessStopped = true;
                             run.setEnabled(false);
                         }
                     }

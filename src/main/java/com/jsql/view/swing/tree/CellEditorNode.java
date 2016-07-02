@@ -62,8 +62,10 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
     }
 
     @Override
-    public Component getTreeCellEditorComponent(JTree tree, Object nodeRenderer,
-            boolean selected, boolean expanded, boolean leaf, int row) {
+    public Component getTreeCellEditorComponent(
+        JTree tree, Object nodeRenderer, boolean selected, 
+        boolean expanded, boolean leaf, int row
+    ) {
 
         Component componentRenderer = defaultTreeRenderer.getTreeCellRendererComponent(
             tree, nodeRenderer, true, expanded, leaf, row, true
@@ -74,7 +76,9 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
         try {
             this.nodeData = (AbstractNodeModel) userObject;
             if (componentRenderer instanceof JCheckBox) {
-                ((JCheckBox) componentRenderer).addActionListener(new ActionCheckUncheck(this.nodeData, currentNode));
+                ((JCheckBox) componentRenderer).addActionListener(
+                    new ActionCheckUncheck(this.nodeData, currentNode)
+                );
             }
         } catch (Exception e) {
             LOGGER.error(e, e);
@@ -105,7 +109,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
         public void actionPerformed(ActionEvent e) {
             Object source = e.getSource();
             JCheckBox columnCheckBox = (JCheckBox) source;
-            this.nodeData.isChecked = columnCheckBox.isSelected();
+            this.nodeData.isSelected = columnCheckBox.isSelected();
 
             DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
             DefaultMutableTreeNode tableNode = (DefaultMutableTreeNode) this.currentTableNode.getParent();
@@ -116,7 +120,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
                 DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
                 if (currentChild.getUserObject() instanceof AbstractNodeModel) {
                     AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
-                    if (columnTreeNodeModel.isChecked) {
+                    if (columnTreeNodeModel.isSelected) {
                         isOneChildSelected = true;
                         break;
                     }
@@ -124,7 +128,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
             }
 
             AbstractNodeModel nodeUserObject = (AbstractNodeModel) tableNode.getUserObject();
-            nodeUserObject.hasChildChecked = isOneChildSelected;
+            nodeUserObject.isContainingSelection = isOneChildSelected;
         }
     }
 

@@ -5,8 +5,8 @@ import java.util.prefs.Preferences;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.exception.PreparationException;
-import com.jsql.model.injection.InjectionModel;
+import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.PreparationException;
 
 public class ProxyUtil {
     /**
@@ -27,7 +27,7 @@ public class ProxyUtil {
     /**
      * True if connection is proxified.
      */
-    public static boolean useProxy = false;
+    public static boolean isUsingProxy = false;
     
     /**
      * Utility class.
@@ -38,22 +38,22 @@ public class ProxyUtil {
     
     /**
      * Save configuration into preferences.
-     * @param useProxy
+     * @param isUsingProxy
      * @param proxyAddress
      * @param proxyPort
      */
-    public static void set(boolean useProxy, String proxyAddress, String proxyPort) {
+    public static void set(boolean isUsingProxy, String proxyAddress, String proxyPort) {
         // Define proxy settings
-        ProxyUtil.useProxy = useProxy;
+        ProxyUtil.isUsingProxy = isUsingProxy;
         ProxyUtil.proxyAddress = proxyAddress;
         ProxyUtil.proxyPort = proxyPort;
 
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-        prefs.putBoolean("useProxy", ProxyUtil.useProxy);
+        prefs.putBoolean("isUsingProxy", ProxyUtil.isUsingProxy);
         prefs.put("proxyAddress", ProxyUtil.proxyAddress);
         prefs.put("proxyPort", ProxyUtil.proxyPort);
 
-        if (ProxyUtil.useProxy) {
+        if (ProxyUtil.isUsingProxy) {
             System.setProperty("http.proxyHost", ProxyUtil.proxyAddress);
             System.setProperty("http.proxyPort", ProxyUtil.proxyPort);
         } else {
@@ -65,18 +65,18 @@ public class ProxyUtil {
     /**
      * Initialize proxy information from previously saved configuration.
      */
-    public static void initializeProxy() {
+    public static void initialize() {
         // Use Preferences API to persist proxy configuration
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
 
         // Default proxy disabled
-        ProxyUtil.useProxy = prefs.getBoolean("useProxy", false);
+        ProxyUtil.isUsingProxy = prefs.getBoolean("isUsingProxy", false);
 
         // Default TOR config
         ProxyUtil.proxyAddress = prefs.get("proxyAddress", "127.0.0.1");
         ProxyUtil.proxyPort = prefs.get("proxyPort", "8118");
         
-        if (ProxyUtil.useProxy) {
+        if (ProxyUtil.isUsingProxy) {
             System.setProperty("http.proxyHost", ProxyUtil.proxyAddress);
             System.setProperty("http.proxyPort", ProxyUtil.proxyPort);
         }
@@ -84,17 +84,22 @@ public class ProxyUtil {
     
     public static void check() throws PreparationException {
         // Test if proxy is available then apply settings
-        if (useProxy && !"".equals(proxyAddress) && !"".equals(proxyPort)) {
+        if (
+            ProxyUtil.isUsingProxy && 
+            !"".equals(ProxyUtil.proxyAddress) && 
+            !"".equals(ProxyUtil.proxyPort)
+        ) {
             try {
                 LOGGER.info("Testing proxy...");
-                new Socket(proxyAddress, Integer.parseInt(proxyPort)).close();
+                new Socket(ProxyUtil.proxyAddress, Integer.parseInt(ProxyUtil.proxyPort)).close();
             } catch (Exception e) {
                 /**
                  * TODO Preparation Proxy Exception
                  */
                 throw new PreparationException(
-                    "Proxy connection failed: " + proxyAddress + ":" + proxyPort
-                    + ". Please check your proxy informations or disable proxy setting."
+                    "Proxy connection failed: "
+                    + ProxyUtil.proxyAddress + ":" + ProxyUtil.proxyPort + ". "
+                    + "Please check your proxy informations or disable proxy setting."
                 );
             }
             LOGGER.debug("Proxy is responding.");

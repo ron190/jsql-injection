@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.MediatorModel;
 import com.jsql.view.swing.MediatorGui;
 
 /**

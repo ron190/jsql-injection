@@ -56,44 +56,47 @@ public final class HelperGui {
     public static final Color COMPONENT_BORDER = UIManager.getColor("controlShadow");
     public static final Color FOCUS_LOST = new Color(248, 249, 249);
     
-    public static final Icon TICK = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/check.png"));
-    public static final Icon SQUARE_RED = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/squareRed.png"));
-    public static final Icon SQUARE_GREY = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/squareGrey.png"));
-    public static final Icon LOADER_GIF = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/spinner.gif"));
+    public static final Icon TICK = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/check.png"));
+    public static final Icon SQUARE_RED = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/squareRed.png"));
+    public static final Icon SQUARE_GREY = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/squareGrey.png"));
+    public static final Icon LOADER_GIF = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/spinner.gif"));
 
-    public static final Icon ADMIN_SERVER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/adminServer.png"));
-    public static final Icon SHELL_SERVER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/shellServer.png"));
-    public static final Icon DATABASE_SERVER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/databaseServer.png"));
-    public static final Icon FILE_SERVER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/fileServer.png"));
-    public static final Icon BRUTER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/lock.png"));
-    public static final Icon CODER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/coder.png"));
-    public static final Icon UPLOAD_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/server_add.png"));
-    public static final Icon SCANLIST_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/application_cascade.png"));
+    public static final Icon ADMIN_SERVER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/adminServer.png"));
+    public static final Icon SHELL_SERVER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/shellServer.png"));
+    public static final Icon DATABASE_SERVER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/databaseServer.png"));
+    public static final Icon FILE_SERVER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/fileServer.png"));
+    public static final Icon BRUTER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/lock.png"));
+    public static final Icon CODER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/coder.png"));
+    public static final Icon UPLOAD_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/server_add.png"));
+    public static final Icon SCANLIST_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/application_cascade.png"));
 
-    public static final Icon TABLE_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/table.png"));
-    public static final Icon TABLE_ICON_GO = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/tableGo.png"));
-    public static final Icon DATABASE_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/database.png"));
-    public static final Icon DATABASE_ICON_GO = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/databaseGo.png"));
+    public static final Icon TABLE_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/table.png"));
+    public static final Icon TABLE_ICON_GO = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/tableGo.png"));
+    public static final Icon DATABASE_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/database.png"));
+    public static final Icon DATABASE_ICON_GO = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/databaseGo.png"));
     
-    public static final Icon CONSOLE_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/console.gif"));
-    public static final Icon HEADER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/header.gif"));
-    public static final Icon CHUNK_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/chunk.gif"));
-    public static final Icon BINARY_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/binary.gif"));
-    public static final Icon CUP_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/cup.png"));
+    public static final Icon CONSOLE_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/console.gif"));
+    public static final Icon HEADER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/header.gif"));
+    public static final Icon CHUNK_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/chunk.gif"));
+    public static final Icon BINARY_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/binary.gif"));
+    public static final Icon CUP_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/cup.png"));
     
-    public static final Icon CLOSE_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/close.png"));
-    public static final Icon CLOSE_ROLLOVER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/closeRollover.png"));
-    public static final Icon CLOSE_PRESSED_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/closePressed.png"));
+    public static final Icon CLOSE_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/close.png"));
+    public static final Icon CLOSE_ROLLOVER_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/closeRollover.png"));
+    public static final Icon CLOSE_PRESSED_ICON = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/closePressed.png"));
 
-    public static final Icon ARROWDEFAULT = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/arrowDefault.png"));
-    public static final Icon ARROWROLLOVER = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/arrowRollover.png"));
-    public static final Icon ARROWPRESSED = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/arrowPressed.png"));
+    public static final Icon ARROWDEFAULT = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/arrowDefault.png"));
+    public static final Icon ARROWROLLOVER = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/arrowRollover.png"));
+    public static final Icon ARROWPRESSED = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/arrowPressed.png"));
 
-    public static final Icon FLAG_US = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/flags/us.png"));
+    public static final Icon FLAG_AR = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/flags/ar.png"));
+    public static final Icon FLAG_US = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/flags/en.png"));
     public static final Icon FLAG_FR = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/flags/fr.png"));
     public static final Icon FLAG_CN = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/flags/cn.png"));
     public static final Icon FLAG_RU = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/flags/ru.png"));
     public static final Icon FLAG_TR = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/flags/tr.png"));
+    public static final Icon FLAG_ES = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/flags/es.png"));
+    public static final Icon FLAG_IN = new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/flags/in.png"));
     
     public static final Icon EMPTY = new ImageIcon(new BufferedImage(16, 16, BufferedImage.TRANSLUCENT));
     public static final Icon ZEROSIZE = new ImageIcon() {
@@ -103,8 +106,8 @@ public final class HelperGui {
         } 
     };
 
-    public static final String PATH_PAUSE = "/com/jsql/view/swing/resources/images/pause.png";
-    public static final String PATH_PROGRESSBAR = "/com/jsql/view/swing/resources/images/progressBar.gif";
+    public static final String PATH_PAUSE = "/com/jsql/view/swing/resources/images/icons/pause.png";
+    public static final String PATH_PROGRESSBAR = "/com/jsql/view/swing/resources/images/icons/progressBar.gif";
     
     public static final Color BLU_COLOR = new Color(132, 172, 221);
 
@@ -167,7 +170,7 @@ public final class HelperGui {
         UIManager.put("CheckBoxMenuItem.selectionBackground", SELECTION_BACKGROUND);
         UIManager.put("CheckBoxMenuItem.font", SEGOE_FONT);
         UIManager.put("CheckBoxMenuItem.borderPainted", false);
-        UIManager.put("CheckBoxMenuItem.checkIcon", new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/check.png")) {
+        UIManager.put("CheckBoxMenuItem.checkIcon", new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/check.png")) {
             @Override
             public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
                 ButtonModel m = ((AbstractButton) c).getModel();
@@ -243,8 +246,8 @@ public final class HelperGui {
         );
         
         // Custom tree
-        UIManager.put("Tree.expandedIcon", new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/expanded.png")));
-        UIManager.put("Tree.collapsedIcon", new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/collapsed.png")));
+        UIManager.put("Tree.expandedIcon", new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/expanded.png")));
+        UIManager.put("Tree.collapsedIcon", new ImageIcon(HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/collapsed.png")));
         UIManager.put("Tree.lineTypeDashed", true);
         // No default icon for tree nodes
         UIManager.put("Tree.leafIcon", new ImageIcon());
@@ -279,9 +282,9 @@ public final class HelperGui {
      */
     public static List<Image> getIcons() {
         List<Image> images = new ArrayList<>();
-        URL url16x16 = HelperGui.class.getResource("/com/jsql/view/swing/resources/images/app-16x16.png");
-        URL url32x32 = HelperGui.class.getResource("/com/jsql/view/swing/resources/images/app-32x32.png");
-        URL url96x96 = HelperGui.class.getResource("/com/jsql/view/swing/resources/images/app-96x96.png");
+        URL url16x16 = HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/app-16x16.png");
+        URL url32x32 = HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/app-32x32.png");
+        URL url96x96 = HelperGui.class.getResource("/com/jsql/view/swing/resources/images/icons/app-96x96.png");
         try {
             images.add(ImageIO.read(url96x96));
             images.add(ImageIO.read(url32x32));

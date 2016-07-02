@@ -56,14 +56,14 @@ abstract class ManagerAbstractList extends JPanel {
      * @param element The string to add to the list
      */
     public void addToList(String element) {
-        boolean found = false;
+        boolean isFound = false;
         DefaultListModel<ListItem> listModel = (DefaultListModel<ListItem>) listPaths.getModel();
         for (int i = 0; i < listModel.size(); i++) {
             if (listModel.get(i).toString().equals(element)) {
-                found = true;
+                isFound = true;
             }
         }
-        if (!found) {
+        if (!isFound) {
             ListItem v = new ListItem(element);
             listModel.addElement(v);
         }

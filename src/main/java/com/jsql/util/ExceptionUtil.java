@@ -23,15 +23,15 @@ public class ExceptionUtil {
             handleException(thread.getName(), thrown);
         }
         
-        protected void handleException(String tname, Throwable thrown) {
-            LOGGER.error("Exception on " + tname, thrown);
+        protected void handleException(String threadName, Throwable throwable) {
+            LOGGER.error("Exception on " + threadName, throwable);
             
             //  Report #214: ignore if OutOfMemoryError: Java heap space
             if (
-                ConfigurationUtil.reportBugs && 
-                !"OutOfMemoryError".equals(thrown.getClass().getSimpleName())
+                PreferencesUtil.isReportingBugs && 
+                !"OutOfMemoryError".equals(throwable.getClass().getSimpleName())
             ) {
-                GitUtil.sendUnhandledException(tname, thrown);
+                GitUtil.sendUnhandledException(threadName, throwable);
             }
         }
     }

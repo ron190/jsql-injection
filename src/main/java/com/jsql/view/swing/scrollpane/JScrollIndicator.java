@@ -150,23 +150,23 @@ public class JScrollIndicator extends JLayeredPane {
             this.setUnitIncrement(64);
             int size = THUMB_THICKNESS + THUMB_MARGIN;
             setPreferredSize(new Dimension(size, size));
-            scrollUI.setVisible(true, true);
+            scrollUI.setVisible();
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    scrollUI.setVisible(true, true);
+                    scrollUI.setVisible();
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    scrollUI.setVisible(false, false);
+                    scrollUI.setVisible();
                 }
             });
 
             addAdjustmentListener(new AdjustmentListener() {
                 @Override
                 public void adjustmentValueChanged(AdjustmentEvent e) {
-                    scrollUI.setVisible(true, false);
+                    scrollUI.setVisible();
                 }
             });
         }
@@ -268,7 +268,7 @@ public class JScrollIndicator extends JLayeredPane {
             scrollBar.repaint(getThumbBounds());
         }
 
-        public void setVisible(boolean visible, boolean mouseOver) {
+        public void setVisible() {
             scrollBar.repaint(getThumbBounds());
         }
     }

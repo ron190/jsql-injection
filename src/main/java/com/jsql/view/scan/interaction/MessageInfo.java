@@ -12,7 +12,7 @@ package com.jsql.view.scan.interaction;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.MediatorModel;
 
 /**
  * Update the general information in status bar.

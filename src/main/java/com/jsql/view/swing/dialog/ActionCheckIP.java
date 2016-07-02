@@ -32,7 +32,7 @@ public class ActionCheckIP implements ActionListener, Runnable {
     public void run() {
         // TODO put in proxy tool
         // Test if proxy is available then apply settings
-        if (ProxyUtil.useProxy && !"".equals(ProxyUtil.proxyAddress) && !"".equals(ProxyUtil.proxyPort)) {
+        if (ProxyUtil.isUsingProxy && !"".equals(ProxyUtil.proxyAddress) && !"".equals(ProxyUtil.proxyPort)) {
             try {
                 LOGGER.info("Testing proxy...");
                 new Socket(ProxyUtil.proxyAddress, Integer.parseInt(ProxyUtil.proxyPort)).close();

@@ -44,7 +44,7 @@ public class JTextFieldWithIcon extends JTextField {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        URL url = JTextFieldWithIcon.class.getResource("/com/jsql/view/swing/resources/images/globe.png");
+        URL url = JTextFieldWithIcon.class.getResource("/com/jsql/view/swing/resources/images/icons/globe.png");
         BufferedImage image = null;
         try {
             image = ImageIO.read(url);
@@ -78,7 +78,7 @@ public class JTextFieldWithIcon extends JTextField {
             int c2 = ((c0 & m) >>> 1) + ((c1 & m) >>> 1);
             g.setColor(new Color(c2, true));
             g.setFont(this.getFont().deriveFont(Font.ITALIC));
-            g.drawString(I18n.ENTER_ADDRESS, ins.left, h / 2 + fm.getAscent() / 2 - 1);
+            g.drawString(I18n.get("ENTER_ADDRESS"), ins.left, h / 2 + fm.getAscent() / 2 - 1);
         }
     }
 }

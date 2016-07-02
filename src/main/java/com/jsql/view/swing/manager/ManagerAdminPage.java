@@ -52,7 +52,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
      */
     public ManagerAdminPage() {
         this.setLayout(new BorderLayout());
-        this.setDefaultText(I18n.ADMIN_PAGE_RUN_BUTTON);
+        this.setDefaultText(I18n.get("ADMIN_PAGE_RUN_BUTTON"));
 
         List<String> pathList = new ArrayList<>();
         try {
@@ -84,10 +84,10 @@ public class ManagerAdminPage extends ManagerAbstractList {
         
         run = new JButton(
             defaultText, 
-            new ImageIcon(ManagerAdminPage.class.getResource("/com/jsql/view/swing/resources/images/adminSearch.png"))
+            new ImageIcon(ManagerAdminPage.class.getResource("/com/jsql/view/swing/resources/images/icons/adminSearch.png"))
         );
 
-        run.setToolTipText(I18n.ADMIN_PAGE_RUN_BUTTON_TOOLTIP);
+        run.setToolTipText(I18n.get("ADMIN_PAGE_RUN_BUTTON_TOOLTIP"));
         run.setBorder(HelperGui.BLU_ROUND_BORDER);
 
         run.addActionListener(new ActionListener() {
@@ -112,7 +112,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
                                 );
                             }
                         } else {
-                            RessourceAccess.endAdminSearch = true;
+                            RessourceAccess.isSearchAdminStopped = true;
                             run.setEnabled(false);
                         }
                     }

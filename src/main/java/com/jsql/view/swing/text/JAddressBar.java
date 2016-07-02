@@ -24,8 +24,8 @@ public class JAddressBar extends JPopupTextField implements DecoratorJComponent<
      * Constructor with default text.
      * @param string The text to display
      */
-    public JAddressBar() {
-        super(new JTextFieldWithIcon());
+    public JAddressBar(JTextField c) {
+        super(c);
 
         this.getProxy().setPreferredSize(new Dimension(0, 27));
         this.getProxy().setFont(

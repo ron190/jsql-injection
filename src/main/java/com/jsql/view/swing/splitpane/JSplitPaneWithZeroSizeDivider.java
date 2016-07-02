@@ -60,17 +60,8 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
         dividerDragSize = 9;
     }
 
-    public JSplitPaneWithZeroSizeDivider() {
-        this(HORIZONTAL_SPLIT);
-    }
-
     public JSplitPaneWithZeroSizeDivider(int orientation) {
-        super(orientation);
-        setContinuousLayout(true);
-    }
-
-    public JSplitPaneWithZeroSizeDivider(int horizontalSplit, boolean b) {
-        super(horizontalSplit, b);
+        super(orientation, true);
     }
 
     public int getDividerDragSize() {

@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.exception.PreparationException;
+import com.jsql.model.exception.PreparationException;
 import com.test.AbstractTestSuite;
 
 public class ConcreteDB2TestSuite extends AbstractTestSuite {

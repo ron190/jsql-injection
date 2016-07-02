@@ -13,7 +13,9 @@ package com.jsql.view.swing.tab;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JTree;
+import javax.swing.SwingConstants;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -82,7 +84,7 @@ public class TabManagers extends MouseTabbedPane {
         this.activateMenu();
 
         // First node in tree
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(new NodeModelEmpty(I18n.NO_DATABASE));
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(new NodeModelEmpty(I18n.get("NO_DATABASE")));
         final JTree tree = new JTree(root);
         MediatorGui.register(tree);
 
@@ -124,15 +126,77 @@ public class TabManagers extends MouseTabbedPane {
 
         LightScrollPane scroller = new LightScrollPane(1, 1, 0, 0, tree);
 
-        this.addTab(I18n.DATABASE, HelperGui.DATABASE_SERVER_ICON, scroller, I18n.DATABASE_TOOLTIP);
-        this.addTab(I18n.ADMINPAGE, HelperGui.ADMIN_SERVER_ICON, adminPageManager, I18n.ADMINPAGE_TOOLTIP);
-        this.addTab(I18n.FILE, HelperGui.FILE_SERVER_ICON, fileManager, I18n.FILE_TOOLTIP);
-        this.addTab(I18n.WEBSHELL, HelperGui.SHELL_SERVER_ICON, shellManager, I18n.WEBSHELL_TOOLTIP);
-        this.addTab(I18n.SQLSHELL, HelperGui.SHELL_SERVER_ICON, sqlShellManager, I18n.SQLSHELL_TOOLTIP);
-        this.addTab(I18n.UPLOAD, HelperGui.UPLOAD_ICON, uploadManager, I18n.UPLOAD_TOOLTIP);
-        this.addTab(I18n.BRUTEFORCE, HelperGui.BRUTER_ICON, new ManagerBruteForce(), I18n.BRUTEFORCE_TOOLTIP);
-        this.addTab(I18n.CODER, HelperGui.CODER_ICON, new ManagerCoder(), I18n.CODER_TOOLTIP);
-        this.addTab(I18n.SCANLIST, HelperGui.SCANLIST_ICON, scanListManager, I18n.SCANLIST_TOOLTIP);
+        JLabel labelDatabase = new JLabel(I18n.get("DATABASE"), HelperGui.DATABASE_SERVER_ICON, SwingConstants.CENTER);
+        this.addTab("Database", HelperGui.DATABASE_SERVER_ICON, scroller, I18n.get("DATABASE_TOOLTIP"));
+        this.setTabComponentAt(
+            this.indexOfTab("Database"),
+            labelDatabase
+        );
+        I18n.add("DATABASE", labelDatabase);
+        
+        JLabel labelAdminPage = new JLabel(I18n.get("ADMINPAGE"), HelperGui.ADMIN_SERVER_ICON, SwingConstants.CENTER);
+        this.addTab("Admin page", HelperGui.ADMIN_SERVER_ICON, adminPageManager, I18n.get("ADMINPAGE_TOOLTIP"));
+        this.setTabComponentAt(
+            this.indexOfTab("Admin page"),
+            labelAdminPage
+        );
+        I18n.add("ADMINPAGE", labelAdminPage);
+        
+        JLabel labelFile = new JLabel(I18n.get("FILE"), HelperGui.FILE_SERVER_ICON, SwingConstants.CENTER);
+        this.addTab("File", HelperGui.FILE_SERVER_ICON, fileManager, I18n.get("FILE_TOOLTIP"));
+        this.setTabComponentAt(
+            this.indexOfTab("File"),
+            labelFile
+        );
+        I18n.add("FILE", labelFile);
+        
+        JLabel labelWebShell = new JLabel(I18n.get("WEBSHELL"), HelperGui.SHELL_SERVER_ICON, SwingConstants.CENTER);
+        this.addTab("Web shell", HelperGui.SHELL_SERVER_ICON, shellManager, I18n.get("WEBSHELL_TOOLTIP"));
+        this.setTabComponentAt(
+            this.indexOfTab("Web shell"),
+            labelWebShell
+        );
+        I18n.add("WEBSHELL", labelWebShell);
+        
+        JLabel labelSqlShell = new JLabel(I18n.get("SQLSHELL"), HelperGui.SHELL_SERVER_ICON, SwingConstants.CENTER);
+        this.addTab("SQL shell", HelperGui.SHELL_SERVER_ICON, sqlShellManager, I18n.get("SQLSHELL_TOOLTIP"));
+        this.setTabComponentAt(
+            this.indexOfTab("SQL shell"),
+            labelSqlShell
+        );
+        I18n.add("SQLSHELL", labelSqlShell);
+        
+        JLabel labelUpload = new JLabel(I18n.get("UPLOAD"), HelperGui.UPLOAD_ICON, SwingConstants.CENTER);
+        this.addTab("Upload", HelperGui.UPLOAD_ICON, uploadManager, I18n.get("UPLOAD_TOOLTIP"));
+        this.setTabComponentAt(
+            this.indexOfTab("Upload"),
+            labelUpload
+        );
+        I18n.add("UPLOAD", labelUpload);
+        
+        JLabel labelBruteforce = new JLabel(I18n.get("BRUTEFORCE"), HelperGui.BRUTER_ICON, SwingConstants.CENTER);
+        this.addTab("Brute force", HelperGui.BRUTER_ICON, new ManagerBruteForce(), I18n.get("BRUTEFORCE_TOOLTIP"));
+        this.setTabComponentAt(
+            this.indexOfTab("Brute force"),
+            labelBruteforce
+        );
+        I18n.add("BRUTEFORCE", labelBruteforce);
+        
+        JLabel labelCoder = new JLabel(I18n.get("CODER"), HelperGui.CODER_ICON, SwingConstants.CENTER);
+        this.addTab("Coder", HelperGui.CODER_ICON, new ManagerCoder(), I18n.get("CODER_TOOLTIP"));
+        this.setTabComponentAt(
+            this.indexOfTab("Coder"),
+            labelCoder
+        );
+        I18n.add("CODER", labelCoder);
+        
+        JLabel labelScan = new JLabel(I18n.get("SCANLIST"), HelperGui.SCANLIST_ICON, SwingConstants.CENTER);
+        this.addTab("Scan", HelperGui.SCANLIST_ICON, scanListManager, I18n.get("SCANLIST_TOOLTIP"));
+        this.setTabComponentAt(
+            this.indexOfTab("Scan"),
+            labelScan
+        );
+        I18n.add("SCANLIST", labelScan);
 
         this.fileManager.setButtonEnable(false);
         this.shellManager.setButtonEnable(false);

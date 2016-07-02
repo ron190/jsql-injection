@@ -24,10 +24,10 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import com.jsql.i18n.I18n;
+import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
-import com.jsql.model.bean.Table;
-import com.jsql.model.injection.MediatorModel;
-import com.jsql.model.injection.suspendable.AbstractSuspendable;
+import com.jsql.model.accessible.bean.Table;
+import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.ImageObserverAnimated;
@@ -74,7 +74,7 @@ public class NodeModelTable extends AbstractNodeModel {
     @Override
     public void runAction() {
         final Table selectedTable = (Table) this.dataObject;
-        if (!this.hasBeenSearched && !this.isRunning) {
+        if (!this.isSearched && !this.isRunning) {
             new SwingWorker<Object, Object>(){
 
                 @Override
@@ -90,15 +90,15 @@ public class NodeModelTable extends AbstractNodeModel {
 
     @Override
     void displayMenu(JPopupMenu tablePopupMenu, final TreePath path) {
-        JMenuItem mnCheckAll = new JMenuItem(I18n.CHECK_ALL, 'C');
-        I18n.components.get("CHECK_ALL").add(mnCheckAll);
-        JMenuItem mnUncheckAll = new JMenuItem(I18n.UNCHECK_ALL, 'U');
-        I18n.components.get("UNCHECK_ALL").add(mnCheckAll);
+        JMenuItem mnCheckAll = new JMenuItem(I18n.get("CHECK_ALL"), 'C');
+        I18n.add("CHECK_ALL", mnCheckAll);
+        JMenuItem mnUncheckAll = new JMenuItem(I18n.get("UNCHECK_ALL"), 'U');
+        I18n.add("UNCHECK_ALL", mnCheckAll);
 
         mnCheckAll.setIcon(HelperGui.EMPTY);
         mnUncheckAll.setIcon(HelperGui.EMPTY);
 
-        if (!this.hasBeenSearched) {
+        if (!this.isSearched) {
             mnCheckAll.setEnabled(false);
             mnUncheckAll.setEnabled(false);
 
@@ -108,10 +108,10 @@ public class NodeModelTable extends AbstractNodeModel {
         }
 
         class TableMenuCheckUncheck implements ActionListener {
-            private boolean check;
+            private boolean isCheckboxesSelected;
             
-            TableMenuCheckUncheck(boolean check) {
-                this.check = check;
+            TableMenuCheckUncheck(boolean isCheckboxesSelected) {
+                this.isCheckboxesSelected = isCheckboxesSelected;
             }
 
             @Override
@@ -126,8 +126,8 @@ public class NodeModelTable extends AbstractNodeModel {
                     DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(currentTableNode, i);
                     if (currentChild.getUserObject() instanceof AbstractNodeModel) {
                         AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
-                        columnTreeNodeModel.isChecked = this.check;
-                        currentTableModel.hasChildChecked = this.check;
+                        columnTreeNodeModel.isSelected = this.isCheckboxesSelected;
+                        currentTableModel.isContainingSelection = this.isCheckboxesSelected;
                     }
                 }
 
@@ -160,6 +160,6 @@ public class NodeModelTable extends AbstractNodeModel {
     
     @Override 
     public boolean isPopupDisplayable() {
-        return this.hasBeenSearched || !this.hasBeenSearched && this.isRunning;
+        return this.isSearched || !this.isSearched && this.isRunning;
     }
 }

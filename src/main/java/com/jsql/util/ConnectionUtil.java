@@ -1,8 +1,13 @@
 package com.jsql.util;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -15,7 +20,7 @@ import net.sourceforge.spnego.SpnegoHttpURLConnection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.jsql.exception.PreparationException;
+import com.jsql.model.exception.PreparationException;
 
 public class ConnectionUtil {
     /**
@@ -51,17 +56,14 @@ public class ConnectionUtil {
     public static String httpProtocol = "POST";
     
     public static void check() throws PreparationException {
-     // Test the HTTP connection
+        // Test the HTTP connection
         HttpURLConnection connection = null;
         try {
-            LOGGER.info("Starting new injection");
-            LOGGER.trace("Connection test...");
-
-            if (AuthenticationUtil.enableKerberos) {
+            if (AuthenticationUtil.isKerberos) {
                 String a = 
                         Pattern
                         .compile("(?s)\\{.*")
-                        .matcher(StringUtils.join(Files.readAllLines(Paths.get(AuthenticationUtil.kerberosLoginConf), Charset.defaultCharset()), ""))
+                        .matcher(StringUtils.join(Files.readAllLines(Paths.get(AuthenticationUtil.pathKerberosLogin), Charset.defaultCharset()), ""))
                         .replaceAll("")
                         .trim();
                 
@@ -70,11 +72,11 @@ public class ConnectionUtil {
             } else {
                 connection = (HttpURLConnection) new URL(ConnectionUtil.initialUrl).openConnection();
             }
-                
+            
             connection.setReadTimeout(15000);
             connection.setConnectTimeout(15000);
             connection.setDefaultUseCaches(false);
-            HttpURLConnection.setFollowRedirects(ConfigurationUtil.followRedirection);
+            HttpURLConnection.setFollowRedirects(PreferencesUtil.isFollowingRedirection);
             
             // Add headers if exists (Authorization:Basic, etc)
             for (String header: ConnectionUtil.headerData.split("\\\\r\\\\n")) {
@@ -103,4 +105,18 @@ public class ConnectionUtil {
         }
     }
     
+    public static String getSource(String url) throws MalformedURLException, IOException {
+        URLConnection connection = new URL(url).openConnection();
+        connection.setReadTimeout(15000);
+        connection.setConnectTimeout(15000);
+        
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String line = "";
+        String pageSource = "";
+        while ((line = reader.readLine()) != null) {
+            pageSource += line + "\n";
+        }
+        reader.close();
+        return pageSource;
+    }
 }

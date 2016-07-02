@@ -3,11 +3,11 @@ package com.jsql.model.vendor;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jsql.model.bean.Database;
-import com.jsql.model.bean.Table;
-import com.jsql.model.blind.ConcreteTimeInjection;
-import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.MediatorModel;
+import com.jsql.model.accessible.bean.Database;
+import com.jsql.model.accessible.bean.Table;
 import com.jsql.model.strategy.Strategy;
+import com.jsql.model.strategy.blind.ConcreteTimeInjection;
 import com.jsql.util.StringUtil;
 
 public class PostgreSQLVendor extends AbstractVendor {

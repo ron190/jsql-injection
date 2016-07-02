@@ -15,7 +15,8 @@ public class RowHeaderRenderer extends DefaultTableCellRenderer {
 
     @Override
     public Component getTableCellRendererComponent(
-        JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
+        JTable table, Object value, boolean isSelected,
+        boolean hasFocus, int row, int column
     ) {
         this.setBackground(new Color(230, 230, 230));
         // Report #218: ignore if value is null

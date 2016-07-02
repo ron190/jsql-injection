@@ -127,17 +127,17 @@ public class LightScrollPane extends JComponent {
     private void displayVerticalScrollBarIfNecessary(JViewport viewPort) {
         Rectangle viewRect = viewPort.getViewRect();
         Dimension viewSize = viewPort.getViewSize();
-        boolean shouldDisplayVerticalScrollBar =
+        boolean isDisplayingVerticalScrollBar =
                 viewSize.getHeight() > viewRect.getHeight();
-        verticalScrollBar.setVisible(shouldDisplayVerticalScrollBar);
+        verticalScrollBar.setVisible(isDisplayingVerticalScrollBar);
     }
 
     private void displayHorizontalScrollBarIfNecessary(JViewport viewPort) {
         Rectangle viewRect = viewPort.getViewRect();
         Dimension viewSize = viewPort.getViewSize();
-        boolean shouldDisplayHorizontalScrollBar =
+        boolean isDisplayingHorizontalScrollBar =
                 viewSize.getWidth() > viewRect.getWidth();
-        horizontalScrollBar.setVisible(shouldDisplayHorizontalScrollBar);
+        horizontalScrollBar.setVisible(isDisplayingHorizontalScrollBar);
     }
 
     private static class MyScrollBarButton extends JButton {

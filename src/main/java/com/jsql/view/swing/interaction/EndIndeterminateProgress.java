@@ -13,7 +13,7 @@ package com.jsql.view.swing.interaction;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import com.jsql.model.bean.AbstractElementDatabase;
+import com.jsql.model.accessible.bean.AbstractElementDatabase;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
@@ -46,7 +46,7 @@ public class EndIndeterminateProgress implements InteractionCommand {
             // Get the node
             AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) nodeModel.getUserObject();
             // Mark the node model as 'no loading bar'
-            progressingTreeNodeModel.hasIndeterminatedProgress = false;
+            progressingTreeNodeModel.isProgressing = false;
             // Mark the node model as 'no stop/pause/resume button'
             progressingTreeNodeModel.isRunning = false;
             

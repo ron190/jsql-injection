@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
-import com.jsql.util.ConfigurationUtil;
+import com.jsql.util.PreferencesUtil;
 
 /**
  * Action to export a JList.
@@ -52,7 +52,7 @@ public class MenuActionExport implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
         try {
             @SuppressWarnings("serial")
-            final JFileChooser importFileDialog = new JFileChooser(ConfigurationUtil.prefPathFile) {
+            final JFileChooser importFileDialog = new JFileChooser(PreferencesUtil.pathFile) {
                 @Override
                 public void approveSelection() {
                     File file = this.getSelectedFile();
@@ -60,7 +60,7 @@ public class MenuActionExport implements ActionListener {
                         if (file.exists()) {
                             int replace = JOptionPane.showConfirmDialog(
                                 this,
-                                file.getName() + " " +I18n.LIST_CONFIRM_REPLACE, I18n.LIST_CONFIRM_EXPORT,
+                                file.getName() + " " +I18n.get("LIST_CONFIRM_REPLACE"), I18n.get("LIST_CONFIRM_EXPORT"),
                                 JOptionPane.YES_NO_OPTION
                             );
                             switch (replace) {
@@ -81,7 +81,7 @@ public class MenuActionExport implements ActionListener {
                     }
                 }
             };
-            importFileDialog.setDialogTitle(I18n.LIST_EXPORT);
+            importFileDialog.setDialogTitle(I18n.get("LIST_EXPORT"));
             int choice = importFileDialog.showSaveDialog(myList.getTopLevelAncestor());
             if (choice != JFileChooser.APPROVE_OPTION) {
                 return;

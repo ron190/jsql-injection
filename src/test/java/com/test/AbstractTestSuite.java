@@ -19,12 +19,12 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.jsql.exception.PreparationException;
-import com.jsql.exception.StoppableException;
 import com.jsql.model.accessible.DataAccess;
-import com.jsql.model.bean.Column;
-import com.jsql.model.bean.Database;
-import com.jsql.model.bean.Table;
+import com.jsql.model.accessible.bean.Column;
+import com.jsql.model.accessible.bean.Database;
+import com.jsql.model.accessible.bean.Table;
+import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.StoppableException;
 
 public abstract class AbstractTestSuite {
     /**

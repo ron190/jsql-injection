@@ -16,8 +16,8 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.injection.InjectionModel;
-import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.InjectionModel;
+import com.jsql.model.MediatorModel;
 
 public class GitUtil {
     /**
@@ -37,25 +37,16 @@ public class GitUtil {
         //not called
     }
 
-    public static void checkVersion() {
+    public static void checkUpdate() {
         try {
-            URLConnection con = new URL("https://raw.githubusercontent.com/ron190/jsql-injection/master/.version").openConnection();
-            con.setReadTimeout(60000);
-            con.setConnectTimeout(60000);
-            
-            BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String line, pageSource = "";
-            while ((line = reader.readLine()) != null) {
-                pageSource += line + "\n";
-            }
-            reader.close();
+            String pageSource = ConnectionUtil.getSource("https://raw.githubusercontent.com/ron190/jsql-injection/master/.version");
             
             Float gitVersion = Float.parseFloat(pageSource);
-            if (gitVersion > Float.parseFloat(InjectionModel.JSQLVERSION)) {
-                LOGGER.warn(I18n.UPDATE_NEW_VERSION_AVAILABLE);
+            if (gitVersion > Float.parseFloat(InjectionModel.VERSION_JSQL)) {
+                LOGGER.warn(I18n.get("UPDATE_NEW_VERSION_AVAILABLE"));
             }
         } catch (NumberFormatException | IOException e) {
-            LOGGER.warn(I18n.UPDATE_EXCEPTION);
+            LOGGER.warn(I18n.get("UPDATE_EXCEPTION"));
             LOGGER.error(e, e);
         }
     }
@@ -66,7 +57,7 @@ public class GitUtil {
         
         String clientDescription = 
             "```\n"
-            + "jSQL: v"+ InjectionModel.JSQLVERSION +"\n"
+            + "jSQL: v"+ InjectionModel.VERSION_JSQL +"\n"
             + "Java: v"+ javaVersion +"-"+ osArch +"\n"
             + "OS: "+ System.getProperty("os.name") +" (v"+ System.getProperty("os.version") +")\n"
             + "Desktop: "+( System.getProperty("sun.desktop") != null ? System.getProperty("sun.desktop") : "undefined" )+"\n"
@@ -89,7 +80,7 @@ public class GitUtil {
     
     public static void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
         // Test if proxy is available then apply settings
-        if (ProxyUtil.useProxy && !"".equals(ProxyUtil.proxyAddress) && !"".equals(ProxyUtil.proxyPort)) {
+        if (ProxyUtil.isUsingProxy && !"".equals(ProxyUtil.proxyAddress) && !"".equals(ProxyUtil.proxyPort)) {
             try {
                 if (showOnConsole == ShowOnConsole.YES) {
                     LOGGER.info("Testing proxy...");

@@ -33,10 +33,10 @@ import javax.swing.tree.DefaultTreeModel;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.bean.AbstractElementDatabase;
-import com.jsql.model.bean.Request;
-import com.jsql.model.injection.InjectionModel;
-import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.InjectionModel;
+import com.jsql.model.MediatorModel;
+import com.jsql.model.accessible.bean.AbstractElementDatabase;
+import com.jsql.model.accessible.bean.Request;
 import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.dropshadow.ShadowPopupFactory;
 import com.jsql.view.swing.interaction.InteractionCommand;
@@ -149,9 +149,6 @@ public class FrameJSql extends JFrame implements Observer {
         PanelStatus panelStatusBar = new PanelStatus();
         this.add(panelStatusBar);
         MediatorGui.register(panelStatusBar);
-
-        // Reduce size of components
-        this.pack(); // nécessaire après le masquage des param proxy
 
         // Size of window
         this.setSize(1024, 768);

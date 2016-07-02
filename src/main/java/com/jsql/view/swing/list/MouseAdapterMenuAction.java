@@ -28,7 +28,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
 import com.jsql.i18n.I18n;
-import com.jsql.util.ConfigurationUtil;
+import com.jsql.util.PreferencesUtil;
 import com.jsql.view.swing.HelperGui;
 
 /**
@@ -38,15 +38,15 @@ public class MouseAdapterMenuAction extends MouseAdapter {
     /**
      * JList to add popupmenu.
      */
-    private DnDList myList;
+    private DnDList dndList;
     
     /**
      * Create a popup menu for current JList item.
-     * @param myList List with action
+     * @param dndList List with action
      * @param mouseOver Is JList hovered
      */
-    public MouseAdapterMenuAction(DnDList myList) {
-        this.myList = myList;
+    public MouseAdapterMenuAction(DnDList dndList) {
+        this.dndList = dndList;
     }
     
     /**
@@ -60,24 +60,24 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 
             JPopupMenu tablePopupMenu = new JPopupMenu();
 
-            JMenuItem mnImport = new JMenuItem(I18n.IMPORT);
-            I18n.components.get("IMPORT").add(mnImport);
-            JMenuItem mnExport = new JMenuItem(I18n.EXPORT);
-            I18n.components.get("EXPORT").add(mnExport);
-            JMenuItem mnCut = new JMenuItem(I18n.CUT);
-            I18n.components.get("CUT").add(mnCut);
-            JMenuItem mnCopy = new JMenuItem(I18n.COPY);
-            I18n.components.get("COPY").add(mnCopy);
-            JMenuItem mnPaste = new JMenuItem(I18n.PASTE);
-            I18n.components.get("PASTE").add(mnPaste);
-            JMenuItem mnDelete = new JMenuItem(I18n.DELETE);
-            I18n.components.get("DELETE").add(mnDelete);
-            JMenuItem mnNew = new JMenuItem(I18n.NEW_VALUE);
-            I18n.components.get("NEW_VALUE").add(mnNew);
-            JMenuItem mnRestoreDefault = new JMenuItem(I18n.RESTORE_DEFAULT);
-            I18n.components.get("RESTORE_DEFAULT").add(mnRestoreDefault);
-            JMenuItem mnSelectAll = new JMenuItem(I18n.SELECT_ALL);
-            I18n.components.get("SELECT_ALL").add(mnSelectAll);
+            JMenuItem mnImport = new JMenuItem(I18n.get("IMPORT"));
+            I18n.add("IMPORT", mnImport);
+            JMenuItem mnExport = new JMenuItem(I18n.get("EXPORT"));
+            I18n.add("EXPORT", mnExport);
+            JMenuItem mnCut = new JMenuItem(I18n.get("CUT"));
+            I18n.add("CUT", mnCut);
+            JMenuItem mnCopy = new JMenuItem(I18n.get("COPY"));
+            I18n.add("COPY", mnCopy);
+            JMenuItem mnPaste = new JMenuItem(I18n.get("PASTE"));
+            I18n.add("PASTE", mnPaste);
+            JMenuItem mnDelete = new JMenuItem(I18n.get("DELETE"));
+            I18n.add("DELETE", mnDelete);
+            JMenuItem mnNew = new JMenuItem(I18n.get("NEW_VALUE"));
+            I18n.add("NEW_VALUE", mnNew);
+            JMenuItem mnRestoreDefault = new JMenuItem(I18n.get("RESTORE_DEFAULT"));
+            I18n.add("RESTORE_DEFAULT", mnRestoreDefault);
+            JMenuItem mnSelectAll = new JMenuItem(I18n.get("SELECT_ALL"));
+            I18n.add("SELECT_ALL", mnSelectAll);
             
             mnImport.setIcon(HelperGui.EMPTY);
             mnExport.setIcon(HelperGui.EMPTY);
@@ -95,20 +95,20 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             mnSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
             
             //Create a file chooser
-            final JFileChooser importFileDialog = new JFileChooser(ConfigurationUtil.prefPathFile);
+            final JFileChooser importFileDialog = new JFileChooser(PreferencesUtil.pathFile);
             importFileDialog.setDialogTitle("Import a list of file paths");
             importFileDialog.setMultiSelectionEnabled(true);
 
-            mnNew.addActionListener(new MenuActionNewValue(myList));
+            mnNew.addActionListener(new MenuActionNewValue(dndList));
 
             mnImport.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                    int choice = importFileDialog.showOpenDialog(myList.getTopLevelAncestor());
+                    int choice = importFileDialog.showOpenDialog(dndList.getTopLevelAncestor());
                     if (choice == JFileChooser.APPROVE_OPTION) {
-                        myList.dropPasteFile(
+                        dndList.dropPasteFile(
                             Arrays.asList(importFileDialog.getSelectedFiles()), 
-                            myList.locationToIndex(e.getPoint())
+                            dndList.locationToIndex(e.getPoint())
                         );
                     }
                 }
@@ -117,10 +117,10 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             mnCopy.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Action action = myList.getActionMap().get(TransferHandler.getCopyAction().getValue(Action.NAME));
+                    Action action = dndList.getActionMap().get(TransferHandler.getCopyAction().getValue(Action.NAME));
                     if (action != null) {
                         action.actionPerformed(
-                            new ActionEvent(myList, ActionEvent.ACTION_PERFORMED, null)
+                            new ActionEvent(dndList, ActionEvent.ACTION_PERFORMED, null)
                         );
                     }
                 }
@@ -129,10 +129,10 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             mnCut.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Action action = myList.getActionMap().get(TransferHandler.getCutAction().getValue(Action.NAME));
+                    Action action = dndList.getActionMap().get(TransferHandler.getCutAction().getValue(Action.NAME));
                     if (action != null) {
                         action.actionPerformed(
-                            new ActionEvent(myList, ActionEvent.ACTION_PERFORMED, null)
+                            new ActionEvent(dndList, ActionEvent.ACTION_PERFORMED, null)
                         );
                     }
                 }
@@ -141,10 +141,10 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             mnPaste.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Action action = myList.getActionMap().get(TransferHandler.getPasteAction().getValue(Action.NAME));
+                    Action action = dndList.getActionMap().get(TransferHandler.getPasteAction().getValue(Action.NAME));
                     if (action != null) {
                         action.actionPerformed(
-                            new ActionEvent(myList, ActionEvent.ACTION_PERFORMED, null)
+                            new ActionEvent(dndList, ActionEvent.ACTION_PERFORMED, null)
                         );
                     }
                 }
@@ -153,18 +153,18 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             mnDelete.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                    myList.removeSelectedItem();
+                    dndList.removeSelectedItem();
                 }
             });
 
-            mnExport.addActionListener(new MenuActionExport(myList));
+            mnExport.addActionListener(new MenuActionExport(dndList));
 
             mnRestoreDefault.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                    myList.listModel.clear();
-                    for (String path: myList.defaultList) {
-                        myList.listModel.addElement(new ListItem(path));
+                    dndList.listModel.clear();
+                    for (String path: dndList.defaultList) {
+                        dndList.listModel.addElement(new ListItem(path));
                     }
                 }
             });
@@ -173,9 +173,9 @@ public class MouseAdapterMenuAction extends MouseAdapter {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
                     int start = 0;
-                    int end = myList.getModel().getSize() - 1;
+                    int end = dndList.getModel().getSize() - 1;
                     if (end >= 0) {
-                        myList.setSelectionInterval(start, end);
+                        dndList.setSelectionInterval(start, end);
                     }
                 }
             });
@@ -201,16 +201,16 @@ public class MouseAdapterMenuAction extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         if (SwingUtilities.isRightMouseButton(e)) {
-            int clickIndex = myList.locationToIndex(e.getPoint());
+            int clickIndex = dndList.locationToIndex(e.getPoint());
             boolean containsIndex = false;
-            for (int currentIndex: myList.getSelectedIndices()) {
+            for (int currentIndex: dndList.getSelectedIndices()) {
                 if (currentIndex == clickIndex) {
                     containsIndex = true;
                     break;
                 }
             }
             if (!containsIndex) {
-                myList.setSelectedIndex(clickIndex);
+                dndList.setSelectedIndex(clickIndex);
             }
         }
         showPopup(e);

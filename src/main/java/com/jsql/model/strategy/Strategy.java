@@ -1,7 +1,6 @@
 package com.jsql.model.strategy;
 
 public enum Strategy {
-    
     UNDEFINED("Undefined", null),
     BLIND("Blind", new BlindStrategy()),
     TIME("Time", new TimeStrategy()),

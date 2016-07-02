@@ -12,12 +12,12 @@ package com.jsql.model.strategy;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.exception.PreparationException;
-import com.jsql.exception.StoppableException;
-import com.jsql.model.bean.Request;
-import com.jsql.model.blind.ConcreteBlindInjection;
-import com.jsql.model.injection.MediatorModel;
-import com.jsql.model.injection.suspendable.AbstractSuspendable;
+import com.jsql.model.MediatorModel;
+import com.jsql.model.accessible.bean.Request;
+import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.StoppableException;
+import com.jsql.model.strategy.blind.ConcreteBlindInjection;
+import com.jsql.model.suspendable.AbstractSuspendable;
 
 /**
  * Injection strategy using blind attack.

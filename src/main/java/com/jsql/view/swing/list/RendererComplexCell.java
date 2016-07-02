@@ -38,10 +38,10 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
 
     @SuppressWarnings("serial")
     public Component getListCellRendererComponent(
-        JList<? extends ListItem> list, ListItem value, int index, boolean isSelected, boolean cellHasFocus
+        JList<? extends ListItem> list, ListItem value, int index, boolean isSelected, boolean isFocused
     ) {
         JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(
-            list, value, index, isSelected, cellHasFocus
+            list, value, index, isSelected, isFocused
         );
 
         renderer.setFont(new Font("Segoe UI", Font.PLAIN, renderer.getFont().getSize()));
@@ -63,7 +63,7 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
             renderer.setBorder(new LineBorder(HelperGui.BLU_COLOR, 1, false));
         } else if (isSelected && !list.isFocusOwner()) {
             renderer.setBorder(new LineBorder(new Color(218, 218, 218), 1, false));
-        } else if (cellHasFocus) {
+        } else if (isFocused) {
             renderer.setBorder(BorderFactory.createCompoundBorder( new AbstractBorder() {
                 @Override
                 public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {

@@ -1,7 +1,7 @@
 package com.jsql.model.vendor;
 
-import com.jsql.model.bean.Database;
-import com.jsql.model.bean.Table;
+import com.jsql.model.accessible.bean.Database;
+import com.jsql.model.accessible.bean.Table;
 
 public abstract class AbstractVendor {    
     

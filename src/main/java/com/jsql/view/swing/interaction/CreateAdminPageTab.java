@@ -87,24 +87,24 @@ public class CreateAdminPageTab implements InteractionCommand {
 
         final JPopupMenu menu = new JPopupMenu();
         
-        JMenuItem item = new JMenuItem(I18n.COPY_PAGE_URL);
-        I18n.components.get("COPY_PAGE_URL").add(item);
+        JMenuItem item = new JMenuItem(I18n.get("COPY_PAGE_URL"));
+        I18n.add("COPY_PAGE_URL", item);
         item.setIcon(HelperGui.EMPTY);
         
         JMenuItem copyItem = new JMenuItem();
         copyItem.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         copyItem.setMnemonic('C');
-        copyItem.setText(I18n.COPY);
-        I18n.components.get("COPY").add(copyItem);
+        copyItem.setText(I18n.get("COPY"));
+        I18n.add("COPY", copyItem);
         copyItem.setIcon(HelperGui.EMPTY);
         
         JMenuItem itemSelectAll = new JMenuItem();
         itemSelectAll.setIcon(HelperGui.EMPTY);
         itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-        itemSelectAll.setText(I18n.SELECT_ALL);
-        I18n.components.get("SELECT_ALL").add(itemSelectAll);
+        itemSelectAll.setText(I18n.get("SELECT_ALL"));
+        I18n.add("SELECT_ALL", itemSelectAll);
         itemSelectAll.setMnemonic('A');
         
         menu.add(item);
@@ -160,7 +160,7 @@ public class CreateAdminPageTab implements InteractionCommand {
         MediatorGui.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(new ImageIcon(CreateAdminPageTab.class.getResource("/com/jsql/view/swing/resources/images/admin.png")));
+        TabHeader header = new TabHeader(new ImageIcon(CreateAdminPageTab.class.getResource("/com/jsql/view/swing/resources/images/icons/admin.png")));
 
         MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), "<html>"+ url +"</html>");
 

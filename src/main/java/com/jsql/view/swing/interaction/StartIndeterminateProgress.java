@@ -13,7 +13,7 @@ package com.jsql.view.swing.interaction;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import com.jsql.model.bean.AbstractElementDatabase;
+import com.jsql.model.accessible.bean.AbstractElementDatabase;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
@@ -44,7 +44,7 @@ public class StartIndeterminateProgress implements InteractionCommand {
         // Get the node
         AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
         // Mark the node model as 'loading'
-        progressingTreeNodeModel.hasIndeterminatedProgress = true;
+        progressingTreeNodeModel.isProgressing = true;
 
         // Update the node
         treeModel.nodeChanged(node);

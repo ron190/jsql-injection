@@ -11,12 +11,12 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.exception.PreparationException;
-import com.jsql.exception.StoppableException;
-import com.jsql.model.bean.Request;
-import com.jsql.model.injection.MediatorModel;
-import com.jsql.model.injection.suspendable.AbstractSuspendable;
-import com.jsql.model.injection.suspendable.SuspendableGetSQLIndexes;
+import com.jsql.model.MediatorModel;
+import com.jsql.model.accessible.bean.Request;
+import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.StoppableException;
+import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.model.suspendable.SuspendableGetSQLIndexes;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.StringUtil;
 

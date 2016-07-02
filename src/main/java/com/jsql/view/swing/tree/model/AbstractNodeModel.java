@@ -23,9 +23,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.bean.AbstractElementDatabase;
-import com.jsql.model.injection.MediatorModel;
-import com.jsql.model.injection.suspendable.AbstractSuspendable;
+import com.jsql.model.MediatorModel;
+import com.jsql.model.accessible.bean.AbstractElementDatabase;
+import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.ActionLoadStop;
@@ -51,12 +51,12 @@ public abstract class AbstractNodeModel {
     /**
      * Current item injection progress regarding total number of elements.
      */
-    public int childUpgradeCount = 0;
+    public int indexProgress = 0;
 
     /**
      * Used by checkbox node ; true if checkbox is checked, false otherwise.
      */
-    public boolean isChecked = false;
+    public boolean isSelected = false;
 
     /**
      * Indicates if process on current node is running.
@@ -67,25 +67,25 @@ public abstract class AbstractNodeModel {
      * True if current table node has checkbox selected, false otherwise.
      * Used to display popup menu and block injection start if no checkbox selected.
      */
-    public boolean hasChildChecked = false;
+    public boolean isContainingSelection = false;
 
     /**
      * True if current node has already been filled, false otherwise.
      * Used to display correct popup menu and block injection start if already done.
      */
-    public boolean hasBeenSearched = false;
+    public boolean isSearched = false;
 
     /**
      * True if current node is loading with unknown total number, false otherwise.
      * Used to display gif loader.
      */
-    public boolean hasIndeterminatedProgress = false;
+    public boolean isProgressing = false;
 
     /**
      * True if current node is loading with total number known, false otherwise.
      * Used to display progress bar.
      */
-    public boolean hasProgress = false;
+    public boolean isLoading = false;
 
     /**
      * Create a functional model for tree node.
@@ -122,17 +122,17 @@ public abstract class AbstractNodeModel {
         JPopupMenu tablePopupMenu = new JPopupMenu();
         AbstractSuspendable suspendableTask = MediatorModel.model().suspendables.get(this.dataObject);
 
-        JMenuItem mnLoad = new JMenuItem(this.isRunning ? I18n.STOP : I18n.LOAD, 'o');
+        JMenuItem mnLoad = new JMenuItem(this.isRunning ? I18n.get("STOP") : I18n.get("LOAD"), 'o');
         JMenuItem mnPause = new JMenuItem(
             // Report #133: ignore if thread not found
             (suspendableTask != null && suspendableTask.isPaused())
-            ? I18n.RESUME
-            : I18n.PAUSE
+            ? I18n.get("RESUME")
+            : I18n.get("PAUSE")
         , 's');
         mnLoad.setIcon(HelperGui.EMPTY);
         mnPause.setIcon(HelperGui.EMPTY);
 
-        if (!this.hasChildChecked && !this.isRunning) {
+        if (!this.isContainingSelection && !this.isRunning) {
             mnLoad.setEnabled(false);
         }
         mnLoad.addActionListener(new ActionLoadStop(this, currentTableNode));
@@ -183,10 +183,10 @@ public abstract class AbstractNodeModel {
             panel.label.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         }
 
-        if (this.hasProgress) {
+        if (this.isLoading) {
             displayProgress(panel, currentNode);
             panel.hideIcon();
-        } else if (this.hasIndeterminatedProgress) {
+        } else if (this.isProgressing) {
             panel.showLoader();
             panel.hideIcon();
 
@@ -214,7 +214,7 @@ public abstract class AbstractNodeModel {
     protected void displayProgress(PanelNode panel, DefaultMutableTreeNode currentNode) {
         int dataCount = this.dataObject.getCount();
         panel.progressBar.setMaximum(dataCount);
-        panel.progressBar.setValue(this.childUpgradeCount);
+        panel.progressBar.setValue(this.indexProgress);
         panel.progressBar.setVisible(true);
         
         // Report #135: ignore if thread not found

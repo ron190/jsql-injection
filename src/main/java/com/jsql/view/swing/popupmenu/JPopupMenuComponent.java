@@ -39,16 +39,16 @@ public class JPopupMenuComponent extends JPopupMenu {
         copyItem.setAction(component.getActionMap().get(DefaultEditorKit.copyAction));
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         copyItem.setMnemonic('C');
-        copyItem.setText(I18n.COPY);
-        I18n.components.get("COPY").add(copyItem);
+        copyItem.setText(I18n.get("COPY"));
+        I18n.add("COPY", copyItem);
         copyItem.setIcon(HelperGui.EMPTY);
         this.setLightWeightPopupEnabled(false);
 
         JMenuItem selectAllItem = new JMenuItem();
         selectAllItem.setIcon(HelperGui.EMPTY);
         selectAllItem.setAction(component.getActionMap().get(DefaultEditorKit.selectAllAction));
-        selectAllItem.setText(I18n.SELECT_ALL);
-        I18n.components.get("SELECT_ALL").add(selectAllItem);
+        selectAllItem.setText(I18n.get("SELECT_ALL"));
+        I18n.add("SELECT_ALL", selectAllItem);
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         selectAllItem.setMnemonic('A');
 

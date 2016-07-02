@@ -64,12 +64,12 @@ public class CreateShellTab implements InteractionCommand {
         MediatorGui.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(new ImageIcon(CreateShellTab.class.getResource("/com/jsql/view/swing/resources/images/shell.png")));
+        TabHeader header = new TabHeader(new ImageIcon(CreateShellTab.class.getResource("/com/jsql/view/swing/resources/images/icons/shell.png")));
 
         MediatorGui.tabResults().setToolTipTextAt(
             MediatorGui.tabResults().indexOfComponent(scroller),
-            "<html><b>URL</b><br>" + url + RessourceAccess.WEBSHELL_FILENAME
-            + "<br><b>Path</b><br>" + path + RessourceAccess.WEBSHELL_FILENAME + "</html>"
+            "<html><b>URL</b><br>" + url + RessourceAccess.FILENAME_WEBSHELL
+            + "<br><b>Path</b><br>" + path + RessourceAccess.FILENAME_WEBSHELL + "</html>"
         );
 
         // Apply the custom header to the tab

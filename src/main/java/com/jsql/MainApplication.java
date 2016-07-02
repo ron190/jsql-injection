@@ -6,11 +6,11 @@ import org.apache.log4j.Appender;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
 
-import com.jsql.model.injection.InjectionModel;
-import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.InjectionModel;
+import com.jsql.model.MediatorModel;
 import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.CertificateUtil;
-import com.jsql.util.ConfigurationUtil;
+import com.jsql.util.PreferencesUtil;
 import com.jsql.util.ExceptionUtil;
 import com.jsql.util.GitUtil;
 import com.jsql.util.ProxyUtil;
@@ -37,25 +37,25 @@ public class MainApplication {
     public static void main(String[] args) {
         CertificateUtil.ignoreCertificationChain();
         ExceptionUtil.setUncaughtExceptionHandler();
-        ProxyUtil.initializeProxy();
-        ConfigurationUtil.initializePreferences();
-        AuthenticationUtil.initializeProtocol();
+        ProxyUtil.initialize();
+        PreferencesUtil.initialize();
+        AuthenticationUtil.initialize();
         
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);
         
         try {
             FrameJSql gui = new FrameJSql();
-            MediatorGui.register(gui);
             model.addObserver(gui);
+            MediatorGui.register(gui);
         } catch (HeadlessException e) {
             LOGGER.error("HeadlessException: command line execution in jSQL not supported yet.");
         }
         
-        model.instanciationDone();
+        model.sendVersionToView();
         
-        if (ConfigurationUtil.checkUpdateAtStartup) {
-            GitUtil.checkVersion();
+        if (PreferencesUtil.isCheckingUpdate) {
+            GitUtil.checkUpdate();
         }
     }
 }

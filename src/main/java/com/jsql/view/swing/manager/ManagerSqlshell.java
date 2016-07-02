@@ -18,10 +18,10 @@ import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.jsql.exception.PreparationException;
-import com.jsql.exception.StoppableException;
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
+import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.StoppableException;
 import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.text.JPopupTextField;
 
@@ -31,9 +31,9 @@ import com.jsql.view.swing.text.JPopupTextField;
 @SuppressWarnings("serial")
 public class ManagerSqlshell extends ManagerAbstractShell {
     
-    final JTextField username = new JPopupTextField(I18n.SQL_SHELL_USERNAME_LABEL).getProxy();
+    final JTextField username = new JPopupTextField(I18n.get("SQL_SHELL_USERNAME_LABEL")).getProxy();
     
-    final JTextField password = new JPopupTextField(I18n.SQL_SHELL_PASSWORD_LABEL).getProxy();
+    final JTextField password = new JPopupTextField(I18n.get("SQL_SHELL_PASSWORD_LABEL")).getProxy();
     
     /**
      * Build the manager panel.
@@ -48,8 +48,8 @@ public class ManagerSqlshell extends ManagerAbstractShell {
         userPassPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         userPassPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 1, 1));
         
-        username.setToolTipText(I18n.SQL_SHELL_USERNAME_TOOLTIP);
-        password.setToolTipText(I18n.SQL_SHELL_PASSWORD_TOOLTIP);
+        username.setToolTipText(I18n.get("SQL_SHELL_USERNAME_TOOLTIP"));
+        password.setToolTipText(I18n.get("SQL_SHELL_PASSWORD_TOOLTIP"));
         
         username.setBorder(HelperGui.BLU_ROUND_BORDER);
         password.setBorder(HelperGui.BLU_ROUND_BORDER);

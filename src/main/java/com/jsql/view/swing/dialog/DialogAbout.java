@@ -45,7 +45,7 @@ import javax.swing.event.HyperlinkListener;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.injection.InjectionModel;
+import com.jsql.model.InjectionModel;
 import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
@@ -128,7 +128,7 @@ public class DialogAbout extends JDialog {
         lastLine.add(Box.createGlue());
         lastLine.add(this.close);
 
-        JLabel iconJSQL = new JLabel(new ImageIcon(DialogAbout.class.getResource("/com/jsql/view/swing/resources/images/app-32x32.png")));
+        JLabel iconJSQL = new JLabel(new ImageIcon(DialogAbout.class.getResource("/com/jsql/view/swing/resources/images/icons/app-32x32.png")));
         iconJSQL.setBorder(BorderFactory.createEmptyBorder(2, 15, 2, 15));
         dialogPane.add(iconJSQL, BorderLayout.WEST);
         dialogPane.add(lastLine, BorderLayout.SOUTH);
@@ -147,7 +147,7 @@ public class DialogAbout extends JDialog {
             }
             reader.close();
 
-            text[0].setText(result.replace("%JSQLVERSION%", InjectionModel.JSQLVERSION));
+            text[0].setText(result.replace("%JSQLVERSION%", InjectionModel.VERSION_JSQL));
         } catch (IOException e) {
             LOGGER.error(e, e);
         }

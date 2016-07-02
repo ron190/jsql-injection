@@ -13,7 +13,7 @@ package com.jsql.view.swing.interaction;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import com.jsql.model.bean.AbstractElementDatabase;
+import com.jsql.model.accessible.bean.AbstractElementDatabase;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
@@ -48,7 +48,7 @@ public class UpdateProgress implements InteractionCommand {
             // Get the node
             AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
             // Update the progress value of the model
-            progressingTreeNodeModel.childUpgradeCount = dataCount;
+            progressingTreeNodeModel.indexProgress = dataCount;
             
             // Tree model, update the tree (refresh, add node, etc)
             DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();

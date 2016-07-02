@@ -20,7 +20,7 @@ import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.table.DefaultTableModel;
 
-import com.jsql.model.bean.HttpHeader;
+import com.jsql.model.accessible.bean.HttpHeader;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
 

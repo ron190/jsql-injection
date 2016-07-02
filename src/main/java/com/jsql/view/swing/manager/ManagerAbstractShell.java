@@ -34,9 +34,9 @@ import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.exception.PreparationException;
-import com.jsql.exception.StoppableException;
 import com.jsql.i18n.I18n;
+import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.StoppableException;
 import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -52,7 +52,7 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
      */
     private static final Logger LOGGER = Logger.getLogger(ManagerAbstractShell.class);
 
-    final JTextField urlShell = new JPopupTextField(I18n.SHELL_URL_LABEL).getProxy();
+    final JTextField urlShell = new JPopupTextField(I18n.get("SHELL_URL_LABEL")).getProxy();
     
     /**
      * Build the manager panel.
@@ -60,7 +60,7 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
     public ManagerAbstractShell() {
         this.setLayout(new BorderLayout());
 
-        this.setDefaultText(I18n.SHELL_RUN_BUTTON);
+        this.setDefaultText(I18n.get("SHELL_RUN_BUTTON"));
         
         List<String> pathsList = new ArrayList<>();
         try {
@@ -81,7 +81,7 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
 
-        String urlTooltip = I18n.SHELL_URL_TOOLTIP;
+        String urlTooltip = I18n.get("SHELL_URL_TOOLTIP");
         
         urlShell.setToolTipText(urlTooltip);
         urlShell.setBorder(
@@ -104,21 +104,21 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
         );
         
         this.run = new JButton(
-            I18n.SHELL_RUN_BUTTON, 
-            new ImageIcon(ManagerAbstractShell.class.getResource("/com/jsql/view/swing/resources/images/shellSearch.png"))
+            I18n.get("SHELL_RUN_BUTTON"), 
+            new ImageIcon(ManagerAbstractShell.class.getResource("/com/jsql/view/swing/resources/images/icons/shellSearch.png"))
         );
-        I18n.components.get("SHELL_RUN_BUTTON").add(this.run);
-        this.run.setToolTipText(I18n.SHELL_RUN_BUTTON_TOOLTIP);
+        I18n.add("SHELL_RUN_BUTTON", this.run);
+        this.run.setToolTipText(I18n.get("SHELL_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
 
         this.run.setBorder(HelperGui.BLU_ROUND_BORDER);
 
         this.run.addActionListener(new ActionRunShell());
 
-        this.privilege = new JLabel(I18n.PRIVILEGE_LABEL, HelperGui.SQUARE_GREY, SwingConstants.LEFT);
-        I18n.components.get("PRIVILEGE_LABEL").add(this.privilege);
+        this.privilege = new JLabel(I18n.get("PRIVILEGE_LABEL"), HelperGui.SQUARE_GREY, SwingConstants.LEFT);
+        I18n.add("PRIVILEGE_LABEL", this.privilege);
         this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperGui.DEFAULT_BACKGROUND));
-        this.privilege.setToolTipText(I18n.PRIVILEGE_TOOLTIP);
+        this.privilege.setToolTipText(I18n.get("PRIVILEGE_TOOLTIP"));
 
         lastLine.add(this.privilege);
         lastLine.add(Box.createHorizontalStrut(5));

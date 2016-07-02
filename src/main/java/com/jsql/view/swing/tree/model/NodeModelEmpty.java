@@ -38,9 +38,10 @@ public class NodeModelEmpty extends AbstractNodeModel {
     }
 
     @Override
-    public Component getComponent(JTree tree, Object nodeRenderer,
-            boolean selected, boolean expanded, boolean leaf, int row,
-            boolean hasFocus) {
+    public Component getComponent(
+        JTree tree, Object nodeRenderer, boolean selected, 
+        boolean expanded, boolean leaf, int row, boolean hasFocus
+    ) {
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         JPanel emptyPanel = new JPanel(new BorderLayout());
         JLabel text = new JLabel(currentNode.getUserObject().toString());

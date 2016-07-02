@@ -3,9 +3,9 @@ package com.jsql.model.vendor;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jsql.model.bean.Database;
-import com.jsql.model.bean.Table;
-import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.MediatorModel;
+import com.jsql.model.accessible.bean.Database;
+import com.jsql.model.accessible.bean.Table;
 import com.jsql.model.strategy.Strategy;
 import com.jsql.util.StringUtil;
 
@@ -111,7 +111,7 @@ public class H2Vendor extends AbstractVendor {
     public String getSqlRows(String[] columns, Database database, Table table) {
         String formatListColumn = StringUtil.join(columns, "{%}");
         
-        // 7f caractère d'effacement, dernier code hexa supporté par mysql, donne 3f=>? à partir de 80
+        // character 7f, last available hexa character (starting at character 80, it gives ?)
         formatListColumn = formatListColumn.replace("{%}", "`,'')),'%7f',trim(ifnull(`");
         
         formatListColumn = "trim(ifnull(`" + formatListColumn + "`,''))";

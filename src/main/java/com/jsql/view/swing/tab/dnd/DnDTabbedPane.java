@@ -49,14 +49,14 @@ public class DnDTabbedPane extends JTabbedPane {
             this.index = index;
         }
         public int getIndex() {
-            return index;
+            return this.index;
         }
-        private boolean dropable = true;
-        public void setDropable(boolean flag) {
-            dropable = flag;
+        private boolean isDropable = true;
+        public void setDropable(boolean isDropable) {
+            this.isDropable = isDropable;
         }
         public boolean isDropable() {
-            return dropable;
+            return this.isDropable;
         }
     }
 
@@ -164,9 +164,9 @@ public class DnDTabbedPane extends JTabbedPane {
         return dropLocation;
     }
     
-    public Object setDropLocationLocal(TransferHandler.DropLocation location, Object state, boolean forDrop) {
+    public Object setDropLocationLocal(TransferHandler.DropLocation location, Object state, boolean isDroping) {
         DropLocation old = dropLocation;
-        if (location == null || !forDrop) {
+        if (location == null || !isDroping) {
             dropLocation = new DropLocation(new Point(), -1);
         } else if (location instanceof DropLocation) {
             dropLocation = (DropLocation) location;

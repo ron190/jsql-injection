@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-import com.jsql.model.bean.Request;
-import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.MediatorModel;
+import com.jsql.model.accessible.bean.Request;
 import com.jsql.util.StringUtil;
 
 /**
@@ -34,7 +34,7 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
 
     @Override
     public CallableAdminPage call() throws Exception {
-        if (!RessourceAccess.endAdminSearch) {
+        if (!RessourceAccess.isSearchAdminStopped) {
             URL targetUrl = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) targetUrl.openConnection();
             connection.setRequestMethod("HEAD");

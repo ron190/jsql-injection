@@ -3,9 +3,9 @@ package com.jsql.model.vendor;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jsql.model.bean.Database;
-import com.jsql.model.bean.Table;
-import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.MediatorModel;
+import com.jsql.model.accessible.bean.Database;
+import com.jsql.model.accessible.bean.Table;
 import com.jsql.util.StringUtil;
 
 public class DerbyVendor extends AbstractVendor {
@@ -43,8 +43,8 @@ public class DerbyVendor extends AbstractVendor {
             + "where+schemaname='" + table.getParent() + "'"
             + "and+tablename='" + table + "'"
             /**
-             * TODO impossible de caster un numeric to string dans getValues()
-             * => masquage des colonnes numériques
+             * TODO casting numeric to string not possible with getValues()
+             * => hiding numeric columns
              */
             + "and+columndatatype||''not+like'DOUBLE%'"
             + "and+columndatatype||''not+like'INTEGER%'"

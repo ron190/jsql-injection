@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.MediatorModel;
 import com.jsql.view.swing.MediatorGui;
 
 /**
@@ -29,7 +29,7 @@ public class EndPreparation implements InteractionCommand {
         MediatorGui.panelAddress().buttonAddressBar.setInjectionReady();
         MediatorGui.panelAddress().loader.setVisible(false);
 
-        if (MediatorModel.model().isInjectionBuilt) {
+        if (MediatorModel.model().isProcessFinished) {
             MediatorGui.tabManagers().fileManager.setButtonEnable(true);
             MediatorGui.tabManagers().shellManager.setButtonEnable(true);
             MediatorGui.tabManagers().sqlShellManager.setButtonEnable(true);

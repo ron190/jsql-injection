@@ -3,12 +3,12 @@ package com.jsql.model.vendor;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jsql.model.bean.Database;
-import com.jsql.model.bean.Table;
-import com.jsql.model.blind.ConcreteTimeInjection;
-import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.MediatorModel;
+import com.jsql.model.accessible.bean.Database;
+import com.jsql.model.accessible.bean.Table;
 import com.jsql.model.strategy.NormalStrategy;
 import com.jsql.model.strategy.Strategy;
+import com.jsql.model.strategy.blind.ConcreteTimeInjection;
 import com.jsql.util.StringUtil;
 
 public class MySQLVendor extends AbstractVendor {
@@ -118,7 +118,7 @@ public class MySQLVendor extends AbstractVendor {
     public String getSqlRows(String[] columns, Database database, Table table) {
         String formatListColumn = StringUtil.join(columns, "{%}");
         
-        // 7f caractère d'effacement, dernier code hexa supporté par mysql, donne 3f=>? à partir de 80
+        // character 7f, last available hexa character (starting at character 80, it gives ?)
         formatListColumn = formatListColumn.replace("{%}", "`,0x00)),0x7f,trim(ifnull(`");
         
         formatListColumn = "trim(ifnull(`" + formatListColumn + "`,0x00))";
@@ -148,8 +148,8 @@ public class MySQLVendor extends AbstractVendor {
     public String getSqlPrivilegeCheck() {
         return
             /**
-             * error base mysql remplace 0x01030307 en \x01\x03\x03\x07
-             * => forcage en charactère
+             * error base convert 0x01030307 to \x01\x03\x03\x07
+             * => force into character
              */
             "cast(" +
                 "concat(" +
@@ -171,8 +171,8 @@ public class MySQLVendor extends AbstractVendor {
     public String getSqlReadFile(String filePath) {
         return
             /**
-             * error base mysql remplace 0x01030307 en \x01\x03\x03\x07
-             * => forcage en charactère
+             * error base convert 0x01030307 to \x01\x03\x03\x07
+             * => force into character
              */
             "cast(" +
                 "concat(load_file(0x" + StringUtil.strhex(filePath) + "),0x01030307)" +
@@ -302,8 +302,8 @@ public class MySQLVendor extends AbstractVendor {
                                     "replace(" +
                                         "(" + sqlQuery + ")" +
                                     /**
-                                     * message error base remplace le \r en \r\n => pb de comptage
-                                     * Fix: remplacement forcé 0x0A => 0x0102
+                                     * errorbased convert \r into \r\n => counting inaccurate
+                                     * force 0x0A into 0x0102
                                      */
                                     ",0x0A,0x0102)" +
                                     /**
@@ -312,13 +312,13 @@ public class MySQLVendor extends AbstractVendor {
                                     ",0x00,'')," +
                                     startPosition + "," +
                                     /**
-                                     * errorbase renvoit 64 caractères: 'SQLi' en consomme 4
-                                     * inutile de renvoyer plus de 64
+                                     * errorbase gets 64 characters: 'SQLi' consumes 4
+                                     * useless to get all the 64 => getting only 60
                                      */
                                     "60" +
                                 ")" +
                             /**
-                             * rétablissement 0x0102 => 0x0D
+                             * force back 0x0102 into 0x0D
                              */
                             ",0x0102,0x0A)," +
                             "floor(rand(0)*2)" +

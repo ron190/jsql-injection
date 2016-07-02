@@ -12,7 +12,7 @@ package com.jsql.view.scan.interaction;
 
 import java.util.Map;
 
-import com.jsql.model.bean.HttpHeader;
+import com.jsql.model.accessible.bean.HttpHeader;
 import com.jsql.view.swing.MediatorGui;
 
 /**

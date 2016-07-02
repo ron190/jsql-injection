@@ -66,12 +66,12 @@ public class CreateSQLShellTab implements InteractionCommand {
         MediatorGui.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(new ImageIcon(CreateSQLShellTab.class.getResource("/com/jsql/view/swing/resources/images/shell.png")));
+        TabHeader header = new TabHeader(new ImageIcon(CreateSQLShellTab.class.getResource("/com/jsql/view/swing/resources/images/icons/shell.png")));
 
         MediatorGui.tabResults().setToolTipTextAt(
             MediatorGui.tabResults().indexOfComponent(scroller),
-            "<html><b>URL</b><br>" + url + RessourceAccess.SQLSHELL_FILENAME
-            + "<br><b>Path</b><br>" + path + RessourceAccess.SQLSHELL_FILENAME + "</html>"
+            "<html><b>URL</b><br>" + url + RessourceAccess.FILENAME_SQLSHELL
+            + "<br><b>Path</b><br>" + path + RessourceAccess.FILENAME_SQLSHELL + "</html>"
         );
 
         // Apply the custom header to the tab

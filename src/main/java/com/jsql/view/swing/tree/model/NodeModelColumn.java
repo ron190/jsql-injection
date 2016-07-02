@@ -21,7 +21,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import com.jsql.model.bean.Column;
+import com.jsql.model.accessible.bean.Column;
 
 /**
  * Column model creating a checkbox.
@@ -37,10 +37,11 @@ public class NodeModelColumn extends AbstractNodeModel {
     }
 
     @Override
-    public Component getComponent(JTree tree, Object nodeRenderer,
-            boolean selected, boolean expanded, boolean leaf, int row,
-            boolean hasFocus) {
-        JCheckBox checkbox = new JCheckBox(this.toString(), this.isChecked);
+    public Component getComponent(
+        JTree tree, Object nodeRenderer, boolean selected, boolean expanded, 
+        boolean leaf, int row, boolean hasFocus
+    ) {
+        JCheckBox checkbox = new JCheckBox(this.toString(), this.isSelected);
         checkbox.setFont(
             checkbox.getFont().deriveFont(
                 Font.PLAIN | Font.ITALIC, 

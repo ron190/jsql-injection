@@ -101,7 +101,8 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         fixedTable.getTableHeader().setDefaultRenderer(new RowHeaderRenderer() {
             @Override
             public Component getTableCellRendererComponent(
-                JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
+                JTable table, Object value, boolean isSelected, 
+                boolean hasFocus, int row, int column
             ) {
                 JComponent lbl = (JComponent) super.getTableCellRendererComponent(
                     table, value, isSelected, hasFocus, row, column

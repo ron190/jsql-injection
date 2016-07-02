@@ -32,10 +32,10 @@ import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.exception.PreparationException;
-import com.jsql.exception.StoppableException;
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
+import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.StoppableException;
 import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
@@ -56,7 +56,7 @@ public class ManagerFile extends ManagerAbstractList {
      */
     public ManagerFile() {
         this.setLayout(new BorderLayout());
-        this.setDefaultText(I18n.FILE_RUN_BUTTON);
+        this.setDefaultText(I18n.get("FILE_RUN_BUTTON"));
         
         List<String> pathList = new ArrayList<>();
         try {
@@ -85,9 +85,9 @@ public class ManagerFile extends ManagerAbstractList {
             )
         );
         
-        run = new JButton(defaultText, new ImageIcon(ManagerFile.class.getResource("/com/jsql/view/swing/resources/images/fileSearch.png")));
+        run = new JButton(defaultText, new ImageIcon(ManagerFile.class.getResource("/com/jsql/view/swing/resources/images/icons/fileSearch.png")));
 
-        run.setToolTipText(I18n.FILE_RUN_BUTTON_TOOLTIP);
+        run.setToolTipText(I18n.get("FILE_RUN_BUTTON_TOOLTIP"));
         run.setEnabled(false);
         run.setBorder(HelperGui.BLU_ROUND_BORDER);
         
@@ -114,7 +114,7 @@ public class ManagerFile extends ManagerAbstractList {
                             }
 
                         } else {
-                            RessourceAccess.endFileSearch = true;
+                            RessourceAccess.isSearchFileStopped = true;
                             run.setEnabled(false);
                         }
                     }
@@ -122,10 +122,10 @@ public class ManagerFile extends ManagerAbstractList {
             }
         });
 
-        privilege = new JLabel(I18n.PRIVILEGE_LABEL, HelperGui.SQUARE_GREY, SwingConstants.LEFT);
-        I18n.components.get("PRIVILEGE_LABEL").add(privilege);
+        privilege = new JLabel(I18n.get("PRIVILEGE_LABEL"), HelperGui.SQUARE_GREY, SwingConstants.LEFT);
+        I18n.add("PRIVILEGE_LABEL", privilege);
         privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperGui.DEFAULT_BACKGROUND));
-        privilege.setToolTipText(I18n.PRIVILEGE_TOOLTIP);
+        privilege.setToolTipText(I18n.get("PRIVILEGE_TOOLTIP"));
 
         loader.setVisible(false);
 

@@ -27,7 +27,7 @@ import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.util.ConfigurationUtil;
+import com.jsql.util.PreferencesUtil;
 import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.dialog.ReplaceFileChooser;
@@ -44,7 +44,7 @@ public class ActionSaveTab extends AbstractAction {
      */
     private static final Logger LOGGER = Logger.getLogger(ActionSaveTab.class);
     
-    final ReplaceFileChooser filechooser = new ReplaceFileChooser(ConfigurationUtil.prefPathFile);
+    final ReplaceFileChooser filechooser = new ReplaceFileChooser(PreferencesUtil.pathFile);
 
     public ActionSaveTab() {
         super();
@@ -79,7 +79,7 @@ public class ActionSaveTab extends AbstractAction {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = filechooser.getSelectedFile();
             
-            ConfigurationUtil.setPath(filechooser.getCurrentDirectory().toString());
+            PreferencesUtil.setPath(filechooser.getCurrentDirectory().toString());
 
             try {
                 TableModel model = table.getModel();
@@ -128,7 +128,7 @@ public class ActionSaveTab extends AbstractAction {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = filechooser.getSelectedFile();
             
-            ConfigurationUtil.setPath(filechooser.getCurrentDirectory().toString());
+            PreferencesUtil.setPath(filechooser.getCurrentDirectory().toString());
             
             try {
                 BufferedWriter fileOut = new BufferedWriter(new FileWriter(file));

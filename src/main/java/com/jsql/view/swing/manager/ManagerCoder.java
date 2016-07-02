@@ -114,10 +114,10 @@ public class ManagerCoder extends JPanel {
         this.encoding.setText("Decode from Base64");
         
         JButton run = new JButton(
-            I18n.CODER_RUN_BUTTON, 
-            new ImageIcon(ManagerCoder.class.getResource("/com/jsql/view/swing/resources/images/tick.png"))
+            I18n.get("CODER_RUN_BUTTON"), 
+            new ImageIcon(ManagerCoder.class.getResource("/com/jsql/view/swing/resources/images/icons/tick.png"))
         );
-        I18n.components.get("CODER_RUN_BUTTON").add(run);
+        I18n.add("CODER_RUN_BUTTON", run);
         run.setBorder(HelperGui.BLU_ROUND_BORDER);
 
         middleLine.add(comboMenubar);

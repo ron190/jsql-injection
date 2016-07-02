@@ -18,7 +18,7 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.bean.Table;
+import com.jsql.model.accessible.bean.Table;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.tree.model.NodeModelTable;
@@ -78,7 +78,7 @@ public class AddTables implements InteractionCommand {
             // Open the database node
             MediatorGui.treeDatabase().expandPath(new TreePath(databaseNode.getPath()));
             // The database has just been search (avoid double check)
-            ((AbstractNodeModel) databaseNode.getUserObject()).hasBeenSearched = true;
+            ((AbstractNodeModel) databaseNode.getUserObject()).isSearched = true;
         }
     }
 }

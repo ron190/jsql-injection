@@ -12,12 +12,12 @@ package com.jsql.view.swing.menubar;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -45,7 +45,7 @@ import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.injection.InjectionModel;
+import com.jsql.model.InjectionModel;
 import com.jsql.util.GitUtil;
 import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.MediatorGui;
@@ -54,6 +54,8 @@ import com.jsql.view.swing.action.ActionNewWindow;
 import com.jsql.view.swing.action.ActionSaveTab;
 import com.jsql.view.swing.dialog.DialogAbout;
 import com.jsql.view.swing.dialog.DialogPreference;
+import com.jsql.view.swing.dialog.DialogTranslate;
+import com.jsql.view.swing.dialog.Lang;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.text.JPopupTextArea;
@@ -88,16 +90,16 @@ public class Menubar extends JMenuBar {
      */
     public Menubar() {
         // File Menu > save tab | exit
-        JMenu menuFile = new JMenu(I18n.MENU_FILE);
-        I18n.components.get("MENU_FILE").add(menuFile);
+        JMenu menuFile = new JMenu(I18n.get("MENU_FILE"));
+        I18n.add("MENU_FILE", menuFile);
         menuFile.setMnemonic('F');
 
         JMenuItem itemNewWindows = new JMenuItem(new ActionNewWindow());
 
         JMenuItem itemSave = new JMenuItem(new ActionSaveTab());
 
-        JMenuItem itemExit = new JMenuItem(I18n.ITEM_EXIT, 'x');
-        I18n.components.get("ITEM_EXIT").add(itemExit);
+        JMenuItem itemExit = new JMenuItem(I18n.get("ITEM_EXIT"), 'x');
+        I18n.add("ITEM_EXIT", itemExit);
         itemExit.setIcon(HelperGui.EMPTY);
         itemExit.addActionListener(new ActionListener() {
             @Override
@@ -115,12 +117,12 @@ public class Menubar extends JMenuBar {
         menuFile.add(itemExit);
 
         // Edit Menu > copy | select all
-        JMenu menuEdit = new JMenu(I18n.MENU_EDIT);
-        I18n.components.get("MENU_EDIT").add(menuEdit);
+        JMenu menuEdit = new JMenu(I18n.get("MENU_EDIT"));
+        I18n.add("MENU_EDIT", menuEdit);
         menuEdit.setMnemonic('E');
 
-        JMenuItem itemCopy = new JMenuItem(I18n.COPY, 'C');
-        I18n.components.get("COPY").add(itemCopy);
+        JMenuItem itemCopy = new JMenuItem(I18n.get("COPY"), 'C');
+        I18n.add("COPY", itemCopy);
         itemCopy.setIcon(HelperGui.EMPTY);
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         itemCopy.addActionListener(new ActionListener() {
@@ -134,8 +136,8 @@ public class Menubar extends JMenuBar {
             }
         });
 
-        JMenuItem itemSelectAll = new JMenuItem(I18n.SELECT_ALL, 'A');
-        I18n.components.get("SELECT_ALL").add(itemSelectAll);
+        JMenuItem itemSelectAll = new JMenuItem(I18n.get("SELECT_ALL"), 'A');
+        I18n.add("SELECT_ALL", itemSelectAll);
         itemSelectAll.setIcon(HelperGui.EMPTY);
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.addActionListener(new ActionListener() {
@@ -156,8 +158,8 @@ public class Menubar extends JMenuBar {
         menuEdit.add(itemSelectAll);
 
         // Window Menu > Preferences
-        JMenu menuWindows = new JMenu(I18n.MENU_WINDOWS);
-        I18n.components.get("MENU_WINDOWS").add(menuWindows);
+        JMenu menuWindows = new JMenu(I18n.get("MENU_WINDOWS"));
+        I18n.add("MENU_WINDOWS", menuWindows);
         menuWindows.setMnemonic('W');
 
         JMenu menuTranslation = new JMenu("Language");
@@ -170,16 +172,20 @@ public class Menubar extends JMenuBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 I18n.CURRENT_LOCALE = ResourceBundle.getBundle("com.jsql.i18n.jsql", Locale.ROOT);
-                switchLocale();                
+                Menubar.this.switchLocale();                
             }
         });
         menuTranslation.add(itemEnglish);
-        JMenuItem itemFrench = new JRadioButtonMenuItem("French", HelperGui.FLAG_FR, Locale.getDefault() == Locale.FRENCH);
+        JMenuItem itemFrench = new JRadioButtonMenuItem(
+            "French", 
+            HelperGui.FLAG_FR, 
+            ArrayUtils.contains(new Locale[]{Locale.FRENCH, Locale.FRANCE}, Locale.getDefault())
+        );
         itemFrench.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 I18n.CURRENT_LOCALE = ResourceBundle.getBundle("com.jsql.i18n.jsql", Locale.FRENCH);
-                switchLocale();                
+                Menubar.this.switchLocale();                
             }
         });
         menuTranslation.add(itemFrench);
@@ -188,84 +194,130 @@ public class Menubar extends JMenuBar {
         groupRadioLanguage.add(itemEnglish);
         groupRadioLanguage.add(itemFrench);
         
-        JMenu menuI18nContribution = new JMenu("I help translating");
-        JMenuItem itemRussia = new JMenuItem("Russian", HelperGui.FLAG_RU);
-        menuI18nContribution.add(itemRussia);
-        JMenuItem itemChina = new JMenuItem("Chinese", HelperGui.FLAG_CN);
-        menuI18nContribution.add(itemChina);
-        JMenuItem itemTurkey = new JMenuItem("Turkish", HelperGui.FLAG_TR);
-        menuI18nContribution.add(itemTurkey);
+        JMenu menuI18nContribution = new JMenu("I help translate jSQL");
         
-        menuTranslation.add(new JSeparator());
-        menuTranslation.add(menuI18nContribution);
+        // Render the About dialog behind scene
+        final DialogTranslate dialogTranslate = new DialogTranslate();
+        
+        class ActionTranslate implements ActionListener {
+            Lang language;
+            
+            ActionTranslate(Lang language) {
+                this.language = language;
+            }
+            
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                dialogTranslate.reinit(this.language);
+                
+                // Center the dialog
+                if (!dialogTranslate.isVisible()) {
+                    dialogTranslate.setSize(640, 460);
+                    dialogTranslate.setLocationRelativeTo(MediatorGui.frame());
+//                    dialogTranslate.buttonSend.requestFocusInWindow();
+                    dialogTranslate.getRootPane().setDefaultButton(dialogTranslate.buttonSend);
+                    
+                    // needed here for button focus
+//                    dialogTranslate.setVisible(true);
+//                    dialogTranslate.requestButtonFocus();
+                }
+                
+                dialogTranslate.setVisible(true);
+//                dialogTranslate.scrollPane.scrollPane.getViewport().setViewPosition(new Point(0, 0));
+            }
+        }
+        
+        JMenuItem itemArabic = new JMenuItem("to Arabic...", HelperGui.FLAG_AR);
+        menuI18nContribution.add(itemArabic);
+        JMenuItem itemTurkey = new JMenuItem("to Turkish...", HelperGui.FLAG_TR);
+        menuI18nContribution.add(itemTurkey);
+        JMenuItem itemSpanish = new JMenuItem("to Spanish...", HelperGui.FLAG_ES);
+        menuI18nContribution.add(itemSpanish);
+        JMenuItem itemHindi = new JMenuItem("to Hindi...", HelperGui.FLAG_IN);
+        menuI18nContribution.add(itemHindi);
+        JMenuItem itemRussia = new JMenuItem("to Russian...", HelperGui.FLAG_RU);
+        menuI18nContribution.add(itemRussia);
+        JMenuItem itemChina = new JMenuItem("to Chinese...", HelperGui.FLAG_CN);
+        menuI18nContribution.add(itemChina);
+        menuI18nContribution.add(new JSeparator());
+        JMenuItem itemOther = new JMenuItem("to another language...");
+        menuI18nContribution.add(itemOther);
+        
+        itemArabic.addActionListener(new ActionTranslate(Lang.AR));
+        itemTurkey.addActionListener(new ActionTranslate(Lang.TR));
+        itemSpanish.addActionListener(new ActionTranslate(Lang.ES));
+        itemHindi.addActionListener(new ActionTranslate(Lang.IN));
+        itemRussia.addActionListener(new ActionTranslate(Lang.RU));
+        itemChina.addActionListener(new ActionTranslate(Lang.CN));
+        itemOther.addActionListener(new ActionTranslate(Lang.AR));
         
         menuWindows.add(menuTranslation);
         menuWindows.add(new JSeparator());
         
-        JMenu menuView = new JMenu(I18n.MENU_VIEW);
-        I18n.components.get("MENU_VIEW").add(menuView);
+        JMenu menuView = new JMenu(I18n.get("MENU_VIEW"));
+        I18n.add("MENU_VIEW", menuView);
         menuView.setMnemonic('V');
-        JMenuItem database = new JMenuItem(I18n.DATABASE, HelperGui.DATABASE_SERVER_ICON);
-        I18n.components.get("DATABASE").add(database);
+        JMenuItem database = new JMenuItem(I18n.get("DATABASE"), HelperGui.DATABASE_SERVER_ICON);
+        I18n.add("DATABASE", database);
         menuView.add(database);
-        JMenuItem adminPage = new JMenuItem(I18n.ADMINPAGE, HelperGui.ADMIN_SERVER_ICON);
-        I18n.components.get("ADMINPAGE").add(adminPage);
+        JMenuItem adminPage = new JMenuItem(I18n.get("ADMINPAGE"), HelperGui.ADMIN_SERVER_ICON);
+        I18n.add("ADMINPAGE", adminPage);
         menuView.add(adminPage);
-        JMenuItem file = new JMenuItem(I18n.FILE, HelperGui.FILE_SERVER_ICON);
-        I18n.components.get("FILE").add(file);
+        JMenuItem file = new JMenuItem(I18n.get("FILE"), HelperGui.FILE_SERVER_ICON);
+        I18n.add("FILE", file);
         menuView.add(file);
-        JMenuItem webshell = new JMenuItem(I18n.WEBSHELL, HelperGui.SHELL_SERVER_ICON);
-        I18n.components.get("WEBSHELL").add(webshell);
+        JMenuItem webshell = new JMenuItem(I18n.get("WEBSHELL"), HelperGui.SHELL_SERVER_ICON);
+        I18n.add("WEBSHELL", webshell);
         menuView.add(webshell);
-        JMenuItem sqlshell = new JMenuItem(I18n.SQLSHELL, HelperGui.SHELL_SERVER_ICON);
-        I18n.components.get("SQLSHELL").add(sqlshell);
+        JMenuItem sqlshell = new JMenuItem(I18n.get("SQLSHELL"), HelperGui.SHELL_SERVER_ICON);
+        I18n.add("SQLSHELL", sqlshell);
         menuView.add(sqlshell);
-        JMenuItem upload = new JMenuItem(I18n.UPLOAD, HelperGui.UPLOAD_ICON);
-        I18n.components.get("UPLOAD").add(upload);
+        JMenuItem upload = new JMenuItem(I18n.get("UPLOAD"), HelperGui.UPLOAD_ICON);
+        I18n.add("UPLOAD", upload);
         menuView.add(upload);
-        JMenuItem bruteforce = new JMenuItem(I18n.BRUTEFORCE, HelperGui.BRUTER_ICON);
-        I18n.components.get("BRUTEFORCE").add(bruteforce);
+        JMenuItem bruteforce = new JMenuItem(I18n.get("BRUTEFORCE"), HelperGui.BRUTER_ICON);
+        I18n.add("BRUTEFORCE", bruteforce);
         menuView.add(bruteforce);
-        JMenuItem coder = new JMenuItem(I18n.CODER, HelperGui.CODER_ICON);
-        I18n.components.get("CODER").add(coder);
+        JMenuItem coder = new JMenuItem(I18n.get("CODER"), HelperGui.CODER_ICON);
+        I18n.add("CODER", coder);
         menuView.add(coder);
-        JMenuItem scanList = new JMenuItem(I18n.SCANLIST, HelperGui.SCANLIST_ICON);
-        I18n.components.get("SCANLIST").add(scanList);
+        JMenuItem scanList = new JMenuItem(I18n.get("SCANLIST"), HelperGui.SCANLIST_ICON);
+        I18n.add("SCANLIST", scanList);
         menuView.add(scanList);
         menuWindows.add(menuView);
 
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
 
-        JMenu menuPanel = new JMenu(I18n.MENU_PANEL);
-        I18n.components.get("MENU_PANEL").add(menuPanel);
+        JMenu menuPanel = new JMenu(I18n.get("MENU_PANEL"));
+        I18n.add("MENU_PANEL", menuPanel);
         menuView.setMnemonic('V');
         chunkMenu = new JCheckBoxMenuItem(
-            I18n.CHUNK_TAB_LABEL, 
+            I18n.get("CHUNK_TAB_LABEL"), 
             HelperGui.CHUNK_ICON, 
             prefs.getBoolean(HelperGui.CHUNK_VISIBLE, true)
         );
-        I18n.components.get("CHUNK_TAB_LABEL").add(chunkMenu);
+        I18n.add("CHUNK_TAB_LABEL", chunkMenu);
         menuPanel.add(chunkMenu);
         binaryMenu = new JCheckBoxMenuItem(
-            I18n.BINARY_TAB_LABEL, 
+            I18n.get("BINARY_TAB_LABEL"), 
             HelperGui.BINARY_ICON, 
             prefs.getBoolean(HelperGui.BINARY_VISIBLE, true)
         );
-        I18n.components.get("BINARY_TAB_LABEL").add(binaryMenu);
+        I18n.add("BINARY_TAB_LABEL", binaryMenu);
         menuPanel.add(binaryMenu);
         networkMenu = new JCheckBoxMenuItem(
-            I18n.NETWORK_TAB_LABEL, 
+            I18n.get("NETWORK_TAB_LABEL"), 
             HelperGui.HEADER_ICON, 
             prefs.getBoolean(HelperGui.NETWORK_VISIBLE, true)
         );
-        I18n.components.get("NETWORK_TAB_LABEL").add(networkMenu);
+        I18n.add("NETWORK_TAB_LABEL", networkMenu);
         menuPanel.add(networkMenu);
         javaDebugMenu = new JCheckBoxMenuItem(
-            I18n.JAVA_TAB_LABEL, 
+            I18n.get("JAVA_TAB_LABEL"), 
             HelperGui.CUP_ICON, 
             prefs.getBoolean(HelperGui.JAVA_VISIBLE, false)
         );
-        I18n.components.get("JAVA_TAB_LABEL").add(javaDebugMenu);
+        I18n.add("JAVA_TAB_LABEL", javaDebugMenu);
 
         for (JCheckBoxMenuItem menuItem: new JCheckBoxMenuItem[]{chunkMenu, binaryMenu, networkMenu, javaDebugMenu}) {
             menuItem.setUI(
@@ -356,9 +408,9 @@ public class Menubar extends JMenuBar {
             });
         }
 
-        JMenuItem preferences = new JMenuItem(I18n.MENU_PREFERENCES, 'P');
+        JMenuItem preferences = new JMenuItem(I18n.get("MENU_PREFERENCES"), 'P');
         preferences.setIcon(HelperGui.EMPTY);
-        I18n.components.get("MENU_PREFERENCES").add(preferences);
+        I18n.add("MENU_PREFERENCES", preferences);
         
         // Render the Preferences dialog behind scene
         final DialogPreference prefDiag = new DialogPreference();
@@ -379,18 +431,15 @@ public class Menubar extends JMenuBar {
         menuWindows.add(preferences);
 
         // Help Menu > about
-        JMenu menuHelp = new JMenu(I18n.MENU_HELP);
+        JMenu menuHelp = new JMenu(I18n.get("MENU_HELP"));
         menuHelp.setMnemonic('H');
-        I18n.components.get("MENU_HELP").add(menuHelp);
-        JMenuItem itemHelp = new JMenuItem(I18n.ITEM_ABOUT, 'A');
+        I18n.add("MENU_HELP", menuHelp);
+        JMenuItem itemHelp = new JMenuItem(I18n.get("ITEM_ABOUT"), 'A');
         itemHelp.setIcon(HelperGui.EMPTY);
-        I18n.components.get("ITEM_ABOUT").add(itemHelp);
-        JMenuItem itemUpdate = new JMenuItem(I18n.ITEM_UPDATE, 'U');
+        I18n.add("ITEM_ABOUT", itemHelp);
+        JMenuItem itemUpdate = new JMenuItem(I18n.get("ITEM_UPDATE"), 'U');
         itemUpdate.setIcon(HelperGui.EMPTY);
-        I18n.components.get("ITEM_UPDATE").add(itemUpdate);
-        JMenuItem itemReportIssue = new JMenuItem(I18n.ITEM_REPORTISSUE, 'R');
-        itemReportIssue.setIcon(HelperGui.EMPTY);
-        I18n.components.get("ITEM_REPORTISSUE").add(itemReportIssue);
+        I18n.add("ITEM_UPDATE", itemUpdate);
 
         // Render the About dialog behind scene
         final DialogAbout aboutDiag = new DialogAbout();
@@ -408,6 +457,19 @@ public class Menubar extends JMenuBar {
             }
         });
         itemUpdate.addActionListener(new ActionCheckUpdate());
+        
+        menuHelp.add(itemUpdate);
+        menuHelp.add(new JSeparator());
+        menuHelp.add(itemHelp);
+
+        // Help Menu > about
+        JMenu menuCommunity = new JMenu("Community");
+        menuHelp.setMnemonic('C');
+        JMenuItem itemSayHi = new JMenuItem("Say hi!");
+        itemSayHi.setIcon(HelperGui.EMPTY);
+        JMenuItem itemReportIssue = new JMenuItem(I18n.get("ITEM_REPORTISSUE"), 'R');
+        itemReportIssue.setIcon(HelperGui.EMPTY);
+        I18n.add("ITEM_REPORTISSUE", itemReportIssue);
         itemReportIssue.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -435,8 +497,8 @@ public class Menubar extends JMenuBar {
                     JOptionPane.OK_CANCEL_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
                     null,
-                    new String[]{"Report", I18n.CANCEL},
-                    I18n.CANCEL
+                    new String[]{"Report", I18n.get("CANCEL")},
+                    I18n.get("CANCEL")
                 );
 
                 if (!"".equals(textarea.getText()) && result == JOptionPane.YES_OPTION) {
@@ -444,38 +506,37 @@ public class Menubar extends JMenuBar {
                 }
             }
         });
+        JMenuItem itemWhatIsNew = new JMenuItem("What's new?", 'U');
+        itemWhatIsNew.setIcon(HelperGui.EMPTY);
         
-        menuHelp.add(itemReportIssue);
-        menuHelp.add(itemUpdate);
-        menuHelp.add(new JSeparator());
-        menuHelp.add(itemHelp);
 
+        menuCommunity.add(menuI18nContribution);
+        menuCommunity.add(new JSeparator());
+        menuCommunity.add(itemSayHi);
+        menuCommunity.add(itemReportIssue);
+        menuCommunity.add(itemWhatIsNew);
+        
         // Make menubar
         this.add(menuFile);
         this.add(menuEdit);
         this.add(menuWindows);
+        this.add(menuCommunity);
         this.add(menuHelp);
     }
     
     public void switchLocale() {
-        Class<?> cl = I18n.class;
-        Field[] ct = cl.getFields();
-        for (Field f: ct) {
-            if (!f.getType().equals(String.class)) continue;
-            for (Object o: I18n.components.get(f.getName())) {
-                Class<?> cl2 = o.getClass();
+        for (String key: I18n.getKeys()) {
+            for (Object componentSwing: I18n.getComponentsSwing(key)) {
+                Class<?> classComponent = componentSwing.getClass();
                 try {
-                    Method ct2 = cl2.getMethod("setText", new Class<?>[]{String.class});
-                    ct2.invoke(o, (String) I18n.CURRENT_LOCALE.getObject(f.getName()));
-                } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
+                    Method methodSetText = classComponent.getMethod("setText", new Class<?>[]{String.class});
+                    methodSetText.invoke(componentSwing, I18n.get(key));
+                } catch (
+                    NoSuchMethodException | SecurityException | IllegalAccessException | 
+                    IllegalArgumentException | InvocationTargetException e1
+                ) {
                     e1.printStackTrace();
                 }
-            }
-            
-            try {
-                f.set(null, (String) I18n.CURRENT_LOCALE.getObject(f.getName()));
-            } catch (IllegalArgumentException | IllegalAccessException e1) {
-                e1.printStackTrace();
             }
         }
     }

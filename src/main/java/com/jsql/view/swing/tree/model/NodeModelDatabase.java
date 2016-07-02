@@ -16,7 +16,7 @@ import javax.swing.SwingWorker;
 import javax.swing.tree.TreePath;
 
 import com.jsql.model.accessible.DataAccess;
-import com.jsql.model.bean.Database;
+import com.jsql.model.accessible.bean.Database;
 import com.jsql.view.swing.HelperGui;
 
 /**
@@ -43,7 +43,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
     @Override
     public void runAction() {
         final Database selectedDatabase = (Database) this.dataObject;
-        if (!this.hasBeenSearched && !this.isRunning) {
+        if (!this.isSearched && !this.isRunning) {
             new SwingWorker<Object, Object>(){
                 @Override
                 protected Object doInBackground() throws Exception {
@@ -57,7 +57,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
 
     @Override 
     public boolean isPopupDisplayable() {
-        return !this.hasBeenSearched && this.isRunning;
+        return !this.isSearched && this.isRunning;
     }
 
     @Override 

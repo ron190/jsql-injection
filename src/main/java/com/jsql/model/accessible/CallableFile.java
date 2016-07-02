@@ -2,10 +2,10 @@ package com.jsql.model.accessible;
 
 import java.util.concurrent.Callable;
 
-import com.jsql.exception.PreparationException;
-import com.jsql.exception.StoppableException;
-import com.jsql.model.injection.MediatorModel;
-import com.jsql.model.injection.suspendable.SuspendableGetRows;
+import com.jsql.model.MediatorModel;
+import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.StoppableException;
+import com.jsql.model.suspendable.SuspendableGetRows;
 
 /**
  * Callable to read file source code.
@@ -31,7 +31,7 @@ public class CallableFile implements Callable<CallableFile> {
 
     @Override
     public CallableFile call() throws Exception {
-        if (!RessourceAccess.endFileSearch) {
+        if (!RessourceAccess.isSearchFileStopped) {
             String[] sourcePage = {""};
 
             String hexResult = "";

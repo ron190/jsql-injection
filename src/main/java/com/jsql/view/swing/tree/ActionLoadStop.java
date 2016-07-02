@@ -19,10 +19,10 @@ import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
-import com.jsql.model.bean.Column;
-import com.jsql.model.injection.MediatorModel;
-import com.jsql.model.injection.suspendable.AbstractSuspendable;
+import com.jsql.model.accessible.bean.Column;
+import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
@@ -49,7 +49,7 @@ public class ActionLoadStop implements ActionListener {
             DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
             if (currentChild.getUserObject() instanceof AbstractNodeModel) {
                 AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
-                if (columnTreeNodeModel.isChecked) {
+                if (columnTreeNodeModel.isSelected) {
                     columnsToSearch.add((Column) columnTreeNodeModel.dataObject);
                 }
             }
@@ -72,9 +72,9 @@ public class ActionLoadStop implements ActionListener {
             
             suspendableTask.stop();
             suspendableTask.unpause();
-            this.nodeData.childUpgradeCount = 0;
-            this.nodeData.hasIndeterminatedProgress = false;
-            this.nodeData.hasProgress = false;
+            this.nodeData.indexProgress = 0;
+            this.nodeData.isProgressing = false;
+            this.nodeData.isLoading = false;
             suspendableTask.resume();
             
             MediatorModel.model().suspendables.remove(this.nodeData.dataObject);

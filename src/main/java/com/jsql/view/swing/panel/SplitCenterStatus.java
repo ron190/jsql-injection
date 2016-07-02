@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.plaf.basic.BasicArrowButton;
 
-import com.jsql.model.injection.InjectionModel;
+import com.jsql.model.InjectionModel;
 import com.jsql.view.swing.HelperGui;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
@@ -37,13 +37,13 @@ public class SplitCenterStatus extends JSplitPaneWithZeroSizeDivider {
      * Name of preference for splitter vertical.
      * Reset divider position for current application version.
      */
-    public static final String NAME_V_SPLITPANE = "verticalSplitter-" + InjectionModel.JSQLVERSION;
+    public static final String NAME_V_SPLITPANE = "verticalSplitter-" + InjectionModel.VERSION_JSQL;
     
     /**
      * Name of preference for splitter horizontal.
      * Reset divider position for current application version. 
      */
-    public static final String NAME_H_SPLITPANE = "horizontalSplitter-" + InjectionModel.JSQLVERSION;
+    public static final String NAME_H_SPLITPANE = "horizontalSplitter-" + InjectionModel.VERSION_JSQL;
 
     /**
      * SplitPane containing Manager panels on the left and result tabs on the right.
@@ -63,7 +63,7 @@ public class SplitCenterStatus extends JSplitPaneWithZeroSizeDivider {
      * and consoles in the bottom. 
      */
     public SplitCenterStatus() {
-        super(JSplitPane.VERTICAL_SPLIT, true);
+        super(JSplitPane.VERTICAL_SPLIT);
 
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
         int verticalSplitter = prefs.getInt(SplitCenterStatus.NAME_V_SPLITPANE, 300);
@@ -73,7 +73,7 @@ public class SplitCenterStatus extends JSplitPaneWithZeroSizeDivider {
         MediatorGui.register(new TabResults());
 
         // Tree and tabs on top
-        this.splitManagerResult = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT, true);
+        this.splitManagerResult = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
         this.splitManagerResult.setLeftComponent(MediatorGui.tabManagers());
         this.splitManagerResult.setRightComponent(MediatorGui.tabResults());
         this.splitManagerResult.setDividerLocation(verticalSplitter);

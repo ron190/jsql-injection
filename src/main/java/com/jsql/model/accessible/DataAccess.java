@@ -17,15 +17,15 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.exception.PreparationException;
-import com.jsql.exception.StoppableException;
-import com.jsql.model.bean.AbstractElementDatabase;
-import com.jsql.model.bean.Column;
-import com.jsql.model.bean.Database;
-import com.jsql.model.bean.Request;
-import com.jsql.model.bean.Table;
-import com.jsql.model.injection.MediatorModel;
-import com.jsql.model.injection.suspendable.SuspendableGetRows;
+import com.jsql.model.MediatorModel;
+import com.jsql.model.accessible.bean.AbstractElementDatabase;
+import com.jsql.model.accessible.bean.Column;
+import com.jsql.model.accessible.bean.Database;
+import com.jsql.model.accessible.bean.Request;
+import com.jsql.model.accessible.bean.Table;
+import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.StoppableException;
+import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.StringUtil;
 
 /**

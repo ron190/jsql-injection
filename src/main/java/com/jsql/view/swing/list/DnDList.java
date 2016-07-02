@@ -200,20 +200,20 @@ public class DnDList extends JList<ListItem> {
             if (!FilenameUtils.getExtension(fileToImport.getPath()).matches("txt|csv|ini")) {
                 JOptionPane.showMessageDialog(
                     this.getTopLevelAncestor(),
-                    I18n.LIST_IMPORT_ERROR_TEXT,
-                    I18n.LIST_IMPORT_ERROR,
+                    I18n.get("LIST_IMPORT_ERROR_TEXT"),
+                    I18n.get("LIST_IMPORT_ERROR"),
                     JOptionPane.ERROR_MESSAGE,
-                    new ImageIcon(DnDList.class.getResource("/com/jsql/view/swing/resources/images/error.png"))
+                    new ImageIcon(DnDList.class.getResource("/com/jsql/view/swing/resources/images/icons/error.png"))
                 );
                 return;
             }
         }
 
-        String[] options = {I18n.REPLACE, I18n.ADD, I18n.CANCEL};
+        String[] options = {I18n.get("REPLACE"), I18n.get("ADD"), I18n.get("CANCEL")};
         int answer = JOptionPane.showOptionDialog(
             this.getTopLevelAncestor(),
-            I18n.LIST_IMPORT_REPLACE,
-            I18n.LIST_IMPORT,
+            I18n.get("LIST_IMPORT_REPLACE"),
+            I18n.get("LIST_IMPORT"),
             JOptionPane.YES_NO_CANCEL_OPTION,
             JOptionPane.QUESTION_MESSAGE,
             null,

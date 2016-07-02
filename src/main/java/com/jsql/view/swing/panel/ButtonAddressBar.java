@@ -75,9 +75,9 @@ public class ButtonAddressBar extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(true);
-        this.setIcon(new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/swing/resources/images/stopDefault.png")));
-        this.setRolloverIcon(new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/swing/resources/images/stopRollover.png")));
-        this.setPressedIcon(new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/swing/resources/images/stopPressed.png")));
+        this.setIcon(new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/swing/resources/images/icons/stopDefault.png")));
+        this.setRolloverIcon(new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/swing/resources/images/icons/stopRollover.png")));
+        this.setPressedIcon(new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/swing/resources/images/icons/stopPressed.png")));
     }
 
     /**

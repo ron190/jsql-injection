@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import com.jsql.model.bean.AbstractElementDatabase;
+import com.jsql.model.accessible.bean.AbstractElementDatabase;
 import com.jsql.util.StringUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tab.TabHeader;
@@ -62,7 +62,7 @@ public class CreateValuesTab implements InteractionCommand {
             AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
             
             // Update the progress value of the model, end the progress
-            progressingTreeNodeModel.childUpgradeCount = table.getCount();
+            progressingTreeNodeModel.indexProgress = table.getCount();
             // Mark the node model as 'no stop/pause/resume button'
             progressingTreeNodeModel.isRunning = false;
             

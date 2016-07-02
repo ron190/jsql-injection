@@ -110,8 +110,8 @@ public class ManagerBruteForce extends JPanel {
 
         JPanel firstLine = new JPanel(new BorderLayout());
 
-        hash = new JPopupTextField(I18n.BRUTEFORCE_HASH).getProxy();
-        hash.setToolTipText(I18n.BRUTEFORCE_HASH_TOOLTIP);
+        hash = new JPopupTextField(I18n.get("BRUTEFORCE_HASH")).getProxy();
+        hash.setToolTipText(I18n.get("BRUTEFORCE_HASH_TOOLTIP"));
         firstLine.add(hash, BorderLayout.CENTER);
         hash.setBorder(
             BorderFactory.createCompoundBorder(
@@ -136,7 +136,7 @@ public class ManagerBruteForce extends JPanel {
         );
         
         hashTypes.setSelectedIndex(6);
-        hashTypes.setToolTipText(I18n.BRUTEFORCE_HASH_TYPE_TOOLTIP);
+        hashTypes.setToolTipText(I18n.get("BRUTEFORCE_HASH_TYPE_TOOLTIP"));
 
         secondLine.add(hashTypes);
 
@@ -145,16 +145,16 @@ public class ManagerBruteForce extends JPanel {
         secondLine.add(numericCharacters);
         secondLine.add(specialCharacters);
 
-        lowerCaseCharacters.setToolTipText(I18n.BRUTEFORCE_LCASE_TOOLTIP);
-        upperCaseCharacters.setToolTipText(I18n.BRUTEFORCE_UCASE_TOOLTIP);
-        numericCharacters.setToolTipText(I18n.BRUTEFORCE_NUM_TOOLTIP);
-        specialCharacters.setToolTipText(I18n.BRUTEFORCE_SPEC_TOOLTIP);
+        lowerCaseCharacters.setToolTipText(I18n.get("BRUTEFORCE_LCASE_TOOLTIP"));
+        upperCaseCharacters.setToolTipText(I18n.get("BRUTEFORCE_UCASE_TOOLTIP"));
+        numericCharacters.setToolTipText(I18n.get("BRUTEFORCE_NUM_TOOLTIP"));
+        specialCharacters.setToolTipText(I18n.get("BRUTEFORCE_SPEC_TOOLTIP"));
 
         JPanel thirdLine = new JPanel();
         thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));
         
-        exclude = new JPopupTextField(I18n.BRUTEFORCE_EXCLUDE_LABEL).getProxy();
-        exclude.setToolTipText(I18n.BRUTEFORCE_EXCLUDE_TOOLTIP);
+        exclude = new JPopupTextField(I18n.get("BRUTEFORCE_EXCLUDE_LABEL")).getProxy();
+        exclude.setToolTipText(I18n.get("BRUTEFORCE_EXCLUDE_TOOLTIP"));
         exclude.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 0, 1, 1, HelperGui.DEFAULT_BACKGROUND),
@@ -180,8 +180,8 @@ public class ManagerBruteForce extends JPanel {
             )
         );
         
-        minimumLength.setToolTipText(I18n.BRUTEFORCE_MIN_TOOLTIP);
-        maximumLength.setToolTipText(I18n.BRUTEFORCE_MAX_TOOLTIP);
+        minimumLength.setToolTipText(I18n.get("BRUTEFORCE_MIN_TOOLTIP"));
+        maximumLength.setToolTipText(I18n.get("BRUTEFORCE_MAX_TOOLTIP"));
         
         minimumLength.setPreferredSize(new Dimension(38, (int) minimumLength.getPreferredSize().getHeight()));
         maximumLength.setPreferredSize(new Dimension(38, (int) maximumLength.getPreferredSize().getHeight()));
@@ -190,13 +190,13 @@ public class ManagerBruteForce extends JPanel {
         minimumLength.setMinimumSize(new Dimension(38, (int) minimumLength.getPreferredSize().getHeight()));
         maximumLength.setMinimumSize(new Dimension(38, (int) maximumLength.getPreferredSize().getHeight()));
 
-        JLabel labelMin = new JLabel(" "+I18n.BRUTEFORCE_MIN_LABEL, SwingConstants.RIGHT);
+        JLabel labelMin = new JLabel(" "+I18n.get("BRUTEFORCE_MIN_LABEL"), SwingConstants.RIGHT);
         thirdLine.add(labelMin);
-        I18n.components.get("BRUTEFORCE_RUN_BUTTON").add(labelMin);
+        I18n.add("BRUTEFORCE_RUN_BUTTON", labelMin);
         thirdLine.add(minimumLength);
-        JLabel labelMax = new JLabel(" "+I18n.BRUTEFORCE_MAX_LABEL, SwingConstants.RIGHT);
+        JLabel labelMax = new JLabel(" "+I18n.get("BRUTEFORCE_MAX_LABEL"), SwingConstants.RIGHT);
         thirdLine.add(labelMax);
-        I18n.components.get("BRUTEFORCE_RUN_BUTTON").add(labelMax);
+        I18n.add("BRUTEFORCE_RUN_BUTTON", labelMax);
         thirdLine.add(maximumLength);
         
         final JPanel secondAndThirdLine = new JPanel(new BorderLayout());
@@ -222,11 +222,11 @@ public class ManagerBruteForce extends JPanel {
         );
         
         run = new JButton(
-            I18n.BRUTEFORCE_RUN_BUTTON, 
-            new ImageIcon(ManagerBruteForce.class.getResource("/com/jsql/view/swing/resources/images/key.png"))
+            I18n.get("BRUTEFORCE_RUN_BUTTON"), 
+            new ImageIcon(ManagerBruteForce.class.getResource("/com/jsql/view/swing/resources/images/icons/key.png"))
         );
-        I18n.components.get("BRUTEFORCE_RUN_BUTTON").add(run);
-        run.setToolTipText(I18n.BRUTEFORCE_RUN_BUTTON_TOOLTIP);
+        I18n.add("BRUTEFORCE_RUN_BUTTON", run);
+        run.setToolTipText(I18n.get("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
         run.setBorder(HelperGui.BLU_ROUND_BORDER);
 
         loader = new JLabel(HelperGui.LOADER_GIF);

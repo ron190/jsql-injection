@@ -17,8 +17,8 @@ import java.util.Observer;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.bean.Request;
-import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.MediatorModel;
+import com.jsql.model.accessible.bean.Request;
 import com.jsql.view.scan.interaction.InteractionCommand;
 
 /**

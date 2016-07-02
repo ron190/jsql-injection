@@ -2,8 +2,8 @@ package com.test.special;
 
 import org.junit.Test;
 
-import com.jsql.exception.PreparationException;
-import com.jsql.exception.StoppableException;
+import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.StoppableException;
 
 public class SpecialTest {
 

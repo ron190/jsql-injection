@@ -10,9 +10,9 @@
  ******************************************************************************/
 package com.jsql.view.swing.manager;
 
-import com.jsql.exception.PreparationException;
-import com.jsql.exception.StoppableException;
 import com.jsql.model.accessible.RessourceAccess;
+import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.StoppableException;
 
 /**
  * Manager for uploading PHP webshell to the host and send system commands.

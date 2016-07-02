@@ -196,32 +196,32 @@ public abstract class AbstractShell extends JTextPane {
     
     /**
      * Append prompt to textpane, measure prompt the first time is used.
-     * @param measurePrompt Should we measure prompt length?
+     * @param isAddingPrompt Should we measure prompt length?
      */
-    public void displayPrompt(boolean measurePrompt) {
+    public void displayPrompt(boolean isAddingPrompt) {
         StyleConstants.setUnderline(style, true);
-        appendPrompt("jsql", Color.LIGHT_GRAY, measurePrompt);
+        appendPrompt("jsql", Color.LIGHT_GRAY, isAddingPrompt);
         StyleConstants.setUnderline(style, false);
 
-        appendPrompt(" " + this.labelShell, Color.LIGHT_GRAY, measurePrompt);
-        appendPrompt("[", new Color(50, 191, 50), measurePrompt);
-        appendPrompt(host, new Color(191, 191, 25), measurePrompt);
-        appendPrompt("]", new Color(50, 191, 50), measurePrompt);
-        appendPrompt(" >", new Color(191, 100, 100), measurePrompt);
-        appendPrompt(" ", Color.LIGHT_GRAY, measurePrompt);
+        appendPrompt(" " + this.labelShell, Color.LIGHT_GRAY, isAddingPrompt);
+        appendPrompt("[", new Color(50, 191, 50), isAddingPrompt);
+        appendPrompt(host, new Color(191, 191, 25), isAddingPrompt);
+        appendPrompt("]", new Color(50, 191, 50), isAddingPrompt);
+        appendPrompt(" >", new Color(191, 100, 100), isAddingPrompt);
+        appendPrompt(" ", Color.LIGHT_GRAY, isAddingPrompt);
     }
 
     /**
      * Add a colored string to the textpane, measure prompt at the same time.
      * @param string Text to append
      * @param color Color of text
-     * @param measurePrompt Should we measure prompt length?
+     * @param isAddingPrompt Should we measure prompt length?
      */
-    private void appendPrompt(String string, Color color, boolean measurePrompt) {
+    private void appendPrompt(String string, Color color, boolean isAddingPrompt) {
         try {
             StyleConstants.setForeground(style, color);
             styledDocument.insertString(styledDocument.getLength(), string, style);
-            if (measurePrompt) {
+            if (isAddingPrompt) {
                 prompt += string;
             }
         } catch (BadLocationException e) {

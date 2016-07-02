@@ -7,7 +7,7 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import com.jsql.model.injection.MediatorModel;
+import com.jsql.model.MediatorModel;
 import com.jsql.model.strategy.Strategy;
 import com.jsql.view.swing.HelperGui;
 
