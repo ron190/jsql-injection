@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 
 /**
@@ -26,20 +26,20 @@ public class MarkFileSystemInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.tabManagers().fileManager.changePrivilegeIcon(HelperGui.SQUARE_RED);
+        MediatorGui.tabManagers().fileManager.changePrivilegeIcon(HelperUi.SQUARE_RED);
         MediatorGui.tabManagers().fileManager.setButtonEnable(true);
         MediatorGui.tabManagers().fileManager.restoreButtonText();
         MediatorGui.tabManagers().fileManager.hideLoader();
         
-        MediatorGui.tabManagers().shellManager.changePrivilegeIcon(HelperGui.SQUARE_RED);
+        MediatorGui.tabManagers().shellManager.changePrivilegeIcon(HelperUi.SQUARE_RED);
         MediatorGui.tabManagers().shellManager.setButtonEnable(true);
         MediatorGui.tabManagers().shellManager.restoreButtonText();
         
-        MediatorGui.tabManagers().uploadManager.changePrivilegeIcon(HelperGui.SQUARE_RED);
+        MediatorGui.tabManagers().uploadManager.changePrivilegeIcon(HelperUi.SQUARE_RED);
         MediatorGui.tabManagers().uploadManager.setButtonEnable(true);
         MediatorGui.tabManagers().uploadManager.restoreButtonText();
         
-        MediatorGui.tabManagers().sqlShellManager.changePrivilegeIcon(HelperGui.SQUARE_RED);
+        MediatorGui.tabManagers().sqlShellManager.changePrivilegeIcon(HelperUi.SQUARE_RED);
         MediatorGui.tabManagers().sqlShellManager.setButtonEnable(true);
         MediatorGui.tabManagers().sqlShellManager.restoreButtonText();
     }

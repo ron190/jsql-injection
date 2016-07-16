@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.accessible.bean.Database;
+import com.jsql.model.bean.database.Database;
 
 /**
  * Add the databases to current injection panel.

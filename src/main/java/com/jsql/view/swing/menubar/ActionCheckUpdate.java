@@ -23,7 +23,7 @@ public class ActionCheckUpdate implements ActionListener, Runnable {
     @Override
     public void run() {
         try {
-            LOGGER.info(I18n.get("UPDATE_LOADING"));
+            LOGGER.info(I18n.valueByKey("UPDATE_LOADING"));
             URLConnection con = new URL("https://raw.githubusercontent.com/ron190/jsql-injection/master/.version").openConnection();
             con.setReadTimeout(60000);
             con.setConnectTimeout(60000);
@@ -38,12 +38,12 @@ public class ActionCheckUpdate implements ActionListener, Runnable {
             Float gitVersion = Float.parseFloat(pageSource);
             MediatorModel.model();
             if (gitVersion <= Float.parseFloat(InjectionModel.VERSION_JSQL)) {
-                LOGGER.debug(I18n.get("UPDATE_UPTODATE"));
+                LOGGER.debug(I18n.valueByKey("UPDATE_UPTODATE"));
             } else {
-                LOGGER.warn(I18n.get("UPDATE_NEW_VERSION_AVAILABLE"));
+                LOGGER.warn(I18n.valueByKey("UPDATE_NEW_VERSION_AVAILABLE"));
             }
         } catch (NumberFormatException | IOException e) {
-            LOGGER.warn(I18n.get("UPDATE_EXCEPTION"));
+            LOGGER.warn(I18n.valueByKey("UPDATE_EXCEPTION"));
             LOGGER.error(e, e);
         }
     }

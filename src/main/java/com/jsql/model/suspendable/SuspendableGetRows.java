@@ -4,11 +4,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.accessible.bean.AbstractElementDatabase;
-import com.jsql.model.accessible.bean.Request;
+import com.jsql.model.bean.database.AbstractElementDatabase;
+import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.PreparationException;
 import com.jsql.model.exception.StoppableException;
-import com.jsql.model.strategy.AbstractStrategy;
+import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.util.StringUtil;
 
 /**
@@ -20,7 +20,7 @@ import com.jsql.util.StringUtil;
  * MID skips characters in a line (useful if result contains less than 1 row).
  * The process can be interrupted by the user (stop/pause).
  */
-public class SuspendableGetRows extends AbstractSuspendable {
+public class SuspendableGetRows extends AbstractSuspendable<String> {
     
     @Override
     public String run(Object... args) throws PreparationException, StoppableException {
@@ -31,9 +31,9 @@ public class SuspendableGetRows extends AbstractSuspendable {
         AbstractElementDatabase searchName = (AbstractElementDatabase) args[4];
         MediatorModel.model().suspendables.put(searchName, this);
 
-        String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", MediatorModel.model().currentVendor.getValue().getSqlLimit(0));
+        String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", MediatorModel.model().vendor.getValue().getSqlLimit(0));
 
-        AbstractStrategy strategy = MediatorModel.model().getStrategy().getValue();
+        AbstractStrategy strategy = MediatorModel.model().getStrategy().instance();
         
         /*
          * As we know the expected number of rows (numberToFind), then it stops injection if all rows are found,
@@ -78,7 +78,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
                     Request request = new Request();
                     request.setMessage("UpdateProgress");
                     request.setParameters(searchName, numberToFind);
-                    MediatorModel.model().interact(request);
+                    MediatorModel.model().sendToViews(request);
                 }
                 break;
             }
@@ -93,7 +93,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
                     Request request = new Request();
                     request.setMessage("UpdateProgress");
                     request.setParameters(searchName, numberToFind);
-                    MediatorModel.model().interact(request);
+                    MediatorModel.model().sendToViews(request);
                 }
                 break;
             }
@@ -113,19 +113,20 @@ public class SuspendableGetRows extends AbstractSuspendable {
                         .matcher(regexAllLine.group(1))
                         .replaceAll("\n")
                 );
-                MediatorModel.model().interact(request);
+                MediatorModel.model().sendToViews(request);
             } catch (IllegalStateException e) {
                 // if it's not the root (empty tree)
                 if (searchName != null) {
                     Request request = new Request();
                     request.setMessage("EndProgress");
                     request.setParameters(searchName);
-                    MediatorModel.model().interact(request);
+                    MediatorModel.model().sendToViews(request);
                 }
                 /**
                  * TODO Injection Exception
                  */
-                throw new PreparationException("Fetching fails: no data to parse for " + searchName + "\nSource page : " + sourcePage[0]);
+//                throw new PreparationException("Fetching fails: no data to parse for " + searchName + "\nSource page: " + sourcePage[0].trim());
+                throw new PreparationException("Fetching fails: no data to parse"+ (searchName != null ? " for "+searchName : ""));
             }
 
             /*
@@ -147,7 +148,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
                 Request request = new Request();
                 request.setMessage("UpdateProgress");
                 request.setParameters(searchName, sqlLimit + nbCompleteLine);
-                MediatorModel.model().interact(request);
+                MediatorModel.model().sendToViews(request);
             }
 
             /*
@@ -233,7 +234,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
                         Request request = new Request();
                         request.setMessage("UpdateProgress");
                         request.setParameters(searchName, sqlLimit);
-                        MediatorModel.model().interact(request);
+                        MediatorModel.model().sendToViews(request);
                     }
 
                     /*
@@ -245,7 +246,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
                             Request request = new Request();
                             request.setMessage("UpdateProgress");
                             request.setParameters(searchName, numberToFind);
-                            MediatorModel.model().interact(request);
+                            MediatorModel.model().sendToViews(request);
                         }
                         break;
                     }
@@ -258,7 +259,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
                         Pattern
                             .compile("(?si)\\{limit\\}")
                             .matcher(initialSQLQuery)
-                            .replaceAll(MediatorModel.model().currentVendor.getValue().getSqlLimit(sqlLimit));
+                            .replaceAll(MediatorModel.model().vendor.getValue().getSqlLimit(sqlLimit));
                     charPositionInCurrentRow = 1;
                     slidingWindowCurrentRow = "";
                 } else {
@@ -267,7 +268,7 @@ public class SuspendableGetRows extends AbstractSuspendable {
                         Request request = new Request();
                         request.setMessage("UpdateProgress");
                         request.setParameters(searchName, numberToFind);
-                        MediatorModel.model().interact(request);
+                        MediatorModel.model().sendToViews(request);
                     }
                     break;
                 }

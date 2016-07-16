@@ -21,7 +21,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
-import com.jsql.model.accessible.bean.Column;
+import com.jsql.model.bean.database.Column;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
@@ -68,7 +68,7 @@ public class ActionLoadStop implements ActionListener {
                 }
             }.execute();
         } else {
-            AbstractSuspendable suspendableTask = MediatorModel.model().suspendables.get(this.nodeData.dataObject);
+            AbstractSuspendable<?> suspendableTask = MediatorModel.model().suspendables.get(this.nodeData.dataObject);
             
             suspendableTask.stop();
             suspendableTask.unpause();

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.accessible.bean.Request;
+import com.jsql.model.bean.util.Request;
 import com.jsql.util.StringUtil;
 
 /**
@@ -17,7 +17,7 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
     /**
      * url: SQL query
      */
-    private String url;
+    private String urlAdminPage;
     
     /**
      * HTTP header response code.
@@ -26,16 +26,16 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
 
     /**
      * Create a callable to find admin page.
-     * @param url URL of admin page
+     * @param urlAdminPage URL of admin page
      */
-    public CallableAdminPage(String url) {
-        this.url = url;
+    public CallableAdminPage(String urlAdminPage) {
+        this.urlAdminPage = urlAdminPage;
     }
 
     @Override
     public CallableAdminPage call() throws Exception {
         if (!RessourceAccess.isSearchAdminStopped) {
-            URL targetUrl = new URL(url);
+            URL targetUrl = new URL(urlAdminPage);
             HttpURLConnection connection = (HttpURLConnection) targetUrl.openConnection();
             connection.setRequestMethod("HEAD");
             responseCodeHTTP = connection.getHeaderField(0);
@@ -45,7 +45,7 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
             }
 
             Map<String, Object> msgHeader = new HashMap<>();
-            msgHeader.put("Url", url);
+            msgHeader.put("Url", urlAdminPage);
             msgHeader.put("Post", "");
             msgHeader.put("Header", "");
             msgHeader.put("Response", StringUtil.getHTTPHeaders(connection));
@@ -53,13 +53,13 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
             Request request = new Request();
             request.setMessage("MessageHeader");
             request.setParameters(msgHeader);
-            MediatorModel.model().interact(request);
+            MediatorModel.model().sendToViews(request);
         }
         return this;
     }
     
     public String getUrl() {
-        return url;
+        return urlAdminPage;
     }
 
     public boolean isHttpResponseOk() {

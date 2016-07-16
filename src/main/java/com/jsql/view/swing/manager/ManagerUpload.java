@@ -11,8 +11,11 @@
 package com.jsql.view.swing.manager;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +42,7 @@ import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.exception.PreparationException;
 import com.jsql.model.exception.StoppableException;
 import com.jsql.util.PreferencesUtil;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -61,7 +64,7 @@ public class ManagerUpload extends ManagerAbstractList {
     public ManagerUpload() {
         this.setLayout(new BorderLayout());
 
-        this.setDefaultText(I18n.get("UPLOAD_RUN_BUTTON"));
+        this.setDefaultText(I18n.valueByKey("UPLOAD_RUN_BUTTON"));
 
         List<String> pathsList = new ArrayList<>();
         try {
@@ -82,17 +85,17 @@ public class ManagerUpload extends ManagerAbstractList {
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
 
-        final JTextField shellURL = new JPopupTextField(I18n.get("UPLOAD_URL_LABEL")).getProxy();
-        String urlTooltip = I18n.get("UPLOAD_URL_TOOLTIP");
+        final JTextField shellURL = new JPopupTextField(I18n.valueByKey("UPLOAD_URL_LABEL")).getProxy();
+        String urlTooltip = I18n.valueByKey("UPLOAD_URL_TOOLTIP");
         
         shellURL.setToolTipText(urlTooltip);
         shellURL.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
-                    BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGui.COMPONENT_BORDER),
-                    BorderFactory.createMatteBorder(1, 1, 0, 1, HelperGui.DEFAULT_BACKGROUND)
+                    BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER),
+                    BorderFactory.createMatteBorder(1, 1, 0, 1, HelperUi.DEFAULT_BACKGROUND)
                 ),
-                HelperGui.BLU_ROUND_BORDER
+                HelperUi.BLU_BORDER
             )
         );
 
@@ -100,17 +103,36 @@ public class ManagerUpload extends ManagerAbstractList {
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGui.COMPONENT_BORDER), 
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
 
-        this.run = new JButton(I18n.get("UPLOAD_DIALOG_TEXT"), new ImageIcon(ManagerUpload.class.getResource("/com/jsql/view/swing/resources/images/icons/add.png")));
-        I18n.add("UPLOAD_DIALOG_TEXT", this.run);
-        this.run.setToolTipText(I18n.get("UPLOAD_RUN_BUTTON_TOOLTIP"));
+        this.run = new JButton(I18n.valueByKey("UPLOAD_DIALOG_TEXT"), new ImageIcon(ManagerUpload.class.getResource("/com/jsql/view/swing/resources/images/icons/bullet_add.png")));
+        I18n.addComponentForKey("UPLOAD_DIALOG_TEXT", this.run);
+        this.run.setToolTipText(I18n.valueByKey("UPLOAD_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
         
-        this.run.setBorder(HelperGui.BLU_ROUND_BORDER);
+        run.setContentAreaFilled(false);
+        run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+        run.setBackground(new Color(200, 221, 242));
+        
+        run.addMouseListener(new MouseAdapter() {
+            @Override public void mouseEntered(MouseEvent e) {
+                if (run.isEnabled()) {
+                    run.setContentAreaFilled(true);
+                    run.setBorder(HelperUi.BLU_ROUND_BORDER);
+                }
+                
+            }
+
+            @Override public void mouseExited(MouseEvent e) {
+                if (run.isEnabled()) {
+                    run.setContentAreaFilled(false);
+                    run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+                }
+            }
+        });
         
         this.run.addActionListener(new ActionListener() {
             @Override
@@ -121,7 +143,7 @@ public class ManagerUpload extends ManagerAbstractList {
                 }
 
                 final JFileChooser filechooser = new JFileChooser(PreferencesUtil.pathFile);
-                filechooser.setDialogTitle(I18n.get("UPLOAD_DIALOG_TEXT"));
+                filechooser.setDialogTitle(I18n.valueByKey("UPLOAD_DIALOG_TEXT"));
                 
                 int returnVal = filechooser.showOpenDialog(MediatorGui.frame());
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -143,10 +165,10 @@ public class ManagerUpload extends ManagerAbstractList {
             }
         });
 
-        this.privilege = new JLabel(I18n.get("PRIVILEGE_LABEL"), HelperGui.SQUARE_GREY, SwingConstants.LEFT);
-        I18n.add("PRIVILEGE_LABEL", this.privilege);
-        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperGui.DEFAULT_BACKGROUND));
-        this.privilege.setToolTipText(I18n.get("PRIVILEGE_TOOLTIP"));
+        this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.SQUARE_GREY, SwingConstants.LEFT);
+        I18n.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
+        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.DEFAULT_BACKGROUND));
+        this.privilege.setToolTipText(I18n.valueByKey("PRIVILEGE_TOOLTIP"));
 
         this.loader.setVisible(false);
 

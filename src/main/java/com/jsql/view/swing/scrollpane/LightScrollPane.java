@@ -20,7 +20,7 @@ import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 
 @SuppressWarnings("serial")
 public class LightScrollPane extends JComponent {
@@ -47,7 +47,7 @@ public class LightScrollPane extends JComponent {
     public LightScrollPane(int top, int left, int bottom, int right, JComponent c) {
         this(c);
 
-        this.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, HelperGui.COMPONENT_BORDER));
+        this.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, HelperUi.COMPONENT_BORDER));
     }
     
     public LightScrollPane(JComponent component) {

@@ -17,7 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.shell.ShellWeb;
@@ -26,7 +26,7 @@ import com.jsql.view.swing.tab.TabHeader;
 /**
  * Create a new tab for the terminal.
  */
-public class CreateShellTab implements InteractionCommand {
+public class CreateShellTab extends CreateTab implements InteractionCommand {
     /**
      * Full path of the shell file on remote host.
      */
@@ -41,6 +41,8 @@ public class CreateShellTab implements InteractionCommand {
      * @param interactionParams The local path and url for the shell
      */
     public CreateShellTab(Object[] interactionParams) {
+        super();
+        
         path = (String) interactionParams[0];
         url = (String) interactionParams[1];
     }
@@ -52,7 +54,7 @@ public class CreateShellTab implements InteractionCommand {
         MediatorGui.frame().getConsoles().put(terminalID, terminal);
         
         LightScrollPane scroller = new LightScrollPane(terminal);
-        scroller.THUMB_COLOR = HelperGui.SELECTION_BACKGROUND;
+        scroller.THUMB_COLOR = HelperUi.SELECTION_BACKGROUND;
         scroller.SCROLL_BAR_ALPHA_ROLLOVER = 175;
         scroller.SCROLL_BAR_ALPHA = 100;
         

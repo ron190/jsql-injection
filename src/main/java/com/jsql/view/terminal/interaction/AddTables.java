@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.accessible.bean.Table;
+import com.jsql.model.bean.database.Table;
 import com.jsql.view.swing.interaction.InteractionCommand;
 
 /**

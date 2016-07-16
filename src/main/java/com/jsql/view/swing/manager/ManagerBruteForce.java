@@ -11,7 +11,10 @@
 package com.jsql.view.swing.manager;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -30,7 +33,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
 import com.jsql.i18n.I18n;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JPopupTextField;
@@ -110,13 +113,13 @@ public class ManagerBruteForce extends JPanel {
 
         JPanel firstLine = new JPanel(new BorderLayout());
 
-        hash = new JPopupTextField(I18n.get("BRUTEFORCE_HASH")).getProxy();
-        hash.setToolTipText(I18n.get("BRUTEFORCE_HASH_TOOLTIP"));
+        hash = new JPopupTextField(I18n.valueByKey("BRUTEFORCE_HASH")).getProxy();
+        hash.setToolTipText(I18n.valueByKey("BRUTEFORCE_HASH_TOOLTIP"));
         firstLine.add(hash, BorderLayout.CENTER);
         hash.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 1, 1, HelperGui.DEFAULT_BACKGROUND),
-                HelperGui.BLU_ROUND_BORDER
+                BorderFactory.createMatteBorder(0, 0, 1, 1, HelperUi.DEFAULT_BACKGROUND),
+                HelperUi.BLU_BORDER
             )
         );
 
@@ -136,7 +139,7 @@ public class ManagerBruteForce extends JPanel {
         );
         
         hashTypes.setSelectedIndex(6);
-        hashTypes.setToolTipText(I18n.get("BRUTEFORCE_HASH_TYPE_TOOLTIP"));
+        hashTypes.setToolTipText(I18n.valueByKey("BRUTEFORCE_HASH_TYPE_TOOLTIP"));
 
         secondLine.add(hashTypes);
 
@@ -145,20 +148,20 @@ public class ManagerBruteForce extends JPanel {
         secondLine.add(numericCharacters);
         secondLine.add(specialCharacters);
 
-        lowerCaseCharacters.setToolTipText(I18n.get("BRUTEFORCE_LCASE_TOOLTIP"));
-        upperCaseCharacters.setToolTipText(I18n.get("BRUTEFORCE_UCASE_TOOLTIP"));
-        numericCharacters.setToolTipText(I18n.get("BRUTEFORCE_NUM_TOOLTIP"));
-        specialCharacters.setToolTipText(I18n.get("BRUTEFORCE_SPEC_TOOLTIP"));
+        lowerCaseCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_LCASE_TOOLTIP"));
+        upperCaseCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_UCASE_TOOLTIP"));
+        numericCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_NUM_TOOLTIP"));
+        specialCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_SPEC_TOOLTIP"));
 
         JPanel thirdLine = new JPanel();
         thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));
         
-        exclude = new JPopupTextField(I18n.get("BRUTEFORCE_EXCLUDE_LABEL")).getProxy();
-        exclude.setToolTipText(I18n.get("BRUTEFORCE_EXCLUDE_TOOLTIP"));
+        exclude = new JPopupTextField(I18n.valueByKey("BRUTEFORCE_EXCLUDE_LABEL")).getProxy();
+        exclude.setToolTipText(I18n.valueByKey("BRUTEFORCE_EXCLUDE_TOOLTIP"));
         exclude.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 0, 1, 1, HelperGui.DEFAULT_BACKGROUND),
-                HelperGui.BLU_ROUND_BORDER
+                BorderFactory.createMatteBorder(1, 0, 1, 1, HelperUi.DEFAULT_BACKGROUND),
+                HelperUi.BLU_BORDER
             )
         );
         thirdLine.add(exclude);
@@ -180,8 +183,8 @@ public class ManagerBruteForce extends JPanel {
             )
         );
         
-        minimumLength.setToolTipText(I18n.get("BRUTEFORCE_MIN_TOOLTIP"));
-        maximumLength.setToolTipText(I18n.get("BRUTEFORCE_MAX_TOOLTIP"));
+        minimumLength.setToolTipText(I18n.valueByKey("BRUTEFORCE_MIN_TOOLTIP"));
+        maximumLength.setToolTipText(I18n.valueByKey("BRUTEFORCE_MAX_TOOLTIP"));
         
         minimumLength.setPreferredSize(new Dimension(38, (int) minimumLength.getPreferredSize().getHeight()));
         maximumLength.setPreferredSize(new Dimension(38, (int) maximumLength.getPreferredSize().getHeight()));
@@ -190,13 +193,13 @@ public class ManagerBruteForce extends JPanel {
         minimumLength.setMinimumSize(new Dimension(38, (int) minimumLength.getPreferredSize().getHeight()));
         maximumLength.setMinimumSize(new Dimension(38, (int) maximumLength.getPreferredSize().getHeight()));
 
-        JLabel labelMin = new JLabel(" "+I18n.get("BRUTEFORCE_MIN_LABEL"), SwingConstants.RIGHT);
+        JLabel labelMin = new JLabel(" "+I18n.valueByKey("BRUTEFORCE_MIN_LABEL"), SwingConstants.RIGHT);
         thirdLine.add(labelMin);
-        I18n.add("BRUTEFORCE_RUN_BUTTON", labelMin);
+        I18n.addComponentForKey("BRUTEFORCE_MIN_LABEL", labelMin);
         thirdLine.add(minimumLength);
-        JLabel labelMax = new JLabel(" "+I18n.get("BRUTEFORCE_MAX_LABEL"), SwingConstants.RIGHT);
+        JLabel labelMax = new JLabel(" "+I18n.valueByKey("BRUTEFORCE_MAX_LABEL"), SwingConstants.RIGHT);
         thirdLine.add(labelMax);
-        I18n.add("BRUTEFORCE_RUN_BUTTON", labelMax);
+        I18n.addComponentForKey("BRUTEFORCE_MAX_LABEL", labelMax);
         thirdLine.add(maximumLength);
         
         final JPanel secondAndThirdLine = new JPanel(new BorderLayout());
@@ -216,20 +219,40 @@ public class ManagerBruteForce extends JPanel {
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGui.COMPONENT_BORDER),
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
         
         run = new JButton(
-            I18n.get("BRUTEFORCE_RUN_BUTTON"), 
+            I18n.valueByKey("BRUTEFORCE_RUN_BUTTON"), 
             new ImageIcon(ManagerBruteForce.class.getResource("/com/jsql/view/swing/resources/images/icons/key.png"))
         );
-        I18n.add("BRUTEFORCE_RUN_BUTTON", run);
-        run.setToolTipText(I18n.get("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
-        run.setBorder(HelperGui.BLU_ROUND_BORDER);
+        I18n.addComponentForKey("BRUTEFORCE_RUN_BUTTON", run);
+        run.setToolTipText(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
+        
+        run.setContentAreaFilled(false);
+        run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+        run.setBackground(new Color(200, 221, 242));
+        
+        run.addMouseListener(new MouseAdapter() {
+            @Override public void mouseEntered(MouseEvent e) {
+                if (run.isEnabled()) {
+                    run.setContentAreaFilled(true);
+                    run.setBorder(HelperUi.BLU_ROUND_BORDER);
+                }
+                
+            }
 
-        loader = new JLabel(HelperGui.LOADER_GIF);
+            @Override public void mouseExited(MouseEvent e) {
+                if (run.isEnabled()) {
+                    run.setContentAreaFilled(false);
+                    run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+                }
+            }
+        });
+
+        loader = new JLabel(HelperUi.LOADER_GIF);
         loader.setVisible(false);
 
         lastLine.add(Box.createHorizontalGlue());

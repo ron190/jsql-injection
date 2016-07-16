@@ -38,18 +38,18 @@ public class ActionHideShowConsole implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (
-            MediatorGui.frame().splitPaneCenter.getTopComponent().isVisible() && 
-            MediatorGui.frame().splitPaneCenter.getBottomComponent().isVisible()
+            MediatorGui.frame().splitHorizontalTopBottom.getTopComponent().isVisible() && 
+            MediatorGui.frame().splitHorizontalTopBottom.getBottomComponent().isVisible()
         ) {
-            MediatorGui.frame().splitPaneCenter.getBottomComponent().setVisible(false);
-            this.loc = MediatorGui.frame().splitPaneCenter.getDividerLocation();
+            MediatorGui.frame().splitHorizontalTopBottom.getBottomComponent().setVisible(false);
+            this.loc = MediatorGui.frame().splitHorizontalTopBottom.getDividerLocation();
             this.panel.setVisible(true);
-            MediatorGui.frame().splitPaneCenter.disableDragSize();
+            MediatorGui.frame().splitHorizontalTopBottom.disableDragSize();
         } else {
-            MediatorGui.frame().splitPaneCenter.getBottomComponent().setVisible(true);
-            MediatorGui.frame().splitPaneCenter.setDividerLocation(this.loc);
+            MediatorGui.frame().splitHorizontalTopBottom.getBottomComponent().setVisible(true);
+            MediatorGui.frame().splitHorizontalTopBottom.setDividerLocation(this.loc);
             this.panel.setVisible(false);
-            MediatorGui.frame().splitPaneCenter.enableDragSize();
+            MediatorGui.frame().splitHorizontalTopBottom.enableDragSize();
         }
     }
 }

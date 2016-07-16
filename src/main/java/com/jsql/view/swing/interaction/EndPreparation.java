@@ -26,10 +26,10 @@ public class EndPreparation implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.panelAddress().buttonAddressBar.setInjectionReady();
+        MediatorGui.panelAddress().buttonInUrl.setInjectionReady();
         MediatorGui.panelAddress().loader.setVisible(false);
 
-        if (MediatorModel.model().isProcessFinished) {
+        if (MediatorModel.model().injectionIsFinished) {
             MediatorGui.tabManagers().fileManager.setButtonEnable(true);
             MediatorGui.tabManagers().shellManager.setButtonEnable(true);
             MediatorGui.tabManagers().sqlShellManager.setButtonEnable(true);

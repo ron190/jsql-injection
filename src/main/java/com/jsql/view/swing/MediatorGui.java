@@ -10,7 +10,6 @@ import com.jsql.view.swing.manager.ManagerWebshell;
 import com.jsql.view.swing.menubar.Menubar;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.PanelConsoles;
-import com.jsql.view.swing.panel.PanelStatus;
 import com.jsql.view.swing.tab.TabConsoles;
 import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.tab.TabResults;
@@ -23,12 +22,11 @@ public final class MediatorGui {
     private static TabResults tabResults;
     private static TabManagers tabManagers;
     
-    private static FrameJSql frame;
+    private static JFrameSoftware frame;
     private static Menubar menubar;
     private static PanelAddressBar panelAddress;
     private static TabConsoles tabConsoles;
     private static PanelConsoles panelConsoles;
-    private static PanelStatus panelStatus;
     
     private static ManagerWebshell webshellManager;
     private static ManagerAdminPage adminPageManager;
@@ -53,7 +51,7 @@ public final class MediatorGui {
         return tabManagers;
     }
      
-    public static FrameJSql frame() {
+    public static JFrameSoftware frame() {
         return frame;
     }
     public static Menubar menubar() {
@@ -67,9 +65,6 @@ public final class MediatorGui {
     }
     public static PanelConsoles panelConsoles() {
         return panelConsoles;
-    }
-    public static PanelStatus panelStatus() {
-        return panelStatus;
     }
      
     public static ManagerWebshell webshellManager() {
@@ -89,7 +84,7 @@ public final class MediatorGui {
     }
     
     // Registering GUI components
-    public static void register(FrameJSql frame) {
+    public static void register(JFrameSoftware frame) {
         MediatorGui.frame = frame;
     }
     public static void register(Menubar menubar) {
@@ -103,9 +98,6 @@ public final class MediatorGui {
     }
     public static void register(PanelConsoles panelConsoles) {
         MediatorGui.panelConsoles = panelConsoles;
-    }
-    public static void register(PanelStatus panelStatus) {
-        MediatorGui.panelStatus = panelStatus;
     }
     public static void register(JTree treeDatabase) {
         MediatorGui.treeDatabase = treeDatabase;

@@ -60,7 +60,7 @@ public class MenuActionExport implements ActionListener {
                         if (file.exists()) {
                             int replace = JOptionPane.showConfirmDialog(
                                 this,
-                                file.getName() + " " +I18n.get("LIST_CONFIRM_REPLACE"), I18n.get("LIST_CONFIRM_EXPORT"),
+                                file.getName() + " " +I18n.valueByKey("LIST_CONFIRM_REPLACE"), I18n.valueByKey("LIST_CONFIRM_EXPORT"),
                                 JOptionPane.YES_NO_OPTION
                             );
                             switch (replace) {
@@ -81,7 +81,7 @@ public class MenuActionExport implements ActionListener {
                     }
                 }
             };
-            importFileDialog.setDialogTitle(I18n.get("LIST_EXPORT"));
+            importFileDialog.setDialogTitle(I18n.valueByKey("LIST_EXPORT"));
             int choice = importFileDialog.showSaveDialog(myList.getTopLevelAncestor());
             if (choice != JFileChooser.APPROVE_OPTION) {
                 return;

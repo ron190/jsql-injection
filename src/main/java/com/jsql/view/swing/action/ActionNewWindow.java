@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.MainApplication;
 import com.jsql.i18n.I18n;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 
 /**
  * Open another jSQL instance in new process. 
@@ -37,15 +37,15 @@ public class ActionNewWindow extends AbstractAction {
     public ActionNewWindow() {
         super();
 
-        this.putValue(Action.NAME, I18n.get("NEW_WINDOW"));
+        this.putValue(Action.NAME, I18n.valueByKey("NEW_WINDOW"));
         this.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_N));
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-        this.putValue(Action.SMALL_ICON, HelperGui.EMPTY);
+        this.putValue(Action.SMALL_ICON, HelperUi.EMPTY);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        LOGGER.info(I18n.get("STARTING_NEW_WINDOW"));
+        LOGGER.info(I18n.valueByKey("STARTING_NEW_WINDOW"));
         String separator = System.getProperty("file.separator");
         String classpath = System.getProperty("java.class.path");
         String path = System.getProperty("java.home") + separator + "bin" + separator + "java";
@@ -60,7 +60,7 @@ public class ActionNewWindow extends AbstractAction {
         try {
             processBuilder.start();
         } catch (IOException e1) {
-            LOGGER.error(I18n.get("ERROR_OPENING_NEW_WINDOW"));
+            LOGGER.error(I18n.valueByKey("ERROR_OPENING_NEW_WINDOW"));
         }        
     }
 }

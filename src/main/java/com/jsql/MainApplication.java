@@ -1,20 +1,26 @@
 package com.jsql;
 
 import java.awt.HeadlessException;
+import java.io.File;
+import java.io.IOException;
+import java.util.Locale;
 
 import org.apache.log4j.Appender;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.CertificateUtil;
-import com.jsql.util.PreferencesUtil;
+import com.jsql.util.ConnectionUtil;
 import com.jsql.util.ExceptionUtil;
 import com.jsql.util.GitUtil;
+import com.jsql.util.PreferencesUtil;
 import com.jsql.util.ProxyUtil;
-import com.jsql.view.swing.FrameJSql;
+import com.jsql.view.swing.JFrameSoftware;
 import com.jsql.view.swing.MediatorGui;
 
 public class MainApplication {
@@ -35,27 +41,53 @@ public class MainApplication {
      * @param args CLI parameters (not used)
      */
     public static void main(String[] args) {
+        
         CertificateUtil.ignoreCertificationChain();
         ExceptionUtil.setUncaughtExceptionHandler();
-        ProxyUtil.initialize();
-        PreferencesUtil.initialize();
-        AuthenticationUtil.initialize();
+        ProxyUtil.setProxy();
+        PreferencesUtil.loadSavedPreferences();
+        AuthenticationUtil.setKerberosCifs();
         
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);
         
         try {
-            FrameJSql gui = new FrameJSql();
-            model.addObserver(gui);
-            MediatorGui.register(gui);
+            JFrameSoftware frame = new JFrameSoftware();
+            model.addObserver(frame);
+            MediatorGui.register(frame);
         } catch (HeadlessException e) {
             LOGGER.error("HeadlessException: command line execution in jSQL not supported yet.");
         }
         
         model.sendVersionToView();
         
-        if (PreferencesUtil.isCheckingUpdate) {
+        if (PreferencesUtil.isCheckUpdateActivated) {
             GitUtil.checkUpdate();
         }
+        
+        File f = new File("com.jsql.i18n.jsql_"+ Locale.getDefault().getLanguage() +".properties");
+        if (!f.exists() && !Locale.getDefault().getLanguage().equals("en")) { 
+            String languageDisplayed = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
+            LOGGER.info(
+                "Language "+ languageDisplayed +" is currently not supported, "
+                + "please consider contributing and translating pieces of jSQL into "+ languageDisplayed +" "
+                + "using the menu Community"
+            );
+        }
+        
+        try {
+            String jsonInfosWebService = ConnectionUtil.getSource(
+                "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/jsql-injection.json"
+            );
+            JSONObject infosSoftware = new JSONObject(jsonInfosWebService);
+            
+            JSONArray news = infosSoftware.getJSONArray("news");
+            for (int i = 0 ; i < news.length() ; i++) {
+                LOGGER.info(news.get(i));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
     }
 }

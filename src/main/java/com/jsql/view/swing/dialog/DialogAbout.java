@@ -11,6 +11,7 @@
 package com.jsql.view.swing.dialog;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dialog;
@@ -46,7 +47,7 @@ import javax.swing.event.HyperlinkListener;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -64,7 +65,7 @@ public class DialogAbout extends JDialog {
     /**
      * Button receiving focus.
      */
-    private JButton close = null;
+    private JButton buttonClose = null;
     
     /**
      * Dialog scroller.
@@ -80,7 +81,7 @@ public class DialogAbout extends JDialog {
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         // Define a small and large app icon
-        this.setIconImages(HelperGui.getIcons());
+        this.setIconImages(HelperUi.getIcons());
 
         // Action for ESCAPE key
         ActionListener escapeListener = new ActionListener() {
@@ -100,21 +101,22 @@ public class DialogAbout extends JDialog {
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));
         lastLine.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        this.close = new JButton("Close");
-        this.close.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGui.BLU_COLOR),
+        this.buttonClose = new JButton("Close");
+        this.buttonClose.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.BLU_COLOR),
             BorderFactory.createEmptyBorder(2, 20, 2, 20))
         );
-        this.close.addActionListener(escapeListener);
+        this.buttonClose.addActionListener(escapeListener);
 
         this.setLayout(new BorderLayout());
         Container dialogPane = this.getContentPane();
-        JButton webpage = new JButton("Webpage");
-        webpage.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGui.BLU_COLOR),
+        
+        final JButton buttonWebpage = new JButton("Webpage");
+        buttonWebpage.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.BLU_COLOR),
             BorderFactory.createEmptyBorder(2, 20, 2, 20))
         );
-        webpage.addActionListener(new ActionListener() {
+        buttonWebpage.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 try {
@@ -124,9 +126,44 @@ public class DialogAbout extends JDialog {
                 }
             }
         });
-        lastLine.add(webpage);
+        
+        buttonWebpage.setContentAreaFilled(false);
+        buttonWebpage.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        buttonWebpage.setBackground(new Color(200, 221, 242));
+        
+        buttonWebpage.addMouseListener(new MouseAdapter() {
+            @Override public void mouseEntered(MouseEvent e) {
+                buttonWebpage.setContentAreaFilled(true);
+                buttonWebpage.setBorder(HelperUi.BLU_ROUND_BORDER);
+                
+            }
+
+            @Override public void mouseExited(MouseEvent e) {
+                buttonWebpage.setContentAreaFilled(false);
+                buttonWebpage.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+            }
+        });
+        
+        buttonClose.setContentAreaFilled(false);
+        buttonClose.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        buttonClose.setBackground(new Color(200, 221, 242));
+        
+        buttonClose.addMouseListener(new MouseAdapter() {
+            @Override public void mouseEntered(MouseEvent e) {
+                buttonClose.setContentAreaFilled(true);
+                buttonClose.setBorder(HelperUi.BLU_ROUND_BORDER);
+                
+            }
+
+            @Override public void mouseExited(MouseEvent e) {
+                buttonClose.setContentAreaFilled(false);
+                buttonClose.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+            }
+        });
+        
+        lastLine.add(buttonWebpage);
         lastLine.add(Box.createGlue());
-        lastLine.add(this.close);
+        lastLine.add(this.buttonClose);
 
         JLabel iconJSQL = new JLabel(new ImageIcon(DialogAbout.class.getResource("/com/jsql/view/swing/resources/images/icons/app-32x32.png")));
         iconJSQL.setBorder(BorderFactory.createEmptyBorder(2, 15, 2, 15));
@@ -202,11 +239,11 @@ public class DialogAbout extends JDialog {
         this.scrollPane.scrollPane.getViewport().setViewPosition(new Point(0, 0));
         this.setSize(460, 300);
         this.setLocationRelativeTo(MediatorGui.frame());
-        this.close.requestFocusInWindow();
-        this.getRootPane().setDefaultButton(this.close);
+        this.buttonClose.requestFocusInWindow();
+        this.getRootPane().setDefaultButton(this.buttonClose);
     }
 
     public void requestButtonFocus() {
-        this.close.requestFocusInWindow();
+        this.buttonClose.requestFocusInWindow();
     }
 }

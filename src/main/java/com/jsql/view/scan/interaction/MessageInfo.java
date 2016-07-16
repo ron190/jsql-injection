@@ -18,6 +18,7 @@ import com.jsql.model.MediatorModel;
  * Update the general information in status bar.
  */
 public class MessageInfo implements InteractionCommand {
+    
     private static final Logger LOGGER = Logger.getLogger(MessageInfo.class);
     
     /**
@@ -31,8 +32,8 @@ public class MessageInfo implements InteractionCommand {
     public void execute() {
         LOGGER.trace(
             MediatorModel.model().versionDatabase 
-            + ", Database: " + MediatorModel.model().currentDatabase 
-            + ", User: " + MediatorModel.model().currentUser
+            + ", Database: " + MediatorModel.model().nameDatabase 
+            + ", User: " + MediatorModel.model().username
         );
     }
 }

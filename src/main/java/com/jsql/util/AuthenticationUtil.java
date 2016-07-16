@@ -139,7 +139,7 @@ public class AuthenticationUtil {
         }
     }
     
-    public static void initialize() {
+    public static void setKerberosCifs() {
         // Use Preferences API to persist proxy configuration
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
 

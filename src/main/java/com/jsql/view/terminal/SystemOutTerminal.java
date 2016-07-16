@@ -18,7 +18,7 @@ import java.util.Observer;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.accessible.bean.Request;
+import com.jsql.model.bean.util.Request;
 import com.jsql.view.swing.interaction.InteractionCommand;
 
 /**
@@ -54,7 +54,7 @@ public class SystemOutTerminal implements Observer {
         Request interaction = (Request) newInteraction;
 
         try {
-            Class<?> cl = Class.forName("com.jsql.view.junit.interaction." + interaction.getMessage());
+            Class<?> cl = Class.forName("com.jsql.view.terminal.interaction." + interaction.getMessage());
             Class<?>[] types = new Class[]{Object[].class};
             Constructor<?> ct = cl.getConstructor(types);
 

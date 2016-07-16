@@ -11,6 +11,9 @@
 package com.jsql.view.swing.manager;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -34,7 +37,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 
 import com.jsql.i18n.I18n;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.combomenu.ComboMenuBar;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
@@ -111,14 +114,37 @@ public class ManagerCoder extends JPanel {
         }
 
         ComboMenuBar comboMenubar = new ComboMenuBar(comboMenu);
+        comboMenubar.setOpaque(false);
+        comboMenubar.setBorder(null);
+        
         this.encoding.setText("Decode from Base64");
         
-        JButton run = new JButton(
-            I18n.get("CODER_RUN_BUTTON"), 
-            new ImageIcon(ManagerCoder.class.getResource("/com/jsql/view/swing/resources/images/icons/tick.png"))
+        final JButton run = new JButton(
+            I18n.valueByKey("CODER_RUN_BUTTON"), 
+            new ImageIcon(ManagerCoder.class.getResource("/com/jsql/view/swing/resources/images/icons/bullet_go.png"))
         );
-        I18n.add("CODER_RUN_BUTTON", run);
-        run.setBorder(HelperGui.BLU_ROUND_BORDER);
+        I18n.addComponentForKey("CODER_RUN_BUTTON", run);
+        
+        run.setContentAreaFilled(false);
+        run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+        run.setBackground(new Color(200, 221, 242));
+        
+        run.addMouseListener(new MouseAdapter() {
+            @Override public void mouseEntered(MouseEvent e) {
+                if (run.isEnabled()) {
+                    run.setContentAreaFilled(true);
+                    run.setBorder(HelperUi.BLU_ROUND_BORDER);
+                }
+                
+            }
+
+            @Override public void mouseExited(MouseEvent e) {
+                if (run.isEnabled()) {
+                    run.setContentAreaFilled(false);
+                    run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+                }
+            }
+        });
 
         middleLine.add(comboMenubar);
         middleLine.add(run, BorderLayout.EAST);

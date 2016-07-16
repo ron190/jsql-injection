@@ -19,6 +19,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -43,7 +45,7 @@ import org.apache.log4j.Logger;
 import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.util.ProxyUtil;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.text.JPopupTextField;
 
@@ -60,7 +62,7 @@ public class DialogPreference extends JDialog {
     /**
      * Button getting focus.
      */
-    private JButton okButton;
+    private JButton buttonApply;
 
     public int width = 350;
     public int height = 520;
@@ -74,7 +76,7 @@ public class DialogPreference extends JDialog {
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         // Define a small and large app icon
-        this.setIconImages(HelperGui.getIcons());
+        this.setIconImages(HelperUi.getIcons());
 
         // Action for ESCAPE key
         ActionListener escListener = new ActionListener() {
@@ -94,45 +96,96 @@ public class DialogPreference extends JDialog {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.LINE_AXIS));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
-        okButton = new JButton("Apply");
-        okButton.setBorder(
+        buttonApply = new JButton("Apply");
+        buttonApply.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGui.BLU_COLOR),
+                BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.BLU_COLOR),
                 BorderFactory.createEmptyBorder(2, 7, 2, 7)
             )
         );
 
-        JButton cancelButton = new JButton("Close");
-        cancelButton.setBorder(
+        final JButton buttonClose = new JButton("Close");
+        buttonClose.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGui.BLU_COLOR),
+                BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.BLU_COLOR),
                 BorderFactory.createEmptyBorder(2, 7, 2, 7)
             )
         );
-        cancelButton.addActionListener(escListener);
+        buttonClose.addActionListener(escListener);
 
-        this.getRootPane().setDefaultButton(okButton);
+        this.getRootPane().setDefaultButton(buttonApply);
 
         this.setLayout(new BorderLayout());
         Container contentPane = this.getContentPane();
 
-        JButton checkIPButton = new JButton("Check your IP", new ImageIcon(DialogPreference.class.getResource("/com/jsql/view/swing/resources/images/icons/wrench.png")));
-        checkIPButton.setBorder(HelperGui.BLU_ROUND_BORDER);
-        checkIPButton.addActionListener(new ActionCheckIP());
-        checkIPButton.setToolTipText(
+        final JButton buttonCheckIp = new JButton("Check your IP", new ImageIcon(DialogPreference.class.getResource("/com/jsql/view/swing/resources/images/icons/wrench.png")));
+//        buttonCheckIp.setBorder(HelperUi.BLU_BORDER);
+        buttonCheckIp.addActionListener(new ActionCheckIP());
+        buttonCheckIp.setToolTipText(
             "<html><b>Verify what public IP address is used by jSQL</b><br>"
             + "Usually it's your own public IP if you don't use a proxy. If you use a proxy<br>"
             + "like TOR then your public IP is hidden and another one is used instead.</html>"
         );
 
-        mainPanel.add(checkIPButton);
+        buttonCheckIp.setContentAreaFilled(false);
+        buttonCheckIp.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        buttonCheckIp.setBackground(new Color(200, 221, 242));
+        
+        buttonCheckIp.addMouseListener(new MouseAdapter() {
+            @Override public void mouseEntered(MouseEvent e) {
+                buttonCheckIp.setContentAreaFilled(true);
+                buttonCheckIp.setBorder(HelperUi.BLU_ROUND_BORDER);
+                
+            }
+
+            @Override public void mouseExited(MouseEvent e) {
+                buttonCheckIp.setContentAreaFilled(false);
+                buttonCheckIp.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+            }
+        });
+        
+        buttonApply.setContentAreaFilled(false);
+        buttonApply.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        buttonApply.setBackground(new Color(200, 221, 242));
+        
+        buttonApply.addMouseListener(new MouseAdapter() {
+            @Override public void mouseEntered(MouseEvent e) {
+                buttonApply.setContentAreaFilled(true);
+                buttonApply.setBorder(HelperUi.BLU_ROUND_BORDER);
+                
+            }
+
+            @Override public void mouseExited(MouseEvent e) {
+                buttonApply.setContentAreaFilled(false);
+                buttonApply.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+            }
+        });
+        
+        buttonClose.setContentAreaFilled(false);
+        buttonClose.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        buttonClose.setBackground(new Color(200, 221, 242));
+        
+        buttonClose.addMouseListener(new MouseAdapter() {
+            @Override public void mouseEntered(MouseEvent e) {
+                buttonClose.setContentAreaFilled(true);
+                buttonClose.setBorder(HelperUi.BLU_ROUND_BORDER);
+                
+            }
+
+            @Override public void mouseExited(MouseEvent e) {
+                buttonClose.setContentAreaFilled(false);
+                buttonClose.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+            }
+        });
+
+        mainPanel.add(buttonCheckIp);
         mainPanel.add(Box.createGlue());
-        mainPanel.add(okButton);
+        mainPanel.add(buttonApply);
         mainPanel.add(Box.createHorizontalStrut(5));
-        mainPanel.add(cancelButton);
+        mainPanel.add(buttonClose);
         contentPane.add(mainPanel, BorderLayout.SOUTH);
 
-        final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", PreferencesUtil.isCheckingUpdate);
+        final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", PreferencesUtil.isCheckUpdateActivated);
         checkboxIsCheckingUpdate.setFocusable(false);
         JButton labelIsCheckingUpdate = new JButton("Check update at startup");
         labelIsCheckingUpdate.addActionListener(new ActionListener() {
@@ -156,7 +209,7 @@ public class DialogPreference extends JDialog {
         });
         
         String tooltipIsEvading = "Use complex SQL syntaxes to bypass protection (slower).";
-        final JCheckBox checkboxIsEvading = new JCheckBox("", PreferencesUtil.isEvading);
+        final JCheckBox checkboxIsEvading = new JCheckBox("", PreferencesUtil.evasionIsEnabled);
         checkboxIsEvading.setToolTipText(tooltipIsEvading);
         checkboxIsEvading.setFocusable(false);
         JButton labelIsEvading = new JButton("Enable evasion");
@@ -319,7 +372,7 @@ public class DialogPreference extends JDialog {
             )
         );
         
-        okButton.addActionListener(new ActionListener() {
+        buttonApply.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 PreferencesUtil.set(
@@ -357,9 +410,9 @@ public class DialogPreference extends JDialog {
                 textProxyPort.setText(ProxyUtil.proxyPort);
                 checkboxIsUsingProxy.setSelected(ProxyUtil.isUsingProxy);
 
-                checkboxIsCheckingUpdate.setSelected(PreferencesUtil.isCheckingUpdate);
+                checkboxIsCheckingUpdate.setSelected(PreferencesUtil.isCheckUpdateActivated);
                 checkboxIsReportingBugs.setSelected(PreferencesUtil.isReportingBugs);
-                checkboxIsEvading.setSelected(PreferencesUtil.isEvading);
+                checkboxIsEvading.setSelected(PreferencesUtil.evasionIsEnabled);
                 checkboxIsFollowingRedirection.setSelected(PreferencesUtil.isFollowingRedirection);
             }
         });
@@ -540,12 +593,12 @@ public class DialogPreference extends JDialog {
         this.pack();
         this.height = this.getHeight() + 5;
         this.setMinimumSize(new Dimension(this.width, this.height));
-        this.getRootPane().setDefaultButton(okButton);
-        cancelButton.requestFocusInWindow();
+        this.getRootPane().setDefaultButton(buttonApply);
+        buttonClose.requestFocusInWindow();
         this.setLocationRelativeTo(MediatorGui.frame());
     }
     
     public void requestButtonFocus() {
-        this.okButton.requestFocusInWindow();
+        this.buttonApply.requestFocusInWindow();
     }
 }

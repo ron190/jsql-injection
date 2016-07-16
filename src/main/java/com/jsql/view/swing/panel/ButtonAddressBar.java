@@ -15,7 +15,7 @@ import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 
 /**
  * A button displayed in address.
@@ -47,9 +47,9 @@ public class ButtonAddressBar extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(true);
-        this.setIcon(HelperGui.ARROWDEFAULT);
-        this.setRolloverIcon(HelperGui.ARROWROLLOVER);
-        this.setPressedIcon(HelperGui.ARROWPRESSED);
+        this.setIcon(HelperUi.ARROWDEFAULT);
+        this.setRolloverIcon(HelperUi.ARROWROLLOVER);
+        this.setPressedIcon(HelperUi.ARROWPRESSED);
     }
 
     /**
@@ -61,9 +61,9 @@ public class ButtonAddressBar extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(true);
-        this.setIcon(HelperGui.ARROWDEFAULT);
-        this.setRolloverIcon(HelperGui.ARROWROLLOVER);
-        this.setPressedIcon(HelperGui.ARROWPRESSED);
+        this.setIcon(HelperUi.ARROWDEFAULT);
+        this.setRolloverIcon(HelperUi.ARROWROLLOVER);
+        this.setPressedIcon(HelperUi.ARROWPRESSED);
     }
 
     /**
@@ -89,7 +89,7 @@ public class ButtonAddressBar extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(false);
-        this.setIcon(HelperGui.LOADER_GIF);
+        this.setIcon(HelperUi.LOADER_GIF);
         this.setEnabled(false);
     }
 }

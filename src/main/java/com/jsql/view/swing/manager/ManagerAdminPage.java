@@ -11,9 +11,12 @@
 package com.jsql.view.swing.manager;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +35,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -52,7 +55,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
      */
     public ManagerAdminPage() {
         this.setLayout(new BorderLayout());
-        this.setDefaultText(I18n.get("ADMIN_PAGE_RUN_BUTTON"));
+        this.setDefaultText(I18n.valueByKey("ADMIN_PAGE_RUN_BUTTON"));
 
         List<String> pathList = new ArrayList<>();
         try {
@@ -77,7 +80,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
 
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGui.COMPONENT_BORDER), 
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
@@ -86,9 +89,25 @@ public class ManagerAdminPage extends ManagerAbstractList {
             defaultText, 
             new ImageIcon(ManagerAdminPage.class.getResource("/com/jsql/view/swing/resources/images/icons/adminSearch.png"))
         );
+        
+        run.setContentAreaFilled(false);
+        run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+        run.setBackground(new Color(200, 221, 242));
+        
+        run.addMouseListener(new MouseAdapter() {
+            @Override public void mouseEntered(MouseEvent e) {
+                run.setContentAreaFilled(true);
+                run.setBorder(HelperUi.BLU_ROUND_BORDER);
+                
+            }
 
-        run.setToolTipText(I18n.get("ADMIN_PAGE_RUN_BUTTON_TOOLTIP"));
-        run.setBorder(HelperGui.BLU_ROUND_BORDER);
+            @Override public void mouseExited(MouseEvent e) {
+                run.setContentAreaFilled(false);
+                run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+            }
+        });
+
+        run.setToolTipText(I18n.valueByKey("ADMIN_PAGE_RUN_BUTTON_TOOLTIP"));
 
         run.addActionListener(new ActionListener() {
             @Override
@@ -101,13 +120,13 @@ public class ManagerAdminPage extends ManagerAbstractList {
                     @Override
                     public void run() {
                         if (run.getText().equals(defaultText)) {
-                            if ("".equals(MediatorGui.panelAddress().urlTextField.getText())) {
+                            if ("".equals(MediatorGui.panelAddress().fieldUrl.getText())) {
                                 LOGGER.warn("Please define the site URL first.");
                             } else {
                                 run.setText("Stop");
                                 loader.setVisible(true);
                                 RessourceAccess.createAdminPages(
-                                    MediatorGui.panelAddress().urlTextField.getText(), 
+                                    MediatorGui.panelAddress().fieldUrl.getText(), 
                                     listFile.getSelectedValuesList()
                                 );
                             }

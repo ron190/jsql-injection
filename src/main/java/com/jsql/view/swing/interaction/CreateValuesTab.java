@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import com.jsql.model.accessible.bean.AbstractElementDatabase;
+import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.StringUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tab.TabHeader;
@@ -24,7 +24,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
 /**
  * Create a new tab for the values.
  */
-public class CreateValuesTab implements InteractionCommand {
+public class CreateValuesTab extends CreateTab implements InteractionCommand {
     /**
      * Array of column names, diplayed in header table.
      */
@@ -44,6 +44,8 @@ public class CreateValuesTab implements InteractionCommand {
      * @param interactionParams Names of columns, table's values and corresponding table
      */
     public CreateValuesTab(Object[] interactionParams) {
+        super(); 
+        
         // Array of column names, diplayed in header table
         columnNames = (String[]) interactionParams[0];
         // 2D array of values

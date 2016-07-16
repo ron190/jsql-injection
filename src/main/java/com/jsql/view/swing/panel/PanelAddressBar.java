@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.panel;
 
+import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -28,15 +29,19 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
 import javax.swing.JToolTip;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.model.injection.method.MethodInjection;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.radio.RadioLinkMethod;
 import com.jsql.view.swing.text.JAddressBar;
@@ -52,39 +57,44 @@ import com.jsql.view.swing.ui.ComponentBorder;
 @SuppressWarnings("serial")
 public class PanelAddressBar extends JPanel {
     /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(PanelAddressBar.class);
+    
+    /**
      * Textfield decorated as an address bar.
      * Used by GET method.
      */
-    public JTextField urlTextField;
+    public JTextField fieldUrl;
     
     /**
      * Used by POST method.
      */
-    private JTextField requestTextField;
+    private JTextField fieldRequest;
     
     /**
      * Used by HEADER method.
      */
-    private JTextField headerTextField;
+    private JTextField fieldHeader;
 
     /**
      * Current injection method.
      */
-    private String injectionMethod = "GET";
+    private MethodInjection methodInjection = MethodInjection.QUERY;
 
-    private String requestMethod = "POST";
+    private String typeRequest = "POST";
 
     /**
      * Animated GIF displayed during injection.
      */
-    public JLabel loader = new JLabel(HelperGui.LOADER_GIF);
+    public JLabel loader = new JLabel(HelperUi.LOADER_GIF);
 
     /**
      * Connection button.
      */
-    public ButtonAddressBar buttonAddressBar = new ButtonAddressBar();
+    public ButtonAddressBar buttonInUrl = new ButtonAddressBar();
 
-    public boolean isExpanded = false;
+    public boolean advanceIsActivated = false;
     
     /**
      * Create panel at the top with textfields and radio.
@@ -103,43 +113,43 @@ public class PanelAddressBar extends JPanel {
         }
     }
     public PanelAddressBar() {
-        final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18n.get("GET_TOOLTIP"))};
+        final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("GET_TOOLTIP"))};
         JTextFieldWithIcon textI18nTip = new JTextFieldWithIcon(){
             @Override
             public JToolTip createToolTip() {
-                JToolTip tipI18n = new JToolTipI18n(I18n.get("GET_TOOLTIP"));
+                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("GET_TOOLTIP"));
                 j[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
             }
         };
-        urlTextField = new JAddressBar(textI18nTip).getProxy();
-        I18n.add("GET_TOOLTIP", j[0]);
+        fieldUrl = new JAddressBar(textI18nTip).getProxy();
+        I18n.addComponentForKey("GET_TOOLTIP", j[0]);
         
-        final JToolTipI18n[] j2 = new JToolTipI18n[]{new JToolTipI18n(I18n.get("REQUEST_METHOD_TOOLTIP"))};
-        requestTextField = new JPopupTextField(new JTextFieldPlaceholder("e.g. key=value&injectMe="){
+        final JToolTipI18n[] j2 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("REQUEST_METHOD_TOOLTIP"))};
+        fieldRequest = new JPopupTextField(new JTextFieldPlaceholder("e.g. key=value&injectMe="){
             @Override
             public JToolTip createToolTip() {
-                JToolTip tipI18n = new JToolTipI18n(I18n.get("REQUEST_METHOD_TOOLTIP"));
+                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("REQUEST_METHOD_TOOLTIP"));
                 j2[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
             }
         }).getProxy();
-        I18n.add("REQUEST_METHOD_TOOLTIP", j2[0]);
+        I18n.addComponentForKey("REQUEST_METHOD_TOOLTIP", j2[0]);
         
-        final JToolTipI18n[] j3 = new JToolTipI18n[]{new JToolTipI18n(I18n.get("HEADER_TOOLTIP"))};
-        headerTextField = new JPopupTextField(new JTextFieldPlaceholder("e.g. key:value\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\nCookie:cKey=cValue&injectMe="){
+        final JToolTipI18n[] j3 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("HEADER_TOOLTIP"))};
+        fieldHeader = new JPopupTextField(new JTextFieldPlaceholder("e.g. key:value\\r\\nCookie:cKey=cValue\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\ninjectMe:"){
             @Override
             public JToolTip createToolTip() {
-                JToolTip tipI18n = new JToolTipI18n(I18n.get("HEADER_TOOLTIP"));
+                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("HEADER_TOOLTIP"));
                 j3[0] = (JToolTipI18n) tipI18n;
                 return j3[0];
             }
         }).getProxy();
-        I18n.add("HEADER_TOOLTIP", j3[0]);
+        I18n.addComponentForKey("HEADER_TOOLTIP", j3[0]);
                 
-        final RadioLinkMethod radioURL = new RadioLinkMethod("GET", true);
-        final RadioLinkMethod radioMethod = new RadioLinkMethod("POST");
-        final RadioLinkMethod radioHeader = new RadioLinkMethod("Header");
+        final RadioLinkMethod radioURL = new RadioLinkMethod("GET", true, MethodInjection.QUERY);
+        final RadioLinkMethod radioMethod = new RadioLinkMethod("POST", MethodInjection.REQUEST);
+        final RadioLinkMethod radioHeader = new RadioLinkMethod("Header", MethodInjection.HEADER);
         
         final JPanel panelHttpProtocol = new JPanel();
         panelHttpProtocol.setLayout(new BoxLayout(panelHttpProtocol, BoxLayout.X_AXIS));
@@ -154,20 +164,45 @@ public class PanelAddressBar extends JPanel {
         panelHttpProtocol.add(radioMethod);
         
         final JPopupMenu popup = new JPopupMenu();
-        ButtonGroup buttonGroup = new ButtonGroup();
+        final ButtonGroup buttonGroup = new ButtonGroup();
         
         for (String protocol : new String[]{"OPTIONS", "HEAD", "POST", "PUT", "DELETE", "TRACE"}) {
             final JMenuItem newMenuItem = new JRadioButtonMenuItem(protocol, protocol.equals("POST"));
             newMenuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    PanelAddressBar.this.requestMethod = newMenuItem.getText();
-                    radioMethod.setText(PanelAddressBar.this.requestMethod);
+                    PanelAddressBar.this.typeRequest = newMenuItem.getText();
+                    radioMethod.setText(PanelAddressBar.this.typeRequest);
                 }
             });
             popup.add(newMenuItem);
             buttonGroup.add(newMenuItem);            
         }
+        
+        JPanel pnlmain = new JPanel(new BorderLayout());
+        final JTextField field = new JPopupTextField("CUSTOM").getProxy();
+
+        final JRadioButton a = new JRadioButton();
+        a.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        a.setIcon(new CheckBoxMenuItemIconCustom());
+        
+        buttonGroup.add(a);
+        a.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!"".equals(field.getText())) {
+                    PanelAddressBar.this.typeRequest = field.getText();
+                    radioMethod.setText(PanelAddressBar.this.typeRequest);
+                    popup.setVisible(false);
+                } else {
+                    LOGGER.warn("Please define a custom method");
+                }
+            }
+        });
+      
+        pnlmain.add(a, BorderLayout.WEST);
+        pnlmain.add(field, BorderLayout.CENTER);
+        popup.insert(pnlmain, popup.getComponentCount());
         
         buttonRequestMethod.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
@@ -194,57 +229,57 @@ public class PanelAddressBar extends JPanel {
         radioHeader.setBorder(BorderFactory.createEmptyBorder(6, 0, 0, 3));
 
         // Tooltip setting
-        this.urlTextField.setToolTipText(I18n.get("GET_TOOLTIP"));
-        this.requestTextField.setToolTipText(I18n.get("REQUEST_METHOD_TOOLTIP"));
-        this.headerTextField.setToolTipText(I18n.get("HEADER_TOOLTIP"));
+        this.fieldUrl.setToolTipText(I18n.valueByKey("GET_TOOLTIP"));
+        this.fieldRequest.setToolTipText(I18n.valueByKey("REQUEST_METHOD_TOOLTIP"));
+        this.fieldHeader.setToolTipText(I18n.valueByKey("HEADER_TOOLTIP"));
 
-        radioURL.setToolTipText(I18n.get("GET_METHOD"));
-        radioMethod.setToolTipText(I18n.get("REQUEST_METHOD"));
-        radioHeader.setToolTipText(I18n.get("HEADER_METHOD"));
+        radioURL.setToolTipText(I18n.valueByKey("GET_METHOD"));
+        radioMethod.setToolTipText(I18n.valueByKey("REQUEST_METHOD"));
+        radioHeader.setToolTipText(I18n.valueByKey("HEADER_METHOD"));
 
         /**
          * Define UI and the left padding for addressBar
          */
-        this.urlTextField.setBorder(
+        this.fieldUrl.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
-                    BorderFactory.createMatteBorder(4, 2, 3, 0, HelperGui.DEFAULT_BACKGROUND),
-                    BorderFactory.createLineBorder(HelperGui.BLU_COLOR)
+                    BorderFactory.createMatteBorder(4, 2, 3, 0, HelperUi.DEFAULT_BACKGROUND),
+                    BorderFactory.createLineBorder(HelperUi.BLU_COLOR)
                 ),
                 BorderFactory.createEmptyBorder(2, 23, 2, 23)
             )
         );
 
-        this.requestTextField.setBorder(
+        this.fieldRequest.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperGui.DEFAULT_BACKGROUND),
-                HelperGui.BLU_ROUND_BORDER
+                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperUi.DEFAULT_BACKGROUND),
+                HelperUi.BLU_BORDER
             )
         );
-        this.headerTextField.setBorder(
+        this.fieldHeader.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperGui.DEFAULT_BACKGROUND),
-                HelperGui.BLU_ROUND_BORDER
+                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperUi.DEFAULT_BACKGROUND),
+                HelperUi.BLU_BORDER
             )
         );
 
-        this.requestTextField.setPreferredSize(new Dimension(0, 27));
-        this.requestTextField.setFont(this.requestTextField.getFont().deriveFont(Font.PLAIN, this.requestTextField.getFont().getSize() + 2));
-        this.headerTextField.setPreferredSize(new Dimension(0, 27));
-        this.headerTextField.setFont(this.headerTextField.getFont().deriveFont(Font.PLAIN, this.headerTextField.getFont().getSize() + 2));
+        this.fieldRequest.setPreferredSize(new Dimension(0, 27));
+        this.fieldRequest.setFont(this.fieldRequest.getFont().deriveFont(Font.PLAIN, this.fieldRequest.getFont().getSize() + 2));
+        this.fieldHeader.setPreferredSize(new Dimension(0, 27));
+        this.fieldHeader.setFont(this.fieldHeader.getFont().deriveFont(Font.PLAIN, this.fieldHeader.getFont().getSize() + 2));
 
-        this.urlTextField.addActionListener(new ActionEnterAddressBar());
-        this.requestTextField.addActionListener(new ActionEnterAddressBar());
-        this.headerTextField.addActionListener(new ActionEnterAddressBar());
+        this.fieldUrl.addActionListener(new ActionEnterAddressBar());
+        this.fieldRequest.addActionListener(new ActionEnterAddressBar());
+        this.fieldHeader.addActionListener(new ActionEnterAddressBar());
 
-        this.buttonAddressBar.setToolTipText(I18n.get("BUTTON_START_INJECTION"));
-        this.buttonAddressBar.addActionListener(new ActionStart());
-        ComponentBorder buttonInTextfield = new ComponentBorder(this.buttonAddressBar, 17, 0);
-        buttonInTextfield.install(this.urlTextField);
+        this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_START_INJECTION"));
+        this.buttonInUrl.addActionListener(new ActionStart());
+        ComponentBorder buttonInTextfield = new ComponentBorder(this.buttonInUrl, 17, 0);
+        buttonInTextfield.install(this.fieldUrl);
 
         this.loader.setVisible(false);
         ComponentBorder loaderInTextfield = new ComponentBorder(this.loader, 17, 1);
-        loaderInTextfield.install(this.urlTextField);
+        loaderInTextfield.install(this.fieldUrl);
         this.loader.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 
         // Add pixels to the right to compensate width when strategy is selected
@@ -268,9 +303,9 @@ public class PanelAddressBar extends JPanel {
                 // Resizable textfields
                 ).addGroup(
                     layoutTextFields.createParallelGroup()
-                        .addComponent(this.urlTextField)
-                        .addComponent(this.requestTextField)
-                        .addComponent(this.headerTextField)
+                        .addComponent(this.fieldUrl)
+                        .addComponent(this.fieldRequest)
+                        .addComponent(this.fieldHeader)
                 // Radio width fixed
                 ).addGroup(
                     layoutTextFields.createParallelGroup(GroupLayout.Alignment.LEADING, false)
@@ -284,29 +319,29 @@ public class PanelAddressBar extends JPanel {
                 .addGroup(
                     layoutTextFields.createParallelGroup(GroupLayout.Alignment.CENTER, false)
                         .addComponent(radioURL)
-                        .addComponent(this.urlTextField)
+                        .addComponent(this.fieldUrl)
                         .addComponent(advancedButton)
                 ).addGroup(
                     layoutTextFields.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(panelHttpProtocol)
-                        .addComponent(this.requestTextField)
+                        .addComponent(this.fieldRequest)
                 ).addGroup(
                     layoutTextFields
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(radioHeader)
-                        .addComponent(this.headerTextField)
+                        .addComponent(this.fieldHeader)
                 )
         );
 
         radioURL.setVisible(false);
 
-        this.requestTextField.setVisible(false);
+        this.fieldRequest.setVisible(false);
         panelHttpProtocol.setVisible(false);
 
-        this.headerTextField.setVisible(false);
+        this.fieldHeader.setVisible(false);
         radioHeader.setVisible(false);
 
-        advancedButton.setToolTipText(I18n.get("BUTTON_ADVANCED"));
+        advancedButton.setToolTipText(I18n.valueByKey("BUTTON_ADVANCED"));
         advancedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -314,13 +349,13 @@ public class PanelAddressBar extends JPanel {
 
                 radioURL.setVisible(isVisible);
 
-                PanelAddressBar.this.requestTextField.setVisible(isVisible);
+                PanelAddressBar.this.fieldRequest.setVisible(isVisible);
                 panelHttpProtocol.setVisible(isVisible);
 
-                PanelAddressBar.this.headerTextField.setVisible(isVisible);
+                PanelAddressBar.this.fieldHeader.setVisible(isVisible);
                 radioHeader.setVisible(isVisible);
                 
-                isExpanded = isVisible;
+                advanceIsActivated = isVisible;
                 MediatorGui.menubar().setVisible(isVisible);
 
                 advancedButton.setDirection(isVisible ? BasicArrowButton.NORTH : BasicArrowButton.SOUTH);
@@ -335,12 +370,12 @@ public class PanelAddressBar extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             // No injection running
-            if ("Connect".equals(PanelAddressBar.this.buttonAddressBar.getState())) {
+            if ("Connect".equals(PanelAddressBar.this.buttonInUrl.getState())) {
                 this.startInjection();
 
             // Injection currently running, stop the process
-            } else if ("Stop".equals(buttonAddressBar.getState())) {
-                stopInjection();
+            } else if ("Stop".equals(buttonInUrl.getState())) {
+                this.stopInjection();
             }
         }
         
@@ -352,26 +387,26 @@ public class PanelAddressBar extends JPanel {
             
             int option = 0;
             // Ask the user confirmation if injection already built
-            if (MediatorModel.model().isProcessFinished) {
+            if (MediatorModel.model().injectionIsFinished) {
                 option = JOptionPane.showConfirmDialog(
                     null, 
-                    I18n.get("DIALOG_NEW_INJECTION_TEXT"),
-                    I18n.get("DIALOG_NEW_INJECTION_TITLE"), 
+                    I18n.valueByKey("DIALOG_NEW_INJECTION_TEXT"),
+                    I18n.valueByKey("DIALOG_NEW_INJECTION_TITLE"), 
                     JOptionPane.OK_CANCEL_OPTION
                 );
             }
 
             // Then start injection
-            if (!MediatorModel.model().isProcessFinished || option == JOptionPane.OK_OPTION) {
-                PanelAddressBar.this.buttonAddressBar.setInjectionRunning();
+            if (!MediatorModel.model().injectionIsFinished || option == JOptionPane.OK_OPTION) {
+                PanelAddressBar.this.buttonInUrl.setInjectionRunning();
                 PanelAddressBar.this.loader.setVisible(true);
 
                 MediatorModel.model().controlInput(
-                    PanelAddressBar.this.urlTextField.getText(),
-                    PanelAddressBar.this.requestTextField.getText(),
-                    PanelAddressBar.this.headerTextField.getText(),
-                    PanelAddressBar.this.injectionMethod,
-                    PanelAddressBar.this.requestMethod,
+                    PanelAddressBar.this.fieldUrl.getText(),
+                    PanelAddressBar.this.fieldRequest.getText(),
+                    PanelAddressBar.this.fieldHeader.getText(),
+                    PanelAddressBar.this.methodInjection,
+                    PanelAddressBar.this.typeRequest,
                     false
                 );
             }
@@ -379,7 +414,7 @@ public class PanelAddressBar extends JPanel {
         
         private void stopInjection() {
             PanelAddressBar.this.loader.setVisible(false);
-            PanelAddressBar.this.buttonAddressBar.setInjectionStopping();
+            PanelAddressBar.this.buttonInUrl.setInjectionStopping();
             MediatorModel.model().stopProcess();
         }
     }
@@ -388,7 +423,7 @@ public class PanelAddressBar extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             // No injection running
-            if ("Connect".equals(PanelAddressBar.this.buttonAddressBar.getState())) {
+            if ("Connect".equals(PanelAddressBar.this.buttonInUrl.getState())) {
                 this.startInjection();
             }
         }
@@ -396,17 +431,17 @@ public class PanelAddressBar extends JPanel {
 
     /**
      * Change the injection method based on selected radio.
-     * @param sendMethod The new method
+     * @param methodInjection The new method
      */
-    public void setSendMethod(String sendMethod) {
-        this.injectionMethod = sendMethod;
+    public void setMethodInjection(MethodInjection methodInjection) {
+        this.methodInjection = methodInjection;
     }
     
     /**
      * Change the injection method based on selected radio.
-     * @param injectionMethod The new method
+     * @param methodInjection The new method
      */
     public void setHttpProtocol(String httpProtocol) {
-        this.requestMethod = httpProtocol;
+        this.typeRequest = httpProtocol;
     }
 }

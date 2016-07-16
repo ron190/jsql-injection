@@ -23,7 +23,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import com.jsql.i18n.I18n;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 
 /**
  * Default popup menu and shortcuts for a table.
@@ -46,10 +46,10 @@ public class JPopupMenuTable extends JPopupMenu {
 
         JMenuItem copyItem = new JMenuItem();
         copyItem.setAction(new ActionCopy());
-        copyItem.setText(I18n.get("COPY"));
-        I18n.add("COPY", copyItem);
+        copyItem.setText(I18n.valueByKey("COPY"));
+        I18n.addComponentForKey("COPY", copyItem);
         copyItem.setMnemonic('C');
-        copyItem.setIcon(HelperGui.EMPTY);
+        copyItem.setIcon(HelperUi.EMPTY);
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         this.add(copyItem);
 
@@ -57,10 +57,10 @@ public class JPopupMenuTable extends JPopupMenu {
 
         JMenuItem selectAllItem = new JMenuItem();
         selectAllItem.setAction(new ActionSelectAll());
-        selectAllItem.setText(I18n.get("SELECT_ALL"));
-        I18n.add("SELECT_ALL", selectAllItem);
+        selectAllItem.setText(I18n.valueByKey("SELECT_ALL"));
+        I18n.addComponentForKey("SELECT_ALL", selectAllItem);
         selectAllItem.setMnemonic('A');
-        selectAllItem.setIcon(HelperGui.EMPTY);
+        selectAllItem.setIcon(HelperUi.EMPTY);
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         this.add(selectAllItem);
         
@@ -75,7 +75,7 @@ public class JPopupMenuTable extends JPopupMenu {
         });
         search.setText("Search...");
         search.setMnemonic('S');
-        search.setIcon(HelperGui.EMPTY);
+        search.setIcon(HelperUi.EMPTY);
         search.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
         this.add(search);
 

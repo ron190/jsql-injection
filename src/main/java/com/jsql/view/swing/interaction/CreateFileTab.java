@@ -23,7 +23,7 @@ import com.jsql.view.swing.text.JPopupTextArea;
 /**
  * Create a new tab for the file.
  */
-public class CreateFileTab implements InteractionCommand {
+public class CreateFileTab extends CreateTab implements InteractionCommand {
     /**
      * Name of the file.
      */
@@ -43,6 +43,8 @@ public class CreateFileTab implements InteractionCommand {
      * @param interactionParams Name, content and path of the file
      */
     public CreateFileTab(Object[] interactionParams) {
+        super();
+        
         name = (String) interactionParams[0];
         content = (String) interactionParams[1];
         path = (String) interactionParams[2];

@@ -25,7 +25,7 @@ public class ShellWeb extends AbstractShell {
      * @param urlShell URL of current shell
      */
     public ShellWeb(UUID terminalID, String urlShell) {
-        super(terminalID, urlShell, "terminal");
+        super(terminalID, urlShell, "system");
     }
 
     @Override

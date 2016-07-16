@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.JLabel;
 
+import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.view.swing.MediatorGui;
 
 /**
@@ -17,23 +18,29 @@ public class RadioLinkMethod extends AbstractRadioLink {
      */
     private static List<JLabel> groupMethod = new ArrayList<>();
 
+    MethodInjection methodInjection = null;
+    
     /**
      * A default radio label.
      * @param string Text for radio label
+     * @param method 
      */
-    public RadioLinkMethod(String string) {
+    public RadioLinkMethod(String string, MethodInjection method) {
         super(string);
-        init();
+        this.init();
+        methodInjection = method;
     }
 
     /**
      * A default radio label selected.
      * @param string Text for radio label
      * @param isSelected True if radio label should be selected
+     * @param method 
      */
-    public RadioLinkMethod(String string, boolean isSelected) {
+    public RadioLinkMethod(String string, boolean isSelected, MethodInjection method) {
         super(string, isSelected);
-        init();
+        this.init();
+        methodInjection = method;
     }
 
     /**
@@ -46,7 +53,7 @@ public class RadioLinkMethod extends AbstractRadioLink {
 
     @Override
     void action() {
-        MediatorGui.panelAddress().setSendMethod(RadioLinkMethod.this.getText());
+        MediatorGui.panelAddress().setMethodInjection(this.methodInjection);
     }
 
     @Override

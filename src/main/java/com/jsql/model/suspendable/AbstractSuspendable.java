@@ -9,7 +9,7 @@ import com.jsql.model.exception.StoppableException;
 /**
  * A thread used to inject database ; stoppable and pausable.
  */
-public abstract class AbstractSuspendable {
+public abstract class AbstractSuspendable<T> {
     /**
      * Log4j logger sent to view.
      */
@@ -42,7 +42,7 @@ public abstract class AbstractSuspendable {
         }
         
         // Return true if stop requested, return false otherwise
-        return this.isStopped || MediatorModel.model().isProcessStopped;
+        return this.isStopped || MediatorModel.model().processIsStopped;
     }
     
     /**
@@ -84,5 +84,5 @@ public abstract class AbstractSuspendable {
     /**
      * The pausable/stoppable action.
      */
-    public abstract String run(Object... args) throws PreparationException, StoppableException;
+    public abstract T run(Object... args) throws PreparationException, StoppableException;
 }

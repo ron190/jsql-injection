@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
-import java.net.URLConnection;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
@@ -39,14 +38,15 @@ public class GitUtil {
 
     public static void checkUpdate() {
         try {
-            String pageSource = ConnectionUtil.getSource("https://raw.githubusercontent.com/ron190/jsql-injection/master/.version");
+            String json = ConnectionUtil.getSource("https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/jsql-injection.json");
+            JSONObject obj = new JSONObject(json);
             
-            Float gitVersion = Float.parseFloat(pageSource);
-            if (gitVersion > Float.parseFloat(InjectionModel.VERSION_JSQL)) {
-                LOGGER.warn(I18n.get("UPDATE_NEW_VERSION_AVAILABLE"));
+            Float versionGit = Float.parseFloat(obj.getString("version"));
+            if (versionGit > Float.parseFloat(InjectionModel.VERSION_JSQL)) {
+                LOGGER.warn(I18n.valueByKey("UPDATE_NEW_VERSION_AVAILABLE"));
             }
         } catch (NumberFormatException | IOException e) {
-            LOGGER.warn(I18n.get("UPDATE_EXCEPTION"));
+            LOGGER.warn(I18n.valueByKey("UPDATE_EXCEPTION"));
             LOGGER.error(e, e);
         }
     }
@@ -61,8 +61,8 @@ public class GitUtil {
             + "Java: v"+ javaVersion +"-"+ osArch +"\n"
             + "OS: "+ System.getProperty("os.name") +" (v"+ System.getProperty("os.version") +")\n"
             + "Desktop: "+( System.getProperty("sun.desktop") != null ? System.getProperty("sun.desktop") : "undefined" )+"\n"
-            + "Strategy: "+( MediatorModel.model().getStrategy() != null ? MediatorModel.model().getStrategy().getValue().getName() : "undefined" )+"\n"
-            + "Db engine: "+ MediatorModel.model().currentVendor.toString() +"\n"
+            + "Strategy: "+( MediatorModel.model().getStrategy() != null ? MediatorModel.model().getStrategy().instance().getName() : "undefined" )+"\n"
+            + "Db engine: "+ MediatorModel.model().vendor.toString() +"\n"
             + "```\n"
             + "```\n"
             + "Exception on "+ tname +"\n"
@@ -76,6 +76,38 @@ public class GitUtil {
     
     public static void sendReport(String reportBody) {
         GitUtil.sendReport(reportBody, ShowOnConsole.YES, "Report");
+    }
+    
+    static private String encode(String str, CharEncoder encoder)
+    {
+        StringBuilder buff = new StringBuilder();
+        for ( int i = 0; i < str.length(); i++)
+            if (str.charAt(i) > 128) {
+                encoder.encode(str.charAt(i), buff);
+            } else {
+                buff.append(str.charAt(i));
+            }
+        return ""+buff;
+    }
+    private static class CharEncoder
+    {
+        String prefix, suffix;
+        int radix;
+        public CharEncoder(String prefix, String suffix, int radix)        {
+            this.prefix = prefix;
+            this.suffix = suffix;
+            this.radix = radix;
+        }
+        void encode(char c, StringBuilder buff)     {
+            buff.append(prefix).append(Integer.toString(c, radix)).append(suffix);
+        }
+    }
+    static final CharEncoder hexUrlEncoder = new CharEncoder("%","",16);
+    static final CharEncoder hexHtmlEncoder = new CharEncoder("&#x",";",16);
+    static final CharEncoder decimalHtmlEncoder = new CharEncoder("&#",";",10); 
+    
+    static public String decimalHtmlEncode(String str)  {
+        return encode(str, decimalHtmlEncoder);
     }
     
     public static void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
@@ -105,11 +137,8 @@ public class GitUtil {
 
         HttpURLConnection connection = null;
         try {
-            if (showOnConsole == ShowOnConsole.YES) {
-                LOGGER.info("Sending report...");
-            }
-            
             URL githubUrl = new URL("https://api.github.com/repos/ron190/jsql-injection/issues");
+
             connection = (HttpURLConnection) githubUrl.openConnection();
             connection.setDefaultUseCaches(false);
             connection.setUseCaches(false);
@@ -129,28 +158,32 @@ public class GitUtil {
             dataOut.writeBytes(
                 new JSONObject()
                     .put("title", reportTitle)
-                    .put("body", new String(reportBody.getBytes("UTF-8")))
+                    .put("body", decimalHtmlEncode(reportBody))
                     .toString()
             );
             dataOut.flush();
             dataOut.close();
             
-            if (showOnConsole == ShowOnConsole.YES) {
-                LOGGER.debug("Report sent successfully.");
-            }
-            
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                while (reader.readLine() != null) {
-                    // nothing
+                String line;
+                String sourcePage = "";
+                while ((line = reader.readLine()) != null) {
+                    sourcePage += line;
+                }
+
+                if (showOnConsole == ShowOnConsole.YES) {
+                    JSONObject objJson = new JSONObject(sourcePage);
+                    String urlIssue = objJson.getString("html_url");
+                    LOGGER.debug("Sent to Github: " + urlIssue);
                 }
             } catch (IOException e) {
                 if (showOnConsole == ShowOnConsole.YES) {
-                    LOGGER.warn("Read error " + e.getMessage(), e);
+                    LOGGER.warn("Read error: " + e.getMessage(), e);
                 }
             }
         } catch (IOException e) {
             if (showOnConsole == ShowOnConsole.YES) {
-                LOGGER.warn("Error during Git report connection " + e.getMessage(), e);
+                LOGGER.warn("Error during Git report connection: " + e.getMessage(), e);
             }
         }
     }

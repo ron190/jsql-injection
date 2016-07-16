@@ -10,23 +10,38 @@
  ******************************************************************************/
 package com.jsql.view.scan.interaction;
 
-import org.apache.log4j.Logger;
+import java.util.Map;
+
+import javax.swing.DefaultListModel;
+import javax.swing.ListModel;
+
+import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.list.ListItem;
 
 /**
  * Mark the injection as vulnerable to a blind injection.
  */
+@SuppressWarnings("unchecked")
 public class MarkBlindVulnerable implements InteractionCommand {
-    private static final Logger LOGGER = Logger.getLogger(MarkBlindVulnerable.class);
 
+    private String url;
+    
     /**
      * @param interactionParams
      */
     public MarkBlindVulnerable(Object[] interactionParams) {
-        // Do nothing
+        Map<String, Object> params = (Map<String, Object>) interactionParams[0];
+        url = (String) params.get("Url");
     }
 
     @Override
     public void execute() {
-        LOGGER.debug("Vulnerable to Blind injection.");
+        ListModel<ListItem> listModel = MediatorGui.tabManagers().scanListManager.listPaths.getModel();
+        for (int i = 0 ; i < listModel.getSize() ; i++) {
+            if (listModel.getElementAt(i).internalString.equals(url)) {
+                listModel.getElementAt(i).isValidated = true;
+                ((DefaultListModel<ListItem>) listModel).setElementAt(listModel.getElementAt(i), i);
+            }
+        }
     }
 }

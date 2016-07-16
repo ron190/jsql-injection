@@ -28,7 +28,7 @@ import javax.swing.text.JTextComponent;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.PreferencesUtil;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.dialog.ReplaceFileChooser;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -52,7 +52,7 @@ public class ActionSaveTab extends AbstractAction {
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         this.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_S));
         this.putValue(Action.NAME, "Save Tab As...");
-        this.putValue(Action.SMALL_ICON, HelperGui.EMPTY);
+        this.putValue(Action.SMALL_ICON, HelperUi.EMPTY);
     }
     
     @Override

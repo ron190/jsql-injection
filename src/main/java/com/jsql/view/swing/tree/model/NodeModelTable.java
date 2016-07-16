@@ -26,9 +26,9 @@ import javax.swing.tree.TreePath;
 import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
-import com.jsql.model.accessible.bean.Table;
+import com.jsql.model.bean.database.Table;
 import com.jsql.model.suspendable.AbstractSuspendable;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.ImageObserverAnimated;
 import com.jsql.view.swing.tree.ImageOverlap;
@@ -49,9 +49,9 @@ public class NodeModelTable extends AbstractNodeModel {
     @Override
     Icon getLeafIcon(boolean leaf) {
         if (leaf) {
-            return HelperGui.TABLE_ICON_GO;
+            return HelperUi.TABLE_ICON_GO;
         } else {
-            return HelperGui.TABLE_ICON;
+            return HelperUi.TABLE_ICON;
         }
     }
 
@@ -60,9 +60,9 @@ public class NodeModelTable extends AbstractNodeModel {
         if ("information_schema".equals(this.getParent().toString())) {
             panel.showLoader();
             
-            AbstractSuspendable suspendableTask = MediatorModel.model().suspendables.get(this.dataObject);
+            AbstractSuspendable<?> suspendableTask = MediatorModel.model().suspendables.get(this.dataObject);
             if (suspendableTask != null && suspendableTask.isPaused()) {
-                ImageIcon animatedGifPaused = new ImageOverlap(HelperGui.PATH_PROGRESSBAR, HelperGui.PATH_PAUSE);
+                ImageIcon animatedGifPaused = new ImageOverlap(HelperUi.PATH_PROGRESSBAR, HelperUi.PATH_PAUSE);
                 animatedGifPaused.setImageObserver(new ImageObserverAnimated(MediatorGui.treeDatabase(), currentNode));
                 panel.setLoaderIcon(animatedGifPaused);
             }
@@ -90,13 +90,13 @@ public class NodeModelTable extends AbstractNodeModel {
 
     @Override
     void displayMenu(JPopupMenu tablePopupMenu, final TreePath path) {
-        JMenuItem mnCheckAll = new JMenuItem(I18n.get("CHECK_ALL"), 'C');
-        I18n.add("CHECK_ALL", mnCheckAll);
-        JMenuItem mnUncheckAll = new JMenuItem(I18n.get("UNCHECK_ALL"), 'U');
-        I18n.add("UNCHECK_ALL", mnCheckAll);
+        JMenuItem mnCheckAll = new JMenuItem(I18n.valueByKey("CHECK_ALL"), 'C');
+        I18n.addComponentForKey("CHECK_ALL", mnCheckAll);
+        JMenuItem mnUncheckAll = new JMenuItem(I18n.valueByKey("UNCHECK_ALL"), 'U');
+        I18n.addComponentForKey("UNCHECK_ALL", mnCheckAll);
 
-        mnCheckAll.setIcon(HelperGui.EMPTY);
-        mnUncheckAll.setIcon(HelperGui.EMPTY);
+        mnCheckAll.setIcon(HelperUi.EMPTY);
+        mnUncheckAll.setIcon(HelperUi.EMPTY);
 
         if (!this.isSearched) {
             mnCheckAll.setEnabled(false);
@@ -150,8 +150,8 @@ public class NodeModelTable extends AbstractNodeModel {
         mnCheckAll.addActionListener(new CheckAll());
         mnUncheckAll.addActionListener(new UncheckAll());
 
-        mnCheckAll.setIcon(HelperGui.EMPTY);
-        mnUncheckAll.setIcon(HelperGui.EMPTY);
+        mnCheckAll.setIcon(HelperUi.EMPTY);
+        mnUncheckAll.setIcon(HelperUi.EMPTY);
 
         tablePopupMenu.add(mnCheckAll);
         tablePopupMenu.add(mnUncheckAll);

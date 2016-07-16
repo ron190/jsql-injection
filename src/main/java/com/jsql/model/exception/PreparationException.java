@@ -19,7 +19,6 @@ package com.jsql.model.exception;
 public class PreparationException extends Exception {
     
     public PreparationException() {
-//        super("Execution stopped by user.");
         super("Execution stopped.");
     }
     

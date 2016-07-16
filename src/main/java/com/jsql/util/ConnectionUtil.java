@@ -21,6 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.exception.PreparationException;
+import com.jsql.model.injection.method.MethodInjection;
 
 public class ConnectionUtil {
     /**
@@ -31,31 +32,31 @@ public class ConnectionUtil {
     /**
      * Url entered by user.
      */
-    public static String initialUrl;
+    public static String urlByUser;
     
     /**
-     * GET, POST, HEADER (State/Strategy pattern).
+     * Http request type : GET, POST, HEADER...
      */
-    public static String method;
+    public static MethodInjection methodInjection;
+    
+    public static String typeRequest = "POST";
     
     /**
      * Get data submitted by user.
      */
-    public static String getData = "";
+    public static String dataQuery = "";
     
     /**
-     * Post data submitted by user.
+     * Request data submitted by user.
      */
-    public static String postData = "";
+    public static String dataRequest = "";
     
     /**
      * Header data submitted by user.
      */
-    public static String headerData = "";
+    public static String dataHeader = "";
     
-    public static String httpProtocol = "POST";
-    
-    public static void check() throws PreparationException {
+    public static void testConnection() throws PreparationException {
         // Test the HTTP connection
         HttpURLConnection connection = null;
         try {
@@ -68,9 +69,9 @@ public class ConnectionUtil {
                         .trim();
                 
                 SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(a);
-                connection = spnego.connect(new URL(ConnectionUtil.initialUrl));
+                connection = spnego.connect(new URL(ConnectionUtil.urlByUser));
             } else {
-                connection = (HttpURLConnection) new URL(ConnectionUtil.initialUrl).openConnection();
+                connection = (HttpURLConnection) new URL(ConnectionUtil.urlByUser).openConnection();
             }
             
             connection.setReadTimeout(15000);
@@ -79,7 +80,7 @@ public class ConnectionUtil {
             HttpURLConnection.setFollowRedirects(PreferencesUtil.isFollowingRedirection);
             
             // Add headers if exists (Authorization:Basic, etc)
-            for (String header: ConnectionUtil.headerData.split("\\\\r\\\\n")) {
+            for (String header: ConnectionUtil.dataHeader.split("\\\\r\\\\n")) {
                 Matcher regexSearch = Pattern.compile("(?s)(.*):(.*)").matcher(header);
                 if (regexSearch.find()) {
                     String keyHeader = regexSearch.group(1).trim();
@@ -96,7 +97,7 @@ public class ConnectionUtil {
                 }
             }
 
-            StringUtil.sendMessageHeader(connection, ConnectionUtil.initialUrl);
+            StringUtil.sendMessageHeader(connection, ConnectionUtil.urlByUser);
             
             // Disable caching of authentication like Kerberos
             connection.disconnect();

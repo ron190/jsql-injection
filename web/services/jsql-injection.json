@@ -2,7 +2,7 @@
     "version": "0.74",
     "roadmap": "WAF tamper, SQLite, Translation",
     "news": [
-        "New Translation system: Use Menubar > Community to help translate jSQL into your language",
-        "New Custom request method: Define a custom method like SEND or REPORT instead of the usual POST",
+        "Translation system: Use Menubar > Community to contribute and translate this software into another language",
+        "Custom Http method: Use your own custom method instead of GET or POST",
     ],
 }

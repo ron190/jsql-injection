@@ -8,7 +8,7 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
 public class ArrowIcon implements Icon, SwingConstants {
-    private static final int DEFAULT_SIZE = 11;
+    private static final int DEFAULT_SIZE = 9;
 
     private int size;
     private int iconSize;

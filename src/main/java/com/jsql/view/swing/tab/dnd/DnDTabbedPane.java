@@ -22,7 +22,8 @@ import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 import javax.swing.TransferHandler;
 
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
 @SuppressWarnings("serial")
@@ -132,7 +133,7 @@ public class DnDTabbedPane extends JTabbedPane {
         addPropertyChangeListener(h);
         // UIManager.put() is not sufficient
         setUI(new CustomMetalTabbedPaneUI());
-        setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGui.COMPONENT_BORDER));
+        setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER));
     }
     
     private DropMode dropMode = DropMode.INSERT;
@@ -329,7 +330,7 @@ public class DnDTabbedPane extends JTabbedPane {
         public void mouseDragged(MouseEvent e)  {
             Point tabPt = e.getPoint(); //e.getDragOrigin();
             if (startPt != null && Math.sqrt(Math.pow(tabPt.x - startPt.x, 2) + Math.pow(tabPt.y - startPt.y, 2)) > gestureMotionThreshold) {
-                DnDTabbedPane src = (DnDTabbedPane)e.getSource();
+                DnDTabbedPane src = (DnDTabbedPane) e.getSource();
                 TransferHandler th = src.getTransferHandler();
                 dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
                 th.exportAsDrag(src, e, TransferHandler.MOVE);
@@ -343,10 +344,10 @@ public class DnDTabbedPane extends JTabbedPane {
         @Override
         public void mouseClicked(MouseEvent e) {
             Point tabPt = e.getPoint(); //e.getDragOrigin();
-            DnDTabbedPane src = (DnDTabbedPane)e.getSource();
+            DnDTabbedPane src = (DnDTabbedPane) e.getSource();
             int i = src.indexAtLocation(tabPt.x, tabPt.y);
             if (-1 < i && e.getButton() == MouseEvent.BUTTON2) {
-                src.removeTabAt(i);
+                ActionCloseTabResult.perform(i);
             }
         }
     }

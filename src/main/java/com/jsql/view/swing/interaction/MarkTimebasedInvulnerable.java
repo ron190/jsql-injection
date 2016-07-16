@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.view.swing.HelperGui;
+import com.jsql.model.injection.strategy.Strategy;
 import com.jsql.view.swing.MediatorGui;
 
 /**
@@ -26,6 +26,11 @@ public class MarkTimebasedInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.panelStatus().setTimeBasedIcon(HelperGui.SQUARE_RED);
+        for (int i = 0 ; i < MediatorGui.tabManagers().databaseManager.panelStrategy.getItemCount() ; i++) {
+            if (MediatorGui.tabManagers().databaseManager.panelStrategy.getItem(i).getText().equals(Strategy.TIME.toString())) {
+                MediatorGui.tabManagers().databaseManager.panelStrategy.getItem(i).setEnabled(false);
+                break;
+            }
+        }
     }
 }

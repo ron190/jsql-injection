@@ -78,7 +78,7 @@ public class JTextFieldWithIcon extends JTextField {
             int c2 = ((c0 & m) >>> 1) + ((c1 & m) >>> 1);
             g.setColor(new Color(c2, true));
             g.setFont(this.getFont().deriveFont(Font.ITALIC));
-            g.drawString(I18n.get("ENTER_ADDRESS"), ins.left, h / 2 + fm.getAscent() / 2 - 1);
+            g.drawString(I18n.valueByKey("ENTER_ADDRESS"), ins.left, h / 2 + fm.getAscent() / 2 - 1);
         }
     }
 }

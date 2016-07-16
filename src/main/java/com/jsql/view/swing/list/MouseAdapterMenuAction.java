@@ -29,7 +29,7 @@ import javax.swing.TransferHandler;
 
 import com.jsql.i18n.I18n;
 import com.jsql.util.PreferencesUtil;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 
 /**
  * A Mouse action to display a popupmenu on a JList.
@@ -60,34 +60,34 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 
             JPopupMenu tablePopupMenu = new JPopupMenu();
 
-            JMenuItem mnImport = new JMenuItem(I18n.get("IMPORT"));
-            I18n.add("IMPORT", mnImport);
-            JMenuItem mnExport = new JMenuItem(I18n.get("EXPORT"));
-            I18n.add("EXPORT", mnExport);
-            JMenuItem mnCut = new JMenuItem(I18n.get("CUT"));
-            I18n.add("CUT", mnCut);
-            JMenuItem mnCopy = new JMenuItem(I18n.get("COPY"));
-            I18n.add("COPY", mnCopy);
-            JMenuItem mnPaste = new JMenuItem(I18n.get("PASTE"));
-            I18n.add("PASTE", mnPaste);
-            JMenuItem mnDelete = new JMenuItem(I18n.get("DELETE"));
-            I18n.add("DELETE", mnDelete);
-            JMenuItem mnNew = new JMenuItem(I18n.get("NEW_VALUE"));
-            I18n.add("NEW_VALUE", mnNew);
-            JMenuItem mnRestoreDefault = new JMenuItem(I18n.get("RESTORE_DEFAULT"));
-            I18n.add("RESTORE_DEFAULT", mnRestoreDefault);
-            JMenuItem mnSelectAll = new JMenuItem(I18n.get("SELECT_ALL"));
-            I18n.add("SELECT_ALL", mnSelectAll);
+            JMenuItem mnImport = new JMenuItem(I18n.valueByKey("IMPORT"));
+            I18n.addComponentForKey("IMPORT", mnImport);
+            JMenuItem mnExport = new JMenuItem(I18n.valueByKey("EXPORT"));
+            I18n.addComponentForKey("EXPORT", mnExport);
+            JMenuItem mnCut = new JMenuItem(I18n.valueByKey("CUT"));
+            I18n.addComponentForKey("CUT", mnCut);
+            JMenuItem mnCopy = new JMenuItem(I18n.valueByKey("COPY"));
+            I18n.addComponentForKey("COPY", mnCopy);
+            JMenuItem mnPaste = new JMenuItem(I18n.valueByKey("PASTE"));
+            I18n.addComponentForKey("PASTE", mnPaste);
+            JMenuItem mnDelete = new JMenuItem(I18n.valueByKey("DELETE"));
+            I18n.addComponentForKey("DELETE", mnDelete);
+            JMenuItem mnNew = new JMenuItem(I18n.valueByKey("NEW_VALUE"));
+            I18n.addComponentForKey("NEW_VALUE", mnNew);
+            JMenuItem mnRestoreDefault = new JMenuItem(I18n.valueByKey("RESTORE_DEFAULT"));
+            I18n.addComponentForKey("RESTORE_DEFAULT", mnRestoreDefault);
+            JMenuItem mnSelectAll = new JMenuItem(I18n.valueByKey("SELECT_ALL"));
+            I18n.addComponentForKey("SELECT_ALL", mnSelectAll);
             
-            mnImport.setIcon(HelperGui.EMPTY);
-            mnExport.setIcon(HelperGui.EMPTY);
-            mnCut.setIcon(HelperGui.EMPTY);
-            mnCopy.setIcon(HelperGui.EMPTY);
-            mnPaste.setIcon(HelperGui.EMPTY);
-            mnDelete.setIcon(HelperGui.EMPTY);
-            mnNew.setIcon(HelperGui.EMPTY);
-            mnRestoreDefault.setIcon(HelperGui.EMPTY);
-            mnSelectAll.setIcon(HelperGui.EMPTY);
+            mnImport.setIcon(HelperUi.EMPTY);
+            mnExport.setIcon(HelperUi.EMPTY);
+            mnCut.setIcon(HelperUi.EMPTY);
+            mnCopy.setIcon(HelperUi.EMPTY);
+            mnPaste.setIcon(HelperUi.EMPTY);
+            mnDelete.setIcon(HelperUi.EMPTY);
+            mnNew.setIcon(HelperUi.EMPTY);
+            mnRestoreDefault.setIcon(HelperUi.EMPTY);
+            mnSelectAll.setIcon(HelperUi.EMPTY);
 
             mnCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
             mnCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));

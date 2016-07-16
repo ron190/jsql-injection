@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import com.jsql.model.injection.strategy.Strategy;
 import com.jsql.view.swing.MediatorGui;
 
 /**
@@ -25,6 +26,13 @@ public class MarkErrorbasedStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.panelStatus().labelErrorBased.setUnderlined();
+        MediatorGui.tabManagers().databaseManager.panelStrategy.setEnabled(true);
+        MediatorGui.tabManagers().databaseManager.panelStrategy.setText(Strategy.ERRORBASED.toString());
+        for (int i = 0 ; i < MediatorGui.tabManagers().databaseManager.panelStrategy.getItemCount() ; i++) {
+            if (MediatorGui.tabManagers().databaseManager.panelStrategy.getItem(i).getText().equals(Strategy.ERRORBASED.toString())) {
+                MediatorGui.tabManagers().databaseManager.panelStrategy.getItem(i).setSelected(true);
+                break;
+            }
+        }
     }
 }

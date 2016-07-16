@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.accessible.bean.Request;
+import com.jsql.model.bean.util.Request;
 
 /**
  * String operations missing like join().
@@ -176,7 +176,7 @@ public final class StringUtil {
         Request request = new Request();
         request.setMessage("MessageHeader");
         request.setParameters(msgHeader);
-        MediatorModel.model().interact(request);
+        MediatorModel.model().sendToViews(request);
         
         if (exception != null) {
             throw new IOException(exception);

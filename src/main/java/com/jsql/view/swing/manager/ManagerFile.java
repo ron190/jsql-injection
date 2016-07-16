@@ -11,9 +11,12 @@
 package com.jsql.view.swing.manager;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +39,7 @@ import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.exception.PreparationException;
 import com.jsql.model.exception.StoppableException;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -56,7 +59,7 @@ public class ManagerFile extends ManagerAbstractList {
      */
     public ManagerFile() {
         this.setLayout(new BorderLayout());
-        this.setDefaultText(I18n.get("FILE_RUN_BUTTON"));
+        this.setDefaultText(I18n.valueByKey("FILE_RUN_BUTTON"));
         
         List<String> pathList = new ArrayList<>();
         try {
@@ -80,16 +83,36 @@ public class ManagerFile extends ManagerAbstractList {
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperGui.COMPONENT_BORDER),
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
         
         run = new JButton(defaultText, new ImageIcon(ManagerFile.class.getResource("/com/jsql/view/swing/resources/images/icons/fileSearch.png")));
 
-        run.setToolTipText(I18n.get("FILE_RUN_BUTTON_TOOLTIP"));
+        run.setToolTipText(I18n.valueByKey("FILE_RUN_BUTTON_TOOLTIP"));
         run.setEnabled(false);
-        run.setBorder(HelperGui.BLU_ROUND_BORDER);
+        
+        run.setContentAreaFilled(false);
+        run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+        run.setBackground(new Color(200, 221, 242));
+        
+        run.addMouseListener(new MouseAdapter() {
+            @Override public void mouseEntered(MouseEvent e) {
+                if (run.isEnabled()) {
+                    run.setContentAreaFilled(true);
+                    run.setBorder(HelperUi.BLU_ROUND_BORDER);
+                }
+                
+            }
+
+            @Override public void mouseExited(MouseEvent e) {
+                if (run.isEnabled()) {
+                    run.setContentAreaFilled(false);
+                    run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+                }
+            }
+        });
         
         run.addActionListener(new ActionListener() {
             @Override
@@ -122,10 +145,10 @@ public class ManagerFile extends ManagerAbstractList {
             }
         });
 
-        privilege = new JLabel(I18n.get("PRIVILEGE_LABEL"), HelperGui.SQUARE_GREY, SwingConstants.LEFT);
-        I18n.add("PRIVILEGE_LABEL", privilege);
-        privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperGui.DEFAULT_BACKGROUND));
-        privilege.setToolTipText(I18n.get("PRIVILEGE_TOOLTIP"));
+        privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.SQUARE_GREY, SwingConstants.LEFT);
+        I18n.addComponentForKey("PRIVILEGE_LABEL", privilege);
+        privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.DEFAULT_BACKGROUND));
+        privilege.setToolTipText(I18n.valueByKey("PRIVILEGE_TOOLTIP"));
 
         loader.setVisible(false);
 

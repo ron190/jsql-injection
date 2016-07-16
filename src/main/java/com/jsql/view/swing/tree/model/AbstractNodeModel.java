@@ -24,9 +24,9 @@ import javax.swing.tree.TreePath;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
-import com.jsql.model.accessible.bean.AbstractElementDatabase;
+import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.suspendable.AbstractSuspendable;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.ActionLoadStop;
 import com.jsql.view.swing.tree.ActionPauseUnpause;
@@ -120,17 +120,17 @@ public abstract class AbstractNodeModel {
      */
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, int x, int y) {
         JPopupMenu tablePopupMenu = new JPopupMenu();
-        AbstractSuspendable suspendableTask = MediatorModel.model().suspendables.get(this.dataObject);
+        AbstractSuspendable<?> suspendableTask = MediatorModel.model().suspendables.get(this.dataObject);
 
-        JMenuItem mnLoad = new JMenuItem(this.isRunning ? I18n.get("STOP") : I18n.get("LOAD"), 'o');
+        JMenuItem mnLoad = new JMenuItem(this.isRunning ? I18n.valueByKey("STOP") : I18n.valueByKey("LOAD"), 'o');
         JMenuItem mnPause = new JMenuItem(
             // Report #133: ignore if thread not found
             (suspendableTask != null && suspendableTask.isPaused())
-            ? I18n.get("RESUME")
-            : I18n.get("PAUSE")
+            ? I18n.valueByKey("RESUME")
+            : I18n.valueByKey("PAUSE")
         , 's');
-        mnLoad.setIcon(HelperGui.EMPTY);
-        mnPause.setIcon(HelperGui.EMPTY);
+        mnLoad.setIcon(HelperUi.EMPTY);
+        mnPause.setIcon(HelperUi.EMPTY);
 
         if (!this.isContainingSelection && !this.isRunning) {
             mnLoad.setEnabled(false);
@@ -146,8 +146,8 @@ public abstract class AbstractNodeModel {
         tablePopupMenu.add(mnLoad);
         tablePopupMenu.add(mnPause);
 
-        mnLoad.setIcon(HelperGui.EMPTY);
-        mnPause.setIcon(HelperGui.EMPTY);
+        mnLoad.setIcon(HelperUi.EMPTY);
+        mnPause.setIcon(HelperUi.EMPTY);
 
         tablePopupMenu.show(MediatorGui.treeDatabase(), x, y);
     }
@@ -177,7 +177,7 @@ public abstract class AbstractNodeModel {
         panel.setIcon(this.getLeafIcon(isLeaf));
 
         if (isSelected) {
-            panel.label.setBackground(HelperGui.SELECTION_BACKGROUND);
+            panel.label.setBackground(HelperUi.SELECTION_BACKGROUND);
         } else {
             panel.label.setBackground(Color.WHITE);
             panel.label.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -190,9 +190,9 @@ public abstract class AbstractNodeModel {
             panel.showLoader();
             panel.hideIcon();
 
-            AbstractSuspendable suspendableTask = MediatorModel.model().suspendables.get(this.dataObject);
+            AbstractSuspendable<?> suspendableTask = MediatorModel.model().suspendables.get(this.dataObject);
             if (suspendableTask != null && suspendableTask.isPaused()) {
-                ImageIcon animatedGIFPaused = new ImageOverlap(HelperGui.PATH_PROGRESSBAR, HelperGui.PATH_PAUSE);
+                ImageIcon animatedGIFPaused = new ImageOverlap(HelperUi.PATH_PROGRESSBAR, HelperUi.PATH_PAUSE);
                 animatedGIFPaused.setImageObserver(
                     new ImageObserverAnimated(
                         MediatorGui.treeDatabase(), 
@@ -218,7 +218,7 @@ public abstract class AbstractNodeModel {
         panel.progressBar.setVisible(true);
         
         // Report #135: ignore if thread not found
-        AbstractSuspendable suspendableTask = MediatorModel.model().suspendables.get(this.dataObject);
+        AbstractSuspendable<?> suspendableTask = MediatorModel.model().suspendables.get(this.dataObject);
         if (suspendableTask != null && suspendableTask.isPaused()) {
             panel.progressBar.pause();
         }

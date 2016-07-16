@@ -14,7 +14,7 @@ import java.util.Observable;
 
 import javax.swing.SwingUtilities;
 
-import com.jsql.model.accessible.bean.Request;
+import com.jsql.model.bean.util.Request;
 
 /**
  * Define the features of the injection model :<br>
@@ -28,13 +28,13 @@ public abstract class AbstractModelObservable extends Observable {
      * During the preparation, several methods will
      * check if the execution must be stopped.
      */
-    public boolean isProcessStopped = false;
+    public boolean processIsStopped = false;
 
     /**
      * Make all process to stop
      */
     public void stopProcess() {
-        this.isProcessStopped = true;
+        this.processIsStopped = true;
     }
 
     /**
@@ -44,14 +44,27 @@ public abstract class AbstractModelObservable extends Observable {
      *  useVisibleIndex false if injection indexes aren't needed,
      *  return source page after the HTTP call.
      */
-    public abstract String injectWithoutIndex(String dataInjection);
     public abstract String inject(String dataInjection, boolean isUsingIndex);
+    
+    /**
+     * Used to inject without need of index (select 1,2,...).<br>
+     * -> first index test (getVisibleIndex), errorbased test,
+     * and errorbased, blind, timed injection.
+     * @return source code of current page
+     */
+    public String injectWithoutIndex(String dataInjection) {
+        return this.inject(dataInjection, false);
+    }
+
+    public String injectWithIndexes(String dataInjection) {
+        return this.inject(dataInjection, true);
+    }
 
     /**
      * Send an interaction message to registered views.
      * @param interaction The evenement bean corresponding to the interaction
      */
-    public void interact(final Request interaction) {
+    public void sendToViews(final Request interaction) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

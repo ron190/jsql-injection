@@ -10,13 +10,19 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.MediatorModel;
-import com.jsql.view.swing.MediatorGui;
 
 /**
  * Update the general information in status bar.
  */
 public class MessageInfo implements InteractionCommand {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(MessageInfo.class);
+    
     /**
      * @param nullParam
      */
@@ -26,11 +32,10 @@ public class MessageInfo implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.panelStatus().setInfos(
-            MediatorModel.model().versionDatabase,
-            MediatorModel.model().currentDatabase,
-            MediatorModel.model().currentUser,
-            MediatorModel.model().authenticatedUser
+        LOGGER.debug(
+            "Database ["+ MediatorModel.model().nameDatabase +"] "
+            + "on "+ MediatorModel.model().vendor +" ["+ MediatorModel.model().versionDatabase +"] "
+            + "for user ["+ MediatorModel.model().username +"]"
         );
     }
 }

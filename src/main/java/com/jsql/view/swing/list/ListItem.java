@@ -18,6 +18,7 @@ public class ListItem {
      * Text displayed on item.
      */
     public String internalString;
+    
     public Boolean isValidated = false;
     
     /**

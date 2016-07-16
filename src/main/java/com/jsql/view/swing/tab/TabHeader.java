@@ -20,8 +20,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.action.ActionCloseTabResult;
 
 /**
  * Panel displayed as a header for tabs.
@@ -32,7 +33,7 @@ public class TabHeader extends JPanel implements MouseListener {
      * Tab header with default tab icon.
      */
     public TabHeader() {
-        this((ImageIcon) HelperGui.TABLE_ICON);
+        this((ImageIcon) HelperUi.TABLE_ICON);
     }
 
     /**
@@ -72,7 +73,8 @@ public class TabHeader extends JPanel implements MouseListener {
             return;
         }
         int closeTabNumber = MediatorGui.tabResults().indexOfTabComponent(TabHeader.this);
-        MediatorGui.tabResults().removeTabAt(closeTabNumber);
+        
+        ActionCloseTabResult.perform(closeTabNumber);
     }
 
     @Override public void mouseEntered(MouseEvent e) {

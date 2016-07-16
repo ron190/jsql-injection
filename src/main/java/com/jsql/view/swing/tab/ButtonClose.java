@@ -4,16 +4,16 @@ import java.awt.Dimension;
 
 import javax.swing.JButton;
 
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 
 @SuppressWarnings("serial")
 public class ButtonClose extends JButton {
     public ButtonClose() {
-        super(HelperGui.CLOSE_ICON);
+        super(HelperUi.CLOSE_ICON);
         
         Dimension closeButtonSize = new Dimension(
-            HelperGui.CLOSE_ICON.getIconWidth(), 
-            HelperGui.CLOSE_ICON.getIconHeight()
+            HelperUi.CLOSE_ICON.getIconWidth(), 
+            HelperUi.CLOSE_ICON.getIconHeight()
         );
         this.setPreferredSize(closeButtonSize);
         
@@ -23,7 +23,7 @@ public class ButtonClose extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(true);
-        this.setRolloverIcon(HelperGui.CLOSE_ROLLOVER_ICON);
-        this.setPressedIcon(HelperGui.CLOSE_PRESSED_ICON);
+        this.setRolloverIcon(HelperUi.CLOSE_ROLLOVER_ICON);
+        this.setPressedIcon(HelperUi.CLOSE_PRESSED_ICON);
     }
 }

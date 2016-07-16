@@ -18,7 +18,7 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.accessible.bean.Table;
+import com.jsql.model.bean.database.Table;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.tree.model.NodeModelTable;

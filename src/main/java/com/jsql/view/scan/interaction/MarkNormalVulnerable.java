@@ -15,8 +15,6 @@ import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
-import org.apache.log4j.Logger;
-
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.ListItem;
 
@@ -24,7 +22,6 @@ import com.jsql.view.swing.list.ListItem;
  * Mark the injection as vulnerable to a basic injection.
  */
 public class MarkNormalVulnerable implements InteractionCommand {
-    private static final Logger LOGGER = Logger.getLogger(MarkNormalVulnerable.class);
 
     private String url;
 
@@ -40,8 +37,6 @@ public class MarkNormalVulnerable implements InteractionCommand {
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void execute() {
-        LOGGER.debug("Vulnerable to Normal injection.");
-        
         ListModel<ListItem> listModel = MediatorGui.tabManagers().scanListManager.listPaths.getModel();
         for (int i = 0 ; i < listModel.getSize() ; i++) {
             if (listModel.getElementAt(i).internalString.equals(url)) {

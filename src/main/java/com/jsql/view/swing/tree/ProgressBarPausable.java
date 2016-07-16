@@ -19,7 +19,7 @@ import javax.swing.JProgressBar;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 
 /**
  * A progress bar with a Pause icon over it.
@@ -49,7 +49,7 @@ public class ProgressBarPausable extends JProgressBar {
 
         if (this.isIconDisplayed) {
             try {
-                BufferedImage im2 = ImageIO.read(ProgressBarPausable.class.getResource(HelperGui.PATH_PAUSE));
+                BufferedImage im2 = ImageIO.read(ProgressBarPausable.class.getResource(HelperUi.PATH_PAUSE));
                 g.drawImage(
                     im2, 
                     (this.getWidth() - im2.getWidth()) / 2, 

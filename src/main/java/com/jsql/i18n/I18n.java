@@ -9,14 +9,16 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 public class I18n {
-    public static ResourceBundle LOCALE_ROOT = ResourceBundle.getBundle("com.jsql.i18n.jsql", Locale.ROOT);
-    public static ResourceBundle CURRENT_LOCALE = ResourceBundle.getBundle("com.jsql.i18n.jsql", Locale.getDefault());
     
-    public static Map<String, List<Object>> componentsView = new HashMap<>();
+    public static ResourceBundle LOCALE_ROOT = ResourceBundle.getBundle("com.jsql.i18n.jsql", Locale.ROOT);
+    
+    public static ResourceBundle LOCALE_DEFAULT = ResourceBundle.getBundle("com.jsql.i18n.jsql", Locale.getDefault());
+    
+    public static Map<String, List<Object>> componentsLocalized = new HashMap<>();
     
     static {
         for (String keyI18n: LOCALE_ROOT.keySet()) {
-            componentsView.put(keyI18n, new ArrayList<>());
+            componentsLocalized.put(keyI18n, new ArrayList<>());
         }
     }
     
@@ -24,19 +26,19 @@ public class I18n {
         // Disable constructor
     }
     
-    public static Set<String> getKeys() {
-        return componentsView.keySet();
+    public static Set<String> keys() {
+        return componentsLocalized.keySet();
     }
     
-    public static List<Object> getComponentsSwing(String key) {
-        return componentsView.get(key);
+    public static List<Object> componentsByKey(String key) {
+        return componentsLocalized.get(key);
     }
     
-    public static String get(String key) {
-        return (String) CURRENT_LOCALE.getObject(key);
+    public static String valueByKey(String key) {
+        return (String) LOCALE_DEFAULT.getObject(key);
     }
     
-    public static void add(String key, Object component) {
-        componentsView.get(key).add(component);
+    public static void addComponentForKey(String key, Object component) {
+        componentsLocalized.get(key).add(component);
     }
 }

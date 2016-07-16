@@ -36,7 +36,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import com.jsql.i18n.I18n;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.TabHeader;
@@ -44,7 +44,7 @@ import com.jsql.view.swing.tab.TabHeader;
 /**
  * Create a new tab for an administration webpage.
  */
-public class CreateAdminPageTab implements InteractionCommand {
+public class CreateAdminPageTab extends CreateTab implements InteractionCommand {
     /**
      * Log4j logger sent to view.
      */
@@ -59,6 +59,8 @@ public class CreateAdminPageTab implements InteractionCommand {
      * @param interactionParams Url of the webpage
      */
     public CreateAdminPageTab(Object[] interactionParams) {
+        super();
+        
         url = (String) interactionParams[0];
     }
 
@@ -87,24 +89,24 @@ public class CreateAdminPageTab implements InteractionCommand {
 
         final JPopupMenu menu = new JPopupMenu();
         
-        JMenuItem item = new JMenuItem(I18n.get("COPY_PAGE_URL"));
-        I18n.add("COPY_PAGE_URL", item);
-        item.setIcon(HelperGui.EMPTY);
+        JMenuItem item = new JMenuItem(I18n.valueByKey("COPY_PAGE_URL"));
+        I18n.addComponentForKey("COPY_PAGE_URL", item);
+        item.setIcon(HelperUi.EMPTY);
         
         JMenuItem copyItem = new JMenuItem();
         copyItem.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         copyItem.setMnemonic('C');
-        copyItem.setText(I18n.get("COPY"));
-        I18n.add("COPY", copyItem);
-        copyItem.setIcon(HelperGui.EMPTY);
+        copyItem.setText(I18n.valueByKey("COPY"));
+        I18n.addComponentForKey("COPY", copyItem);
+        copyItem.setIcon(HelperUi.EMPTY);
         
         JMenuItem itemSelectAll = new JMenuItem();
-        itemSelectAll.setIcon(HelperGui.EMPTY);
+        itemSelectAll.setIcon(HelperUi.EMPTY);
         itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-        itemSelectAll.setText(I18n.get("SELECT_ALL"));
-        I18n.add("SELECT_ALL", itemSelectAll);
+        itemSelectAll.setText(I18n.valueByKey("SELECT_ALL"));
+        I18n.addComponentForKey("SELECT_ALL", itemSelectAll);
         itemSelectAll.setMnemonic('A');
         
         menu.add(item);

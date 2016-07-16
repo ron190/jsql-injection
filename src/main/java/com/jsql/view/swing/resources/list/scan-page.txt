@@ -1,3 +1,6 @@
+http://testphp.vulnweb.com/artists.php?artist=1
+http://testasp.vulnweb.com/showthread.asp?id=4
+http://testaspnet.vulnweb.com/ReadNews.aspx?id=2
 http://127.0.0.1/simulate_get.php?lib=0
 http://127.0.0.1/simulate_get.php?lib=1
 http://127.0.0.1/pg_simulate_get.php?lib=0

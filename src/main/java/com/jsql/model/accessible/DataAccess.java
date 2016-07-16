@@ -18,11 +18,11 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.accessible.bean.AbstractElementDatabase;
-import com.jsql.model.accessible.bean.Column;
-import com.jsql.model.accessible.bean.Database;
-import com.jsql.model.accessible.bean.Request;
-import com.jsql.model.accessible.bean.Table;
+import com.jsql.model.bean.database.AbstractElementDatabase;
+import com.jsql.model.bean.database.Column;
+import com.jsql.model.bean.database.Database;
+import com.jsql.model.bean.database.Table;
+import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.PreparationException;
 import com.jsql.model.exception.StoppableException;
 import com.jsql.model.suspendable.SuspendableGetRows;
@@ -47,7 +47,7 @@ public class DataAccess {
         String[] sourcePage = {""};
 
         String hexResult = new SuspendableGetRows().run(
-            MediatorModel.model().currentVendor.getValue().getSqlInfos(),
+            MediatorModel.model().vendor.getValue().getSqlInfos(),
             sourcePage,
             false,
             0,
@@ -64,15 +64,15 @@ public class DataAccess {
         }
 
         String vendorName = "";
-        if (MediatorModel.model().selectedVendor != MediatorModel.model().currentVendor) {
-            vendorName = MediatorModel.model().currentVendor.toString();
+        if (MediatorModel.model().vendorByUser != MediatorModel.model().vendor) {
+            vendorName = MediatorModel.model().vendor.toString();
         }
         
         try {
-            MediatorModel.model().versionDatabase   = vendorName + hexResult.split("\\{%\\}")[0].replaceAll("\\s+"," ");
-            MediatorModel.model().currentDatabase   = hexResult.split("\\{%\\}")[1];
-            MediatorModel.model().currentUser       = hexResult.split("\\{%\\}")[2];
-            MediatorModel.model().authenticatedUser = hexResult.split("\\{%\\}")[3];
+            MediatorModel.model().versionDatabase = hexResult.split("\\x04")[0].replaceAll("\\s+"," ");
+            MediatorModel.model().nameDatabase = hexResult.split("\\x04")[1];
+            MediatorModel.model().username = hexResult.split("\\x04")[2];
+            MediatorModel.model().usernameAuthenticated = hexResult.split("\\x04")[3];
         } catch (ArrayIndexOutOfBoundsException e) {
             LOGGER.warn("Incorrect database info: "+ hexResult);
             
@@ -85,7 +85,7 @@ public class DataAccess {
         // Inform the view that info should be displayed
         Request request = new Request();
         request.setMessage("MessageInfo");
-        MediatorModel.model().interact(request);
+        MediatorModel.model().sendToViews(request);
     }
     
     /**
@@ -101,7 +101,7 @@ public class DataAccess {
         
         String[] sourcePage = {""};
         String hexResult = new SuspendableGetRows().run(
-            MediatorModel.model().currentVendor.getValue().getSqlDatabases(),
+            MediatorModel.model().vendor.getValue().getSqlDatabases(),
             sourcePage,
             true,
             0,
@@ -137,7 +137,7 @@ public class DataAccess {
         Request request = new Request();
         request.setMessage("AddDatabases");
         request.setParameters(databases);
-        MediatorModel.model().interact(request);
+        MediatorModel.model().sendToViews(request);
         
         return databases;
     }
@@ -158,13 +158,13 @@ public class DataAccess {
         Request request = new Request();
         request.setMessage("StartProgress");
         request.setParameters(database);
-        MediatorModel.model().interact(request);
+        MediatorModel.model().sendToViews(request);
 
         String tableCount = Integer.toString(database.getCount());
 
         String[] pageSource = {""};
         String hexResult = new SuspendableGetRows().run(
-            MediatorModel.model().currentVendor.getValue().getSqlTables(database),
+            MediatorModel.model().vendor.getValue().getSqlTables(database),
             pageSource,
             true,
             Integer.parseInt(tableCount),
@@ -195,14 +195,14 @@ public class DataAccess {
             Request request2 = new Request();
             request2.setMessage("AddTables");
             request2.setParameters(tables);
-            MediatorModel.model().interact(request2);
+            MediatorModel.model().sendToViews(request2);
         }
 
         // Inform the view that database job is finished
         Request request3 = new Request();
         request3.setMessage("EndProgress");
         request3.setParameters(database);
-        MediatorModel.model().interact(request3);
+        MediatorModel.model().sendToViews(request3);
         
         return tables;
     }
@@ -223,11 +223,11 @@ public class DataAccess {
         Request request = new Request();
         request.setMessage("StartIndeterminateProgress");
         request.setParameters(table);
-        MediatorModel.model().interact(request);
+        MediatorModel.model().sendToViews(request);
 
         String[] pageSource = {""};
         String hexResult = new SuspendableGetRows().run(
-            MediatorModel.model().currentVendor.getValue().getSqlColumns(table),
+            MediatorModel.model().vendor.getValue().getSqlColumns(table),
             pageSource,
             true,
             0,
@@ -257,14 +257,14 @@ public class DataAccess {
             Request request2 = new Request();
             request2.setMessage("AddColumns");
             request2.setParameters(columns);
-            MediatorModel.model().interact(request2);
+            MediatorModel.model().sendToViews(request2);
         }
 
         // Inform the view that table job is finished
         Request request3 = new Request();
         request3.setMessage("EndIndeterminateProgress");
         request3.setParameters(table);
-        MediatorModel.model().interact(request3);
+        MediatorModel.model().sendToViews(request3);
         
         return columns;
     }
@@ -290,7 +290,7 @@ public class DataAccess {
         Request request = new Request();
         request.setMessage("StartProgress");
         request.setParameters(table);
-        MediatorModel.model().interact(request);
+        MediatorModel.model().sendToViews(request);
 
         // Build an array of column names
         List<String> columnsName = new ArrayList<>();
@@ -307,7 +307,7 @@ public class DataAccess {
 
         String[] pageSource = {""};
         String hexResult = new SuspendableGetRows().run(
-            MediatorModel.model().currentVendor.getValue().getSqlRows(arrayColumns, database, table),
+            MediatorModel.model().vendor.getValue().getSqlRows(arrayColumns, database, table),
             pageSource, 
             true, 
             rowCount, 
@@ -371,13 +371,13 @@ public class DataAccess {
         Request request2 = new Request();
         request2.setMessage("CreateValuesTab");
         request2.setParameters(objectData);
-        MediatorModel.model().interact(request2);
+        MediatorModel.model().sendToViews(request2);
 
         // Inform the view that table job is finished
         Request request3 = new Request();
         request3.setMessage("EndProgress");
         request3.setParameters(table);
-        MediatorModel.model().interact(request3);
+        MediatorModel.model().sendToViews(request3);
         
         return tableDatas;
     }

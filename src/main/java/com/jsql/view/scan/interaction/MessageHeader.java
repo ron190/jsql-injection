@@ -12,13 +12,14 @@ package com.jsql.view.scan.interaction;
 
 import java.util.Map;
 
-import com.jsql.model.accessible.bean.HttpHeader;
+import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.view.swing.MediatorGui;
 
 /**
  * Append a text to the tab Header.
  */
 public class MessageHeader implements InteractionCommand {
+    
     // The text to append to the tab
     private String url;
     private String post;

@@ -65,7 +65,7 @@ public class ProxyUtil {
     /**
      * Initialize proxy information from previously saved configuration.
      */
-    public static void initialize() {
+    public static void setProxy() {
         // Use Preferences API to persist proxy configuration
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
 
@@ -82,7 +82,7 @@ public class ProxyUtil {
         }
     }
     
-    public static void check() throws PreparationException {
+    public static void testProxy() throws PreparationException {
         // Test if proxy is available then apply settings
         if (
             ProxyUtil.isUsingProxy && 

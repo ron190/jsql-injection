@@ -34,9 +34,9 @@ public class MessageInfo implements InteractionCommand {
     @Override
     public void execute() {
         LOGGER.info(MediatorModel.model().versionDatabase);
-        LOGGER.info(MediatorModel.model().currentDatabase);
-        LOGGER.info(MediatorModel.model().currentUser);
-        LOGGER.info(MediatorModel.model().authenticatedUser);
+        LOGGER.info(MediatorModel.model().nameDatabase);
+        LOGGER.info(MediatorModel.model().username);
+        LOGGER.info(MediatorModel.model().usernameAuthenticated);
         LOGGER.info("\n");
     }
 }

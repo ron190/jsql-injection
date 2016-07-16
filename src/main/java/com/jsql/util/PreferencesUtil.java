@@ -14,12 +14,12 @@ public class PreferencesUtil {
     /**
      * True if connection is proxified.
      */
-    public static boolean isCheckingUpdate = true;
+    public static boolean isCheckUpdateActivated = true;
     
     /**
      * True if evasion techniques should be used.
      */
-    public static boolean isEvading = false;
+    public static boolean evasionIsEnabled = false;
 
     /**
      * True to follow HTTP 302 redirection.
@@ -31,13 +31,13 @@ public class PreferencesUtil {
      */
     public static boolean isReportingBugs = true;
     
-    public static void initialize() {
+    public static void loadSavedPreferences() {
         // Use Preferences API to persist proxy configuration
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
         
-        PreferencesUtil.isCheckingUpdate = prefs.getBoolean("isCheckingUpdate", true);
+        PreferencesUtil.isCheckUpdateActivated = prefs.getBoolean("isCheckingUpdate", true);
         PreferencesUtil.isReportingBugs = prefs.getBoolean("isReportingBugs", true);
-        PreferencesUtil.isEvading = prefs.getBoolean("isEvading", false);
+        PreferencesUtil.evasionIsEnabled = prefs.getBoolean("isEvading", false);
         PreferencesUtil.isFollowingRedirection = prefs.getBoolean("isFollowingRedirection", false);
         
         PreferencesUtil.pathFile = prefs.get("pathFile", System.getProperty("user.dir"));
@@ -50,16 +50,16 @@ public class PreferencesUtil {
     }
     
     public static void set(boolean isCheckingUpdate, boolean isReportingBugs, boolean isEvading, boolean isFollowingRedirection) {
-        PreferencesUtil.isCheckingUpdate = isCheckingUpdate;
+        PreferencesUtil.isCheckUpdateActivated = isCheckingUpdate;
         PreferencesUtil.isReportingBugs = isReportingBugs;
-        PreferencesUtil.isEvading = isEvading;
+        PreferencesUtil.evasionIsEnabled = isEvading;
         PreferencesUtil.isFollowingRedirection = isFollowingRedirection;
 
         Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
 
-        preferences.putBoolean("isCheckingUpdate", PreferencesUtil.isCheckingUpdate);
+        preferences.putBoolean("isCheckingUpdate", PreferencesUtil.isCheckUpdateActivated);
         preferences.putBoolean("isReportingBugs", PreferencesUtil.isReportingBugs);
-        preferences.putBoolean("isEvading", PreferencesUtil.isEvading);
+        preferences.putBoolean("isEvading", PreferencesUtil.evasionIsEnabled);
         preferences.putBoolean("isFollowingRedirection", PreferencesUtil.isFollowingRedirection);
     }
     

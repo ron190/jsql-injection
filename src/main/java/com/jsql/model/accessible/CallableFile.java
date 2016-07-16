@@ -14,19 +14,19 @@ public class CallableFile implements Callable<CallableFile> {
     /**
      * Url of the file to read.
      */
-    private String filePath;
+    private String pathFile;
 
     /**
      * Source code of file.
      */
-    private String fileSource;
+    private String sourceFile;
 
     /**
      * Create Callable to read a file.
-     * @param filePath
+     * @param pathFile
      */
-    public CallableFile(String filePath) {
-        this.filePath = filePath;
+    public CallableFile(String pathFile) {
+        this.pathFile = pathFile;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class CallableFile implements Callable<CallableFile> {
             String hexResult = "";
             try {
                 hexResult = new SuspendableGetRows().run(
-                    MediatorModel.model().currentVendor.getValue().getSqlReadFile(filePath),
+                    MediatorModel.model().vendor.getValue().getSqlReadFile(pathFile),
                     sourcePage,
                     false,
                     1,
@@ -46,16 +46,16 @@ public class CallableFile implements Callable<CallableFile> {
             } catch (PreparationException | StoppableException e) {
                 // User cancels the search, probably
             }
-            fileSource = hexResult;
+            sourceFile = hexResult;
         }
         return this;
     }
     
     public String getUrl() {
-        return filePath;
+        return pathFile;
     }
 
     public String getFileSource() {
-        return fileSource;
+        return sourceFile;
     }
 }

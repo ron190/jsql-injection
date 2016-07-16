@@ -20,9 +20,9 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import com.jsql.model.accessible.DataAccess;
-import com.jsql.model.accessible.bean.Column;
-import com.jsql.model.accessible.bean.Database;
-import com.jsql.model.accessible.bean.Table;
+import com.jsql.model.bean.database.Column;
+import com.jsql.model.bean.database.Database;
+import com.jsql.model.bean.database.Table;
 import com.jsql.model.exception.PreparationException;
 import com.jsql.model.exception.StoppableException;
 

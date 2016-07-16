@@ -16,8 +16,8 @@ import javax.swing.SwingWorker;
 import javax.swing.tree.TreePath;
 
 import com.jsql.model.accessible.DataAccess;
-import com.jsql.model.accessible.bean.Database;
-import com.jsql.view.swing.HelperGui;
+import com.jsql.model.bean.database.Database;
+import com.jsql.view.swing.HelperUi;
 
 /**
  * Database model displaying the database icon on the label.
@@ -34,9 +34,9 @@ public class NodeModelDatabase extends AbstractNodeModel {
     @Override
     Icon getLeafIcon(boolean leaf) {
         if (leaf) {
-            return HelperGui.DATABASE_ICON_GO;
+            return HelperUi.DATABASE_ICON_GO;
         } else {
-            return HelperGui.DATABASE_ICON;
+            return HelperUi.DATABASE_ICON;
         }
     }
 

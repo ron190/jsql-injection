@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 
 /**
@@ -26,9 +26,9 @@ public class MarkFileSystemVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.tabManagers().fileManager.changePrivilegeIcon(HelperGui.TICK);
-        MediatorGui.tabManagers().shellManager.changePrivilegeIcon(HelperGui.TICK);
-        MediatorGui.tabManagers().sqlShellManager.changePrivilegeIcon(HelperGui.TICK);
-        MediatorGui.tabManagers().uploadManager.changePrivilegeIcon(HelperGui.TICK);
+        MediatorGui.tabManagers().fileManager.changePrivilegeIcon(HelperUi.TICK);
+        MediatorGui.tabManagers().shellManager.changePrivilegeIcon(HelperUi.TICK);
+        MediatorGui.tabManagers().sqlShellManager.changePrivilegeIcon(HelperUi.TICK);
+        MediatorGui.tabManagers().uploadManager.changePrivilegeIcon(HelperUi.TICK);
     }
 }

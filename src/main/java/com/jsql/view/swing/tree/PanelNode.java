@@ -23,7 +23,7 @@ import javax.swing.JTree;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.TreeNode;
 
-import com.jsql.view.swing.HelperGui;
+import com.jsql.view.swing.HelperUi;
 
 /**
  * A tree Node composed of an icon, a GIF loader, a progress bar, a label.
@@ -58,7 +58,7 @@ public class PanelNode extends JPanel {
     public PanelNode(final JTree tree, final TreeNode currentNode) {
         super();
 
-        ImageIcon animatedGIF = new ImageIcon(PanelNode.class.getResource(HelperGui.PATH_PROGRESSBAR));
+        ImageIcon animatedGIF = new ImageIcon(PanelNode.class.getResource(HelperUi.PATH_PROGRESSBAR));
         animatedGIF.setImageObserver(new ImageObserverAnimated(tree, currentNode));
         this.loader.setIcon(animatedGIF);
 
@@ -66,11 +66,11 @@ public class PanelNode extends JPanel {
         this.progressBar.setUI(new BasicProgressBarUI());
         this.label.setOpaque(true);
 
-        this.label.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, HelperGui.BLU_COLOR));
+        this.label.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.BLU_COLOR));
 
         this.setBackground(Color.WHITE);
 
-        this.setLayout(new FlowLayout(FlowLayout.CENTER, 3, 3));
+        this.setLayout(new FlowLayout(FlowLayout.CENTER, 2, 2));
         this.add(this.icon);
         this.add(this.loader);
         this.add(this.progressBar);

@@ -104,14 +104,7 @@ public final class ActionHandler {
      */
     @SuppressWarnings("serial")
     public static void addShortcut(JRootPane rootPane, final JTabbedPane valuesTabbedPane) {
-        Action closeTab = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (valuesTabbedPane.getTabCount() > 0) {
-                    valuesTabbedPane.removeTabAt(valuesTabbedPane.getSelectedIndex());
-                }
-            }
-        };
+        Action closeTab = new ActionCloseTabResult();
         
         Action nextTab = new AbstractAction() {
             @Override
@@ -197,7 +190,7 @@ public final class ActionHandler {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            if (!MediatorGui.panelAddress().isExpanded) {
+                            if (!MediatorGui.panelAddress().advanceIsActivated) {
                                 menubar.setVisible(false);
                             }
                         }
@@ -211,8 +204,8 @@ public final class ActionHandler {
             @Override
             public boolean dispatchKeyEvent(KeyEvent e) {
                 if (e.isAltDown() && e.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D)) {
-                    MediatorGui.panelAddress().urlTextField.requestFocusInWindow();
-                    MediatorGui.panelAddress().urlTextField.selectAll();
+                    MediatorGui.panelAddress().fieldUrl.requestFocusInWindow();
+                    MediatorGui.panelAddress().fieldUrl.selectAll();
                     wasAltDPressed[0] = true;
                     return true;
                 } else if (
@@ -220,7 +213,7 @@ public final class ActionHandler {
                     e.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)
                 ) {
                     if (!wasAltDPressed[0] && !wasAltPressed[0]) {
-                        if (!MediatorGui.panelAddress().isExpanded) {
+                        if (!MediatorGui.panelAddress().advanceIsActivated) {
                             menubar.setVisible(!menubar.isVisible());
                         }
                     } else {
@@ -229,7 +222,7 @@ public final class ActionHandler {
                     }
                     return true;
                 } else if (e.isAltDown() && e.getKeyCode() == KeyEvent.VK_ALT) {
-                    if (!MediatorGui.panelAddress().isExpanded && menubar.isVisible()) {
+                    if (!MediatorGui.panelAddress().advanceIsActivated && menubar.isVisible()) {
                         menubar.setVisible(!menubar.isVisible());
                         wasAltPressed[0] = true;
                     }
