@@ -7,9 +7,8 @@ It's is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS
 
 This software is also included in distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) and [BlackArch Linux](http://www.blackarch.org/).
 
-[![License: GPLv2](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/license.png)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+[![License: GPLv2](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/gplv2.png)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 [![Java](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/java.png)](http://www.oracle.com/technetwork/java/javase/jdk7-relnotes-418459.html#changes)
-[![SonarQube](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/sonar.png)](http://www.sonarqube.org/)
 [![JUnit](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/junit.png)](http://junit.org)
 [![Maven](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/maven.png)](https://maven.apache.org/)
 
