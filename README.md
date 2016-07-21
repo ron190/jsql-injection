@@ -7,11 +7,11 @@ It's is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS
 
 This software is also included in distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) and [BlackArch Linux](http://www.blackarch.org/).
 
-[![License: GPLv2](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/license.svg)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
-[![Java](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/java.svg)](http://www.oracle.com/technetwork/java/javase/jdk7-relnotes-418459.html#changes)
-[![SonarQube](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/sonar.svg)](http://www.sonarqube.org/)
-[![JUnit](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/junit.svg)](http://junit.org)
-[![Maven](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/maven.svg)](https://maven.apache.org/)
+[![License: GPLv2](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/license.png)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+[![Java](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/java.png)](http://www.oracle.com/technetwork/java/javase/jdk7-relnotes-418459.html#changes)
+[![SonarQube](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/sonar.png)](http://www.sonarqube.org/)
+[![JUnit](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/junit.png)](http://junit.org)
+[![Maven](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/maven.png)](https://maven.apache.org/)
 
 ## Installation
 Install [Java](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/download/v0.74/jsql-injection-v0.74.jar) of jSQL and double-click on the .jar to launch the software.<br>
