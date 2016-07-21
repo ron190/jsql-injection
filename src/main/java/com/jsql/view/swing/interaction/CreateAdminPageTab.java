@@ -59,8 +59,6 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
      * @param interactionParams Url of the webpage
      */
     public CreateAdminPageTab(Object[] interactionParams) {
-        super();
-        
         url = (String) interactionParams[0];
     }
 

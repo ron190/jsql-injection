@@ -34,14 +34,13 @@ public class MarkNormalVulnerable implements InteractionCommand {
         url = (String) params.get("Url");
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void execute() {
         ListModel<ListItem> listModel = MediatorGui.tabManagers().scanListManager.listPaths.getModel();
         for (int i = 0 ; i < listModel.getSize() ; i++) {
-            if (listModel.getElementAt(i).internalString.equals(url)) {
-                listModel.getElementAt(i).isValidated = true;
-                ((DefaultListModel) listModel).setElementAt(listModel.getElementAt(i), i);
+            if (listModel.getElementAt(i).internalString.contains(url)) {
+                listModel.getElementAt(i).isVulnerable = true;
+                ((DefaultListModel<ListItem>) listModel).setElementAt(listModel.getElementAt(i), i);
             }
         }
     }

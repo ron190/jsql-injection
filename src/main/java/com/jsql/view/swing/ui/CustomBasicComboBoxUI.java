@@ -13,13 +13,8 @@ package com.jsql.view.swing.ui;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 
 /**
- * Better Combox UI.
+ * Adapter to replace default MetalComboBoxUI
  */
 public class CustomBasicComboBoxUI extends BasicComboBoxUI {
-    /**
-     * Disable default MetalComboBoxUI
-     */
-    public CustomBasicComboBoxUI() {
-        super();
-    }
+    // Empty
 }

@@ -13,8 +13,8 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.model.suspendable.SuspendableGetIndexesInUrl;
 import com.jsql.util.ConnectionUtil;
@@ -37,21 +37,17 @@ public class NormalStrategy extends AbstractStrategy {
     public String visibleIndex;
 
     @Override
-    public void checkApplicability() throws PreparationException, StoppableException {
+    public void checkApplicability() throws InjectionFailureException, StoppedByUserException {
         LOGGER.trace("Normal test...");
-        MediatorModel.model().indexesInUrl = new SuspendableGetIndexesInUrl().run();
+        MediatorModel.model().setIndexesInUrl(new SuspendableGetIndexesInUrl().run());
 
-        // If there is no page source defined then there is no injection possible
-        if (MediatorModel.model().srcSuccess != null) {
-            // Define visibleIndex, i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML source
-            this.visibleIndex = this.getVisibleIndex(MediatorModel.model().srcSuccess);
-        }
+        // Define visibleIndex, i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML source
+        this.visibleIndex = this.getVisibleIndex(MediatorModel.model().getSrcSuccess());
         
         this.isApplicable = 
-            (!"".equals(MediatorModel.model().indexesInUrl)) 
+            (!"".equals(MediatorModel.model().getIndexesInUrl())) 
             && new Integer(Strategy.NORMAL.instance().getPerformanceLength()) > 0
             && this.visibleIndex != null
-            && MediatorModel.model().srcSuccess != null
         ;
         
         if (this.isApplicable) {
@@ -68,7 +64,7 @@ public class NormalStrategy extends AbstractStrategy {
         request.setMessage("MarkNormalVulnerable");
         
         Map<String, Object> msgHeader = new HashMap<>();
-        msgHeader.put("Url", ConnectionUtil.urlByUser + ConnectionUtil.dataQuery + MediatorModel.model().charInsertion);
+        msgHeader.put("Url", ConnectionUtil.urlByUser);
 
         request.setParameters(msgHeader);
         MediatorModel.model().sendToViews(request);
@@ -82,7 +78,7 @@ public class NormalStrategy extends AbstractStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppableException {
+    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserException {
         return MediatorModel.model().injectWithIndexes(MediatorModel.model().vendor.getValue().getSqlNormal(sqlQuery, startPosition));
     }
 
@@ -128,7 +124,7 @@ public class NormalStrategy extends AbstractStrategy {
         String[] indexes = foundIndexes.toArray(new String[foundIndexes.size()]);
 
         // Make url shorter, replace useless indexes from 1337[index]7331 to 1
-        MediatorModel.model().indexesInUrl = MediatorModel.model().indexesInUrl.replaceAll("1337(?!" + StringUtil.join(indexes, "|") + "7331)\\d*7331", "1");
+        String indexesInUrl = MediatorModel.model().getIndexesInUrl().replaceAll("1337(?!" + StringUtil.join(indexes, "|") + "7331)\\d*7331", "1");
 
         // Replace correct indexes from 1337[index]7331 to
         // ==> SQLi[index]######...######iLQS
@@ -174,12 +170,12 @@ public class NormalStrategy extends AbstractStrategy {
         this.performanceLength = lengthFields[lengthFields.length - 1][0].toString();
 
         // Replace all others indexes by 1
-        MediatorModel.model().indexesInUrl =
-            MediatorModel.model().indexesInUrl.replaceAll(
-                "1337(?!" + lengthFields[lengthFields.length - 1][1] + "7331)\\d*7331",
-                "1"
-            )
-        ;
+        indexesInUrl = indexesInUrl.replaceAll(
+            "1337(?!" + lengthFields[lengthFields.length - 1][1] + "7331)\\d*7331",
+            "1"
+        );
+        MediatorModel.model().setIndexesInUrl(indexesInUrl);
+        
         return Integer.toString(lengthFields[lengthFields.length - 1][1]);
     }
 }

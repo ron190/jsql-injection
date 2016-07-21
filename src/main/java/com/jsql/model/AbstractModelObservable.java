@@ -28,13 +28,14 @@ public abstract class AbstractModelObservable extends Observable {
      * During the preparation, several methods will
      * check if the execution must be stopped.
      */
-    public boolean processIsStopped = false;
+    private boolean isStoppedByUser = false;
 
-    /**
-     * Make all process to stop
-     */
-    public void stopProcess() {
-        this.processIsStopped = true;
+    public boolean isStoppedByUser() {
+        return isStoppedByUser;
+    }
+
+    public void setIsStoppedByUser(boolean processStopped) {
+        this.isStoppedByUser = processStopped;
     }
 
     /**

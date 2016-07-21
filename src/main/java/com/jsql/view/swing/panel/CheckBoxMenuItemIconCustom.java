@@ -12,8 +12,9 @@ import javax.swing.JRadioButton;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializable
-{
+@SuppressWarnings("serial")
+public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializable {
+    
     public void paintOceanIcon(Component c, Graphics g, int x, int y) {
         ButtonModel model = ((JRadioButton)c).getModel();
         boolean isSelected = model.isSelected();
@@ -80,108 +81,9 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
 
     public void paintIcon( Component c, Graphics g, int x, int y )
     {
-        //if (MetalLookAndFeel.usingOcean()) {
-        if (true) {
-            paintOceanIcon(c, g, x, y);
-            return;
-        }
-        JRadioButton b = (JRadioButton) c;
-        ButtonModel model = b.getModel();
-
-        boolean isSelected = model.isSelected();
-        boolean isEnabled = model.isEnabled();
-        boolean isPressed = model.isPressed();
-        boolean isArmed = model.isArmed();
-
-        g.translate( x, y );
-
-        if ( isEnabled )
-        {
-            if ( isPressed || isArmed )
-            {
-                g.setColor( MetalLookAndFeel.getPrimaryControl()  );
-                g.drawLine( 3, 1, 8, 1 );
-                g.drawLine( 2, 9, 7, 9 );
-                g.drawLine( 1, 3, 1, 8 );
-                g.drawLine( 9, 2, 9, 7 );
-                g.drawLine( 2, 2, 2, 2 );
-                g.drawLine( 8, 8, 8, 8 );
-
-                g.setColor( MetalLookAndFeel.getControlInfo()  );
-                g.drawLine( 2, 0, 6, 0 );
-                g.drawLine( 2, 8, 6, 8 );
-                g.drawLine( 0, 2, 0, 6 );
-                g.drawLine( 8, 2, 8, 6 );
-                g.drawLine( 1, 1, 1, 1 );
-                g.drawLine( 7, 1, 7, 1 );
-                g.drawLine( 1, 7, 1, 7 );
-                g.drawLine( 7, 7, 7, 7 );
-            }
-            else
-            {
-                g.setColor( MetalLookAndFeel.getControlHighlight()  );
-                g.drawLine( 3, 1, 8, 1 );
-                g.drawLine( 2, 9, 7, 9 );
-                g.drawLine( 1, 3, 1, 8 );
-                g.drawLine( 9, 2, 9, 7 );
-                g.drawLine( 2, 2, 2, 2 );
-                g.drawLine( 8, 8, 8, 8 );
-
-                g.setColor( MetalLookAndFeel.getControlDarkShadow()  );
-                g.drawLine( 2, 0, 6, 0 );
-                g.drawLine( 2, 8, 6, 8 );
-                g.drawLine( 0, 2, 0, 6 );
-                g.drawLine( 8, 2, 8, 6 );
-                g.drawLine( 1, 1, 1, 1 );
-                g.drawLine( 7, 1, 7, 1 );
-                g.drawLine( 1, 7, 1, 7 );
-                g.drawLine( 7, 7, 7, 7 );
-            }
-        }
-        else
-        {
-            g.setColor( MetalLookAndFeel.getMenuDisabledForeground()  );
-            g.drawLine( 2, 0, 6, 0 );
-            g.drawLine( 2, 8, 6, 8 );
-            g.drawLine( 0, 2, 0, 6 );
-            g.drawLine( 8, 2, 8, 6 );
-            g.drawLine( 1, 1, 1, 1 );
-            g.drawLine( 7, 1, 7, 1 );
-            g.drawLine( 1, 7, 1, 7 );
-            g.drawLine( 7, 7, 7, 7 );
-        }
-
-        if ( isSelected )
-        {
-            if ( isEnabled )
-            {
-                if ( model.isArmed() || ( c instanceof JMenu && model.isSelected() ) )
-                {
-                    g.setColor( MetalLookAndFeel.getMenuSelectedForeground() );
-                }
-                else
-                {
-                    g.setColor( b.getForeground() );
-                }
-            }
-            else
-            {
-                g.setColor( MetalLookAndFeel.getMenuDisabledForeground()  );
-            }
-
-            g.drawLine( 3, 2, 5, 2 );
-            g.drawLine( 2, 3, 6, 3 );
-            g.drawLine( 2, 4, 6, 4 );
-            g.drawLine( 2, 5, 6, 5 );
-            g.drawLine( 3, 6, 5, 6 );
-        }
-
-        g.translate( -x, -y );
+        paintOceanIcon(c, g, x, y);
     }
 
-    //public int getIconWidth() { return menuCheckIconSize.width; }
-    //
-    //public int getIconHeight() { return menuCheckIconSize.height; }
     public int getIconWidth() { return new Dimension( 10, 10 ).width; }
 
     public int getIconHeight() { return new Dimension( 10, 10 ).height; }

@@ -54,9 +54,10 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
             renderer.setBackground(Color.WHITE);
         }
         
-        if (value.isValidated) {
+        if (value.isVulnerable) {
             renderer.setForeground(new Color(0, 128, 0));
-            renderer.setFont(new Font("Segoe UI", Font.BOLD, renderer.getFont().getSize()));
+        } else if (value.isDatabaseConfirmed) {
+            renderer.setForeground(new Color(0, 0, 255));
         }
 
         if (isSelected && list.isFocusOwner()) {

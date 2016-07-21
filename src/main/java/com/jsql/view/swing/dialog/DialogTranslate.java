@@ -205,8 +205,8 @@ public class DialogTranslate extends JDialog {
         
         labelTranslation.setText(
             "<html>"
-            + "<b>Contribute and translate pieces of jSQL into "+ DialogTranslate.this.language +"</b><br>"
-            + "Help the community and translate some buttons, menus, tabs and tooltips into "+ DialogTranslate.this.language +", "
+            + "<b>Contribute and translate pieces of jSQL into "+ language +"</b><br>"
+            + "Help the community and translate some buttons, menus, tabs and tooltips into "+ language +", "
             + "then click on Send to forward the changes to the developer on Github, it's that simple.<br>"
             + "<i>E.g. for Chinese, change '<b>COPY = Copy</b>' to '<b>COPY = \u590d\u5236</b>', then click on Send. The list only displays what needs to be translated "
             + "and it's updated as soon as the developer processes your translation.</i><br>"
@@ -227,16 +227,16 @@ public class DialogTranslate extends JDialog {
                 try {
                     String pageSource = ConnectionUtil.getSource(
                         "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/"
-                        + "jsql_"+ DialogTranslate.this.language.name().toLowerCase() +".properties"
+                        + "jsql_"+ language.name().toLowerCase() +".properties"
                     );
                     
-                    LOGGER.info("Text to translate into "+ DialogTranslate.this.language +" loaded from Github");
+                    LOGGER.info("Text for "+ language +" loaded from Github");
                     
                     Properties prop = new Properties();       
                     prop.load(new StringReader(pageSource));
                     int percentTranslated = 100 * (I18n.keys().size() - prop.size()) / I18n.keys().size();
                     progressBarTranslation.setValue(percentTranslated);
-                    progressBarTranslation.setString(percentTranslated +"% translated to "+ language);
+                    progressBarTranslation.setString(percentTranslated +"% translated into "+ language);
                 
                     if (language == Language.OT || percentTranslated == 0) {
                         progressBarTranslation.setVisible(false);
@@ -246,7 +246,7 @@ public class DialogTranslate extends JDialog {
                     
                     textToTranslate[0].setText(pageSource);
                     textToTranslate[0].setCaretPosition(0);
-                } catch (IOException errGithub) {
+                } catch (IOException eGithub) {
                     LOGGER.info("Text to translate loaded from local");
                     
                     InputStream in = DialogAbout.class.getResourceAsStream("/com/jsql/i18n/jsql.properties");
@@ -257,7 +257,7 @@ public class DialogTranslate extends JDialog {
                         }
                         textToTranslate[0].setText(result);
                         textToTranslate[0].setCaretPosition(0);
-                    } catch (IOException errFile) {
+                    } catch (IOException eFile) {
                         LOGGER.warn("File error: /com/jsql/i18n/jsql.properties");
                     }
                 }

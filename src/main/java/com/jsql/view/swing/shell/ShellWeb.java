@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.shell;
 
+import java.net.MalformedURLException;
 import java.util.UUID;
 
 import com.jsql.model.accessible.RessourceAccess;
@@ -23,8 +24,9 @@ public class ShellWeb extends AbstractShell {
      * Build a webshell instance.
      * @param terminalID Unique identifier to discriminate beyond multiple opened terminals
      * @param urlShell URL of current shell
+     * @throws MalformedURLException 
      */
-    public ShellWeb(UUID terminalID, String urlShell) {
+    public ShellWeb(UUID terminalID, String urlShell) throws MalformedURLException {
         super(terminalID, urlShell, "system");
     }
 

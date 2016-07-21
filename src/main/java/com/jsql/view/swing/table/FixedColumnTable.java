@@ -37,32 +37,34 @@ import javax.swing.table.TableColumnModel;
  *  of the model.
  */
 public class FixedColumnTable implements ChangeListener, PropertyChangeListener {
-    private JTable mainTable;
-    private JTable fixedTable;
-    private JScrollPane scrollPane;
+    
+    private static JTable mainTable;
+    private static JTable fixedTable;
+    private static JScrollPane scrollPane;
+    private static FixedColumnTable p = new FixedColumnTable();
 
     /**
      *  Specify the number of columns to be fixed and the scroll pane
      *  containing the table.
      */
     @SuppressWarnings("serial")
-    public FixedColumnTable(int fixedColumns, JScrollPane scrollPane) {
-        this.scrollPane = scrollPane;
+    public static void fixColumnSize(int fixedColumns, JScrollPane scrollPane) {
+        FixedColumnTable.scrollPane = scrollPane;
 
-        mainTable = ((JTable) scrollPane.getViewport().getView());
-        mainTable.setAutoCreateColumnsFromModel(false);
-        mainTable.addPropertyChangeListener(this);
+        FixedColumnTable.mainTable = ((JTable) scrollPane.getViewport().getView());
+        FixedColumnTable.mainTable.setAutoCreateColumnsFromModel(false);
+        FixedColumnTable.mainTable.addPropertyChangeListener(p);
 
         //  Use the existing table to create a new table sharing
         //  the DataModel and ListSelectionModel
-        fixedTable = new JTable() {
+        FixedColumnTable.fixedTable = new JTable() {
             @Override
             public boolean isCellEditable(int row,int column) {
                 return false;
             }
         };
         
-        fixedTable.setAutoCreateColumnsFromModel(false);
+        FixedColumnTable.fixedTable.setAutoCreateColumnsFromModel(false);
         final DefaultTableModel modelFixedTable = new DefaultTableModel(){
             @Override
             public int getColumnCount() {
@@ -76,7 +78,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
 
             @Override
             public int getRowCount() {
-                return mainTable.getRowCount();
+                return FixedColumnTable.mainTable.getRowCount();
             }
 
             @Override
@@ -90,15 +92,15 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
             }
         };
         
-        fixedTable.setModel(modelFixedTable);
-        fixedTable.setSelectionModel(mainTable.getSelectionModel());
+        FixedColumnTable.fixedTable.setModel(modelFixedTable);
+        FixedColumnTable.fixedTable.setSelectionModel(FixedColumnTable.mainTable.getSelectionModel());
         
-        fixedTable.setRowHeight(20);
-        fixedTable.setFocusable(false);
-        fixedTable.getTableHeader().setReorderingAllowed(false);
-        fixedTable.setGridColor(Color.LIGHT_GRAY);
+        FixedColumnTable.fixedTable.setRowHeight(20);
+        FixedColumnTable.fixedTable.setFocusable(false);
+        FixedColumnTable.fixedTable.getTableHeader().setReorderingAllowed(false);
+        FixedColumnTable.fixedTable.setGridColor(Color.LIGHT_GRAY);
         
-        fixedTable.getTableHeader().setDefaultRenderer(new RowHeaderRenderer() {
+        FixedColumnTable.fixedTable.getTableHeader().setDefaultRenderer(new RowHeaderRenderer() {
             @Override
             public Component getTableCellRendererComponent(
                 JTable table, Object value, boolean isSelected, 
@@ -115,32 +117,32 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         //  Remove the fixed columns from the main table
         //  and add them to the fixed table
         for (int i = 0; i < fixedColumns; i++) {
-            TableColumnModel columnModel = mainTable.getColumnModel();
+            TableColumnModel columnModel = FixedColumnTable.mainTable.getColumnModel();
             TableColumn column = columnModel.getColumn(0);
             column.setMinWidth(0);
             column.setMaxWidth(0);
-            fixedTable.getColumnModel().addColumn(new TableColumn());
+            FixedColumnTable.fixedTable.getColumnModel().addColumn(new TableColumn());
         }
 
         DefaultTableCellRenderer rowHeaderRender = new RowHeaderRenderer();
-        fixedTable.getColumnModel().getColumn(0).setCellRenderer(rowHeaderRender);
-        fixedTable.getColumnModel().getColumn(0).setResizable(false);
-        fixedTable.getColumnModel().getColumn(0).setPreferredWidth(38);
+        FixedColumnTable.fixedTable.getColumnModel().getColumn(0).setCellRenderer(rowHeaderRender);
+        FixedColumnTable.fixedTable.getColumnModel().getColumn(0).setResizable(false);
+        FixedColumnTable.fixedTable.getColumnModel().getColumn(0).setPreferredWidth(38);
 
-        mainTable.getRowSorter().addRowSorterListener(
+        FixedColumnTable.mainTable.getRowSorter().addRowSorterListener(
             new RowSorterListener() {
                 @Override
                 public void sorterChanged(RowSorterEvent e) {
                     modelFixedTable.fireTableDataChanged();
                     // Copy data from hidden column in main table
-                    for (int i = 0; i < mainTable.getRowCount(); i++) {
-                        fixedTable.setValueAt(mainTable.getValueAt(i, 0), i, 0);
+                    for (int i = 0; i < FixedColumnTable.mainTable.getRowCount(); i++) {
+                        FixedColumnTable.fixedTable.setValueAt(FixedColumnTable.mainTable.getValueAt(i, 0), i, 0);
                     }
                 }
             }
         );
         
-        mainTable.getSelectionModel().addListSelectionListener(
+        FixedColumnTable.mainTable.getSelectionModel().addListSelectionListener(
             new ListSelectionListener() {
                 @Override
                 public void valueChanged(ListSelectionEvent e) {
@@ -150,17 +152,17 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         );
         
         // Copy data from first colum of main table to fixed column
-        for (int i = 0; i < mainTable.getRowCount(); i++) {
-            fixedTable.setValueAt(mainTable.getValueAt(i, 0), i, 0);
+        for (int i = 0; i < FixedColumnTable.mainTable.getRowCount(); i++) {
+            FixedColumnTable.fixedTable.setValueAt(FixedColumnTable.mainTable.getValueAt(i, 0), i, 0);
         }
         
         //  Add the fixed table to the scroll pane
-        fixedTable.setPreferredScrollableViewportSize(fixedTable.getPreferredSize());
-        scrollPane.setRowHeaderView(fixedTable);
-        scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, fixedTable.getTableHeader());
+        FixedColumnTable.fixedTable.setPreferredScrollableViewportSize(FixedColumnTable.fixedTable.getPreferredSize());
+        scrollPane.setRowHeaderView(FixedColumnTable.fixedTable);
+        scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, FixedColumnTable.fixedTable.getTableHeader());
 
         // Synchronize scrolling of the row header with the main table
-        scrollPane.getRowHeader().addChangeListener(this);
+        scrollPane.getRowHeader().addChangeListener(p);
     }
 
     /**
@@ -180,11 +182,11 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
     public void propertyChange(PropertyChangeEvent e) {
         //  Keep the fixed table in sync with the main table
         if ("selectionModel".equals(e.getPropertyName())) {
-            fixedTable.setSelectionModel(mainTable.getSelectionModel());
+            FixedColumnTable.fixedTable.setSelectionModel(FixedColumnTable.mainTable.getSelectionModel());
         }
 
         if ("model".equals(e.getPropertyName())) {
-            fixedTable.setModel(mainTable.getModel());
+            FixedColumnTable.fixedTable.setModel(mainTable.getModel());
         }
     }
 }

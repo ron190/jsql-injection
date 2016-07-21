@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
 import com.jsql.view.swing.MediatorGui;
 
@@ -26,6 +27,7 @@ public class EndPreparation implements InteractionCommand {
 
     @Override
     public void execute() {
+        MediatorGui.panelAddress().buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_START_INJECTION"));
         MediatorGui.panelAddress().buttonInUrl.setInjectionReady();
         MediatorGui.panelAddress().loader.setVisible(false);
 

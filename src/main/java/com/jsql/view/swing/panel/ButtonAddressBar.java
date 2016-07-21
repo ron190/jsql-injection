@@ -22,16 +22,21 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public class ButtonAddressBar extends JButton {
+    
+    public enum State {
+        STARTABLE, STOPPING, STOPPABLE
+    }
+    
     /**
      * State of current injection.
      */
-    private String state = "Connect";
+    private State state = State.STARTABLE;
 
     /**
      * Return the current state of current process.
      * @return State of process
      */
-    public String getState() {
+    public State getState() {
         return this.state;
     }
     
@@ -56,7 +61,7 @@ public class ButtonAddressBar extends JButton {
      * Replace button with Stop icon ; user can stop current process.
      */
     public void setInjectionReady() {
-        this.state = "Connect";
+        this.state = State.STARTABLE;
         this.setEnabled(true);
         
         // turn on before rollovers work
@@ -70,7 +75,7 @@ public class ButtonAddressBar extends JButton {
      * Replace button with Stop icon ; user can stop current process.
      */
     public void setInjectionRunning() {
-        this.state = "Stop";
+        this.state = State.STOPPABLE;
         this.setEnabled(true);
         
         // turn on before rollovers work
@@ -85,7 +90,7 @@ public class ButtonAddressBar extends JButton {
      * is finished ; user waits the end of process.
      */
     public void setInjectionStopping() {
-        this.state = "Stopping...";
+        this.state = State.STOPPING;
         
         // turn on before rollovers work
         this.setRolloverEnabled(false);

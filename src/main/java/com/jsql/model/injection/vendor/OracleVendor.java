@@ -13,7 +13,7 @@ public class OracleVendor extends AbstractVendor {
 
     @Override
     public String getSqlInfos() {
-        return "SELECT+version||'%04'||SYS.DATABASE_NAME||'%04'||user||'%04'||user||'%01%03%03%07'FROM+v%24instance";
+        return "SELECT+version||'%04'||SYS.DATABASE_NAME||'%04'||user||'%01%03%03%07'FROM+v%24instance";
     }
 
     @Override
@@ -168,7 +168,7 @@ public class OracleVendor extends AbstractVendor {
     @Override
     public String getSqlIndicesCapacityCheck(String[] indexes) {
         return
-            MediatorModel.model().indexesInUrl.replaceAll(
+            MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
                 /**
                  * rpad 1024 (not 65536) to avoid error 'result of string concatenation is too long'

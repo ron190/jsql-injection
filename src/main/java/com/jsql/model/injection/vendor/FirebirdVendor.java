@@ -14,7 +14,7 @@ public class FirebirdVendor extends AbstractVendor {
     public String getSqlInfos() {
         return
             "SELECT+rdb$get_context('SYSTEM','ENGINE_VERSION')||'%04'||rdb$get_context('SYSTEM','DB_NAME')"
-            + "||'%04'||rdb$get_context('SYSTEM','CURRENT_USER')||'%04-%01%03%03%07'from+rdb$database";
+            + "||'%04'||rdb$get_context('SYSTEM','CURRENT_USER')||'%01%03%03%07'from+rdb$database";
     }
 
     @Override
@@ -67,7 +67,7 @@ public class FirebirdVendor extends AbstractVendor {
      @Override
      public String getSqlIndicesCapacityCheck(String[] indexes) {
          return
-             MediatorModel.model().indexesInUrl.replaceAll(
+             MediatorModel.model().getIndexesInUrl().replaceAll(
                  "1337(" + StringUtil.join(indexes, "|") + ")7331",
                  "(select+'SQLi$1'||rpad('%23',1024,'%23')||'iLQS'from+RDB\\$DATABASE)"
              );

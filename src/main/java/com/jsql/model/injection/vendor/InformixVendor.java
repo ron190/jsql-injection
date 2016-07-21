@@ -13,7 +13,7 @@ public class InformixVendor extends AbstractVendor {
     @Override
     public String getSqlInfos() {
         return
-            "SELECT+trim(DBINFO('version','full')||'%04'||DBSERVERNAME||'%04'||USER||'%04'||USER||'%01%03%03%07')r+FROM+TABLE(SET{1})";
+            "SELECT+trim(DBINFO('version','full')||'%04'||DBSERVERNAME||'%04'||USER||'%01%03%03%07')r+FROM+TABLE(SET{1})";
     }
 
     @Override
@@ -66,7 +66,7 @@ public class InformixVendor extends AbstractVendor {
     @Override
     public String getSqlIndicesCapacityCheck(String[] indexes) {
         return
-            MediatorModel.model().indexesInUrl.replaceAll(
+            MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
                 "'SQLi$1'||rpad('%23',1024,'%23')||'iLQS'"
             );

@@ -17,8 +17,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.injection.strategy.blind.ConcreteBlindInjection;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.ConnectionUtil;
@@ -38,7 +37,7 @@ public class BlindStrategy extends AbstractStrategy {
     private ConcreteBlindInjection blind;
     
     @Override
-    public void checkApplicability() throws PreparationException {
+    public void checkApplicability() throws StoppedByUserException {
         LOGGER.trace("Blind test...");
         
         this.blind = new ConcreteBlindInjection();
@@ -59,7 +58,7 @@ public class BlindStrategy extends AbstractStrategy {
         request.setMessage("MarkBlindVulnerable");
         
         Map<String, Object> msgHeader = new HashMap<>();
-        msgHeader.put("Url", ConnectionUtil.urlByUser + ConnectionUtil.dataQuery + MediatorModel.model().charInsertion);
+        msgHeader.put("Url", ConnectionUtil.urlByUser);
 
         request.setParameters(msgHeader);
         MediatorModel.model().sendToViews(request);
@@ -73,7 +72,7 @@ public class BlindStrategy extends AbstractStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppableException {
+    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserException {
         return blind.inject(
             MediatorModel.model().vendor.getValue().getSqlBlind(sqlQuery, startPosition),
             stoppable
@@ -85,14 +84,14 @@ public class BlindStrategy extends AbstractStrategy {
         LOGGER.info("Using strategy ["+ this.getName() +"]");
         MediatorModel.model().setStrategy(Strategy.BLIND);
         
-        Request request = new Request();
-        request.setMessage("MessageBinary");
-        request.setParameters(blind.getInfoMessage());
-        MediatorModel.model().sendToViews(request);
+        Request requestMessageBinary = new Request();
+        requestMessageBinary.setMessage("MessageBinary");
+        requestMessageBinary.setParameters(blind.getInfoMessage());
+        MediatorModel.model().sendToViews(requestMessageBinary);
         
-        Request request2 = new Request();
-        request2.setMessage("MarkBlindStrategy");
-        MediatorModel.model().sendToViews(request2);
+        Request requestMarkBlindStrategy = new Request();
+        requestMarkBlindStrategy.setMessage("MarkBlindStrategy");
+        MediatorModel.model().sendToViews(requestMarkBlindStrategy);
     }
     
     @Override

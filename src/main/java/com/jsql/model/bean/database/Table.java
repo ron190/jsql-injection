@@ -80,10 +80,11 @@ public class Table extends AbstractElementDatabase {
             if (Integer.parseInt(rowCount) > 1) {
                 sPlural = "s";
             }
-        } catch (NumberFormatException err) {
+        } catch (NumberFormatException e) {
             rowCount = "0";
             LOGGER.warn("Incorrect number of rows.");
         }
+        
         return this.elementValue + " (" + nbRow + " row" + sPlural + ")";
     }
 }

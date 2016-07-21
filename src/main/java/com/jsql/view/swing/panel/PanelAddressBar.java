@@ -13,7 +13,6 @@ package com.jsql.view.swing.panel;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -195,7 +194,7 @@ public class PanelAddressBar extends JPanel {
                     radioMethod.setText(PanelAddressBar.this.typeRequest);
                     popup.setVisible(false);
                 } else {
-                    LOGGER.warn("Please define a custom method");
+                    LOGGER.warn("Custom method undefined");
                 }
             }
         });
@@ -264,9 +263,9 @@ public class PanelAddressBar extends JPanel {
         );
 
         this.fieldRequest.setPreferredSize(new Dimension(0, 27));
-        this.fieldRequest.setFont(this.fieldRequest.getFont().deriveFont(Font.PLAIN, this.fieldRequest.getFont().getSize() + 2));
+        this.fieldRequest.setFont(HelperUi.FONT_SEGOE_BIG);
         this.fieldHeader.setPreferredSize(new Dimension(0, 27));
-        this.fieldHeader.setFont(this.fieldHeader.getFont().deriveFont(Font.PLAIN, this.fieldHeader.getFont().getSize() + 2));
+        this.fieldHeader.setFont(HelperUi.FONT_SEGOE_BIG);
 
         this.fieldUrl.addActionListener(new ActionEnterAddressBar());
         this.fieldRequest.addActionListener(new ActionEnterAddressBar());
@@ -370,11 +369,11 @@ public class PanelAddressBar extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             // No injection running
-            if ("Connect".equals(PanelAddressBar.this.buttonInUrl.getState())) {
+            if (PanelAddressBar.this.buttonInUrl.getState() == ButtonAddressBar.State.STARTABLE) {
                 this.startInjection();
 
             // Injection currently running, stop the process
-            } else if ("Stop".equals(buttonInUrl.getState())) {
+            } else if (PanelAddressBar.this.buttonInUrl.getState() == ButtonAddressBar.State.STOPPABLE) {
                 this.stopInjection();
             }
         }
@@ -398,6 +397,7 @@ public class PanelAddressBar extends JPanel {
 
             // Then start injection
             if (!MediatorModel.model().injectionIsFinished || option == JOptionPane.OK_OPTION) {
+                PanelAddressBar.this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_STOP_INJECTION"));
                 PanelAddressBar.this.buttonInUrl.setInjectionRunning();
                 PanelAddressBar.this.loader.setVisible(true);
 
@@ -415,7 +415,8 @@ public class PanelAddressBar extends JPanel {
         private void stopInjection() {
             PanelAddressBar.this.loader.setVisible(false);
             PanelAddressBar.this.buttonInUrl.setInjectionStopping();
-            MediatorModel.model().stopProcess();
+            PanelAddressBar.this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_STOPPING_INJECTION"));
+            MediatorModel.model().setIsStoppedByUser(true);
         }
     }
     
@@ -423,7 +424,7 @@ public class PanelAddressBar extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             // No injection running
-            if ("Connect".equals(PanelAddressBar.this.buttonInUrl.getState())) {
+            if (PanelAddressBar.this.buttonInUrl.getState() == ButtonAddressBar.State.STARTABLE) {
                 this.startInjection();
             }
         }

@@ -24,6 +24,7 @@ import java.util.zip.Checksum;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.log4j.Logger;
 
 import com.jsql.util.StringUtil;
 import com.jsql.view.swing.bruteforce.HashBruter;
@@ -32,34 +33,41 @@ import com.jsql.view.swing.bruteforce.HashBruter;
  * Action runned when this.coderManager.encoding.
  */
 public class ActionCoder implements ActionListener {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ActionCoder.class);
     
     private ManagerCoder coderManager;
     
     public ActionCoder(ManagerCoder coderManager) {
-        super();
         this.coderManager = coderManager;
     }
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
+        if ("".equals(this.coderManager.entry.getText())) {
+            LOGGER.warn("Empty String to convert");
+            return;
+        }
+        
         String choice = this.coderManager.encoding.getText().replace("Hash to ", "");
         
         //TODO State pattern
         if (Arrays.asList(new String[]{ "Md2", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512" } ).contains(choice)) {
-            MessageDigest md = null;
             try {
-                md = MessageDigest.getInstance(choice);
+                MessageDigest md = MessageDigest.getInstance(choice);
+                
+                String passwordString = new String(this.coderManager.entry.getText().toCharArray());
+                byte[] passwordByte = passwordString.getBytes();
+                md.update(passwordByte, 0, passwordByte.length);
+                byte[] encodedPassword = md.digest();
+                String encodedPasswordInString = this.coderManager.digestToHexString(encodedPassword);
+                
+                this.coderManager.result.setText(encodedPasswordInString);
             } catch (NoSuchAlgorithmException e1) {
-                this.coderManager.result.setText("No such algorithm for hashes exists");
+                LOGGER.warn("Digest algorithm "+ choice +" not found");
             }
-
-            String passwordString = new String(this.coderManager.entry.getText().toCharArray());
-            byte[] passwordByte = passwordString.getBytes();
-            md.update(passwordByte, 0, passwordByte.length);
-            byte[] encodedPassword = md.digest();
-            String encodedPasswordInString = this.coderManager.digestToHexString(encodedPassword);
-
-            this.coderManager.result.setText(encodedPasswordInString);
             
         } else if ("Md4".contains(choice)) {
             MessageDigest md = new MD4();
@@ -89,26 +97,25 @@ public class ActionCoder implements ActionListener {
             this.coderManager.result.setText(HashBruter.generateCRC64(this.coderManager.entry.getText().getBytes()));
             
         } else if ("Mysql".equals(choice)) {
-            MessageDigest md = null;
             try {
-                md = MessageDigest.getInstance("sha-1");
+                MessageDigest md = MessageDigest.getInstance("sha-1");
+                
+                String password = new String(this.coderManager.entry.getText().toCharArray());
+                byte[] passwordBytes = password.getBytes();
+                md.update(passwordBytes, 0, passwordBytes.length);
+                byte[] hashSHA1 = md.digest();
+                String stringSHA1 = this.coderManager.digestToHexString(hashSHA1);
+                
+                String passwordSHA1 = new String(StringUtil.hexstr(stringSHA1).toCharArray());
+                byte[] passwordSHA1Bytes = passwordSHA1.getBytes();
+                md.update(passwordSHA1Bytes, 0, passwordSHA1Bytes.length);
+                byte[] hashSHA1SH1 = md.digest();
+                String mysqlHash = this.coderManager.digestToHexString(hashSHA1SH1);
+                
+                this.coderManager.result.setText(mysqlHash);
             } catch (NoSuchAlgorithmException e1) {
-                this.coderManager.result.setText("No such algorithm for hashes exists");
+                LOGGER.warn("Digest algorithm sha-1 not found");
             }
-
-            String password = new String(this.coderManager.entry.getText().toCharArray());
-            byte[] passwordBytes = password.getBytes();
-            md.update(passwordBytes, 0, passwordBytes.length);
-            byte[] hashSHA1 = md.digest();
-            String stringSHA1 = this.coderManager.digestToHexString(hashSHA1);
-
-            String passwordSHA1 = new String(StringUtil.hexstr(stringSHA1).toCharArray());
-            byte[] passwordSHA1Bytes = passwordSHA1.getBytes();
-            md.update(passwordSHA1Bytes, 0, passwordSHA1Bytes.length);
-            byte[] hashSHA1SH1 = md.digest();
-            String mysqlHash = this.coderManager.digestToHexString(hashSHA1SH1);
-
-            this.coderManager.result.setText(mysqlHash);
             
         } else if ("Encode to Hex".equalsIgnoreCase(choice)) {
             try {
@@ -118,7 +125,7 @@ public class ActionCoder implements ActionListener {
                     ).trim()
                 );
             } catch (UnsupportedEncodingException e) {
-                this.coderManager.result.setText("this.coderManager.encoding error: " + e.getMessage());
+                this.coderManager.result.setText("Encoding to Hex error: " + e.getMessage());
             }
             
         } else if ("Decode from Hex".equalsIgnoreCase(choice)) {
@@ -132,7 +139,7 @@ public class ActionCoder implements ActionListener {
                     )
                 );
             } catch (Exception e) {
-                this.coderManager.result.setText("Decoding error: " + e.getMessage());
+                this.coderManager.result.setText("Decoding from Hex error: " + e.getMessage());
             }
             
         } else if ("Encode to Hex(zipped)".equalsIgnoreCase(choice)) {
@@ -145,7 +152,7 @@ public class ActionCoder implements ActionListener {
                     ).trim()
                 );
             } catch (Exception e) {
-                this.coderManager.result.setText("this.coderManager.encoding error: " + e.getMessage());
+                this.coderManager.result.setText("Encoding to Hex(zipped) error: " + e.getMessage());
             }
             
         } else if ("Decode from Hex(zipped)".equalsIgnoreCase(choice)) {
@@ -161,7 +168,7 @@ public class ActionCoder implements ActionListener {
                     )
                 );
             } catch (Exception e) {
-                this.coderManager.result.setText("Decoding error: " + e.getMessage());
+                this.coderManager.result.setText("Decoding from Hex(zipped) error: " + e.getMessage());
             }
             
         } else if ("Encode to Base64(zipped)".equalsIgnoreCase(choice)) {
@@ -174,7 +181,7 @@ public class ActionCoder implements ActionListener {
                     )
                 );
             } catch (IOException e) {
-                this.coderManager.result.setText("this.coderManager.encoding error: " + e.getMessage());
+                this.coderManager.result.setText("Encoding to Base64(zipped) error: " + e.getMessage());
             }
             
         } else if ("Decode from Base64(zipped)".equalsIgnoreCase(choice)) {
@@ -187,7 +194,7 @@ public class ActionCoder implements ActionListener {
                     )
                 );
             } catch (IOException e) {
-                this.coderManager.result.setText("Decoding error: " + e.getMessage());
+                this.coderManager.result.setText("Decoding from Base64(zipped) error: " + e.getMessage());
             }
             
         } else if ("Encode to Base64".equalsIgnoreCase(choice)) {
@@ -211,7 +218,7 @@ public class ActionCoder implements ActionListener {
                     )
                 );
             } catch (UnsupportedEncodingException e) {
-                this.coderManager.result.setText("this.coderManager.encoding error: " + e.getMessage());
+                this.coderManager.result.setText("Encoding to Url error: " + e.getMessage());
             }
             
         } else if ("Decode from Url".equalsIgnoreCase(choice)) {
@@ -223,11 +230,11 @@ public class ActionCoder implements ActionListener {
                     )
                 );
             } catch (UnsupportedEncodingException e) {
-                this.coderManager.result.setText("Decoding error: " + e.getMessage());
+                this.coderManager.result.setText("Decoding from Url error: " + e.getMessage());
             }
             
         } else {
-            this.coderManager.result.setText("*** Choose the encoding or decoding method");
+            this.coderManager.result.setText("Unsupported encoding or decoding method");
         }
     }
 }

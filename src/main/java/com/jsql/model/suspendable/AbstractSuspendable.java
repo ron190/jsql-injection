@@ -3,8 +3,8 @@ package com.jsql.model.suspendable;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.StoppedByUserException;
 
 /**
  * A thread used to inject database ; stoppable and pausable.
@@ -37,12 +37,13 @@ public abstract class AbstractSuspendable<T> {
             try {
                 this.wait();
             } catch (InterruptedException e) {
-                LOGGER.error(e, e);
+                LOGGER.error("Interruption while suspendable is waiting", e);
+                Thread.currentThread().interrupt();
             }
         }
         
         // Return true if stop requested, return false otherwise
-        return this.isStopped || MediatorModel.model().processIsStopped;
+        return this.isStopped || MediatorModel.model().isStoppedByUser();
     }
     
     /**
@@ -84,5 +85,5 @@ public abstract class AbstractSuspendable<T> {
     /**
      * The pausable/stoppable action.
      */
-    public abstract T run(Object... args) throws PreparationException, StoppableException;
+    public abstract T run(Object... args) throws InjectionFailureException, StoppedByUserException;
 }

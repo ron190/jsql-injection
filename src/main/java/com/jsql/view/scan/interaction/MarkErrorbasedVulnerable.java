@@ -21,7 +21,6 @@ import com.jsql.view.swing.list.ListItem;
 /**
  * Mark the injection as vulnerable to a error-based injection.
  */
-@SuppressWarnings("unchecked")
 public class MarkErrorbasedVulnerable implements InteractionCommand {
 
     private String url;
@@ -29,6 +28,7 @@ public class MarkErrorbasedVulnerable implements InteractionCommand {
     /**
      * @param interactionParams
      */
+    @SuppressWarnings("unchecked")
     public MarkErrorbasedVulnerable(Object[] interactionParams) {
         Map<String, Object> params = (Map<String, Object>) interactionParams[0];
         url = (String) params.get("Url");
@@ -36,11 +36,10 @@ public class MarkErrorbasedVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-//        LOGGER.debug("Vulnerable to Error based injection.");
         ListModel<ListItem> listModel = MediatorGui.tabManagers().scanListManager.listPaths.getModel();
         for (int i = 0 ; i < listModel.getSize() ; i++) {
-            if (listModel.getElementAt(i).internalString.equals(url)) {
-                listModel.getElementAt(i).isValidated = true;
+            if (listModel.getElementAt(i).internalString.contains(url)) {
+                listModel.getElementAt(i).isVulnerable = true;
                 ((DefaultListModel<ListItem>) listModel).setElementAt(listModel.getElementAt(i), i);
             }
         }

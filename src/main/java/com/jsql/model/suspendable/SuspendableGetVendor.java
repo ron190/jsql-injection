@@ -10,8 +10,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.injection.vendor.Vendor;
 
 /**
@@ -27,7 +26,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
     private static final Logger LOGGER = Logger.getLogger(SuspendableGetVendor.class);
 
     @Override
-    public Vendor run(Object... args) throws PreparationException, StoppableException {
+    public Vendor run(Object... args) throws StoppedByUserException {
         Vendor vendor = null;
         
         if (MediatorModel.model().vendorByUser != Vendor.AUTO) {
@@ -52,10 +51,11 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
 
         int total = 1;
         while (0 < total) {
-            // The user need to stop the job
+
             if (this.isSuspended()) {
-                throw new StoppableException();
+                throw new StoppedByUserException();
             }
+            
             try {
                 CallableHTMLPage currentCallable = taskCompletionService.take().get();
                 total--;
@@ -220,7 +220,7 @@ select '"'"'
                     vendor = Vendor.H2;
                 }
             } catch (InterruptedException | ExecutionException e) {
-                LOGGER.error(e, e);
+                LOGGER.error("Interruption while determining the type of database", e);
             }
         }
         

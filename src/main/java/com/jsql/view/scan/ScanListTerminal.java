@@ -17,7 +17,6 @@ import java.util.Observer;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
 import com.jsql.view.scan.interaction.InteractionCommand;
 
@@ -34,14 +33,6 @@ public class ScanListTerminal implements Observer {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getLogger(ScanListTerminal.class);
-
-    /**
-     * Build the GUI: add app icon, tree icons, the 3 main panels.
-     */
-    public ScanListTerminal() {
-        // Register the view to the model
-        MediatorModel.model().addObserver(this);
-    }
 
     /**
      * Observer pattern.<br>

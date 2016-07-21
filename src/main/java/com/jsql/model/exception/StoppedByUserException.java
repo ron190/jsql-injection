@@ -16,9 +16,20 @@ package com.jsql.model.exception;
  * database elements (database, table, column).
  */
 @SuppressWarnings("serial")
-public class StoppableException extends Exception {
+public class StoppedByUserException extends SlidingException {
+
+    private String slidingWindowAllRows;
     
-    public StoppableException() {
-        super("Execution stopped.");
+    public StoppedByUserException() {
+        super("Stopped by user");
     }
+
+    public void setSlidingWindowAllRows(String slidingWindowAllRows) {
+        this.slidingWindowAllRows = slidingWindowAllRows;
+    }
+    
+    public String getSlidingWindowAllRows() {
+        return this.slidingWindowAllRows;
+    }
+    
 }

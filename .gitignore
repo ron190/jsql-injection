@@ -1,16 +1,15 @@
 # project configuration
-.classpath
-.project
 .settings/
 target/
-.gitignore
+.classpath
+.project
 
 # code quality plugin properties
-.checkstyle
-.pmd
-sonar-project.properties
 test-output/
 .codepro/
 .sonar/
+.checkstyle
+.pmd
+sonar-project.properties
 dependency-reduced-pom.xml
 build.xml

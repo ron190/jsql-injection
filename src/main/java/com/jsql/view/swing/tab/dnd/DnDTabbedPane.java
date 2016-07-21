@@ -109,7 +109,6 @@ public class DnDTabbedPane extends JTabbedPane {
     }
     
     public DnDTabbedPane() {
-        super();
         Handler h = new Handler();
         addMouseListener(h);
         addMouseMotionListener(h);
@@ -189,20 +188,22 @@ public class DnDTabbedPane extends JTabbedPane {
             }
             parent = parent.getParent();
         }
-
-        Component tab = getTabComponentAt(dragIndex);
-        String str = getTitleAt(dragIndex);
-        Icon icon = getIconAt(dragIndex);
-        String tip = getToolTipTextAt(dragIndex);
-        boolean flg = isEnabledAt(dragIndex);
-        remove(dragIndex);
-        target.insertTab(str, icon, cmp, tip, targetIndex);
-        target.setEnabledAt(targetIndex, flg);
-
-        target.setTabComponentAt(targetIndex, tab);
-        target.setSelectedIndex(targetIndex);
-        if (tab != null && tab instanceof JComponent) {
-            ((JComponent) tab).scrollRectToVisible(tab.getBounds());
+        
+        if (target != null) {
+            Component tab = getTabComponentAt(dragIndex);
+            String str = getTitleAt(dragIndex);
+            Icon icon = getIconAt(dragIndex);
+            String tip = getToolTipTextAt(dragIndex);
+            boolean flg = isEnabledAt(dragIndex);
+            remove(dragIndex);
+            target.insertTab(str, icon, cmp, tip, targetIndex);
+            target.setEnabledAt(targetIndex, flg);
+    
+            target.setTabComponentAt(targetIndex, tab);
+            target.setSelectedIndex(targetIndex);
+            if (tab != null && tab instanceof JComponent) {
+                ((JComponent) tab).scrollRectToVisible(tab.getBounds());
+            }
         }
     }
 

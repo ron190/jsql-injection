@@ -15,7 +15,6 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -119,7 +118,6 @@ public class DialogPreference extends JDialog {
         Container contentPane = this.getContentPane();
 
         final JButton buttonCheckIp = new JButton("Check your IP", new ImageIcon(DialogPreference.class.getResource("/com/jsql/view/swing/resources/images/icons/wrench.png")));
-//        buttonCheckIp.setBorder(HelperUi.BLU_BORDER);
         buttonCheckIp.addActionListener(new ActionCheckIP());
         buttonCheckIp.setToolTipText(
             "<html><b>Verify what public IP address is used by jSQL</b><br>"
@@ -356,21 +354,13 @@ public class DialogPreference extends JDialog {
             }
         });
         
-        textProxyAddress.setFont(textProxyAddress.getFont().deriveFont(Font.PLAIN, textProxyAddress.getFont().getSize() + 2));
-        textProxyPort.setFont(textProxyPort.getFont().deriveFont(Font.PLAIN, textProxyPort.getFont().getSize() + 2));
-        textKerberosLoginConf.setFont(textKerberosLoginConf.getFont().deriveFont(Font.PLAIN, textKerberosLoginConf.getFont().getSize() + 2));
-        textKerberosKrb5Conf.setFont(textKerberosKrb5Conf.getFont().deriveFont(Font.PLAIN, textKerberosKrb5Conf.getFont().getSize() + 2));
+        textProxyAddress.setFont(HelperUi.FONT_SEGOE_BIG);
+        textProxyPort.setFont(HelperUi.FONT_SEGOE_BIG);
+        textKerberosLoginConf.setFont(HelperUi.FONT_SEGOE_BIG);
+        textKerberosKrb5Conf.setFont(HelperUi.FONT_SEGOE_BIG);
         
-        textDigestAuthenticationUsername.setFont(
-            textDigestAuthenticationUsername.getFont().deriveFont(
-                Font.PLAIN, textDigestAuthenticationUsername.getFont().getSize() + 2
-            )
-        );
-        textDigestAuthenticationPassword.setFont(
-            textDigestAuthenticationPassword.getFont().deriveFont(
-                Font.PLAIN, textDigestAuthenticationPassword.getFont().getSize() + 2
-            )
-        );
+        textDigestAuthenticationUsername.setFont(HelperUi.FONT_SEGOE_BIG);
+        textDigestAuthenticationPassword.setFont(HelperUi.FONT_SEGOE_BIG);
         
         buttonApply.addActionListener(new ActionListener() {
             @Override
@@ -397,7 +387,7 @@ public class DialogPreference extends JDialog {
                     textKerberosLoginConf.getText()
                 );
 
-                LOGGER.info("Preferences saved.");
+                LOGGER.info("Preferences saved");
             }
         });
 

@@ -78,7 +78,7 @@ public class ManagerDatabase extends JPanel {
         tree.setShowsRootHandles(true);
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-        // TODO Dirty trick that allows to repaint GIF progressbar
+        // Repaint Gif progressbar
         tree.getModel().addTreeModelListener(new TreeModelListener() {
             @Override
             public void treeNodesChanged(TreeModelEvent arg0) {

@@ -20,8 +20,8 @@ import javax.swing.JTextField;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.text.JPopupTextField;
 
@@ -39,8 +39,6 @@ public class ManagerSqlshell extends ManagerAbstractShell {
      * Build the manager panel.
      */
     public ManagerSqlshell() {
-        super();
-        
         JPanel userPassPanel = new JPanel();
         
         GroupLayout userPassLayout = new GroupLayout(userPassPanel);
@@ -91,7 +89,7 @@ public class ManagerSqlshell extends ManagerAbstractShell {
     }
 
     @Override
-    void action(String shellPath, String shellURL) throws PreparationException, StoppableException {
+    void action(String shellPath, String shellURL) throws InjectionFailureException, StoppedByUserException {
         RessourceAccess.createSqlShell(shellPath, shellURL, username.getText(), password.getText());
     }
 }

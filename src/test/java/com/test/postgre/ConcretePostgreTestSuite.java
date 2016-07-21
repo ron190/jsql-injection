@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.InjectionFailureException;
 import com.test.AbstractTestSuite;
 
 public class ConcretePostgreTestSuite extends AbstractTestSuite {
@@ -14,7 +14,7 @@ public class ConcretePostgreTestSuite extends AbstractTestSuite {
     private static final Logger LOGGER = Logger.getLogger(ConcretePostgreTestSuite.class);
 
     public ConcretePostgreTestSuite () {
-        this.jdbcURL = "jdbc:postgresql://localhost:5432/postgres";
+        this.jdbcURL = "jdbc:postgresql://"+ AbstractTestSuite.hostName +":5432/postgres";
         this.jdbcUser = "postgres";
         this.jdbcPassword = "pg";
         this.jsqlDatabaseName = "information_schema";
@@ -32,7 +32,7 @@ public class ConcretePostgreTestSuite extends AbstractTestSuite {
         
         try {
             initializer();
-        } catch (SQLException | PreparationException e) {
+        } catch (Exception e) {
             LOGGER.warn(e);
         }
     }

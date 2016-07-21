@@ -36,13 +36,6 @@ public class ProgressBarPausable extends JProgressBar {
      */
     private boolean isIconDisplayed = false;
 
-    /**
-     * Create progress bar with a Pause icon over it.
-     */
-    public ProgressBarPausable() {
-        super();
-    }
-
     @Override
     public void paint(Graphics g) {
         super.paint(g);

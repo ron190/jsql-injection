@@ -20,8 +20,7 @@ public class H2Vendor extends AbstractVendor {
                         "'%04'," +
                         "H2VERSION()," +
                         "database()," +
-                        "user()," +
-                        "CURRENT_USER" +
+                        "user()" +
                     ")" +
                 "" +
                 "," +
@@ -153,7 +152,7 @@ public class H2Vendor extends AbstractVendor {
                         /**
                          * Minus 'SQLi' should apply
                          */
-                          Strategy.NORMAL.instance().getPerformanceLength() +
+                        Strategy.NORMAL.instance().getPerformanceLength() +
                     ")" +
                 ")" +
         ")";
@@ -162,7 +161,7 @@ public class H2Vendor extends AbstractVendor {
     @Override
     public String getSqlIndicesCapacityCheck(String[] indexes) {
         return
-            MediatorModel.model().indexesInUrl.replaceAll(
+            MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
                 "(select+concat('SQLi',$1,repeat('%23',65536),'%01%03%03%07'))"
             );

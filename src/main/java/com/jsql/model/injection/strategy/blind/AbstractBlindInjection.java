@@ -13,8 +13,8 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.suspendable.AbstractSuspendable;
 
 /**
@@ -47,11 +47,11 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
     /**
      * Process the whole blind injection, character by character, bit by bit.
      * @param inj SQL query
-     * @param stoppable Action a user can stop
+     * @param suspendable Action a user can stop
      * @return Final string: SQLiABCDEF...
-     * @throws StoppableException
+     * @throws StoppedByUserException
      */
-    public String inject(String inj, AbstractSuspendable stoppable) throws StoppableException {
+    public String inject(String inj, AbstractSuspendable<String> suspendable) throws StoppedByUserException {
         /**
          *  List of the characters, each one represented by an array of 8 bits
          *  e.g SQLi: bytes[0] => 01010011:S, bytes[1] => 01010001:Q ...
@@ -74,29 +74,26 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
          * in other word until all HTTP requests are done
          */
         while (submittedTasks > 0) {
-            // stop/pause/resume if user needs that
-            if (stoppable.isSuspended()) {
+            if (suspendable.isSuspended()) {
                 /**
                  * TODO log stopping/free memory...
                  */
                 taskExecutor.shutdown();
 
-                // Wait for termination
+                // Await for termination
                 boolean isTerminated = false;
                 try {
                     isTerminated = taskExecutor.awaitTermination(0, TimeUnit.SECONDS);
                 } catch (InterruptedException e) {
                     LOGGER.error(e, e);
+                    Thread.currentThread().interrupt();
                 }
                 if (!isTerminated) {
-                    // awaitTermination timed out, interrupt everyone
+                    // awaitTermination timed out, interrupt everything
                     taskExecutor.shutdownNow();
                 }
 
-                /**
-                 * TODO InjectionStopped
-                 */
-                throw new StoppableException();
+                throw new StoppedByUserException();
             }
             try {
                 // The URL call is done, bring back the finished task
@@ -131,6 +128,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
                 } else {
                     // The bits linked to the url
                     char[] e = bytes.get(currentCallable.getCurrentIndex() - 1);
+                    
                     // Define the bit
                     e[(int) (8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit())) / Math.log(2)) ] = currentCallable.isTrue() ? '1' : '0';
 
@@ -145,8 +143,8 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
                         interaction.setMessage("MessageBinary");
                         interaction.setParameters("\t" + new String(e) + "=" + str);
                         MediatorModel.model().sendToViews(interaction);
-                    // byte string not fully constructed : 0x1x010x
                     } catch (NumberFormatException err) {
+                        // byte string not fully constructed : 0x1x010x
                         // Ignore
                     }
                 }
@@ -161,6 +159,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
             taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             LOGGER.error(e, e);
+            Thread.currentThread().interrupt();
         }
 
         // Build the complete final string from array of bits
@@ -180,7 +179,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
      * @return Source code
      */
     public static String callUrl(String urlString) {
-        return MediatorModel.model().injectWithoutIndex(MediatorModel.model().charInsertion + urlString);
+        return MediatorModel.model().injectWithoutIndex(MediatorModel.model().getCharInsertion() + urlString);
     }
     
     /**
@@ -204,9 +203,9 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
     /**
      * Start one test to verify if blind works.
      * @return true if blind method is confirmed
-     * @throws PreparationException
+     * @throws InjectionFailureException
      */
-    public abstract boolean isInjectable() throws PreparationException;
+    public abstract boolean isInjectable() throws StoppedByUserException;
     
     /**
      * Display a message to explain how is blid/time working.

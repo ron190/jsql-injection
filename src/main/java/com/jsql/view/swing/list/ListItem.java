@@ -18,19 +18,33 @@ public class ListItem {
      * Text displayed on item.
      */
     public String internalString;
+
+    private String originalString;
     
-    public Boolean isValidated = false;
+    /**
+     * 
+     */
+    public Boolean isVulnerable = false;
+    
+    public Boolean isDatabaseConfirmed = false;
     
     /**
      * Create a JList item.
      * @param newString
      */
     public ListItem(String newString) {
-        internalString = newString;
+        this.internalString = newString;
+        this.originalString = newString;
     }
 
     @Override
     public String toString() {
-        return internalString;
+        return this.internalString;
+    }
+    
+    public void reset() {
+        this.internalString = this.originalString;
+        this.isVulnerable = false;
+        this.isDatabaseConfirmed = false;
     }
 }

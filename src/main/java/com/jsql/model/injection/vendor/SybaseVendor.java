@@ -14,7 +14,7 @@ public class SybaseVendor extends AbstractVendor {
     public String getSqlInfos() {
         return
             "select+" +
-                "@@version%2B'%04'%2Bdb_name()%2B'%04'%2Buser_name()%2B'%04'%2Bsuser_name()" +
+                "@@version%2B'%04'%2Bdb_name()%2B'%04'%2Buser_name()" +
                 "%2B'%01%03%03%07'r"
         ;
     }
@@ -69,7 +69,7 @@ public class SybaseVendor extends AbstractVendor {
     @Override
     public String getSqlIndicesCapacityCheck(String[] indexes) {
         return
-            MediatorModel.model().indexesInUrl.replaceAll(
+            MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
                 "(select'SQLi$1'%2breplicate('%23',1024)%2b'iLQS')"
             );

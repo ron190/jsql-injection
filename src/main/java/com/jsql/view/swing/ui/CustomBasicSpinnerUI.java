@@ -13,13 +13,8 @@ package com.jsql.view.swing.ui;
 import javax.swing.plaf.basic.BasicSpinnerUI;
 
 /**
- * Better Combox UI.
+ * Adapter to replace default MetalComboBoxUI
  */
 public class CustomBasicSpinnerUI extends BasicSpinnerUI {
-    /**
-     * Disable default MetalComboBoxUI
-     */
-    public CustomBasicSpinnerUI() {
-        super();
-    }
+    // Empty
 }

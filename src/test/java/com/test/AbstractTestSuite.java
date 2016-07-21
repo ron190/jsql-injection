@@ -23,8 +23,8 @@ import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.StoppedByUserException;
 
 public abstract class AbstractTestSuite {
     /**
@@ -33,9 +33,13 @@ public abstract class AbstractTestSuite {
     private static final Logger LOGGER = Logger.getLogger(AbstractTestSuite.class);
 
     static {
+        // Use Timeout fix in Model
+        jcifs.Config.registerSmbURLHandler();
         PropertyConfigurator.configure("src/test/java/log4j.tests.properties");
     }
 
+    public static final String hostName = "127.0.0.1";
+    
     private List<String> databaseToFind = new ArrayList<>();
     private List<String> tableToFind = new ArrayList<>();
     private List<String> columnToFind = new ArrayList<>();
@@ -62,22 +66,18 @@ public abstract class AbstractTestSuite {
     public Retry retry = new Retry(3);
 
     @BeforeClass
-    public static void initialize() throws PreparationException, SQLException {
-        System.err.println("AbstractTestSuite and ConcreteTestSuite are for initialization purpose.");
-        System.err.println("Please run a test suite or a unit test instead.");
-        throw new PreparationException();
+    public static void initialize() throws Exception {
+        LOGGER.warn(
+            "AbstractTestSuite and ConcreteTestSuite are for initialization purpose. "
+            + "Run test suite or unit test instead."
+        );
+        throw new InjectionFailureException();
     }
 
-    public void initializer() throws PreparationException, SQLException {
-        Connection conn = DriverManager.getConnection(jdbcURL, jdbcUser, jdbcPassword);
-
-        Statement stmt = null;
-        try {
-            ResultSet res = null;
-            
-            stmt = conn.createStatement();
-            res = stmt.executeQuery(jdbcQueryForDatabaseNames);
-                    
+    public void initializer() throws Exception {
+        try (Connection conn = DriverManager.getConnection(jdbcURL, jdbcUser, jdbcPassword)) {
+            Statement stmt = conn.createStatement();
+            ResultSet res = stmt.executeQuery(jdbcQueryForDatabaseNames);
             while (res.next()) {
                 String dbName = res.getString(jdbcColumnForDatabaseName);
                 databaseToFind.add(dbName);
@@ -87,7 +87,6 @@ public abstract class AbstractTestSuite {
             
             stmt = conn.createStatement();
             res = stmt.executeQuery(jdbcQueryForTableNames);
-
             while (res.next()) {
                 String tableName = res.getString(jdbcColumnForTableName);
                 tableToFind.add(tableName);
@@ -97,7 +96,6 @@ public abstract class AbstractTestSuite {
             
             stmt = conn.createStatement();
             res = stmt.executeQuery(jdbcQueryForColumnNames);
-
             while (res.next()) {
                 String colName = res.getString(jdbcColumnForColumnName);
                 columnToFind.add(colName);
@@ -107,35 +105,19 @@ public abstract class AbstractTestSuite {
 
             stmt = conn.createStatement();
             res = stmt.executeQuery(jdbcQueryForValues);
-
             while (res.next()) {
                 String value = res.getString(jsqlColumnName);
                 valueToFind.add(value);
             }
             res.close();
-
-            conn.close();
+            stmt.close();
         } catch(Exception e) {
             LOGGER.warn(e);
-        } finally {
-            try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-            } catch(SQLException se2) {
-                try {
-                    if (conn != null) {
-                        conn.close();
-                    }
-                } catch(SQLException e) {
-                    LOGGER.warn(e);
-                }
-            }
         }
     }
 
     @Test
-    public void listDatabases() throws PreparationException, StoppableException {
+    public void listDatabases() throws Exception {
         Set<Object> set1 = new HashSet<>();
         Set<Object> set2 = new HashSet<>();
         
@@ -170,7 +152,7 @@ public abstract class AbstractTestSuite {
     }
 
     @Test
-    public void listTables() throws PreparationException, StoppableException {
+    public void listTables() throws Exception {
         Set<Object> set1 = new HashSet<>();
         Set<Object> set2 = new HashSet<>();
 
@@ -204,7 +186,7 @@ public abstract class AbstractTestSuite {
     }
 
     @Test
-    public void listColumns() throws PreparationException, StoppableException {
+    public void listColumns() throws Exception {
         Set<Object> set1 = new HashSet<>();
         Set<Object> set2 = new HashSet<>();
 
@@ -242,7 +224,7 @@ public abstract class AbstractTestSuite {
     }
 
     @Test
-    public void listValues() throws PreparationException, StoppableException {
+    public void listValues() throws Exception {
         Set<Object> set1 = new TreeSet<>();
         Set<Object> set2 = new TreeSet<>();
 

@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.InjectionFailureException;
 import com.test.AbstractTestSuite;
 
 public class ConcreteOracleTestSuite extends AbstractTestSuite {
@@ -14,7 +14,7 @@ public class ConcreteOracleTestSuite extends AbstractTestSuite {
     private static final Logger LOGGER = Logger.getLogger(ConcreteOracleTestSuite.class);
 
     public ConcreteOracleTestSuite () {
-        this.jdbcURL = "jdbc:oracle:thin:@localhost:1521:xe";
+        this.jdbcURL = "jdbc:oracle:thin:@"+ AbstractTestSuite.hostName +":1521:xe";
         this.jdbcUser = "system";
         this.jdbcPassword = "test";
         this.jsqlDatabaseName = "HR";
@@ -32,7 +32,7 @@ public class ConcreteOracleTestSuite extends AbstractTestSuite {
         
         try {
             initializer();
-        } catch (SQLException | PreparationException e) {
+        } catch (Exception e) {
             LOGGER.warn(e);
         }
     }

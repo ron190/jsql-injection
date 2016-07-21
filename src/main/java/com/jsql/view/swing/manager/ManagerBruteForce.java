@@ -232,7 +232,7 @@ public class ManagerBruteForce extends JPanel {
         run.setToolTipText(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
         
         run.setContentAreaFilled(false);
-        run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+        run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         run.setBackground(new Color(200, 221, 242));
         
         run.addMouseListener(new MouseAdapter() {
@@ -247,7 +247,7 @@ public class ManagerBruteForce extends JPanel {
             @Override public void mouseExited(MouseEvent e) {
                 if (run.isEnabled()) {
                     run.setContentAreaFilled(false);
-                    run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+                    run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
                 }
             }
         });

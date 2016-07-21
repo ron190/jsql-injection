@@ -19,8 +19,7 @@ public class PostgreSQLVendor extends AbstractVendor {
                 "'%04'," +
                 "version()," +
                 "current_database()," +
-                "user," +
-                "session_user" +
+                "user" +
             ")" +
             "||" +
             "'%01%03%03%07'";
@@ -223,7 +222,7 @@ public class PostgreSQLVendor extends AbstractVendor {
     @Override
     public String getSqlIndicesCapacityCheck(String[] indexes) {
         return
-            MediatorModel.model().indexesInUrl.replaceAll(
+            MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
                 "(select+'SQLi'||$1||repeat(chr(35),1024)||'iLQS')"
             );

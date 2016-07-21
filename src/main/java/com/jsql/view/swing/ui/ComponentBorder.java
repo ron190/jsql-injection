@@ -77,8 +77,6 @@ public class ComponentBorder implements Border {
      *                   specified Edge. Must be in the range 0 - 1.0.
      */
     public ComponentBorder(JComponent component, Edge edge, float alignment) {
-        super();
-        
         this.component = component;
         component.setSize(component.getPreferredSize());
         component.setCursor(Cursor.getDefaultCursor());

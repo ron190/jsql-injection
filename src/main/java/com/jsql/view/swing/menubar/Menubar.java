@@ -58,12 +58,18 @@ import com.jsql.view.swing.dialog.Language;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.text.JPopupTextArea;
+import com.sun.istack.internal.logging.Logger;
 
 /**
  * Application main menubar.
  */
 @SuppressWarnings("serial")
 public class Menubar extends JMenuBar {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Menubar.class);
+
     /**
      * Checkbox item to show/hide chunk console.
      */
@@ -170,7 +176,7 @@ public class Menubar extends JMenuBar {
         itemEnglish.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                I18n.LOCALE_DEFAULT = ResourceBundle.getBundle("com.jsql.i18n.jsql", Locale.ROOT);
+                I18n.setLocaleDefault(ResourceBundle.getBundle("com.jsql.i18n.jsql", Locale.ROOT));
                 Menubar.this.switchLocale();                
             }
         });
@@ -183,7 +189,7 @@ public class Menubar extends JMenuBar {
         itemFrench.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                I18n.LOCALE_DEFAULT = ResourceBundle.getBundle("com.jsql.i18n.jsql", Locale.FRENCH);
+                I18n.setLocaleDefault(ResourceBundle.getBundle("com.jsql.i18n.jsql", Locale.FRENCH));
                 Menubar.this.switchLocale();                
             }
         });
@@ -193,7 +199,7 @@ public class Menubar extends JMenuBar {
         groupRadioLanguage.add(itemEnglish);
         groupRadioLanguage.add(itemFrench);
         
-        JMenu menuI18nContribution = new JMenu("I help to translate jSQL");
+        JMenu menuI18nContribution = new JMenu("I help translate jSQL");
         
         // Render the About dialog behind scene
         final DialogTranslate dialogTranslate = new DialogTranslate();
@@ -222,6 +228,7 @@ public class Menubar extends JMenuBar {
         
         JMenuItem itemIntoArabic = new JMenuItem("into Arabic...", HelperUi.FLAG_AR);
         JMenuItem itemIntoRussia = new JMenuItem("into Russian...", HelperUi.FLAG_RU);
+        JMenuItem itemIntoDutch = new JMenuItem("into Dutch...", HelperUi.FLAG_NL);
         JMenuItem itemIntoChina = new JMenuItem("into Chinese...", HelperUi.FLAG_CN);
         JMenuItem itemIntoFrench = new JMenuItem("into French...", HelperUi.FLAG_FR);
         JMenuItem itemIntoTurkey = new JMenuItem("into Turkish...", HelperUi.FLAG_TR);
@@ -232,6 +239,7 @@ public class Menubar extends JMenuBar {
         
         menuI18nContribution.add(itemIntoArabic);
         menuI18nContribution.add(itemIntoRussia);
+        menuI18nContribution.add(itemIntoDutch);
         menuI18nContribution.add(itemIntoChina);
         menuI18nContribution.add(itemIntoFrench);
         menuI18nContribution.add(itemIntoTurkey);
@@ -243,6 +251,7 @@ public class Menubar extends JMenuBar {
         
         itemIntoArabic.addActionListener(new ActionTranslate(Language.AR));
         itemIntoRussia.addActionListener(new ActionTranslate(Language.RU));
+        itemIntoDutch.addActionListener(new ActionTranslate(Language.NL));
         itemIntoChina.addActionListener(new ActionTranslate(Language.CN));
         itemIntoFrench.addActionListener(new ActionTranslate(Language.FR));
         itemIntoTurkey.addActionListener(new ActionTranslate(Language.TR));
@@ -533,9 +542,9 @@ public class Menubar extends JMenuBar {
                     methodSetText.invoke(componentSwing, I18n.valueByKey(key));
                 } catch (
                     NoSuchMethodException | SecurityException | IllegalAccessException | 
-                    IllegalArgumentException | InvocationTargetException e1
+                    IllegalArgumentException | InvocationTargetException e
                 ) {
-                    e1.printStackTrace();
+                    LOGGER.warning("Reflection for "+ key +" failed while switching locale", e);
                 }
             }
         }

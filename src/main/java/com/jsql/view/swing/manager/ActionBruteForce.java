@@ -32,7 +32,6 @@ public class ActionBruteForce implements ActionListener, Runnable {
     private Boolean isStopped = false;
     
     public ActionBruteForce(ManagerBruteForce bruteForceManager) {
-        super();
         this.bruteForceManager = bruteForceManager;
     }
 
@@ -46,25 +45,25 @@ public class ActionBruteForce implements ActionListener, Runnable {
                 Integer.parseInt(this.bruteForceManager.maximumLength.getValue().toString());
                 Integer.parseInt(this.bruteForceManager.minimumLength.getValue().toString());
             } catch (NumberFormatException e) {
-                this.bruteForceManager.result.setText("*** " + I18n.valueByKey("BRUTEFORCE_INCORRECT_LENGTH"));
+                LOGGER.warn(I18n.valueByKey("BRUTEFORCE_INCORRECT_LENGTH"));
                 return;
             }
 
             if ("".equals(this.bruteForceManager.hash.getText())) {
-                this.bruteForceManager.result.setText("*** " + I18n.valueByKey("BRUTEFORCE_EMPTY_HASH"));
+                LOGGER.warn(I18n.valueByKey("BRUTEFORCE_EMPTY_HASH"));
                 return;
             } else if (
                     !this.bruteForceManager.specialCharacters.isSelected()
                     && !this.bruteForceManager.upperCaseCharacters.isSelected()
                     && !this.bruteForceManager.lowerCaseCharacters.isSelected()
                     && !this.bruteForceManager.numericCharacters.isSelected()) {
-                this.bruteForceManager.result.setText("*** " + I18n.valueByKey("BRUTEFORCE_CHARACTER_RANGE"));
+                LOGGER.warn(I18n.valueByKey("BRUTEFORCE_CHARACTER_RANGE"));
                 return;
             } else if (
                 Integer.parseInt(this.bruteForceManager.maximumLength.getValue().toString()) < 
                 Integer.parseInt(this.bruteForceManager.minimumLength.getValue().toString())
             ) {
-                this.bruteForceManager.result.setText("*** " + I18n.valueByKey("BRUTEFORCE_INCORRECT_MIN_MAX_LENGTH"));
+                LOGGER.warn(I18n.valueByKey("BRUTEFORCE_INCORRECT_MIN_MAX_LENGTH"));
                 return;
             }
 
@@ -121,7 +120,8 @@ public class ActionBruteForce implements ActionListener, Runnable {
                 // delay to update result panel
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                LOGGER.error(e, e);
+                LOGGER.error("Interruption while sleeping for brute force", e);
+                Thread.currentThread().interrupt();
             }
             
             int selectionStart = this.bruteForceManager.result.getSelectionStart();
@@ -165,15 +165,19 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
         // Display the result
         if (ActionBruteForce.this.isStopped) {
-            this.bruteForceManager.result.append("\n\n*** " + I18n.valueByKey("BRUTEFORCE_ABORTED") + "\n");
+            LOGGER.warn(I18n.valueByKey("BRUTEFORCE_ABORTED"));
         } else if (hashBruter.isFound()) {
             this.bruteForceManager.result.append(
-                "\n\n" + I18n.valueByKey("BRUTEFORCE_FOUND_HASH") + ":\n" + hashBruter.getGeneratedHash() + " => " + hashBruter.getPassword()
+                "\n\n"+ I18n.valueByKey("BRUTEFORCE_FOUND_HASH") +":\n"+ hashBruter.getGeneratedHash() +" => "+ hashBruter.getPassword()
             );
 
-            LOGGER.debug(I18n.valueByKey("BRUTEFORCE_FOUND_HASH") + ": " + hashBruter.getGeneratedHash() + " => " + hashBruter.getPassword());
+            LOGGER.debug(I18n.valueByKey("BRUTEFORCE_FOUND_HASH") +": "+ hashBruter.getGeneratedHash() +" => "+ hashBruter.getPassword());
         } else if (hashBruter.isDone()) {
-            this.bruteForceManager.result.append("\n\n*** " + I18n.valueByKey("BRUTEFORCE_HASH_NOT_FOUND"));
+            this.bruteForceManager.result.append(
+                "\n\n"+ I18n.valueByKey("BRUTEFORCE_HASH_NOT_FOUND")
+            );
+            
+            LOGGER.warn(I18n.valueByKey("BRUTEFORCE_HASH_NOT_FOUND"));
         }
 
         ActionBruteForce.this.isStopped = false;

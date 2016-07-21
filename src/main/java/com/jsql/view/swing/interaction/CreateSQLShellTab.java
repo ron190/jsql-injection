@@ -11,10 +11,13 @@
 package com.jsql.view.swing.interaction;
 
 import java.awt.Color;
+import java.net.MalformedURLException;
 import java.util.UUID;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+
+import org.apache.log4j.Logger;
 
 import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.view.swing.HelperUi;
@@ -27,6 +30,11 @@ import com.jsql.view.swing.tab.TabHeader;
  * Create a new tab for the terminal.
  */
 public class CreateSQLShellTab extends CreateTab implements InteractionCommand {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(CreateSQLShellTab.class);
+    
     /**
      * Full path of the shell file on remote host.
      */
@@ -41,8 +49,6 @@ public class CreateSQLShellTab extends CreateTab implements InteractionCommand {
      * @param interactionParams The local path and url for the shell
      */
     public CreateSQLShellTab(Object[] interactionParams) {
-        super();
-        
         path = (String) interactionParams[0];
         url = (String) interactionParams[1];
         user = (String) interactionParams[2];
@@ -51,37 +57,42 @@ public class CreateSQLShellTab extends CreateTab implements InteractionCommand {
 
     @Override
     public void execute() {
-        UUID terminalID = UUID.randomUUID();
-        ShellSql terminal = new ShellSql(terminalID, url, user, pass);
-        MediatorGui.frame().getConsoles().put(terminalID, terminal);
-
-        LightScrollPane scroller = new LightScrollPane(terminal);
-        scroller.THUMB_COLOR = HelperUi.SELECTION_BACKGROUND;
-        scroller.SCROLL_BAR_ALPHA_ROLLOVER = 175;
-        scroller.SCROLL_BAR_ALPHA = 100;
-        
-        scroller.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.BLACK));
-        
-        MediatorGui.tabResults().addTab("SQL shell ", scroller);
-
-        // Focus on the new tab
-        MediatorGui.tabResults().setSelectedComponent(scroller);
-
-        // Create a custom tab header with close button
-        TabHeader header = new TabHeader(new ImageIcon(CreateSQLShellTab.class.getResource("/com/jsql/view/swing/resources/images/icons/shell.png")));
-
-        MediatorGui.tabResults().setToolTipTextAt(
-            MediatorGui.tabResults().indexOfComponent(scroller),
-            "<html><b>URL</b><br>" + url + RessourceAccess.FILENAME_SQLSHELL
-            + "<br><b>Path</b><br>" + path + RessourceAccess.FILENAME_SQLSHELL + "</html>"
-        );
-
-        // Apply the custom header to the tab
-        MediatorGui.tabResults().setTabComponentAt(
-            MediatorGui.tabResults().indexOfComponent(scroller), 
-            header
-        );
-
-        terminal.requestFocusInWindow();
+        try {
+            UUID terminalID = UUID.randomUUID();
+            ShellSql terminal;
+            terminal = new ShellSql(terminalID, url, user, pass);
+            MediatorGui.frame().getConsoles().put(terminalID, terminal);
+    
+            LightScrollPane scroller = new LightScrollPane(terminal);
+            scroller.THUMB_COLOR = HelperUi.SELECTION_BACKGROUND;
+            scroller.SCROLL_BAR_ALPHA_ROLLOVER = 175;
+            scroller.SCROLL_BAR_ALPHA = 100;
+            
+            scroller.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.BLACK));
+            
+            MediatorGui.tabResults().addTab("SQL shell ", scroller);
+    
+            // Focus on the new tab
+            MediatorGui.tabResults().setSelectedComponent(scroller);
+    
+            // Create a custom tab header with close button
+            TabHeader header = new TabHeader(new ImageIcon(CreateSQLShellTab.class.getResource("/com/jsql/view/swing/resources/images/icons/shell.png")));
+    
+            MediatorGui.tabResults().setToolTipTextAt(
+                MediatorGui.tabResults().indexOfComponent(scroller),
+                "<html><b>URL</b><br>" + url + RessourceAccess.FILENAME_SQLSHELL
+                + "<br><b>Path</b><br>" + path + RessourceAccess.FILENAME_SQLSHELL + "</html>"
+            );
+    
+            // Apply the custom header to the tab
+            MediatorGui.tabResults().setTabComponentAt(
+                MediatorGui.tabResults().indexOfComponent(scroller), 
+                header
+            );
+    
+            terminal.requestFocusInWindow();
+        } catch (MalformedURLException e) {
+            LOGGER.warn("Incorrect shell Url", e);
+        }
     }
 }

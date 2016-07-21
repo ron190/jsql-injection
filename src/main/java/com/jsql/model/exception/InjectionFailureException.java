@@ -16,13 +16,24 @@ package com.jsql.model.exception;
  * with database elements (database, table, column)
  */
 @SuppressWarnings("serial")
-public class PreparationException extends Exception {
+public class InjectionFailureException extends SlidingException {
     
-    public PreparationException() {
-        super("Execution stopped.");
+    private String slidingWindowAllRows = "";
+    
+    public InjectionFailureException() {
+        super("Execution stopped");
     }
     
-    public PreparationException(String message) {
+    public InjectionFailureException(String message) {
         super(message);
     }
+    
+    public void setSlidingWindowAllRows(String slidingWindowAllRows) {
+        this.slidingWindowAllRows = slidingWindowAllRows;
+    }
+    
+    public String getSlidingWindowAllRows() {
+        return this.slidingWindowAllRows;
+    }
+    
 }

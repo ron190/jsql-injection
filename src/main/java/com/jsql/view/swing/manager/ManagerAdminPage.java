@@ -91,19 +91,18 @@ public class ManagerAdminPage extends ManagerAbstractList {
         );
         
         run.setContentAreaFilled(false);
-        run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+        run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         run.setBackground(new Color(200, 221, 242));
         
         run.addMouseListener(new MouseAdapter() {
             @Override public void mouseEntered(MouseEvent e) {
                 run.setContentAreaFilled(true);
                 run.setBorder(HelperUi.BLU_ROUND_BORDER);
-                
             }
 
             @Override public void mouseExited(MouseEvent e) {
                 run.setContentAreaFilled(false);
-                run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+                run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
             }
         });
 
@@ -113,7 +112,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (listFile.getSelectedValuesList().isEmpty()) {
-                    LOGGER.warn("Select at least one admin page.");
+                    LOGGER.warn("Select admin page(s) in the list");
                     return;
                 }
                 new Thread(new Runnable() {
@@ -121,14 +120,20 @@ public class ManagerAdminPage extends ManagerAbstractList {
                     public void run() {
                         if (run.getText().equals(defaultText)) {
                             if ("".equals(MediatorGui.panelAddress().fieldUrl.getText())) {
-                                LOGGER.warn("Please define the site URL first.");
+                                LOGGER.warn("Please define the main address");
                             } else {
                                 run.setText("Stop");
                                 loader.setVisible(true);
-                                RessourceAccess.createAdminPages(
-                                    MediatorGui.panelAddress().fieldUrl.getText(), 
-                                    listFile.getSelectedValuesList()
-                                );
+                                
+                                try {
+                                    RessourceAccess.createAdminPages(
+                                        MediatorGui.panelAddress().fieldUrl.getText(), 
+                                        listFile.getSelectedValuesList()
+                                    );
+                                } catch (InterruptedException e) {
+                                    LOGGER.error("Interruption while waiting for Opening Admin Page termination", e);
+                                    Thread.currentThread().interrupt();
+                                }
                             }
                         } else {
                             RessourceAccess.isSearchAdminStopped = true;

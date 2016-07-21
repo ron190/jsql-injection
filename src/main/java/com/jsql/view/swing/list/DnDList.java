@@ -56,12 +56,12 @@ public class DnDList extends JList<ListItem> {
     /**
      * Model for the JList.
      */
-    public DefaultListModel<ListItem> listModel;
+    private DefaultListModel<ListItem> listModel;
     
     /**
      * List of default items.
      */
-    public List<String> defaultList;
+    private List<String> defaultList;
     
     /**
      * Create a JList decorated with drag/drop features.
@@ -178,7 +178,7 @@ public class DnDList extends JList<ListItem> {
                     this.getMaxSelectionIndex()
                 )
             );
-        } catch (NullPointerException err) {
+        } catch (NullPointerException e) {
             // Report NullPointerException #1571 : manual scroll elsewhere then run action
         }
     }
@@ -265,7 +265,7 @@ public class DnDList extends JList<ListItem> {
                             DnDList.this.getMaxSelectionIndex()
                         )
                     );
-                } catch (NullPointerException err) {
+                } catch (NullPointerException e) {
                     // Report NullPointerException #1571 : manual scroll elsewhere then run action
                 }
             }
@@ -273,27 +273,34 @@ public class DnDList extends JList<ListItem> {
         
     }
     
-    /**
-     * Compatibility method for java 6.
-     */
-    @Override
-    public List<ListItem> getSelectedValuesList() {
-        ListSelectionModel sm = getSelectionModel();
-        ListModel<ListItem> dm = getModel();
-
-        int iMin = sm.getMinSelectionIndex();
-        int iMax = sm.getMaxSelectionIndex();
-
-        if ((iMin < 0) || (iMax < 0)) {
-            return Collections.emptyList();
+//    /**
+//     * Compatibility method for java 6.
+//     */
+//    @Override
+//    public List<ListItem> getSelectedValuesList() {
+//        ListSelectionModel sm = getSelectionModel();
+//        ListModel<ListItem> dm = getModel();
+//
+//        int iMin = sm.getMinSelectionIndex();
+//        int iMax = sm.getMaxSelectionIndex();
+//
+//        if ((iMin < 0) || (iMax < 0)) {
+//            return Collections.emptyList();
+//        }
+//
+//        List<ListItem> selectedItems = new ArrayList<>();
+//        for (int i = iMin; i <= iMax; i++) {
+//            if (sm.isSelectedIndex(i)) {
+//                selectedItems.add(dm.getElementAt(i));
+//            }
+//        }
+//        return selectedItems;
+//    }
+    
+    public void restore() {
+        this.listModel.clear();
+        for (String path: this.defaultList) {
+            this.listModel.addElement(new ListItem(path));
         }
-
-        List<ListItem> selectedItems = new ArrayList<>();
-        for (int i = iMin; i <= iMax; i++) {
-            if (sm.isSelectedIndex(i)) {
-                selectedItems.add(dm.getElementAt(i));
-            }
-        }
-        return selectedItems;
     }
 }

@@ -19,7 +19,7 @@ public class CallableHTMLPage implements Callable<CallableHTMLPage> {
     /**
      * Source code for current page.
      */
-    private String content;
+    private String content = "";
 
     /**
      * Character used for current page.

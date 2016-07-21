@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.shell;
 
+import java.net.MalformedURLException;
 import java.util.UUID;
 
 import com.jsql.model.accessible.RessourceAccess;
@@ -24,8 +25,9 @@ public class ShellSql extends AbstractShell {
      * @param terminalID Unique identifier to discriminate beyond multiple opened terminals
      * @param urlShell URL of current shell
      * @param args User and password
+     * @throws MalformedURLException 
      */
-    public ShellSql(UUID terminalID, String urlShell, String... args) {
+    public ShellSql(UUID terminalID, String urlShell, String... args) throws MalformedURLException {
         super(terminalID, urlShell, "sql");
         this.loginPassword = args;
     }

@@ -24,12 +24,6 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  */
 @SuppressWarnings("serial")
 public class CellRendererNode extends DefaultTreeCellRenderer {
-    /**
-     * Create tree node based on the node model.
-     */
-    public CellRendererNode() {
-        super();
-    }
     
     @Override
     public Component getTreeCellRendererComponent(

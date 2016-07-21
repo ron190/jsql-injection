@@ -11,7 +11,7 @@ import java.util.concurrent.Future;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.injection.strategy.blind.diff_match_patch.Diff;
 
 /**
@@ -51,7 +51,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
         ConcreteBlindInjection.blankTrueMark = ConcreteBlindInjection.callUrl("");
 
         // Check if the user wants to stop the preparation
-        if (MediatorModel.model().processIsStopped) {
+        if (MediatorModel.model().isStoppedByUser()) {
             return;
         }
 
@@ -65,34 +65,32 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
             listCallableFalse.add(new CallableBlind(urlTest));
         }
         
-        // Begin the url requests
-        List<Future<CallableBlind>> listFalseMark;
-        try {
-            listFalseMark = executorFalseMark.invokeAll(listCallableFalse);
-        } catch (InterruptedException e) {
-            LOGGER.error(e, e);
-            return;
-        }
-        executorFalseMark.shutdown();
-
         /*
          * Delete junk from the results of FALSE statements,
          * keep only opcodes found in each and every FALSE pages.
          * Allow the user to stop the loop
          */
         try {
-            constantFalseMark = listFalseMark.get(0).get().getOpcodes();
-            for (Future<CallableBlind> falseMark: listFalseMark) {
-                if (MediatorModel.model().processIsStopped) {
+            // Begin the url requests
+            List<Future<CallableBlind>> listTagFalse = null;
+            listTagFalse = executorFalseMark.invokeAll(listCallableFalse);
+            executorFalseMark.shutdown();
+            
+            constantFalseMark = listTagFalse.get(0).get().getOpcodes();
+            for (Future<CallableBlind> falseMark: listTagFalse) {
+                if (MediatorModel.model().isStoppedByUser()) {
                     return;
                 }
                 constantFalseMark.retainAll(falseMark.get().getOpcodes());
             }
-        } catch (InterruptedException | ExecutionException e) {
-            LOGGER.error(e, e);
+        } catch (ExecutionException e) {
+            LOGGER.error("Searching fails for Blind False tags", e);
+        } catch (InterruptedException e) {
+            LOGGER.error("Interruption while searching for Blind False tags", e);
+            Thread.currentThread().interrupt();
         }
 
-        if (MediatorModel.model().processIsStopped) {
+        if (MediatorModel.model().isStoppedByUser()) {
             return;
         }
 
@@ -107,12 +105,12 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
         }
         
         // Begin the url requests
-        List<Future<CallableBlind>> listTrueMark;
+        List<Future<CallableBlind>> listTrueMark = null;
         try {
             listTrueMark = executorTrueMark.invokeAll(listCallableTrue);
         } catch (InterruptedException e) {
             LOGGER.error(e, e);
-            return;
+            Thread.currentThread().interrupt();
         }
         executorTrueMark.shutdown();
 
@@ -123,7 +121,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
          */
         try {
             for (Future<CallableBlind> trueMark: listTrueMark) {
-                if (MediatorModel.model().processIsStopped) {
+                if (MediatorModel.model().isStoppedByUser()) {
                     return;
                 }
                 ConcreteBlindInjection.constantFalseMark.removeAll(trueMark.get().getOpcodes());
@@ -144,12 +142,9 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
     }
 
     @Override
-    public boolean isInjectable() throws PreparationException {
-        if (MediatorModel.model().processIsStopped) {
-            /**
-             * TODO Stoppable Exception
-             */
-            throw new PreparationException();
+    public boolean isInjectable() throws StoppedByUserException {
+        if (MediatorModel.model().isStoppedByUser()) {
+            throw new StoppedByUserException();
         }
         
         if (MediatorModel.model().vendor.getValue().getSqlBlindFirstTest() == null) {

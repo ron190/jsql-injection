@@ -19,10 +19,10 @@ import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.util.ThreadUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
@@ -68,7 +68,7 @@ public class ActionLoadStop implements ActionListener {
                 }
             }.execute();
         } else {
-            AbstractSuspendable<?> suspendableTask = MediatorModel.model().suspendables.get(this.nodeData.dataObject);
+            AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.nodeData.dataObject);
             
             suspendableTask.stop();
             suspendableTask.unpause();
@@ -77,7 +77,7 @@ public class ActionLoadStop implements ActionListener {
             this.nodeData.isLoading = false;
             suspendableTask.resume();
             
-            MediatorModel.model().suspendables.remove(this.nodeData.dataObject);
+            ThreadUtil.remove(this.nodeData.dataObject);
         }
         this.nodeData.isRunning = !this.nodeData.isRunning;
     }

@@ -86,18 +86,14 @@ public abstract class AbstractShell extends JTextPane {
      * @param uuidShell Unique identifier to discriminate beyond multiple opened terminals
      * @param urlShell URL of current shell
      * @param labelShell Type of shell to display on prompt
+     * @throws MalformedURLException 
      */
-    public AbstractShell(UUID uuidShell, String urlShell, String labelShell) {
+    public AbstractShell(UUID uuidShell, String urlShell, String labelShell) throws MalformedURLException {
         this.uuidShell = uuidShell;
         this.urlShell = urlShell;
         this.labelShell = labelShell;
 
-        URL url = null;
-        try {
-            url = new URL(urlShell);
-        } catch (MalformedURLException e) {
-            LOGGER.warn("Malformed URL : no protocol", e);
-        }
+        URL url = new URL(urlShell);
         host = url.getHost();
 
         this.setFont(new Font("Ubuntu Mono", Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize()));

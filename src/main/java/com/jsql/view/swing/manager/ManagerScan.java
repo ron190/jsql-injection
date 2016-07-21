@@ -27,6 +27,7 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -38,6 +39,7 @@ import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.list.DnDList;
+import com.jsql.view.swing.list.ListItem;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 
 /**
@@ -91,19 +93,18 @@ public class ManagerScan extends ManagerAbstractList {
         run.setToolTipText(I18n.valueByKey("SCANLIST_RUN_BUTTON_TOOLTIP"));
 
         run.setContentAreaFilled(false);
-        run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+        run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         run.setBackground(new Color(200, 221, 242));
         
         run.addMouseListener(new MouseAdapter() {
             @Override public void mouseEntered(MouseEvent e) {
                 run.setContentAreaFilled(true);
                 run.setBorder(HelperUi.BLU_ROUND_BORDER);
-                
             }
 
             @Override public void mouseExited(MouseEvent e) {
                 run.setContentAreaFilled(false);
-                run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+                run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
             }
         });
         
@@ -111,7 +112,7 @@ public class ManagerScan extends ManagerAbstractList {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (listFile.getSelectedValuesList().isEmpty()) {
-                    LOGGER.warn("Select at least one URL");
+                    LOGGER.warn("Select one or more URL");
                     return;
                 }
                 new Thread(new Runnable() {
@@ -120,10 +121,16 @@ public class ManagerScan extends ManagerAbstractList {
                         if (run.getText().equals(defaultText)) {
                             run.setText("Stop");
                             loader.setVisible(true);
+                            
+                            DefaultListModel<ListItem> listModel = (DefaultListModel<ListItem>) listFile.getModel();
+                            for (int i = 0 ; i < listModel.getSize() ; i++) {
+                                listModel.get(i).reset();
+                            }
+                            
                             RessourceAccess.scanList(listFile.getSelectedValuesList());
                         } else {
                             RessourceAccess.isScanStopped = true;
-                            MediatorModel.model().processIsStopped = true;
+                            MediatorModel.model().setIsStoppedByUser(true);
                             run.setEnabled(false);
                         }
                     }

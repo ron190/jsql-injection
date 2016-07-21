@@ -4,12 +4,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.jsql.model.MediatorModel;
+import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.util.StringUtil;
+import com.jsql.util.ThreadUtil;
 
 /**
  * Get all data from a SQL request (remember that data will often been cut, we need to reach ALL the data)
@@ -23,13 +25,13 @@ import com.jsql.util.StringUtil;
 public class SuspendableGetRows extends AbstractSuspendable<String> {
     
     @Override
-    public String run(Object... args) throws PreparationException, StoppableException {
+    public String run(Object... args) throws InjectionFailureException, StoppedByUserException {
         String initialSQLQuery = (String) args[0];
         String[] sourcePage = (String[]) args[1];
         boolean isUsingLimit = (Boolean) args[2];
         int numberToFind = (Integer) args[3];
         AbstractElementDatabase searchName = (AbstractElementDatabase) args[4];
-        MediatorModel.model().suspendables.put(searchName, this);
+        ThreadUtil.put(searchName, this);
 
         String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", MediatorModel.model().vendor.getValue().getSqlLimit(0));
 
@@ -48,12 +50,16 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         
         while (true) {
 
-            // Fix #1905 : NullPointerException on injectionStrategy.inject()
-            if (this.isSuspended() || strategy == null) {
-                break;
+            if (this.isSuspended()) {
+                StoppedByUserException e = new StoppedByUserException();
+                e.setSlidingWindowAllRows(slidingWindowAllRows);
+                throw e;
+            } else if (strategy == null) {
+                // Fix #1905 : NullPointerException on injectionStrategy.inject()
+                throw new InjectionFailureException();
             }
             
-            sourcePage[0] = strategy.inject(sqlQuery, charPositionInCurrentRow + "", this);
+            sourcePage[0] = strategy.inject(sqlQuery, charPositionInCurrentRow+"", this);
             
             /**
              * After SQLi tag, gets characters between 1 and maxPerf
@@ -122,11 +128,8 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     request.setParameters(searchName);
                     MediatorModel.model().sendToViews(request);
                 }
-                /**
-                 * TODO Injection Exception
-                 */
-//                throw new PreparationException("Fetching fails: no data to parse for " + searchName + "\nSource page: " + sourcePage[0].trim());
-                throw new PreparationException("Fetching fails: no data to parse"+ (searchName != null ? " for "+searchName : ""));
+
+                throw new InjectionFailureException("Fetching fails: no data to parse"+ (searchName != null ? " for "+searchName : ""));
             }
 
             /*
@@ -134,7 +137,12 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
              */
             regexAllLine = 
                 Pattern
-                    .compile("(?si)(\\x04([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?\\x04)")
+                    .compile(
+                        "(?si)("
+                            + DataAccess.SEPARATOR 
+                            + "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?"
+                            + DataAccess.SEPARATOR 
+                        + ")")
                     .matcher(slidingWindowCurrentRow);
             int nbCompleteLine = 0;
             while (regexAllLine.find()) {
@@ -175,12 +183,22 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                      */
                     slidingWindowAllRows = 
                         Pattern
-                            .compile("(?si)(\\x06\\x04|\\x05\\d*)$")
+                            .compile(
+                                "(?si)("
+                                    + "\\x06"+ DataAccess.SEPARATOR +""
+                                    + "|"
+                                    + "\\x05\\d*"
+                                + ")$")
                             .matcher(slidingWindowAllRows)
                             .replaceAll("");
                     slidingWindowCurrentRow = 
                         Pattern
-                            .compile("(?si)(\\x06\\x04|\\x05\\d*)$")
+                            .compile(
+                                "(?si)("
+                                    + "\\x06"+ DataAccess.SEPARATOR +""
+                                    + "|"
+                                    + "\\x05\\d*"
+                                + ")$")
                             .matcher(slidingWindowCurrentRow)
                             .replaceAll("");
 
@@ -189,11 +207,18 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                      */
                     regexAllLine = 
                         Pattern
-                            .compile("(?si)[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]\\x04\\x06\\x04[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$")
+                            .compile(
+                                "(?si)"
+                                + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]"
+                                + DataAccess.SEPARATOR +"\\x06"+ DataAccess.SEPARATOR 
+                                + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
+                            )
                             .matcher(slidingWindowCurrentRow);
                     Matcher regexSearch2a2 = 
                         Pattern
-                            .compile("(?si)\\x04[^\\x01-\\x03\\x05-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$")
+                            .compile(
+                                "(?si)"+ DataAccess.SEPARATOR +"[^\\x01-\\x03\\x05-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
+                            )
                             .matcher(slidingWindowCurrentRow);
 
                     /*
@@ -203,7 +228,9 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     if (regexAllLine.find()) {
                         slidingWindowAllRows = 
                             Pattern
-                                .compile("(?si)\\x04[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$")
+                                .compile(
+                                    "(?si)"+ DataAccess.SEPARATOR +"[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
+                                )
                                 .matcher(slidingWindowAllRows)
                                 .replaceAll("");
                     } else if (regexSearch2a2.find()) {
@@ -220,7 +247,13 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                          * => \\x08? seems ok though
                          */
                         Pattern
-                            .compile("(?si)(\\x04[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x05[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?\\x04)")
+                            .compile(
+                                "(?si)("
+                                    + DataAccess.SEPARATOR 
+                                    + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x05[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?"
+                                    + DataAccess.SEPARATOR 
+                                +")"
+                            )
                             .matcher(slidingWindowAllRows);
 
                     nbCompleteLine = 0;
@@ -278,7 +311,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             charPositionInCurrentRow = slidingWindowCurrentRow.length() + 1;
         }
         
-        MediatorModel.model().suspendables.remove(searchName);
+        ThreadUtil.remove(searchName);
 
         return slidingWindowAllRows;
     }

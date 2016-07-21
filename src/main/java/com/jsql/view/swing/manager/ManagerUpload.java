@@ -39,8 +39,8 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
@@ -114,7 +114,7 @@ public class ManagerUpload extends ManagerAbstractList {
         this.run.setEnabled(false);
         
         run.setContentAreaFilled(false);
-        run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+        run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         run.setBackground(new Color(200, 221, 242));
         
         run.addMouseListener(new MouseAdapter() {
@@ -123,13 +123,12 @@ public class ManagerUpload extends ManagerAbstractList {
                     run.setContentAreaFilled(true);
                     run.setBorder(HelperUi.BLU_ROUND_BORDER);
                 }
-                
             }
 
             @Override public void mouseExited(MouseEvent e) {
                 if (run.isEnabled()) {
                     run.setContentAreaFilled(false);
-                    run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+                    run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
                 }
             }
         });
@@ -138,7 +137,7 @@ public class ManagerUpload extends ManagerAbstractList {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (ManagerUpload.this.listPaths.getSelectedValuesList().isEmpty()) {
-                    LOGGER.warn("Select at least one directory");
+                    LOGGER.warn("Select one or more directory");
                     return;
                 }
 
@@ -155,8 +154,10 @@ public class ManagerUpload extends ManagerAbstractList {
                                 try {
                                     ManagerUpload.this.loader.setVisible(true);
                                     RessourceAccess.uploadFile(path.toString(), shellURL.getText(), file);
-                                } catch (PreparationException | StoppableException e) {
-                                    LOGGER.warn("Can't upload file " + file.getName() + " to " + path, e);
+                                } catch (InjectionFailureException | StoppedByUserException e) {
+                                    LOGGER.warn("Can't upload file " + file.getName() +" to "+ path, e);
+                                } catch (IOException e) {
+                                    LOGGER.warn("Connection to shell Url failed at "+ shellURL.getText(), e);
                                 }
                             }
                         }, "upload").start();

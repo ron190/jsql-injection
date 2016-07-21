@@ -64,7 +64,7 @@ public class Database extends AbstractElementDatabase {
             if (Integer.parseInt(tableCount) > 1) {
                 sPlural = "s";
             }
-        } catch (NumberFormatException err) {
+        } catch (NumberFormatException e) {
             tableCount = "0";
             LOGGER.warn("Incorrect number of tables.");
         }

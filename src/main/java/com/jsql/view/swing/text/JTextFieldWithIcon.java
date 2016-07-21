@@ -26,8 +26,6 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
-import org.apache.log4j.Logger;
-
 import com.jsql.i18n.I18n;
 
 /**
@@ -35,10 +33,6 @@ import com.jsql.i18n.I18n;
  */
 @SuppressWarnings("serial")
 public class JTextFieldWithIcon extends JTextField {
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getLogger(JTextFieldWithIcon.class);
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -47,21 +41,23 @@ public class JTextFieldWithIcon extends JTextField {
         URL url = JTextFieldWithIcon.class.getResource("/com/jsql/view/swing/resources/images/icons/globe.png");
         BufferedImage image = null;
         try {
+            // Fix IllegalArgumentException when globe.png is unavailable
             image = ImageIO.read(url);
-        } catch (IOException e) {
-            LOGGER.error(e, e);
+        } catch (IOException | IllegalArgumentException e) {
+            image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
         }
 
         Border border = UIManager.getBorder("TextField.border");
 
         int x = border.getBorderInsets(this).left;
-        // Report #223: ignore if icon is missing
-        int y = 0;
-        if (image != null) {
-            y = (getHeight() - image.getHeight()) / 2;
-        }
+        int y = (getHeight() - image.getHeight()) / 2;
 
-        g.drawImage(image, x + 4, y + 1, this);
+        // Fix #1654 (Linux only) : ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData
+        try {
+            g.drawImage(image, x + 4, y + 1, this);
+        } catch (ClassCastException e) {
+            // Ignore Exception
+        }
     }
     
     @Override

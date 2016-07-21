@@ -35,8 +35,6 @@ public class ActionNewWindow extends AbstractAction {
     private static final Logger LOGGER = Logger.getLogger(ActionNewWindow.class);
 
     public ActionNewWindow() {
-        super();
-
         this.putValue(Action.NAME, I18n.valueByKey("NEW_WINDOW"));
         this.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_N));
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));

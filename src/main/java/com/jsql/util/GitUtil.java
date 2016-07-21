@@ -5,7 +5,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.Socket;
 import java.net.URL;
 
 import org.apache.commons.codec.binary.Base64;
@@ -47,7 +46,6 @@ public class GitUtil {
             }
         } catch (NumberFormatException | IOException e) {
             LOGGER.warn(I18n.valueByKey("UPDATE_EXCEPTION"));
-            LOGGER.error(e, e);
         }
     }
     
@@ -111,28 +109,8 @@ public class GitUtil {
     }
     
     public static void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
-        // Test if proxy is available then apply settings
-        if (ProxyUtil.isUsingProxy && !"".equals(ProxyUtil.proxyAddress) && !"".equals(ProxyUtil.proxyPort)) {
-            try {
-                if (showOnConsole == ShowOnConsole.YES) {
-                    LOGGER.info("Testing proxy...");
-                }
-                
-                new Socket(ProxyUtil.proxyAddress, Integer.parseInt(ProxyUtil.proxyPort)).close();
-            } catch (Exception e) {
-                if (showOnConsole == ShowOnConsole.YES) {
-                    LOGGER.warn(
-                        "Proxy connection failed: " 
-                        + ProxyUtil.proxyAddress + ":" + ProxyUtil.proxyPort
-                        + ". Please check your proxy informations or disable proxy setting.",
-                        e
-                    );
-                }
-                return;
-            }
-            if (showOnConsole == ShowOnConsole.YES) {
-                LOGGER.trace("Proxy is responding.");
-            }
+        if (!ProxyUtil.proxyIsResponding(showOnConsole == ShowOnConsole.YES)) {
+            return;
         }
 
         HttpURLConnection connection = null;
@@ -150,8 +128,8 @@ public class GitUtil {
                 "Authorization", 
                 "token " + StringUtils.newStringUtf8(Base64.decodeBase64("NGQ1YzdkYWE1NDQwYzdkNTk1YTZlODQzYzFlODlkZmMzNzQ1NDhlNg=="))
             );
-            connection.setReadTimeout(15000);
-            connection.setConnectTimeout(15000);
+            connection.setReadTimeout(ConnectionUtil.timeOut);
+            connection.setConnectTimeout(ConnectionUtil.timeOut);
             connection.setDoOutput(true);
 
             DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());

@@ -179,7 +179,7 @@ public class PanelTable extends JPanel {
         scroller.scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         scroller.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
 
-        new FixedColumnTable(1, scroller.scrollPane);
+        FixedColumnTable.fixColumnSize(1, scroller.scrollPane);
         
         this.add(scroller, BorderLayout.CENTER);
         

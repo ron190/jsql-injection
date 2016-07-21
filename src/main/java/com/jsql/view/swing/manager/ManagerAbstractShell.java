@@ -38,8 +38,8 @@ import javax.swing.SwingConstants;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -86,8 +86,8 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
 
         String urlTooltip = I18n.valueByKey("SHELL_URL_TOOLTIP");
         
-        urlShell.setToolTipText(urlTooltip);
-        urlShell.setBorder(
+        this.urlShell.setToolTipText(urlTooltip);
+        this.urlShell.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
                     BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER),
@@ -114,23 +114,22 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
         this.run.setToolTipText(I18n.valueByKey("SHELL_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
 
-        run.setContentAreaFilled(false);
-        run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
-        run.setBackground(new Color(200, 221, 242));
+        this.run.setContentAreaFilled(false);
+        this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        this.run.setBackground(new Color(200, 221, 242));
         
-        run.addMouseListener(new MouseAdapter() {
+        this.run.addMouseListener(new MouseAdapter() {
             @Override public void mouseEntered(MouseEvent e) {
                 if (run.isEnabled()) {
                     run.setContentAreaFilled(true);
                     run.setBorder(HelperUi.BLU_ROUND_BORDER);
                 }
-                
             }
 
             @Override public void mouseExited(MouseEvent e) {
                 if (run.isEnabled()) {
                     run.setContentAreaFilled(false);
-                    run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+                    run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
                 }
             }
         });
@@ -147,18 +146,18 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
         lastLine.add(Box.createHorizontalGlue());
         lastLine.add(this.run);
 
-        southPanel.add(urlShell);
+        southPanel.add(this.urlShell);
         southPanel.add(lastLine);
         this.add(southPanel, BorderLayout.SOUTH);
     }
     
-    abstract void action(String pathShell, String urlShell) throws PreparationException, StoppableException;
+    abstract void action(String pathShell, String urlShell) throws InjectionFailureException, StoppedByUserException;
     
     private class ActionRunShell implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent evt) {
             if (ManagerAbstractShell.this.listPaths.getSelectedValuesList().isEmpty()) {
-                LOGGER.warn("Select at least one directory");
+                LOGGER.warn("Select one or more directory");
                 return;
             }
 
@@ -177,7 +176,7 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
                     public void run() {
                         try {
                             ManagerAbstractShell.this.action(pathShell.toString(), urlShell.getText());
-                        } catch (PreparationException | StoppableException e) {
+                        } catch (InjectionFailureException | StoppedByUserException e) {
                             LOGGER.warn("Problem writing into " + pathShell, e);
                         }
                     }

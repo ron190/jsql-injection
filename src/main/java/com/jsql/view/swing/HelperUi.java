@@ -99,8 +99,9 @@ public final class HelperUi {
     public static final Icon ARROWROLLOVER = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/arrowRollover.png"));
     public static final Icon ARROWPRESSED = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/arrowPressed.png"));
 
-    public static final Icon FLAG_DE = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/de.png"));
     public static final Icon FLAG_AR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/ar.png"));
+    public static final Icon FLAG_DE = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/de.png"));
+    public static final Icon FLAG_NL = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/nl.png"));
     public static final Icon FLAG_US = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/en.png"));
     public static final Icon FLAG_FR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/fr.png"));
     public static final Icon FLAG_CN = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/cn.png"));
@@ -154,7 +155,13 @@ public final class HelperUi {
         }
     };
 
-    public static final Font SEGOE_FONT = new Font("Segoe UI", Font.PLAIN, UIManager.getDefaults().getFont("TextPane.font").getSize());
+    public static final Font FONT_SEGOE = new Font("Segoe UI", Font.PLAIN, UIManager.getDefaults().getFont("TextPane.font").getSize());
+    public static final Font FONT_SEGOE_BIG = new Font(
+        UIManager.getDefaults().getFont("TextField.font").getName(), 
+        Font.PLAIN, 
+        UIManager.getDefaults().getFont("TextField.font").getSize() + 2
+    );
+    public static final Font FONT_UBUNTU = new Font("Ubuntu Mono", Font.PLAIN, UIManager.getDefaults().getFont("TextArea.font").getSize() + 2);
 
     public static final String CHUNK_VISIBLE = "chunk_visible";
     public static final String BINARY_VISIBLE = "binary_visible";
@@ -177,7 +184,7 @@ public final class HelperUi {
             Font ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             ge.registerFont(ubuntuFont);
         } catch (FontFormatException | IOException e) {
-            e.printStackTrace();
+            LOGGER.warn("Loading Font Ubuntu failed", e);
         }
         
         // Custom tooltip
@@ -192,7 +199,7 @@ public final class HelperUi {
         UIManager.put("ToolTip.backgroundInactive", new Color(255, 255, 225));
         UIManager.put("ToolTip.foreground", Color.BLACK);
         UIManager.put("ToolTip.foregroundInactive", Color.BLACK);
-        UIManager.put("ToolTip.font", SEGOE_FONT);
+        UIManager.put("ToolTip.font", FONT_SEGOE);
         
         // Custom button
         // Change border of button in default Save as, Confirm dialogs
@@ -204,18 +211,18 @@ public final class HelperUi {
         UIManager.put("ToggleButton.border", BLU_BORDER);
 
         // No bold for menu + round corner
-        UIManager.put("Menu.font", SEGOE_FONT);
+        UIManager.put("Menu.font", FONT_SEGOE);
         UIManager.put("Menu.selectionBackground", SELECTION_BACKGROUND);
         UIManager.put("Menu.borderPainted", false);
-        UIManager.put("PopupMenu.font", SEGOE_FONT);
+        UIManager.put("PopupMenu.font", FONT_SEGOE);
         UIManager.put("RadioButtonMenuItem.selectionBackground", SELECTION_BACKGROUND);
         UIManager.put("RadioButtonMenuItem.borderPainted", false);
         UIManager.put("MenuItem.selectionBackground", SELECTION_BACKGROUND);
-        UIManager.put("MenuItem.font", SEGOE_FONT);
+        UIManager.put("MenuItem.font", FONT_SEGOE);
         UIManager.put("MenuItem.borderPainted", false);
         
         UIManager.put("CheckBoxMenuItem.selectionBackground", SELECTION_BACKGROUND);
-        UIManager.put("CheckBoxMenuItem.font", SEGOE_FONT);
+        UIManager.put("CheckBoxMenuItem.font", FONT_SEGOE);
         UIManager.put("CheckBoxMenuItem.borderPainted", false);
         UIManager.put("CheckBoxMenuItem.checkIcon", new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/check.png")) {
             @Override
@@ -228,7 +235,7 @@ public final class HelperUi {
         });
 
         // Custom tab
-        UIManager.put("TabbedPane.font", SEGOE_FONT);
+        UIManager.put("TabbedPane.font", FONT_SEGOE);
         // margin of current tab panel
         UIManager.put("TabbedPane.contentBorderInsets", new Insets(0, 0, 0, 0));
         // margin above tabs
@@ -238,9 +245,9 @@ public final class HelperUi {
         // lighter unselected tab border
         UIManager.put("TabbedPane.darkShadow", new Color(190,198,205));
         
-        UIManager.put("Button.font", SEGOE_FONT);
-        UIManager.put("CheckBox.font", SEGOE_FONT);
-        UIManager.put("TitledBorder.font", SEGOE_FONT);
+        UIManager.put("Button.font", FONT_SEGOE);
+        UIManager.put("CheckBox.font", FONT_SEGOE);
+        UIManager.put("TitledBorder.font", FONT_SEGOE);
 
         UIManager.put("Spinner.arrowButtonBorder", HelperUi.BLU_BORDER);
         UIManager.put("Spinner.border", BorderFactory.createCompoundBorder(
@@ -248,7 +255,7 @@ public final class HelperUi {
             BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE)
         ));
         
-        UIManager.put("FileChooser.listFont", SEGOE_FONT);
+        UIManager.put("FileChooser.listFont", FONT_SEGOE);
         UIManager.put("FileChooser.listViewBorder", BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(HelperUi.BLU_COLOR),
             BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE)
@@ -257,25 +264,24 @@ public final class HelperUi {
         // Custom text component
         // Admin page
         UIManager.put("TextPane.selectionBackground", SELECTION_BACKGROUND);
-        UIManager.put("TextPane.font", new Font("Ubuntu Mono", Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize() + 2));
+        UIManager.put("TextPane.font", FONT_UBUNTU);
         UIManager.put("TextPane.selectionBackground", SELECTION_BACKGROUND);
         
-        UIManager.put("TextField.font", new Font(((Font) UIManager.get("TextField.font")).getName(), Font.PLAIN, ((Font) UIManager.get("TextField.font")).getSize()));
         UIManager.put("TextField.border", HelperUi.BLU_BORDER);
         UIManager.put("TextField.selectionBackground", SELECTION_BACKGROUND);
         
         UIManager.put("EditorPane.selectionBackground", SELECTION_BACKGROUND);
         
         UIManager.put("TextArea.selectionBackground", SELECTION_BACKGROUND);
-        UIManager.put("TextArea.font", new Font("Ubuntu Mono", Font.PLAIN, ((Font) UIManager.get("TextArea.font")).getSize() + 2));
+        UIManager.put("TextArea.font", FONT_UBUNTU);
 
         // Custom Label
-        UIManager.put("Label.font", SEGOE_FONT);
+        UIManager.put("Label.font", FONT_SEGOE);
         UIManager.put("Label.selectionBackground", SELECTION_BACKGROUND);
 
         // Custom table
-        UIManager.put("Table.font", SEGOE_FONT);
-        UIManager.put("TableHeader.font", SEGOE_FONT);
+        UIManager.put("Table.font", FONT_SEGOE);
+        UIManager.put("TableHeader.font", FONT_SEGOE);
         UIManager.put("Table.selectionBackground", SELECTION_BACKGROUND);
         UIManager.put("Table.focusCellHighlightBorder",
             BorderFactory.createCompoundBorder(
@@ -313,7 +319,7 @@ public final class HelperUi {
         UIManager.put("ProgressBar.background", UIManager.get("Tree.background"));
 
         // Custom ComboBox
-        UIManager.put("ComboBox.font", SEGOE_FONT);
+        UIManager.put("ComboBox.font", FONT_SEGOE);
         UIManager.put("ComboBox.selectionBackground", SELECTION_BACKGROUND);
         // Use ColorUIResource to preserve the background color for arrow
         UIManager.put("ComboBox.background", new ColorUIResource(Color.WHITE));

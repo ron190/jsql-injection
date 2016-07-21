@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -37,8 +38,8 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
@@ -94,7 +95,7 @@ public class ManagerFile extends ManagerAbstractList {
         run.setEnabled(false);
         
         run.setContentAreaFilled(false);
-        run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+        run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         run.setBackground(new Color(200, 221, 242));
         
         run.addMouseListener(new MouseAdapter() {
@@ -103,13 +104,12 @@ public class ManagerFile extends ManagerAbstractList {
                     run.setContentAreaFilled(true);
                     run.setBorder(HelperUi.BLU_ROUND_BORDER);
                 }
-                
             }
 
             @Override public void mouseExited(MouseEvent e) {
                 if (run.isEnabled()) {
                     run.setContentAreaFilled(false);
-                    run.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 8));
+                    run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
                 }
             }
         });
@@ -118,7 +118,7 @@ public class ManagerFile extends ManagerAbstractList {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (listFile.getSelectedValuesList().isEmpty()) {
-                    LOGGER.warn("Select at least one file");
+                    LOGGER.warn("Select one or more file");
                     return;
                 }
 
@@ -126,14 +126,20 @@ public class ManagerFile extends ManagerAbstractList {
                     @Override
                     public void run() {
                         if (run.getText().equals(defaultText)) {
+                            
                             run.setText("Stop");
                             try {
                                 MediatorGui.tabManagers().shellManager.clearSelection();
                                 MediatorGui.tabManagers().sqlShellManager.clearSelection();
                                 loader.setVisible(true);
                                 RessourceAccess.readFile(listFile.getSelectedValuesList());
-                            } catch (PreparationException | StoppableException e) {
-                                LOGGER.warn("Problem reading file", e);
+                            } catch (StoppedByUserException e) {
+                                LOGGER.warn("Reading File stopped by user", e);
+                            } catch (InjectionFailureException e) {
+                                LOGGER.warn("Reading File failed", e);
+                            } catch (InterruptedException e) {
+                                LOGGER.warn("Interruption while waiting for Reading File termination", e);
+                                Thread.currentThread().interrupt();
                             }
 
                         } else {

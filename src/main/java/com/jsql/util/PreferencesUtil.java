@@ -1,5 +1,6 @@
 package com.jsql.util;
 
+import java.net.HttpURLConnection;
 import java.util.prefs.Preferences;
 
 import com.jsql.model.InjectionModel;
@@ -41,6 +42,8 @@ public class PreferencesUtil {
         PreferencesUtil.isFollowingRedirection = prefs.getBoolean("isFollowingRedirection", false);
         
         PreferencesUtil.pathFile = prefs.get("pathFile", System.getProperty("user.dir"));
+        
+        HttpURLConnection.setFollowRedirects(PreferencesUtil.isFollowingRedirection);
     }
     
     public static void setPath(String path) {
@@ -61,6 +64,8 @@ public class PreferencesUtil {
         preferences.putBoolean("isReportingBugs", PreferencesUtil.isReportingBugs);
         preferences.putBoolean("isEvading", PreferencesUtil.evasionIsEnabled);
         preferences.putBoolean("isFollowingRedirection", PreferencesUtil.isFollowingRedirection);
+        
+        HttpURLConnection.setFollowRedirects(PreferencesUtil.isFollowingRedirection);
     }
     
 }

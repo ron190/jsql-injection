@@ -11,9 +11,10 @@
 package com.jsql.view.swing.text;
 
 import java.awt.Dimension;
-import java.awt.Font;
 
 import javax.swing.JTextField;
+
+import com.jsql.view.swing.HelperUi;
 
 /**
  * A JTextField displaying an icon and buttons.
@@ -28,11 +29,6 @@ public class JAddressBar extends JPopupTextField implements DecoratorJComponent<
         super(c);
 
         this.getProxy().setPreferredSize(new Dimension(0, 27));
-        this.getProxy().setFont(
-            this.getProxy().getFont().deriveFont(
-                Font.PLAIN, 
-                this.getProxy().getFont().getSize() + 2
-            )
-        );
+        this.getProxy().setFont(HelperUi.FONT_SEGOE_BIG);
     }
 }

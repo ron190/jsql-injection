@@ -24,10 +24,10 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.util.ThreadUtil;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.ImageObserverAnimated;
@@ -60,7 +60,7 @@ public class NodeModelTable extends AbstractNodeModel {
         if ("information_schema".equals(this.getParent().toString())) {
             panel.showLoader();
             
-            AbstractSuspendable<?> suspendableTask = MediatorModel.model().suspendables.get(this.dataObject);
+            AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.dataObject);
             if (suspendableTask != null && suspendableTask.isPaused()) {
                 ImageIcon animatedGifPaused = new ImageOverlap(HelperUi.PATH_PROGRESSBAR, HelperUi.PATH_PAUSE);
                 animatedGifPaused.setImageObserver(new ImageObserverAnimated(MediatorGui.treeDatabase(), currentNode));

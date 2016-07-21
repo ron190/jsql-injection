@@ -20,8 +20,7 @@ public class HSQLDBVendor extends AbstractVendor {
                         "'%04'," +
                         "DATABASE_VERSION()," +
                         "CURRENT_SCHEMA," +
-                        "USER()," +
-                        "SYSTEM_USER" +
+                        "USER()" +
                     ")" +
                 "" +
                 "," +
@@ -153,7 +152,7 @@ public class HSQLDBVendor extends AbstractVendor {
     @Override
     public String getSqlIndicesCapacityCheck(String[] indexes) {
         return
-            MediatorModel.model().indexesInUrl.replaceAll(
+            MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
                 "('SQLi'||$1||repeat('%23',1024)||'iLQS')"
             );

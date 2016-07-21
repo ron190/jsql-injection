@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.util.ConnectionUtil;
 
@@ -29,41 +29,65 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
     private static final Logger LOGGER = Logger.getLogger(SuspendableGetCharInsertion.class);
 
     @Override
-    public String run(Object... args) throws PreparationException, StoppableException {
+    public String run(Object... args) throws InjectionFailureException, StoppedByUserException {
+        
         int nbStarInParameter = 0;
+        
         if (ConnectionUtil.dataQuery.contains("*")) nbStarInParameter++;
         if (ConnectionUtil.dataRequest.contains("*")) nbStarInParameter++;
         if (ConnectionUtil.dataHeader.contains("*")) nbStarInParameter++;
-        if (nbStarInParameter >= 2) {
-            throw new PreparationException("Character * must be used once in GET, POST or Header parameters");
-            
-        } else if (ConnectionUtil.dataQuery.contains("*") && ConnectionUtil.methodInjection != MethodInjection.QUERY) {
-            throw new PreparationException("Activate method GET to use character * or remove it from GET parameters");
-            
-        } else if (ConnectionUtil.dataRequest.contains("*") && ConnectionUtil.methodInjection != MethodInjection.REQUEST) {
-            throw new PreparationException("Activate method POST to use character * or remove it from POST parameters");
-            
-        } else if (ConnectionUtil.dataHeader.contains("*") && ConnectionUtil.methodInjection != MethodInjection.HEADER) {
-            throw new PreparationException("Activate method Header to use character * or remove it from Header parameters");
-            
-        } else
         
-        // Has the url a query string?
-        if (ConnectionUtil.methodInjection == MethodInjection.QUERY && (ConnectionUtil.dataQuery == null || "".equals(ConnectionUtil.dataQuery))) {
-            /**
-             * TODO Preparation Format Exception
-             */
-            throw new PreparationException("No query string");
+        // Injection Point
+        if (nbStarInParameter >= 2) {
+            throw new InjectionFailureException("Character * must be used once in GET, POST or Header parameters");
             
-        // Is the query string well formed?
-        } else if (!"".equals(ConnectionUtil.dataQuery) && ConnectionUtil.dataQuery.matches("[^\\w]*=.*")) {
-            throw new PreparationException("Incorrect query string");
+        } else if (
+            ConnectionUtil.dataQuery.contains("*") 
+            && ConnectionUtil.methodInjection != MethodInjection.QUERY
+        ) {
+            throw new InjectionFailureException("Activate method GET to use character * or remove it from GET parameters");
             
-        } else if (!"".equals(ConnectionUtil.dataRequest) && ConnectionUtil.dataRequest.indexOf("=") < 0) {
-            throw new PreparationException("Incorrect POST datas");
+        } else if (
+            ConnectionUtil.dataRequest.contains("*") 
+            && ConnectionUtil.methodInjection != MethodInjection.REQUEST
+        ) {
+            throw new InjectionFailureException("Activate method POST to use character * or remove it from POST parameters");
             
-        } else if (!"".equals(ConnectionUtil.dataHeader) && ConnectionUtil.dataHeader.indexOf(":") < 0) {
-            throw new PreparationException("Incorrect HEADER datas");
+        } else if (
+            ConnectionUtil.dataHeader.contains("*") 
+            && ConnectionUtil.methodInjection != MethodInjection.HEADER
+        ) {
+            throw new InjectionFailureException("Activate method Header to use character * or remove it from Header parameters");
+            
+        } 
+        
+        // Query String
+        else if (
+            ConnectionUtil.methodInjection == MethodInjection.QUERY 
+            && (ConnectionUtil.dataQuery == null || "".equals(ConnectionUtil.dataQuery))
+        ) {
+            throw new InjectionFailureException("No query string");
+            
+        } else if (
+            !"".equals(ConnectionUtil.dataQuery) 
+            && ConnectionUtil.dataQuery.matches("[^\\w]*=.*")
+        ) {
+            throw new InjectionFailureException("Incorrect query string");
+            
+        } 
+        
+        // Request/Header data
+        else if (
+            !"".equals(ConnectionUtil.dataRequest) 
+            && ConnectionUtil.dataRequest.indexOf("=") < 0
+        ) {
+            throw new InjectionFailureException("Incorrect POST datas");
+            
+        } else if (
+            !"".equals(ConnectionUtil.dataHeader) 
+            && ConnectionUtil.dataHeader.indexOf(":") < 0
+        ) {
+            throw new InjectionFailureException("Incorrect HEADER datas");
             
         // Parse query information: url=>everything before the sign '=',
         // start of query string=>everything after '='
@@ -77,7 +101,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                     ConnectionUtil.dataQuery = regexSearch.group(1);
                     return regexSearch.group(2);
                 } catch (IllegalStateException e) {
-                    throw new PreparationException("Incorrect GET format");
+                    throw new InjectionFailureException("Incorrect GET format");
                 }
             }
             
@@ -92,7 +116,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                     ConnectionUtil.dataRequest = regexSearch.group(1);
                     return regexSearch.group(2);
                 } catch (IllegalStateException e) {
-                    throw new PreparationException("Incorrect POST format");
+                    throw new InjectionFailureException("Incorrect POST format");
                 }
             }
         // Parse header information
@@ -106,7 +130,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                     ConnectionUtil.dataHeader = regexSearch.group(1);
                     return regexSearch.group(2);
                 } catch (IllegalStateException e) {
-                    throw new PreparationException("Incorrect Header format");
+                    throw new InjectionFailureException("Incorrect Header format");
                 }
             }
         }
@@ -130,10 +154,11 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
 
         int total = 7;
         while (0 < total) {
-            // The user need to stop the job
+
             if (this.isSuspended()) {
-                throw new StoppableException();
+                throw new StoppedByUserException();
             }
+            
             try {
                 CallableHTMLPage currentCallable = taskCompletionService.take().get();
                 total--;
@@ -150,8 +175,9 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                     return currentCallable.getInsertionCharacter();
                 }
             } catch (InterruptedException | ExecutionException e) {
-                LOGGER.error(e, e);
+                LOGGER.error("Interruption while determining character injection", e);
             }
+            
         }
 
         // Nothing seems to work, forces 1 has the character

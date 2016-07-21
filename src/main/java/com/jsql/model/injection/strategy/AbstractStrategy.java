@@ -1,7 +1,7 @@
 package com.jsql.model.injection.strategy;
 
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.suspendable.AbstractSuspendable;
 
 /**
@@ -24,10 +24,10 @@ public abstract class AbstractStrategy {
     /**
      * Test if this strategy can be used to inject SQL.
      * @return
-     * @throws PreparationException
-     * @throws StoppableException
+     * @throws InjectionFailureException
+     * @throws StoppedByUserException
      */
-    public abstract void checkApplicability() throws PreparationException, StoppableException;
+    public abstract void checkApplicability() throws InjectionFailureException, StoppedByUserException;
     
     /**
      * Inform the view that this strategy can be used.
@@ -43,7 +43,7 @@ public abstract class AbstractStrategy {
      * Start the strategy work.
      * @return Source code
      */
-    public abstract String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppableException;
+    public abstract String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserException;
     
     /**
      * Change the strategy of the model to current strategy.

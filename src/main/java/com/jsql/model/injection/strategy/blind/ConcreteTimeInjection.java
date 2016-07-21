@@ -11,7 +11,7 @@ import java.util.concurrent.Future;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.StoppedByUserException;
 
 /**
  * A time attack class using thread asynchronisation.
@@ -42,7 +42,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
     public ConcreteTimeInjection() {
 
         // Check if the user wants to stop the preparation
-        if (MediatorModel.model().processIsStopped) {
+        if (MediatorModel.model().isStoppedByUser()) {
             return;
         }
 
@@ -51,17 +51,18 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
          *  it will use inject() from the model
          */
         ExecutorService executorFalseMark = Executors.newCachedThreadPool();
-        Collection<CallableTime> listCallableFalse = new ArrayList<>();
+        Collection<CallableTime> listCallableFalseTags = new ArrayList<>();
         for (String urlTest: falseTest) {
-            listCallableFalse.add(new CallableTime(urlTest));
+            listCallableFalseTags.add(new CallableTime(urlTest));
         }
         
         // Begin the url requests
-        List<Future<CallableTime>> listFalseMark = null;
+        List<Future<CallableTime>> listFalseTags = null;
         try {
-            listFalseMark = executorFalseMark.invokeAll(listCallableFalse);
+            listFalseTags = executorFalseMark.invokeAll(listCallableFalseTags);
         } catch (InterruptedException e) {
-            LOGGER.error(e, e);
+            LOGGER.error("Interruption while checking Time False tags", e);
+            Thread.currentThread().interrupt();
         }
         executorFalseMark.shutdown();
 
@@ -71,8 +72,8 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
          * Allow the user to stop the loop
          */
         try {
-            for (Future<CallableTime> falseMark: listFalseMark) {
-                if (MediatorModel.model().processIsStopped) {
+            for (Future<CallableTime> falseMark: listFalseTags) {
+                if (MediatorModel.model().isStoppedByUser()) {
                     return;
                 }
                 if (falseMark.get().isTrue()) {
@@ -81,7 +82,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
                 }
             }
         } catch (InterruptedException | ExecutionException e) {
-            LOGGER.error(e, e);
+            LOGGER.error("Interruption while checking Time injection", e);
         }
 
         /*
@@ -89,18 +90,18 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
          *  it will use inject() from the model
          */
         ExecutorService executorTrueMark = Executors.newCachedThreadPool();
-        Collection<CallableTime> listCallableTrue = new ArrayList<>();
+        Collection<CallableTime> listCallableTrueTags = new ArrayList<>();
         for (String urlTest: trueTest) {
-            listCallableTrue.add(new CallableTime(urlTest));
+            listCallableTrueTags.add(new CallableTime(urlTest));
         }
         
         // Begin the url requests
-        List<Future<CallableTime>> listTrueMark;
+        List<Future<CallableTime>> listTrueTags = null;
         try {
-            listTrueMark = executorTrueMark.invokeAll(listCallableTrue);
+            listTrueTags = executorTrueMark.invokeAll(listCallableTrueTags);
         } catch (InterruptedException e) {
-            LOGGER.error(e, e);
-            return;
+            LOGGER.error("Interruption while checking Time True tags", e);
+            Thread.currentThread().interrupt();
         }
         executorTrueMark.shutdown();
 
@@ -110,8 +111,8 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
          * Allow the user to stop the loop
          */
         try {
-            for (Future<CallableTime> falseMark: listTrueMark) {
-                if (MediatorModel.model().processIsStopped) {
+            for (Future<CallableTime> falseMark: listTrueTags) {
+                if (MediatorModel.model().isStoppedByUser()) {
                     return;
                 }
                 if (!falseMark.get().isTrue()) {
@@ -120,7 +121,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
                 }
             }
         } catch (InterruptedException | ExecutionException e) {
-            LOGGER.error(e, e);
+            LOGGER.error("Interruption while checking Time injection", e);
         }
     }
     
@@ -135,12 +136,9 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
     }
 
     @Override
-    public boolean isInjectable() throws PreparationException {
-        if (MediatorModel.model().processIsStopped) {
-            /**
-             * TODO Stoppable Exception
-             */
-            throw new PreparationException();
+    public boolean isInjectable() throws StoppedByUserException {
+        if (MediatorModel.model().isStoppedByUser()) {
+            throw new StoppedByUserException();
         }
 
         if (MediatorModel.model().vendor.getValue().getSqlBlindFirstTest() == null) {

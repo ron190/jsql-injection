@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.StoppedByUserException;
 
 /**
  * Runnable class, search the correct number of fields in the SQL query.
@@ -25,7 +25,7 @@ public class SuspendableGetIndexesInUrl extends AbstractSuspendable<String> {
     private static final Logger LOGGER = Logger.getLogger(SuspendableGetIndexesInUrl.class);
 
     @Override
-    public String run(Object... args) throws PreparationException, StoppableException {
+    public String run(Object... args) throws InjectionFailureException, StoppedByUserException {
         // Parallelize the search
         ExecutorService taskExecutor = Executors.newCachedThreadPool();
         CompletionService<CallableHTMLPage> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
@@ -40,46 +40,43 @@ public class SuspendableGetIndexesInUrl extends AbstractSuspendable<String> {
         for (nbIndex = 1; nbIndex <= 10; nbIndex++) {
             taskCompletionService.submit(
                 new CallableHTMLPage(
-                    MediatorModel.model().charInsertion + 
+                    MediatorModel.model().getCharInsertion() + 
                     MediatorModel.model().vendor.getValue().getSqlIndices(nbIndex)
                 )
             );
         }
 
         try {
-            // Starting up with 10 requests, loop until 100
+            // Start from 10 to 100 requests
             while (!isRequestFound && nbIndex <= 100) {
-                // Breaks the loop if the user needs
-                /**
-                 * TODO pauseOnUserDemand()
-                 * stop()
-                 */
+
                 if (this.isSuspended()) {
-                    throw new StoppableException();
+                    throw new StoppedByUserException();
                 }
 
                 CallableHTMLPage currentCallable = taskCompletionService.take().get();
 
                 // Found a correct mark 1337[index]7331 in the source
                 if (Pattern.compile("(?s).*1337\\d+7331.*").matcher(currentCallable.getContent()).matches()) {
-                    MediatorModel.model().srcSuccess = currentCallable.getContent();
+                    MediatorModel.model().setSrcSuccess(currentCallable.getContent());
                     initialQuery = currentCallable.getUrl().replaceAll("0%2b1", "1");
                     isRequestFound = true;
-                // Else add a new index
                 } else {
+                    // Else add a new index
                     taskCompletionService.submit(
                         new CallableHTMLPage(
-                            MediatorModel.model().charInsertion + 
+                            MediatorModel.model().getCharInsertion() + 
                             MediatorModel.model().vendor.getValue().getSqlIndices(nbIndex)
                         )
                     );
                     nbIndex++;
                 }
+                
             }
             taskExecutor.shutdown();
             taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException e) {
-            LOGGER.error(e, e);
+            LOGGER.error("Interruption while determining injection indexes", e);
         }
 
         if (isRequestFound) {

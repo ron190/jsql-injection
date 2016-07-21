@@ -162,10 +162,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             mnRestoreDefault.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                    dndList.listModel.clear();
-                    for (String path: dndList.defaultList) {
-                        dndList.listModel.addElement(new ListItem(path));
-                    }
+                    dndList.restore();
                 }
             });
 

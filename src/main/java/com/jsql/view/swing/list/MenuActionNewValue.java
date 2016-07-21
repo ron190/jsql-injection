@@ -41,7 +41,6 @@ public class MenuActionNewValue implements ActionListener {
      * @param myList List to add new items. 
      */
     public MenuActionNewValue(DnDList myList) {
-        super();
         this.myList = myList;
     }
     

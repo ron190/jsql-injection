@@ -154,18 +154,16 @@ public final class ActionHandler {
         inputMap.put(KeyStroke.getKeyStroke("ctrl shift TAB"), "actionString-previousTab");
         actionMap.put("actionString-previousTab", previousTab);
         
-        // TODO : replace directly by "for (int j = 0; j < GUIMediator.left().getTabCount(); j++)"
-        int[] i = new int[MediatorGui.tabManagers().getTabCount()];
-        for (int j = 0; j < MediatorGui.tabManagers().getTabCount(); j++) {
-            i[j] = j + 1;
-        }
-        for (final int j: i) {
-            inputMap.put(KeyStroke.getKeyStroke("ctrl " + j), "actionString-selectTab" + j);
-            inputMap.put(KeyStroke.getKeyStroke("ctrl NUMPAD" + j), "actionString-selectTab" + j);
-            actionMap.put("actionString-selectTab" + j, new AbstractAction(){
+        int i = MediatorGui.tabManagers().getTabCount();
+        for (int k = 1; k <= i; k++) {
+            inputMap.put(KeyStroke.getKeyStroke("ctrl "+ k), "actionString-selectTab"+ k);
+            inputMap.put(KeyStroke.getKeyStroke("ctrl NUMPAD"+ k), "actionString-selectTab"+ k);
+            
+            final int l = k;
+            actionMap.put("actionString-selectTab"+ k, new AbstractAction(){
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    MediatorGui.tabManagers().setSelectedIndex(j - 1);
+                    MediatorGui.tabManagers().setSelectedIndex(l-1);
                 }
             });
         }

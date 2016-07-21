@@ -47,8 +47,6 @@ public class ActionSaveTab extends AbstractAction {
     final ReplaceFileChooser filechooser = new ReplaceFileChooser(PreferencesUtil.pathFile);
 
     public ActionSaveTab() {
-        super();
-        
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         this.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_S));
         this.putValue(Action.NAME, "Save Tab As...");
@@ -110,8 +108,8 @@ public class ActionSaveTab extends AbstractAction {
                 
                 excel.close();
                 
-            } catch (IOException err) {
-                LOGGER.warn(err.getMessage(), err);
+            } catch (IOException e) {
+                LOGGER.warn("Error writing to "+ file.getName(), e);
             }
         }
     }
@@ -130,12 +128,10 @@ public class ActionSaveTab extends AbstractAction {
             
             PreferencesUtil.setPath(filechooser.getCurrentDirectory().toString());
             
-            try {
-                BufferedWriter fileOut = new BufferedWriter(new FileWriter(file));
+            try (BufferedWriter fileOut = new BufferedWriter(new FileWriter(file))) {
                 textArea.write(fileOut);
-                fileOut.close();
-            } catch (IOException err) {
-                LOGGER.warn(err.getMessage(), err);
+            } catch (IOException e) {
+                LOGGER.warn("Error writing to "+ file.getName(), e);
             }
         }
     }

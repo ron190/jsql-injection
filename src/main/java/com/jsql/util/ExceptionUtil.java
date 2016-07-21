@@ -28,8 +28,7 @@ public class ExceptionUtil {
             
             //  Report #214: ignore if OutOfMemoryError: Java heap space
             if (
-                PreferencesUtil.isReportingBugs && 
-                !"OutOfMemoryError".equals(throwable.getClass().getSimpleName())
+                PreferencesUtil.isReportingBugs && !(throwable instanceof OutOfMemoryError)
             ) {
                 GitUtil.sendUnhandledException(threadName, throwable);
             }

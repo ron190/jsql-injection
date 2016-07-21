@@ -6,8 +6,6 @@ import java.util.zip.Adler32;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
-import javax.swing.JOptionPane;
-
 import org.apache.log4j.Logger;
 
 import com.jsql.util.StringUtil;
@@ -76,31 +74,41 @@ public class HashBruter extends Bruter {
 
     public void tryBruteForce() {
         starttime = System.nanoTime();
+        
         for (int size = minLength; size <= maxLength; size++) {
             if (found || done) {
                 break;
             } else {
+                
                 while (paused) {
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
-                        LOGGER.error(e, e);
+                        LOGGER.error("Interruption while sleeping for brute force", e);
+                        Thread.currentThread().interrupt();
                     }
                 }
-                generateAllPossibleCombinations("", size);
+                
+                try {
+                    generateAllPossibleCombinations("", size);
+                } catch (NoSuchAlgorithmException e) {
+                    LOGGER.error("Coding algorithm not found", e);
+                } catch (InterruptedException e) {
+                    LOGGER.error("Interruption while generating brute force combinations", e);
+                    Thread.currentThread().interrupt();
+                }
+                
             }
         }
+        
         done = true;
     }
 
-    private void generateAllPossibleCombinations(String baseString, int length) {
+    private void generateAllPossibleCombinations(String baseString, int length) throws NoSuchAlgorithmException, InterruptedException {
         while (paused) {
-            try {
-                Thread.sleep(500);
-            } catch (InterruptedException e) {
-                LOGGER.error(e, e);
-            }
+            Thread.sleep(500);
         }
+        
         if (!found || !done) {
             if (baseString.length() == length) {
                 if("adler32".equalsIgnoreCase(type)) {
@@ -135,41 +143,31 @@ public class HashBruter extends Bruter {
         }
     }
 
-    private String generateMySQL(char[] passwordChar) {
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance("sha-1");
-        } catch (NoSuchAlgorithmException e1) {
-            JOptionPane.showMessageDialog(null, "No such algorithm for hashes exists", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        String passwordString = new String(passwordChar);
-        byte[] passwordByte = passwordString.getBytes();
-        md.update(passwordByte, 0, passwordByte.length);
-        byte[] encodedPassword = md.digest();
-        String encodedPasswordInString = digestToHexString(encodedPassword);
+    private String generateMySQL(char[] passwordChar) throws NoSuchAlgorithmException {
+        MessageDigest digestPass1 = MessageDigest.getInstance("sha-1");
         
-        MessageDigest md2 = null;
-        try {
-            md2 = MessageDigest.getInstance("sha-1");
-        } catch (NoSuchAlgorithmException e1) {
-            JOptionPane.showMessageDialog(null, "No such algorithm for hashes exists", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        String passwordString2 = new String(StringUtil.hexstr(encodedPasswordInString).toCharArray());
-        byte[] passwordByte2 = passwordString2.getBytes();
-        md2.update(passwordByte2, 0, passwordByte2.length);
-        byte[] encodedPassword2 = md2.digest();
-        String encodedPasswordInString2 = digestToHexString(encodedPassword2);
+        String passwordStringPass1 = new String(passwordChar);
+        byte[] passwordBytePass1 = passwordStringPass1.getBytes();
         
-        return encodedPasswordInString2;
+        digestPass1.update(passwordBytePass1, 0, passwordBytePass1.length);
+        byte[] passwordPass1 = digestPass1.digest();
+        String passwordHexPass1 = digestToHexString(passwordPass1);
+        
+        MessageDigest digestPass2 = MessageDigest.getInstance("sha-1");
+        
+        String passwordStringPass2 = new String(StringUtil.hexstr(passwordHexPass1).toCharArray());
+        byte[] passwordBytePass2 = passwordStringPass2.getBytes();
+        
+        digestPass2.update(passwordBytePass2, 0, passwordBytePass2.length);
+        byte[] passwordPass2 = digestPass2.digest();
+        String passwordHexPass2 = digestToHexString(passwordPass2);
+        
+        return passwordHexPass2;
     }
 
-    private String generateHash(char[] passwordChar) {
-        MessageDigest md = null;
-        try {
-            md = MessageDigest.getInstance(type);
-        } catch (NoSuchAlgorithmException e1) {
-            JOptionPane.showMessageDialog(null, "No such algorithm for hashes exists", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+    private String generateHash(char[] passwordChar) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance(type);
+        
         String passwordString = new String(passwordChar);
         byte[] passwordByte = passwordString.getBytes();
         md.update(passwordByte, 0, passwordByte.length);

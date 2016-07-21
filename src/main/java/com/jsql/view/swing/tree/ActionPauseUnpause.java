@@ -15,8 +15,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.util.ThreadUtil;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**
@@ -33,7 +33,7 @@ public class ActionPauseUnpause implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        AbstractSuspendable<?> suspendableTask = MediatorModel.model().suspendables.get(this.nodeData.dataObject);
+        AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.nodeData.dataObject);
         
         // Exception encountered : NullPointerException
         if (suspendableTask != null) {

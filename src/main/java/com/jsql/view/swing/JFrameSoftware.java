@@ -34,10 +34,10 @@ import javax.swing.tree.DefaultTreeModel;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.vendor.Vendor;
+import com.jsql.util.ThreadUtil;
 import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.dropshadow.ShadowPopupFactory;
@@ -178,8 +178,10 @@ public class JFrameSoftware extends JFrame implements Observer {
 
             InteractionCommand interactionCommand = (InteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
             interactionCommand.execute();
+        } catch (ClassNotFoundException e) {
+            // Ignore unused interaction message
         } catch (
-            ClassNotFoundException | InstantiationException | 
+            InstantiationException | 
             IllegalAccessException | NoSuchMethodException | 
             SecurityException | IllegalArgumentException | 
             InvocationTargetException e
@@ -200,16 +202,12 @@ public class JFrameSoftware extends JFrame implements Observer {
         }
         MediatorGui.tabManagers().databaseManager.panelStrategy.setEnabled(false);
         
-        for (AbstractElementDatabase supsendableTask : MediatorModel.model().suspendables.keySet()) {
-            MediatorModel.model().suspendables.get(supsendableTask).stop();
-        }
+        ThreadUtil.reset();
         
-        // Empty tree objects
-        MediatorModel.model().suspendables.clear();
         this.mapNodes.clear();
         this.mapShells.clear();
         
-        MediatorGui.panelConsoles().listHttpHeader.clear();
+        MediatorGui.panelConsoles().reset();
         
         // Tree model for refreshing the tree
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();

@@ -10,19 +10,35 @@
  ******************************************************************************/
 package com.jsql.view.swing.tree.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.Icon;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingWorker;
 import javax.swing.tree.TreePath;
 
+import org.apache.log4j.Logger;
+
+import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.Database;
+import com.jsql.model.bean.database.Table;
+import com.jsql.model.bean.util.Request;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.SlidingException;
+import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.view.swing.HelperUi;
 
 /**
  * Database model displaying the database icon on the label.
  */
 public class NodeModelDatabase extends AbstractNodeModel {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(NodeModelDatabase.class);
+    
     /**
      * Node as a database model.
      * @param database Element database coming from model
@@ -44,13 +60,35 @@ public class NodeModelDatabase extends AbstractNodeModel {
     public void runAction() {
         final Database selectedDatabase = (Database) this.dataObject;
         if (!this.isSearched && !this.isRunning) {
+            
             new SwingWorker<Object, Object>(){
                 @Override
                 protected Object doInBackground() throws Exception {
-                    DataAccess.listTables(selectedDatabase);
-                    return null;
+                    return DataAccess.listTables(selectedDatabase);
+                }
+                
+                @Override
+                @SuppressWarnings("unchecked")
+                protected void done() {
+                    List<Table> tables = new ArrayList<>();
+                    try {
+                        tables = (List<Table>) get();
+                    } catch (Exception e) {
+                        LOGGER.warn(e, e);
+                    } finally {
+                        Request requestAddTables = new Request();
+                        requestAddTables.setMessage("AddTables");
+                        requestAddTables.setParameters(tables);
+                        MediatorModel.model().sendToViews(requestAddTables);
+                  
+                        Request requestEndProgress = new Request();
+                        requestEndProgress.setMessage("EndProgress");
+                        requestEndProgress.setParameters(selectedDatabase);
+                        MediatorModel.model().sendToViews(requestEndProgress);
+                    }
                 }
             }.execute();
+            
             this.isRunning = true;
         }
     }

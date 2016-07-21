@@ -3,8 +3,8 @@ package com.jsql.model.accessible;
 import java.util.concurrent.Callable;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 
 /**
@@ -31,23 +31,23 @@ public class CallableFile implements Callable<CallableFile> {
 
     @Override
     public CallableFile call() throws Exception {
-        if (!RessourceAccess.isSearchFileStopped) {
+//        if (!RessourceAccess.isSearchFileStopped) {
             String[] sourcePage = {""};
 
-            String hexResult = "";
+            String resultToParse = "";
             try {
-                hexResult = new SuspendableGetRows().run(
+                resultToParse = new SuspendableGetRows().run(
                     MediatorModel.model().vendor.getValue().getSqlReadFile(pathFile),
                     sourcePage,
                     false,
                     1,
                     null
                 );
-            } catch (PreparationException | StoppableException e) {
-                // User cancels the search, probably
+            } catch (InjectionFailureException e) {
+                // File does not exist probably
             }
-            sourceFile = hexResult;
-        }
+            sourceFile = resultToParse;
+//        }
         return this;
     }
     

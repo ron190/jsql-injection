@@ -123,6 +123,11 @@ public class AuthenticationUtil {
             System.setProperty("spnego.krb5.conf", "");
             System.setProperty("spnego.login.conf", "");
             
+            System.setProperty("jcifs.smb.client.responseTimeout", ConnectionUtil.timeOut.toString());
+            System.setProperty("jcifs.smb.client.soTimeout", ConnectionUtil.timeOut.toString());
+            jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", ConnectionUtil.timeOut.toString());
+            jcifs.Config.setProperty("jcifs.smb.client.soTimeout", ConnectionUtil.timeOut.toString());
+            
             jcifs.Config.registerSmbURLHandler();
         }
         
@@ -188,6 +193,11 @@ public class AuthenticationUtil {
             System.setProperty("java.security.auth.login.config", "");
             System.setProperty("spnego.krb5.conf", "");
             System.setProperty("spnego.login.conf", "");
+            
+            System.setProperty("jcifs.smb.client.responseTimeout", ConnectionUtil.timeOut.toString());
+            System.setProperty("jcifs.smb.client.soTimeout", ConnectionUtil.timeOut.toString());
+            jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", ConnectionUtil.timeOut.toString());
+            jcifs.Config.setProperty("jcifs.smb.client.soTimeout", ConnectionUtil.timeOut.toString());
             
             jcifs.Config.registerSmbURLHandler();
         }

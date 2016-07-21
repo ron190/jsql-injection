@@ -10,12 +10,17 @@
  ******************************************************************************/
 package com.jsql.view.scan.interaction;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.view.swing.MediatorGui;
 
 /**
  * End the refreshing of administration page search button.
  */
 public class EndScanList implements InteractionCommand {
+    
+    private static final Logger LOGGER = Logger.getLogger(EndScanList.class);
+    
     /**
      * @param interactionParams
      */
@@ -28,5 +33,7 @@ public class EndScanList implements InteractionCommand {
         MediatorGui.tabManagers().scanListManager.restoreButtonText();
         MediatorGui.tabManagers().scanListManager.setButtonEnable(true);
         MediatorGui.tabManagers().scanListManager.hideLoader();
+        
+        LOGGER.trace("Scan finished");
     }
 }

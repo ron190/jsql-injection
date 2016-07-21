@@ -213,14 +213,14 @@ public class DialogAbout extends JDialog {
 
         text[0].addHyperlinkListener(new HyperlinkListener() {
             @Override
-            public void hyperlinkUpdate(HyperlinkEvent hle) {
-                if (HyperlinkEvent.EventType.ACTIVATED.equals(hle.getEventType())) {
+            public void hyperlinkUpdate(HyperlinkEvent linkEvent) {
+                if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {
                     try {
-                        Desktop.getDesktop().browse(hle.getURL().toURI());
+                        Desktop.getDesktop().browse(linkEvent.getURL().toURI());
                     } catch (IOException e) {
-                        LOGGER.warn(e.getMessage(), e);
+                        LOGGER.warn("Browsing to Url failed", e);
                     } catch (URISyntaxException e) {
-                        LOGGER.error(e, e);
+                        LOGGER.error("Incorrect Url", e);
                     }
                 }
             }

@@ -15,8 +15,7 @@ public class TeradataVendor extends AbstractVendor {
         return
             "select'-'||'%04'||" +
             "database||'%04'||" +
-            "user||'%04'||" +
-            "CURRENT_USER||" +
+            "user||" +
             "'%01%03%03%07'" +
             "";
     }
@@ -73,7 +72,7 @@ public class TeradataVendor extends AbstractVendor {
      @Override
      public String getSqlIndicesCapacityCheck(String[] indexes) {
          return
-             MediatorModel.model().indexesInUrl.replaceAll(
+             MediatorModel.model().getIndexesInUrl().replaceAll(
                  "1337(" + StringUtil.join(indexes, "|") + ")7331",
                  "(select+'SQLi$1'||cast(rpad('%23',1024,'%23')as+varchar(1024)))"
              );

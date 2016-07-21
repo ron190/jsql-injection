@@ -4,7 +4,7 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.exception.PreparationException;
+import com.jsql.model.exception.InjectionFailureException;
 import com.test.AbstractTestSuite;
 
 public class ConcreteMysqlTestSuite extends AbstractTestSuite {
@@ -14,7 +14,7 @@ public class ConcreteMysqlTestSuite extends AbstractTestSuite {
     private static final Logger LOGGER = Logger.getLogger(ConcreteMysqlTestSuite.class);
 
     public ConcreteMysqlTestSuite () {
-        this.jdbcURL = "jdbc:mysql://localhost:3306/perf-test";
+        this.jdbcURL = "jdbc:mysql://"+ AbstractTestSuite.hostName +":3306/perf-test";
         this.jdbcUser = "root";
         this.jdbcPassword = "";
         this.jsqlDatabaseName = "perf-test";
@@ -32,7 +32,7 @@ public class ConcreteMysqlTestSuite extends AbstractTestSuite {
         
         try {
             initializer();
-        } catch (SQLException | PreparationException e) {
+        } catch (Exception e) {
             LOGGER.warn(e);
         }
     }

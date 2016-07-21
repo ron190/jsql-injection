@@ -47,15 +47,15 @@ public class NodeModelEmpty extends AbstractNodeModel {
         JLabel text = new JLabel(currentNode.getUserObject().toString());
         emptyPanel.add(text);
         text.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        if (currentNode != null) {
-            if (selected) {
-                emptyPanel.setBackground(HelperUi.SELECTION_BACKGROUND);
-                text.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.BLU_COLOR));
-            } else {
-                emptyPanel.setBackground(Color.WHITE);
-                text.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-            }
+        
+        if (selected) {
+            emptyPanel.setBackground(HelperUi.SELECTION_BACKGROUND);
+            text.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.BLU_COLOR));
+        } else {
+            emptyPanel.setBackground(Color.WHITE);
+            text.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         }
+
         return emptyPanel;
     }
 

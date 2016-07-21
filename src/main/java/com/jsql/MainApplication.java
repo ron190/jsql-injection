@@ -56,22 +56,27 @@ public class MainApplication {
             model.addObserver(frame);
             MediatorGui.register(frame);
         } catch (HeadlessException e) {
-            LOGGER.error("HeadlessException: command line execution in jSQL not supported yet.");
+            LOGGER.error("HeadlessException: command line execution in jSQL not supported yet", e);
         }
         
         model.sendVersionToView();
+        
+        if (!ProxyUtil.proxyIsResponding()) {
+            return;
+        }
         
         if (PreferencesUtil.isCheckUpdateActivated) {
             GitUtil.checkUpdate();
         }
         
         File f = new File("com.jsql.i18n.jsql_"+ Locale.getDefault().getLanguage() +".properties");
-        if (!f.exists() && !Locale.getDefault().getLanguage().equals("en")) { 
+        if (!f.exists() && !"en".equals(Locale.getDefault().getLanguage())) { 
             String languageDisplayed = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
-            LOGGER.info(
-                "Language "+ languageDisplayed +" is currently not supported, "
-                + "please consider contributing and translating pieces of jSQL into "+ languageDisplayed +" "
-                + "using the menu Community"
+            LOGGER.debug(
+                "Language "+ languageDisplayed +" is not supported. "
+                + "Contribute and translate pieces of jSQL into "+ languageDisplayed +": "
+                + "open menu [Community] using [Advanced] arrow on the right, choose [I help translate jSQL], "
+                + "translate some text into "+ languageDisplayed +" then click on [Send], it's that simple."
             );
         }
         
@@ -83,10 +88,10 @@ public class MainApplication {
             
             JSONArray news = infosSoftware.getJSONArray("news");
             for (int i = 0 ; i < news.length() ; i++) {
-                LOGGER.info(news.get(i));
+                LOGGER.info("[Info] "+ news.get(i));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.warn("Connection to Github Webservice fail", e);
         }
         
     }

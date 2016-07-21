@@ -23,9 +23,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.util.ThreadUtil;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.ActionLoadStop;
@@ -120,7 +120,7 @@ public abstract class AbstractNodeModel {
      */
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, int x, int y) {
         JPopupMenu tablePopupMenu = new JPopupMenu();
-        AbstractSuspendable<?> suspendableTask = MediatorModel.model().suspendables.get(this.dataObject);
+        AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.dataObject);
 
         JMenuItem mnLoad = new JMenuItem(this.isRunning ? I18n.valueByKey("STOP") : I18n.valueByKey("LOAD"), 'o');
         JMenuItem mnPause = new JMenuItem(
@@ -190,7 +190,7 @@ public abstract class AbstractNodeModel {
             panel.showLoader();
             panel.hideIcon();
 
-            AbstractSuspendable<?> suspendableTask = MediatorModel.model().suspendables.get(this.dataObject);
+            AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.dataObject);
             if (suspendableTask != null && suspendableTask.isPaused()) {
                 ImageIcon animatedGIFPaused = new ImageOverlap(HelperUi.PATH_PROGRESSBAR, HelperUi.PATH_PAUSE);
                 animatedGIFPaused.setImageObserver(
@@ -218,7 +218,7 @@ public abstract class AbstractNodeModel {
         panel.progressBar.setVisible(true);
         
         // Report #135: ignore if thread not found
-        AbstractSuspendable<?> suspendableTask = MediatorModel.model().suspendables.get(this.dataObject);
+        AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.dataObject);
         if (suspendableTask != null && suspendableTask.isPaused()) {
             panel.progressBar.pause();
         }

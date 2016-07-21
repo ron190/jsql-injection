@@ -44,7 +44,6 @@ public class MenuActionExport implements ActionListener {
      * @param myList List to export.
      */
     public MenuActionExport(DnDList myList) {
-        super();
         this.myList = myList;
     }
 

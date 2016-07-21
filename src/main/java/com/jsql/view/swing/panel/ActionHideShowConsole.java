@@ -25,7 +25,6 @@ public class ActionHideShowConsole implements ActionListener {
      * Create the hide/show bottom panel action.
      */
     public ActionHideShowConsole(JPanel panel) {
-        super();
         this.panel = panel;
     }
 

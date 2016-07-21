@@ -11,8 +11,8 @@
 package com.jsql.view.swing.manager;
 
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.model.exception.PreparationException;
-import com.jsql.model.exception.StoppableException;
+import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.StoppedByUserException;
 
 /**
  * Manager for uploading PHP webshell to the host and send system commands.
@@ -20,7 +20,7 @@ import com.jsql.model.exception.StoppableException;
 @SuppressWarnings("serial")
 public class ManagerWebshell extends ManagerAbstractShell {
     @Override
-    void action(String pathShell, String urlShell) throws PreparationException, StoppableException {
+    void action(String pathShell, String urlShell) throws InjectionFailureException, StoppedByUserException {
         RessourceAccess.createWebShell(pathShell.toString(), urlShell);
     }
 }

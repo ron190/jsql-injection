@@ -103,7 +103,7 @@ public class PanelConsoles extends JPanel {
     /**
      * List of HTTP injection requests and responses.
      */
-    public List<HttpHeader> listHttpHeader = new ArrayList<>();
+    private List<HttpHeader> listHttpHeader = new ArrayList<>();
 
     /**
      * Table in Network tab displaying HTTP requests.
@@ -474,5 +474,13 @@ public class PanelConsoles extends JPanel {
             labelJava
         );
         I18n.addComponentForKey("JAVA_TAB_LABEL", labelJava);
+    }
+    
+    public void addHeader(HttpHeader header) {
+        this.listHttpHeader.add(header);
+    }
+    
+    public void reset() {
+        this.listHttpHeader.clear();
     }
 }

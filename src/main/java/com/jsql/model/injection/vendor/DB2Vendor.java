@@ -13,7 +13,7 @@ public class DB2Vendor extends AbstractVendor {
     @Override
     public String getSqlInfos() {
         return
-            "select+versionnumber||'%04'||current+server||'%04'||user||'%04'||session_user||'%01%03%03%07'from+sysibm.sysversions";
+            "select+versionnumber||'%04'||current+server||'%04'||user||'%01%03%03%07'from+sysibm.sysversions";
     }
 
     @Override
@@ -117,7 +117,7 @@ public class DB2Vendor extends AbstractVendor {
     @Override
     public String getSqlIndicesCapacityCheck(String[] indexes) {
         return
-            MediatorModel.model().indexesInUrl.replaceAll(
+            MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
                 /**
                  * repeat gets internal table size error on blind 'where 1=1'

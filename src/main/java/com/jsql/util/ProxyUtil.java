@@ -6,7 +6,6 @@ import java.util.prefs.Preferences;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.exception.PreparationException;
 
 public class ProxyUtil {
     /**
@@ -82,28 +81,34 @@ public class ProxyUtil {
         }
     }
     
-    public static void testProxy() throws PreparationException {
-        // Test if proxy is available then apply settings
+    public static boolean proxyIsResponding() {
+        return ProxyUtil.proxyIsResponding(true);
+    }
+    
+    public static boolean proxyIsResponding(boolean isErrorDisplayed) {
+        boolean proxyIsResponding = true;
+        
         if (
             ProxyUtil.isUsingProxy && 
             !"".equals(ProxyUtil.proxyAddress) && 
             !"".equals(ProxyUtil.proxyPort)
         ) {
             try {
-                LOGGER.info("Testing proxy...");
                 new Socket(ProxyUtil.proxyAddress, Integer.parseInt(ProxyUtil.proxyPort)).close();
             } catch (Exception e) {
-                /**
-                 * TODO Preparation Proxy Exception
-                 */
-                throw new PreparationException(
-                    "Proxy connection failed: "
-                    + ProxyUtil.proxyAddress + ":" + ProxyUtil.proxyPort + ". "
-                    + "Please check your proxy informations or disable proxy setting."
-                );
+                proxyIsResponding = false;
+                
+                if (isErrorDisplayed) {
+                    LOGGER.warn(
+                        "Proxy connection failed: " 
+                        + ProxyUtil.proxyAddress + ":" + ProxyUtil.proxyPort
+                        + ". Please check your proxy settings"
+                    );
+                }
             }
-            LOGGER.debug("Proxy is responding.");
         }
+        
+        return proxyIsResponding;
     }
     
 }

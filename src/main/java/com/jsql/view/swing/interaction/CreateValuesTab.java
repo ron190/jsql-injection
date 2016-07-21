@@ -44,8 +44,6 @@ public class CreateValuesTab extends CreateTab implements InteractionCommand {
      * @param interactionParams Names of columns, table's values and corresponding table
      */
     public CreateValuesTab(Object[] interactionParams) {
-        super(); 
-        
         // Array of column names, diplayed in header table
         columnNames = (String[]) interactionParams[0];
         // 2D array of values
