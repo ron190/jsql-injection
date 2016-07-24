@@ -9,7 +9,7 @@ import java.util.zip.Checksum;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.StringUtil;
-import com.jsql.view.swing.manager.MD4;
+import com.jsql.view.swing.manager.util.MD4;
 
 public class HashBruter extends Bruter {
     /**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -31,14 +31,6 @@ public class ButtonAddressBar extends JButton {
      * State of current injection.
      */
     private State state = State.STARTABLE;
-
-    /**
-     * Return the current state of current process.
-     * @return State of process
-     */
-    public State getState() {
-        return this.state;
-    }
     
     /**
      * Create a button in address bar.
@@ -55,6 +47,14 @@ public class ButtonAddressBar extends JButton {
         this.setIcon(HelperUi.ARROWDEFAULT);
         this.setRolloverIcon(HelperUi.ARROWROLLOVER);
         this.setPressedIcon(HelperUi.ARROWPRESSED);
+    }
+
+    /**
+     * Return the current state of current process.
+     * @return State of process
+     */
+    public State getState() {
+        return this.state;
     }
 
     /**

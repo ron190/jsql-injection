@@ -10,40 +10,44 @@ public class PreferencesUtil {
     /**
      * File path saved in preference.
      */
-    public static String pathFile;
-    
+    private static String pathFile;
+
     /**
      * True if connection is proxified.
      */
-    public static boolean isCheckUpdateActivated = true;
-    
+    private static boolean isCheckUpdateActivated = true;
+
     /**
      * True if evasion techniques should be used.
      */
-    public static boolean evasionIsEnabled = false;
+    private static boolean evasionIsEnabled = false;
 
     /**
      * True to follow HTTP 302 redirection.
      */
-    public static boolean isFollowingRedirection = false;
-    
+    private static boolean isFollowingRedirection = false;
+
     /**
      * True if connection is proxified.
      */
-    public static boolean isReportingBugs = true;
+    private static boolean isReportingBugs = true;
+
+    private PreferencesUtil() {
+        // Utility class
+    }
     
     public static void loadSavedPreferences() {
         // Use Preferences API to persist proxy configuration
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
         
-        PreferencesUtil.isCheckUpdateActivated = prefs.getBoolean("isCheckingUpdate", true);
-        PreferencesUtil.isReportingBugs = prefs.getBoolean("isReportingBugs", true);
-        PreferencesUtil.evasionIsEnabled = prefs.getBoolean("isEvading", false);
-        PreferencesUtil.isFollowingRedirection = prefs.getBoolean("isFollowingRedirection", false);
+        PreferencesUtil.setCheckUpdateActivated(prefs.getBoolean("isCheckingUpdate", true));
+        PreferencesUtil.setReportingBugs(prefs.getBoolean("isReportingBugs", true));
+        PreferencesUtil.setEvasionIsEnabled(prefs.getBoolean("isEvading", false));
+        PreferencesUtil.setFollowingRedirection(prefs.getBoolean("isFollowingRedirection", false));
         
         PreferencesUtil.pathFile = prefs.get("pathFile", System.getProperty("user.dir"));
         
-        HttpURLConnection.setFollowRedirects(PreferencesUtil.isFollowingRedirection);
+        HttpURLConnection.setFollowRedirects(PreferencesUtil.isFollowingRedirection());
     }
     
     public static void setPath(String path) {
@@ -53,19 +57,54 @@ public class PreferencesUtil {
     }
     
     public static void set(boolean isCheckingUpdate, boolean isReportingBugs, boolean isEvading, boolean isFollowingRedirection) {
-        PreferencesUtil.isCheckUpdateActivated = isCheckingUpdate;
-        PreferencesUtil.isReportingBugs = isReportingBugs;
-        PreferencesUtil.evasionIsEnabled = isEvading;
-        PreferencesUtil.isFollowingRedirection = isFollowingRedirection;
+        PreferencesUtil.setCheckUpdateActivated(isCheckingUpdate);
+        PreferencesUtil.setReportingBugs(isReportingBugs);
+        PreferencesUtil.setEvasionIsEnabled(isEvading);
+        PreferencesUtil.setFollowingRedirection(isFollowingRedirection);
 
         Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
 
-        preferences.putBoolean("isCheckingUpdate", PreferencesUtil.isCheckUpdateActivated);
-        preferences.putBoolean("isReportingBugs", PreferencesUtil.isReportingBugs);
-        preferences.putBoolean("isEvading", PreferencesUtil.evasionIsEnabled);
-        preferences.putBoolean("isFollowingRedirection", PreferencesUtil.isFollowingRedirection);
+        preferences.putBoolean("isCheckingUpdate", PreferencesUtil.isCheckUpdateActivated());
+        preferences.putBoolean("isReportingBugs", PreferencesUtil.isReportingBugs());
+        preferences.putBoolean("isEvading", PreferencesUtil.isEvasionIsEnabled());
+        preferences.putBoolean("isFollowingRedirection", PreferencesUtil.isFollowingRedirection());
         
-        HttpURLConnection.setFollowRedirects(PreferencesUtil.isFollowingRedirection);
+        HttpURLConnection.setFollowRedirects(PreferencesUtil.isFollowingRedirection());
+    }
+
+    public static String getPathFile() {
+        return pathFile;
     }
     
+    public static boolean isCheckUpdateActivated() {
+        return isCheckUpdateActivated;
+    }
+
+    public static void setCheckUpdateActivated(boolean isCheckUpdateActivated) {
+        PreferencesUtil.isCheckUpdateActivated = isCheckUpdateActivated;
+    }
+
+    public static boolean isEvasionIsEnabled() {
+        return evasionIsEnabled;
+    }
+
+    public static void setEvasionIsEnabled(boolean evasionIsEnabled) {
+        PreferencesUtil.evasionIsEnabled = evasionIsEnabled;
+    }
+    
+    public static boolean isFollowingRedirection() {
+        return isFollowingRedirection;
+    }
+
+    public static void setFollowingRedirection(boolean isFollowingRedirection) {
+        PreferencesUtil.isFollowingRedirection = isFollowingRedirection;
+    }
+    
+    public static boolean isReportingBugs() {
+        return isReportingBugs;
+    }
+
+    public static void setReportingBugs(boolean isReportingBugs) {
+        PreferencesUtil.isReportingBugs = isReportingBugs;
+    }    
 }

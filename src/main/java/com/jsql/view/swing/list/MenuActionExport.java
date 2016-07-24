@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -51,7 +51,7 @@ public class MenuActionExport implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
         try {
             @SuppressWarnings("serial")
-            final JFileChooser importFileDialog = new JFileChooser(PreferencesUtil.pathFile) {
+            final JFileChooser importFileDialog = new JFileChooser(PreferencesUtil.getPathFile()) {
                 @Override
                 public void approveSelection() {
                     File file = this.getSelectedFile();
@@ -88,7 +88,7 @@ public class MenuActionExport implements ActionListener {
 
             PrintStream out = new PrintStream(new FileOutputStream(importFileDialog.getSelectedFile()));
             int len = myList.getModel().getSize();
-            for (int i = 0; i < len; i++) {
+            for (int i = 0 ; i < len ; i++) {
                 out.println(myList.getModel().getElementAt(i).toString());
             }
             out.close();

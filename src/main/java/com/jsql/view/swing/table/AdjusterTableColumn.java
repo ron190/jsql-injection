@@ -86,7 +86,7 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
     public void adjustColumns() {
         TableColumnModel tcm = table.getColumnModel();
 
-        for (int i = 0; i < tcm.getColumnCount(); i++) {
+        for (int i = 0 ; i < tcm.getColumnCount() ; i++) {
             adjustColumn(i);
         }
     }
@@ -140,7 +140,7 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
         int preferredWidth = 0;
         int maxWidth = table.getColumnModel().getColumn(column).getMaxWidth();
 
-        for (int row = 0; row < table.getRowCount(); row++) {
+        for (int row = 0 ; row < table.getRowCount() ; row++) {
             preferredWidth = Math.max(preferredWidth, getCellDataWidth(row, column));
 
             //  We've exceeded the maximum width, no need to check other rows
@@ -160,9 +160,7 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
 
         TableCellRenderer cellRenderer = table.getCellRenderer(row, column);
         Component c = table.prepareRenderer(cellRenderer, row, column);
-        int width = c.getPreferredSize().width + table.getIntercellSpacing().width;
-
-        return width;
+        return c.getPreferredSize().width + table.getIntercellSpacing().width;
     }
 
     /**
@@ -194,7 +192,7 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
     public void restoreColumns() {
         TableColumnModel tcm = table.getColumnModel();
 
-        for (int i = 0; i < tcm.getColumnCount(); i++) {
+        for (int i = 0 ; i < tcm.getColumnCount() ; i++) {
             restoreColumn(i);
         }
     }
@@ -356,7 +354,7 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
             if (isSelectedColumn) {
                 int[] columns = table.getSelectedColumns();
 
-                for (int i = 0; i < columns.length; i++) {
+                for (int i = 0 ; i < columns.length ; i++) {
                     if (isAdjust) {
                         adjustColumn(columns[i]);
                     } else {

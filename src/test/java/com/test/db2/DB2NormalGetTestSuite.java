@@ -21,9 +21,9 @@ public class DB2NormalGetTestSuite extends ConcreteDB2TestSuite {
         
         MediatorModel.model().addObserver(new SystemOutTerminal());
 
-        ConnectionUtil.urlBase = "http://"+ AbstractTestSuite.hostName +"/db2_simulate_get.php";
-        ConnectionUtil.dataQuery = "?lib=0";
-        ConnectionUtil.methodInjection = MethodInjection.QUERY;
+        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/db2_simulate_get.php");
+        ConnectionUtil.setDataQuery("?lib=0");
+        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
 
         MediatorModel.model().injection();
 

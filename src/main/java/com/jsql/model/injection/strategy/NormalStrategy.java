@@ -3,9 +3,7 @@ package com.jsql.model.injection.strategy;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -13,11 +11,11 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.bean.util.TypeRequest;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.model.suspendable.SuspendableGetIndexesInUrl;
-import com.jsql.util.ConnectionUtil;
 import com.jsql.util.StringUtil;
 
 /**
@@ -29,15 +27,15 @@ public class NormalStrategy extends AbstractStrategy {
      */
     private static final Logger LOGGER = Logger.getLogger(NormalStrategy.class);
 
-    public String performanceLength = "0";
+    private String performanceLength = "0";
     
     /**
      * i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML source.
      */
-    public String visibleIndex;
+    private String visibleIndex;
 
     @Override
-    public void checkApplicability() throws InjectionFailureException, StoppedByUserException {
+    public void checkApplicability() throws JSqlException {
         LOGGER.trace("Normal test...");
         MediatorModel.model().setIndexesInUrl(new SuspendableGetIndexesInUrl().run());
 
@@ -60,26 +58,17 @@ public class NormalStrategy extends AbstractStrategy {
 
     @Override
     public void allow() {
-        Request request = new Request();
-        request.setMessage("MarkNormalVulnerable");
-        
-        Map<String, Object> msgHeader = new HashMap<>();
-        msgHeader.put("Url", ConnectionUtil.urlByUser);
-
-        request.setParameters(msgHeader);
-        MediatorModel.model().sendToViews(request);
+        markVulnerable(TypeRequest.MARK_NORMAL_VULNERABLE);
     }
 
     @Override
     public void unallow() {
-        Request request = new Request();
-        request.setMessage("MarkNormalInvulnerable");
-        MediatorModel.model().sendToViews(request);
+        markVulnerable(TypeRequest.MARK_NORMAL_INVULNERABLE);
     }
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserException {
-        return MediatorModel.model().injectWithIndexes(MediatorModel.model().vendor.getValue().getSqlNormal(sqlQuery, startPosition));
+        return MediatorModel.model().injectWithIndexes(MediatorModel.model().vendor.instance().getSqlNormal(sqlQuery, startPosition));
     }
 
     @Override
@@ -88,7 +77,7 @@ public class NormalStrategy extends AbstractStrategy {
         MediatorModel.model().setStrategy(Strategy.NORMAL);
         
         Request request = new Request();
-        request.setMessage("MarkNormalStrategy");
+        request.setMessage(TypeRequest.MARK_NORMAL_STRATEGY);
         MediatorModel.model().sendToViews(request);
     }
     
@@ -129,7 +118,7 @@ public class NormalStrategy extends AbstractStrategy {
         // Replace correct indexes from 1337[index]7331 to
         // ==> SQLi[index]######...######iLQS
         // Search for index that displays the most #
-        String performanceQuery = MediatorModel.model().vendor.getValue().getSqlIndicesCapacityCheck(indexes);
+        String performanceQuery = MediatorModel.model().vendor.instance().getSqlIndicesCapacityCheck(indexes);
         String performanceSourcePage = MediatorModel.model().injectWithoutIndex(performanceQuery);
 
         // Build a 2D array of string with:
@@ -177,5 +166,13 @@ public class NormalStrategy extends AbstractStrategy {
         MediatorModel.model().setIndexesInUrl(indexesInUrl);
         
         return Integer.toString(lengthFields[lengthFields.length - 1][1]);
+    }
+    
+    public String getVisibleIndex() {
+        return visibleIndex;
+    }
+
+    public void setVisibleIndex(String visibleIndex) {
+        this.visibleIndex = visibleIndex;
     }
 }

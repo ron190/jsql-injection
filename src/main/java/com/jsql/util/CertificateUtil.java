@@ -1,5 +1,7 @@
 package com.jsql.util;
 
+import java.security.cert.X509Certificate;
+
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -7,7 +9,14 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import org.apache.log4j.Logger;
+
 public class CertificateUtil {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(CertificateUtil.class);
+    
     /**
      * Utility class.
      */
@@ -21,20 +30,20 @@ public class CertificateUtil {
         TrustManager[] trustAllCerts = new TrustManager[]{
             new X509TrustManager() {
                 @Override
-                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-                    return new java.security.cert.X509Certificate[0];
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
                 }
                 @Override
                 public void checkClientTrusted(
-                    java.security.cert.X509Certificate[] certs, String authType
+                    X509Certificate[] certs, String authType
                 ) {
-                    // nothing
+                    // Ignore
                 }
                 @Override
                 public void checkServerTrusted(
-                    java.security.cert.X509Certificate[] certs, String authType
+                    X509Certificate[] certs, String authType
                 ) {
-                    // nothing
+                    // Ignore
                 }
             }
         };
@@ -45,7 +54,7 @@ public class CertificateUtil {
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
         } catch (Exception e) {
-            // nothing
+            LOGGER.warn("Error ignoring untrusted SSL: "+ e, e);
         }
         
         // Ignore CertificateException: No subject alternative names present

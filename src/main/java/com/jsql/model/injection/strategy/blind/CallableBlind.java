@@ -24,7 +24,7 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
      * @param inj
      */
     public CallableBlind(String inj) {
-        this.blindUrl = MediatorModel.model().vendor.getValue().getSqlBlindCheck(inj);
+        this.blindUrl = MediatorModel.model().vendor.instance().sqlTestBlind(inj);
     }
     
     /**
@@ -34,7 +34,7 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
      * @param bit
      */
     public CallableBlind(String inj, int indexCharacter, int bit) {
-        this.blindUrl = MediatorModel.model().vendor.getValue().getSqlBlindBitCheck(inj, indexCharacter, bit);
+        this.blindUrl = MediatorModel.model().vendor.instance().sqlBitTestBlind(inj, indexCharacter, bit);
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
     }
@@ -46,7 +46,7 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
      * @param isTestingLength
      */
     public CallableBlind(String inj, int indexCharacter, boolean isTestingLength) {
-        this.blindUrl = MediatorModel.model().vendor.getValue().getSqlBlindLengthCheck(inj, indexCharacter);
+        this.blindUrl = MediatorModel.model().vendor.instance().sqlLengthTestBlind(inj, indexCharacter);
         this.isTestingLength = isTestingLength;
     }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -45,7 +45,7 @@ public class ActionLoadStop implements ActionListener {
         final List<Column> columnsToSearch = new ArrayList<>();
 
         int tableChildCount = treeModel.getChildCount(tableNode);
-        for (int i = 0; i < tableChildCount; i++) {
+        for (int i = 0 ; i < tableChildCount ; i++) {
             DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
             if (currentChild.getUserObject() instanceof AbstractNodeModel) {
                 AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
@@ -70,12 +70,15 @@ public class ActionLoadStop implements ActionListener {
         } else {
             AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.nodeData.dataObject);
             
-            suspendableTask.stop();
-            suspendableTask.unpause();
+            if (suspendableTask != null) {
+                suspendableTask.stop();
+                suspendableTask.unpause();
+                suspendableTask.resume();
+            }
+            
             this.nodeData.indexProgress = 0;
             this.nodeData.isProgressing = false;
             this.nodeData.isLoading = false;
-            suspendableTask.resume();
             
             ThreadUtil.remove(this.nodeData.dataObject);
         }

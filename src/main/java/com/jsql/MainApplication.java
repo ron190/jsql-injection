@@ -2,20 +2,16 @@ package com.jsql;
 
 import java.awt.HeadlessException;
 import java.io.File;
-import java.io.IOException;
 import java.util.Locale;
 
 import org.apache.log4j.Appender;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.CertificateUtil;
-import com.jsql.util.ConnectionUtil;
 import com.jsql.util.ExceptionUtil;
 import com.jsql.util.GitUtil;
 import com.jsql.util.PreferencesUtil;
@@ -65,7 +61,7 @@ public class MainApplication {
             return;
         }
         
-        if (PreferencesUtil.isCheckUpdateActivated) {
+        if (PreferencesUtil.isCheckUpdateActivated()) {
             GitUtil.checkUpdate();
         }
         
@@ -80,19 +76,6 @@ public class MainApplication {
             );
         }
         
-        try {
-            String jsonInfosWebService = ConnectionUtil.getSource(
-                "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/jsql-injection.json"
-            );
-            JSONObject infosSoftware = new JSONObject(jsonInfosWebService);
-            
-            JSONArray news = infosSoftware.getJSONArray("news");
-            for (int i = 0 ; i < news.length() ; i++) {
-                LOGGER.info("[Info] "+ news.get(i));
-            }
-        } catch (IOException e) {
-            LOGGER.warn("Connection to Github Webservice fail", e);
-        }
-        
+        GitUtil.showNews();
     }
 }

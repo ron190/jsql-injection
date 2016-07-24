@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserException;
 
 /**
@@ -25,7 +25,7 @@ public class SuspendableGetIndexesInUrl extends AbstractSuspendable<String> {
     private static final Logger LOGGER = Logger.getLogger(SuspendableGetIndexesInUrl.class);
 
     @Override
-    public String run(Object... args) throws InjectionFailureException, StoppedByUserException {
+    public String run(Object... args) throws JSqlException {
         // Parallelize the search
         ExecutorService taskExecutor = Executors.newCachedThreadPool();
         CompletionService<CallableHTMLPage> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
@@ -37,11 +37,11 @@ public class SuspendableGetIndexesInUrl extends AbstractSuspendable<String> {
         // SQL: each field is built has the following 1337[index]7330+1
         // Search if the source contains 1337[index]7331, this notation allows to exclude
         // pages that display our own url in the source
-        for (nbIndex = 1; nbIndex <= 10; nbIndex++) {
+        for (nbIndex = 1 ; nbIndex <= 10 ; nbIndex++) {
             taskCompletionService.submit(
                 new CallableHTMLPage(
                     MediatorModel.model().getCharInsertion() + 
-                    MediatorModel.model().vendor.getValue().getSqlIndices(nbIndex)
+                    MediatorModel.model().vendor.instance().getSqlIndices(nbIndex)
                 )
             );
         }
@@ -66,7 +66,7 @@ public class SuspendableGetIndexesInUrl extends AbstractSuspendable<String> {
                     taskCompletionService.submit(
                         new CallableHTMLPage(
                             MediatorModel.model().getCharInsertion() + 
-                            MediatorModel.model().vendor.getValue().getSqlIndices(nbIndex)
+                            MediatorModel.model().vendor.instance().getSqlIndices(nbIndex)
                         )
                     );
                     nbIndex++;

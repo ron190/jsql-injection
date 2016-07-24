@@ -3,7 +3,6 @@ package com.test;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +23,6 @@ import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.StoppedByUserException;
 
 public abstract class AbstractTestSuite {
     /**
@@ -38,7 +36,7 @@ public abstract class AbstractTestSuite {
         PropertyConfigurator.configure("src/test/java/log4j.tests.properties");
     }
 
-    public static final String hostName = "127.0.0.1";
+    public static final String HOSTNAME = "127.0.0.1";
     
     private List<String> databaseToFind = new ArrayList<>();
     private List<String> tableToFind = new ArrayList<>();

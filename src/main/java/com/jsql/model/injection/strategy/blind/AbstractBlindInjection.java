@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -25,13 +26,13 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
      * Every FALSE SQL statements will be checked,
      * more statements means a more robust application
      */
-    protected String[] falseTest = MediatorModel.model().vendor.getValue().getListFalseTest();
+    protected String[] falseTest = MediatorModel.model().vendor.instance().getListFalseTest();
 
     /**
      * Every TRUE SQL statements will be checked,
      * more statements means a more robust application
      */
-    protected String[] trueTest = MediatorModel.model().vendor.getValue().getListTrueTest();
+    protected String[] trueTest = MediatorModel.model().vendor.instance().getListTrueTest();
 
     /**
      * Constant linked to a URL, true if that url
@@ -74,10 +75,8 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
          * in other word until all HTTP requests are done
          */
         while (submittedTasks > 0) {
+            
             if (suspendable.isSuspended()) {
-                /**
-                 * TODO log stopping/free memory...
-                 */
                 taskExecutor.shutdown();
 
                 // Await for termination
@@ -95,6 +94,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
 
                 throw new StoppedByUserException();
             }
+            
             try {
                 // The URL call is done, bring back the finished task
                 T currentCallable = taskCompletionService.take().get();
@@ -140,7 +140,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
                         String str = Character.toString((char) charCode);
 
                         Request interaction = new Request();
-                        interaction.setMessage("MessageBinary");
+                        interaction.setMessage(TypeRequest.MESSAGE_BINARY);
                         interaction.setParameters("\t" + new String(e) + "=" + str);
                         MediatorModel.model().sendToViews(interaction);
                     } catch (NumberFormatException err) {
@@ -151,6 +151,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
             } catch (InterruptedException | ExecutionException e) {
                 LOGGER.error(e, e);
             }
+            
         }
 
         // End the job

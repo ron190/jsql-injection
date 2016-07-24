@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -22,6 +22,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
 
@@ -42,6 +43,7 @@ import javax.swing.MenuSelectionManager;
 import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
@@ -52,13 +54,12 @@ import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.action.ActionNewWindow;
 import com.jsql.view.swing.action.ActionSaveTab;
 import com.jsql.view.swing.dialog.DialogAbout;
-import com.jsql.view.swing.dialog.DialogPreference;
+import com.jsql.view.swing.dialog.DialogPreferences;
 import com.jsql.view.swing.dialog.DialogTranslate;
 import com.jsql.view.swing.dialog.Language;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.text.JPopupTextArea;
-import com.sun.istack.internal.logging.Logger;
 
 /**
  * Application main menubar.
@@ -408,11 +409,11 @@ public class Menubar extends JMenuBar {
         mapMenuItem.put(bruteforce, 6);
         mapMenuItem.put(coder, 7);
         mapMenuItem.put(scanList, 8);
-        for (final JMenuItem menuItem: mapMenuItem.keySet()) {
-            menuItem.addActionListener(new ActionListener() {
+        for (final Entry<JMenuItem, Integer> entry: mapMenuItem.entrySet()) {
+            entry.getKey().addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent arg0) {
-                    MediatorGui.tabManagers().setSelectedIndex(mapMenuItem.get(menuItem));
+                    MediatorGui.tabManagers().setSelectedIndex(entry.getValue());
                 }
             });
         }
@@ -422,19 +423,19 @@ public class Menubar extends JMenuBar {
         I18n.addComponentForKey("MENU_PREFERENCES", preferences);
         
         // Render the Preferences dialog behind scene
-        final DialogPreference prefDiag = new DialogPreference();
+        final DialogPreferences dialoguePreferences = new DialogPreferences();
         preferences.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 // Center the dialog
-                if (!prefDiag.isVisible()) {
-                    prefDiag.setSize(prefDiag.width, prefDiag.height);
-                    prefDiag.setLocationRelativeTo(MediatorGui.frame());
+                if (!dialoguePreferences.isVisible()) {
+                    dialoguePreferences.setSize(dialoguePreferences.getWidthDialog(), dialoguePreferences.getHeightDialog());
+                    dialoguePreferences.setLocationRelativeTo(MediatorGui.frame());
                     // needed here for button focus
-                    prefDiag.setVisible(true);
-                    prefDiag.requestButtonFocus();
+                    dialoguePreferences.setVisible(true);
+                    dialoguePreferences.requestButtonFocus();
                 }
-                prefDiag.setVisible(true);
+                dialoguePreferences.setVisible(true);
             }
         });
         menuWindows.add(preferences);
@@ -544,7 +545,7 @@ public class Menubar extends JMenuBar {
                     NoSuchMethodException | SecurityException | IllegalAccessException | 
                     IllegalArgumentException | InvocationTargetException e
                 ) {
-                    LOGGER.warning("Reflection for "+ key +" failed while switching locale", e);
+                    LOGGER.warn("Reflection for "+ key +" failed while switching locale", e);
                 }
             }
         }

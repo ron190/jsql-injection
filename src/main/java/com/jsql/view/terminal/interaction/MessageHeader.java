@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -14,6 +14,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.bean.util.TypeHeader;
 import com.jsql.view.swing.interaction.InteractionCommand;
 
 /**
@@ -37,10 +38,10 @@ public class MessageHeader implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
         Map<String, Object> params = (Map<String, Object>) interactionParams[0];
-        url = (String) params.get("Url");
-        post = (String) params.get("Post");
-        header = (String) params.get("Header");
-        response = (Map<String, String>) params.get("Response");
+        url = (String) params.get(TypeHeader.URL);
+        post = (String) params.get(TypeHeader.POST);
+        header = (String) params.get(TypeHeader.HEADER);
+        response = (Map<String, String>) params.get(TypeHeader.RESPONSE);
     }
 
     @Override

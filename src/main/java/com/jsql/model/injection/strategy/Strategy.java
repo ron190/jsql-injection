@@ -7,20 +7,20 @@ public enum Strategy {
     ERRORBASED("ErrorBased", new ErrorbasedStrategy()),
     NORMAL("Normal", new NormalStrategy());
 
-    private final AbstractStrategy strategy;
-    private final String strategyName;
+    private final AbstractStrategy instanceStrategy;
+    private final String nameStrategy;
     
-    Strategy(String strategyName, AbstractStrategy vendor) {
-        this.strategyName = strategyName;
-        this.strategy = vendor;
+    Strategy(String nameStrategy, AbstractStrategy instanceStrategy) {
+        this.nameStrategy = nameStrategy;
+        this.instanceStrategy = instanceStrategy;
     }
     
     public AbstractStrategy instance() {
-        return strategy;
+        return instanceStrategy;
     }
     
     @Override
     public String toString() {
-        return this.strategyName +" ";
+        return this.nameStrategy +" ";
     }
 }

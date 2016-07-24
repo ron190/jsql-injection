@@ -3,8 +3,7 @@ package com.jsql.model.suspendable;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.JSqlException;
 
 /**
  * A thread used to inject database ; stoppable and pausable.
@@ -85,5 +84,5 @@ public abstract class AbstractSuspendable<T> {
     /**
      * The pausable/stoppable action.
      */
-    public abstract T run(Object... args) throws InjectionFailureException, StoppedByUserException;
+    public abstract T run(Object... args) throws JSqlException;
 }

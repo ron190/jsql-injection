@@ -11,6 +11,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.jsql.i18n.I18n;
@@ -22,6 +23,22 @@ public class GitUtil {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getLogger(GitUtil.class);
+    
+    private static class CharEncoder {
+        String prefix;
+        String suffix;
+        int radix;
+        public CharEncoder(String prefix, String suffix, int radix) {
+            this.prefix = prefix;
+            this.suffix = suffix;
+            this.radix = radix;
+        }
+        void encode(char c, StringBuilder buff) {
+            buff.append(prefix).append(Integer.toString(c, radix)).append(suffix);
+        }
+    }
+    
+    private static final CharEncoder DECIMAL_HTML_ENCODER = new CharEncoder("&#",";",10); 
     
     public enum ShowOnConsole {
         YES,
@@ -45,7 +62,7 @@ public class GitUtil {
                 LOGGER.warn(I18n.valueByKey("UPDATE_NEW_VERSION_AVAILABLE"));
             }
         } catch (NumberFormatException | IOException e) {
-            LOGGER.warn(I18n.valueByKey("UPDATE_EXCEPTION"));
+            LOGGER.warn(I18n.valueByKey("UPDATE_EXCEPTION"), e);
         }
     }
     
@@ -76,10 +93,10 @@ public class GitUtil {
         GitUtil.sendReport(reportBody, ShowOnConsole.YES, "Report");
     }
     
-    static private String encode(String str, CharEncoder encoder)
+    private static String encode(String str, CharEncoder encoder)
     {
         StringBuilder buff = new StringBuilder();
-        for ( int i = 0; i < str.length(); i++)
+        for ( int i = 0 ; i < str.length() ; i++)
             if (str.charAt(i) > 128) {
                 encoder.encode(str.charAt(i), buff);
             } else {
@@ -87,29 +104,13 @@ public class GitUtil {
             }
         return ""+buff;
     }
-    private static class CharEncoder
-    {
-        String prefix, suffix;
-        int radix;
-        public CharEncoder(String prefix, String suffix, int radix)        {
-            this.prefix = prefix;
-            this.suffix = suffix;
-            this.radix = radix;
-        }
-        void encode(char c, StringBuilder buff)     {
-            buff.append(prefix).append(Integer.toString(c, radix)).append(suffix);
-        }
-    }
-    static final CharEncoder hexUrlEncoder = new CharEncoder("%","",16);
-    static final CharEncoder hexHtmlEncoder = new CharEncoder("&#x",";",16);
-    static final CharEncoder decimalHtmlEncoder = new CharEncoder("&#",";",10); 
     
-    static public String decimalHtmlEncode(String str)  {
-        return encode(str, decimalHtmlEncoder);
+    private static String decimalHtmlEncode(String str) {
+        return encode(str, DECIMAL_HTML_ENCODER);
     }
     
     public static void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
-        if (!ProxyUtil.proxyIsResponding(showOnConsole == ShowOnConsole.YES)) {
+        if (!ProxyUtil.proxyIsResponding(showOnConsole)) {
             return;
         }
 
@@ -128,8 +129,8 @@ public class GitUtil {
                 "Authorization", 
                 "token " + StringUtils.newStringUtf8(Base64.decodeBase64("NGQ1YzdkYWE1NDQwYzdkNTk1YTZlODQzYzFlODlkZmMzNzQ1NDhlNg=="))
             );
-            connection.setReadTimeout(ConnectionUtil.timeOut);
-            connection.setConnectTimeout(ConnectionUtil.timeOut);
+            connection.setReadTimeout(ConnectionUtil.TIMEOUT);
+            connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
             connection.setDoOutput(true);
 
             DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
@@ -156,13 +157,29 @@ public class GitUtil {
                 }
             } catch (IOException e) {
                 if (showOnConsole == ShowOnConsole.YES) {
-                    LOGGER.warn("Read error: " + e.getMessage(), e);
+                    LOGGER.warn("Read error: "+ e, e);
                 }
             }
         } catch (IOException e) {
             if (showOnConsole == ShowOnConsole.YES) {
-                LOGGER.warn("Error during Git report connection: " + e.getMessage(), e);
+                LOGGER.warn("Error during Git report connection: "+ e, e);
             }
+        }
+    }
+    
+    public static void showNews() {
+        try {
+            String jsonInfosWebService = ConnectionUtil.getSource(
+                "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/jsql-injection.json"
+            );
+            JSONObject infosSoftware = new JSONObject(jsonInfosWebService);
+            
+            JSONArray news = infosSoftware.getJSONArray("news");
+            for (int i = 0 ; i < news.length() ; i++) {
+                LOGGER.info("[Info] "+ news.get(i));
+            }
+        } catch (IOException e) {
+            LOGGER.warn("Connection to Github Webservice fail", e);
         }
     }
 }

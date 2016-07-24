@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -165,8 +165,8 @@ public class DialogAbout extends JDialog {
         lastLine.add(Box.createGlue());
         lastLine.add(this.buttonClose);
 
-        JLabel iconJSQL = new JLabel(new ImageIcon(DialogAbout.class.getResource("/com/jsql/view/swing/resources/images/icons/app-32x32.png")));
-        iconJSQL.setBorder(BorderFactory.createEmptyBorder(2, 15, 2, 15));
+        JLabel iconJSQL = new JLabel(new ImageIcon(HelperUi.ICON96));
+//        iconJSQL.setBorder(BorderFactory.createEmptyBorder(2, 15, 2, 15));
         dialogPane.add(iconJSQL, BorderLayout.WEST);
         dialogPane.add(lastLine, BorderLayout.SOUTH);
 
@@ -176,13 +176,17 @@ public class DialogAbout extends JDialog {
             text[0] = new JEditorPane();
             text[0].setContentType("text/html");
 
-            InputStream in = DialogAbout.class.getResourceAsStream("about.htm");
-            String line, result = "";
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            while ((line = reader.readLine()) != null) {
-                result += line;
+            String result = "";
+            
+            try (
+                InputStream in = DialogAbout.class.getResourceAsStream("about.htm");
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in))
+            ) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    result += line;
+                }
             }
-            reader.close();
 
             text[0].setText(result.replace("%JSQLVERSION%", InjectionModel.VERSION_JSQL));
         } catch (IOException e) {

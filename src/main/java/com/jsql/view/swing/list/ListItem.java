@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -17,16 +17,16 @@ public class ListItem {
     /**
      * Text displayed on item.
      */
-    public String internalString;
+    private String internalString;
 
     private String originalString;
     
     /**
      * 
      */
-    public Boolean isVulnerable = false;
+    private Boolean isVulnerable = false;
     
-    public Boolean isDatabaseConfirmed = false;
+    private Boolean isDatabaseConfirmed = false;
     
     /**
      * Create a JList item.
@@ -37,14 +37,38 @@ public class ListItem {
         this.originalString = newString;
     }
 
-    @Override
-    public String toString() {
-        return this.internalString;
+    public String getInternalString() {
+        return internalString;
+    }
+
+    public void setInternalString(String internalString) {
+        this.internalString = internalString;
+    }
+
+    public Boolean getIsVulnerable() {
+        return isVulnerable;
+    }
+
+    public void setIsVulnerable(Boolean isVulnerable) {
+        this.isVulnerable = isVulnerable;
+    }
+
+    public Boolean getIsDatabaseConfirmed() {
+        return isDatabaseConfirmed;
+    }
+
+    public void setIsDatabaseConfirmed(Boolean isDatabaseConfirmed) {
+        this.isDatabaseConfirmed = isDatabaseConfirmed;
     }
     
     public void reset() {
         this.internalString = this.originalString;
         this.isVulnerable = false;
         this.isDatabaseConfirmed = false;
+    }
+
+    @Override
+    public String toString() {
+        return this.internalString;
     }
 }

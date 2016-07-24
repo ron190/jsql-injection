@@ -25,8 +25,8 @@ import com.jsql.view.swing.HelperUi;
 @SuppressWarnings("serial")
 public class LightScrollPane extends JComponent {
     
-    public  int SCROLL_BAR_ALPHA_ROLLOVER = 100;
-    public  int SCROLL_BAR_ALPHA = 25;
+    public int SCROLL_BAR_ALPHA_ROLLOVER = 100;
+    public int SCROLL_BAR_ALPHA = 25;
     private static final int THUMB_BORDER_SIZE = 0;
     private static final int THUMB_SIZE = 11;
     public  Color THUMB_COLOR = Color.DARK_GRAY;
@@ -163,7 +163,7 @@ public class LightScrollPane extends JComponent {
 
         @Override
         protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
-            // nothing
+            // Nothing
         }
 
         @Override

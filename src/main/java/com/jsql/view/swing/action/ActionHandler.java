@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -155,7 +155,7 @@ public final class ActionHandler {
         actionMap.put("actionString-previousTab", previousTab);
         
         int i = MediatorGui.tabManagers().getTabCount();
-        for (int k = 1; k <= i; k++) {
+        for (int k = 1 ; k <= i ; k++) {
             inputMap.put(KeyStroke.getKeyStroke("ctrl "+ k), "actionString-selectTab"+ k);
             inputMap.put(KeyStroke.getKeyStroke("ctrl NUMPAD"+ k), "actionString-selectTab"+ k);
             
@@ -184,6 +184,7 @@ public final class ActionHandler {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(
             "permanentFocusOwner", 
             new PropertyChangeListener() {
+                @Override
                 public void propertyChange(final PropertyChangeEvent e) {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override

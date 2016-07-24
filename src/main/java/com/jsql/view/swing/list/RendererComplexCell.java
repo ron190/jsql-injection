@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -54,9 +54,9 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
             renderer.setBackground(Color.WHITE);
         }
         
-        if (value.isVulnerable) {
+        if (value.getIsVulnerable()) {
             renderer.setForeground(new Color(0, 128, 0));
-        } else if (value.isDatabaseConfirmed) {
+        } else if (value.getIsDatabaseConfirmed()) {
             renderer.setForeground(new Color(0, 0, 255));
         }
 

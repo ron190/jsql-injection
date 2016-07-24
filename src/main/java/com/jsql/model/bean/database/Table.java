@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -67,7 +67,7 @@ public class Table extends AbstractElementDatabase {
      */
     @Override
     public String getLabel() {
-        String nbRow = "";
+        String nbRow;
         if ("information_schema".equals(parentDatabase.toString())) {
             nbRow = "?";
         } else {

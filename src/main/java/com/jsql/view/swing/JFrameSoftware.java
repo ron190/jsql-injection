@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -134,7 +134,7 @@ public class JFrameSoftware extends JFrame implements Observer {
                 prefs.putBoolean(HelperUi.NETWORK_VISIBLE, false);
                 prefs.putBoolean(HelperUi.JAVA_VISIBLE, false);
                 
-                for (int i = 0; i < MediatorGui.tabConsoles().getTabCount(); i++) {
+                for (int i = 0 ; i < MediatorGui.tabConsoles().getTabCount() ; i++) {
                     if ("Binary".equals(MediatorGui.tabConsoles().getTitleAt(i))) {
                         prefs.putBoolean(HelperUi.BINARY_VISIBLE, true);
                     } else if ("Chunk".equals(MediatorGui.tabConsoles().getTitleAt(i))) {
@@ -172,7 +172,7 @@ public class JFrameSoftware extends JFrame implements Observer {
         Request interaction = (Request) newInteraction;
 
         try {
-            Class<?> cl = Class.forName("com.jsql.view.swing.interaction." + interaction.getMessage());
+            Class<?> cl = Class.forName("com.jsql.view.swing.interaction."+ interaction.getMessage());
             Class<?>[] types = new Class[]{Object[].class};
             Constructor<?> ct = cl.getConstructor(types);
 
@@ -239,7 +239,7 @@ public class JFrameSoftware extends JFrame implements Observer {
         MediatorGui.panelConsoles().networkTabSource.setText("");
         MediatorGui.panelConsoles().networkTabPreview.setText("");
         
-        for (int i = 0; i < MediatorGui.tabConsoles().getTabCount(); i++) {
+        for (int i = 0 ; i < MediatorGui.tabConsoles().getTabCount() ; i++) {
             Component tabComponent = MediatorGui.tabConsoles().getTabComponentAt(i);
             if (tabComponent != null) {
                 tabComponent.setFont(tabComponent.getFont().deriveFont(Font.PLAIN));

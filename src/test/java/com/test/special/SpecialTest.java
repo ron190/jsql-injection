@@ -2,48 +2,47 @@ package com.test.special;
 
 import org.junit.Test;
 
-import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.JSqlException;
 
 public class SpecialTest {
 
     @Test
-    public void specialCharacterDatabase() throws InjectionFailureException, StoppedByUserException {
+    public void specialCharacterDatabase() throws JSqlException {
         // nothing
     }
 
     @Test
-    public void specialCharacterTable() throws InjectionFailureException, StoppedByUserException {
+    public void specialCharacterTable() throws JSqlException {
         // nothing
     }
 
     @Test
-    public void specialCharacterColumn() throws InjectionFailureException, StoppedByUserException {
+    public void specialCharacterColumn() throws JSqlException {
         // nothing
     }
 
     @Test
-    public void specialCharacterValue() throws InjectionFailureException, StoppedByUserException {
+    public void specialCharacterValue() throws JSqlException {
         // nothing
     }
 
     @Test
-    public void longNameDatabase() throws InjectionFailureException, StoppedByUserException {
+    public void longNameDatabase() throws JSqlException {
         // nothing
     }
 
     @Test
-    public void longNameTable() throws InjectionFailureException, StoppedByUserException {
+    public void longNameTable() throws JSqlException {
         // nothing
     }
 
     @Test
-    public void longNameColumn() throws InjectionFailureException, StoppedByUserException {
+    public void longNameColumn() throws JSqlException {
         // nothing
     }
 
     @Test
-    public void longLineValue() throws InjectionFailureException, StoppedByUserException {
+    public void longLineValue() throws JSqlException {
         // nothing
     }
 }

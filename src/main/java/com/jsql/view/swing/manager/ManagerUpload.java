@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -39,8 +39,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
@@ -108,8 +107,8 @@ public class ManagerUpload extends ManagerAbstractList {
             )
         );
 
-        this.run = new JButton(I18n.valueByKey("UPLOAD_DIALOG_TEXT"), new ImageIcon(ManagerUpload.class.getResource("/com/jsql/view/swing/resources/images/icons/bullet_add.png")));
-        I18n.addComponentForKey("UPLOAD_DIALOG_TEXT", this.run);
+        this.run = new JButton(I18n.valueByKey("UPLOAD_RUN_BUTTON"), new ImageIcon(ManagerUpload.class.getResource("/com/jsql/view/swing/resources/images/icons/disk.png")));
+        I18n.addComponentForKey("UPLOAD_RUN_BUTTON", this.run);
         this.run.setToolTipText(I18n.valueByKey("UPLOAD_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
         
@@ -137,11 +136,11 @@ public class ManagerUpload extends ManagerAbstractList {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (ManagerUpload.this.listPaths.getSelectedValuesList().isEmpty()) {
-                    LOGGER.warn("Select one or more directory");
+                    LOGGER.warn("Select directory(ies) to upload a file into");
                     return;
                 }
 
-                final JFileChooser filechooser = new JFileChooser(PreferencesUtil.pathFile);
+                final JFileChooser filechooser = new JFileChooser(PreferencesUtil.getPathFile());
                 filechooser.setDialogTitle(I18n.valueByKey("UPLOAD_DIALOG_TEXT"));
                 
                 int returnVal = filechooser.showOpenDialog(MediatorGui.frame());
@@ -154,10 +153,10 @@ public class ManagerUpload extends ManagerAbstractList {
                                 try {
                                     ManagerUpload.this.loader.setVisible(true);
                                     RessourceAccess.uploadFile(path.toString(), shellURL.getText(), file);
-                                } catch (InjectionFailureException | StoppedByUserException e) {
-                                    LOGGER.warn("Can't upload file " + file.getName() +" to "+ path, e);
+                                } catch (JSqlException e) {
+                                    LOGGER.warn("Payload creation error: "+ e, e);
                                 } catch (IOException e) {
-                                    LOGGER.warn("Connection to shell Url failed at "+ shellURL.getText(), e);
+                                    LOGGER.warn("Posting file failed: "+ e, e);
                                 }
                             }
                         }, "upload").start();

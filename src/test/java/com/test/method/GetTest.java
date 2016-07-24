@@ -22,9 +22,9 @@ public class GetTest extends ConcreteMysqlTestSuite {
 
         MediatorModel.model().addObserver(new SystemOutTerminal());
 
-        ConnectionUtil.urlBase = "http://"+ AbstractTestSuite.hostName +"/simulate_get.php";
-        ConnectionUtil.dataQuery = "?lib=0";
-        ConnectionUtil.methodInjection = MethodInjection.QUERY;
+        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_get.php");
+        ConnectionUtil.setDataQuery("?lib=0");
+        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
 
         MediatorModel.model().injection();
 

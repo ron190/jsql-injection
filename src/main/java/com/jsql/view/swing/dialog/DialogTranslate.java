@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -69,19 +69,16 @@ public class DialogTranslate extends JDialog {
     /**
      * Button receiving focus.
      */
-    public JButton buttonSend = null;
+    public final JButton buttonSend = new JButton("Send");
     
-    /**
-     * Dialog scroller.
-     */
-    public LightScrollPane scrollPane;
-
     private Language language;
     
-    private JLabel labelTranslation;
+    private final JLabel labelTranslation = new JLabel();
     
-    final JTextArea[] textToTranslate;
+    private final JTextArea[] textToTranslate = new JTextArea[1];
     
+    private final JProgressBar progressBarTranslation = new JProgressBar();
+
     /**
      * Create a dialog for general information on project jsql.
      */
@@ -111,7 +108,6 @@ public class DialogTranslate extends JDialog {
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.LINE_AXIS));
         lastLine.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        this.buttonSend = new JButton("Send");
         
         this.buttonSend.setContentAreaFilled(false);
         this.buttonSend.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
@@ -158,7 +154,6 @@ public class DialogTranslate extends JDialog {
         lastLine.add(Box.createGlue());
         lastLine.add(this.buttonSend);
 
-        labelTranslation = new JLabel();
         labelTranslation.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         containerDialog.add(
             labelTranslation,
@@ -167,7 +162,6 @@ public class DialogTranslate extends JDialog {
         containerDialog.add(lastLine, BorderLayout.SOUTH);
 
         // Contact info, use HTML text
-        textToTranslate = new JTextArea[1];
         textToTranslate[0] = new JPopupTextArea(new JTextArea()).getProxy();
 
         textToTranslate[0].addMouseListener(new MouseAdapter() {
@@ -191,11 +185,11 @@ public class DialogTranslate extends JDialog {
 
         textToTranslate[0].setComponentPopupMenu(new JPopupMenuText(textToTranslate[0]));
 
-        this.scrollPane = new LightScrollPane(1, 0, 1, 0, textToTranslate[0]);
-        containerDialog.add(this.scrollPane, BorderLayout.CENTER);
+        containerDialog.add(
+            new LightScrollPane(1, 0, 1, 0, textToTranslate[0]), 
+            BorderLayout.CENTER
+        );
     }
-
-    JProgressBar progressBarTranslation = new JProgressBar();
 
     /**
      * Set back default setting for About frame.
@@ -249,16 +243,19 @@ public class DialogTranslate extends JDialog {
                 } catch (IOException eGithub) {
                     LOGGER.info("Text to translate loaded from local");
                     
-                    InputStream in = DialogAbout.class.getResourceAsStream("/com/jsql/i18n/jsql.properties");
-                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
-                        String line, result = "";
+                    try (
+                        InputStream in = DialogAbout.class.getResourceAsStream("/com/jsql/i18n/jsql.properties");
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(in))
+                    ) {
+                        String result = "";
+                        String line;
                         while ((line = reader.readLine()) != null) {
-                            result += line+"\n";
+                            result += line +"\n";
                         }
                         textToTranslate[0].setText(result);
                         textToTranslate[0].setCaretPosition(0);
                     } catch (IOException eFile) {
-                        LOGGER.warn("File error: /com/jsql/i18n/jsql.properties");
+                        LOGGER.warn(eFile, eFile);
                     }
                 }
                 

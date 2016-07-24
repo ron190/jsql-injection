@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -21,6 +21,7 @@ import javax.swing.JViewport;
 import javax.swing.table.DefaultTableModel;
 
 import com.jsql.model.bean.util.HttpHeader;
+import com.jsql.model.bean.util.TypeHeader;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
 
@@ -42,11 +43,11 @@ public class MessageHeader implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
         params = (Map<String, Object>) interactionParams[0];
-        url = (String) params.get("Url");
-        post = (String) params.get("Post");
-        header = (String) params.get("Header");
-        response = (Map<String, String>) params.get("Response");
-        source = (String) params.get("Source");
+        url = (String) params.get(TypeHeader.URL);
+        post = (String) params.get(TypeHeader.POST);
+        header = (String) params.get(TypeHeader.HEADER);
+        response = (Map<String, String>) params.get(TypeHeader.RESPONSE);
+        source = (String) params.get(TypeHeader.SOURCE);
     }
 
     @Override

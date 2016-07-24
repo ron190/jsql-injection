@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -59,22 +59,21 @@ public class ManagerScan extends ManagerAbstractList {
         this.setLayout(new BorderLayout());
         this.setDefaultText(I18n.valueByKey("SCANLIST_RUN_BUTTON"));
 
-        List<String> pathList = new ArrayList<>();
+        List<String> pathsList = new ArrayList<>();
         try {
             InputStream in = ManagerScan.class.getResourceAsStream("/com/jsql/view/swing/resources/list/scan-page.txt");
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
-                pathList.add(line);
+                pathsList.add(line);
             }
             reader.close();
         } catch (IOException e) {
             LOGGER.error(e, e);
         }
 
-        final DnDList listFile = new DnDList(pathList);
+        final DnDList listFile = new DnDList(pathsList);
         this.listPaths = listFile;
-
         this.add(new LightScrollPane(1, 1, 0, 0, listFile), BorderLayout.CENTER);
 
         JPanel lastLine = new JPanel();
@@ -88,7 +87,7 @@ public class ManagerScan extends ManagerAbstractList {
             )
         );
         
-        run = new JButton(defaultText, new ImageIcon(ManagerScan.class.getResource("/com/jsql/view/swing/resources/images/icons/find.png")));
+        run = new JButton(defaultText, new ImageIcon(ManagerScan.class.getResource("/com/jsql/view/swing/resources/images/icons/magnifier.png")));
 
         run.setToolTipText(I18n.valueByKey("SCANLIST_RUN_BUTTON_TOOLTIP"));
 
@@ -112,7 +111,7 @@ public class ManagerScan extends ManagerAbstractList {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (listFile.getSelectedValuesList().isEmpty()) {
-                    LOGGER.warn("Select one or more URL");
+                    LOGGER.warn("Select URL(s) to scan");
                     return;
                 }
                 new Thread(new Runnable() {
@@ -129,7 +128,7 @@ public class ManagerScan extends ManagerAbstractList {
                             
                             RessourceAccess.scanList(listFile.getSelectedValuesList());
                         } else {
-                            RessourceAccess.isScanStopped = true;
+                            RessourceAccess.setScanStopped(true);
                             MediatorModel.model().setIsStoppedByUser(true);
                             run.setEnabled(false);
                         }

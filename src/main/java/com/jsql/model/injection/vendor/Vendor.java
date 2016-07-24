@@ -19,20 +19,20 @@ public enum Vendor {
     SYBASE("Sybase", new SybaseVendor()),
     TERADATA("Teradata", new TeradataVendor());
 
-    private final AbstractVendor vendor;
-    private final String label;
+    private final AbstractVendorDefault instanceVendor;
+    private final String labelVendor;
     
-    Vendor(String label, AbstractVendor vendor) {
-        this.label = label;
-        this.vendor = vendor;
+    Vendor(String labelVendor, AbstractVendorDefault instanceVendor) {
+        this.labelVendor = labelVendor;
+        this.instanceVendor = instanceVendor;
     }
     
-    public AbstractVendor getValue() {
-        return vendor;
+    public AbstractVendorDefault instance() {
+        return instanceVendor;
     }
     
     @Override
     public String toString() {
-        return this.label;
+        return this.labelVendor;
     }
 }

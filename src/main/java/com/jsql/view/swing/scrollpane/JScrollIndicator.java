@@ -173,17 +173,17 @@ public class JScrollIndicator extends JLayeredPane {
 
         @Override
         public void setUI(ScrollBarUI ui) {
-            // nothing
+            // Nothing
         }
 
         @Override
         public void updateUI() {
-            // nothing
+            // Nothing
         }
 
         @Override
         public void paint(Graphics g) {
-            scrollUI.paintThumb(g, this); // just the thumb
+            scrollUI.paintThumb(g); // just the thumb
         }
 
         @Override
@@ -197,18 +197,18 @@ public class JScrollIndicator extends JLayeredPane {
     }
 
     public class MyScrollBarUI extends BasicScrollBarUI {
-        private JMyScrollBar scrollBar;
+        private JMyScrollBar myScrollBar;
         private float alpha = 0.0f;
 
         private MyScrollBarUI(JMyScrollBar scrollBar) {
-            this.scrollBar = scrollBar;
+            this.myScrollBar = scrollBar;
         }
 
         @Override
         protected void installComponents() {
             incrButton = new JButton();
             decrButton = new JButton();
-            if (scrollBar.getOrientation() == JScrollBar.HORIZONTAL) {
+            if (myScrollBar.getOrientation() == JScrollBar.HORIZONTAL) {
                 int size = THUMB_THICKNESS + THUMB_MARGIN; // let lower right corner empty
                 incrButton.setPreferredSize(new Dimension(size, size));
             } else {
@@ -224,7 +224,7 @@ public class JScrollIndicator extends JLayeredPane {
             // ensure the minimum size of the thumb
             int w = minimumThumbSize.width;
             int h = minimumThumbSize.height;
-            if (scrollBar.getOrientation() == JScrollBar.VERTICAL) {
+            if (myScrollBar.getOrientation() == JScrollBar.VERTICAL) {
                 h = Math.max(h, Math.min(maximumThumbSize.height, THUMB_MIN_SIZE));
             } else {
                 w = Math.max(w, Math.min(maximumThumbSize.width, THUMB_MIN_SIZE));
@@ -232,7 +232,7 @@ public class JScrollIndicator extends JLayeredPane {
             minimumThumbSize = new Dimension(w, h);
         }
 
-        private void paintThumb(Graphics g, JComponent c) {
+        private void paintThumb(Graphics g) {
             int alphaThumb = isThumbRollover() ? SCROLL_BAR_ALPHA_ROLLOVER : SCROLL_BAR_ALPHA;
 
             g.setColor(new Color(getAlphaColor(THUMB_COLOR).getRed(),
@@ -245,7 +245,7 @@ public class JScrollIndicator extends JLayeredPane {
             int w = thumbBounds.width;
             int h = thumbBounds.height;
 
-            if (scrollBar.getOrientation() == JScrollBar.VERTICAL) {
+            if (myScrollBar.getOrientation() == JScrollBar.VERTICAL) {
                 w -= THUMB_MARGIN;
             } else {
                 h -= THUMB_MARGIN;
@@ -265,11 +265,11 @@ public class JScrollIndicator extends JLayeredPane {
 
         public void setAlpha(float alpha) {
             this.alpha = alpha;
-            scrollBar.repaint(getThumbBounds());
+            myScrollBar.repaint(getThumbBounds());
         }
 
         public void setVisible() {
-            scrollBar.repaint(getThumbBounds());
+            myScrollBar.repaint(getThumbBounds());
         }
     }
 }

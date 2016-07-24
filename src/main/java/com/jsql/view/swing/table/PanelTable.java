@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -246,7 +246,7 @@ public class PanelTable extends JPanel {
         panelSearch.setVisible(false);
 
         Comparator<Object> comparatorNumeric = new ComparatorColumn<>();
-        for (int i = 0; i < table.getColumnCount(); i++) {
+        for (int i = 0 ; i < table.getColumnCount() ; i++) {
             rowSorter.setComparator(i, comparatorNumeric);
         }
     }

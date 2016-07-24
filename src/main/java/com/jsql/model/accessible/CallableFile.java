@@ -4,7 +4,6 @@ import java.util.concurrent.Callable;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 
 /**
@@ -31,23 +30,22 @@ public class CallableFile implements Callable<CallableFile> {
 
     @Override
     public CallableFile call() throws Exception {
-//        if (!RessourceAccess.isSearchFileStopped) {
-            String[] sourcePage = {""};
+        String[] sourcePage = {""};
 
-            String resultToParse = "";
-            try {
-                resultToParse = new SuspendableGetRows().run(
-                    MediatorModel.model().vendor.getValue().getSqlReadFile(pathFile),
-                    sourcePage,
-                    false,
-                    1,
-                    null
-                );
-            } catch (InjectionFailureException e) {
-                // File does not exist probably
-            }
-            sourceFile = resultToParse;
-//        }
+        String resultToParse = "";
+        try {
+            resultToParse = new SuspendableGetRows().run(
+                MediatorModel.model().vendor.instance().sqlFileRead(pathFile),
+                sourcePage,
+                false,
+                1,
+                null
+            );
+        } catch (InjectionFailureException e) {
+            // Commonly file does not exist, ignoring
+        }
+        sourceFile = resultToParse;
+        
         return this;
     }
     

@@ -13,6 +13,8 @@ import org.apache.log4j.WriterAppender;
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.ThrowableInformation;
 
+import com.jsql.view.swing.HelperUi;
+
 /**
  * Log4j swing appender to display console message to respective textareas.
  */
@@ -34,15 +36,15 @@ public class SwingAppender extends WriterAppender {
     private static final SimpleAttributeSet DEBUG = new SimpleAttributeSet();
     private static final SimpleAttributeSet TRACE = new SimpleAttributeSet();
     private static final SimpleAttributeSet ALL = new SimpleAttributeSet();
-
+    
     static {
-        StyleConstants.setFontFamily(FATAL, "Ubuntu Mono");
-        StyleConstants.setFontFamily(ERROR, "Ubuntu Mono");
-        StyleConstants.setFontFamily(WARN, "Ubuntu Mono");
-        StyleConstants.setFontFamily(INFO, "Ubuntu Mono");
-        StyleConstants.setFontFamily(DEBUG, "Ubuntu Mono");
-        StyleConstants.setFontFamily(TRACE, "Ubuntu Mono");
-        StyleConstants.setFontFamily(ALL, "Ubuntu Mono");
+        StyleConstants.setFontFamily(FATAL, HelperUi.FONT_NAME);
+        StyleConstants.setFontFamily(ERROR, HelperUi.FONT_NAME);
+        StyleConstants.setFontFamily(WARN, HelperUi.FONT_NAME);
+        StyleConstants.setFontFamily(INFO, HelperUi.FONT_NAME);
+        StyleConstants.setFontFamily(DEBUG, HelperUi.FONT_NAME);
+        StyleConstants.setFontFamily(TRACE, HelperUi.FONT_NAME);
+        StyleConstants.setFontFamily(ALL, HelperUi.FONT_NAME);
         
         StyleConstants.setFontSize(FATAL, 14);
         StyleConstants.setFontSize(ERROR, 14);

@@ -1,15 +1,12 @@
 package com.jsql.model.injection.strategy;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.suspendable.AbstractSuspendable;
-import com.jsql.util.ConnectionUtil;
 
 /**
  * Injection strategy using error attack.
@@ -26,7 +23,7 @@ public class ErrorbasedStrategy extends AbstractStrategy {
         
         String performanceSourcePage = MediatorModel.model().injectWithoutIndex(
             MediatorModel.model().getCharInsertion() + 
-            MediatorModel.model().vendor.getValue().getSqlErrorBasedCheck()
+            MediatorModel.model().vendor.instance().sqlTestErrorBased()
         );
 
         isApplicable = performanceSourcePage.matches(
@@ -61,28 +58,19 @@ public class ErrorbasedStrategy extends AbstractStrategy {
 
     @Override
     public void allow() {
-        Request request = new Request();
-        request.setMessage("MarkErrorbasedVulnerable");
-        
-        Map<String, Object> msgHeader = new HashMap<>();
-        msgHeader.put("Url", ConnectionUtil.urlByUser);
-
-        request.setParameters(msgHeader);
-        MediatorModel.model().sendToViews(request);
+        markVulnerable(TypeRequest.MARK_ERRORBASED_VULNERABLE);
     }
 
     @Override
     public void unallow() {
-        Request request = new Request();
-        request.setMessage("MarkErrorbasedInvulnerable");
-        MediatorModel.model().sendToViews(request);
+        markVulnerable(TypeRequest.MARK_ERRORBASED_INVULNERABLE);
     }
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserException {
         return MediatorModel.model().injectWithoutIndex(
             MediatorModel.model().getCharInsertion() +
-            MediatorModel.model().vendor.getValue().getSqlErrorBased(sqlQuery, startPosition)
+            MediatorModel.model().vendor.instance().sqlErrorBased(sqlQuery, startPosition)
         );
     }
 
@@ -92,7 +80,7 @@ public class ErrorbasedStrategy extends AbstractStrategy {
         MediatorModel.model().setStrategy(Strategy.ERRORBASED);
         
         Request request = new Request();
-        request.setMessage("MarkErrorbasedStrategy");
+        request.setMessage(TypeRequest.MARK_ERRORBASED_STRATEGY);
         MediatorModel.model().sendToViews(request);
     }
     

@@ -190,7 +190,7 @@ public class MetalUtilsCustom {
      * @param vertical Direction of the gradient
      * @return true if <code>key</code> exists, otherwise false.
      */
-    static boolean drawGradient(Component c, Graphics g, String key,
+    public static boolean drawGradient(Component c, Graphics g, String key,
                                 int x, int y, int w, int h, boolean vertical) {
         List gradient = (List)UIManager.get(key);
         if (gradient == null || !(g instanceof Graphics2D)) {
@@ -284,14 +284,14 @@ public class MetalUtilsCustom {
             // Render to the screen
             g.translate(x, y);
             if (isVertical) {
-                for (int counter = 0; counter < w; counter += IMAGE_SIZE) {
+                for (int counter = 0 ; counter < w ; counter += IMAGE_SIZE) {
                     int tileSize = Math.min(IMAGE_SIZE, w - counter);
                     g.drawImage(image, counter, 0, counter + tileSize, h,
                                 0, 0, tileSize, h, null);
                 }
             }
             else {
-                for (int counter = 0; counter < h; counter += IMAGE_SIZE) {
+                for (int counter = 0 ; counter < h ; counter += IMAGE_SIZE) {
                     int tileSize = Math.min(IMAGE_SIZE, h - counter);
                     g.drawImage(image, 0, counter, w, counter + tileSize,
                                 0, 0, w, tileSize, null);

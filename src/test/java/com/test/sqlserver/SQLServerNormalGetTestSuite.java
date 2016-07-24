@@ -21,9 +21,9 @@ public class SQLServerNormalGetTestSuite extends ConcreteSQLServerTestSuite {
 
         MediatorModel.model().addObserver(new SystemOutTerminal());
 
-        ConnectionUtil.urlBase = "http://"+ AbstractTestSuite.hostName +"/sqlserver_simulate_get.php";
-        ConnectionUtil.dataQuery = "?lib=0";
-        ConnectionUtil.methodInjection = MethodInjection.QUERY;
+        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/sqlserver_simulate_get.php");
+        ConnectionUtil.setDataQuery("?lib=0");
+        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
 
         MediatorModel.model().injection();
 

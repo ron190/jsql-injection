@@ -1,10 +1,7 @@
 package com.test.db2;
 
-import java.sql.SQLException;
-
 import org.apache.log4j.Logger;
 
-import com.jsql.model.exception.InjectionFailureException;
 import com.test.AbstractTestSuite;
 
 public class ConcreteDB2TestSuite extends AbstractTestSuite {
@@ -14,7 +11,7 @@ public class ConcreteDB2TestSuite extends AbstractTestSuite {
     private static final Logger LOGGER = Logger.getLogger(ConcreteDB2TestSuite.class);
 
     public ConcreteDB2TestSuite () {
-        this.jdbcURL = "jdbc:db2://"+ AbstractTestSuite.hostName +":50000/sample";
+        this.jdbcURL = "jdbc:db2://"+ AbstractTestSuite.HOSTNAME +":50000/sample";
         this.jdbcUser = "db2admin";
         this.jdbcPassword = "ec3-benjo";
         this.jsqlDatabaseName = "SYSTOOLS";

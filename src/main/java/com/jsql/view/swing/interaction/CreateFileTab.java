@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -15,6 +15,7 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JTextArea;
 
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.TabHeader;
@@ -52,7 +53,7 @@ public class CreateFileTab extends CreateTab implements InteractionCommand {
     public void execute() {
         JTextArea fileText = new JPopupTextArea().getProxy();
         fileText.setText(content);
-        fileText.setFont(new Font("Ubuntu Mono", Font.PLAIN, 14));
+        fileText.setFont(new Font(HelperUi.FONT_NAME, Font.PLAIN, 14));
         LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, fileText);
         
         fileText.setCaretPosition(0);

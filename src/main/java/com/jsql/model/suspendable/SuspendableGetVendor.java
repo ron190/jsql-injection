@@ -102,11 +102,11 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                 }
                 
                 /**
-Warning: oci_parse() [function.oci-parse]: ORA-01756: quoted string not properly terminated in E:\Outils\EasyPHP-5.3.9\www\oracle_simulate_get.php on line 6
+Warning: oci_parse() [function.oci-parse]: ORA-01756: quoted string not properly terminated in x\oracle_simulate_get.php on line 6
 
-Warning: oci_execute() expects parameter 1 to be resource, boolean given in E:\Outils\EasyPHP-5.3.9\www\oracle_simulate_get.php on line 7
+Warning: oci_execute() expects parameter 1 to be resource, boolean given in x\oracle_simulate_get.php on line 7
 
-Warning: oci_fetch_array() expects parameter 1 to be resource, boolean given in E:\Outils\EasyPHP-5.3.9\www\oracle_simulate_get.php on line 10
+Warning: oci_fetch_array() expects parameter 1 to be resource, boolean given in x\oracle_simulate_get.php on line 10
 
 jdbc
 Error at line 1:
@@ -131,9 +131,9 @@ select '"'"'
                 }
                 
                 /**
-                 * Warning: db2_execute() [function.db2-execute]: Statement Execute Failed in E:\Outils\EasyPHP-5.3.9\www\db2_simulate_get.php on line 13
+                 * Warning: db2_execute() [function.db2-execute]: Statement Execute Failed in x\db2_simulate_get.php on line 13
 exec errormsg: [IBM][CLI Driver][DB2/NT] SQL0010N La constante commen ant par """ ne comporte pas de d limiteur de fin de cha ne. SQLSTATE=42603
-Warning: db2_fetch_array() [function.db2-fetch-array]: Column information cannot be retrieved in E:\Outils\EasyPHP-5.3.9\www\db2_simulate_get.php on line 17
+Warning: db2_fetch_array() [function.db2-fetch-array]: Column information cannot be retrieved in x\db2_simulate_get.php on line 17
 
                  * jdbc
                  * DB2 SQL Error: SQLCODE=-10, SQLSTATE=42603, SQLERRMC="', DRIVER=3.69.24 [SQL State=42603, DB Errorcode=-10] 
@@ -154,13 +154,13 @@ Next: DB2 SQL Error: SQLCODE=-727, SQLSTATE=56098, SQLERRMC=2;-10;42603;"', DRIV
                 }
                 
                 /**
-                 * Warning: sybase_connect() [function.sybase-connect]: Sybase: Server message: Changed database context to 'master'. (severity 10, procedure N/A) in E:\Dev\xampp-win32-1.7.4-VC6\htdocs\sybase\sybase_simulate_get.php on line 5
+                 * Warning: sybase_connect() [function.sybase-connect]: Sybase: Server message: Changed database context to 'master'. (severity 10, procedure N/A) in x\sybase_simulate_get.php on line 5
 
-Warning: sybase_query() [function.sybase-query]: Sybase: Server message: Unclosed quote before the character string '\"'. (severity 15, procedure N/A) in E:\Dev\xampp-win32-1.7.4-VC6\htdocs\sybase\sybase_simulate_get.php on line 10
+Warning: sybase_query() [function.sybase-query]: Sybase: Server message: Unclosed quote before the character string '\"'. (severity 15, procedure N/A) in x\sybase_simulate_get.php on line 10
 
-Warning: sybase_query() [function.sybase-query]: Sybase: Server message: Incorrect syntax near '\"'. (severity 15, procedure N/A) in E:\Dev\xampp-win32-1.7.4-VC6\htdocs\sybase\sybase_simulate_get.php on line 10
+Warning: sybase_query() [function.sybase-query]: Sybase: Server message: Incorrect syntax near '\"'. (severity 15, procedure N/A) in x\sybase_simulate_get.php on line 10
 
-Warning: sybase_fetch_row() expects parameter 1 to be resource, boolean given in E:\Dev\xampp-win32-1.7.4-VC6\htdocs\sybase\sybase_simulate_get.php on line 14
+Warning: sybase_fetch_row() expects parameter 1 to be resource, boolean given in x\sybase_simulate_get.php on line 14
 
 jdbc
 Invalid SQL statement or JDBC escape, terminating '"' not found. [SQL State=22025] 
@@ -170,7 +170,7 @@ Invalid SQL statement or JDBC escape, terminating '"' not found. [SQL State=2202
                 }
                 
                 /**
-                 *  Warning: maxdb::query() [maxdb.query]: -3014 POS(40) Invalid end of SQL statement [42000] in E:\Dev\xampp-win32-1.6.8\htdocs\maxdb\maxdb_simulate_get.php on line 40
+                 *  Warning: maxdb::query() [maxdb.query]: -3014 POS(40) Invalid end of SQL statement [42000] in x\maxdb_simulate_get.php on line 40
                  *  
                  * jdbc
                  * [-3014] (at 12): Invalid end of SQL statement
@@ -194,7 +194,7 @@ select '"'"'
                 
                 /**
                  * 
-Warning: ibase_query() [function.ibase-query]: Dynamic SQL Error SQL error code = -104 as approximate floating-point values in SQL dialect 1, but as 64-bit in E:\Dev\xampp-win32-1.6.8\htdocs\firebird\firebird_simulate_get.php on line 27
+Warning: ibase_query() [function.ibase-query]: Dynamic SQL Error SQL error code = -104 as approximate floating-point values in SQL dialect 1, but as 64-bit in x.php on line 27
 Dynamic SQL Error SQL error code = -104 as approximate floating-point values in SQL dialect 1, but as 64-bit
 
 jdbc

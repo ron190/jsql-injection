@@ -7,7 +7,6 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -34,87 +33,93 @@ public class ConnectionUtil {
      */
     private static final Logger LOGGER = Logger.getLogger(ConnectionUtil.class);
     
-    public static String urlByUser;
-    
+    private static String urlByUser;
+
     /**
      * Url entered by user.
      */
-    public static String urlBase;
-    
+    private static String urlBase;
+
     /**
      * Http request type : GET, POST, HEADER...
      */
-    public static MethodInjection methodInjection;
-    
-    public static String typeRequest = "POST";
-    
+    private static MethodInjection methodInjection;
+
+    private static String typeRequest = "POST";
+
     /**
      * Get data submitted by user.
      */
-    public static String dataQuery = "";
-    
+    private static String dataQuery = "";
+
     /**
      * Request data submitted by user.
      */
-    public static String dataRequest = "";
-    
+    private static String dataRequest = "";
+
     /**
      * Header data submitted by user.
      */
-    public static String dataHeader = "";
+    private static String dataHeader = "";
+
+    public static final Integer TIMEOUT = 15000;
     
-    public static final Integer timeOut = 15000;
+    private ConnectionUtil() {
+        // Utility class
+    }
     
     public static void testConnection() throws InjectionFailureException {
         // Test the HTTP connection
         HttpURLConnection connection = null;
         try {
-            if (AuthenticationUtil.isKerberos) {
+            if (AuthenticationUtil.isKerberos()) {
                 String loginKerberos = 
                         Pattern
                             .compile("(?s)\\{.*")
-                            .matcher(StringUtils.join(Files.readAllLines(Paths.get(AuthenticationUtil.pathKerberosLogin), Charset.defaultCharset()), ""))
+                            .matcher(StringUtils.join(Files.readAllLines(Paths.get(AuthenticationUtil.getPathKerberosLogin()), Charset.defaultCharset()), ""))
                             .replaceAll("")
                             .trim();
                 
                 SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(loginKerberos);
-                connection = spnego.connect(new URL(ConnectionUtil.urlBase));
+                connection = spnego.connect(new URL(ConnectionUtil.getUrlBase()));
             } else {
-                connection = (HttpURLConnection) new URL(ConnectionUtil.urlBase).openConnection();
+                connection = (HttpURLConnection) new URL(ConnectionUtil.getUrlBase()).openConnection();
             }
             
-            connection.setReadTimeout(ConnectionUtil.timeOut);
-            connection.setConnectTimeout(ConnectionUtil.timeOut);
+            connection.setReadTimeout(ConnectionUtil.TIMEOUT);
+            connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
             connection.setDefaultUseCaches(false);
             
             ConnectionUtil.fixJcifsTimeout(connection);
             
             // Add headers if exists (Authorization:Basic, etc)
-            for (String header: ConnectionUtil.dataHeader.split("\\\\r\\\\n")) {
+            for (String header: ConnectionUtil.getDataHeader().split("\\\\r\\\\n")) {
                 ConnectionUtil.sanitizeHeaders(connection, header);
             }
 
-            StringUtil.sendMessageHeader(connection, ConnectionUtil.urlBase);
+            StringUtil.sendMessageHeader(connection, ConnectionUtil.getUrlBase());
             
             // Disable caching of authentication like Kerberos
             connection.disconnect();
         } catch (Exception e) {
-            throw new InjectionFailureException("Connection to "+ ConnectionUtil.urlBase +" failed : "+ e.getMessage());
+            throw new InjectionFailureException("Connection to "+ ConnectionUtil.getUrlBase() +" failed : "+ e, e);
         }
     }
     
-    public static String getSource(String url) throws MalformedURLException, IOException {
+    public static String getSource(String url) throws IOException {
         URLConnection connection = new URL(url).openConnection();
-        connection.setReadTimeout(ConnectionUtil.timeOut);
-        connection.setConnectTimeout(ConnectionUtil.timeOut);
+        connection.setReadTimeout(ConnectionUtil.TIMEOUT);
+        connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
         
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String line = "";
         String pageSource = "";
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String line;
         while ((line = reader.readLine()) != null) {
             pageSource += line + "\n";
         }
         reader.close();
+        
         return pageSource.trim();
     }
     
@@ -152,21 +157,36 @@ public class ConnectionUtil {
     public static void fixJcifsTimeout(HttpURLConnection connection) {
         Class<?> classConnection = connection.getClass();
         try {
-            Field privateFieldURLConnection = classConnection.getDeclaredField("connection");
-            privateFieldURLConnection.setAccessible(true);
+            boolean isReflexive = true;
             
-            URLConnection privateURLConnection = (URLConnection) privateFieldURLConnection.get(connection);
-            Class<?> classURLConnectionPrivate = privateURLConnection.getClass();
+            Field privateFieldURLConnection = null;
+            try {
+                privateFieldURLConnection = classConnection.getDeclaredField("connection");
+            } catch (Exception e) {
+                isReflexive = false;
+            }
             
-            Field privateFieldConnectTimeout = classURLConnectionPrivate.getDeclaredField("connectTimeout");
-            privateFieldConnectTimeout.setAccessible(true);
-            privateFieldConnectTimeout.setInt(privateURLConnection, ConnectionUtil.timeOut);
-            
-            Field privateFieldReadTimeout = classURLConnectionPrivate.getDeclaredField("readTimeout");
-            privateFieldReadTimeout.setAccessible(true);
-            privateFieldReadTimeout.setInt(privateURLConnection, ConnectionUtil.timeOut);
+            if (isReflexive) {
+                privateFieldURLConnection.setAccessible(true);
+                
+                URLConnection privateURLConnection = (URLConnection) privateFieldURLConnection.get(connection);
+                Class<?> classURLConnectionPrivate = privateURLConnection.getClass();
+                
+                final Class<?> parentClass = classURLConnectionPrivate.getSuperclass();
+                if (parentClass == HttpsURLConnection.class) {
+                    return;
+                }
+    
+                Field privateFieldConnectTimeout = classURLConnectionPrivate.getDeclaredField("connectTimeout");
+                privateFieldConnectTimeout.setAccessible(true);
+                privateFieldConnectTimeout.setInt(privateURLConnection, ConnectionUtil.TIMEOUT);
+                
+                Field privateFieldReadTimeout = classURLConnectionPrivate.getDeclaredField("readTimeout");
+                privateFieldReadTimeout.setAccessible(true);
+                privateFieldReadTimeout.setInt(privateURLConnection, ConnectionUtil.TIMEOUT);
+            }
         } catch (Exception e) {
-            LOGGER.warn("Fix jcifs timeout failed: "+ e.getMessage(), e);
+            LOGGER.warn("Fix jcifs timeout failed: "+ e, e);
         }
     }
     
@@ -182,8 +202,64 @@ public class ConnectionUtil {
                     connection.addRequestProperty(keyHeader, URLDecoder.decode(valueHeader, "UTF-8"));
                 }
             } catch (UnsupportedEncodingException e) {
-                LOGGER.warn("Unsupported header encoding " + e.getMessage(), e);
+                LOGGER.warn("Unsupported header encoding "+ e, e);
             }
         }
+    }
+    
+    public static String getUrlByUser() {
+        return urlByUser;
+    }
+
+    public static void setUrlByUser(String urlByUser) {
+        ConnectionUtil.urlByUser = urlByUser;
+    }
+    
+    public static String getUrlBase() {
+        return urlBase;
+    }
+
+    public static void setUrlBase(String urlBase) {
+        ConnectionUtil.urlBase = urlBase;
+    }
+    
+    public static MethodInjection getMethodInjection() {
+        return methodInjection;
+    }
+
+    public static void setMethodInjection(MethodInjection methodInjection) {
+        ConnectionUtil.methodInjection = methodInjection;
+    }
+    
+    public static String getTypeRequest() {
+        return typeRequest;
+    }
+
+    public static void setTypeRequest(String typeRequest) {
+        ConnectionUtil.typeRequest = typeRequest;
+    }
+    
+    public static String getDataQuery() {
+        return dataQuery;
+    }
+
+    public static void setDataQuery(String dataQuery) {
+        ConnectionUtil.dataQuery = dataQuery;
+    }
+    
+    public static String getDataRequest() {
+        return dataRequest;
+    }
+
+    public static void setDataRequest(String dataRequest) {
+        ConnectionUtil.dataRequest = dataRequest;
+    }
+    
+    public static String getDataHeader() {
+        return dataHeader;
+    }
+
+    public static void setDataHeader(String dataHeader) {
+        ConnectionUtil.dataHeader = dataHeader;
     }
 }

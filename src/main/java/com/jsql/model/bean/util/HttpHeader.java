@@ -26,7 +26,7 @@ public class HttpHeader {
      */
     private Map<String, String> response;
     
-    public String source;
+    private String source;
     
     /**
      * Create object containing HTTP data to display in Network panel.
@@ -79,5 +79,9 @@ public class HttpHeader {
     @Override
     public String toString() {
         return url;
+    }
+
+    public String getSource() {
+        return source;
     }
 }

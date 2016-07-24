@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -104,8 +104,6 @@ public class ManagerDatabase extends JPanel {
 
         LightScrollPane scroller = new LightScrollPane(1, 1, 0, 0, tree);
         
-//        JPanel p = new JPanel(new BorderLayout());
-        
         class ComboMenu extends JMenu {
             ArrowIcon iconRenderer;
 
@@ -121,17 +119,18 @@ public class ManagerDatabase extends JPanel {
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Dimension d = this.getPreferredSize();
-                int x = Math.max(0, 0 +10);
-                int y = Math.max(0, (d.height - iconRenderer.getIconHeight())/2 -2);
-                iconRenderer.paintIcon(this,g, x,y);
+                int x = Math.max(0, 10);
+                int y = Math.max(0, (d.height - iconRenderer.getIconHeight()) / 2 - 1);
+                iconRenderer.paintIcon(this, g, x, y);
             }
         }
         
-        JMenuBar p2 = new JMenuBar();
-        p2.setOpaque(false);
-        p2.setBorder(null);
+        JMenuBar panelLineBottom = new JMenuBar();
+        panelLineBottom.setOpaque(false);
+        panelLineBottom.setBorder(null);
+        panelLineBottom.setPreferredSize(new Dimension(0, 26));
         
-        p2.setBorder(
+        panelLineBottom.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
@@ -176,11 +175,11 @@ public class ManagerDatabase extends JPanel {
             }
         }
         
-        p2.add(panelVendor);
-        p2.add(Box.createHorizontalGlue());
-        p2.add(panelStrategy);
+        panelLineBottom.add(panelVendor);
+        panelLineBottom.add(Box.createHorizontalGlue());
+        panelLineBottom.add(panelStrategy);
 
         this.add(scroller, BorderLayout.CENTER);
-        this.add(p2, BorderLayout.SOUTH);
+        this.add(panelLineBottom, BorderLayout.SOUTH);
     }
 }

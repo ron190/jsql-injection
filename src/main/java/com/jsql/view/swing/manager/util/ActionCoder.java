@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  *******************************************************************************/
-package com.jsql.view.swing.manager;
+package com.jsql.view.swing.manager.util;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.util.StringUtil;
 import com.jsql.view.swing.bruteforce.HashBruter;
+import com.jsql.view.swing.manager.ManagerCoder;
 
 /**
  * Action runned when this.coderManager.encoding.
@@ -46,15 +47,17 @@ public class ActionCoder implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        if ("".equals(this.coderManager.entry.getText())) {
-            LOGGER.warn("Empty String to convert");
+        String choice = this.coderManager.encoding.getText().replace("Hash to ", "");
+        
+        if (
+            "".equals(this.coderManager.entry.getText())
+            && !Arrays.asList(new String[]{"Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql"}).contains(choice)
+        ) {
+            LOGGER.warn("Empty string to convert");
             return;
         }
         
-        String choice = this.coderManager.encoding.getText().replace("Hash to ", "");
-        
-        //TODO State pattern
-        if (Arrays.asList(new String[]{ "Md2", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512" } ).contains(choice)) {
+        if (Arrays.asList(new String[]{"Md2", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512"}).contains(choice)) {
             try {
                 MessageDigest md = MessageDigest.getInstance(choice);
                 
@@ -65,8 +68,8 @@ public class ActionCoder implements ActionListener {
                 String encodedPasswordInString = this.coderManager.digestToHexString(encodedPassword);
                 
                 this.coderManager.result.setText(encodedPasswordInString);
-            } catch (NoSuchAlgorithmException e1) {
-                LOGGER.warn("Digest algorithm "+ choice +" not found");
+            } catch (NoSuchAlgorithmException e) {
+                LOGGER.warn("Digest algorithm "+ choice +" not found", e);
             }
             
         } else if ("Md4".contains(choice)) {
@@ -91,7 +94,7 @@ public class ActionCoder implements ActionListener {
             Checksum checksum = new CRC32();
             checksum.update(bytes,0,bytes.length);
             long lngChecksum = checksum.getValue();
-            this.coderManager.result.setText(lngChecksum+"");
+            this.coderManager.result.setText(Long.toString(lngChecksum));
             
         } else if ("Crc64".contains(choice)) {
             this.coderManager.result.setText(HashBruter.generateCRC64(this.coderManager.entry.getText().getBytes()));
@@ -113,8 +116,8 @@ public class ActionCoder implements ActionListener {
                 String mysqlHash = this.coderManager.digestToHexString(hashSHA1SH1);
                 
                 this.coderManager.result.setText(mysqlHash);
-            } catch (NoSuchAlgorithmException e1) {
-                LOGGER.warn("Digest algorithm sha-1 not found");
+            } catch (NoSuchAlgorithmException e) {
+                LOGGER.warn("Digest algorithm sha-1 not found", e);
             }
             
         } else if ("Encode to Hex".equalsIgnoreCase(choice)) {
@@ -125,7 +128,7 @@ public class ActionCoder implements ActionListener {
                     ).trim()
                 );
             } catch (UnsupportedEncodingException e) {
-                this.coderManager.result.setText("Encoding to Hex error: " + e.getMessage());
+                this.coderManager.result.setText("Encoding to Hex error: "+ e);
             }
             
         } else if ("Decode from Hex".equalsIgnoreCase(choice)) {
@@ -139,7 +142,7 @@ public class ActionCoder implements ActionListener {
                     )
                 );
             } catch (Exception e) {
-                this.coderManager.result.setText("Decoding from Hex error: " + e.getMessage());
+                this.coderManager.result.setText("Decoding from Hex error: "+ e);
             }
             
         } else if ("Encode to Hex(zipped)".equalsIgnoreCase(choice)) {
@@ -152,7 +155,7 @@ public class ActionCoder implements ActionListener {
                     ).trim()
                 );
             } catch (Exception e) {
-                this.coderManager.result.setText("Encoding to Hex(zipped) error: " + e.getMessage());
+                this.coderManager.result.setText("Encoding to Hex(zipped) error: "+ e);
             }
             
         } else if ("Decode from Hex(zipped)".equalsIgnoreCase(choice)) {
@@ -168,7 +171,7 @@ public class ActionCoder implements ActionListener {
                     )
                 );
             } catch (Exception e) {
-                this.coderManager.result.setText("Decoding from Hex(zipped) error: " + e.getMessage());
+                this.coderManager.result.setText("Decoding from Hex(zipped) error: "+ e);
             }
             
         } else if ("Encode to Base64(zipped)".equalsIgnoreCase(choice)) {
@@ -181,7 +184,7 @@ public class ActionCoder implements ActionListener {
                     )
                 );
             } catch (IOException e) {
-                this.coderManager.result.setText("Encoding to Base64(zipped) error: " + e.getMessage());
+                this.coderManager.result.setText("Encoding to Base64(zipped) error: "+ e);
             }
             
         } else if ("Decode from Base64(zipped)".equalsIgnoreCase(choice)) {
@@ -194,7 +197,7 @@ public class ActionCoder implements ActionListener {
                     )
                 );
             } catch (IOException e) {
-                this.coderManager.result.setText("Decoding from Base64(zipped) error: " + e.getMessage());
+                this.coderManager.result.setText("Decoding from Base64(zipped) error: "+ e);
             }
             
         } else if ("Encode to Base64".equalsIgnoreCase(choice)) {
@@ -212,25 +215,19 @@ public class ActionCoder implements ActionListener {
         } else if ("Encode to Url".equalsIgnoreCase(choice)) {
             try {
                 this.coderManager.result.setText(
-                    URLEncoder.encode(
-                        this.coderManager.entry.getText(), 
-                        "UTF-8"
-                    )
+                    URLEncoder.encode(this.coderManager.entry.getText(), "UTF-8")
                 );
             } catch (UnsupportedEncodingException e) {
-                this.coderManager.result.setText("Encoding to Url error: " + e.getMessage());
+                LOGGER.warn("Encoding to UTF-8 failed: "+ e, e);
             }
             
         } else if ("Decode from Url".equalsIgnoreCase(choice)) {
             try {
                 this.coderManager.result.setText(
-                    URLDecoder.decode(
-                        this.coderManager.entry.getText().replace("%", "%25"),
-                        "UTF-8"
-                    )
+                    URLDecoder.decode(this.coderManager.entry.getText().replace("%", "%25"), "UTF-8")
                 );
             } catch (UnsupportedEncodingException e) {
-                this.coderManager.result.setText("Decoding from Url error: " + e.getMessage());
+                LOGGER.warn("Decoding to UTF-8 failed: "+ e, e);
             }
             
         } else {

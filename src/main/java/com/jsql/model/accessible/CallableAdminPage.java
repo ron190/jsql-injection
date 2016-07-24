@@ -8,6 +8,8 @@ import java.util.concurrent.Callable;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.TypeHeader;
+import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.util.StringUtil;
 
 /**
@@ -34,7 +36,7 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
 
     @Override
     public CallableAdminPage call() throws Exception {
-        if (!RessourceAccess.isSearchAdminStopped) {
+        if (!RessourceAccess.isSearchAdminStopped()) {
             URL targetUrl = new URL(urlAdminPage);
             HttpURLConnection connection = (HttpURLConnection) targetUrl.openConnection();
             connection.setRequestMethod("HEAD");
@@ -44,14 +46,14 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
                 responseCodeHTTP = "";
             }
 
-            Map<String, Object> msgHeader = new HashMap<>();
-            msgHeader.put("Url", urlAdminPage);
-            msgHeader.put("Post", "");
-            msgHeader.put("Header", "");
-            msgHeader.put("Response", StringUtil.getHTTPHeaders(connection));
+            Map<TypeHeader, Object> msgHeader = new HashMap<>();
+            msgHeader.put(TypeHeader.URL, urlAdminPage);
+            msgHeader.put(TypeHeader.POST, "");
+            msgHeader.put(TypeHeader.HEADER, "");
+            msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHTTPHeaders(connection));
 
             Request request = new Request();
-            request.setMessage("MessageHeader");
+            request.setMessage(TypeRequest.MESSAGE_HEADER);
             request.setParameters(msgHeader);
             MediatorModel.model().sendToViews(request);
         }

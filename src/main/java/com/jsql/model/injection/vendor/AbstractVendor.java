@@ -19,67 +19,35 @@ public abstract class AbstractVendor {
     
     public abstract String getSqlLimit(Integer limitSQLResult);
     
-    public String getSqlPrivilegeCheck() {
-        return "";
-    }
+    public abstract String sqlPrivilegeTest();
 
-    public String getSqlReadFile(String filePath) {
-        return "";
-    }
+    public abstract String sqlFileRead(String filePath);
 
-    public String getSqlTextIntoFile(String content, String filePath) {
-        return "";
-    }
+    public abstract String sqlTextIntoFile(String content, String filePath);
 
-    public String[] getListFalseTest() {
-        return new String[0];
-    }
+    public abstract String[] getListFalseTest();
 
-    public String[] getListTrueTest() {
-        return new String[0];
-    }
+    public abstract String[] getListTrueTest();
 
-    public String getSqlBlindFirstTest() {
-        return null;
-    }
+    public abstract String sqlTestBlindFirst();
 
-    public String getSqlBlindCheck(String check) {
-        return "";
-    }
+    public abstract String sqlTestBlind(String check);
 
-    public String getSqlBlindBitCheck(String inj, int indexCharacter, int bit) {
-        return "";
-    }
+    public abstract String sqlBitTestBlind(String inj, int indexCharacter, int bit);
 
-    public String getSqlBlindLengthCheck(String inj, int indexCharacter) {
-        return "";
-    }
+    public abstract String sqlLengthTestBlind(String inj, int indexCharacter);
 
-    public String getSqlTimeCheck(String check) {
-        return "";
-    }
+    public abstract String sqlTimeTest(String check);
 
-    public String getSqlTimeBitCheck(String inj, int indexCharacter, int bit) {
-        return "";
-    }
+    public abstract String sqlBitTestTime(String inj, int indexCharacter, int bit);
 
-    public String getSqlTimeLengthCheck(String inj, int indexCharacter) {
-        return "";
-    }
+    public abstract String sqlLengthTestTime(String inj, int indexCharacter);
 
-    public String getSqlBlind(String sqlQuery, String startPosition) {
-        return "";
-    }
+    public abstract String sqlBlind(String sqlQuery, String startPosition);
 
-    public String getSqlErrorBasedCheck() {
-        return "";
-    }
+    public abstract String sqlTestErrorBased();
 
-    public String getSqlErrorBased(String sqlQuery, String startPosition) {
-        return "";
-    }
+    public abstract String sqlErrorBased(String sqlQuery, String startPosition);
 
-    public String getSqlTime(String sqlQuery, String startPosition) {
-        return "";
-    }
+    public abstract String sqlTime(String sqlQuery, String startPosition);
 }

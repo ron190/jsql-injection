@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -18,7 +18,7 @@ public class Request {
     /**
      * Class identifier for the interraction.
      */
-    private String message;
+    private TypeRequest message;
     
     /**
      * List of parameters.
@@ -29,7 +29,7 @@ public class Request {
      * Get identifier class name for this interraction.
      * @return Name of interraction
      */
-    public String getMessage() {
+    public TypeRequest getMessage() {
         return message;
     }
 
@@ -45,7 +45,7 @@ public class Request {
      * Identifier message for this request.
      * @param message Text identifier
      */
-    public void setMessage(String message) {
+    public void setMessage(TypeRequest message) {
         this.message = message;
     }
 

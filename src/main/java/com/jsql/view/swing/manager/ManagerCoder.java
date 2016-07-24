@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -38,7 +39,8 @@ import org.apache.commons.codec.binary.StringUtils;
 
 import com.jsql.i18n.I18n;
 import com.jsql.view.swing.HelperUi;
-import com.jsql.view.swing.combomenu.ComboMenuBar;
+import com.jsql.view.swing.manager.util.ActionCoder;
+import com.jsql.view.swing.manager.util.MenuBarCoder;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.text.JPopupTextArea;
@@ -51,17 +53,17 @@ public class ManagerCoder extends JPanel {
     /**
      * User input to encode. 
      */
-    JTextArea entry;
+    public JTextArea entry;
 
     /**
      * Encoding choosed by user. 
      */
-    JMenuItem encoding;
+    public JMenuItem encoding;
 
     /**
      * JTextArea displaying result of encoding/decoding.
      */
-    JTextArea result;
+    public JTextArea result;
 
     /**
      * Create a panel to encode a string.
@@ -87,9 +89,9 @@ public class ManagerCoder extends JPanel {
         menus.put("Base64(zipped)", new JMenu("Base64(zipped)"));
         menus.put("Hex(zipped)", new JMenu("Hex(zipped)"));
 
-        for (String key: menus.keySet()) {
-            menus.get(key).add(new JMenuItem("Encode to " + key));
-            menus.get(key).add(new JMenuItem("Decode from " + key));
+        for (Entry<String, JMenu> entry: menus.entrySet()) {
+            entry.getValue().add(new JMenuItem("Encode to "+ entry.getKey()));
+            entry.getValue().add(new JMenuItem("Decode from "+ entry.getKey()));
         }
 
         menus.put("Hash", new JMenu("Hash"));
@@ -106,18 +108,18 @@ public class ManagerCoder extends JPanel {
         menus.get("Hash").add(new JMenuItem("Hash to Sha-512"));
         menus.get("Hash").add(new JMenuItem("Hash to Mysql"));
 
-        JMenu comboMenu = ComboMenuBar.createMenu("Choose method...");
+        JMenu comboMenu = MenuBarCoder.createMenu("Choose method...");
         encoding = comboMenu;
         
         for (JMenu menu: menus.values()) {
             comboMenu.add(menu);
         }
 
-        ComboMenuBar comboMenubar = new ComboMenuBar(comboMenu);
+        MenuBarCoder comboMenubar = new MenuBarCoder(comboMenu);
         comboMenubar.setOpaque(false);
         comboMenubar.setBorder(null);
         
-        this.encoding.setText("Decode from Base64");
+        this.encoding.setText("Encode to Base64");
         
         final JButton run = new JButton(
             I18n.valueByKey("CODER_RUN_BUTTON"), 
@@ -130,21 +132,24 @@ public class ManagerCoder extends JPanel {
         run.setBackground(new Color(200, 221, 242));
         
         run.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
+            @Override
+            public void mouseEntered(MouseEvent e) {
                 if (run.isEnabled()) {
                     run.setContentAreaFilled(true);
                     run.setBorder(HelperUi.BLU_ROUND_BORDER);
                 }
-                
             }
 
-            @Override public void mouseExited(MouseEvent e) {
+            @Override 
+            public void mouseExited(MouseEvent e) {
                 if (run.isEnabled()) {
                     run.setContentAreaFilled(false);
                     run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
                 }
             }
         });
+        
+        run.addActionListener(new ActionCoder(this));
 
         middleLine.add(comboMenubar);
         middleLine.add(run, BorderLayout.EAST);
@@ -156,8 +161,6 @@ public class ManagerCoder extends JPanel {
         result = new JPopupTextArea().getProxy();
         result.setLineWrap(true);
         bottom.add(new LightScrollPane(1, 1, 0, 0, result), BorderLayout.CENTER);
-
-        run.addActionListener(new ActionCoder(this));
 
         JSplitPaneWithZeroSizeDivider divider = new JSplitPaneWithZeroSizeDivider(JSplitPane.VERTICAL_SPLIT);
         divider.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -175,7 +178,7 @@ public class ManagerCoder extends JPanel {
      * @param s base64 decode
      * @return Base64 decoded string
      */
-    String base64Decode(String s) {
+    public String base64Decode(String s) {
         return StringUtils.newStringUtf8(Base64.decodeBase64(s));
     }
 
@@ -184,7 +187,7 @@ public class ManagerCoder extends JPanel {
      * @param s String to base64 encode
      * @return Base64 encoded string
      */
-    String base64Encode(String s) {
+    public String base64Encode(String s) {
         return Base64.encodeBase64String(StringUtils.getBytesUtf8(s));
     }
 
@@ -194,7 +197,7 @@ public class ManagerCoder extends JPanel {
      * @return Zipped string
      * @throws IOException
      */
-    String compress(String str) throws IOException {
+    public String compress(String str) throws IOException {
         if (str == null || str.length() == 0) {
             return str;
         }
@@ -211,7 +214,7 @@ public class ManagerCoder extends JPanel {
      * @return String unzipped
      * @throws IOException
      */
-    String decompress(String str) throws IOException {
+    public String decompress(String str) throws IOException {
         if (str == null || str.length() == 0) {
             return str;
         }
@@ -247,10 +250,10 @@ public class ManagerCoder extends JPanel {
      * @param block Digest array
      * @return Hash as a string
      */
-    String digestToHexString(byte[] block) {
+    public String digestToHexString(byte[] block) {
         StringBuilder  buf = new StringBuilder();
         int len = block.length;
-        for (int i = 0; i < len; i++) {
+        for (int i = 0 ; i < len ; i++) {
             this.byte2hex(block[i], buf);
         }
         return buf.toString();

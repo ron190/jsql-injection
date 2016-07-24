@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 
 import org.apache.log4j.Logger;
@@ -54,7 +53,7 @@ public class JColoredConsole extends JPopupTextPane {
      * @param attribut Font
      */
     public void append(String message, SimpleAttributeSet attribut) {
-        // Report #863: avoid exception during report of exception
+        // Report #863: exception during report of exception
         try {
             this.getProxy().getDocument().insertString(
                 this.getProxy().getDocument().getLength(),
@@ -69,7 +68,7 @@ public class JColoredConsole extends JPopupTextPane {
                     tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
                 }
             }
-        } catch (BadLocationException | ArrayIndexOutOfBoundsException e) {
+        } catch (Exception e) {
             LOGGER.fatal(message);
         }
     }

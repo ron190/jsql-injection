@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -99,18 +99,22 @@ public class PanelAddressBar extends JPanel {
      * Create panel at the top with textfields and radio.
      */
     public class JToolTipI18n extends JToolTip {
-        public JToolTipI18n(String gET_TOOLTIP) {
-            textTooltip = gET_TOOLTIP;
-        }
         String textTooltip;
+        
+        public JToolTipI18n(String textTooltip) {
+            this.textTooltip = textTooltip;
+        }
+        
         public void setText(String textTooltip) {
             this.textTooltip = textTooltip;
         }
+        
         @Override
         public String getTipText() {
             return textTooltip;
         }
     }
+    
     public PanelAddressBar() {
         final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("GET_TOOLTIP"))};
         JTextFieldWithIcon textI18nTip = new JTextFieldWithIcon(){
@@ -166,7 +170,7 @@ public class PanelAddressBar extends JPanel {
         final ButtonGroup buttonGroup = new ButtonGroup();
         
         for (String protocol : new String[]{"OPTIONS", "HEAD", "POST", "PUT", "DELETE", "TRACE"}) {
-            final JMenuItem newMenuItem = new JRadioButtonMenuItem(protocol, protocol.equals("POST"));
+            final JMenuItem newMenuItem = new JRadioButtonMenuItem(protocol, "POST".equals(protocol));
             newMenuItem.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -204,6 +208,7 @@ public class PanelAddressBar extends JPanel {
         popup.insert(pnlmain, popup.getComponentCount());
         
         buttonRequestMethod.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent e) {
                 popup.show(
                     e.getComponent(), 

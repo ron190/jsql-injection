@@ -5,20 +5,31 @@ import java.util.List;
 
 public class Bruter {
 
-    public List<String> characters = new ArrayList<>();
-    public boolean found = false;
-    public int maxLength;
-    public int minLength;
-    public int count;
-    long starttime, endtime;
-    public int minutes, seconds, hours, days;
-    public char[] specialCharacters = {
+    List<String> characters = new ArrayList<>();
+    
+    boolean found = false;
+    
+    int maxLength;
+    int minLength;
+    
+    int count;
+    
+    long starttime;
+    long endtime;
+    
+    int minutes;
+    int seconds;
+    int hours;
+    int days;
+    
+    private static final char[] specialCharacters = {
         '~', '`', '!', '@', '#', '$', '%', '^',
         '&', '*', '(', ')', '_', '-', '+', '=', '{', '}', '[', ']', '|', '\\',
         ';', ':', '\'', '"', '<', '.', ',', '>', '/', '?', ' '
     };
-    public boolean done = false;
-    public boolean paused = false;
+    
+    boolean done = false;
+    boolean paused = false;
 
     public boolean isFound() {
         return found;
@@ -120,14 +131,14 @@ public class Bruter {
             }
 
             if (minutes > 60) {
-                hours = (int) minutes / 60;
+                hours = minutes / 60;
                 if (hours * 60 > minutes) {
                     hours = hours - 1;
                 }
             }
 
             if (hours > 24) {
-                days = (int) hours / 24;
+                days = hours / 24;
                 if (days * 24 > hours) {
                     days = days - 1;
                 }
@@ -141,15 +152,14 @@ public class Bruter {
     }
 
     private long calculateTimeDifference() {
-        long timeTaken = (long) ((endtime - starttime) * (1 * Math.pow(10, -9)));
-        return timeTaken;
+        return (long) ((endtime - starttime) * (1 * Math.pow(10, -9)));
     }
 
     public boolean excludeChars(String s) {
         char[] arrayChars = s.toCharArray();
         
         for (int i = 0; i < arrayChars.length; i++) {
-            characters.remove(arrayChars[i] + "");
+            characters.remove(Character.toString(arrayChars[i]));
         }
         
         return characters.size() >= maxLength;

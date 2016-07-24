@@ -1,5 +1,10 @@
 package com.jsql.model.injection.vendor;
 
+import static com.jsql.model.accessible.DataAccess.QTE_SQL;
+import static com.jsql.model.accessible.DataAccess.SEPARATOR_SQL;
+import static com.jsql.model.accessible.DataAccess.TD_SQL;
+import static com.jsql.model.accessible.DataAccess.TRAIL_SQL;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +14,7 @@ import com.jsql.model.bean.database.Table;
 import com.jsql.model.injection.strategy.Strategy;
 import com.jsql.util.StringUtil;
 
-public class CubridVendor extends AbstractVendor {
+public class CubridVendor extends AbstractVendorDefault {
 
     @Override
     public String getSqlInfos() {
@@ -17,14 +22,14 @@ public class CubridVendor extends AbstractVendor {
             "concat(" +
                 "" +
                     "concat_ws(" +
-                        "'%04'," +
+                        "'"+ SEPARATOR_SQL +"'," +
                         "version()," +
                         "database()," +
                         "user()" +
                     ")" +
                 "" +
                 "," +
-                "'%01%03%03%07'" +
+                "'"+ TRAIL_SQL +"'" +
             ")";
     }
 
@@ -34,15 +39,15 @@ public class CubridVendor extends AbstractVendor {
             "select+" +
                 "concat(" +
                     "group_concat(" +
-                        "'%04'||" +
+                        "'"+ SEPARATOR_SQL +"'||" +
                         "r||" +
-                        "'%05'||" +
+                        "'"+ QTE_SQL +"'||" +
                         "cast(q+as+varchar)||" +
-                        "'%04'" +
+                        "'"+ SEPARATOR_SQL +"'" +
                         "+order+by+1+" +
-                        "separator+'%06'" +
+                        "separator+'"+ TD_SQL +"'" +
                     ")," +
-                    "'%01%03%03%07'" +
+                    "'"+ TRAIL_SQL +"'" +
                 ")" +
             "from(" +
                 "select+" +
@@ -60,13 +65,13 @@ public class CubridVendor extends AbstractVendor {
             "select+" +
                 "concat(" +
                     "group_concat(" +
-                        "'%04'||" +
+                        "'"+ SEPARATOR_SQL +"'||" +
                         "cast(r+as+varchar)||" +
-                        "'%050%04'+" +
+                        "'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'+" +
                         "order+by+1+" +
-                        "separator+'%06'" +
+                        "separator+'"+ TD_SQL +"'" +
                     ")," +
-                    "'%01%03%03%07'" +
+                    "'"+ TRAIL_SQL +"'" +
                 ")" +
             "from(" +
                 "select+" +
@@ -85,15 +90,15 @@ public class CubridVendor extends AbstractVendor {
             "select+" +
                 "concat(" +
                     "group_concat(" +
-                        "'%04'||" +
+                        "'"+ SEPARATOR_SQL +"'||" +
                         "cast(n+as+varchar)||" +
-                        "'%05'||" +
+                        "'"+ QTE_SQL +"'||" +
                         "0||" +
-                        "'%04'+" +
+                        "'"+ SEPARATOR_SQL +"'+" +
                         "order+by+1+" +
-                        "separator+'%06'" +
+                        "separator+'"+ TD_SQL +"'" +
                     ")," +
-                    "'%01%03%03%07'" +
+                    "'"+ TRAIL_SQL +"'" +
                 ")" +
             "from(" +
                 "select+" +
@@ -120,14 +125,14 @@ public class CubridVendor extends AbstractVendor {
         return
             "select+concat(" +
                 "group_concat(" +
-                    "'%04'||" +
+                    "'"+ SEPARATOR_SQL +"'||" +
                     "r||" +
-                    "'%05'||" +
+                    "'"+ QTE_SQL +"'||" +
                     "cast(q+as+varchar)||" +
-                    "'%04'" +
-                    "+order+by+1+separator+'%06'" +
+                    "'"+ SEPARATOR_SQL +"'" +
+                    "+order+by+1+separator+'"+ TD_SQL +"'" +
                 ")," +
-                "'%01%03%03%07'" +
+                "'"+ TRAIL_SQL +"'" +
             ")from(" +
                 "select+" +
                     "cast(concat(" + formatListColumn + ")as+varchar)r," +
@@ -165,7 +170,7 @@ public class CubridVendor extends AbstractVendor {
         return
             MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
-                "(select+concat('SQLi',$1,repeat('%23',65536),'%01%03%03%07iLQS'))"
+                "(select+concat('SQLi',$1,repeat('%23',65536),'"+ TRAIL_SQL +"iLQS'))"
             );
     }
 

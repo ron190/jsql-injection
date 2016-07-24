@@ -22,9 +22,9 @@ public class HeaderTest extends ConcreteMysqlTestSuite {
 
         MediatorModel.model().addObserver(new SystemOutTerminal());
 
-        ConnectionUtil.urlBase = "http://"+ AbstractTestSuite.hostName +"/simulate_header.php";
-        ConnectionUtil.dataHeader = "lib:0";
-        ConnectionUtil.methodInjection = MethodInjection.HEADER;
+        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_header.php");
+        ConnectionUtil.setDataHeader("lib:0");
+        ConnectionUtil.setMethodInjection(MethodInjection.HEADER);
 
         MediatorModel.model().injection();
 

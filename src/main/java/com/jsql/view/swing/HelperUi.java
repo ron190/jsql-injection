@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -34,9 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
-import javax.swing.ButtonModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.ToolTipManager;
@@ -48,6 +46,7 @@ import javax.swing.plaf.ColorUIResource;
 import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.console.SwingAppender;
+import com.jsql.view.swing.ui.CheckBoxIcon;
 import com.jsql.view.swing.ui.CustomBasicComboBoxUI;
 
 /**
@@ -75,10 +74,10 @@ public final class HelperUi {
     public static final Icon SHELL_SERVER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/shellServer.png"));
     public static final Icon DATABASE_SERVER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/databaseServer.png"));
     public static final Icon FILE_SERVER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/fileServer.png"));
-    public static final Icon BRUTER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/lock.png"));
-    public static final Icon CODER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/coder.png"));
-    public static final Icon UPLOAD_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/server_add.png"));
-    public static final Icon SCANLIST_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/application_cascade.png"));
+    public static final Icon BRUTER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/lock_open.png"));
+    public static final Icon CODER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/textfield.png"));
+    public static final Icon UPLOAD_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/page_save.png"));
+    public static final Icon SCANLIST_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/table_multiple.png"));
 
     public static final Icon TABLE_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/table.png"));
     public static final Icon TABLE_ICON_GO = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/tableGo.png"));
@@ -110,6 +109,10 @@ public final class HelperUi {
     public static final Icon FLAG_ES = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/es.png"));
     public static final Icon FLAG_IN = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/in.png"));
     
+    public static final URL ICON16 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug16.png");
+    public static final URL ICON32 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug32.png");
+    public static final URL ICON96 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug96.png");
+
     public static final Icon EMPTY = new ImageIcon(new BufferedImage(16, 16, BufferedImage.TRANSLUCENT));
     public static final Icon ZEROSIZE = new ImageIcon() {
         @Override
@@ -155,13 +158,15 @@ public final class HelperUi {
         }
     };
 
+    public static final String FONT_NAME = "Ubuntu Mono";
+
     public static final Font FONT_SEGOE = new Font("Segoe UI", Font.PLAIN, UIManager.getDefaults().getFont("TextPane.font").getSize());
     public static final Font FONT_SEGOE_BIG = new Font(
         UIManager.getDefaults().getFont("TextField.font").getName(), 
         Font.PLAIN, 
         UIManager.getDefaults().getFont("TextField.font").getSize() + 2
     );
-    public static final Font FONT_UBUNTU = new Font("Ubuntu Mono", Font.PLAIN, UIManager.getDefaults().getFont("TextArea.font").getSize() + 2);
+    public static final Font FONT_UBUNTU = new Font(FONT_NAME, Font.PLAIN, UIManager.getDefaults().getFont("TextArea.font").getSize() + 2);
 
     public static final String CHUNK_VISIBLE = "chunk_visible";
     public static final String BINARY_VISIBLE = "binary_visible";
@@ -204,7 +209,6 @@ public final class HelperUi {
         // Custom button
         // Change border of button in default Save as, Confirm dialogs
         UIManager.put("Button.border", BLU_BORDER);
-//        UIManager.put("Button.select", SELECTION_BACKGROUND);
         UIManager.put("Button.select", new Color(155, 193, 232));
         
         // Change border of button in Save as dialog
@@ -224,15 +228,7 @@ public final class HelperUi {
         UIManager.put("CheckBoxMenuItem.selectionBackground", SELECTION_BACKGROUND);
         UIManager.put("CheckBoxMenuItem.font", FONT_SEGOE);
         UIManager.put("CheckBoxMenuItem.borderPainted", false);
-        UIManager.put("CheckBoxMenuItem.checkIcon", new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/check.png")) {
-            @Override
-            public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
-                ButtonModel m = ((AbstractButton) c).getModel();
-                if (m.isSelected()) {
-                    super.paintIcon(c, g, x, y);
-                }
-            }
-        });
+        UIManager.put("CheckBoxMenuItem.checkIcon", new CheckBoxIcon());
 
         // Custom tab
         UIManager.put("TabbedPane.font", FONT_SEGOE);
@@ -335,13 +331,10 @@ public final class HelperUi {
      */
     public static List<Image> getIcons() {
         List<Image> images = new ArrayList<>();
-        URL url16x16 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/app-16x16.png");
-        URL url32x32 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/app-32x32.png");
-        URL url96x96 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/app-96x96.png");
         try {
-            images.add(ImageIO.read(url96x96));
-            images.add(ImageIO.read(url32x32));
-            images.add(ImageIO.read(url16x16));
+            images.add(ImageIO.read(HelperUi.ICON96));
+            images.add(ImageIO.read(HelperUi.ICON32));
+            images.add(ImageIO.read(HelperUi.ICON16));
         } catch (IOException e) {
             LOGGER.error(e, e);
         }

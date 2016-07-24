@@ -1,13 +1,18 @@
 package com.jsql.model.suspendable;
 
+import static com.jsql.model.accessible.DataAccess.MODE;
+import static com.jsql.model.accessible.DataAccess.SEPARATOR;
+import static com.jsql.model.accessible.DataAccess.TD;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.util.StringUtil;
@@ -25,7 +30,7 @@ import com.jsql.util.ThreadUtil;
 public class SuspendableGetRows extends AbstractSuspendable<String> {
     
     @Override
-    public String run(Object... args) throws InjectionFailureException, StoppedByUserException {
+    public String run(Object... args) throws JSqlException {
         String initialSQLQuery = (String) args[0];
         String[] sourcePage = (String[]) args[1];
         boolean isUsingLimit = (Boolean) args[2];
@@ -33,7 +38,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         AbstractElementDatabase searchName = (AbstractElementDatabase) args[4];
         ThreadUtil.put(searchName, this);
 
-        String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", MediatorModel.model().vendor.getValue().getSqlLimit(0));
+        String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", MediatorModel.model().vendor.instance().getSqlLimit(0));
 
         AbstractStrategy strategy = MediatorModel.model().getStrategy().instance();
         
@@ -42,11 +47,10 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
          * keep track of rows we have reached (limitSQLResult) and use these to skip entire rows,
          * keep track of characters we have reached (startPosition) and use these to skip characters,
          */
-        /**
-         * TODO simpler loop
-         */
-        String slidingWindowAllRows = "", slidingWindowCurrentRow = "";
-        int sqlLimit = 0, charPositionInCurrentRow = 1;
+        String slidingWindowAllRows = "";
+        String slidingWindowCurrentRow = "";
+        int sqlLimit = 0;
+        int charPositionInCurrentRow = 1;
         
         while (true) {
 
@@ -59,7 +63,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 throw new InjectionFailureException();
             }
             
-            sourcePage[0] = strategy.inject(sqlQuery, charPositionInCurrentRow+"", this);
+            sourcePage[0] = strategy.inject(sqlQuery, Integer.toString(charPositionInCurrentRow), this);
             
             /**
              * After SQLi tag, gets characters between 1 and maxPerf
@@ -70,19 +74,19 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             // Parse all the data we have retrieved
             Matcher regexAllLine = 
                 Pattern
-                    .compile("(?si)SQLi(.{1,"+ strategy.getPerformanceLength() +"})")
+                    .compile(MODE +"SQLi(.{1,"+ strategy.getPerformanceLength() +"})")
                     .matcher(sourcePage[0]);
             
             Matcher regexEndOfLine = 
                 Pattern
-                    .compile("(?si)SQLi\\x01\\x03\\x03\\x07")
+                    .compile(MODE +"SQLi\\x01\\x03\\x03\\x07")
                     .matcher(sourcePage[0]);
             
             if (regexEndOfLine.find() && isUsingLimit && !"".equals(slidingWindowAllRows)) {
                 // Update the view only if there are value to find, and if it's not the root (empty tree)
                 if (numberToFind > 0 && searchName != null) {
                     Request request = new Request();
-                    request.setMessage("UpdateProgress");
+                    request.setMessage(TypeRequest.UPDATE_PROGRESS);
                     request.setParameters(searchName, numberToFind);
                     MediatorModel.model().sendToViews(request);
                 }
@@ -97,7 +101,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 // Update the view only if there are value to find, and if it's not the root (empty tree)
                 if (numberToFind > 0 && searchName != null) {
                     Request request = new Request();
-                    request.setMessage("UpdateProgress");
+                    request.setMessage(TypeRequest.UPDATE_PROGRESS);
                     request.setParameters(searchName, numberToFind);
                     MediatorModel.model().sendToViews(request);
                 }
@@ -112,10 +116,10 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 slidingWindowCurrentRow += regexAllLine.group(1);
 
                 Request request = new Request();
-                request.setMessage("MessageChunk");
+                request.setMessage(TypeRequest.MESSAGE_CHUNK);
                 request.setParameters(
                     Pattern
-                        .compile("(?si)\\x01\\x03\\x03\\x07.*")
+                        .compile(MODE +"\\x01\\x03\\x03\\x07.*")
                         .matcher(regexAllLine.group(1))
                         .replaceAll("\n")
                 );
@@ -124,7 +128,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 // if it's not the root (empty tree)
                 if (searchName != null) {
                     Request request = new Request();
-                    request.setMessage("EndProgress");
+                    request.setMessage(TypeRequest.END_PROGRESS);
                     request.setParameters(searchName);
                     MediatorModel.model().sendToViews(request);
                 }
@@ -138,10 +142,10 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             regexAllLine = 
                 Pattern
                     .compile(
-                        "(?si)("
-                            + DataAccess.SEPARATOR 
+                        MODE +"("
+                            + SEPARATOR 
                             + "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?"
-                            + DataAccess.SEPARATOR 
+                            + SEPARATOR 
                         + ")")
                     .matcher(slidingWindowCurrentRow);
             int nbCompleteLine = 0;
@@ -154,7 +158,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
              */
             if (isUsingLimit && numberToFind > 0 && searchName != null) {
                 Request request = new Request();
-                request.setMessage("UpdateProgress");
+                request.setMessage(TypeRequest.UPDATE_PROGRESS);
                 request.setParameters(searchName, sqlLimit + nbCompleteLine);
                 MediatorModel.model().sendToViews(request);
             }
@@ -171,7 +175,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                  */
                 slidingWindowCurrentRow = 
                     Pattern
-                        .compile("(?si)\\x01\\x03\\x03\\x07.*")
+                        .compile(MODE +"\\x01\\x03\\x03\\x07.*")
                         .matcher(slidingWindowCurrentRow)
                         .replaceAll("");
                 slidingWindowAllRows += slidingWindowCurrentRow;
@@ -184,18 +188,19 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     slidingWindowAllRows = 
                         Pattern
                             .compile(
-                                "(?si)("
-                                    + "\\x06"+ DataAccess.SEPARATOR +""
+                                MODE +"("
+                                    + TD + SEPARATOR
                                     + "|"
                                     + "\\x05\\d*"
-                                + ")$")
+                                + ")$"
+                            )
                             .matcher(slidingWindowAllRows)
                             .replaceAll("");
                     slidingWindowCurrentRow = 
                         Pattern
                             .compile(
-                                "(?si)("
-                                    + "\\x06"+ DataAccess.SEPARATOR +""
+                                MODE +"("
+                                    + TD + SEPARATOR
                                     + "|"
                                     + "\\x05\\d*"
                                 + ")$")
@@ -208,16 +213,16 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     regexAllLine = 
                         Pattern
                             .compile(
-                                "(?si)"
+                                MODE
                                 + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]"
-                                + DataAccess.SEPARATOR +"\\x06"+ DataAccess.SEPARATOR 
+                                + SEPARATOR + TD + SEPARATOR 
                                 + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
                             )
                             .matcher(slidingWindowCurrentRow);
                     Matcher regexSearch2a2 = 
                         Pattern
                             .compile(
-                                "(?si)"+ DataAccess.SEPARATOR +"[^\\x01-\\x03\\x05-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
+                                MODE + SEPARATOR +"[^\\x01-\\x03\\x05-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
                             )
                             .matcher(slidingWindowCurrentRow);
 
@@ -229,7 +234,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                         slidingWindowAllRows = 
                             Pattern
                                 .compile(
-                                    "(?si)"+ DataAccess.SEPARATOR +"[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
+                                    MODE + SEPARATOR +"[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
                                 )
                                 .matcher(slidingWindowAllRows)
                                 .replaceAll("");
@@ -248,10 +253,10 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                          */
                         Pattern
                             .compile(
-                                "(?si)("
-                                    + DataAccess.SEPARATOR 
+                                MODE +"("
+                                    + SEPARATOR 
                                     + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x05[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?"
-                                    + DataAccess.SEPARATOR 
+                                    + SEPARATOR 
                                 +")"
                             )
                             .matcher(slidingWindowAllRows);
@@ -265,7 +270,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     // Inform the view about the progression
                     if (numberToFind > 0 && searchName != null) {
                         Request request = new Request();
-                        request.setMessage("UpdateProgress");
+                        request.setMessage(TypeRequest.UPDATE_PROGRESS);
                         request.setParameters(searchName, sqlLimit);
                         MediatorModel.model().sendToViews(request);
                     }
@@ -277,7 +282,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     if (sqlLimit == numberToFind) {
                         if (numberToFind > 0 && searchName != null) {
                             Request request = new Request();
-                            request.setMessage("UpdateProgress");
+                            request.setMessage(TypeRequest.UPDATE_PROGRESS);
                             request.setParameters(searchName, numberToFind);
                             MediatorModel.model().sendToViews(request);
                         }
@@ -290,16 +295,16 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                      */
                     sqlQuery = 
                         Pattern
-                            .compile("(?si)\\{limit\\}")
+                            .compile(MODE +"\\{limit\\}")
                             .matcher(initialSQLQuery)
-                            .replaceAll(MediatorModel.model().vendor.getValue().getSqlLimit(sqlLimit));
-                    charPositionInCurrentRow = 1;
+                            .replaceAll(MediatorModel.model().vendor.instance().getSqlLimit(sqlLimit));
+
                     slidingWindowCurrentRow = "";
                 } else {
                     // Inform the view about the progression
                     if (numberToFind > 0 && searchName != null) {
                         Request request = new Request();
-                        request.setMessage("UpdateProgress");
+                        request.setMessage(TypeRequest.UPDATE_PROGRESS);
                         request.setParameters(searchName, numberToFind);
                         MediatorModel.model().sendToViews(request);
                     }

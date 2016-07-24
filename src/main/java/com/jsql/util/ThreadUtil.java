@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -20,6 +20,10 @@ import com.jsql.model.suspendable.AbstractSuspendable;
  * String operations missing like join().
  */
 public final class ThreadUtil {
+    /**
+     * List of running jobs.
+     */
+    private final Map<AbstractElementDatabase, AbstractSuspendable<?>> suspendables = new HashMap<>();
     
     private static final ThreadUtil INSTANCE = new ThreadUtil();
     
@@ -29,11 +33,6 @@ public final class ThreadUtil {
     private ThreadUtil() {
         //not called
     }
-    
-    /**
-     * List of running jobs.
-     */
-    private final Map<AbstractElementDatabase, AbstractSuspendable<?>> suspendables = new HashMap<>();
 
     public static void put(AbstractElementDatabase dataObject, AbstractSuspendable<?> suspendable) {
         INSTANCE.suspendables.put(dataObject, suspendable);

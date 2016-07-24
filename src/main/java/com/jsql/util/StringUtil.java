@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -24,6 +24,8 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.TypeHeader;
+import com.jsql.model.bean.util.TypeRequest;
 
 /**
  * String operations missing like join().
@@ -49,7 +51,7 @@ public final class StringUtil {
      */
     public static String join(String[] strings, String separator) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < strings.length; i++) {
+        for (int i = 0 ; i < strings.length ; i++) {
             if (i != 0) {
                 sb.append(separator);
             }
@@ -65,7 +67,7 @@ public final class StringUtil {
      */
     public static String hexstr(String hex) {
         byte[] bytes = new byte[hex.length() / 2];
-        for (int i = 0; i < bytes.length; i++) {
+        for (int i = 0 ; i < bytes.length ; i++) {
             bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
         }
         return new String(bytes);
@@ -88,7 +90,7 @@ public final class StringUtil {
     public static Map<String, String> getHTTPHeaders(URLConnection conn) {
         Map<String, String> mapResponse = new HashMap<>();
         
-        for (int i = 0;; i++) {
+        for (int i = 0 ; ; i++) {
             String headerName = conn.getHeaderFieldKey(i);
             String headerValue = conn.getHeaderField(i);
             if (headerName == null && headerValue == null) {
@@ -102,23 +104,23 @@ public final class StringUtil {
 
     @SuppressWarnings("unchecked")
     public static void sendMessageHeader(HttpURLConnection connection, String url) throws IOException {
-        Map<String, Object> msgHeader = new HashMap<>();
-        msgHeader.put("Url", url);
-        msgHeader.put("Response", StringUtil.getHTTPHeaders(connection));
+        Map<TypeHeader, Object> msgHeader = new HashMap<>();
+        msgHeader.put(TypeHeader.URL, url);
+        msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHTTPHeaders(connection));
 
         if (
-            !PreferencesUtil.isFollowingRedirection
-            && Pattern.matches("3\\d\\d", ""+connection.getResponseCode())
+            !PreferencesUtil.isFollowingRedirection()
+            && Pattern.matches("3\\d\\d", Integer.toString(connection.getResponseCode()))
         ) {
             LOGGER.warn("HTTP 3XX Redirection detected. Please test again with option 'Follow HTTP redirection' enabled.");
         }
         
         Map<String, String> mapResponse = (Map<String, String>) msgHeader.get("Response");
         if (
-            Pattern.matches("4\\d\\d", ""+connection.getResponseCode()) 
+            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
             && mapResponse.containsKey("WWW-Authenticate") 
             && mapResponse.get("WWW-Authenticate") != null
-            && mapResponse.get("WWW-Authenticate").toString().startsWith("Basic ")
+            && mapResponse.get("WWW-Authenticate").startsWith("Basic ")
         ) {
             LOGGER.warn(
                 "Basic Authentication detected.\n"
@@ -127,7 +129,7 @@ public final class StringUtil {
             );
         
         } else if (
-            Pattern.matches("4\\d\\d", ""+connection.getResponseCode()) 
+            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
             && mapResponse.containsKey("WWW-Authenticate") 
             && "NTLM".equals(mapResponse.get("WWW-Authenticate"))
         ) {
@@ -138,10 +140,10 @@ public final class StringUtil {
             );
         
         } else if (
-            Pattern.matches("4\\d\\d", ""+connection.getResponseCode()) 
+            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
             && mapResponse.containsKey("WWW-Authenticate") 
             && mapResponse.get("WWW-Authenticate") != null
-            && mapResponse.get("WWW-Authenticate").toString().startsWith("Digest ")
+            && mapResponse.get("WWW-Authenticate").startsWith("Digest ")
         ) {
             LOGGER.warn(
                 "Digest Authentication detected.\n"
@@ -149,7 +151,7 @@ public final class StringUtil {
             );
         
         } else if (
-            Pattern.matches("4\\d\\d", ""+connection.getResponseCode()) 
+            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
             && mapResponse.containsKey("WWW-Authenticate") 
             && "Negotiate".equals(mapResponse.get("WWW-Authenticate"))
         ) {
@@ -160,8 +162,10 @@ public final class StringUtil {
         }
         
         // Request the web page to the server
-        String line, pageSource = "";
+        String pageSource = "";
         Exception exception = null;
+        
+        String line;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
             while ((line = reader.readLine()) != null) {
                 pageSource += line + "\r\n";
@@ -170,11 +174,11 @@ public final class StringUtil {
             exception = e;
         }
 
-        msgHeader.put("Source", pageSource);
+        msgHeader.put(TypeHeader.SOURCE, pageSource);
         
         // Inform the view about the log infos
         Request request = new Request();
-        request.setMessage("MessageHeader");
+        request.setMessage(TypeRequest.MESSAGE_HEADER);
         request.setParameters(msgHeader);
         MediatorModel.model().sendToViews(request);
         

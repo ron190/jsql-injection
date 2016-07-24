@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -31,6 +31,8 @@ import javax.swing.text.StyledDocument;
 import org.apache.log4j.Logger;
 
 import sun.swing.SwingUtilities2;
+
+import com.jsql.view.swing.HelperUi;
 
 /**
  * A Terminal completely built from swing text pane.
@@ -96,13 +98,17 @@ public abstract class AbstractShell extends JTextPane {
         URL url = new URL(urlShell);
         host = url.getHost();
 
-        this.setFont(new Font("Ubuntu Mono", Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize()));
+        this.setFont(new Font(HelperUi.FONT_NAME, Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize()));
         this.setCaret(new BlockCaret());
         this.setBackground(Color.BLACK);
         this.setForeground(Color.LIGHT_GRAY);
 
-        // Disable antialiasing
-        this.putClientProperty(SwingUtilities2.AA_TEXT_PROPERTY_KEY, null);
+        try {
+            // Disable antialiasing (not Java 9 compatible)
+            this.putClientProperty(SwingUtilities2.AA_TEXT_PROPERTY_KEY, null);
+        } catch (NoSuchFieldError e) {
+            // Ignore
+        }
 
         this.displayPrompt(true);
 
@@ -113,7 +119,7 @@ public abstract class AbstractShell extends JTextPane {
         this.addMouseListener(new EmptyFocus());
         this.addKeyListener(new KeyAdapterTerminal(this));
     }
-
+    
     /**
      * Update terminal and use default behavior.
      */

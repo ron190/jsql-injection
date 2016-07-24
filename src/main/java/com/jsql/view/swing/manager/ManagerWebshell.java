@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -11,8 +11,7 @@
 package com.jsql.view.swing.manager;
 
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.JSqlException;
 
 /**
  * Manager for uploading PHP webshell to the host and send system commands.
@@ -20,7 +19,7 @@ import com.jsql.model.exception.StoppedByUserException;
 @SuppressWarnings("serial")
 public class ManagerWebshell extends ManagerAbstractShell {
     @Override
-    void action(String pathShell, String urlShell) throws InjectionFailureException, StoppedByUserException {
-        RessourceAccess.createWebShell(pathShell.toString(), urlShell);
+    void createPayload(String pathShell, String urlShell) throws JSqlException {
+        RessourceAccess.createWebShell(pathShell, urlShell);
     }
 }

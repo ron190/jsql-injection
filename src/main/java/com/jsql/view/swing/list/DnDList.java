@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,8 +32,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.ListCellRenderer;
-import javax.swing.ListModel;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
@@ -193,7 +190,7 @@ public class DnDList extends JList<ListItem> {
             return;
         }
         
-        for (Iterator<File> it = filesToImport.iterator(); it.hasNext();) {
+        for (Iterator<File> it = filesToImport.iterator() ; it.hasNext() ; ) {
             File fileToImport = it.next();
 
             // Report NoSuchMethodError #1617
@@ -238,15 +235,16 @@ public class DnDList extends JList<ListItem> {
             @Override
             public void run() {
                 
-                for (Iterator<File> iterator = (filesToImport).iterator(); iterator.hasNext();) {
+                for (Iterator<File> iterator = (filesToImport).iterator() ; iterator.hasNext() ; ) {
                     try (BufferedReader fileReader = new BufferedReader(new FileReader(iterator.next()))) {
                         String line;
                         while ((line = fileReader.readLine()) != null) {
-                            if (!"".equals(line)) {
+                            if (
+                                !"".equals(line)
                                 // Fix Report #60
-                                if (0 <= endPosition[0] && endPosition[0] <= listModel.size()) {
-                                    listModel.add(endPosition[0]++, new ListItem(line.replace("\\", "/")));
-                                }
+                                && 0 <= endPosition[0] && endPosition[0] <= listModel.size()
+                            ) {
+                                listModel.add(endPosition[0]++, new ListItem(line.replace("\\", "/")));
                             }
                         }
                     } catch (IOException e) {
@@ -272,30 +270,6 @@ public class DnDList extends JList<ListItem> {
         });
         
     }
-    
-//    /**
-//     * Compatibility method for java 6.
-//     */
-//    @Override
-//    public List<ListItem> getSelectedValuesList() {
-//        ListSelectionModel sm = getSelectionModel();
-//        ListModel<ListItem> dm = getModel();
-//
-//        int iMin = sm.getMinSelectionIndex();
-//        int iMax = sm.getMaxSelectionIndex();
-//
-//        if ((iMin < 0) || (iMax < 0)) {
-//            return Collections.emptyList();
-//        }
-//
-//        List<ListItem> selectedItems = new ArrayList<>();
-//        for (int i = iMin; i <= iMax; i++) {
-//            if (sm.isSelectedIndex(i)) {
-//                selectedItems.add(dm.getElementAt(i));
-//            }
-//        }
-//        return selectedItems;
-//    }
     
     public void restore() {
         this.listModel.clear();

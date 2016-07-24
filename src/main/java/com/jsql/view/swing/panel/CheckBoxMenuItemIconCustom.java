@@ -79,13 +79,19 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
         g.translate( -x, -y );
     }
 
-    public void paintIcon( Component c, Graphics g, int x, int y )
-    {
+    @Override
+    public void paintIcon(Component c, Graphics g, int x, int y) {
         paintOceanIcon(c, g, x, y);
     }
 
-    public int getIconWidth() { return new Dimension( 10, 10 ).width; }
+    @Override
+    public int getIconWidth() { 
+        return new Dimension( 10, 10 ).width; 
+    }
 
-    public int getIconHeight() { return new Dimension( 10, 10 ).height; }
+    @Override
+    public int getIconHeight() { 
+        return new Dimension( 10, 10 ).height; 
+    }
 
 }  // End class RadioButtonMenuItemIcon

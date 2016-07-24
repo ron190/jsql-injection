@@ -22,17 +22,17 @@ public class AuthenticationUtil {
      */
     private static final Logger LOGGER = Logger.getLogger(AuthenticationUtil.class);
 
-    public static String usernameDigest;
+    private static String usernameDigest;
 
-    public static String passwordDigest;
+    private static String passwordDigest;
 
-    public static boolean isDigestAuthentication = false;
+    private static boolean isDigestAuthentication = false;
 
-    public static String pathKerberosLogin;
+    private static String pathKerberosLogin;
 
-    public static String pathKerberosKrb5;
+    private static String pathKerberosKrb5;
 
-    public static boolean isKerberos = false;
+    private static boolean isKerberos = false;
     
     /**
      * Utility class.
@@ -92,44 +92,17 @@ public class AuthenticationUtil {
             Authenticator.setDefault(new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    PasswordAuthentication pa = new PasswordAuthentication (
+                    return new PasswordAuthentication (
                         AuthenticationUtil.usernameDigest, 
                         AuthenticationUtil.passwordDigest.toCharArray()
                     );
-                    return pa;
                 }
             });
         } else {
             Authenticator.setDefault(null);
         }
         
-        if (AuthenticationUtil.isKerberos) {
-            if (System.getProperty("java.protocol.handler.pkgs") != null) {
-                System.setProperty(
-                    "java.protocol.handler.pkgs", 
-                    System.getProperty("java.protocol.handler.pkgs")
-                        .replace("|jcifs", "")
-                        .replace("jcifs", "")
-                );
-            }
-            System.setProperty("java.security.krb5.conf", AuthenticationUtil.pathKerberosKrb5);
-            System.setProperty("java.security.auth.login.config", AuthenticationUtil.pathKerberosLogin);
-            System.setProperty("spnego.krb5.conf", AuthenticationUtil.pathKerberosKrb5);
-            System.setProperty("spnego.login.conf", AuthenticationUtil.pathKerberosLogin);
-        } else {
-            System.setProperty("java.protocol.handler.pkgs", "");
-            System.setProperty("java.security.krb5.conf", "");
-            System.setProperty("java.security.auth.login.config", "");
-            System.setProperty("spnego.krb5.conf", "");
-            System.setProperty("spnego.login.conf", "");
-            
-            System.setProperty("jcifs.smb.client.responseTimeout", ConnectionUtil.timeOut.toString());
-            System.setProperty("jcifs.smb.client.soTimeout", ConnectionUtil.timeOut.toString());
-            jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", ConnectionUtil.timeOut.toString());
-            jcifs.Config.setProperty("jcifs.smb.client.soTimeout", ConnectionUtil.timeOut.toString());
-            
-            jcifs.Config.registerSmbURLHandler();
-        }
+        AuthenticationUtil.setAuthentication();
         
         if (
             isRestartRequired && 
@@ -165,15 +138,18 @@ public class AuthenticationUtil {
             Authenticator.setDefault(new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    PasswordAuthentication pa = new PasswordAuthentication (
+                    return new PasswordAuthentication (
                         AuthenticationUtil.usernameDigest, 
                         AuthenticationUtil.passwordDigest.toCharArray()
                     );
-                    return pa;
                 }
             });
         }
         
+        AuthenticationUtil.setAuthentication();
+    }
+    
+    private static void setAuthentication() {
         if (AuthenticationUtil.isKerberos) {
             if (System.getProperty("java.protocol.handler.pkgs") != null) {
                 System.setProperty(
@@ -194,12 +170,40 @@ public class AuthenticationUtil {
             System.setProperty("spnego.krb5.conf", "");
             System.setProperty("spnego.login.conf", "");
             
-            System.setProperty("jcifs.smb.client.responseTimeout", ConnectionUtil.timeOut.toString());
-            System.setProperty("jcifs.smb.client.soTimeout", ConnectionUtil.timeOut.toString());
-            jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", ConnectionUtil.timeOut.toString());
-            jcifs.Config.setProperty("jcifs.smb.client.soTimeout", ConnectionUtil.timeOut.toString());
+            System.setProperty("jcifs.smb.client.responseTimeout", ConnectionUtil.TIMEOUT.toString());
+            System.setProperty("jcifs.smb.client.soTimeout", ConnectionUtil.TIMEOUT.toString());
+            jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", ConnectionUtil.TIMEOUT.toString());
+            jcifs.Config.setProperty("jcifs.smb.client.soTimeout", ConnectionUtil.TIMEOUT.toString());
             
             jcifs.Config.registerSmbURLHandler();
         }
+    }
+
+    public static String getUsernameDigest() {
+        return usernameDigest;
+    }
+
+    public static String getPasswordDigest() {
+        return passwordDigest;
+    }
+
+    public static boolean isDigestAuthentication() {
+        return isDigestAuthentication;
+    }
+
+    public static String getPathKerberosLogin() {
+        return pathKerberosLogin;
+    }
+
+    public static String getPathKerberosKrb5() {
+        return pathKerberosKrb5;
+    }
+
+    public static boolean isKerberos() {
+        return isKerberos;
+    }
+
+    public static Logger getLogger() {
+        return LOGGER;
     }
 }

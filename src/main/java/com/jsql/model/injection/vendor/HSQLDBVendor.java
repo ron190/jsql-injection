@@ -1,5 +1,10 @@
 package com.jsql.model.injection.vendor;
 
+import static com.jsql.model.accessible.DataAccess.QTE_SQL;
+import static com.jsql.model.accessible.DataAccess.SEPARATOR_SQL;
+import static com.jsql.model.accessible.DataAccess.TD_SQL;
+import static com.jsql.model.accessible.DataAccess.TRAIL_SQL;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +14,7 @@ import com.jsql.model.bean.database.Table;
 import com.jsql.model.injection.strategy.Strategy;
 import com.jsql.util.StringUtil;
 
-public class HSQLDBVendor extends AbstractVendor {
+public class HSQLDBVendor extends AbstractVendorDefault {
 
     @Override
     public String getSqlInfos() {
@@ -17,14 +22,14 @@ public class HSQLDBVendor extends AbstractVendor {
             "select+concat(" +
                 "" +
                     "concat_ws(" +
-                        "'%04'," +
+                        "'"+ SEPARATOR_SQL +"'," +
                         "DATABASE_VERSION()," +
                         "CURRENT_SCHEMA," +
                         "USER()" +
                     ")" +
                 "" +
                 "," +
-                "'%01%03%03%07'" +
+                "'"+ TRAIL_SQL +"'" +
             ")r+FROM(VALUES(0))";
     }
 
@@ -34,15 +39,15 @@ public class HSQLDBVendor extends AbstractVendor {
             "select+" +
                 "concat(" +
                     "group_concat(" +
-                        "'%04'||" +
+                        "'"+ SEPARATOR_SQL +"'||" +
                         "r||" +
-                        "'%05'||" +
+                        "'"+ QTE_SQL +"'||" +
                         "convert(q,SQL_VARCHAR)||" +
-                        "'%04'" +
+                        "'"+ SEPARATOR_SQL +"'" +
                         "+order+by+r+" +
-                        "separator+'%06'" +
+                        "separator+'"+ TD_SQL +"'" +
                     ")," +
-                    "'%01%03%03%07'" +
+                    "'"+ TRAIL_SQL +"'" +
                 ")r+" +
             "from(" +
                 "select+" +
@@ -60,13 +65,13 @@ public class HSQLDBVendor extends AbstractVendor {
             "select+" +
                 "concat(" +
                     "group_concat(" +
-                        "'%04'||" +
+                        "'"+ SEPARATOR_SQL +"'||" +
                         "convert(r,SQL_VARCHAR)||" +
-                        "'%050%04'+" +
+                        "'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'+" +
                         "order+by+r+" +
-                        "separator+'%06'" +
+                        "separator+'"+ TD_SQL +"'" +
                     ")," +
-                    "'%01%03%03%07'" +
+                    "'"+ TRAIL_SQL +"'" +
                 ")r+" +
             "from(" +
                 "select+" +
@@ -85,15 +90,15 @@ public class HSQLDBVendor extends AbstractVendor {
             "select+" +
                 "concat(" +
                     "group_concat(" +
-                        "'%04'||" +
+                        "'"+ SEPARATOR_SQL +"'||" +
                         "convert(n,SQL_VARCHAR)||" +
-                        "'%05'||" +
+                        "'"+ QTE_SQL +"'||" +
                         "0||" +
-                        "'%04'+" +
+                        "'"+ SEPARATOR_SQL +"'+" +
                         "order+by+n+" +
-                        "separator+'%06'" +
+                        "separator+'"+ TD_SQL +"'" +
                     ")," +
-                    "'%01%03%03%07'" +
+                    "'"+ TRAIL_SQL +"'" +
                 ")r+" +
             "from(" +
                 "select+" +
@@ -120,14 +125,14 @@ public class HSQLDBVendor extends AbstractVendor {
         return
             "select+concat(" +
                 "group_concat(" +
-                    "'%04'||" +
+                    "'"+ SEPARATOR_SQL +"'||" +
                     "r||" +
-                    "'%05'||" +
+                    "'"+ QTE_SQL +"'||" +
                     "convert(q,SQL_VARCHAR)||" +
-                    "'%04'" +
-                    "+order+by+r+separator+'%06'" +
+                    "'"+ SEPARATOR_SQL +"'" +
+                    "+order+by+r+separator+'"+ TD_SQL +"'" +
                 ")," +
-                "'%01%03%03%07'" +
+                "'"+ TRAIL_SQL +"'" +
             ")r+from(" +
                 "select+" +
                     "convert(concat(" + formatListColumn + "),SQL_VARCHAR)r," +

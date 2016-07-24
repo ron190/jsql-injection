@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -122,7 +122,6 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
 
         this.setBottomComponent(MediatorGui.panelConsoles());
         this.setDividerLocation(669 - horizontalSplitter);
-//        this.setDividerLocation(594 - horizontalSplitter);
 
         // defines left and bottom pane
         this.setResizeWeight(1);

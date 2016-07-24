@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.action;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
@@ -44,7 +45,7 @@ public class ActionSaveTab extends AbstractAction {
      */
     private static final Logger LOGGER = Logger.getLogger(ActionSaveTab.class);
     
-    final ReplaceFileChooser filechooser = new ReplaceFileChooser(PreferencesUtil.pathFile);
+    final ReplaceFileChooser filechooser = new ReplaceFileChooser(PreferencesUtil.getPathFile());
 
     public ActionSaveTab() {
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
@@ -57,12 +58,14 @@ public class ActionSaveTab extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
         filechooser.setDialogTitle("Save Tab As");
 
-        if (MediatorGui.tabResults().getSelectedComponent() instanceof PanelTable) {
+        Component component = MediatorGui.tabResults().getSelectedComponent();
+        if (component instanceof PanelTable) {
             saveTablePanel();
-        } else if (MediatorGui.tabResults().getSelectedComponent() instanceof LightScrollPane) {
-            if ((((LightScrollPane) MediatorGui.tabResults().getSelectedComponent()).scrollPane.getViewport()).getView() instanceof JTextComponent) {
-                saveJTextComponent();
-            }
+        } else if (
+            component instanceof LightScrollPane
+            && (((LightScrollPane) component).scrollPane.getViewport()).getView() instanceof JTextComponent
+        ) {
+            this.saveJTextComponent();
         }
     }
     
@@ -83,14 +86,14 @@ public class ActionSaveTab extends AbstractAction {
                 TableModel model = table.getModel();
                 FileWriter excel = new FileWriter(file);
                 
-                for (int i = 2; i < model.getColumnCount(); i++) {
+                for (int i = 2 ; i < model.getColumnCount() ; i++) {
                     excel.write(model.getColumnName(i) + "\t");
                 }
                 
                 excel.write("\n");
                 
-                for (int i = 0; i < model.getRowCount(); i++) {
-                    for (int j = 2; j < model.getColumnCount(); j++) {
+                for (int i = 0 ; i < model.getRowCount() ; i++) {
+                    for (int j = 2 ; j < model.getColumnCount() ; j++) {
                         /*
                          * Cell empty when string was too long to be injected (columnTooLong|cellEmpty|cellEmpty).
                          */

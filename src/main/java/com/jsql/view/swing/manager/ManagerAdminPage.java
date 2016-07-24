@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -112,7 +112,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (listFile.getSelectedValuesList().isEmpty()) {
-                    LOGGER.warn("Select admin page(s) in the list");
+                    LOGGER.warn("Select admin page(s) to find");
                     return;
                 }
                 new Thread(new Runnable() {
@@ -136,7 +136,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
                                 }
                             }
                         } else {
-                            RessourceAccess.isSearchAdminStopped = true;
+                            RessourceAccess.setSearchAdminStopped(true);
                             run.setEnabled(false);
                         }
                     }

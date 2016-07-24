@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -20,8 +20,7 @@ import javax.swing.JTextField;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.text.JPopupTextField;
 
@@ -89,7 +88,7 @@ public class ManagerSqlshell extends ManagerAbstractShell {
     }
 
     @Override
-    void action(String shellPath, String shellURL) throws InjectionFailureException, StoppedByUserException {
+    void createPayload(String shellPath, String shellURL) throws JSqlException {
         RessourceAccess.createSqlShell(shellPath, shellURL, username.getText(), password.getText());
     }
 }

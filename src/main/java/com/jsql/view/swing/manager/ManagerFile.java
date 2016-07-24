@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -38,8 +38,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
@@ -118,7 +117,7 @@ public class ManagerFile extends ManagerAbstractList {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (listFile.getSelectedValuesList().isEmpty()) {
-                    LOGGER.warn("Select one or more file");
+                    LOGGER.warn("Select file(s) to read");
                     return;
                 }
 
@@ -133,17 +132,15 @@ public class ManagerFile extends ManagerAbstractList {
                                 MediatorGui.tabManagers().sqlShellManager.clearSelection();
                                 loader.setVisible(true);
                                 RessourceAccess.readFile(listFile.getSelectedValuesList());
-                            } catch (StoppedByUserException e) {
-                                LOGGER.warn("Reading File stopped by user", e);
-                            } catch (InjectionFailureException e) {
-                                LOGGER.warn("Reading File failed", e);
+                            } catch (JSqlException | ExecutionException e) {
+                                LOGGER.warn(e, e);
                             } catch (InterruptedException e) {
                                 LOGGER.warn("Interruption while waiting for Reading File termination", e);
                                 Thread.currentThread().interrupt();
                             }
 
                         } else {
-                            RessourceAccess.isSearchFileStopped = true;
+                            RessourceAccess.setSearchFileStopped(true);
                             run.setEnabled(false);
                         }
                     }

@@ -1,8 +1,17 @@
 package com.jsql.model.injection.strategy;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.jsql.model.MediatorModel;
+import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.TypeHeader;
+import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.util.ConnectionUtil;
 
 /**
  * Define a strategy to inject SQL with methods like errorbased or timebased.
@@ -27,7 +36,7 @@ public abstract class AbstractStrategy {
      * @throws InjectionFailureException
      * @throws StoppedByUserException
      */
-    public abstract void checkApplicability() throws InjectionFailureException, StoppedByUserException;
+    public abstract void checkApplicability() throws JSqlException;
     
     /**
      * Inform the view that this strategy can be used.
@@ -38,6 +47,23 @@ public abstract class AbstractStrategy {
      * Inform the view that this strategy can't be used.
      */
     protected abstract void unallow();
+    
+    public void markVulnerable(TypeRequest message) {
+        Request request = new Request();
+        request.setMessage(message);
+        
+        Map<TypeHeader, Object> msgHeader = new HashMap<>();
+        msgHeader.put(TypeHeader.URL, ConnectionUtil.getUrlByUser());
+
+        request.setParameters(msgHeader);
+        MediatorModel.model().sendToViews(request);
+    }
+
+    public void markInvulnerable(TypeRequest message) {
+        Request request = new Request();
+        request.setMessage(message);
+        MediatorModel.model().sendToViews(request);
+    }
     
     /**
      * Start the strategy work.

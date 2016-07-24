@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -42,7 +42,7 @@ public class ActionNewWindow extends AbstractAction {
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent event) {
         LOGGER.info(I18n.valueByKey("STARTING_NEW_WINDOW"));
         String separator = System.getProperty("file.separator");
         String classpath = System.getProperty("java.class.path");
@@ -57,8 +57,8 @@ public class ActionNewWindow extends AbstractAction {
         ;
         try {
             processBuilder.start();
-        } catch (IOException e1) {
-            LOGGER.error(I18n.valueByKey("ERROR_OPENING_NEW_WINDOW"));
+        } catch (IOException e) {
+            LOGGER.error(I18n.valueByKey("ERROR_OPENING_NEW_WINDOW"), e);
         }        
     }
 }

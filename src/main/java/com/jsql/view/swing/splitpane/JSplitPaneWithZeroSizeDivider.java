@@ -52,16 +52,16 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
      */
     private int dividerDragOffset = 4;
     
+    public JSplitPaneWithZeroSizeDivider(int orientation) {
+        super(orientation, true);
+    }
+    
     public void disableDragSize() {
         dividerDragSize = 0;
     }
     
     public void enableDragSize() {
         dividerDragSize = 9;
-    }
-
-    public JSplitPaneWithZeroSizeDivider(int orientation) {
-        super(orientation, true);
     }
 
     public int getDividerDragSize() {

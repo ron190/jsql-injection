@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -18,8 +18,6 @@ package com.jsql.model.exception;
 @SuppressWarnings("serial")
 public class InjectionFailureException extends SlidingException {
     
-    private String slidingWindowAllRows = "";
-    
     public InjectionFailureException() {
         super("Execution stopped");
     }
@@ -27,13 +25,9 @@ public class InjectionFailureException extends SlidingException {
     public InjectionFailureException(String message) {
         super(message);
     }
-    
-    public void setSlidingWindowAllRows(String slidingWindowAllRows) {
-        this.slidingWindowAllRows = slidingWindowAllRows;
-    }
-    
-    public String getSlidingWindowAllRows() {
-        return this.slidingWindowAllRows;
+
+    public InjectionFailureException(String message, Throwable e) {
+        super(message, e);
     }
     
 }

@@ -30,7 +30,7 @@ public class CallableTime extends CallableAbstractBlind<CallableTime> {
      * @param inj
      */
     public CallableTime(String inj) {
-        this.blindUrl = MediatorModel.model().vendor.getValue().getSqlTimeCheck(inj);
+        this.blindUrl = MediatorModel.model().vendor.instance().sqlTimeTest(inj);
     }
     
     /**
@@ -40,13 +40,13 @@ public class CallableTime extends CallableAbstractBlind<CallableTime> {
      * @param bit
      */
     public CallableTime(String inj, int indexCharacter, int bit) {
-        this.blindUrl = MediatorModel.model().vendor.getValue().getSqlTimeBitCheck(inj, indexCharacter, bit);
+        this.blindUrl = MediatorModel.model().vendor.instance().sqlBitTestTime(inj, indexCharacter, bit);
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
     }
 
     public CallableTime(String inj, int indexCharacter, boolean isTestingLength) {
-        this.blindUrl = MediatorModel.model().vendor.getValue().getSqlTimeLengthCheck(inj, indexCharacter);
+        this.blindUrl = MediatorModel.model().vendor.instance().sqlLengthTestTime(inj, indexCharacter);
         this.isTestingLength = isTestingLength;
     }
     

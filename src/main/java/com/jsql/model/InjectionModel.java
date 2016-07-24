@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -37,8 +37,10 @@ import org.ietf.jgss.GSSException;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.TypeHeader;
+import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.injection.strategy.NormalStrategy;
 import com.jsql.model.injection.strategy.Strategy;
@@ -131,12 +133,12 @@ public class InjectionModel extends AbstractModelObservable {
     public void sendVersionToView() {
         String versionJava = System.getProperty("java.version");
         String nameSystemArchitecture = System.getProperty("os.arch");
-        LOGGER.trace("jSQL Injection v" + VERSION_JSQL + " on java "+ versionJava +"-"+ nameSystemArchitecture +"");
+        LOGGER.trace("jSQL Injection v" + VERSION_JSQL + " on java "+ versionJava +"-"+ nameSystemArchitecture);
     }
     
     public void resetModel() {
         this.charInsertion = null;
-        ((NormalStrategy) Strategy.NORMAL.instance()).visibleIndex = null;
+        ((NormalStrategy) Strategy.NORMAL.instance()).setVisibleIndex(null);
         this.indexesInUrl = null;
         
         this.versionDatabase = null;
@@ -148,7 +150,7 @@ public class InjectionModel extends AbstractModelObservable {
         
         this.strategy = null;
         
-        RessourceAccess.readingIsAllowed = false;
+        RessourceAccess.setReadingIsAllowed(false);
         
         ThreadUtil.reset();
     }
@@ -184,19 +186,19 @@ public class InjectionModel extends AbstractModelObservable {
             } else {
                 LOGGER.info("Using database type ["+ this.vendor +"]");
                 
-                Map<String, Object> msgHeader = new HashMap<>();
-                msgHeader.put("Url", ConnectionUtil.urlBase + ConnectionUtil.dataQuery + this.charInsertion);
-                msgHeader.put("Vendor", this.vendor);
+                Map<TypeHeader, Object> msgHeader = new HashMap<>();
+                msgHeader.put(TypeHeader.URL, ConnectionUtil.getUrlBase() + ConnectionUtil.getDataQuery() + this.charInsertion);
+                msgHeader.put(TypeHeader.VENDOR, this.vendor);
                 
                 Request requestDatabaseIdentified = new Request();
-                requestDatabaseIdentified.setMessage("DatabaseIdentified");
+                requestDatabaseIdentified.setMessage(TypeRequest.DATABASE_IDENTIFIED);
                 requestDatabaseIdentified.setParameters(msgHeader);
                 
                 this.sendToViews(requestDatabaseIdentified);
             }
             
             Request requestSetVendor = new Request();
-            requestSetVendor.setMessage("SetVendor");
+            requestSetVendor.setMessage(TypeRequest.SET_VENDOR);
             requestSetVendor.setParameters(this.vendor);
             
             this.sendToViews(requestSetVendor);
@@ -220,18 +222,18 @@ public class InjectionModel extends AbstractModelObservable {
             } else if (Strategy.TIME.instance().isApplicable()) {
                 Strategy.TIME.instance().activateStrategy();
                 
-            } else if (PreferencesUtil.evasionIsEnabled && this.stepSecurity < 3) {
+            } else if (PreferencesUtil.isEvasionIsEnabled() && this.stepSecurity < 3) {
                 // No injection possible, increase evasion level and restart whole process
                 this.stepSecurity++;
 
                 LOGGER.warn("Injection failed, testing evasion level "+ this.stepSecurity +"...");
                 
                 Request request = new Request();
-                request.setMessage("ResetStrategyLabel");
+                request.setMessage(TypeRequest.RESET_STRATEGY_LABEL);
                 this.sendToViews(request);
                 
                 // sinon perte de insertionCharacter entre 2 injections
-                ConnectionUtil.dataQuery += charInsertion;
+                ConnectionUtil.setDataQuery(ConnectionUtil.getDataQuery() + charInsertion);
                 this.injection();
                 
                 return;
@@ -246,11 +248,11 @@ public class InjectionModel extends AbstractModelObservable {
             
             LOGGER.trace("Done");
             this.injectionIsFinished = true;
-        } catch (Exception e) {
+        } catch (JSqlException e) {
             LOGGER.warn(e.getMessage(), e);
         } finally {
             Request request = new Request();
-            request.setMessage("EndPreparation");
+            request.setMessage(TypeRequest.END_PREPARATION);
             this.sendToViews(request);
         }
     }
@@ -263,7 +265,7 @@ public class InjectionModel extends AbstractModelObservable {
      */
     public String inject(String newDataInjection, boolean isUsingIndex) {
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
-        String urlInjection = ConnectionUtil.urlBase;
+        String urlInjection = ConnectionUtil.getUrlBase();
         
         String dataInjection = newDataInjection;
         urlInjection = this.buildURL(urlInjection, isUsingIndex, dataInjection);
@@ -272,15 +274,15 @@ public class InjectionModel extends AbstractModelObservable {
         try {
             urlObject = new URL(urlInjection);
         } catch (MalformedURLException e) {
-            LOGGER.warn("Incorrect Query Url: "+ e.getMessage(), e);
+            LOGGER.warn("Incorrect Query Url: "+ e, e);
         }
 
         /**
          * Build the GET query string infos
          * Add primary evasion
          */
-        if (ConnectionUtil.dataQuery != null && !"".equals(ConnectionUtil.dataQuery)) {
-            urlInjection += this.buildQuery(MethodInjection.QUERY, ConnectionUtil.dataQuery, isUsingIndex, dataInjection);
+        if (ConnectionUtil.getDataQuery() != null && !"".equals(ConnectionUtil.getDataQuery())) {
+            urlInjection += this.buildQuery(MethodInjection.QUERY, ConnectionUtil.getDataQuery(), isUsingIndex, dataInjection);
             try {
                 // Evasion
                 if (stepSecurity == 1) {
@@ -315,7 +317,7 @@ public class InjectionModel extends AbstractModelObservable {
 
                 urlObject = new URL(urlInjection);
             } catch (MalformedURLException e) {
-                LOGGER.warn("Incorrect Evasion Url "+ e.getMessage(), e);
+                LOGGER.warn("Incorrect Evasion Url "+ e, e);
             }
         }
         
@@ -326,11 +328,11 @@ public class InjectionModel extends AbstractModelObservable {
         try {
             
             // Block Opening Connection
-            if (AuthenticationUtil.isKerberos) {
+            if (AuthenticationUtil.isKerberos()) {
                 String kerberosConfiguration = 
                     Pattern
                         .compile("(?s)\\{.*")
-                        .matcher(StringUtils.join(Files.readAllLines(Paths.get(AuthenticationUtil.pathKerberosLogin), Charset.defaultCharset()), ""))
+                        .matcher(StringUtils.join(Files.readAllLines(Paths.get(AuthenticationUtil.getPathKerberosLogin()), Charset.defaultCharset()), ""))
                         .replaceAll("")
                         .trim();
                 
@@ -340,52 +342,52 @@ public class InjectionModel extends AbstractModelObservable {
                 connection = (HttpURLConnection) urlObject.openConnection();
             }
             
-            connection.setReadTimeout(ConnectionUtil.timeOut);
-            connection.setConnectTimeout(ConnectionUtil.timeOut);
+            connection.setReadTimeout(ConnectionUtil.TIMEOUT);
+            connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
             connection.setDefaultUseCaches(false);
             
             ConnectionUtil.fixJcifsTimeout(connection);
 
-            Map<String, Object> msgHeader = new HashMap<>();
-            msgHeader.put("Url", urlInjection);
+            Map<TypeHeader, Object> msgHeader = new HashMap<>();
+            msgHeader.put(TypeHeader.URL, urlInjection);
             
             /**
              * Build the HEADER and logs infos
              * #Need primary evasion
              */
-            if (!"".equals(ConnectionUtil.dataHeader)) {
-                for (String header: this.buildQuery(MethodInjection.HEADER, ConnectionUtil.dataHeader, isUsingIndex, dataInjection).split("\\\\r\\\\n")) {
+            if (!"".equals(ConnectionUtil.getDataHeader())) {
+                for (String header: this.buildQuery(MethodInjection.HEADER, ConnectionUtil.getDataHeader(), isUsingIndex, dataInjection).split("\\\\r\\\\n")) {
                     ConnectionUtil.sanitizeHeaders(connection, header);
                 }
                 
-                msgHeader.put("Header", this.buildQuery(MethodInjection.HEADER, ConnectionUtil.dataHeader, isUsingIndex, dataInjection));
+                msgHeader.put(TypeHeader.HEADER, this.buildQuery(MethodInjection.HEADER, ConnectionUtil.getDataHeader(), isUsingIndex, dataInjection));
             }
     
             /**
              * Build the POST and logs infos
              * #Need primary evasion
              */
-            if (!"".equals(ConnectionUtil.dataRequest)) {
+            if (!"".equals(ConnectionUtil.getDataRequest())) {
                 try {
-                    ConnectionUtil.fixCustomRequestMethod(connection, ConnectionUtil.typeRequest);
+                    ConnectionUtil.fixCustomRequestMethod(connection, ConnectionUtil.getTypeRequest());
                     
                     connection.setDoOutput(true);
                     connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
     
-                    if (ConnectionUtil.typeRequest.matches("PUT|POST")) {
+                    if (ConnectionUtil.getTypeRequest().matches("PUT|POST")) {
                         DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
-                        dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.dataRequest, isUsingIndex, dataInjection));
+                        dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.getDataRequest(), isUsingIndex, dataInjection));
                         dataOut.flush();
                         dataOut.close();
                     }
                     
-                    msgHeader.put("Post", this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.dataRequest, isUsingIndex, dataInjection));
+                    msgHeader.put(TypeHeader.POST, this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.getDataRequest(), isUsingIndex, dataInjection));
                 } catch (IOException e) {
-                    LOGGER.warn("Error during Request connection "+ e.getMessage(), e);
+                    LOGGER.warn("Error during Request connection "+ e, e);
                 }
             }
             
-            msgHeader.put("Response", StringUtil.getHTTPHeaders(connection));
+            msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHTTPHeaders(connection));
     
             // Request the web page to the server
             String line;
@@ -400,11 +402,11 @@ public class InjectionModel extends AbstractModelObservable {
             // Disable caching of authentication like Kerberos
             connection.disconnect();
             
-            msgHeader.put("Source", pageSource);
+            msgHeader.put(TypeHeader.SOURCE, pageSource);
             
             // Inform the view about the log infos
             Request request = new Request();
-            request.setMessage("MessageHeader");
+            request.setMessage(TypeRequest.MESSAGE_HEADER);
             request.setParameters(msgHeader);
             this.sendToViews(request);
             
@@ -412,7 +414,7 @@ public class InjectionModel extends AbstractModelObservable {
             // Exception for Block Opening Connection
             IOException | LoginException | GSSException | PrivilegedActionException e
         ) {
-            LOGGER.warn("Error during connection: " + e.getMessage(), e);
+            LOGGER.warn("Error during connection: "+ e, e);
         }
 
         // return the source code of the page
@@ -439,7 +441,7 @@ public class InjectionModel extends AbstractModelObservable {
                 return 
                     paramLead.replace("*", 
                         this.indexesInUrl.replaceAll(
-                            "1337" + ((NormalStrategy) Strategy.NORMAL.instance()).visibleIndex + "7331",
+                            "1337" + ((NormalStrategy) Strategy.NORMAL.instance()).getVisibleIndex() + "7331",
                             /**
                              * Oracle column often contains $, which is reserved for regex.
                              * => need to be escape with quoteReplacement()
@@ -453,10 +455,10 @@ public class InjectionModel extends AbstractModelObservable {
         return paramLead;
     }
     
-    private String buildQuery(MethodInjection dataType, String paramLead, boolean isUsingIndex, String sqlTrail) {
+    private String buildQuery(MethodInjection methodInjection, String paramLead, boolean isUsingIndex, String sqlTrail) {
         String query;
         
-        if (ConnectionUtil.methodInjection != dataType || ConnectionUtil.urlBase.contains("*")) {
+        if (ConnectionUtil.getMethodInjection() != methodInjection || ConnectionUtil.getUrlBase().contains("*")) {
             query = paramLead;
         } else if (paramLead.contains("*")) {
             if (!isUsingIndex) {
@@ -465,7 +467,7 @@ public class InjectionModel extends AbstractModelObservable {
                 query = 
                     paramLead.replace("*", 
                         this.indexesInUrl.replaceAll(
-                            "1337" + ((NormalStrategy) Strategy.NORMAL.instance()).visibleIndex + "7331",
+                            "1337" + ((NormalStrategy) Strategy.NORMAL.instance()).getVisibleIndex() + "7331",
                             /**
                              * Oracle column often contains $, which is reserved for regex.
                              * => need to be escape with quoteReplacement()
@@ -482,7 +484,7 @@ public class InjectionModel extends AbstractModelObservable {
                 query = 
                     paramLead 
                     + this.indexesInUrl.replaceAll(
-                        "1337" + ((NormalStrategy) Strategy.NORMAL.instance()).visibleIndex + "7331",
+                        "1337" + ((NormalStrategy) Strategy.NORMAL.instance()).getVisibleIndex() + "7331",
                         /**
                          * Oracle column often contains $, which is reserved for regex.
                          * => need to be escape with quoteReplacement()
@@ -528,26 +530,26 @@ public class InjectionModel extends AbstractModelObservable {
         String typeRequest, Boolean isScanning
     ) {
         try {
-            ConnectionUtil.urlByUser = dataQuery;
+            ConnectionUtil.setUrlByUser(dataQuery);
             
             // Parse url and GET query string
-            ConnectionUtil.dataQuery = "";
+            ConnectionUtil.setDataQuery("");
             Matcher regexSearch = Pattern.compile("(.*)(\\?.*)").matcher(dataQuery);
             if (regexSearch.find()) {
                 URL url = new URL(dataQuery);
-                ConnectionUtil.urlBase = regexSearch.group(1);
+                ConnectionUtil.setUrlBase(regexSearch.group(1));
                 if (!"".equals(url.getQuery())) {
-                    ConnectionUtil.dataQuery = regexSearch.group(2);
+                    ConnectionUtil.setDataQuery(regexSearch.group(2));
                 }
             } else {
-                ConnectionUtil.urlBase = dataQuery;
+                ConnectionUtil.setUrlBase(dataQuery);
             }
             
             // Define other methods
-            ConnectionUtil.dataRequest = dataRequest;
-            ConnectionUtil.dataHeader = dataHeader;
-            ConnectionUtil.methodInjection = methodInjection;
-            ConnectionUtil.typeRequest = typeRequest;
+            ConnectionUtil.setDataRequest(dataRequest);
+            ConnectionUtil.setDataHeader(dataHeader);
+            ConnectionUtil.setMethodInjection(methodInjection);
+            ConnectionUtil.setTypeRequest(typeRequest);
             
             // Reset level of evasion
             this.stepSecurity = 0;
@@ -565,7 +567,7 @@ public class InjectionModel extends AbstractModelObservable {
                 
                 // Erase everything in the view from a previous injection
                 Request request = new Request();
-                request.setMessage("ResetInterface");
+                request.setMessage(TypeRequest.RESET_INTERFACE);
                 this.sendToViews(request);
             }
         } catch (MalformedURLException e) {
@@ -573,7 +575,7 @@ public class InjectionModel extends AbstractModelObservable {
             
             // Incorrect URL, reset the start button
             Request request = new Request();
-            request.setMessage("EndPreparation");
+            request.setMessage(TypeRequest.END_PREPARATION);
             this.sendToViews(request);
         }
     }

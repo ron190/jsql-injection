@@ -1,4 +1,4 @@
-package com.jsql.view.swing.manager;
+package com.jsql.view.swing.manager.util;
 
 // This file is currently unlocked (change this line if you lock the file)
 //

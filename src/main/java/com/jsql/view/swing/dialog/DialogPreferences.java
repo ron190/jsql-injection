@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -52,24 +52,25 @@ import com.jsql.view.swing.text.JPopupTextField;
  * A dialog for saving application settings.
  */
 @SuppressWarnings("serial")
-public class DialogPreference extends JDialog {
+public class DialogPreferences extends JDialog {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(DialogPreference.class);
+    private static final Logger LOGGER = Logger.getLogger(DialogPreferences.class);
 
     /**
      * Button getting focus.
      */
     private JButton buttonApply;
 
-    public int width = 350;
-    public int height = 520;
+    private int widthDialog = 350;
+
+    private int heightDialog = 520;
 
     /**
      * Create Preferences panel to save jSQL settings.
      */
-    public DialogPreference() {
+    public DialogPreferences() {
         super(MediatorGui.frame(), "Preferences", Dialog.ModalityType.MODELESS);
 
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -81,7 +82,7 @@ public class DialogPreference extends JDialog {
         ActionListener escListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DialogPreference.this.dispose();
+                DialogPreferences.this.dispose();
             }
         };
 
@@ -117,7 +118,7 @@ public class DialogPreference extends JDialog {
         this.setLayout(new BorderLayout());
         Container contentPane = this.getContentPane();
 
-        final JButton buttonCheckIp = new JButton("Check your IP", new ImageIcon(DialogPreference.class.getResource("/com/jsql/view/swing/resources/images/icons/wrench.png")));
+        final JButton buttonCheckIp = new JButton("Check your IP", new ImageIcon(DialogPreferences.class.getResource("/com/jsql/view/swing/resources/images/icons/wrench.png")));
         buttonCheckIp.addActionListener(new ActionCheckIP());
         buttonCheckIp.setToolTipText(
             "<html><b>Verify what public IP address is used by jSQL</b><br>"
@@ -183,7 +184,7 @@ public class DialogPreference extends JDialog {
         mainPanel.add(buttonClose);
         contentPane.add(mainPanel, BorderLayout.SOUTH);
 
-        final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", PreferencesUtil.isCheckUpdateActivated);
+        final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", PreferencesUtil.isCheckUpdateActivated());
         checkboxIsCheckingUpdate.setFocusable(false);
         JButton labelIsCheckingUpdate = new JButton("Check update at startup");
         labelIsCheckingUpdate.addActionListener(new ActionListener() {
@@ -194,7 +195,7 @@ public class DialogPreference extends JDialog {
         });
         
         String tooltipIsReportingBugs = "Send unhandled exception to developer in order to fix issues.";
-        final JCheckBox checkboxIsReportingBugs = new JCheckBox("", PreferencesUtil.isReportingBugs);
+        final JCheckBox checkboxIsReportingBugs = new JCheckBox("", PreferencesUtil.isReportingBugs());
         checkboxIsReportingBugs.setToolTipText(tooltipIsReportingBugs);
         checkboxIsReportingBugs.setFocusable(false);
         JButton labelIsReportingBugs = new JButton("Report unhandled exception");
@@ -207,7 +208,7 @@ public class DialogPreference extends JDialog {
         });
         
         String tooltipIsEvading = "Use complex SQL syntaxes to bypass protection (slower).";
-        final JCheckBox checkboxIsEvading = new JCheckBox("", PreferencesUtil.evasionIsEnabled);
+        final JCheckBox checkboxIsEvading = new JCheckBox("", PreferencesUtil.isEvasionIsEnabled());
         checkboxIsEvading.setToolTipText(tooltipIsEvading);
         checkboxIsEvading.setFocusable(false);
         JButton labelIsEvading = new JButton("Enable evasion");
@@ -220,7 +221,7 @@ public class DialogPreference extends JDialog {
         });
         
         String tooltipIsFollowingRedirection = "Force redirection when the page has moved (e.g. HTTP/1.1 302 Found).";
-        final JCheckBox checkboxIsFollowingRedirection = new JCheckBox("", PreferencesUtil.isFollowingRedirection);
+        final JCheckBox checkboxIsFollowingRedirection = new JCheckBox("", PreferencesUtil.isFollowingRedirection());
         checkboxIsFollowingRedirection.setToolTipText(tooltipIsFollowingRedirection);
         checkboxIsFollowingRedirection.setFocusable(false);
         JButton labelIsFollowingRedirection = new JButton("Follow HTTP redirection");
@@ -257,9 +258,9 @@ public class DialogPreference extends JDialog {
         labelIsUsingProxy.setToolTipText(tooltipIsUsingProxy);
 
         // Proxy setting: IP, port, checkbox to activate proxy
-        final JTextField textProxyAddress = new JPopupTextField("e.g Tor address: 127.0.0.1", ProxyUtil.proxyAddress).getProxy();
-        final JTextField textProxyPort = new JPopupTextField("e.g Tor port: 8118", ProxyUtil.proxyPort).getProxy();
-        final JCheckBox checkboxIsUsingProxy = new JCheckBox("", ProxyUtil.isUsingProxy);
+        final JTextField textProxyAddress = new JPopupTextField("e.g Tor address: 127.0.0.1", ProxyUtil.getProxyAddress()).getProxy();
+        final JTextField textProxyPort = new JPopupTextField("e.g Tor port: 8118", ProxyUtil.getProxyPort()).getProxy();
+        final JCheckBox checkboxIsUsingProxy = new JCheckBox("", ProxyUtil.isUsingProxy());
         checkboxIsUsingProxy.setToolTipText(tooltipIsUsingProxy);
         checkboxIsUsingProxy.setFocusable(false);
 
@@ -283,9 +284,9 @@ public class DialogPreference extends JDialog {
         labelUseDigestAuthentication.setToolTipText(tooltipUseDigestAuthentication);
         
         // Proxy setting: IP, port, checkbox to activate proxy
-        final JTextField textDigestAuthenticationUsername = new JPopupTextField("Host system user", AuthenticationUtil.usernameDigest).getProxy();
-        final JTextField textDigestAuthenticationPassword = new JPopupTextField("Host system password", AuthenticationUtil.passwordDigest).getProxy();
-        final JCheckBox checkboxUseDigestAuthentication = new JCheckBox("", AuthenticationUtil.isDigestAuthentication);
+        final JTextField textDigestAuthenticationUsername = new JPopupTextField("Host system user", AuthenticationUtil.getUsernameDigest()).getProxy();
+        final JTextField textDigestAuthenticationPassword = new JPopupTextField("Host system password", AuthenticationUtil.getPasswordDigest()).getProxy();
+        final JCheckBox checkboxUseDigestAuthentication = new JCheckBox("", AuthenticationUtil.isDigestAuthentication());
         checkboxUseDigestAuthentication.setToolTipText(tooltipUseDigestAuthentication);
         checkboxUseDigestAuthentication.setFocusable(false);
         
@@ -303,9 +304,9 @@ public class DialogPreference extends JDialog {
         labelUseKerberos.setToolTipText(tooltipUseKerberos);
         
         // Proxy setting: IP, port, checkbox to activate proxy
-        final JTextField textKerberosLoginConf = new JPopupTextField("Path to login.conf", AuthenticationUtil.pathKerberosLogin).getProxy();
-        final JTextField textKerberosKrb5Conf = new JPopupTextField("Path to krb5.conf", AuthenticationUtil.pathKerberosKrb5).getProxy();
-        final JCheckBox checkboxUseKerberos = new JCheckBox("", AuthenticationUtil.isKerberos);
+        final JTextField textKerberosLoginConf = new JPopupTextField("Path to login.conf", AuthenticationUtil.getPathKerberosLogin()).getProxy();
+        final JTextField textKerberosKrb5Conf = new JPopupTextField("Path to krb5.conf", AuthenticationUtil.getPathKerberosKrb5()).getProxy();
+        final JCheckBox checkboxUseKerberos = new JCheckBox("", AuthenticationUtil.isKerberos());
         textKerberosLoginConf.setToolTipText(
             "<html>"
             + "Define the path to <b>login.conf</b>. Sample :<br>"
@@ -396,14 +397,14 @@ public class DialogPreference extends JDialog {
             public void windowClosed(WindowEvent e) {
                 super.windowClosed(e);
 
-                textProxyAddress.setText(ProxyUtil.proxyAddress);
-                textProxyPort.setText(ProxyUtil.proxyPort);
-                checkboxIsUsingProxy.setSelected(ProxyUtil.isUsingProxy);
+                textProxyAddress.setText(ProxyUtil.getProxyAddress());
+                textProxyPort.setText(ProxyUtil.getProxyPort());
+                checkboxIsUsingProxy.setSelected(ProxyUtil.isUsingProxy());
 
-                checkboxIsCheckingUpdate.setSelected(PreferencesUtil.isCheckUpdateActivated);
-                checkboxIsReportingBugs.setSelected(PreferencesUtil.isReportingBugs);
-                checkboxIsEvading.setSelected(PreferencesUtil.evasionIsEnabled);
-                checkboxIsFollowingRedirection.setSelected(PreferencesUtil.isFollowingRedirection);
+                checkboxIsCheckingUpdate.setSelected(PreferencesUtil.isCheckUpdateActivated());
+                checkboxIsReportingBugs.setSelected(PreferencesUtil.isReportingBugs());
+                checkboxIsEvading.setSelected(PreferencesUtil.isEvasionIsEnabled());
+                checkboxIsFollowingRedirection.setSelected(PreferencesUtil.isFollowingRedirection());
             }
         });
 
@@ -581,8 +582,7 @@ public class DialogPreference extends JDialog {
         contentPane.add(settingPanel, BorderLayout.CENTER);
 
         this.pack();
-        this.height = this.getHeight() + 5;
-        this.setMinimumSize(new Dimension(this.width, this.height));
+        this.setMinimumSize(new Dimension(this.widthDialog, this.heightDialog));
         this.getRootPane().setDefaultButton(buttonApply);
         buttonClose.requestFocusInWindow();
         this.setLocationRelativeTo(MediatorGui.frame());
@@ -590,5 +590,15 @@ public class DialogPreference extends JDialog {
     
     public void requestButtonFocus() {
         this.buttonApply.requestFocusInWindow();
+    }
+
+    // getWidth() already exists in parent
+    public int getWidthDialog() {
+        return widthDialog;
+    }
+
+    // getHeight() already exists in parent
+    public int getHeightDialog() {
+        return heightDialog;
     }
 }

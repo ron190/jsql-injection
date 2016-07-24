@@ -21,7 +21,9 @@ public abstract class AbstractRadioLink extends JLabel {
      */
     public AbstractRadioLink(String string, boolean isSelected) {
         this(string);
-        this.setUnderlined();
+        if (isSelected) {
+            this.setUnderlined();
+        }
     }
 
     /**

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -18,7 +18,7 @@ import com.jsql.view.swing.shell.AbstractShell;
 /**
  * Append the result of a command in the terminal.
  */
-public class GetShellResult implements InteractionCommand {
+public class AbstractGetShellResult implements InteractionCommand {
     /**
      * Unique identifier for the terminal. Used for outputing results of
      * commands in the right shell tab (in case of multiple shell opened).
@@ -31,28 +31,18 @@ public class GetShellResult implements InteractionCommand {
     private String result;
 
     /**
-     * The command executed in shell.
-     */
-    private String cmd;
-
-    /**
      * @param interactionParams The unique identifier of the terminal and the command's result to display
      */
-    public GetShellResult(Object[] interactionParams) {
+    public AbstractGetShellResult(Object[] interactionParams) {
         terminalID = (UUID) interactionParams[0];
         result = (String) interactionParams[1];
-        cmd = (String) interactionParams[2];
     }
 
     @Override
     public void execute() {
-        AbstractShell terminal = MediatorGui.frame().getConsoles().get(terminalID);
+        AbstractShell terminal = MediatorGui.frame().getConsoles().get(this.terminalID);
         
-        if (!"".equals(result)) {
-            terminal.append(result);
-        } else {
-            terminal.append("No result.\nTry " + cmd.trim() + " 2>&1 to get error messages.\n");
-        }
+        terminal.append(result);
         
         terminal.append("\n");
         terminal.reset();

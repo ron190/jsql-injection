@@ -141,11 +141,11 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
             throw new StoppedByUserException();
         }
 
-        if (MediatorModel.model().vendor.getValue().getSqlBlindFirstTest() == null) {
+        if (MediatorModel.model().vendor.instance().sqlTestBlindFirst() == null) {
             return false;
         }
         
-        CallableTime blindTest = new CallableTime(MediatorModel.model().vendor.getValue().getSqlBlindFirstTest());
+        CallableTime blindTest = new CallableTime(MediatorModel.model().vendor.instance().sqlTestBlindFirst());
         try {
             blindTest.call();
         } catch (Exception e) {

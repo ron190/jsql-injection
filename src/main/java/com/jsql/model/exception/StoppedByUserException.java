@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -18,18 +18,8 @@ package com.jsql.model.exception;
 @SuppressWarnings("serial")
 public class StoppedByUserException extends SlidingException {
 
-    private String slidingWindowAllRows;
-    
     public StoppedByUserException() {
         super("Stopped by user");
     }
 
-    public void setSlidingWindowAllRows(String slidingWindowAllRows) {
-        this.slidingWindowAllRows = slidingWindowAllRows;
-    }
-    
-    public String getSlidingWindowAllRows() {
-        return this.slidingWindowAllRows;
-    }
-    
 }

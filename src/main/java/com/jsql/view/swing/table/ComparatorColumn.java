@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -26,8 +26,8 @@ public class ComparatorColumn<T> implements Comparator<T> {
      */
     @Override
     public int compare(T object1, T object2) {
-        boolean isFirstNumeric = true;
-        boolean isSecondNumeric = true;
+        boolean isFirstNumber = true;
+        boolean isSecondNumber = true;
         
         String value1 = object1.toString().trim();
         String value2 = object2.toString().trim();
@@ -35,23 +35,30 @@ public class ComparatorColumn<T> implements Comparator<T> {
         try {
             Long.parseLong(value1);
         } catch (NumberFormatException e) {
-            isFirstNumeric = false;
+            isFirstNumber = false;
         }
         
         try {
             Long.parseLong(value2);
         } catch (NumberFormatException e) {
-            isSecondNumeric = false;
+            isSecondNumber = false;
         }
         
-        if (isFirstNumeric && isSecondNumeric) {
-            return Long.valueOf(value1).compareTo(Long.valueOf(value2));
-        } else if (isFirstNumeric && !isSecondNumeric) {
-            return -1;
-        } else if (!isFirstNumeric && isSecondNumeric) {
-            return 1;
+        int sortOrder;
+        if (isFirstNumber && isSecondNumber) {
+            // or Sort by Number
+            sortOrder = Long.valueOf(value1).compareTo(Long.valueOf(value2));
+        } else if (isFirstNumber) {
+            // or Sort by Number first
+            sortOrder = -1;
+        } else if (isSecondNumber) {
+            // or Sort by Letter first
+            sortOrder = 1;
         } else {
-            return value1.compareToIgnoreCase(value2);
-        }        
+            // Sort by Letter
+            sortOrder = value1.compareToIgnoreCase(value2);
+        }
+        
+        return sortOrder;
     }
 }

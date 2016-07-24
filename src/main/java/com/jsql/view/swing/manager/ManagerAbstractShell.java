@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -38,8 +38,7 @@ import javax.swing.SwingConstants;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -108,7 +107,7 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
         
         this.run = new JButton(
             I18n.valueByKey("SHELL_RUN_BUTTON"), 
-            new ImageIcon(ManagerAbstractShell.class.getResource("/com/jsql/view/swing/resources/images/icons/shellSearch.png"))
+            new ImageIcon(ManagerAbstractShell.class.getResource("/com/jsql/view/swing/resources/images/icons/application_xp_terminal.png"))
         );
         I18n.addComponentForKey("SHELL_RUN_BUTTON", this.run);
         this.run.setToolTipText(I18n.valueByKey("SHELL_RUN_BUTTON_TOOLTIP"));
@@ -134,7 +133,7 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
             }
         });
 
-        this.run.addActionListener(new ActionRunShell());
+        this.run.addActionListener(new ActionCreationShell());
 
         this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.SQUARE_GREY, SwingConstants.LEFT);
         I18n.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
@@ -151,13 +150,13 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
         this.add(southPanel, BorderLayout.SOUTH);
     }
     
-    abstract void action(String pathShell, String urlShell) throws InjectionFailureException, StoppedByUserException;
+    abstract void createPayload(String pathShell, String urlShell) throws JSqlException;
     
-    private class ActionRunShell implements ActionListener {
+    private class ActionCreationShell implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent evt) {
             if (ManagerAbstractShell.this.listPaths.getSelectedValuesList().isEmpty()) {
-                LOGGER.warn("Select one or more directory");
+                LOGGER.warn("Select directory(ies) to create the shell into");
                 return;
             }
 
@@ -175,9 +174,9 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
                     @Override
                     public void run() {
                         try {
-                            ManagerAbstractShell.this.action(pathShell.toString(), urlShell.getText());
-                        } catch (InjectionFailureException | StoppedByUserException e) {
-                            LOGGER.warn("Problem writing into " + pathShell, e);
+                            ManagerAbstractShell.this.createPayload(pathShell.toString(), urlShell.getText());
+                        } catch (JSqlException e) {
+                            LOGGER.warn("Payload creation error: "+ e, e);
                         }
                     }
                 }, "getShell").start();

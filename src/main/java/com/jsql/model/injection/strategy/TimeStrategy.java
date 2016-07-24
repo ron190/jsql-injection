@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -10,17 +10,14 @@
  *******************************************************************************/
 package com.jsql.model.injection.strategy;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.injection.strategy.blind.ConcreteTimeInjection;
 import com.jsql.model.suspendable.AbstractSuspendable;
-import com.jsql.util.ConnectionUtil;
 
 /**
  * Injection strategy using time attack.
@@ -54,27 +51,18 @@ public class TimeStrategy extends AbstractStrategy {
     
     @Override
     public void allow() {
-        Request request = new Request();
-        request.setMessage("MarkTimebasedVulnerable");
-        
-        Map<String, Object> msgHeader = new HashMap<>();
-        msgHeader.put("Url", ConnectionUtil.urlByUser);
-
-        request.setParameters(msgHeader);
-        MediatorModel.model().sendToViews(request);
+        markVulnerable(TypeRequest.MARK_TIMEBASED_VULNERABLE);
     }
 
     @Override
     public void unallow() {
-        Request request = new Request();
-        request.setMessage("MarkTimebasedInvulnerable");
-        MediatorModel.model().sendToViews(request);
+        markVulnerable(TypeRequest.MARK_TIMEBASED_INVULNERABLE);
     }
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserException {
         return this.timeInjection.inject(
-            MediatorModel.model().vendor.getValue().getSqlTime(sqlQuery, startPosition),
+            MediatorModel.model().vendor.instance().sqlTime(sqlQuery, startPosition),
             stoppable
         );
     }
@@ -85,12 +73,12 @@ public class TimeStrategy extends AbstractStrategy {
         MediatorModel.model().setStrategy(Strategy.TIME);
         
         Request requestMessageBinary = new Request();
-        requestMessageBinary.setMessage("MessageBinary");
+        requestMessageBinary.setMessage(TypeRequest.MESSAGE_BINARY);
         requestMessageBinary.setParameters(timeInjection.getInfoMessage());
         MediatorModel.model().sendToViews(requestMessageBinary);
         
         Request requestMarkTimebasedStrategy = new Request();
-        requestMarkTimebasedStrategy.setMessage("MarkTimebasedStrategy");
+        requestMarkTimebasedStrategy.setMessage(TypeRequest.MARK_TIMEBASED_STRATEGY);
         MediatorModel.model().sendToViews(requestMarkTimebasedStrategy);
     }
     

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -57,8 +57,8 @@ abstract class ManagerAbstractList extends JPanel {
      */
     public void addToList(String element) {
         boolean isFound = false;
-        DefaultListModel<ListItem> listModel = (DefaultListModel<ListItem>) listPaths.getModel();
-        for (int i = 0; i < listModel.size(); i++) {
+        DefaultListModel<ListItem> listModel = (DefaultListModel<ListItem>) this.listPaths.getModel();
+        for (int i = 0 ; i < listModel.size() ; i++) {
             if (listModel.get(i).toString().equals(element)) {
                 isFound = true;
             }
@@ -80,7 +80,7 @@ abstract class ManagerAbstractList extends JPanel {
      * Unselect every element of the list.
      */
     public void clearSelection() {
-        listPaths.clearSelection();
+        this.listPaths.clearSelection();
     }
 
     /**

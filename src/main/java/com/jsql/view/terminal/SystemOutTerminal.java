@@ -1,6 +1,6 @@
 package com.jsql.view.terminal;
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -45,7 +45,7 @@ public class SystemOutTerminal implements Observer {
         Request interaction = (Request) newInteraction;
 
         try {
-            Class<?> cl = Class.forName("com.jsql.view.terminal.interaction." + interaction.getMessage());
+            Class<?> cl = Class.forName("com.jsql.view.terminal.interaction."+ interaction.getMessage());
             Class<?>[] types = new Class[]{Object[].class};
             Constructor<?> ct = cl.getConstructor(types);
 

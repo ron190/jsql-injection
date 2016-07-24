@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -34,6 +34,7 @@ import javax.swing.SwingConstants;
 
 import com.jsql.i18n.I18n;
 import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.manager.util.ActionBruteForce;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JPopupTextField;
@@ -51,57 +52,57 @@ public class ManagerBruteForce extends JPanel {
     /**
      * Input for hash to brute force.
      */
-    JTextField hash;
+    public JTextField hash;
     
     /**
      * Combobox of hashing methods.
      */
-    JComboBox<String> hashTypes;
+    public JComboBox<String> hashTypes;
     
     /**
      * Enable injection of lowercase characters.
      */
-    JCheckBox lowerCaseCharacters;
+    public JCheckBox lowerCaseCharacters;
     
     /**
      * Enable injection of uppercase characters.
      */
-    JCheckBox upperCaseCharacters;
+    public JCheckBox upperCaseCharacters;
     
     /**
      * Enable injection of numeric characters.
      */
-    JCheckBox numericCharacters;
+    public JCheckBox numericCharacters;
     
     /**
      * Enable injection of special characters. 
      */
-    JCheckBox specialCharacters;
+    public JCheckBox specialCharacters;
     
     /**
      * List of characters to exclude from the attack.
      */
-    JTextField exclude;
+    public JTextField exclude;
     
     /**
      * Minimum length of string to attack.
      */
-    JSpinner minimumLength;
+    public JSpinner minimumLength;
     
     /**
      * Maximum length of string to attack.
      */
-    JSpinner maximumLength;
+    public JSpinner maximumLength;
     
     /**
      * Textarea displaying result.
      */
-    JTextArea result;
+    public JTextArea result;
     
     /**
      * Animated GIF displayed during attack. 
      */
-    JLabel loader;
+    public JLabel loader;
 
     /**
      * Create a panel to run brute force attack. 

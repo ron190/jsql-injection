@@ -22,9 +22,9 @@ public class PostTest extends ConcreteMysqlTestSuite {
 
         MediatorModel.model().addObserver(new SystemOutTerminal());
 
-        ConnectionUtil.urlBase = "http://"+ AbstractTestSuite.hostName +"/simulate_post.php";
-        ConnectionUtil.dataRequest = "lib=0";
-        ConnectionUtil.methodInjection = MethodInjection.REQUEST;
+        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_post.php");
+        ConnectionUtil.setDataRequest("lib=0");
+        ConnectionUtil.setMethodInjection(MethodInjection.REQUEST);
 
         MediatorModel.model().injection();
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -23,7 +23,9 @@ import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.SlidingException;
 import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.suspendable.SuspendableGetRows;
@@ -38,7 +40,18 @@ public class DataAccess {
      */
     private static final Logger LOGGER = Logger.getLogger(DataAccess.class);
     
+    public static final String TRAIL_SQL = "%01%03%03%07";
+    
+    public static final String TD = "\\x06";
+    public static final String TD_SQL = "%06";
+    
+    public static final String QTE_SQL = "%05";
+    
     public static final String SEPARATOR = "\\x04";
+    public static final String SEPARATOR_SQL = "%04";
+    
+    public static final String MODE = "(?si)";
+    public static final String LINE = "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?";
     
     private DataAccess() {
         // Utility
@@ -49,14 +62,14 @@ public class DataAccess {
      * => version{%}database{%}user{%}CURRENT_USER
      * @throws StoppedByUserException 
      */
-    public static void getDatabaseInfos() throws Exception {
+    public static void getDatabaseInfos() throws JSqlException {
         LOGGER.trace("Fetching informations...");
         
         String[] sourcePage = {""};
 
         String resultToParse;
         resultToParse = new SuspendableGetRows().run(
-            MediatorModel.model().vendor.getValue().getSqlInfos(),
+            MediatorModel.model().vendor.instance().getSqlInfos(),
             sourcePage,
             false,
             0,
@@ -91,14 +104,14 @@ public class DataAccess {
      * The process can be stopped by the user.
      * @throws StoppedByUserException 
      */
-    public static List<Database> listDatabases() throws Exception {
+    public static List<Database> listDatabases() throws JSqlException {
         LOGGER.trace("Fetching databases...");
         
         List<Database> databases = new ArrayList<>();
         
         String[] sourcePage = {""};
         String resultToParse = new SuspendableGetRows().run(
-            MediatorModel.model().vendor.getValue().getSqlDatabases(),
+            MediatorModel.model().vendor.instance().getSqlDatabases(),
             sourcePage,
             true,
             0,
@@ -108,7 +121,7 @@ public class DataAccess {
         // Parse all data we have retrieved
         Matcher regexSearch = 
             Pattern
-                .compile("(?si)"+ SEPARATOR +"([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?"+ SEPARATOR)
+                .compile(MODE + SEPARATOR + LINE + SEPARATOR)
                 .matcher(resultToParse);
 
         if (!regexSearch.find()) {
@@ -127,7 +140,7 @@ public class DataAccess {
         }
 
         Request request = new Request();
-        request.setMessage("AddDatabases");
+        request.setMessage(TypeRequest.ADD_DATABASES);
         request.setParameters(databases);
         MediatorModel.model().sendToViews(request);
         
@@ -142,12 +155,12 @@ public class DataAccess {
      * Stoppable_loopIntoResults helps to obtain the rest of the unreachable data.<br>
      * The process can be interrupted by the user (stop/pause).
      */
-    public static List<Table> listTables(Database database) throws InjectionFailureException, StoppedByUserException {
+    public static List<Table> listTables(Database database) throws JSqlException {
         List<Table> tables = new ArrayList<>();
         
         // Inform the view that database has just been used
         Request request = new Request();
-        request.setMessage("StartProgress");
+        request.setMessage(TypeRequest.START_PROGRESS);
         request.setParameters(database);
         MediatorModel.model().sendToViews(request);
 
@@ -157,36 +170,36 @@ public class DataAccess {
         try {
             String[] pageSource = {""};
             resultToParse = new SuspendableGetRows().run(
-                MediatorModel.model().vendor.getValue().getSqlTables(database),
+                MediatorModel.model().vendor.instance().getSqlTables(database),
                 pageSource,
                 true,
                 Integer.parseInt(tableCount),
                 database
             );
         } catch (SlidingException e) {
+            LOGGER.warn(e.getMessage(), e);
             // Get pieces of data already retreive instead of losing them
-            resultToParse = ((SlidingException) e).getSlidingWindowAllRows();
-            LOGGER.warn(e.getMessage());
-        } finally {
-            // Parse all the data we have retrieved
-            Matcher regexSearch =
-                Pattern
-                    .compile("(?si)"+ SEPARATOR +"([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?"+ SEPARATOR)
-                    .matcher(resultToParse);
+            resultToParse = e.getSlidingWindowAllRows();
+        }
+
+        // Parse all the data we have retrieved
+        Matcher regexSearch =
+            Pattern
+                .compile(MODE + SEPARATOR + LINE + SEPARATOR)
+                .matcher(resultToParse);
+        
+        if (!regexSearch.find()) {
+            throw new InjectionFailureException();
+        } else {
+            regexSearch.reset();
             
-            if (!regexSearch.find()) {
-                throw new InjectionFailureException();
-            } else {
-                regexSearch.reset();
+            // Build an array of Table objects from the data we have parsed
+            while (regexSearch.find()) {
+                String tableName = regexSearch.group(1);
+                String rowCount  = regexSearch.group(2);
                 
-                // Build an array of Table objects from the data we have parsed
-                while (regexSearch.find()) {
-                    String tableName = regexSearch.group(1);
-                    String rowCount  = regexSearch.group(2);
-                    
-                    Table newTable = new Table(tableName, rowCount, database);
-                    tables.add(newTable);
-                }
+                Table newTable = new Table(tableName, rowCount, database);
+                tables.add(newTable);
             }
         }
         
@@ -202,18 +215,18 @@ public class DataAccess {
      * Stoppable_loopIntoResults helps to obtain the rest of the unreachable data.<br>
      * The process can be interrupted by the user (stop/pause)
      */
-    public static List<Column> listColumns(Table table) throws Exception {
+    public static List<Column> listColumns(Table table) throws JSqlException {
         List<Column> columns = new ArrayList<>();
         
         // Inform the view that table has just been used
         Request request = new Request();
-        request.setMessage("StartIndeterminateProgress");
+        request.setMessage(TypeRequest.START_INDETERMINATE_PROGRESS);
         request.setParameters(table);
         MediatorModel.model().sendToViews(request);
 
         String[] pageSource = {""};
         String resultToParse = new SuspendableGetRows().run(
-            MediatorModel.model().vendor.getValue().getSqlColumns(table),
+            MediatorModel.model().vendor.instance().getSqlColumns(table),
             pageSource,
             true,
             0,
@@ -223,7 +236,7 @@ public class DataAccess {
         // Parse all the data we have retrieved
         Matcher regexSearch = 
             Pattern
-                .compile("(?si)"+ SEPARATOR +"([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?"+ SEPARATOR)
+                .compile(MODE + SEPARATOR + LINE + SEPARATOR)
                 .matcher(resultToParse);
 
         if (!regexSearch.find()) {
@@ -240,13 +253,13 @@ public class DataAccess {
             }
 
             Request requestAddColumns = new Request();
-            requestAddColumns.setMessage("AddColumns");
+            requestAddColumns.setMessage(TypeRequest.ADD_COLUMNS);
             requestAddColumns.setParameters(columns);
             MediatorModel.model().sendToViews(requestAddColumns);
         }
 
         Request request3 = new Request();
-        request3.setMessage("EndIndeterminateProgress");
+        request3.setMessage(TypeRequest.END_INDETERMINATE_PROGRESS);
         request3.setParameters(table);
         MediatorModel.model().sendToViews(request3);
         
@@ -265,14 +278,14 @@ public class DataAccess {
      * @param values columns selected by user
      * @return
      */
-    public static String[][] listValues(List<Column> argsElementDatabase) throws Exception {
+    public static String[][] listValues(List<Column> argsElementDatabase) throws JSqlException {
         Database database = (Database) argsElementDatabase.get(0).getParent().getParent();
         Table table = (Table) argsElementDatabase.get(0).getParent();
         int rowCount = argsElementDatabase.get(0).getParent().getCount();
 
         // Inform the view that table has just been used
         Request request = new Request();
-        request.setMessage("StartProgress");
+        request.setMessage(TypeRequest.START_PROGRESS);
         request.setParameters(table);
         MediatorModel.model().sendToViews(request);
 
@@ -291,7 +304,7 @@ public class DataAccess {
 
         String[] pageSource = {""};
         String resultToParse = new SuspendableGetRows().run(
-            MediatorModel.model().vendor.getValue().getSqlRows(arrayColumns, database, table),
+            MediatorModel.model().vendor.instance().getSqlRows(arrayColumns, database, table),
             pageSource, 
             true, 
             rowCount, 
@@ -301,7 +314,7 @@ public class DataAccess {
         // Parse all the data we have retrieved
         Matcher regexSearch = 
             Pattern
-                .compile("(?si)"+ SEPARATOR +"([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?"+ SEPARATOR)
+                .compile(MODE + SEPARATOR +"([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?"+ SEPARATOR)
                 .matcher(resultToParse);
 
         if (!regexSearch.find()) {
@@ -332,14 +345,14 @@ public class DataAccess {
 
         // Build a proper 2D array from the data
         String[][] tableDatas = new String[listValues.size()][columnsName.size()];
-        for (int indexRow = 0; indexRow < listValues.size(); indexRow++) {
+        for (int indexRow = 0 ; indexRow < listValues.size() ; indexRow++) {
             boolean isIncomplete = false;
-            for (int indexColumn = 0; indexColumn < columnsName.size(); indexColumn++) {
+            for (int indexColumn = 0 ; indexColumn < columnsName.size() ; indexColumn++) {
                 try {
                     tableDatas[indexRow][indexColumn] = listValues.get(indexRow).get(indexColumn);
                 } catch (IndexOutOfBoundsException e) {
                     isIncomplete = true;
-                    LOGGER.trace("Incomplete line found");
+                    LOGGER.trace("Incomplete line found", e);
                 }
             }
             if (isIncomplete) {
@@ -354,12 +367,12 @@ public class DataAccess {
         Object[] objectData = {arrayColumns, tableDatas, table};
 
         Request requestCreateValuesTab = new Request();
-        requestCreateValuesTab.setMessage("CreateValuesTab");
+        requestCreateValuesTab.setMessage(TypeRequest.CREATE_VALUES_TAB);
         requestCreateValuesTab.setParameters(objectData);
         MediatorModel.model().sendToViews(requestCreateValuesTab);
 
         Request requestEndProgress = new Request();
-        requestEndProgress.setMessage("EndProgress");
+        requestEndProgress.setMessage(TypeRequest.END_PROGRESS);
         requestEndProgress.setParameters(table);
         MediatorModel.model().sendToViews(requestEndProgress);
         

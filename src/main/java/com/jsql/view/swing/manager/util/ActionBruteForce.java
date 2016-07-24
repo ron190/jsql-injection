@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  *******************************************************************************/
-package com.jsql.view.swing.manager;
+package com.jsql.view.swing.manager.util;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.view.swing.bruteforce.HashBruter;
+import com.jsql.view.swing.manager.ManagerBruteForce;
 
 /**
  * Run a brute force attack.

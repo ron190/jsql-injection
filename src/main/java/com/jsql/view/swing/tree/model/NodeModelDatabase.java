@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyhacked (H) 2012-2014.
+ * Copyhacked (H) 2012-2016.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -25,9 +25,7 @@ import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.SlidingException;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.view.swing.HelperUi;
 
 /**
@@ -77,12 +75,12 @@ public class NodeModelDatabase extends AbstractNodeModel {
                         LOGGER.warn(e, e);
                     } finally {
                         Request requestAddTables = new Request();
-                        requestAddTables.setMessage("AddTables");
+                        requestAddTables.setMessage(TypeRequest.ADD_TABLES);
                         requestAddTables.setParameters(tables);
                         MediatorModel.model().sendToViews(requestAddTables);
                   
                         Request requestEndProgress = new Request();
-                        requestEndProgress.setMessage("EndProgress");
+                        requestEndProgress.setMessage(TypeRequest.END_PROGRESS);
                         requestEndProgress.setParameters(selectedDatabase);
                         MediatorModel.model().sendToViews(requestEndProgress);
                     }
