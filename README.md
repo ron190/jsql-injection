@@ -16,6 +16,8 @@ This software is also included in distributions like [Pentest Box](https://pente
 Install [Java](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/download/v0.74/jsql-injection-v0.74.jar) of jSQL and double-click on the .jar to launch the software.<br>
 You can also type `java -jar jsql-injection-v0.74.jar` in your terminal to start the program.
 
+## v0.74 [[download here](https://github.com/ron190/jsql-injection/releases)]
+
 ## Screenshot of v0.75 [Soon]
 [![Default](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default-mini.png "Default")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default.png)
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
@@ -28,7 +30,6 @@ You can also type `java -jar jsql-injection-v0.74.jar` in your terminal to start
 [![Upload](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/upload-mini.png "Upload")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/upload.png)
 [![Bruteforce](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/bruter-mini.png "Bruteforce")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/bruter.png)
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
-[![Batch scan](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Batch scan")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## Roadmap
 `New databases: SQLite Access and Neo4j, Command Line Interface, Translation, SOAP injection`
