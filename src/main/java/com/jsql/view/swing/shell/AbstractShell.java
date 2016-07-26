@@ -104,10 +104,11 @@ public abstract class AbstractShell extends JTextPane {
         this.setForeground(Color.LIGHT_GRAY);
 
         try {
-            // Disable antialiasing (not Java 9 compatible)
+            // Disable antialiasing 
+            // TODO: incompatible with Java 9
             this.putClientProperty(SwingUtilities2.AA_TEXT_PROPERTY_KEY, null);
         } catch (NoSuchFieldError e) {
-            // Ignore
+            // Ignore missing property
         }
 
         this.displayPrompt(true);

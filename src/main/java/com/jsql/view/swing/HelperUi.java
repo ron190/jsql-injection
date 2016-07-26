@@ -99,19 +99,16 @@ public final class HelperUi {
     public static final Icon ARROWPRESSED = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/arrowPressed.png"));
 
     public static final Icon FLAG_AR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/ar.png"));
-    public static final Icon FLAG_DE = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/de.png"));
-    public static final Icon FLAG_NL = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/nl.png"));
-    public static final Icon FLAG_US = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/en.png"));
-    public static final Icon FLAG_FR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/fr.png"));
     public static final Icon FLAG_CN = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/cn.png"));
     public static final Icon FLAG_RU = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/ru.png"));
     public static final Icon FLAG_TR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/tr.png"));
-    public static final Icon FLAG_ES = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/es.png"));
-    public static final Icon FLAG_IN = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/in.png"));
+    public static final Icon FLAG_EN = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/en.png"));
+    public static final Icon FLAG_FR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/fr.png"));
     
     public static final URL ICON16 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug16.png");
     public static final URL ICON32 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug32.png");
     public static final URL ICON96 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug96.png");
+    public static final URL ICON128 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug128.png");
 
     public static final Icon EMPTY = new ImageIcon(new BufferedImage(16, 16, BufferedImage.TRANSLUCENT));
     public static final Icon ZEROSIZE = new ImageIcon() {
@@ -332,6 +329,7 @@ public final class HelperUi {
     public static List<Image> getIcons() {
         List<Image> images = new ArrayList<>();
         try {
+            images.add(ImageIO.read(HelperUi.ICON128));
             images.add(ImageIO.read(HelperUi.ICON96));
             images.add(ImageIO.read(HelperUi.ICON32));
             images.add(ImageIO.read(HelperUi.ICON16));

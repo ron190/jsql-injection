@@ -337,7 +337,6 @@ public class DnDTabbedPane extends JTabbedPane {
             String propertyName = e.getPropertyName();
             
             if ("dropLocation".equals(propertyName)) {
-                //System.out.println("propertyChange: dropLocation");
                 repaintDropLocation(getDropLocation());
             }
         }
@@ -351,7 +350,7 @@ public class DnDTabbedPane extends JTabbedPane {
                 return;
             }
             
-            Point tabPt = e.getPoint(); //e.getDragOrigin();
+            Point tabPt = e.getPoint();
             int idx = src.indexAtLocation(tabPt.x, tabPt.y);
             
             //disabled tab, null component problem.
@@ -362,7 +361,7 @@ public class DnDTabbedPane extends JTabbedPane {
         
         @Override
         public void mouseDragged(MouseEvent e)  {
-            Point tabPt = e.getPoint(); //e.getDragOrigin();
+            Point tabPt = e.getPoint();
             
             if (startPt != null && Math.sqrt(Math.pow(tabPt.x - startPt.x, 2) + Math.pow(tabPt.y - startPt.y, 2)) > gestureMotionThreshold) {
                 DnDTabbedPane src = (DnDTabbedPane) e.getSource();
@@ -379,7 +378,7 @@ public class DnDTabbedPane extends JTabbedPane {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            Point tabPt = e.getPoint(); //e.getDragOrigin();
+            Point tabPt = e.getPoint();
             DnDTabbedPane src = (DnDTabbedPane) e.getSource();
             
             int i = src.indexAtLocation(tabPt.x, tabPt.y);

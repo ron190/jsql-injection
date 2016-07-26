@@ -229,11 +229,6 @@ public final class ShadowPopup extends Popup {
         this.x = x;
         this.y = y;
         
-// Why return if JComboBox ffs ?
-//        if (owner instanceof JComboBox) {
-//            return;
-//        }
-        
         // Do not install the shadow border when the contents
         // has a preferred size less than or equal to 0.
         // We can't use the size, because it is(0, 0) for new popups.

@@ -47,6 +47,7 @@ import com.jsql.view.swing.text.JAddressBar;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.text.JTextFieldPlaceholder;
 import com.jsql.view.swing.text.JTextFieldWithIcon;
+import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.ui.ComponentBorder;
 
 /**
@@ -95,60 +96,41 @@ public class PanelAddressBar extends JPanel {
 
     public boolean advanceIsActivated = false;
     
-    /**
-     * Create panel at the top with textfields and radio.
-     */
-    public class JToolTipI18n extends JToolTip {
-        String textTooltip;
-        
-        public JToolTipI18n(String textTooltip) {
-            this.textTooltip = textTooltip;
-        }
-        
-        public void setText(String textTooltip) {
-            this.textTooltip = textTooltip;
-        }
-        
-        @Override
-        public String getTipText() {
-            return textTooltip;
-        }
-    }
-    
     public PanelAddressBar() {
-        final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("GET_TOOLTIP"))};
-        JTextFieldWithIcon textI18nTip = new JTextFieldWithIcon(){
+        final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("FIELD_QUERYSTRING_TOOLTIP"))};
+        JTextFieldWithIcon fieldWithIcon = new JTextFieldWithIcon(I18n.valueByKey("ADDRESS_BAR")){
             @Override
             public JToolTip createToolTip() {
-                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("GET_TOOLTIP"));
+                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("FIELD_QUERYSTRING_TOOLTIP"));
                 j[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
             }
         };
-        fieldUrl = new JAddressBar(textI18nTip).getProxy();
-        I18n.addComponentForKey("GET_TOOLTIP", j[0]);
+        fieldUrl = new JAddressBar(fieldWithIcon).getProxy();
+        I18n.addComponentForKey("ADDRESS_BAR", fieldWithIcon);
+        I18n.addComponentForKey("FIELD_QUERYSTRING_TOOLTIP", j[0]);
         
-        final JToolTipI18n[] j2 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("REQUEST_METHOD_TOOLTIP"))};
+        final JToolTipI18n[] j2 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("FIELD_REQUEST_TOOLTIP"))};
         fieldRequest = new JPopupTextField(new JTextFieldPlaceholder("e.g. key=value&injectMe="){
             @Override
             public JToolTip createToolTip() {
-                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("REQUEST_METHOD_TOOLTIP"));
+                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("FIELD_REQUEST_TOOLTIP"));
                 j2[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
             }
         }).getProxy();
-        I18n.addComponentForKey("REQUEST_METHOD_TOOLTIP", j2[0]);
+        I18n.addComponentForKey("FIELD_REQUEST_TOOLTIP", j2[0]);
         
-        final JToolTipI18n[] j3 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("HEADER_TOOLTIP"))};
+        final JToolTipI18n[] j3 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("FIELD_HEADER_TOOLTIP"))};
         fieldHeader = new JPopupTextField(new JTextFieldPlaceholder("e.g. key:value\\r\\nCookie:cKey=cValue\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\ninjectMe:"){
             @Override
             public JToolTip createToolTip() {
-                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("HEADER_TOOLTIP"));
+                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("FIELD_HEADER_TOOLTIP"));
                 j3[0] = (JToolTipI18n) tipI18n;
                 return j3[0];
             }
         }).getProxy();
-        I18n.addComponentForKey("HEADER_TOOLTIP", j3[0]);
+        I18n.addComponentForKey("FIELD_HEADER_TOOLTIP", j3[0]);
                 
         final RadioLinkMethod radioURL = new RadioLinkMethod("GET", true, MethodInjection.QUERY);
         final RadioLinkMethod radioMethod = new RadioLinkMethod("POST", MethodInjection.REQUEST);
@@ -233,13 +215,13 @@ public class PanelAddressBar extends JPanel {
         radioHeader.setBorder(BorderFactory.createEmptyBorder(6, 0, 0, 3));
 
         // Tooltip setting
-        this.fieldUrl.setToolTipText(I18n.valueByKey("GET_TOOLTIP"));
-        this.fieldRequest.setToolTipText(I18n.valueByKey("REQUEST_METHOD_TOOLTIP"));
-        this.fieldHeader.setToolTipText(I18n.valueByKey("HEADER_TOOLTIP"));
+        this.fieldUrl.setToolTipText(I18n.valueByKey("FIELD_QUERYSTRING_TOOLTIP"));
+        this.fieldRequest.setToolTipText(I18n.valueByKey("FIELD_REQUEST_TOOLTIP"));
+        this.fieldHeader.setToolTipText(I18n.valueByKey("FIELD_HEADER_TOOLTIP"));
 
-        radioURL.setToolTipText(I18n.valueByKey("GET_METHOD"));
-        radioMethod.setToolTipText(I18n.valueByKey("REQUEST_METHOD"));
-        radioHeader.setToolTipText(I18n.valueByKey("HEADER_METHOD"));
+        radioURL.setToolTipText(I18n.valueByKey("METHOD_QUERYSTRING_TOOLTIP"));
+        radioMethod.setToolTipText(I18n.valueByKey("METHOD_REQUEST_TOOLTIP"));
+        radioHeader.setToolTipText(I18n.valueByKey("METHOD_HEADER_TOOLTIP"));
 
         /**
          * Define UI and the left padding for addressBar
@@ -276,7 +258,7 @@ public class PanelAddressBar extends JPanel {
         this.fieldRequest.addActionListener(new ActionEnterAddressBar());
         this.fieldHeader.addActionListener(new ActionEnterAddressBar());
 
-        this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_START_INJECTION"));
+        this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_START_TOOLTIP"));
         this.buttonInUrl.addActionListener(new ActionStart());
         ComponentBorder buttonInTextfield = new ComponentBorder(this.buttonInUrl, 17, 0);
         buttonInTextfield.install(this.fieldUrl);
@@ -402,7 +384,7 @@ public class PanelAddressBar extends JPanel {
 
             // Then start injection
             if (!MediatorModel.model().injectionIsFinished || option == JOptionPane.OK_OPTION) {
-                PanelAddressBar.this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_STOP_INJECTION"));
+                PanelAddressBar.this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_STOP_TOOLTIP"));
                 PanelAddressBar.this.buttonInUrl.setInjectionRunning();
                 PanelAddressBar.this.loader.setVisible(true);
 
@@ -420,7 +402,7 @@ public class PanelAddressBar extends JPanel {
         private void stopInjection() {
             PanelAddressBar.this.loader.setVisible(false);
             PanelAddressBar.this.buttonInUrl.setInjectionStopping();
-            PanelAddressBar.this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_STOPPING_INJECTION"));
+            PanelAddressBar.this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_STOPPING_TOOLTIP"));
             MediatorModel.model().setIsStoppedByUser(true);
         }
     }

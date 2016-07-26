@@ -29,10 +29,10 @@ public class ActionCheckUpdate implements ActionListener, Runnable {
             if (gitVersion <= Float.parseFloat(InjectionModel.VERSION_JSQL)) {
                 LOGGER.debug(I18n.valueByKey("UPDATE_UPTODATE"));
             } else {
-                LOGGER.warn(I18n.valueByKey("UPDATE_NEW_VERSION_AVAILABLE"));
+                LOGGER.warn(I18n.valueByKey("UPDATE_NEW_VERSION"));
             }
         } catch (NumberFormatException | IOException e) {
-            LOGGER.warn(I18n.valueByKey("UPDATE_EXCEPTION"));
+            LOGGER.warn(I18n.valueByKey("UPDATE_EXCEPTION"), e);
         }
     }
 

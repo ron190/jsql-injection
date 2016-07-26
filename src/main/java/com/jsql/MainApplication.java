@@ -70,9 +70,9 @@ public class MainApplication {
             String languageDisplayed = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
             LOGGER.debug(
                 "Language "+ languageDisplayed +" is not supported. "
-                + "Contribute and translate pieces of jSQL into "+ languageDisplayed +": "
-                + "open menu [Community] using [Advanced] arrow on the right, choose [I help translate jSQL], "
-                + "translate some text into "+ languageDisplayed +" then click on [Send], it's that simple."
+                + "Please contribute and translate pieces of jSQL into "+ languageDisplayed +": "
+                + "Open menu [Community] with the arrow on the right, choose [I help translate jSQL], "
+                + "translate some text into "+ languageDisplayed +" then click on [Send], it's that easy."
             );
         }
         

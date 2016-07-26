@@ -24,7 +24,7 @@ public class ExceptionUtil {
         }
         
         protected void handleException(String threadName, Throwable throwable) {
-            LOGGER.error("Exception on " + threadName, throwable);
+            LOGGER.error("Exception on "+ threadName, throwable);
             
             //  Report #214: ignore if OutOfMemoryError: Java heap space
             if (

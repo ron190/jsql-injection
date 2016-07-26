@@ -197,8 +197,8 @@ public class DnDList extends JList<ListItem> {
             if (!FilenameUtils.getExtension(fileToImport.getPath()).matches("txt|csv|ini")) {
                 JOptionPane.showMessageDialog(
                     this.getTopLevelAncestor(),
-                    I18n.valueByKey("LIST_IMPORT_ERROR_TEXT"),
-                    I18n.valueByKey("LIST_IMPORT_ERROR"),
+                    I18n.valueByKey("LIST_IMPORT_ERROR_LABEL"),
+                    I18n.valueByKey("LIST_IMPORT_ERROR_TITLE"),
                     JOptionPane.ERROR_MESSAGE,
                     new ImageIcon(DnDList.class.getResource("/com/jsql/view/swing/resources/images/icons/error.png"))
                 );
@@ -206,11 +206,11 @@ public class DnDList extends JList<ListItem> {
             }
         }
 
-        String[] options = {I18n.valueByKey("REPLACE"), I18n.valueByKey("ADD"), I18n.valueByKey("CANCEL")};
+        String[] options = {I18n.valueByKey("LIST_IMPORT_CONFIRM_REPLACE"), I18n.valueByKey("LIST_IMPORT_CONFIRM_ADD"), I18n.valueByKey("LIST_ADD_VALUE_CANCEL")};
         int answer = JOptionPane.showOptionDialog(
             this.getTopLevelAncestor(),
-            I18n.valueByKey("LIST_IMPORT_REPLACE"),
-            I18n.valueByKey("LIST_IMPORT"),
+            I18n.valueByKey("LIST_IMPORT_CONFIRM_LABEL"),
+            I18n.valueByKey("LIST_IMPORT_CONFIRM_TITLE"),
             JOptionPane.YES_NO_CANCEL_OPTION,
             JOptionPane.QUESTION_MESSAGE,
             null,

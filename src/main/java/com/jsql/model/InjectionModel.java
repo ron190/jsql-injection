@@ -193,14 +193,12 @@ public class InjectionModel extends AbstractModelObservable {
                 Request requestDatabaseIdentified = new Request();
                 requestDatabaseIdentified.setMessage(TypeRequest.DATABASE_IDENTIFIED);
                 requestDatabaseIdentified.setParameters(msgHeader);
-                
                 this.sendToViews(requestDatabaseIdentified);
             }
             
             Request requestSetVendor = new Request();
             requestSetVendor.setMessage(TypeRequest.SET_VENDOR);
             requestSetVendor.setParameters(this.vendor);
-            
             this.sendToViews(requestSetVendor);
 
             // Test each injection methods: time, blind, error, normal
@@ -393,10 +391,11 @@ public class InjectionModel extends AbstractModelObservable {
             String line;
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                 while ((line = reader.readLine()) != null) {
-                    pageSource += line + "\r\n";
+                    pageSource += line + "\n";
                 }
             } catch (IOException e) {
-                // Preserve consoles: ignore read errors
+                // Ignore connection errors like 403, 406
+                // Http status code already logged in Network tab
             }
             
             // Disable caching of authentication like Kerberos

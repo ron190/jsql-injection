@@ -4,7 +4,7 @@ import com.jsql.view.swing.MediatorGui;
 
 public class CreateTab {
 
-    public CreateTab() {
+    protected CreateTab() {
         if (MediatorGui.tabResults().getTabCount() == 0) {
             int i = MediatorGui.frame().splitHorizontalTopBottom.splitVerticalLeftRight.getDividerLocation();
             MediatorGui.frame().splitHorizontalTopBottom.splitVerticalLeftRight.setRightComponent(

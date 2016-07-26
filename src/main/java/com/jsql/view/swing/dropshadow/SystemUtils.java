@@ -251,8 +251,8 @@ public class SystemUtils {
         try {
             return System.getProperty(key);
         } catch (SecurityException e) {
-            Logger.getLogger(SystemUtils.class.getName()).warning(
-                  "Can't access the System property " + key + ".");
+            Logger.getLogger(SystemUtils.class.getName())
+                .warning("Can't access the System property "+ key +".");
             return "";
         }
     }

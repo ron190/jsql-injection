@@ -92,10 +92,11 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 }
                 break;
             }
+            
             /*
              * Ending condition:
              * One row could be very long, longer than the database can provide
-             * #Need verification
+             * TODO Need verification
              */
             if (!regexAllLine.find() && isUsingLimit && !"".equals(slidingWindowAllRows)) {
                 // Update the view only if there are value to find, and if it's not the root (empty tree)
@@ -109,8 +110,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             }
 
             /*
-             * Add the result to the data already found, informs the view about it.
-             * If throws exception, inform the view about the failure.
+             * Add the result to the data already found.
              */
             try {
                 slidingWindowCurrentRow += regexAllLine.group(1);
@@ -125,6 +125,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 );
                 MediatorModel.model().sendToViews(request);
             } catch (IllegalStateException e) {
+                // Premature end of results
                 // if it's not the root (empty tree)
                 if (searchName != null) {
                     Request request = new Request();
@@ -133,7 +134,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     MediatorModel.model().sendToViews(request);
                 }
 
-                throw new InjectionFailureException("Fetching fails: no data to parse"+ (searchName != null ? " for "+searchName : ""));
+                throw new InjectionFailureException("Fetching fails: no data to parse"+ (searchName != null ? " for "+searchName : ""), e);
             }
 
             /*
@@ -313,7 +314,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 
             }
 
-            charPositionInCurrentRow = slidingWindowCurrentRow.length() + 1;
+            charPositionInCurrentRow = slidingWindowCurrentRow.length() + 1/* - StringUtils.countMatches(slidingWindowCurrentRow, "\n")*/;
         }
         
         ThreadUtil.remove(searchName);

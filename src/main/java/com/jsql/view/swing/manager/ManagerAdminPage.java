@@ -55,7 +55,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
      */
     public ManagerAdminPage() {
         this.setLayout(new BorderLayout());
-        this.setDefaultText(I18n.valueByKey("ADMIN_PAGE_RUN_BUTTON"));
+        this.setDefaultText(I18n.valueByKey("ADMIN_PAGE_RUN_BUTTON_LABEL"));
 
         List<String> pathList = new ArrayList<>();
         try {

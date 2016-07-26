@@ -55,4 +55,8 @@ public class JTextFieldPlaceholder extends JTextField {
             g.drawString(placeholderText, ins.left + 2, h / 2 + fm.getAscent() / 2 - 1);
         }
     }
+
+    public void setPlaceholderText(String placeholderText) {
+        this.placeholderText = placeholderText;
+    }
 }

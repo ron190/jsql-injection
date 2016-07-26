@@ -50,7 +50,7 @@ public class MenuActionNewValue implements ActionListener {
         final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
         JLabel labelAddValue = new JLabel(I18n.valueByKey("LIST_ADD_VALUE_LABEL") + ":");
         panel.add(labelAddValue, BorderLayout.NORTH);
-        I18n.addComponentForKey("SELECT_ALL", labelAddValue);
+        I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", labelAddValue);
         panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
         
         panel.setPreferredSize(new Dimension(300, 200));
@@ -67,12 +67,12 @@ public class MenuActionNewValue implements ActionListener {
         int result = JOptionPane.showOptionDialog(
             myList.getTopLevelAncestor(),
             panel,
-            I18n.valueByKey("LIST_ADD_VALUE"),
+            I18n.valueByKey("LIST_ADD_VALUE_TITLE"),
             JOptionPane.OK_CANCEL_OPTION,
             JOptionPane.QUESTION_MESSAGE,
             null,
-            new String[]{I18n.valueByKey("OK"), I18n.valueByKey("CANCEL")},
-            I18n.valueByKey("CANCEL")
+            new String[]{I18n.valueByKey("LIST_ADD_VALUE_OK"), I18n.valueByKey("LIST_ADD_VALUE_CANCEL")},
+            I18n.valueByKey("LIST_ADD_VALUE_CANCEL")
         );
 
         if (!"".equals(textarea.getText()) && result == JOptionPane.YES_OPTION) {

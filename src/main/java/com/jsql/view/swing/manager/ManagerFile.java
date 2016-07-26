@@ -59,7 +59,7 @@ public class ManagerFile extends ManagerAbstractList {
      */
     public ManagerFile() {
         this.setLayout(new BorderLayout());
-        this.setDefaultText(I18n.valueByKey("FILE_RUN_BUTTON"));
+        this.setDefaultText(I18n.valueByKey("FILE_RUN_BUTTON_LABEL"));
         
         List<String> pathList = new ArrayList<>();
         try {

@@ -87,24 +87,24 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
 
         final JPopupMenu menu = new JPopupMenu();
         
-        JMenuItem item = new JMenuItem(I18n.valueByKey("COPY_PAGE_URL"));
-        I18n.addComponentForKey("COPY_PAGE_URL", item);
+        JMenuItem item = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_COPY_PAGE_URL"));
+        I18n.addComponentForKey("CONTEXT_MENU_COPY_PAGE_URL", item);
         item.setIcon(HelperUi.EMPTY);
         
         JMenuItem copyItem = new JMenuItem();
         copyItem.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         copyItem.setMnemonic('C');
-        copyItem.setText(I18n.valueByKey("COPY"));
-        I18n.addComponentForKey("COPY", copyItem);
+        copyItem.setText(I18n.valueByKey("CONTEXT_MENU_COPY"));
+        I18n.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
         copyItem.setIcon(HelperUi.EMPTY);
         
         JMenuItem itemSelectAll = new JMenuItem();
         itemSelectAll.setIcon(HelperUi.EMPTY);
         itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-        itemSelectAll.setText(I18n.valueByKey("SELECT_ALL"));
-        I18n.addComponentForKey("SELECT_ALL", itemSelectAll);
+        itemSelectAll.setText(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"));
+        I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
         itemSelectAll.setMnemonic('A');
         
         menu.add(item);

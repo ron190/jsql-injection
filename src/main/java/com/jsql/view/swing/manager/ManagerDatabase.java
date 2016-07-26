@@ -12,21 +12,18 @@ package com.jsql.view.swing.manager;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTree;
-import javax.swing.SwingConstants;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -38,8 +35,7 @@ import com.jsql.model.injection.strategy.Strategy;
 import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
-import com.jsql.view.swing.combomenu.ArrowIcon;
-import com.jsql.view.swing.combomenu.BlankIcon;
+import com.jsql.view.swing.manager.util.ComboMenu;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tree.CellEditorNode;
 import com.jsql.view.swing.tree.CellRendererNode;
@@ -62,7 +58,7 @@ public class ManagerDatabase extends JPanel {
         super(new BorderLayout());
 
         // First node in tree
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(new NodeModelEmpty(I18n.valueByKey("NO_DATABASE")));
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(new NodeModelEmpty(I18n.valueByKey("DATABASE_EMPTY")));
         final JTree tree = new JTree(root);
         MediatorGui.register(tree);
 
@@ -104,27 +100,6 @@ public class ManagerDatabase extends JPanel {
 
         LightScrollPane scroller = new LightScrollPane(1, 1, 0, 0, tree);
         
-        class ComboMenu extends JMenu {
-            ArrowIcon iconRenderer;
-
-            public ComboMenu(String label) {
-                super(label);
-                iconRenderer = new ArrowIcon(SwingConstants.SOUTH, true);
-                this.setBorderPainted(false);
-                this.setIcon(new BlankIcon(null, 11));
-                this.setHorizontalTextPosition(JButton.RIGHT);
-            }
-
-            @Override
-            public void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Dimension d = this.getPreferredSize();
-                int x = Math.max(0, 10);
-                int y = Math.max(0, (d.height - iconRenderer.getIconHeight()) / 2 - 1);
-                iconRenderer.paintIcon(this, g, x, y);
-            }
-        }
-        
         JMenuBar panelLineBottom = new JMenuBar();
         panelLineBottom.setOpaque(false);
         panelLineBottom.setBorder(null);
@@ -161,17 +136,18 @@ public class ManagerDatabase extends JPanel {
         
         for (final Strategy strategy: Strategy.values()) {
             if (strategy != Strategy.UNDEFINED) {
-                JMenuItem i1 = new JRadioButtonMenuItem(strategy.toString());
-                i1.setEnabled(false);
-                i1.addActionListener(new ActionListener() {
+                JMenuItem menuItem = new JRadioButtonMenuItem(strategy.toString());
+                menuItem.setEnabled(false);
+                menuItem.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         panelStrategy.setText(strategy.toString());
                         MediatorModel.model().setStrategy(strategy);
                     }
                 });
-                panelStrategy.add(i1);
-                g2.add(i1);
+                menuItem.setToolTipText(I18n.valueByKey("STRATEGY_"+ strategy.name() +"_TOOLTIP"));
+                panelStrategy.add(menuItem);
+                g2.add(menuItem);
             }
         }
         

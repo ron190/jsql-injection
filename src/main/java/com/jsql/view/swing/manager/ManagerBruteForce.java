@@ -114,7 +114,7 @@ public class ManagerBruteForce extends JPanel {
 
         JPanel firstLine = new JPanel(new BorderLayout());
 
-        hash = new JPopupTextField(I18n.valueByKey("BRUTEFORCE_HASH")).getProxy();
+        hash = new JPopupTextField(I18n.valueByKey("BRUTEFORCE_HASH_LABEL")).getProxy();
         hash.setToolTipText(I18n.valueByKey("BRUTEFORCE_HASH_TOOLTIP"));
         firstLine.add(hash, BorderLayout.CENTER);
         hash.setBorder(
@@ -226,10 +226,10 @@ public class ManagerBruteForce extends JPanel {
         );
         
         run = new JButton(
-            I18n.valueByKey("BRUTEFORCE_RUN_BUTTON"), 
+            I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_LABEL"), 
             new ImageIcon(ManagerBruteForce.class.getResource("/com/jsql/view/swing/resources/images/icons/key.png"))
         );
-        I18n.addComponentForKey("BRUTEFORCE_RUN_BUTTON", run);
+        I18n.addComponentForKey("BRUTEFORCE_RUN_BUTTON_LABEL", run);
         run.setToolTipText(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
         
         run.setContentAreaFilled(false);

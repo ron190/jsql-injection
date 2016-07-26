@@ -122,12 +122,12 @@ public abstract class AbstractNodeModel {
         JPopupMenu tablePopupMenu = new JPopupMenu();
         AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.dataObject);
 
-        JMenuItem mnLoad = new JMenuItem(this.isRunning ? I18n.valueByKey("STOP") : I18n.valueByKey("LOAD"), 'o');
+        JMenuItem mnLoad = new JMenuItem(this.isRunning ? I18n.valueByKey("THREAD_STOP") : I18n.valueByKey("THREAD_LOAD"), 'o');
         JMenuItem mnPause = new JMenuItem(
             // Report #133: ignore if thread not found
             (suspendableTask != null && suspendableTask.isPaused())
-            ? I18n.valueByKey("RESUME")
-            : I18n.valueByKey("PAUSE")
+            ? I18n.valueByKey("THREAD_RESUME")
+            : I18n.valueByKey("THREAD_PAUSE")
         , 's');
         mnLoad.setIcon(HelperUi.EMPTY);
         mnPause.setIcon(HelperUi.EMPTY);

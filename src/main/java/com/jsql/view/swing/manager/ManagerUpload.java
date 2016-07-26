@@ -63,7 +63,7 @@ public class ManagerUpload extends ManagerAbstractList {
     public ManagerUpload() {
         this.setLayout(new BorderLayout());
 
-        this.setDefaultText(I18n.valueByKey("UPLOAD_RUN_BUTTON"));
+        this.setDefaultText(I18n.valueByKey("UPLOAD_RUN_BUTTON_LABEL"));
 
         List<String> pathsList = new ArrayList<>();
         try {
@@ -107,8 +107,8 @@ public class ManagerUpload extends ManagerAbstractList {
             )
         );
 
-        this.run = new JButton(I18n.valueByKey("UPLOAD_RUN_BUTTON"), new ImageIcon(ManagerUpload.class.getResource("/com/jsql/view/swing/resources/images/icons/disk.png")));
-        I18n.addComponentForKey("UPLOAD_RUN_BUTTON", this.run);
+        this.run = new JButton(I18n.valueByKey("UPLOAD_RUN_BUTTON_LABEL"), new ImageIcon(ManagerUpload.class.getResource("/com/jsql/view/swing/resources/images/icons/disk.png")));
+        I18n.addComponentForKey("UPLOAD_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("UPLOAD_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
         

@@ -59,7 +59,7 @@ public class GitUtil {
             
             Float versionGit = Float.parseFloat(obj.getString("version"));
             if (versionGit > Float.parseFloat(InjectionModel.VERSION_JSQL)) {
-                LOGGER.warn(I18n.valueByKey("UPDATE_NEW_VERSION_AVAILABLE"));
+                LOGGER.warn(I18n.valueByKey("UPDATE_NEW_VERSION"));
             }
         } catch (NumberFormatException | IOException e) {
             LOGGER.warn(I18n.valueByKey("UPDATE_EXCEPTION"), e);
@@ -116,7 +116,7 @@ public class GitUtil {
 
         HttpURLConnection connection = null;
         try {
-            URL githubUrl = new URL("https://api.github.com/repos/ron190/jsql-injection/issues");
+            URL githubUrl = new URL("https://api.github.com/repos/ron190/test-issues/issues");
 
             connection = (HttpURLConnection) githubUrl.openConnection();
             connection.setDefaultUseCaches(false);
@@ -176,10 +176,10 @@ public class GitUtil {
             
             JSONArray news = infosSoftware.getJSONArray("news");
             for (int i = 0 ; i < news.length() ; i++) {
-                LOGGER.info("[Info] "+ news.get(i));
+                LOGGER.debug("[Info] "+ news.get(i));
             }
         } catch (IOException e) {
-            LOGGER.warn("Connection to Github Webservice fail", e);
+            LOGGER.warn("Connection to the Github News Webservice failed", e);
         }
     }
 }

@@ -124,7 +124,7 @@ public class ConnectionUtil {
     }
     
     public static void fixCustomRequestMethod(HttpURLConnection connection, String typeRequest) throws ProtocolException {
-        // Add default or custom method : check whether we are running on a buggy JRE
+        // Add a default or custom method : check whether we are running on a buggy JRE
         try {
             connection.setRequestMethod(typeRequest);
         } catch (final ProtocolException pe) {
@@ -156,17 +156,18 @@ public class ConnectionUtil {
     
     public static void fixJcifsTimeout(HttpURLConnection connection) {
         Class<?> classConnection = connection.getClass();
+        boolean connectionIsWrapped = true;
+        
+        Field privateFieldURLConnection = null;
         try {
-            boolean isReflexive = true;
-            
-            Field privateFieldURLConnection = null;
+            privateFieldURLConnection = classConnection.getDeclaredField("connection");
+        } catch (Exception e) {
+            // Ignore Fix
+            connectionIsWrapped = false;
+        }
+        
+        if (connectionIsWrapped) {
             try {
-                privateFieldURLConnection = classConnection.getDeclaredField("connection");
-            } catch (Exception e) {
-                isReflexive = false;
-            }
-            
-            if (isReflexive) {
                 privateFieldURLConnection.setAccessible(true);
                 
                 URLConnection privateURLConnection = (URLConnection) privateFieldURLConnection.get(connection);
@@ -184,9 +185,9 @@ public class ConnectionUtil {
                 Field privateFieldReadTimeout = classURLConnectionPrivate.getDeclaredField("readTimeout");
                 privateFieldReadTimeout.setAccessible(true);
                 privateFieldReadTimeout.setInt(privateURLConnection, ConnectionUtil.TIMEOUT);
+            } catch (Exception e) {
+                LOGGER.warn("Fix jcifs timeout failed: "+ e, e);
             }
-        } catch (Exception e) {
-            LOGGER.warn("Fix jcifs timeout failed: "+ e, e);
         }
     }
     

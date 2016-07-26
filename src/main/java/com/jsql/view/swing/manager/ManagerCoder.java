@@ -122,10 +122,10 @@ public class ManagerCoder extends JPanel {
         this.encoding.setText("Encode to Base64");
         
         final JButton run = new JButton(
-            I18n.valueByKey("CODER_RUN_BUTTON"), 
+            I18n.valueByKey("CODER_RUN_BUTTON_LABEL"), 
             new ImageIcon(ManagerCoder.class.getResource("/com/jsql/view/swing/resources/images/icons/bullet_go.png"))
         );
-        I18n.addComponentForKey("CODER_RUN_BUTTON", run);
+        I18n.addComponentForKey("CODER_RUN_BUTTON_LABEL", run);
         
         run.setContentAreaFilled(false);
         run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));

@@ -57,7 +57,7 @@ public class ManagerScan extends ManagerAbstractList {
      */
     public ManagerScan() {
         this.setLayout(new BorderLayout());
-        this.setDefaultText(I18n.valueByKey("SCANLIST_RUN_BUTTON"));
+        this.setDefaultText(I18n.valueByKey("SCAN_RUN_BUTTON_LABEL"));
 
         List<String> pathsList = new ArrayList<>();
         try {
@@ -89,7 +89,7 @@ public class ManagerScan extends ManagerAbstractList {
         
         run = new JButton(defaultText, new ImageIcon(ManagerScan.class.getResource("/com/jsql/view/swing/resources/images/icons/magnifier.png")));
 
-        run.setToolTipText(I18n.valueByKey("SCANLIST_RUN_BUTTON_TOOLTIP"));
+        run.setToolTipText(I18n.valueByKey("SCAN_RUN_BUTTON_TOOLTIP"));
 
         run.setContentAreaFilled(false);
         run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));

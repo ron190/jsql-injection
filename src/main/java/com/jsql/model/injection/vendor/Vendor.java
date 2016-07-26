@@ -2,7 +2,7 @@ package com.jsql.model.injection.vendor;
 
 public enum Vendor {
     AUTO("<Database auto>", null),
-    CUBRID("Cubrid", new CubridVendor()),
+    CUBRID("CUBRID", new CubridVendor()),
     DB2("DB2", new DB2Vendor()),
     DERBY("Derby", new DerbyVendor()),
     FIREBIRD("Firebird", new FirebirdVendor()),
@@ -11,11 +11,11 @@ public enum Vendor {
     INFORMIX("Informix", new InformixVendor()),
     INGRES("Ingres", new IngresVendor()),
     MARIADB("MariaDB", new MariaDBVendor()),
-    MAXDB("MaxDb", new MaxDbVendor()),
+    MAXDB("MaxDB", new MaxDbVendor()),
     MYSQL("MySQL", new MySQLVendor()),
     ORACLE("Oracle", new OracleVendor()),
     POSTGRESQL("PostgreSQL", new PostgreSQLVendor()),
-    SQLSERVER("SQLServer", new SQLServerVendor()),
+    SQLSERVER("SQL Server", new SQLServerVendor()),
     SYBASE("Sybase", new SybaseVendor()),
     TERADATA("Teradata", new TeradataVendor());
 

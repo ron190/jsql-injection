@@ -213,7 +213,7 @@ public class RessourceAccess {
                 throw new JSqlException("Payload integrity verification: Empty payload");
             }
         } catch(JSqlException e) {
-            throw new JSqlException("Payload integrity verification failed: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"));
+            throw new JSqlException("Payload integrity verification failed: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"), e);
         }
         
         String url = urlShell;
@@ -355,7 +355,7 @@ public class RessourceAccess {
                 throw new JSqlException("Bad payload integrity: Empty payload");
             }
         } catch(JSqlException e) {
-            throw new JSqlException("Payload integrity verification failed: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"));
+            throw new JSqlException("Payload integrity verification failed: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"), e);
         }
         
         String url = urlShell;
@@ -509,7 +509,7 @@ public class RessourceAccess {
                 throw new JSqlException("Bad payload integrity: Empty payload");
             }
         } catch(JSqlException e) {
-            throw new JSqlException("Payload integrity verification failed: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"));
+            throw new JSqlException("Payload integrity verification failed: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"), e);
         }
 
         String urlFileFixed = urlFile;
@@ -654,8 +654,7 @@ public class RessourceAccess {
      * @throws InterruptedException 
      * @throws ExecutionException 
      */
-    public static void readFile(List<ListItem> pathsFiles) throws JSqlException, InterruptedException, ExecutionException 
-    {
+    public static void readFile(List<ListItem> pathsFiles) throws JSqlException, InterruptedException, ExecutionException {
         if (!RessourceAccess.isReadingAllowed()) {
             return;
         }

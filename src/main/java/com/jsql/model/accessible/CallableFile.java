@@ -42,7 +42,8 @@ public class CallableFile implements Callable<CallableFile> {
                 null
             );
         } catch (InjectionFailureException e) {
-            // Commonly file does not exist, ignoring
+            // Ignore
+            // Usually thrown if File does not exist
         }
         sourceFile = resultToParse;
         

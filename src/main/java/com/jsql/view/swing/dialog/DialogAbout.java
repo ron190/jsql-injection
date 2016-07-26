@@ -166,7 +166,6 @@ public class DialogAbout extends JDialog {
         lastLine.add(this.buttonClose);
 
         JLabel iconJSQL = new JLabel(new ImageIcon(HelperUi.ICON96));
-//        iconJSQL.setBorder(BorderFactory.createEmptyBorder(2, 15, 2, 15));
         dialogPane.add(iconJSQL, BorderLayout.WEST);
         dialogPane.add(lastLine, BorderLayout.SOUTH);
 

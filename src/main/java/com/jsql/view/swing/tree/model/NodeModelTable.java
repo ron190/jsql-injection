@@ -90,10 +90,10 @@ public class NodeModelTable extends AbstractNodeModel {
 
     @Override
     void displayMenu(JPopupMenu tablePopupMenu, final TreePath path) {
-        JMenuItem mnCheckAll = new JMenuItem(I18n.valueByKey("CHECK_ALL"), 'C');
-        I18n.addComponentForKey("CHECK_ALL", mnCheckAll);
-        JMenuItem mnUncheckAll = new JMenuItem(I18n.valueByKey("UNCHECK_ALL"), 'U');
-        I18n.addComponentForKey("UNCHECK_ALL", mnCheckAll);
+        JMenuItem mnCheckAll = new JMenuItem(I18n.valueByKey("COLUMNS_CHECK_ALL"), 'C');
+        I18n.addComponentForKey("COLUMNS_CHECK_ALL", mnCheckAll);
+        JMenuItem mnUncheckAll = new JMenuItem(I18n.valueByKey("COLUMNS_UNCHECK_ALL"), 'U');
+        I18n.addComponentForKey("COLUMNS_UNCHECK_ALL", mnCheckAll);
 
         mnCheckAll.setIcon(HelperUi.EMPTY);
         mnUncheckAll.setIcon(HelperUi.EMPTY);

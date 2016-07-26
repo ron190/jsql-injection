@@ -22,12 +22,14 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -46,7 +48,6 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.i18n.I18n;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.GitUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
@@ -112,6 +113,12 @@ public class DialogTranslate extends JDialog {
         this.buttonSend.setContentAreaFilled(false);
         this.buttonSend.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         this.buttonSend.setBackground(new Color(200, 221, 242));
+        this.buttonSend.setToolTipText(
+            "<html>"
+            + "<b>Send your translation to the developer</b><br>"
+            + "Your translation will be integrated in the next version of jSQL"
+            + "</html>"
+        );
         
         this.buttonSend.addMouseListener(new MouseAdapter() {
             @Override public void mouseEntered(MouseEvent e) {
@@ -129,6 +136,11 @@ public class DialogTranslate extends JDialog {
         this.buttonSend.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (textToTranslate[0].getText().equals(translation)) {
+                    LOGGER.warn("Nothing changed, translate a piece of text then click on Send");
+                    return;
+                }
+                
                 String clientDescription = 
                     // Escape Markdown character # for h1 in .properties
                     textToTranslate[0].getText()
@@ -148,7 +160,6 @@ public class DialogTranslate extends JDialog {
         progressBarTranslation.setOpaque(false);
         progressBarTranslation.setStringPainted(true);
         progressBarTranslation.setValue(0);
-        progressBarTranslation.setVisible(false);
         
         lastLine.add(progressBarTranslation);
         lastLine.add(Box.createGlue());
@@ -195,67 +206,102 @@ public class DialogTranslate extends JDialog {
      * Set back default setting for About frame.
      */
     public final void reinit(final Language language) {
+        progressBarTranslation.setValue(0);
+        progressBarTranslation.setString("Loading...");
+        
         DialogTranslate.this.language = language;
         
         labelTranslation.setText(
             "<html>"
             + "<b>Contribute and translate pieces of jSQL into "+ language +"</b><br>"
             + "Help the community and translate some buttons, menus, tabs and tooltips into "+ language +", "
-            + "then click on Send to forward the changes to the developer on Github, it's that simple.<br>"
-            + "<i>E.g. for Chinese, change '<b>COPY = Copy</b>' to '<b>COPY = \u590d\u5236</b>', then click on Send. The list only displays what needs to be translated "
-            + "and it's updated as soon as the developer processes your translation.</i><br>"
-            + "<b style='color:blue'>Thank you for your contribution !</b>"
+            + "then click on Send to forward your changes to the developer on Github, it's that simple.<br>"
+            + "<i>E.g. for Chinese, change '<b>CONTEXT_MENU_COPY = Copy</b>' to '<b>CONTEXT_MENU_COPY = \u590d\u5236</b>', then click on Send. The list only displays what needs to be translated "
+            + "and it's updated as soon as the developer processes your translation.</i>"
             + "</html>"
         );
         labelTranslation.setIcon(language.getFlag());
         
         DialogTranslate.this.setTitle("Translate to "+ language);
         textToTranslate[0].setText(null);
+        textToTranslate[0].setEditable(false);
+        buttonSend.setEnabled(false);
         
         // Monospaced is compatible with all required languages, this includes Chinese and Arabic
         textToTranslate[0].setFont(new Font("Monospaced", Font.PLAIN, ((Font) UIManager.get("TextField.font")).getSize()));
         
+        LOGGER.trace("Loading text to translate into "+ language +"...");
         new SwingWorker<Object, Object>(){
             @Override
             protected Object doInBackground() throws Exception {
-                try {
-                    String pageSource = ConnectionUtil.getSource(
-                        "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/"
-                        + "jsql_"+ language.name().toLowerCase() +".properties"
-                    );
-                    
-                    LOGGER.info("Text for "+ language +" loaded from Github");
-                    
-                    Properties prop = new Properties();       
-                    prop.load(new StringReader(pageSource));
-                    int percentTranslated = 100 * (I18n.keys().size() - prop.size()) / I18n.keys().size();
-                    progressBarTranslation.setValue(percentTranslated);
-                    progressBarTranslation.setString(percentTranslated +"% translated into "+ language);
+                OrderedProperties propRoot = new OrderedProperties();       
+                Properties propLanguage = new Properties();       
+                String propertiesToTranslate = "";
                 
-                    if (language == Language.OT || percentTranslated == 0) {
-                        progressBarTranslation.setVisible(false);
-                    } else {
-                        progressBarTranslation.setVisible(true);
+                if (language == Language.OT) {
+                    progressBarTranslation.setVisible(false);
+                } else {
+                    progressBarTranslation.setVisible(true);
+                }
+                
+                try {
+                    try {
+                        String pageSourceRoot = ConnectionUtil.getSource(
+                            "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql.properties"
+                        );
+                        propRoot.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}")));
+                        LOGGER.info("Source language loaded from Github");
+                    } catch (IOException e) {
+                        propRoot.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql.properties"))))).replaceAll("{@|@}")));
+                        LOGGER.info("Source language loaded from local");
                     }
                     
-                    textToTranslate[0].setText(pageSource);
-                    textToTranslate[0].setCaretPosition(0);
-                } catch (IOException eGithub) {
-                    LOGGER.info("Text to translate loaded from local");
-                    
-                    try (
-                        InputStream in = DialogAbout.class.getResourceAsStream("/com/jsql/i18n/jsql.properties");
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(in))
-                    ) {
-                        String result = "";
-                        String line;
-                        while ((line = reader.readLine()) != null) {
-                            result += line +"\n";
+                    if (language != Language.OT) {
+                        try {
+                            String pageSourceLanguage = ConnectionUtil.getSource(
+                                "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql_"+ language.name().toLowerCase() +".properties"
+                            );
+                            propLanguage.load(new StringReader(pageSourceLanguage));
+                            LOGGER.info("Text for "+ language +" loaded from Github");
+                        } catch (IOException e) {
+                            propLanguage.load(new StringReader(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql_"+ language.name().toLowerCase() +".properties")))));
+                            LOGGER.info("Text for "+ language +" loaded from local");
                         }
-                        textToTranslate[0].setText(result);
-                        textToTranslate[0].setCaretPosition(0);
-                    } catch (IOException eFile) {
-                        LOGGER.warn(eFile, eFile);
+                    } else {
+                        LOGGER.info("Text to translate loaded from source");
+                    }
+                } catch (IOException eGithub) {
+                    if (propLanguage.size() == 0) {
+                        if (language == Language.OT) {
+                            LOGGER.info("Language file not found, text to translate loaded from local", eGithub);
+                        } else {
+                            LOGGER.info("Language file not found, text to translate into "+ language +" loaded from local", eGithub);
+                        }
+                    } else if (propRoot.size() == 0) {
+                        throw new IOException("Source language not found");
+                    }
+                } finally {
+                    for (Entry<String, String> key: propRoot.entrySet()) {
+                        if (language == Language.OT || propLanguage.size() == 0) {
+                            propertiesToTranslate += "\n\n"+ key.getKey() +"="+ ((String) key.getValue()).replace("{@|@}","\\\n");
+                        } else {
+                            if (!propLanguage.containsKey(key.getKey())) {
+                                propertiesToTranslate += "\n\n"+ key.getKey() +"="+ ((String) key.getValue()).replace("{@|@}","\\\n");
+                            }
+                        }
+                    }
+                    
+                    translation = propertiesToTranslate.trim();
+                    
+                    buttonSend.setEnabled(true);
+                    textToTranslate[0].setText(translation);
+                    textToTranslate[0].setCaretPosition(0);
+                    textToTranslate[0].setEditable(true);
+                    
+                    if (language != Language.OT) {
+                        int percentTranslated = 100 * propLanguage.size() / propRoot.size();
+                        progressBarTranslation.setValue(percentTranslated);
+                        progressBarTranslation.setString(percentTranslated +"% translated into "+ language);
                     }
                 }
                 
@@ -263,6 +309,8 @@ public class DialogTranslate extends JDialog {
             }
         }.execute();
     }
+    
+    String translation = "";
 
     public void requestButtonFocus() {
         this.buttonSend.requestFocusInWindow();

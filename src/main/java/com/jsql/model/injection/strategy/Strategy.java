@@ -21,6 +21,6 @@ public enum Strategy {
     
     @Override
     public String toString() {
-        return this.nameStrategy +" ";
+        return this.nameStrategy;
     }
 }

@@ -35,7 +35,7 @@ public class ActionNewWindow extends AbstractAction {
     private static final Logger LOGGER = Logger.getLogger(ActionNewWindow.class);
 
     public ActionNewWindow() {
-        this.putValue(Action.NAME, I18n.valueByKey("NEW_WINDOW"));
+        this.putValue(Action.NAME, I18n.valueByKey("NEW_WINDOW_MENU"));
         this.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_N));
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
         this.putValue(Action.SMALL_ICON, HelperUi.EMPTY);
@@ -43,7 +43,7 @@ public class ActionNewWindow extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        LOGGER.info(I18n.valueByKey("STARTING_NEW_WINDOW"));
+        LOGGER.info(I18n.valueByKey("NEW_WINDOW_START"));
         String separator = System.getProperty("file.separator");
         String classpath = System.getProperty("java.class.path");
         String path = System.getProperty("java.home") + separator + "bin" + separator + "java";
@@ -58,7 +58,7 @@ public class ActionNewWindow extends AbstractAction {
         try {
             processBuilder.start();
         } catch (IOException e) {
-            LOGGER.error(I18n.valueByKey("ERROR_OPENING_NEW_WINDOW"), e);
+            LOGGER.error(I18n.valueByKey("NEW_WINDOW_ERROR"), e);
         }        
     }
 }

@@ -6,16 +6,12 @@ import com.jsql.view.swing.HelperUi;
 
 public enum Language {
     
-    DE("German", HelperUi.FLAG_DE), 
-    EN("English", HelperUi.FLAG_US), 
-    ES("Spanish", HelperUi.FLAG_ES), 
-    CN("Chinese", HelperUi.FLAG_CN), 
-    FR("French", HelperUi.FLAG_FR), 
-    IN("Hindi", HelperUi.FLAG_IN), 
-    RU("Russian", HelperUi.FLAG_RU), 
-    TR("Turkish", HelperUi.FLAG_TR), 
     AR("Arabic", HelperUi.FLAG_AR),
-    NL("Dutch", HelperUi.FLAG_NL),
+    RU("Russian", HelperUi.FLAG_RU), 
+    CN("Chinese", HelperUi.FLAG_CN), 
+    TR("Turkish", HelperUi.FLAG_TR), 
+    EN("English", HelperUi.FLAG_EN), 
+    FR("French", HelperUi.FLAG_FR), 
     OT("another language", null);
 
     String stringLang;

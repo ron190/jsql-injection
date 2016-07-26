@@ -37,8 +37,8 @@ public class ReplaceFileChooser extends JFileChooser {
             if (file.exists()) {
                 int result = JOptionPane.showConfirmDialog(
                     this,
-                    this.getSelectedFile().getName() + " " + I18n.valueByKey("DIALOG_REPLACE_FILE_CONFIRM"),
-                    I18n.valueByKey("DIALOG_REPLACE_FILE_TITLE"),
+                    this.getSelectedFile().getName() + " " + I18n.valueByKey("SAVE_TAB_CONFIRM_LABEL"),
+                    I18n.valueByKey("SAVE_TAB_CONFIRM_TITLE"),
                     JOptionPane.YES_NO_OPTION
                 );
                 switch (result) {

@@ -43,7 +43,7 @@ public class MD4 extends MessageDigest implements Cloneable {
     /**
      * The size in bytes of the input block to the tranformation algorithm.
      */
-    private static final int BLOCK_LENGTH = 64;       //    = 512 / 8;
+    private static final int BLOCK_LENGTH = 64; //512 / 8
 
     /**
      * 4 32-bit words (interim result)

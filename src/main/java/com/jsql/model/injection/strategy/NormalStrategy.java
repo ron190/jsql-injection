@@ -141,7 +141,7 @@ public class NormalStrategy extends AbstractStrategy {
         Integer[][] lengthFields = new Integer[performanceResults.size()][2];
         for (int i = 0; i < performanceResults.size(); i++) {
             lengthFields[i] = new Integer[]{
-                performanceResults.get(i)[1].length(),
+                performanceResults.get(i)[1].length() + performanceResults.get(i)[0].length(),
                 Integer.parseInt(performanceResults.get(i)[0])
             };
         }

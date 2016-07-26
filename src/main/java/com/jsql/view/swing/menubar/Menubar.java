@@ -60,6 +60,7 @@ import com.jsql.view.swing.dialog.Language;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.table.PanelTable;
 import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.text.JTextFieldPlaceholder;
 
 /**
  * Application main menubar.
@@ -96,16 +97,16 @@ public class Menubar extends JMenuBar {
      */
     public Menubar() {
         // File Menu > save tab | exit
-        JMenu menuFile = new JMenu(I18n.valueByKey("MENU_FILE"));
-        I18n.addComponentForKey("MENU_FILE", menuFile);
+        JMenu menuFile = new JMenu(I18n.valueByKey("MENUBAR_FILE"));
+        I18n.addComponentForKey("MENUBAR_FILE", menuFile);
         menuFile.setMnemonic('F');
 
         JMenuItem itemNewWindows = new JMenuItem(new ActionNewWindow());
 
         JMenuItem itemSave = new JMenuItem(new ActionSaveTab());
 
-        JMenuItem itemExit = new JMenuItem(I18n.valueByKey("ITEM_EXIT"), 'x');
-        I18n.addComponentForKey("ITEM_EXIT", itemExit);
+        JMenuItem itemExit = new JMenuItem(I18n.valueByKey("MENUBAR_FILE_EXIT"), 'x');
+        I18n.addComponentForKey("MENUBAR_FILE_EXIT", itemExit);
         itemExit.setIcon(HelperUi.EMPTY);
         itemExit.addActionListener(new ActionListener() {
             @Override
@@ -123,12 +124,12 @@ public class Menubar extends JMenuBar {
         menuFile.add(itemExit);
 
         // Edit Menu > copy | select all
-        JMenu menuEdit = new JMenu(I18n.valueByKey("MENU_EDIT"));
-        I18n.addComponentForKey("MENU_EDIT", menuEdit);
+        JMenu menuEdit = new JMenu(I18n.valueByKey("MENUBAR_EDIT"));
+        I18n.addComponentForKey("MENUBAR_EDIT", menuEdit);
         menuEdit.setMnemonic('E');
 
-        JMenuItem itemCopy = new JMenuItem(I18n.valueByKey("COPY"), 'C');
-        I18n.addComponentForKey("COPY", itemCopy);
+        JMenuItem itemCopy = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_COPY"), 'C');
+        I18n.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
         itemCopy.setIcon(HelperUi.EMPTY);
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         itemCopy.addActionListener(new ActionListener() {
@@ -142,8 +143,8 @@ public class Menubar extends JMenuBar {
             }
         });
 
-        JMenuItem itemSelectAll = new JMenuItem(I18n.valueByKey("SELECT_ALL"), 'A');
-        I18n.addComponentForKey("SELECT_ALL", itemSelectAll);
+        JMenuItem itemSelectAll = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"), 'A');
+        I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
         itemSelectAll.setIcon(HelperUi.EMPTY);
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.addActionListener(new ActionListener() {
@@ -164,14 +165,14 @@ public class Menubar extends JMenuBar {
         menuEdit.add(itemSelectAll);
 
         // Window Menu > Preferences
-        JMenu menuWindows = new JMenu(I18n.valueByKey("MENU_WINDOWS"));
-        I18n.addComponentForKey("MENU_WINDOWS", menuWindows);
+        JMenu menuWindows = new JMenu(I18n.valueByKey("MENUBAR_WINDOWS"));
+        I18n.addComponentForKey("MENUBAR_WINDOWS", menuWindows);
         menuWindows.setMnemonic('W');
 
         JMenu menuTranslation = new JMenu("Language");
         JMenuItem itemEnglish = new JRadioButtonMenuItem(
             "English", 
-            HelperUi.FLAG_US, 
+            HelperUi.FLAG_EN, 
             !ArrayUtils.contains(new Locale[]{Locale.FRENCH}, Locale.getDefault())
         );
         itemEnglish.addActionListener(new ActionListener() {
@@ -229,105 +230,93 @@ public class Menubar extends JMenuBar {
         
         JMenuItem itemIntoArabic = new JMenuItem("into Arabic...", HelperUi.FLAG_AR);
         JMenuItem itemIntoRussia = new JMenuItem("into Russian...", HelperUi.FLAG_RU);
-        JMenuItem itemIntoDutch = new JMenuItem("into Dutch...", HelperUi.FLAG_NL);
         JMenuItem itemIntoChina = new JMenuItem("into Chinese...", HelperUi.FLAG_CN);
         JMenuItem itemIntoFrench = new JMenuItem("into French...", HelperUi.FLAG_FR);
         JMenuItem itemIntoTurkey = new JMenuItem("into Turkish...", HelperUi.FLAG_TR);
-        JMenuItem itemIntoSpanish = new JMenuItem("into Spanish...", HelperUi.FLAG_ES);
-        JMenuItem itemIntoHindi = new JMenuItem("into Hindi...", HelperUi.FLAG_IN);
-        JMenuItem itemIntoGerman = new JMenuItem("into German...", HelperUi.FLAG_DE);
         JMenuItem itemIntoOther = new JMenuItem("into another language...");
         
         menuI18nContribution.add(itemIntoArabic);
         menuI18nContribution.add(itemIntoRussia);
-        menuI18nContribution.add(itemIntoDutch);
         menuI18nContribution.add(itemIntoChina);
         menuI18nContribution.add(itemIntoFrench);
         menuI18nContribution.add(itemIntoTurkey);
-        menuI18nContribution.add(itemIntoSpanish);
-        menuI18nContribution.add(itemIntoHindi);
-        menuI18nContribution.add(itemIntoGerman);
         menuI18nContribution.add(new JSeparator());
         menuI18nContribution.add(itemIntoOther);
         
         itemIntoArabic.addActionListener(new ActionTranslate(Language.AR));
         itemIntoRussia.addActionListener(new ActionTranslate(Language.RU));
-        itemIntoDutch.addActionListener(new ActionTranslate(Language.NL));
         itemIntoChina.addActionListener(new ActionTranslate(Language.CN));
-        itemIntoFrench.addActionListener(new ActionTranslate(Language.FR));
         itemIntoTurkey.addActionListener(new ActionTranslate(Language.TR));
-        itemIntoSpanish.addActionListener(new ActionTranslate(Language.ES));
-        itemIntoHindi.addActionListener(new ActionTranslate(Language.IN));
-        itemIntoGerman.addActionListener(new ActionTranslate(Language.DE));
+        itemIntoFrench.addActionListener(new ActionTranslate(Language.FR));
         itemIntoOther.addActionListener(new ActionTranslate(Language.OT));
         
         menuWindows.add(menuTranslation);
         menuWindows.add(new JSeparator());
         
-        JMenu menuView = new JMenu(I18n.valueByKey("MENU_VIEW"));
-        I18n.addComponentForKey("MENU_VIEW", menuView);
+        JMenu menuView = new JMenu(I18n.valueByKey("MENUBAR_VIEW"));
+        I18n.addComponentForKey("MENUBAR_VIEW", menuView);
         menuView.setMnemonic('V');
-        JMenuItem database = new JMenuItem(I18n.valueByKey("DATABASE"), HelperUi.DATABASE_SERVER_ICON);
-        I18n.addComponentForKey("DATABASE", database);
+        JMenuItem database = new JMenuItem(I18n.valueByKey("DATABASE_TAB"), HelperUi.DATABASE_SERVER_ICON);
+        I18n.addComponentForKey("DATABASE_TAB", database);
         menuView.add(database);
-        JMenuItem adminPage = new JMenuItem(I18n.valueByKey("ADMINPAGE"), HelperUi.ADMIN_SERVER_ICON);
-        I18n.addComponentForKey("ADMINPAGE", adminPage);
+        JMenuItem adminPage = new JMenuItem(I18n.valueByKey("ADMINPAGE_TAB"), HelperUi.ADMIN_SERVER_ICON);
+        I18n.addComponentForKey("ADMINPAGE_TAB", adminPage);
         menuView.add(adminPage);
-        JMenuItem file = new JMenuItem(I18n.valueByKey("FILE"), HelperUi.FILE_SERVER_ICON);
-        I18n.addComponentForKey("FILE", file);
+        JMenuItem file = new JMenuItem(I18n.valueByKey("FILE_TAB"), HelperUi.FILE_SERVER_ICON);
+        I18n.addComponentForKey("FILE_TAB", file);
         menuView.add(file);
-        JMenuItem webshell = new JMenuItem(I18n.valueByKey("WEBSHELL"), HelperUi.SHELL_SERVER_ICON);
-        I18n.addComponentForKey("WEBSHELL", webshell);
+        JMenuItem webshell = new JMenuItem(I18n.valueByKey("WEBSHELL_TAB"), HelperUi.SHELL_SERVER_ICON);
+        I18n.addComponentForKey("WEBSHELL_TAB", webshell);
         menuView.add(webshell);
-        JMenuItem sqlshell = new JMenuItem(I18n.valueByKey("SQLSHELL"), HelperUi.SHELL_SERVER_ICON);
-        I18n.addComponentForKey("SQLSHELL", sqlshell);
+        JMenuItem sqlshell = new JMenuItem(I18n.valueByKey("SQLSHELL_TAB"), HelperUi.SHELL_SERVER_ICON);
+        I18n.addComponentForKey("SQLSHELL_TAB", sqlshell);
         menuView.add(sqlshell);
-        JMenuItem upload = new JMenuItem(I18n.valueByKey("UPLOAD"), HelperUi.UPLOAD_ICON);
-        I18n.addComponentForKey("UPLOAD", upload);
+        JMenuItem upload = new JMenuItem(I18n.valueByKey("UPLOAD_TAB"), HelperUi.UPLOAD_ICON);
+        I18n.addComponentForKey("UPLOAD_TAB", upload);
         menuView.add(upload);
-        JMenuItem bruteforce = new JMenuItem(I18n.valueByKey("BRUTEFORCE"), HelperUi.BRUTER_ICON);
-        I18n.addComponentForKey("BRUTEFORCE", bruteforce);
+        JMenuItem bruteforce = new JMenuItem(I18n.valueByKey("BRUTEFORCE_TAB"), HelperUi.BRUTER_ICON);
+        I18n.addComponentForKey("BRUTEFORCE_TAB", bruteforce);
         menuView.add(bruteforce);
-        JMenuItem coder = new JMenuItem(I18n.valueByKey("CODER"), HelperUi.CODER_ICON);
-        I18n.addComponentForKey("CODER", coder);
+        JMenuItem coder = new JMenuItem(I18n.valueByKey("CODER_TAB"), HelperUi.CODER_ICON);
+        I18n.addComponentForKey("CODER_TAB", coder);
         menuView.add(coder);
-        JMenuItem scanList = new JMenuItem(I18n.valueByKey("SCANLIST"), HelperUi.SCANLIST_ICON);
-        I18n.addComponentForKey("SCANLIST", scanList);
+        JMenuItem scanList = new JMenuItem(I18n.valueByKey("SCANLIST_TAB"), HelperUi.SCANLIST_ICON);
+        I18n.addComponentForKey("SCANLIST_TAB", scanList);
         menuView.add(scanList);
         menuWindows.add(menuView);
 
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
 
-        JMenu menuPanel = new JMenu(I18n.valueByKey("MENU_PANEL"));
-        I18n.addComponentForKey("MENU_PANEL", menuPanel);
+        JMenu menuPanel = new JMenu(I18n.valueByKey("MENUBAR_PANEL"));
+        I18n.addComponentForKey("MENUBAR_PANEL", menuPanel);
         menuView.setMnemonic('V');
         chunkMenu = new JCheckBoxMenuItem(
-            I18n.valueByKey("CHUNK_TAB_LABEL"), 
+            I18n.valueByKey("CONSOLE_CHUNK_LABEL"), 
             HelperUi.CHUNK_ICON, 
             prefs.getBoolean(HelperUi.CHUNK_VISIBLE, true)
         );
-        I18n.addComponentForKey("CHUNK_TAB_LABEL", chunkMenu);
+        I18n.addComponentForKey("CONSOLE_CHUNK_LABEL", chunkMenu);
         menuPanel.add(chunkMenu);
         binaryMenu = new JCheckBoxMenuItem(
-            I18n.valueByKey("BINARY_TAB_LABEL"), 
+            I18n.valueByKey("CONSOLE_BINARY_LABEL"), 
             HelperUi.BINARY_ICON, 
             prefs.getBoolean(HelperUi.BINARY_VISIBLE, true)
         );
-        I18n.addComponentForKey("BINARY_TAB_LABEL", binaryMenu);
+        I18n.addComponentForKey("CONSOLE_BINARY_LABEL", binaryMenu);
         menuPanel.add(binaryMenu);
         networkMenu = new JCheckBoxMenuItem(
-            I18n.valueByKey("NETWORK_TAB_LABEL"), 
+            I18n.valueByKey("CONSOLE_NETWORK_LABEL"), 
             HelperUi.HEADER_ICON, 
             prefs.getBoolean(HelperUi.NETWORK_VISIBLE, true)
         );
-        I18n.addComponentForKey("NETWORK_TAB_LABEL", networkMenu);
+        I18n.addComponentForKey("CONSOLE_NETWORK_LABEL", networkMenu);
         menuPanel.add(networkMenu);
         javaDebugMenu = new JCheckBoxMenuItem(
-            I18n.valueByKey("JAVA_TAB_LABEL"), 
+            I18n.valueByKey("CONSOLE_JAVA_LABEL"), 
             HelperUi.CUP_ICON, 
             prefs.getBoolean(HelperUi.JAVA_VISIBLE, false)
         );
-        I18n.addComponentForKey("JAVA_TAB_LABEL", javaDebugMenu);
+        I18n.addComponentForKey("CONSOLE_JAVA_LABEL", javaDebugMenu);
 
         for (JCheckBoxMenuItem menuItem: new JCheckBoxMenuItem[]{chunkMenu, binaryMenu, networkMenu, javaDebugMenu}) {
             menuItem.setUI(
@@ -418,9 +407,9 @@ public class Menubar extends JMenuBar {
             });
         }
 
-        JMenuItem preferences = new JMenuItem(I18n.valueByKey("MENU_PREFERENCES"), 'P');
+        JMenuItem preferences = new JMenuItem(I18n.valueByKey("MENUBAR_PREFERENCES"), 'P');
         preferences.setIcon(HelperUi.EMPTY);
-        I18n.addComponentForKey("MENU_PREFERENCES", preferences);
+        I18n.addComponentForKey("MENUBAR_PREFERENCES", preferences);
         
         // Render the Preferences dialog behind scene
         final DialogPreferences dialoguePreferences = new DialogPreferences();
@@ -441,15 +430,15 @@ public class Menubar extends JMenuBar {
         menuWindows.add(preferences);
 
         // Help Menu > about
-        JMenu menuHelp = new JMenu(I18n.valueByKey("MENU_HELP"));
+        JMenu menuHelp = new JMenu(I18n.valueByKey("MENUBAR_HELP"));
         menuHelp.setMnemonic('H');
-        I18n.addComponentForKey("MENU_HELP", menuHelp);
-        JMenuItem itemHelp = new JMenuItem(I18n.valueByKey("ITEM_ABOUT"), 'A');
+        I18n.addComponentForKey("MENUBAR_HELP", menuHelp);
+        JMenuItem itemHelp = new JMenuItem(I18n.valueByKey("MENUBAR_HELP_ABOUT"), 'A');
         itemHelp.setIcon(HelperUi.EMPTY);
-        I18n.addComponentForKey("ITEM_ABOUT", itemHelp);
-        JMenuItem itemUpdate = new JMenuItem(I18n.valueByKey("ITEM_UPDATE"), 'U');
+        I18n.addComponentForKey("MENUBAR_HELP_ABOUT", itemHelp);
+        JMenuItem itemUpdate = new JMenuItem(I18n.valueByKey("MENUBAR_HELP_UPDATE"), 'U');
         itemUpdate.setIcon(HelperUi.EMPTY);
-        I18n.addComponentForKey("ITEM_UPDATE", itemUpdate);
+        I18n.addComponentForKey("MENUBAR_HELP_UPDATE", itemUpdate);
 
         // Render the About dialog behind scene
         final DialogAbout aboutDiag = new DialogAbout();
@@ -477,9 +466,9 @@ public class Menubar extends JMenuBar {
         menuHelp.setMnemonic('C');
         JMenuItem itemSayHi = new JMenuItem("Say hi!");
         itemSayHi.setIcon(HelperUi.EMPTY);
-        JMenuItem itemReportIssue = new JMenuItem(I18n.valueByKey("ITEM_REPORTISSUE"), 'R');
+        JMenuItem itemReportIssue = new JMenuItem(I18n.valueByKey("MENUBAR_COMMUNITY_REPORTISSUE"), 'R');
         itemReportIssue.setIcon(HelperUi.EMPTY);
-        I18n.addComponentForKey("ITEM_REPORTISSUE", itemReportIssue);
+        I18n.addComponentForKey("MENUBAR_COMMUNITY_REPORTISSUE", itemReportIssue);
         itemReportIssue.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -507,8 +496,8 @@ public class Menubar extends JMenuBar {
                     JOptionPane.OK_CANCEL_OPTION,
                     JOptionPane.QUESTION_MESSAGE,
                     null,
-                    new String[]{"Report", I18n.valueByKey("CANCEL")},
-                    I18n.valueByKey("CANCEL")
+                    new String[]{"Report", I18n.valueByKey("LIST_ADD_VALUE_CANCEL")},
+                    I18n.valueByKey("LIST_ADD_VALUE_CANCEL")
                 );
 
                 if (!"".equals(textarea.getText()) && result == JOptionPane.YES_OPTION) {
@@ -539,8 +528,13 @@ public class Menubar extends JMenuBar {
             for (Object componentSwing: I18n.componentsByKey(key)) {
                 Class<?> classComponent = componentSwing.getClass();
                 try {
-                    Method methodSetText = classComponent.getMethod("setText", new Class<?>[]{String.class});
-                    methodSetText.invoke(componentSwing, I18n.valueByKey(key));
+                    if (componentSwing instanceof JTextFieldPlaceholder) {
+                        Method setPlaceholderText = classComponent.getMethod("setPlaceholderText", new Class<?>[]{String.class});
+                        setPlaceholderText.invoke(componentSwing, I18n.valueByKey(key));
+                    } else {
+                        Method methodSetText = classComponent.getMethod("setText", new Class<?>[]{String.class});
+                        methodSetText.invoke(componentSwing, I18n.valueByKey(key));
+                    }
                 } catch (
                     NoSuchMethodException | SecurityException | IllegalAccessException | 
                     IllegalArgumentException | InvocationTargetException e

@@ -62,7 +62,7 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
     public ManagerAbstractShell() {
         this.setLayout(new BorderLayout());
 
-        this.setDefaultText(I18n.valueByKey("SHELL_RUN_BUTTON"));
+        this.setDefaultText(I18n.valueByKey("SHELL_RUN_BUTTON_LABEL"));
         
         List<String> pathsList = new ArrayList<>();
         try {
@@ -106,10 +106,10 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
         );
         
         this.run = new JButton(
-            I18n.valueByKey("SHELL_RUN_BUTTON"), 
+            I18n.valueByKey("SHELL_RUN_BUTTON_LABEL"), 
             new ImageIcon(ManagerAbstractShell.class.getResource("/com/jsql/view/swing/resources/images/icons/application_xp_terminal.png"))
         );
-        I18n.addComponentForKey("SHELL_RUN_BUTTON", this.run);
+        I18n.addComponentForKey("SHELL_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("SHELL_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
 

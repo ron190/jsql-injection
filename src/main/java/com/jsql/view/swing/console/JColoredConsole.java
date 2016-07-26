@@ -69,7 +69,7 @@ public class JColoredConsole extends JPopupTextPane {
                 }
             }
         } catch (Exception e) {
-            LOGGER.fatal(message);
+            LOGGER.fatal(message, e);
         }
     }
 }

@@ -116,6 +116,7 @@ public class Bruter {
         try {
             i = (int) (getCounter() / calculateTimeDifference());
         } catch (Exception ex) {
+            // Ignore division by zero
             return 0;
         }
         return i;
