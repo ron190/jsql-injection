@@ -49,7 +49,9 @@ public class HashBruter extends Bruter {
      * }
      */
 
-    public String hash, generatedHash, password;
+    public String hash;
+    public String generatedHash;
+    public String password;
     public String type;
 
     public String getType() {

@@ -25,8 +25,8 @@ public class EndFileSearch implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.tabManagers().fileManager.restoreButtonText();
-        MediatorGui.tabManagers().fileManager.setButtonEnable(true);
-        MediatorGui.tabManagers().fileManager.hideLoader();
+        MediatorGui.managerFile().restoreButtonText();
+        MediatorGui.managerFile().setButtonEnable(true);
+        MediatorGui.managerFile().hideLoader();
     }
 }

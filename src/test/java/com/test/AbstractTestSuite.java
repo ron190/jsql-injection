@@ -23,6 +23,7 @@ import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.exception.JSqlException;
 
 public abstract class AbstractTestSuite {
     /**
@@ -64,7 +65,7 @@ public abstract class AbstractTestSuite {
     public Retry retry = new Retry(3);
 
     @BeforeClass
-    public static void initialize() throws Exception {
+    public static void initialize() throws InjectionFailureException {
         LOGGER.warn(
             "AbstractTestSuite and ConcreteTestSuite are for initialization purpose. "
             + "Run test suite or unit test instead."
@@ -72,7 +73,7 @@ public abstract class AbstractTestSuite {
         throw new InjectionFailureException();
     }
 
-    public void initializer() throws Exception {
+    public void initializer() {
         try (Connection conn = DriverManager.getConnection(jdbcURL, jdbcUser, jdbcPassword)) {
             Statement stmt = conn.createStatement();
             ResultSet res = stmt.executeQuery(jdbcQueryForDatabaseNames);
@@ -115,7 +116,7 @@ public abstract class AbstractTestSuite {
     }
 
     @Test
-    public void listDatabases() throws Exception {
+    public void listDatabases() throws JSqlException {
         Set<Object> set1 = new HashSet<>();
         Set<Object> set2 = new HashSet<>();
         
@@ -150,7 +151,7 @@ public abstract class AbstractTestSuite {
     }
 
     @Test
-    public void listTables() throws Exception {
+    public void listTables() throws JSqlException {
         Set<Object> set1 = new HashSet<>();
         Set<Object> set2 = new HashSet<>();
 
@@ -184,7 +185,7 @@ public abstract class AbstractTestSuite {
     }
 
     @Test
-    public void listColumns() throws Exception {
+    public void listColumns() throws JSqlException {
         Set<Object> set1 = new HashSet<>();
         Set<Object> set2 = new HashSet<>();
 
@@ -222,7 +223,7 @@ public abstract class AbstractTestSuite {
     }
 
     @Test
-    public void listValues() throws Exception {
+    public void listValues() throws JSqlException {
         Set<Object> set1 = new TreeSet<>();
         Set<Object> set2 = new TreeSet<>();
 

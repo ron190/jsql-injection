@@ -24,6 +24,8 @@ public class GitUtil {
      */
     private static final Logger LOGGER = Logger.getLogger(GitUtil.class);
     
+    public static JSONObject obj;
+    
     private static class CharEncoder {
         String prefix;
         String suffix;
@@ -54,10 +56,12 @@ public class GitUtil {
 
     public static void checkUpdate() {
         try {
-            String json = ConnectionUtil.getSource("https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/jsql-injection.json");
-            JSONObject obj = new JSONObject(json);
+            if (GitUtil.obj == null) {
+                String json = ConnectionUtil.getSource("https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/jsql-injection.json");
+                GitUtil.obj = new JSONObject(json);
+            }
             
-            Float versionGit = Float.parseFloat(obj.getString("version"));
+            Float versionGit = Float.parseFloat(GitUtil.obj.getString("version"));
             if (versionGit > Float.parseFloat(InjectionModel.VERSION_JSQL)) {
                 LOGGER.warn(I18n.valueByKey("UPDATE_NEW_VERSION"));
             }
@@ -71,7 +75,7 @@ public class GitUtil {
         String osArch = System.getProperty("os.arch");
         
         String clientDescription = 
-            "```\n"
+              "```\n"
             + "jSQL: v"+ InjectionModel.VERSION_JSQL +"\n"
             + "Java: v"+ javaVersion +"-"+ osArch +"\n"
             + "OS: "+ System.getProperty("os.name") +" (v"+ System.getProperty("os.version") +")\n"
@@ -116,7 +120,7 @@ public class GitUtil {
 
         HttpURLConnection connection = null;
         try {
-            URL githubUrl = new URL("https://api.github.com/repos/ron190/test-issues/issues");
+            URL githubUrl = new URL("https://api.github.com/repos/ron190/jsql-injection/issues");
 
             connection = (HttpURLConnection) githubUrl.openConnection();
             connection.setDefaultUseCaches(false);
@@ -127,7 +131,7 @@ public class GitUtil {
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty(
                 "Authorization", 
-                "token " + StringUtils.newStringUtf8(Base64.decodeBase64("NGQ1YzdkYWE1NDQwYzdkNTk1YTZlODQzYzFlODlkZmMzNzQ1NDhlNg=="))
+                "token "+ StringUtils.newStringUtf8(Base64.decodeBase64("NGQ1YzdkYWE1NDQwYzdkNTk1YTZlODQzYzFlODlkZmMzNzQ1NDhlNg=="))
             );
             connection.setReadTimeout(ConnectionUtil.TIMEOUT);
             connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
@@ -169,14 +173,16 @@ public class GitUtil {
     
     public static void showNews() {
         try {
-            String jsonInfosWebService = ConnectionUtil.getSource(
-                "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/jsql-injection.json"
-            );
-            JSONObject infosSoftware = new JSONObject(jsonInfosWebService);
+            if (GitUtil.obj == null) {
+                String jsonInfosWebService = ConnectionUtil.getSource(
+                    "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/jsql-injection.json"
+                );
+                GitUtil.obj = new JSONObject(jsonInfosWebService);
+            }
             
-            JSONArray news = infosSoftware.getJSONArray("news");
-            for (int i = 0 ; i < news.length() ; i++) {
-                LOGGER.debug("[Info] "+ news.get(i));
+            JSONArray news = GitUtil.obj.getJSONArray("news");
+            for (int index = 0 ; index < news.length() ; index++) {
+                LOGGER.info(news.get(index));
             }
         } catch (IOException e) {
             LOGGER.warn("Connection to the Github News Webservice failed", e);

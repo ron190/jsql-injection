@@ -89,7 +89,7 @@ public class DataAccess {
             );
         } catch (ArrayIndexOutOfBoundsException e) {
             LOGGER.warn("Incorrect database informations: "+ resultToParse, e);
-            throw new InjectionFailureException();
+            throw new InjectionFailureException("Unrecognized information on database");
         }
         
         LOGGER.debug(MediatorModel.model().getDatabaseInfos());
@@ -126,7 +126,7 @@ public class DataAccess {
 
         if (!regexSearch.find()) {
             MediatorModel.model().sendResponseFromSite("Fetching databases fails", sourcePage[0].trim());
-            throw new InjectionFailureException();
+            throw new InjectionFailureException("Unrecognized name of databases");
         }
         regexSearch.reset();
 
@@ -189,7 +189,7 @@ public class DataAccess {
                 .matcher(resultToParse);
         
         if (!regexSearch.find()) {
-            throw new InjectionFailureException();
+            throw new InjectionFailureException("Unrecognized name of tables");
         } else {
             regexSearch.reset();
             

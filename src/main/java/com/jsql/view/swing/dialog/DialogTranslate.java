@@ -56,6 +56,7 @@ import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.text.JTextAreaPlaceholder;
 
 /**
  * A dialog displaying information on jSQL.
@@ -173,7 +174,7 @@ public class DialogTranslate extends JDialog {
         containerDialog.add(lastLine, BorderLayout.SOUTH);
 
         // Contact info, use HTML text
-        textToTranslate[0] = new JPopupTextArea(new JTextArea()).getProxy();
+        textToTranslate[0] = new JPopupTextArea(new JTextAreaPlaceholder("Text to translate")).getProxy();
 
         textToTranslate[0].addMouseListener(new MouseAdapter() {
             @Override
@@ -221,6 +222,7 @@ public class DialogTranslate extends JDialog {
             + "</html>"
         );
         labelTranslation.setIcon(language.getFlag());
+        labelTranslation.setIconTextGap(8);
         
         DialogTranslate.this.setTitle("Translate to "+ language);
         textToTranslate[0].setText(null);
@@ -234,8 +236,8 @@ public class DialogTranslate extends JDialog {
         new SwingWorker<Object, Object>(){
             @Override
             protected Object doInBackground() throws Exception {
-                OrderedProperties propRoot = new OrderedProperties();       
-                Properties propLanguage = new Properties();       
+                OrderedProperties sourceProperties = new OrderedProperties();       
+                Properties languageProperties = new Properties();       
                 String propertiesToTranslate = "";
                 
                 if (language == Language.OT) {
@@ -249,10 +251,10 @@ public class DialogTranslate extends JDialog {
                         String pageSourceRoot = ConnectionUtil.getSource(
                             "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql.properties"
                         );
-                        propRoot.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}")));
+                        sourceProperties.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}")));
                         LOGGER.info("Source language loaded from Github");
                     } catch (IOException e) {
-                        propRoot.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql.properties"))))).replaceAll("{@|@}")));
+                        sourceProperties.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql.properties"))))).replaceAll("{@|@}")));
                         LOGGER.info("Source language loaded from local");
                     }
                     
@@ -261,31 +263,31 @@ public class DialogTranslate extends JDialog {
                             String pageSourceLanguage = ConnectionUtil.getSource(
                                 "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql_"+ language.name().toLowerCase() +".properties"
                             );
-                            propLanguage.load(new StringReader(pageSourceLanguage));
-                            LOGGER.info("Text for "+ language +" loaded from Github");
+                            languageProperties.load(new StringReader(pageSourceLanguage));
+                            LOGGER.info("Text for "+ language +" translation loaded from Github");
                         } catch (IOException e) {
-                            propLanguage.load(new StringReader(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql_"+ language.name().toLowerCase() +".properties")))));
-                            LOGGER.info("Text for "+ language +" loaded from local");
+                            languageProperties.load(new StringReader(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql_"+ language.name().toLowerCase() +".properties")))));
+                            LOGGER.info("Text for "+ language +" translation loaded from local");
                         }
                     } else {
                         LOGGER.info("Text to translate loaded from source");
                     }
                 } catch (IOException eGithub) {
-                    if (propLanguage.size() == 0) {
+                    if (languageProperties.size() == 0) {
                         if (language == Language.OT) {
                             LOGGER.info("Language file not found, text to translate loaded from local", eGithub);
                         } else {
                             LOGGER.info("Language file not found, text to translate into "+ language +" loaded from local", eGithub);
                         }
-                    } else if (propRoot.size() == 0) {
+                    } else if (sourceProperties.size() == 0) {
                         throw new IOException("Source language not found");
                     }
                 } finally {
-                    for (Entry<String, String> key: propRoot.entrySet()) {
-                        if (language == Language.OT || propLanguage.size() == 0) {
+                    for (Entry<String, String> key: sourceProperties.entrySet()) {
+                        if (language == Language.OT || languageProperties.size() == 0) {
                             propertiesToTranslate += "\n\n"+ key.getKey() +"="+ ((String) key.getValue()).replace("{@|@}","\\\n");
                         } else {
-                            if (!propLanguage.containsKey(key.getKey())) {
+                            if (!languageProperties.containsKey(key.getKey())) {
                                 propertiesToTranslate += "\n\n"+ key.getKey() +"="+ ((String) key.getValue()).replace("{@|@}","\\\n");
                             }
                         }
@@ -299,7 +301,7 @@ public class DialogTranslate extends JDialog {
                     textToTranslate[0].setEditable(true);
                     
                     if (language != Language.OT) {
-                        int percentTranslated = 100 * propLanguage.size() / propRoot.size();
+                        int percentTranslated = 100 * languageProperties.size() / sourceProperties.size();
                         progressBarTranslation.setValue(percentTranslated);
                         progressBarTranslation.setString(percentTranslated +"% translated into "+ language);
                     }

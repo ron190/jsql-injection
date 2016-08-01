@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.view.swing.MediatorGui;
 
 /**
@@ -25,8 +26,9 @@ public class EndAdminSearch implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.tabManagers().adminPageManager.restoreButtonText();
-        MediatorGui.tabManagers().adminPageManager.setButtonEnable(true);
-        MediatorGui.tabManagers().adminPageManager.hideLoader();
+        MediatorGui.managerAdminPage().restoreButtonText();
+        MediatorGui.managerAdminPage().setButtonEnable(true);
+        MediatorGui.managerAdminPage().hideLoader();
+        RessourceAccess.setSearchAdminStopped(false);
     }
 }

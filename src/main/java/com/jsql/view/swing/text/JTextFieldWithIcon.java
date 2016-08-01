@@ -11,11 +11,10 @@
 package com.jsql.view.swing.text;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.awt.Image;
 import java.net.URL;
 
-import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
@@ -34,18 +33,17 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
         super.paintComponent(g);
 
         URL url = JTextFieldWithIcon.class.getResource("/com/jsql/view/swing/resources/images/icons/globe.png");
-        BufferedImage image = null;
+        Image image = null;
         try {
-            image = ImageIO.read(url);
-        } catch (IOException | IllegalArgumentException e) {
-            // Fix IllegalArgumentException when globe.png is unavailable
-            image = new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB);
+            image = new ImageIcon(url).getImage();
+        } catch (IllegalArgumentException e) {
+            // Ignore Exception when globe.png is unavailable
         }
 
         Border border = UIManager.getBorder("TextField.border");
 
         int x = border.getBorderInsets(this).left;
-        int y = (getHeight() - image.getHeight()) / 2;
+        int y = (getHeight() - 16) / 2;
 
         // Fix #1654 (Linux only) : ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData
         try {

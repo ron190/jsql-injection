@@ -1,9 +1,11 @@
 {
-    "version": "0.74",
-    "roadmap": "Translation into Arabic and Russian, WAF tamper, SQLite and Access",
+    "version": "0.75",
+    "roadmap": "Databases: SQLite Access MongoDb and Neo4j, Translation, SOAP injection, Command line interface",
     "news": [
-        "Translation system: Contribute and translate jSQL into Arabic, Russian or Chinese. Open menu [Community] with the arrow on the top right, choose [I help translate jSQL], translate some text into your language then click on [Send], it's that easy.",
-        "Custom Http method in [Advanced settings]: Use your own custom method instead of GET and POST",
+        "[New] Translation system: contribute and translate jSQL for example into Arabic. Click on the top right button and open menu [Community], choose a language using [I help translate jSQL] and translate some text then click on [Send]. The developer will add your translation to the next release",
+        "[New] Custom Http method: use your own custom method instead of POST using the top right button",
     ],
-    "commit": "",
+    "commit": [
+        "",
+    ],
 }

@@ -70,13 +70,13 @@ public final class HelperUi {
     public static final Icon SQUARE_GREY = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/squareGrey.png"));
     public static final Icon LOADER_GIF = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/spinner.gif"));
 
-    public static final Icon ADMIN_SERVER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/adminServer.png"));
-    public static final Icon SHELL_SERVER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/shellServer.png"));
-    public static final Icon DATABASE_SERVER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/databaseServer.png"));
-    public static final Icon FILE_SERVER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/fileServer.png"));
+    public static final Icon ADMIN_SERVER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/admin.png"));
+    public static final Icon SHELL_SERVER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/application_xp_terminal.png"));
+    public static final Icon DATABASE_SERVER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/database.png"));
+    public static final Icon FILE_SERVER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/file.png"));
     public static final Icon BRUTER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/lock_open.png"));
     public static final Icon CODER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/textfield.png"));
-    public static final Icon UPLOAD_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/page_save.png"));
+    public static final Icon UPLOAD_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/disk.png"));
     public static final Icon SCANLIST_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/table_multiple.png"));
 
     public static final Icon TABLE_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/table.png"));
@@ -104,6 +104,7 @@ public final class HelperUi {
     public static final Icon FLAG_TR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/tr.png"));
     public static final Icon FLAG_EN = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/en.png"));
     public static final Icon FLAG_FR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/fr.png"));
+    public static final Icon FLAG_IN = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/in.png"));
     
     public static final URL ICON16 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug16.png");
     public static final URL ICON32 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug32.png");

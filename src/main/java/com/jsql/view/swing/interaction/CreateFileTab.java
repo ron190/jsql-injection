@@ -71,8 +71,8 @@ public class CreateFileTab extends CreateTab implements InteractionCommand {
         MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(scroller), header);
 
         // Add the path String to the list of files only if there is no same StringObject value already
-        MediatorGui.tabManagers().shellManager.addToList(path.replace(name, ""));
-        MediatorGui.tabManagers().uploadManager.addToList(path.replace(name, ""));
-        MediatorGui.tabManagers().sqlShellManager.addToList(path.replace(name, ""));
+        MediatorGui.managerWebshell().addToList(path.replace(name, ""));
+        MediatorGui.managerUpload().addToList(path.replace(name, ""));
+        MediatorGui.managerSqlshell().addToList(path.replace(name, ""));
     }
 }

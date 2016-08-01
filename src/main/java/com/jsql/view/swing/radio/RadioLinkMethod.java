@@ -53,7 +53,7 @@ public class RadioLinkMethod extends AbstractRadioLink {
 
     @Override
     void action() {
-        MediatorGui.panelAddress().setMethodInjection(this.methodInjection);
+        MediatorGui.panelAddressBar().setMethodInjection(this.methodInjection);
     }
 
     @Override

@@ -27,7 +27,6 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -85,10 +84,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
             )
         );
         
-        run = new JButton(
-            defaultText, 
-            new ImageIcon(ManagerAdminPage.class.getResource("/com/jsql/view/swing/resources/images/icons/adminSearch.png"))
-        );
+        run = new JButton(defaultText);
         
         run.setContentAreaFilled(false);
         run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
@@ -119,15 +115,15 @@ public class ManagerAdminPage extends ManagerAbstractList {
                     @Override
                     public void run() {
                         if (run.getText().equals(defaultText)) {
-                            if ("".equals(MediatorGui.panelAddress().fieldUrl.getText())) {
-                                LOGGER.warn("Please define the main address");
+                            if ("".equals(MediatorGui.panelAddressBar().fieldUrl.getText())) {
+                                LOGGER.warn("Enter the main address");
                             } else {
                                 run.setText("Stop");
                                 loader.setVisible(true);
                                 
                                 try {
                                     RessourceAccess.createAdminPages(
-                                        MediatorGui.panelAddress().fieldUrl.getText(), 
+                                        MediatorGui.panelAddressBar().fieldUrl.getText(), 
                                         listFile.getSelectedValuesList()
                                     );
                                 } catch (InterruptedException e) {

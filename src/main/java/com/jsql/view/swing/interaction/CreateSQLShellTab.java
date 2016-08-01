@@ -15,7 +15,6 @@ import java.net.MalformedURLException;
 import java.util.UUID;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 
 import org.apache.log4j.Logger;
 
@@ -76,7 +75,7 @@ public class CreateSQLShellTab extends CreateTab implements InteractionCommand {
             MediatorGui.tabResults().setSelectedComponent(scroller);
     
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader(new ImageIcon(CreateSQLShellTab.class.getResource("/com/jsql/view/swing/resources/images/icons/shell.png")));
+            TabHeader header = new TabHeader(HelperUi.SHELL_SERVER_ICON);
     
             MediatorGui.tabResults().setToolTipTextAt(
                 MediatorGui.tabResults().indexOfComponent(scroller),

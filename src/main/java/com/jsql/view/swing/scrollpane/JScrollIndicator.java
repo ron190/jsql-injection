@@ -140,7 +140,7 @@ public class JScrollIndicator extends JLayeredPane {
 
     private class JMyScrollBar extends JScrollBar {
 
-        protected final MyScrollBarUI scrollUI;
+        protected final transient MyScrollBarUI scrollUI;
 
         public JMyScrollBar(int direction) {
             super(direction);

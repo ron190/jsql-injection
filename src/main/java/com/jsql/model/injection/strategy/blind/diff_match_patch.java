@@ -735,8 +735,10 @@ public class diff_match_patch {
         String seed = longtext.substring(i, i + longtext.length() / 4);
         int j = -1;
         String best_common = "";
-        String best_longtext_a = "", best_longtext_b = "";
-        String best_shorttext_a = "", best_shorttext_b = "";
+        String best_longtext_a = "";
+        String best_longtext_b = "";
+        String best_shorttext_a = "";
+        String best_shorttext_b = "";
         while ((j = shorttext.indexOf(seed, j + 1)) != -1) {
             int prefixLength = diff_commonPrefix(longtext.substring(i),
                     shorttext.substring(j));
@@ -913,11 +915,16 @@ public class diff_match_patch {
      * @param diffs LinkedList of Diff objects.
      */
     public void diff_cleanupSemanticLossless(List<Diff> diffs) {
-        String equality1, edit, equality2;
+        String equality1;
+        String edit;
+        String equality2;
         String commonString;
         int commonOffset;
-        int score, bestScore;
-        String bestEquality1, bestEdit, bestEquality2;
+        int score;
+        int bestScore;
+        String bestEquality1;
+        String bestEdit;
+        String bestEquality2;
         // Create a new iterator at the start.
         ListIterator<Diff> pointer = diffs.listIterator();
         Diff prevDiff = pointer.hasNext() ? pointer.next() : null;
@@ -1114,7 +1121,8 @@ public class diff_match_patch {
                     // Replace equality with a delete.
                     pointer.set(new Diff(Operation.DELETE, lastequality));
                     // Insert a corresponding an insert.
-                    pointer.add(thisDiff = new Diff(Operation.INSERT, lastequality));
+                    thisDiff = new Diff(Operation.INSERT, lastequality);
+                    pointer.add(thisDiff);
 
                     equalities.pop();  // Throw away the equality we just deleted.
                     lastequality = null;
@@ -1436,19 +1444,15 @@ public class diff_match_patch {
      * Operations are tab-separated.  Inserted text is escaped using %xx notation.
      * @param diffs Array of Diff objects.
      * @return Delta text.
+     * @throws UnsupportedEncodingException 
      */
-    public String diff_toDelta(List<Diff> diffs) {
+    public String diff_toDelta(List<Diff> diffs) throws UnsupportedEncodingException {
         StringBuilder text = new StringBuilder();
         for (Diff aDiff : diffs) {
             switch (aDiff.operation) {
             case INSERT:
-                try {
-                    text.append("+").append(URLEncoder.encode(aDiff.text, "UTF-8")
-                            .replace('+', ' ')).append("\t");
-                } catch (UnsupportedEncodingException e) {
-                    // Not likely on modern system.
-                    throw new Error("This system does not support UTF-8.", e);
-                }
+                text.append("+").append(URLEncoder.encode(aDiff.text, "UTF-8")
+                        .replace('+', ' ')).append("\t");
                 break;
             case DELETE:
                 text.append("-").append(aDiff.text.length()).append("\t");
@@ -1474,9 +1478,10 @@ public class diff_match_patch {
      * @param delta Delta text.
      * @return Array of Diff objects or null if invalid.
      * @throws IllegalArgumentException If invalid input.
+     * @throws UnsupportedEncodingException 
      */
     public List<Diff> diff_fromDelta(String text1, String delta)
-            throws IllegalArgumentException {
+            throws IllegalArgumentException, UnsupportedEncodingException {
         List<Diff> diffs = new LinkedList<>();
         int pointer = 0;  // Cursor in text1
         String[] tokens = delta.split("\t");
@@ -1494,9 +1499,6 @@ public class diff_match_patch {
                 param = param.replace("+", "%2B");
                 try {
                     param = URLDecoder.decode(param, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    // Not likely on modern system.
-                    throw new Error("This system does not support UTF-8.", e);
                 } catch (IllegalArgumentException e) {
                     // Malformed URI sequence.
                     throw new IllegalArgumentException(
@@ -1520,7 +1522,10 @@ public class diff_match_patch {
                 }
                 String text;
                 try {
-                    text = text1.substring(pointer, pointer += n);
+                    int p1 = pointer;
+                    pointer += n;
+                    int p2 = pointer; 
+                    text = text1.substring(p1, p2);
                 } catch (StringIndexOutOfBoundsException e) {
                     throw new IllegalArgumentException("Delta length (" + pointer
                             + ") larger than source text length (" + text1.length()
@@ -1614,7 +1619,8 @@ public class diff_match_patch {
         int matchmask = 1 << (pattern.length() - 1);
         best_loc = -1;
 
-        int bin_min, bin_mid;
+        int bin_min;
+        int bin_mid;
         int bin_max = pattern.length() + text.length();
         // Empty initialization added to appease Java compiler.
         int[] last_rd = new int[0];
@@ -2107,9 +2113,11 @@ public class diff_match_patch {
      */
     public void patch_splitMax(LinkedList<Patch> patches) {
         short patch_size = Match_MaxBits;
-        String precontext, postcontext;
+        String precontext;
+        String postcontext;
         Patch patch;
-        int start1, start2;
+        int start1;
+        int start2;
         boolean empty;
         Operation diff_type;
         String diff_text;
@@ -2222,9 +2230,10 @@ public class diff_match_patch {
      * @param textline Text representation of patches.
      * @return List of Patch objects.
      * @throws IllegalArgumentException If invalid input.
+     * @throws UnsupportedEncodingException 
      */
     public List<Patch> patch_fromText(String textline)
-            throws IllegalArgumentException {
+            throws IllegalArgumentException, UnsupportedEncodingException {
         List<Patch> patches = new LinkedList<>();
         if (textline.length() == 0) {
             return patches;
@@ -2280,9 +2289,6 @@ public class diff_match_patch {
                 line = line.replace("+", "%2B");  // decode would change all "+" to " "
                 try {
                     line = URLDecoder.decode(line, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    // Not likely on modern system.
-                    throw new Error("This system does not support UTF-8.", e);
                 } catch (IllegalArgumentException e) {
                     // Malformed URI sequence.
                     throw new IllegalArgumentException(
@@ -2420,7 +2426,8 @@ public class diff_match_patch {
          * @return The GNU diff string.
          */
         public String toString() {
-            String coords1, coords2;
+            String coords1;
+            String coords2;
             if (this.length1 == 0) {
                 coords1 = this.start1 + ",0";
             } else if (this.length1 == 1) {
@@ -2456,7 +2463,7 @@ public class diff_match_patch {
                     .append("\n");
                 } catch (UnsupportedEncodingException e) {
                     // Not likely on modern system.
-                    throw new Error("This system does not support UTF-8.", e);
+                    throw new IllegalArgumentException("This system does not support UTF-8.");
                 }
             }
             return unescapeForEncodeUriCompatability(text.toString());

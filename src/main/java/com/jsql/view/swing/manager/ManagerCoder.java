@@ -26,7 +26,6 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -44,12 +43,13 @@ import com.jsql.view.swing.manager.util.MenuBarCoder;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.text.JTextAreaPlaceholder;
 
 /**
  * Manager to code/uncode string in various methods.
  */
 @SuppressWarnings("serial")
-public class ManagerCoder extends JPanel {
+public class ManagerCoder extends JPanel implements Manager {
     /**
      * User input to encode. 
      */
@@ -71,7 +71,7 @@ public class ManagerCoder extends JPanel {
     public ManagerCoder() {
         super(new BorderLayout());
 
-        entry = new JPopupTextArea(new JTextArea()).getProxy();
+        entry = new JPopupTextArea(new JTextAreaPlaceholder("Type a string to convert")).getProxy();
         entry.setEditable(true);
         entry.setLineWrap(true);
 
@@ -121,10 +121,7 @@ public class ManagerCoder extends JPanel {
         
         this.encoding.setText("Encode to Base64");
         
-        final JButton run = new JButton(
-            I18n.valueByKey("CODER_RUN_BUTTON_LABEL"), 
-            new ImageIcon(ManagerCoder.class.getResource("/com/jsql/view/swing/resources/images/icons/bullet_go.png"))
-        );
+        final JButton run = new JButton(I18n.valueByKey("CODER_RUN_BUTTON_LABEL"));
         I18n.addComponentForKey("CODER_RUN_BUTTON_LABEL", run);
         
         run.setContentAreaFilled(false);
@@ -158,7 +155,7 @@ public class ManagerCoder extends JPanel {
         topMixed.add(middleLine, BorderLayout.SOUTH);
 
         JPanel bottom = new JPanel(new BorderLayout());
-        result = new JPopupTextArea().getProxy();
+        result = new JPopupTextArea("Result of conversion").getProxy();
         result.setLineWrap(true);
         bottom.add(new LightScrollPane(1, 1, 0, 0, result), BorderLayout.CENTER);
 

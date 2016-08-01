@@ -66,12 +66,12 @@ public abstract class AbstractShell extends JTextPane {
     /**
      * Document used to append colored text.
      */
-    private StyledDocument styledDocument = this.getStyledDocument();
+    private transient StyledDocument styledDocument = this.getStyledDocument();
 
     /**
      * Style used for coloring text.
      */
-    private Style style = this.addStyle("Necrophagist's next album is 2014.", null);
+    private transient Style style = this.addStyle("Necrophagist's next album is 2014.", null);
 
     /**
      *  Length of prompt.

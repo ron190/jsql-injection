@@ -60,7 +60,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 throw e;
             } else if (strategy == null) {
                 // Fix #1905 : NullPointerException on injectionStrategy.inject()
-                throw new InjectionFailureException();
+                throw new InjectionFailureException("Undefined startegy");
             }
             
             sourcePage[0] = strategy.inject(sqlQuery, Integer.toString(charPositionInCurrentRow), this);

@@ -28,6 +28,6 @@ public class SetVendor implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.tabManagers().databaseManager.panelVendor.setText(vendor.toString());
+        MediatorGui.managerDatabase().panelVendor.setText(vendor.toString());
     }
 }

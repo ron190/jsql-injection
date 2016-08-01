@@ -26,21 +26,21 @@ public class MarkFileSystemInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.tabManagers().fileManager.changePrivilegeIcon(HelperUi.SQUARE_RED);
-        MediatorGui.tabManagers().fileManager.setButtonEnable(true);
-        MediatorGui.tabManagers().fileManager.restoreButtonText();
-        MediatorGui.tabManagers().fileManager.hideLoader();
+        MediatorGui.managerFile().changePrivilegeIcon(HelperUi.SQUARE_RED);
+        MediatorGui.managerFile().setButtonEnable(true);
+        MediatorGui.managerFile().restoreButtonText();
+        MediatorGui.managerFile().hideLoader();
         
-        MediatorGui.tabManagers().shellManager.changePrivilegeIcon(HelperUi.SQUARE_RED);
-        MediatorGui.tabManagers().shellManager.setButtonEnable(true);
-        MediatorGui.tabManagers().shellManager.restoreButtonText();
+        MediatorGui.managerWebshell().changePrivilegeIcon(HelperUi.SQUARE_RED);
+        MediatorGui.managerWebshell().setButtonEnable(true);
+        MediatorGui.managerWebshell().restoreButtonText();
         
-        MediatorGui.tabManagers().uploadManager.changePrivilegeIcon(HelperUi.SQUARE_RED);
-        MediatorGui.tabManagers().uploadManager.setButtonEnable(true);
-        MediatorGui.tabManagers().uploadManager.restoreButtonText();
+        MediatorGui.managerUpload().changePrivilegeIcon(HelperUi.SQUARE_RED);
+        MediatorGui.managerUpload().setButtonEnable(true);
+        MediatorGui.managerUpload().restoreButtonText();
         
-        MediatorGui.tabManagers().sqlShellManager.changePrivilegeIcon(HelperUi.SQUARE_RED);
-        MediatorGui.tabManagers().sqlShellManager.setButtonEnable(true);
-        MediatorGui.tabManagers().sqlShellManager.restoreButtonText();
+        MediatorGui.managerSqlshell().changePrivilegeIcon(HelperUi.SQUARE_RED);
+        MediatorGui.managerSqlshell().setButtonEnable(true);
+        MediatorGui.managerSqlshell().restoreButtonText();
     }
 }

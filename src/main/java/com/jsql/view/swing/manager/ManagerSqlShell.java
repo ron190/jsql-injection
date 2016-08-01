@@ -28,7 +28,7 @@ import com.jsql.view.swing.text.JPopupTextField;
  * Manager for uploading PHP SQL shell to the host and send queries.
  */
 @SuppressWarnings("serial")
-public class ManagerSqlshell extends ManagerAbstractShell {
+public class ManagerSqlShell extends ManagerAbstractShell {
     
     final JTextField username = new JPopupTextField(I18n.valueByKey("SQL_SHELL_USERNAME_LABEL")).getProxy();
     
@@ -37,7 +37,10 @@ public class ManagerSqlshell extends ManagerAbstractShell {
     /**
      * Build the manager panel.
      */
-    public ManagerSqlshell() {
+    public ManagerSqlShell() {
+
+        run.setText("Create SQL shell(s)");
+        
         JPanel userPassPanel = new JPanel();
         
         GroupLayout userPassLayout = new GroupLayout(userPassPanel);

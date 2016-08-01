@@ -20,7 +20,6 @@ import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -43,7 +42,7 @@ import com.jsql.view.swing.text.JPopupTextField;
  * Manager to brute force a hash of various types.
  */
 @SuppressWarnings("serial")
-public class ManagerBruteForce extends JPanel {
+public class ManagerBruteForce extends JPanel implements Manager {
     /**
      * Button running the attack.
      */
@@ -211,7 +210,7 @@ public class ManagerBruteForce extends JPanel {
         options.add(secondAndThirdLine, BorderLayout.SOUTH);
         this.add(options, BorderLayout.NORTH);
 
-        result = new JPopupTextArea().getProxy();
+        result = new JPopupTextArea("Result of brute force processing").getProxy();
         result.setLineWrap(true);
         this.add(new LightScrollPane(1, 1, 0, 0, result), BorderLayout.CENTER);
         
@@ -225,10 +224,7 @@ public class ManagerBruteForce extends JPanel {
             )
         );
         
-        run = new JButton(
-            I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_LABEL"), 
-            new ImageIcon(ManagerBruteForce.class.getResource("/com/jsql/view/swing/resources/images/icons/key.png"))
-        );
+        run = new JButton(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_LABEL"));
         I18n.addComponentForKey("BRUTEFORCE_RUN_BUTTON_LABEL", run);
         run.setToolTipText(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
         

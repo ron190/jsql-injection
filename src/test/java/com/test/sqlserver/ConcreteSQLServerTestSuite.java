@@ -1,14 +1,8 @@
 package com.test.sqlserver;
 
-import org.apache.log4j.Logger;
-
 import com.test.AbstractTestSuite;
 
 public class ConcreteSQLServerTestSuite extends AbstractTestSuite {
-    /**
-     * Using default log4j.properties from root /
-     */
-    private static final Logger LOGGER = Logger.getLogger(ConcreteSQLServerTestSuite.class);
 
     public ConcreteSQLServerTestSuite () {
         this.jdbcURL = "jdbc:sqlserver://"+ AbstractTestSuite.HOSTNAME +":52382";
@@ -27,10 +21,6 @@ public class ConcreteSQLServerTestSuite extends AbstractTestSuite {
         this.jdbcQueryForColumnNames = "select c.name FROM test..syscolumns c, test..sysobjects t WHERE c.id=t.id AND t.name='table_test_1'";  
         this.jdbcQueryForValues = "select LTRIM(RTRIM(test)) test FROM test.dbo.table_test_1";   
         
-        try {
-            initializer();
-        } catch (Exception e) {
-            LOGGER.warn(e);
-        }
+        initializer();
     }
 }

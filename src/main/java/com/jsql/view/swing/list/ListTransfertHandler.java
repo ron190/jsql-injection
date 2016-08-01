@@ -40,7 +40,7 @@ public class ListTransfertHandler extends TransferHandler {
     /**
      * List of cut/copy/paste/drag/drop items.
      */
-    private List<ListItem> dragPaths = null;
+    private transient List<ListItem> dragPaths = null;
     
     @Override
     public int getSourceActions(JComponent c) {

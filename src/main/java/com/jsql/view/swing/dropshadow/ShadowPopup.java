@@ -105,7 +105,8 @@ public final class ShadowPopup extends Popup {
     /**
      * The desired x and y location of the popup.
      */
-    private int x, y;
+    private int x;
+    private int y;
 
     /**
      * The real popup. The #show() and #hide() methods will delegate

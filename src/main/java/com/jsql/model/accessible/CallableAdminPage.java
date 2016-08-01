@@ -39,6 +39,11 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
         if (!RessourceAccess.isSearchAdminStopped()) {
             URL targetUrl = new URL(urlAdminPage);
             HttpURLConnection connection = (HttpURLConnection) targetUrl.openConnection();
+            
+            connection.setRequestProperty("Pragma", "no-cache");
+            connection.setRequestProperty("Cache-Control", "no-cache");
+            connection.setRequestProperty("Expires", "-1");
+            
             connection.setRequestMethod("HEAD");
             responseCodeHTTP = connection.getHeaderField(0);
             
@@ -50,7 +55,7 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
             msgHeader.put(TypeHeader.URL, urlAdminPage);
             msgHeader.put(TypeHeader.POST, "");
             msgHeader.put(TypeHeader.HEADER, "");
-            msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHTTPHeaders(connection));
+            msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHttpHeaders(connection));
 
             Request request = new Request();
             request.setMessage(TypeRequest.MESSAGE_HEADER);

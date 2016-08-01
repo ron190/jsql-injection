@@ -28,7 +28,6 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -88,7 +87,7 @@ public class ManagerFile extends ManagerAbstractList {
             )
         );
         
-        run = new JButton(defaultText, new ImageIcon(ManagerFile.class.getResource("/com/jsql/view/swing/resources/images/icons/fileSearch.png")));
+        run = new JButton(defaultText);
 
         run.setToolTipText(I18n.valueByKey("FILE_RUN_BUTTON_TOOLTIP"));
         run.setEnabled(false);
@@ -128,8 +127,8 @@ public class ManagerFile extends ManagerAbstractList {
                             
                             run.setText("Stop");
                             try {
-                                MediatorGui.tabManagers().shellManager.clearSelection();
-                                MediatorGui.tabManagers().sqlShellManager.clearSelection();
+                                MediatorGui.managerWebshell().clearSelection();
+                                MediatorGui.managerSqlshell().clearSelection();
                                 loader.setVisible(true);
                                 RessourceAccess.readFile(listFile.getSelectedValuesList());
                             } catch (JSqlException | ExecutionException e) {

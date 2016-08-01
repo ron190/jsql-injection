@@ -56,11 +56,11 @@ import com.jsql.view.swing.shell.AbstractShell;
  * - at the bottom: information labels.
  */
 @SuppressWarnings("serial")
-public class JFrameSoftware extends JFrame implements Observer {
+public class JFrameView extends JFrame implements Observer {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(JFrameSoftware.class);
+    private static final Logger LOGGER = Logger.getLogger(JFrameView.class);
 
     /**
      * Main center panel, composed by left and right tabs.
@@ -83,7 +83,7 @@ public class JFrameSoftware extends JFrame implements Observer {
     /**
      * Build the GUI: add app icon, tree icons, the 3 main panels.
      */
-    public JFrameSoftware() {
+    public JFrameView() {
         super("jSQL Injection");
         
         MediatorGui.register(this);
@@ -120,13 +120,13 @@ public class JFrameSoftware extends JFrame implements Observer {
                 Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
                 prefs.putInt(
                     SplitHorizontalTopBottom.NAME_V_SPLITPANE, 
-                    JFrameSoftware.this.splitHorizontalTopBottom.splitVerticalLeftRight.getDividerLocation()
+                    JFrameView.this.splitHorizontalTopBottom.splitVerticalLeftRight.getDividerLocation()
                 );
                 
                 // Divider location change when window is maximized, we can't save getDividerLocation()
                 prefs.putInt(
                     SplitHorizontalTopBottom.NAME_H_SPLITPANE, 
-                    JFrameSoftware.this.splitHorizontalTopBottom.getHeight() - JFrameSoftware.this.splitHorizontalTopBottom.getDividerLocation()
+                    JFrameView.this.splitHorizontalTopBottom.getHeight() - JFrameView.this.splitHorizontalTopBottom.getDividerLocation()
                 );
                 
                 prefs.putBoolean(HelperUi.BINARY_VISIBLE, false);
@@ -194,13 +194,13 @@ public class JFrameSoftware extends JFrame implements Observer {
      * Empty the interface.
      */
     public void resetInterface() {
-        MediatorGui.tabManagers().databaseManager.panelVendor.setText(Vendor.AUTO.toString());
-        MediatorGui.tabManagers().databaseManager.panelStrategy.setText("<Strategy auto>");
-        for (int i = 0 ; i < MediatorGui.tabManagers().databaseManager.panelStrategy.getItemCount() ; i++) {
-            MediatorGui.tabManagers().databaseManager.panelStrategy.getItem(i).setSelected(false);
-            MediatorGui.tabManagers().databaseManager.panelStrategy.setEnabled(false);
+        MediatorGui.managerDatabase().panelVendor.setText(Vendor.AUTO.toString());
+        MediatorGui.managerDatabase().panelStrategy.setText("<Strategy auto>");
+        for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
+            MediatorGui.managerDatabase().panelStrategy.getItem(i).setSelected(false);
+            MediatorGui.managerDatabase().panelStrategy.setEnabled(false);
         }
-        MediatorGui.tabManagers().databaseManager.panelStrategy.setEnabled(false);
+        MediatorGui.managerDatabase().panelStrategy.setEnabled(false);
         
         ThreadUtil.reset();
         
@@ -246,14 +246,14 @@ public class JFrameSoftware extends JFrame implements Observer {
             }
         }
         
-        MediatorGui.tabManagers().fileManager.setButtonEnable(false);
-        MediatorGui.tabManagers().shellManager.setButtonEnable(false);
-        MediatorGui.tabManagers().sqlShellManager.setButtonEnable(false);
+        MediatorGui.managerFile().setButtonEnable(false);
+        MediatorGui.managerWebshell().setButtonEnable(false);
+        MediatorGui.managerSqlshell().setButtonEnable(false);
 
-        MediatorGui.tabManagers().fileManager.changePrivilegeIcon(HelperUi.SQUARE_GREY);
-        MediatorGui.tabManagers().shellManager.changePrivilegeIcon(HelperUi.SQUARE_GREY);
-        MediatorGui.tabManagers().sqlShellManager.changePrivilegeIcon(HelperUi.SQUARE_GREY);
-        MediatorGui.tabManagers().uploadManager.changePrivilegeIcon(HelperUi.SQUARE_GREY);
+        MediatorGui.managerFile().changePrivilegeIcon(HelperUi.SQUARE_GREY);
+        MediatorGui.managerWebshell().changePrivilegeIcon(HelperUi.SQUARE_GREY);
+        MediatorGui.managerSqlshell().changePrivilegeIcon(HelperUi.SQUARE_GREY);
+        MediatorGui.managerUpload().changePrivilegeIcon(HelperUi.SQUARE_GREY);
     }
 
     /**

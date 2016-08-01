@@ -26,9 +26,9 @@ public class MarkErrorbasedVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        for (int i = 0 ; i < MediatorGui.tabManagers().databaseManager.panelStrategy.getItemCount() ; i++) {
-            if (MediatorGui.tabManagers().databaseManager.panelStrategy.getItem(i).getText().equals(Strategy.ERRORBASED.toString())) {
-                MediatorGui.tabManagers().databaseManager.panelStrategy.getItem(i).setEnabled(true);
+        for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
+            if (MediatorGui.managerDatabase().panelStrategy.getItem(i).getText().equals(Strategy.ERRORBASED.toString())) {
+                MediatorGui.managerDatabase().panelStrategy.getItem(i).setEnabled(true);
                 break;
             }
         }

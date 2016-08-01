@@ -29,7 +29,7 @@ public class LightScrollPane extends JComponent {
     public int SCROLL_BAR_ALPHA = 25;
     private static final int THUMB_BORDER_SIZE = 0;
     private static final int THUMB_SIZE = 11;
-    public  Color THUMB_COLOR = Color.DARK_GRAY;
+    public Color THUMB_COLOR = Color.DARK_GRAY;
 
     public final JScrollPane scrollPane;
     private final JScrollBar verticalScrollBar;
@@ -194,7 +194,16 @@ public class LightScrollPane extends JComponent {
 
             Graphics2D graphics2D = (Graphics2D) g.create();
             graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            graphics2D.setColor(new Color(THUMB_COLOR.getRed(), THUMB_COLOR.getGreen(), THUMB_COLOR.getBlue(), alpha));
+            
+            // Fix Mac OS Color.DARK_GRAY and alpha incompatibility
+            Color colorThumb;
+            try {
+                colorThumb = new Color(THUMB_COLOR.getRed(), THUMB_COLOR.getGreen(), THUMB_COLOR.getBlue(), alpha);                
+            } catch (NullPointerException e) {
+                colorThumb = Color.GRAY;                
+            }
+            graphics2D.setColor(colorThumb);
+            
             graphics2D.fillRect(x, y, width, height);
             graphics2D.dispose();
         }

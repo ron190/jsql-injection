@@ -28,7 +28,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
@@ -87,7 +86,7 @@ public class ManagerScan extends ManagerAbstractList {
             )
         );
         
-        run = new JButton(defaultText, new ImageIcon(ManagerScan.class.getResource("/com/jsql/view/swing/resources/images/icons/magnifier.png")));
+        run = new JButton(defaultText);
 
         run.setToolTipText(I18n.valueByKey("SCAN_RUN_BUTTON_TOOLTIP"));
 

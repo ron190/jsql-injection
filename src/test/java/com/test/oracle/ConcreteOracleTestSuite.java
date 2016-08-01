@@ -1,14 +1,8 @@
 package com.test.oracle;
 
-import org.apache.log4j.Logger;
-
 import com.test.AbstractTestSuite;
 
 public class ConcreteOracleTestSuite extends AbstractTestSuite {
-    /**
-     * Using default log4j.properties from root /
-     */
-    private static final Logger LOGGER = Logger.getLogger(ConcreteOracleTestSuite.class);
 
     public ConcreteOracleTestSuite () {
         this.jdbcURL = "jdbc:oracle:thin:@"+ AbstractTestSuite.HOSTNAME +":1521:xe";
@@ -27,10 +21,6 @@ public class ConcreteOracleTestSuite extends AbstractTestSuite {
         this.jdbcQueryForColumnNames = "SELECT column_name FROM all_tab_columns where owner='HR' and table_name='REGIONS'";  
         this.jdbcQueryForValues = "SELECT REGION_NAME FROM HR.REGIONS";   
         
-        try {
-            initializer();
-        } catch (Exception e) {
-            LOGGER.warn(e);
-        }
+        initializer();
     }
 }

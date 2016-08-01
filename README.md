@@ -3,22 +3,20 @@
 
 It's is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X).
 
-![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution **[Kali Linux](http://www.kali.org/)** and is included in distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) and [BlackArch Linux](http://www.blackarch.org/).
+![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) and [BlackArch Linux](http://www.blackarch.org/).
 
 [![License: GPLv2](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/gplv2.png)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
 [![Java](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/java.png)](http://www.oracle.com/technetwork/java/javase/jdk7-relnotes-418459.html#changes)
 [![JUnit](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/junit.png)](http://junit.org)
 [![Maven](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/maven.png)](https://maven.apache.org/)
-[![SonarQube](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/sonar.png)](http://www.sonarqube.org/)
+[![SonarQube](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/sonar.png)](http://www.sonarqube.org/)<br>
 [![Twitter](https://github.com/ron190/jsql-injection/raw/master/web/images/twitter.png)](https://twitter.com/ron190jsql)
 
 ## Installation
-Install [Java](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/download/v0.74/jsql-injection-v0.74.jar) of jSQL and double-click on the .jar to launch the software.<br>
-You can also type `java -jar jsql-injection-v0.74.jar` in your terminal to start the program.
+Install [Java](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) of jSQL and double-click on the .jar to launch the software.<br>
+You can also type `java -jar jsql-injection-v0.75.jar` in your terminal to start the program.
 
-## v0.74 [[download here](https://github.com/ron190/jsql-injection/releases)]
-
-## v0.75 [soon]
+## v0.75 [[download here](https://github.com/ron190/jsql-injection/releases/download/v0.75/jsql-injection-v0.75.jar)]
 [![Default](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default-mini.png "Default")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default.png)
 [![Batch scan](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/scan-mini.png "Batch scan")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/scan.png)
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
@@ -36,7 +34,9 @@ You can also type `java -jar jsql-injection-v0.74.jar` in your terminal to start
 
 ## Change log
 
-**Next release: v0.75** `URI injection point, WAF tamper, HTTP Auth Bruteforce, Mavenify, Upgrade to Java 7, Optimized UI`
+**Next release: v0.76** `WAF tamper, HTTP Auth Bruteforce`
+
+**v0.75** `URI injection point, Mavenify, Upgrade to Java 7, Optimized UI`
 
 **v0.73** `Authentication: Basic Digest Negotiate NTLM and Kerberos, Database flavor selection`
 

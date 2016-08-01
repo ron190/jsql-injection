@@ -45,7 +45,7 @@ import com.jsql.view.swing.tree.model.NodeModelEmpty;
  * Manager to code/uncode string in various methods.
  */
 @SuppressWarnings("serial")
-public class ManagerDatabase extends JPanel {
+public class ManagerDatabase extends JPanel implements Manager {
 
     public JMenu panelVendor;
     

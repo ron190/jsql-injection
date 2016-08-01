@@ -1,14 +1,8 @@
 package com.test.db2;
 
-import org.apache.log4j.Logger;
-
 import com.test.AbstractTestSuite;
 
 public class ConcreteDB2TestSuite extends AbstractTestSuite {
-    /**
-     * Using default log4j.properties from root /
-     */
-    private static final Logger LOGGER = Logger.getLogger(ConcreteDB2TestSuite.class);
 
     public ConcreteDB2TestSuite () {
         this.jdbcURL = "jdbc:db2://"+ AbstractTestSuite.HOSTNAME +":50000/sample";
@@ -27,10 +21,6 @@ public class ConcreteDB2TestSuite extends AbstractTestSuite {
         this.jdbcQueryForColumnNames = "select trim(name) name from sysibm.syscolumns where coltype!='BLOB'and tbcreator='SYSTOOLS'and tbname='POLICY'";  
         this.jdbcQueryForValues = "SELECT trim(NAME) name FROM SYSTOOLS.POLICY";   
         
-        try {
-            initializer();
-        } catch (Exception e) {
-            LOGGER.warn(e);
-        }
+        initializer();
     }
 }

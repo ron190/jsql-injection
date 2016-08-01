@@ -236,7 +236,7 @@ public class InjectionModel extends AbstractModelObservable {
                 
                 return;
             } else {
-                throw new InjectionFailureException();
+                throw new InjectionFailureException("No injection found");
             }
 
             if (!this.isScanning) {
@@ -344,6 +344,10 @@ public class InjectionModel extends AbstractModelObservable {
             connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
             connection.setDefaultUseCaches(false);
             
+            connection.setRequestProperty("Pragma", "no-cache");
+            connection.setRequestProperty("Cache-Control", "no-cache");
+            connection.setRequestProperty("Expires", "-1");
+            
             ConnectionUtil.fixJcifsTimeout(connection);
 
             Map<TypeHeader, Object> msgHeader = new HashMap<>();
@@ -385,7 +389,7 @@ public class InjectionModel extends AbstractModelObservable {
                 }
             }
             
-            msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHTTPHeaders(connection));
+            msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHttpHeaders(connection));
     
             // Request the web page to the server
             String line;

@@ -30,9 +30,9 @@ public class EndScanList implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.tabManagers().scanListManager.restoreButtonText();
-        MediatorGui.tabManagers().scanListManager.setButtonEnable(true);
-        MediatorGui.tabManagers().scanListManager.hideLoader();
+        MediatorGui.managerScan().restoreButtonText();
+        MediatorGui.managerScan().setButtonEnable(true);
+        MediatorGui.managerScan().hideLoader();
         
         LOGGER.trace("Scan finished");
     }

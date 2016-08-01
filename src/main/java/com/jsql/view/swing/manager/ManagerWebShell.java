@@ -17,7 +17,12 @@ import com.jsql.model.exception.JSqlException;
  * Manager for uploading PHP webshell to the host and send system commands.
  */
 @SuppressWarnings("serial")
-public class ManagerWebshell extends ManagerAbstractShell {
+public class ManagerWebShell extends ManagerAbstractShell {
+    
+    public ManagerWebShell() {
+        run.setText("Create Web shell(s)");
+    }
+    
     @Override
     void createPayload(String pathShell, String urlShell) throws JSqlException {
         RessourceAccess.createWebShell(pathShell, urlShell);

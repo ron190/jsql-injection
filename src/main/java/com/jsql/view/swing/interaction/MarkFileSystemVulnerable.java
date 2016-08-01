@@ -26,9 +26,9 @@ public class MarkFileSystemVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.tabManagers().fileManager.changePrivilegeIcon(HelperUi.TICK);
-        MediatorGui.tabManagers().shellManager.changePrivilegeIcon(HelperUi.TICK);
-        MediatorGui.tabManagers().sqlShellManager.changePrivilegeIcon(HelperUi.TICK);
-        MediatorGui.tabManagers().uploadManager.changePrivilegeIcon(HelperUi.TICK);
+        MediatorGui.managerFile().changePrivilegeIcon(HelperUi.TICK);
+        MediatorGui.managerWebshell().changePrivilegeIcon(HelperUi.TICK);
+        MediatorGui.managerSqlshell().changePrivilegeIcon(HelperUi.TICK);
+        MediatorGui.managerUpload().changePrivilegeIcon(HelperUi.TICK);
     }
 }

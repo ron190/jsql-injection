@@ -189,7 +189,7 @@ public final class ActionHandler {
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            if (!MediatorGui.panelAddress().advanceIsActivated) {
+                            if (!MediatorGui.panelAddressBar().advanceIsActivated) {
                                 menubar.setVisible(false);
                             }
                         }
@@ -203,8 +203,8 @@ public final class ActionHandler {
             @Override
             public boolean dispatchKeyEvent(KeyEvent e) {
                 if (e.isAltDown() && e.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D)) {
-                    MediatorGui.panelAddress().fieldUrl.requestFocusInWindow();
-                    MediatorGui.panelAddress().fieldUrl.selectAll();
+                    MediatorGui.panelAddressBar().fieldUrl.requestFocusInWindow();
+                    MediatorGui.panelAddressBar().fieldUrl.selectAll();
                     wasAltDPressed[0] = true;
                     return true;
                 } else if (
@@ -212,7 +212,7 @@ public final class ActionHandler {
                     e.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)
                 ) {
                     if (!wasAltDPressed[0] && !wasAltPressed[0]) {
-                        if (!MediatorGui.panelAddress().advanceIsActivated) {
+                        if (!MediatorGui.panelAddressBar().advanceIsActivated) {
                             menubar.setVisible(!menubar.isVisible());
                         }
                     } else {
@@ -221,7 +221,7 @@ public final class ActionHandler {
                     }
                     return true;
                 } else if (e.isAltDown() && e.getKeyCode() == KeyEvent.VK_ALT) {
-                    if (!MediatorGui.panelAddress().advanceIsActivated && menubar.isVisible()) {
+                    if (!MediatorGui.panelAddressBar().advanceIsActivated && menubar.isVisible()) {
                         menubar.setVisible(!menubar.isVisible());
                         wasAltPressed[0] = true;
                     }

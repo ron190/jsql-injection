@@ -190,9 +190,10 @@ public class MetalUtilsCustom {
      * @param vertical Direction of the gradient
      * @return true if <code>key</code> exists, otherwise false.
      */
+    @SuppressWarnings("unchecked")
     public static boolean drawGradient(Component c, Graphics g, String key,
                                 int x, int y, int w, int h, boolean vertical) {
-        List gradient = (List)UIManager.get(key);
+        List<Object> gradient = (List<Object>)UIManager.get(key);
         if (gradient == null || !(g instanceof Graphics2D)) {
             return false;
         }
@@ -233,7 +234,7 @@ public class MetalUtilsCustom {
         }
 
         public void paint(Component c, Graphics2D g,
-                          List gradient, int x, int y, int w,
+                          List<Object> gradient, int x, int y, int w,
                           int h, boolean isVertical) {
             int imageWidth;
             int imageHeight;
@@ -253,10 +254,11 @@ public class MetalUtilsCustom {
             }
         }
 
+        @SuppressWarnings("unchecked")
         protected void paintToImage(Component c, Image image, Graphics g,
                                     int w, int h, Object[] args) {
             Graphics2D g2 = (Graphics2D)g;
-            List gradient = (List)args[0];
+            List<Object> gradient = (List<Object>)args[0];
             boolean isVertical = ((Boolean)args[1]).booleanValue();
             // Render to the VolatileImage
             if (isVertical) {

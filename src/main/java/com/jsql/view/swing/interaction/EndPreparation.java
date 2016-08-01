@@ -27,15 +27,15 @@ public class EndPreparation implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.panelAddress().buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_START_TOOLTIP"));
-        MediatorGui.panelAddress().buttonInUrl.setInjectionReady();
-        MediatorGui.panelAddress().loader.setVisible(false);
+        MediatorGui.panelAddressBar().buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_START_TOOLTIP"));
+        MediatorGui.panelAddressBar().buttonInUrl.setInjectionReady();
+        MediatorGui.panelAddressBar().loader.setVisible(false);
 
         if (MediatorModel.model().injectionIsFinished) {
-            MediatorGui.tabManagers().fileManager.setButtonEnable(true);
-            MediatorGui.tabManagers().shellManager.setButtonEnable(true);
-            MediatorGui.tabManagers().sqlShellManager.setButtonEnable(true);
-            MediatorGui.tabManagers().uploadManager.setButtonEnable(true);
+            MediatorGui.managerFile().setButtonEnable(true);
+            MediatorGui.managerWebshell().setButtonEnable(true);
+            MediatorGui.managerSqlshell().setButtonEnable(true);
+            MediatorGui.managerUpload().setButtonEnable(true);
         }
     }
 }

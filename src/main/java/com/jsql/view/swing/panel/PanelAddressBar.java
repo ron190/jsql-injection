@@ -164,19 +164,19 @@ public class PanelAddressBar extends JPanel {
             buttonGroup.add(newMenuItem);            
         }
         
-        JPanel pnlmain = new JPanel(new BorderLayout());
-        final JTextField field = new JPopupTextField("CUSTOM").getProxy();
+        JPanel panelCustomMethod = new JPanel(new BorderLayout());
+        final JTextField inputCustomMethod = new JPopupTextField("CUSTOM").getProxy();
 
-        final JRadioButton a = new JRadioButton();
-        a.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
-        a.setIcon(new CheckBoxMenuItemIconCustom());
+        final JRadioButton radioCustomMethod = new JRadioButton();
+        radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        radioCustomMethod.setIcon(new CheckBoxMenuItemIconCustom());
         
-        buttonGroup.add(a);
-        a.addActionListener(new ActionListener() {
+        buttonGroup.add(radioCustomMethod);
+        radioCustomMethod.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!"".equals(field.getText())) {
-                    PanelAddressBar.this.typeRequest = field.getText();
+                if (!"".equals(inputCustomMethod.getText())) {
+                    PanelAddressBar.this.typeRequest = inputCustomMethod.getText();
                     radioMethod.setText(PanelAddressBar.this.typeRequest);
                     popup.setVisible(false);
                 } else {
@@ -185,9 +185,9 @@ public class PanelAddressBar extends JPanel {
             }
         });
       
-        pnlmain.add(a, BorderLayout.WEST);
-        pnlmain.add(field, BorderLayout.CENTER);
-        popup.insert(pnlmain, popup.getComponentCount());
+        panelCustomMethod.add(radioCustomMethod, BorderLayout.WEST);
+        panelCustomMethod.add(inputCustomMethod, BorderLayout.CENTER);
+        popup.insert(panelCustomMethod, popup.getComponentCount());
         
         buttonRequestMethod.addMouseListener(new MouseAdapter() {
             @Override
@@ -366,10 +366,10 @@ public class PanelAddressBar extends JPanel {
         }
         
         protected void startInjection() {
-            // Register the view to the model
-            // Used by manual injection and batch query
-            MediatorModel.model().deleteObservers();
-            MediatorModel.model().addObserver(MediatorGui.frame());
+//            // Register the view to the model
+//            // Used by manual injection and batch query
+//            MediatorModel.model().deleteObservers();
+//            MediatorModel.model().addObserver(MediatorGui.frame());
             
             int option = 0;
             // Ask the user confirmation if injection already built

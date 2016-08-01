@@ -64,7 +64,7 @@ public class PreferencesUtil {
 
         Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
 
-        preferences.putBoolean("isCheckingUpdate", PreferencesUtil.isCheckUpdateActivated());
+        preferences.putBoolean("isCheckingUpdate", PreferencesUtil.checkUpdateIsActivated());
         preferences.putBoolean("isReportingBugs", PreferencesUtil.isReportingBugs());
         preferences.putBoolean("isEvading", PreferencesUtil.isEvasionIsEnabled());
         preferences.putBoolean("isFollowingRedirection", PreferencesUtil.isFollowingRedirection());
@@ -76,7 +76,7 @@ public class PreferencesUtil {
         return pathFile;
     }
     
-    public static boolean isCheckUpdateActivated() {
+    public static boolean checkUpdateIsActivated() {
         return isCheckUpdateActivated;
     }
 

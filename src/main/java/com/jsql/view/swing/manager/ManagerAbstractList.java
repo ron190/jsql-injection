@@ -24,7 +24,7 @@ import com.jsql.view.swing.list.ListItem;
  * Abstract manager containing a drag and drop list of item.
  */
 @SuppressWarnings("serial")
-abstract class ManagerAbstractList extends JPanel {
+abstract class ManagerAbstractList extends JPanel implements Manager {
     /**
      * Contains the paths of webshell.
      */

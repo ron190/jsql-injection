@@ -14,7 +14,7 @@ import java.awt.FlowLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.ImageIcon;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,13 +33,13 @@ public class TabHeader extends JPanel implements MouseListener {
      * Tab header with default tab icon.
      */
     public TabHeader() {
-        this((ImageIcon) HelperUi.TABLE_ICON);
+        this(HelperUi.TABLE_ICON);
     }
 
     /**
      * Tab header with a custom icon.
      */
-    public TabHeader(ImageIcon imageIcon) {
+    public TabHeader(Icon imageIcon) {
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
         this.setOpaque(false);

@@ -25,8 +25,8 @@ public class EndUpload implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.tabManagers().uploadManager.restoreButtonText();
-        MediatorGui.tabManagers().uploadManager.setButtonEnable(true);
-        MediatorGui.tabManagers().uploadManager.hideLoader();
+        MediatorGui.managerUpload().restoreButtonText();
+        MediatorGui.managerUpload().setButtonEnable(true);
+        MediatorGui.managerUpload().hideLoader();
     }
 }

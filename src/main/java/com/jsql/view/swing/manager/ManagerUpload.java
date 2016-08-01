@@ -27,7 +27,6 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -107,7 +106,7 @@ public class ManagerUpload extends ManagerAbstractList {
             )
         );
 
-        this.run = new JButton(I18n.valueByKey("UPLOAD_RUN_BUTTON_LABEL"), new ImageIcon(ManagerUpload.class.getResource("/com/jsql/view/swing/resources/images/icons/disk.png")));
+        this.run = new JButton(I18n.valueByKey("UPLOAD_RUN_BUTTON_LABEL"));
         I18n.addComponentForKey("UPLOAD_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("UPLOAD_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);

@@ -87,8 +87,8 @@ public final class StringUtil {
      * @param conn Connection with HTTP headers
      * @return Map of HTTP headers <name, value>
      */
-    public static Map<String, String> getHTTPHeaders(URLConnection conn) {
-        Map<String, String> mapResponse = new HashMap<>();
+    public static Map<String, String> getHttpHeaders(URLConnection conn) {
+        Map<String, String> mapHeaders = new HashMap<>();
         
         for (int i = 0 ; ; i++) {
             String headerName = conn.getHeaderFieldKey(i);
@@ -96,17 +96,17 @@ public final class StringUtil {
             if (headerName == null && headerValue == null) {
                 break;
             }
-            mapResponse.put(headerName == null ? "Method" : headerName, headerValue);
+            mapHeaders.put(headerName == null ? "Method" : headerName, headerValue);
         }
 
-        return mapResponse;
+        return mapHeaders;
     }
 
     @SuppressWarnings("unchecked")
     public static void sendMessageHeader(HttpURLConnection connection, String url) throws IOException {
         Map<TypeHeader, Object> msgHeader = new HashMap<>();
         msgHeader.put(TypeHeader.URL, url);
-        msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHTTPHeaders(connection));
+        msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHttpHeaders(connection));
 
         if (
             !PreferencesUtil.isFollowingRedirection()
@@ -115,7 +115,7 @@ public final class StringUtil {
             LOGGER.warn("HTTP 3XX Redirection detected. Please test again with option 'Follow HTTP redirection' enabled.");
         }
         
-        Map<String, String> mapResponse = (Map<String, String>) msgHeader.get("Response");
+        Map<String, String> mapResponse = (Map<String, String>) msgHeader.get(TypeHeader.RESPONSE);
         if (
             Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
             && mapResponse.containsKey("WWW-Authenticate") 

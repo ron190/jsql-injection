@@ -27,7 +27,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -118,7 +117,7 @@ public class DialogPreferences extends JDialog {
         this.setLayout(new BorderLayout());
         Container contentPane = this.getContentPane();
 
-        final JButton buttonCheckIp = new JButton("Check your IP", new ImageIcon(DialogPreferences.class.getResource("/com/jsql/view/swing/resources/images/icons/wrench.png")));
+        final JButton buttonCheckIp = new JButton("Check your IP");
         buttonCheckIp.addActionListener(new ActionCheckIP());
         buttonCheckIp.setToolTipText(
             "<html><b>Verify what public IP address is used by jSQL</b><br>"
@@ -184,7 +183,7 @@ public class DialogPreferences extends JDialog {
         mainPanel.add(buttonClose);
         contentPane.add(mainPanel, BorderLayout.SOUTH);
 
-        final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", PreferencesUtil.isCheckUpdateActivated());
+        final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", PreferencesUtil.checkUpdateIsActivated());
         checkboxIsCheckingUpdate.setFocusable(false);
         JButton labelIsCheckingUpdate = new JButton("Check update at startup");
         labelIsCheckingUpdate.addActionListener(new ActionListener() {
@@ -401,7 +400,7 @@ public class DialogPreferences extends JDialog {
                 textProxyPort.setText(ProxyUtil.getProxyPort());
                 checkboxIsUsingProxy.setSelected(ProxyUtil.isUsingProxy());
 
-                checkboxIsCheckingUpdate.setSelected(PreferencesUtil.isCheckUpdateActivated());
+                checkboxIsCheckingUpdate.setSelected(PreferencesUtil.checkUpdateIsActivated());
                 checkboxIsReportingBugs.setSelected(PreferencesUtil.isReportingBugs());
                 checkboxIsEvading.setSelected(PreferencesUtil.isEvasionIsEnabled());
                 checkboxIsFollowingRedirection.setSelected(PreferencesUtil.isFollowingRedirection());

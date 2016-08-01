@@ -12,6 +12,7 @@ public enum Language {
     TR("Turkish", HelperUi.FLAG_TR), 
     EN("English", HelperUi.FLAG_EN), 
     FR("French", HelperUi.FLAG_FR), 
+    IN("Hindi", HelperUi.FLAG_IN), 
     OT("another language", null);
 
     String stringLang;

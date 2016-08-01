@@ -3,7 +3,6 @@ package com.jsql.view.swing.dialog;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InvalidObjectException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -11,7 +10,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Reader;
-import java.io.Serializable;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -51,13 +49,10 @@ import java.util.Vector;
  *
  * @see Properties
  */
-@SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-public final class OrderedProperties implements Serializable {
+public final class OrderedProperties {
 
-    private static final long serialVersionUID = 1L;
-
-    private transient Map<String, String> properties;
-    private transient boolean suppressDate;
+    private Map<String, String> properties;
+    private boolean suppressDate;
 
     /**
      * Creates a new instance that will keep the properties in the order they have been added. Other than
@@ -169,7 +164,6 @@ public final class OrderedProperties implements Serializable {
     /**
      * See {@link Properties#loadFromXML(InputStream)}.
      */
-    @SuppressWarnings("DuplicateThrows")
     public void loadFromXML(InputStream stream) throws IOException, InvalidPropertiesFormatException {
         CustomProperties customProperties = new CustomProperties(this.properties);
         customProperties.loadFromXML(stream);
@@ -276,10 +270,6 @@ public final class OrderedProperties implements Serializable {
         suppressDate = stream.readBoolean();
     }
 
-    private void readObjectNoData() throws InvalidObjectException {
-        throw new InvalidObjectException("Stream data required");
-    }
-
     /**
      * See {@link Properties#toString()}.
      */
@@ -362,6 +352,7 @@ public final class OrderedProperties implements Serializable {
      * Custom {@link Properties} that delegates reading, writing, and enumerating properties to the
      * backing {@link OrderedProperties} instance's properties.
      */
+    @SuppressWarnings("serial")
     private static final class CustomProperties extends Properties {
 
         private final Map<String, String> targetProperties;
@@ -390,7 +381,6 @@ public final class OrderedProperties implements Serializable {
             return new Vector<Object>(targetProperties.keySet()).elements();
         }
 
-        @SuppressWarnings("NullableProblems")
         @Override
         public Set<Object> keySet() {
             return new LinkedHashSet<Object>(targetProperties.keySet());
@@ -414,7 +404,6 @@ public final class OrderedProperties implements Serializable {
             super(out);
         }
 
-        @SuppressWarnings("NullableProblems")
         @Override
         public void write(String string) throws IOException {
             if (currentComment != null) {

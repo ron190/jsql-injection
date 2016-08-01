@@ -14,6 +14,8 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,6 +26,10 @@ import net.sourceforge.spnego.SpnegoHttpURLConnection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.jsql.model.MediatorModel;
+import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.TypeHeader;
+import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.injection.method.MethodInjection;
 
@@ -89,6 +95,9 @@ public class ConnectionUtil {
             connection.setReadTimeout(ConnectionUtil.TIMEOUT);
             connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
             connection.setDefaultUseCaches(false);
+            connection.setRequestProperty("Pragma", "no-cache");
+            connection.setRequestProperty("Cache-Control", "no-cache");
+            connection.setRequestProperty("Expires", "-1");
             
             ConnectionUtil.fixJcifsTimeout(connection);
             
@@ -107,9 +116,17 @@ public class ConnectionUtil {
     }
     
     public static String getSource(String url) throws IOException {
-        URLConnection connection = new URL(url).openConnection();
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setReadTimeout(ConnectionUtil.TIMEOUT);
         connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
+        
+        connection.setRequestProperty("Pragma", "no-cache");
+        connection.setRequestProperty("Cache-Control", "no-cache");
+        connection.setRequestProperty("Expires", "-1");
+        
+        Map<TypeHeader, Object> msgHeader = new HashMap<>();
+        msgHeader.put(TypeHeader.URL, url);
+        msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHttpHeaders(connection));
         
         String pageSource = "";
 
@@ -119,6 +136,14 @@ public class ConnectionUtil {
             pageSource += line + "\n";
         }
         reader.close();
+
+        msgHeader.put(TypeHeader.SOURCE, pageSource);
+        
+        // Inform the view about the log infos
+        Request request = new Request();
+        request.setMessage(TypeRequest.MESSAGE_HEADER);
+        request.setParameters(msgHeader);
+        MediatorModel.model().sendToViews(request);
         
         return pageSource.trim();
     }
