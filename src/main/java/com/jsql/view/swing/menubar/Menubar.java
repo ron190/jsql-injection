@@ -471,8 +471,6 @@ public class Menubar extends JMenuBar {
         // Help Menu > about
         JMenu menuCommunity = new JMenu("Community");
         menuHelp.setMnemonic('C');
-        JMenuItem itemSayHi = new JMenuItem("Say hi!");
-        itemSayHi.setIcon(HelperUi.EMPTY);
         JMenuItem itemReportIssue = new JMenuItem(I18n.valueByKey("MENUBAR_COMMUNITY_REPORTISSUE"), 'R');
         itemReportIssue.setIcon(HelperUi.EMPTY);
         I18n.addComponentForKey("MENUBAR_COMMUNITY_REPORTISSUE", itemReportIssue);
@@ -512,15 +510,10 @@ public class Menubar extends JMenuBar {
                 }
             }
         });
-        JMenuItem itemWhatIsNew = new JMenuItem("What's new?", 'U');
-        itemWhatIsNew.setIcon(HelperUi.EMPTY);
         
-
         menuCommunity.add(menuI18nContribution);
         menuCommunity.add(new JSeparator());
-        menuCommunity.add(itemSayHi);
         menuCommunity.add(itemReportIssue);
-        menuCommunity.add(itemWhatIsNew);
         
         // Make menubar
         this.add(menuFile);

@@ -33,6 +33,11 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
         super.paintComponent(g);
 
         URL url = JTextFieldWithIcon.class.getResource("/com/jsql/view/swing/resources/images/icons/globe.png");
+        if (url == null) {
+            // Fix NullPointerException in constructor ImageIcon()
+            return;
+        }
+        
         Image image = null;
         try {
             image = new ImageIcon(url).getImage();

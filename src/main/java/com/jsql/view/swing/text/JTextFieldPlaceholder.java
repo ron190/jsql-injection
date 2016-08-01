@@ -41,6 +41,7 @@ public class JTextFieldPlaceholder extends JTextField {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+        
         if (getText().length() == 0) {
             int h = getHeight();
             ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);

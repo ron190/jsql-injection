@@ -157,7 +157,7 @@ public class GitUtil {
                 if (showOnConsole == ShowOnConsole.YES) {
                     JSONObject objJson = new JSONObject(sourcePage);
                     String urlIssue = objJson.getString("html_url");
-                    LOGGER.debug("Sent to Github: " + urlIssue);
+                    LOGGER.debug("Sent to Github: "+ urlIssue);
                 }
             } catch (IOException e) {
                 if (showOnConsole == ShowOnConsole.YES) {

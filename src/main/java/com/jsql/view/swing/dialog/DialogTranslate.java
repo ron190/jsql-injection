@@ -150,7 +150,8 @@ public class DialogTranslate extends JDialog {
                         .replaceAll("<", "\\\\<")
                 ;
                   
-                GitUtil.sendReport(clientDescription, ShowOnConsole.YES, DialogTranslate.this.language + " translation");
+                GitUtil.sendReport(clientDescription, ShowOnConsole.YES, DialogTranslate.this.language +" translation");
+                DialogTranslate.this.setVisible(false);
             }
         });
 

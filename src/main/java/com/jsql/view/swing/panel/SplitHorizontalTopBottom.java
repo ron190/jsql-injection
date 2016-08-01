@@ -72,7 +72,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
 
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
         int verticalSplitter = prefs.getInt(SplitHorizontalTopBottom.NAME_V_SPLITPANE, 300);
-        int horizontalSplitter = prefs.getInt(SplitHorizontalTopBottom.NAME_H_SPLITPANE, 100);
+        int horizontalSplitter = prefs.getInt(SplitHorizontalTopBottom.NAME_H_SPLITPANE, 200);
 
         MediatorGui.register(new TabManagers());
         MediatorGui.register(new TabResults());
