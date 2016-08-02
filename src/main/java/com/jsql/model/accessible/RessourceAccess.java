@@ -167,9 +167,9 @@ public class RessourceAccess {
         RessourceAccess.isSearchAdminStopped = false;
 
         if (nbAdminPagesFound > 0) {
-            LOGGER.debug("Admin page(s) found: " + nbAdminPagesFound + "/" + submittedTasks);
+            LOGGER.debug("Admin page(s) found: "+ nbAdminPagesFound +"/"+ submittedTasks);
         } else {
-            LOGGER.trace("Admin page(s) found: " + nbAdminPagesFound + "/" + submittedTasks);
+            LOGGER.trace("Admin page(s) found: "+ nbAdminPagesFound +"/"+ submittedTasks);
         }
 
         Request request = new Request();
@@ -289,11 +289,11 @@ public class RessourceAccess {
         
         try {
             result = runCommandShell(
-                urlShell + FILENAME_WEBSHELL + "?c=" + URLEncoder.encode(command.trim(), "ISO-8859-1")
+                urlShell + FILENAME_WEBSHELL + "?c="+ URLEncoder.encode(command.trim(), "ISO-8859-1")
             );
             
             if ("".equals(result)) {
-                result = "No result.\nTry \"" + command.trim() + " 2>&1\" to get a system error message.\n";
+                result = "No result.\nTry \""+ command.trim() +" 2>&1\" to get a system error message.\n";
             }
         } catch (UnsupportedEncodingException e) {
             LOGGER.warn("Encoding command to ISO-8859-1 failed: "+ e, e);
@@ -537,13 +537,13 @@ public class RessourceAccess {
                 }
                 
                 String headerForm = "";
-                headerForm += "-----------------------------4664151417711" + crLf;
-                headerForm += "Content-Disposition: form-data; name=\"u\"; filename=\"" + file.getName() +"\""+ crLf;
-                headerForm += "Content-Type: binary/octet-stream" + crLf;
+                headerForm += "-----------------------------4664151417711"+ crLf;
+                headerForm += "Content-Disposition: form-data; name=\"u\"; filename=\""+ file.getName() +"\""+ crLf;
+                headerForm += "Content-Type: binary/octet-stream"+ crLf;
                 headerForm += crLf;
 
                 String headerFile = "";
-                headerFile += crLf + "-----------------------------4664151417711--" + crLf;
+                headerFile += crLf +"-----------------------------4664151417711--"+ crLf;
 
                 connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=---------------------------4664151417711");
                 connection.setRequestProperty("Content-Length", String.valueOf(headerForm.length() + headerFile.length() + streamData.length));
@@ -705,9 +705,9 @@ public class RessourceAccess {
             RessourceAccess.isSearchFileStopped = false;
             
             if (countFileFound > 0) {
-                LOGGER.debug("File(s) found: " + countFileFound + "/" + submittedTasks);
+                LOGGER.debug("File(s) found: "+ countFileFound +"/"+ submittedTasks);
             } else {
-                LOGGER.trace("File(s) found: " + countFileFound + "/" + submittedTasks);
+                LOGGER.trace("File(s) found: "+ countFileFound +"/"+ submittedTasks);
             }
             Request request = new Request();
             request.setMessage(TypeRequest.END_FILE_SEARCH);
@@ -740,7 +740,7 @@ public class RessourceAccess {
             if (MediatorModel.model().isStoppedByUser() || RessourceAccess.isScanStopped) {
                 break;
             }
-            LOGGER.info("Scanning " + url);
+            LOGGER.info("Scanning "+ url);
             MediatorModel.model().controlInput(url.toString(), "", "", MethodInjection.QUERY, "POST", true);
             
             try {

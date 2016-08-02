@@ -235,7 +235,7 @@ public class Menubar extends JMenuBar {
         JMenuItem itemIntoChina = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span>...</html>", HelperUi.FLAG_CN);
         JMenuItem itemIntoFrench = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("fr").getDisplayLanguage(new Locale("fr")) +"</span>...</html>", HelperUi.FLAG_FR);
         JMenuItem itemIntoTurkey = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("tr").getDisplayLanguage(new Locale("tr")) +"</span>...</html>", HelperUi.FLAG_TR);
-        JMenuItem itemIntoOther = new JMenuItem("into another language...");
+        JMenuItem itemIntoOther = new JMenuItem("another language...");
         
         itemIntoArabic.setHorizontalAlignment(SwingConstants.TRAILING);
         itemIntoArabic.setHorizontalTextPosition(SwingConstants.LEADING);

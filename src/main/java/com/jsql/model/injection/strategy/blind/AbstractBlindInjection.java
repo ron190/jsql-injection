@@ -141,7 +141,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
 
                         Request interaction = new Request();
                         interaction.setMessage(TypeRequest.MESSAGE_BINARY);
-                        interaction.setParameters("\t" + new String(e) + "=" + str);
+                        interaction.setParameters("\t"+ new String(e) +"="+ str);
                         MediatorModel.model().sendToViews(interaction);
                     } catch (NumberFormatException err) {
                         // byte string not fully constructed : 0x1x010x

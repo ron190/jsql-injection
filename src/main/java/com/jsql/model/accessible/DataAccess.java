@@ -356,7 +356,7 @@ public class DataAccess {
                 }
             }
             if (isIncomplete) {
-                LOGGER.warn("String is too long, row #" + (indexRow + 1) + " is incomplete:");
+                LOGGER.warn("String is too long, row #"+ (indexRow + 1) +" is incomplete:");
                 LOGGER.warn(StringUtil.join(listValues.get(indexRow).toArray(new String[listValues.get(indexRow).size()]), ", "));
             }
         }

@@ -69,6 +69,6 @@ public class Database extends AbstractElementDatabase {
             LOGGER.warn("Incorrect number of tables.");
         }
         
-        return this.elementValue + " (" + tableCount + " table" + sPlural + ")";
+        return this.elementValue +" ("+ tableCount +" table"+ sPlural +")";
     }
 }

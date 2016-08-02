@@ -34,11 +34,11 @@ public class Retry implements TestRule {
                         return;
                     } catch (Throwable t) {
                         caughtThrowable = t;
-                        LOGGER.error(description.getDisplayName() + ": run " + (i+1) + " failed");
+                        LOGGER.error(description.getDisplayName() +": run "+ (i+1) +" failed");
                     }
                 }
                 
-                LOGGER.error(description.getDisplayName() + ": giving up after " + retryCount + " failures");
+                LOGGER.error(description.getDisplayName() +": giving up after "+ retryCount +" failures");
                 throw caughtThrowable;
             }
         };

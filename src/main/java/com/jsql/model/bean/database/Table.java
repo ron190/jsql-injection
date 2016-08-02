@@ -85,6 +85,6 @@ public class Table extends AbstractElementDatabase {
             LOGGER.warn("Incorrect number of rows.");
         }
         
-        return this.elementValue + " (" + nbRow + " row" + sPlural + ")";
+        return this.elementValue +" ("+ nbRow +" row"+ sPlural +")";
     }
 }

@@ -113,7 +113,7 @@ public class NormalStrategy extends AbstractStrategy {
         String[] indexes = foundIndexes.toArray(new String[foundIndexes.size()]);
 
         // Make url shorter, replace useless indexes from 1337[index]7331 to 1
-        String indexesInUrl = MediatorModel.model().getIndexesInUrl().replaceAll("1337(?!" + StringUtil.join(indexes, "|") + "7331)\\d*7331", "1");
+        String indexesInUrl = MediatorModel.model().getIndexesInUrl().replaceAll("1337(?!"+ StringUtil.join(indexes, "|") +"7331)\\d*7331", "1");
 
         // Replace correct indexes from 1337[index]7331 to
         // ==> SQLi[index]######...######iLQS
@@ -160,7 +160,7 @@ public class NormalStrategy extends AbstractStrategy {
 
         // Replace all others indexes by 1
         indexesInUrl = indexesInUrl.replaceAll(
-            "1337(?!" + lengthFields[lengthFields.length - 1][1] + "7331)\\d*7331",
+            "1337(?!"+ lengthFields[lengthFields.length - 1][1] +"7331)\\d*7331",
             "1"
         );
         MediatorModel.model().setIndexesInUrl(indexesInUrl);

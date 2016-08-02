@@ -52,8 +52,8 @@ public class MainApplication {
             model.addObserver(view);
             MediatorGui.register(view);
         } catch (HeadlessException e) {
-            LOGGER.error("HeadlessException: command line execution in jSQL not supported yet", e);
-            throw e;
+            LOGGER.error("HeadlessException, command line execution in jSQL not supported yet: "+ e, e);
+            return;
         }
         
         model.sendVersionToView();

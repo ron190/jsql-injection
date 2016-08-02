@@ -78,7 +78,7 @@ public class InjectionModel extends AbstractModelObservable {
      * HTML source of page successfully responding to
      * multiple fields selection (select 1,2,3,..).
      */
-    private String srcSuccess;
+    private String srcSuccess = "";
     
     /**
      * initialUrl transformed to a correct injection url.
