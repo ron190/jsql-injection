@@ -30,7 +30,7 @@ You can also type `java -jar jsql-injection-v0.76.jar` in your terminal to start
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## Roadmap
-`WAF tamper, HTTP Auth Bruteforce, Translation, SOAP injection, Command line interface, Databases: Access MongoDb and Neo4j`
+`WAF tamper, HTTP Auth Bruteforce, Translation, SOAP injection, Command line interface, Databases: Access Cassandra MongoDb and Neo4j`
 
 ## Change log
 
