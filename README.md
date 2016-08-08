@@ -16,7 +16,7 @@ It's is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS
 Install [Java](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) of jSQL and double-click on the .jar to launch the software.<br>
 You can also type `java -jar jsql-injection-v0.76.jar` in your terminal to start the program.
 
-## v0.76 [[download here](https://github.com/ron190/jsql-injection/releases/download/v0.75/jsql-injection-v0.76.jar)]
+## v0.76 [[download here](https://github.com/ron190/jsql-injection/releases/download/v0.76/jsql-injection-v0.76.jar)]
 [![Default](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default-mini.png "Default")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default.png)
 [![Batch scan](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/scan-mini.png "Batch scan")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/scan.png)
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
