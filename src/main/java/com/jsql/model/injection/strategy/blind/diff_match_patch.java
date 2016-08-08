@@ -32,14 +32,15 @@ package com.jsql.model.injection.strategy.blind;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -393,7 +394,7 @@ public class diff_match_patch {
         int delta = text1_length - text2_length;
         // If the total number of characters is odd, then the front path will
         // collide with the reverse path.
-        boolean front = (delta % 2 != 0);
+        boolean front = delta % 2 != 0;
         // Offsets for start and end of k loop.
         // Prevents mapping of space beyond the grid.
         int k1start = 0;
@@ -770,7 +771,7 @@ public class diff_match_patch {
             return;
         }
         boolean changes = false;
-        Stack<Diff> equalities = new Stack<>();  // Stack of qualities.
+        Deque<Diff> equalities = new ArrayDeque<>();  // Stack of qualities.
         String lastequality = null; // Always equal to equalities.lastElement().text
         ListIterator<Diff> pointer = diffs.listIterator();
         // Number of characters that changed prior to the equality.
@@ -804,7 +805,7 @@ public class diff_match_patch {
                                 <= Math.max(length_insertions2, length_deletions2))) {
                     //System.out.println("Splitting: '" + lastequality + "'");
                     // Walk back to offending equality.
-                    while (thisDiff != equalities.lastElement()) {
+                    while (thisDiff != equalities.getLast()) {
                         thisDiff = pointer.previous();
                     }
                     pointer.next();
@@ -815,18 +816,18 @@ public class diff_match_patch {
                     pointer.add(new Diff(Operation.INSERT, lastequality));
 
                     equalities.pop();  // Throw away the equality we just deleted.
-                    if (!equalities.empty()) {
+                    if (!equalities.isEmpty()) {
                         // Throw away the previous equality (it needs to be reevaluated).
                         equalities.pop();
                     }
-                    if (equalities.empty()) {
+                    if (equalities.isEmpty()) {
                         // There are no previous equalities, walk back to the start.
                         while (pointer.hasPrevious()) {
                             pointer.previous();
                         }
                     } else {
                         // There is a safe equality we can fall back to.
-                        thisDiff = equalities.lastElement();
+                        thisDiff = equalities.getLast();
                         while (thisDiff != pointer.previous()) {
                             // Intentionally empty loop.
                         }
@@ -1062,7 +1063,7 @@ public class diff_match_patch {
             return;
         }
         boolean changes = false;
-        Stack<Diff> equalities = new Stack<>();  // Stack of equalities.
+        Deque<Diff> equalities = new ArrayDeque<>();  // Stack of equalities.
         String lastequality = null; // Always equal to equalities.lastElement().text
         ListIterator<Diff> pointer = diffs.listIterator();
         // Is there an insertion operation before the last equality.
@@ -1113,7 +1114,7 @@ public class diff_match_patch {
                                                 + (post_ins ? 1 : 0) + (post_del ? 1 : 0)) == 3))) {
                     //System.out.println("Splitting: '" + lastequality + "'");
                     // Walk back to offending equality.
-                    while (thisDiff != equalities.lastElement()) {
+                    while (thisDiff != equalities.getLast()) {
                         thisDiff = pointer.previous();
                     }
                     pointer.next();
@@ -1132,17 +1133,17 @@ public class diff_match_patch {
                         equalities.clear();
                         safeDiff = thisDiff;
                     } else {
-                        if (!equalities.empty()) {
+                        if (!equalities.isEmpty()) {
                             // Throw away the previous equality (it needs to be reevaluated).
                             equalities.pop();
                         }
-                        if (equalities.empty()) {
+                        if (equalities.isEmpty()) {
                             // There are no previous questionable equalities,
                             // walk back to the last known safe diff.
                             thisDiff = safeDiff;
                         } else {
                             // There is an equality we can fall back to.
-                            thisDiff = equalities.lastElement();
+                            thisDiff = equalities.getLast();
                         }
                         while (thisDiff != pointer.previous()) {
                             // Intentionally empty loop.
@@ -1594,7 +1595,7 @@ public class diff_match_patch {
      * @return Best match index or -1.
      */
     protected int match_bitap(String text, String pattern, int loc) {
-        assert (Match_MaxBits == 0 || pattern.length() <= Match_MaxBits)
+        assert Match_MaxBits == 0 || pattern.length() <= Match_MaxBits
         : "Pattern too long for this application.";
 
         // Initialise the alphabet.
@@ -2258,7 +2259,7 @@ public class diff_match_patch {
             if (m.group(2).length() == 0) {
                 patch.start1--;
                 patch.length1 = 1;
-            } else if (m.group(2).equals("0")) {
+            } else if ("0".equals(m.group(2))) {
                 patch.length1 = 0;
             } else {
                 patch.start1--;
@@ -2269,7 +2270,7 @@ public class diff_match_patch {
             if (m.group(4).length() == 0) {
                 patch.start2--;
                 patch.length2 = 1;
-            } else if (m.group(4).equals("0")) {
+            } else if ("0".equals(m.group(4))) {
                 patch.length2 = 0;
             } else {
                 patch.start2--;
@@ -2346,6 +2347,7 @@ public class diff_match_patch {
          * Display a human-readable version of this Diff.
          * @return text version.
          */
+        @Override
         public String toString() {
             String prettyText = this.text.replace('\n', '\u00b6');
             return "Diff(" + this.operation + ",\"" + prettyText + "\")";
@@ -2425,6 +2427,7 @@ public class diff_match_patch {
          * Indicies are printed as 1-based, not 0-based.
          * @return The GNU diff string.
          */
+        @Override
         public String toString() {
             String coords1;
             String coords2;

@@ -37,6 +37,7 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
     private static DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 
     @SuppressWarnings("serial")
+    @Override
     public Component getListCellRendererComponent(
         JList<? extends ListItem> list, ListItem value, int index, boolean isSelected, boolean isFocused
     ) {

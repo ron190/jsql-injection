@@ -50,6 +50,7 @@ public class CallableTime extends CallableAbstractBlind<CallableTime> {
         this.isTestingLength = isTestingLength;
     }
     
+    @Override
     public boolean isTrue() {
         return this.diffSeconds < ConcreteTimeInjection.SLEEP_TIME;
     }

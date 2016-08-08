@@ -46,7 +46,6 @@ public class ReplaceFileChooser extends JFileChooser {
                         super.approveSelection();
                         return;
                     case JOptionPane.NO_OPTION:
-                        return;
                     case JOptionPane.CLOSED_OPTION:
                         return;
                     case JOptionPane.CANCEL_OPTION:

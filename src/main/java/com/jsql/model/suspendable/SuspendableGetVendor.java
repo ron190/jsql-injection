@@ -216,6 +216,9 @@ select '"'"'
                 if (Pattern.compile(".*teradata.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.TERADATA;
                 }
+                if (Pattern.compile(".*SQLite.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                    vendor = Vendor.SQLITE;
+                }
                 if (Pattern.compile(".*h2 database.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.H2;
                 }

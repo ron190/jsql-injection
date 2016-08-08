@@ -86,6 +86,9 @@ public class AuthenticationUtil {
             LOGGER.warn("Login file not found: " + AuthenticationUtil.pathKerberosLogin);
         }
         
+        // TODO: java.lang.IllegalAccessError: class com.jsql.tool.AuthenticationTools (in unnamed module @0x266d09) 
+        // cannot access class sun.net.www.protocol.http.AuthCacheImpl (in module java.base) because module java.base 
+        // does not export sun.net.www.protocol.http to unnamed module @0x266d09
         AuthCacheValue.setAuthCache(new AuthCacheImpl());
         
         if (AuthenticationUtil.isDigestAuthentication) {

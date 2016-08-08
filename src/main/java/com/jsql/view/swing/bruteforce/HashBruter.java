@@ -317,7 +317,7 @@ public class HashBruter extends Bruter {
                 if ((v & 1) == 1) {
                     v = (v >>> 1) ^ POLY64REV;
                 } else {
-                    v = (v >>> 1);
+                    v = v >>> 1;
                 }
             }
             LOOKUPTABLE[i] = v;

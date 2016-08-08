@@ -1,9 +1,10 @@
 {
-    "version": "0.75",
-    "roadmap": "Databases: SQLite Access MongoDb and Neo4j, Translation, SOAP injection, Command line interface",
+    "version": "0.76",
+    "roadmap": "WAF tamper, HTTP Auth Bruteforce, Arabic translation, SOAP injection, Command line interface, Databases: Access MongoDb and Neo4j",
     "news": [
-        "[New] Translation system: contribute and translate jSQL for example into Arabic. Click on the top right button to show advanced settings and open menu [Community], choose a language using [I help translate jSQL] and translate some text then click on [Send]. Your translation will be integrated to the next release by the developer",
-        "[New] Custom Http method: use your own custom method instead of POST using advanced settings",
+        "[Feature] Contribute and translate jSQL for example into Arabic: Click on the top right button to show advanced settings and open menu [Community], choose a language using [I help translate jSQL] and translate some text then click on [Send]. Your translation will be integrated to the next release by the developer",
+        "[Release] Version 0.76 includes Czech translation and support of SQLite",
+        "[Pending] MS-Access support, Restful and SOAP injection",
     ],
     "commit": [
         "",

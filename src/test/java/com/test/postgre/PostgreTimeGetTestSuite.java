@@ -35,14 +35,14 @@ public class PostgreTimeGetTestSuite extends ConcretePostgreTestSuite {
 
     @Override
     @Test
-    @Ignore
+    @Ignore // Too Slow
     public void listColumns() throws JSqlException {
         // Empty on purpose
     }
 
     @Override
     @Test
-    @Ignore
+    @Ignore // Too Slow
     public void listTables() throws JSqlException {
         // Empty on purpose
     }

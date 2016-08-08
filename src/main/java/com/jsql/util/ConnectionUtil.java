@@ -14,7 +14,7 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -80,11 +80,19 @@ public class ConnectionUtil {
         try {
             if (AuthenticationUtil.isKerberos()) {
                 String loginKerberos = 
-                        Pattern
-                            .compile("(?s)\\{.*")
-                            .matcher(StringUtils.join(Files.readAllLines(Paths.get(AuthenticationUtil.getPathKerberosLogin()), Charset.defaultCharset()), ""))
-                            .replaceAll("")
-                            .trim();
+                    Pattern
+                        .compile("(?s)\\{.*")
+                        .matcher(
+                            StringUtils.join(
+                                Files.readAllLines(
+                                    Paths.get(AuthenticationUtil.getPathKerberosLogin()),
+                                    Charset.defaultCharset()
+                                ),
+                                ""
+                            )
+                        )
+                        .replaceAll("")
+                        .trim();
                 
                 SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(loginKerberos);
                 connection = spnego.connect(new URL(ConnectionUtil.getUrlBase()));
@@ -111,7 +119,7 @@ public class ConnectionUtil {
             // Disable caching of authentication like Kerberos
             connection.disconnect();
         } catch (Exception e) {
-            throw new InjectionFailureException("Connection to "+ ConnectionUtil.getUrlBase() +" failed : "+ e, e);
+            throw new InjectionFailureException("Connection to "+ ConnectionUtil.getUrlBase() +" failed: "+ e, e);
         }
     }
     
@@ -124,7 +132,7 @@ public class ConnectionUtil {
         connection.setRequestProperty("Cache-Control", "no-cache");
         connection.setRequestProperty("Expires", "-1");
         
-        Map<TypeHeader, Object> msgHeader = new HashMap<>();
+        Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
         msgHeader.put(TypeHeader.URL, url);
         msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHttpHeaders(connection));
         

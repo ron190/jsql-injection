@@ -105,6 +105,7 @@ public final class HelperUi {
     public static final Icon FLAG_EN = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/en.png"));
     public static final Icon FLAG_FR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/fr.png"));
     public static final Icon FLAG_IN = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/in.png"));
+    public static final Icon FLAG_CZ = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/cz.png"));
     
     public static final URL ICON16 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug16.png");
     public static final URL ICON32 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug32.png");

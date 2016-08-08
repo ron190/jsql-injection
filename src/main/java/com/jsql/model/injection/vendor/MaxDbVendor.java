@@ -69,7 +69,7 @@ public class MaxDbVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlIndicesCapacityCheck(String[] indexes) {
+    public String getSqlCapacity(String[] indexes) {
         return
             MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",

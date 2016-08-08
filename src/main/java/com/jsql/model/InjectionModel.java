@@ -21,7 +21,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.PrivilegedActionException;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -67,7 +67,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Current version of application.
      */
-    public static final String VERSION_JSQL = "0.75";
+    public static final String VERSION_JSQL = "0.76";
     
     /**
      * i.e, -1 in "[..].php?id=-1 union select[..]"
@@ -186,7 +186,7 @@ public class InjectionModel extends AbstractModelObservable {
             } else {
                 LOGGER.info("Using database type ["+ this.vendor +"]");
                 
-                Map<TypeHeader, Object> msgHeader = new HashMap<>();
+                Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
                 msgHeader.put(TypeHeader.URL, ConnectionUtil.getUrlBase() + ConnectionUtil.getDataQuery() + this.charInsertion);
                 msgHeader.put(TypeHeader.VENDOR, this.vendor);
                 
@@ -261,6 +261,7 @@ public class InjectionModel extends AbstractModelObservable {
      * @param responseHeader unused
      * @return source code of current page
      */
+    @Override
     public String inject(String newDataInjection, boolean isUsingIndex) {
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
         String urlInjection = ConnectionUtil.getUrlBase();
@@ -350,7 +351,7 @@ public class InjectionModel extends AbstractModelObservable {
             
             ConnectionUtil.fixJcifsTimeout(connection);
 
-            Map<TypeHeader, Object> msgHeader = new HashMap<>();
+            Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
             msgHeader.put(TypeHeader.URL, urlInjection);
             
             /**
@@ -533,6 +534,10 @@ public class InjectionModel extends AbstractModelObservable {
         String typeRequest, Boolean isScanning
     ) {
         try {
+            if ("".equals(dataQuery)) {
+                throw new MalformedURLException();
+            }
+            
             ConnectionUtil.setUrlByUser(dataQuery);
             
             // Parse url and GET query string

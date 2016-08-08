@@ -73,6 +73,7 @@ public class SwingAppender extends WriterAppender {
      * @param event A logging event.
      * @see org.apache.log4j.AppenderSkeleton
      */
+    @Override
     public void append(final LoggingEvent event) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -116,11 +117,6 @@ public class SwingAppender extends WriterAppender {
                 consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
                 break;
                 
-            case Level.ALL_INT:
-                consoleTextPane.append(message, ALL);
-                consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
-                break;
-                
             case Level.FATAL_INT:
                 consoleTextPane.append(message, FATAL);
                 consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
@@ -152,6 +148,7 @@ public class SwingAppender extends WriterAppender {
                 consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
                 break;
                 
+            case Level.ALL_INT:
             default:
                 consoleTextPane.append(message, ALL);
                 consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());

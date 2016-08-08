@@ -66,7 +66,7 @@ public class MainApplication {
             GitUtil.checkUpdate();
         }
         
-        File fileRootLocale = new File("com.jsql.i18n.jsql_"+ Locale.getDefault().getLanguage() +".properties");
+        File fileRootLocale = new File("src/main/java/com/jsql/i18n/jsql_"+ Locale.getDefault().getLanguage() +".properties");
         if (!fileRootLocale.exists() && !new Locale("en").getLanguage().equals(Locale.getDefault().getLanguage())) { 
             String languageDisplayed = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
             LOGGER.debug(

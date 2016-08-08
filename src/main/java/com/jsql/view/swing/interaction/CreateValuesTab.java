@@ -70,7 +70,7 @@ public class CreateValuesTab extends CreateTab implements InteractionCommand {
             PanelTable newTableJPanel = new PanelTable(data, columnNames);
             
             // Create a new tab: add header and table
-            MediatorGui.tabResults().addTab(table + " ", newTableJPanel);
+            MediatorGui.tabResults().addTab(table +" ", newTableJPanel);
             // Focus on the new tab
             MediatorGui.tabResults().setSelectedComponent(newTableJPanel);
             

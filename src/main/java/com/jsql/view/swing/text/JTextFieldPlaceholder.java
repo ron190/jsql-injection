@@ -40,7 +40,11 @@ public class JTextFieldPlaceholder extends JTextField {
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
+        try {
+            super.paint(g);
+        } catch (ClassCastException e) {
+            // Fix #4301, ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData
+        }
         
         if (getText().length() == 0) {
             int h = getHeight();

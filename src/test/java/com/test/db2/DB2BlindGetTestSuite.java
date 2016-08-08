@@ -35,14 +35,14 @@ public class DB2BlindGetTestSuite extends ConcreteDB2TestSuite {
     
     @Override
     @Test
-    @Ignore
+    @Ignore // Too Slow
     public void listDatabases() throws JSqlException {
         // Empty on purpose
     }
     
     @Override
     @Test
-    @Ignore
+    @Ignore // Too Slow
     public void listTables() throws JSqlException {
         // Empty on purpose
     }

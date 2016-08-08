@@ -60,9 +60,9 @@ public class CreateShellTab extends CreateTab implements InteractionCommand {
             MediatorGui.frame().getConsoles().put(terminalID, terminal);
             
             LightScrollPane scroller = new LightScrollPane(terminal);
-            scroller.THUMB_COLOR = HelperUi.SELECTION_BACKGROUND;
-            scroller.SCROLL_BAR_ALPHA_ROLLOVER = 175;
-            scroller.SCROLL_BAR_ALPHA = 100;
+            scroller.colorThumb = HelperUi.SELECTION_BACKGROUND;
+            scroller.scrollBarAlphaRollover = 175;
+            scroller.scrollBarAlpha = 100;
             
             scroller.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.BLACK));
     

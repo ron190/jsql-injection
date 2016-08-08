@@ -66,8 +66,9 @@ public class MenuActionExport implements ActionListener {
                                 case JOptionPane.YES_OPTION:
                                     super.approveSelection();
                                     return;
-                                case JOptionPane.NO_OPTION: return;
-                                case JOptionPane.CLOSED_OPTION: return;
+                                case JOptionPane.NO_OPTION:
+                                case JOptionPane.CLOSED_OPTION: 
+                                    return;
                                 case JOptionPane.CANCEL_OPTION:
                                     cancelSelection();
                                     return;

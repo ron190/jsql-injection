@@ -118,7 +118,7 @@ public class NormalStrategy extends AbstractStrategy {
         // Replace correct indexes from 1337[index]7331 to
         // ==> SQLi[index]######...######iLQS
         // Search for index that displays the most #
-        String performanceQuery = MediatorModel.model().vendor.instance().getSqlIndicesCapacityCheck(indexes);
+        String performanceQuery = MediatorModel.model().vendor.instance().getSqlCapacity(indexes);
         String performanceSourcePage = MediatorModel.model().injectWithoutIndex(performanceQuery);
 
         // Build a 2D array of string with:

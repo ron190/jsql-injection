@@ -28,6 +28,7 @@ import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.SlidingException;
 import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.StringUtil;
 
@@ -233,6 +234,20 @@ public class DataAccess {
             table
         );
 
+        // Build SQLite columns
+        if (MediatorModel.model().vendor == Vendor.SQLITE) {
+            String resultSQLite = "";
+            String resultTmp = resultToParse.replaceFirst(".+?\\(", "").trim().replaceAll("\\)$", "");
+            resultTmp = resultTmp.replaceAll("\\(.+?\\)", "");
+            for (String columnNameAndType: resultTmp.split(",")) {
+                String columnName = columnNameAndType.trim().split(" ")[0];
+                if (!"CONSTRAINT".equals(columnName) && !"UNIQUE".equals(columnName)) {
+                    resultSQLite += (char)4 + columnName + (char)5 + "0" + (char)4 + (char)6;
+                }
+            }
+            resultToParse = resultSQLite;
+        }
+        
         // Parse all the data we have retrieved
         Matcher regexSearch = 
             Pattern

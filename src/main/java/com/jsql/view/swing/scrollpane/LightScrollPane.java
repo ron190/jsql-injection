@@ -25,11 +25,11 @@ import com.jsql.view.swing.HelperUi;
 @SuppressWarnings("serial")
 public class LightScrollPane extends JComponent {
     
-    public int SCROLL_BAR_ALPHA_ROLLOVER = 100;
-    public int SCROLL_BAR_ALPHA = 25;
+    public int scrollBarAlpha = 25;
+    public int scrollBarAlphaRollover = 100;
     private static final int THUMB_BORDER_SIZE = 0;
     private static final int THUMB_SIZE = 11;
-    public Color THUMB_COLOR = Color.DARK_GRAY;
+    public Color colorThumb = Color.DARK_GRAY;
 
     public final JScrollPane scrollPane;
     private final JScrollBar verticalScrollBar;
@@ -173,7 +173,7 @@ public class LightScrollPane extends JComponent {
         
         @Override
         protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
-            int alpha = isThumbRollover() ? SCROLL_BAR_ALPHA_ROLLOVER : SCROLL_BAR_ALPHA;
+            int alpha = isThumbRollover() ? scrollBarAlphaRollover : scrollBarAlpha;
             int orientation = scrollbar.getOrientation();
             int x = thumbBounds.x + THUMB_BORDER_SIZE;
             int y = thumbBounds.y + THUMB_BORDER_SIZE;
@@ -196,13 +196,13 @@ public class LightScrollPane extends JComponent {
             graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             
             // Fix Mac OS Color.DARK_GRAY and alpha incompatibility
-            Color colorThumb;
+            Color colorThumbAlpha;
             try {
-                colorThumb = new Color(THUMB_COLOR.getRed(), THUMB_COLOR.getGreen(), THUMB_COLOR.getBlue(), alpha);                
+                colorThumbAlpha = new Color(colorThumb.getRed(), colorThumb.getGreen(), colorThumb.getBlue(), alpha);                
             } catch (NullPointerException e) {
-                colorThumb = Color.GRAY;                
+                colorThumbAlpha = Color.GRAY;                
             }
-            graphics2D.setColor(colorThumb);
+            graphics2D.setColor(colorThumbAlpha);
             
             graphics2D.fillRect(x, y, width, height);
             graphics2D.dispose();

@@ -171,10 +171,11 @@ public class Menubar extends JMenuBar {
         menuWindows.setMnemonic('W');
 
         JMenu menuTranslation = new JMenu("Language");
+        
         JMenuItem itemEnglish = new JRadioButtonMenuItem(
             "<html><span style=\"font-family:'Monospace'\">"+ new Locale("en").getDisplayLanguage(new Locale("en")) +"</span></html>",
             HelperUi.FLAG_EN, 
-            !ArrayUtils.contains(new Locale[]{Locale.FRENCH}, Locale.getDefault())
+            !ArrayUtils.contains(new String[]{new Locale("fr").getLanguage(), new Locale("cs").getLanguage()}, Locale.getDefault().getLanguage())
         );
         itemEnglish.addActionListener(new ActionListener() {
             @Override
@@ -184,10 +185,11 @@ public class Menubar extends JMenuBar {
             }
         });
         menuTranslation.add(itemEnglish);
+        
         JMenuItem itemFrench = new JRadioButtonMenuItem(
             "<html><span style=\"font-family:'Monospace'\">"+ new Locale("fr").getDisplayLanguage(new Locale("fr")) +"</span></html>",
             HelperUi.FLAG_FR, 
-            ArrayUtils.contains(new Locale[]{Locale.FRENCH}, Locale.getDefault())
+            new Locale("fr").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         itemFrench.addActionListener(new ActionListener() {
             @Override
@@ -198,9 +200,24 @@ public class Menubar extends JMenuBar {
         });
         menuTranslation.add(itemFrench);
         
+        JMenuItem itemCzech = new JRadioButtonMenuItem(
+            "<html><span style=\"font-family:'Monospace'\">"+ new Locale("cs").getDisplayLanguage(new Locale("cs")) +"</span></html>",
+            HelperUi.FLAG_CZ, 
+            new Locale("cs").getLanguage().equals(Locale.getDefault().getLanguage())
+        );
+        itemCzech.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                I18n.setLocaleDefault(ResourceBundle.getBundle("com.jsql.i18n.jsql", new Locale("cs")));
+                Menubar.this.switchLocale();                
+            }
+        });
+        menuTranslation.add(itemCzech);
+        
         ButtonGroup groupRadioLanguage = new ButtonGroup();
         groupRadioLanguage.add(itemEnglish);
         groupRadioLanguage.add(itemFrench);
+        groupRadioLanguage.add(itemCzech);
         
         JMenu menuI18nContribution = new JMenu("I help translate jSQL into");
         
@@ -235,6 +252,7 @@ public class Menubar extends JMenuBar {
         JMenuItem itemIntoChina = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span>...</html>", HelperUi.FLAG_CN);
         JMenuItem itemIntoFrench = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("fr").getDisplayLanguage(new Locale("fr")) +"</span>...</html>", HelperUi.FLAG_FR);
         JMenuItem itemIntoTurkey = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("tr").getDisplayLanguage(new Locale("tr")) +"</span>...</html>", HelperUi.FLAG_TR);
+        JMenuItem itemIntoCzech = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("cs").getDisplayLanguage(new Locale("cs")) +"</span>...</html>", HelperUi.FLAG_CZ);
         JMenuItem itemIntoOther = new JMenuItem("another language...");
         
         itemIntoArabic.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -246,6 +264,7 @@ public class Menubar extends JMenuBar {
         menuI18nContribution.add(itemIntoChina);
         menuI18nContribution.add(itemIntoFrench);
         menuI18nContribution.add(itemIntoTurkey);
+        menuI18nContribution.add(itemIntoCzech);
         menuI18nContribution.add(new JSeparator());
         menuI18nContribution.add(itemIntoOther);
         
@@ -253,8 +272,9 @@ public class Menubar extends JMenuBar {
         itemIntoArabic.addActionListener(new ActionTranslate(Language.AR));
         itemIntoRussia.addActionListener(new ActionTranslate(Language.RU));
         itemIntoChina.addActionListener(new ActionTranslate(Language.CN));
-        itemIntoTurkey.addActionListener(new ActionTranslate(Language.TR));
         itemIntoFrench.addActionListener(new ActionTranslate(Language.FR));
+        itemIntoTurkey.addActionListener(new ActionTranslate(Language.TR));
+        itemIntoCzech.addActionListener(new ActionTranslate(Language.CZ));
         itemIntoOther.addActionListener(new ActionTranslate(Language.OT));
         
         menuWindows.add(menuTranslation);

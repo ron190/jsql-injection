@@ -18,3 +18,4 @@ http://127.0.0.1/PJBS/php/test_h2.php?lib=0
 http://127.0.0.1/PJBS/php/test_derby.php?lib=0
 http://127.0.0.1/cubrid_simulate_get.php?lib=0
 http://127.0.0.1:85/teradata_simulate_get.php?lib=0
+http://127.0.0.1/sqlite_simulate_get.php?lib=0

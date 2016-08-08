@@ -13,7 +13,7 @@ public abstract class AbstractVendor {
 
     public abstract String getSqlNormal(String sqlQuery, String startPosition);
     
-    public abstract String getSqlIndicesCapacityCheck(String[] indexes);
+    public abstract String getSqlCapacity(String[] indexes);
     public abstract String getSqlIndices(Integer nbFields);
     public abstract String getSqlOrderBy();
     

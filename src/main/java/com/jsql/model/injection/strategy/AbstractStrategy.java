@@ -1,6 +1,6 @@
 package com.jsql.model.injection.strategy;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 
 import com.jsql.model.MediatorModel;
@@ -52,7 +52,7 @@ public abstract class AbstractStrategy {
         Request request = new Request();
         request.setMessage(message);
         
-        Map<TypeHeader, Object> msgHeader = new HashMap<>();
+        Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
         msgHeader.put(TypeHeader.URL, ConnectionUtil.getUrlByUser());
 
         request.setParameters(msgHeader);

@@ -24,7 +24,7 @@ public class GitUtil {
      */
     private static final Logger LOGGER = Logger.getLogger(GitUtil.class);
     
-    public static JSONObject obj;
+    private static JSONObject obj;
     
     private static class CharEncoder {
         String prefix;
@@ -40,7 +40,7 @@ public class GitUtil {
         }
     }
     
-    private static final CharEncoder DECIMAL_HTML_ENCODER = new CharEncoder("&#",";",10); 
+    private static final CharEncoder DECIMAL_HTML_ENCODER = new CharEncoder("&#", ";", 10); 
     
     public enum ShowOnConsole {
         YES,
@@ -56,12 +56,7 @@ public class GitUtil {
 
     public static void checkUpdate() {
         try {
-            if (GitUtil.obj == null) {
-                String json = ConnectionUtil.getSource("https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/jsql-injection.json");
-                GitUtil.obj = new JSONObject(json);
-            }
-            
-            Float versionGit = Float.parseFloat(GitUtil.obj.getString("version"));
+            Float versionGit = Float.parseFloat(GitUtil.getJSONObject().getString("version"));
             if (versionGit > Float.parseFloat(InjectionModel.VERSION_JSQL)) {
                 LOGGER.warn(I18n.valueByKey("UPDATE_NEW_VERSION"));
             }
@@ -173,19 +168,22 @@ public class GitUtil {
     
     public static void showNews() {
         try {
-            if (GitUtil.obj == null) {
-                String jsonInfosWebService = ConnectionUtil.getSource(
-                    "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/jsql-injection.json"
-                );
-                GitUtil.obj = new JSONObject(jsonInfosWebService);
-            }
-            
-            JSONArray news = GitUtil.obj.getJSONArray("news");
+            JSONArray news = GitUtil.getJSONObject().getJSONArray("news");
             for (int index = 0 ; index < news.length() ; index++) {
                 LOGGER.info(news.get(index));
             }
         } catch (IOException e) {
             LOGGER.warn("Connection to the Github News Webservice failed", e);
         }
+    }
+    
+    public static JSONObject getJSONObject() throws IOException {
+        if (GitUtil.obj == null) {
+            String json = ConnectionUtil.getSource(
+                "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/jsql-injection.json"
+            );
+            GitUtil.obj = new JSONObject(json);
+        }
+        return GitUtil.obj;
     }
 }

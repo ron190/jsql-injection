@@ -2,7 +2,7 @@ package com.jsql.model.accessible;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -51,7 +51,7 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
                 responseCodeHTTP = "";
             }
 
-            Map<TypeHeader, Object> msgHeader = new HashMap<>();
+            Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
             msgHeader.put(TypeHeader.URL, urlAdminPage);
             msgHeader.put(TypeHeader.POST, "");
             msgHeader.put(TypeHeader.HEADER, "");

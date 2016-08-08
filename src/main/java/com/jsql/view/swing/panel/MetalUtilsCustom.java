@@ -255,6 +255,7 @@ public class MetalUtilsCustom {
         }
 
         @SuppressWarnings("unchecked")
+        @Override
         protected void paintToImage(Component c, Image image, Graphics g,
                                     int w, int h, Object[] args) {
             Graphics2D g2 = (Graphics2D)g;
@@ -279,6 +280,7 @@ public class MetalUtilsCustom {
             }
         }
 
+        @Override
         protected void paintImage(Component c, Graphics g,
                                   int x, int y, int imageW, int imageH,
                                   Image image, Object[] args) {
@@ -366,7 +368,7 @@ public class MetalUtilsCustom {
      * Returns true if the specified widget is in a toolbar.
      */
     static boolean isToolBarButton(JComponent c) {
-        return (c.getParent() instanceof JToolBar);
+        return c.getParent() instanceof JToolBar;
     }
 
     static Icon getOceanToolBarIcon(Image i) {
@@ -404,6 +406,7 @@ public class MetalUtilsCustom {
             this.factor = (max - min) / 255f;
         }
 
+        @Override
         public int filterRGB(int x, int y, int rgb) {
             // Coefficients are from the sRGB color space:
             int gray = Math.min(255, (int)(((0.2125f * ((rgb >> 16) & 0xFF)) +
@@ -424,10 +427,11 @@ public class MetalUtilsCustom {
             canFilterIndexColorModel = true;
         }
 
+        @Override
         public int filterRGB(int x, int y, int rgb) {
-            int r = ((rgb >> 16) & 0xff);
-            int g = ((rgb >> 8) & 0xff);
-            int b = (rgb & 0xff);
+            int r = (rgb >> 16) & 0xff;
+            int g = (rgb >> 8) & 0xff;
+            int b = rgb & 0xff;
             int gray = Math.max(Math.max(r, g), b);
             return (rgb & 0xff000000) | (gray << 16) | (gray << 8) |
                 (gray << 0);

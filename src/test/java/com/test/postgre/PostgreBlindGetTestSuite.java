@@ -35,7 +35,7 @@ public class PostgreBlindGetTestSuite extends ConcretePostgreTestSuite {
 
     @Override
     @Test
-    @Ignore
+    @Ignore // Too Slow
     public void listTables() throws JSqlException {
         // Empty on purpose
     }

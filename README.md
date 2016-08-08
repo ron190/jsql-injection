@@ -14,9 +14,9 @@ It's is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS
 
 ## Installation
 Install [Java](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) of jSQL and double-click on the .jar to launch the software.<br>
-You can also type `java -jar jsql-injection-v0.75.jar` in your terminal to start the program.
+You can also type `java -jar jsql-injection-v0.76.jar` in your terminal to start the program.
 
-## v0.75 [[download here](https://github.com/ron190/jsql-injection/releases/download/v0.75/jsql-injection-v0.75.jar)]
+## v0.76 [[download here](https://github.com/ron190/jsql-injection/releases/download/v0.75/jsql-injection-v0.76.jar)]
 [![Default](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default-mini.png "Default")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default.png)
 [![Batch scan](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/scan-mini.png "Batch scan")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/scan.png)
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
@@ -30,11 +30,11 @@ You can also type `java -jar jsql-injection-v0.75.jar` in your terminal to start
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## Roadmap
-`Databases: SQLite Access MongoDb and Neo4j, Translation, SOAP injection, Command line interface`
+`WAF tamper, HTTP Auth Bruteforce, Translation, SOAP injection, Command line interface, Databases: Access MongoDb and Neo4j`
 
 ## Change log
 
-**Next release: v0.76** `WAF tamper, HTTP Auth Bruteforce`
+**v0.76** `Czech translation, 17 Database flavors: SQLite`
 
 **v0.75** `URI injection point, Mavenify, Upgrade to Java 7, Optimized UI`
 

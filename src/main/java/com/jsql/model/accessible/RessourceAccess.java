@@ -24,7 +24,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -124,7 +124,7 @@ public class RessourceAccess {
             directoryNames.add("/");
         }
         for (String directoryName: urlWithoutFileName.split("/")) {
-            directoryNames.add(directoryName + "/");
+            directoryNames.add(directoryName +"/");
         }
 
         ExecutorService taskExecutor = Executors.newFixedThreadPool(10);
@@ -263,7 +263,7 @@ public class RessourceAccess {
             LOGGER.warn("Incorrect response from Web shell", e);
         }
         
-        Map<TypeHeader, Object> msgHeader = new HashMap<>();
+        Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
         msgHeader.put(TypeHeader.URL, url);
         msgHeader.put(TypeHeader.POST, "");
         msgHeader.put(TypeHeader.HEADER, "");
@@ -588,7 +588,7 @@ public class RessourceAccess {
                         LOGGER.warn("Upload failed");
                     }
                     
-                    Map<TypeHeader, Object> msgHeader = new HashMap<>();
+                    Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
                     msgHeader.put(TypeHeader.URL, urlFileFixed);
                     msgHeader.put(TypeHeader.POST, "");
                     msgHeader.put(TypeHeader.HEADER, "");

@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.URLConnection;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -104,7 +105,7 @@ public final class StringUtil {
 
     @SuppressWarnings("unchecked")
     public static void sendMessageHeader(HttpURLConnection connection, String url) throws IOException {
-        Map<TypeHeader, Object> msgHeader = new HashMap<>();
+        Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
         msgHeader.put(TypeHeader.URL, url);
         msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHttpHeaders(connection));
 

@@ -15,6 +15,7 @@ public enum Vendor {
     MYSQL("MySQL", new MySQLVendor()),
     ORACLE("Oracle", new OracleVendor()),
     POSTGRESQL("PostgreSQL", new PostgreSQLVendor()),
+    SQLITE("SQLite", new SQLiteVendor()),
     SQLSERVER("SQL Server", new SQLServerVendor()),
     SYBASE("Sybase", new SybaseVendor()),
     TERADATA("Teradata", new TeradataVendor());
