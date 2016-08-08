@@ -8,12 +8,12 @@ public enum Language {
     
     AR("Arabic", HelperUi.FLAG_AR),
     RU("Russian", HelperUi.FLAG_RU), 
-    CN("Chinese", HelperUi.FLAG_CN), 
+    ZH("Chinese", HelperUi.FLAG_ZH), 
     TR("Turkish", HelperUi.FLAG_TR), 
     EN("English", HelperUi.FLAG_EN), 
     FR("French", HelperUi.FLAG_FR), 
-    IN("Hindi", HelperUi.FLAG_IN), 
-    CZ("Czech", HelperUi.FLAG_CZ), 
+    HI("Hindi", HelperUi.FLAG_HI), 
+    CS("Czech", HelperUi.FLAG_CS), 
     OT("another language", null);
 
     String stringLang;

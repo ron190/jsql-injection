@@ -202,7 +202,7 @@ public class Menubar extends JMenuBar {
         
         JMenuItem itemCzech = new JRadioButtonMenuItem(
             "<html><span style=\"font-family:'Monospace'\">"+ new Locale("cs").getDisplayLanguage(new Locale("cs")) +"</span></html>",
-            HelperUi.FLAG_CZ, 
+            HelperUi.FLAG_CS, 
             new Locale("cs").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         itemCzech.addActionListener(new ActionListener() {
@@ -246,13 +246,13 @@ public class Menubar extends JMenuBar {
             }
         }
         
-        JMenuItem itemIntoHindi = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("hi").getDisplayLanguage(new Locale("hi")) +"</span>...</html>", HelperUi.FLAG_IN);
+        JMenuItem itemIntoHindi = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("hi").getDisplayLanguage(new Locale("hi")) +"</span>...</html>", HelperUi.FLAG_HI);
         JMenuItem itemIntoArabic = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("ar").getDisplayLanguage(new Locale("ar")) +"</span>...</html>", HelperUi.FLAG_AR);
         JMenuItem itemIntoRussia = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("ru").getDisplayLanguage(new Locale("ru")) +"</span>...</html>", HelperUi.FLAG_RU);
-        JMenuItem itemIntoChina = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span>...</html>", HelperUi.FLAG_CN);
+        JMenuItem itemIntoChina = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span>...</html>", HelperUi.FLAG_ZH);
         JMenuItem itemIntoFrench = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("fr").getDisplayLanguage(new Locale("fr")) +"</span>...</html>", HelperUi.FLAG_FR);
         JMenuItem itemIntoTurkey = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("tr").getDisplayLanguage(new Locale("tr")) +"</span>...</html>", HelperUi.FLAG_TR);
-        JMenuItem itemIntoCzech = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("cs").getDisplayLanguage(new Locale("cs")) +"</span>...</html>", HelperUi.FLAG_CZ);
+        JMenuItem itemIntoCzech = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("cs").getDisplayLanguage(new Locale("cs")) +"</span>...</html>", HelperUi.FLAG_CS);
         JMenuItem itemIntoOther = new JMenuItem("another language...");
         
         itemIntoArabic.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -268,13 +268,13 @@ public class Menubar extends JMenuBar {
         menuI18nContribution.add(new JSeparator());
         menuI18nContribution.add(itemIntoOther);
         
-        itemIntoHindi.addActionListener(new ActionTranslate(Language.IN));
+        itemIntoHindi.addActionListener(new ActionTranslate(Language.HI));
         itemIntoArabic.addActionListener(new ActionTranslate(Language.AR));
         itemIntoRussia.addActionListener(new ActionTranslate(Language.RU));
-        itemIntoChina.addActionListener(new ActionTranslate(Language.CN));
+        itemIntoChina.addActionListener(new ActionTranslate(Language.ZH));
         itemIntoFrench.addActionListener(new ActionTranslate(Language.FR));
         itemIntoTurkey.addActionListener(new ActionTranslate(Language.TR));
-        itemIntoCzech.addActionListener(new ActionTranslate(Language.CZ));
+        itemIntoCzech.addActionListener(new ActionTranslate(Language.CS));
         itemIntoOther.addActionListener(new ActionTranslate(Language.OT));
         
         menuWindows.add(menuTranslation);

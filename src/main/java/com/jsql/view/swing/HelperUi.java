@@ -99,13 +99,13 @@ public final class HelperUi {
     public static final Icon ARROWPRESSED = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/arrowPressed.png"));
 
     public static final Icon FLAG_AR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/ar.png"));
-    public static final Icon FLAG_CN = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/cn.png"));
+    public static final Icon FLAG_ZH = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/zh.png"));
     public static final Icon FLAG_RU = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/ru.png"));
     public static final Icon FLAG_TR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/tr.png"));
     public static final Icon FLAG_EN = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/en.png"));
     public static final Icon FLAG_FR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/fr.png"));
-    public static final Icon FLAG_IN = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/in.png"));
-    public static final Icon FLAG_CZ = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/cz.png"));
+    public static final Icon FLAG_HI = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/hi.png"));
+    public static final Icon FLAG_CS = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/cs.png"));
     
     public static final URL ICON16 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug16.png");
     public static final URL ICON32 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug32.png");
