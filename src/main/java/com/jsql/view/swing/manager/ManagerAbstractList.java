@@ -12,13 +12,14 @@ package com.jsql.view.swing.manager;
 
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ListItem;
+import com.jsql.view.swing.manager.util.JButtonStatable;
+import com.jsql.view.swing.manager.util.StateButton;
 
 /**
  * Abstract manager containing a drag and drop list of item.
@@ -33,7 +34,7 @@ abstract class ManagerAbstractList extends JPanel implements Manager {
     /**
      * Starts the upload process.
      */
-    protected JButton run;
+    protected JButtonStatable run;
 
     /**
      * Display the FILE privilege of current user.
@@ -49,7 +50,7 @@ abstract class ManagerAbstractList extends JPanel implements Manager {
     /**
      * A animated GIF displayed during processing.
      */
-    protected JLabel loader = new JLabel(HelperUi.LOADER_GIF);
+    protected JLabel loader = new JLabel(HelperUi.ICON_LOADER_GIF);
 
     /**
      * Add a new string to the list if it's not a duplicate.
@@ -112,5 +113,9 @@ abstract class ManagerAbstractList extends JPanel implements Manager {
      */
     public void setDefaultText(String defaultText) {
         this.defaultText = defaultText;
+    }
+    
+    public void setStateButton(StateButton stateButton) {
+        run.setState(stateButton);
     }
 }

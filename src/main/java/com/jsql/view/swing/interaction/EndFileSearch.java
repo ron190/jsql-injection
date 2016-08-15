@@ -11,6 +11,7 @@
 package com.jsql.view.swing.interaction;
 
 import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.manager.util.StateButton;
 
 /**
  * End the refreshing of File search button.
@@ -28,5 +29,6 @@ public class EndFileSearch implements InteractionCommand {
         MediatorGui.managerFile().restoreButtonText();
         MediatorGui.managerFile().setButtonEnable(true);
         MediatorGui.managerFile().hideLoader();
+        MediatorGui.managerFile().setStateButton(StateButton.STARTABLE);
     }
 }

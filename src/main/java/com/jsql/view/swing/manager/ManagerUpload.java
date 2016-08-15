@@ -14,8 +14,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +25,6 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -43,8 +40,10 @@ import com.jsql.util.PreferencesUtil;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
+import com.jsql.view.swing.manager.util.JButtonStatable;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextField;
+import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 
 /**
  * Manager to upload files to the host.
@@ -90,10 +89,10 @@ public class ManagerUpload extends ManagerAbstractList {
         shellURL.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
-                    BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER),
-                    BorderFactory.createMatteBorder(1, 1, 0, 1, HelperUi.DEFAULT_BACKGROUND)
+                    BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                    BorderFactory.createMatteBorder(1, 1, 0, 1, HelperUi.COLOR_DEFAULT_BACKGROUND)
                 ),
-                HelperUi.BLU_BORDER
+                HelperUi.BORDER_BLU
             )
         );
 
@@ -101,12 +100,12 @@ public class ManagerUpload extends ManagerAbstractList {
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER), 
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
 
-        this.run = new JButton(I18n.valueByKey("UPLOAD_RUN_BUTTON_LABEL"));
+        this.run = new JButtonStatable(I18n.valueByKey("UPLOAD_RUN_BUTTON_LABEL"));
         I18n.addComponentForKey("UPLOAD_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("UPLOAD_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
@@ -115,21 +114,7 @@ public class ManagerUpload extends ManagerAbstractList {
         run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         run.setBackground(new Color(200, 221, 242));
         
-        run.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
-                if (run.isEnabled()) {
-                    run.setContentAreaFilled(true);
-                    run.setBorder(HelperUi.BLU_ROUND_BORDER);
-                }
-            }
-
-            @Override public void mouseExited(MouseEvent e) {
-                if (run.isEnabled()) {
-                    run.setContentAreaFilled(false);
-                    run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-                }
-            }
-        });
+        this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
         
         this.run.addActionListener(new ActionListener() {
             @Override
@@ -145,9 +130,11 @@ public class ManagerUpload extends ManagerAbstractList {
                 int returnVal = filechooser.showOpenDialog(MediatorGui.frame());
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
                     for (final Object path: ManagerUpload.this.listPaths.getSelectedValuesList()) {
+                        
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
+                                
                                 File file = filechooser.getSelectedFile();
                                 try {
                                     ManagerUpload.this.loader.setVisible(true);
@@ -157,16 +144,18 @@ public class ManagerUpload extends ManagerAbstractList {
                                 } catch (IOException e) {
                                     LOGGER.warn("Posting file failed: "+ e, e);
                                 }
+                                
                             }
-                        }, "upload").start();
+                        }, "ThreadUpload").start();
+                        
                     }
                 }
             }
         });
 
-        this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.SQUARE_GREY, SwingConstants.LEFT);
+        this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.ICON_SQUARE_GREY, SwingConstants.LEFT);
         I18n.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
-        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.DEFAULT_BACKGROUND));
+        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND));
         this.privilege.setToolTipText(I18n.valueByKey("PRIVILEGE_TOOLTIP"));
 
         this.loader.setVisible(false);

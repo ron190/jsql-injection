@@ -30,8 +30,8 @@ public class JScrollPanePixelBorder extends JScrollPane {
     public JScrollPanePixelBorder(Component c) {
         super(c);
         
-        this.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperUi.COMPONENT_BORDER));
-        this.setViewportBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperUi.COMPONENT_BORDER));
+        this.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
+        this.setViewportBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
     }
 
     /**
@@ -45,7 +45,7 @@ public class JScrollPanePixelBorder extends JScrollPane {
     public JScrollPanePixelBorder(int top, int left, int bottom, int right, Component c) {
         this(c);
 
-        this.setBorder(BorderFactory.createMatteBorder(top, 0, bottom, 0, HelperUi.COMPONENT_BORDER));
-        this.setViewportBorder(BorderFactory.createMatteBorder(0, left, 0, right, HelperUi.COMPONENT_BORDER));
+        this.setBorder(BorderFactory.createMatteBorder(top, 0, bottom, 0, HelperUi.COLOR_COMPONENT_BORDER));
+        this.setViewportBorder(BorderFactory.createMatteBorder(0, left, 0, right, HelperUi.COLOR_COMPONENT_BORDER));
     }
 }

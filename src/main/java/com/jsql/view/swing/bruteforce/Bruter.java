@@ -126,7 +126,7 @@ public class Bruter {
         long timeTaken = calculateTimeDifference();
         seconds = (int) timeTaken;
         if (seconds > 60) {
-            minutes = (int) (seconds / 60);
+            minutes = seconds / 60;
             if (minutes * 60 > seconds) {
                 minutes = minutes - 1;
             }

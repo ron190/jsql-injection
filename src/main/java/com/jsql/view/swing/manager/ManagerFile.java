@@ -15,8 +15,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +26,6 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -41,7 +38,10 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
+import com.jsql.view.swing.manager.util.JButtonStatable;
+import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
+import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 
 /**
  * Manager to read a file from the host.
@@ -82,37 +82,23 @@ public class ManagerFile extends ManagerAbstractList {
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER),
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
         
-        run = new JButton(defaultText);
+        this.run = new JButtonStatable(defaultText);
 
-        run.setToolTipText(I18n.valueByKey("FILE_RUN_BUTTON_TOOLTIP"));
-        run.setEnabled(false);
+        this.run.setToolTipText(I18n.valueByKey("FILE_RUN_BUTTON_TOOLTIP"));
+        this.run.setEnabled(false);
         
-        run.setContentAreaFilled(false);
-        run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        run.setBackground(new Color(200, 221, 242));
+        this.run.setContentAreaFilled(false);
+        this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        this.run.setBackground(new Color(200, 221, 242));
         
-        run.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
-                if (run.isEnabled()) {
-                    run.setContentAreaFilled(true);
-                    run.setBorder(HelperUi.BLU_ROUND_BORDER);
-                }
-            }
-
-            @Override public void mouseExited(MouseEvent e) {
-                if (run.isEnabled()) {
-                    run.setContentAreaFilled(false);
-                    run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-                }
-            }
-        });
+        this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
         
-        run.addActionListener(new ActionListener() {
+        this.run.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (listFile.getSelectedValuesList().isEmpty()) {
@@ -123,13 +109,15 @@ public class ManagerFile extends ManagerAbstractList {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        if (run.getText().equals(defaultText)) {
+                        
+                        if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {
+                            ManagerFile.this.run.setText("Stop");
+                            ManagerFile.this.run.setState(StateButton.STOPPABLE);
+                            ManagerFile.this.loader.setVisible(true);
                             
-                            run.setText("Stop");
+                            MediatorGui.managerWebshell().clearSelection();
+                            MediatorGui.managerSqlshell().clearSelection();
                             try {
-                                MediatorGui.managerWebshell().clearSelection();
-                                MediatorGui.managerSqlshell().clearSelection();
-                                loader.setVisible(true);
                                 RessourceAccess.readFile(listFile.getSelectedValuesList());
                             } catch (JSqlException | ExecutionException e) {
                                 LOGGER.warn(e, e);
@@ -140,25 +128,27 @@ public class ManagerFile extends ManagerAbstractList {
 
                         } else {
                             RessourceAccess.setSearchFileStopped(true);
-                            run.setEnabled(false);
+                            ManagerFile.this.run.setEnabled(false);
+                            ManagerFile.this.run.setState(StateButton.STOPPING);
                         }
+                        
                     }
-                }, "getFile").start();
+                }, "ThreadReadFile").start();
             }
         });
 
-        privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.SQUARE_GREY, SwingConstants.LEFT);
-        I18n.addComponentForKey("PRIVILEGE_LABEL", privilege);
-        privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.DEFAULT_BACKGROUND));
-        privilege.setToolTipText(I18n.valueByKey("PRIVILEGE_TOOLTIP"));
+        this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.ICON_SQUARE_GREY, SwingConstants.LEFT);
+        I18n.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
+        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND));
+        this.privilege.setToolTipText(I18n.valueByKey("PRIVILEGE_TOOLTIP"));
 
-        loader.setVisible(false);
+        this.loader.setVisible(false);
 
-        lastLine.add(privilege);
+        lastLine.add(this.privilege);
         lastLine.add(Box.createHorizontalGlue());
-        lastLine.add(loader);
+        lastLine.add(this.loader);
         lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
-        lastLine.add(run);
+        lastLine.add(this.run);
         
         this.add(lastLine, BorderLayout.SOUTH);
     }

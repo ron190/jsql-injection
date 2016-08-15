@@ -26,20 +26,20 @@ public class MarkFileSystemInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.managerFile().changePrivilegeIcon(HelperUi.SQUARE_RED);
+        MediatorGui.managerFile().changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
         MediatorGui.managerFile().setButtonEnable(true);
         MediatorGui.managerFile().restoreButtonText();
         MediatorGui.managerFile().hideLoader();
         
-        MediatorGui.managerWebshell().changePrivilegeIcon(HelperUi.SQUARE_RED);
+        MediatorGui.managerWebshell().changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
         MediatorGui.managerWebshell().setButtonEnable(true);
         MediatorGui.managerWebshell().restoreButtonText();
         
-        MediatorGui.managerUpload().changePrivilegeIcon(HelperUi.SQUARE_RED);
+        MediatorGui.managerUpload().changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
         MediatorGui.managerUpload().setButtonEnable(true);
         MediatorGui.managerUpload().restoreButtonText();
         
-        MediatorGui.managerSqlshell().changePrivilegeIcon(HelperUi.SQUARE_RED);
+        MediatorGui.managerSqlshell().changePrivilegeIcon(HelperUi.ICON_SQUARE_RED);
         MediatorGui.managerSqlshell().setButtonEnable(true);
         MediatorGui.managerSqlshell().restoreButtonText();
     }

@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.suspendable.ThreadFactoryCallable;
 
 /**
  * A time attack class using thread asynchronisation.
@@ -50,21 +51,21 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
          *  Parallelize the call to the FALSE statements,
          *  it will use inject() from the model
          */
-        ExecutorService executorFalseMark = Executors.newCachedThreadPool();
-        Collection<CallableTime> listCallableFalseTags = new ArrayList<>();
+        ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagFalse"));
+        Collection<CallableTime> listCallableTagFalse = new ArrayList<>();
         for (String urlTest: falseTest) {
-            listCallableFalseTags.add(new CallableTime(urlTest));
+            listCallableTagFalse.add(new CallableTime(urlTest));
         }
         
         // Begin the url requests
-        List<Future<CallableTime>> listFalseTags = null;
+        List<Future<CallableTime>> listTagFalse = null;
         try {
-            listFalseTags = executorFalseMark.invokeAll(listCallableFalseTags);
+            listTagFalse = executorTagFalse.invokeAll(listCallableTagFalse);
         } catch (InterruptedException e) {
             LOGGER.error("Interruption while checking Time False tags", e);
             Thread.currentThread().interrupt();
         }
-        executorFalseMark.shutdown();
+        executorTagFalse.shutdown();
 
         /*
          * If one FALSE query makes less than X seconds,
@@ -72,11 +73,11 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
          * Allow the user to stop the loop
          */
         try {
-            for (Future<CallableTime> falseMark: listFalseTags) {
+            for (Future<CallableTime> tagFalse: listTagFalse) {
                 if (MediatorModel.model().isStoppedByUser()) {
                     return;
                 }
-                if (falseMark.get().isTrue()) {
+                if (tagFalse.get().isTrue()) {
                     isTimeInjectable = false;
                     return;
                 }
@@ -89,21 +90,21 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
          *  Parallelize the call to the TRUE statements,
          *  it will use inject() from the model
          */
-        ExecutorService executorTrueMark = Executors.newCachedThreadPool();
-        Collection<CallableTime> listCallableTrueTags = new ArrayList<>();
+        ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagTrue"));
+        Collection<CallableTime> listCallableTagTrue = new ArrayList<>();
         for (String urlTest: trueTest) {
-            listCallableTrueTags.add(new CallableTime(urlTest));
+            listCallableTagTrue.add(new CallableTime(urlTest));
         }
         
         // Begin the url requests
-        List<Future<CallableTime>> listTrueTags = null;
+        List<Future<CallableTime>> listTagTrue = null;
         try {
-            listTrueTags = executorTrueMark.invokeAll(listCallableTrueTags);
+            listTagTrue = executorTagTrue.invokeAll(listCallableTagTrue);
         } catch (InterruptedException e) {
             LOGGER.error("Interruption while checking Time True tags", e);
             Thread.currentThread().interrupt();
         }
-        executorTrueMark.shutdown();
+        executorTagTrue.shutdown();
 
         /*
          * If one TRUE query makes more than X seconds,
@@ -111,7 +112,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
          * Allow the user to stop the loop
          */
         try {
-            for (Future<CallableTime> falseMark: listTrueTags) {
+            for (Future<CallableTime> falseMark: listTagTrue) {
                 if (MediatorModel.model().isStoppedByUser()) {
                     return;
                 }

@@ -1,5 +1,6 @@
 package com.test;
 
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -24,6 +25,7 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
+import com.test.util.Retry;
 
 public abstract class AbstractTestSuite {
     /**
@@ -73,7 +75,10 @@ public abstract class AbstractTestSuite {
         throw new InjectionFailureException();
     }
 
-    public void initializer() {
+    public void requestJdbc() {
+        PrintWriter out = new PrintWriter(System.out, true);
+        DriverManager.setLogWriter(out);
+        
         try (Connection conn = DriverManager.getConnection(jdbcURL, jdbcUser, jdbcPassword)) {
             Statement stmt = conn.createStatement();
             ResultSet res = stmt.executeQuery(jdbcQueryForDatabaseNames);

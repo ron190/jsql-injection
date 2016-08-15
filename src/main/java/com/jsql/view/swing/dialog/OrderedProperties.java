@@ -14,7 +14,6 @@ import java.io.Writer;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Enumeration;
-import java.util.InvalidPropertiesFormatException;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -164,7 +163,7 @@ public final class OrderedProperties {
     /**
      * See {@link Properties#loadFromXML(InputStream)}.
      */
-    public void loadFromXML(InputStream stream) throws IOException, InvalidPropertiesFormatException {
+    public void loadFromXML(InputStream stream) throws IOException {
         CustomProperties customProperties = new CustomProperties(this.properties);
         customProperties.loadFromXML(stream);
     }

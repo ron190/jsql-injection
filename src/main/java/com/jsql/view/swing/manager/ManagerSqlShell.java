@@ -51,8 +51,8 @@ public class ManagerSqlShell extends ManagerAbstractShell {
         username.setToolTipText(I18n.valueByKey("SQL_SHELL_USERNAME_TOOLTIP"));
         password.setToolTipText(I18n.valueByKey("SQL_SHELL_PASSWORD_TOOLTIP"));
         
-        username.setBorder(HelperUi.BLU_BORDER);
-        password.setBorder(HelperUi.BLU_BORDER);
+        username.setBorder(HelperUi.BORDER_BLU);
+        password.setBorder(HelperUi.BORDER_BLU);
         
         JPanel panelPassword = new JPanel(new BorderLayout());
         panelPassword.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));

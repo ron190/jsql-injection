@@ -117,7 +117,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
         public ZeroSizeDivider(BasicSplitPaneUI ui) {
             super(ui);
             super.setBorder(null);
-            setBackground(HelperUi.COMPONENT_BORDER);
+            setBackground(HelperUi.COLOR_COMPONENT_BORDER);
         }
 
         @Override

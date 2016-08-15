@@ -138,7 +138,7 @@ public class PanelConsoles extends JPanel {
         this.network.setResizeWeight(1);
         this.network.setDividerSize(0);
         this.network.setDividerLocation(600);
-        this.network.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperUi.COMPONENT_BORDER));
+        this.network.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
         this.networkTable = new JTable(0, 4) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -326,11 +326,11 @@ public class PanelConsoles extends JPanel {
 
         MediatorGui.tabConsoles().addTab(
             "Console",
-            HelperUi.CONSOLE_ICON,
+            HelperUi.ICON_CONSOLE,
             new LightScrollPane(1, 1, 0, 0, this.consoleTab.getProxy()),
             I18n.valueByKey("CONSOLE_MAIN_TOOLTIP")
         );
-        JLabel labelConsole = new JLabel(I18n.valueByKey("CONSOLE_MAIN_LABEL"), HelperUi.CONSOLE_ICON, SwingConstants.CENTER);
+        JLabel labelConsole = new JLabel(I18n.valueByKey("CONSOLE_MAIN_LABEL"), HelperUi.ICON_CONSOLE, SwingConstants.CENTER);
         MediatorGui.tabConsoles().setTabComponentAt(
             MediatorGui.tabConsoles().indexOfTab("Console"),
             labelConsole
@@ -402,13 +402,13 @@ public class PanelConsoles extends JPanel {
     public void insertChunkTab() {
         MediatorGui.tabConsoles().insertTab(
             "Chunk",
-            HelperUi.CHUNK_ICON,
+            HelperUi.ICON_CHUNK,
             new LightScrollPane(1, 1, 0, 0, PanelConsoles.this.chunkTab),
             I18n.valueByKey("CONSOLE_CHUNK_TOOLTIP"),
             1
         );
 
-        JLabel labelTimebased = new JLabel(I18n.valueByKey("CONSOLE_CHUNK_LABEL"), HelperUi.CHUNK_ICON, SwingConstants.CENTER);
+        JLabel labelTimebased = new JLabel(I18n.valueByKey("CONSOLE_CHUNK_LABEL"), HelperUi.ICON_CHUNK, SwingConstants.CENTER);
         MediatorGui.tabConsoles().setTabComponentAt(
             MediatorGui.tabConsoles().indexOfTab("Chunk"),
             labelTimebased
@@ -422,13 +422,13 @@ public class PanelConsoles extends JPanel {
     public void insertBinaryTab() {
         MediatorGui.tabConsoles().insertTab(
             "Binary",
-            HelperUi.BINARY_ICON,
+            HelperUi.ICON_BINARY,
             new LightScrollPane(1, 1, 0, 0, PanelConsoles.this.binaryTab),
             I18n.valueByKey("CONSOLE_BINARY_TOOLTIP"),
             1 + (MediatorGui.menubar().chunkMenu.isSelected() ? 1 : 0)
         );
 
-        JLabel labelBinary = new JLabel(I18n.valueByKey("CONSOLE_BINARY_LABEL"), HelperUi.BINARY_ICON, SwingConstants.CENTER);
+        JLabel labelBinary = new JLabel(I18n.valueByKey("CONSOLE_BINARY_LABEL"), HelperUi.ICON_BINARY, SwingConstants.CENTER);
         MediatorGui.tabConsoles().setTabComponentAt(
             MediatorGui.tabConsoles().indexOfTab("Binary"), 
             labelBinary
@@ -442,13 +442,13 @@ public class PanelConsoles extends JPanel {
     public void insertNetworkTab() {
         MediatorGui.tabConsoles().insertTab(
             "Network",
-            HelperUi.HEADER_ICON,
+            HelperUi.ICON_HEADER,
             PanelConsoles.this.network,
             I18n.valueByKey("CONSOLE_NETWORK_TOOLTIP"),
             MediatorGui.tabConsoles().getTabCount() - (MediatorGui.menubar().javaDebugMenu.isSelected() ? 1 : 0)
         );
 
-        JLabel labelNetwork = new JLabel(I18n.valueByKey("CONSOLE_NETWORK_LABEL"), HelperUi.HEADER_ICON, SwingConstants.CENTER);
+        JLabel labelNetwork = new JLabel(I18n.valueByKey("CONSOLE_NETWORK_LABEL"), HelperUi.ICON_HEADER, SwingConstants.CENTER);
         MediatorGui.tabConsoles().setTabComponentAt(
             MediatorGui.tabConsoles().indexOfTab("Network"), 
             labelNetwork
@@ -462,13 +462,13 @@ public class PanelConsoles extends JPanel {
     public void insertJavaDebugTab() {
         MediatorGui.tabConsoles().insertTab(
             "Java",
-            HelperUi.CUP_ICON,
+            HelperUi.ICON_CUP,
             new LightScrollPane(1, 1, 0, 0, PanelConsoles.this.javaTab.getProxy()),
             I18n.valueByKey("CONSOLE_JAVA_TOOLTIP"),
             MediatorGui.tabConsoles().getTabCount()
         );
 
-        JLabel labelJava = new JLabel(I18n.valueByKey("CONSOLE_JAVA_LABEL"), HelperUi.CUP_ICON, SwingConstants.CENTER);
+        JLabel labelJava = new JLabel(I18n.valueByKey("CONSOLE_JAVA_LABEL"), HelperUi.ICON_CUP, SwingConstants.CENTER);
         MediatorGui.tabConsoles().setTabComponentAt(
             MediatorGui.tabConsoles().indexOfTab("Java"), 
             labelJava

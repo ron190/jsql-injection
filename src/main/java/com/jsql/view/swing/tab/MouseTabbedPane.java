@@ -25,6 +25,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import com.jsql.i18n.I18n;
 import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
@@ -57,7 +58,7 @@ public class MouseTabbedPane extends JTabbedPane {
     /**
      * Display popupmenu with a list of tabs.
      */
-    public void activateMenu() {
+    public void addMouseClickMenu() {
         this.addMouseListener(new TabSelectionMouseHandler());
     }
 
@@ -75,6 +76,7 @@ public class MouseTabbedPane extends JTabbedPane {
                 int tabCount = tabPane.getTabCount();
                 for (int i = 0 ; i < tabCount ; i++) {
                     JMenuItem menuItem = menu.add(new TabAction(tabPane, i));
+                    menuItem.setText(I18n.valueByKey(tabPane.getTitleAt(i)));
                     menuItem.setAccelerator(KeyStroke.getKeyStroke("ctrl " + (i + 1)));
                 }
 

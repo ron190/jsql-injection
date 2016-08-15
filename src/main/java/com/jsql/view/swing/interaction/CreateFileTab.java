@@ -12,7 +12,6 @@ package com.jsql.view.swing.interaction;
 
 import java.awt.Font;
 
-import javax.swing.ImageIcon;
 import javax.swing.JTextArea;
 
 import com.jsql.view.swing.HelperUi;
@@ -63,7 +62,7 @@ public class CreateFileTab extends CreateTab implements InteractionCommand {
         MediatorGui.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(new ImageIcon(CreateFileTab.class.getResource("/com/jsql/view/swing/resources/images/icons/file.png")));
+        TabHeader header = new TabHeader(HelperUi.ICON_FILE_SERVER);
 
         MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), path);
 

@@ -50,7 +50,7 @@ public class ActionLoadStop implements ActionListener {
             if (currentChild.getUserObject() instanceof AbstractNodeModel) {
                 AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
                 if (columnTreeNodeModel.isSelected) {
-                    columnsToSearch.add((Column) columnTreeNodeModel.dataObject);
+                    columnsToSearch.add((Column) columnTreeNodeModel.elementDatabase);
                 }
             }
         }
@@ -68,7 +68,7 @@ public class ActionLoadStop implements ActionListener {
                 }
             }.execute();
         } else {
-            AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.nodeData.dataObject);
+            AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.nodeData.elementDatabase);
             
             if (suspendableTask != null) {
                 suspendableTask.stop();
@@ -80,7 +80,7 @@ public class ActionLoadStop implements ActionListener {
             this.nodeData.isProgressing = false;
             this.nodeData.isLoading = false;
             
-            ThreadUtil.remove(this.nodeData.dataObject);
+            ThreadUtil.remove(this.nodeData.elementDatabase);
         }
         this.nodeData.isRunning = !this.nodeData.isRunning;
     }

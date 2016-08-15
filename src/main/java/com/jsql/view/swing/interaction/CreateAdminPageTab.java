@@ -22,7 +22,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
@@ -66,6 +65,9 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
     public void execute() {
         String htmlSource = "";
         try {
+            // TODO: test if proxy is used by jsoup
+            // Previous test for 2xx Success and 3xx Redirection was Header only,
+            // now get the HTML content
             htmlSource = Jsoup.clean(
                 Jsoup.connect(url).get().html()
                     .replaceAll("<img.*>", "")
@@ -89,7 +91,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         
         JMenuItem item = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_COPY_PAGE_URL"));
         I18n.addComponentForKey("CONTEXT_MENU_COPY_PAGE_URL", item);
-        item.setIcon(HelperUi.EMPTY);
+        item.setIcon(HelperUi.ICON_EMPTY);
         
         JMenuItem copyItem = new JMenuItem();
         copyItem.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
@@ -97,10 +99,10 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         copyItem.setMnemonic('C');
         copyItem.setText(I18n.valueByKey("CONTEXT_MENU_COPY"));
         I18n.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
-        copyItem.setIcon(HelperUi.EMPTY);
+        copyItem.setIcon(HelperUi.ICON_EMPTY);
         
         JMenuItem itemSelectAll = new JMenuItem();
-        itemSelectAll.setIcon(HelperUi.EMPTY);
+        itemSelectAll.setIcon(HelperUi.ICON_EMPTY);
         itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.setText(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"));
@@ -160,7 +162,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         MediatorGui.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(new ImageIcon(CreateAdminPageTab.class.getResource("/com/jsql/view/swing/resources/images/icons/admin.png")));
+        TabHeader header = new TabHeader(HelperUi.ICON_ADMIN_SERVER);
 
         MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), "<html>"+ url +"</html>");
 

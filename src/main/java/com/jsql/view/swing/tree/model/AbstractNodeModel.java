@@ -41,7 +41,7 @@ public abstract class AbstractNodeModel {
     /**
      * Element from injection model in a linked list.
      */
-    public AbstractElementDatabase dataObject;
+    public AbstractElementDatabase elementDatabase;
 
     /**
      * Text for empty node.
@@ -89,10 +89,10 @@ public abstract class AbstractNodeModel {
 
     /**
      * Create a functional model for tree node.
-     * @param dataObject Database structural component
+     * @param elementDatabase Database structural component
      */
-    public AbstractNodeModel(AbstractElementDatabase dataObject) {
-        this.dataObject = dataObject;
+    public AbstractNodeModel(AbstractElementDatabase elementDatabase) {
+        this.elementDatabase = elementDatabase;
     }
 
     /**
@@ -108,7 +108,7 @@ public abstract class AbstractNodeModel {
      * @return Parent
      */
     protected AbstractElementDatabase getParent() {
-        return dataObject.getParent();
+        return elementDatabase.getParent();
     }
 
     /**
@@ -120,7 +120,7 @@ public abstract class AbstractNodeModel {
      */
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, int x, int y) {
         JPopupMenu tablePopupMenu = new JPopupMenu();
-        AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.dataObject);
+        AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.elementDatabase);
 
         JMenuItem mnLoad = new JMenuItem(this.isRunning ? I18n.valueByKey("THREAD_STOP") : I18n.valueByKey("THREAD_LOAD"), 'o');
         JMenuItem mnPause = new JMenuItem(
@@ -129,8 +129,8 @@ public abstract class AbstractNodeModel {
             ? I18n.valueByKey("THREAD_RESUME")
             : I18n.valueByKey("THREAD_PAUSE")
         , 's');
-        mnLoad.setIcon(HelperUi.EMPTY);
-        mnPause.setIcon(HelperUi.EMPTY);
+        mnLoad.setIcon(HelperUi.ICON_EMPTY);
+        mnPause.setIcon(HelperUi.ICON_EMPTY);
 
         if (!this.isContainingSelection && !this.isRunning) {
             mnLoad.setEnabled(false);
@@ -146,8 +146,8 @@ public abstract class AbstractNodeModel {
         tablePopupMenu.add(mnLoad);
         tablePopupMenu.add(mnPause);
 
-        mnLoad.setIcon(HelperUi.EMPTY);
-        mnPause.setIcon(HelperUi.EMPTY);
+        mnLoad.setIcon(HelperUi.ICON_EMPTY);
+        mnPause.setIcon(HelperUi.ICON_EMPTY);
 
         tablePopupMenu.show(MediatorGui.treeDatabase(), x, y);
     }
@@ -177,7 +177,7 @@ public abstract class AbstractNodeModel {
         panel.setIcon(this.getLeafIcon(isLeaf));
 
         if (isSelected) {
-            panel.label.setBackground(HelperUi.SELECTION_BACKGROUND);
+            panel.label.setBackground(HelperUi.COLOR_SELECTION_BACKGROUND);
         } else {
             panel.label.setBackground(Color.WHITE);
             panel.label.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -190,7 +190,7 @@ public abstract class AbstractNodeModel {
             panel.showLoader();
             panel.hideIcon();
 
-            AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.dataObject);
+            AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.elementDatabase);
             if (suspendableTask != null && suspendableTask.isPaused()) {
                 ImageIcon animatedGIFPaused = new ImageOverlap(HelperUi.PATH_PROGRESSBAR, HelperUi.PATH_PAUSE);
                 animatedGIFPaused.setImageObserver(
@@ -212,13 +212,13 @@ public abstract class AbstractNodeModel {
      * @param currentNode Functional node model object
      */
     protected void displayProgress(PanelNode panel, DefaultMutableTreeNode currentNode) {
-        int dataCount = this.dataObject.getCount();
+        int dataCount = this.elementDatabase.getCount();
         panel.progressBar.setMaximum(dataCount);
         panel.progressBar.setValue(this.indexProgress);
         panel.progressBar.setVisible(true);
         
         // Report #135: ignore if thread not found
-        AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.dataObject);
+        AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.elementDatabase);
         if (suspendableTask != null && suspendableTask.isPaused()) {
             panel.progressBar.pause();
         }
@@ -253,6 +253,6 @@ public abstract class AbstractNodeModel {
     
     @Override
     public String toString() {
-        return dataObject != null ? this.dataObject.getLabel() : emptyObject;
+        return elementDatabase != null ? this.elementDatabase.getLabel() : emptyObject;
     }
 }

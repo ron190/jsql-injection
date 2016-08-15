@@ -38,7 +38,7 @@ public class ActionNewWindow extends AbstractAction {
         this.putValue(Action.NAME, I18n.valueByKey("NEW_WINDOW_MENU"));
         this.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_N));
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-        this.putValue(Action.SMALL_ICON, HelperUi.EMPTY);
+        this.putValue(Action.SMALL_ICON, HelperUi.ICON_EMPTY);
     }
 
     @Override

@@ -50,6 +50,7 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.suspendable.SuspendableGetRows;
+import com.jsql.model.suspendable.ThreadFactoryCallable;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.StringUtil;
 import com.jsql.view.scan.ScanListTerminal;
@@ -104,6 +105,8 @@ public class RessourceAccess {
      */
     private static boolean readingIsAllowed = false;
 
+    private static List<CallableFile> callablesReadFile = new ArrayList<CallableFile>();
+
     private RessourceAccess() {
         
     }
@@ -126,8 +129,8 @@ public class RessourceAccess {
         for (String directoryName: urlWithoutFileName.split("/")) {
             directoryNames.add(directoryName +"/");
         }
-
-        ExecutorService taskExecutor = Executors.newFixedThreadPool(10);
+        
+        ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable("CallableGetAdminPage"));
         CompletionService<CallableAdminPage> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
         
         String urlPart = "";
@@ -141,8 +144,9 @@ public class RessourceAccess {
 
         int nbAdminPagesFound = 0;
         int submittedTasks = directoryNames.size() * pageNames.size();
+        int tasksHandled;
         for (
-            int tasksHandled = 0; 
+            tasksHandled = 0; 
             tasksHandled < submittedTasks && !RessourceAccess.isSearchAdminStopped; 
             tasksHandled++
         ) {
@@ -166,10 +170,15 @@ public class RessourceAccess {
 
         RessourceAccess.isSearchAdminStopped = false;
 
+        String result = 
+            "Found "+ nbAdminPagesFound +" page"+( nbAdminPagesFound > 1 ? 's' : "" )+" "
+            + (tasksHandled != submittedTasks ? "on "+ tasksHandled +" processed " : "")
+            + "of a total of "+ submittedTasks 
+        ;
         if (nbAdminPagesFound > 0) {
-            LOGGER.debug("Admin page(s) found: "+ nbAdminPagesFound +"/"+ submittedTasks);
+            LOGGER.debug(result);
         } else {
-            LOGGER.trace("Admin page(s) found: "+ nbAdminPagesFound +"/"+ submittedTasks);
+            LOGGER.trace(result);
         }
 
         Request request = new Request();
@@ -663,56 +672,68 @@ public class RessourceAccess {
         }
 
         int countFileFound = 0;
-        ExecutorService taskExecutor = Executors.newFixedThreadPool(10);
+        ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable("CallableReadFile"));
         CompletionService<CallableFile> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         for (ListItem pathFile: pathsFiles) {
-            taskCompletionService.submit(new CallableFile(pathFile.toString()));
+            CallableFile c = new CallableFile(pathFile.toString());
+            taskCompletionService.submit(c);
+            callablesReadFile.add(c);
         }
 
         List<String> duplicate = new ArrayList<>();
         int submittedTasks = pathsFiles.size();
-        
-        try {
-            for (int tasksHandled = 0 ; tasksHandled < submittedTasks ; tasksHandled++) {
-                CallableFile currentCallable = taskCompletionService.take().get();
-                if (!"".equals(currentCallable.getFileSource())) {
-                    String name = currentCallable.getUrl().substring(currentCallable.getUrl().lastIndexOf('/') + 1, currentCallable.getUrl().length());
-                    String content = currentCallable.getFileSource();
-                    String path = currentCallable.getUrl();
-    
-                    Request request = new Request();
-                    request.setMessage(TypeRequest.CREATE_FILE_TAB);
-                    request.setParameters(name, content, path);
-                    MediatorModel.model().sendToViews(request);
-    
-                    if (!duplicate.contains(path.replace(name, ""))) {
-                        LOGGER.info("Shell might be possible in folder "+ path.replace(name, ""));
-                    }
-                    duplicate.add(path.replace(name, ""));
-    
-                    countFileFound++;
+        int tasksHandled;
+        for (
+            tasksHandled = 0 ; 
+            tasksHandled < submittedTasks && !RessourceAccess.isSearchFileStopped ;
+            tasksHandled++
+        ) {
+            CallableFile currentCallable = taskCompletionService.take().get();
+            if (!"".equals(currentCallable.getFileSource())) {
+                String name = currentCallable.getUrl().substring(currentCallable.getUrl().lastIndexOf('/') + 1, currentCallable.getUrl().length());
+                String content = currentCallable.getFileSource();
+                String path = currentCallable.getUrl();
+
+                Request request = new Request();
+                request.setMessage(TypeRequest.CREATE_FILE_TAB);
+                request.setParameters(name, content, path);
+                MediatorModel.model().sendToViews(request);
+
+                if (!duplicate.contains(path.replace(name, ""))) {
+                    LOGGER.info("Shell might be possible in folder "+ path.replace(name, ""));
                 }
-                
-                if (RessourceAccess.isSearchFileStopped) {
-                    throw new StoppedByUserException();
-                }
+                duplicate.add(path.replace(name, ""));
+
+                countFileFound++;
             }
-        } finally {
-            taskExecutor.shutdown();
-            taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
-            
-            RessourceAccess.isSearchFileStopped = false;
-            
-            if (countFileFound > 0) {
-                LOGGER.debug("File(s) found: "+ countFileFound +"/"+ submittedTasks);
-            } else {
-                LOGGER.trace("File(s) found: "+ countFileFound +"/"+ submittedTasks);
-            }
-            Request request = new Request();
-            request.setMessage(TypeRequest.END_FILE_SEARCH);
-            MediatorModel.model().sendToViews(request);
         }
+        
+        // Force eventual ongoing suspendables to stop immediately
+        for (CallableFile callableReadFile: callablesReadFile) {
+            callableReadFile.suspendableReadFile.stop();
+        }
+        callablesReadFile.clear();
+
+        taskExecutor.shutdown();
+        taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
+        
+        RessourceAccess.isSearchFileStopped = false;
+        
+        String result = 
+            "Found "+ countFileFound +" file"+( countFileFound > 1 ? 's' : "" )+" "
+            + (tasksHandled != submittedTasks ? "on "+ tasksHandled +" processed " : "")
+            + "of a total of "+ submittedTasks 
+        ;
+        if (countFileFound > 0) {
+            LOGGER.debug(result);
+        } else {
+            LOGGER.trace(result);
+        }
+        
+        Request request = new Request();
+        request.setMessage(TypeRequest.END_FILE_SEARCH);
+        MediatorModel.model().sendToViews(request);
     }
     
     public static void scanList(List<ListItem> urlList) {
@@ -759,7 +780,7 @@ public class RessourceAccess {
         RessourceAccess.isScanStopped = false;
 
         Request request = new Request();
-        request.setMessage(TypeRequest.END_SCAN_LIST);
+        request.setMessage(TypeRequest.END_SCAN);
         MediatorModel.model().sendToViews(request);
     }
     
@@ -777,6 +798,13 @@ public class RessourceAccess {
 
     public static void setSearchFileStopped(boolean isSearchFileStopped) {
         RessourceAccess.isSearchFileStopped = isSearchFileStopped;
+        
+        // Force ongoing suspendable to stop immediately
+        if (isSearchFileStopped) {
+            for (CallableFile callable: callablesReadFile) {
+                callable.suspendableReadFile.stop();
+            }
+        }
     }
 
     public static boolean isReadingIsAllowed() {

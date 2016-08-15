@@ -91,7 +91,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         this.splitVerticalLeftRight.setRightComponent(labelPlaceholderResult);
         this.splitVerticalLeftRight.setDividerLocation(verticalSplitter);
         this.splitVerticalLeftRight.setDividerSize(0);
-        this.splitVerticalLeftRight.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperUi.COMPONENT_BORDER));
+        this.splitVerticalLeftRight.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
 
         this.setDividerSize(0);
         this.setBorder(null);
@@ -110,7 +110,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         buttonHideConsoles.addActionListener(SplitHorizontalTopBottom.ACTION_HIDE_SHOW_CONSOLE);
         PANEL_HIDDEN_CONSOLES.add(Box.createHorizontalGlue());
         PANEL_HIDDEN_CONSOLES.add(buttonHideConsoles, BorderLayout.EAST);
-        PANEL_HIDDEN_CONSOLES.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperUi.COMPONENT_BORDER));
+        PANEL_HIDDEN_CONSOLES.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
         PANEL_HIDDEN_CONSOLES.setVisible(false);
 
         panelManagerResult.add(PANEL_HIDDEN_CONSOLES, BorderLayout.SOUTH);

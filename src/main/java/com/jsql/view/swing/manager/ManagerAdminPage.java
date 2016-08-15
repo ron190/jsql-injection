@@ -15,8 +15,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +25,6 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
@@ -37,7 +34,10 @@ import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
+import com.jsql.view.swing.manager.util.JButtonStatable;
+import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
+import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 
 /**
  * Manager to display webpages frequently used as backoffice administration.
@@ -79,47 +79,41 @@ public class ManagerAdminPage extends ManagerAbstractList {
 
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER), 
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
         
-        run = new JButton(defaultText);
+        this.run = new JButtonStatable(this.defaultText);
         
-        run.setContentAreaFilled(false);
-        run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        run.setBackground(new Color(200, 221, 242));
+        this.run.setContentAreaFilled(false);
+        this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        this.run.setBackground(new Color(200, 221, 242));
         
-        run.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
-                run.setContentAreaFilled(true);
-                run.setBorder(HelperUi.BLU_ROUND_BORDER);
-            }
+        this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
 
-            @Override public void mouseExited(MouseEvent e) {
-                run.setContentAreaFilled(false);
-                run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-            }
-        });
+        this.run.setToolTipText(I18n.valueByKey("ADMIN_PAGE_RUN_BUTTON_TOOLTIP"));
 
-        run.setToolTipText(I18n.valueByKey("ADMIN_PAGE_RUN_BUTTON_TOOLTIP"));
-
-        run.addActionListener(new ActionListener() {
+        this.run.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
+                
                 if (listFile.getSelectedValuesList().isEmpty()) {
                     LOGGER.warn("Select admin page(s) to find");
                     return;
                 }
+                
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        if (run.getText().equals(defaultText)) {
+                        
+                        if (ManagerAdminPage.this.run.getState() == StateButton.STARTABLE) {
                             if ("".equals(MediatorGui.panelAddressBar().fieldUrl.getText())) {
                                 LOGGER.warn("Enter the main address");
                             } else {
-                                run.setText("Stop");
-                                loader.setVisible(true);
+                                ManagerAdminPage.this.run.setText("Stop");
+                                ManagerAdminPage.this.run.setState(StateButton.STOPPABLE);
+                                ManagerAdminPage.this.loader.setVisible(true);
                                 
                                 try {
                                     RessourceAccess.createAdminPages(
@@ -131,21 +125,24 @@ public class ManagerAdminPage extends ManagerAbstractList {
                                     Thread.currentThread().interrupt();
                                 }
                             }
-                        } else {
+                        } else if (run.getState() == StateButton.STOPPABLE) {
                             RessourceAccess.setSearchAdminStopped(true);
-                            run.setEnabled(false);
+                            ManagerAdminPage.this.run.setEnabled(false);
+                            ManagerAdminPage.this.run.setState(StateButton.STOPPING);
                         }
+                        
                     }
-                }, "getAdminPage").start();
+                }, "ThreadAdminPage").start();
             }
         });
 
-        loader.setVisible(false);
+        this.loader.setVisible(false);
 
         lastLine.add(Box.createHorizontalGlue());
-        lastLine.add(loader);
+        lastLine.add(this.loader);
         lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
-        lastLine.add(run);
+        lastLine.add(this.run);
+        
         this.add(lastLine, BorderLayout.SOUTH);
     }
 }

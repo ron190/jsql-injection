@@ -67,7 +67,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Current version of application.
      */
-    public static final String VERSION_JSQL = "0.76";
+    public static final String VERSION_JSQL = "0.77";
     
     /**
      * i.e, -1 in "[..].php?id=-1 union select[..]"
@@ -159,7 +159,7 @@ public class InjectionModel extends AbstractModelObservable {
      * Prepare the injection process, can be interrupted by the user (via shouldStopAll).
      * Erase all attributes eventually defined in a previous injection.
      */
-    public void injection() {
+    public void beginInjection() {
         this.resetModel();
         
         if (!ProxyUtil.proxyIsResponding()) {
@@ -232,7 +232,7 @@ public class InjectionModel extends AbstractModelObservable {
                 
                 // sinon perte de insertionCharacter entre 2 injections
                 ConnectionUtil.setDataQuery(ConnectionUtil.getDataQuery() + charInsertion);
-                this.injection();
+                this.beginInjection();
                 
                 return;
             } else {
@@ -563,15 +563,15 @@ public class InjectionModel extends AbstractModelObservable {
             this.stepSecurity = 0;
             
             if (isScanning) {
-                this.injection();
+                this.beginInjection();
             } else {
                 // Start the model injection process in a thread
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        InjectionModel.this.injection();
+                        InjectionModel.this.beginInjection();
                     }
-                }, "InjectionController - controlInput").start();
+                }, "ThreadBeginInjection").start();
                 
                 // Erase everything in the view from a previous injection
                 Request request = new Request();
@@ -579,7 +579,7 @@ public class InjectionModel extends AbstractModelObservable {
                 this.sendToViews(request);
             }
         } catch (MalformedURLException e) {
-            LOGGER.warn("Incorrect Url", e);
+            LOGGER.warn("Incorrect Url: "+ e, e);
             
             // Incorrect URL, reset the start button
             Request request = new Request();

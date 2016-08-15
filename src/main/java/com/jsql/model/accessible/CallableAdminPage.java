@@ -24,7 +24,7 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
     /**
      * HTTP header response code.
      */
-    private String responseCodeHTTP;
+    private String responseCodeHTTP = "";
 
     /**
      * Create a callable to find admin page.
@@ -70,6 +70,6 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
     }
 
     public boolean isHttpResponseOk() {
-        return responseCodeHTTP.indexOf("200 OK") >= 0;
+        return responseCodeHTTP.matches(".+[23]\\d\\d.+");
     }
 }

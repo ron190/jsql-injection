@@ -28,7 +28,6 @@ import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.DefaultListModel;
 import javax.swing.DropMode;
-import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.ListCellRenderer;
@@ -39,6 +38,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
+import com.jsql.view.swing.HelperUi;
 
 /**
  * A list supporting drag and drop.
@@ -200,7 +200,7 @@ public class DnDList extends JList<ListItem> {
                     I18n.valueByKey("LIST_IMPORT_ERROR_LABEL"),
                     I18n.valueByKey("LIST_IMPORT_ERROR_TITLE"),
                     JOptionPane.ERROR_MESSAGE,
-                    new ImageIcon(DnDList.class.getResource("/com/jsql/view/swing/resources/images/icons/error.png"))
+                    HelperUi.ICON_ERROR
                 );
                 return;
             }

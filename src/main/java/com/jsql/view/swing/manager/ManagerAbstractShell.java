@@ -14,8 +14,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +26,6 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -40,8 +37,11 @@ import com.jsql.i18n.I18n;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.list.DnDList;
+import com.jsql.view.swing.list.ListItem;
+import com.jsql.view.swing.manager.util.JButtonStatable;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextField;
+import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 
 /**
  * Manager for uploading PHP webshell to the host and send system commands.
@@ -88,10 +88,10 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
         this.urlShell.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
-                    BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER),
-                    BorderFactory.createMatteBorder(1, 1, 0, 1, HelperUi.DEFAULT_BACKGROUND)
+                    BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                    BorderFactory.createMatteBorder(1, 1, 0, 1, HelperUi.COLOR_DEFAULT_BACKGROUND)
                 ),
-                HelperUi.BLU_BORDER
+                HelperUi.BORDER_BLU
             )
         );
 
@@ -99,12 +99,12 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER),
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
         
-        this.run = new JButton(I18n.valueByKey("SHELL_RUN_BUTTON_LABEL"));
+        this.run = new JButtonStatable(I18n.valueByKey("SHELL_RUN_BUTTON_LABEL"));
         I18n.addComponentForKey("SHELL_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("SHELL_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
@@ -113,27 +113,13 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
         this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         this.run.setBackground(new Color(200, 221, 242));
         
-        this.run.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
-                if (run.isEnabled()) {
-                    run.setContentAreaFilled(true);
-                    run.setBorder(HelperUi.BLU_ROUND_BORDER);
-                }
-            }
-
-            @Override public void mouseExited(MouseEvent e) {
-                if (run.isEnabled()) {
-                    run.setContentAreaFilled(false);
-                    run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-                }
-            }
-        });
+        this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
 
         this.run.addActionListener(new ActionCreationShell());
 
-        this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.SQUARE_GREY, SwingConstants.LEFT);
+        this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.ICON_SQUARE_GREY, SwingConstants.LEFT);
         I18n.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
-        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.DEFAULT_BACKGROUND));
+        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND));
         this.privilege.setToolTipText(I18n.valueByKey("PRIVILEGE_TOOLTIP"));
 
         lastLine.add(this.privilege);
@@ -156,26 +142,29 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
                 return;
             }
 
-            if (!"".equals(urlShell.getText())) {
+            if (!"".equals(ManagerAbstractShell.this.urlShell.getText())) {
                 try {
-                    new URL(urlShell.getText());
+                    new URL(ManagerAbstractShell.this.urlShell.getText());
                 } catch (MalformedURLException e) {
-                    LOGGER.warn("URL is malformed: no protocol", e);
+                    LOGGER.warn("URL is malformed: "+ e, e);
                     return;
                 }
             }
 
-            for (final Object pathShell: ManagerAbstractShell.this.listPaths.getSelectedValuesList()) {
+            for (final ListItem pathShell: ManagerAbstractShell.this.listPaths.getSelectedValuesList()) {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            ManagerAbstractShell.this.createPayload(pathShell.toString(), urlShell.getText());
+                            ManagerAbstractShell.this.createPayload(
+                                pathShell.toString(), 
+                                ManagerAbstractShell.this.urlShell.getText()
+                            );
                         } catch (JSqlException e) {
                             LOGGER.warn("Payload creation error: "+ e, e);
                         }
                     }
-                }, "getShell").start();
+                }, "ThreadGetShell").start();
             }
         }
     }

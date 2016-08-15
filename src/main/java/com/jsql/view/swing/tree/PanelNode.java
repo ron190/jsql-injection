@@ -64,7 +64,7 @@ public class PanelNode extends JPanel {
         this.progressBar.setUI(new BasicProgressBarUI());
         this.label.setOpaque(true);
 
-        this.label.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.BLU_COLOR));
+        this.label.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.COLOR_BLU));
 
         this.setBackground(Color.WHITE);
 

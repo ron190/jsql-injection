@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.injection.strategy.blind.diff_match_patch.Diff;
+import com.jsql.model.suspendable.ThreadFactoryCallable;
 
 /**
  * A blind attack class using thread asynchronisation.
@@ -59,10 +60,10 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
          *  Parallelize the call to the FALSE statements,
          *  it will use inject() from the model
          */
-        ExecutorService executorFalseMark = Executors.newCachedThreadPool();
-        Collection<CallableBlind> listCallableFalse = new ArrayList<>();
+        ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagFalse"));
+        Collection<CallableBlind> listCallableTagFalse = new ArrayList<>();
         for (String urlTest: this.falseTest) {
-            listCallableFalse.add(new CallableBlind(urlTest));
+            listCallableTagFalse.add(new CallableBlind(urlTest));
         }
         
         /*
@@ -73,8 +74,8 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
         try {
             // Begin the url requests
             List<Future<CallableBlind>> listTagFalse = null;
-            listTagFalse = executorFalseMark.invokeAll(listCallableFalse);
-            executorFalseMark.shutdown();
+            listTagFalse = executorTagFalse.invokeAll(listCallableTagFalse);
+            executorTagFalse.shutdown();
             
             constantFalseMark = listTagFalse.get(0).get().getOpcodes();
             for (Future<CallableBlind> falseMark: listTagFalse) {
@@ -98,21 +99,21 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
          *  Parallelize the call to the TRUE statements,
          *  it will use inject() from the model.
          */
-        ExecutorService executorTrueMark = Executors.newCachedThreadPool();
-        Collection<CallableBlind> listCallableTrue = new ArrayList<>();
+        ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagTrue"));
+        Collection<CallableBlind> listCallableTagTrue = new ArrayList<>();
         for (String urlTest: trueTest) {
-            listCallableTrue.add(new CallableBlind(urlTest));
+            listCallableTagTrue.add(new CallableBlind(urlTest));
         }
         
         // Begin the url requests
-        List<Future<CallableBlind>> listTrueMark = null;
+        List<Future<CallableBlind>> listTagTrue = null;
         try {
-            listTrueMark = executorTrueMark.invokeAll(listCallableTrue);
+            listTagTrue = executorTagTrue.invokeAll(listCallableTagTrue);
         } catch (InterruptedException e) {
             LOGGER.error(e, e);
             Thread.currentThread().interrupt();
         }
-        executorTrueMark.shutdown();
+        executorTagTrue.shutdown();
 
         /*
          * Remove TRUE opcodes in the FALSE opcodes, because
@@ -120,11 +121,11 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
          * Allow the user to stop the loop.
          */
         try {
-            for (Future<CallableBlind> trueMark: listTrueMark) {
+            for (Future<CallableBlind> trueTag: listTagTrue) {
                 if (MediatorModel.model().isStoppedByUser()) {
                     return;
                 }
-                ConcreteBlindInjection.constantFalseMark.removeAll(trueMark.get().getOpcodes());
+                ConcreteBlindInjection.constantFalseMark.removeAll(trueTag.get().getOpcodes());
             }
         } catch (InterruptedException | ExecutionException e) {
             LOGGER.error(e, e);

@@ -15,7 +15,7 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
     /**
      * List of differences found between the TRUE page, and the present page.
      */
-    private LinkedList<Diff> opcodes;
+    private LinkedList<Diff> opcodes = new LinkedList<>();
     
     private static final diff_match_patch DIFFMATCHPATCH = new diff_match_patch();
 

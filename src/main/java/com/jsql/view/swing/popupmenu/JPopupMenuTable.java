@@ -49,7 +49,7 @@ public class JPopupMenuTable extends JPopupMenu {
         copyItem.setText(I18n.valueByKey("CONTEXT_MENU_COPY"));
         I18n.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
         copyItem.setMnemonic('C');
-        copyItem.setIcon(HelperUi.EMPTY);
+        copyItem.setIcon(HelperUi.ICON_EMPTY);
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         this.add(copyItem);
 
@@ -60,24 +60,24 @@ public class JPopupMenuTable extends JPopupMenu {
         selectAllItem.setText(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"));
         I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", selectAllItem);
         selectAllItem.setMnemonic('A');
-        selectAllItem.setIcon(HelperUi.EMPTY);
+        selectAllItem.setIcon(HelperUi.ICON_EMPTY);
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         this.add(selectAllItem);
         
-        this.addSeparator();
-        
-        JMenuItem search = new JMenuItem();
-        search.setAction(new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO
-            }
-        });
-        search.setText("Search...");
-        search.setMnemonic('S');
-        search.setIcon(HelperUi.EMPTY);
-        search.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
-        this.add(search);
+//        this.addSeparator();
+//        
+//        JMenuItem search = new JMenuItem();
+//        search.setAction(new AbstractAction() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                //TODO
+//            }
+//        });
+//        search.setText("Search...");
+//        search.setMnemonic('S');
+//        search.setIcon(HelperUi.ICON_EMPTY);
+//        search.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
+//        this.add(search);
 
         // Show menu next mouse pointer
         this.addPopupMenuListener(new PopupMenuListener() {

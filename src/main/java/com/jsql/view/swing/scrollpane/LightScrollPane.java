@@ -47,7 +47,7 @@ public class LightScrollPane extends JComponent {
     public LightScrollPane(int top, int left, int bottom, int right, JComponent c) {
         this(c);
 
-        this.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, HelperUi.COMPONENT_BORDER));
+        this.setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, HelperUi.COLOR_COMPONENT_BORDER));
     }
     
     public LightScrollPane(JComponent component) {

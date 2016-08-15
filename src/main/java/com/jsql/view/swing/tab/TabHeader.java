@@ -33,7 +33,7 @@ public class TabHeader extends JPanel implements MouseListener {
      * Tab header with default tab icon.
      */
     public TabHeader() {
-        this(HelperUi.TABLE_ICON);
+        this(HelperUi.ICON_TABLE);
     }
 
     /**

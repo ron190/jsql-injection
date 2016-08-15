@@ -18,8 +18,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -46,6 +44,7 @@ import com.jsql.util.ProxyUtil;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.text.JPopupTextField;
+import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 
 /**
  * A dialog for saving application settings.
@@ -98,7 +97,7 @@ public class DialogPreferences extends JDialog {
         buttonApply = new JButton("Apply");
         buttonApply.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.BLU_COLOR),
+                BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.COLOR_BLU),
                 BorderFactory.createEmptyBorder(2, 7, 2, 7)
             )
         );
@@ -106,7 +105,7 @@ public class DialogPreferences extends JDialog {
         final JButton buttonClose = new JButton("Close");
         buttonClose.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.BLU_COLOR),
+                BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.COLOR_BLU),
                 BorderFactory.createEmptyBorder(2, 7, 2, 7)
             )
         );
@@ -129,52 +128,19 @@ public class DialogPreferences extends JDialog {
         buttonCheckIp.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         buttonCheckIp.setBackground(new Color(200, 221, 242));
         
-        buttonCheckIp.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
-                buttonCheckIp.setContentAreaFilled(true);
-                buttonCheckIp.setBorder(HelperUi.BLU_ROUND_BORDER);
-                
-            }
-
-            @Override public void mouseExited(MouseEvent e) {
-                buttonCheckIp.setContentAreaFilled(false);
-                buttonCheckIp.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-            }
-        });
+        buttonCheckIp.addMouseListener(new FlatButtonMouseAdapter(buttonCheckIp));
         
         buttonApply.setContentAreaFilled(false);
         buttonApply.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         buttonApply.setBackground(new Color(200, 221, 242));
         
-        buttonApply.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
-                buttonApply.setContentAreaFilled(true);
-                buttonApply.setBorder(HelperUi.BLU_ROUND_BORDER);
-                
-            }
-
-            @Override public void mouseExited(MouseEvent e) {
-                buttonApply.setContentAreaFilled(false);
-                buttonApply.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-            }
-        });
+        buttonApply.addMouseListener(new FlatButtonMouseAdapter(buttonApply));
         
         buttonClose.setContentAreaFilled(false);
         buttonClose.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         buttonClose.setBackground(new Color(200, 221, 242));
         
-        buttonClose.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
-                buttonClose.setContentAreaFilled(true);
-                buttonClose.setBorder(HelperUi.BLU_ROUND_BORDER);
-                
-            }
-
-            @Override public void mouseExited(MouseEvent e) {
-                buttonClose.setContentAreaFilled(false);
-                buttonClose.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-            }
-        });
+        buttonClose.addMouseListener(new FlatButtonMouseAdapter(buttonClose));
 
         mainPanel.add(buttonCheckIp);
         mainPanel.add(Box.createGlue());

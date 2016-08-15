@@ -34,16 +34,16 @@ public final class ThreadUtil {
         //not called
     }
 
-    public static void put(AbstractElementDatabase dataObject, AbstractSuspendable<?> suspendable) {
-        INSTANCE.suspendables.put(dataObject, suspendable);
+    public static void put(AbstractElementDatabase elementDatabase, AbstractSuspendable<?> suspendable) {
+        INSTANCE.suspendables.put(elementDatabase, suspendable);
     }
     
-    public static AbstractSuspendable<?> get(AbstractElementDatabase dataObject) {
-        return INSTANCE.suspendables.get(dataObject);
+    public static AbstractSuspendable<?> get(AbstractElementDatabase elementDatabase) {
+        return INSTANCE.suspendables.get(elementDatabase);
     }
     
-    public static void remove(AbstractElementDatabase dataObject) {
-        INSTANCE.suspendables.remove(dataObject);
+    public static void remove(AbstractElementDatabase elementDatabase) {
+        INSTANCE.suspendables.remove(elementDatabase);
     }
     
     public static void reset() {

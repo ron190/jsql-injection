@@ -3,12 +3,12 @@ package com.test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import com.test.db2.DB2TestSuite;
 import com.test.method.MethodTestSuite;
-import com.test.mysql.MysqlTestSuite;
-import com.test.oracle.OracleTestSuite;
-import com.test.postgre.PostgreTestSuite;
-import com.test.sqlserver.SQLServerTestSuite;
+import com.test.vendor.db2.DB2TestSuite;
+import com.test.vendor.mysql.MysqlTestSuite;
+import com.test.vendor.oracle.OracleTestSuite;
+import com.test.vendor.postgre.PostgreTestSuite;
+import com.test.vendor.sqlserver.SQLServerTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({

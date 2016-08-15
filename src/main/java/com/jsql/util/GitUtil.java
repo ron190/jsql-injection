@@ -45,7 +45,7 @@ public class GitUtil {
     public enum ShowOnConsole {
         YES,
         NO;
-    }; 
+    }
 
     /**
      * Utility class.
@@ -55,10 +55,20 @@ public class GitUtil {
     }
 
     public static void checkUpdate() {
+        GitUtil.checkUpdate(false);
+    }
+    
+    public static void checkUpdate(boolean displayUpdateMessage) {
+        if (displayUpdateMessage) {
+            LOGGER.trace(I18n.valueByKey("UPDATE_LOADING"));    
+        }
+        
         try {
             Float versionGit = Float.parseFloat(GitUtil.getJSONObject().getString("version"));
             if (versionGit > Float.parseFloat(InjectionModel.VERSION_JSQL)) {
                 LOGGER.warn(I18n.valueByKey("UPDATE_NEW_VERSION"));
+            } else if(displayUpdateMessage) {
+                LOGGER.debug(I18n.valueByKey("UPDATE_UPTODATE"));
             }
         } catch (NumberFormatException | IOException e) {
             LOGGER.warn(I18n.valueByKey("UPDATE_EXCEPTION"), e);

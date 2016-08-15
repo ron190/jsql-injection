@@ -180,7 +180,11 @@ public class DataAccess {
         } catch (SlidingException e) {
             LOGGER.warn(e.getMessage(), e);
             // Get pieces of data already retreive instead of losing them
-            resultToParse = e.getSlidingWindowAllRows();
+            if (!e.getSlidingWindowAllRows().equals("")) {
+                resultToParse = e.getSlidingWindowAllRows();
+            } else if (!e.getSlidingWindowCurrentRows().equals("")) {
+                resultToParse = e.getSlidingWindowCurrentRows();
+            }
         }
 
         // Parse all the data we have retrieved
@@ -347,7 +351,8 @@ public class DataAccess {
             int instances = Integer.parseInt(regexSearch.group(2));
 
             listValues.add(new ArrayList<String>());
-            listValues.get(rowsFound).add(rowsFound + 1 +" x"+ instances);
+            listValues.get(rowsFound).add(rowsFound + 1 +"");
+            listValues.get(rowsFound).add("x"+ instances);
             for (String cellValue: values.split("\\x7F", -1)) {
                 listValues.get(rowsFound).add(cellValue);
             }
@@ -356,6 +361,7 @@ public class DataAccess {
         }
 
         // Add the default title to the columns: row number, occurrence
+        columnsName.add(0, "");
         columnsName.add(0, "");
 
         // Build a proper 2D array from the data

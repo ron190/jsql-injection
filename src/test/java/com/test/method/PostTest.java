@@ -10,7 +10,7 @@ import com.jsql.model.injection.strategy.Strategy;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.AbstractTestSuite;
-import com.test.mysql.ConcreteMysqlTestSuite;
+import com.test.vendor.mysql.ConcreteMysqlTestSuite;
 
 public class PostTest extends ConcreteMysqlTestSuite {
 
@@ -26,7 +26,7 @@ public class PostTest extends ConcreteMysqlTestSuite {
         ConnectionUtil.setDataRequest("lib=0");
         ConnectionUtil.setMethodInjection(MethodInjection.REQUEST);
 
-        MediatorModel.model().injection();
+        MediatorModel.model().beginInjection();
 
         MediatorModel.model().setStrategy(Strategy.NORMAL);
     }

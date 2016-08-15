@@ -92,7 +92,7 @@ public class HashBruter extends Bruter {
                 }
                 
                 try {
-                    generateAllPossibleCombinations("", size);
+                    this.generateAllPossibleCombinations("", size);
                 } catch (NoSuchAlgorithmException e) {
                     LOGGER.error("Coding algorithm not found", e);
                 } catch (InterruptedException e) {
@@ -139,7 +139,7 @@ public class HashBruter extends Bruter {
                 count++;
             } else if (baseString.length() < length) {
                 for (int n = 0; n < characters.size(); n++) {
-                    generateAllPossibleCombinations(baseString + characters.get(n), length);
+                    this.generateAllPossibleCombinations(baseString + characters.get(n), length);
                 }
             }
         }
@@ -162,9 +162,8 @@ public class HashBruter extends Bruter {
         
         digestPass2.update(passwordBytePass2, 0, passwordBytePass2.length);
         byte[] passwordPass2 = digestPass2.digest();
-        String passwordHexPass2 = digestToHexString(passwordPass2);
         
-        return passwordHexPass2;
+        return digestToHexString(passwordPass2);
     }
 
     private String generateHash(char[] passwordChar) throws NoSuchAlgorithmException {
@@ -174,8 +173,8 @@ public class HashBruter extends Bruter {
         byte[] passwordByte = passwordString.getBytes();
         md.update(passwordByte, 0, passwordByte.length);
         byte[] encodedPassword = md.digest();
-        String encodedPasswordInString = digestToHexString(encodedPassword);
-        return encodedPasswordInString;
+        
+        return digestToHexString(encodedPassword);
     }
 
     private String generateCRC32(String baseString) {
@@ -222,22 +221,22 @@ public class HashBruter extends Bruter {
         return String.valueOf(checksum.getValue());
     }
     
-/*************************************************************************
- *  Compilation:  javac CRC16.java
- *  Execution:    java CRC16 s
- *  
- *  Reads in a string s as a command-line argument, and prints out
- *  its 16-bit Cyclic Redundancy Check (CRC16). Uses a lookup table.
- *
- *  Reference:  http://www.gelato.unsw.edu.au/lxr/source/lib/crc16.c
- *
- *  % java CRC16 123456789
- *  CRC16 = bb3d
- *
- * Uses irreducible polynomial:  1 + x^2 + x^15 + x^16
- *
- *
- *************************************************************************/
+    /*************************************************************************
+     *  Compilation:  javac CRC16.java
+     *  Execution:    java CRC16 s
+     *  
+     *  Reads in a string s as a command-line argument, and prints out
+     *  its 16-bit Cyclic Redundancy Check (CRC16). Uses a lookup table.
+     *
+     *  Reference:  http://www.gelato.unsw.edu.au/lxr/source/lib/crc16.c
+     *
+     *  % java CRC16 123456789
+     *  CRC16 = bb3d
+     *
+     * Uses irreducible polynomial:  1 + x^2 + x^15 + x^16
+     *
+     *
+     *************************************************************************/
     public static String generateCRC16(String baseString) {
         int[] table = {
             0x0000, 0xC0C1, 0xC181, 0x0140, 0xC301, 0x03C0, 0x0280, 0xC241,
@@ -284,27 +283,27 @@ public class HashBruter extends Bruter {
         return Integer.toHexString(crc);
     }
     
-/*******************************************************************************
- * Copyright (c) 2009, 2012 Mountainminds GmbH & Co. KG and Contributors
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Marc R. Hoffmann - initial API and implementation
- *    
- *******************************************************************************/
-
-/**
- * CRC64 checksum calculator based on the polynom specified in ISO 3309. The
- * implementation is based on the following publications:
- * 
- * <ul>
- * <li>http://en.wikipedia.org/wiki/Cyclic_redundancy_check</li>
- * <li>http://www.geocities.com/SiliconValley/Pines/8659/crc.htm</li>
- * </ul>
- */
+    /*******************************************************************************
+     * Copyright (c) 2009, 2012 Mountainminds GmbH & Co. KG and Contributors
+     * All rights reserved. This program and the accompanying materials
+     * are made available under the terms of the Eclipse Public License v1.0
+     * which accompanies this distribution, and is available at
+     * http://www.eclipse.org/legal/epl-v10.html
+     *
+     * Contributors:
+     *    Marc R. Hoffmann - initial API and implementation
+     *    
+     *******************************************************************************/
+    
+    /**
+     * CRC64 checksum calculator based on the polynom specified in ISO 3309. The
+     * implementation is based on the following publications:
+     * 
+     * <ul>
+     * <li>http://en.wikipedia.org/wiki/Cyclic_redundancy_check</li>
+     * <li>http://www.geocities.com/SiliconValley/Pines/8659/crc.htm</li>
+     * </ul>
+     */
     private static final long POLY64REV = 0xd800000000000000L;
 
     private static final long[] LOOKUPTABLE;
@@ -346,9 +345,8 @@ public class HashBruter extends Bruter {
         byte[] passwordByte = passwordString.getBytes();
         md.update(passwordByte, 0, passwordByte.length);
         byte[] encodedPassword = md.digest();
-        String encodedPasswordInString = digestToHexString(encodedPassword);
 
-        return encodedPasswordInString;
+        return digestToHexString(encodedPassword);
     }
     
     /**

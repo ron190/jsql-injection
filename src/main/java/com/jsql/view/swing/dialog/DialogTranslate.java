@@ -57,6 +57,7 @@ import com.jsql.view.swing.popupmenu.JPopupMenuText;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
+import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 
 /**
  * A dialog displaying information on jSQL.
@@ -80,6 +81,8 @@ public class DialogTranslate extends JDialog {
     private final JTextArea[] textToTranslate = new JTextArea[1];
     
     private final JProgressBar progressBarTranslation = new JProgressBar();
+
+    private String textBeforeChange = "";
 
     /**
      * Create a dialog for general information on project jsql.
@@ -121,23 +124,12 @@ public class DialogTranslate extends JDialog {
             + "</html>"
         );
         
-        this.buttonSend.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
-                DialogTranslate.this.buttonSend.setContentAreaFilled(true);
-                DialogTranslate.this.buttonSend.setBorder(HelperUi.BLU_ROUND_BORDER);
-                
-            }
-
-            @Override public void mouseExited(MouseEvent e) {
-                DialogTranslate.this.buttonSend.setContentAreaFilled(false);
-                DialogTranslate.this.buttonSend.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-            }
-        });
+        this.buttonSend.addMouseListener(new FlatButtonMouseAdapter(this.buttonSend));
         
         this.buttonSend.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (textToTranslate[0].getText().equals(translation)) {
+                if (textToTranslate[0].getText().equals(textBeforeChange)) {
                     LOGGER.warn("Nothing changed, translate a piece of text then click on Send");
                     return;
                 }
@@ -217,7 +209,7 @@ public class DialogTranslate extends JDialog {
             "<html>"
             + "<b>Contribute and translate pieces of jSQL into "+ language +"</b><br>"
             + "Help the community and translate some buttons, menus, tabs and tooltips into "+ language +", "
-            + "then click on Send to forward your changes to the developer on Github, it's that simple.<br>"
+            + "then click on Send to forward your changes to the developer on Github.<br>"
             + "<i>E.g. for Chinese, change '<b>CONTEXT_MENU_COPY = Copy</b>' to '<b>CONTEXT_MENU_COPY = \u590d\u5236</b>', then click on Send. The list only displays what needs to be translated "
             + "and it's updated as soon as the developer processes your translation.</i>"
             + "</html>"
@@ -286,18 +278,18 @@ public class DialogTranslate extends JDialog {
                 } finally {
                     for (Entry<String, String> key: sourceProperties.entrySet()) {
                         if (language == Language.OT || languageProperties.size() == 0) {
-                            propertiesToTranslate += "\n\n"+ key.getKey() +"="+ ((String) key.getValue()).replace("{@|@}","\\\n");
+                            propertiesToTranslate += "\n\n"+ key.getKey() +"="+ key.getValue().replace("{@|@}","\\\n");
                         } else {
                             if (!languageProperties.containsKey(key.getKey())) {
-                                propertiesToTranslate += "\n\n"+ key.getKey() +"="+ ((String) key.getValue()).replace("{@|@}","\\\n");
+                                propertiesToTranslate += "\n\n"+ key.getKey() +"="+ key.getValue().replace("{@|@}","\\\n");
                             }
                         }
                     }
                     
-                    translation = propertiesToTranslate.trim();
+                    textBeforeChange = propertiesToTranslate.trim();
                     
                     buttonSend.setEnabled(true);
-                    textToTranslate[0].setText(translation);
+                    textToTranslate[0].setText(textBeforeChange);
                     textToTranslate[0].setCaretPosition(0);
                     textToTranslate[0].setEditable(true);
                     
@@ -313,8 +305,6 @@ public class DialogTranslate extends JDialog {
         }.execute();
     }
     
-    String translation = "";
-
     public void requestButtonFocus() {
         this.buttonSend.requestFocusInWindow();
     }

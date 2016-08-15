@@ -46,6 +46,38 @@ public class DnDTabbedPane extends JTabbedPane {
     private DropMode dropMode = DropMode.INSERT;
     
     private transient DropLocation dropLocation;
+
+    public DnDTabbedPane() {
+        Handler h = new Handler();
+        addMouseListener(h);
+        addMouseMotionListener(h);
+        
+        addMouseWheelListener(new MouseWheelListener() {
+            @Override
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                JTabbedPane tabPane = (JTabbedPane)e.getSource();
+                
+                int dir = -e.getWheelRotation();
+                int selIndex = tabPane.getSelectedIndex();
+                int maxIndex = tabPane.getTabCount() - 1;
+                
+                if ((selIndex == 0 && dir < 0) || (selIndex == maxIndex && dir > 0)) {
+                    selIndex = maxIndex - selIndex;
+                } else {
+                    selIndex += dir;
+                }
+                
+                if (0 <= selIndex && selIndex < tabPane.getTabCount()) {
+                    tabPane.setSelectedIndex(selIndex);
+                }
+            }
+        });
+        
+        addPropertyChangeListener(h);
+        // UIManager.put() is not sufficient
+        setUI(new CustomMetalTabbedPaneUI());
+        setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
+    }
     
     public static final class DropLocation extends TransferHandler.DropLocation {
         private final int index;
@@ -118,38 +150,6 @@ public class DnDTabbedPane extends JTabbedPane {
         } else if (RFORWARD.contains(pt)) {
             clickArrowButton("scrollTabsForwardAction");
         }
-    }
-    
-    public DnDTabbedPane() {
-        Handler h = new Handler();
-        addMouseListener(h);
-        addMouseMotionListener(h);
-        
-        addMouseWheelListener(new MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                JTabbedPane tabPane = (JTabbedPane)e.getSource();
-                
-                int dir = -e.getWheelRotation();
-                int selIndex = tabPane.getSelectedIndex();
-                int maxIndex = tabPane.getTabCount() - 1;
-                
-                if ((selIndex == 0 && dir < 0) || (selIndex == maxIndex && dir > 0)) {
-                    selIndex = maxIndex - selIndex;
-                } else {
-                    selIndex += dir;
-                }
-                
-                if (0 <= selIndex && selIndex < tabPane.getTabCount()) {
-                    tabPane.setSelectedIndex(selIndex);
-                }
-            }
-        });
-        
-        addPropertyChangeListener(h);
-        // UIManager.put() is not sufficient
-        setUI(new CustomMetalTabbedPaneUI());
-        setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER));
     }
     
     public DropLocation dropLocationForPointLocal(Point p) {

@@ -107,47 +107,47 @@ public class ManagerDatabase extends JPanel implements Manager {
         
         panelLineBottom.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER), 
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
         
         panelVendor = new ComboMenu(Vendor.AUTO.toString());
         
-        ButtonGroup g = new ButtonGroup();
+        ButtonGroup groupVendor = new ButtonGroup();
         
         for (final Vendor vendor: Vendor.values()) {
-            JMenuItem i1 = new JRadioButtonMenuItem(vendor.toString(), vendor == Vendor.AUTO);
-            i1.addActionListener(new ActionListener() {
+            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == Vendor.AUTO);
+            itemRadioVendor.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     panelVendor.setText(vendor.toString());
                     MediatorModel.model().vendorByUser = vendor;
                 }
             });
-            panelVendor.add(i1);
-            g.add(i1);
+            panelVendor.add(itemRadioVendor);
+            groupVendor.add(itemRadioVendor);
         }
         
         panelStrategy = new ComboMenu("<Strategy auto>");
         panelStrategy.setEnabled(false);
         
-        ButtonGroup g2 = new ButtonGroup();
+        ButtonGroup groupStrategy = new ButtonGroup();
         
         for (final Strategy strategy: Strategy.values()) {
             if (strategy != Strategy.UNDEFINED) {
-                JMenuItem menuItem = new JRadioButtonMenuItem(strategy.toString());
-                menuItem.setEnabled(false);
-                menuItem.addActionListener(new ActionListener() {
+                JMenuItem itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString());
+                itemRadioStrategy.setEnabled(false);
+                itemRadioStrategy.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         panelStrategy.setText(strategy.toString());
                         MediatorModel.model().setStrategy(strategy);
                     }
                 });
-                menuItem.setToolTipText(I18n.valueByKey("STRATEGY_"+ strategy.name() +"_TOOLTIP"));
-                panelStrategy.add(menuItem);
-                g2.add(menuItem);
+                itemRadioStrategy.setToolTipText(I18n.valueByKey("STRATEGY_"+ strategy.name() +"_TOOLTIP"));
+                panelStrategy.add(itemRadioStrategy);
+                groupStrategy.add(itemRadioStrategy);
             }
         }
         

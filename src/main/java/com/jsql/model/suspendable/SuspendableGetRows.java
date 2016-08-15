@@ -57,6 +57,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             if (this.isSuspended()) {
                 StoppedByUserException e = new StoppedByUserException();
                 e.setSlidingWindowAllRows(slidingWindowAllRows);
+                e.setSlidingWindowCurrentRows(slidingWindowCurrentRow);
                 throw e;
             } else if (strategy == null) {
                 // Fix #1905 : NullPointerException on injectionStrategy.inject()

@@ -60,7 +60,7 @@ public class CreateShellTab extends CreateTab implements InteractionCommand {
             MediatorGui.frame().getConsoles().put(terminalID, terminal);
             
             LightScrollPane scroller = new LightScrollPane(terminal);
-            scroller.colorThumb = HelperUi.SELECTION_BACKGROUND;
+            scroller.colorThumb = HelperUi.COLOR_SELECTION_BACKGROUND;
             scroller.scrollBarAlphaRollover = 175;
             scroller.scrollBarAlpha = 100;
             
@@ -72,7 +72,7 @@ public class CreateShellTab extends CreateTab implements InteractionCommand {
             MediatorGui.tabResults().setSelectedComponent(scroller);
     
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader(HelperUi.SHELL_SERVER_ICON);
+            TabHeader header = new TabHeader(HelperUi.ICON_SHELL_SERVER);
     
             MediatorGui.tabResults().setToolTipTextAt(
                 MediatorGui.tabResults().indexOfComponent(scroller),

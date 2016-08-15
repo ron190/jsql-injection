@@ -32,15 +32,14 @@ package com.jsql.model.injection.strategy.blind;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -95,6 +94,10 @@ public class diff_match_patch {
      * The number of bits in an int.
      */
     private short Match_MaxBits = 32;
+
+    // Define some regex patterns for matching boundaries.
+    private Pattern BLANKLINEEND = Pattern.compile("\\n\\r?\\n\\Z", Pattern.DOTALL);
+    private Pattern BLANKLINESTART = Pattern.compile("\\A\\r?\\n\\r?\\n", Pattern.DOTALL);
 
     /**
      * Internal class for returning results from diff_linesToChars().
@@ -771,7 +774,7 @@ public class diff_match_patch {
             return;
         }
         boolean changes = false;
-        Deque<Diff> equalities = new ArrayDeque<>();  // Stack of qualities.
+        Stack<Diff> equalities = new Stack<>();  // Stack of qualities.
         String lastequality = null; // Always equal to equalities.lastElement().text
         ListIterator<Diff> pointer = diffs.listIterator();
         // Number of characters that changed prior to the equality.
@@ -805,7 +808,7 @@ public class diff_match_patch {
                                 <= Math.max(length_insertions2, length_deletions2))) {
                     //System.out.println("Splitting: '" + lastequality + "'");
                     // Walk back to offending equality.
-                    while (thisDiff != equalities.getLast()) {
+                    while (thisDiff != equalities.lastElement()) {
                         thisDiff = pointer.previous();
                     }
                     pointer.next();
@@ -816,18 +819,18 @@ public class diff_match_patch {
                     pointer.add(new Diff(Operation.INSERT, lastequality));
 
                     equalities.pop();  // Throw away the equality we just deleted.
-                    if (!equalities.isEmpty()) {
+                    if (!equalities.empty()) {
                         // Throw away the previous equality (it needs to be reevaluated).
                         equalities.pop();
                     }
-                    if (equalities.isEmpty()) {
+                    if (equalities.empty()) {
                         // There are no previous equalities, walk back to the start.
                         while (pointer.hasPrevious()) {
                             pointer.previous();
                         }
                     } else {
                         // There is a safe equality we can fall back to.
-                        thisDiff = equalities.getLast();
+                        thisDiff = equalities.lastElement();
                         while (thisDiff != pointer.previous()) {
                             // Intentionally empty loop.
                         }
@@ -1050,10 +1053,6 @@ public class diff_match_patch {
         return 0;
     }
 
-    // Define some regex patterns for matching boundaries.
-    private Pattern BLANKLINEEND = Pattern.compile("\\n\\r?\\n\\Z", Pattern.DOTALL);
-    private Pattern BLANKLINESTART = Pattern.compile("\\A\\r?\\n\\r?\\n", Pattern.DOTALL);
-
     /**
      * Reduce the number of edits by eliminating operationally trivial equalities.
      * @param diffs LinkedList of Diff objects.
@@ -1063,7 +1062,7 @@ public class diff_match_patch {
             return;
         }
         boolean changes = false;
-        Deque<Diff> equalities = new ArrayDeque<>();  // Stack of equalities.
+        Stack<Diff> equalities = new Stack<>();  // Stack of equalities.
         String lastequality = null; // Always equal to equalities.lastElement().text
         ListIterator<Diff> pointer = diffs.listIterator();
         // Is there an insertion operation before the last equality.
@@ -1114,7 +1113,7 @@ public class diff_match_patch {
                                                 + (post_ins ? 1 : 0) + (post_del ? 1 : 0)) == 3))) {
                     //System.out.println("Splitting: '" + lastequality + "'");
                     // Walk back to offending equality.
-                    while (thisDiff != equalities.getLast()) {
+                    while (thisDiff != equalities.lastElement()) {
                         thisDiff = pointer.previous();
                     }
                     pointer.next();
@@ -1133,17 +1132,17 @@ public class diff_match_patch {
                         equalities.clear();
                         safeDiff = thisDiff;
                     } else {
-                        if (!equalities.isEmpty()) {
+                        if (!equalities.empty()) {
                             // Throw away the previous equality (it needs to be reevaluated).
                             equalities.pop();
                         }
-                        if (equalities.isEmpty()) {
+                        if (equalities.empty()) {
                             // There are no previous questionable equalities,
                             // walk back to the last known safe diff.
                             thisDiff = safeDiff;
                         } else {
                             // There is an equality we can fall back to.
-                            thisDiff = equalities.getLast();
+                            thisDiff = equalities.lastElement();
                         }
                         while (thisDiff != pointer.previous()) {
                             // Intentionally empty loop.
@@ -1481,8 +1480,7 @@ public class diff_match_patch {
      * @throws IllegalArgumentException If invalid input.
      * @throws UnsupportedEncodingException 
      */
-    public List<Diff> diff_fromDelta(String text1, String delta)
-            throws IllegalArgumentException, UnsupportedEncodingException {
+    public List<Diff> diff_fromDelta(String text1, String delta) throws UnsupportedEncodingException {
         List<Diff> diffs = new LinkedList<>();
         int pointer = 0;  // Cursor in text1
         String[] tokens = delta.split("\t");
@@ -2233,8 +2231,7 @@ public class diff_match_patch {
      * @throws IllegalArgumentException If invalid input.
      * @throws UnsupportedEncodingException 
      */
-    public List<Patch> patch_fromText(String textline)
-            throws IllegalArgumentException, UnsupportedEncodingException {
+    public List<Patch> patch_fromText(String textline) throws UnsupportedEncodingException {
         List<Patch> patches = new LinkedList<>();
         if (textline.length() == 0) {
             return patches;

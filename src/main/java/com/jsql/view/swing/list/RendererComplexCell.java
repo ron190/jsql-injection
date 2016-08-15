@@ -48,9 +48,9 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
         renderer.setFont(new Font("Segoe UI", Font.PLAIN, renderer.getFont().getSize()));
 
         if (isSelected && list.isFocusOwner()) {
-            renderer.setBackground(HelperUi.SELECTION_BACKGROUND);
+            renderer.setBackground(HelperUi.COLOR_SELECTION_BACKGROUND);
         } else if (isSelected && !list.isFocusOwner()) {
-            renderer.setBackground(HelperUi.FOCUS_LOST);
+            renderer.setBackground(HelperUi.COLOR_FOCUS_LOST);
         } else {
             renderer.setBackground(Color.WHITE);
         }
@@ -62,7 +62,7 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
         }
 
         if (isSelected && list.isFocusOwner()) {
-            renderer.setBorder(new LineBorder(HelperUi.BLU_COLOR, 1, false));
+            renderer.setBorder(new LineBorder(HelperUi.COLOR_BLU, 1, false));
         } else if (isSelected && !list.isFocusOwner()) {
             renderer.setBorder(new LineBorder(new Color(218, 218, 218), 1, false));
         } else if (isFocused) {

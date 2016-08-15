@@ -67,7 +67,7 @@ public class CustomMetalTabbedPaneUI extends MetalTabbedPaneUI {
         public ScrollableTabButton(int direction) {
             super(
                 direction,
-                HelperUi.DEFAULT_BACKGROUND,
+                HelperUi.COLOR_DEFAULT_BACKGROUND,
                 UIManager.getColor("TabbedPane.darkShadow"),
                 new Color(122, 138, 153),
                 UIManager.getColor("TabbedPane.highlight")

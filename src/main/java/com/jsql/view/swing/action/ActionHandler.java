@@ -34,7 +34,6 @@ import javax.swing.SwingUtilities;
 
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.menubar.Menubar;
-import com.jsql.view.swing.text.JPopupLabel;
 
 /**
  * Keyword shortcut definition. <br>
@@ -59,10 +58,7 @@ public final class ActionHandler {
             new PropertyChangeListener() {
                 @Override
                 public void propertyChange(final PropertyChangeEvent e) {
-                    if (
-                        e.getNewValue() instanceof JTextField ||
-                        e.getNewValue() instanceof JPopupLabel
-                    ) {
+                    if (e.getNewValue() instanceof JTextField) {
                         SwingUtilities.invokeLater(new Runnable() {
                             @Override
                             public void run() {

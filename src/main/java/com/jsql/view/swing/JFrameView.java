@@ -40,11 +40,11 @@ import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.util.ThreadUtil;
 import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.action.ActionHandler;
-import com.jsql.view.swing.dropshadow.ShadowPopupFactory;
 import com.jsql.view.swing.interaction.InteractionCommand;
 import com.jsql.view.swing.menubar.Menubar;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.SplitHorizontalTopBottom;
+import com.jsql.view.swing.shadow.ShadowPopupFactory;
 import com.jsql.view.swing.shell.AbstractShell;
 
 /**
@@ -250,10 +250,10 @@ public class JFrameView extends JFrame implements Observer {
         MediatorGui.managerWebshell().setButtonEnable(false);
         MediatorGui.managerSqlshell().setButtonEnable(false);
 
-        MediatorGui.managerFile().changePrivilegeIcon(HelperUi.SQUARE_GREY);
-        MediatorGui.managerWebshell().changePrivilegeIcon(HelperUi.SQUARE_GREY);
-        MediatorGui.managerSqlshell().changePrivilegeIcon(HelperUi.SQUARE_GREY);
-        MediatorGui.managerUpload().changePrivilegeIcon(HelperUi.SQUARE_GREY);
+        MediatorGui.managerFile().changePrivilegeIcon(HelperUi.ICON_SQUARE_GREY);
+        MediatorGui.managerWebshell().changePrivilegeIcon(HelperUi.ICON_SQUARE_GREY);
+        MediatorGui.managerSqlshell().changePrivilegeIcon(HelperUi.ICON_SQUARE_GREY);
+        MediatorGui.managerUpload().changePrivilegeIcon(HelperUi.ICON_SQUARE_GREY);
     }
 
     /**

@@ -15,7 +15,7 @@ import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.suspendable.AbstractSuspendable;
-import com.jsql.model.suspendable.SuspendableGetIndexesInUrl;
+import com.jsql.model.suspendable.SuspendableGetIndexes;
 import com.jsql.util.StringUtil;
 
 /**
@@ -37,7 +37,7 @@ public class NormalStrategy extends AbstractStrategy {
     @Override
     public void checkApplicability() throws JSqlException {
         LOGGER.trace("Normal test...");
-        MediatorModel.model().setIndexesInUrl(new SuspendableGetIndexesInUrl().run());
+        MediatorModel.model().setIndexesInUrl(new SuspendableGetIndexes().run());
 
         // Define visibleIndex, i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML source
         this.visibleIndex = this.getVisibleIndex(MediatorModel.model().getSrcSuccess());

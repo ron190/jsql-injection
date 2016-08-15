@@ -86,13 +86,13 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         // Request/Header data
         else if (
             !"".equals(ConnectionUtil.getDataRequest()) 
-            && ConnectionUtil.getDataRequest().indexOf("=") < 0
+            && ConnectionUtil.getDataRequest().indexOf('=') < 0
         ) {
             throw new InjectionFailureException("Incorrect POST format");
             
         } else if (
             !"".equals(ConnectionUtil.getDataHeader()) 
-            && ConnectionUtil.getDataHeader().indexOf(":") < 0
+            && ConnectionUtil.getDataHeader().indexOf(':') < 0
         ) {
             throw new InjectionFailureException("Incorrect HEADER format");
             
@@ -147,11 +147,11 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         // and check if a correct error message is sent back by the server:
         //         Unknown column '1337' in 'order clause'
         // or   supplied argument is not a valid MySQL result resource
-        ExecutorService taskExecutor = Executors.newCachedThreadPool();
-        CompletionService<CallableHTMLPage> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
+        ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetInsertionCharacter"));
+        CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
         for (String insertionCharacter : new String[] {"0", "0'", "'", "-1", "1", "\"", "-1)", "-1))"}) {
             taskCompletionService.submit(
-                new CallableHTMLPage(
+                new CallablePageSource(
                     insertionCharacter + 
                     MediatorModel.model().vendor.instance().getSqlOrderBy(),
                     insertionCharacter
@@ -167,7 +167,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             }
             
             try {
-                CallableHTMLPage currentCallable = taskCompletionService.take().get();
+                CallablePageSource currentCallable = taskCompletionService.take().get();
                 total--;
                 String pageSource = currentCallable.getContent();
                 

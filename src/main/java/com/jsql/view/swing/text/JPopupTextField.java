@@ -45,8 +45,8 @@ public class JPopupTextField extends JPopupTextComponent<JTextField> implements 
 
         this.getProxy().setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(HelperUi.DEFAULT_BACKGROUND, 2),
-                HelperUi.BLU_BORDER
+                BorderFactory.createLineBorder(HelperUi.COLOR_DEFAULT_BACKGROUND, 2),
+                HelperUi.BORDER_BLU
             )
         );
     }

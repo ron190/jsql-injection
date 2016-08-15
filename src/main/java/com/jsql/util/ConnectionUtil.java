@@ -119,7 +119,7 @@ public class ConnectionUtil {
             // Disable caching of authentication like Kerberos
             connection.disconnect();
         } catch (Exception e) {
-            throw new InjectionFailureException("Connection to "+ ConnectionUtil.getUrlBase() +" failed: "+ e, e);
+            throw new InjectionFailureException("Connection failed: "+ e, e);
         }
     }
     
@@ -127,6 +127,7 @@ public class ConnectionUtil {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setReadTimeout(ConnectionUtil.TIMEOUT);
         connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
+        connection.setUseCaches(false);
         
         connection.setRequestProperty("Pragma", "no-cache");
         connection.setRequestProperty("Cache-Control", "no-cache");

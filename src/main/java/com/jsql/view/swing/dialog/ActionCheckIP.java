@@ -21,7 +21,7 @@ public class ActionCheckIP implements ActionListener, Runnable {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        new Thread(this, "Prefs - Action check IP").start();
+        new Thread(this, "ThreadCheckIP").start();
     }
 
     @Override

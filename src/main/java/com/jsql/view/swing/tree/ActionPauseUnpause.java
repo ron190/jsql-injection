@@ -33,7 +33,7 @@ public class ActionPauseUnpause implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.nodeData.dataObject);
+        AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.nodeData.elementDatabase);
         
         // Exception encountered : NullPointerException
         if (suspendableTask != null) {

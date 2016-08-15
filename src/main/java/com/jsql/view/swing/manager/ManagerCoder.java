@@ -12,8 +12,6 @@ package com.jsql.view.swing.manager;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -37,13 +35,13 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 
 import com.jsql.i18n.I18n;
-import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.manager.util.ActionCoder;
 import com.jsql.view.swing.manager.util.MenuBarCoder;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
+import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 
 /**
  * Manager to code/uncode string in various methods.
@@ -128,23 +126,7 @@ public class ManagerCoder extends JPanel implements Manager {
         run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         run.setBackground(new Color(200, 221, 242));
         
-        run.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                if (run.isEnabled()) {
-                    run.setContentAreaFilled(true);
-                    run.setBorder(HelperUi.BLU_ROUND_BORDER);
-                }
-            }
-
-            @Override 
-            public void mouseExited(MouseEvent e) {
-                if (run.isEnabled()) {
-                    run.setContentAreaFilled(false);
-                    run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-                }
-            }
-        });
+        run.addMouseListener(new FlatButtonMouseAdapter(run));
         
         run.addActionListener(new ActionCoder(this));
 

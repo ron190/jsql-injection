@@ -59,61 +59,61 @@ public final class HelperUi {
      */
     private static final Logger LOGGER = Logger.getLogger(HelperUi.class);
 
-    public static final Color SELECTION_BACKGROUND = (Color) UIManager.get("TabbedPane.selected");
+    public static final Color COLOR_SELECTION_BACKGROUND = (Color) UIManager.get("TabbedPane.selected");
     
-    public static final Color DEFAULT_BACKGROUND = UIManager.getColor("Panel.background");
-    public static final Color COMPONENT_BORDER = UIManager.getColor("controlShadow");
-    public static final Color FOCUS_LOST = new Color(248, 249, 249);
+    public static final Color COLOR_DEFAULT_BACKGROUND = UIManager.getColor("Panel.background");
+    public static final Color COLOR_COMPONENT_BORDER = UIManager.getColor("controlShadow");
+    public static final Color COLOR_FOCUS_LOST = new Color(248, 249, 249);
     
-    public static final Icon TICK = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/check.png"));
-    public static final Icon SQUARE_RED = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/squareRed.png"));
-    public static final Icon SQUARE_GREY = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/squareGrey.png"));
-    public static final Icon LOADER_GIF = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/spinner.gif"));
+    public static final Icon ICON_TICK = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/check.png"));
+    public static final Icon ICON_SQUARE_RED = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/squareRed.png"));
+    public static final Icon ICON_SQUARE_GREY = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/squareGrey.png"));
+    public static final Icon ICON_LOADER_GIF = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/spinner.gif"));
 
-    public static final Icon ADMIN_SERVER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/admin.png"));
-    public static final Icon SHELL_SERVER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/application_xp_terminal.png"));
-    public static final Icon DATABASE_SERVER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/database.png"));
-    public static final Icon FILE_SERVER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/file.png"));
-    public static final Icon BRUTER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/lock_open.png"));
-    public static final Icon CODER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/textfield.png"));
-    public static final Icon UPLOAD_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/disk.png"));
-    public static final Icon SCANLIST_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/table_multiple.png"));
+    public static final Icon ICON_ADMIN_SERVER = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/admin.png"));
+    public static final Icon ICON_SHELL_SERVER = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/application_xp_terminal.png"));
+    public static final Icon ICON_DATABASE_SERVER = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/database.png"));
+    public static final Icon ICON_FILE_SERVER = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/file.png"));
+    public static final Icon ICON_BRUTER = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/lock_open.png"));
+    public static final Icon ICON_CODER = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/textfield.png"));
+    public static final Icon ICON_UPLOAD = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/disk.png"));
+    public static final Icon ICON_SCANLIST = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/table_multiple.png"));
 
-    public static final Icon TABLE_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/table.png"));
-    public static final Icon TABLE_ICON_GO = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/tableGo.png"));
-    public static final Icon DATABASE_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/database.png"));
-    public static final Icon DATABASE_ICON_GO = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/databaseGo.png"));
+    public static final Icon ICON_TABLE = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/table.png"));
+    public static final Icon ICON_TABLE_GO = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/tableGo.png"));
+    public static final Icon ICON_DATABASE = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/database.png"));
+    public static final Icon ICON_DATABASE_GO = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/databaseGo.png"));
     
-    public static final Icon CONSOLE_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/console.gif"));
-    public static final Icon HEADER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/header.gif"));
-    public static final Icon CHUNK_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/chunk.gif"));
-    public static final Icon BINARY_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/binary.gif"));
-    public static final Icon CUP_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/cup.png"));
+    public static final Icon ICON_CONSOLE = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/console.gif"));
+    public static final Icon ICON_HEADER = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/header.gif"));
+    public static final Icon ICON_CHUNK = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/chunk.gif"));
+    public static final Icon ICON_BINARY = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/binary.gif"));
+    public static final Icon ICON_CUP = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/cup.png"));
     
-    public static final Icon CLOSE_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/close.png"));
-    public static final Icon CLOSE_ROLLOVER_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/closeRollover.png"));
-    public static final Icon CLOSE_PRESSED_ICON = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/closePressed.png"));
+    public static final Icon ICON_CLOSE = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/close.png"));
+    public static final Icon ICON_CLOSE_ROLLOVER = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/closeRollover.png"));
+    public static final Icon ICON_CLOSE_PRESSED = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/closePressed.png"));
 
-    public static final Icon ARROWDEFAULT = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/arrowDefault.png"));
-    public static final Icon ARROWROLLOVER = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/arrowRollover.png"));
-    public static final Icon ARROWPRESSED = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/arrowPressed.png"));
+    public static final Icon ICON_ARROW_DEFAULT = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/arrowDefault.png"));
+    public static final Icon ICON_ARROW_ROLLOVER = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/arrowRollover.png"));
+    public static final Icon ICON_ARROW_PRESSED = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/arrowPressed.png"));
 
-    public static final Icon FLAG_AR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/ar.png"));
-    public static final Icon FLAG_ZH = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/zh.png"));
-    public static final Icon FLAG_RU = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/ru.png"));
-    public static final Icon FLAG_TR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/tr.png"));
-    public static final Icon FLAG_EN = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/en.png"));
-    public static final Icon FLAG_FR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/fr.png"));
-    public static final Icon FLAG_HI = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/hi.png"));
-    public static final Icon FLAG_CS = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/cs.png"));
+    public static final Icon ICON_FLAG_AR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/ar.png"));
+    public static final Icon ICON_FLAG_ZH = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/zh.png"));
+    public static final Icon ICON_FLAG_RU = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/ru.png"));
+    public static final Icon ICON_FLAG_TR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/tr.png"));
+    public static final Icon ICON_FLAG_EN = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/en.png"));
+    public static final Icon ICON_FLAG_FR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/fr.png"));
+    public static final Icon ICON_FLAG_HI = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/hi.png"));
+    public static final Icon ICON_FLAG_CS = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/cs.png"));
     
-    public static final URL ICON16 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug16.png");
-    public static final URL ICON32 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug32.png");
-    public static final URL ICON96 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug96.png");
-    public static final URL ICON128 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug128.png");
+    public static final URL ICON_16 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug16.png");
+    public static final URL ICON_32 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug32.png");
+    public static final URL ICON_96 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug96.png");
+    public static final URL ICON_128 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug128.png");
 
-    public static final Icon EMPTY = new ImageIcon(new BufferedImage(16, 16, BufferedImage.TRANSLUCENT));
-    public static final Icon ZEROSIZE = new ImageIcon() {
+    public static final Icon ICON_EMPTY = new ImageIcon(new BufferedImage(16, 16, BufferedImage.TRANSLUCENT));
+    public static final Icon ICON_ZERO_SIZE = new ImageIcon() {
         @Override
         public void paintIcon(Component c, Graphics g, int x, int y) { 
             // Do nothing
@@ -123,14 +123,16 @@ public final class HelperUi {
     public static final String PATH_PAUSE = "/com/jsql/view/swing/resources/images/icons/pause.png";
     public static final String PATH_PROGRESSBAR = "/com/jsql/view/swing/resources/images/icons/progressBar.gif";
     
-    public static final Color BLU_COLOR = new Color(132, 172, 221);
+    public static final Icon ICON_ERROR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/error.png"));
+    
+    public static final Color COLOR_BLU = new Color(132, 172, 221);
 
-    public static final Border BLU_BORDER = BorderFactory.createCompoundBorder(
-        BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.BLU_COLOR),
+    public static final Border BORDER_BLU = BorderFactory.createCompoundBorder(
+        BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.COLOR_BLU),
         BorderFactory.createEmptyBorder(2, 2, 2, 2)
     );
     
-    public static final Border BLU_ROUND_BORDER = new AbstractBorder() {
+    public static final Border BORDER_ROUND_BLU = new AbstractBorder() {
         @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
             Graphics2D g2 = (Graphics2D)g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -207,24 +209,24 @@ public final class HelperUi {
         
         // Custom button
         // Change border of button in default Save as, Confirm dialogs
-        UIManager.put("Button.border", BLU_BORDER);
+        UIManager.put("Button.border", BORDER_BLU);
         UIManager.put("Button.select", new Color(155, 193, 232));
         
         // Change border of button in Save as dialog
-        UIManager.put("ToggleButton.border", BLU_BORDER);
+        UIManager.put("ToggleButton.border", BORDER_BLU);
 
         // No bold for menu + round corner
         UIManager.put("Menu.font", FONT_SEGOE);
-        UIManager.put("Menu.selectionBackground", SELECTION_BACKGROUND);
+        UIManager.put("Menu.selectionBackground", COLOR_SELECTION_BACKGROUND);
         UIManager.put("Menu.borderPainted", false);
         UIManager.put("PopupMenu.font", FONT_SEGOE);
-        UIManager.put("RadioButtonMenuItem.selectionBackground", SELECTION_BACKGROUND);
+        UIManager.put("RadioButtonMenuItem.selectionBackground", COLOR_SELECTION_BACKGROUND);
         UIManager.put("RadioButtonMenuItem.borderPainted", false);
-        UIManager.put("MenuItem.selectionBackground", SELECTION_BACKGROUND);
+        UIManager.put("MenuItem.selectionBackground", COLOR_SELECTION_BACKGROUND);
         UIManager.put("MenuItem.font", FONT_SEGOE);
         UIManager.put("MenuItem.borderPainted", false);
         
-        UIManager.put("CheckBoxMenuItem.selectionBackground", SELECTION_BACKGROUND);
+        UIManager.put("CheckBoxMenuItem.selectionBackground", COLOR_SELECTION_BACKGROUND);
         UIManager.put("CheckBoxMenuItem.font", FONT_SEGOE);
         UIManager.put("CheckBoxMenuItem.borderPainted", false);
         UIManager.put("CheckBoxMenuItem.checkIcon", new CheckBoxIcon());
@@ -244,40 +246,40 @@ public final class HelperUi {
         UIManager.put("CheckBox.font", FONT_SEGOE);
         UIManager.put("TitledBorder.font", FONT_SEGOE);
 
-        UIManager.put("Spinner.arrowButtonBorder", HelperUi.BLU_BORDER);
+        UIManager.put("Spinner.arrowButtonBorder", HelperUi.BORDER_BLU);
         UIManager.put("Spinner.border", BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(HelperUi.BLU_COLOR),
+            BorderFactory.createLineBorder(HelperUi.COLOR_BLU),
             BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE)
         ));
         
         UIManager.put("FileChooser.listFont", FONT_SEGOE);
         UIManager.put("FileChooser.listViewBorder", BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(HelperUi.BLU_COLOR),
+            BorderFactory.createLineBorder(HelperUi.COLOR_BLU),
             BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE)
         ));
 
         // Custom text component
         // Admin page
-        UIManager.put("TextPane.selectionBackground", SELECTION_BACKGROUND);
+        UIManager.put("TextPane.selectionBackground", COLOR_SELECTION_BACKGROUND);
         UIManager.put("TextPane.font", FONT_UBUNTU);
-        UIManager.put("TextPane.selectionBackground", SELECTION_BACKGROUND);
+        UIManager.put("TextPane.selectionBackground", COLOR_SELECTION_BACKGROUND);
         
-        UIManager.put("TextField.border", HelperUi.BLU_BORDER);
-        UIManager.put("TextField.selectionBackground", SELECTION_BACKGROUND);
+        UIManager.put("TextField.border", HelperUi.BORDER_BLU);
+        UIManager.put("TextField.selectionBackground", COLOR_SELECTION_BACKGROUND);
         
-        UIManager.put("EditorPane.selectionBackground", SELECTION_BACKGROUND);
+        UIManager.put("EditorPane.selectionBackground", COLOR_SELECTION_BACKGROUND);
         
-        UIManager.put("TextArea.selectionBackground", SELECTION_BACKGROUND);
+        UIManager.put("TextArea.selectionBackground", COLOR_SELECTION_BACKGROUND);
         UIManager.put("TextArea.font", FONT_UBUNTU);
 
         // Custom Label
         UIManager.put("Label.font", FONT_SEGOE);
-        UIManager.put("Label.selectionBackground", SELECTION_BACKGROUND);
+        UIManager.put("Label.selectionBackground", COLOR_SELECTION_BACKGROUND);
 
         // Custom table
         UIManager.put("Table.font", FONT_SEGOE);
         UIManager.put("TableHeader.font", FONT_SEGOE);
-        UIManager.put("Table.selectionBackground", SELECTION_BACKGROUND);
+        UIManager.put("Table.selectionBackground", COLOR_SELECTION_BACKGROUND);
         UIManager.put("Table.focusCellHighlightBorder",
             BorderFactory.createCompoundBorder(
                 new AbstractBorder() {
@@ -315,10 +317,10 @@ public final class HelperUi {
 
         // Custom ComboBox
         UIManager.put("ComboBox.font", FONT_SEGOE);
-        UIManager.put("ComboBox.selectionBackground", SELECTION_BACKGROUND);
+        UIManager.put("ComboBox.selectionBackground", COLOR_SELECTION_BACKGROUND);
         // Use ColorUIResource to preserve the background color for arrow
         UIManager.put("ComboBox.background", new ColorUIResource(Color.WHITE));
-        UIManager.put("ComboBox.border", HelperUi.BLU_BORDER);
+        UIManager.put("ComboBox.border", HelperUi.BORDER_BLU);
         UIManager.put("ComboBoxUI", CustomBasicComboBoxUI.class.getName());
         
         UIManager.put("swing.boldMetal", Boolean.FALSE);
@@ -331,10 +333,10 @@ public final class HelperUi {
     public static List<Image> getIcons() {
         List<Image> images = new ArrayList<>();
         try {
-            images.add(ImageIO.read(HelperUi.ICON128));
-            images.add(ImageIO.read(HelperUi.ICON96));
-            images.add(ImageIO.read(HelperUi.ICON32));
-            images.add(ImageIO.read(HelperUi.ICON16));
+            images.add(ImageIO.read(HelperUi.ICON_128));
+            images.add(ImageIO.read(HelperUi.ICON_96));
+            images.add(ImageIO.read(HelperUi.ICON_32));
+            images.add(ImageIO.read(HelperUi.ICON_16));
         } catch (IOException e) {
             LOGGER.error(e, e);
         }

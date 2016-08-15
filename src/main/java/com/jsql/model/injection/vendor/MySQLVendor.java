@@ -35,7 +35,7 @@ public class MySQLVendor extends AbstractVendorDefault {
         return
             "select+" +
                 "concat(" +
-                    "group_concat(" +
+                    "ifnull(group_concat(" +
                         "0x04," +
                         "r," +
                         "0x05," +
@@ -43,7 +43,7 @@ public class MySQLVendor extends AbstractVendorDefault {
                         "0x04" +
                         "+order+by+r+" +
                         "separator+0x06" +
-                    ")," +
+                    "),'')," +
                     "0x01030307" +
                 ")" +
             "from(" +

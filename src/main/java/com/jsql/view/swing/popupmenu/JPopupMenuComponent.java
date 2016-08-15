@@ -41,11 +41,11 @@ public class JPopupMenuComponent extends JPopupMenu {
         copyItem.setMnemonic('C');
         copyItem.setText(I18n.valueByKey("CONTEXT_MENU_COPY"));
         I18n.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
-        copyItem.setIcon(HelperUi.EMPTY);
+        copyItem.setIcon(HelperUi.ICON_EMPTY);
         this.setLightWeightPopupEnabled(false);
 
         JMenuItem selectAllItem = new JMenuItem();
-        selectAllItem.setIcon(HelperUi.EMPTY);
+        selectAllItem.setIcon(HelperUi.ICON_EMPTY);
         selectAllItem.setAction(component.getActionMap().get(DefaultEditorKit.selectAllAction));
         selectAllItem.setText(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"));
         I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", selectAllItem);

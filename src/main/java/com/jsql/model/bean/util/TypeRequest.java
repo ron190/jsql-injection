@@ -15,7 +15,7 @@ public enum TypeRequest {
     END_INDETERMINATE_PROGRESS("EndIndeterminateProgress"),
     END_PREPARATION("EndPreparation"),
     END_PROGRESS("EndProgress"),
-    END_SCAN_LIST("EndScanList"),
+    END_SCAN("EndScan"),
     END_UPLOAD("EndUpload"),
     GET_WEB_SHELL_RESULT("GetWebShellResult"),
     GET_SQL_SHELL_RESULT("GetSQLShellResult"),
@@ -54,5 +54,5 @@ public enum TypeRequest {
     @Override
     public String toString() {
         return name;
-    };
+    }
 }

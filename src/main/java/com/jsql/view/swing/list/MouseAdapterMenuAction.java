@@ -79,15 +79,15 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             JMenuItem mnSelectAll = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"));
             I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", mnSelectAll);
             
-            mnImport.setIcon(HelperUi.EMPTY);
-            mnExport.setIcon(HelperUi.EMPTY);
-            mnCut.setIcon(HelperUi.EMPTY);
-            mnCopy.setIcon(HelperUi.EMPTY);
-            mnPaste.setIcon(HelperUi.EMPTY);
-            mnDelete.setIcon(HelperUi.EMPTY);
-            mnNew.setIcon(HelperUi.EMPTY);
-            mnRestoreDefault.setIcon(HelperUi.EMPTY);
-            mnSelectAll.setIcon(HelperUi.EMPTY);
+            mnImport.setIcon(HelperUi.ICON_EMPTY);
+            mnExport.setIcon(HelperUi.ICON_EMPTY);
+            mnCut.setIcon(HelperUi.ICON_EMPTY);
+            mnCopy.setIcon(HelperUi.ICON_EMPTY);
+            mnPaste.setIcon(HelperUi.ICON_EMPTY);
+            mnDelete.setIcon(HelperUi.ICON_EMPTY);
+            mnNew.setIcon(HelperUi.ICON_EMPTY);
+            mnRestoreDefault.setIcon(HelperUi.ICON_EMPTY);
+            mnSelectAll.setIcon(HelperUi.ICON_EMPTY);
 
             mnCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
             mnCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));

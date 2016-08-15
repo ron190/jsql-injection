@@ -10,7 +10,7 @@ import com.jsql.model.injection.strategy.Strategy;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.AbstractTestSuite;
-import com.test.mysql.ConcreteMysqlTestSuite;
+import com.test.vendor.mysql.ConcreteMysqlTestSuite;
 
 public class CookieTest extends ConcreteMysqlTestSuite {
     // pour chaque vendor/méthode/strategy
@@ -33,7 +33,7 @@ public class CookieTest extends ConcreteMysqlTestSuite {
         ConnectionUtil.setDataHeader("Cookie:lib=0");
         ConnectionUtil.setMethodInjection(MethodInjection.HEADER);
 
-        MediatorModel.model().injection();
+        MediatorModel.model().beginInjection();
 
         MediatorModel.model().setStrategy(Strategy.NORMAL);
     }

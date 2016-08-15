@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
@@ -38,11 +39,11 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
         // and check if a correct error message is sent back by the server:
         //         Unknown column '1337' in 'order clause'
         // or   supplied argument is not a valid MySQL result resource
-        ExecutorService taskExecutor = Executors.newCachedThreadPool();
-        CompletionService<CallableHTMLPage> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
+        ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetVendor"));
+        CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
         for (String insertionCharacter : new String[] {"'\"#-)'\""}) {
             taskCompletionService.submit(
-                new CallableHTMLPage(
+                new CallablePageSource(
                     insertionCharacter,
                     insertionCharacter
                 )
@@ -57,7 +58,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             }
             
             try {
-                CallableHTMLPage currentCallable = taskCompletionService.take().get();
+                CallablePageSource currentCallable = taskCompletionService.take().get();
                 total--;
                 String pageSource = currentCallable.getContent();
                 
@@ -70,7 +71,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                     vendor = Vendor.MYSQL;
                 }
                 
-                if (pageSource.matches("(?si).*("
+                else if (pageSource.matches("(?si).*("
                         // JDBC + php : same error
                         + "You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near"
                         + "|"
@@ -79,14 +80,14 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                     vendor = Vendor.MARIADB;
                 }
                 
-                if (pageSource.matches("(?si).*("
+                else if (pageSource.matches("(?si).*("
                         // JDBC + php : same error
                         + "HSQLDB"
                         + ").*")) {
                     vendor = Vendor.HSQLDB;
                 }
                 
-                if (pageSource.matches("(?si).*("
+                else if (pageSource.matches("(?si).*("
                         // jdbc
                         + "ERROR: unterminated quoted identifier at or near"
                         + "|"
@@ -102,19 +103,19 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                 }
                 
                 /**
-Warning: oci_parse() [function.oci-parse]: ORA-01756: quoted string not properly terminated in x\oracle_simulate_get.php on line 6
-
-Warning: oci_execute() expects parameter 1 to be resource, boolean given in x\oracle_simulate_get.php on line 7
-
-Warning: oci_fetch_array() expects parameter 1 to be resource, boolean given in x\oracle_simulate_get.php on line 10
-
-jdbc
-Error at line 1:
-ORA-01740: missing double quote in identifier
-select '"'"'
-          ^
+                Warning: oci_parse() [function.oci-parse]: ORA-01756: quoted string not properly terminated in x\oracle_simulate_get.php on line 6
+                
+                Warning: oci_execute() expects parameter 1 to be resource, boolean given in x\oracle_simulate_get.php on line 7
+                
+                Warning: oci_fetch_array() expects parameter 1 to be resource, boolean given in x\oracle_simulate_get.php on line 10
+                
+                jdbc
+                Error at line 1:
+                ORA-01740: missing double quote in identifier
+                select '"'"'
+                          ^
                  */
-                if (Pattern.compile(".*function\\.oci.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                else if (Pattern.compile(".*function\\.oci.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.ORACLE;
                 }
                 
@@ -126,20 +127,20 @@ select '"'"'
                  * jdbc
                  * Unclosed quotation mark after the character string '''. [SQL State=S0001, DB Errorcode=105] 
                  */
-                if (Pattern.compile(".*SQL Server.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                else if (Pattern.compile(".*SQL Server.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.SQLSERVER;
                 }
                 
                 /**
                  * Warning: db2_execute() [function.db2-execute]: Statement Execute Failed in x\db2_simulate_get.php on line 13
-exec errormsg: [IBM][CLI Driver][DB2/NT] SQL0010N La constante commen ant par """ ne comporte pas de d limiteur de fin de cha ne. SQLSTATE=42603
-Warning: db2_fetch_array() [function.db2-fetch-array]: Column information cannot be retrieved in x\db2_simulate_get.php on line 17
+                exec errormsg: [IBM][CLI Driver][DB2/NT] SQL0010N La constante commen ant par """ ne comporte pas de d limiteur de fin de cha ne. SQLSTATE=42603
+                Warning: db2_fetch_array() [function.db2-fetch-array]: Column information cannot be retrieved in x\db2_simulate_get.php on line 17
 
                  * jdbc
                  * DB2 SQL Error: SQLCODE=-10, SQLSTATE=42603, SQLERRMC="', DRIVER=3.69.24 [SQL State=42603, DB Errorcode=-10] 
-Next: DB2 SQL Error: SQLCODE=-727, SQLSTATE=56098, SQLERRMC=2;-10;42603;"', DRIVER=3.69.24 [SQL State=56098, DB Errorcode=-727] 
+                Next: DB2 SQL Error: SQLCODE=-727, SQLSTATE=56098, SQLERRMC=2;-10;42603;"', DRIVER=3.69.24 [SQL State=56098, DB Errorcode=-727] 
                  */
-                if (Pattern.compile(".*function\\.db2.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                else if (Pattern.compile(".*function\\.db2.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.DB2;
                 }
                 
@@ -149,23 +150,23 @@ Next: DB2 SQL Error: SQLCODE=-727, SQLSTATE=56098, SQLERRMC=2;-10;42603;"', DRIV
                  * jdbc
                  * Unmatched quote, parenthesis, bracket or brace. [SQL State=42000, DB Errorcode=802835] 
                  */
-                if (Pattern.compile(".*Non-terminated string.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                else if (Pattern.compile(".*Non-terminated string.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.INGRES;
                 }
                 
                 /**
                  * Warning: sybase_connect() [function.sybase-connect]: Sybase: Server message: Changed database context to 'master'. (severity 10, procedure N/A) in x\sybase_simulate_get.php on line 5
 
-Warning: sybase_query() [function.sybase-query]: Sybase: Server message: Unclosed quote before the character string '\"'. (severity 15, procedure N/A) in x\sybase_simulate_get.php on line 10
-
-Warning: sybase_query() [function.sybase-query]: Sybase: Server message: Incorrect syntax near '\"'. (severity 15, procedure N/A) in x\sybase_simulate_get.php on line 10
-
-Warning: sybase_fetch_row() expects parameter 1 to be resource, boolean given in x\sybase_simulate_get.php on line 14
-
-jdbc
-Invalid SQL statement or JDBC escape, terminating '"' not found. [SQL State=22025] 
+                Warning: sybase_query() [function.sybase-query]: Sybase: Server message: Unclosed quote before the character string '\"'. (severity 15, procedure N/A) in x\sybase_simulate_get.php on line 10
+                
+                Warning: sybase_query() [function.sybase-query]: Sybase: Server message: Incorrect syntax near '\"'. (severity 15, procedure N/A) in x\sybase_simulate_get.php on line 10
+                
+                Warning: sybase_fetch_row() expects parameter 1 to be resource, boolean given in x\sybase_simulate_get.php on line 14
+                
+                jdbc
+                Invalid SQL statement or JDBC escape, terminating '"' not found. [SQL State=22025] 
                  */
-                if (Pattern.compile(".*function\\.sybase.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                else if (Pattern.compile(".*function\\.sybase.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.SYBASE;
                 }
                 
@@ -178,7 +179,7 @@ Invalid SQL statement or JDBC escape, terminating '"' not found. [SQL State=2202
 select '"'"'
            ^
                  */
-                if (Pattern.compile(".*maxdb\\.query.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                else if (Pattern.compile(".*maxdb\\.query.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.MAXDB;
                 }
                 
@@ -188,7 +189,7 @@ select '"'"'
                  * jdbc
                  * Found a quote for which there is no matching quote. [SQL State=IX000, DB Errorcode=-282] 
                  */
-                if (Pattern.compile(".*Informix.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                else if (Pattern.compile(".*Informix.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.INFORMIX;
                 }
                 
@@ -204,27 +205,36 @@ Unexpected end of command - line 1, column 11
 
 select '"'"'
                  */
-                if (Pattern.compile(".*function\\.ibase-query.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                else if (Pattern.compile(".*function\\.ibase-query.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.FIREBIRD;
                 }
-                if (Pattern.compile(".*derby.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                else if (Pattern.compile(".*derby.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.DERBY;
                 }
-                if (Pattern.compile(".*cubrid.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                else if (Pattern.compile(".*cubrid.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.CUBRID;
                 }
-                if (Pattern.compile(".*teradata.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                else if (Pattern.compile(".*teradata.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.TERADATA;
                 }
-                if (Pattern.compile(".*SQLite.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                else if (Pattern.compile(".*SQLite.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.SQLITE;
                 }
-                if (Pattern.compile(".*h2 database.*", Pattern.DOTALL).matcher(pageSource).matches()) {
+                else if (Pattern.compile(".*h2 database.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.H2;
                 }
             } catch (InterruptedException | ExecutionException e) {
                 LOGGER.error("Interruption while determining the type of database", e);
             }
+        }
+        
+        // End the job
+        try {
+            taskExecutor.shutdown();
+            taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            LOGGER.error(e, e);
+            Thread.currentThread().interrupt();
         }
         
         return vendor;

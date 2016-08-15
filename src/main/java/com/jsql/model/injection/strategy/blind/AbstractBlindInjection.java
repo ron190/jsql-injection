@@ -17,6 +17,7 @@ import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.model.suspendable.ThreadFactoryCallable;
 
 /**
  *
@@ -62,7 +63,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
         int indexCharacter = 0;
 
         // Parallelize the URL requests
-        ExecutorService taskExecutor = Executors.newFixedThreadPool(150);
+        ExecutorService taskExecutor = Executors.newFixedThreadPool(150, new ThreadFactoryCallable("CallableAbstractBlind"));
         CompletionService<T> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         // Send the first binary question: is the SQL result empty?
@@ -92,7 +93,21 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
                     taskExecutor.shutdownNow();
                 }
 
-                throw new StoppedByUserException();
+                // TODO Get current progress and display
+                StoppedByUserException e = new StoppedByUserException();
+                String result = "";
+                for (char[] c: bytes) {
+                    try {
+                        int charCode = Integer.parseInt(new String(c), 2);
+                        String str = Character.toString((char) charCode);
+                        result += str;
+                    } catch (NumberFormatException err) {
+                        // Byte string not fully constructed : 0x1x010x
+                        // Ignore
+                    }
+                }
+                e.setSlidingWindowAllRows(result); 
+                throw e;
             }
             
             try {
@@ -127,24 +142,24 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
                  */
                 } else {
                     // The bits linked to the url
-                    char[] e = bytes.get(currentCallable.getCurrentIndex() - 1);
+                    char[] codeAsciiInBinary = bytes.get(currentCallable.getCurrentIndex() - 1);
                     
                     // Define the bit
-                    e[(int) (8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit())) / Math.log(2)) ] = currentCallable.isTrue() ? '1' : '0';
+                    codeAsciiInBinary[(int) (8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit())) / Math.log(2)) ] = currentCallable.isTrue() ? '1' : '0';
 
                     /*
                      * Inform the View if a array of bits is complete, else nothing #Need fix
                      */
                     try {
-                        int charCode = Integer.parseInt(new String(e), 2);
-                        String str = Character.toString((char) charCode);
+                        int codeAscii = Integer.parseInt(new String(codeAsciiInBinary), 2);
+                        String charText = Character.toString((char) codeAscii);
 
                         Request interaction = new Request();
                         interaction.setMessage(TypeRequest.MESSAGE_BINARY);
-                        interaction.setParameters("\t"+ new String(e) +"="+ str);
+                        interaction.setParameters("\t"+ new String(codeAsciiInBinary) +"="+ charText);
                         MediatorModel.model().sendToViews(interaction);
                     } catch (NumberFormatException err) {
-                        // byte string not fully constructed : 0x1x010x
+                        // Byte string not fully constructed : 0x1x010x
                         // Ignore
                     }
                 }

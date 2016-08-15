@@ -74,7 +74,7 @@ public class MainApplication {
                 + "please contribute and translate pieces of jSQL into "+ languageDisplayed +": "
                 + "click on the top right button and open menu [Community], choose a language using [I help translate jSQL] and "
                 + "translate some text into "+ languageDisplayed +" then click on [Send]. The developer will add your translation "
-                + "to the next release of jSQL"
+                + "to the next release"
             );
         }
         

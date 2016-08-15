@@ -42,6 +42,7 @@ import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.radio.RadioLinkMethod;
 import com.jsql.view.swing.text.JAddressBar;
 import com.jsql.view.swing.text.JPopupTextField;
@@ -87,7 +88,7 @@ public class PanelAddressBar extends JPanel {
     /**
      * Animated GIF displayed during injection.
      */
-    public JLabel loader = new JLabel(HelperUi.LOADER_GIF);
+    public JLabel loader = new JLabel(HelperUi.ICON_LOADER_GIF);
 
     /**
      * Connection button.
@@ -229,8 +230,8 @@ public class PanelAddressBar extends JPanel {
         this.fieldUrl.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
-                    BorderFactory.createMatteBorder(4, 2, 3, 0, HelperUi.DEFAULT_BACKGROUND),
-                    BorderFactory.createLineBorder(HelperUi.BLU_COLOR)
+                    BorderFactory.createMatteBorder(4, 2, 3, 0, HelperUi.COLOR_DEFAULT_BACKGROUND),
+                    BorderFactory.createLineBorder(HelperUi.COLOR_BLU)
                 ),
                 BorderFactory.createEmptyBorder(2, 23, 2, 23)
             )
@@ -238,14 +239,14 @@ public class PanelAddressBar extends JPanel {
 
         this.fieldRequest.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperUi.DEFAULT_BACKGROUND),
-                HelperUi.BLU_BORDER
+                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND),
+                HelperUi.BORDER_BLU
             )
         );
         this.fieldHeader.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperUi.DEFAULT_BACKGROUND),
-                HelperUi.BLU_BORDER
+                BorderFactory.createMatteBorder(1, 2, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND),
+                HelperUi.BORDER_BLU
             )
         );
 
@@ -356,11 +357,11 @@ public class PanelAddressBar extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             // No injection running
-            if (PanelAddressBar.this.buttonInUrl.getState() == ButtonAddressBar.State.STARTABLE) {
+            if (PanelAddressBar.this.buttonInUrl.getState() == StateButton.STARTABLE) {
                 this.startInjection();
 
             // Injection currently running, stop the process
-            } else if (PanelAddressBar.this.buttonInUrl.getState() == ButtonAddressBar.State.STOPPABLE) {
+            } else if (PanelAddressBar.this.buttonInUrl.getState() == StateButton.STOPPABLE) {
                 this.stopInjection();
             }
         }
@@ -411,7 +412,7 @@ public class PanelAddressBar extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             // No injection running
-            if (PanelAddressBar.this.buttonInUrl.getState() == ButtonAddressBar.State.STARTABLE) {
+            if (PanelAddressBar.this.buttonInUrl.getState() == StateButton.STARTABLE) {
                 this.startInjection();
             }
         }

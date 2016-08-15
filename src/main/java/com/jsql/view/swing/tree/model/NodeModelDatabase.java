@@ -48,15 +48,15 @@ public class NodeModelDatabase extends AbstractNodeModel {
     @Override
     Icon getLeafIcon(boolean leaf) {
         if (leaf) {
-            return HelperUi.DATABASE_ICON_GO;
+            return HelperUi.ICON_DATABASE_GO;
         } else {
-            return HelperUi.DATABASE_ICON;
+            return HelperUi.ICON_DATABASE;
         }
     }
 
     @Override
     public void runAction() {
-        final Database selectedDatabase = (Database) this.dataObject;
+        final Database selectedDatabase = (Database) this.elementDatabase;
         if (!this.isSearched && !this.isRunning) {
             
             new SwingWorker<Object, Object>(){

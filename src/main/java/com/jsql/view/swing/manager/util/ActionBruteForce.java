@@ -38,7 +38,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        if (I18n.valueByKey("BRUTEFORCE_STOP").equals(bruteForceManager.run.getText())) {
+        if (bruteForceManager.run.getState() == StateButton.STOPPABLE) {
             this.bruteForceManager.run.setEnabled(false);
             this.isStopped = true;
         } else {
@@ -68,8 +68,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
                 return;
             }
 
-            new Thread(this, "Start brute force").start();
-
+            new Thread(this, "ThreadDisplayBruteForce").start();
         }
     }
 
@@ -77,6 +76,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
     public void run() {
         // Reset the panel
         this.bruteForceManager.run.setText(I18n.valueByKey("BRUTEFORCE_STOP"));
+        this.bruteForceManager.run.setState(StateButton.STOPPABLE);
         this.bruteForceManager.loader.setVisible(true);
         this.bruteForceManager.result.setText(null);
 
@@ -111,10 +111,10 @@ public class ActionBruteForce implements ActionListener, Runnable {
             public void run() { 
                 hashBruter.tryBruteForce(); 
             } 
-        }, "Display brute force results");
+        }, "ThreadRunBruteForce");
         thread.start();
 
-        while (!hashBruter.isDone() && !hashBruter.isFound() && !ActionBruteForce.this.isStopped) {
+        while (!hashBruter.isDone() && !hashBruter.isFound() && !this.isStopped) {
             hashBruter.setEndtime(System.nanoTime());
 
             try {
@@ -157,7 +157,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
             this.bruteForceManager.result.setSelectionStart(selectionStart);
             this.bruteForceManager.result.setSelectionEnd(selectionEnd);
             
-            if (ActionBruteForce.this.isStopped) {
+            if (this.isStopped) {
                 hashBruter.setIsDone(true);
                 hashBruter.setFound(true);
                 break;
@@ -165,7 +165,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
         }
 
         // Display the result
-        if (ActionBruteForce.this.isStopped) {
+        if (this.isStopped) {
             LOGGER.warn(I18n.valueByKey("BRUTEFORCE_ABORTED"));
         } else if (hashBruter.isFound()) {
             this.bruteForceManager.result.append(
@@ -181,9 +181,10 @@ public class ActionBruteForce implements ActionListener, Runnable {
             LOGGER.warn(I18n.valueByKey("BRUTEFORCE_HASH_NOT_FOUND"));
         }
 
-        ActionBruteForce.this.isStopped = false;
+        this.isStopped = false;
         this.bruteForceManager.loader.setVisible(false);
         this.bruteForceManager.run.setText(I18n.valueByKey("BRUTEFORCE_START"));
         this.bruteForceManager.run.setEnabled(true);
+        this.bruteForceManager.run.setState(StateButton.STARTABLE);
     }
 }

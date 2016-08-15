@@ -51,6 +51,7 @@ import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
+import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 
 /**
  * A dialog displaying information on jSQL.
@@ -103,7 +104,7 @@ public class DialogAbout extends JDialog {
 
         this.buttonClose = new JButton("Close");
         this.buttonClose.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.BLU_COLOR),
+            BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.COLOR_BLU),
             BorderFactory.createEmptyBorder(2, 20, 2, 20))
         );
         this.buttonClose.addActionListener(escapeListener);
@@ -113,7 +114,7 @@ public class DialogAbout extends JDialog {
         
         final JButton buttonWebpage = new JButton("Webpage");
         buttonWebpage.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.BLU_COLOR),
+            BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.COLOR_BLU),
             BorderFactory.createEmptyBorder(2, 20, 2, 20))
         );
         buttonWebpage.addActionListener(new ActionListener() {
@@ -131,41 +132,19 @@ public class DialogAbout extends JDialog {
         buttonWebpage.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         buttonWebpage.setBackground(new Color(200, 221, 242));
         
-        buttonWebpage.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
-                buttonWebpage.setContentAreaFilled(true);
-                buttonWebpage.setBorder(HelperUi.BLU_ROUND_BORDER);
-                
-            }
-
-            @Override public void mouseExited(MouseEvent e) {
-                buttonWebpage.setContentAreaFilled(false);
-                buttonWebpage.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-            }
-        });
+        buttonWebpage.addMouseListener(new FlatButtonMouseAdapter(buttonWebpage));
         
         buttonClose.setContentAreaFilled(false);
         buttonClose.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         buttonClose.setBackground(new Color(200, 221, 242));
         
-        buttonClose.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
-                buttonClose.setContentAreaFilled(true);
-                buttonClose.setBorder(HelperUi.BLU_ROUND_BORDER);
-                
-            }
-
-            @Override public void mouseExited(MouseEvent e) {
-                buttonClose.setContentAreaFilled(false);
-                buttonClose.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-            }
-        });
+        buttonClose.addMouseListener(new FlatButtonMouseAdapter(buttonClose));
         
         lastLine.add(buttonWebpage);
         lastLine.add(Box.createGlue());
         lastLine.add(this.buttonClose);
 
-        JLabel iconJSQL = new JLabel(new ImageIcon(HelperUi.ICON96));
+        JLabel iconJSQL = new JLabel(new ImageIcon(HelperUi.ICON_96));
         dialogPane.add(iconJSQL, BorderLayout.WEST);
         dialogPane.add(lastLine, BorderLayout.SOUTH);
 

@@ -224,7 +224,7 @@ public class ActionCoder implements ActionListener {
         } else if ("Decode from Url".equalsIgnoreCase(choice)) {
             try {
                 this.coderManager.result.setText(
-                    URLDecoder.decode(this.coderManager.entry.getText().replace("%", "%25"), "UTF-8")
+                    URLDecoder.decode(this.coderManager.entry.getText(), "UTF-8")
                 );
             } catch (UnsupportedEncodingException e) {
                 LOGGER.warn("Decoding to UTF-8 failed: "+ e, e);

@@ -9,11 +9,11 @@ import com.jsql.view.swing.HelperUi;
 @SuppressWarnings("serial")
 public class ButtonClose extends JButton {
     public ButtonClose() {
-        super(HelperUi.CLOSE_ICON);
+        super(HelperUi.ICON_CLOSE);
         
         Dimension closeButtonSize = new Dimension(
-            HelperUi.CLOSE_ICON.getIconWidth(), 
-            HelperUi.CLOSE_ICON.getIconHeight()
+            HelperUi.ICON_CLOSE.getIconWidth(), 
+            HelperUi.ICON_CLOSE.getIconHeight()
         );
         this.setPreferredSize(closeButtonSize);
         
@@ -23,7 +23,7 @@ public class ButtonClose extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(true);
-        this.setRolloverIcon(HelperUi.CLOSE_ROLLOVER_ICON);
-        this.setPressedIcon(HelperUi.CLOSE_PRESSED_ICON);
+        this.setRolloverIcon(HelperUi.ICON_CLOSE_ROLLOVER);
+        this.setPressedIcon(HelperUi.ICON_CLOSE_PRESSED);
     }
 }

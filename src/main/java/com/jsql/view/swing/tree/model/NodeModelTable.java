@@ -49,9 +49,9 @@ public class NodeModelTable extends AbstractNodeModel {
     @Override
     Icon getLeafIcon(boolean leaf) {
         if (leaf) {
-            return HelperUi.TABLE_ICON_GO;
+            return HelperUi.ICON_TABLE_GO;
         } else {
-            return HelperUi.TABLE_ICON;
+            return HelperUi.ICON_TABLE;
         }
     }
 
@@ -60,7 +60,7 @@ public class NodeModelTable extends AbstractNodeModel {
         if ("information_schema".equals(this.getParent().toString())) {
             panel.showLoader();
             
-            AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.dataObject);
+            AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.elementDatabase);
             if (suspendableTask != null && suspendableTask.isPaused()) {
                 ImageIcon animatedGifPaused = new ImageOverlap(HelperUi.PATH_PROGRESSBAR, HelperUi.PATH_PAUSE);
                 animatedGifPaused.setImageObserver(new ImageObserverAnimated(MediatorGui.treeDatabase(), currentNode));
@@ -73,7 +73,7 @@ public class NodeModelTable extends AbstractNodeModel {
 
     @Override
     public void runAction() {
-        final Table selectedTable = (Table) this.dataObject;
+        final Table selectedTable = (Table) this.elementDatabase;
         if (!this.isSearched && !this.isRunning) {
             new SwingWorker<Object, Object>(){
 
@@ -95,8 +95,8 @@ public class NodeModelTable extends AbstractNodeModel {
         JMenuItem mnUncheckAll = new JMenuItem(I18n.valueByKey("COLUMNS_UNCHECK_ALL"), 'U');
         I18n.addComponentForKey("COLUMNS_UNCHECK_ALL", mnCheckAll);
 
-        mnCheckAll.setIcon(HelperUi.EMPTY);
-        mnUncheckAll.setIcon(HelperUi.EMPTY);
+        mnCheckAll.setIcon(HelperUi.ICON_EMPTY);
+        mnUncheckAll.setIcon(HelperUi.ICON_EMPTY);
 
         if (!this.isSearched) {
             mnCheckAll.setEnabled(false);
@@ -150,8 +150,8 @@ public class NodeModelTable extends AbstractNodeModel {
         mnCheckAll.addActionListener(new CheckAll());
         mnUncheckAll.addActionListener(new UncheckAll());
 
-        mnCheckAll.setIcon(HelperUi.EMPTY);
-        mnUncheckAll.setIcon(HelperUi.EMPTY);
+        mnCheckAll.setIcon(HelperUi.ICON_EMPTY);
+        mnUncheckAll.setIcon(HelperUi.ICON_EMPTY);
 
         tablePopupMenu.add(mnCheckAll);
         tablePopupMenu.add(mnUncheckAll);

@@ -51,7 +51,7 @@ public class ActionSaveTab extends AbstractAction {
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         this.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_S));
         this.putValue(Action.NAME, "Save Tab As...");
-        this.putValue(Action.SMALL_ICON, HelperUi.EMPTY);
+        this.putValue(Action.SMALL_ICON, HelperUi.ICON_EMPTY);
     }
     
     @Override

@@ -41,7 +41,6 @@ import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -61,6 +60,8 @@ public class PanelTable extends JPanel {
      * Table to display in the panel.
      */
     public JTable table;
+    
+    private FixedColumnTable tableFixedColumn = new FixedColumnTable();
 
     /**
      * Create a panel containing a table to display injection values.
@@ -105,12 +106,6 @@ public class PanelTable extends JPanel {
                 return lbl;
             }
         });
-
-        table.getColumnModel().getColumn(0).setResizable(false);
-        table.getColumnModel().getColumn(0).setPreferredWidth(38);
-
-        DefaultTableCellRenderer centerHorizontalAlignment = new RowHeaderRenderer();
-        table.getColumnModel().getColumn(0).setCellRenderer(centerHorizontalAlignment);
 
         table.getTableHeader().setReorderingAllowed(false);
 
@@ -179,7 +174,7 @@ public class PanelTable extends JPanel {
         scroller.scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         scroller.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
 
-        FixedColumnTable.fixColumnSize(1, scroller.scrollPane);
+        tableFixedColumn.fixColumnSize(2, scroller.scrollPane);
         
         this.add(scroller, BorderLayout.CENTER);
         

@@ -16,6 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.manager.util.StateButton;
 
 /**
  * A button displayed in address.
@@ -23,14 +24,10 @@ import com.jsql.view.swing.HelperUi;
 @SuppressWarnings("serial")
 public class ButtonAddressBar extends JButton {
     
-    public enum State {
-        STARTABLE, STOPPING, STOPPABLE
-    }
-    
     /**
      * State of current injection.
      */
-    private State state = State.STARTABLE;
+    private StateButton state = StateButton.STARTABLE;
     
     /**
      * Create a button in address bar.
@@ -44,16 +41,16 @@ public class ButtonAddressBar extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(true);
-        this.setIcon(HelperUi.ARROWDEFAULT);
-        this.setRolloverIcon(HelperUi.ARROWROLLOVER);
-        this.setPressedIcon(HelperUi.ARROWPRESSED);
+        this.setIcon(HelperUi.ICON_ARROW_DEFAULT);
+        this.setRolloverIcon(HelperUi.ICON_ARROW_ROLLOVER);
+        this.setPressedIcon(HelperUi.ICON_ARROW_PRESSED);
     }
 
     /**
      * Return the current state of current process.
      * @return State of process
      */
-    public State getState() {
+    public StateButton getState() {
         return this.state;
     }
 
@@ -61,21 +58,21 @@ public class ButtonAddressBar extends JButton {
      * Replace button with Stop icon ; user can stop current process.
      */
     public void setInjectionReady() {
-        this.state = State.STARTABLE;
+        this.state = StateButton.STARTABLE;
         this.setEnabled(true);
         
         // turn on before rollovers work
         this.setRolloverEnabled(true);
-        this.setIcon(HelperUi.ARROWDEFAULT);
-        this.setRolloverIcon(HelperUi.ARROWROLLOVER);
-        this.setPressedIcon(HelperUi.ARROWPRESSED);
+        this.setIcon(HelperUi.ICON_ARROW_DEFAULT);
+        this.setRolloverIcon(HelperUi.ICON_ARROW_ROLLOVER);
+        this.setPressedIcon(HelperUi.ICON_ARROW_PRESSED);
     }
 
     /**
      * Replace button with Stop icon ; user can stop current process.
      */
     public void setInjectionRunning() {
-        this.state = State.STOPPABLE;
+        this.state = StateButton.STOPPABLE;
         this.setEnabled(true);
         
         // turn on before rollovers work
@@ -90,11 +87,11 @@ public class ButtonAddressBar extends JButton {
      * is finished ; user waits the end of process.
      */
     public void setInjectionStopping() {
-        this.state = State.STOPPING;
+        this.state = StateButton.STOPPING;
         
         // turn on before rollovers work
         this.setRolloverEnabled(false);
-        this.setIcon(HelperUi.LOADER_GIF);
+        this.setIcon(HelperUi.ICON_LOADER_GIF);
         this.setEnabled(false);
     }
 }

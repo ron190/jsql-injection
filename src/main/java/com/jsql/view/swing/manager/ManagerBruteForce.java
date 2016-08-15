@@ -13,14 +13,10 @@ package com.jsql.view.swing.manager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -34,9 +30,11 @@ import javax.swing.SwingConstants;
 import com.jsql.i18n.I18n;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.manager.util.ActionBruteForce;
+import com.jsql.view.swing.manager.util.JButtonStatable;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JPopupTextField;
+import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 
 /**
  * Manager to brute force a hash of various types.
@@ -46,7 +44,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
     /**
      * Button running the attack.
      */
-    public AbstractButton run;
+    public JButtonStatable run;
     
     /**
      * Input for hash to brute force.
@@ -118,8 +116,8 @@ public class ManagerBruteForce extends JPanel implements Manager {
         firstLine.add(hash, BorderLayout.CENTER);
         hash.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 1, 1, HelperUi.DEFAULT_BACKGROUND),
-                HelperUi.BLU_BORDER
+                BorderFactory.createMatteBorder(0, 0, 1, 1, HelperUi.COLOR_DEFAULT_BACKGROUND),
+                HelperUi.BORDER_BLU
             )
         );
 
@@ -160,8 +158,8 @@ public class ManagerBruteForce extends JPanel implements Manager {
         exclude.setToolTipText(I18n.valueByKey("BRUTEFORCE_EXCLUDE_TOOLTIP"));
         exclude.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 0, 1, 1, HelperUi.DEFAULT_BACKGROUND),
-                HelperUi.BLU_BORDER
+                BorderFactory.createMatteBorder(1, 0, 1, 1, HelperUi.COLOR_DEFAULT_BACKGROUND),
+                HelperUi.BORDER_BLU
             )
         );
         thirdLine.add(exclude);
@@ -219,12 +217,12 @@ public class ManagerBruteForce extends JPanel implements Manager {
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COMPONENT_BORDER),
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
         
-        run = new JButton(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_LABEL"));
+        run = new JButtonStatable(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_LABEL"));
         I18n.addComponentForKey("BRUTEFORCE_RUN_BUTTON_LABEL", run);
         run.setToolTipText(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
         
@@ -232,24 +230,9 @@ public class ManagerBruteForce extends JPanel implements Manager {
         run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         run.setBackground(new Color(200, 221, 242));
         
-        run.addMouseListener(new MouseAdapter() {
-            @Override public void mouseEntered(MouseEvent e) {
-                if (run.isEnabled()) {
-                    run.setContentAreaFilled(true);
-                    run.setBorder(HelperUi.BLU_ROUND_BORDER);
-                }
-                
-            }
+        this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
 
-            @Override public void mouseExited(MouseEvent e) {
-                if (run.isEnabled()) {
-                    run.setContentAreaFilled(false);
-                    run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-                }
-            }
-        });
-
-        loader = new JLabel(HelperUi.LOADER_GIF);
+        loader = new JLabel(HelperUi.ICON_LOADER_GIF);
         loader.setVisible(false);
 
         lastLine.add(Box.createHorizontalGlue());
