@@ -10,8 +10,6 @@
  *******************************************************************************/
 package com.jsql.view.swing.text;
 
-import java.awt.Dimension;
-
 import javax.swing.JTextField;
 
 import com.jsql.view.swing.HelperUi;
@@ -20,15 +18,19 @@ import com.jsql.view.swing.HelperUi;
  * A JTextField displaying an icon and buttons.
  */
 @SuppressWarnings("serial")
-public class JAddressBar extends JPopupTextField implements DecoratorJComponent<JTextField> {
+public class JTextFieldAddressBar extends JPopupTextField implements DecoratorJComponent<JTextField> {
     /**
      * Constructor with default text.
      * @param string The text to display
      */
-    public JAddressBar(JTextField c) {
+    public JTextFieldAddressBar(JTextField c) {
         super(c);
 
-        this.getProxy().setPreferredSize(new Dimension(0, 27));
+        // Fix height when orientation Right to Left is activated
+//        this.getProxy().setMinimumSize(new Dimension(0, 27));
+//        this.getProxy().setMaximumSize(new Dimension(0, 27));
+//        this.getProxy().setPreferredSize(new Dimension(0, 27));
+        
         this.getProxy().setFont(HelperUi.FONT_SEGOE_BIG);
     }
 }

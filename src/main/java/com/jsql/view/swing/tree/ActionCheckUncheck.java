@@ -1,0 +1,51 @@
+package com.jsql.view.swing.tree;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JCheckBox;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+
+import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.tree.model.AbstractNodeModel;
+
+/**
+ * Check and unckeck column as checkbox.
+ */
+public class ActionCheckUncheck implements ActionListener {
+
+    private AbstractNodeModel nodeModel;
+    private DefaultMutableTreeNode currentTableNode;
+
+    public ActionCheckUncheck(AbstractNodeModel nodeModel, DefaultMutableTreeNode currentTableNode) {
+        this.nodeModel = nodeModel;
+        this.currentTableNode = currentTableNode;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        JCheckBox columnCheckBox = (JCheckBox) source;
+        this.nodeModel.isSelected = columnCheckBox.isSelected();
+
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
+        DefaultMutableTreeNode tableNode = (DefaultMutableTreeNode) this.currentTableNode.getParent();
+
+        int tableChildCount = treeModel.getChildCount(tableNode);
+        boolean isOneChildSelected = false;
+        for (int i = 0 ; i < tableChildCount ; i++) {
+            DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
+            if (currentChild.getUserObject() instanceof AbstractNodeModel) {
+                AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
+                if (columnTreeNodeModel.isSelected) {
+                    isOneChildSelected = true;
+                    break;
+                }
+            }
+        }
+
+        AbstractNodeModel nodeUserObject = (AbstractNodeModel) tableNode.getUserObject();
+        nodeUserObject.isContainingSelection = isOneChildSelected;
+    }
+}

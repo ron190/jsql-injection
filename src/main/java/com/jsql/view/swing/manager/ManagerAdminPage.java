@@ -108,7 +108,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
                     public void run() {
                         
                         if (ManagerAdminPage.this.run.getState() == StateButton.STARTABLE) {
-                            if ("".equals(MediatorGui.panelAddressBar().fieldUrl.getText())) {
+                            if ("".equals(MediatorGui.panelAddressBar().textFieldAddress.getText())) {
                                 LOGGER.warn("Enter the main address");
                             } else {
                                 ManagerAdminPage.this.run.setText("Stop");
@@ -117,7 +117,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
                                 
                                 try {
                                     RessourceAccess.createAdminPages(
-                                        MediatorGui.panelAddressBar().fieldUrl.getText(), 
+                                        MediatorGui.panelAddressBar().textFieldAddress.getText(), 
                                         listFile.getSelectedValuesList()
                                     );
                                 } catch (InterruptedException e) {

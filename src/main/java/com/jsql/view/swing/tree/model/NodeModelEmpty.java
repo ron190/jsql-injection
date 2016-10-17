@@ -13,6 +13,7 @@ package com.jsql.view.swing.tree.model;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -71,12 +72,12 @@ public class NodeModelEmpty extends AbstractNodeModel {
     }
     
     @Override 
-    void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {
+    void buildMenu(JPopupMenu tablePopupMenu, TreePath path) {
         // Not used
     }
     
     @Override 
-    public void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j) {
+    public void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
         // Not used
     }
     

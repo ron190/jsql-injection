@@ -43,25 +43,25 @@ public class BlindStrategy extends AbstractStrategy {
         
         if (this.isApplicable) {
             LOGGER.debug("Vulnerable to Blind injection");
-            allow();
+            this.allow();
         } else {
-            unallow();
+            this.unallow();
         }
     }
 
     @Override
     public void allow() {
-        markVulnerable(TypeRequest.MARK_BLIND_VULNERABLE);
+        this.markVulnerable(TypeRequest.MARK_BLIND_VULNERABLE);
     }
 
     @Override
     public void unallow() {
-        markVulnerable(TypeRequest.MARK_BLIND_INVULNERABLE);
+        this.markVulnerable(TypeRequest.MARK_BLIND_INVULNERABLE);
     }
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserException {
-        return blind.inject(
+        return this.blind.inject(
             MediatorModel.model().vendor.instance().sqlBlind(sqlQuery, startPosition),
             stoppable
         );

@@ -1,6 +1,7 @@
 package com.jsql.view.swing.ui;
 
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Insets;
@@ -8,6 +9,8 @@ import java.awt.Insets;
 import javax.swing.JComponent;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
+
+import com.jsql.i18n.I18n;
 
 /**
  *  The ComponentBorder class allows you to place a real component in
@@ -160,7 +163,11 @@ public class ComponentBorder implements Border {
      */
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        float x2 = (width  - component.getWidth())  * component.getAlignmentX() + x;
+        
+        float x2 = 
+            ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+            ? (0 + component.getWidth()) * component.getAlignmentX() + x
+            : (width - component.getWidth()) * component.getAlignmentX() + x;
         float y2 = (height - component.getHeight()) * component.getAlignmentY() + y;
         component.setLocation((int) x2 + addX, (int) y2 + addY);
     }

@@ -57,9 +57,9 @@ public class NodeModelDatabase extends AbstractNodeModel {
     @Override
     public void runAction() {
         final Database selectedDatabase = (Database) this.elementDatabase;
-        if (!this.isSearched && !this.isRunning) {
+        if (!this.isLoaded && !this.isRunning) {
             
-            new SwingWorker<Object, Object>(){
+            new SwingWorker<Object, Object>() {
                 @Override
                 protected Object doInBackground() throws Exception {
                     return DataAccess.listTables(selectedDatabase);
@@ -93,11 +93,11 @@ public class NodeModelDatabase extends AbstractNodeModel {
 
     @Override 
     public boolean isPopupDisplayable() {
-        return !this.isSearched && this.isRunning;
+        return this.isLoaded || !this.isLoaded && this.isRunning;
     }
 
     @Override 
-    void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {
+    void buildMenu(JPopupMenu tablePopupMenu, TreePath path) {
         // Do nothing
     }
 }

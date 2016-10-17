@@ -29,7 +29,6 @@ public class SwingAppender extends WriterAppender {
      */
     private static JavaConsoleAdapter javaTextPane;
 
-    private static final SimpleAttributeSet FATAL = new SimpleAttributeSet();
     private static final SimpleAttributeSet ERROR = new SimpleAttributeSet();
     private static final SimpleAttributeSet WARN = new SimpleAttributeSet();
     private static final SimpleAttributeSet INFO = new SimpleAttributeSet();
@@ -38,7 +37,6 @@ public class SwingAppender extends WriterAppender {
     private static final SimpleAttributeSet ALL = new SimpleAttributeSet();
     
     static {
-        StyleConstants.setFontFamily(FATAL, HelperUi.FONT_NAME);
         StyleConstants.setFontFamily(ERROR, HelperUi.FONT_NAME);
         StyleConstants.setFontFamily(WARN, HelperUi.FONT_NAME);
         StyleConstants.setFontFamily(INFO, HelperUi.FONT_NAME);
@@ -46,7 +44,6 @@ public class SwingAppender extends WriterAppender {
         StyleConstants.setFontFamily(TRACE, HelperUi.FONT_NAME);
         StyleConstants.setFontFamily(ALL, HelperUi.FONT_NAME);
         
-        StyleConstants.setFontSize(FATAL, 14);
         StyleConstants.setFontSize(ERROR, 14);
         StyleConstants.setFontSize(WARN, 14);
         StyleConstants.setFontSize(INFO, 14);
@@ -54,7 +51,6 @@ public class SwingAppender extends WriterAppender {
         StyleConstants.setFontSize(TRACE, 14);
         StyleConstants.setFontSize(ALL, 14);
         
-        StyleConstants.setForeground(FATAL, Color.blue);
         StyleConstants.setForeground(ERROR, Color.red);
         StyleConstants.setForeground(WARN, Color.red);
         StyleConstants.setForeground(INFO, Color.blue);
@@ -117,11 +113,6 @@ public class SwingAppender extends WriterAppender {
                 consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
                 break;
                 
-            case Level.FATAL_INT:
-                consoleTextPane.append(message, FATAL);
-                consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
-                break;
-                
             case Level.ERROR_INT:
                 javaTextPane.append(message, WARN);
                 javaTextPane.getProxy().setCaretPosition(javaTextPane.getProxy().getDocument().getLength());
@@ -146,6 +137,10 @@ public class SwingAppender extends WriterAppender {
             case Level.DEBUG_INT:
                 consoleTextPane.append(message, DEBUG);
                 consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
+                break;
+                
+            case Level.FATAL_INT:
+                // Ignore exception during report of exception
                 break;
                 
             case Level.ALL_INT:

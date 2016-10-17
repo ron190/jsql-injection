@@ -1,10 +1,10 @@
 {
     "version": "0.77",
     "news": [
-        "[Roadmap] MS-Access database, SOAP and Restful injection, WAF tamper, Bruteforce of HTTP Auth, Arabic translation, Command line interface",
-        "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu [Community], choose a language using [I help translate jSQL] and translate some text then click on [Send]. Your translation will be integrated to the next release by the developer",
-        "[Release] Version 0.77 fixes 3 bugs and optimizes multithreading",
-        "[In progress] MySQL error based injection with BIGINT and overflow",
+        "[Roadmap] MySQL error based injection using BIGINT and overflow, MS-Access database, WAF tamper, Bruteforce of HTTP Auth, Arabic translation, Command line interface",
+        "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer",
+        "[In progress] Russian translation, GUI compatibility with Right To Left languages like Arabic",
+        "[Swarming] You can contact the developer for any help with Burp integration and CTF oriented version",
     ],
     "commit": [
         "",

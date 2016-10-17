@@ -53,6 +53,10 @@ import javax.swing.Popup;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
+import org.apache.log4j.Logger;
+
+import com.jsql.model.injection.strategy.blind.ConcreteBlindInjection;
+
 /**
  * Does all the magic for getting popups with drop shadows.
  * It adds the drop shadow border to the Popup,
@@ -66,6 +70,10 @@ import javax.swing.border.Border;
  * @see com.jgoodies.looks.common.ShadowPopupFactory
  */
 public final class ShadowPopup extends Popup {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ShadowPopup.class);
 
     /**
      * Max number of items to store in the cache.
@@ -231,8 +239,10 @@ public final class ShadowPopup extends Popup {
      * @param y the desired y location of the popup
      * @param popup the popup to wrap
      */
-    private void reset(Component owner, Component contents, int x, int y,
-            Popup popup) {
+    private void reset(
+        Component owner, Component contents, int x, int y,
+        Popup popup
+    ) {
         this.owner = owner;
         this.contents = contents;
         this.popup = popup;
@@ -242,12 +252,19 @@ public final class ShadowPopup extends Popup {
         // Do not install the shadow border when the contents
         // has a preferred size less than or equal to 0.
         // We can't use the size, because it is(0, 0) for new popups.
-        Dimension contentsPrefSize = contents.getPreferredSize();
-        if ((contentsPrefSize.width <= 0) || (contentsPrefSize.height <= 0)) {
+        Dimension contentsPrefSize = new Dimension();
+        try {
+            contentsPrefSize = contents.getPreferredSize();
+        } catch(NullPointerException e) {
+            // Fix #4172
+            LOGGER.error(e, e);
+        }
+        if (contentsPrefSize.width <= 0 || contentsPrefSize.height <= 0) {
             return;
         }
-        for (Container p = contents.getParent(); p != null; p = p.getParent()) {
-            if ((p instanceof JWindow) || (p instanceof Panel)) {
+        
+        for (Container p = contents.getParent() ; p != null ; p = p.getParent()) {
+            if (p instanceof JWindow || p instanceof Panel) {
                 // Workaround for the gray rect problem.
                 p.setBackground(contents.getBackground());
                 heavyWeightContainer = p;
@@ -261,8 +278,7 @@ public final class ShadowPopup extends Popup {
         parent.setBorder(SHADOW_BORDER);
         // Pack it because we have changed the border.
         if (heavyWeightContainer != null) {
-            heavyWeightContainer.setSize(
-                    heavyWeightContainer.getPreferredSize());
+            heavyWeightContainer.setSize(heavyWeightContainer.getPreferredSize());
         } else {
             parent.setSize(parent.getPreferredSize());
         }
@@ -341,7 +357,12 @@ public final class ShadowPopup extends Popup {
                     JComponent c = (JComponent) layeredPane;
                     boolean doubleBuffered = c.isDoubleBuffered();
                     c.setDoubleBuffered(false);
-                    c.paintAll(g);
+                    try {
+                        c.paintAll(g);
+                    } catch(IllegalArgumentException e) {
+                        // Fix #3127
+                        LOGGER.error(e, e);
+                    }
                     c.setDoubleBuffered(doubleBuffered);
                 } else {
                     layeredPane.paintAll(g);

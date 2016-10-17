@@ -115,7 +115,7 @@ public abstract class AbstractTestSuite {
             }
             res.close();
             stmt.close();
-        } catch(Exception e) {
+        } catch (Exception e) {
             LOGGER.warn(e);
         }
     }
@@ -139,7 +139,7 @@ public abstract class AbstractTestSuite {
 
             Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
             
-        } catch(AssertionError e) {
+        } catch (AssertionError e) {
             Set<Object> tmp = new TreeSet<>();
             for (Object x: set1) {
                 if (!set2.contains(x)) {
@@ -173,7 +173,7 @@ public abstract class AbstractTestSuite {
             LOGGER.info("listTables: found "+ set1 +"\nto find "+ set2 +"\n");
             Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
             
-        } catch(AssertionError e) {
+        } catch (AssertionError e) {
             Set<Object> tmp = new TreeSet<>();
             for (Object x: set1) {
                 if (!set2.contains(x)) {
@@ -211,7 +211,7 @@ public abstract class AbstractTestSuite {
             LOGGER.info("listColumns: found "+ set1 +"\nto find "+ set2 +"\n");
             Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
             
-        } catch(AssertionError e) {
+        } catch (AssertionError e) {
             Set<Object> tmp = new TreeSet<>();
             for (Object x: set1) {
                 if (!set2.contains(x)) {
@@ -242,7 +242,7 @@ public abstract class AbstractTestSuite {
             ));
             List<String> valuesFound = new ArrayList<>();
             for (String[] v: vs) {
-                valuesFound.add(v[1].replaceAll("\r\n", "\n"));
+                valuesFound.add(v[2].replaceAll("\r\n", "\n"));
             }
 
             set1.addAll(valuesFound);
@@ -261,7 +261,7 @@ public abstract class AbstractTestSuite {
             );
             Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
             
-        } catch(AssertionError e) {
+        } catch (AssertionError e) {
             Set<Object> tmp = new TreeSet<>();
             for (Object x: set1) {
                 if (!set2.contains(x)) {

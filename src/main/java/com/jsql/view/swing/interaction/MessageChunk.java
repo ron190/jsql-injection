@@ -13,12 +13,19 @@ package com.jsql.view.swing.interaction;
 import java.awt.Component;
 import java.awt.Font;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.view.swing.MediatorGui;
 
 /**
  * Append text to the tab Chunk.
  */
 public class MessageChunk implements InteractionCommand {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(MessageChunk.class);
+    
     /**
      * Text to append to the Chunk log area.
      */
@@ -33,15 +40,20 @@ public class MessageChunk implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.panelConsoles().chunkTab.append(text);
-        MediatorGui.panelConsoles().chunkTab.setCaretPosition(MediatorGui.panelConsoles().chunkTab.getDocument().getLength());
-        
-        int tabIndex = MediatorGui.tabConsoles().indexOfTab("Chunk");
-        if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
-            Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
-            if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
-                tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
-            }
+        try {
+            MediatorGui.panelConsoles().chunkTab.append(text);
+            MediatorGui.panelConsoles().chunkTab.setCaretPosition(MediatorGui.panelConsoles().chunkTab.getDocument().getLength());
+            
+            int tabIndex = MediatorGui.tabConsoles().indexOfTab("Chunk");
+            if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
+                Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
+                if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
+                    tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
+                }
+            }            
+        } catch(ArrayIndexOutOfBoundsException e) {
+            // Fix #4770 on chunkTab.append()
+            LOGGER.error(e, e);
         }
     }
 }

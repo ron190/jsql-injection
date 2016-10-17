@@ -401,13 +401,17 @@ public class DialogPreferences extends JDialog {
         labelUseKerberos.setBorderPainted(false);
         labelUseKerberos.setContentAreaFilled(false); 
         
-        JLabel authenticationField = new JLabel("<html><b>Authentication</b></html>", JLabel.RIGHT);
-        JLabel authenticationInfo = new JLabel(" / Basic, Digest, NTLM or Kerberos");
-        authenticationField.setBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0));
-
         JLabel proxyField = new JLabel("<html><b>Proxy</b></html>", JLabel.RIGHT);
         JLabel proxyInfo = new JLabel(" / Define proxy settings (e.g. TOR)");
         proxyField.setBorder(BorderFactory.createEmptyBorder(0, 0, 6, 0));
+        
+        JLabel httpClientField = new JLabel("<html><b>Http client</b></html>", JLabel.RIGHT);
+        JLabel httpClientInfo = new JLabel(" / User agent, Header");
+        httpClientField.setBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0));
+        
+        JLabel authenticationField = new JLabel("<html><b>Authentication</b></html>", JLabel.RIGHT);
+        JLabel authenticationInfo = new JLabel(" / Basic, Digest, NTLM or Kerberos");
+        authenticationField.setBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0));
         
         JLabel preferencesField = new JLabel("<html><b>Other</b></html>", JLabel.RIGHT);
         JLabel preferencesInfo = new JLabel(" / Standard options");
@@ -423,6 +427,7 @@ public class DialogPreferences extends JDialog {
                     .addComponent(checkboxIsUsingProxy)
                     .addComponent(labelProxyAddress)
                     .addComponent(labelProxyPort)
+                    .addComponent(httpClientField)
                     .addComponent(authenticationField)
                     .addComponent(checkboxUseDigestAuthentication)
                     .addComponent(labelDigestAuthenticationUsername)
@@ -442,6 +447,7 @@ public class DialogPreferences extends JDialog {
                     .addComponent(labelIsUsingProxy)
                     .addComponent(textProxyAddress)
                     .addComponent(textProxyPort)
+                    .addComponent(httpClientInfo)
                     .addComponent(authenticationInfo)
                     .addComponent(labelUseDigestAuthentication)
                     .addComponent(textDigestAuthenticationUsername)
@@ -480,6 +486,11 @@ public class DialogPreferences extends JDialog {
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(labelProxyPort)
                         .addComponent(textProxyPort)
+                ).addGroup(
+                    settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(httpClientInfo)
+                        .addComponent(httpClientField)
                 ).addGroup(
                     settingLayout
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -547,6 +558,8 @@ public class DialogPreferences extends JDialog {
         contentPane.add(settingPanel, BorderLayout.CENTER);
 
         this.pack();
+        this.widthDialog = this.getWidth();
+        this.heightDialog = this.getHeight();
         this.setMinimumSize(new Dimension(this.widthDialog, this.heightDialog));
         this.getRootPane().setDefaultButton(buttonApply);
         buttonClose.requestFocusInWindow();

@@ -23,17 +23,17 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  * Action to pause and unpause injection process.
  */
 public class ActionPauseUnpause implements ActionListener {
-    AbstractNodeModel nodeData;
+    AbstractNodeModel nodeModel;
     DefaultMutableTreeNode currentTableNode;
 
-    public ActionPauseUnpause(AbstractNodeModel nodeData, DefaultMutableTreeNode currentTableNode) {
-        this.nodeData = nodeData;
+    public ActionPauseUnpause(AbstractNodeModel nodeModel, DefaultMutableTreeNode currentTableNode) {
+        this.nodeModel = nodeModel;
         this.currentTableNode = currentTableNode;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.nodeData.elementDatabase);
+        AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.nodeModel.elementDatabase);
         
         // Exception encountered : NullPointerException
         if (suspendableTask != null) {

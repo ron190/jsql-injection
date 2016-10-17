@@ -199,8 +199,8 @@ public final class ActionHandler {
             @Override
             public boolean dispatchKeyEvent(KeyEvent e) {
                 if (e.isAltDown() && e.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D)) {
-                    MediatorGui.panelAddressBar().fieldUrl.requestFocusInWindow();
-                    MediatorGui.panelAddressBar().fieldUrl.selectAll();
+                    MediatorGui.panelAddressBar().textFieldAddress.requestFocusInWindow();
+                    MediatorGui.panelAddressBar().textFieldAddress.selectAll();
                     wasAltDPressed[0] = true;
                     return true;
                 } else if (

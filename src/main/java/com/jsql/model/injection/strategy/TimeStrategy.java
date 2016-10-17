@@ -43,20 +43,20 @@ public class TimeStrategy extends AbstractStrategy {
         
         if (this.isApplicable) {
             LOGGER.debug("Vulnerable to Time injection");
-            allow();
+            this.allow();
         } else {
-            unallow();
+            this.unallow();
         }
     }
     
     @Override
     public void allow() {
-        markVulnerable(TypeRequest.MARK_TIMEBASED_VULNERABLE);
+        this.markVulnerable(TypeRequest.MARK_TIMEBASED_VULNERABLE);
     }
 
     @Override
     public void unallow() {
-        markVulnerable(TypeRequest.MARK_TIMEBASED_INVULNERABLE);
+        this.markVulnerable(TypeRequest.MARK_TIMEBASED_INVULNERABLE);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class TimeStrategy extends AbstractStrategy {
         
         Request requestMessageBinary = new Request();
         requestMessageBinary.setMessage(TypeRequest.MESSAGE_BINARY);
-        requestMessageBinary.setParameters(timeInjection.getInfoMessage());
+        requestMessageBinary.setParameters(this.timeInjection.getInfoMessage());
         MediatorModel.model().sendToViews(requestMessageBinary);
         
         Request requestMarkTimebasedStrategy = new Request();

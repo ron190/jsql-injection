@@ -68,7 +68,7 @@ public class NormalStrategy extends AbstractStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserException {
-        return MediatorModel.model().injectWithIndexes(MediatorModel.model().vendor.instance().getSqlNormal(sqlQuery, startPosition));
+        return MediatorModel.model().injectWithIndexes(MediatorModel.model().vendor.instance().sqlNormal(sqlQuery, startPosition));
     }
 
     @Override
@@ -118,7 +118,7 @@ public class NormalStrategy extends AbstractStrategy {
         // Replace correct indexes from 1337[index]7331 to
         // ==> SQLi[index]######...######iLQS
         // Search for index that displays the most #
-        String performanceQuery = MediatorModel.model().vendor.instance().getSqlCapacity(indexes);
+        String performanceQuery = MediatorModel.model().vendor.instance().sqlCapacity(indexes);
         String performanceSourcePage = MediatorModel.model().injectWithoutIndex(performanceQuery);
 
         // Build a 2D array of string with:

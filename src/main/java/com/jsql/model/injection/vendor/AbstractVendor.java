@@ -5,19 +5,19 @@ import com.jsql.model.bean.database.Table;
 
 public abstract class AbstractVendor {    
     
-    public abstract String getSqlInfos();
-    public abstract String getSqlDatabases();
-    public abstract String getSqlTables(Database database);
-    public abstract String getSqlColumns(Table table);
-    public abstract String getSqlRows(String[] arrayColumns, Database database, Table table);
+    public abstract String sqlInfos();
+    public abstract String sqlDatabases();
+    public abstract String sqlTables(Database database);
+    public abstract String sqlColumns(Table table);
+    public abstract String sqlRows(String[] arrayColumns, Database database, Table table);
 
-    public abstract String getSqlNormal(String sqlQuery, String startPosition);
+    public abstract String sqlNormal(String sqlQuery, String startPosition);
     
-    public abstract String getSqlCapacity(String[] indexes);
-    public abstract String getSqlIndices(Integer nbFields);
-    public abstract String getSqlOrderBy();
+    public abstract String sqlCapacity(String[] indexes);
+    public abstract String sqlIndices(Integer nbFields);
+    public abstract String sqlOrderBy();
     
-    public abstract String getSqlLimit(Integer limitSQLResult);
+    public abstract String sqlLimit(Integer limitSQLResult);
     
     public abstract String sqlPrivilegeTest();
 

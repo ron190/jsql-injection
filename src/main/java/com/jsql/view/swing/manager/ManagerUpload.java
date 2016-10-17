@@ -127,28 +127,34 @@ public class ManagerUpload extends ManagerAbstractList {
                 final JFileChooser filechooser = new JFileChooser(PreferencesUtil.getPathFile());
                 filechooser.setDialogTitle(I18n.valueByKey("UPLOAD_DIALOG_TEXT"));
                 
-                int returnVal = filechooser.showOpenDialog(MediatorGui.frame());
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    for (final Object path: ManagerUpload.this.listPaths.getSelectedValuesList()) {
-                        
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                
-                                File file = filechooser.getSelectedFile();
-                                try {
-                                    ManagerUpload.this.loader.setVisible(true);
-                                    RessourceAccess.uploadFile(path.toString(), shellURL.getText(), file);
-                                } catch (JSqlException e) {
-                                    LOGGER.warn("Payload creation error: "+ e, e);
-                                } catch (IOException e) {
-                                    LOGGER.warn("Posting file failed: "+ e, e);
-                                }
-                                
-                            }
-                        }, "ThreadUpload").start();
-                        
+                try {
+                    int returnVal = filechooser.showOpenDialog(MediatorGui.frame());
+                    if (returnVal == JFileChooser.APPROVE_OPTION) {
+                        for (final Object path: ManagerUpload.this.listPaths.getSelectedValuesList()) {
+                            
+                            new Thread(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        File file = filechooser.getSelectedFile();
+                                        try {
+                                            ManagerUpload.this.loader.setVisible(true);
+                                            RessourceAccess.uploadFile(path.toString(), shellURL.getText(), file);
+                                        } catch (JSqlException e) {
+                                            LOGGER.warn("Payload creation error: "+ e, e);
+                                        } catch (IOException e) {
+                                            LOGGER.warn("Posting file failed: "+ e, e);
+                                        }
+                                    }
+                                },
+                                "ThreadUpload"
+                            ).start();
+                            
+                        }
                     }
+                } catch(NullPointerException e) {
+                    // Fix #2402 on showOpenDialog()
+                    LOGGER.error(e, e);
                 }
             }
         });

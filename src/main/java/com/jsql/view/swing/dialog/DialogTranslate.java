@@ -245,10 +245,10 @@ public class DialogTranslate extends JDialog {
                             "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql.properties"
                         );
                         sourceProperties.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}")));
-                        LOGGER.info("Source language loaded from Github");
+                        LOGGER.info("Reference language loaded from Github");
                     } catch (IOException e) {
                         sourceProperties.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql.properties"))))).replaceAll("{@|@}")));
-                        LOGGER.info("Source language loaded from local");
+                        LOGGER.info("Reference language loaded from local");
                     }
                     
                     if (language != Language.OT) {
@@ -273,7 +273,7 @@ public class DialogTranslate extends JDialog {
                             LOGGER.info("Language file not found, text to translate into "+ language +" loaded from local", eGithub);
                         }
                     } else if (sourceProperties.size() == 0) {
-                        throw new IOException("Source language not found");
+                        throw new IOException("Reference language not found");
                     }
                 } finally {
                     for (Entry<String, String> key: sourceProperties.entrySet()) {

@@ -2,6 +2,7 @@ package com.jsql.view.swing.scrollpane;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -99,7 +100,9 @@ public class LightScrollPane extends JComponent {
                 int cornerOffset = verticalScrollBar.isVisible() && horizontalScrollBar.isVisible() ? scrollBarSize : 0;
                 if (verticalScrollBar.isVisible()) {
                     verticalScrollBar.setBounds(
-                        width - scrollBarSize, 
+                        LightScrollPane.this.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT
+                        ? 0
+                        : width - scrollBarSize, 
                         0, 
                         scrollBarSize, 
                         height - cornerOffset

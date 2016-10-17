@@ -38,7 +38,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         AbstractElementDatabase searchName = (AbstractElementDatabase) args[4];
         ThreadUtil.put(searchName, this);
 
-        String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", MediatorModel.model().vendor.instance().getSqlLimit(0));
+        String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", MediatorModel.model().vendor.instance().sqlLimit(0));
 
         AbstractStrategy strategy = MediatorModel.model().getStrategy().instance();
         
@@ -135,7 +135,11 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     MediatorModel.model().sendToViews(request);
                 }
 
-                throw new InjectionFailureException("Fetching fails: no data to parse"+ (searchName != null ? " for "+searchName : ""), e);
+                throw new InjectionFailureException(
+                    "Fetching fails: no data to parse"
+                    + (searchName != null ? " for "+searchName : ""),
+                    e
+                );
             }
 
             /*
@@ -144,11 +148,13 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             regexAllLine = 
                 Pattern
                     .compile(
-                        MODE +"("
+                        MODE 
+                        +"("
                             + SEPARATOR 
                             + "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?"
                             + SEPARATOR 
-                        + ")")
+                        + ")"
+                    )
                     .matcher(slidingWindowCurrentRow);
             int nbCompleteLine = 0;
             while (regexAllLine.find()) {
@@ -299,7 +305,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                         Pattern
                             .compile(MODE +"\\{limit\\}")
                             .matcher(initialSQLQuery)
-                            .replaceAll(MediatorModel.model().vendor.instance().getSqlLimit(sqlLimit));
+                            .replaceAll(MediatorModel.model().vendor.instance().sqlLimit(sqlLimit));
 
                     slidingWindowCurrentRow = "";
                 } else {

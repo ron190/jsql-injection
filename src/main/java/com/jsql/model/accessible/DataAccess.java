@@ -70,7 +70,7 @@ public class DataAccess {
 
         String resultToParse;
         resultToParse = new SuspendableGetRows().run(
-            MediatorModel.model().vendor.instance().getSqlInfos(),
+            MediatorModel.model().vendor.instance().sqlInfos(),
             sourcePage,
             false,
             0,
@@ -110,14 +110,25 @@ public class DataAccess {
         
         List<Database> databases = new ArrayList<>();
         
-        String[] sourcePage = {""};
-        String resultToParse = new SuspendableGetRows().run(
-            MediatorModel.model().vendor.instance().getSqlDatabases(),
-            sourcePage,
-            true,
-            0,
-            null
-        );
+        String resultToParse = "";
+        try {
+            String[] sourcePage = {""};
+            resultToParse = new SuspendableGetRows().run(
+                MediatorModel.model().vendor.instance().sqlDatabases(),
+                sourcePage,
+                true,
+                0,
+                null
+            );
+        } catch (SlidingException e) {
+            LOGGER.warn(e.getMessage(), e);
+            // Get pieces of data already retreive instead of losing them
+            if (!e.getSlidingWindowAllRows().equals("")) {
+                resultToParse = e.getSlidingWindowAllRows();
+            } else if (!e.getSlidingWindowCurrentRows().equals("")) {
+                resultToParse = e.getSlidingWindowCurrentRows();
+            }
+        }
 
         // Parse all data we have retrieved
         Matcher regexSearch = 
@@ -126,7 +137,6 @@ public class DataAccess {
                 .matcher(resultToParse);
 
         if (!regexSearch.find()) {
-            MediatorModel.model().sendResponseFromSite("Fetching databases fails", sourcePage[0].trim());
             throw new InjectionFailureException("Unrecognized name of databases");
         }
         regexSearch.reset();
@@ -171,7 +181,7 @@ public class DataAccess {
         try {
             String[] pageSource = {""};
             resultToParse = new SuspendableGetRows().run(
-                MediatorModel.model().vendor.instance().getSqlTables(database),
+                MediatorModel.model().vendor.instance().sqlTables(database),
                 pageSource,
                 true,
                 Integer.parseInt(tableCount),
@@ -229,14 +239,25 @@ public class DataAccess {
         request.setParameters(table);
         MediatorModel.model().sendToViews(request);
 
-        String[] pageSource = {""};
-        String resultToParse = new SuspendableGetRows().run(
-            MediatorModel.model().vendor.instance().getSqlColumns(table),
-            pageSource,
-            true,
-            0,
-            table
-        );
+        String resultToParse = "";
+        try {
+            String[] pageSource = {""};
+            resultToParse = new SuspendableGetRows().run(
+                MediatorModel.model().vendor.instance().sqlColumns(table),
+                pageSource,
+                true,
+                0,
+                table
+            );
+        } catch (SlidingException e) {
+            LOGGER.warn(e.getMessage(), e);
+            // Get pieces of data already retreive instead of losing them
+            if (!e.getSlidingWindowAllRows().equals("")) {
+                resultToParse = e.getSlidingWindowAllRows();
+            } else if (!e.getSlidingWindowCurrentRows().equals("")) {
+                resultToParse = e.getSlidingWindowCurrentRows();
+            }
+        }
 
         // Build SQLite columns
         if (MediatorModel.model().vendor == Vendor.SQLITE) {
@@ -246,7 +267,7 @@ public class DataAccess {
             for (String columnNameAndType: resultTmp.split(",")) {
                 String columnName = columnNameAndType.trim().split(" ")[0];
                 if (!"CONSTRAINT".equals(columnName) && !"UNIQUE".equals(columnName)) {
-                    resultSQLite += (char)4 + columnName + (char)5 + "0" + (char)4 + (char)6;
+                    resultSQLite += (char) 4 + columnName + (char) 5 + "0" + (char) 4 + (char) 6;
                 }
             }
             resultToParse = resultSQLite;
@@ -259,7 +280,7 @@ public class DataAccess {
                 .matcher(resultToParse);
 
         if (!regexSearch.find()) {
-            MediatorModel.model().sendResponseFromSite("Fetching columns fails", pageSource[0].trim());
+            throw new InjectionFailureException("Unrecognized name of columns");
         } else {
             regexSearch.reset();
 
@@ -323,7 +344,7 @@ public class DataAccess {
 
         String[] pageSource = {""};
         String resultToParse = new SuspendableGetRows().run(
-            MediatorModel.model().vendor.instance().getSqlRows(arrayColumns, database, table),
+            MediatorModel.model().vendor.instance().sqlRows(arrayColumns, database, table),
             pageSource, 
             true, 
             rowCount, 

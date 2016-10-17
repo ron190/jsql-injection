@@ -7,7 +7,16 @@ import javax.swing.Icon;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
+import org.apache.log4j.Logger;
+
+import com.jsql.view.swing.interaction.MessageChunk;
+
 public class ArrowIcon implements Icon, SwingConstants {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ArrowIcon.class);
+    
     private static final int DEFAULT_SIZE = 9;
 
     private int size;
@@ -30,7 +39,12 @@ public class ArrowIcon implements Icon, SwingConstants {
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        iconRenderer.paintTriangle(g, x, y+3, size, direction, isEnabled);
+        try {
+            iconRenderer.paintTriangle(g, x, y + 3, size, direction, isEnabled);
+        } catch(ClassCastException e) {
+            // Fix #4731
+            LOGGER.error(e, e);
+        }
     }
 
     @Override

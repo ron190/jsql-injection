@@ -12,12 +12,15 @@ package com.jsql.view.swing.tree.model;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.JSeparator;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -73,7 +76,7 @@ public abstract class AbstractNodeModel {
      * True if current node has already been filled, false otherwise.
      * Used to display correct popup menu and block injection start if already done.
      */
-    public boolean isSearched = false;
+    public boolean isLoaded = false;
 
     /**
      * True if current node is loading with unknown total number, false otherwise.
@@ -118,38 +121,63 @@ public abstract class AbstractNodeModel {
      * @param x Popup menu x mouse coordinate
      * @param y Popup menu y mouse coordinate
      */
-    public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, int x, int y) {
-        JPopupMenu tablePopupMenu = new JPopupMenu();
+    public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
+        JPopupMenu popupMenuTable = new JPopupMenu();
         AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.elementDatabase);
 
-        JMenuItem mnLoad = new JMenuItem(this.isRunning ? I18n.valueByKey("THREAD_STOP") : I18n.valueByKey("THREAD_LOAD"), 'o');
-        JMenuItem mnPause = new JMenuItem(
-            // Report #133: ignore if thread not found
-            (suspendableTask != null && suspendableTask.isPaused())
-            ? I18n.valueByKey("THREAD_RESUME")
-            : I18n.valueByKey("THREAD_PAUSE")
-        , 's');
+        JMenuItem mnLoad = new JMenuItem(
+            this.isRunning 
+                ? I18n.valueByKey("THREAD_STOP") 
+                : I18n.valueByKey("THREAD_LOAD"),
+            'o'
+        );
         mnLoad.setIcon(HelperUi.ICON_EMPTY);
-        mnPause.setIcon(HelperUi.ICON_EMPTY);
-
+        
         if (!this.isContainingSelection && !this.isRunning) {
             mnLoad.setEnabled(false);
         }
         mnLoad.addActionListener(new ActionLoadStop(this, currentTableNode));
+
+        JMenuItem mnPause = new JMenuItem(
+            // Report #133: ignore if thread not found
+            (suspendableTask != null && suspendableTask.isPaused())
+                ? I18n.valueByKey("THREAD_RESUME")
+                : I18n.valueByKey("THREAD_PAUSE"), 
+            's'
+        );
+        mnPause.setIcon(HelperUi.ICON_EMPTY);
 
         if (!this.isRunning) {
             mnPause.setEnabled(false);
         }
         mnPause.addActionListener(new ActionPauseUnpause(this, currentTableNode));
 
-        this.displayMenu(tablePopupMenu, path);
-        tablePopupMenu.add(mnLoad);
-        tablePopupMenu.add(mnPause);
+        this.buildMenu(popupMenuTable, path);
+        
+        popupMenuTable.add(mnLoad);
+        popupMenuTable.add(mnPause);
+        
+        if (this.isLoaded && !this.isRunning) {
+            popupMenuTable.add(new JSeparator());
+            popupMenuTable.add(new JMenuItem("Reload"));
+        }
+        
+        popupMenuTable.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
 
-        mnLoad.setIcon(HelperUi.ICON_EMPTY);
-        mnPause.setIcon(HelperUi.ICON_EMPTY);
-
-        tablePopupMenu.show(MediatorGui.treeDatabase(), x, y);
+        popupMenuTable.show(
+            MediatorGui.treeDatabase(), 
+            ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+            ? e.getX() - popupMenuTable.getWidth()
+            : e.getX(), 
+            e.getY()
+        );
+        
+        popupMenuTable.setLocation(
+            ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+            ? e.getXOnScreen() - popupMenuTable.getWidth()
+            : e.getXOnScreen(), 
+            e.getYOnScreen()
+        );
     }
 
     /**
@@ -229,7 +257,7 @@ public abstract class AbstractNodeModel {
      * @param tablePopupMenu Menu to display
      * @param path Treepath of current node
      */
-    abstract void displayMenu(JPopupMenu tablePopupMenu, TreePath path);
+    abstract void buildMenu(JPopupMenu tablePopupMenu, TreePath path);
     
     /**
      * Check if menu should be opened.

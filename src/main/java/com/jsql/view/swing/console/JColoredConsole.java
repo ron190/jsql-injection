@@ -53,7 +53,6 @@ public class JColoredConsole extends JPopupTextPane {
      * @param attribut Font
      */
     public void append(String message, SimpleAttributeSet attribut) {
-        // Report #863: exception during report of exception
         try {
             this.getProxy().getDocument().insertString(
                 this.getProxy().getDocument().getLength(),
@@ -69,6 +68,8 @@ public class JColoredConsole extends JPopupTextPane {
                 }
             }
         } catch (Exception e) {
+            // Report #863: exception during report of exception
+            // Route message to fatal and stderr
             LOGGER.fatal(message, e);
         }
     }

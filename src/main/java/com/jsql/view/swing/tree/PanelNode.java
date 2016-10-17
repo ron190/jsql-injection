@@ -11,6 +11,7 @@
 package com.jsql.view.swing.tree;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 
@@ -23,6 +24,7 @@ import javax.swing.JTree;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.TreeNode;
 
+import com.jsql.i18n.I18n;
 import com.jsql.view.swing.HelperUi;
 
 /**
@@ -73,6 +75,7 @@ public class PanelNode extends JPanel {
         this.add(this.loader);
         this.add(this.progressBar);
         this.add(this.label);
+        this.setComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
 
         this.progressBar.setVisible(false);
         this.loader.setVisible(false);

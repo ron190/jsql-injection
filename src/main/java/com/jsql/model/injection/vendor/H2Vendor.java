@@ -17,7 +17,7 @@ import com.jsql.util.StringUtil;
 public class H2Vendor extends AbstractVendorDefault {
 
     @Override
-    public String getSqlInfos() {
+    public String sqlInfos() {
         return
             "concat(" +
                 "" +
@@ -34,7 +34,7 @@ public class H2Vendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlDatabases() {
+    public String sqlDatabases() {
         return
             "select+" +
                 "concat(" +
@@ -60,7 +60,7 @@ public class H2Vendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlTables(Database database) {
+    public String sqlTables(Database database) {
         return
             "select+" +
                 "concat(" +
@@ -85,7 +85,7 @@ public class H2Vendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlColumns(Table table) {
+    public String sqlColumns(Table table) {
         return
             "select+" +
                 "concat(" +
@@ -112,7 +112,7 @@ public class H2Vendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlRows(String[] columns, Database database, Table table) {
+    public String sqlRows(String[] columns, Database database, Table table) {
         String formatListColumn = StringUtil.join(columns, "{%}");
         
         // character 7f, last available hexa character (starting at character 80, it gives ?)
@@ -142,7 +142,7 @@ public class H2Vendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlNormal(String sqlQuery, String startPosition) {
+    public String sqlNormal(String sqlQuery, String startPosition) {
         return
         "(" +
             "select+" +
@@ -164,7 +164,7 @@ public class H2Vendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlCapacity(String[] indexes) {
+    public String sqlCapacity(String[] indexes) {
         return
             MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
@@ -173,7 +173,7 @@ public class H2Vendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlIndices(Integer nbFields) {
+    public String sqlIndices(Integer nbFields) {
         List<String> fields = new ArrayList<>(); 
         for (int i = 1 ; i <= nbFields ; i++) {
             fields.add("''||1337"+ i +"7330%2b1");
@@ -182,12 +182,12 @@ public class H2Vendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlOrderBy() {
+    public String sqlOrderBy() {
         return "+order+by+1337--+";
     }
 
     @Override
-    public String getSqlLimit(Integer limitSQLResult) {
+    public String sqlLimit(Integer limitSQLResult) {
         return "+limit+" + limitSQLResult + ",65536";
     }
 }

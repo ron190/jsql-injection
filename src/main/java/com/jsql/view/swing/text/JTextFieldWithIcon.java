@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.jsql.view.swing.text;
 
+import java.awt.ComponentOrientation;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.net.URL;
@@ -18,11 +19,20 @@ import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
+import org.apache.log4j.Logger;
+
+import com.jsql.i18n.I18n;
+import com.jsql.view.swing.HelperUi;
+
 /**
  * A JTextField with globe icon displayed on the left. 
  */
 @SuppressWarnings("serial")
 public class JTextFieldWithIcon extends JTextFieldPlaceholder {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(JTextFieldWithIcon.class);
 
     public JTextFieldWithIcon(String placeholder) {
         super(placeholder);
@@ -32,7 +42,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        URL url = JTextFieldWithIcon.class.getResource("/com/jsql/view/swing/resources/images/icons/globe.png");
+        URL url = HelperUi.URL_GLOBE;
         if (url == null) {
             // Fix NullPointerException in constructor ImageIcon()
             return;
@@ -42,7 +52,8 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
         try {
             image = new ImageIcon(url).getImage();
         } catch (IllegalArgumentException e) {
-            // Ignore Exception when globe.png is unavailable
+            // Exception if globe.png is unavailable
+            LOGGER.error("Handled Exception: "+ e, e);
         }
 
         Border border = UIManager.getBorder("TextField.border");
@@ -52,9 +63,16 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
 
         // Fix #1654 (Linux only) : ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData
         try {
-            g.drawImage(image, x + 4, y + 1, this);
+            g.drawImage(
+                image,
+                ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                ? JTextFieldWithIcon.this.getWidth() - (16 + x + 4)
+                : x + 4, 
+                y + 1, 
+                this
+            );
         } catch (ClassCastException e) {
-            // Ignore Exception
+            LOGGER.error("Handled Exception: "+ e, e);
         }
     }
 }

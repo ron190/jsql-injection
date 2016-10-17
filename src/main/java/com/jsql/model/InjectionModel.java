@@ -316,7 +316,7 @@ public class InjectionModel extends AbstractModelObservable {
 
                 urlObject = new URL(urlInjection);
             } catch (MalformedURLException e) {
-                LOGGER.warn("Incorrect Evasion Url "+ e, e);
+                LOGGER.warn("Incorrect Evasion Url: "+ e, e);
             }
         }
         

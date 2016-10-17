@@ -15,7 +15,7 @@ import com.jsql.util.StringUtil;
 public class TeradataVendor extends AbstractVendorDefault {
 
     @Override
-    public String getSqlInfos() {
+    public String sqlInfos() {
         return
             "select'-'||'"+ SEPARATOR_SQL +"'||" +
             "database||'"+ SEPARATOR_SQL +"'||" +
@@ -25,21 +25,21 @@ public class TeradataVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlDatabases() {
+    public String sqlDatabases() {
         return
             "select+'"+ SEPARATOR_SQL +"'||DatabaseName||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'FROM" +
             "(select+DatabaseName,ROW_NUMBER()over(ORDER+BY+DatabaseName)AS+rnum+from+DBC.DBASE)x+where+1=1+{limit}";
     }
 
     @Override
-    public String getSqlTables(Database database) {
+    public String sqlTables(Database database) {
         return
             "select+'"+ SEPARATOR_SQL +"'||TVMName||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'FROM" +
             "(select+TVMName,ROW_NUMBER()over(ORDER+BY+TVMName)AS+rnum+from+DBC.TVM+t+inner+join+DBC.DBASE+d+on+t.DatabaseId=d.DatabaseId+where+DatabaseName='" + database + "')x+where+1=1+{limit}";
     }
 
     @Override
-    public String getSqlColumns(Table table) {
+    public String sqlColumns(Table table) {
         return
             "select+'"+ SEPARATOR_SQL +"'||FieldName||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +""+ TRAIL_SQL +"'FROM" +
             "(select+FieldName,ROW_NUMBER()over(ORDER+BY+FieldName)AS+rnum+from(select+distinct+FieldName+"
@@ -52,7 +52,7 @@ public class TeradataVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlRows(String[] columns, Database database, Table table) {
+    public String sqlRows(String[] columns, Database database, Table table) {
         String formatListColumn = StringUtil.join(columns, ",''))||'%7f'||trim(coalesce(''||");
         formatListColumn = "trim(coalesce(''||" + formatListColumn + ",''))";
         
@@ -61,7 +61,7 @@ public class TeradataVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlNormal(String sqlQuery, String startPosition) {
+    public String sqlNormal(String sqlQuery, String startPosition) {
         return
             "select+" +
                 /**
@@ -74,7 +74,7 @@ public class TeradataVendor extends AbstractVendorDefault {
      }
 
      @Override
-     public String getSqlCapacity(String[] indexes) {
+     public String sqlCapacity(String[] indexes) {
          return
              MediatorModel.model().getIndexesInUrl().replaceAll(
                  "1337(" + StringUtil.join(indexes, "|") + ")7331",
@@ -83,7 +83,7 @@ public class TeradataVendor extends AbstractVendorDefault {
      }
 
     @Override
-    public String getSqlIndices(Integer nbFields) {
+    public String sqlIndices(Integer nbFields) {
         List<String> fields = new ArrayList<>(); 
         for (int i = 1 ; i <= nbFields ; i++) {
             fields.add("trim(''||(1337"+ i +"7330%2b1))");
@@ -92,12 +92,12 @@ public class TeradataVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlOrderBy() {
+    public String sqlOrderBy() {
         return "+order+by+1337--+";
     }
 
     @Override
-    public String getSqlLimit(Integer limitSQLResult) {
+    public String sqlLimit(Integer limitSQLResult) {
         return "and+rnum+BETWEEN+" + (limitSQLResult+1) + "+AND+" + (limitSQLResult+1) + "";
     }
 }

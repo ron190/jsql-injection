@@ -50,7 +50,7 @@ public class MenuActionNewValue implements ActionListener {
         final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
         JLabel labelAddValue = new JLabel(I18n.valueByKey("LIST_ADD_VALUE_LABEL") + ":");
         panel.add(labelAddValue, BorderLayout.NORTH);
-        I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", labelAddValue);
+        I18n.addComponentForKey("LIST_ADD_VALUE_LABEL", labelAddValue);
         panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
         
         panel.setPreferredSize(new Dimension(300, 200));

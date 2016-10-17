@@ -20,6 +20,8 @@ import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.model.bean.util.TypeHeader;
 import com.jsql.view.swing.MediatorGui;
@@ -29,6 +31,11 @@ import com.jsql.view.swing.scrollpane.JScrollIndicator;
  * Append a text to the tab Header.
  */
 public class MessageHeader implements InteractionCommand {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(MessageHeader.class);
+    
     // The text to append to the tab
     private String url;
     private String post;
@@ -58,19 +65,25 @@ public class MessageHeader implements InteractionCommand {
         JTable table = (JTable) viewport.getView();
         
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        model.addRow(new Object[]{response.get("Method"), url, response.get("Content-Length"), response.get("Content-Type")});
         
-        Rectangle rect = table.getCellRect(table.getRowCount() - 1, 0, true);
-        Point pt = viewport.getViewPosition();
-        rect.translate(-pt.x, -pt.y);
-        viewport.scrollRectToVisible(rect);
-        
-        int tabIndex = MediatorGui.tabConsoles().indexOfTab("Network");
-        if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
-            Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
-            if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
-                tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
+        try {
+            model.addRow(new Object[]{response.get("Method"), url, response.get("Content-Length"), response.get("Content-Type")});
+            
+            Rectangle rect = table.getCellRect(table.getRowCount() - 1, 0, true);
+            Point pt = viewport.getViewPosition();
+            rect.translate(-pt.x, -pt.y);
+            viewport.scrollRectToVisible(rect);
+            
+            int tabIndex = MediatorGui.tabConsoles().indexOfTab("Network");
+            if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
+                Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
+                if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
+                    tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
+                }
             }
+        } catch(NullPointerException | IndexOutOfBoundsException e) {
+            // Fix #4658, #2653, #2224, #1797 on model.addRow()
+            LOGGER.error(e, e);
         }
     }
 }

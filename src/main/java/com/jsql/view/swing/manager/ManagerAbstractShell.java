@@ -146,7 +146,7 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
                 try {
                     new URL(ManagerAbstractShell.this.urlShell.getText());
                 } catch (MalformedURLException e) {
-                    LOGGER.warn("URL is malformed: "+ e, e);
+                    LOGGER.warn("Incorrect URL: "+ e, e);
                     return;
                 }
             }

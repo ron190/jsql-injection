@@ -18,11 +18,20 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.JTextComponent;
 
+import org.apache.log4j.Logger;
+
+import com.jsql.view.swing.text.JTextAreaPlaceholder;
+
 /**
  * A caret in a block shape.
  */
 @SuppressWarnings("serial")
 public class BlockCaret extends DefaultCaret {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(BlockCaret.class);
+    
     /**
      * Create a caret shaped for terminal.
      */
@@ -74,6 +83,7 @@ public class BlockCaret extends DefaultCaret {
             }
             dotChar = comp.getText(dot, 1).charAt(0);
         } catch (BadLocationException e) {
+            LOGGER.error("Handled Exception: "+ e, e);
             return;
         }
 

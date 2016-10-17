@@ -11,6 +11,7 @@
 package com.jsql.view.swing;
 
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
@@ -33,6 +34,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.util.Request;
@@ -148,6 +150,8 @@ public class JFrameView extends JFrame implements Observer {
             }
         });
         
+        this.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
+        
         // Size of window
         this.setSize(1024, 768);
         this.setVisible(true);
@@ -229,7 +233,14 @@ public class JFrameView extends JFrame implements Observer {
         // Empty infos tabs
         MediatorGui.panelConsoles().chunkTab.setText("");
         MediatorGui.panelConsoles().binaryTab.setText("");
-        ((DefaultTableModel) MediatorGui.panelConsoles().networkTable.getModel()).setRowCount(0);
+        
+        try {
+            ((DefaultTableModel) MediatorGui.panelConsoles().networkTable.getModel()).setRowCount(0);
+        } catch(NullPointerException | ArrayIndexOutOfBoundsException e) {
+            // Fix #4657, #1860
+            LOGGER.error(e, e);
+        }
+        
         MediatorGui.panelConsoles().javaTab.getProxy().setText("");
         
         MediatorGui.panelConsoles().networkTabHeader.setText("");

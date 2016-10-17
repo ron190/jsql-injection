@@ -18,7 +18,7 @@ import com.jsql.util.StringUtil;
 public class PostgreSQLVendor extends AbstractVendorDefault {
 
     @Override
-    public String getSqlInfos() {
+    public String sqlInfos() {
         return
             "concat_ws(" +
                 "'"+ SEPARATOR_SQL +"'," +
@@ -31,7 +31,7 @@ public class PostgreSQLVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlDatabases() {
+    public String sqlDatabases() {
         return
             "select+array_to_string(array(" +
                 "select" +
@@ -55,7 +55,7 @@ public class PostgreSQLVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlTables(Database database) {
+    public String sqlTables(Database database) {
         return
             "select+array_to_string(array(" +
                 "select" +
@@ -78,7 +78,7 @@ public class PostgreSQLVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlColumns(Table table) {
+    public String sqlColumns(Table table) {
         return
             "select+array_to_string(array(" +
                 "select" +
@@ -102,7 +102,7 @@ public class PostgreSQLVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlRows(String[] columns, Database database, Table table) {
+    public String sqlRows(String[] columns, Database database, Table table) {
         String formatListColumn = StringUtil.join(columns, "::text,''))||'%7f'||trim(coalesce(");
         formatListColumn = "trim(coalesce(" + formatListColumn + "::text,''))";
         
@@ -211,7 +211,7 @@ public class PostgreSQLVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlNormal(String sqlQuery, String startPosition) {
+    public String sqlNormal(String sqlQuery, String startPosition) {
         return
             "select+" +
                 /**
@@ -225,7 +225,7 @@ public class PostgreSQLVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlCapacity(String[] indexes) {
+    public String sqlCapacity(String[] indexes) {
         return
             MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
@@ -234,7 +234,7 @@ public class PostgreSQLVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlIndices(Integer nbFields) {
+    public String sqlIndices(Integer nbFields) {
         List<String> fields = new ArrayList<>(); 
         for (int i = 1 ; i <= nbFields ; i++) {
             fields.add("(1337"+ i +"7330%2b1)::text");
@@ -243,12 +243,12 @@ public class PostgreSQLVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlOrderBy() {
+    public String sqlOrderBy() {
         return "+order+by+1337--+";
     }
 
     @Override
-    public String getSqlLimit(Integer limitSQLResult) {
+    public String sqlLimit(Integer limitSQLResult) {
         return "+limit+65536+offset+" + limitSQLResult;
     }
 }

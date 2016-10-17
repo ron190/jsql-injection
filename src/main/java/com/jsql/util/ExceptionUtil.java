@@ -20,11 +20,11 @@ public class ExceptionUtil {
         @Override
         public void uncaughtException(Thread thread, Throwable thrown) {
             // for other uncaught exceptions
-            handleException(thread.getName(), thrown);
+            this.handleException(thread.getName(), thrown);
         }
         
         protected void handleException(String threadName, Throwable throwable) {
-            LOGGER.error("Exception on "+ threadName, throwable);
+            LOGGER.error("Unhandled Exception on "+ threadName, throwable);
             
             //  Report #214: ignore if OutOfMemoryError: Java heap space
             if (

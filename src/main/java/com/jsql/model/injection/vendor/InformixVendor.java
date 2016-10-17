@@ -15,13 +15,13 @@ import com.jsql.util.StringUtil;
 public class InformixVendor extends AbstractVendorDefault {
 
     @Override
-    public String getSqlInfos() {
+    public String sqlInfos() {
         return
             "SELECT+trim(DBINFO('version','full')||'"+ SEPARATOR_SQL +"'||DBSERVERNAME||'"+ SEPARATOR_SQL +"'||USER||'"+ TRAIL_SQL +"')r+FROM+TABLE(SET{1})";
     }
 
     @Override
-    public String getSqlDatabases() {
+    public String sqlDatabases() {
         return
             "select+rr||'"+ TRAIL_SQL +"'+r+from(select'"+ SEPARATOR_SQL +"'||trim(t.name)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+name+from+sysdatabases)t,(select+distinct+name+from+sysdatabases)t1+" +
@@ -30,7 +30,7 @@ public class InformixVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlTables(Database database) {
+    public String sqlTables(Database database) {
         return
             "select+rr||'"+ TRAIL_SQL +"'+r+from(select+'"+ SEPARATOR_SQL +"'||trim(t.tabname)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+tabname+from+" + database + ":systables)t,(select+distinct+tabname+from+" + database + ":systables)t1+" +
@@ -39,7 +39,7 @@ public class InformixVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlColumns(Table table) {
+    public String sqlColumns(Table table) {
         return
             "select+rr||'"+ TRAIL_SQL +"'+r+from(select+'"+ SEPARATOR_SQL +"'||trim(t.colname)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"'rr+" +
             "from(select+distinct+colname+from+" + table.getParent() + ":syscolumns+c+join+" + table.getParent() + ":systables+t+on+c.tabid=t.tabid+where+tabname='" + table + "')t,(select+distinct+colname+from+" + table.getParent() + ":syscolumns+c+join+" + table.getParent() + ":systables+t+on+c.tabid=t.tabid+where+tabname='" + table + "')t1+" +
@@ -48,7 +48,7 @@ public class InformixVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlRows(String[] columns, Database database, Table table) {
+    public String sqlRows(String[] columns, Database database, Table table) {
         String formatListColumn = StringUtil.join(columns, "{%}");
         
         formatListColumn = formatListColumn.replace("{%}", ",''))||'%7f'||trim(nvl(");
@@ -62,13 +62,13 @@ public class InformixVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlNormal(String sqlQuery, String startPosition) {
+    public String sqlNormal(String sqlQuery, String startPosition) {
         return
             "select'SQLi'||substr(r," + startPosition + ",32767)from(" + sqlQuery + ")x";
     }
 
     @Override
-    public String getSqlCapacity(String[] indexes) {
+    public String sqlCapacity(String[] indexes) {
         return
             MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
@@ -77,7 +77,7 @@ public class InformixVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlIndices(Integer nbFields) {
+    public String sqlIndices(Integer nbFields) {
         String replaceTag = "";
         List<String> fields = new ArrayList<>(); 
         for (int i = 1 ; i <= nbFields ; i++) {
@@ -88,12 +88,12 @@ public class InformixVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlOrderBy() {
+    public String sqlOrderBy() {
         return "+order+by+1337+";
     }
 
     @Override
-    public String getSqlLimit(Integer limitSQLResult) {
+    public String sqlLimit(Integer limitSQLResult) {
         return "+having+count(*)+between+" + (limitSQLResult+1) + "+and+" + (limitSQLResult+1);
     }
 }

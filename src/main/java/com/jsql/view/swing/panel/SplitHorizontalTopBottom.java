@@ -109,7 +109,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
 
         buttonHideConsoles.addActionListener(SplitHorizontalTopBottom.ACTION_HIDE_SHOW_CONSOLE);
         PANEL_HIDDEN_CONSOLES.add(Box.createHorizontalGlue());
-        PANEL_HIDDEN_CONSOLES.add(buttonHideConsoles, BorderLayout.EAST);
+        PANEL_HIDDEN_CONSOLES.add(buttonHideConsoles, BorderLayout.LINE_END);
         PANEL_HIDDEN_CONSOLES.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
         PANEL_HIDDEN_CONSOLES.setVisible(false);
 

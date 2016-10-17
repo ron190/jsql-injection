@@ -12,7 +12,9 @@ package com.jsql.view.swing.tree.model;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.ComponentOrientation;
 import java.awt.Font;
+import java.awt.event.MouseEvent;
 
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
@@ -21,6 +23,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
+import com.jsql.i18n.I18n;
 import com.jsql.model.bean.database.Column;
 
 /**
@@ -49,6 +52,7 @@ public class NodeModelColumn extends AbstractNodeModel {
             )
         );
         checkbox.setBackground(Color.WHITE);
+        checkbox.setComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
         return checkbox;
     }
 
@@ -62,11 +66,11 @@ public class NodeModelColumn extends AbstractNodeModel {
         // Do nothing
     }
     @Override 
-    void displayMenu(JPopupMenu tablePopupMenu, TreePath path) {
+    void buildMenu(JPopupMenu tablePopupMenu, TreePath path) {
         // Do nothing
     }
     @Override 
-    public void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, int i, int j) {
+    public void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
         // Do nothing
     }
     @Override 

@@ -65,6 +65,8 @@ public final class HelperUi {
     public static final Color COLOR_COMPONENT_BORDER = UIManager.getColor("controlShadow");
     public static final Color COLOR_FOCUS_LOST = new Color(248, 249, 249);
     
+    public static final URL URL_GLOBE = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/globe.png");
+    
     public static final Icon ICON_TICK = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/check.png"));
     public static final Icon ICON_SQUARE_RED = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/squareRed.png"));
     public static final Icon ICON_SQUARE_GREY = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/icons/squareGrey.png"));
@@ -107,10 +109,10 @@ public final class HelperUi {
     public static final Icon ICON_FLAG_HI = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/hi.png"));
     public static final Icon ICON_FLAG_CS = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/cs.png"));
     
-    public static final URL ICON_16 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug16.png");
-    public static final URL ICON_32 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug32.png");
-    public static final URL ICON_96 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug96.png");
-    public static final URL ICON_128 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug128.png");
+    public static final URL URL_ICON_16 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug16.png");
+    public static final URL URL_ICON_32 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug32.png");
+    public static final URL URL_ICON_96 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug96.png");
+    public static final URL URL_ICON_128 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug128.png");
 
     public static final Icon ICON_EMPTY = new ImageIcon(new BufferedImage(16, 16, BufferedImage.TRANSLUCENT));
     public static final Icon ICON_ZERO_SIZE = new ImageIcon() {
@@ -221,6 +223,7 @@ public final class HelperUi {
         UIManager.put("Menu.borderPainted", false);
         UIManager.put("PopupMenu.font", FONT_SEGOE);
         UIManager.put("RadioButtonMenuItem.selectionBackground", COLOR_SELECTION_BACKGROUND);
+        UIManager.put("RadioButtonMenuItem.font", FONT_SEGOE);
         UIManager.put("RadioButtonMenuItem.borderPainted", false);
         UIManager.put("MenuItem.selectionBackground", COLOR_SELECTION_BACKGROUND);
         UIManager.put("MenuItem.font", FONT_SEGOE);
@@ -333,10 +336,10 @@ public final class HelperUi {
     public static List<Image> getIcons() {
         List<Image> images = new ArrayList<>();
         try {
-            images.add(ImageIO.read(HelperUi.ICON_128));
-            images.add(ImageIO.read(HelperUi.ICON_96));
-            images.add(ImageIO.read(HelperUi.ICON_32));
-            images.add(ImageIO.read(HelperUi.ICON_16));
+            images.add(ImageIO.read(HelperUi.URL_ICON_128));
+            images.add(ImageIO.read(HelperUi.URL_ICON_96));
+            images.add(ImageIO.read(HelperUi.URL_ICON_32));
+            images.add(ImageIO.read(HelperUi.URL_ICON_16));
         } catch (IOException e) {
             LOGGER.error(e, e);
         }

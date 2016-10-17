@@ -22,12 +22,18 @@ import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 import javax.swing.TransferHandler;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
 @SuppressWarnings("serial")
 public class DnDTabbedPane extends JTabbedPane {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(DnDTabbedPane.class);
     
     private static final int LINEWIDTH = 3;
     
@@ -319,7 +325,16 @@ public class DnDTabbedPane extends JTabbedPane {
     private class Handler extends MouseAdapter implements PropertyChangeListener { //, BeforeDrag
         private Point startPt;
         
-        int gestureMotionThreshold = DragSource.getDragThreshold();
+        int gestureMotionThreshold;
+        
+        Handler() {
+            try {
+                gestureMotionThreshold = DragSource.getDragThreshold();
+            } catch(RuntimeException e) {
+                // Fix #2205
+                LOGGER.error(e, e);
+            }
+        }
         
         private void repaintDropLocation(DropLocation loc) {
             Component c = getRootPane().getGlassPane();
@@ -344,7 +359,7 @@ public class DnDTabbedPane extends JTabbedPane {
         // MouseListener
         @Override
         public void mousePressed(MouseEvent e) {
-            DnDTabbedPane src = (DnDTabbedPane)e.getSource();
+            DnDTabbedPane src = (DnDTabbedPane) e.getSource();
             if (src.getTabCount() <= 1) {
                 startPt = null;
                 return;

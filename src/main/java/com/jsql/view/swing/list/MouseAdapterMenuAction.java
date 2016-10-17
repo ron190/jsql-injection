@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.list;
 
+import java.awt.ComponentOrientation;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -58,24 +59,32 @@ public class MouseAdapterMenuAction extends MouseAdapter {
         if (e.isPopupTrigger()) {
             JList<ListItem> list = (JList<ListItem>) e.getSource();
 
-            JPopupMenu tablePopupMenu = new JPopupMenu();
+            JPopupMenu popupMenuList = new JPopupMenu();
 
             JMenuItem mnImport = new JMenuItem(I18n.valueByKey("LIST_IMPORT_CONFIRM_TITLE"));
             I18n.addComponentForKey("LIST_IMPORT_CONFIRM_TITLE", mnImport);
+            
             JMenuItem mnExport = new JMenuItem(I18n.valueByKey("LIST_EXPORT_TITLE"));
             I18n.addComponentForKey("LIST_EXPORT_TITLE", mnExport);
+            
             JMenuItem mnCut = new JMenuItem(I18n.valueByKey("LIST_CUT"));
             I18n.addComponentForKey("LIST_CUT", mnCut);
+            
             JMenuItem mnCopy = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_COPY"));
             I18n.addComponentForKey("CONTEXT_MENU_COPY", mnCopy);
+            
             JMenuItem mnPaste = new JMenuItem(I18n.valueByKey("LIST_PASTE"));
             I18n.addComponentForKey("LIST_PASTE", mnPaste);
+            
             JMenuItem mnDelete = new JMenuItem(I18n.valueByKey("LIST_DELETE"));
             I18n.addComponentForKey("LIST_DELETE", mnDelete);
+            
             JMenuItem mnNew = new JMenuItem(I18n.valueByKey("LIST_NEW_VALUE"));
             I18n.addComponentForKey("LIST_NEW_VALUE", mnNew);
+            
             JMenuItem mnRestoreDefault = new JMenuItem(I18n.valueByKey("LIST_RESTORE_DEFAULT"));
             I18n.addComponentForKey("LIST_RESTORE_DEFAULT", mnRestoreDefault);
+            
             JMenuItem mnSelectAll = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"));
             I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", mnSelectAll);
             
@@ -177,21 +186,36 @@ public class MouseAdapterMenuAction extends MouseAdapter {
                 }
             });
 
-            tablePopupMenu.add(mnNew);
-            tablePopupMenu.add(new JSeparator());
-            tablePopupMenu.add(mnCut);
-            tablePopupMenu.add(mnCopy);
-            tablePopupMenu.add(mnPaste);
-            tablePopupMenu.add(mnDelete);
-            tablePopupMenu.add(new JSeparator());
-            tablePopupMenu.add(mnSelectAll);
-            tablePopupMenu.add(new JSeparator());
-            tablePopupMenu.add(mnImport);
-            tablePopupMenu.add(mnExport);
-            tablePopupMenu.add(new JSeparator());
-            tablePopupMenu.add(mnRestoreDefault);
+            popupMenuList.add(mnNew);
+            popupMenuList.add(new JSeparator());
+            popupMenuList.add(mnCut);
+            popupMenuList.add(mnCopy);
+            popupMenuList.add(mnPaste);
+            popupMenuList.add(mnDelete);
+            popupMenuList.add(new JSeparator());
+            popupMenuList.add(mnSelectAll);
+            popupMenuList.add(new JSeparator());
+            popupMenuList.add(mnImport);
+            popupMenuList.add(mnExport);
+            popupMenuList.add(new JSeparator());
+            popupMenuList.add(mnRestoreDefault);
+            
+            popupMenuList.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
 
-            tablePopupMenu.show(list, e.getX(), e.getY());
+            popupMenuList.show(
+                list,
+                ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                ? e.getX() - popupMenuList.getWidth()
+                : e.getX(), 
+                e.getY()
+            );
+            
+            popupMenuList.setLocation(
+                ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                ? e.getXOnScreen() - popupMenuList.getWidth()
+                : e.getXOnScreen(), 
+                e.getYOnScreen()
+            );
         }
     }
 

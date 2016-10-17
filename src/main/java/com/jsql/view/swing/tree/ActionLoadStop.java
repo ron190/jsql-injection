@@ -30,11 +30,11 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  * Action to start and stop injection process.
  */
 public class ActionLoadStop implements ActionListener {
-    AbstractNodeModel nodeData;
+    AbstractNodeModel nodeModel;
     DefaultMutableTreeNode currentTableNode;
 
-    public ActionLoadStop(AbstractNodeModel nodeData, DefaultMutableTreeNode currentTableNode) {
-        this.nodeData = nodeData;
+    public ActionLoadStop(AbstractNodeModel nodeModel, DefaultMutableTreeNode currentTableNode) {
+        this.nodeModel = nodeModel;
         this.currentTableNode = currentTableNode;
     }
 
@@ -55,11 +55,11 @@ public class ActionLoadStop implements ActionListener {
             }
         }
 
-        if (!this.nodeData.isRunning && columnsToSearch.isEmpty()) {
+        if (!this.nodeModel.isRunning && columnsToSearch.isEmpty()) {
             return;
         }
 
-        if (!this.nodeData.isRunning) {
+        if (!this.nodeModel.isRunning) {
             new SwingWorker<Object, Object>(){
                 @Override
                 protected Object doInBackground() throws Exception {
@@ -68,7 +68,7 @@ public class ActionLoadStop implements ActionListener {
                 }
             }.execute();
         } else {
-            AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.nodeData.elementDatabase);
+            AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.nodeModel.elementDatabase);
             
             if (suspendableTask != null) {
                 suspendableTask.stop();
@@ -76,12 +76,12 @@ public class ActionLoadStop implements ActionListener {
                 suspendableTask.resume();
             }
             
-            this.nodeData.indexProgress = 0;
-            this.nodeData.isProgressing = false;
-            this.nodeData.isLoading = false;
+            this.nodeModel.indexProgress = 0;
+            this.nodeModel.isProgressing = false;
+            this.nodeModel.isLoading = false;
             
-            ThreadUtil.remove(this.nodeData.elementDatabase);
+            ThreadUtil.remove(this.nodeModel.elementDatabase);
         }
-        this.nodeData.isRunning = !this.nodeData.isRunning;
+        this.nodeModel.isRunning = !this.nodeModel.isRunning;
     }
 }

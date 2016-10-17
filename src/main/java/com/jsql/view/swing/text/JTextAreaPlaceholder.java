@@ -1,6 +1,7 @@
 package com.jsql.view.swing.text;
 
 import java.awt.Color;
+import java.awt.ComponentOrientation;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -10,11 +11,18 @@ import java.awt.RenderingHints;
 
 import javax.swing.JTextArea;
 
+import org.apache.log4j.Logger;
+
 /**
  * Textfield with information text displayed when empty.
  */
 @SuppressWarnings("serial")
 public class JTextAreaPlaceholder extends JTextArea {
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getLogger(JTextAreaPlaceholder.class);
+    
     /**
      * Text to display when empty.
      */
@@ -27,7 +35,7 @@ public class JTextAreaPlaceholder extends JTextArea {
      */
     public JTextAreaPlaceholder(String placeholder, String value) {
         this(placeholder);
-        setText(value);
+        this.setText(value);
     }
     
     /**
@@ -40,18 +48,35 @@ public class JTextAreaPlaceholder extends JTextArea {
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
-        if (getText().length() == 0) {
-            ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            Insets ins = getInsets();
+        // Fix #6350
+        try {
+            super.paint(g);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            LOGGER.error("Handled Exception: "+ e, e);
+        }
+        
+        if (this.getText().length() == 0) {
+            int w = this.getWidth();
+            
+            ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            Insets ins = this.getInsets();
             FontMetrics fm = g.getFontMetrics();
-            int c0 = getBackground().getRGB();
-            int c1 = getForeground().getRGB();
+            
+            int c0 = this.getBackground().getRGB();
+            int c1 = this.getForeground().getRGB();
             int m = 0xfefefefe;
             int c2 = ((c0 & m) >>> 1) + ((c1 & m) >>> 1);
+            
             g.setColor(new Color(c2, true));
             g.setFont(this.getFont().deriveFont(Font.ITALIC));
-            g.drawString(placeholderText, ins.left + 2,  fm.getAscent() + 2);
+            
+            g.drawString(
+                placeholderText, 
+                this.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT
+                    ? w - (fm.stringWidth(placeholderText) + ins.left + 2)
+                    : ins.left + 2, 
+                fm.getAscent() + 2
+            );
         }
     }
 }

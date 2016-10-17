@@ -78,7 +78,7 @@ public class AddTables implements InteractionCommand {
             // Open the database node
             MediatorGui.treeDatabase().expandPath(new TreePath(databaseNode.getPath()));
             // The database has just been search (avoid double check)
-            ((AbstractNodeModel) databaseNode.getUserObject()).isSearched = true;
+            ((AbstractNodeModel) databaseNode.getUserObject()).isLoaded = true;
         }
     }
 }

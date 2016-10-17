@@ -122,8 +122,8 @@ public class DialogAbout extends JDialog {
             public void actionPerformed(ActionEvent arg0) {
                 try {
                     Desktop.getDesktop().browse(new URI("https://github.com/ron190/jsql-injection"));
-                } catch (IOException | URISyntaxException e) {
-                    LOGGER.error(e, e);
+                } catch (IOException | URISyntaxException | UnsupportedOperationException e) {
+                    LOGGER.warn(e, e);
                 }
             }
         });
@@ -144,7 +144,7 @@ public class DialogAbout extends JDialog {
         lastLine.add(Box.createGlue());
         lastLine.add(this.buttonClose);
 
-        JLabel iconJSQL = new JLabel(new ImageIcon(HelperUi.ICON_96));
+        JLabel iconJSQL = new JLabel(new ImageIcon(HelperUi.URL_ICON_96));
         dialogPane.add(iconJSQL, BorderLayout.WEST);
         dialogPane.add(lastLine, BorderLayout.SOUTH);
 

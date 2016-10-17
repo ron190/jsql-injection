@@ -11,6 +11,7 @@
 package com.jsql.view.swing.panel;
 
 import java.awt.BorderLayout;
+import java.awt.ComponentOrientation;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -32,7 +33,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
 import javax.swing.JToolTip;
-import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
 import org.apache.log4j.Logger;
@@ -44,8 +44,8 @@ import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.radio.RadioLinkMethod;
-import com.jsql.view.swing.text.JAddressBar;
 import com.jsql.view.swing.text.JPopupTextField;
+import com.jsql.view.swing.text.JTextFieldAddressBar;
 import com.jsql.view.swing.text.JTextFieldPlaceholder;
 import com.jsql.view.swing.text.JTextFieldWithIcon;
 import com.jsql.view.swing.text.JToolTipI18n;
@@ -66,17 +66,17 @@ public class PanelAddressBar extends JPanel {
      * Textfield decorated as an address bar.
      * Used by GET method.
      */
-    public JTextField fieldUrl;
+    public JTextField textFieldAddress;
     
     /**
      * Used by POST method.
      */
-    private JTextField fieldRequest;
+    private JTextField textFieldRequest;
     
     /**
      * Used by HEADER method.
      */
-    private JTextField fieldHeader;
+    private JTextField textFieldHeader;
 
     /**
      * Current injection method.
@@ -107,12 +107,12 @@ public class PanelAddressBar extends JPanel {
                 return tipI18n;
             }
         };
-        fieldUrl = new JAddressBar(fieldWithIcon).getProxy();
+        textFieldAddress = new JTextFieldAddressBar(fieldWithIcon).getProxy();
         I18n.addComponentForKey("ADDRESS_BAR", fieldWithIcon);
         I18n.addComponentForKey("FIELD_QUERYSTRING_TOOLTIP", j[0]);
         
         final JToolTipI18n[] j2 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("FIELD_REQUEST_TOOLTIP"))};
-        fieldRequest = new JPopupTextField(new JTextFieldPlaceholder("e.g. key=value&injectMe="){
+        textFieldRequest = new JPopupTextField(new JTextFieldPlaceholder("e.g. key=value&injectMe="){
             @Override
             public JToolTip createToolTip() {
                 JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("FIELD_REQUEST_TOOLTIP"));
@@ -123,7 +123,7 @@ public class PanelAddressBar extends JPanel {
         I18n.addComponentForKey("FIELD_REQUEST_TOOLTIP", j2[0]);
         
         final JToolTipI18n[] j3 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("FIELD_HEADER_TOOLTIP"))};
-        fieldHeader = new JPopupTextField(new JTextFieldPlaceholder("e.g. key:value\\r\\nCookie:cKey=cValue\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\ninjectMe:"){
+        textFieldHeader = new JPopupTextField(new JTextFieldPlaceholder("e.g. key:value\\r\\nCookie:cKey=cValue\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\ninjectMe:"){
             @Override
             public JToolTip createToolTip() {
                 JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("FIELD_HEADER_TOOLTIP"));
@@ -133,14 +133,15 @@ public class PanelAddressBar extends JPanel {
         }).getProxy();
         I18n.addComponentForKey("FIELD_HEADER_TOOLTIP", j3[0]);
                 
-        final RadioLinkMethod radioURL = new RadioLinkMethod("GET", true, MethodInjection.QUERY);
+        final RadioLinkMethod radioQueryString = new RadioLinkMethod("GET", true, MethodInjection.QUERY);
         final RadioLinkMethod radioMethod = new RadioLinkMethod("POST", MethodInjection.REQUEST);
         final RadioLinkMethod radioHeader = new RadioLinkMethod("Header", MethodInjection.HEADER);
         
         final JPanel panelHttpProtocol = new JPanel();
-        panelHttpProtocol.setLayout(new BoxLayout(panelHttpProtocol, BoxLayout.X_AXIS));
+        panelHttpProtocol.setLayout(new BoxLayout(panelHttpProtocol, BoxLayout.LINE_AXIS));
         panelHttpProtocol.setMaximumSize(new Dimension(Integer.MAX_VALUE, 16));
         panelHttpProtocol.setBorder(null);
+        I18n.addComponentOrientable(panelHttpProtocol);
         
         JButton buttonRequestMethod = new BasicArrowButton(BasicArrowButton.SOUTH);
         buttonRequestMethod.setBorderPainted(false);
@@ -186,17 +187,33 @@ public class PanelAddressBar extends JPanel {
             }
         });
       
-        panelCustomMethod.add(radioCustomMethod, BorderLayout.WEST);
+        panelCustomMethod.add(radioCustomMethod, BorderLayout.LINE_START);
         panelCustomMethod.add(inputCustomMethod, BorderLayout.CENTER);
         popup.insert(panelCustomMethod, popup.getComponentCount());
         
         buttonRequestMethod.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                popup.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
+                if (ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT) {
+                    radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
+                } else {
+                    radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
+                }
+                
                 popup.show(
                     e.getComponent(), 
-                    e.getComponent().getX(), 
+                    ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                    ? e.getComponent().getX() - e.getComponent().getWidth() - popup.getWidth()
+                    : e.getComponent().getX(), 
                     e.getComponent().getY() + e.getComponent().getWidth()
+                );
+                
+                popup.setLocation(
+                    ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                    ? e.getComponent().getLocationOnScreen().x + e.getComponent().getWidth() - popup.getWidth()
+                    : e.getComponent().getLocationOnScreen().x, 
+                    e.getComponent().getLocationOnScreen().y + e.getComponent().getWidth()
                 );
             }
         });
@@ -209,25 +226,26 @@ public class PanelAddressBar extends JPanel {
         GroupLayout layoutTextFields = new GroupLayout(panelTextFields);
         panelTextFields.setLayout(layoutTextFields);
         panelTextFields.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
+        I18n.addComponentOrientable(panelTextFields);
         this.add(panelTextFields);
 
-        radioURL.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 3));
-        panelHttpProtocol.setBorder(BorderFactory.createEmptyBorder(6, 0, 0, 3));
-        radioHeader.setBorder(BorderFactory.createEmptyBorder(6, 0, 0, 3));
+        radioQueryString.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
+        panelHttpProtocol.setBorder(BorderFactory.createEmptyBorder(6, 3, 0, 3));
+        radioHeader.setBorder(BorderFactory.createEmptyBorder(6, 3, 0, 3));
 
         // Tooltip setting
-        this.fieldUrl.setToolTipText(I18n.valueByKey("FIELD_QUERYSTRING_TOOLTIP"));
-        this.fieldRequest.setToolTipText(I18n.valueByKey("FIELD_REQUEST_TOOLTIP"));
-        this.fieldHeader.setToolTipText(I18n.valueByKey("FIELD_HEADER_TOOLTIP"));
+        this.textFieldAddress.setToolTipText(I18n.valueByKey("FIELD_QUERYSTRING_TOOLTIP"));
+        this.textFieldRequest.setToolTipText(I18n.valueByKey("FIELD_REQUEST_TOOLTIP"));
+        this.textFieldHeader.setToolTipText(I18n.valueByKey("FIELD_HEADER_TOOLTIP"));
 
-        radioURL.setToolTipText(I18n.valueByKey("METHOD_QUERYSTRING_TOOLTIP"));
+        radioQueryString.setToolTipText(I18n.valueByKey("METHOD_QUERYSTRING_TOOLTIP"));
         radioMethod.setToolTipText(I18n.valueByKey("METHOD_REQUEST_TOOLTIP"));
         radioHeader.setToolTipText(I18n.valueByKey("METHOD_HEADER_TOOLTIP"));
 
         /**
          * Define UI and the left padding for addressBar
          */
-        this.fieldUrl.setBorder(
+        this.textFieldAddress.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
                     BorderFactory.createMatteBorder(4, 2, 3, 0, HelperUi.COLOR_DEFAULT_BACKGROUND),
@@ -237,42 +255,42 @@ public class PanelAddressBar extends JPanel {
             )
         );
 
-        this.fieldRequest.setBorder(
+        this.textFieldRequest.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 2, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND),
                 HelperUi.BORDER_BLU
             )
         );
-        this.fieldHeader.setBorder(
+        this.textFieldHeader.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 2, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND),
                 HelperUi.BORDER_BLU
             )
         );
 
-        this.fieldRequest.setPreferredSize(new Dimension(0, 27));
-        this.fieldRequest.setFont(HelperUi.FONT_SEGOE_BIG);
-        this.fieldHeader.setPreferredSize(new Dimension(0, 27));
-        this.fieldHeader.setFont(HelperUi.FONT_SEGOE_BIG);
+        this.textFieldRequest.setPreferredSize(new Dimension(0, 27));
+        this.textFieldRequest.setFont(HelperUi.FONT_SEGOE_BIG);
+        this.textFieldHeader.setPreferredSize(new Dimension(0, 27));
+        this.textFieldHeader.setFont(HelperUi.FONT_SEGOE_BIG);
 
-        this.fieldUrl.addActionListener(new ActionEnterAddressBar());
-        this.fieldRequest.addActionListener(new ActionEnterAddressBar());
-        this.fieldHeader.addActionListener(new ActionEnterAddressBar());
+        this.textFieldAddress.addActionListener(new ActionEnterAddressBar());
+        this.textFieldRequest.addActionListener(new ActionEnterAddressBar());
+        this.textFieldHeader.addActionListener(new ActionEnterAddressBar());
 
         this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_START_TOOLTIP"));
         this.buttonInUrl.addActionListener(new ActionStart());
         ComponentBorder buttonInTextfield = new ComponentBorder(this.buttonInUrl, 17, 0);
-        buttonInTextfield.install(this.fieldUrl);
+        buttonInTextfield.install(this.textFieldAddress);
 
         this.loader.setVisible(false);
         ComponentBorder loaderInTextfield = new ComponentBorder(this.loader, 17, 1);
-        loaderInTextfield.install(this.fieldUrl);
+        loaderInTextfield.install(this.textFieldAddress);
         this.loader.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 
         // Add pixels to the right to compensate width when strategy is selected
-        radioHeader.setPreferredSize(new Dimension(radioHeader.getPreferredSize().width + 3, radioHeader.getPreferredSize().height));
-        radioHeader.setMinimumSize(new Dimension(radioHeader.getPreferredSize().width + 3, radioHeader.getPreferredSize().height));
-        radioHeader.setHorizontalAlignment(SwingConstants.RIGHT);
+//        radioHeader.setPreferredSize(new Dimension(radioHeader.getPreferredSize().width + 3, radioHeader.getPreferredSize().height));
+//        radioHeader.setMinimumSize(new Dimension(radioHeader.getPreferredSize().width + 3, radioHeader.getPreferredSize().height));
+//        radioHeader.setHorizontalAlignment(SwingConstants.LEADING);
 
         final BasicArrowButton advancedButton = new BasicArrowButton(BasicArrowButton.SOUTH);
         advancedButton.setBorderPainted(false);
@@ -284,15 +302,15 @@ public class PanelAddressBar extends JPanel {
                 // Label width fixed
                 .addGroup(
                     layoutTextFields.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(radioURL)
+                        .addComponent(radioQueryString)
                         .addComponent(panelHttpProtocol)
                         .addComponent(radioHeader)
                 // Resizable textfields
                 ).addGroup(
                     layoutTextFields.createParallelGroup()
-                        .addComponent(this.fieldUrl)
-                        .addComponent(this.fieldRequest)
-                        .addComponent(this.fieldHeader)
+                        .addComponent(this.textFieldAddress)
+                        .addComponent(this.textFieldRequest)
+                        .addComponent(this.textFieldHeader)
                 // Radio width fixed
                 ).addGroup(
                     layoutTextFields.createParallelGroup(GroupLayout.Alignment.LEADING, false)
@@ -305,27 +323,27 @@ public class PanelAddressBar extends JPanel {
             layoutTextFields.createSequentialGroup()
                 .addGroup(
                     layoutTextFields.createParallelGroup(GroupLayout.Alignment.CENTER, false)
-                        .addComponent(radioURL)
-                        .addComponent(this.fieldUrl)
+                        .addComponent(radioQueryString)
+                        .addComponent(this.textFieldAddress)
                         .addComponent(advancedButton)
                 ).addGroup(
                     layoutTextFields.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(panelHttpProtocol)
-                        .addComponent(this.fieldRequest)
+                        .addComponent(this.textFieldRequest)
                 ).addGroup(
                     layoutTextFields
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(radioHeader)
-                        .addComponent(this.fieldHeader)
+                        .addComponent(this.textFieldHeader)
                 )
         );
 
-        radioURL.setVisible(false);
+        radioQueryString.setVisible(false);
 
-        this.fieldRequest.setVisible(false);
+        this.textFieldRequest.setVisible(false);
         panelHttpProtocol.setVisible(false);
 
-        this.fieldHeader.setVisible(false);
+        this.textFieldHeader.setVisible(false);
         radioHeader.setVisible(false);
 
         advancedButton.setToolTipText(I18n.valueByKey("BUTTON_ADVANCED"));
@@ -334,12 +352,12 @@ public class PanelAddressBar extends JPanel {
             public void actionPerformed(ActionEvent arg0) {
                 Boolean isVisible = advancedButton.getDirection() == BasicArrowButton.SOUTH;
 
-                radioURL.setVisible(isVisible);
+                radioQueryString.setVisible(isVisible);
 
-                PanelAddressBar.this.fieldRequest.setVisible(isVisible);
+                PanelAddressBar.this.textFieldRequest.setVisible(isVisible);
                 panelHttpProtocol.setVisible(isVisible);
 
-                PanelAddressBar.this.fieldHeader.setVisible(isVisible);
+                PanelAddressBar.this.textFieldHeader.setVisible(isVisible);
                 radioHeader.setVisible(isVisible);
                 
                 advanceIsActivated = isVisible;
@@ -390,9 +408,9 @@ public class PanelAddressBar extends JPanel {
                 PanelAddressBar.this.loader.setVisible(true);
 
                 MediatorModel.model().controlInput(
-                    PanelAddressBar.this.fieldUrl.getText(),
-                    PanelAddressBar.this.fieldRequest.getText(),
-                    PanelAddressBar.this.fieldHeader.getText(),
+                    PanelAddressBar.this.textFieldAddress.getText(),
+                    PanelAddressBar.this.textFieldRequest.getText(),
+                    PanelAddressBar.this.textFieldHeader.getText(),
                     PanelAddressBar.this.methodInjection,
                     PanelAddressBar.this.typeRequest,
                     false

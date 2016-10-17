@@ -11,9 +11,11 @@
 package com.jsql.view.swing.panel;
 
 import java.awt.AWTKeyStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
@@ -28,7 +30,6 @@ import java.util.Set;
 import java.util.prefs.Preferences;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -125,10 +126,10 @@ public class PanelConsoles extends JPanel {
         this.consoleTab.getProxy().setEditable(false);
         SwingAppender.register(this.consoleTab);
         
-        this.chunkTab = new JPopupTextArea("Raw data extracted during injection.").getProxy();
+        this.chunkTab = new JPopupTextArea("Raw data extracted during injection").getProxy();
         this.chunkTab.setEditable(false);
         
-        this.binaryTab = new JPopupTextArea("Characters extracted during blind or time based injection.").getProxy();
+        this.binaryTab = new JPopupTextArea("Characters extracted during blind or time based injection").getProxy();
         this.binaryTab.setEditable(false);
         
         this.javaTab.getProxy().setEditable(false);
@@ -375,22 +376,24 @@ public class PanelConsoles extends JPanel {
         showBottomButton.addActionListener(SplitHorizontalTopBottom.ACTION_HIDE_SHOW_CONSOLE);
 
         JPanel arrowDownPanel = new JPanel();
-        arrowDownPanel.setLayout(new BoxLayout(arrowDownPanel, BoxLayout.PAGE_AXIS));
+//        arrowDownPanel.setLayout(new BoxLayout(arrowDownPanel, BoxLayout.PAGE_AXIS));
+        arrowDownPanel.setLayout(new BorderLayout());
         arrowDownPanel.setOpaque(false);
         showBottomButton.setOpaque(false);
         // Disable overlap with zerosizesplitter
         arrowDownPanel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
-        arrowDownPanel.setPreferredSize(new Dimension(17, 27));
-        arrowDownPanel.setMaximumSize(new Dimension(17, 27));
-        arrowDownPanel.add(showBottomButton);
+        arrowDownPanel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 27));
+        arrowDownPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 27));
+//        arrowDownPanel.add(Box.createHorizontalGlue());
+        arrowDownPanel.add(showBottomButton, BorderLayout.LINE_END);
         this.add(arrowDownPanel);
         this.add(MediatorGui.tabConsoles());
 
         // Do Overlay
-        arrowDownPanel.setAlignmentX(1.0f);
-        arrowDownPanel.setAlignmentY(0.0f);
-        MediatorGui.tabConsoles().setAlignmentX(1.0f);
-        MediatorGui.tabConsoles().setAlignmentY(0.0f);
+        arrowDownPanel.setAlignmentX(FlowLayout.TRAILING);
+        arrowDownPanel.setAlignmentY(JTextArea.TOP_ALIGNMENT);
+        MediatorGui.tabConsoles().setAlignmentX(FlowLayout.LEADING);
+        MediatorGui.tabConsoles().setAlignmentY(JTextArea.TOP_ALIGNMENT);
 
         this.chunkTab.setLineWrap(true);
         this.binaryTab.setLineWrap(true);

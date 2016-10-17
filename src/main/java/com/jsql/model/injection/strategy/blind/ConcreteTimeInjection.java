@@ -26,6 +26,8 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
     /**
      * Waiting time in seconds, if response time is above
      * then the SQL query is false.
+     * Noting that sleep() functions will add up for each line from request.
+     * A sleep time of 5 will be executed only if the SELECT returns exactly one line.
      */
     public static final long SLEEP_TIME = 5;
 

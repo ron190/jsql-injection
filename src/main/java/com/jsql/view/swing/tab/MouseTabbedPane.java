@@ -10,7 +10,9 @@
  ******************************************************************************/
 package com.jsql.view.swing.tab;
 
+import java.awt.ComponentOrientation;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -20,12 +22,14 @@ import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
-import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.apache.commons.lang3.SerializationUtils;
+
 import com.jsql.i18n.I18n;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
@@ -68,19 +72,31 @@ public class MouseTabbedPane extends JTabbedPane {
     private class TabSelectionMouseHandler extends MouseAdapter {
         @Override
         public void mouseClicked(MouseEvent e) {
-            // we only look at the right button
             if (SwingUtilities.isRightMouseButton(e)) {
                 JTabbedPane tabPane = (JTabbedPane) e.getSource();
                 JPopupMenu menu = new JPopupMenu();
 
-                int tabCount = tabPane.getTabCount();
-                for (int i = 0 ; i < tabCount ; i++) {
-                    JMenuItem menuItem = menu.add(new TabAction(tabPane, i));
-                    menuItem.setText(I18n.valueByKey(tabPane.getTitleAt(i)));
-                    menuItem.setAccelerator(KeyStroke.getKeyStroke("ctrl " + (i + 1)));
+                for (int position = 0 ; position < MediatorGui.menubar().menuView.getMenuComponentCount() ; position++) {
+                    JMenuItem itemMenu = (JMenuItem) SerializationUtils.clone(MediatorGui.menubar().menuView.getMenuComponent(position));
+                    menu.add(itemMenu);
+                    
+                    final int positionFinal = position;
+                    itemMenu.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent arg0) {
+                            MediatorGui.tabManagers().setSelectedIndex(positionFinal);
+                        }
+                    });
                 }
 
                 menu.show(tabPane, e.getX(), e.getY());
+                
+                menu.setLocation(
+                    ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                    ? e.getXOnScreen() - menu.getWidth()
+                    : e.getXOnScreen(), 
+                    e.getYOnScreen()
+                );
             }
         }
     }

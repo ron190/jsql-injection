@@ -222,7 +222,7 @@ public class RessourceAccess {
             if ("".equals(resultInjection)) {
                 throw new JSqlException("Payload integrity verification: Empty payload");
             }
-        } catch(JSqlException e) {
+        } catch (JSqlException e) {
             throw new JSqlException("Payload integrity verification failed: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"), e);
         }
         
@@ -364,7 +364,7 @@ public class RessourceAccess {
             if ("".equals(resultInjection)) {
                 throw new JSqlException("Bad payload integrity: Empty payload");
             }
-        } catch(JSqlException e) {
+        } catch (JSqlException e) {
             throw new JSqlException("Payload integrity verification failed: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"), e);
         }
         
@@ -518,7 +518,7 @@ public class RessourceAccess {
             if ("".equals(sourceShellInjected)) {
                 throw new JSqlException("Bad payload integrity: Empty payload");
             }
-        } catch(JSqlException e) {
+        } catch (JSqlException e) {
             throw new JSqlException("Payload integrity verification failed: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"), e);
         }
 

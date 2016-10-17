@@ -171,7 +171,7 @@ public final class StringUtil {
             while ((line = reader.readLine()) != null) {
                 pageSource += line + "\r\n";
             }
-        } catch(IOException e) {
+        } catch (IOException e) {
             exception = e;
         }
 

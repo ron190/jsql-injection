@@ -108,7 +108,7 @@ public abstract class AbstractShell extends JTextPane {
             // TODO: incompatible with Java 9
             this.putClientProperty(SwingUtilities2.AA_TEXT_PROPERTY_KEY, null);
         } catch (NoSuchFieldError e) {
-            // Ignore missing property
+            LOGGER.error("Handled Exception: "+ e, e);
         }
 
         this.displayPrompt(true);

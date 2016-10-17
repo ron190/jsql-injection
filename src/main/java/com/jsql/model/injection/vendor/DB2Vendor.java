@@ -15,13 +15,13 @@ import com.jsql.util.StringUtil;
 public class DB2Vendor extends AbstractVendorDefault {
 
     @Override
-    public String getSqlInfos() {
+    public String sqlInfos() {
         return
             "select+versionnumber||'"+ SEPARATOR_SQL +"'||current+server||'"+ SEPARATOR_SQL +"'||user||'"+ TRAIL_SQL +"'from+sysibm.sysversions";
     }
 
     @Override
-    public String getSqlDatabases() {
+    public String sqlDatabases() {
         return
             /**
              * First substr(,3) remove 'gg' at the beginning
@@ -30,7 +30,7 @@ public class DB2Vendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlTables(Database database) {
+    public String sqlTables(Database database) {
         return
             /**
              * First substr(,3) remove 'gg' at the beginning
@@ -39,13 +39,13 @@ public class DB2Vendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlColumns(Table table) {
+    public String sqlColumns(Table table) {
         return
             "select+varchar(LISTAGG('"+ SEPARATOR_SQL +"'||trim(name)||'"+ QTE_SQL +"0"+ SEPARATOR_SQL +"')||'"+ TRAIL_SQL +"')from+sysibm.syscolumns+where+coltype!='BLOB'and+tbcreator='"+table.getParent()+"'and+tbname='"+table+"'{limit}";
     }
 
     @Override
-    public String getSqlRows(String[] columns, Database database, Table table) {
+    public String sqlRows(String[] columns, Database database, Table table) {
         String formatListColumn = StringUtil.join(columns, "{%}");
         
         /**
@@ -106,7 +106,7 @@ public class DB2Vendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlNormal(String sqlQuery, String startPosition) {
+    public String sqlNormal(String sqlQuery, String startPosition) {
         return
             "(select+" +
             /**
@@ -119,7 +119,7 @@ public class DB2Vendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlCapacity(String[] indexes) {
+    public String sqlCapacity(String[] indexes) {
         return
             MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337(" + StringUtil.join(indexes, "|") + ")7331",
@@ -132,7 +132,7 @@ public class DB2Vendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlIndices(Integer nbFields) {
+    public String sqlIndices(Integer nbFields) {
         List<String> fields = new ArrayList<>(); 
         for (int i = 1 ; i <= nbFields ; i++) {
             fields.add("varchar(''||(1337"+ i +"7330%2b1),1024)");
@@ -141,12 +141,12 @@ public class DB2Vendor extends AbstractVendorDefault {
     }
 
     @Override
-    public String getSqlOrderBy() {
+    public String sqlOrderBy() {
         return "+order+by+1337--+";
     }
 
     @Override
-    public String getSqlLimit(Integer limitSQLResult) {
+    public String sqlLimit(Integer limitSQLResult) {
         return "+limit+" + limitSQLResult + ",5";
     }
 }

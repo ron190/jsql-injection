@@ -74,7 +74,7 @@ public class NodeModelTable extends AbstractNodeModel {
     @Override
     public void runAction() {
         final Table selectedTable = (Table) this.elementDatabase;
-        if (!this.isSearched && !this.isRunning) {
+        if (!this.isLoaded && !this.isRunning) {
             new SwingWorker<Object, Object>(){
 
                 @Override
@@ -89,28 +89,28 @@ public class NodeModelTable extends AbstractNodeModel {
     }
 
     @Override
-    void displayMenu(JPopupMenu tablePopupMenu, final TreePath path) {
-        JMenuItem mnCheckAll = new JMenuItem(I18n.valueByKey("COLUMNS_CHECK_ALL"), 'C');
-        I18n.addComponentForKey("COLUMNS_CHECK_ALL", mnCheckAll);
-        JMenuItem mnUncheckAll = new JMenuItem(I18n.valueByKey("COLUMNS_UNCHECK_ALL"), 'U');
-        I18n.addComponentForKey("COLUMNS_UNCHECK_ALL", mnCheckAll);
+    void buildMenu(JPopupMenu tablePopupMenu, final TreePath path) {
+        JMenuItem menuItemCheckAll = new JMenuItem(I18n.valueByKey("COLUMNS_CHECK_ALL"), 'C');
+        I18n.addComponentForKey("COLUMNS_CHECK_ALL", menuItemCheckAll);
+        JMenuItem menuItemUncheckAll = new JMenuItem(I18n.valueByKey("COLUMNS_UNCHECK_ALL"), 'U');
+        I18n.addComponentForKey("COLUMNS_UNCHECK_ALL", menuItemUncheckAll);
 
-        mnCheckAll.setIcon(HelperUi.ICON_EMPTY);
-        mnUncheckAll.setIcon(HelperUi.ICON_EMPTY);
+        menuItemCheckAll.setIcon(HelperUi.ICON_EMPTY);
+        menuItemUncheckAll.setIcon(HelperUi.ICON_EMPTY);
 
-        if (!this.isSearched) {
-            mnCheckAll.setEnabled(false);
-            mnUncheckAll.setEnabled(false);
+        if (!this.isLoaded) {
+            menuItemCheckAll.setEnabled(false);
+            menuItemUncheckAll.setEnabled(false);
 
-            tablePopupMenu.add(mnCheckAll);
-            tablePopupMenu.add(mnUncheckAll);
+            tablePopupMenu.add(menuItemCheckAll);
+            tablePopupMenu.add(menuItemUncheckAll);
             tablePopupMenu.add(new JSeparator());
         }
 
-        class TableMenuCheckUncheck implements ActionListener {
+        class ActionCheckbox implements ActionListener {
             private boolean isCheckboxesSelected;
             
-            TableMenuCheckUncheck(boolean isCheckboxesSelected) {
+            ActionCheckbox(boolean isCheckboxesSelected) {
                 this.isCheckboxesSelected = isCheckboxesSelected;
             }
 
@@ -135,31 +135,31 @@ public class NodeModelTable extends AbstractNodeModel {
             }
         }
 
-        class CheckAll extends TableMenuCheckUncheck {
-            CheckAll() {
+        class ActionCheckAll extends ActionCheckbox {
+            ActionCheckAll() {
                 super(true);
             }
         }
 
-        class UncheckAll extends TableMenuCheckUncheck {
-            UncheckAll() {
+        class ActionUncheckAll extends ActionCheckbox {
+            ActionUncheckAll() {
                 super(false);
             }
         }
 
-        mnCheckAll.addActionListener(new CheckAll());
-        mnUncheckAll.addActionListener(new UncheckAll());
+        menuItemCheckAll.addActionListener(new ActionCheckAll());
+        menuItemUncheckAll.addActionListener(new ActionUncheckAll());
 
-        mnCheckAll.setIcon(HelperUi.ICON_EMPTY);
-        mnUncheckAll.setIcon(HelperUi.ICON_EMPTY);
+        menuItemCheckAll.setIcon(HelperUi.ICON_EMPTY);
+        menuItemUncheckAll.setIcon(HelperUi.ICON_EMPTY);
 
-        tablePopupMenu.add(mnCheckAll);
-        tablePopupMenu.add(mnUncheckAll);
+        tablePopupMenu.add(menuItemCheckAll);
+        tablePopupMenu.add(menuItemUncheckAll);
         tablePopupMenu.add(new JSeparator());
     }
     
     @Override 
     public boolean isPopupDisplayable() {
-        return this.isSearched || !this.isSearched && this.isRunning;
+        return this.isLoaded || !this.isLoaded && this.isRunning;
     }
 }

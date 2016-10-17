@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.popupmenu;
 
+import java.awt.ComponentOrientation;
 import java.awt.MouseInfo;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -41,6 +42,7 @@ public class JPopupMenuComponent extends JPopupMenu {
         copyItem.setMnemonic('C');
         copyItem.setText(I18n.valueByKey("CONTEXT_MENU_COPY"));
         I18n.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
+        I18n.addComponentOrientable(copyItem);
         copyItem.setIcon(HelperUi.ICON_EMPTY);
         this.setLightWeightPopupEnabled(false);
 
@@ -49,6 +51,7 @@ public class JPopupMenuComponent extends JPopupMenu {
         selectAllItem.setAction(component.getActionMap().get(DefaultEditorKit.selectAllAction));
         selectAllItem.setText(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"));
         I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", selectAllItem);
+        I18n.addComponentOrientable(selectAllItem);
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         selectAllItem.setMnemonic('A');
 
@@ -60,6 +63,13 @@ public class JPopupMenuComponent extends JPopupMenu {
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
                 JPopupMenuComponent.this.setLocation(MouseInfo.getPointerInfo().getLocation());
+                
+                JPopupMenuComponent.this.setLocation(
+                    ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                    ? MouseInfo.getPointerInfo().getLocation().x - JPopupMenuComponent.this.getWidth()
+                    : MouseInfo.getPointerInfo().getLocation().x, 
+                    MouseInfo.getPointerInfo().getLocation().y
+                );
             }
             @Override
             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {

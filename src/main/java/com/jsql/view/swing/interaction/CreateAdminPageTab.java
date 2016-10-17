@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import java.awt.ComponentOrientation;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -89,17 +90,19 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
 
         final JPopupMenu menu = new JPopupMenu();
         
-        JMenuItem item = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_COPY_PAGE_URL"));
-        I18n.addComponentForKey("CONTEXT_MENU_COPY_PAGE_URL", item);
-        item.setIcon(HelperUi.ICON_EMPTY);
+        JMenuItem itemCopyUrl = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_COPY_PAGE_URL"));
+        I18n.addComponentForKey("CONTEXT_MENU_COPY_PAGE_URL", itemCopyUrl);
+        I18n.addComponentOrientable(itemCopyUrl);
+        itemCopyUrl.setIcon(HelperUi.ICON_EMPTY);
         
-        JMenuItem copyItem = new JMenuItem();
-        copyItem.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
-        copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
-        copyItem.setMnemonic('C');
-        copyItem.setText(I18n.valueByKey("CONTEXT_MENU_COPY"));
-        I18n.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
-        copyItem.setIcon(HelperUi.ICON_EMPTY);
+        JMenuItem itemCopy = new JMenuItem();
+        itemCopy.setAction(browser.getActionMap().get(DefaultEditorKit.copyAction));
+        itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+        itemCopy.setMnemonic('C');
+        itemCopy.setText(I18n.valueByKey("CONTEXT_MENU_COPY"));
+        I18n.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
+        I18n.addComponentOrientable(itemCopy);
+        itemCopy.setIcon(HelperUi.ICON_EMPTY);
         
         JMenuItem itemSelectAll = new JMenuItem();
         itemSelectAll.setIcon(HelperUi.ICON_EMPTY);
@@ -107,14 +110,17 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.setText(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"));
         I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
+        I18n.addComponentOrientable(itemSelectAll);
         itemSelectAll.setMnemonic('A');
         
-        menu.add(item);
+        menu.add(itemCopyUrl);
         menu.add(new JSeparator());
-        menu.add(copyItem);
+        menu.add(itemCopy);
         menu.add(itemSelectAll);
+        
+        menu.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
 
-        item.addActionListener(new ActionListener() {
+        itemCopyUrl.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 StringSelection stringSelection = new StringSelection(url);
@@ -151,6 +157,13 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
             public void mouseReleased(MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
                     menu.show(evt.getComponent(), evt.getX(), evt.getY());
+                    
+                    menu.setLocation(
+                        ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                        ? evt.getXOnScreen() - menu.getWidth()
+                        : evt.getXOnScreen(), 
+                        evt.getYOnScreen()
+                    );
                 }
             }
         });
