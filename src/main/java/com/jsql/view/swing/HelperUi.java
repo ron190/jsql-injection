@@ -197,7 +197,7 @@ public final class HelperUi {
         
         // Custom tooltip
         // timer before showing tooltip
-        ToolTipManager.sharedInstance().setInitialDelay(250);
+        ToolTipManager.sharedInstance().setInitialDelay(750);
         // timer before closing automatically tooltip
         ToolTipManager.sharedInstance().setDismissDelay(30000);
         // timer used when mouse move to another component, show tooltip immediately if timer is not expired

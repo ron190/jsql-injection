@@ -180,14 +180,19 @@ public class Menubar extends JMenuBar {
             new Locale("en").getDisplayLanguage(new Locale("en")),
             HelperUi.ICON_FLAG_EN, 
             !ArrayUtils.contains(
-                new String[]{new Locale("fr").getLanguage(), new Locale("cs").getLanguage(), new Locale("ar").getLanguage(), new Locale("ru").getLanguage()}, 
+                new String[]{
+                    new Locale("fr").getLanguage(), 
+                    new Locale("cs").getLanguage(), 
+                    new Locale("ar").getLanguage(), 
+                    new Locale("ru").getLanguage(), 
+                    new Locale("zh").getLanguage()
+                }, 
                 Locale.getDefault().getLanguage()
             )
         );
         itemEnglish.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                I18n.setLocaleDefault(ResourceBundle.getBundle("com.jsql.i18n.jsql", Locale.ROOT));
                 Menubar.this.switchLocale(Locale.ROOT);                
             }
         });
@@ -201,7 +206,6 @@ public class Menubar extends JMenuBar {
         itemArab.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                I18n.setLocaleDefault(ResourceBundle.getBundle("com.jsql.i18n.jsql", new Locale("ar")));
                 Menubar.this.switchLocale(new Locale("ar"));                
             }
         });
@@ -216,7 +220,6 @@ public class Menubar extends JMenuBar {
         itemRussian.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                I18n.setLocaleDefault(ResourceBundle.getBundle("com.jsql.i18n.jsql", new Locale("ru")));
                 Menubar.this.switchLocale(new Locale("ru"));                
             }
         });
@@ -230,7 +233,6 @@ public class Menubar extends JMenuBar {
         itemCzech.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                I18n.setLocaleDefault(ResourceBundle.getBundle("com.jsql.i18n.jsql", new Locale("cs")));
                 Menubar.this.switchLocale(new Locale("cs"));                
             }
         });
@@ -244,11 +246,23 @@ public class Menubar extends JMenuBar {
         itemFrench.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                I18n.setLocaleDefault(ResourceBundle.getBundle("com.jsql.i18n.jsql", new Locale("fr")));
                 Menubar.this.switchLocale(new Locale("fr"));                
             }
         });
         menuTranslation.add(itemFrench);
+        
+        JMenuItem itemChinese = new JRadioButtonMenuItem(
+            "<html><span style=\"font-family:'Monospace'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span></html>",
+            HelperUi.ICON_FLAG_ZH, 
+            new Locale("zh").getLanguage().equals(Locale.getDefault().getLanguage())
+        );
+        itemChinese.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Menubar.this.switchLocale(new Locale("zh"));                
+            }
+        });
+        menuTranslation.add(itemChinese);
         
         ButtonGroup groupRadioLanguage = new ButtonGroup();
         groupRadioLanguage.add(itemEnglish);
@@ -256,6 +270,7 @@ public class Menubar extends JMenuBar {
         groupRadioLanguage.add(itemRussian);
         groupRadioLanguage.add(itemCzech);
         groupRadioLanguage.add(itemFrench);
+        groupRadioLanguage.add(itemChinese);
         
         JMenu menuI18nContribution = new JMenu("I help translate jSQL into");
         
@@ -601,7 +616,11 @@ public class Menubar extends JMenuBar {
                         setPlaceholderText.invoke(componentSwing, I18n.valueByKey(key));
                     } else {
                         Method methodSetText = classComponent.getMethod("setText", new Class<?>[]{String.class});
-                        methodSetText.invoke(componentSwing, I18n.valueByKey(key));
+                        if (newLocale.getLanguage() == new Locale("zh").getLanguage()) {
+                            methodSetText.invoke(componentSwing, "<html><span style=\"font-family:'Monospace'\">"+ I18n.valueByKey(key) +"</span></html>");
+                        } else {
+                            methodSetText.invoke(componentSwing, I18n.valueByKey(key));
+                        }
                     }
                 } catch (
                     NoSuchMethodException | SecurityException | IllegalAccessException | 

@@ -33,7 +33,7 @@ public class ActionCheckIP implements ActionListener, Runnable {
         try {
             LOGGER.trace("Checking ip address...");
             String addressIp = ConnectionUtil.getSource("http://checkip.amazonaws.com");
-            LOGGER.info("Your ip address is " + addressIp);
+            LOGGER.info("Your public IP address is " + addressIp);
         } catch (MalformedURLException e) {
             LOGGER.warn("Malformed URL: "+ e, e);
         } catch (IOException e) {
