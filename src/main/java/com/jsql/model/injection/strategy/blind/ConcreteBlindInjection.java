@@ -22,7 +22,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ConcreteBlindInjection.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Source code of the TRUE web page (usually ?id=1).

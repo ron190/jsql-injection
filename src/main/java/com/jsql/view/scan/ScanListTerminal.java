@@ -32,7 +32,7 @@ public class ScanListTerminal implements Observer {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ScanListTerminal.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Observer pattern.<br>

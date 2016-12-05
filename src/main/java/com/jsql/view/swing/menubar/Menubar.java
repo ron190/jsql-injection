@@ -47,6 +47,7 @@ import org.apache.log4j.Logger;
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.util.GitUtil;
+import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionHandler;
@@ -69,7 +70,7 @@ public class Menubar extends JMenuBar {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(Menubar.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Checkbox item to show/hide chunk console.
@@ -104,7 +105,6 @@ public class Menubar extends JMenuBar {
 
         JMenuItem itemNewWindows = new JMenuItem(new ActionNewWindow());
         I18n.addComponentForKey("NEW_WINDOW_MENU", itemNewWindows);
-        I18n.addComponentOrientable(itemNewWindows);
 
         JMenuItem itemSave = new JMenuItem(new ActionSaveTab());
 
@@ -133,7 +133,6 @@ public class Menubar extends JMenuBar {
 
         JMenuItem itemCopy = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_COPY"), 'C');
         I18n.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
-        I18n.addComponentOrientable(itemCopy);
         itemCopy.setIcon(HelperUi.ICON_EMPTY);
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         itemCopy.addActionListener(new ActionListener() {
@@ -149,7 +148,6 @@ public class Menubar extends JMenuBar {
 
         JMenuItem itemSelectAll = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"), 'A');
         I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
-        I18n.addComponentOrientable(itemSelectAll);
         itemSelectAll.setIcon(HelperUi.ICON_EMPTY);
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.addActionListener(new ActionListener() {
@@ -196,7 +194,6 @@ public class Menubar extends JMenuBar {
                 Menubar.this.switchLocale(Locale.ROOT);                
             }
         });
-        menuTranslation.add(itemEnglish);
         
         JMenuItem itemArab = new JRadioButtonMenuItem(
             "<html><span style=\"font-family:'Monospace'\">"+ new Locale("ar").getDisplayLanguage(new Locale("ar")) +"</span></html>",
@@ -210,7 +207,6 @@ public class Menubar extends JMenuBar {
             }
         });
         itemArab.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        menuTranslation.add(itemArab);
         
         JMenuItem itemRussian = new JRadioButtonMenuItem(
             new Locale("ru").getDisplayLanguage(new Locale("ru")),
@@ -223,7 +219,6 @@ public class Menubar extends JMenuBar {
                 Menubar.this.switchLocale(new Locale("ru"));                
             }
         });
-        menuTranslation.add(itemRussian);
         
         JMenuItem itemCzech = new JRadioButtonMenuItem(
             new Locale("cs").getDisplayLanguage(new Locale("cs")),
@@ -236,7 +231,6 @@ public class Menubar extends JMenuBar {
                 Menubar.this.switchLocale(new Locale("cs"));                
             }
         });
-        menuTranslation.add(itemCzech);
         
         JMenuItem itemFrench = new JRadioButtonMenuItem(
             new Locale("fr").getDisplayLanguage(new Locale("fr")),
@@ -249,7 +243,6 @@ public class Menubar extends JMenuBar {
                 Menubar.this.switchLocale(new Locale("fr"));                
             }
         });
-        menuTranslation.add(itemFrench);
         
         JMenuItem itemChinese = new JRadioButtonMenuItem(
             "<html><span style=\"font-family:'Monospace'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span></html>",
@@ -262,7 +255,13 @@ public class Menubar extends JMenuBar {
                 Menubar.this.switchLocale(new Locale("zh"));                
             }
         });
+        
+        menuTranslation.add(itemEnglish);
         menuTranslation.add(itemChinese);
+        menuTranslation.add(itemArab);
+        menuTranslation.add(itemRussian);
+        menuTranslation.add(itemFrench);
+        menuTranslation.add(itemCzech);
         
         ButtonGroup groupRadioLanguage = new ButtonGroup();
         groupRadioLanguage.add(itemEnglish);
@@ -338,12 +337,10 @@ public class Menubar extends JMenuBar {
         
         JMenuItem database = new JMenuItem(I18n.valueByKey("DATABASE_TAB"), HelperUi.ICON_DATABASE_SERVER);
         I18n.addComponentForKey("DATABASE_TAB", database);
-        I18n.addComponentOrientable(database);
         menuView.add(database);
         
         JMenuItem adminPage = new JMenuItem(I18n.valueByKey("ADMINPAGE_TAB"), HelperUi.ICON_ADMIN_SERVER);
         I18n.addComponentForKey("ADMINPAGE_TAB", adminPage);
-        I18n.addComponentOrientable(adminPage);
         menuView.add(adminPage);
         
         JMenuItem file = new JMenuItem(I18n.valueByKey("FILE_TAB"), HelperUi.ICON_FILE_SERVER);
@@ -585,7 +582,7 @@ public class Menubar extends JMenuBar {
                 );
 
                 if (!"".equals(textarea.getText()) && result == JOptionPane.YES_OPTION) {
-                    GitUtil.sendReport(textarea.getText());
+                    GitUtil.sendReport(textarea.getText(), ShowOnConsole.YES, "Report");
                 }
             }
         });
@@ -634,7 +631,6 @@ public class Menubar extends JMenuBar {
         ComponentOrientation componentOrientation = ComponentOrientation.getOrientation(I18n.getLocaleDefault());
         MediatorGui.frame().applyComponentOrientation(componentOrientation);
         
-//        if (componentOrientation == ComponentOrientation.RIGHT_TO_LEFT) {
         if (ComponentOrientation.getOrientation(oldLocale) != ComponentOrientation.getOrientation(newLocale)) {
             Component c1 = MediatorGui.frame().splitHorizontalTopBottom.splitVerticalLeftRight.getLeftComponent();
             Component c2 = MediatorGui.frame().splitHorizontalTopBottom.splitVerticalLeftRight.getRightComponent();

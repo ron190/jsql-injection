@@ -32,7 +32,7 @@ public class ActionNewWindow extends AbstractAction {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ActionNewWindow.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     public ActionNewWindow() {
         this.putValue(Action.NAME, I18n.valueByKey("NEW_WINDOW_MENU"));

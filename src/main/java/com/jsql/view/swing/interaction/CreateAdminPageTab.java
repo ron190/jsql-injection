@@ -48,7 +48,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(CreateAdminPageTab.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Url for the administration webpage.
@@ -92,7 +92,6 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         
         JMenuItem itemCopyUrl = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_COPY_PAGE_URL"));
         I18n.addComponentForKey("CONTEXT_MENU_COPY_PAGE_URL", itemCopyUrl);
-        I18n.addComponentOrientable(itemCopyUrl);
         itemCopyUrl.setIcon(HelperUi.ICON_EMPTY);
         
         JMenuItem itemCopy = new JMenuItem();
@@ -101,7 +100,6 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         itemCopy.setMnemonic('C');
         itemCopy.setText(I18n.valueByKey("CONTEXT_MENU_COPY"));
         I18n.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
-        I18n.addComponentOrientable(itemCopy);
         itemCopy.setIcon(HelperUi.ICON_EMPTY);
         
         JMenuItem itemSelectAll = new JMenuItem();
@@ -110,7 +108,6 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.setText(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"));
         I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
-        I18n.addComponentOrientable(itemSelectAll);
         itemSelectAll.setMnemonic('A');
         
         menu.add(itemCopyUrl);

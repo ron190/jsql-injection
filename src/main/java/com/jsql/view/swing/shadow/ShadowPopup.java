@@ -55,8 +55,6 @@ import javax.swing.border.Border;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.injection.strategy.blind.ConcreteBlindInjection;
-
 /**
  * Does all the magic for getting popups with drop shadows.
  * It adds the drop shadow border to the Popup,
@@ -73,7 +71,7 @@ public final class ShadowPopup extends Popup {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ShadowPopup.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Max number of items to store in the cache.

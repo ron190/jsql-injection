@@ -30,7 +30,7 @@ public class AddTables implements InteractionCommand {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(AddTables.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Tables retreived by the view.

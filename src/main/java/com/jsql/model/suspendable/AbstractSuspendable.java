@@ -12,7 +12,7 @@ public abstract class AbstractSuspendable<T> {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(AbstractSuspendable.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Make the action to stop if true.
@@ -49,6 +49,7 @@ public abstract class AbstractSuspendable<T> {
      * Mark as stopped.
      */
     public void stop() {
+    	this.unpause();
         this.isStopped = true;
     }
     
@@ -64,6 +65,7 @@ public abstract class AbstractSuspendable<T> {
      */
     public void unpause() {
         this.isPaused = false;
+        this.resume();
     }
     
     /**

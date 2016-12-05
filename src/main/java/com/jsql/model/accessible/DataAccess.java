@@ -39,7 +39,7 @@ public class DataAccess {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(DataAccess.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     public static final String TRAIL_SQL = "%01%03%03%07";
     

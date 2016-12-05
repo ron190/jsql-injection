@@ -28,16 +28,17 @@ import com.jsql.model.exception.JSqlException;
 import com.test.util.Retry;
 
 public abstract class AbstractTestSuite {
+	
+	static {
+		// Use Timeout fix in Model
+		PropertyConfigurator.configure("src/test/resources/log4j2.properties");
+		jcifs.Config.registerSmbURLHandler();
+	}
+	
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getLogger(AbstractTestSuite.class);
-
-    static {
-        // Use Timeout fix in Model
-        jcifs.Config.registerSmbURLHandler();
-        PropertyConfigurator.configure("src/test/java/log4j.tests.properties");
-    }
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     public static final String HOSTNAME = "127.0.0.1";
     

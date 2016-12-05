@@ -21,7 +21,7 @@ public class MessageBinary implements InteractionCommand {
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getLogger(MessageBinary.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Text to append to the Binary log area.

@@ -22,7 +22,7 @@ public class SQLServerVendor extends AbstractVendorDefault {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(SQLServerVendor.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     @Override
     public String sqlInfos() {

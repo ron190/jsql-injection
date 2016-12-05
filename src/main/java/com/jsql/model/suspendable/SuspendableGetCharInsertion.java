@@ -27,7 +27,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(SuspendableGetCharInsertion.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     @Override
     public String run(Object... args) throws JSqlException {

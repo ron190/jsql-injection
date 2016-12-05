@@ -15,7 +15,7 @@ public class HashBruter extends Bruter {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(HashBruter.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /*
      * public static void main(String[] args) {

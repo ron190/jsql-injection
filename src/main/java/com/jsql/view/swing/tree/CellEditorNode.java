@@ -11,8 +11,6 @@
 package com.jsql.view.swing.tree;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -22,7 +20,6 @@ import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellEditor;
 import javax.swing.tree.TreePath;
 
@@ -39,7 +36,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(CellEditorNode.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Renderer for nodes included JPanel, button, checkbox, icons...

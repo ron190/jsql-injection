@@ -8,19 +8,24 @@ import org.apache.log4j.Logger;
 import com.jsql.model.InjectionModel;
 import com.jsql.util.GitUtil.ShowOnConsole;
 
+/**
+ * Utility class managing proxy settings.
+ * The proxy configuration is saved as preferences and applied to the JVM.
+ */
 public class ProxyUtil {
+	
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ProxyUtil.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
-     * Proxy address.
+     * Proxy IP address or name.
      */
     private static String proxyAddress;
 
     /**
-     * Proxy port.
+     * Proxy port number.
      */
     private static String proxyPort;
     
@@ -29,30 +34,31 @@ public class ProxyUtil {
      */
     private static boolean isUsingProxy = false;
     
-    /**
-     * Utility class.
-     */
+    // Utility class
     private ProxyUtil() {
-        //not called
+        // not called
     }
     
     /**
-     * Save configuration into preferences.
-     * @param isUsingProxy
-     * @param proxyAddress
-     * @param proxyPort
+     * Save proxy configuration into the JVM preferences.
+     * @param isUsingProxy wether the connection is using a proxy
+     * @param proxyAddress IP address or name of the proxy
+     * @param proxyPort port number of proxy
      */
     public static void set(boolean isUsingProxy, String proxyAddress, String proxyPort) {
-        // Define proxy settings
+    	
+        // Set the application proxy settings
         ProxyUtil.setUsingProxy(isUsingProxy);
         ProxyUtil.setProxyAddress(proxyAddress);
         ProxyUtil.setProxyPort(proxyPort);
 
+        // Save the settings in the JVM
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
         prefs.putBoolean("isUsingProxy", ProxyUtil.isUsingProxy());
         prefs.put("proxyAddress", ProxyUtil.getProxyAddress());
         prefs.put("proxyPort", ProxyUtil.getProxyPort());
 
+        // Change the JVM configuration
         if (ProxyUtil.isUsingProxy()) {
             System.setProperty("http.proxyHost", ProxyUtil.getProxyAddress());
             System.setProperty("http.proxyPort", ProxyUtil.getProxyPort());
@@ -60,12 +66,14 @@ public class ProxyUtil {
             System.setProperty("http.proxyHost", "");
             System.setProperty("http.proxyPort", "");
         }
+        
     }
     
     /**
-     * Initialize proxy information from previously saved configuration.
+     * Initialize proxy information from JVM already saved preferences.
      */
     public static void setProxy() {
+    	
         // Use Preferences API to persist proxy configuration
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
 
@@ -76,17 +84,21 @@ public class ProxyUtil {
         ProxyUtil.setProxyAddress(prefs.get("proxyAddress", "127.0.0.1"));
         ProxyUtil.setProxyPort(prefs.get("proxyPort", "8118"));
         
+        // Change the JVM configuration
         if (ProxyUtil.isUsingProxy()) {
             System.setProperty("http.proxyHost", ProxyUtil.getProxyAddress());
             System.setProperty("http.proxyPort", ProxyUtil.getProxyPort());
         }
+        
     }
     
-    public static boolean proxyIsResponding() {
-        return ProxyUtil.proxyIsResponding(ShowOnConsole.YES);
-    }
-    
-    public static boolean proxyIsResponding(ShowOnConsole isErrorDisplayed) {
+    /**
+     * Check if the proxy is up.
+     * @param showOnConsole wether the message should be presented to the user
+     * @return true if the proxy is up
+     */
+    public static boolean proxyIsResponding(ShowOnConsole showOnConsole) {
+    	
         boolean proxyIsResponding = true;
         
         if (
@@ -95,20 +107,24 @@ public class ProxyUtil {
             !"".equals(ProxyUtil.getProxyPort())
         ) {
             try {
-                new Socket(ProxyUtil.getProxyAddress(), Integer.parseInt(ProxyUtil.getProxyPort())).close();
+            	Socket socket = new Socket(ProxyUtil.getProxyAddress(), Integer.parseInt(ProxyUtil.getProxyPort()));
+            	socket.close();
             } catch (Exception e) {
                 proxyIsResponding = false;
                 
-                if (isErrorDisplayed == ShowOnConsole.YES) {
+                if (showOnConsole == ShowOnConsole.YES) {
                     LOGGER.warn(
-                        "Connection to proxy "+ ProxyUtil.toStr() +" failed: "+ e +". Verify your proxy settings"
+                        "Connection to proxy "+ ProxyUtil.getProxyAddress() +":"+ ProxyUtil.getProxyPort() +" failed: "+ e +". Verify your proxy settings.", e
                     );
                 }
             }
         }
         
         return proxyIsResponding;
+        
     }
+    
+    // Getters and setters
     
     public static String getProxyAddress() {
         return proxyAddress;
@@ -132,9 +148,6 @@ public class ProxyUtil {
 
     public static void setUsingProxy(boolean isUsingProxy) {
         ProxyUtil.isUsingProxy = isUsingProxy;
-    }    
-    
-    private static String toStr() {
-        return ProxyUtil.getProxyAddress() + ":" + ProxyUtil.getProxyPort();
     }
+    
 }

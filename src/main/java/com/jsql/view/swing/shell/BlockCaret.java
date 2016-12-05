@@ -20,8 +20,6 @@ import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.text.JTextAreaPlaceholder;
-
 /**
  * A caret in a block shape.
  */
@@ -30,7 +28,7 @@ public class BlockCaret extends DefaultCaret {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(BlockCaret.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * Create a caret shaped for terminal.

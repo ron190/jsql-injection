@@ -34,7 +34,7 @@ public class MessageHeader implements InteractionCommand {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(MessageHeader.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     // The text to append to the tab
     private String url;

@@ -19,7 +19,7 @@ import com.jsql.view.swing.MediatorGui;
  */
 public class EndScan implements InteractionCommand {
     
-    private static final Logger LOGGER = Logger.getLogger(EndScan.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * @param interactionParams

@@ -48,7 +48,7 @@ public class DnDList extends JList<ListItem> {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(DnDList.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * Model for the JList.

@@ -9,7 +9,7 @@ public class Retry implements TestRule {
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getLogger(Retry.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     private int retryCount;
 

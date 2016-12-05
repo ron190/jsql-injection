@@ -24,7 +24,7 @@ public class AddDatabases implements InteractionCommand {
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getLogger(AddDatabases.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Databases retreived by the view.

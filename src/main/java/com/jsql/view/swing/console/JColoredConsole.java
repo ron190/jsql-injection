@@ -21,7 +21,7 @@ public class JColoredConsole extends JPopupTextPane {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(JColoredConsole.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Text name of tab.

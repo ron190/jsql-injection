@@ -19,7 +19,7 @@ public class Database extends AbstractElementDatabase {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(Database.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * The number of tables in the database.

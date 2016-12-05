@@ -35,7 +35,7 @@ public class ListTransfertHandler extends TransferHandler {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ListTransfertHandler.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * List of cut/copy/paste/drag/drop items.

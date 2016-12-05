@@ -39,6 +39,8 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
+import com.jsql.model.bean.util.Request;
+import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
@@ -60,7 +62,7 @@ public class PanelAddressBar extends JPanel {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(PanelAddressBar.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * Textfield decorated as an address bar.
@@ -141,7 +143,6 @@ public class PanelAddressBar extends JPanel {
         panelHttpProtocol.setLayout(new BoxLayout(panelHttpProtocol, BoxLayout.LINE_AXIS));
         panelHttpProtocol.setMaximumSize(new Dimension(Integer.MAX_VALUE, 16));
         panelHttpProtocol.setBorder(null);
-        I18n.addComponentOrientable(panelHttpProtocol);
         
         JButton buttonRequestMethod = new BasicArrowButton(BasicArrowButton.SOUTH);
         buttonRequestMethod.setBorderPainted(false);
@@ -226,7 +227,6 @@ public class PanelAddressBar extends JPanel {
         GroupLayout layoutTextFields = new GroupLayout(panelTextFields);
         panelTextFields.setLayout(layoutTextFields);
         panelTextFields.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
-        I18n.addComponentOrientable(panelTextFields);
         this.add(panelTextFields);
 
         radioQueryString.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
@@ -392,7 +392,7 @@ public class PanelAddressBar extends JPanel {
             
             int option = 0;
             // Ask the user confirmation if injection already built
-            if (MediatorModel.model().injectionIsFinished) {
+            if (MediatorModel.model().injectionAlreadyBuilt) {
                 option = JOptionPane.showConfirmDialog(
                     null, 
                     I18n.valueByKey("DIALOG_NEW_INJECTION_TEXT"),
@@ -402,10 +402,15 @@ public class PanelAddressBar extends JPanel {
             }
 
             // Then start injection
-            if (!MediatorModel.model().injectionIsFinished || option == JOptionPane.OK_OPTION) {
+            if (!MediatorModel.model().injectionAlreadyBuilt || option == JOptionPane.OK_OPTION) {
                 PanelAddressBar.this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_STOP_TOOLTIP"));
                 PanelAddressBar.this.buttonInUrl.setInjectionRunning();
                 PanelAddressBar.this.loader.setVisible(true);
+
+                // Erase everything in the view from a previous injection
+                Request requests = new Request();
+                requests.setMessage(TypeRequest.RESET_INTERFACE);
+                MediatorModel.model().sendToViews(requests);
 
                 MediatorModel.model().controlInput(
                     PanelAddressBar.this.textFieldAddress.getText(),

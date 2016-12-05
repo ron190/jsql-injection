@@ -54,7 +54,7 @@ public class DialogPreferences extends JDialog {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(DialogPreferences.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Button getting focus.
@@ -149,7 +149,7 @@ public class DialogPreferences extends JDialog {
         mainPanel.add(buttonClose);
         contentPane.add(mainPanel, BorderLayout.SOUTH);
 
-        final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", PreferencesUtil.checkUpdateIsActivated());
+        final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", PreferencesUtil.isCheckUpdateActivated());
         checkboxIsCheckingUpdate.setFocusable(false);
         JButton labelIsCheckingUpdate = new JButton("Check update at startup");
         labelIsCheckingUpdate.addActionListener(new ActionListener() {
@@ -173,7 +173,7 @@ public class DialogPreferences extends JDialog {
         });
         
         String tooltipIsEvading = "Use complex SQL syntaxes to bypass protection (slower).";
-        final JCheckBox checkboxIsEvading = new JCheckBox("", PreferencesUtil.isEvasionIsEnabled());
+        final JCheckBox checkboxIsEvading = new JCheckBox("", PreferencesUtil.isEvasionEnabled());
         checkboxIsEvading.setToolTipText(tooltipIsEvading);
         checkboxIsEvading.setFocusable(false);
         JButton labelIsEvading = new JButton("Enable evasion");
@@ -366,9 +366,9 @@ public class DialogPreferences extends JDialog {
                 textProxyPort.setText(ProxyUtil.getProxyPort());
                 checkboxIsUsingProxy.setSelected(ProxyUtil.isUsingProxy());
 
-                checkboxIsCheckingUpdate.setSelected(PreferencesUtil.checkUpdateIsActivated());
+                checkboxIsCheckingUpdate.setSelected(PreferencesUtil.isCheckUpdateActivated());
                 checkboxIsReportingBugs.setSelected(PreferencesUtil.isReportingBugs());
-                checkboxIsEvading.setSelected(PreferencesUtil.isEvasionIsEnabled());
+                checkboxIsEvading.setSelected(PreferencesUtil.isEvasionEnabled());
                 checkboxIsFollowingRedirection.setSelected(PreferencesUtil.isFollowingRedirection());
             }
         });

@@ -21,8 +21,6 @@ import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import net.sourceforge.spnego.SpnegoHttpURLConnection;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -33,12 +31,21 @@ import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.injection.method.MethodInjection;
 
+import net.sourceforge.spnego.SpnegoHttpURLConnection;
+
+/**
+ *
+ */
 public class ConnectionUtil {
+	
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ConnectionUtil.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
+    /**
+     * 
+     */
     private static String urlByUser;
 
     /**
@@ -51,6 +58,9 @@ public class ConnectionUtil {
      */
     private static MethodInjection methodInjection;
 
+    /**
+     * 
+     */
     private static String typeRequest = "POST";
 
     /**
@@ -68,12 +78,19 @@ public class ConnectionUtil {
      */
     private static String dataHeader = "";
 
+    /**
+     * 
+     */
     public static final Integer TIMEOUT = 15000;
     
     private ConnectionUtil() {
         // Utility class
     }
     
+    /**
+     * 
+     * @throws InjectionFailureException
+     */
     public static void testConnection() throws InjectionFailureException {
         // Test the HTTP connection
         HttpURLConnection connection = null;
@@ -123,6 +140,12 @@ public class ConnectionUtil {
         }
     }
     
+    /**
+     * 
+     * @param url
+     * @return
+     * @throws IOException
+     */
     public static String getSource(String url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setReadTimeout(ConnectionUtil.TIMEOUT);
@@ -157,6 +180,12 @@ public class ConnectionUtil {
         return pageSource.trim();
     }
     
+    /**
+     * 
+     * @param connection
+     * @param typeRequest
+     * @throws ProtocolException
+     */
     public static void fixCustomRequestMethod(HttpURLConnection connection, String typeRequest) throws ProtocolException {
         // Add a default or custom method : check whether we are running on a buggy JRE
         try {
@@ -188,6 +217,10 @@ public class ConnectionUtil {
         }
     }
     
+    /**
+     * 
+     * @param connection
+     */
     public static void fixJcifsTimeout(HttpURLConnection connection) {
         Class<?> classConnection = connection.getClass();
         boolean connectionIsWrapped = true;
@@ -225,6 +258,11 @@ public class ConnectionUtil {
         }
     }
     
+    /**
+     * 
+     * @param connection
+     * @param header
+     */
     public static void sanitizeHeaders(HttpURLConnection connection, String header) {
         Matcher regexSearch = Pattern.compile("(?s)(.*):(.*)").matcher(header);
         if (regexSearch.find()) {
@@ -241,6 +279,8 @@ public class ConnectionUtil {
             }
         }
     }
+    
+    // Getters and setters
     
     public static String getUrlByUser() {
         return urlByUser;

@@ -21,7 +21,7 @@ public class JTextAreaPlaceholder extends JTextArea {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(JTextAreaPlaceholder.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * Text to display when empty.

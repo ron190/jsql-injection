@@ -62,7 +62,7 @@ public class JFrameView extends JFrame implements Observer {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(JFrameView.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Main center panel, composed by left and right tabs.
@@ -205,8 +205,6 @@ public class JFrameView extends JFrame implements Observer {
             MediatorGui.managerDatabase().panelStrategy.setEnabled(false);
         }
         MediatorGui.managerDatabase().panelStrategy.setEnabled(false);
-        
-        ThreadUtil.reset();
         
         this.mapNodes.clear();
         this.mapShells.clear();

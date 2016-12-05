@@ -23,7 +23,7 @@ public class CreateValuesTab implements InteractionCommand {
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getLogger(CreateValuesTab.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * 2D array of values.

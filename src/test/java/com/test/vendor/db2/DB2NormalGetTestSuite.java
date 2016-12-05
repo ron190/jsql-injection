@@ -17,7 +17,7 @@ public class DB2NormalGetTestSuite extends ConcreteDB2TestSuite {
     public static void initialize() throws InjectionFailureException {
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);
-        model.sendVersionToView();
+        model.displayVersion();
         
         MediatorModel.model().addObserver(new SystemOutTerminal());
 

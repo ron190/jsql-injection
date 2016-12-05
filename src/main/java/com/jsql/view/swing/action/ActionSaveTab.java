@@ -43,7 +43,7 @@ public class ActionSaveTab extends AbstractAction {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ActionSaveTab.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     final ReplaceFileChooser filechooser = new ReplaceFileChooser(PreferencesUtil.getPathFile());
 
@@ -80,7 +80,7 @@ public class ActionSaveTab extends AbstractAction {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = filechooser.getSelectedFile();
             
-            PreferencesUtil.setPath(filechooser.getCurrentDirectory().toString());
+            PreferencesUtil.set(filechooser.getCurrentDirectory().toString());
 
             try {
                 TableModel model = table.getModel();
@@ -129,7 +129,7 @@ public class ActionSaveTab extends AbstractAction {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = filechooser.getSelectedFile();
             
-            PreferencesUtil.setPath(filechooser.getCurrentDirectory().toString());
+            PreferencesUtil.set(filechooser.getCurrentDirectory().toString());
             
             try (BufferedWriter fileOut = new BufferedWriter(new FileWriter(file))) {
                 textArea.write(fileOut);

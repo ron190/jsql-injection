@@ -24,7 +24,7 @@ public class AddTables implements InteractionCommand {
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getLogger(AddTables.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Tables retreived by the view.

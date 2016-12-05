@@ -18,48 +18,43 @@ import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 
+/**
+ * Utility class used to connect to Github Rest webservices.
+ * It uses jsql-robot profile to post data to Github.
+ */
 public class GitUtil {
+	
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(GitUtil.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
-    private static JSONObject obj;
+    /**
+     * Application useful informations as json object from Github repository.
+     * Used to get current development version and community news.
+     */
+    private static JSONObject jsonObject;
     
-    private static class CharEncoder {
-        String prefix;
-        String suffix;
-        int radix;
-        public CharEncoder(String prefix, String suffix, int radix) {
-            this.prefix = prefix;
-            this.suffix = suffix;
-            this.radix = radix;
-        }
-        void encode(char c, StringBuilder buff) {
-            buff.append(prefix).append(Integer.toString(c, radix)).append(suffix);
-        }
-    }
-    
-    private static final CharEncoder DECIMAL_HTML_ENCODER = new CharEncoder("&#", ";", 10); 
-    
+    /**
+     * Define explicit labels to declare method parameters.
+     * Used for code readability only. 
+     */
     public enum ShowOnConsole {
         YES,
         NO;
     }
 
-    /**
-     * Utility class.
-     */
+    // Utility class
     private GitUtil() {
-        //not called
+        // not called
     }
 
-    public static void checkUpdate() {
-        GitUtil.checkUpdate(false);
-    }
-    
-    public static void checkUpdate(boolean displayUpdateMessage) {
-        if (displayUpdateMessage) {
+    /**
+     * Verify if application is up to date against the version on Github.
+     * @param displayUpdateMessage YES for manual update verification, hidden otherwise
+     */
+    public static void checkUpdate(ShowOnConsole displayUpdateMessage) {
+        if (displayUpdateMessage == ShowOnConsole.YES) {
             LOGGER.trace(I18n.valueByKey("UPDATE_LOADING"));    
         }
         
@@ -67,7 +62,7 @@ public class GitUtil {
             Float versionGit = Float.parseFloat(GitUtil.getJSONObject().getString("version"));
             if (versionGit > Float.parseFloat(InjectionModel.VERSION_JSQL)) {
                 LOGGER.warn(I18n.valueByKey("UPDATE_NEW_VERSION"));
-            } else if(displayUpdateMessage) {
+            } else if(displayUpdateMessage == ShowOnConsole.YES) {
                 LOGGER.debug(I18n.valueByKey("UPDATE_UPTODATE"));
             }
         } catch (NumberFormatException | IOException e) {
@@ -75,7 +70,14 @@ public class GitUtil {
         }
     }
     
-    public static void sendUnhandledException(String tname, Throwable thrown) {
+    /**
+     * Define the body of an issue to send to Github for an unhandled exception.
+     * It adds different system data to the body and remove sensible data like
+     * injection URL.
+     * @param threadName name of thread where the exception occured
+     * @param throwable unhandled exception to report to Gihub
+     */
+    public static void sendUnhandledException(String threadName, Throwable throwable) {
         String javaVersion = System.getProperty("java.version");
         String osArch = System.getProperty("os.arch");
         
@@ -89,42 +91,32 @@ public class GitUtil {
             + "Db engine: "+ MediatorModel.model().vendor.toString() +"\n"
             + "```\n"
             + "```\n"
-            + "Exception on "+ tname +"\n"
-            + ExceptionUtils.getStackTrace(thrown).trim() +"\n"
+            + "Exception on "+ threadName +"\n"
+            + ExceptionUtils.getStackTrace(throwable).trim() +"\n"
             + "```";
         
         clientDescription = clientDescription.replaceAll("(https?://[.a-zA-Z_0-9]*)+", "");
           
-        GitUtil.sendReport(clientDescription, ShowOnConsole.NO, "Unhandled "+thrown.getClass().getSimpleName());
+        GitUtil.sendReport(clientDescription, ShowOnConsole.NO, "Unhandled "+ throwable.getClass().getSimpleName());
     }
     
-    public static void sendReport(String reportBody) {
-        GitUtil.sendReport(reportBody, ShowOnConsole.YES, "Report");
-    }
-    
-    private static String encode(String str, CharEncoder encoder)
-    {
-        StringBuilder buff = new StringBuilder();
-        for ( int i = 0 ; i < str.length() ; i++)
-            if (str.charAt(i) > 128) {
-                encoder.encode(str.charAt(i), buff);
-            } else {
-                buff.append(str.charAt(i));
-            }
-        return ""+buff;
-    }
-    
-    private static String decimalHtmlEncode(String str) {
-        return encode(str, DECIMAL_HTML_ENCODER);
-    }
-    
+    /**
+     * Connect to Github webservices and create an Issue on the repository.
+     * Used by translation protocol, unhandled exception detection and manual Issue reporting.
+     * @param reportBody text of the Issue
+     * @param showOnConsole in case of manual Issue reporting. Hidden in case of automatic reporting of unhandled exception.
+     * @param reportTitle title of the Issue
+     */
     public static void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
+    	// Check proxy
         if (!ProxyUtil.proxyIsResponding(showOnConsole)) {
             return;
         }
 
+        // Connect to Github webservice
         HttpURLConnection connection = null;
         try {
+        	// TODO define in properties
             URL githubUrl = new URL("https://api.github.com/repos/ron190/jsql-injection/issues");
 
             connection = (HttpURLConnection) githubUrl.openConnection();
@@ -134,24 +126,30 @@ public class GitUtil {
             connection.setRequestProperty("Cache-Control", "no-cache");
             connection.setRequestProperty("Expires", "-1");
             connection.setRequestProperty("Content-Type", "application/json");
+            
+            // Authenticate as jsql-robot
             connection.setRequestProperty(
                 "Authorization", 
+                // TODO define in properties
                 "token "+ StringUtils.newStringUtf8(Base64.decodeBase64("NGQ1YzdkYWE1NDQwYzdkNTk1YTZlODQzYzFlODlkZmMzNzQ1NDhlNg=="))
             );
+            
             connection.setReadTimeout(ConnectionUtil.TIMEOUT);
             connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
             connection.setDoOutput(true);
 
+            // Set the content of the Issue
             DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
             dataOut.writeBytes(
                 new JSONObject()
                     .put("title", reportTitle)
-                    .put("body", decimalHtmlEncode(reportBody))
+                    .put("body", GitUtil.decimalHtmlEncode(reportBody))
                     .toString()
             );
             dataOut.flush();
             dataOut.close();
             
+            // Read the response
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                 String line;
                 String sourcePage = "";
@@ -160,8 +158,8 @@ public class GitUtil {
                 }
 
                 if (showOnConsole == ShowOnConsole.YES) {
-                    JSONObject objJson = new JSONObject(sourcePage);
-                    String urlIssue = objJson.getString("html_url");
+                    JSONObject jsonObjectResponse = new JSONObject(sourcePage);
+                    String urlIssue = jsonObjectResponse.getString("html_url");
                     LOGGER.debug("Sent to Github: "+ urlIssue);
                 }
             } catch (IOException e) {
@@ -176,6 +174,11 @@ public class GitUtil {
         }
     }
     
+    /**
+     * Displays news informations on the console from Github web service.
+     * Infos concern the general roadmap for the application, current development status
+     * and other useful statements for the community.
+     */
     public static void showNews() {
         try {
             JSONArray news = GitUtil.getJSONObject().getJSONArray("news");
@@ -187,13 +190,77 @@ public class GitUtil {
         }
     }
     
+    /**
+     * Instanciate the jsonObject from json data if not already set.
+     * @return jsonObject describing json data
+     * @throws IOException if connection to json data fails
+     */
     public static JSONObject getJSONObject() throws IOException {
-        if (GitUtil.obj == null) {
+        if (GitUtil.jsonObject == null) {
             String json = ConnectionUtil.getSource(
+        		// TODO get from properties
                 "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/jsql-injection.json"
             );
-            GitUtil.obj = new JSONObject(json);
+            GitUtil.jsonObject = new JSONObject(json);
         }
-        return GitUtil.obj;
+        return GitUtil.jsonObject;
     }
+    
+    /**
+     * Convert special characters like Chinese and Arabic letters to the corresponding html entities.
+     * @param text string to encode
+     * @return string encoded in html entities
+     * TODO create specialized class
+     */
+    private static String decimalHtmlEncode(String text) {
+        return GitUtil.encode(text, DECIMAL_HTML_ENCODER);
+    }
+    
+    /**
+     * Non trivial methods to convert unicode characters to html entities.
+     * @param text string to encode
+     * @param encoder schema of encoding
+     * @return string representation using the encoder schema
+     */
+    private static String encode(String text, CharEncoder encoder) {
+        StringBuilder buff = new StringBuilder();
+        for ( int i = 0 ; i < text.length() ; i++)
+            if (text.charAt(i) > 128) {
+                encoder.encode(text.charAt(i), buff);
+            } else {
+                buff.append(text.charAt(i));
+            }
+        return ""+ buff;
+    }
+    
+    /**
+     * Define the schema of convertion to html entities.
+     */
+    private static final CharEncoder DECIMAL_HTML_ENCODER = new CharEncoder("&#", ";", 10); 
+    
+    /**
+     * This utility class defines a schema used to encode a text into a specialized
+     * representation 
+     */
+    private static class CharEncoder {
+    	
+        String prefix;
+        String suffix;
+        int radix;
+        
+        public CharEncoder(String prefix, String suffix, int radix) {
+            this.prefix = prefix;
+            this.suffix = suffix;
+            this.radix = radix;
+        }
+        
+        void encode(char c, StringBuilder buff) {
+            buff
+            	.append(prefix)
+            	.append(Integer.toString(c, radix))
+            	.append(suffix);
+        }
+        
+    }
+    
 }

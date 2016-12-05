@@ -28,7 +28,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(KeyAdapterTerminal.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Terminal where keys are processed.

@@ -30,9 +30,9 @@ import javax.swing.text.StyledDocument;
 
 import org.apache.log4j.Logger;
 
-import sun.swing.SwingUtilities2;
-
 import com.jsql.view.swing.HelperUi;
+
+import sun.swing.SwingUtilities2;
 
 /**
  * A Terminal completely built from swing text pane.
@@ -42,7 +42,7 @@ public abstract class AbstractShell extends JTextPane {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(AbstractShell.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * True if terminal is processing command.

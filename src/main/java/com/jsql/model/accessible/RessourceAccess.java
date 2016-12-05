@@ -65,7 +65,7 @@ public class RessourceAccess {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(RessourceAccess.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * File name for web shell.

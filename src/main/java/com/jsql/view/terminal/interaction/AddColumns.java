@@ -24,7 +24,7 @@ public class AddColumns implements InteractionCommand {
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getLogger(AddColumns.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Columns retreived by the view.

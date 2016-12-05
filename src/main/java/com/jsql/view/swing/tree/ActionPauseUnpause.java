@@ -43,10 +43,10 @@ public class ActionPauseUnpause implements ActionListener {
                 suspendableTask.pause();
             }
     
-            // Restart the action after an unpause
-            if (!suspendableTask.isPaused()) {
-                suspendableTask.resume();
-            }
+//            // Restart the action after an unpause
+//            if (!suspendableTask.isPaused()) {
+//                suspendableTask.resume();
+//            }
         }
     }
 }

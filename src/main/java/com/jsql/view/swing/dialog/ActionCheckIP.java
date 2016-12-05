@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.ConnectionUtil;
+import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.ProxyUtil;
 
 /**
@@ -17,7 +18,7 @@ public class ActionCheckIP implements ActionListener, Runnable {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ActionCheckIP.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -26,7 +27,7 @@ public class ActionCheckIP implements ActionListener, Runnable {
 
     @Override
     public void run() {
-        if (!ProxyUtil.proxyIsResponding()) {
+        if (!ProxyUtil.proxyIsResponding(ShowOnConsole.YES)) {
             return;
         }
 

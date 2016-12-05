@@ -37,7 +37,7 @@ public class ActionCoder implements ActionListener {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ActionCoder.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     private ManagerCoder coderManager;
     

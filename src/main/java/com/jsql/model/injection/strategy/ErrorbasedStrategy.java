@@ -15,7 +15,7 @@ public class ErrorbasedStrategy extends AbstractStrategy {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ErrorbasedStrategy.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     @Override
     public void checkApplicability() {

@@ -63,6 +63,7 @@ public class ActionLoadStop implements ActionListener {
             new SwingWorker<Object, Object>(){
                 @Override
                 protected Object doInBackground() throws Exception {
+                	Thread.currentThread().setName("SwingWorkerActionLoadStop");
                     DataAccess.listValues(columnsToSearch);
                     return null;
                 }
@@ -72,8 +73,8 @@ public class ActionLoadStop implements ActionListener {
             
             if (suspendableTask != null) {
                 suspendableTask.stop();
-                suspendableTask.unpause();
-                suspendableTask.resume();
+//                suspendableTask.unpause();
+//                suspendableTask.resume();
             }
             
             this.nodeModel.indexProgress = 0;

@@ -35,7 +35,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(NodeModelDatabase.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * Node as a database model.
@@ -62,6 +62,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
             new SwingWorker<Object, Object>() {
                 @Override
                 protected Object doInBackground() throws Exception {
+                	Thread.currentThread().setName("SwingWorkerNodeModelDatabase");
                     return DataAccess.listTables(selectedDatabase);
                 }
                 
@@ -71,7 +72,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
                     List<Table> tables = new ArrayList<>();
                     try {
                         tables = (List<Table>) get();
-                    } catch (Exception e) {
+                    } catch (Throwable e) {
                         LOGGER.warn(e, e);
                     } finally {
                         Request requestAddTables = new Request();

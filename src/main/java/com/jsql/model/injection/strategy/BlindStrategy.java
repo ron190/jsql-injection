@@ -26,7 +26,7 @@ public class BlindStrategy extends AbstractStrategy {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(BlindStrategy.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Blind injection object.

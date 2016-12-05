@@ -61,7 +61,7 @@ public class DialogAbout extends JDialog {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(DialogAbout.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Button receiving focus.

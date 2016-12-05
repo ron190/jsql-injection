@@ -24,7 +24,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(SuspendableGetVendor.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     @Override
     public Vendor run(Object... args) throws StoppedByUserException {

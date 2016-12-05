@@ -2,7 +2,6 @@ package com.jsql.util;
 
 import java.security.cert.X509Certificate;
 
-import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
@@ -11,41 +10,52 @@ import javax.net.ssl.X509TrustManager;
 
 import org.apache.log4j.Logger;
 
+/**
+ * SSL certificates are used by https connection. This utility class
+ * gets rid of malformed certification chains from bad configured websites
+ * in order to ignore connection exception in that specific case.
+ */
 public class CertificateUtil {
+	
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(CertificateUtil.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
-    /**
-     * Utility class.
-     */
+    // Utility class
     private CertificateUtil() {
-        //not called
+        // not called
     }
     
     public static void ignoreCertificationChain() {
+    	
         // Create a trust manager that does not validate certificate chains
         // and ignore exception PKIX path building failed: unable to find valid certification path to requested target
-        TrustManager[] trustAllCerts = new TrustManager[]{
+        TrustManager[] trustAllCerts = new TrustManager[] {
+        		
             new X509TrustManager() {
+            	
                 @Override
                 public X509Certificate[] getAcceptedIssuers() {
                     return new X509Certificate[0];
                 }
+                
                 @Override
                 public void checkClientTrusted(
                     X509Certificate[] certs, String authType
                 ) {
                     // Ignore
                 }
+                
                 @Override
                 public void checkServerTrusted(
                     X509Certificate[] certs, String authType
                 ) {
                     // Ignore
                 }
+                
             }
+            
         };
 
         // Install the all-trusting trust manager
@@ -58,13 +68,8 @@ public class CertificateUtil {
         }
         
         // Ignore CertificateException: No subject alternative names present
-        HttpsURLConnection.setDefaultHostnameVerifier(
-            new HostnameVerifier() {
-                @Override
-                public boolean verify(String hostname, SSLSession sslSession) {
-                    return true;
-                }
-            }
-        );
+        HttpsURLConnection.setDefaultHostnameVerifier((String hostname, SSLSession sslSession) -> true);
+        
     }
+    
 }

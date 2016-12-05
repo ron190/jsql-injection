@@ -32,7 +32,7 @@ public class CreateSQLShellTab extends CreateTab implements InteractionCommand {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(CreateSQLShellTab.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * Full path of the shell file on remote host.

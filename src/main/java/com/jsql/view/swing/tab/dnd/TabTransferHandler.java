@@ -20,7 +20,7 @@ public class TabTransferHandler extends TransferHandler {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(TabTransferHandler.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     private final DataFlavor localObjectFlavor;
     

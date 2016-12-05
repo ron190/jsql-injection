@@ -21,7 +21,7 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ConcreteTimeInjection.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Waiting time in seconds, if response time is above

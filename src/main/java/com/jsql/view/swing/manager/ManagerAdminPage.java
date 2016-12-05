@@ -47,7 +47,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ManagerAdminPage.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Create admin page finder.

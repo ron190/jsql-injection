@@ -44,7 +44,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(AbstractBlindInjection.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Process the whole blind injection, character by character, bit by bit.

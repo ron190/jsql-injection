@@ -28,7 +28,7 @@ public class ImageOverlap extends ImageIcon {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ImageOverlap.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * The path of icon displayed on the bottom right corner.

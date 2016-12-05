@@ -32,7 +32,7 @@ public class MenuActionExport implements ActionListener {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(MenuActionExport.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * List to export.

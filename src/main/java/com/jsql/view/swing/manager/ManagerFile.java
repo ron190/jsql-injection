@@ -51,7 +51,7 @@ public class ManagerFile extends ManagerAbstractList {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ManagerFile.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Create the manager panel to read a file.

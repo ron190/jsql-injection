@@ -67,7 +67,7 @@ public class DialogTranslate extends JDialog {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(DialogTranslate.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Button receiving focus.
@@ -229,6 +229,8 @@ public class DialogTranslate extends JDialog {
         new SwingWorker<Object, Object>(){
             @Override
             protected Object doInBackground() throws Exception {
+            	Thread.currentThread().setName("SwingWorkerDialogTranslate");
+            	
                 OrderedProperties sourceProperties = new OrderedProperties();       
                 Properties languageProperties = new Properties();       
                 String propertiesToTranslate = "";

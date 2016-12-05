@@ -20,7 +20,7 @@ public class Table extends AbstractElementDatabase {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(Table.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * The database that contains the current column.

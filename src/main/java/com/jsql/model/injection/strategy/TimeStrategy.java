@@ -26,7 +26,7 @@ public class TimeStrategy extends AbstractStrategy {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(TimeStrategy.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Injection method using time attack.

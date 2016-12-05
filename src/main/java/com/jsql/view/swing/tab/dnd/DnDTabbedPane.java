@@ -33,7 +33,7 @@ public class DnDTabbedPane extends JTabbedPane {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(DnDTabbedPane.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     private static final int LINEWIDTH = 3;
     

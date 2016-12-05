@@ -1,42 +1,65 @@
 package com.jsql.util;
 
+import java.lang.reflect.InvocationTargetException;
+
+import javax.swing.SwingUtilities;
+
 import org.apache.log4j.Logger;
 
+/**
+ * Utility class managing an exception reporting mecanism.
+ * It uses Github as the issue webtracker.
+ */
 public class ExceptionUtil {
+	
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getLogger(Exception.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
-    /**
-     * Utility class.
-     */
+    // Utility class
     private ExceptionUtil() {
-        //not called
+        // not called
     }
 
+    /**
+     * Handler class processing errors on top of the JVM in order to send
+     * a report to Github automatically.
+     */
     public static class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
         @Override
-        public void uncaughtException(Thread thread, Throwable thrown) {
+        public void uncaughtException(Thread thread, Throwable throwable) {
             // for other uncaught exceptions
-            this.handleException(thread.getName(), thrown);
-        }
-        
-        protected void handleException(String threadName, Throwable throwable) {
-            LOGGER.error("Unhandled Exception on "+ threadName, throwable);
+            LOGGER.error("Unhandled Exception on "+ thread.getName(), throwable);
             
             //  Report #214: ignore if OutOfMemoryError: Java heap space
-            if (
-                PreferencesUtil.isReportingBugs() && !(throwable instanceof OutOfMemoryError)
-            ) {
-                GitUtil.sendUnhandledException(threadName, throwable);
+            if (PreferencesUtil.isReportingBugs() && !(throwable instanceof OutOfMemoryError)) {
+            	GitUtil.sendUnhandledException(thread.getName(), throwable);
             }
         }
+        
     }
     
+    /**
+     * Add the error reporting mecanism on top of the JVM in order to
+     * intercept and process the error to Github.
+     */
     public static void setUncaughtExceptionHandler() {
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
-        System.setProperty("sun.awt.exception.handler", ExceptionHandler.class.getName());
+    	
+    	// Regular Exception
+    	Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+
+    	// Event dispatching thread Exception
+    	try {
+			SwingUtilities.invokeAndWait(() -> 
+		        // We are in the event dispatching thread
+				Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler())
+		    );
+		} catch (InvocationTargetException | InterruptedException e) {
+			LOGGER.error("Unhandled Exception on ExceptionUtil", e);
+		}
+    	
     }
+    
 }

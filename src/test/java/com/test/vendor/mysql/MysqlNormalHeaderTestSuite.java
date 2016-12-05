@@ -17,7 +17,7 @@ public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
     public static void initialize() throws InjectionFailureException {
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);
-        model.sendVersionToView();
+        model.displayVersion();
 
         MediatorModel.model().addObserver(new SystemOutTerminal());
 

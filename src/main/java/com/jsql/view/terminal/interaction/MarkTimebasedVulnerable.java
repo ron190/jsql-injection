@@ -21,7 +21,7 @@ public class MarkTimebasedVulnerable implements InteractionCommand {
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getLogger(MarkTimebasedVulnerable.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * @param nullParam

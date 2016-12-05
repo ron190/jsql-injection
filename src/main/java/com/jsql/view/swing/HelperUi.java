@@ -57,7 +57,7 @@ public final class HelperUi {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(HelperUi.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     public static final Color COLOR_SELECTION_BACKGROUND = (Color) UIManager.get("TabbedPane.selected");
     

@@ -25,7 +25,7 @@ public class NormalStrategy extends AbstractStrategy {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(NormalStrategy.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     private String performanceLength = "0";
     

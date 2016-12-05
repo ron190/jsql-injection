@@ -51,7 +51,7 @@ public abstract class ManagerAbstractShell extends ManagerAbstractList {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ManagerAbstractShell.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     final JTextField urlShell = new JPopupTextField(I18n.valueByKey("SHELL_URL_LABEL")).getProxy();
     

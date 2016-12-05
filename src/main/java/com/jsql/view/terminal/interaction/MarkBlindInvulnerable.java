@@ -21,7 +21,7 @@ public class MarkBlindInvulnerable implements InteractionCommand {
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getLogger(MarkBlindInvulnerable.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * @param interactionParams

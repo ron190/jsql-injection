@@ -32,7 +32,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(JTextFieldWithIcon.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     public JTextFieldWithIcon(String placeholder) {
         super(placeholder);

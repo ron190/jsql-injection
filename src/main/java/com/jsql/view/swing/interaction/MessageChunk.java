@@ -24,7 +24,7 @@ public class MessageChunk implements InteractionCommand {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(MessageChunk.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * Text to append to the Chunk log area.

@@ -79,6 +79,7 @@ public class NodeModelTable extends AbstractNodeModel {
 
                 @Override
                 protected Object doInBackground() throws Exception {
+                	Thread.currentThread().setName("SwingWorkerNodeModelTable");
                     DataAccess.listColumns(selectedTable);
                     return null;
                 }

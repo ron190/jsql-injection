@@ -35,7 +35,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(JPopupTextComponent.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Save the component to decorate, add the Undo/Redo.

@@ -35,7 +35,7 @@ public final class StringUtil {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(StringUtil.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * Utility class.

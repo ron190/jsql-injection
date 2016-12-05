@@ -29,7 +29,7 @@ public class ProgressBarPausable extends JProgressBar {
     /**
      * Log4j logger sent to view.
      */
-    private static final Logger LOGGER = Logger.getLogger(ProgressBarPausable.class);
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * True if icon should be displayed, false otherwise.
