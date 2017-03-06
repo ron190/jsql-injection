@@ -3,7 +3,7 @@
     "news": [
         "[Roadmap] Upgrade to Java 8, MySQL injection with BIGINT and overflow, MS-Access database, WAF tamper, Bruteforce of HTTP Auth, Arabic translation, Command line interface.",
         "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer.",
-        "[In progress] Translation to Chinese completed, French 65%, Russian 54%, Czech 20%, Arabic 8%, thanks to the community. Also GUI compatibility with Right To Left languages like Arabic.",
-        "[Programming] Contact the developer for any help with Burp integration, CTF events and custom builds."
+        "[In progress] Translation thanks to the community: Chinese complete, French 68%, Russian 67%, Turkish 53%, Czech 24%, Italian 15%, German 10%, Arabic 8%, Dutch 6%. Also working on GUI compatibility with Right To Left languages like Arabic.",
+        "[Programming] Contact the developer for any help with CTF events, Burp integration and custom builds."
     ]
 }
