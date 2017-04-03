@@ -1,10 +1,10 @@
 {
-    "version": "0.77",
+    "version": "0.78",
     "news": [
-        "[Roadmap] Database flavor: Cassandra, WAF detection, Bruteforce of HTTP Auth, Arabic translation, Command line interface.",
+        "[Roadmap] WAF detection, Database flavor: Cassandra, Bruteforce of HTTP Auth, Arabic translation, Command line interface.",
         "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer.",
-        "[In progress] New translation started: Portuguese, Spanish, Dutch, German, Italian. Also optimizing code to Java 8.",
-        "[Done] New panel: Study and test SQL engine, Database flavor: MS-Access, MySQL injection with BIGINT overflow.",
-        "[Programming] Contact the developer for any help with new features, CTF events and Burp integration."
+        "[In progress] New translation started: Portuguese, Spanish, Dutch, German, Italian. Also changing code to Java 8.",
+        "[Programming] Contact the developer for any help with new features, CTF events and Burp integration.",
+        "[Release v0.78] SQL Engine: new panel to study and test SQL notations, Database flavor: MS-Access, MySQL injection with BIGINT overflow."
     ]
 }

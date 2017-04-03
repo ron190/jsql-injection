@@ -694,14 +694,14 @@ public class Menubar extends JMenuBar {
         });
         menuWindows.add(preferences);
         
-        JMenuItem sqlEngine = new JMenuItem("SQL engine");
+        JMenuItem sqlEngine = new JMenuItem("SQL Engine");
         
         // Render the Preferences dialog behind scene
         sqlEngine.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 for (int i = 0; i < MediatorGui.tabResults().getTabCount() ; i++) {
-                    if (MediatorGui.tabResults().getTitleAt(i).equals("SQL engine")) {
+                    if (MediatorGui.tabResults().getTitleAt(i).equals("SQL Engine")) {
                         MediatorGui.tabResults().setSelectedIndex(i);
                         return;
                     }
@@ -711,15 +711,15 @@ public class Menubar extends JMenuBar {
 
                 SqlEngine panelSqlEngine = new SqlEngine();
                 
-                MediatorGui.tabResults().addTab("SQL engine", panelSqlEngine);
+                MediatorGui.tabResults().addTab("SQL Engine", panelSqlEngine);
 
                 // Focus on the new tab
                 MediatorGui.tabResults().setSelectedComponent(panelSqlEngine);
 
                 // Create a custom tab header with close button
-                TabHeader header = new TabHeader("SQL engine ", HelperUi.ICON_FILE_SERVER);
+                TabHeader header = new TabHeader("SQL Engine ", HelperUi.ICON_FILE_SERVER);
 
-                MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(panelSqlEngine), "SQL engine");
+                MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(panelSqlEngine), "SQL Engine");
 
                 // Apply the custom header to the tab
                 MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(panelSqlEngine), header);

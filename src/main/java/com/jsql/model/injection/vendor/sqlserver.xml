@@ -117,16 +117,16 @@ SELECT replace(CONVERT(VARCHAR(MAX),CONVERT(VARBINARY(MAX),'0'%2bSTUFF(
     <strategy>
         <configuration>
             <slidingWindow>
-(select'SQLi'%2Bsubstring((${INJECTION}),${INDEX},65536))
+(select'${LEAD}'%2Bsubstring((${INJECTION}),${INDEX},65536))
             </slidingWindow>
             <limit> and rnum BETWEEN ${LIMIT} AND 65536</limit>
             <failsafe>CONVERT(varchar,(1337${INDICE}7330%2b1))</failsafe>
-            <calibrator>replicate(0x23,1024)</calibrator>
+            <calibrator>replicate(${CALIBRATOR_HEX},1024)</calibrator>
             <limitBoundary>1</limitBoundary>
         </configuration>
         <normal>
             <indices> union select ${INDICES}</indices>
-            <capacity>(select concat('SQLi${INDICE}',replicate(0x23,1024),'iLQS'))</capacity>
+            <capacity>(select concat('${LEAD}${INDICE}',${CALIBRATOR}))</capacity>
             <orderBy> order by 1337</orderBy>
         </normal>
         <boolean>

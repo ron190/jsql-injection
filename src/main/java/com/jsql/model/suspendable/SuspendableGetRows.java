@@ -1,6 +1,7 @@
 package com.jsql.model.suspendable;
 
 import static com.jsql.model.accessible.DataAccess.ENCLOSE_VALUE_RGX;
+import static com.jsql.model.accessible.DataAccess.LEAD;
 import static com.jsql.model.accessible.DataAccess.MODE;
 import static com.jsql.model.accessible.DataAccess.SEPARATOR_CELL_RGX;
 import static com.jsql.model.accessible.DataAccess.SEPARATOR_QTE_RGX;
@@ -73,20 +74,20 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             sourcePage[0] = strategy.inject(sqlQuery, Integer.toString(charPositionInCurrentRow), this);
             
             /**
-             * After SQLi tag, gets characters between 1 and maxPerf
+             * After ${LEAD} tag, gets characters between 1 and maxPerf
              * performanceQuery() gets 65536 characters or less
-             * SQLiblahblah1337      ] : end or limit+1
-             * SQLiblahblah      blah] : continue substr()
+             * ${LEAD}blahblah1337      ] : end or limit+1
+             * ${LEAD}blahblah      blah] : continue substr()
              */
             // Parse all the data we have retrieved
             Matcher regexAllLine = 
                 Pattern
-                    .compile(MODE +"SQLi(.{1,"+ strategy.getPerformanceLength() +"})")
+                    .compile(MODE + LEAD +"(.{1,"+ strategy.getPerformanceLength() +"})")
                     .matcher(sourcePage[0]);
             
             Matcher regexEndOfLine = 
                 Pattern
-                    .compile(MODE +"SQLi"+ TRAIL_RGX)
+                    .compile(MODE + LEAD + TRAIL_RGX)
                     .matcher(sourcePage[0]);
             
             if (regexEndOfLine.find() && isUsingLimit && !"".equals(slidingWindowAllRows)) {

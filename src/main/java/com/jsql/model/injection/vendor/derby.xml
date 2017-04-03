@@ -77,9 +77,9 @@ from ${DATABASE}.${TABLE}
             <slidingWindow>
 select
     /**
-     * If reach end of string (SQLii) then NULLIF nullifies the result
+     * If reach end of string (${LEAD}i) then NULLIF nullifies the result
      */
-    'SQLi'||
+    '${LEAD}'||
     NULLIF(
         substr(
             (${INJECTION}),
@@ -96,7 +96,7 @@ from SYSIBM.SYSDUMMY1
         </configuration>
         <normal>
             <indices> union select ${INDICES} from SYSIBM.SYSDUMMY1</indices>
-            <capacity>(select 'SQLi${INDICE}'||${CALIBRATOR}||'iLQS'from SYSIBM.SYSDUMMY1)</capacity>
+            <capacity>(select '${LEAD}${INDICE}'||${CALIBRATOR}from SYSIBM.SYSDUMMY1)</capacity>
             <orderBy> order by 1337</orderBy>
         </normal>
     </strategy>

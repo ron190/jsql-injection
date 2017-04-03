@@ -29,7 +29,7 @@ public class LightScrollPane extends JComponent {
     public int scrollBarAlpha = 25;
     public int scrollBarAlphaRollover = 100;
     private static final int THUMB_BORDER_SIZE = 0;
-    public static final int THUMB_SIZE = 12;
+    public static final int THUMB_SIZE = 15;
     public Color colorThumb = Color.DARK_GRAY;
 
     public final JScrollPane scrollPane;
@@ -96,7 +96,7 @@ public class LightScrollPane extends JComponent {
                 int height = getHeight();
                 scrollPane.setBounds(0, 0, width, height);
 
-                int scrollBarSize = 12;
+                int scrollBarSize = THUMB_SIZE;
                 int cornerOffset = verticalScrollBar.isVisible() && horizontalScrollBar.isVisible() ? scrollBarSize : 0;
                 if (verticalScrollBar.isVisible()) {
                     verticalScrollBar.setBounds(
@@ -171,7 +171,7 @@ public class LightScrollPane extends JComponent {
 
         @Override
         protected Dimension getMinimumThumbSize() {
-            return new Dimension(12, 24 + 2*2);
+            return new Dimension(THUMB_SIZE, 24 + 2*2);
         }
         
         @Override

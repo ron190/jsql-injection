@@ -105,6 +105,7 @@ public class DataAccess {
     public static final String LEAD_HEX = "0x53514c69";
     public static final String LEAD = "SQLi";
     public static final String TRAIL_HEX = "0x01030307";
+    public static final String TRAIL = "iLQS";
     
     /**
      * Regex keywords corresponding to multiline and case insensitive match.

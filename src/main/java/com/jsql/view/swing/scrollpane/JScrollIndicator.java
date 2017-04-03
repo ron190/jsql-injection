@@ -42,7 +42,7 @@ public class JScrollIndicator extends JLayeredPane {
     public static final int SCROLL_BAR_ALPHA = 25;
 
     private static final Color THUMB_COLOR = Color.DARK_GRAY;
-    private static final int THUMB_THICKNESS = 11;
+    private static final int THUMB_THICKNESS = 15;
     private static final int THUMB_MIN_SIZE = 48;
     private static final int THUMB_MARGIN = 0;
 

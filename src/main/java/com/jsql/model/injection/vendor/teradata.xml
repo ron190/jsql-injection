@@ -88,21 +88,21 @@ where 1=1
             <slidingWindow>
 select
     /**
-     * If reach end of string (SQLii) then NULLIF nullifies the result
+     * If reach end of string (${LEAD}i) then NULLIF nullifies the result
      */
-    'SQLi'||NULLIF(substr(
+    '${LEAD}'||NULLIF(substr(
     (${INJECTION}),
     ${INDEX}
     ),'${TRAIL_SQL}')
             </slidingWindow>
             <limit> and rnum BETWEEN ${LIMIT} AND ${LIMIT}</limit>
             <failsafe>trim(''||(1337${INDICE}7330%2b1))</failsafe>
-            <calibrator>cast(rpad('%23',1024,'%23')as varchar(1024))</calibrator>
+            <calibrator>cast(rpad('${CALIBRATOR_SQL}',1024,'${CALIBRATOR_SQL}')as varchar(1024))</calibrator>
             <limitBoundary>1</limitBoundary>
         </configuration>
         <normal>
             <indices> union select ${INDICES} FROM(SELECT 1 AS x)x</indices>
-            <capacity>(select 'SQLi${INDICE}'||${CALIBRATOR})</capacity>
+            <capacity>(select '${LEAD}${INDICE}'||${CALIBRATOR})</capacity>
             <orderBy> order by 1337</orderBy>
         </normal>
     </strategy>

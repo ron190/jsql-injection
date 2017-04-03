@@ -10,12 +10,9 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-
-import org.mozilla.universalchardet.UniversalDetector;
 
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.StringUtil;

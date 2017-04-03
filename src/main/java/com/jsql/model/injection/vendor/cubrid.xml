@@ -121,7 +121,7 @@ select concat(
             </slidingWindow>
             <limit> limit ${LIMIT},65536</limit>
             <failsafe>''||1337${INDICE}7330%2b1</failsafe>
-            <calibrator>repeat('%23',65536)</calibrator>
+            <calibrator>repeat('${CALIBRATOR_SQL}',65536)</calibrator>
             <limitBoundary>0</limitBoundary>
         </configuration>
         <normal>

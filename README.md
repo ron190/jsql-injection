@@ -14,9 +14,9 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 
 ## Installation
 Install [Java](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) of jSQL and double-click on the .jar to launch the software.<br>
-You can also type `java -jar jsql-injection-v0.77.jar` in your terminal to start the program.
+You can also type `java -jar jsql-injection-v0.78.jar` in your terminal to start the program.
 
-## v0.77 [[download here](https://github.com/ron190/jsql-injection/releases/download/v0.77/jsql-injection-v0.77.jar)]
+## v0.78 [[download here](https://github.com/ron190/jsql-injection/releases/download/v0.78/jsql-injection-v0.78.jar)]
 [![Default](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default-mini.png "Default")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default.png)
 [![Batch scan](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/scan-mini.png "Batch scan")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/scan.png)
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
@@ -30,9 +30,11 @@ You can also type `java -jar jsql-injection-v0.77.jar` in your terminal to start
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## Roadmap
-`WAF tamper, HTTP Auth Bruteforce, Translation, SOAP injection, Command line interface, Database flavors including Access Cassandra MongoDb and Neo4j`
+`Database flavor: Cassandra, WAF detection, Bruteforce of HTTP Auth, Arabic translation, Command line interface.`
 
 ## Change log
+
+**v0.78** `SQL Engine, MySQL BIGINT Overflow, Translations: es pt de it nl id, GUI improvements`
 
 **v0.76** `Czech translation, 17 Database flavors including SQLite`
 

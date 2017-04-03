@@ -6,11 +6,12 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
+import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.StoppedByUserException;
-import com.jsql.model.injection.vendor.VendorXml;
 import com.jsql.model.injection.vendor.Model.Strategy.Error.Method;
+import com.jsql.model.injection.vendor.VendorXml;
 import com.jsql.model.suspendable.AbstractSuspendable;
 
 /**
@@ -64,8 +65,9 @@ public class ErrorbasedStrategy extends AbstractStrategy {
                 this.allow(indexErrorMethod);
                 
                 String performanceErrorBasedSourcePage = MediatorModel.model().injectWithoutIndex(
-                    MediatorModel.model().getCharInsertion() + 
-                    " "+ VendorXml.replaceTags(
+                    MediatorModel.model().getCharInsertion() 
+                    + " " 
+                    + VendorXml.replaceTags(
                         errorMethod.getQuery()
                         .replace("${WINDOW}", MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getSlidingWindow())
                         .replace("${INJECTION}", MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getCalibrator())
@@ -74,7 +76,7 @@ public class ErrorbasedStrategy extends AbstractStrategy {
                     )
                 );
                 
-                Matcher regexSearch = Pattern.compile("(?s)SQLi(#+)").matcher(performanceErrorBasedSourcePage);
+                Matcher regexSearch = Pattern.compile("(?s)"+ DataAccess.LEAD +"(#+)").matcher(performanceErrorBasedSourcePage);
                 while (regexSearch.find()) {
                     if (errorCapacity < regexSearch.group(1).length()) {
                         errorIndex = indexErrorMethod;

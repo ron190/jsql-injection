@@ -93,16 +93,16 @@ from(
     <strategy>
         <configuration>
             <slidingWindow>
-select 'SQLi'||SUBSTR(r,${INDEX},1500)from(${INJECTION})x
+select '${LEAD}'||SUBSTR(r,${INDEX},1500)from(${INJECTION})x
             </slidingWindow>
             <limit> having count(*) between ${LIMIT} and ${LIMIT}</limit>
             <failsafe>select(1337${INDICE}7330%2b1)r from dual</failsafe>
-            <calibrator>rpad('%23',1024,'%23',1025)</calibrator>
+            <calibrator>rpad('${CALIBRATOR_SQL}',1024,'${CALIBRATOR_SQL}',1025)</calibrator>
             <limitBoundary>1</limitBoundary>
         </configuration>
         <normal>
-            <indices> union select ${STARS} from(${INDICES_STARS})z</indices>
-            <capacity>(select'SQLi${INDICE}'||${CALIBRATOR}||'iLQS'from dual)</capacity>
+            <indices> union select ${RESULT_RANGE} from(${INDICE_UNIQUE})z</indices>
+            <capacity>(select'${LEAD}${INDICE}'||${CALIBRATOR}from dual)</capacity>
             <orderBy> order by 1337</orderBy>
         </normal>
     </strategy>

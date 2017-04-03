@@ -85,16 +85,16 @@ from (
             <slidingWindow>
 (
     select
-        varchar(replace('SQLi'||substr(
+        varchar(replace('${LEAD}'||substr(
             (${INJECTION}),
             ${INDEX}
-            ),'SQLi${TRAIL_SQL}','SQLi'))
+            ),'${LEAD}${TRAIL_SQL}','${LEAD}'))
     from sysibm.sysdummy1
 )
             </slidingWindow>
             <limit> limit ${LIMIT},5</limit>
             <failsafe>varchar(''||(1337${INDICE}7330%2b1),1024)</failsafe>
-            <calibrator>rpad('%23',1024,'%23')</calibrator>
+            <calibrator>rpad('${CALIBRATOR_SQL}',1024,'${CALIBRATOR_SQL}')</calibrator>
             <limitBoundary>0</limitBoundary>
         </configuration>
         <normal>
@@ -104,7 +104,7 @@ from (
  * repeat gets internal table size error on blind 'where 1=1'
  * => uses rpad instead
  */
-varchar('SQLi${INDICE}'||${CALIBRATOR}||'iLQS',1024)            
+varchar('${LEAD}${INDICE}'||${CALIBRATOR},1024)            
             </capacity>
             <orderBy> order by 1337</orderBy>
         </normal>

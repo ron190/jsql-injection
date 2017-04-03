@@ -112,9 +112,9 @@ select array_to_string(
             <slidingWindow>
 select
     /**
-     * If reach end of string (SQLii) then NULLIF nullifies the result
+     * If reach end of string (${LEAD}i) then NULLIF nullifies the result
      */
-    'SQLi'||NULLIF(substr(
+    '${LEAD}'||NULLIF(substr(
         (${INJECTION}),
         ${INDEX},
         65536
@@ -127,7 +127,7 @@ select
         </configuration>
         <normal>
             <indices> union select ${INDICES}</indices>
-            <capacity>(select 'SQLi'||${INDICE}||${CALIBRATOR}||'iLQS')</capacity>
+            <capacity>(select '${LEAD}'||${INDICE}||${CALIBRATOR})</capacity>
             <orderBy> order by 1337</orderBy>
         </normal>
         <boolean>

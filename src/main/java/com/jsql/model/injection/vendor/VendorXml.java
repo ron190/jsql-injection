@@ -1,5 +1,7 @@
 package com.jsql.model.injection.vendor;
 
+import static com.jsql.model.accessible.DataAccess.CALIBRATOR_HEX;
+import static com.jsql.model.accessible.DataAccess.CALIBRATOR_SQL;
 import static com.jsql.model.accessible.DataAccess.ENCLOSE_VALUE_HEX;
 import static com.jsql.model.accessible.DataAccess.ENCLOSE_VALUE_SQL;
 import static com.jsql.model.accessible.DataAccess.LEAD;
@@ -13,7 +15,6 @@ import static com.jsql.model.accessible.DataAccess.TRAIL_SQL;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +27,6 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.log4j.Logger;
-import org.mozilla.universalchardet.UniversalDetector;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.Database;
@@ -252,7 +252,7 @@ public class VendorXml extends AbstractVendorDefault {
     @Override
     public String sqlBlind(String sqlQuery, String startPosition) {
         return 
-            replaceTags(
+            VendorXml.replaceTags(
                 this.xmlModel.getStrategy().getConfiguration().getSlidingWindow()
                 .replace("${INJECTION}", sqlQuery)
                 .replace("${INDEX}", ""+ startPosition)
@@ -263,7 +263,7 @@ public class VendorXml extends AbstractVendorDefault {
     @Override
     public String sqlTime(String sqlQuery, String startPosition) {
         return 
-            replaceTags(
+            VendorXml.replaceTags(
                 this.xmlModel.getStrategy().getConfiguration().getSlidingWindow()
                 .replace("${INJECTION}", sqlQuery)
                 .replace("${INDEX}", ""+ startPosition)
@@ -285,7 +285,7 @@ public class VendorXml extends AbstractVendorDefault {
     public String sqlErrorBased(String sqlQuery, String startPosition) {
         return 
             " "+ 
-            replaceTags(
+            VendorXml.replaceTags(
                 this.xmlModel.getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getErrorIndex()).getQuery()
                 .replace("${WINDOW}", this.xmlModel.getStrategy().getConfiguration().getSlidingWindow())
                 .replace("${INJECTION}", sqlQuery)
@@ -297,7 +297,7 @@ public class VendorXml extends AbstractVendorDefault {
     @Override
     public String sqlNormal(String sqlQuery, String startPosition) {
         return 
-            replaceTags(
+            VendorXml.replaceTags(
                 this.xmlModel.getStrategy().getConfiguration().getSlidingWindow()
                 .replace("${INJECTION}", sqlQuery)
                 .replace("${INDEX}", ""+startPosition)
@@ -310,7 +310,7 @@ public class VendorXml extends AbstractVendorDefault {
         return 
             MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337("+ StringUtil.join(indexes, "|") +")7331",
-                replaceTags(
+                VendorXml.replaceTags(
                     this.xmlModel.getStrategy().getNormal().getCapacity()
                         .replace("${INDICE}", "$1")
                         .replace("${CALIBRATOR}", this.xmlModel.getStrategy().getConfiguration().getCalibrator())
@@ -323,7 +323,7 @@ public class VendorXml extends AbstractVendorDefault {
         String replaceTag = "";
         List<String> fields = new ArrayList<>(); 
         
-        int indice = 0;
+        int indice = 1;
         for (  ; indice <= nbFields ; indice++) {
             fields.add(this.xmlModel.getStrategy().getConfiguration().getFailsafe().replace("${INDICE}", ""+ indice));
             replaceTag = this.xmlModel.getStrategy().getConfiguration().getFailsafe().replace("${INDICE}", ""+ indice);
@@ -334,8 +334,8 @@ public class VendorXml extends AbstractVendorDefault {
             " "+ 
             this.xmlModel.getStrategy().getNormal().getIndices()
             .replace("${INDICES}", StringUtil.join(fields.toArray(new String[fields.size()]), ","))
-            .replace("${INDICES_STARS}", replaceTag)
-            .replace("${STARS}", String.join(",", Collections.nCopies(indice, "r")));
+            .replace("${INDICE_UNIQUE}", replaceTag)
+            .replace("${RESULT_RANGE}", String.join(",", Collections.nCopies(indice, "r")));
     }
 
     @Override
@@ -360,6 +360,8 @@ public class VendorXml extends AbstractVendorDefault {
             .replace("${SEPARATOR_QTE_HEX}", SEPARATOR_QTE_HEX)
             .replace("${SEPARATOR_CELL_SQL}", SEPARATOR_CELL_SQL)
             .replace("${SEPARATOR_CELL_HEX}", SEPARATOR_CELL_HEX)
+            .replace("${CALIBRATOR_SQL}", CALIBRATOR_SQL)
+            .replace("${CALIBRATOR_HEX}", CALIBRATOR_HEX)
             .replace("${TRAIL_SQL}", TRAIL_SQL)
             .replace("${TRAIL_HEX}", TRAIL_HEX)
             .replace("${LEAD}", LEAD)

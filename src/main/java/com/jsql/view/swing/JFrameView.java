@@ -40,7 +40,6 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.vendor.Vendor;
-import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.interaction.InteractionCommand;
 import com.jsql.view.swing.menubar.Menubar;

@@ -15,7 +15,6 @@ import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
-import java.nio.charset.StandardCharsets;
 
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
@@ -23,8 +22,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
-
-import org.mozilla.universalchardet.UniversalDetector;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.bean.database.Column;

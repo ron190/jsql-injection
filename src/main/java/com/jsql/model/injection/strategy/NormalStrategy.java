@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
+import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.JSqlException;
@@ -111,7 +112,7 @@ public class NormalStrategy extends AbstractStrategy {
         String indexesInUrl = MediatorModel.model().getIndexesInUrl().replaceAll("1337(?!"+ StringUtil.join(indexes, "|") +"7331)\\d*7331", "1");
 
         // Replace correct indexes from 1337[index]7331 to
-        // ==> SQLi[index]######...######iLQS
+        // ==> ${LEAD}[index]######...######${TRAIL}
         // Search for index that displays the most #
         String performanceQuery = MediatorModel.model().vendor.instance().sqlCapacity(indexes);
         String performanceSourcePage = MediatorModel.model().injectWithoutIndex(performanceQuery);
@@ -119,7 +120,7 @@ public class NormalStrategy extends AbstractStrategy {
         // Build a 2D array of string with:
         //     column 1: index
         //     column 2: # found, so #######...#######
-        regexSearch = Pattern.compile("(?s)SQLi(\\d+)(#+)").matcher(performanceSourcePage);
+        regexSearch = Pattern.compile("(?s)"+ DataAccess.LEAD +"(\\d+)(#+)").matcher(performanceSourcePage);
         List<String[]> performanceResults = new ArrayList<>();
         while (regexSearch.find()) {
             performanceResults.add(new String[]{regexSearch.group(1), regexSearch.group(2)});
