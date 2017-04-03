@@ -30,6 +30,7 @@ import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
 @SuppressWarnings("serial")
 public class DnDTabbedPane extends JTabbedPane {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -80,7 +81,7 @@ public class DnDTabbedPane extends JTabbedPane {
         });
         
         addPropertyChangeListener(h);
-        // UIManager.put() is not sufficient
+        // UIManager.put() is not enough
         setUI(new CustomMetalTabbedPaneUI());
         setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
     }
@@ -403,5 +404,6 @@ public class DnDTabbedPane extends JTabbedPane {
             }
         }
     }
+    
 }
 

@@ -21,6 +21,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  * Stop the refreshing of progress bar.
  */
 public class EndProgress implements InteractionCommand {
+	
     /**
      * The element in the database tree for which the progress ends.
      */
@@ -30,7 +31,7 @@ public class EndProgress implements InteractionCommand {
      * @param interactionParams Element to update
      */
     public EndProgress(Object[] interactionParams) {
-        dataElementDatabase = (AbstractElementDatabase) interactionParams[0];
+        this.dataElementDatabase = (AbstractElementDatabase) interactionParams[0];
     }
 
     @Override
@@ -39,7 +40,7 @@ public class EndProgress implements InteractionCommand {
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
 
         // Report NullPointerException #1671 
-        DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(dataElementDatabase);
+        DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(this.dataElementDatabase);
         
         if (node != null) {
             // Get the node
@@ -55,4 +56,5 @@ public class EndProgress implements InteractionCommand {
             treeModel.nodeChanged(node); 
         }
     }
+    
 }

@@ -20,6 +20,7 @@ import com.jsql.model.accessible.RessourceAccess;
  */
 @SuppressWarnings("serial")
 public class ShellWeb extends AbstractShell {
+	
     /**
      * Build a webshell instance.
      * @param terminalID Unique identifier to discriminate beyond multiple opened terminals
@@ -34,4 +35,5 @@ public class ShellWeb extends AbstractShell {
     void action(String command, UUID terminalID, String urlShell, String... arg) {
         RessourceAccess.runWebShell(command, terminalID, urlShell);
     }
+    
 }

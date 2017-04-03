@@ -27,5 +27,7 @@ public class ConcreteInformixTestSuite extends AbstractTestSuite {
         this.jdbcQueryForValues = "select distinct trim(username) username from sysutils:sysusers";   
         
         requestJdbc();
+        
     }
+    
 }

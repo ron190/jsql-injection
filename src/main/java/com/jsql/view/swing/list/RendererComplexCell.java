@@ -31,6 +31,7 @@ import com.jsql.view.swing.HelperUi;
  * Item renderer for JList.
  */
 public class RendererComplexCell implements ListCellRenderer<ListItem> {
+	
     /**
      * List component renderer.
      */
@@ -90,4 +91,5 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
 
         return renderer;
     }
+    
 }

@@ -68,6 +68,7 @@ import org.apache.log4j.Logger;
  * @see com.jgoodies.looks.common.ShadowPopupFactory
  */
 public final class ShadowPopup extends Popup {
+	
     /**
      * Log4j logger sent to view.
      */

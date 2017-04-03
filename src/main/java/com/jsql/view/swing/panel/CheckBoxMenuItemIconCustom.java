@@ -25,12 +25,10 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
         g.translate( x, y );
 
         if (isEnabled) {
-            MetalUtilsCustom.drawGradient(c, g, "RadioButtonMenuItem.gradient",
-                    1, 1, 7, 7, true);
+            MetalUtilsCustom.drawGradient(c, g, "RadioButtonMenuItem.gradient", 1, 1, 7, 7, true);
             if (isPressed || isArmed) {
                 g.setColor(MetalLookAndFeel.getPrimaryControl());
-            }
-            else {
+            } else {
                 g.setColor(MetalLookAndFeel.getControlHighlight());
             }
             g.drawLine( 2, 9, 7, 9 );
@@ -39,12 +37,10 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
 
             if (isPressed || isArmed) {
                 g.setColor(MetalLookAndFeel.getControlInfo());
-            }
-            else {
+            } else {
                 g.setColor(MetalLookAndFeel.getControlDarkShadow());
             }
-        }
-        else {
+        } else {
             g.setColor( MetalLookAndFeel.getMenuDisabledForeground()  );
         }
         g.drawLine( 2, 0, 6, 0 );
@@ -58,15 +54,13 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
 
         if (isSelected) {
             if (isEnabled) {
-                if (isArmed || (c instanceof JMenu && model.isSelected())){
+                if (isArmed || (c instanceof JMenu && model.isSelected())) {
                     g.setColor(MetalLookAndFeel.
                             getMenuSelectedForeground() );
-                }
-                else {
+                } else {
                     g.setColor(MetalLookAndFeel.getControlInfo());
                 }
-            }
-            else {
+            } else {
                 g.setColor(MetalLookAndFeel.getMenuDisabledForeground());
             }
             g.drawLine( 3, 2, 5, 2 );

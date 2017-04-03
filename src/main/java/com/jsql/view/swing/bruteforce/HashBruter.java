@@ -12,6 +12,7 @@ import com.jsql.util.StringUtil;
 import com.jsql.view.swing.manager.util.MD4;
 
 public class HashBruter extends Bruter {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -55,30 +56,30 @@ public class HashBruter extends Bruter {
     public String type;
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setHash(String p) {
-        hash = p;
+        this.hash = p;
     }
 
     public void setType(String digestType) {
-        type = digestType;
+        this.type = digestType;
     }
 
     public String getGeneratedHash() {
-        return generatedHash;
+        return this.generatedHash;
     }
 
     public void tryBruteForce() {
-        starttime = System.nanoTime();
+        this.starttime = System.nanoTime();
         
-        for (int size = minLength; size <= maxLength; size++) {
-            if (found || done) {
+        for (int size = this.minLength; size <= this.maxLength; size++) {
+            if (this.found || this.done) {
                 break;
             } else {
                 
@@ -103,7 +104,7 @@ public class HashBruter extends Bruter {
             }
         }
         
-        done = true;
+        this.done = true;
     }
 
     private void generateAllPossibleCombinations(String baseString, int length) throws NoSuchAlgorithmException, InterruptedException {
@@ -111,30 +112,30 @@ public class HashBruter extends Bruter {
             Thread.sleep(500);
         }
         
-        if (!found || !done) {
+        if (!this.found || !this.done) {
             if (baseString.length() == length) {
-                if("adler32".equalsIgnoreCase(type)) {
-                    generatedHash = generateAdler32(baseString);
-                } else if("crc16".equalsIgnoreCase(type)) {
-                    generatedHash = generateCRC16(baseString);
-                } else if("crc32".equalsIgnoreCase(type)) {
-                    generatedHash = generateCRC32(baseString);
-                } else if("crc64".equalsIgnoreCase(type)) {
-                    generatedHash = generateCRC64(baseString.getBytes());
-                } else if("mysql".equalsIgnoreCase(type)) {
-                    generatedHash = generateMySQL(baseString.toCharArray());
-                } else if("md4".equalsIgnoreCase(type)) {
-                    generatedHash = generateMd4(baseString);
+                if("adler32".equalsIgnoreCase(this.type)) {
+                    this.generatedHash = generateAdler32(baseString);
+                } else if("crc16".equalsIgnoreCase(this.type)) {
+                    this.generatedHash = generateCRC16(baseString);
+                } else if("crc32".equalsIgnoreCase(this.type)) {
+                    this.generatedHash = generateCRC32(baseString);
+                } else if("crc64".equalsIgnoreCase(this.type)) {
+                    this.generatedHash = generateCRC64(baseString.getBytes());
+                } else if("mysql".equalsIgnoreCase(this.type)) {
+                    this.generatedHash = generateMySQL(baseString.toCharArray());
+                } else if("md4".equalsIgnoreCase(this.type)) {
+                    this.generatedHash = generateMd4(baseString);
                 } else {
-                    generatedHash = generateHash(baseString.toCharArray());
+                    this.generatedHash = generateHash(baseString.toCharArray());
                 }
                 
-                password = baseString;
+                this.password = baseString;
                 
-                if (hash.equals(generatedHash)) {
-                    password = baseString;
-                    found = true;
-                    done = true;
+                if (this.hash.equals(this.generatedHash)) {
+                    this.password = baseString;
+                    this.found = true;
+                    this.done = true;
                 }
                 count++;
             } else if (baseString.length() < length) {
@@ -167,7 +168,7 @@ public class HashBruter extends Bruter {
     }
 
     private String generateHash(char[] passwordChar) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance(type);
+        MessageDigest md = MessageDigest.getInstance(this.type);
         
         String passwordString = new String(passwordChar);
         byte[] passwordByte = passwordString.getBytes();
@@ -376,4 +377,5 @@ public class HashBruter extends Bruter {
         buf.append(hexChars[high]);
         buf.append(hexChars[low]);
     }
+    
 }

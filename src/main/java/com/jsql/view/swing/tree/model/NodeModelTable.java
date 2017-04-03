@@ -38,6 +38,7 @@ import com.jsql.view.swing.tree.PanelNode;
  * Table model displaying the table icon on the label.
  */
 public class NodeModelTable extends AbstractNodeModel {
+	
     /**
      * Node as a table model.
      * @param table Element table coming from model
@@ -74,17 +75,24 @@ public class NodeModelTable extends AbstractNodeModel {
     @Override
     public void runAction() {
         final Table selectedTable = (Table) this.elementDatabase;
-        if (!this.isLoaded && !this.isRunning) {
+        
+        if (/*!this.isLoaded && */!this.isRunning) {
+            MediatorGui.frame().getTreeNodeModels().get(this.elementDatabase).removeAllChildren();
+            DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
+            treeModel.reload(MediatorGui.frame().getTreeNodeModels().get(this.elementDatabase));
+            
             new SwingWorker<Object, Object>(){
 
                 @Override
                 protected Object doInBackground() throws Exception {
+                	// TODO start/end progress
                 	Thread.currentThread().setName("SwingWorkerNodeModelTable");
                     DataAccess.listColumns(selectedTable);
                     return null;
                 }
                 
             }.execute();
+            
             this.isRunning = true;
         }
     }
@@ -102,10 +110,6 @@ public class NodeModelTable extends AbstractNodeModel {
         if (!this.isLoaded) {
             menuItemCheckAll.setEnabled(false);
             menuItemUncheckAll.setEnabled(false);
-
-            tablePopupMenu.add(menuItemCheckAll);
-            tablePopupMenu.add(menuItemUncheckAll);
-            tablePopupMenu.add(new JSeparator());
         }
 
         class ActionCheckbox implements ActionListener {
@@ -154,13 +158,14 @@ public class NodeModelTable extends AbstractNodeModel {
         menuItemCheckAll.setIcon(HelperUi.ICON_EMPTY);
         menuItemUncheckAll.setIcon(HelperUi.ICON_EMPTY);
 
+        tablePopupMenu.add(new JSeparator());
         tablePopupMenu.add(menuItemCheckAll);
         tablePopupMenu.add(menuItemUncheckAll);
-        tablePopupMenu.add(new JSeparator());
     }
     
     @Override 
     public boolean isPopupDisplayable() {
         return this.isLoaded || !this.isLoaded && this.isRunning;
     }
+    
 }

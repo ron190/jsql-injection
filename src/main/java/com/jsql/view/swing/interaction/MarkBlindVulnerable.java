@@ -17,6 +17,7 @@ import com.jsql.view.swing.MediatorGui;
  * Mark the injection as vulnerable to a blind injection.
  */
 public class MarkBlindVulnerable implements InteractionCommand {
+	
     /**
      * @param interactionParams
      */
@@ -33,4 +34,5 @@ public class MarkBlindVulnerable implements InteractionCommand {
             }
         }
     }
+    
 }

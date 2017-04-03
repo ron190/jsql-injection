@@ -23,4 +23,5 @@ public class ConcretePostgreTestSuite extends AbstractTestSuite {
         
         requestJdbc();
     }
+    
 }

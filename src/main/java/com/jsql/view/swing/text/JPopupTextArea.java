@@ -22,6 +22,7 @@ import javax.swing.JTextArea;
  */
 @SuppressWarnings("serial")
 public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements DecoratorJComponent<JTextArea> {
+	
     /**
      * Build new instance of readonly JTextArea to decorate.
      */
@@ -29,6 +30,10 @@ public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements De
         this("");
     }
     
+    /**
+     * Build new instance of readonly JTextArea to decorate
+     * with a default placeholder.
+     */
     public JPopupTextArea(String p) {
         this(new JTextAreaPlaceholder(p) {
             @Override
@@ -55,4 +60,5 @@ public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements De
         this.getProxy().setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         this.getProxy().setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
     }
+    
 }

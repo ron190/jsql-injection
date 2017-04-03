@@ -29,6 +29,7 @@ import com.jsql.util.PreferencesUtil;
  * Action to export a JList.
  */
 public class MenuActionExport implements ActionListener {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -97,4 +98,5 @@ public class MenuActionExport implements ActionListener {
             LOGGER.error(e, e);
         }
     }
+    
 }

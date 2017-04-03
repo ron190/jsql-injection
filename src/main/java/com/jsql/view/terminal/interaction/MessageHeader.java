@@ -21,6 +21,7 @@ import com.jsql.view.swing.interaction.InteractionCommand;
  * Append a text to the tab Header.
  */
 public class MessageHeader implements InteractionCommand {
+	
     /**
      * Using default log4j.properties from root /
      */
@@ -28,8 +29,11 @@ public class MessageHeader implements InteractionCommand {
 
     // The text to append to the tab
     private String url;
+    
     private String post;
+    
     private String header;
+    
     private Map<String, String> response;
 
     /**
@@ -54,4 +58,5 @@ public class MessageHeader implements InteractionCommand {
         LOGGER.info("Content-Type: " + response.get("Content-Type"));
         LOGGER.info("\n");
     }
+    
 }

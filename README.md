@@ -30,19 +30,19 @@ You can also type `java -jar jsql-injection-v0.77.jar` in your terminal to start
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## Roadmap
-`WAF tamper, HTTP Auth Bruteforce, Translation, SOAP injection, Command line interface, Database flavors include Access Cassandra MongoDb and Neo4j`
+`WAF tamper, HTTP Auth Bruteforce, Translation, SOAP injection, Command line interface, Database flavors including Access Cassandra MongoDb and Neo4j`
 
 ## Change log
 
-**v0.76** `Czech translation, 17 Database flavors include SQLite`
+**v0.76** `Czech translation, 17 Database flavors including SQLite`
 
 **v0.75** `URI injection point, Mavenify, Upgrade to Java 7, Optimized UI`
 
 **v0.73** `Authentication: Basic Digest Negotiate NTLM and Kerberos, Database flavor selection`
 
-**v0.7** `Scan multiple URLs, Github Issue reporter, 16 Database flavors include Cubrid Derby H2 HSQLDB MariaDB and Teradata, Optimized UI`
+**v0.7** `Scan multiple URLs, Github Issue reporter, 16 Database flavors including Cubrid Derby H2 HSQLDB MariaDB and Teradata, Optimized UI`
 
-**alpha-v0.6** `Speed x2: No hex encoding, 10 Database flavors include MySQL Oracle SQLServer PostgreSQL DB2 Firebird Informix Ingres MaxDb and Sybase, JUnit tests, Log4j, Translation`
+**alpha-v0.6** `Speed x2: No hex encoding, 10 Database flavors including MySQL Oracle SQLServer PostgreSQL DB2 Firebird Informix Ingres MaxDb and Sybase, JUnit tests, Log4j, Translation`
 
 **0.5** `SQL Shell, Uploader`
 

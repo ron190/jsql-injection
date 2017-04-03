@@ -29,6 +29,7 @@ import com.jsql.view.swing.interaction.InteractionCommand;
  * - at the bottom: information labels.
  */
 public class SystemOutTerminal implements Observer {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -60,4 +61,5 @@ public class SystemOutTerminal implements Observer {
             LOGGER.error(e, e);
         }
     }
+    
 }

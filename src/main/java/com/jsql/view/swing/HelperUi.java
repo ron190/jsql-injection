@@ -54,6 +54,7 @@ import com.jsql.view.swing.ui.CustomBasicComboBoxUI;
  */
 @SuppressWarnings("serial")
 public final class HelperUi {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -108,6 +109,12 @@ public final class HelperUi {
     public static final Icon ICON_FLAG_FR = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/fr.png"));
     public static final Icon ICON_FLAG_HI = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/hi.png"));
     public static final Icon ICON_FLAG_CS = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/cs.png"));
+    public static final Icon ICON_FLAG_DE = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/de.png"));
+    public static final Icon ICON_FLAG_NL = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/nl.png"));
+    public static final Icon ICON_FLAG_IN_ID = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/id.png"));
+    public static final Icon ICON_FLAG_IT = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/it.png"));
+    public static final Icon ICON_FLAG_ES = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/es.png"));
+    public static final Icon ICON_FLAG_PT = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/pt.png"));
     
     public static final URL URL_ICON_16 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug16.png");
     public static final URL URL_ICON_32 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug32.png");
@@ -135,6 +142,7 @@ public final class HelperUi {
     );
     
     public static final Border BORDER_ROUND_BLU = new AbstractBorder() {
+    	
         @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
             Graphics2D g2 = (Graphics2D)g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -151,14 +159,17 @@ public final class HelperUi {
             g2.draw(round);
             g2.dispose();
         }
+        
         @Override public Insets getBorderInsets(Component c) {
             return new Insets(4, 8, 4, 8);
         }
+        
         @Override public Insets getBorderInsets(Component c, Insets insets) {
             insets.left = insets.right = 8;
             insets.top = insets.bottom = 4;
             return insets;
         }
+        
     };
 
     public static final String FONT_NAME = "Ubuntu Mono";
@@ -235,6 +246,7 @@ public final class HelperUi {
         UIManager.put("CheckBoxMenuItem.checkIcon", new CheckBoxIcon());
 
         // Custom tab
+        UIManager.put("TabbedPane.contentAreaColor", COLOR_DEFAULT_BACKGROUND);
         UIManager.put("TabbedPane.font", FONT_SEGOE);
         // margin of current tab panel
         UIManager.put("TabbedPane.contentBorderInsets", new Insets(0, 0, 0, 0));
@@ -345,4 +357,5 @@ public final class HelperUi {
         }
         return images;
     }
+    
 }

@@ -79,4 +79,5 @@ public class CheckBoxIcon implements Icon, UIResource, Serializable {
     public int getIconHeight() {
         return getControlSize();
     }
+    
 } // End class CheckBoxIcon

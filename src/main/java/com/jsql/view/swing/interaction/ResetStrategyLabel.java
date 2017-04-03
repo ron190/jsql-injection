@@ -16,6 +16,7 @@ import com.jsql.view.swing.MediatorGui;
  * Erase the screen.
  */
 public class ResetStrategyLabel implements InteractionCommand {
+	
     /**
      * @param interactionParams
      */
@@ -30,4 +31,5 @@ public class ResetStrategyLabel implements InteractionCommand {
             MediatorGui.managerDatabase().panelStrategy.getItem(i).setSelected(false);
         }
     }
+    
 }

@@ -34,6 +34,7 @@ import com.jsql.view.swing.manager.ManagerCoder;
  * Action runned when this.coderManager.encoding.
  */
 public class ActionCoder implements ActionListener {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -50,7 +51,7 @@ public class ActionCoder implements ActionListener {
         String choice = this.coderManager.encoding.getText().replace("Hash to ", "");
         
         if (
-            "".equals(this.coderManager.entry.getText())
+            "".equals(this.coderManager.textInput.getText())
             && !Arrays.asList(new String[]{"Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql"}).contains(choice)
         ) {
             LOGGER.warn("Empty string to convert");
@@ -61,7 +62,7 @@ public class ActionCoder implements ActionListener {
             try {
                 MessageDigest md = MessageDigest.getInstance(choice);
                 
-                String passwordString = new String(this.coderManager.entry.getText().toCharArray());
+                String passwordString = new String(this.coderManager.textInput.getText().toCharArray());
                 byte[] passwordByte = passwordString.getBytes();
                 md.update(passwordByte, 0, passwordByte.length);
                 byte[] encodedPassword = md.digest();
@@ -75,7 +76,7 @@ public class ActionCoder implements ActionListener {
         } else if ("Md4".contains(choice)) {
             MessageDigest md = new MD4();
 
-            String passwordString = new String(this.coderManager.entry.getText().toCharArray());
+            String passwordString = new String(this.coderManager.textInput.getText().toCharArray());
             byte[] passwordByte = passwordString.getBytes();
             md.update(passwordByte, 0, passwordByte.length);
             byte[] encodedPassword = md.digest();
@@ -84,26 +85,26 @@ public class ActionCoder implements ActionListener {
             this.coderManager.result.setText(encodedPasswordInString);
             
         } else if ("Adler32".contains(choice)) {
-            this.coderManager.result.setText(HashBruter.generateAdler32(this.coderManager.entry.getText()));
+            this.coderManager.result.setText(HashBruter.generateAdler32(this.coderManager.textInput.getText()));
             
         } else if ("Crc16".contains(choice)) {
-            this.coderManager.result.setText(HashBruter.generateCRC16(this.coderManager.entry.getText()));
+            this.coderManager.result.setText(HashBruter.generateCRC16(this.coderManager.textInput.getText()));
             
         } else if ("Crc32".contains(choice)) {
-            byte[] bytes = this.coderManager.entry.getText().getBytes();
+            byte[] bytes = this.coderManager.textInput.getText().getBytes();
             Checksum checksum = new CRC32();
             checksum.update(bytes,0,bytes.length);
             long lngChecksum = checksum.getValue();
             this.coderManager.result.setText(Long.toString(lngChecksum));
             
         } else if ("Crc64".contains(choice)) {
-            this.coderManager.result.setText(HashBruter.generateCRC64(this.coderManager.entry.getText().getBytes()));
+            this.coderManager.result.setText(HashBruter.generateCRC64(this.coderManager.textInput.getText().getBytes()));
             
         } else if ("Mysql".equals(choice)) {
             try {
                 MessageDigest md = MessageDigest.getInstance("sha-1");
                 
-                String password = new String(this.coderManager.entry.getText().toCharArray());
+                String password = new String(this.coderManager.textInput.getText().toCharArray());
                 byte[] passwordBytes = password.getBytes();
                 md.update(passwordBytes, 0, passwordBytes.length);
                 byte[] hashSHA1 = md.digest();
@@ -124,7 +125,7 @@ public class ActionCoder implements ActionListener {
             try {
                 this.coderManager.result.setText(
                     Hex.encodeHexString(
-                        this.coderManager.entry.getText().getBytes("UTF-8")
+                        this.coderManager.textInput.getText().getBytes("UTF-8")
                     ).trim()
                 );
             } catch (UnsupportedEncodingException e) {
@@ -136,7 +137,7 @@ public class ActionCoder implements ActionListener {
                 this.coderManager.result.setText(
                     new String(
                         Hex.decodeHex(
-                            this.coderManager.entry.getText().toCharArray()
+                            this.coderManager.textInput.getText().toCharArray()
                         ), 
                         "UTF-8"
                     )
@@ -150,7 +151,7 @@ public class ActionCoder implements ActionListener {
                 this.coderManager.result.setText(
                     Hex.encodeHexString(
                         this.coderManager.compress(
-                            this.coderManager.entry.getText()
+                            this.coderManager.textInput.getText()
                         ).getBytes("UTF-8")
                     ).trim()
                 );
@@ -164,7 +165,7 @@ public class ActionCoder implements ActionListener {
                     this.coderManager.decompress(
                         new String(
                             Hex.decodeHex(
-                                this.coderManager.entry.getText().toCharArray()
+                                this.coderManager.textInput.getText().toCharArray()
                             ), 
                             "UTF-8"
                         )
@@ -179,7 +180,7 @@ public class ActionCoder implements ActionListener {
                 this.coderManager.result.setText(
                     this.coderManager.base64Encode(
                         this.coderManager.compress(
-                            this.coderManager.entry.getText()
+                            this.coderManager.textInput.getText()
                         )
                     )
                 );
@@ -192,7 +193,7 @@ public class ActionCoder implements ActionListener {
                 this.coderManager.result.setText(
                     this.coderManager.decompress(
                         this.coderManager.base64Decode(
-                            this.coderManager.entry.getText()
+                            this.coderManager.textInput.getText()
                         )
                     )
                 );
@@ -201,21 +202,21 @@ public class ActionCoder implements ActionListener {
             }
             
         } else if ("Encode to Base64".equalsIgnoreCase(choice)) {
-            this.coderManager.result.setText(this.coderManager.base64Encode(this.coderManager.entry.getText()));
+            this.coderManager.result.setText(this.coderManager.base64Encode(this.coderManager.textInput.getText()));
             
         } else if ("Decode from Base64".equalsIgnoreCase(choice)) {
-            this.coderManager.result.setText(this.coderManager.base64Decode(this.coderManager.entry.getText()));
+            this.coderManager.result.setText(this.coderManager.base64Decode(this.coderManager.textInput.getText()));
             
         } else if ("Encode to Html".equalsIgnoreCase(choice)) {
-            this.coderManager.result.setText(StringEscapeUtils.escapeHtml3(this.coderManager.entry.getText()));
+            this.coderManager.result.setText(StringEscapeUtils.escapeHtml3(this.coderManager.textInput.getText()));
             
         } else if ("Decode from Html".equalsIgnoreCase(choice)) {
-            this.coderManager.result.setText(StringEscapeUtils.unescapeHtml3(this.coderManager.entry.getText()));
+            this.coderManager.result.setText(StringEscapeUtils.unescapeHtml3(this.coderManager.textInput.getText()));
             
         } else if ("Encode to Url".equalsIgnoreCase(choice)) {
             try {
                 this.coderManager.result.setText(
-                    URLEncoder.encode(this.coderManager.entry.getText(), "UTF-8")
+                    URLEncoder.encode(this.coderManager.textInput.getText(), "UTF-8")
                 );
             } catch (UnsupportedEncodingException e) {
                 LOGGER.warn("Encoding to UTF-8 failed: "+ e, e);
@@ -224,7 +225,7 @@ public class ActionCoder implements ActionListener {
         } else if ("Decode from Url".equalsIgnoreCase(choice)) {
             try {
                 this.coderManager.result.setText(
-                    URLDecoder.decode(this.coderManager.entry.getText(), "UTF-8")
+                    URLDecoder.decode(this.coderManager.textInput.getText(), "UTF-8")
                 );
             } catch (UnsupportedEncodingException e) {
                 LOGGER.warn("Decoding to UTF-8 failed: "+ e, e);
@@ -234,4 +235,5 @@ public class ActionCoder implements ActionListener {
             this.coderManager.result.setText("Unsupported encoding or decoding method");
         }
     }
+    
 }

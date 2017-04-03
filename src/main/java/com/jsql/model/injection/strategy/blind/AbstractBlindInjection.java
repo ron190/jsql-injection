@@ -17,12 +17,10 @@ import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.suspendable.AbstractSuspendable;
-import com.jsql.model.suspendable.ThreadFactoryCallable;
+import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
-/**
- *
- */
 public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>> {
+    
     /**
      * Every FALSE SQL statements will be checked,
      * more statements means a more robust application
@@ -228,4 +226,5 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
      * @return
      */
     public abstract String getInfoMessage();
+    
 }

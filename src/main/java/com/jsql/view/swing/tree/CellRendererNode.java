@@ -35,4 +35,5 @@ public class CellRendererNode extends DefaultTreeCellRenderer {
         AbstractNodeModel dataModel = (AbstractNodeModel) userObject;
         return dataModel.getComponent(tree, nodeRenderer, selected, expanded, leaf, row, hasFocus);
     }
+    
 }

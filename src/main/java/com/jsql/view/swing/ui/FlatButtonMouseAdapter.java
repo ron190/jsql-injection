@@ -29,4 +29,5 @@ public class FlatButtonMouseAdapter extends MouseAdapter {
             buttonFlat.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         }
     }
+    
 }

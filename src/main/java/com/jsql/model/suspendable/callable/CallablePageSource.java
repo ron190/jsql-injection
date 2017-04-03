@@ -1,4 +1,4 @@
-package com.jsql.model.suspendable;
+package com.jsql.model.suspendable.callable;
 
 import java.util.concurrent.Callable;
 
@@ -11,6 +11,7 @@ import com.jsql.model.MediatorModel;
  * tag: store user information (ex. current index)
  */
 public class CallablePageSource implements Callable<CallablePageSource> {
+	
     /**
      * URL to load.
      */
@@ -43,12 +44,14 @@ public class CallablePageSource implements Callable<CallablePageSource> {
         this(url);
         this.insertionCharacter = insertionCharacter;
     }
-
+    
     @Override
     public CallablePageSource call() throws Exception {
         this.content = MediatorModel.model().injectWithoutIndex(this.url);
         return this;
     }
+
+    // Getters and setters
 
     public String getUrl() {
         return url;
@@ -61,4 +64,5 @@ public class CallablePageSource implements Callable<CallablePageSource> {
     public String getInsertionCharacter() {
         return insertionCharacter;
     }
+    
 }

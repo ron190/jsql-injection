@@ -4,6 +4,7 @@ package com.jsql.model.exception;
 public abstract class SlidingException extends JSqlException {
     
     private String slidingWindowAllRows = "";
+    
     private String slidingWindowCurrentRows = "";
     
     public SlidingException(String message) {

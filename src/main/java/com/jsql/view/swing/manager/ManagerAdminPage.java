@@ -34,7 +34,7 @@ import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
-import com.jsql.view.swing.manager.util.JButtonStatable;
+import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
@@ -43,7 +43,8 @@ import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
  * Manager to display webpages frequently used as backoffice administration.
  */
 @SuppressWarnings("serial")
-public class ManagerAdminPage extends ManagerAbstractList {
+public class ManagerAdminPage extends AbstractManagerList {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -55,7 +56,7 @@ public class ManagerAdminPage extends ManagerAbstractList {
     public ManagerAdminPage() {
         this.setLayout(new BorderLayout());
         this.setDefaultText(I18n.valueByKey("ADMIN_PAGE_RUN_BUTTON_LABEL"));
-
+        
         List<String> pathList = new ArrayList<>();
         try {
             InputStream in = ManagerAdminPage.class.getResourceAsStream("/com/jsql/view/swing/resources/list/admin-page.txt");
@@ -71,7 +72,8 @@ public class ManagerAdminPage extends ManagerAbstractList {
 
         final DnDList listFile = new DnDList(pathList);
 
-        this.add(new LightScrollPane(1, 1, 0, 0, listFile), BorderLayout.CENTER);
+        listFile.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
+        this.add(new LightScrollPane(1, 0, 0, 0, listFile), BorderLayout.CENTER);
 
         JPanel lastLine = new JPanel();
         lastLine.setOpaque(false);
@@ -79,12 +81,12 @@ public class ManagerAdminPage extends ManagerAbstractList {
 
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER), 
+                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
         
-        this.run = new JButtonStatable(this.defaultText);
+        this.run = new JButtonStateful(this.defaultText);
         
         this.run.setContentAreaFilled(false);
         this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
@@ -145,4 +147,5 @@ public class ManagerAdminPage extends ManagerAbstractList {
         
         this.add(lastLine, BorderLayout.SOUTH);
     }
+    
 }

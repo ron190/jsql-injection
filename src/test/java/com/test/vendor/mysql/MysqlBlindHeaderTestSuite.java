@@ -22,11 +22,12 @@ public class MysqlBlindHeaderTestSuite extends ConcreteMysqlTestSuite {
         MediatorModel.model().addObserver(new SystemOutTerminal());
 
         ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_header.php");
-        ConnectionUtil.setDataHeader("lib:1");
+        ConnectionUtil.setHeader("lib:1");
         ConnectionUtil.setMethodInjection(MethodInjection.HEADER);
 
         MediatorModel.model().beginInjection();
 
         MediatorModel.model().setStrategy(Strategy.BLIND);
     }
+    
 }

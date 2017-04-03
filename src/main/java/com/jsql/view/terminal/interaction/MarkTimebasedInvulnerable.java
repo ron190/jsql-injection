@@ -18,6 +18,7 @@ import com.jsql.view.swing.interaction.InteractionCommand;
  * Mark the injection as invulnerable to a time based injection.
  */
 public class MarkTimebasedInvulnerable implements InteractionCommand {
+	
     /**
      * Using default log4j.properties from root /
      */
@@ -35,4 +36,5 @@ public class MarkTimebasedInvulnerable implements InteractionCommand {
         LOGGER.info("MarkTimebasedInvulnerable");
         LOGGER.info("\n");
     }
+    
 }

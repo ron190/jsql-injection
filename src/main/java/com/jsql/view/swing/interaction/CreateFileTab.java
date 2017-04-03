@@ -24,6 +24,7 @@ import com.jsql.view.swing.text.JPopupTextArea;
  * Create a new tab for the file.
  */
 public class CreateFileTab extends CreateTab implements InteractionCommand {
+	
     /**
      * Name of the file.
      */
@@ -43,35 +44,36 @@ public class CreateFileTab extends CreateTab implements InteractionCommand {
      * @param interactionParams Name, content and path of the file
      */
     public CreateFileTab(Object[] interactionParams) {
-        name = (String) interactionParams[0];
-        content = (String) interactionParams[1];
-        path = (String) interactionParams[2];
+        this.name = (String) interactionParams[0];
+        this.content = (String) interactionParams[1];
+        this.path = (String) interactionParams[2];
     }
 
     @Override
     public void execute() {
         JTextArea fileText = new JPopupTextArea().getProxy();
-        fileText.setText(content);
+        fileText.setText(this.content);
         fileText.setFont(new Font(HelperUi.FONT_NAME, Font.PLAIN, 14));
         LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, fileText);
         
         fileText.setCaretPosition(0);
-        MediatorGui.tabResults().addTab(name + " ", scroller);
+        MediatorGui.tabResults().addTab(this.name +" ", scroller);
 
         // Focus on the new tab
         MediatorGui.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(HelperUi.ICON_FILE_SERVER);
+        TabHeader header = new TabHeader(this.name +" ", HelperUi.ICON_FILE_SERVER);
 
-        MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), path);
+        MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), this.path);
 
         // Apply the custom header to the tab
         MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(scroller), header);
 
         // Add the path String to the list of files only if there is no same StringObject value already
-        MediatorGui.managerWebshell().addToList(path.replace(name, ""));
-        MediatorGui.managerUpload().addToList(path.replace(name, ""));
-        MediatorGui.managerSqlshell().addToList(path.replace(name, ""));
+        MediatorGui.managerWebshell().addToList(this.path.replace(this.name, ""));
+        MediatorGui.managerUpload().addToList(this.path.replace(this.name, ""));
+        MediatorGui.managerSqlshell().addToList(this.path.replace(this.name, ""));
     }
+    
 }

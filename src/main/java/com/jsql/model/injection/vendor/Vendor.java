@@ -1,29 +1,32 @@
 package com.jsql.model.injection.vendor;
 
 public enum Vendor {
+	
     AUTO("<Database auto>", null),
-    CUBRID("CUBRID", new CubridVendor()),
-    DB2("DB2", new DB2Vendor()),
-    DERBY("Derby", new DerbyVendor()),
-    FIREBIRD("Firebird", new FirebirdVendor()),
-    H2("H2", new H2Vendor()),
-    HSQLDB("HSQLDB", new HSQLDBVendor()),
-    INFORMIX("Informix", new InformixVendor()),
-    INGRES("Ingres", new IngresVendor()),
-    MARIADB("MariaDB", new MariaDBVendor()),
-    MAXDB("MaxDB", new MaxDbVendor()),
-    MYSQL("MySQL", new MySQLVendor()),
-    ORACLE("Oracle", new OracleVendor()),
-    POSTGRESQL("PostgreSQL", new PostgreSQLVendor()),
-    SQLITE("SQLite", new SQLiteVendor()),
-    SQLSERVER("SQL Server", new SQLServerVendor()),
-    SYBASE("Sybase", new SybaseVendor()),
-    TERADATA("Teradata", new TeradataVendor());
+    ACCESS("Access", new VendorXml("access.xml")),
+    CUBRID("CUBRID", new VendorXml("cubrid.xml")),
+    DB2("DB2", new VendorXml("db2.xml")),
+    DERBY("Derby", new VendorXml("derby.xml")),
+    FIREBIRD("Firebird", new VendorXml("firebird.xml")),
+    H2("H2", new VendorXml("h2.xml")),
+    HSQLDB("HSQLDB", new VendorXml("hsqldb.xml")),
+    INFORMIX("Informix", new VendorXml("informix.xml")),
+    INGRES("Ingres", new VendorXml("ingres.xml")),
+    MARIADB("MariaDB", new VendorXml("mysql.xml")),
+    MAXDB("MaxDB", new VendorXml("maxdb.xml")),
+    MYSQL("MySQL", new VendorXml("mysql.xml")),
+    ORACLE("Oracle", new VendorXml("oracle.xml")),
+    POSTGRESQL("PostgreSQL", new VendorXml("postgresql.xml")),
+    SQLITE("SQLite", new VendorXml("sqlite.xml")),
+    SQLSERVER("SQL Server", new VendorXml("sqlserver.xml")),
+    SYBASE("Sybase", new VendorXml("sybase.xml")),
+    TERADATA("Teradata", new VendorXml("teradata.xml"));
 
-    private final AbstractVendorDefault instanceVendor;
     private final String labelVendor;
     
-    Vendor(String labelVendor, AbstractVendorDefault instanceVendor) {
+    private final AbstractVendorDefault instanceVendor;
+    
+    private Vendor(String labelVendor, AbstractVendorDefault instanceVendor) {
         this.labelVendor = labelVendor;
         this.instanceVendor = instanceVendor;
     }
@@ -36,4 +39,5 @@ public enum Vendor {
     public String toString() {
         return this.labelVendor;
     }
+    
 }

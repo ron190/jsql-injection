@@ -64,6 +64,7 @@ import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
  */
 @SuppressWarnings("serial")
 public class DialogTranslate extends JDialog {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -211,7 +212,7 @@ public class DialogTranslate extends JDialog {
             + "Help the community and translate some buttons, menus, tabs and tooltips into "+ language +", "
             + "then click on Send to forward your changes to the developer on Github.<br>"
             + "<i>E.g. for Chinese, change '<b>CONTEXT_MENU_COPY = Copy</b>' to '<b>CONTEXT_MENU_COPY = \u590d\u5236</b>', then click on Send. The list only displays what needs to be translated "
-            + "and it's updated as soon as the developer processes your translation.</i>"
+            + "and is updated as soon as the developer processes your translation.</i>"
             + "</html>"
         );
         labelTranslation.setIcon(language.getFlag());
@@ -256,12 +257,12 @@ public class DialogTranslate extends JDialog {
                     if (language != Language.OT) {
                         try {
                             String pageSourceLanguage = ConnectionUtil.getSource(
-                                "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql_"+ language.name().toLowerCase() +".properties"
+                                "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql_"+ language.getNameLocale() +".properties"
                             );
                             languageProperties.load(new StringReader(pageSourceLanguage));
                             LOGGER.info("Text for "+ language +" translation loaded from Github");
                         } catch (IOException e) {
-                            languageProperties.load(new StringReader(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql_"+ language.name().toLowerCase() +".properties")))));
+                            languageProperties.load(new StringReader(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql_"+ language.getNameLocale() +".properties")))));
                             LOGGER.info("Text for "+ language +" translation loaded from local");
                         }
                     } else {
@@ -310,4 +311,5 @@ public class DialogTranslate extends JDialog {
     public void requestButtonFocus() {
         this.buttonSend.requestFocusInWindow();
     }
+    
 }

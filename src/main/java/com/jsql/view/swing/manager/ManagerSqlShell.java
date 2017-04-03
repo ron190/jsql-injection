@@ -28,7 +28,7 @@ import com.jsql.view.swing.text.JPopupTextField;
  * Manager for uploading PHP SQL shell to the host and send queries.
  */
 @SuppressWarnings("serial")
-public class ManagerSqlShell extends ManagerAbstractShell {
+public class ManagerSqlShell extends AbstractManagerShell {
     
     final JTextField username = new JPopupTextField(I18n.valueByKey("SQL_SHELL_USERNAME_LABEL")).getProxy();
     
@@ -39,7 +39,7 @@ public class ManagerSqlShell extends ManagerAbstractShell {
      */
     public ManagerSqlShell() {
 
-        run.setText("Create SQL shell(s)");
+        this.run.setText("Create SQL shell(s)");
         
         JPanel userPassPanel = new JPanel();
         
@@ -48,15 +48,15 @@ public class ManagerSqlShell extends ManagerAbstractShell {
         userPassPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         userPassPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 1, 1));
         
-        username.setToolTipText(I18n.valueByKey("SQL_SHELL_USERNAME_TOOLTIP"));
-        password.setToolTipText(I18n.valueByKey("SQL_SHELL_PASSWORD_TOOLTIP"));
+        this.username.setToolTipText(I18n.valueByKey("SQL_SHELL_USERNAME_TOOLTIP"));
+        this.password.setToolTipText(I18n.valueByKey("SQL_SHELL_PASSWORD_TOOLTIP"));
         
-        username.setBorder(HelperUi.BORDER_BLU);
-        password.setBorder(HelperUi.BORDER_BLU);
+        this.username.setBorder(HelperUi.BORDER_BLU);
+        this.password.setBorder(HelperUi.BORDER_BLU);
         
         JPanel panelPassword = new JPanel(new BorderLayout());
         panelPassword.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
-        panelPassword.add(password);
+        panelPassword.add(this.password);
         
         userPassLayout.setHorizontalGroup(
             userPassLayout
@@ -67,7 +67,7 @@ public class ManagerSqlShell extends ManagerAbstractShell {
                 )
                 .addGroup(
                     userPassLayout.createParallelGroup()
-                        .addComponent(username)
+                        .addComponent(this.username)
                         .addComponent(panelPassword)
                 )
         );
@@ -78,7 +78,7 @@ public class ManagerSqlShell extends ManagerAbstractShell {
                 .addGroup(
                     userPassLayout
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(username)
+                        .addComponent(this.username)
                 )
                 .addGroup(
                     userPassLayout
@@ -92,6 +92,7 @@ public class ManagerSqlShell extends ManagerAbstractShell {
 
     @Override
     void createPayload(String shellPath, String shellURL) throws JSqlException {
-        RessourceAccess.createSqlShell(shellPath, shellURL, username.getText(), password.getText());
+        RessourceAccess.createSqlShell(shellPath, shellURL, this.username.getText(), this.password.getText());
     }
+    
 }

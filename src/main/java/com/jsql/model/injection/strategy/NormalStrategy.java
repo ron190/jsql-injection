@@ -22,11 +22,15 @@ import com.jsql.util.StringUtil;
  * Injection strategy using normal attack.
  */
 public class NormalStrategy extends AbstractStrategy {
+	
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
+    /**
+     * 
+     */
     private String performanceLength = "0";
     
     /**
@@ -34,6 +38,9 @@ public class NormalStrategy extends AbstractStrategy {
      */
     private String visibleIndex;
 
+    /**
+     * 
+     */
     @Override
     public void checkApplicability() throws JSqlException {
         LOGGER.trace("Normal test...");
@@ -81,20 +88,6 @@ public class NormalStrategy extends AbstractStrategy {
         MediatorModel.model().sendToViews(request);
     }
     
-    @Override
-    public String getPerformanceLength() {
-        return this.performanceLength;
-    }
-    
-    public void setPerformanceLength(String performanceLength) {
-        this.performanceLength = performanceLength;
-    }
-    
-    @Override
-    public String getName() {
-        return "Normal";
-    }
-    
     /**
      * Runnable class, search the most efficient index.<br>
      * Some indexes will display a lots of characters, others won't,
@@ -104,7 +97,9 @@ public class NormalStrategy extends AbstractStrategy {
      */
     public String getVisibleIndex(String firstSuccessPageSource) {
         // Parse all indexes found
+    	// Fix #4007 (initialize firstSuccessPageSource to "" instead of null)
         Matcher regexSearch = Pattern.compile("(?s)1337(\\d+?)7331").matcher(firstSuccessPageSource);
+        
         List<String> foundIndexes = new ArrayList<>();
         while (regexSearch.find()) {
             foundIndexes.add(regexSearch.group(1));
@@ -132,6 +127,7 @@ public class NormalStrategy extends AbstractStrategy {
 
         if (performanceResults.isEmpty()) {
             this.performanceLength = "0";
+            // TODO optional
             return null;
         }
         
@@ -148,6 +144,7 @@ public class NormalStrategy extends AbstractStrategy {
 
         // Sort by length of #######...#######
         Arrays.sort(lengthFields, new Comparator<Integer[]>() {
+        	// TODO java 8
             @Override
             public int compare(Integer[] s1, Integer[] s2) {
                 Integer t1 = s1[0];
@@ -168,6 +165,17 @@ public class NormalStrategy extends AbstractStrategy {
         return Integer.toString(lengthFields[lengthFields.length - 1][1]);
     }
     
+    // Getters and setters
+    
+    @Override
+    public String getPerformanceLength() {
+        return this.performanceLength;
+    }
+    
+    public void setPerformanceLength(String performanceLength) {
+        this.performanceLength = performanceLength;
+    }
+    
     public String getVisibleIndex() {
         return visibleIndex;
     }
@@ -175,4 +183,10 @@ public class NormalStrategy extends AbstractStrategy {
     public void setVisibleIndex(String visibleIndex) {
         this.visibleIndex = visibleIndex;
     }
+    
+    @Override
+    public String getName() {
+        return "Normal";
+    }
+    
 }

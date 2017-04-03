@@ -15,6 +15,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,7 +35,10 @@ import com.jsql.model.injection.method.MethodInjection;
 import net.sourceforge.spnego.SpnegoHttpURLConnection;
 
 /**
- *
+ * Utility class in charge of connection to web resources and management
+ * of source page and request and response headers.
+ * In the same time it allows to fix different lack of functionality induced by
+ * library bugs (jcifs) or core design lazyness (custom HTTP method).
  */
 public class ConnectionUtil {
 	
@@ -44,52 +48,55 @@ public class ConnectionUtil {
     private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
-     * 
+     * URL entered by user
      */
     private static String urlByUser;
 
     /**
-     * Url entered by user.
+     * URL entered by user without the query string
      */
     private static String urlBase;
 
     /**
-     * Http request type : GET, POST, HEADER...
+     * Method of injection: by query string, request or header.
      */
     private static MethodInjection methodInjection;
 
     /**
-     * 
+     * Default HTTP method. It can be changed to a custom method.
      */
     private static String typeRequest = "POST";
 
     /**
-     * Get data submitted by user.
+     * Query string built from the URL submitted by user.
      */
-    private static String dataQuery = "";
+    private static String queryString = "";
 
     /**
-     * Request data submitted by user.
+     * Request submitted by user.
      */
-    private static String dataRequest = "";
+    private static String request = "";
 
     /**
-     * Header data submitted by user.
+     * Header submitted by user.
      */
-    private static String dataHeader = "";
+    private static String header = "";
 
     /**
-     * 
+     * Default timeout used by the jcifs fix. It's the default value used usually by the JVM.
      */
     public static final Integer TIMEOUT = 15000;
     
+    // Utility class
     private ConnectionUtil() {
-        // Utility class
+        // not used
     }
     
     /**
-     * 
-     * @throws InjectionFailureException
+     * Check that the connection to the website is working correctly.
+     * It uses authentication defined by user, with fixed timeout, and warn
+     * user in case of authentication detected.
+     * @throws InjectionFailureException when any error occurs during the connection
      */
     public static void testConnection() throws InjectionFailureException {
         // Test the HTTP connection
@@ -127,11 +134,11 @@ public class ConnectionUtil {
             ConnectionUtil.fixJcifsTimeout(connection);
             
             // Add headers if exists (Authorization:Basic, etc)
-            for (String header: ConnectionUtil.getDataHeader().split("\\\\r\\\\n")) {
+            for (String header: ConnectionUtil.getHeader().split("\\\\r\\\\n")) {
                 ConnectionUtil.sanitizeHeaders(connection, header);
             }
 
-            StringUtil.sendMessageHeader(connection, ConnectionUtil.getUrlBase());
+            ConnectionUtil.checkResponseHeader(connection, ConnectionUtil.getUrlBase());
             
             // Disable caching of authentication like Kerberos
             connection.disconnect();
@@ -141,10 +148,10 @@ public class ConnectionUtil {
     }
     
     /**
-     * 
-     * @param url
-     * @return
-     * @throws IOException
+     * Call an URL and return the source page.
+     * @param url to call
+     * @return the source page of the URL
+     * @throws IOException when the reading of source page fails
      */
     public static String getSource(String url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
@@ -158,7 +165,7 @@ public class ConnectionUtil {
         
         Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
         msgHeader.put(TypeHeader.URL, url);
-        msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHttpHeaders(connection));
+        msgHeader.put(TypeHeader.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
         
         String pageSource = "";
 
@@ -177,19 +184,22 @@ public class ConnectionUtil {
         request.setParameters(msgHeader);
         MediatorModel.model().sendToViews(request);
         
+        // TODO optional
         return pageSource.trim();
     }
     
     /**
-     * 
-     * @param connection
-     * @param typeRequest
-     * @throws ProtocolException
+     * Fix a wrong doing by Java core developers on design of HTTP method definition.
+     * Compatible HTTP methods are stored in an array but it cannot be modified in order
+     * to define your own method, whereas method should be customizable.
+     * @param connection which HTTP method must be customized
+     * @param customMethod to set on the connection
+     * @throws ProtocolException if backup solution fails during reflectivity
      */
-    public static void fixCustomRequestMethod(HttpURLConnection connection, String typeRequest) throws ProtocolException {
+    public static void fixCustomRequestMethod(HttpURLConnection connection, String customMethod) throws ProtocolException {
         // Add a default or custom method : check whether we are running on a buggy JRE
         try {
-            connection.setRequestMethod(typeRequest);
+            connection.setRequestMethod(customMethod);
         } catch (final ProtocolException pe) {
             try {
                 final Class<?> httpURLConnectionClass = connection.getClass();
@@ -198,7 +208,7 @@ public class ConnectionUtil {
                 
                 Field methods = parentClass.getDeclaredField("methods");
                 methods.setAccessible(true);
-                Array.set(methods.get(connection), 1, typeRequest);
+                Array.set(methods.get(connection), 1, customMethod);
                 
                 // If the implementation class is an Https URL Connection, we
                 // need to go up one level higher in the heirarchy to modify the
@@ -209,7 +219,7 @@ public class ConnectionUtil {
                     methodField = parentClass.getDeclaredField("method");
                 }
                 methodField.setAccessible(true);
-                methodField.set(connection, typeRequest);
+                methodField.set(connection, customMethod);
             } catch (Exception e) {
                 LOGGER.warn("Custom Request method definition failed, forcing method GET", e);
                 connection.setRequestMethod("GET");
@@ -218,8 +228,10 @@ public class ConnectionUtil {
     }
     
     /**
-     * 
-     * @param connection
+     * Fix a bug introduced by authentication library jcifs which ignore
+     * default timeout of connection.
+     * Use reflectivity to set connectTimeout and readTimeout attributs.
+     * @param connection whose default timeout attributs will be set
      */
     public static void fixJcifsTimeout(HttpURLConnection connection) {
         Class<?> classConnection = connection.getClass();
@@ -259,9 +271,10 @@ public class ConnectionUtil {
     }
     
     /**
-     * 
-     * @param connection
-     * @param header
+     * Parse the header component and decode any character of the form %xy
+     * except for cookie
+     * @param connection where decoded value will be set
+     * @param header string to decode
      */
     public static void sanitizeHeaders(HttpURLConnection connection, String header) {
         Matcher regexSearch = Pattern.compile("(?s)(.*):(.*)").matcher(header);
@@ -278,6 +291,118 @@ public class ConnectionUtil {
                 LOGGER.warn("Unsupported header encoding "+ e, e);
             }
         }
+    }
+
+    /**
+     * Verify the headers received after a request, detect authentication response and
+     * send the headers to the view.
+     * @param connection contains headers response
+     * @param url the website to request
+     * @throws IOException when an error occurs during connection
+     */
+    @SuppressWarnings("unchecked")
+    public static void checkResponseHeader(HttpURLConnection connection, String url) throws IOException {
+        Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
+        msgHeader.put(TypeHeader.URL, url);
+        msgHeader.put(TypeHeader.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
+
+        if (
+            !PreferencesUtil.isFollowingRedirection()
+            && Pattern.matches("3\\d\\d", Integer.toString(connection.getResponseCode()))
+        ) {
+            LOGGER.warn("HTTP 3XX Redirection detected. Please test again with option 'Follow HTTP redirection' enabled.");
+        }
+        
+        Map<String, String> mapResponse = (Map<String, String>) msgHeader.get(TypeHeader.RESPONSE);
+        if (
+            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
+            && mapResponse.containsKey("WWW-Authenticate") 
+            && mapResponse.get("WWW-Authenticate") != null
+            && mapResponse.get("WWW-Authenticate").startsWith("Basic ")
+        ) {
+            LOGGER.warn(
+                "Basic Authentication detected.\n"
+                + "Please define and enable authentication information in the panel Preferences.\n"
+                + "Or open Advanced panel, add 'Authorization: Basic b3N..3Jk' to the Header, replace b3N..3Jk with the string 'osUserName:osPassword' encoded in Base64. You can use the Coder in jSQL to encode the string."
+            );
+        
+        } else if (
+            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
+            && mapResponse.containsKey("WWW-Authenticate") 
+            && "NTLM".equals(mapResponse.get("WWW-Authenticate"))
+        ) {
+            LOGGER.warn(
+                "NTLM Authentication detected.\n"
+                + "Please define and enable authentication information in the panel Preferences.\n"
+                + "Or add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
+            );
+        
+        } else if (
+            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
+            && mapResponse.containsKey("WWW-Authenticate") 
+            && mapResponse.get("WWW-Authenticate") != null
+            && mapResponse.get("WWW-Authenticate").startsWith("Digest ")
+        ) {
+            LOGGER.warn(
+                "Digest Authentication detected.\n"
+                + "Please define and enable authentication information in the panel Preferences."
+            );
+        
+        } else if (
+            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
+            && mapResponse.containsKey("WWW-Authenticate") 
+            && "Negotiate".equals(mapResponse.get("WWW-Authenticate"))
+        ) {
+            LOGGER.warn(
+                "Negotiate Authentication detected.\n"
+                + "Please add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
+            );
+        }
+        
+        // Request the web page to the server
+        String pageSource = "";
+        Exception exception = null;
+        
+        String line;
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            while ((line = reader.readLine()) != null) {
+                pageSource += line + "\r\n";
+            }
+        } catch (IOException e) {
+            exception = e;
+        }
+
+        msgHeader.put(TypeHeader.SOURCE, pageSource);
+        
+        // Inform the view about the log infos
+        Request request = new Request();
+        request.setMessage(TypeRequest.MESSAGE_HEADER);
+        request.setParameters(msgHeader);
+        MediatorModel.model().sendToViews(request);
+        
+        if (exception != null) {
+            throw new IOException(exception);
+        }
+    }
+    
+    /**
+     * Extract HTTP headers from a connection.
+     * @param connection Connection with HTTP headers
+     * @return Map of HTTP headers <name, value>
+     */
+    public static Map<String, String> getHttpHeaders(URLConnection connection) {
+        Map<String, String> mapHeaders = new HashMap<>();
+        
+        for (int i = 0 ; ; i++) {
+            String headerName = connection.getHeaderFieldKey(i);
+            String headerValue = connection.getHeaderField(i);
+            if (headerName == null && headerValue == null) {
+                break;
+            }
+            mapHeaders.put(headerName == null ? "Method" : headerName, headerValue);
+        }
+
+        return mapHeaders;
     }
     
     // Getters and setters
@@ -314,27 +439,28 @@ public class ConnectionUtil {
         ConnectionUtil.typeRequest = typeRequest;
     }
     
-    public static String getDataQuery() {
-        return dataQuery;
+    public static String getQueryString() {
+        return queryString;
     }
 
-    public static void setDataQuery(String dataQuery) {
-        ConnectionUtil.dataQuery = dataQuery;
+    public static void setQueryString(String queryString) {
+        ConnectionUtil.queryString = queryString;
     }
     
-    public static String getDataRequest() {
-        return dataRequest;
+    public static String getRequest() {
+        return request;
     }
 
-    public static void setDataRequest(String dataRequest) {
-        ConnectionUtil.dataRequest = dataRequest;
+    public static void setRequest(String request) {
+        ConnectionUtil.request = request;
     }
     
-    public static String getDataHeader() {
-        return dataHeader;
+    public static String getHeader() {
+        return header;
     }
 
-    public static void setDataHeader(String dataHeader) {
-        ConnectionUtil.dataHeader = dataHeader;
+    public static void setHeader(String header) {
+        ConnectionUtil.header = header;
     }
+    
 }

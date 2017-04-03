@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
  */
 @SuppressWarnings("serial")
 public class ListTransfertHandler extends TransferHandler {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -205,4 +206,5 @@ public class ListTransfertHandler extends TransferHandler {
 
         return true;
     }
+    
 }

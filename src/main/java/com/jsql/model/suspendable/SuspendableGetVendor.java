@@ -13,6 +13,8 @@ import org.apache.log4j.Logger;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.injection.vendor.Vendor;
+import com.jsql.model.suspendable.callable.CallablePageSource;
+import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 /**
  * Runnable class, define insertionCharacter that will be used by all futures requests,
@@ -21,11 +23,15 @@ import com.jsql.model.injection.vendor.Vendor;
  * in the source page.
  */
 public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
+	
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
+    /**
+     * 
+     */
     @Override
     public Vendor run(Object... args) throws StoppedByUserException {
         Vendor vendor = null;
@@ -237,6 +243,8 @@ select '"'"'
             Thread.currentThread().interrupt();
         }
         
+        // TODO vendor
         return vendor;
     }
+    
 }

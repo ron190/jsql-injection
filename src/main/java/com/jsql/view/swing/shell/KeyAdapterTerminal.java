@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
  * Keyboard key processing for terminal.
  */
 public class KeyAdapterTerminal extends KeyAdapter {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -192,4 +193,5 @@ public class KeyAdapterTerminal extends KeyAdapter {
             LOGGER.error(e, e);
         }
     }
+    
 }

@@ -21,6 +21,7 @@ import com.jsql.view.swing.MediatorGui;
  * Append text to the tab Chunk.
  */
 public class MessageChunk implements InteractionCommand {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -35,13 +36,13 @@ public class MessageChunk implements InteractionCommand {
      * @param interactionParams Text to append
      */
     public MessageChunk(Object[] interactionParams) {
-        text = (String) interactionParams[0];
+        this.text = (String) interactionParams[0];
     }
 
     @Override
     public void execute() {
         try {
-            MediatorGui.panelConsoles().chunkTab.append(text);
+            MediatorGui.panelConsoles().chunkTab.append(this.text);
             MediatorGui.panelConsoles().chunkTab.setCaretPosition(MediatorGui.panelConsoles().chunkTab.getDocument().getLength());
             
             int tabIndex = MediatorGui.tabConsoles().indexOfTab("Chunk");
@@ -56,4 +57,5 @@ public class MessageChunk implements InteractionCommand {
             LOGGER.error(e, e);
         }
     }
+    
 }

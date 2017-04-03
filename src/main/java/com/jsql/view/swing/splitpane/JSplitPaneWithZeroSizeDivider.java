@@ -38,6 +38,7 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
+	
     /**
      * The size of the transparent drag area.
      */
@@ -155,4 +156,5 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
             super.finishDraggingTo(location + dividerDragOffset);
         }
     }
+    
 }

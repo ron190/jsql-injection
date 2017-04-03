@@ -23,4 +23,5 @@ public class ConcreteOracleTestSuite extends AbstractTestSuite {
         
         requestJdbc();
     }
+    
 }

@@ -27,6 +27,7 @@ import com.jsql.view.swing.tree.model.NodeModelTable;
  * Add the tables to the corresponding database.
  */
 public class AddTables implements InteractionCommand {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -42,7 +43,7 @@ public class AddTables implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public AddTables(Object[] interactionParams) {
-        tables = (List<Table>) interactionParams[0];
+        this.tables = (List<Table>) interactionParams[0];
     }
 
     @Override
@@ -54,7 +55,7 @@ public class AddTables implements InteractionCommand {
         DefaultMutableTreeNode databaseNode = null;
 
         // Loop into the list of tables
-        for (Table table: tables) {
+        for (Table table: this.tables) {
             // Create a node model with the table element
             AbstractNodeModel newTreeNodeModel = new NodeModelTable(table);
             // Create the node
@@ -81,4 +82,5 @@ public class AddTables implements InteractionCommand {
             ((AbstractNodeModel) databaseNode.getUserObject()).isLoaded = true;
         }
     }
+    
 }

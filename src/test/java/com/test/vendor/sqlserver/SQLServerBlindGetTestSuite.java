@@ -22,11 +22,12 @@ public class SQLServerBlindGetTestSuite extends ConcreteSQLServerTestSuite {
         MediatorModel.model().addObserver(new SystemOutTerminal());
 
         ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/sqlserver_simulate_get.php");
-        ConnectionUtil.setDataQuery("?lib=1");
+        ConnectionUtil.setQueryString("?lib=1");
         ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
 
         MediatorModel.model().beginInjection();
 
         MediatorModel.model().setStrategy(Strategy.BLIND);
     }
+    
 }

@@ -17,4 +17,5 @@ public class ActionCheckUpdate implements ActionListener, Runnable {
     public void actionPerformed(ActionEvent e) {
         new Thread(this, "ThreadCheckUpdate").start();
     }
+    
 }

@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
  * Allow to traverse upward to its corresponding database.
  */
 public class Table extends AbstractElementDatabase {
+    
     /**
      * Log4j logger sent to view.
      */
@@ -56,7 +57,7 @@ public class Table extends AbstractElementDatabase {
      * Return the number of rows in the table.
      */
     @Override
-    public int getCount() {
+    public int getChildCount() {
         return Integer.parseInt(rowCount);
     }
 
@@ -87,4 +88,5 @@ public class Table extends AbstractElementDatabase {
         
         return this.elementValue +" ("+ nbRow +" row"+ sPlural +")";
     }
+    
 }

@@ -31,6 +31,7 @@ import com.jsql.view.swing.scrollpane.JScrollIndicator;
  * Append a text to the tab Header.
  */
 public class MessageHeader implements InteractionCommand {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -49,17 +50,17 @@ public class MessageHeader implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
-        params = (Map<String, Object>) interactionParams[0];
-        url = (String) params.get(TypeHeader.URL);
-        post = (String) params.get(TypeHeader.POST);
-        header = (String) params.get(TypeHeader.HEADER);
-        response = (Map<String, String>) params.get(TypeHeader.RESPONSE);
-        source = (String) params.get(TypeHeader.SOURCE);
+        this.params = (Map<String, Object>) interactionParams[0];
+        url = (String) this.params.get(TypeHeader.URL);
+        post = (String) this.params.get(TypeHeader.POST);
+        header = (String) this.params.get(TypeHeader.HEADER);
+        response = (Map<String, String>) this.params.get(TypeHeader.RESPONSE);
+        source = (String) this.params.get(TypeHeader.SOURCE);
     }
 
     @Override
     public void execute() {
-        MediatorGui.panelConsoles().addHeader(new HttpHeader(url, post, header, response, source));
+        MediatorGui.panelConsoles().addHeader(new HttpHeader(this.url, this.post, this.header, this.response, this.source));
         
         JViewport viewport = ((JScrollIndicator) MediatorGui.panelConsoles().network.getLeftComponent()).scrollPane.getViewport();
         JTable table = (JTable) viewport.getView();
@@ -67,7 +68,7 @@ public class MessageHeader implements InteractionCommand {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         
         try {
-            model.addRow(new Object[]{response.get("Method"), url, response.get("Content-Length"), response.get("Content-Type")});
+            model.addRow(new Object[]{response.get("Method"), this.url, this.response.get("Content-Length"), response.get("Content-Type")});
             
             Rectangle rect = table.getCellRect(table.getRowCount() - 1, 0, true);
             Point pt = viewport.getViewPosition();
@@ -86,4 +87,5 @@ public class MessageHeader implements InteractionCommand {
             LOGGER.error(e, e);
         }
     }
+    
 }

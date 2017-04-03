@@ -18,6 +18,7 @@ import com.jsql.view.swing.interaction.InteractionCommand;
  * Mark the injection as invulnerable to a blind injection.
  */
 public class MarkBlindInvulnerable implements InteractionCommand {
+	
     /**
      * Using default log4j.properties from root /
      */
@@ -35,4 +36,5 @@ public class MarkBlindInvulnerable implements InteractionCommand {
         LOGGER.info("MarkBlindInvulnerable");
         LOGGER.info("\n");
     }
+    
 }

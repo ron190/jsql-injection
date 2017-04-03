@@ -18,4 +18,5 @@ public class MessageHeader extends com.jsql.view.swing.interaction.MessageHeader
     public MessageHeader(Object[] interactionParams) {
         super(interactionParams);
     }
+    
 }

@@ -1,6 +1,7 @@
 package com.jsql.i18n;
 
-import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +28,7 @@ public class I18n {
     private static final Logger LOGGER = Logger.getRootLogger();
     
 //    static {
-//        Locale.setDefault(new Locale("fr"));
+//        Locale.setDefault(new Locale("ar"));
 //    }
     
     /**
@@ -105,10 +106,11 @@ public class I18n {
     /**
      * Verify if there is a language properties file corresponding to the current system language.
      * If not then it invites the user to use the translation process. 
+     * @throws URISyntaxException 
      */
-    public static void checkCurrentLanguage() {
-        File fileRootLocale = new File("com/jsql/i18n/jsql_"+ Locale.getDefault().getLanguage() +".properties");
-        if (!fileRootLocale.exists() && !new Locale("en").getLanguage().equals(Locale.getDefault().getLanguage())) { 
+    public static void checkCurrentLanguage() throws URISyntaxException {
+        URL path = I18n.class.getResource("/com/jsql/i18n/jsql_"+ Locale.getDefault().getLanguage() +".properties");
+        if (!Locale.getDefault().getLanguage().equals("en") && path == null) { 
             String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
             LOGGER.debug(
                 "Language "+ languageHost +" is not supported, "
@@ -129,4 +131,5 @@ public class I18n {
     public static Locale getLocaleDefault() {
     	return I18n.localeDefault.getLocale();
     }
+    
 }

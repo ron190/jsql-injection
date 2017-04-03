@@ -27,41 +27,108 @@ import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.SlidingException;
-import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.util.StringUtil;
 
 /**
- * Database ressource object to read database, table, columns.
+ * Database ressource object to read name of databases, tables, columns and values
+ * using most suited injection strategy.
  */
 public class DataAccess {
+	
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
+    /**
+     * SQL characters marking the end of the result of an injection.
+     * Process stops when this schema is encountered: SQLix01x03x03x07
+     */
     public static final String TRAIL_SQL = "%01%03%03%07";
     
-    public static final String TD = "\\x06";
-    public static final String TD_SQL = "%06";
+    /**
+     * Regex characters marking the end of the result of an injection.
+     * Process stops when this schema is encountered: SQLix01x03x03x07
+     */
+    public static final String TRAIL_RGX = "\\x01\\x03\\x03\\x07";
     
-    public static final String QTE_SQL = "%05";
+    public static final String SEPARATOR_FIELD_HEX = "0x7f";
+    public static final String SEPARATOR_FIELD_SQL = "%7f";
     
-    public static final String SEPARATOR = "\\x04";
-    public static final String SEPARATOR_SQL = "%04";
+    /**
+     * Regex character used between each table cells.
+     * Expected schema of multiple table cells :
+     * x04[table cell]x05[number of occurences]x04x06x04[table cell]x05[number of occurences]x04
+     */
+    public static final String SEPARATOR_CELL_RGX = "\\x06";
     
+    /**
+     * SQL character used between each table cells.
+     * Expected schema of multiple table cells :
+     * %04[table cell]%05[number of occurences]%04%06%04[table cell]%05[number of occurences]%04
+     */
+    public static final String SEPARATOR_CELL_SQL = "%06";
+    
+    /**
+     * SQL character used between the table cell and the number of occurence of the cell text.
+     * Expected schema of a table cell data is %04[table cell]%05[number of occurences]%04
+     */
+    public static final String SEPARATOR_QTE_SQL = "%05";
+    
+    /**
+     * Regex character used between the table cell and the number of occurence of the cell text.
+     * Expected schema of a table cell data is x04[table cell]x05[number of occurences]x04
+     */
+    public static final String SEPARATOR_QTE_RGX = "\\x05";
+    
+    /**
+     * Regex character enclosing a table cell returned by injection.
+     * It allows to detect the correct end of a table cell data during parsing. 
+     * Expected schema of a table cell data is x04[table cell]x05[number of occurences]x04
+     */
+    public static final String ENCLOSE_VALUE_RGX = "\\x04";
+    
+    /**
+     * SQL character enclosing a table cell returned by injection.
+     * It allows to detect the correct end of a table cell data during parsing. 
+     * Expected schema of a table cell data is %04[table cell]%05[number of occurences]%04
+     */
+    public static final String ENCLOSE_VALUE_SQL = "%04";
+    
+    public static final String CALIBRATOR_SQL = "%23";
+    public static final String CALIBRATOR_HEX = "0x23";
+    public static final String ENCLOSE_VALUE_HEX = "0x04";
+    public static final String SEPARATOR_QTE_HEX = "0x05";
+    public static final String SEPARATOR_CELL_HEX = "0x06";
+    public static final String LEAD_HEX = "0x53514c69";
+    public static final String LEAD = "SQLi";
+    public static final String TRAIL_HEX = "0x01030307";
+    
+    /**
+     * Regex keywords corresponding to multiline and case insensitive match.
+     */
     public static final String MODE = "(?si)";
-    public static final String LINE = "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?";
     
+    /**
+     * Regex schema describing a table cell with firstly the cell content and secondly the number of occurences
+     * of the cell text, separated by the reserved character x05 in hexadecimal.
+     * The range of characters from x01 to x1F are not printable ASCII characters used to parse the data and exclude
+     * printable characters during parsing.
+     * Expected schema of a table cell data is x04[table cell]x05[number of occurences]x04
+     */
+    public static final String CELL_TABLE = "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)"+ SEPARATOR_QTE_RGX +"([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?";
+    
+    // Utility class
     private DataAccess() {
-        // Utility
+        // not used
     }
     
     /**
-     * Get the initial database informations.<br>
+     * Get general database informations.<br>
      * => version{%}database{%}user{%}CURRENT_USER
-     * @throws StoppedByUserException 
+     * @throws JSqlException
      */
     public static void getDatabaseInfos() throws JSqlException {
         LOGGER.trace("Fetching informations...");
@@ -84,9 +151,9 @@ public class DataAccess {
         // Check if parsing is failing
         try {
             MediatorModel.model().setDatabaseInfos(
-                resultToParse.split(SEPARATOR)[0].replaceAll("\\s+"," "),
-                resultToParse.split(SEPARATOR)[1],
-                resultToParse.split(SEPARATOR)[2]
+                resultToParse.split(ENCLOSE_VALUE_RGX)[0].replaceAll("\\s+"," "),
+                resultToParse.split(ENCLOSE_VALUE_RGX)[1],
+                resultToParse.split(ENCLOSE_VALUE_RGX)[2]
             );
         } catch (ArrayIndexOutOfBoundsException e) {
             LOGGER.warn("Incorrect database informations: "+ resultToParse, e);
@@ -97,13 +164,13 @@ public class DataAccess {
     }
     
     /**
-     * Get all databases names and table counts, then address them to the view.<br>
-     * We use a hexadecimal format and parse the pattern:<br>
-     * => hh[database name 1]jj[number of tables]hhgghh[database name 2]jj[number of tables]hhggh...hi<br>
-     * We can't expect that all the data will be found in one request,
-     * Stoppable_loopIntoResults helps to obtain the rest of the normally unreachable data.<br>
-     * The process can be stopped by the user.
-     * @throws StoppedByUserException 
+     * Get database names and table counts and send them to the view.<br>
+     * Use readable text (not hexa) and parse this pattern:<br>
+     * => hh[database name 1]jj[table count]hhgghh[database name 2]jj[table count]hhggh...hi<br>
+     * Data window can be cut before the end of the request but the process helps to obtain
+     * the rest of the unreachable data. The process can be interrupted by the user (stop/pause).
+     * @return list of databases found
+     * @throws JSqlException when injection failure or stopped by user
      */
     public static List<Database> listDatabases() throws JSqlException {
         LOGGER.trace("Fetching databases...");
@@ -133,7 +200,12 @@ public class DataAccess {
         // Parse all data we have retrieved
         Matcher regexSearch = 
             Pattern
-                .compile(MODE + SEPARATOR + LINE + SEPARATOR)
+                .compile(
+            		MODE 
+            		+ ENCLOSE_VALUE_RGX 
+            		+ CELL_TABLE 
+            		+ ENCLOSE_VALUE_RGX
+        		)
                 .matcher(resultToParse);
 
         if (!regexSearch.find()) {
@@ -159,23 +231,25 @@ public class DataAccess {
     }
 
     /**
-     * Get all tables names and row counts, then address them to the view.<br>
-     * We use a hexadecimal format and parse the pattern:<br>
-     * => hh[table name 1]jj[number of rows]hhgghh[table name 2]jj[number of rows]hhggh...hi<br>
-     * We can't expect that all the data will be found in one request,
-     * Stoppable_loopIntoResults helps to obtain the rest of the unreachable data.<br>
-     * The process can be interrupted by the user (stop/pause).
+     * Get tables name and row count and send them to the view.<br>
+     * Use readable text (not hexa) and parse this pattern:<br>
+     * => hh[table name 1]jj[rows count]hhgghh[table name 2]jj[rows count]hhggh...hi<br>
+     * Data window can be cut before the end of the request but the process helps to obtain
+     * the rest of the unreachable data. The process can be interrupted by the user (stop/pause).
+     * @param database which contains tables to find
+     * @return list of tables found
+     * @throws JSqlException when injection failure or stopped by user
      */
     public static List<Table> listTables(Database database) throws JSqlException {
         List<Table> tables = new ArrayList<>();
         
         // Inform the view that database has just been used
-        Request request = new Request();
-        request.setMessage(TypeRequest.START_PROGRESS);
-        request.setParameters(database);
-        MediatorModel.model().sendToViews(request);
+        Request requestStartProgress = new Request();
+        requestStartProgress.setMessage(TypeRequest.START_PROGRESS);
+        requestStartProgress.setParameters(database);
+        MediatorModel.model().sendToViews(requestStartProgress);
 
-        String tableCount = Integer.toString(database.getCount());
+        String tableCount = Integer.toString(database.getChildCount());
         
         String resultToParse = "";
         try {
@@ -200,7 +274,12 @@ public class DataAccess {
         // Parse all the data we have retrieved
         Matcher regexSearch =
             Pattern
-                .compile(MODE + SEPARATOR + LINE + SEPARATOR)
+                .compile(
+            		MODE 
+            		+ ENCLOSE_VALUE_RGX 
+            		+ CELL_TABLE 
+            		+ ENCLOSE_VALUE_RGX
+        		)
                 .matcher(resultToParse);
         
         if (!regexSearch.find()) {
@@ -218,26 +297,29 @@ public class DataAccess {
             }
         }
         
+        // TODO end progress ?
+        
         return tables;
     }
 
     /**
-     * Get all columns names (we force count to 1, then ignore it),
-     * then address them to the view.<br>
-     * We use a hexadecimal format and parse the pattern:<br>
-     * => hh[column name 1]jj31hhgghh[column name 2]jj31hhggh...hi<br>
-     * We can't expect that all the data will be found in one request,
-     * Stoppable_loopIntoResults helps to obtain the rest of the unreachable data.<br>
-     * The process can be interrupted by the user (stop/pause)
+     * Get column names and send them to the view.<br>
+     * Use readable text (not hexa) and parse this pattern with 2nd member forced to 31 (1 in ascii):<br>
+     * => hh[column name 1]jj[31]hhgghh[column name 2]jj[31]hhggh...hi<br>
+     * Data window can be cut before the end of the request but the process helps to obtain
+     * the rest of the unreachable data. The process can be interrupted by the user (stop/pause).
+     * @param table which contains columns to find
+     * @return list of columns found
+     * @throws JSqlException when injection failure or stopped by user
      */
     public static List<Column> listColumns(Table table) throws JSqlException {
         List<Column> columns = new ArrayList<>();
         
         // Inform the view that table has just been used
-        Request request = new Request();
-        request.setMessage(TypeRequest.START_INDETERMINATE_PROGRESS);
-        request.setParameters(table);
-        MediatorModel.model().sendToViews(request);
+        Request requestStartProgress = new Request();
+        requestStartProgress.setMessage(TypeRequest.START_INDETERMINATE_PROGRESS);
+        requestStartProgress.setParameters(table);
+        MediatorModel.model().sendToViews(requestStartProgress);
 
         String resultToParse = "";
         try {
@@ -259,6 +341,7 @@ public class DataAccess {
             }
         }
 
+        // TODO send to SQLite
         // Build SQLite columns
         if (MediatorModel.model().vendor == Vendor.SQLITE) {
             String resultSQLite = "";
@@ -276,7 +359,12 @@ public class DataAccess {
         // Parse all the data we have retrieved
         Matcher regexSearch = 
             Pattern
-                .compile(MODE + SEPARATOR + LINE + SEPARATOR)
+                .compile(
+            		MODE 
+            		+ ENCLOSE_VALUE_RGX 
+            		+ CELL_TABLE 
+            		+ ENCLOSE_VALUE_RGX
+        		)
                 .matcher(resultToParse);
 
         if (!regexSearch.find()) {
@@ -286,10 +374,10 @@ public class DataAccess {
 
             // Build an array of Column objects from the data we have parsed
             while (regexSearch.find()) {
-                String columnName = regexSearch.group(1);
+                String nameColumn = regexSearch.group(1);
 
-                Column newColumn = new Column(columnName, table);
-                columns.add(newColumn);
+                Column column = new Column(nameColumn, table);
+                columns.add(column);
             }
 
             Request requestAddColumns = new Request();
@@ -298,30 +386,28 @@ public class DataAccess {
             MediatorModel.model().sendToViews(requestAddColumns);
         }
 
-        Request request3 = new Request();
-        request3.setMessage(TypeRequest.END_INDETERMINATE_PROGRESS);
-        request3.setParameters(table);
-        MediatorModel.model().sendToViews(request3);
+        Request requestEndProgress = new Request();
+        requestEndProgress.setMessage(TypeRequest.END_INDETERMINATE_PROGRESS);
+        requestEndProgress.setParameters(table);
+        MediatorModel.model().sendToViews(requestEndProgress);
         
         return columns;
     }
 
     /**
-     * Get all values and their occurrences (we use GROUP BY),
-     * then address them to the view.<br>
-     * We use a hexadecimal format and parse the pattern<br>
-     * => hh[value 1]jj[occurence]hhgghh[value 2]jj[occurence]hhggh...hi<br>
-     * We can't expect that all the data will be found in one request,
-     * Stoppable_loopIntoResults helps to obtain the rest of the
-     * unreachable data.<br>
-     * The process can be interrupted by the user (stop/pause).
-     * @param values columns selected by user
-     * @return
+     * Get table values and count each occurrences and send them to the view.<br>
+     * Values are on clear text (not hexa) and follows this window pattern<br>
+     * => hh[value 1]jj[count]hhgghh[value 2]jj[count]hhggh...hi<br>
+     * Data window can be cut before the end of the request but the process helps to obtain
+     * the rest of the unreachable data. The process can be interrupted by the user (stop/pause).
+     * @param columns choosed by the user
+     * @return a 2x2 table containing values by columns
+     * @throws JSqlException when injection failure or stopped by user
      */
-    public static String[][] listValues(List<Column> argsElementDatabase) throws JSqlException {
-        Database database = (Database) argsElementDatabase.get(0).getParent().getParent();
-        Table table = (Table) argsElementDatabase.get(0).getParent();
-        int rowCount = argsElementDatabase.get(0).getParent().getCount();
+    public static String[][] listValues(List<Column> columns) throws JSqlException {
+        Database database = (Database) columns.get(0).getParent().getParent();
+        Table table = (Table) columns.get(0).getParent();
+        int rowCount = columns.get(0).getParent().getChildCount();
 
         // Inform the view that table has just been used
         Request request = new Request();
@@ -331,7 +417,7 @@ public class DataAccess {
 
         // Build an array of column names
         List<String> columnsName = new ArrayList<>();
-        for (AbstractElementDatabase e: argsElementDatabase) {
+        for (AbstractElementDatabase e: columns) {
             columnsName.add(e.toString());
         }
 
@@ -342,6 +428,7 @@ public class DataAccess {
          */
         String[] arrayColumns = columnsName.toArray(new String[columnsName.size()]);
 
+        // TODO try catch for partial result
         String[] pageSource = {""};
         String resultToParse = new SuspendableGetRows().run(
             MediatorModel.model().vendor.instance().sqlRows(arrayColumns, database, table),
@@ -354,7 +441,15 @@ public class DataAccess {
         // Parse all the data we have retrieved
         Matcher regexSearch = 
             Pattern
-                .compile(MODE + SEPARATOR +"([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?"+ SEPARATOR)
+            	// TODO requete differente
+                .compile(
+            		MODE 
+            		+ ENCLOSE_VALUE_RGX 
+            		+ "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)"
+            		+ SEPARATOR_QTE_RGX 
+            		+ "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?"
+            		+ ENCLOSE_VALUE_RGX
+        		)
                 .matcher(resultToParse);
 
         if (!regexSearch.find()) {
@@ -420,4 +515,5 @@ public class DataAccess {
         
         return tableDatas;
     }
+    
 }

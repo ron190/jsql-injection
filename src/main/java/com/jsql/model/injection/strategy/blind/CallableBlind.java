@@ -12,6 +12,7 @@ import com.jsql.model.injection.strategy.blind.diff_match_patch.Diff;
  * the TRUE page, and the resulting page.
  */
 public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
+    
     /**
      * List of differences found between the TRUE page, and the present page.
      */
@@ -82,4 +83,5 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
     public List<Diff> getOpcodes() {
         return this.opcodes;
     }
+    
 }

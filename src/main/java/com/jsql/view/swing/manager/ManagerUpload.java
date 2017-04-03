@@ -40,7 +40,7 @@ import com.jsql.util.PreferencesUtil;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
-import com.jsql.view.swing.manager.util.JButtonStatable;
+import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
@@ -49,7 +49,8 @@ import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
  * Manager to upload files to the host.
  */
 @SuppressWarnings("serial")
-public class ManagerUpload extends ManagerAbstractList {
+public class ManagerUpload extends AbstractManagerList {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -77,7 +78,8 @@ public class ManagerUpload extends ManagerAbstractList {
         }
 
         this.listPaths = new DnDList(pathsList);
-        this.add(new LightScrollPane(1, 1, 0, 0, this.listPaths), BorderLayout.CENTER);
+        listPaths.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
+        this.add(new LightScrollPane(1, 0, 0, 0, this.listPaths), BorderLayout.CENTER);
         
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
@@ -89,7 +91,7 @@ public class ManagerUpload extends ManagerAbstractList {
         shellURL.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
-                    BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                    BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
                     BorderFactory.createMatteBorder(1, 1, 0, 1, HelperUi.COLOR_DEFAULT_BACKGROUND)
                 ),
                 HelperUi.BORDER_BLU
@@ -100,12 +102,12 @@ public class ManagerUpload extends ManagerAbstractList {
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER), 
+                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
 
-        this.run = new JButtonStatable(I18n.valueByKey("UPLOAD_RUN_BUTTON_LABEL"));
+        this.run = new JButtonStateful(I18n.valueByKey("UPLOAD_RUN_BUTTON_LABEL"));
         I18n.addComponentForKey("UPLOAD_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("UPLOAD_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
@@ -174,4 +176,5 @@ public class ManagerUpload extends ManagerAbstractList {
         southPanel.add(lastLine);
         this.add(southPanel, BorderLayout.SOUTH);
     }
+    
 }

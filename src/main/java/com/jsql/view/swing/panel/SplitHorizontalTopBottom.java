@@ -36,6 +36,7 @@ import com.jsql.view.swing.tab.TabResults;
  */
 @SuppressWarnings("serial")
 public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
+	
     /**
      * Name of preference for splitter vertical.
      * Reset divider position for current application version.
@@ -126,4 +127,5 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         // defines left and bottom pane
         this.setResizeWeight(1);
     }
+    
 }

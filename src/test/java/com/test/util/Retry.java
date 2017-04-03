@@ -6,6 +6,7 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 public class Retry implements TestRule {
+	
     /**
      * Using default log4j.properties from root /
      */
@@ -43,4 +44,5 @@ public class Retry implements TestRule {
             }
         };
     }
+    
 }

@@ -29,6 +29,7 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public class JTextFieldWithIcon extends JTextFieldPlaceholder {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -75,4 +76,5 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
             LOGGER.error("Handled Exception: "+ e, e);
         }
     }
+    
 }

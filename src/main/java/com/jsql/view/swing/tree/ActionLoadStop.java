@@ -30,7 +30,9 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  * Action to start and stop injection process.
  */
 public class ActionLoadStop implements ActionListener {
+	
     AbstractNodeModel nodeModel;
+    
     DefaultMutableTreeNode currentTableNode;
 
     public ActionLoadStop(AbstractNodeModel nodeModel, DefaultMutableTreeNode currentTableNode) {
@@ -73,8 +75,6 @@ public class ActionLoadStop implements ActionListener {
             
             if (suspendableTask != null) {
                 suspendableTask.stop();
-//                suspendableTask.unpause();
-//                suspendableTask.resume();
             }
             
             this.nodeModel.indexProgress = 0;
@@ -85,4 +85,5 @@ public class ActionLoadStop implements ActionListener {
         }
         this.nodeModel.isRunning = !this.nodeModel.isRunning;
     }
+    
 }

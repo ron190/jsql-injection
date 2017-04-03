@@ -17,6 +17,7 @@ import com.jsql.view.swing.manager.util.StateButton;
  * End the refreshing of administration page search button.
  */
 public class EndScan implements InteractionCommand {
+	
     /**
      * @param interactionParams
      */
@@ -31,4 +32,5 @@ public class EndScan implements InteractionCommand {
         MediatorGui.managerScan().hideLoader();
         MediatorGui.managerScan().setStateButton(StateButton.STARTABLE);
     }
+    
 }

@@ -25,7 +25,7 @@ public class DB2BlindGetTestSuite extends ConcreteDB2TestSuite {
         MediatorModel.model().addObserver(new SystemOutTerminal());
 
         ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/db2_simulate_get.php");
-        ConnectionUtil.setDataQuery("?lib=1");
+        ConnectionUtil.setQueryString("?lib=1");
         ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
 
         MediatorModel.model().beginInjection();
@@ -46,4 +46,5 @@ public class DB2BlindGetTestSuite extends ConcreteDB2TestSuite {
     public void listTables() throws JSqlException {
         // Empty on purpose
     }
+    
 }

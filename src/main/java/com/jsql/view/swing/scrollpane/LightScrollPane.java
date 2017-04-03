@@ -29,7 +29,7 @@ public class LightScrollPane extends JComponent {
     public int scrollBarAlpha = 25;
     public int scrollBarAlphaRollover = 100;
     private static final int THUMB_BORDER_SIZE = 0;
-    private static final int THUMB_SIZE = 11;
+    public static final int THUMB_SIZE = 12;
     public Color colorThumb = Color.DARK_GRAY;
 
     public final JScrollPane scrollPane;
@@ -74,7 +74,7 @@ public class LightScrollPane extends JComponent {
         scrollPane.setLayout(new ScrollPaneLayout() {
             @Override
             public void layoutContainer(Container parent) {
-                viewport.setBounds(0, 0, getWidth() - 1, getHeight() - 1);
+                viewport.setBounds(0, 0, getWidth(), getHeight() - 1);
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
@@ -211,4 +211,5 @@ public class LightScrollPane extends JComponent {
             graphics2D.dispose();
         }
     }
+    
 }

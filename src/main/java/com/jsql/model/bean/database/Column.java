@@ -15,6 +15,7 @@ package com.jsql.model.bean.database;
  * Allow to traverse upward to its corresponding table
  */
 public class Column extends AbstractElementDatabase {
+    
     /**
      * The table that contains the current column.
      */
@@ -44,7 +45,7 @@ public class Column extends AbstractElementDatabase {
      * @return No child for column
      */
     @Override
-    public int getCount() {
+    public int getChildCount() {
         return 0;
     }
 
@@ -56,5 +57,6 @@ public class Column extends AbstractElementDatabase {
     public String getLabel() {
         return toString();
     }
+    
 }
 

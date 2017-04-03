@@ -17,9 +17,11 @@ import javax.swing.JComponent;
  * @param <T> Component like JTextField or JTextArea to decorate
  */
 interface DecoratorJComponent<T extends JComponent> {
+	
     /**
      * Get back the decorated component.
      * @return Proxyfied component
      */
     T getProxy();
+    
 }

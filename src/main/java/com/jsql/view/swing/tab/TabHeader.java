@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionCloseTabResult;
@@ -29,6 +30,9 @@ import com.jsql.view.swing.action.ActionCloseTabResult;
  */
 @SuppressWarnings("serial")
 public class TabHeader extends JPanel implements MouseListener {
+    
+    private JLabel tabTitleLabel = new JLabel();
+	
     /**
      * Tab header with default tab icon.
      */
@@ -45,16 +49,7 @@ public class TabHeader extends JPanel implements MouseListener {
         this.setOpaque(false);
 
         // Set the text of tab
-        JLabel tabTitleLabel = new JLabel() {
-            @Override
-            public String getText() {
-                int i = MediatorGui.tabResults().indexOfTabComponent(TabHeader.this);
-                if (i != -1) {
-                    return MediatorGui.tabResults().getTitleAt(i);
-                }
-                return null;
-            }
-        };
+        tabTitleLabel = new JLabel();
         tabTitleLabel.setIcon(imageIcon);
         this.add(tabTitleLabel);
 
@@ -62,6 +57,16 @@ public class TabHeader extends JPanel implements MouseListener {
         tabCloseButton.addMouseListener(this);
 
         this.add(tabCloseButton);
+    }
+
+    public TabHeader(String label, Icon imageIcon) {
+        this(imageIcon);
+        tabTitleLabel.setText(label);
+    }
+    
+    public TabHeader(String label) {
+        this();
+        tabTitleLabel.setText(label);
     }
 
     /**
@@ -80,13 +85,17 @@ public class TabHeader extends JPanel implements MouseListener {
     @Override public void mouseEntered(MouseEvent e) {
         // Do nothing
     }
+    
     @Override public void mouseExited(MouseEvent e) {
         // Do nothing
     }
+    
     @Override public void mousePressed(MouseEvent e) {
         // Do nothing
     }
+    
     @Override public void mouseReleased(MouseEvent e) {
         // Do nothing
     }
+    
 }

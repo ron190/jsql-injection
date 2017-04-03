@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
  */
 @SuppressWarnings("serial")
 public class JTextAreaPlaceholder extends JTextArea {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -79,4 +80,5 @@ public class JTextAreaPlaceholder extends JTextArea {
             );
         }
     }
+    
 }

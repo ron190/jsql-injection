@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 @SuppressWarnings("serial")
 public class RowHeaderRenderer extends DefaultTableCellRenderer {
+	
     public RowHeaderRenderer() {
         this.setHorizontalAlignment(JLabel.CENTER);
     }
@@ -25,4 +26,5 @@ public class RowHeaderRenderer extends DefaultTableCellRenderer {
         }
         return this;
     }
+    
 }

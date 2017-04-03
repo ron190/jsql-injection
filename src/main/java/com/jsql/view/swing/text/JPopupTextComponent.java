@@ -32,6 +32,7 @@ import com.jsql.view.swing.popupmenu.JPopupMenuText;
  */
 @SuppressWarnings("serial")
 public class JPopupTextComponent<T extends JTextComponent> extends JPopupComponent<T> implements DecoratorJComponent<T> {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -99,4 +100,5 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
         // Bind the redo action to ctl-Y
         this.getProxy().getInputMap().put(KeyStroke.getKeyStroke("control Y"), redoIdentifier);
     }
+    
 }

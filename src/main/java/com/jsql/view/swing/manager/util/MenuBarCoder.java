@@ -16,44 +16,16 @@ import com.jsql.view.swing.combomenu.BlankIcon;
 
 @SuppressWarnings("serial")
 public class MenuBarCoder extends JMenuBar {
-    JMenu menu;
-    Dimension preferredSize;
+	
+    private JMenu menu;
 
-    public MenuBarCoder(JMenu menu) {
-        this.menu = menu;
-
-        MenuItemListener listener = new MenuItemListener();
-        this.setListener(menu, listener);
-
-        this.add(menu);
-    }
-
-    class MenuItemListener implements ActionListener {
+    private class MenuItemListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             JMenuItem item = (JMenuItem) e.getSource();
             MenuBarCoder.this.menu.setText(item.getText());
-            
-            
-            
             MenuBarCoder.this.menu.requestFocus();
         }
-    }
-
-    private void setListener(JMenuItem item, ActionListener listener) {
-        if (item instanceof JMenu) {
-            JMenu menuContainingItems = (JMenu) item;
-            int n = menuContainingItems.getItemCount();
-            for (int i = 0 ; i < n ; i++) {
-                this.setListener(menuContainingItems.getItem(i), listener);
-            }
-        } else if (item != null) { // null means separator
-            item.addActionListener(listener);
-        }
-    }
-
-    public String getSelectedItem() {
-        return MenuBarCoder.this.menu.getText();
     }
 
     public static class ComboMenu extends JMenu {
@@ -76,8 +48,34 @@ public class MenuBarCoder extends JMenuBar {
             this.iconRenderer.paintIcon(this, g, x, y);
         }
     }
+    
+    public MenuBarCoder(JMenu menu) {
+        this.menu = menu;
+
+        MenuItemListener listener = new MenuItemListener();
+        this.setListener(menu, listener);
+
+        this.add(menu);
+    }
+
+    private void setListener(JMenuItem item, ActionListener listener) {
+        if (item instanceof JMenu) {
+            JMenu menuContainingItems = (JMenu) item;
+            int n = menuContainingItems.getItemCount();
+            for (int i = 0 ; i < n ; i++) {
+                this.setListener(menuContainingItems.getItem(i), listener);
+            }
+        } else if (item != null) { // null means separator
+            item.addActionListener(listener);
+        }
+    }
+
+    public String getSelectedItem() {
+        return MenuBarCoder.this.menu.getText();
+    }
 
     public static JMenu createMenu(String label) {
         return new ComboMenu(label);
     }
+    
 }

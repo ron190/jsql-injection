@@ -33,4 +33,5 @@ public class ConcreteDB2TestSuite extends AbstractTestSuite {
         
         requestJdbc();
     }
+    
 }

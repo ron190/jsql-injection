@@ -17,6 +17,7 @@ import java.util.Comparator;
  * column with string will sort like 100 < 20 < 3.
  */
 public class ComparatorColumn<T> implements Comparator<T> {
+	
     /**
      * Custom compare to sort numbers as numbers.
      * Strings as strings, with numbers ordered before strings.
@@ -61,4 +62,5 @@ public class ComparatorColumn<T> implements Comparator<T> {
         
         return sortOrder;
     }
+    
 }

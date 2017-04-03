@@ -21,6 +21,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  * Refresh the progress bar of an element in the database tree.
  */
 public class UpdateProgress implements InteractionCommand {
+	
     /**
      * The element in the database tree to refresh.
      */
@@ -35,9 +36,9 @@ public class UpdateProgress implements InteractionCommand {
      * @param interactionParams Element in the database tree and progression index
      */
     public UpdateProgress(Object[] interactionParams) {
-        dataElementDatabase = (AbstractElementDatabase) interactionParams[0];
+        this.dataElementDatabase = (AbstractElementDatabase) interactionParams[0];
 
-        dataCount = (Integer) interactionParams[1];
+        this.dataCount = (Integer) interactionParams[1];
     }
 
     @Override
@@ -48,7 +49,7 @@ public class UpdateProgress implements InteractionCommand {
             // Get the node
             AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
             // Update the progress value of the model
-            progressingTreeNodeModel.indexProgress = dataCount;
+            progressingTreeNodeModel.indexProgress = this.dataCount;
             
             // Tree model, update the tree (refresh, add node, etc)
             DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
@@ -57,4 +58,5 @@ public class UpdateProgress implements InteractionCommand {
             treeModel.nodeChanged(node);
         }
     }
+    
 }

@@ -18,7 +18,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import javax.swing.AbstractAction;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
@@ -38,12 +37,13 @@ import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
  */
 @SuppressWarnings("serial")
 public class MouseTabbedPane extends JTabbedPane {
+	
     /**
      * Create tabs with ctrl-TAB, mousewheel and new UI.
      */
     public MouseTabbedPane() {
         this.addMouseWheelListener(new TabbedPaneMouseWheelScroller());
-        // UIManager.put() is not sufficient
+        // UIManager.put() is not enough
         this.setUI(new CustomMetalTabbedPaneUI());
         this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
@@ -121,24 +121,5 @@ public class MouseTabbedPane extends JTabbedPane {
             }
         }
     }
-
-    /**
-     * Select the tab selected on the popmenu list of tabs.
-     */
-    private class TabAction extends AbstractAction {
-        private JTabbedPane tabPane;
-        private int index;
-
-        public TabAction(JTabbedPane tabPane, int index) {
-            super(tabPane.getTitleAt(index), tabPane.getIconAt(index));
-
-            this.tabPane = tabPane;
-            this.index   = index;
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            tabPane.setSelectedIndex(index);
-        }
-    }
+    
 }

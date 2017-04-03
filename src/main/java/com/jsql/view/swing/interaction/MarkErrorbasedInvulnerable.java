@@ -17,6 +17,7 @@ import com.jsql.view.swing.MediatorGui;
  * Mark the injection as invulnerable to a error based injection.
  */
 public class MarkErrorbasedInvulnerable implements InteractionCommand {
+	
     /**
      * @param interactionParams
      */
@@ -33,4 +34,5 @@ public class MarkErrorbasedInvulnerable implements InteractionCommand {
             }
         }
     }
+    
 }

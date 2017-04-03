@@ -19,6 +19,7 @@ import com.jsql.view.swing.shell.AbstractShell;
  * Append the result of a command in the terminal.
  */
 public class AbstractGetShellResult implements InteractionCommand {
+	
     /**
      * Unique identifier for the terminal. Used for outputing results of
      * commands in the right shell tab (in case of multiple shell opened).
@@ -34,17 +35,18 @@ public class AbstractGetShellResult implements InteractionCommand {
      * @param interactionParams The unique identifier of the terminal and the command's result to display
      */
     public AbstractGetShellResult(Object[] interactionParams) {
-        terminalID = (UUID) interactionParams[0];
-        result = (String) interactionParams[1];
+        this.terminalID = (UUID) interactionParams[0];
+        this.result = (String) interactionParams[1];
     }
 
     @Override
     public void execute() {
         AbstractShell terminal = MediatorGui.frame().getConsoles().get(this.terminalID);
         
-        terminal.append(result);
+        terminal.append(this.result);
         
         terminal.append("\n");
         terminal.reset();
     }
+    
 }

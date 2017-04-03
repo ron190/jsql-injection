@@ -17,6 +17,7 @@ import com.jsql.view.swing.MediatorGui;
  * Mark the injection as invulnerable to a time based injection.
  */
 public class MarkTimebasedInvulnerable implements InteractionCommand {
+	
     /**
      * @param interactionParams
      */
@@ -33,4 +34,5 @@ public class MarkTimebasedInvulnerable implements InteractionCommand {
             }
         }
     }
+    
 }

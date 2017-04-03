@@ -21,6 +21,7 @@ import com.jsql.view.swing.interaction.InteractionCommand;
  * Add the databases to current injection panel.
  */
 public class AddDatabases implements InteractionCommand {
+	
     /**
      * Using default log4j.properties from root /
      */
@@ -48,4 +49,5 @@ public class AddDatabases implements InteractionCommand {
         }
         LOGGER.info("\n");
     }
+    
 }

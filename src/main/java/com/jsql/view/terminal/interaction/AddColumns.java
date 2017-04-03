@@ -21,6 +21,7 @@ import com.jsql.view.swing.interaction.InteractionCommand;
  * Add the columns to corresponding table.
  */
 public class AddColumns implements InteractionCommand {
+	
     /**
      * Using default log4j.properties from root /
      */
@@ -48,4 +49,5 @@ public class AddColumns implements InteractionCommand {
         }
         LOGGER.info("\n");
     }
+    
 }

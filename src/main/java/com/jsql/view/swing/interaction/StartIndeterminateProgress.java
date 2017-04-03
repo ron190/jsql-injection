@@ -22,6 +22,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  * Progression is not tracked (like colum search).
  */
 public class StartIndeterminateProgress implements InteractionCommand {
+	
     /**
      * The element in the database tree for which the progress starts.
      */
@@ -31,7 +32,7 @@ public class StartIndeterminateProgress implements InteractionCommand {
      * @param interactionParams Element in the database tree to update
      */
     public StartIndeterminateProgress(Object[] interactionParams) {
-        dataElementDatabase = (AbstractElementDatabase) interactionParams[0];
+        this.dataElementDatabase = (AbstractElementDatabase) interactionParams[0];
     }
 
     @Override
@@ -39,7 +40,7 @@ public class StartIndeterminateProgress implements InteractionCommand {
         // Tree model, update the tree (refresh, add node, etc)
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
 
-        DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(dataElementDatabase);
+        DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(this.dataElementDatabase);
         
         // Get the node
         AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
@@ -49,4 +50,5 @@ public class StartIndeterminateProgress implements InteractionCommand {
         // Update the node
         treeModel.nodeChanged(node);
     }
+    
 }

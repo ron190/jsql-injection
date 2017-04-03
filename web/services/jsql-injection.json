@@ -1,9 +1,10 @@
 {
     "version": "0.77",
     "news": [
-        "[Roadmap] Upgrade to Java 8, MySQL injection with BIGINT and overflow, MS-Access database, WAF tamper, Bruteforce of HTTP Auth, Arabic translation, Command line interface.",
+        "[Roadmap] Database flavor: Cassandra, WAF detection, Bruteforce of HTTP Auth, Arabic translation, Command line interface.",
         "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer.",
-        "[In progress] Translation thanks to the community: Chinese complete, French 68%, Russian 67%, Turkish 53%, Czech 24%, Italian 15%, German 10%, Arabic 8%, Dutch 6%. Also working on GUI compatibility with Right To Left languages like Arabic.",
-        "[Programming] Contact the developer for any help with CTF events, Burp integration and custom builds."
+        "[In progress] New translation started: Portuguese, Spanish, Dutch, German, Italian. Also optimizing code to Java 8.",
+        "[Done] New panel: Study and test SQL engine, Database flavor: MS-Access, MySQL injection with BIGINT overflow.",
+        "[Programming] Contact the developer for any help with new features, CTF events and Burp integration."
     ]
 }

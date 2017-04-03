@@ -17,6 +17,7 @@ import com.jsql.view.swing.MediatorGui;
  * Mark the injection as using a user profile vulnerable to file I/O.
  */
 public class MarkFileSystemVulnerable implements InteractionCommand {
+	
     /**
      * @param nullParam
      */
@@ -31,4 +32,5 @@ public class MarkFileSystemVulnerable implements InteractionCommand {
         MediatorGui.managerSqlshell().changePrivilegeIcon(HelperUi.ICON_TICK);
         MediatorGui.managerUpload().changePrivilegeIcon(HelperUi.ICON_TICK);
     }
+    
 }

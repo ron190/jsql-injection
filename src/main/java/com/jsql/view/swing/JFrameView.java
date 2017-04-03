@@ -19,6 +19,7 @@ import java.awt.event.WindowEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -39,7 +40,6 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.vendor.Vendor;
-import com.jsql.util.ThreadUtil;
 import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.interaction.InteractionCommand;
@@ -59,6 +59,7 @@ import com.jsql.view.swing.shell.AbstractShell;
  */
 @SuppressWarnings("serial")
 public class JFrameView extends JFrame implements Observer {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -137,7 +138,7 @@ public class JFrameView extends JFrame implements Observer {
                 prefs.putBoolean(HelperUi.JAVA_VISIBLE, false);
                 
                 for (int i = 0 ; i < MediatorGui.tabConsoles().getTabCount() ; i++) {
-                    if ("Binary".equals(MediatorGui.tabConsoles().getTitleAt(i))) {
+                    if ("Boolean".equals(MediatorGui.tabConsoles().getTitleAt(i))) {
                         prefs.putBoolean(HelperUi.BINARY_VISIBLE, true);
                     } else if ("Chunk".equals(MediatorGui.tabConsoles().getTitleAt(i))) {
                         prefs.putBoolean(HelperUi.CHUNK_VISIBLE, true);
@@ -163,6 +164,8 @@ public class JFrameView extends JFrame implements Observer {
         // Define the keyword shortcuts for tabs #Need to work even if the focus is not on tabs
         ActionHandler.addShortcut(this.getRootPane(), MediatorGui.tabResults());
         ActionHandler.addTextFieldShortcutSelectAll();
+        
+        menubar.switchLocale(Locale.ENGLISH, I18n.getLocaleDefault());
     }
 
     /**
@@ -216,10 +219,6 @@ public class JFrameView extends JFrame implements Observer {
         // The tree root
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
 
-        // Delete tabs
-        MediatorGui.tabResults().removeAll();
-        ActionCloseTabResult.perform();
-        
         // Remove tree nodes
         root.removeAllChildren();
         // Refresh the root
@@ -244,7 +243,6 @@ public class JFrameView extends JFrame implements Observer {
         MediatorGui.panelConsoles().networkTabHeader.setText("");
         MediatorGui.panelConsoles().networkTabParam.setText("");
         MediatorGui.panelConsoles().networkTabResponse.setText("");
-        MediatorGui.panelConsoles().networkTabTiming.setText("");
         MediatorGui.panelConsoles().networkTabSource.setText("");
         MediatorGui.panelConsoles().networkTabPreview.setText("");
         
@@ -280,4 +278,5 @@ public class JFrameView extends JFrame implements Observer {
     public final Map<AbstractElementDatabase, DefaultMutableTreeNode> getTreeNodeModels() {
         return mapNodes;
     }
+    
 }

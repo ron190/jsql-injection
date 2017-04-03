@@ -8,36 +8,46 @@ import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 
 /**
- * Callable to read file source code.
+ * Thread unit to read source of a file by SQL injection.
+ * User can interrupt the process and get a partial result of the file content.
  */
 public class CallableFile implements Callable<CallableFile> {
+	
     /**
-     * Url of the file to read.
+     * Path to the file to read.
      */
     private String pathFile;
 
     /**
-     * Source code of file.
+     * Source of file.
      */
     private String sourceFile = "";
-
+    
     /**
+     * Suspendable task that reads lines of the file by injection.
+     */
+    private SuspendableGetRows suspendableReadFile = new SuspendableGetRows();
+
+	/**
      * Create Callable to read a file.
      * @param pathFile
      */
     public CallableFile(String pathFile) {
         this.pathFile = pathFile;
     }
-
-    public SuspendableGetRows suspendableReadFile = new SuspendableGetRows();
+    
+    /**
+     * Read a file on the server using SQL injection.
+     * Get partial result if user interrupts the process.
+     */
     @Override
     public CallableFile call() throws Exception {
         String[] sourcePage = {""};
 
         String resultToParse = "";
         try {
-            resultToParse = suspendableReadFile.run(
-                MediatorModel.model().vendor.instance().sqlFileRead(pathFile),
+            resultToParse = this.suspendableReadFile.run(
+                MediatorModel.model().vendor.instance().sqlFileRead(this.pathFile),
                 sourcePage,
                 false,
                 1,
@@ -54,16 +64,24 @@ public class CallableFile implements Callable<CallableFile> {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
         }
-        sourceFile = resultToParse;
+        this.sourceFile = resultToParse;
         
         return this;
     }
     
-    public String getUrl() {
-        return pathFile;
+    // Getters and setters
+    
+    public String getPathFile() {
+        return this.pathFile;
     }
 
-    public String getFileSource() {
-        return sourceFile;
+    public String getSourceFile() {
+    	// TODO optional
+        return this.sourceFile;
     }
+
+    public SuspendableGetRows getSuspendableReadFile() {
+		return this.suspendableReadFile;
+	}
+    
 }

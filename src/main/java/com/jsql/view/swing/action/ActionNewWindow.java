@@ -29,6 +29,7 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public class ActionNewWindow extends AbstractAction {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -61,4 +62,5 @@ public class ActionNewWindow extends AbstractAction {
             LOGGER.error(I18n.valueByKey("NEW_WINDOW_ERROR"), e);
         }        
     }
+    
 }

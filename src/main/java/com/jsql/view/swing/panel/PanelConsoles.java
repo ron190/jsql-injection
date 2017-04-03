@@ -19,10 +19,13 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -42,6 +45,7 @@ import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.OverlayLayout;
+import javax.swing.SizeRequirements;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
@@ -53,10 +57,20 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.text.DefaultCaret;
+import javax.swing.text.Element;
+import javax.swing.text.View;
+import javax.swing.text.ViewFactory;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.HTMLEditorKit.HTMLFactory;
+import javax.swing.text.html.InlineView;
+import javax.swing.text.html.ParagraphView;
+
+import org.mozilla.universalchardet.UniversalDetector;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.HttpHeader;
+import com.jsql.util.StringUtil;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.console.JavaConsoleAdapter;
@@ -69,6 +83,7 @@ import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.tab.MouseTabbedPane;
 import com.jsql.view.swing.tab.TabConsoles;
 import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.text.JPopupTextPane;
 import com.jsql.view.swing.text.JTextPanePlaceholder;
 
 /**
@@ -76,6 +91,7 @@ import com.jsql.view.swing.text.JTextPanePlaceholder;
  */
 @SuppressWarnings("serial")
 public class PanelConsoles extends JPanel {
+	
     /**
      * Console for default application messages.
      */
@@ -111,17 +127,18 @@ public class PanelConsoles extends JPanel {
      */
     public JTable networkTable;
 
+    public JTextArea networkTabUrl = new JPopupTextArea("Request URL").getProxy();
     public JTextArea networkTabResponse = new JPopupTextArea("Header server response").getProxy();
-    public JTextArea networkTabSource = new JPopupTextArea("Raw page source").getProxy();
+    public JTextPane networkTabSource = new JPopupTextPane("Raw page source").getProxy();
     public JTextPane networkTabPreview = new JTextPanePlaceholder("Web browser rendering");
     public JTextArea networkTabHeader = new JPopupTextArea("Header client request").getProxy();
     public JTextArea networkTabParam = new JPopupTextArea("HTTP POST parameters").getProxy();
-    public JTextArea networkTabTiming = new JPopupTextArea("Response time duration").getProxy();
     
     /**
      * Create panel at the bottom with differents consoles to report injection process.
      */
     public PanelConsoles() {
+        
         // Object creation after customization
         this.consoleTab.getProxy().setEditable(false);
         SwingAppender.register(this.consoleTab);
@@ -139,7 +156,7 @@ public class PanelConsoles extends JPanel {
         this.network.setResizeWeight(1);
         this.network.setDividerSize(0);
         this.network.setDividerLocation(600);
-        this.network.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
+        this.network.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
         this.networkTable = new JTable(0, 4) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -258,15 +275,35 @@ public class PanelConsoles extends JPanel {
         JScrollIndicator scroller = new JScrollIndicator(this.networkTable);
         scroller.scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         scroller.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
+        
+        AdjustmentListener singleItemScroll = new AdjustmentListener() {
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                // The user scrolled the List (using the bar, mouse wheel or something else):
+                if (e.getAdjustmentType() == AdjustmentEvent.TRACK){
+                    // Jump to the next "block" (which is a row".
+                    e.getAdjustable().setBlockIncrement(100);
+                    e.getAdjustable().setUnitIncrement(100);
+                }
+            }
+        };
+
+        scroller.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
+        scroller.scrollPane.getHorizontalScrollBar().addAdjustmentListener(singleItemScroll);
+        
         this.network.setLeftComponent(scroller);
         
         MouseTabbedPane networkDetailTabs = new MouseTabbedPane();
+        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_URL_LABEL"), new LightScrollPane(1, 1, 0, 0, networkTabUrl));
         networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_RESPONSE_LABEL"), new LightScrollPane(1, 1, 0, 0, networkTabResponse));
+        
+        networkTabSource.setEditorKit(new HTMLEditorKitTextPaneWrap()); 
+        networkTabPreview.setEditorKit(new HTMLEditorKitTextPaneWrap()); 
+        
         networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_SOURCE_LABEL"), new LightScrollPane(1, 1, 0, 0, networkTabSource));
         networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_PREVIEW_LABEL"), new LightScrollPane(1, 1, 0, 0, networkTabPreview));
         networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_HEADERS_LABEL"), new LightScrollPane(1, 1, 0, 0, networkTabHeader));
         networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_PARAMS_LABEL"), new LightScrollPane(1, 1, 0, 0, networkTabParam));
-        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_TIMING_LABEL"), new LightScrollPane(1, 1, 0, 0, networkTabTiming));
         
         DefaultCaret caret = (DefaultCaret) networkTabResponse.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
@@ -278,14 +315,13 @@ public class PanelConsoles extends JPanel {
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
         caret = (DefaultCaret) networkTabParam.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) networkTabTiming.getCaret();
+        caret = (DefaultCaret) networkTabUrl.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
         
         networkTabHeader.setLineWrap(true);
         networkTabParam.setLineWrap(true);
         networkTabResponse.setLineWrap(true);
-        networkTabTiming.setLineWrap(true);
-        networkTabSource.setLineWrap(true);
+        networkTabUrl.setLineWrap(true);
         
         networkTabPreview.setContentType("text/html");
         networkTabPreview.setEditable(false);
@@ -300,6 +336,7 @@ public class PanelConsoles extends JPanel {
                     HttpHeader networkData = listHttpHeader.get(PanelConsoles.this.networkTable.getSelectedRow());
                     networkTabHeader.setText(networkData.getHeader());
                     networkTabParam.setText(networkData.getPost());
+                    networkTabUrl.setText(networkData.getUrl());
                     
                     networkTabResponse.setText("");
                     for(String key: networkData.getResponse().keySet()) {
@@ -307,13 +344,9 @@ public class PanelConsoles extends JPanel {
                         networkTabResponse.append("\n");
                     }
                     
-                    networkTabTiming.setText("?");
-                    networkTabSource.setText(networkData.getSource());
-                    networkTabPreview.setText(
-                        "<html>" 
-                        + networkData.getSource()
-                        + "</html>"
-                    );
+                    networkTabSource.setText(StringUtil.detectUtf8Html(networkData.getSource()));
+                    
+                    networkTabPreview.setText("<html>"+ StringUtil.detectUtf8(networkData.getSource()) + "</html>");
                     // ^^^^ Report EmptyStackException #1551 
                     // To avoid this, create a new document, getEditorKit().createDefaultDocument(), and replace the existing Document with the new one.
                 }
@@ -323,12 +356,12 @@ public class PanelConsoles extends JPanel {
         this.network.setRightComponent(networkDetailTabs);
 
         MediatorGui.register(new TabConsoles());
-        MediatorGui.tabConsoles().setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 0));
+        MediatorGui.tabConsoles().setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 
         MediatorGui.tabConsoles().addTab(
             "Console",
             HelperUi.ICON_CONSOLE,
-            new LightScrollPane(1, 1, 0, 0, this.consoleTab.getProxy()),
+            new LightScrollPane(1, 0, 0, 0, this.consoleTab.getProxy()),
             I18n.valueByKey("CONSOLE_MAIN_TOOLTIP")
         );
         JLabel labelConsole = new JLabel(I18n.valueByKey("CONSOLE_MAIN_LABEL"), HelperUi.ICON_CONSOLE, SwingConstants.CENTER);
@@ -361,6 +394,7 @@ public class PanelConsoles extends JPanel {
                     Component currentTabHeader = tabs.getTabComponentAt(tabs.getSelectedIndex());
                     if (currentTabHeader != null) {
                         currentTabHeader.setFont(currentTabHeader.getFont().deriveFont(Font.PLAIN));
+                        currentTabHeader.setForeground(Color.BLACK);
                     }
                 }
             }
@@ -372,19 +406,16 @@ public class PanelConsoles extends JPanel {
         showBottomButton.setBorderPainted(false);
         showBottomButton.setPreferredSize(showBottomButton.getPreferredSize());
         showBottomButton.setMaximumSize(showBottomButton.getPreferredSize());
-
+        showBottomButton.setOpaque(false);
         showBottomButton.addActionListener(SplitHorizontalTopBottom.ACTION_HIDE_SHOW_CONSOLE);
 
         JPanel arrowDownPanel = new JPanel();
-//        arrowDownPanel.setLayout(new BoxLayout(arrowDownPanel, BoxLayout.PAGE_AXIS));
         arrowDownPanel.setLayout(new BorderLayout());
         arrowDownPanel.setOpaque(false);
-        showBottomButton.setOpaque(false);
         // Disable overlap with zerosizesplitter
         arrowDownPanel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
         arrowDownPanel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 27));
         arrowDownPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 27));
-//        arrowDownPanel.add(Box.createHorizontalGlue());
         arrowDownPanel.add(showBottomButton, BorderLayout.LINE_END);
         this.add(arrowDownPanel);
         this.add(MediatorGui.tabConsoles());
@@ -406,7 +437,7 @@ public class PanelConsoles extends JPanel {
         MediatorGui.tabConsoles().insertTab(
             "Chunk",
             HelperUi.ICON_CHUNK,
-            new LightScrollPane(1, 1, 0, 0, PanelConsoles.this.chunkTab),
+            new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.chunkTab),
             I18n.valueByKey("CONSOLE_CHUNK_TOOLTIP"),
             1
         );
@@ -424,16 +455,16 @@ public class PanelConsoles extends JPanel {
      */
     public void insertBinaryTab() {
         MediatorGui.tabConsoles().insertTab(
-            "Binary",
+            "Boolean",
             HelperUi.ICON_BINARY,
-            new LightScrollPane(1, 1, 0, 0, PanelConsoles.this.binaryTab),
+            new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.binaryTab),
             I18n.valueByKey("CONSOLE_BINARY_TOOLTIP"),
             1 + (MediatorGui.menubar().chunkMenu.isSelected() ? 1 : 0)
         );
 
         JLabel labelBinary = new JLabel(I18n.valueByKey("CONSOLE_BINARY_LABEL"), HelperUi.ICON_BINARY, SwingConstants.CENTER);
         MediatorGui.tabConsoles().setTabComponentAt(
-            MediatorGui.tabConsoles().indexOfTab("Binary"), 
+            MediatorGui.tabConsoles().indexOfTab("Boolean"), 
             labelBinary
         );
         I18n.addComponentForKey("CONSOLE_BINARY_LABEL", labelBinary);
@@ -466,7 +497,7 @@ public class PanelConsoles extends JPanel {
         MediatorGui.tabConsoles().insertTab(
             "Java",
             HelperUi.ICON_CUP,
-            new LightScrollPane(1, 1, 0, 0, PanelConsoles.this.javaTab.getProxy()),
+            new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.javaTab.getProxy()),
             I18n.valueByKey("CONSOLE_JAVA_TOOLTIP"),
             MediatorGui.tabConsoles().getTabCount()
         );
@@ -486,4 +517,5 @@ public class PanelConsoles extends JPanel {
     public void reset() {
         this.listHttpHeader.clear();
     }
+    
 }

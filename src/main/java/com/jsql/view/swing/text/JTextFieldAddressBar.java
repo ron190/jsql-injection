@@ -19,6 +19,7 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public class JTextFieldAddressBar extends JPopupTextField implements DecoratorJComponent<JTextField> {
+	
     /**
      * Constructor with default text.
      * @param string The text to display
@@ -26,11 +27,7 @@ public class JTextFieldAddressBar extends JPopupTextField implements DecoratorJC
     public JTextFieldAddressBar(JTextField c) {
         super(c);
 
-        // Fix height when orientation Right to Left is activated
-//        this.getProxy().setMinimumSize(new Dimension(0, 27));
-//        this.getProxy().setMaximumSize(new Dimension(0, 27));
-//        this.getProxy().setPreferredSize(new Dimension(0, 27));
-        
         this.getProxy().setFont(HelperUi.FONT_SEGOE_BIG);
     }
+    
 }

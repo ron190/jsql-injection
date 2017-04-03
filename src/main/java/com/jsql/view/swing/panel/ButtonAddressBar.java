@@ -94,4 +94,5 @@ public class ButtonAddressBar extends JButton {
         this.setIcon(HelperUi.ICON_LOADER_GIF);
         this.setEnabled(false);
     }
+    
 }

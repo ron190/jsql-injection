@@ -55,11 +55,11 @@ public class CustomMetalTabbedPaneUI extends MetalTabbedPaneUI {
     
     @Override
     protected JButton createScrollButton(int direction) {
-         if (direction != SOUTH && direction != NORTH && direction != EAST && direction != WEST) {
-             throw new IllegalArgumentException("Direction must be one of: SOUTH, NORTH, EAST or WEST");
-         }
+    	if (direction != SOUTH && direction != NORTH && direction != EAST && direction != WEST) {
+    		throw new IllegalArgumentException("Direction must be one of: SOUTH, NORTH, EAST or WEST");
+    	}
 
-         return new ScrollableTabButton(direction);
+    	return new ScrollableTabButton(direction);
     }
     
     @SuppressWarnings("serial")
@@ -78,4 +78,5 @@ public class CustomMetalTabbedPaneUI extends MetalTabbedPaneUI {
             this.setBorderPainted(false);
         }
     }
+    
 }

@@ -13,17 +13,23 @@ import org.apache.log4j.Logger;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.suspendable.callable.CallablePageSource;
+import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 /**
  * Runnable class, search the correct number of fields in the SQL query.
  * Parallelizes the search, provides the stop capability
  */
 public class SuspendableGetIndexes extends AbstractSuspendable<String> {
+	
     /**
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
+    /**
+     * 
+     */
     @Override
     public String run(Object... args) throws JSqlException {
         // Parallelize the search
@@ -82,6 +88,8 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         if (isRequestFound) {
             return initialQuery.replaceAll("\\+\\+union\\+select\\+.*?--\\+$", "+");
         }
+        // TODO optional
         return "";
     }
+    
 }

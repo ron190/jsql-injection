@@ -50,7 +50,6 @@ import com.jsql.util.ConnectionUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.util.ProxyUtil;
-import com.jsql.util.StringUtil;
 import com.jsql.util.ThreadUtil;
 
 import net.sourceforge.spnego.SpnegoHttpURLConnection;
@@ -189,7 +188,7 @@ public class InjectionModel extends AbstractModelObservable {
                 LOGGER.info("Using database type ["+ this.vendor +"]");
                 
                 Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
-                msgHeader.put(TypeHeader.URL, ConnectionUtil.getUrlBase() + ConnectionUtil.getDataQuery() + this.charInsertion);
+                msgHeader.put(TypeHeader.URL, ConnectionUtil.getUrlBase() + ConnectionUtil.getQueryString() + this.charInsertion);
                 msgHeader.put(TypeHeader.VENDOR, this.vendor);
                 
                 Request requestDatabaseIdentified = new Request();
@@ -235,7 +234,7 @@ public class InjectionModel extends AbstractModelObservable {
                 this.sendToViews(request);
                 
                 // sinon perte de insertionCharacter entre 2 injections
-                ConnectionUtil.setDataQuery(ConnectionUtil.getDataQuery() + charInsertion);
+                ConnectionUtil.setQueryString(ConnectionUtil.getQueryString() + charInsertion);
                 this.beginInjection();
                 
                 return;
@@ -274,6 +273,7 @@ public class InjectionModel extends AbstractModelObservable {
         String urlInjection = ConnectionUtil.getUrlBase();
         
         String dataInjection = newDataInjection;
+        
         urlInjection = this.buildURL(urlInjection, isUsingIndex, dataInjection);
 
         URL urlObject = null;
@@ -288,8 +288,8 @@ public class InjectionModel extends AbstractModelObservable {
          * Add primary evasion
          * TODO separate method
          */
-        if (ConnectionUtil.getDataQuery() != null && !"".equals(ConnectionUtil.getDataQuery())) {
-            urlInjection += this.buildQuery(MethodInjection.QUERY, ConnectionUtil.getDataQuery(), isUsingIndex, dataInjection);
+        if (ConnectionUtil.getQueryString() != null && !"".equals(ConnectionUtil.getQueryString())) {
+            urlInjection += this.buildQuery(MethodInjection.QUERY, ConnectionUtil.getQueryString(), isUsingIndex, dataInjection);
             try {
                 // Evasion
                 if (stepSecurity == 1) {
@@ -367,12 +367,12 @@ public class InjectionModel extends AbstractModelObservable {
              * Build the HEADER and logs infos
              * #Need primary evasion
              */
-            if (!"".equals(ConnectionUtil.getDataHeader())) {
-                for (String header: this.buildQuery(MethodInjection.HEADER, ConnectionUtil.getDataHeader(), isUsingIndex, dataInjection).split("\\\\r\\\\n")) {
+            if (!"".equals(ConnectionUtil.getHeader())) {
+                for (String header: this.buildQuery(MethodInjection.HEADER, ConnectionUtil.getHeader(), isUsingIndex, dataInjection).split("\\\\r\\\\n")) {
                     ConnectionUtil.sanitizeHeaders(connection, header);
                 }
                 
-                msgHeader.put(TypeHeader.HEADER, this.buildQuery(MethodInjection.HEADER, ConnectionUtil.getDataHeader(), isUsingIndex, dataInjection));
+                msgHeader.put(TypeHeader.HEADER, this.buildQuery(MethodInjection.HEADER, ConnectionUtil.getHeader(), isUsingIndex, dataInjection));
             }
     
             /**
@@ -380,7 +380,7 @@ public class InjectionModel extends AbstractModelObservable {
              * #Need primary evasion
              * TODO separate method
              */
-            if (!"".equals(ConnectionUtil.getDataRequest())) {
+            if (!"".equals(ConnectionUtil.getRequest())) {
                 try {
                     ConnectionUtil.fixCustomRequestMethod(connection, ConnectionUtil.getTypeRequest());
                     
@@ -389,25 +389,28 @@ public class InjectionModel extends AbstractModelObservable {
     
                     if (ConnectionUtil.getTypeRequest().matches("PUT|POST")) {
                         DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
-                        dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.getDataRequest(), isUsingIndex, dataInjection));
+                        dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.getRequest(), isUsingIndex, dataInjection));
                         dataOut.flush();
                         dataOut.close();
                     }
                     
-                    msgHeader.put(TypeHeader.POST, this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.getDataRequest(), isUsingIndex, dataInjection));
+                    msgHeader.put(TypeHeader.POST, this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.getRequest(), isUsingIndex, dataInjection));
                 } catch (IOException e) {
                     LOGGER.warn("Error during Request connection "+ e, e);
                 }
             }
             
-            msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHttpHeaders(connection));
+            msgHeader.put(TypeHeader.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
     
             // Request the web page to the server
-            String line;
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                while ((line = reader.readLine()) != null) {
-                    pageSource += line + "\n";
+                char[] buffer = new char[4096];
+                StringBuilder sb = new StringBuilder();
+                while (reader.read(buffer) > 0) {
+                    sb.append(buffer);
                 }
+                
+                pageSource = sb.toString();
             } catch (IOException e) {
                 // Ignore connection errors like 403, 406
                 // Http status code already logged in Network tab
@@ -516,6 +519,19 @@ public class InjectionModel extends AbstractModelObservable {
             }
         }
         
+        query = query
+            .trim()
+            // Remove comments
+            .replaceAll("(?s)/\\*.*?\\*/", "")
+            // Remove spaces after a word
+            .replaceAll("([^\\s\\w])(\\s+)", "$1")
+            // Remove spaces before a word
+            .replaceAll("(\\s+)([^\\s\\w])", "$2")
+            // Replace spaces
+            .replaceAll("\\s+", "+")
+            // Add ending line comment, except for INGRES
+            +(vendor != Vendor.INGRES ? "--+" : "");
+        
         return query;
     }
     
@@ -549,21 +565,21 @@ public class InjectionModel extends AbstractModelObservable {
             ConnectionUtil.setUrlByUser(dataQuery);
             
             // Parse url and GET query string
-            ConnectionUtil.setDataQuery("");
+            ConnectionUtil.setQueryString("");
             Matcher regexSearch = Pattern.compile("(.*)(\\?.*)").matcher(dataQuery);
             if (regexSearch.find()) {
                 URL url = new URL(dataQuery);
                 ConnectionUtil.setUrlBase(regexSearch.group(1));
                 if (!"".equals(url.getQuery())) {
-                    ConnectionUtil.setDataQuery(regexSearch.group(2));
+                    ConnectionUtil.setQueryString(regexSearch.group(2));
                 }
             } else {
                 ConnectionUtil.setUrlBase(dataQuery);
             }
             
             // Define other methods
-            ConnectionUtil.setDataRequest(dataRequest);
-            ConnectionUtil.setDataHeader(dataHeader);
+            ConnectionUtil.setRequest(dataRequest);
+            ConnectionUtil.setHeader(dataHeader);
             ConnectionUtil.setMethodInjection(methodInjection);
             ConnectionUtil.setTypeRequest(typeRequest);
             
@@ -617,7 +633,7 @@ public class InjectionModel extends AbstractModelObservable {
     // Getters and setters
     
     public Strategy getStrategy() {
-    	return strategy;
+    	return this.strategy;
     }
 
     public void setStrategy(Strategy strategy) {
@@ -625,11 +641,11 @@ public class InjectionModel extends AbstractModelObservable {
     }
 
     public String getCharInsertion() {
-        return charInsertion;
+        return this.charInsertion;
     }
 
     public String getSrcSuccess() {
-        return srcSuccess;
+        return this.srcSuccess;
     }
 
     public void setSrcSuccess(String srcSuccess) {
@@ -637,7 +653,7 @@ public class InjectionModel extends AbstractModelObservable {
     }
 
     public String getIndexesInUrl() {
-        return indexesInUrl;
+        return this.indexesInUrl;
     }
 
     public void setIndexesInUrl(String indexesInUrl) {

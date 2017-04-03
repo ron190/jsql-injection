@@ -26,11 +26,12 @@ public class IngresNormalGetTestSuite extends ConcreteIngresTestSuite {
         MediatorModel.model().addObserver(new SystemOutTerminal());
 
         ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +":81/ingres_simulate_get.php");
-        ConnectionUtil.setDataQuery("?lib=0");
+        ConnectionUtil.setQueryString("?lib=0");
         ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
 
         MediatorModel.model().beginInjection();
 
         MediatorModel.model().setStrategy(Strategy.NORMAL);
     }
+    
 }

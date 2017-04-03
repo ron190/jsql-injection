@@ -1,6 +1,7 @@
 package com.jsql.model.bean.util;
 
 public enum TypeRequest {
+	
     ADD_COLUMNS("AddColumns"),
     ADD_DATABASES("AddDatabases"),
     ADD_TABLES("AddTables"),
@@ -55,4 +56,5 @@ public enum TypeRequest {
     public String toString() {
         return name;
     }
+    
 }

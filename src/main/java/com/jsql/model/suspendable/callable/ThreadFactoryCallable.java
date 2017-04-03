@@ -1,4 +1,4 @@
-package com.jsql.model.suspendable;
+package com.jsql.model.suspendable.callable;
 
 import java.util.concurrent.ThreadFactory;
 
@@ -14,4 +14,5 @@ public class ThreadFactoryCallable implements ThreadFactory {
     public Thread newThread(Runnable runnable) {
         return new Thread(runnable, nameThread);
     }
+    
 }

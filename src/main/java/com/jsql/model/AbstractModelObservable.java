@@ -30,14 +30,6 @@ public abstract class AbstractModelObservable extends Observable {
      */
     private boolean isStoppedByUser = false;
 
-    public boolean isStoppedByUser() {
-        return isStoppedByUser;
-    }
-
-    public void setIsStoppedByUser(boolean processStopped) {
-        this.isStoppedByUser = processStopped;
-    }
-
     /**
      *  Function header for the inject() methods, definition needed by call(),
      *  dataInjection: SQL query,
@@ -74,4 +66,15 @@ public abstract class AbstractModelObservable extends Observable {
             }
         });
     }
+
+    // Getters and setters
+    
+    public boolean isStoppedByUser() {
+        return this.isStoppedByUser;
+    }
+
+    public void setIsStoppedByUser(boolean processStopped) {
+        this.isStoppedByUser = processStopped;
+    }
+    
 }

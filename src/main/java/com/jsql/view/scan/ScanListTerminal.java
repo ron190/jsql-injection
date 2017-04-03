@@ -29,6 +29,7 @@ import com.jsql.view.scan.interaction.InteractionCommand;
  * - at the bottom: information labels.
  */
 public class ScanListTerminal implements Observer {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -60,4 +61,5 @@ public class ScanListTerminal implements Observer {
             LOGGER.error(e, e);
         }
     }
+    
 }

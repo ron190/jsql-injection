@@ -1,5 +1,6 @@
 package com.jsql.view.swing.console;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -18,6 +19,7 @@ import com.jsql.view.swing.text.JPopupTextPane;
  */
 @SuppressWarnings("serial")
 public class JColoredConsole extends JPopupTextPane {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -65,6 +67,7 @@ public class JColoredConsole extends JPopupTextPane {
                 Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
                 if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
                     tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
+                    tabHeader.setForeground(attribut == SwingAppender.WARN ? Color.RED : Color.BLACK);
                 }
             }
         } catch (Exception e) {
@@ -73,4 +76,5 @@ public class JColoredConsole extends JPopupTextPane {
             LOGGER.fatal(message, e);
         }
     }
+    
 }

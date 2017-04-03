@@ -19,6 +19,7 @@ import com.jsql.view.swing.HelperUi;
  * Log4j swing appender to display console message to respective textareas.
  */
 public class SwingAppender extends WriterAppender {
+	
     /**
      * Main console textfield.
      */
@@ -30,7 +31,7 @@ public class SwingAppender extends WriterAppender {
     private static JavaConsoleAdapter javaTextPane;
 
     private static final SimpleAttributeSet ERROR = new SimpleAttributeSet();
-    private static final SimpleAttributeSet WARN = new SimpleAttributeSet();
+    public static final SimpleAttributeSet WARN = new SimpleAttributeSet();
     private static final SimpleAttributeSet INFO = new SimpleAttributeSet();
     private static final SimpleAttributeSet DEBUG = new SimpleAttributeSet();
     private static final SimpleAttributeSet TRACE = new SimpleAttributeSet();
@@ -74,8 +75,7 @@ public class SwingAppender extends WriterAppender {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                insertText(layout.format(event), event.getLevel(), event
-                        .getThrowableInformation());
+                insertText(layout.format(event), event.getLevel(), event.getThrowableInformation());
             }
         });
     }
@@ -166,4 +166,5 @@ public class SwingAppender extends WriterAppender {
     public static void register(SimpleConsoleAdapter consoleColored) {
         SwingAppender.consoleTextPane = consoleColored;
     }
+    
 }

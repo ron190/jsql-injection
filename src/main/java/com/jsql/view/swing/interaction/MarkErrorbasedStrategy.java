@@ -10,6 +10,9 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import javax.swing.JMenu;
+
+import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.strategy.Strategy;
 import com.jsql.view.swing.MediatorGui;
 
@@ -17,6 +20,7 @@ import com.jsql.view.swing.MediatorGui;
  * Mark the injection as invulnerable to a error based injection.
  */
 public class MarkErrorbasedStrategy implements InteractionCommand {
+	
     /**
      * @param interactionParams
      */
@@ -29,10 +33,16 @@ public class MarkErrorbasedStrategy implements InteractionCommand {
         MediatorGui.managerDatabase().panelStrategy.setEnabled(true);
         MediatorGui.managerDatabase().panelStrategy.setText(Strategy.ERRORBASED.toString());
         for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
-            if (MediatorGui.managerDatabase().panelStrategy.getItem(i).getText().equals(Strategy.ERRORBASED.toString())) {
-                MediatorGui.managerDatabase().panelStrategy.getItem(i).setSelected(true);
+            if (((JMenu) MediatorGui.managerDatabase().panelStrategy.getMenuComponent(2)).getItem(i).getText().equals(
+                MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getErrorIndex()).getName()
+            )) {
+                ((JMenu) MediatorGui.managerDatabase().panelStrategy.getMenuComponent(2)).getItem(i).setSelected(true);
+                MediatorGui.managerDatabase().panelStrategy.setText(
+                    MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getErrorIndex()).getName()
+                );
                 break;
             }
         }
     }
+    
 }

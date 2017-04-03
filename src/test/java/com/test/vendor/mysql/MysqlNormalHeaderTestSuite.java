@@ -22,11 +22,12 @@ public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
         MediatorModel.model().addObserver(new SystemOutTerminal());
 
         ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_header.php");
-        ConnectionUtil.setDataHeader("lib:0");
+        ConnectionUtil.setHeader("lib:0");
         ConnectionUtil.setMethodInjection(MethodInjection.HEADER);
 
         MediatorModel.model().beginInjection();
 
         MediatorModel.model().setStrategy(Strategy.NORMAL);
     }
+    
 }

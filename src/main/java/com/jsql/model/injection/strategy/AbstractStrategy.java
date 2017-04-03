@@ -17,6 +17,7 @@ import com.jsql.util.ConnectionUtil;
  * Define a strategy to inject SQL with methods like errorbased or timebased.
  */
 public abstract class AbstractStrategy {
+	
     /**
      * True if injection can be used, false otherwise.
      */
@@ -65,6 +66,29 @@ public abstract class AbstractStrategy {
         MediatorModel.model().sendToViews(request);
     }
     
+    public void markVulnerable(TypeRequest message, int i) {
+        Request request = new Request();
+        request.setMessage(message);
+        
+        Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
+        msgHeader.put(TypeHeader.URL, ConnectionUtil.getUrlByUser());
+        msgHeader.put(TypeHeader.SOURCE, i);
+
+        request.setParameters(msgHeader);
+        MediatorModel.model().sendToViews(request);
+    }
+
+    public void markInvulnerable(TypeRequest message, int i) {
+        Request request = new Request();
+        request.setMessage(message);
+        
+        Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
+        msgHeader.put(TypeHeader.SOURCE, i);
+
+        request.setParameters(msgHeader);
+        MediatorModel.model().sendToViews(request);
+    }
+    
     /**
      * Start the strategy work.
      * @return Source code
@@ -85,4 +109,18 @@ public abstract class AbstractStrategy {
      * Get the injection strategy name.
      */
     public abstract String getName();
+    public Integer getErrorIndex() {
+        return 0;
+    }
+
+    public void allow(int i) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void unallow(int i) {
+        // TODO Auto-generated method stub
+        
+    }
+    
 }

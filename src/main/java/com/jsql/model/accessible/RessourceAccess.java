@@ -50,9 +50,8 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.suspendable.SuspendableGetRows;
-import com.jsql.model.suspendable.ThreadFactoryCallable;
+import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 import com.jsql.util.ConnectionUtil;
-import com.jsql.util.StringUtil;
 import com.jsql.view.scan.ScanListTerminal;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.ListItem;
@@ -62,6 +61,7 @@ import com.jsql.view.swing.list.ListItem;
  * Get informations from file system, commands, webpage.
  */
 public class RessourceAccess {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -70,20 +70,17 @@ public class RessourceAccess {
     /**
      * File name for web shell.
      */
-    public static final String FILENAME_WEBSHELL = 
-        "."+ InjectionModel.VERSION_JSQL + ".jw.php";
+    public static final String FILENAME_WEBSHELL = "."+ InjectionModel.VERSION_JSQL + ".jw.php";
     
     /**
      * File name for sql shell.
      */
-    public static final String FILENAME_SQLSHELL = 
-        "."+ InjectionModel.VERSION_JSQL + ".js.php";
+    public static final String FILENAME_SQLSHELL = "."+ InjectionModel.VERSION_JSQL + ".js.php";
     
     /**
      * File name for upload form.
      */
-    public static final String FILENAME_UPLOAD = 
-        "."+ InjectionModel.VERSION_JSQL + ".ju.php";
+    public static final String FILENAME_UPLOAD = "."+ InjectionModel.VERSION_JSQL + ".ju.php";
     
     /**
      * True if admin page sould stop, false otherwise.
@@ -96,7 +93,8 @@ public class RessourceAccess {
     private static boolean isScanStopped = false;
 
     /**
-     * True if file search must stop, false otherwise.
+     * True if ongoing file reading must stop, false otherwise.
+     * If true any new file read is cancelled at start.
      */
     private static boolean isSearchFileStopped = false;
 
@@ -105,10 +103,14 @@ public class RessourceAccess {
      */
     private static boolean readingIsAllowed = false;
 
-    private static List<CallableFile> callablesReadFile = new ArrayList<CallableFile>();
+    /**
+     * List of ongoing jobs.
+     */
+    private static List<CallableFile> callablesReadFile = new ArrayList<>();
 
+    // Utility class
     private RessourceAccess() {
-        
+        // not used
     }
 
     /**
@@ -172,8 +174,8 @@ public class RessourceAccess {
 
         String result = 
             "Found "+ nbAdminPagesFound +" page"+( nbAdminPagesFound > 1 ? 's' : "" )+" "
-            + (tasksHandled != submittedTasks ? "on "+ tasksHandled +" processed " : "")
-            + "of a total of "+ submittedTasks 
+            + (tasksHandled != submittedTasks ? "of "+ tasksHandled +" processed " : "")
+            + "on a total of "+ submittedTasks 
         ;
         if (nbAdminPagesFound > 0) {
             LOGGER.debug(result);
@@ -243,6 +245,12 @@ public class RessourceAccess {
         }
     }
     
+    /**
+     * 
+     * @param urlCommand
+     * @return
+     * @throws IOException
+     */
     private static String runCommandShell(String urlCommand) throws IOException {
         URLConnection connection;
 
@@ -276,7 +284,7 @@ public class RessourceAccess {
         msgHeader.put(TypeHeader.URL, url);
         msgHeader.put(TypeHeader.POST, "");
         msgHeader.put(TypeHeader.HEADER, "");
-        msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHttpHeaders(connection));
+        msgHeader.put(TypeHeader.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
         msgHeader.put(TypeHeader.SOURCE, pageSource);
         
         Request request = new Request();
@@ -284,6 +292,7 @@ public class RessourceAccess {
         request.setParameters(msgHeader);
         MediatorModel.model().sendToViews(request);
         
+        // TODO optional
         return result;
     }
     
@@ -424,6 +433,7 @@ public class RessourceAccess {
                     ) {
                         Collections.sort(
                             listRows, 
+                            // TODO java 8
                             new Comparator<List<String>>() {
                                 @Override
                                 public int compare(List<String> firstRow, List<String> secondRow) {
@@ -482,10 +492,9 @@ public class RessourceAccess {
     /**
      * Upload a file to the server.
      * @param pathFile Remote path of the file to upload
-     * @param url URL of uploaded file
+     * @param urlFile URL of uploaded file
      * @param file File to upload
-     * @throws InjectionFailureException
-     * @throws StoppedByUserException
+     * @throws JSqlException
      * @throws IOException 
      */
     public static void uploadFile(String pathFile, String urlFile, File file) throws JSqlException, IOException {
@@ -601,7 +610,7 @@ public class RessourceAccess {
                     msgHeader.put(TypeHeader.URL, urlFileFixed);
                     msgHeader.put(TypeHeader.POST, "");
                     msgHeader.put(TypeHeader.HEADER, "");
-                    msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHttpHeaders(connection));
+                    msgHeader.put(TypeHeader.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
                     msgHeader.put(TypeHeader.SOURCE, result);
     
                     Request request = new Request();
@@ -622,8 +631,7 @@ public class RessourceAccess {
     /**
      * Check if current user can read files.
      * @return True if user can read file, false otherwise
-     * @throws InjectionFailureException
-     * @throws StoppedByUserException
+     * @throws JSqlException when an error occurs during injection
      */
     public static boolean isReadingAllowed() throws JSqlException {
         String[] sourcePage = {""};
@@ -641,30 +649,32 @@ public class RessourceAccess {
             Request request = new Request();
             request.setMessage(TypeRequest.MARK_FILE_SYSTEM_INVULNERABLE);
             MediatorModel.model().sendToViews(request);
-            readingIsAllowed = false;
+            RessourceAccess.readingIsAllowed = false;
         } else if ("false".equals(resultInjection)) {
             LOGGER.warn("No FILE privilege");
             Request request = new Request();
             request.setMessage(TypeRequest.MARK_FILE_SYSTEM_INVULNERABLE);
             MediatorModel.model().sendToViews(request);
-            readingIsAllowed = false;
+            RessourceAccess.readingIsAllowed = false;
         } else {
             Request request = new Request();
             request.setMessage(TypeRequest.MARK_FILE_SYSTEM_VULNERABLE);
             MediatorModel.model().sendToViews(request);
-            readingIsAllowed = true;
+            RessourceAccess.readingIsAllowed = true;
         }
         
-        return readingIsAllowed;
+        // TODO optional
+        return RessourceAccess.readingIsAllowed;
     }
     
     /**
-     * Create a panel for each file in the list.
-     * @param pathsFiles List of file to read
-     * @throws InjectionFailureException
-     * @throws StoppedByUserException
-     * @throws InterruptedException 
-     * @throws ExecutionException 
+     * Attempt to read files in parallel by their path from the website using injection.
+     * Reading file needs a FILE right on the server.
+     * The user can interrupt the process at any time.
+     * @param pathsFiles List of file paths to read
+     * @throws JSqlException when an error occurs during injection
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ExecutionException if the computation threw an exception
      */
     public static void readFile(List<ListItem> pathsFiles) throws JSqlException, InterruptedException, ExecutionException {
         if (!RessourceAccess.isReadingAllowed()) {
@@ -676,9 +686,9 @@ public class RessourceAccess {
         CompletionService<CallableFile> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         for (ListItem pathFile: pathsFiles) {
-            CallableFile c = new CallableFile(pathFile.toString());
-            taskCompletionService.submit(c);
-            callablesReadFile.add(c);
+            CallableFile callableFile = new CallableFile(pathFile.toString());
+            taskCompletionService.submit(callableFile);
+            RessourceAccess.callablesReadFile.add(callableFile);
         }
 
         List<String> duplicate = new ArrayList<>();
@@ -690,10 +700,10 @@ public class RessourceAccess {
             tasksHandled++
         ) {
             CallableFile currentCallable = taskCompletionService.take().get();
-            if (!"".equals(currentCallable.getFileSource())) {
-                String name = currentCallable.getUrl().substring(currentCallable.getUrl().lastIndexOf('/') + 1, currentCallable.getUrl().length());
-                String content = currentCallable.getFileSource();
-                String path = currentCallable.getUrl();
+            if (!"".equals(currentCallable.getSourceFile())) {
+                String name = currentCallable.getPathFile().substring(currentCallable.getPathFile().lastIndexOf('/') + 1, currentCallable.getPathFile().length());
+                String content = currentCallable.getSourceFile();
+                String path = currentCallable.getPathFile();
 
                 Request request = new Request();
                 request.setMessage(TypeRequest.CREATE_FILE_TAB);
@@ -709,11 +719,11 @@ public class RessourceAccess {
             }
         }
         
-        // Force eventual ongoing suspendables to stop immediately
-        for (CallableFile callableReadFile: callablesReadFile) {
-            callableReadFile.suspendableReadFile.stop();
+        // Force ongoing suspendables to stop immediately
+        for (CallableFile callableReadFile: RessourceAccess.callablesReadFile) {
+            callableReadFile.getSuspendableReadFile().stop();
         }
-        callablesReadFile.clear();
+        RessourceAccess.callablesReadFile.clear();
 
         taskExecutor.shutdown();
         taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
@@ -722,8 +732,8 @@ public class RessourceAccess {
         
         String result = 
             "Found "+ countFileFound +" file"+( countFileFound > 1 ? 's' : "" )+" "
-            + (tasksHandled != submittedTasks ? "on "+ tasksHandled +" processed " : "")
-            + "of a total of "+ submittedTasks 
+            + (tasksHandled != submittedTasks ? "of "+ tasksHandled +" processed " : "")
+            + "on a total of "+ submittedTasks 
         ;
         if (countFileFound > 0) {
             LOGGER.debug(result);
@@ -736,6 +746,14 @@ public class RessourceAccess {
         MediatorModel.model().sendToViews(request);
     }
     
+    /**
+     * Start fast scan of URLs in sequence and display result.
+     * Unplug any existing view and plug a console-like view in order to 
+     * respond appropriately to GUI message with simple text result instead of
+     * build complex graphical components during the multi website injections.
+     * At the end of the scan it plugs again the normal view.
+     * @param urlList contains a list of String URL
+     */
     public static void scanList(List<ListItem> urlList) {
         // Erase everything in the view from a previous injection
         Request requests = new Request();
@@ -773,6 +791,7 @@ public class RessourceAccess {
         }
         
         // Get back the normal view
+        // TODO Don't play with View on Model
         MediatorModel.model().addObserver(MediatorGui.frame());
         
         MediatorModel.model().isScanning = false;
@@ -783,9 +802,25 @@ public class RessourceAccess {
         request.setMessage(TypeRequest.END_SCAN);
         MediatorModel.model().sendToViews(request);
     }
+
+    /**
+     * Mark the search of files to stop.
+     * Any ongoing file reading is interrupted and any new file read
+     * is cancelled.
+     */
+    public static void stopSearchingFile() {
+        RessourceAccess.isSearchFileStopped = true;
+        
+        // Force ongoing suspendable to stop immediately
+        for (CallableFile callable: RessourceAccess.callablesReadFile) {
+            callable.getSuspendableReadFile().stop();
+        }
+    }
+    
+    // Getters and setters
     
     public static boolean isSearchAdminStopped() {
-        return isSearchAdminStopped;
+        return RessourceAccess.isSearchAdminStopped;
     }
 
     public static void setSearchAdminStopped(boolean isSearchAdminStopped) {
@@ -796,22 +831,12 @@ public class RessourceAccess {
         RessourceAccess.isScanStopped = isScanStopped;
     }
 
-    public static void setSearchFileStopped(boolean isSearchFileStopped) {
-        RessourceAccess.isSearchFileStopped = isSearchFileStopped;
-        
-        // Force ongoing suspendable to stop immediately
-        if (isSearchFileStopped) {
-            for (CallableFile callable: callablesReadFile) {
-                callable.suspendableReadFile.stop();
-            }
-        }
-    }
-
     public static boolean isReadingIsAllowed() {
-        return readingIsAllowed;
+        return RessourceAccess.readingIsAllowed;
     }
 
     public static void setReadingIsAllowed(boolean readingIsAllowed) {
         RessourceAccess.readingIsAllowed = readingIsAllowed;
     }
+    
 }

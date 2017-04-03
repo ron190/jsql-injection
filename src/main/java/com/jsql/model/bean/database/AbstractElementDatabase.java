@@ -19,6 +19,7 @@ package com.jsql.model.bean.database;
  * Concern only databases, tables and columns, values are raw data directly processed by the view
  */
 public abstract class AbstractElementDatabase {
+    
     /**
      * Label of the current element.
      */
@@ -35,7 +36,7 @@ public abstract class AbstractElementDatabase {
      * - for database: number of tables,<br>
      * - for table: number of rows.<br>
      */
-    public abstract int getCount();
+    public abstract int getChildCount();
     
     /**
      * Return a readable label displayed by the view.
@@ -50,4 +51,5 @@ public abstract class AbstractElementDatabase {
     public String toString() {
         return this.elementValue;
     }
+    
 }

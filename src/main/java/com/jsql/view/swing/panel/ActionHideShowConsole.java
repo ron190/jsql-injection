@@ -11,6 +11,7 @@ import com.jsql.view.swing.MediatorGui;
  * MouseAdapter to show/hide bottom panel.
  */
 public class ActionHideShowConsole implements ActionListener {
+	
     /**
      * Save the divider location when bottom panel is not visible.
      */
@@ -51,4 +52,5 @@ public class ActionHideShowConsole implements ActionListener {
             MediatorGui.frame().splitHorizontalTopBottom.enableDragSize();
         }
     }
+    
 }

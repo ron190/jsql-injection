@@ -1,16 +1,18 @@
 package com.jsql.model.injection.strategy;
 
 public enum Strategy {
+	
     UNDEFINED("Undefined", null),
     TIME("Time", new TimeStrategy()),
     BLIND("Blind", new BlindStrategy()),
     ERRORBASED("ErrorBased", new ErrorbasedStrategy()),
     NORMAL("Normal", new NormalStrategy());
+    
+    private final String nameStrategy;
 
     private final AbstractStrategy instanceStrategy;
-    private final String nameStrategy;
     
-    Strategy(String nameStrategy, AbstractStrategy instanceStrategy) {
+    private Strategy(String nameStrategy, AbstractStrategy instanceStrategy) {
         this.nameStrategy = nameStrategy;
         this.instanceStrategy = instanceStrategy;
     }
@@ -23,4 +25,5 @@ public enum Strategy {
     public String toString() {
         return this.nameStrategy;
     }
+    
 }

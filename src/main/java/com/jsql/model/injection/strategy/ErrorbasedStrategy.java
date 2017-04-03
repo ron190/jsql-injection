@@ -1,17 +1,23 @@
 package com.jsql.model.injection.strategy;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.injection.vendor.VendorXml;
+import com.jsql.model.injection.vendor.Model.Strategy.Error.Method;
 import com.jsql.model.suspendable.AbstractSuspendable;
 
 /**
  * Injection strategy using error attack.
  */
 public class ErrorbasedStrategy extends AbstractStrategy {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -19,40 +25,68 @@ public class ErrorbasedStrategy extends AbstractStrategy {
 
     @Override
     public void checkApplicability() {
-        LOGGER.trace("Error based test...");
         
-        String performanceSourcePage = MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().getCharInsertion() + 
-            MediatorModel.model().vendor.instance().sqlTestErrorBased()
-        );
-
-        isApplicable = performanceSourcePage.matches(
-            "(?s).*(Duplicate entry '1' for key "
-            + "|Like verdier '1' for "
-            + "|Like verdiar '1' for "
-            + "|Kattuv väärtus '1' võtmele "
-            + "|Opakovaný kµúè '1' \\(èíslo kµúèa "
-            + "|pienie '1' dla klucza "
-            + "|Duplikalt bejegyzes '1' a "
-            + "|Ens værdier '1' for indeks "
-            + "|Dubbel nyckel '1' för nyckel "
-            + "|klíè '1' \\(èíslo klíèe "
-            + "|Duplicata du champ '1' pour la clef "
-            + "|Entrada duplicada '1' para la clave "
-            + "|Cimpul '1' e duplicat pentru cheia "
-            + "|Dubbele ingang '1' voor zoeksleutel "
-            + "|Valore duplicato '1' per la chiave "
-            /*jp missing*/
-            /*kr grk ukr rss missing*/
-            + "|Dupliran unos '1' za klju"        
-            + "|Entrada '1' duplicada para a chave ).*"
-        );
-        
-        if (this.isApplicable) {
-            LOGGER.debug("Vulnerable to Error based injection");
-            this.allow();
+        if (MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError() == null) {
+            LOGGER.info("No Error based strategy known for "+ MediatorModel.model().vendor +".");
+            return;
         } else {
-            this.unallow();
+            LOGGER.trace("Error based test...");
+        }
+        
+        this.errorCapacity = new String[MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError().getMethod().size()];
+        int indexErrorMethod = 0;
+        int errorCapacity = 0;
+        for (Method errorMethod: MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError().getMethod()) {
+            LOGGER.trace("Testing "+ errorMethod.getName() +"...");
+        
+            String performanceSourcePage = MediatorModel.model().injectWithoutIndex(
+                MediatorModel.model().getCharInsertion() + 
+                " "+ VendorXml.replaceTags(
+                    errorMethod.getQuery()
+                    .replace("${WINDOW}", MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getSlidingWindow())
+                    .replace("${INJECTION}", MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getFailsafe().replace("${INDICE}","0"))
+                    .replace("${INDEX}", "1")
+                    .replace("${CAPACITY}", ""+errorMethod.getCapacity())
+                )
+            );
+    
+            isApplicable = performanceSourcePage.matches(
+                VendorXml.replaceTags(
+                    "(?s).*"+ 
+                    MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getFailsafe()
+                    .replace("${INDICE}","0")
+                    .replace("0%2b1", "1") +".*"
+                )
+            );
+            
+            if (this.isApplicable) {
+                LOGGER.debug("Vulnerable to "+ errorMethod.getName());
+                this.allow(indexErrorMethod);
+                
+                String performanceErrorBasedSourcePage = MediatorModel.model().injectWithoutIndex(
+                    MediatorModel.model().getCharInsertion() + 
+                    " "+ VendorXml.replaceTags(
+                        errorMethod.getQuery()
+                        .replace("${WINDOW}", MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getSlidingWindow())
+                        .replace("${INJECTION}", MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getCalibrator())
+                        .replace("${INDEX}", "1")
+                        .replace("${CAPACITY}", (""+errorMethod.getCapacity()))
+                    )
+                );
+                
+                Matcher regexSearch = Pattern.compile("(?s)SQLi(#+)").matcher(performanceErrorBasedSourcePage);
+                while (regexSearch.find()) {
+                    if (errorCapacity < regexSearch.group(1).length()) {
+                        errorIndex = indexErrorMethod;
+                    }
+                    errorCapacity = regexSearch.group(1).length();
+                    this.errorCapacity[indexErrorMethod] = errorCapacity+"";
+                }
+            } else {
+                this.unallow(indexErrorMethod);
+            }
+            
+            indexErrorMethod++;
         }
     }
 
@@ -67,7 +101,17 @@ public class ErrorbasedStrategy extends AbstractStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserException {
+    public void allow(int i) {
+        markVulnerable(TypeRequest.MARK_ERRORBASED_VULNERABLE, i);
+    }
+
+    @Override
+    public void unallow(int i) {
+        markVulnerable(TypeRequest.MARK_ERRORBASED_INVULNERABLE, i);
+    }
+
+    @Override
+    public String inject(String sqlQuery, String startPosition, /*TODO parametre inutile? */AbstractSuspendable<String> stoppable) throws StoppedByUserException {
         return MediatorModel.model().injectWithoutIndex(
             MediatorModel.model().getCharInsertion() +
             MediatorModel.model().vendor.instance().sqlErrorBased(sqlQuery, startPosition)
@@ -86,15 +130,23 @@ public class ErrorbasedStrategy extends AbstractStrategy {
     
     @Override
     public String getPerformanceLength() {
-        /**
-         * mysql errorbase renvoit 64 caractères - 'SQLi' = 60
-         * on va prendre 60 caractères après le marqueur SQLi
-         */
-        return "60" ;
+        return errorCapacity[errorIndex] +"" ;
     }
     
     @Override
     public String getName() {
         return "Error based";
     }
+    
+    String[] errorCapacity;
+    
+    int errorIndex = 0;
+    
+    public Integer getErrorIndex() {
+        return errorIndex;
+    }
+    public void setErrorIndex(int i) {
+        errorIndex = i;
+    }
+    
 }

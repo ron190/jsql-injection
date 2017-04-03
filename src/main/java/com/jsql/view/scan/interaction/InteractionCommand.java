@@ -14,8 +14,10 @@ package com.jsql.view.scan.interaction;
  * Action ordered by the Model and applied to the View.
  */
 public interface InteractionCommand {
+	
     /**
      * Do the action ordered by the model.
      */
     void execute();
+    
 }

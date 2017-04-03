@@ -7,6 +7,7 @@ import javax.swing.JToolTip;
  */
 @SuppressWarnings("serial")
 public class JToolTipI18n extends JToolTip {
+	
     String textTooltip;
 
     public JToolTipI18n(String textTooltip) {
@@ -21,4 +22,5 @@ public class JToolTipI18n extends JToolTip {
     public String getTipText() {
         return textTooltip;
     }
+    
 }

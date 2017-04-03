@@ -20,6 +20,7 @@ import com.jsql.view.swing.interaction.InteractionCommand;
  * Create a new tab for the values.
  */
 public class CreateValuesTab implements InteractionCommand {
+	
     /**
      * Using default log4j.properties from root /
      */
@@ -43,4 +44,5 @@ public class CreateValuesTab implements InteractionCommand {
         LOGGER.info("CreateValuesTab: " + Arrays.deepToString(data) +"\n");
         LOGGER.info("\n");
     }
+    
 }

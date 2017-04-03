@@ -17,6 +17,7 @@ import com.jsql.view.swing.MediatorGui;
  * Mark the injection as using a user profile invulnerable to file I/O.
  */
 public class MarkFileSystemInvulnerable implements InteractionCommand {
+	
     /**
      * @param interactionParams
      */
@@ -43,4 +44,5 @@ public class MarkFileSystemInvulnerable implements InteractionCommand {
         MediatorGui.managerSqlshell().setButtonEnable(true);
         MediatorGui.managerSqlshell().restoreButtonText();
     }
+    
 }

@@ -52,63 +52,63 @@ public class Bruter {
     }
 
     public int getCounter() {
-        return count;
+        return this.count;
     }
 
     public long getRemainder() {
-        return getNumberOfPossibilities() - count;
+        return getNumberOfPossibilities() - this.count;
     }
 
     public long getNumberOfPossibilities() {
         long possibilities = 0;
-        for (int i = minLength; i <= maxLength; i++) {
-            possibilities += (long) Math.pow(characters.size(), i);
+        for (int i = this.minLength; i <= this.maxLength; i++) {
+            possibilities += (long) Math.pow(this.characters.size(), i);
         }
         return possibilities;
     }
 
     public void addExtendedSet() {
         for (char c = (char) 0; c <= (char) 31; c++) {
-            characters.add(String.valueOf(c));
+            this.characters.add(String.valueOf(c));
         }
     }
 
     public void addStandardCharacterSet() {
         for (char c = (char) 32; c <= (char) 127; c++) {
-            characters.add(String.valueOf(c));
+            this.characters.add(String.valueOf(c));
         }
     }
 
     public void addLowerCaseLetters() {
         for (char c = 'a'; c <= 'z'; c++) {
-            characters.add(String.valueOf(c));
+            this.characters.add(String.valueOf(c));
         }
     }
 
     public void addDigits() {
         for (int c = 0; c <= 9; c++) {
-            characters.add(String.valueOf(c));
+            this.characters.add(String.valueOf(c));
         }
     }
 
     public void addUpperCaseLetters() {
         for (char c = 'A'; c <= 'Z'; c++) {
-            characters.add(String.valueOf(c));
+            this.characters.add(String.valueOf(c));
         }
     }
 
     public void addSpecialCharacters() {
         for (char c : specialCharacters) {
-            characters.add(String.valueOf(c));
+            this.characters.add(String.valueOf(c));
         }
     }
 
     public void setMaxLength(int i) {
-        maxLength = i;
+        this.maxLength = i;
     }
 
     public void setMinLength(int i) {
-        minLength = i;
+        this.minLength = i;
     }
 
     public int getPerSecond() {
@@ -124,61 +124,62 @@ public class Bruter {
 
     public String calculateTimeElapsed() {
         long timeTaken = calculateTimeDifference();
-        seconds = (int) timeTaken;
-        if (seconds > 60) {
-            minutes = seconds / 60;
-            if (minutes * 60 > seconds) {
-                minutes = minutes - 1;
+        this.seconds = (int) timeTaken;
+        if (this.seconds > 60) {
+            this.minutes = this.seconds / 60;
+            if (this.minutes * 60 > this.seconds) {
+                this.minutes = this.minutes - 1;
             }
 
-            if (minutes > 60) {
-                hours = minutes / 60;
-                if (hours * 60 > minutes) {
-                    hours = hours - 1;
+            if (this.minutes > 60) {
+                this.hours = this.minutes / 60;
+                if (this.hours * 60 > this.minutes) {
+                    this.hours = this.hours - 1;
                 }
             }
 
-            if (hours > 24) {
-                days = hours / 24;
-                if (days * 24 > hours) {
-                    days = days - 1;
+            if (this.hours > 24) {
+                this.days = this.hours / 24;
+                if (this.days * 24 > this.hours) {
+                    this.days = this.days - 1;
                 }
             }
-            seconds -= (minutes * 60);
-            minutes -= (hours * 60);
-            hours -= (days * 24);
-            days -= (hours * 24);
+            this.seconds -= (this.minutes * 60);
+            this.minutes -= (this.hours * 60);
+            this.hours -= (this.days * 24);
+            this.days -= (this.hours * 24);
         }
-        return "Time elapsed: " + days + "days " + hours + "h " + minutes + "min " + seconds + "s";
+        return "Time elapsed: "+ this.days +"days "+ this.hours +"h "+ this.minutes +"min "+ this.seconds +"s";
     }
 
     private long calculateTimeDifference() {
-        return (long) ((endtime - starttime) * (1 * Math.pow(10, -9)));
+        return (long) ((this.endtime - this.starttime) * (1 * Math.pow(10, -9)));
     }
 
     public boolean excludeChars(String s) {
         char[] arrayChars = s.toCharArray();
         
         for (int i = 0; i < arrayChars.length; i++) {
-            characters.remove(Character.toString(arrayChars[i]));
+            this.characters.remove(Character.toString(arrayChars[i]));
         }
         
-        return characters.size() >= maxLength;
+        return this.characters.size() >= this.maxLength;
     }
 
     public int getMaxLength() {
-        return maxLength;
+        return this.maxLength;
     }
 
     public int getMinLength() {
-        return minLength;
+        return this.minLength;
     }
 
     public void setIsDone(Boolean b) {
-        done = b;
+        this.done = b;
     }
 
     public boolean isDone() {
-        return done;
+        return this.done;
     }
+    
 }

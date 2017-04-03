@@ -30,6 +30,7 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public class JPopupMenuTable extends JPopupMenu {
+	
     /**
      * Table with new menu and shortcut.
      */
@@ -120,4 +121,5 @@ public class JPopupMenuTable extends JPopupMenu {
             JPopupMenuTable.this.table.getActionMap().get(copyEvent.getActionCommand()).actionPerformed(copyEvent);
         }
     }
+    
 }

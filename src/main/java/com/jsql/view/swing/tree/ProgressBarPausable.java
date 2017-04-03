@@ -26,6 +26,7 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public class ProgressBarPausable extends JProgressBar {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -61,4 +62,5 @@ public class ProgressBarPausable extends JProgressBar {
     public void pause() {
         this.isIconDisplayed = true;
     }
+    
 }

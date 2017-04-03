@@ -12,6 +12,7 @@ import com.jsql.view.swing.combomenu.BlankIcon;
 
 @SuppressWarnings("serial")
 public class ComboMenu extends JMenu {
+	
     ArrowIcon iconRenderer;
 
     public ComboMenu(String label) {
@@ -30,4 +31,5 @@ public class ComboMenu extends JMenu {
         int y = Math.max(0, (d.height - iconRenderer.getIconHeight()) / 2 - 1);
         iconRenderer.paintIcon(this, g, x, y);
     }
+    
 }

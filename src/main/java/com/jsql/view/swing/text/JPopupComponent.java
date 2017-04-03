@@ -24,6 +24,7 @@ import com.jsql.view.swing.popupmenu.JPopupMenuComponent;
  */
 @SuppressWarnings("serial")
 public class JPopupComponent<T extends JComponent> extends JComponent implements DecoratorJComponent<T> {
+	
     /**
      * Decorated component.
      */
@@ -53,4 +54,5 @@ public class JPopupComponent<T extends JComponent> extends JComponent implements
     public T getProxy() {
         return this.proxy;
     }
+    
 }

@@ -13,6 +13,7 @@ import com.test.AbstractTestSuite;
 import com.test.vendor.mysql.ConcreteMysqlTestSuite;
 
 public class CookieTest extends ConcreteMysqlTestSuite {
+	
     // pour chaque vendor/méthode/strategy
     /**
      * liste db, table, colonne, value
@@ -30,11 +31,12 @@ public class CookieTest extends ConcreteMysqlTestSuite {
         MediatorModel.model().addObserver(new SystemOutTerminal());
 
         ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_cookie.php");
-        ConnectionUtil.setDataHeader("Cookie:lib=0");
+        ConnectionUtil.setHeader("Cookie:lib=0");
         ConnectionUtil.setMethodInjection(MethodInjection.HEADER);
 
         MediatorModel.model().beginInjection();
 
         MediatorModel.model().setStrategy(Strategy.NORMAL);
     }
+    
 }

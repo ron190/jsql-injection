@@ -16,6 +16,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
 public class ActionCheckUncheck implements ActionListener {
 
     private AbstractNodeModel nodeModel;
+    
     private DefaultMutableTreeNode currentTableNode;
 
     public ActionCheckUncheck(AbstractNodeModel nodeModel, DefaultMutableTreeNode currentTableNode) {
@@ -48,4 +49,5 @@ public class ActionCheckUncheck implements ActionListener {
         AbstractNodeModel nodeUserObject = (AbstractNodeModel) tableNode.getUserObject();
         nodeUserObject.isContainingSelection = isOneChildSelected;
     }
+    
 }

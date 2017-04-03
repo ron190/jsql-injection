@@ -1,11 +1,11 @@
 package com.jsql;
 
 import java.awt.HeadlessException;
+import java.net.URISyntaxException;
 
 import org.apache.log4j.Appender;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
@@ -26,11 +26,6 @@ import com.jsql.view.swing.MediatorGui;
  */
 public class MainApplication {
 	
-	static {
-		// TODO define in properties
-    	PropertyConfigurator.configure(MainApplication.class.getResource("/log4j2.properties"));
-	}
-	
     /**
      * Using default log4j.properties from root /
      */
@@ -46,8 +41,9 @@ public class MainApplication {
     /**
      * Application starting point.
      * @param args CLI parameters (not used)
+     * @throws URISyntaxException 
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws URISyntaxException {
     	
     	// Configure global environnement settings
         CertificateUtil.ignoreCertificationChain();

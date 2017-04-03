@@ -8,6 +8,10 @@ import com.jsql.view.swing.MediatorGui;
 public class CreateTab {
 
     protected CreateTab() {
+        CreateTab.initializeSplitOrientation();
+    }
+    
+    public static void initializeSplitOrientation() {
         if (MediatorGui.tabResults().getTabCount() == 0) {
             int i = MediatorGui.frame().splitHorizontalTopBottom.splitVerticalLeftRight.getDividerLocation();
             
@@ -23,5 +27,4 @@ public class CreateTab {
             MediatorGui.frame().splitHorizontalTopBottom.splitVerticalLeftRight.setDividerLocation(i);
         }
     }
-    
 }

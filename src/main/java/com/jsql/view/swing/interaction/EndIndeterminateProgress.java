@@ -22,6 +22,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  * progression (like colum search).
  */
 public class EndIndeterminateProgress implements InteractionCommand {
+	
     /**
      * The element in the database tree for which the progress ends.
      */
@@ -31,7 +32,7 @@ public class EndIndeterminateProgress implements InteractionCommand {
      * @param interactionParams Element to update
      */
     public EndIndeterminateProgress(Object[] interactionParams) {
-        dataElementDatabase = (AbstractElementDatabase) interactionParams[0];
+        this.dataElementDatabase = (AbstractElementDatabase) interactionParams[0];
     }
 
     @Override
@@ -39,7 +40,7 @@ public class EndIndeterminateProgress implements InteractionCommand {
         // Tree model, update the tree (refresh, add node, etc)
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
 
-        DefaultMutableTreeNode nodeModel = MediatorGui.frame().getTreeNodeModels().get(dataElementDatabase);
+        DefaultMutableTreeNode nodeModel = MediatorGui.frame().getTreeNodeModels().get(this.dataElementDatabase);
         
         // Fix #1806 : NullPointerException on ...odels().get(dataElementDatabase).getUserObject()
         if (nodeModel != null) {
@@ -54,4 +55,5 @@ public class EndIndeterminateProgress implements InteractionCommand {
             treeModel.nodeChanged(nodeModel);
         }
     }
+    
 }

@@ -25,7 +25,7 @@ public class PostgreBlindGetTestSuite extends ConcretePostgreTestSuite {
         MediatorModel.model().addObserver(new SystemOutTerminal());
 
         ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/pg_simulate_get.php");
-        ConnectionUtil.setDataQuery("?lib=1");
+        ConnectionUtil.setQueryString("?lib=1");
         ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
 
         MediatorModel.model().beginInjection();
@@ -39,4 +39,5 @@ public class PostgreBlindGetTestSuite extends ConcretePostgreTestSuite {
     public void listTables() throws JSqlException {
         // Empty on purpose
     }
+    
 }

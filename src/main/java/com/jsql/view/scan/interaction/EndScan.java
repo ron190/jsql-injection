@@ -36,4 +36,5 @@ public class EndScan implements InteractionCommand {
         
         LOGGER.trace("Scan finished");
     }
+    
 }

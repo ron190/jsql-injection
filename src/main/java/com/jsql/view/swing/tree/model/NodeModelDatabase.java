@@ -16,6 +16,7 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingWorker;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
@@ -27,11 +28,13 @@ import com.jsql.model.bean.database.Table;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.MediatorGui;
 
 /**
  * Database model displaying the database icon on the label.
  */
 public class NodeModelDatabase extends AbstractNodeModel {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -57,7 +60,10 @@ public class NodeModelDatabase extends AbstractNodeModel {
     @Override
     public void runAction() {
         final Database selectedDatabase = (Database) this.elementDatabase;
-        if (!this.isLoaded && !this.isRunning) {
+        if (/*!this.isLoaded && */!this.isRunning) {
+            MediatorGui.frame().getTreeNodeModels().get(this.elementDatabase).removeAllChildren();
+            DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
+            treeModel.reload(MediatorGui.frame().getTreeNodeModels().get(this.elementDatabase));
             
             new SwingWorker<Object, Object>() {
                 @Override
@@ -75,6 +81,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
                     } catch (Throwable e) {
                         LOGGER.warn(e, e);
                     } finally {
+                    	// TODO do in model
                         Request requestAddTables = new Request();
                         requestAddTables.setMessage(TypeRequest.ADD_TABLES);
                         requestAddTables.setParameters(tables);
@@ -101,4 +108,5 @@ public class NodeModelDatabase extends AbstractNodeModel {
     void buildMenu(JPopupMenu tablePopupMenu, TreePath path) {
         // Do nothing
     }
+    
 }

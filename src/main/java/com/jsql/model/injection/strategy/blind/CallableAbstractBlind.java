@@ -6,6 +6,7 @@ import java.util.concurrent.Callable;
  * Callable used to read blind/time database information.
  */
 public abstract class CallableAbstractBlind<T extends CallableAbstractBlind<T>> implements Callable<T> {
+    
     /**
      * The URL called.
      */
@@ -54,4 +55,5 @@ public abstract class CallableAbstractBlind<T extends CallableAbstractBlind<T>> 
      * @return true if the current SQL test is confirmed
      */
     abstract boolean isTrue();
+    
 }

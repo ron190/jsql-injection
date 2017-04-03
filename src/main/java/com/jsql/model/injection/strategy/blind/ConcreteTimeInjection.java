@@ -12,12 +12,13 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.StoppedByUserException;
-import com.jsql.model.suspendable.ThreadFactoryCallable;
+import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 /**
  * A time attack class using thread asynchronisation.
  */
 public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -43,7 +44,12 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
      * then time attack is confirmed. 
      */
     public ConcreteTimeInjection() {
-
+        // No blind
+        if (this.falseTest.length == 0) {
+            LOGGER.info("Time strategy is unknown for "+ MediatorModel.model().vendor +".");
+            return;
+        }
+        
         // Check if the user wants to stop the preparation
         if (MediatorModel.model().isStoppedByUser()) {
             return;
@@ -162,4 +168,5 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
     public String getInfoMessage() {
         return "Asking server \"Is this bit true?\", if delay does not exceed 5 seconds then response is true.\n";
     }
+    
 }

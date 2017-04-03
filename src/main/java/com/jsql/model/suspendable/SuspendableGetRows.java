@@ -1,8 +1,10 @@
 package com.jsql.model.suspendable;
 
+import static com.jsql.model.accessible.DataAccess.ENCLOSE_VALUE_RGX;
 import static com.jsql.model.accessible.DataAccess.MODE;
-import static com.jsql.model.accessible.DataAccess.SEPARATOR;
-import static com.jsql.model.accessible.DataAccess.TD;
+import static com.jsql.model.accessible.DataAccess.SEPARATOR_CELL_RGX;
+import static com.jsql.model.accessible.DataAccess.SEPARATOR_QTE_RGX;
+import static com.jsql.model.accessible.DataAccess.TRAIL_RGX;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,6 +31,9 @@ import com.jsql.util.ThreadUtil;
  */
 public class SuspendableGetRows extends AbstractSuspendable<String> {
     
+	/**
+	 * 
+	 */
     @Override
     public String run(Object... args) throws JSqlException {
         String initialSQLQuery = (String) args[0];
@@ -40,6 +45,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
 
         String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", MediatorModel.model().vendor.instance().sqlLimit(0));
 
+        // TODO Fix #14417
         AbstractStrategy strategy = MediatorModel.model().getStrategy().instance();
         
         /*
@@ -80,7 +86,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             
             Matcher regexEndOfLine = 
                 Pattern
-                    .compile(MODE +"SQLi\\x01\\x03\\x03\\x07")
+                    .compile(MODE +"SQLi"+ TRAIL_RGX)
                     .matcher(sourcePage[0]);
             
             if (regexEndOfLine.find() && isUsingLimit && !"".equals(slidingWindowAllRows)) {
@@ -120,7 +126,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 request.setMessage(TypeRequest.MESSAGE_CHUNK);
                 request.setParameters(
                     Pattern
-                        .compile(MODE +"\\x01\\x03\\x03\\x07.*")
+                        .compile(MODE + TRAIL_RGX +".*")
                         .matcher(regexAllLine.group(1))
                         .replaceAll("\n")
                 );
@@ -150,9 +156,11 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     .compile(
                         MODE 
                         +"("
-                            + SEPARATOR 
-                            + "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)\\x05([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?"
-                            + SEPARATOR 
+                            + ENCLOSE_VALUE_RGX 
+                            + "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)"
+                            + SEPARATOR_QTE_RGX 
+                            + "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?"
+                            + ENCLOSE_VALUE_RGX 
                         + ")"
                     )
                     .matcher(slidingWindowCurrentRow);
@@ -176,14 +184,14 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
              * => hhxxxxxxxxjj00hhgghh...hiLQS
              */
             /* Design Pattern: State? */
-            if (nbCompleteLine>0 || slidingWindowCurrentRow.matches("(?s).*\\x01\\x03\\x03\\x07.*")) {
+            if (nbCompleteLine>0 || slidingWindowCurrentRow.matches("(?s).*"+ TRAIL_RGX +".*")) {
                 /*
                  * Remove everything after our result
                  * => hhxxxxxxxxjj00hhgghh...h |-> iLQSjunk
                  */
                 slidingWindowCurrentRow = 
                     Pattern
-                        .compile(MODE +"\\x01\\x03\\x03\\x07.*")
+                        .compile(MODE + TRAIL_RGX +".*")
                         .matcher(slidingWindowCurrentRow)
                         .replaceAll("");
                 slidingWindowAllRows += slidingWindowCurrentRow;
@@ -197,10 +205,10 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                         Pattern
                             .compile(
                                 MODE +"("
-                                    + TD + SEPARATOR
-                                    + "|"
-                                    + "\\x05\\d*"
-                                + ")$"
+                                    + SEPARATOR_CELL_RGX + ENCLOSE_VALUE_RGX
+                                    +"|"
+                                    + SEPARATOR_QTE_RGX +"\\d*"
+                                +")$"
                             )
                             .matcher(slidingWindowAllRows)
                             .replaceAll("");
@@ -208,10 +216,11 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                         Pattern
                             .compile(
                                 MODE +"("
-                                    + TD + SEPARATOR
-                                    + "|"
-                                    + "\\x05\\d*"
-                                + ")$")
+                                    + SEPARATOR_CELL_RGX + ENCLOSE_VALUE_RGX
+                                    +"|"
+                                    + SEPARATOR_QTE_RGX +"\\d*"
+                                +")$"
+                            )
                             .matcher(slidingWindowCurrentRow)
                             .replaceAll("");
 
@@ -223,14 +232,18 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                             .compile(
                                 MODE
                                 + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]"
-                                + SEPARATOR + TD + SEPARATOR 
+                                + ENCLOSE_VALUE_RGX 
+                                + SEPARATOR_CELL_RGX 
+                                + ENCLOSE_VALUE_RGX 
                                 + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
                             )
                             .matcher(slidingWindowCurrentRow);
                     Matcher regexSearch2a2 = 
                         Pattern
                             .compile(
-                                MODE + SEPARATOR +"[^\\x01-\\x03\\x05-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
+                                MODE 
+                                + ENCLOSE_VALUE_RGX 
+                                + "[^\\x01-\\x03\\x05-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
                             )
                             .matcher(slidingWindowCurrentRow);
 
@@ -242,7 +255,9 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                         slidingWindowAllRows = 
                             Pattern
                                 .compile(
-                                    MODE + SEPARATOR +"[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
+                                    MODE 
+                                    + ENCLOSE_VALUE_RGX 
+                                    + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
                                 )
                                 .matcher(slidingWindowAllRows)
                                 .replaceAll("");
@@ -262,9 +277,11 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                         Pattern
                             .compile(
                                 MODE +"("
-                                    + SEPARATOR 
-                                    + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x05[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?"
-                                    + SEPARATOR 
+                                    + ENCLOSE_VALUE_RGX 
+                                    + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?"
+                                    + SEPARATOR_QTE_RGX 
+                                    + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?"
+                                    + ENCLOSE_VALUE_RGX 
                                 +")"
                             )
                             .matcher(slidingWindowAllRows);
@@ -321,12 +338,13 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 
             }
 
-            charPositionInCurrentRow = slidingWindowCurrentRow.length() + 1/* - StringUtils.countMatches(slidingWindowCurrentRow, "\n")*/;
+            charPositionInCurrentRow = slidingWindowCurrentRow.length() + 1;
         }
         
         ThreadUtil.remove(searchName);
 
         return slidingWindowAllRows;
     }
+    
 }
 

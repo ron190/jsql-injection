@@ -33,6 +33,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  */
 @SuppressWarnings("serial")
 public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor, TreeSelectionListener, MouseListener {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -100,7 +101,9 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
 
         if (node.getUserObject() instanceof AbstractNodeModel) {
             AbstractNodeModel dataModel = (AbstractNodeModel) node.getUserObject();
-            dataModel.runAction();
+            if (!dataModel.isLoaded) {
+                dataModel.runAction();
+            }
         }
     }
 
@@ -151,4 +154,5 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
     public void mouseExited(MouseEvent e) {
         // Do nothing
     }
+    
 }

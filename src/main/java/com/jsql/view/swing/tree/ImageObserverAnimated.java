@@ -23,9 +23,13 @@ import javax.swing.tree.TreePath;
  * Observer to update tree node composed by the animated GIF.
  */
 public class ImageObserverAnimated implements ImageObserver {
+	
     private JTree tree;
+    
     private DefaultTreeModel treeModel;
+    
     private TreeNode node;
+    
     private TreePath path;
     
     /**
@@ -50,4 +54,5 @@ public class ImageObserverAnimated implements ImageObserver {
         }
         return (flags & (ALLBITS | ABORT)) == 0;
     }
+    
 }

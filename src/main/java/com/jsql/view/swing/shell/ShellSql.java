@@ -20,6 +20,7 @@ import com.jsql.model.accessible.RessourceAccess;
  */
 @SuppressWarnings("serial")
 public class ShellSql extends AbstractShell {
+	
    /**
      * Build a SQL shell instance.
      * @param terminalID Unique identifier to discriminate beyond multiple opened terminals
@@ -36,4 +37,5 @@ public class ShellSql extends AbstractShell {
     void action(String cmd, UUID terminalID, String wbhPath, String... arg) {
         RessourceAccess.runSqlShell(cmd, terminalID, wbhPath, arg[0], arg[1]);
     }
+    
 }

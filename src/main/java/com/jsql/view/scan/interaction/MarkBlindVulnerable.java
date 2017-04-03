@@ -32,17 +32,18 @@ public class MarkBlindVulnerable implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public MarkBlindVulnerable(Object[] interactionParams) {
         Map<String, Object> params = (Map<String, Object>) interactionParams[0];
-        url = (String) params.get(TypeHeader.URL);
+        this.url = (String) params.get(TypeHeader.URL);
     }
 
     @Override
     public void execute() {
         ListModel<ListItem> listModel = MediatorGui.managerScan().listPaths.getModel();
         for (int i = 0 ; i < listModel.getSize() ; i++) {
-            if (listModel.getElementAt(i).getInternalString().contains(url)) {
+            if (listModel.getElementAt(i).getInternalString().contains(this.url)) {
                 listModel.getElementAt(i).setIsVulnerable(true);
                 ((DefaultListModel<ListItem>) listModel).setElementAt(listModel.getElementAt(i), i);
             }
         }
     }
+    
 }

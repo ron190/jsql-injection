@@ -59,6 +59,7 @@ import com.jsql.view.swing.ui.ComponentBorder;
  */
 @SuppressWarnings("serial")
 public class PanelAddressBar extends JPanel {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -287,11 +288,6 @@ public class PanelAddressBar extends JPanel {
         loaderInTextfield.install(this.textFieldAddress);
         this.loader.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 
-        // Add pixels to the right to compensate width when strategy is selected
-//        radioHeader.setPreferredSize(new Dimension(radioHeader.getPreferredSize().width + 3, radioHeader.getPreferredSize().height));
-//        radioHeader.setMinimumSize(new Dimension(radioHeader.getPreferredSize().width + 3, radioHeader.getPreferredSize().height));
-//        radioHeader.setHorizontalAlignment(SwingConstants.LEADING);
-
         final BasicArrowButton advancedButton = new BasicArrowButton(BasicArrowButton.SOUTH);
         advancedButton.setBorderPainted(false);
         advancedButton.setOpaque(false);
@@ -385,11 +381,6 @@ public class PanelAddressBar extends JPanel {
         }
         
         protected void startInjection() {
-//            // Register the view to the model
-//            // Used by manual injection and batch query
-//            MediatorModel.model().deleteObservers();
-//            MediatorModel.model().addObserver(MediatorGui.frame());
-            
             int option = 0;
             // Ask the user confirmation if injection already built
             if (MediatorModel.model().injectionAlreadyBuilt) {
@@ -456,4 +447,5 @@ public class PanelAddressBar extends JPanel {
     public void setHttpProtocol(String httpProtocol) {
         this.typeRequest = httpProtocol;
     }
+    
 }

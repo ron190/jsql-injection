@@ -10,6 +10,7 @@ import com.jsql.model.MediatorModel;
  * diffSeconds represents the response time of the current page
  */
 public class CallableTime extends CallableAbstractBlind<CallableTime> {
+    
     /**
      * Time before the url call.
      */
@@ -71,4 +72,5 @@ public class CallableTime extends CallableAbstractBlind<CallableTime> {
         this.diffSeconds = diff / 1000;
         return this;
     }
+    
 }

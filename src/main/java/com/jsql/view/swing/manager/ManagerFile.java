@@ -38,7 +38,7 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
-import com.jsql.view.swing.manager.util.JButtonStatable;
+import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
@@ -47,7 +47,8 @@ import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
  * Manager to read a file from the host.
  */
 @SuppressWarnings("serial")
-public class ManagerFile extends ManagerAbstractList {
+public class ManagerFile extends AbstractManagerList {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -75,19 +76,20 @@ public class ManagerFile extends ManagerAbstractList {
 
         final DnDList listFile = new DnDList(pathList);
 
-        this.add(new LightScrollPane(1, 1, 0, 0, listFile), BorderLayout.CENTER);
+        listFile.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
+        this.add(new LightScrollPane(1, 0, 0, 0, listFile), BorderLayout.CENTER);
 
         JPanel lastLine = new JPanel();
         lastLine.setOpaque(false);
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
         
-        this.run = new JButtonStatable(defaultText);
+        this.run = new JButtonStateful(defaultText);
 
         this.run.setToolTipText(I18n.valueByKey("FILE_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
@@ -127,7 +129,7 @@ public class ManagerFile extends ManagerAbstractList {
                             }
 
                         } else {
-                            RessourceAccess.setSearchFileStopped(true);
+                            RessourceAccess.stopSearchingFile();
                             ManagerFile.this.run.setEnabled(false);
                             ManagerFile.this.run.setState(StateButton.STOPPING);
                         }
@@ -152,4 +154,5 @@ public class ManagerFile extends ManagerAbstractList {
         
         this.add(lastLine, BorderLayout.SOUTH);
     }
+    
 }

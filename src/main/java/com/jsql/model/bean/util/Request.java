@@ -15,6 +15,7 @@ package com.jsql.model.bean.util;
  * Used with the Observer pattern.
  */
 public class Request {
+    
     /**
      * Class identifier for the interraction.
      */
@@ -56,4 +57,5 @@ public class Request {
     public void setParameters(Object... parameters) {
         this.parameters = parameters;
     }
+    
 }

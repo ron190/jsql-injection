@@ -13,11 +13,14 @@ package com.jsql.view.swing.tree.model;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
@@ -28,6 +31,7 @@ import javax.swing.tree.TreePath;
 import com.jsql.i18n.I18n;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.suspendable.AbstractSuspendable;
+import com.jsql.util.StringUtil;
 import com.jsql.util.ThreadUtil;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
@@ -41,6 +45,7 @@ import com.jsql.view.swing.tree.PanelNode;
  * Model adding functional layer to the node ; used by renderer and editor.
  */
 public abstract class AbstractNodeModel {
+	
     /**
      * Element from injection model in a linked list.
      */
@@ -122,7 +127,7 @@ public abstract class AbstractNodeModel {
      * @param y Popup menu y mouse coordinate
      */
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
-        JPopupMenu popupMenuTable = new JPopupMenu();
+        JPopupMenu popupMenu = new JPopupMenu();
         AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.elementDatabase);
 
         JMenuItem mnLoad = new JMenuItem(
@@ -151,30 +156,42 @@ public abstract class AbstractNodeModel {
             mnPause.setEnabled(false);
         }
         mnPause.addActionListener(new ActionPauseUnpause(this, currentTableNode));
+        
+        popupMenu.add(mnLoad);
+        popupMenu.add(mnPause);
+        
+        JMenuItem mnRestart = new JMenuItem(
+            this instanceof NodeModelDatabase ? "Reload tables" :
+            this instanceof NodeModelTable ? "Reload columns" : "?"
+        );
+        mnRestart.setIcon(HelperUi.ICON_EMPTY);
 
-        this.buildMenu(popupMenuTable, path);
+        mnRestart.setEnabled(!this.isRunning);
+        mnRestart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AbstractNodeModel.this.runAction();
+            }
+        });
         
-        popupMenuTable.add(mnLoad);
-        popupMenuTable.add(mnPause);
-        
-        if (this.isLoaded && !this.isRunning) {
-            popupMenuTable.add(new JSeparator());
-            popupMenuTable.add(new JMenuItem("Reload"));
-        }
-        
-        popupMenuTable.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
+        popupMenu.add(new JSeparator());
+        popupMenu.add(mnRestart);
 
-        popupMenuTable.show(
+        this.buildMenu(popupMenu, path);
+        
+        popupMenu.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
+
+        popupMenu.show(
             MediatorGui.treeDatabase(), 
             ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
-            ? e.getX() - popupMenuTable.getWidth()
+            ? e.getX() - popupMenu.getWidth()
             : e.getX(), 
             e.getY()
         );
         
-        popupMenuTable.setLocation(
+        popupMenu.setLocation(
             ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
-            ? e.getXOnScreen() - popupMenuTable.getWidth()
+            ? e.getXOnScreen() - popupMenu.getWidth()
             : e.getXOnScreen(), 
             e.getYOnScreen()
         );
@@ -198,7 +215,7 @@ public abstract class AbstractNodeModel {
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         final PanelNode panel = new PanelNode(tree, currentNode);
 
-        panel.label.setText(this.toString());
+        panel.label.setText(StringUtil.detectUtf8Html(this.toString()));
         panel.label.setVisible(true);
         panel.showIcon();
 
@@ -240,7 +257,7 @@ public abstract class AbstractNodeModel {
      * @param currentNode Functional node model object
      */
     protected void displayProgress(PanelNode panel, DefaultMutableTreeNode currentNode) {
-        int dataCount = this.elementDatabase.getCount();
+        int dataCount = this.elementDatabase.getChildCount();
         panel.progressBar.setMaximum(dataCount);
         panel.progressBar.setValue(this.indexProgress);
         panel.progressBar.setVisible(true);
@@ -283,4 +300,5 @@ public abstract class AbstractNodeModel {
     public String toString() {
         return elementDatabase != null ? this.elementDatabase.getLabel() : emptyObject;
     }
+    
 }

@@ -18,6 +18,7 @@ import com.jsql.view.swing.interaction.InteractionCommand;
  * Append text to the tab Binary.
  */
 public class MessageBinary implements InteractionCommand {
+	
     /**
      * Using default log4j.properties from root /
      */
@@ -40,4 +41,5 @@ public class MessageBinary implements InteractionCommand {
         LOGGER.info(text);
         LOGGER.info("\n");
     }
+    
 }

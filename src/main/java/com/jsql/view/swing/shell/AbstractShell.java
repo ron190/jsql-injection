@@ -39,6 +39,7 @@ import sun.swing.SwingUtilities2;
  */
 @SuppressWarnings("serial")
 public abstract class AbstractShell extends JTextPane {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -288,4 +289,5 @@ public abstract class AbstractShell extends JTextPane {
      * @param arg Additional parameters (User and password for SQLShell)
      */
     abstract void action(String cmd, UUID terminalID, String wbhPath, String... arg);
+    
 }

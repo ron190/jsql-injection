@@ -22,6 +22,7 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public class JScrollPanePixelBorder extends JScrollPane {
+	
     /**
      * Create a scrollpane with top and left border for default component and a slide one.
      * A component slided to the right will normaly hide the left border, JScrollPanePixelBorder fix this.
@@ -48,4 +49,5 @@ public class JScrollPanePixelBorder extends JScrollPane {
         this.setBorder(BorderFactory.createMatteBorder(top, 0, bottom, 0, HelperUi.COLOR_COMPONENT_BORDER));
         this.setViewportBorder(BorderFactory.createMatteBorder(0, left, 0, right, HelperUi.COLOR_COMPONENT_BORDER));
     }
+    
 }

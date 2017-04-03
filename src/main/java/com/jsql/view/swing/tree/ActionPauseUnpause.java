@@ -23,7 +23,9 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  * Action to pause and unpause injection process.
  */
 public class ActionPauseUnpause implements ActionListener {
+	
     AbstractNodeModel nodeModel;
+    
     DefaultMutableTreeNode currentTableNode;
 
     public ActionPauseUnpause(AbstractNodeModel nodeModel, DefaultMutableTreeNode currentTableNode) {
@@ -42,11 +44,7 @@ public class ActionPauseUnpause implements ActionListener {
             } else {
                 suspendableTask.pause();
             }
-    
-//            // Restart the action after an unpause
-//            if (!suspendableTask.isPaused()) {
-//                suspendableTask.resume();
-//            }
         }
     }
+    
 }

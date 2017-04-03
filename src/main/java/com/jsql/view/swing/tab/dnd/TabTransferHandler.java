@@ -17,6 +17,7 @@ import com.jsql.view.swing.tab.TabResults;
 
 @SuppressWarnings("serial")
 public class TabTransferHandler extends TransferHandler {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -140,4 +141,5 @@ public class TabTransferHandler extends TransferHandler {
         glassPane.setVisible(false);
         src.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
+    
 }

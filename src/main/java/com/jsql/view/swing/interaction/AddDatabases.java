@@ -25,6 +25,7 @@ import com.jsql.view.swing.tree.model.NodeModelDatabase;
  * Add the databases to current injection panel.
  */
 public class AddDatabases implements InteractionCommand {
+	
     /**
      * Databases retreived by the view.
      */
@@ -36,7 +37,7 @@ public class AddDatabases implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public AddDatabases(Object[] interactionParams) {
         // Get list of databases from the model
-        databases = (List<Database>) interactionParams[0];
+        this.databases = (List<Database>) interactionParams[0];
     }
 
     @Override
@@ -48,7 +49,7 @@ public class AddDatabases implements InteractionCommand {
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
 
         // Loop into the list of databases
-        for (Database database: databases) {
+        for (Database database: this.databases) {
             // Create a node model with the database element
             AbstractNodeModel newTreeNodeModel = new NodeModelDatabase(database);
             // Create the node
@@ -65,4 +66,5 @@ public class AddDatabases implements InteractionCommand {
         MediatorGui.treeDatabase().expandPath(new TreePath(root.getPath()));
         MediatorGui.treeDatabase().setRootVisible(false);
     }
+    
 }

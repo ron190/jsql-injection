@@ -36,4 +36,5 @@ public class ConcreteCubridTestSuite extends AbstractTestSuite {
         
         requestJdbc();
     }
+    
 }

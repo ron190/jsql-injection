@@ -15,15 +15,18 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
+import javax.swing.JComponent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTree;
+import javax.swing.MenuElement;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -31,7 +34,9 @@ import javax.swing.tree.TreeSelectionModel;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
+import com.jsql.model.injection.strategy.ErrorbasedStrategy;
 import com.jsql.model.injection.strategy.Strategy;
+import com.jsql.model.injection.vendor.Model.Strategy.Error.Method;
 import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
@@ -50,6 +55,9 @@ public class ManagerDatabase extends JPanel implements Manager {
     public JMenu panelVendor;
     
     public JMenu panelStrategy;
+    
+    JMenu[] itemRadioStrategyError = new JMenu[1];
+    ButtonGroup groupStrategy = new ButtonGroup();
     
     /**
      * Create a panel to encode a string.
@@ -98,7 +106,8 @@ public class ManagerDatabase extends JPanel implements Manager {
             }
         });
 
-        LightScrollPane scroller = new LightScrollPane(1, 1, 0, 0, tree);
+        tree.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
+        LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, tree);
         
         JMenuBar panelLineBottom = new JMenuBar();
         panelLineBottom.setOpaque(false);
@@ -112,7 +121,38 @@ public class ManagerDatabase extends JPanel implements Manager {
             )
         );
         
-        panelVendor = new ComboMenu(Vendor.AUTO.toString());
+        this.panelStrategy = new ComboMenu("<Strategy auto>");
+        this.panelStrategy.setEnabled(false);
+        
+        this.itemRadioStrategyError = new JMenu[1];
+        
+        for (final Strategy strategy: Strategy.values()) {
+            if (strategy != Strategy.UNDEFINED) {
+                MenuElement itemRadioStrategy;
+                if (strategy == Strategy.ERRORBASED) {
+                    itemRadioStrategy = new JMenu(strategy.toString());
+                    this.itemRadioStrategyError[0] = (JMenu) itemRadioStrategy;
+                    
+                    this.panelStrategy.add((JMenuItem) itemRadioStrategy);
+                } else {
+                    itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString());
+                    ((JComponent) itemRadioStrategy).setEnabled(false);
+                    ((AbstractButton) itemRadioStrategy).addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            ManagerDatabase.this.panelStrategy.setText(strategy.toString());
+                            MediatorModel.model().setStrategy(strategy);
+                        }
+                    });
+                    ((JComponent) itemRadioStrategy).setToolTipText(I18n.valueByKey("STRATEGY_"+ strategy.name() +"_TOOLTIP"));
+                    
+                    this.panelStrategy.add((JMenuItem) itemRadioStrategy);
+                    this.groupStrategy.add((AbstractButton) itemRadioStrategy);
+                }
+            }
+        }
+        
+        this.panelVendor = new ComboMenu(Vendor.AUTO.toString());
         
         ButtonGroup groupVendor = new ButtonGroup();
         
@@ -121,41 +161,50 @@ public class ManagerDatabase extends JPanel implements Manager {
             itemRadioVendor.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    panelVendor.setText(vendor.toString());
+                    ManagerDatabase.this.panelVendor.setText(vendor.toString());
                     MediatorModel.model().vendorByUser = vendor;
+                    
+                    if (vendor == Vendor.AUTO) {
+                        ManagerDatabase.this.initErrorMethods(MediatorModel.model().vendor);
+                    } else {
+                        ManagerDatabase.this.initErrorMethods(vendor);
+                    }
                 }
             });
-            panelVendor.add(itemRadioVendor);
+            this.panelVendor.add(itemRadioVendor);
             groupVendor.add(itemRadioVendor);
         }
         
-        panelStrategy = new ComboMenu("<Strategy auto>");
-        panelStrategy.setEnabled(false);
-        
-        ButtonGroup groupStrategy = new ButtonGroup();
-        
-        for (final Strategy strategy: Strategy.values()) {
-            if (strategy != Strategy.UNDEFINED) {
-                JMenuItem itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString());
-                itemRadioStrategy.setEnabled(false);
-                itemRadioStrategy.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        panelStrategy.setText(strategy.toString());
-                        MediatorModel.model().setStrategy(strategy);
-                    }
-                });
-                itemRadioStrategy.setToolTipText(I18n.valueByKey("STRATEGY_"+ strategy.name() +"_TOOLTIP"));
-                panelStrategy.add(itemRadioStrategy);
-                groupStrategy.add(itemRadioStrategy);
-            }
-        }
-        
-        panelLineBottom.add(panelVendor);
+        panelLineBottom.add(this.panelVendor);
         panelLineBottom.add(Box.createHorizontalGlue());
-        panelLineBottom.add(panelStrategy);
+        panelLineBottom.add(this.panelStrategy);
 
         this.add(scroller, BorderLayout.CENTER);
         this.add(panelLineBottom, BorderLayout.SOUTH);
     }
+    
+    public void initErrorMethods(Vendor vendor) {
+        this.itemRadioStrategyError[0].removeAll();
+        
+        Integer i[] = {0};
+        if (vendor != Vendor.AUTO && vendor.instance().getXmlModel().getStrategy().getError() != null)
+        for (Method a: vendor.instance().getXmlModel().getStrategy().getError().getMethod()) {
+            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(a.getName());
+            this.itemRadioStrategyError[0].add(itemRadioVendor);
+            this.groupStrategy.add((AbstractButton) itemRadioVendor);
+            
+            final int p = new Integer(i[0]);
+            ((AbstractButton) itemRadioVendor).addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    ManagerDatabase.this.panelStrategy.setText(a.getName());
+                    MediatorModel.model().setStrategy(Strategy.ERRORBASED);
+                    ((ErrorbasedStrategy)Strategy.ERRORBASED.instance()).setErrorIndex(p);
+                }
+            });
+            
+            i[0]++;
+        }
+    }
+    
 }

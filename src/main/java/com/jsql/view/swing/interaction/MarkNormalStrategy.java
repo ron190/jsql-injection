@@ -17,6 +17,7 @@ import com.jsql.view.swing.MediatorGui;
  * Mark the injection as invulnerable to a normal injection.
  */
 public class MarkNormalStrategy implements InteractionCommand {
+	
     /**
      * @param interactionParams
      */
@@ -35,4 +36,5 @@ public class MarkNormalStrategy implements InteractionCommand {
             }
         }
     }
+    
 }

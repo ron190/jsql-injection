@@ -45,6 +45,7 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public class DnDList extends JList<ListItem> {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -279,4 +280,5 @@ public class DnDList extends JList<ListItem> {
             this.listModel.addElement(new ListItem(path));
         }
     }
+    
 }

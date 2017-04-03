@@ -19,6 +19,7 @@ import com.jsql.view.swing.MediatorGui;
  * Append text to the tab Binary.
  */
 public class MessageBinary implements InteractionCommand {
+	
     /**
      * Text to append to the Binary log area.
      */
@@ -28,15 +29,15 @@ public class MessageBinary implements InteractionCommand {
      * @param interactionParams Text to append
      */
     public MessageBinary(Object[] interactionParams) {
-        text = (String) interactionParams[0];
+        this.text = (String) interactionParams[0];
     }
 
     @Override
     public void execute() {
-        MediatorGui.panelConsoles().binaryTab.append(text);
+        MediatorGui.panelConsoles().binaryTab.append(this.text);
         MediatorGui.panelConsoles().binaryTab.setCaretPosition(MediatorGui.panelConsoles().binaryTab.getDocument().getLength());
         
-        int tabIndex = MediatorGui.tabConsoles().indexOfTab("Binary");
+        int tabIndex = MediatorGui.tabConsoles().indexOfTab("Boolean");
         if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
             Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
             if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
@@ -44,4 +45,5 @@ public class MessageBinary implements InteractionCommand {
             }
         }
     }
+    
 }

@@ -13,12 +13,13 @@ import org.apache.log4j.Logger;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.StoppedByUserException;
 import com.jsql.model.injection.strategy.blind.diff_match_patch.Diff;
-import com.jsql.model.suspendable.ThreadFactoryCallable;
+import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 /**
  * A blind attack class using thread asynchronisation.
  */
 public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind> {
+    
     /**
      * Log4j logger sent to view.
      */
@@ -45,6 +46,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
     public ConcreteBlindInjection() {
         // No blind
         if (this.falseTest.length == 0) {
+            LOGGER.info("Blind strategy is unknown for "+ MediatorModel.model().vendor +".");
             return;
         }
         
@@ -187,4 +189,5 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
     public static List<Diff> getConstantFalseMark() {
         return constantFalseMark;
     }
+    
 }

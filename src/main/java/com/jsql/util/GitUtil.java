@@ -143,7 +143,7 @@ public class GitUtil {
             dataOut.writeBytes(
                 new JSONObject()
                     .put("title", reportTitle)
-                    .put("body", GitUtil.decimalHtmlEncode(reportBody))
+                    .put("body", StringUtil.decimalHtmlEncode(reportBody))
                     .toString()
             );
             dataOut.flush();
@@ -204,63 +204,6 @@ public class GitUtil {
             GitUtil.jsonObject = new JSONObject(json);
         }
         return GitUtil.jsonObject;
-    }
-    
-    /**
-     * Convert special characters like Chinese and Arabic letters to the corresponding html entities.
-     * @param text string to encode
-     * @return string encoded in html entities
-     * TODO create specialized class
-     */
-    private static String decimalHtmlEncode(String text) {
-        return GitUtil.encode(text, DECIMAL_HTML_ENCODER);
-    }
-    
-    /**
-     * Non trivial methods to convert unicode characters to html entities.
-     * @param text string to encode
-     * @param encoder schema of encoding
-     * @return string representation using the encoder schema
-     */
-    private static String encode(String text, CharEncoder encoder) {
-        StringBuilder buff = new StringBuilder();
-        for ( int i = 0 ; i < text.length() ; i++)
-            if (text.charAt(i) > 128) {
-                encoder.encode(text.charAt(i), buff);
-            } else {
-                buff.append(text.charAt(i));
-            }
-        return ""+ buff;
-    }
-    
-    /**
-     * Define the schema of convertion to html entities.
-     */
-    private static final CharEncoder DECIMAL_HTML_ENCODER = new CharEncoder("&#", ";", 10); 
-    
-    /**
-     * This utility class defines a schema used to encode a text into a specialized
-     * representation 
-     */
-    private static class CharEncoder {
-    	
-        String prefix;
-        String suffix;
-        int radix;
-        
-        public CharEncoder(String prefix, String suffix, int radix) {
-            this.prefix = prefix;
-            this.suffix = suffix;
-            this.radix = radix;
-        }
-        
-        void encode(char c, StringBuilder buff) {
-            buff
-            	.append(prefix)
-            	.append(Integer.toString(c, radix))
-            	.append(suffix);
-        }
-        
     }
     
 }

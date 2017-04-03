@@ -14,6 +14,7 @@ import javax.swing.JLabel;
  */
 @SuppressWarnings("serial")
 public abstract class AbstractRadioLink extends JLabel {
+	
     /**
      * Build a radio label.
      * @param string Text for label
@@ -73,4 +74,5 @@ public abstract class AbstractRadioLink extends JLabel {
      * @return
      */
     abstract List<JLabel> getGroup();
+    
 }

@@ -10,6 +10,7 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import org.apache.log4j.Logger;
 
 public class ArrowIcon implements Icon, SwingConstants {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -66,4 +67,5 @@ public class ArrowIcon implements Icon, SwingConstants {
             default: return iconSize;
         }
     }
+    
 }

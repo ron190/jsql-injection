@@ -37,6 +37,7 @@ import com.jsql.view.swing.HelperUi;
  * A Mouse action to display a popupmenu on a JList.
  */
 public class MouseAdapterMenuAction extends MouseAdapter {
+	
     /**
      * JList to add popupmenu.
      */
@@ -97,7 +98,6 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             );
             I18n.addComponentForKey("LIST_PASTE", mnPaste);
             
-//            JMenuItem mnDelete = new JMenuItem(I18n.valueByKey("LIST_DELETE"));
             JMenuItem mnDelete = new JMenuItem(
                 I18n.getLocaleDefault().getLanguage() == new Locale("zh").getLanguage() ?
                 "<html><span style=\"font-family:'Monospace'\">"+ I18n.valueByKey("LIST_DELETE") +"</span></html>"
@@ -105,7 +105,6 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             );
             I18n.addComponentForKey("LIST_DELETE", mnDelete);
             
-//            JMenuItem mnNew = new JMenuItem(I18n.valueByKey("LIST_NEW_VALUE"));
             JMenuItem mnNew = new JMenuItem(
                 I18n.getLocaleDefault().getLanguage() == new Locale("zh").getLanguage() ?
                 "<html><span style=\"font-family:'Monospace'\">"+ I18n.valueByKey("LIST_NEW_VALUE") +"</span></html>"
@@ -280,4 +279,5 @@ public class MouseAdapterMenuAction extends MouseAdapter {
     public void mouseReleased(MouseEvent e) {
         showPopup(e);
     }
+    
 }

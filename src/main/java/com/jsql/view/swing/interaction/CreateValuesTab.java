@@ -10,9 +10,12 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+
+import org.mozilla.universalchardet.UniversalDetector;
 
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.StringUtil;
@@ -25,6 +28,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  * Create a new tab for the values.
  */
 public class CreateValuesTab extends CreateTab implements InteractionCommand {
+	
     /**
      * Array of column names, diplayed in header table.
      */
@@ -45,44 +49,45 @@ public class CreateValuesTab extends CreateTab implements InteractionCommand {
      */
     public CreateValuesTab(Object[] interactionParams) {
         // Array of column names, diplayed in header table
-        columnNames = (String[]) interactionParams[0];
+        this.columnNames = (String[]) interactionParams[0];
         // 2D array of values
-        data = (String[][]) interactionParams[1];
+        this.data = (String[][]) interactionParams[1];
         // The table containing the data
-        table = (AbstractElementDatabase) interactionParams[2];
+        this.table = (AbstractElementDatabase) interactionParams[2];
     }
 
     @Override
     public void execute() {
         // Report NullPointerException #1683 
-        DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(table);
+        DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(this.table);
         
         if (node != null) {
             // Get the node
             AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
             
             // Update the progress value of the model, end the progress
-            progressingTreeNodeModel.indexProgress = table.getCount();
+            progressingTreeNodeModel.indexProgress = this.table.getChildCount();
             // Mark the node model as 'no stop/pause/resume button'
             progressingTreeNodeModel.isRunning = false;
             
             // Create a new table to display the values
-            PanelTable newTableJPanel = new PanelTable(data, columnNames);
+            PanelTable newTableJPanel = new PanelTable(this.data, this.columnNames);
             
             // Create a new tab: add header and table
-            MediatorGui.tabResults().addTab(table +" ", newTableJPanel);
+            MediatorGui.tabResults().addTab(StringUtil.detectUtf8(this.table.toString()), newTableJPanel);
+            
             // Focus on the new tab
             MediatorGui.tabResults().setSelectedComponent(newTableJPanel);
             
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader();
+            TabHeader header = new TabHeader(StringUtil.detectUtf8Html(this.table +" "));
             
             MediatorGui.tabResults().setToolTipTextAt(
                 MediatorGui.tabResults().indexOfComponent(newTableJPanel),
-                "<html><b>"
-                + table.getParent() +"."+ table +"</b><br>"
-                + "<i>"+ StringUtil.join(Arrays.copyOfRange(columnNames, 2, columnNames.length), "<br>") 
-                + "</i></html>"
+                "<html>"
+                + "<b>"+ this.table.getParent() +"."+ this.table +"</b><br>"
+                + "<i>"+ StringUtil.join(Arrays.copyOfRange(this.columnNames, 2, this.columnNames.length), "<br>") +"</i>"
+                + "</html>"
             );
             
             // Apply the custom header to the tab
@@ -92,4 +97,5 @@ public class CreateValuesTab extends CreateTab implements InteractionCommand {
             );
         }
     }
+    
 }

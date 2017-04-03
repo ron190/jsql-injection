@@ -48,10 +48,11 @@ import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
  */
 @SuppressWarnings("serial")
 public class ManagerCoder extends JPanel implements Manager {
+	
     /**
      * User input to encode. 
      */
-    public JTextArea entry;
+    public JTextArea textInput;
 
     /**
      * Encoding choosed by user. 
@@ -69,9 +70,9 @@ public class ManagerCoder extends JPanel implements Manager {
     public ManagerCoder() {
         super(new BorderLayout());
 
-        entry = new JPopupTextArea(new JTextAreaPlaceholder("Type a string to convert")).getProxy();
-        entry.setEditable(true);
-        entry.setLineWrap(true);
+        this.textInput = new JPopupTextArea(new JTextAreaPlaceholder("Type a string to convert")).getProxy();
+        this.textInput.setEditable(true);
+        this.textInput.setLineWrap(true);
 
         JPanel topMixed = new JPanel(new BorderLayout());
 
@@ -87,9 +88,9 @@ public class ManagerCoder extends JPanel implements Manager {
         menus.put("Base64(zipped)", new JMenu("Base64(zipped)"));
         menus.put("Hex(zipped)", new JMenu("Hex(zipped)"));
 
-        for (Entry<String, JMenu> entry: menus.entrySet()) {
-            entry.getValue().add(new JMenuItem("Encode to "+ entry.getKey()));
-            entry.getValue().add(new JMenuItem("Decode from "+ entry.getKey()));
+        for (Entry<String, JMenu> entryMap: menus.entrySet()) {
+            entryMap.getValue().add(new JMenuItem("Encode to "+ entryMap.getKey()));
+            entryMap.getValue().add(new JMenuItem("Decode from "+ entryMap.getKey()));
         }
 
         menus.put("Hash", new JMenu("Hash"));
@@ -107,7 +108,7 @@ public class ManagerCoder extends JPanel implements Manager {
         menus.get("Hash").add(new JMenuItem("Hash to Mysql"));
 
         JMenu comboMenu = MenuBarCoder.createMenu("Choose method...");
-        encoding = comboMenu;
+        this.encoding = comboMenu;
         
         for (JMenu menu: menus.values()) {
             comboMenu.add(menu);
@@ -133,13 +134,13 @@ public class ManagerCoder extends JPanel implements Manager {
         middleLine.add(comboMenubar);
         middleLine.add(run, BorderLayout.EAST);
 
-        topMixed.add(new LightScrollPane(1, 1, 1, 0, entry), BorderLayout.CENTER);
+        topMixed.add(new LightScrollPane(1, 0, 1, 0, this.textInput), BorderLayout.CENTER);
         topMixed.add(middleLine, BorderLayout.SOUTH);
 
         JPanel bottom = new JPanel(new BorderLayout());
-        result = new JPopupTextArea("Result of conversion").getProxy();
-        result.setLineWrap(true);
-        bottom.add(new LightScrollPane(1, 1, 0, 0, result), BorderLayout.CENTER);
+        this.result = new JPopupTextArea("Result of conversion").getProxy();
+        this.result.setLineWrap(true);
+        bottom.add(new LightScrollPane(1, 0, 0, 0, this.result), BorderLayout.CENTER);
 
         JSplitPaneWithZeroSizeDivider divider = new JSplitPaneWithZeroSizeDivider(JSplitPane.VERTICAL_SPLIT);
         divider.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -237,4 +238,5 @@ public class ManagerCoder extends JPanel implements Manager {
         }
         return buf.toString();
     }
+    
 }

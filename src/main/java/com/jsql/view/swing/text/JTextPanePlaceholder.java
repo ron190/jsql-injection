@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
  */
 @SuppressWarnings("serial")
 public class JTextPanePlaceholder extends JTextPane {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -81,4 +82,5 @@ public class JTextPanePlaceholder extends JTextPane {
             );
         }
     }
+    
 }

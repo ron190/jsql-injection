@@ -15,6 +15,7 @@ import com.jsql.util.ProxyUtil;
  * Action performing a IP localisation test.
  */
 public class ActionCheckIP implements ActionListener, Runnable {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -41,4 +42,5 @@ public class ActionCheckIP implements ActionListener, Runnable {
             LOGGER.warn("Error during AWS test: "+ e, e);
         }
     }
+    
 }

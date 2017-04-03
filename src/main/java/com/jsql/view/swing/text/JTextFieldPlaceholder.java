@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
  */
 @SuppressWarnings("serial")
 public class JTextFieldPlaceholder extends JTextField {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -80,4 +81,5 @@ public class JTextFieldPlaceholder extends JTextField {
     public void setPlaceholderText(String placeholderText) {
         this.placeholderText = placeholderText;
     }
+    
 }

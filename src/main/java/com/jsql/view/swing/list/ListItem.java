@@ -14,6 +14,7 @@ package com.jsql.view.swing.list;
  * Basic object to avoid String incompatibility with drag and drop feature.
  */
 public class ListItem {
+	
     /**
      * Text displayed on item.
      */
@@ -71,4 +72,5 @@ public class ListItem {
     public String toString() {
         return this.internalString;
     }
+    
 }

@@ -11,9 +11,11 @@
 package com.jsql.view.swing.tab;
 
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.JToolTip;
 import javax.swing.SwingConstants;
 
 import com.jsql.i18n.I18n;
@@ -28,17 +30,19 @@ import com.jsql.view.swing.manager.ManagerScan;
 import com.jsql.view.swing.manager.ManagerSqlShell;
 import com.jsql.view.swing.manager.ManagerUpload;
 import com.jsql.view.swing.manager.ManagerWebShell;
+import com.jsql.view.swing.text.JToolTipI18n;
 
 /**
  * Panel on the left with functionalities like webshell, file reading and admin page finder.
  */
 @SuppressWarnings("serial")
 public class TabManagers extends MouseTabbedPane {
+	
     /**
      * Create manager panel.
      */
     public TabManagers() {
-
+        
         ManagerWebShell managerWebShell = new ManagerWebShell();
         ManagerScan managerScanList = new ManagerScan();
         ManagerDatabase managerDatabase = new ManagerDatabase();
@@ -48,7 +52,6 @@ public class TabManagers extends MouseTabbedPane {
         ManagerSqlShell managerSqlShell = new ManagerSqlShell();
         
         MediatorGui.register(managerWebShell);
-        MediatorGui.register(managerAdminPage);
         MediatorGui.register(managerScanList);
         MediatorGui.register(managerDatabase);
         MediatorGui.register(managerAdminPage);
@@ -57,7 +60,6 @@ public class TabManagers extends MouseTabbedPane {
         MediatorGui.register(managerSqlShell);
         
         this.setMinimumSize(new Dimension(100, 0));
-        this.setBorder(BorderFactory.createEmptyBorder(0, 1, 0, 0));
         this.addMouseClickMenu();
 
         JLabel labelDatabase = new JLabel(I18n.valueByKey("DATABASE_TAB"), HelperUi.ICON_DATABASE_SERVER, SwingConstants.CENTER);
@@ -84,21 +86,55 @@ public class TabManagers extends MouseTabbedPane {
         );
         I18n.addComponentForKey("FILE_TAB", labelFile);
         
-        JLabel labelWebShell = new JLabel(I18n.valueByKey("WEBSHELL_TAB"), HelperUi.ICON_SHELL_SERVER, SwingConstants.CENTER);
+        final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("WEBSHELL_TOOLTIP"))};
+        JLabel labelWebShell = new JLabel(I18n.valueByKey("WEBSHELL_TAB"), HelperUi.ICON_SHELL_SERVER, SwingConstants.CENTER){
+            @Override
+            public JToolTip createToolTip() {
+                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("WEBSHELL_TOOLTIP"));
+                j[0] = (JToolTipI18n) tipI18n;
+                return tipI18n;
+            }
+        };
+        labelWebShell.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                TabManagers.this.setSelectedComponent(managerWebShell);
+                super.mousePressed(e);
+            }
+        });
         this.addTab(I18n.valueByKey("WEBSHELL_TAB"), HelperUi.ICON_SHELL_SERVER, managerWebShell, I18n.valueByKey("WEBSHELL_TOOLTIP"));
         this.setTabComponentAt(
             this.indexOfTab(I18n.valueByKey("WEBSHELL_TAB")),
             labelWebShell
         );
         I18n.addComponentForKey("WEBSHELL_TAB", labelWebShell);
+        I18n.addComponentForKey("WEBSHELL_TOOLTIP", j[0]);
+        labelWebShell.setToolTipText(I18n.valueByKey("WEBSHELL_TOOLTIP"));
         
-        JLabel labelSqlShell = new JLabel(I18n.valueByKey("SQLSHELL_TAB"), HelperUi.ICON_SHELL_SERVER, SwingConstants.CENTER);
+        final JToolTipI18n[] j2 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("SQLSHELL_TOOLTIP"))};
+        JLabel labelSqlShell = new JLabel(I18n.valueByKey("SQLSHELL_TAB"), HelperUi.ICON_SHELL_SERVER, SwingConstants.CENTER){
+            @Override
+            public JToolTip createToolTip() {
+                JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("SQLSHELL_TOOLTIP"));
+                j2[0] = (JToolTipI18n) tipI18n;
+                return tipI18n;
+            }
+        };
+        labelSqlShell.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                TabManagers.this.setSelectedComponent(managerSqlShell);
+                super.mousePressed(e);
+            }
+        });
         this.addTab(I18n.valueByKey("SQLSHELL_TAB"), HelperUi.ICON_SHELL_SERVER, managerSqlShell, I18n.valueByKey("SQLSHELL_TOOLTIP"));
         this.setTabComponentAt(
             this.indexOfTab(I18n.valueByKey("SQLSHELL_TAB")),
             labelSqlShell
         );
         I18n.addComponentForKey("SQLSHELL_TAB", labelSqlShell);
+        I18n.addComponentForKey("SQLSHELL_TOOLTIP", j2[0]);
+        labelSqlShell.setToolTipText(I18n.valueByKey("SQLSHELL_TOOLTIP"));
         
         JLabel labelUpload = new JLabel(I18n.valueByKey("UPLOAD_TAB"), HelperUi.ICON_UPLOAD, SwingConstants.CENTER);
         this.addTab(I18n.valueByKey("UPLOAD_TAB"), HelperUi.ICON_UPLOAD, managerUpload, I18n.valueByKey("UPLOAD_TOOLTIP"));
@@ -136,4 +172,5 @@ public class TabManagers extends MouseTabbedPane {
         managerWebShell.setButtonEnable(false);
         managerSqlShell.setButtonEnable(false);
     }
+    
 }

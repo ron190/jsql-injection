@@ -8,6 +8,7 @@ import com.jsql.view.swing.HelperUi;
 
 @SuppressWarnings("serial")
 public class ButtonClose extends JButton {
+	
     public ButtonClose() {
         super(HelperUi.ICON_CLOSE);
         
@@ -26,4 +27,5 @@ public class ButtonClose extends JButton {
         this.setRolloverIcon(HelperUi.ICON_CLOSE_ROLLOVER);
         this.setPressedIcon(HelperUi.ICON_CLOSE_PRESSED);
     }
+    
 }

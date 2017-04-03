@@ -45,6 +45,7 @@ import com.jsql.view.swing.tab.TabHeader;
  * Create a new tab for an administration webpage.
  */
 public class CreateAdminPageTab extends CreateTab implements InteractionCommand {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -59,7 +60,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
      * @param interactionParams Url of the webpage
      */
     public CreateAdminPageTab(Object[] interactionParams) {
-        url = (String) interactionParams[0];
+        this.url = (String) interactionParams[0];
     }
 
     @Override
@@ -70,7 +71,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
             // Previous test for 2xx Success and 3xx Redirection was Header only,
             // now get the HTML content
             htmlSource = Jsoup.clean(
-                Jsoup.connect(url).get().html()
+                Jsoup.connect(this.url).get().html()
                     .replaceAll("<img.*>", "")
                     .replaceAll("<input.*type=\"?hidden\"?.*>", "")
                     .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>") 
@@ -120,7 +121,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         itemCopyUrl.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                StringSelection stringSelection = new StringSelection(url);
+                StringSelection stringSelection = new StringSelection(CreateAdminPageTab.this.url);
                 Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
                 clipboard.setContents(stringSelection, null);
             }
@@ -166,13 +167,13 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         });
 
         final LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, browser);
-        MediatorGui.tabResults().addTab(url.replaceAll(".*/", "") + " ", scroller);
+        MediatorGui.tabResults().addTab(url.replaceAll(".*/", "") +" ", scroller);
 
         // Focus on the new tab
         MediatorGui.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(HelperUi.ICON_ADMIN_SERVER);
+        TabHeader header = new TabHeader(url.replaceAll(".*/", "") +" ", HelperUi.ICON_ADMIN_SERVER);
 
         MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), "<html>"+ url +"</html>");
 
@@ -190,4 +191,5 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
             }
         });
     }
+    
 }

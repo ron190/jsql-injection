@@ -1,7 +1,10 @@
 package com.jsql.model.injection.vendor;
 
 
-public abstract class AbstractVendorDefault extends AbstractVendor {    
+public abstract class AbstractVendorDefault extends AbstractVendor {
+    
+    protected Model xmlModel;
+	
     @Override
     public String sqlPrivilegeTest() {
         return "";
@@ -68,6 +71,11 @@ public abstract class AbstractVendorDefault extends AbstractVendor {
     }
 
     @Override
+    public String sqlCapacityErrorBased() {
+        return "";
+    }
+
+    @Override
     public String sqlTestErrorBased() {
         return "";
     }
@@ -76,9 +84,24 @@ public abstract class AbstractVendorDefault extends AbstractVendor {
     public String sqlErrorBased(String sqlQuery, String startPosition) {
         return "";
     }
+    
+    @Override
+    public String sqlErrorBasedCapacity() {
+        return "";
+    }
 
     @Override
     public String sqlTime(String sqlQuery, String startPosition) {
         return "";
     }
+    
+    public void setXmlModel(Model xmlModel) {
+        this.xmlModel = xmlModel;
+    }
+    
+    @Override
+    public Model getXmlModel() {
+        return this.xmlModel;
+    }
+    
 }

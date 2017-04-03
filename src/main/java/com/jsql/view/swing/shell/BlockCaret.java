@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
  */
 @SuppressWarnings("serial")
 public class BlockCaret extends DefaultCaret {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -107,4 +108,5 @@ public class BlockCaret extends DefaultCaret {
             g.fillRect(r.x, r.y, width, r.height);
         }
     }
+    
 }

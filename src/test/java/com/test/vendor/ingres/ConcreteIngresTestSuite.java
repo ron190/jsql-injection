@@ -27,5 +27,7 @@ public class ConcreteIngresTestSuite extends AbstractTestSuite {
         this.jdbcQueryForValues = "select distinct ct_code from \"watthieu-x64\".country";   
         
         requestJdbc();
+        
     }
+    
 }

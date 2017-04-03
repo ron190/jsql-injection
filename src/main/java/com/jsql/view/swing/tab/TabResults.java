@@ -22,6 +22,7 @@ import com.jsql.view.swing.tab.dnd.TabTransferHandler;
  */
 @SuppressWarnings("serial")
 public class TabResults extends DnDTabbedPane {
+	
     /**
      * Create the panel containing injection results.
      */
@@ -34,4 +35,5 @@ public class TabResults extends DnDTabbedPane {
         // Add hotkeys to rootpane ctrl-tab, ctrl-shift-tab, ctrl-w
         ActionHandler.addShortcut(this);
     }
+    
 }

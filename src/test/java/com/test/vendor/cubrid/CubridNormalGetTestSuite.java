@@ -26,11 +26,12 @@ public class CubridNormalGetTestSuite extends ConcreteCubridTestSuite {
         MediatorModel.model().addObserver(new SystemOutTerminal());
 
         ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/cubrid_simulate_get.php");
-        ConnectionUtil.setDataQuery("?lib=0");
+        ConnectionUtil.setQueryString("?lib=0");
         ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
 
         MediatorModel.model().beginInjection();
 
         MediatorModel.model().setStrategy(Strategy.NORMAL);
     }
+    
 }

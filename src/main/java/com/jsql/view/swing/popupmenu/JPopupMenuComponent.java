@@ -31,6 +31,7 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public class JPopupMenuComponent extends JPopupMenu {
+	
     /**
      * Create a popup menu for editable component.
      * @param component The component with the new menu
@@ -79,4 +80,5 @@ public class JPopupMenuComponent extends JPopupMenu {
             }
         });
     }
+    
 }

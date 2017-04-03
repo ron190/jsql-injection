@@ -272,4 +272,5 @@ public class JScrollIndicator extends JLayeredPane {
             myScrollBar.repaint(getThumbBounds());
         }
     }
+    
 }

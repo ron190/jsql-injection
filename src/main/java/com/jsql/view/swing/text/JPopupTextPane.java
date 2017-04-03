@@ -22,6 +22,7 @@ import javax.swing.JTextPane;
  */
 @SuppressWarnings("serial")
 public class JPopupTextPane extends JPopupTextComponent<JTextPane> implements DecoratorJComponent<JTextPane> {
+	
     /**
      * Build new instance of JTextField to decorate.
      * @param placeholder
@@ -52,4 +53,5 @@ public class JPopupTextPane extends JPopupTextComponent<JTextPane> implements De
         this.getProxy().setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         this.getProxy().setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
     }
+    
 }

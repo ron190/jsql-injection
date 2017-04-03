@@ -36,7 +36,7 @@ import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ListItem;
-import com.jsql.view.swing.manager.util.JButtonStatable;
+import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
@@ -45,7 +45,8 @@ import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
  * Manager to display webpages frequently used as backoffice administration.
  */
 @SuppressWarnings("serial")
-public class ManagerScan extends ManagerAbstractList {
+public class ManagerScan extends AbstractManagerList {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -73,7 +74,8 @@ public class ManagerScan extends ManagerAbstractList {
 
         final DnDList listFile = new DnDList(pathsList);
         this.listPaths = listFile;
-        this.add(new LightScrollPane(1, 1, 0, 0, listFile), BorderLayout.CENTER);
+        this.listPaths.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
+        this.add(new LightScrollPane(1, 0, 0, 0, listFile), BorderLayout.CENTER);
 
         JPanel lastLine = new JPanel();
         lastLine.setOpaque(false);
@@ -81,12 +83,12 @@ public class ManagerScan extends ManagerAbstractList {
 
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER), 
+                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER), 
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
         
-        this.run = new JButtonStatable(this.defaultText);
+        this.run = new JButtonStateful(this.defaultText);
 
         this.run.setToolTipText(I18n.valueByKey("SCAN_RUN_BUTTON_TOOLTIP"));
 
@@ -140,4 +142,5 @@ public class ManagerScan extends ManagerAbstractList {
         
         this.add(lastLine, BorderLayout.SOUTH);
     }
+    
 }

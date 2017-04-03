@@ -45,9 +45,13 @@ public abstract class AbstractVendor {
 
     public abstract String sqlBlind(String sqlQuery, String startPosition);
 
+    public abstract String sqlCapacityErrorBased();
     public abstract String sqlTestErrorBased();
+    public abstract String sqlErrorBasedCapacity();
+    public abstract Model getXmlModel();
 
     public abstract String sqlErrorBased(String sqlQuery, String startPosition);
 
     public abstract String sqlTime(String sqlQuery, String startPosition);
+    
 }

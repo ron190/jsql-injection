@@ -32,6 +32,7 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public class PanelNode extends JPanel {
+	
     /**
      * Default icon of the node (database or table).
      */
@@ -119,4 +120,5 @@ public class PanelNode extends JPanel {
     public void showLoader() {
         this.loader.setVisible(true);
     }
+    
 }

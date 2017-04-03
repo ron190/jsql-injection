@@ -23,4 +23,5 @@ public class ConcreteMysqlTestSuite extends AbstractTestSuite {
         
         requestJdbc();
     }
+    
 }

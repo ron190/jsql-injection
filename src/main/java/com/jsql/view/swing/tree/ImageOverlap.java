@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
  */
 @SuppressWarnings("serial")
 public class ImageOverlap extends ImageIcon {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -61,4 +62,5 @@ public class ImageOverlap extends ImageIcon {
             LOGGER.error(e, e);
         }
     }
+    
 }

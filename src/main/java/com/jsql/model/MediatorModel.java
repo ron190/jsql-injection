@@ -22,4 +22,5 @@ public class MediatorModel {
     public static InjectionModel model() {
         return model;
     }
+    
 }

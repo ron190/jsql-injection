@@ -6,6 +6,7 @@ import java.util.Map;
  * An HTTP object containing request and response data.
  */
 public class HttpHeader {
+    
     /**
      * GET request.
      */
@@ -84,4 +85,5 @@ public class HttpHeader {
     public String getSource() {
         return source;
     }
+    
 }

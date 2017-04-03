@@ -49,9 +49,11 @@ public final class MediatorGui {
     public static JTree treeDatabase() {
         return treeDatabase;
     }
+    
     public static TabResults tabResults() {
         return tabResults;
     }
+    
     public static TabManagers tabManagers() {
         return tabManagers;
     }
@@ -59,15 +61,19 @@ public final class MediatorGui {
     public static JFrameView frame() {
         return frame;
     }
+    
     public static Menubar menubar() {
         return menubar;
     }
+    
     public static PanelAddressBar panelAddressBar() {
         return panelAddressBar;
     }
+    
     public static TabConsoles tabConsoles() {
         return tabConsoles;
     }
+    
     public static PanelConsoles panelConsoles() {
         return panelConsoles;
     }
@@ -76,21 +82,27 @@ public final class MediatorGui {
     public static ManagerWebShell managerWebshell() {
         return managerWebshell;
     }
+    
     public static ManagerAdminPage managerAdminPage() {
         return managerAdminPage;
     }
+    
     public static ManagerFile managerFile() {
         return managerFile;
     }
+    
     public static ManagerUpload managerUpload() {
         return managerUpload;
     }
+    
     public static ManagerSqlShell managerSqlshell() {
         return managerSqlshell;
     }
+    
     public static ManagerScan managerScan() {
         return managerScan;
     }
+    
     public static ManagerDatabase managerDatabase() {
         return managerDatabase;
     }
@@ -99,24 +111,31 @@ public final class MediatorGui {
     public static void register(JFrameView frame) {
         MediatorGui.frame = frame;
     }
+    
     public static void register(Menubar menubar) {
         MediatorGui.menubar = menubar;
     }
+    
     public static void register(PanelAddressBar panelAddress) {
         MediatorGui.panelAddressBar = panelAddress;
     }
+    
     public static void register(TabConsoles tabConsoles) {
         MediatorGui.tabConsoles = tabConsoles;
     }
+    
     public static void register(PanelConsoles panelConsoles) {
         MediatorGui.panelConsoles = panelConsoles;
     }
+    
     public static void register(JTree treeDatabase) {
         MediatorGui.treeDatabase = treeDatabase;
     }
+    
     public static void register(TabResults tabResults) {
         MediatorGui.tabResults = tabResults;
     }
+    
     public static void register(TabManagers tabManagers) {
         MediatorGui.tabManagers = tabManagers;
     }
@@ -125,21 +144,27 @@ public final class MediatorGui {
     public static void register(ManagerWebShell managerWebshell) {
         MediatorGui.managerWebshell = managerWebshell;
     }
+    
     public static void register(ManagerAdminPage managerAdminPage) {
         MediatorGui.managerAdminPage = managerAdminPage;
     }
+    
     public static void register(ManagerFile managerFile) {
         MediatorGui.managerFile = managerFile;
     }
+    
     public static void register(ManagerUpload managerUpload) {
         MediatorGui.managerUpload = managerUpload;
     }
+    
     public static void register(ManagerSqlShell managerSqlshell) {
         MediatorGui.managerSqlshell = managerSqlshell;
     }
+    
     public static void register(ManagerScan managerScan) {
         MediatorGui.managerScan = managerScan;
     }
+    
     public static void register(ManagerDatabase managerDatabase) {
         MediatorGui.managerDatabase = managerDatabase;
     }

@@ -1,3 +1,4 @@
+
 package com.jsql.view.swing.tab.dnd;
 
 import java.awt.AlphaComposite;
@@ -34,4 +35,5 @@ public class GhostGlassPane extends JPanel {
             g2.fill(r);
         }
     }
+    
 }

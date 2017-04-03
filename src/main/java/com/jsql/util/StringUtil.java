@@ -10,38 +10,77 @@
  ******************************************************************************/
 package com.jsql.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.math.BigInteger;
-import java.net.HttpURLConnection;
-import java.net.URLConnection;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
+import java.nio.charset.StandardCharsets;
 
-import org.apache.log4j.Logger;
-
-import com.jsql.model.MediatorModel;
-import com.jsql.model.bean.util.Request;
-import com.jsql.model.bean.util.TypeHeader;
-import com.jsql.model.bean.util.TypeRequest;
+import org.mozilla.universalchardet.UniversalDetector;
 
 /**
- * String operations missing like join().
+ * Utility class adding String operations like join() which are not
+ * part of standard JVM.
  */
 public final class StringUtil {
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
-     * Utility class.
+     * Define the schema of convertion to html entities.
      */
+    private static final CharEncoder DECIMAL_HTML_ENCODER = new CharEncoder("&#", ";", 10); 
+    
+    /**
+     * This utility class defines a schema used to encode a text into a specialized
+     * representation 
+     */
+    private static class CharEncoder {
+    	
+        String prefix;
+        String suffix;
+        int radix;
+        
+        public CharEncoder(String prefix, String suffix, int radix) {
+            this.prefix = prefix;
+            this.suffix = suffix;
+            this.radix = radix;
+        }
+        
+        void encode(char c, StringBuilder buff) {
+            buff
+            	.append(prefix)
+            	.append(Integer.toString(c, radix))
+            	.append(suffix);
+        }
+        
+    }
+	
+    // Utility class.
     private StringUtil() {
-        //not called
+        // not called
+    }
+    
+    /**
+     * Convert special characters like Chinese and Arabic letters to the corresponding html entities.
+     * @param text string to encode
+     * @return string encoded in html entities
+     * TODO create specialized class
+     */
+    public static String decimalHtmlEncode(String text) {
+        return StringUtil.encode(text, DECIMAL_HTML_ENCODER);
+    }
+    
+    /**
+     * Non trivial methods to convert unicode characters to html entities.
+     * @param text string to encode
+     * @param encoder schema of encoding
+     * @return string representation using the encoder schema
+     */
+    private static String encode(String text, CharEncoder encoder) {
+        StringBuilder buff = new StringBuilder();
+        for ( int i = 0 ; i < text.length() ; i++)
+            if (text.charAt(i) > 128) {
+                encoder.encode(text.charAt(i), buff);
+            } else {
+                buff.append(text.charAt(i));
+            }
+        return ""+ buff;
     }
     
     /**
@@ -73,118 +112,41 @@ public final class StringUtil {
         }
         return new String(bytes);
     }
-
-    /**
-     * Convert a String to a hexadecimal String.
-     * @param arg The string to convert
-     * @return Hexadecimal String conversion
-     */
-    public static String strhex(String arg) {
-        return String.format("%x", new BigInteger(arg.getBytes()));
+    
+    public static String detectUtf8Html(String text) {
+        return StringUtil.detectUtf8Html(text, false);
     }
     
-    /**
-     * Extract HTTP headers from a connection.
-     * @param conn Connection with HTTP headers
-     * @return Map of HTTP headers <name, value>
-     */
-    public static Map<String, String> getHttpHeaders(URLConnection conn) {
-        Map<String, String> mapHeaders = new HashMap<>();
-        
-        for (int i = 0 ; ; i++) {
-            String headerName = conn.getHeaderFieldKey(i);
-            String headerValue = conn.getHeaderField(i);
-            if (headerName == null && headerValue == null) {
-                break;
-            }
-            mapHeaders.put(headerName == null ? "Method" : headerName, headerValue);
-        }
-
-        return mapHeaders;
+    public static String detectUtf8HtmlNoWrap(String text) {
+        return StringUtil.detectUtf8Html(text, true);
     }
-
-    @SuppressWarnings("unchecked")
-    public static void sendMessageHeader(HttpURLConnection connection, String url) throws IOException {
-        Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
-        msgHeader.put(TypeHeader.URL, url);
-        msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHttpHeaders(connection));
-
-        if (
-            !PreferencesUtil.isFollowingRedirection()
-            && Pattern.matches("3\\d\\d", Integer.toString(connection.getResponseCode()))
-        ) {
-            LOGGER.warn("HTTP 3XX Redirection detected. Please test again with option 'Follow HTTP redirection' enabled.");
+    
+    public static String detectUtf8Html(String text, Boolean nowrap) {
+        UniversalDetector detector = new UniversalDetector(null);
+        detector.handleData(text.getBytes(), 0, text.length() - 1);
+        detector.dataEnd();
+        String encoding = detector.getDetectedCharset();
+        
+        String result = text;
+        if (encoding != null) {
+            result = "<html><span style=\"font-family:'Monospace';"+( nowrap ? "white-space:nowrap;" : "" )+"\">"+ new String(text.getBytes(), StandardCharsets.UTF_8) +"</span></html>";
         }
         
-        Map<String, String> mapResponse = (Map<String, String>) msgHeader.get(TypeHeader.RESPONSE);
-        if (
-            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
-            && mapResponse.containsKey("WWW-Authenticate") 
-            && mapResponse.get("WWW-Authenticate") != null
-            && mapResponse.get("WWW-Authenticate").startsWith("Basic ")
-        ) {
-            LOGGER.warn(
-                "Basic Authentication detected.\n"
-                + "Please define and enable authentication information in the panel Preferences.\n"
-                + "Or open Advanced panel, add 'Authorization: Basic b3N..3Jk' to the Header, replace b3N..3Jk with the string 'osUserName:osPassword' encoded in Base64. You can use the Coder in jSQL to encode the string."
-            );
-        
-        } else if (
-            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
-            && mapResponse.containsKey("WWW-Authenticate") 
-            && "NTLM".equals(mapResponse.get("WWW-Authenticate"))
-        ) {
-            LOGGER.warn(
-                "NTLM Authentication detected.\n"
-                + "Please define and enable authentication information in the panel Preferences.\n"
-                + "Or add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
-            );
-        
-        } else if (
-            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
-            && mapResponse.containsKey("WWW-Authenticate") 
-            && mapResponse.get("WWW-Authenticate") != null
-            && mapResponse.get("WWW-Authenticate").startsWith("Digest ")
-        ) {
-            LOGGER.warn(
-                "Digest Authentication detected.\n"
-                + "Please define and enable authentication information in the panel Preferences."
-            );
-        
-        } else if (
-            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
-            && mapResponse.containsKey("WWW-Authenticate") 
-            && "Negotiate".equals(mapResponse.get("WWW-Authenticate"))
-        ) {
-            LOGGER.warn(
-                "Negotiate Authentication detected.\n"
-                + "Please add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
-            );
-        }
-        
-        // Request the web page to the server
-        String pageSource = "";
-        Exception exception = null;
-        
-        String line;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            while ((line = reader.readLine()) != null) {
-                pageSource += line + "\r\n";
-            }
-        } catch (IOException e) {
-            exception = e;
-        }
-
-        msgHeader.put(TypeHeader.SOURCE, pageSource);
-        
-        // Inform the view about the log infos
-        Request request = new Request();
-        request.setMessage(TypeRequest.MESSAGE_HEADER);
-        request.setParameters(msgHeader);
-        MediatorModel.model().sendToViews(request);
-        
-        if (exception != null) {
-            throw new IOException(exception);
-        }
+        return result;
     }
+    
+    public static String detectUtf8(String text) {
+        UniversalDetector detector = new UniversalDetector(null);
+        detector.handleData(text.getBytes(), 0, text.length() - 1);
+        detector.dataEnd();
+        String encoding = detector.getDetectedCharset();
+        
+        String result = text;
+        if (encoding != null) {
+            result = new String(text.getBytes(), StandardCharsets.UTF_8);
+        }
+        
+        return result;
+    }
+    
 }

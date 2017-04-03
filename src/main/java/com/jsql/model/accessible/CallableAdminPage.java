@@ -6,18 +6,22 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeHeader;
 import com.jsql.model.bean.util.TypeRequest;
-import com.jsql.util.StringUtil;
+import com.jsql.util.ConnectionUtil;
 
 /**
- * Callable for admin page finder.
+ * Thread unit to test if an administration page exists on the server.
+ * The process can be cancelled by the user.
  */
 public class CallableAdminPage implements Callable<CallableAdminPage> {
+	
     /**
-     * url: SQL query
+     * URL to an administration page on the website to get tested.
      */
     private String urlAdminPage;
     
@@ -34,6 +38,9 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
         this.urlAdminPage = urlAdminPage;
     }
 
+    /**
+     * Call URL to a administration page in HEAD mode and send the result back to view.
+     */
     @Override
     public CallableAdminPage call() throws Exception {
         if (!RessourceAccess.isSearchAdminStopped()) {
@@ -45,17 +52,13 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
             connection.setRequestProperty("Expires", "-1");
             
             connection.setRequestMethod("HEAD");
-            responseCodeHTTP = connection.getHeaderField(0);
-            
-            if (responseCodeHTTP == null) {
-                responseCodeHTTP = "";
-            }
+            responseCodeHTTP = ObjectUtils.firstNonNull(connection.getHeaderField(0), "");
 
             Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
             msgHeader.put(TypeHeader.URL, urlAdminPage);
             msgHeader.put(TypeHeader.POST, "");
             msgHeader.put(TypeHeader.HEADER, "");
-            msgHeader.put(TypeHeader.RESPONSE, StringUtil.getHttpHeaders(connection));
+            msgHeader.put(TypeHeader.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
 
             Request request = new Request();
             request.setMessage(TypeRequest.MESSAGE_HEADER);
@@ -64,12 +67,20 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
         }
         return this;
     }
+
+    /**
+     * Check if HTTP response is either 2xx or 3xx, which corrsponds to
+     * a acceptable response from the website.
+     * @return true if HTTP code start with 2 or 3
+     */
+    public boolean isHttpResponseOk() {
+        return responseCodeHTTP.matches(".+[23]\\d\\d.+");
+    }
+    
+    // Getters and setters
     
     public String getUrl() {
         return urlAdminPage;
     }
-
-    public boolean isHttpResponseOk() {
-        return responseCodeHTTP.matches(".+[23]\\d\\d.+");
-    }
+    
 }

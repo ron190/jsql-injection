@@ -17,10 +17,13 @@ import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
@@ -41,12 +44,18 @@ import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import org.mozilla.universalchardet.UniversalDetector;
+
+import com.jsql.util.StringUtil;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.popupmenu.JPopupMenuTable;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tab.ButtonClose;
 import com.jsql.view.swing.text.JTextFieldPlaceholder;
 
@@ -56,6 +65,7 @@ import com.jsql.view.swing.text.JTextFieldPlaceholder;
  */
 @SuppressWarnings("serial")
 public class PanelTable extends JPanel {
+	
     /**
      * Table to display in the panel.
      */
@@ -88,6 +98,7 @@ public class PanelTable extends JPanel {
         table.setGridColor(Color.LIGHT_GRAY);
 
         final TableCellRenderer tcrOs = table.getTableHeader().getDefaultRenderer();
+        final DefaultTableCellRenderer tcrOs2 = new DefaultTableCellRenderer();
         table.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(
@@ -95,13 +106,26 @@ public class PanelTable extends JPanel {
                 int row, int column
             ) {
                 JLabel lbl = (JLabel) tcrOs.getTableCellRendererComponent(
-                    table, " "+ value +" ", isSelected, hasFocus, row, column
+                    table, StringUtil.detectUtf8HtmlNoWrap(" "+ value +" "), isSelected, hasFocus, row, column
                 );
                 lbl.setBorder(
                     BorderFactory.createCompoundBorder(
                         BorderFactory.createMatteBorder(1, 0, 1, 1, Color.LIGHT_GRAY),
                         BorderFactory.createEmptyBorder(0, 5, 0, 5)
                     )
+                );
+                return lbl;
+            }
+        });
+        
+        table.setDefaultRenderer(table.getColumnClass(2), new TableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(
+                JTable table, Object value, boolean isSelected, boolean hasFocus,
+                int row, int column
+            ) {
+                JLabel lbl = (JLabel) tcrOs2.getTableCellRendererComponent(
+                    table, StringUtil.detectUtf8HtmlNoWrap(value.toString()), isSelected, hasFocus, row, column
                 );
                 return lbl;
             }
@@ -173,6 +197,21 @@ public class PanelTable extends JPanel {
         JScrollIndicator scroller = new JScrollIndicator(table);
         scroller.scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         scroller.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
+        
+        AdjustmentListener singleItemScroll = new AdjustmentListener() {
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                // The user scrolled the List (using the bar, mouse wheel or something else):
+                if (e.getAdjustmentType() == AdjustmentEvent.TRACK){
+                    // Jump to the next "block" (which is a row".
+                    e.getAdjustable().setBlockIncrement(100);
+                    e.getAdjustable().setUnitIncrement(100);
+                }
+            }
+        };
+
+        scroller.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
+        scroller.scrollPane.getHorizontalScrollBar().addAdjustmentListener(singleItemScroll);
 
         tableFixedColumn.fixColumnSize(2, scroller.scrollPane);
         
@@ -260,4 +299,5 @@ public class PanelTable extends JPanel {
         ActionEvent nev = new ActionEvent(table, ActionEvent.ACTION_PERFORMED, "copy");
         table.getActionMap().get(nev.getActionCommand()).actionPerformed(nev);
     }
+    
 }

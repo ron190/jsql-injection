@@ -42,6 +42,7 @@ import com.jsql.view.swing.menubar.Menubar;
  * - ctrl W: delete tab
  */
 public final class ActionHandler {
+	
     /**
      * Utility class without constructor.
      */
@@ -227,4 +228,5 @@ public final class ActionHandler {
             }
         });
     }
+    
 }

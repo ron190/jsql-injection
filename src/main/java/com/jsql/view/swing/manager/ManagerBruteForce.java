@@ -30,7 +30,7 @@ import javax.swing.SwingConstants;
 import com.jsql.i18n.I18n;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.manager.util.ActionBruteForce;
-import com.jsql.view.swing.manager.util.JButtonStatable;
+import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JPopupTextField;
@@ -41,10 +41,11 @@ import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
  */
 @SuppressWarnings("serial")
 public class ManagerBruteForce extends JPanel implements Manager {
+	
     /**
      * Button running the attack.
      */
-    public JButtonStatable run;
+    public JButtonStateful run;
     
     /**
      * Input for hash to brute force.
@@ -111,10 +112,10 @@ public class ManagerBruteForce extends JPanel implements Manager {
 
         JPanel firstLine = new JPanel(new BorderLayout());
 
-        hash = new JPopupTextField(I18n.valueByKey("BRUTEFORCE_HASH_LABEL")).getProxy();
-        hash.setToolTipText(I18n.valueByKey("BRUTEFORCE_HASH_TOOLTIP"));
-        firstLine.add(hash, BorderLayout.CENTER);
-        hash.setBorder(
+        this.hash = new JPopupTextField(I18n.valueByKey("BRUTEFORCE_HASH_LABEL")).getProxy();
+        this.hash.setToolTipText(I18n.valueByKey("BRUTEFORCE_HASH_TOOLTIP"));
+        firstLine.add(this.hash, BorderLayout.CENTER);
+        this.hash.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 0, 1, 1, HelperUi.COLOR_DEFAULT_BACKGROUND),
                 HelperUi.BORDER_BLU
@@ -124,47 +125,47 @@ public class ManagerBruteForce extends JPanel implements Manager {
         final JPanel secondLine = new JPanel();
         secondLine.setLayout(new BoxLayout(secondLine, BoxLayout.X_AXIS));
 
-        lowerCaseCharacters = new JCheckBox("a-z", true);
-        upperCaseCharacters = new JCheckBox("A-Z", true);
-        numericCharacters = new JCheckBox("0-9", true);
-        specialCharacters = new JCheckBox("Special", true);
+        this.lowerCaseCharacters = new JCheckBox("a-z", true);
+        this.upperCaseCharacters = new JCheckBox("A-Z", true);
+        this.numericCharacters = new JCheckBox("0-9", true);
+        this.specialCharacters = new JCheckBox("Special", true);
 
-        hashTypes = new JComboBox<>(
+        this.hashTypes = new JComboBox<>(
             new String[]{
                 "Adler32", "Crc16", "Crc32", "Crc64", "Md2", "Md4", 
                 "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "mysql"
             }
         );
         
-        hashTypes.setSelectedIndex(6);
-        hashTypes.setToolTipText(I18n.valueByKey("BRUTEFORCE_HASH_TYPE_TOOLTIP"));
+        this.hashTypes.setSelectedIndex(6);
+        this.hashTypes.setToolTipText(I18n.valueByKey("BRUTEFORCE_HASH_TYPE_TOOLTIP"));
 
-        secondLine.add(hashTypes);
+        secondLine.add(this.hashTypes);
 
-        secondLine.add(lowerCaseCharacters);
-        secondLine.add(upperCaseCharacters);
-        secondLine.add(numericCharacters);
-        secondLine.add(specialCharacters);
+        secondLine.add(this.lowerCaseCharacters);
+        secondLine.add(this.upperCaseCharacters);
+        secondLine.add(this.numericCharacters);
+        secondLine.add(this.specialCharacters);
 
-        lowerCaseCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_LCASE_TOOLTIP"));
-        upperCaseCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_UCASE_TOOLTIP"));
-        numericCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_NUM_TOOLTIP"));
-        specialCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_SPEC_TOOLTIP"));
+        this.lowerCaseCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_LCASE_TOOLTIP"));
+        this.upperCaseCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_UCASE_TOOLTIP"));
+        this.numericCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_NUM_TOOLTIP"));
+        this.specialCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_SPEC_TOOLTIP"));
 
         JPanel thirdLine = new JPanel();
         thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));
         
-        exclude = new JPopupTextField(I18n.valueByKey("BRUTEFORCE_EXCLUDE_LABEL")).getProxy();
-        exclude.setToolTipText(I18n.valueByKey("BRUTEFORCE_EXCLUDE_TOOLTIP"));
-        exclude.setBorder(
+        this.exclude = new JPopupTextField(I18n.valueByKey("BRUTEFORCE_EXCLUDE_LABEL")).getProxy();
+        this.exclude.setToolTipText(I18n.valueByKey("BRUTEFORCE_EXCLUDE_TOOLTIP"));
+        this.exclude.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 0, 1, 1, HelperUi.COLOR_DEFAULT_BACKGROUND),
                 HelperUi.BORDER_BLU
             )
         );
-        thirdLine.add(exclude);
+        thirdLine.add(this.exclude);
 
-        minimumLength = new JSpinner(
+        this.minimumLength = new JSpinner(
             new SpinnerNumberModel(
                 new Integer(1),
                 new Integer(1),
@@ -172,7 +173,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
                 new Integer(1)
             )
         );
-        maximumLength = new JSpinner(
+        this.maximumLength = new JSpinner(
             new SpinnerNumberModel(
                 new Integer(5),
                 new Integer(1),
@@ -181,24 +182,24 @@ public class ManagerBruteForce extends JPanel implements Manager {
             )
         );
         
-        minimumLength.setToolTipText(I18n.valueByKey("BRUTEFORCE_MIN_TOOLTIP"));
-        maximumLength.setToolTipText(I18n.valueByKey("BRUTEFORCE_MAX_TOOLTIP"));
+        this.minimumLength.setToolTipText(I18n.valueByKey("BRUTEFORCE_MIN_TOOLTIP"));
+        this.maximumLength.setToolTipText(I18n.valueByKey("BRUTEFORCE_MAX_TOOLTIP"));
         
-        minimumLength.setPreferredSize(new Dimension(38, (int) minimumLength.getPreferredSize().getHeight()));
-        maximumLength.setPreferredSize(new Dimension(38, (int) maximumLength.getPreferredSize().getHeight()));
-        minimumLength.setMaximumSize(new Dimension(38, (int) minimumLength.getPreferredSize().getHeight()));
-        maximumLength.setMaximumSize(new Dimension(38, (int) maximumLength.getPreferredSize().getHeight()));
-        minimumLength.setMinimumSize(new Dimension(38, (int) minimumLength.getPreferredSize().getHeight()));
-        maximumLength.setMinimumSize(new Dimension(38, (int) maximumLength.getPreferredSize().getHeight()));
+        this.minimumLength.setPreferredSize(new Dimension(38, (int) this.minimumLength.getPreferredSize().getHeight()));
+        this.maximumLength.setPreferredSize(new Dimension(38, (int) this.maximumLength.getPreferredSize().getHeight()));
+        this.minimumLength.setMaximumSize(new Dimension(38, (int) this.minimumLength.getPreferredSize().getHeight()));
+        this.maximumLength.setMaximumSize(new Dimension(38, (int) this.maximumLength.getPreferredSize().getHeight()));
+        this.minimumLength.setMinimumSize(new Dimension(38, (int) this.minimumLength.getPreferredSize().getHeight()));
+        this.maximumLength.setMinimumSize(new Dimension(38, (int) this.maximumLength.getPreferredSize().getHeight()));
 
         JLabel labelMin = new JLabel(" "+I18n.valueByKey("BRUTEFORCE_MIN_LABEL"), SwingConstants.RIGHT);
         thirdLine.add(labelMin);
         I18n.addComponentForKey("BRUTEFORCE_MIN_LABEL", labelMin);
-        thirdLine.add(minimumLength);
+        thirdLine.add(this.minimumLength);
         JLabel labelMax = new JLabel(" "+I18n.valueByKey("BRUTEFORCE_MAX_LABEL"), SwingConstants.RIGHT);
         thirdLine.add(labelMax);
         I18n.addComponentForKey("BRUTEFORCE_MAX_LABEL", labelMax);
-        thirdLine.add(maximumLength);
+        thirdLine.add(this.maximumLength);
         
         final JPanel secondAndThirdLine = new JPanel(new BorderLayout());
         secondAndThirdLine.add(secondLine, BorderLayout.NORTH);
@@ -208,9 +209,9 @@ public class ManagerBruteForce extends JPanel implements Manager {
         options.add(secondAndThirdLine, BorderLayout.SOUTH);
         this.add(options, BorderLayout.NORTH);
 
-        result = new JPopupTextArea("Result of brute force processing").getProxy();
-        result.setLineWrap(true);
-        this.add(new LightScrollPane(1, 1, 0, 0, result), BorderLayout.CENTER);
+        this.result = new JPopupTextArea("Result of brute force processing").getProxy();
+        this.result.setLineWrap(true);
+        this.add(new LightScrollPane(1, 1, 0, 0, this.result), BorderLayout.CENTER);
         
         JPanel lastLine = new JPanel();
         lastLine.setOpaque(false);
@@ -222,26 +223,27 @@ public class ManagerBruteForce extends JPanel implements Manager {
             )
         );
         
-        run = new JButtonStatable(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_LABEL"));
-        I18n.addComponentForKey("BRUTEFORCE_RUN_BUTTON_LABEL", run);
-        run.setToolTipText(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
+        this.run = new JButtonStateful(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_LABEL"));
+        I18n.addComponentForKey("BRUTEFORCE_RUN_BUTTON_LABEL", this.run);
+        this.run.setToolTipText(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
         
-        run.setContentAreaFilled(false);
-        run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        run.setBackground(new Color(200, 221, 242));
+        this.run.setContentAreaFilled(false);
+        this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        this.run.setBackground(new Color(200, 221, 242));
         
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
 
-        loader = new JLabel(HelperUi.ICON_LOADER_GIF);
-        loader.setVisible(false);
+        this.loader = new JLabel(HelperUi.ICON_LOADER_GIF);
+        this.loader.setVisible(false);
 
         lastLine.add(Box.createHorizontalGlue());
-        lastLine.add(loader);
+        lastLine.add(this.loader);
         lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
-        lastLine.add(run);
+        lastLine.add(this.run);
 
-        run.addActionListener(new ActionBruteForce(this));
+        this.run.addActionListener(new ActionBruteForce(this));
 
         this.add(lastLine, BorderLayout.SOUTH);
     }
+    
 }

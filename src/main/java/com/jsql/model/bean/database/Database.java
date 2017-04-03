@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
  * Define a Database, e.g is sent to the view by the model after injection.
  */
 public class Database extends AbstractElementDatabase {
+    
     /**
      * Log4j logger sent to view.
      */
@@ -48,7 +49,7 @@ public class Database extends AbstractElementDatabase {
      * Return the number of tables in the table.
      */
     @Override
-    public int getCount() {
+    public int getChildCount() {
         return Integer.parseInt(tableCount);
     }
 
@@ -71,4 +72,5 @@ public class Database extends AbstractElementDatabase {
         
         return this.elementValue +" ("+ tableCount +" table"+ sPlural +")";
     }
+    
 }

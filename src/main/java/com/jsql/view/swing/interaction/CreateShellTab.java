@@ -29,6 +29,7 @@ import com.jsql.view.swing.tab.TabHeader;
  * Create a new tab for the terminal.
  */
 public class CreateShellTab extends CreateTab implements InteractionCommand {
+	
     /**
      * Log4j logger sent to view.
      */
@@ -48,15 +49,15 @@ public class CreateShellTab extends CreateTab implements InteractionCommand {
      * @param interactionParams The local path and url for the shell
      */
     public CreateShellTab(Object[] interactionParams) {
-        path = (String) interactionParams[0];
-        url = (String) interactionParams[1];
+        this.path = (String) interactionParams[0];
+        this.url = (String) interactionParams[1];
     }
 
     @Override
     public void execute() {
         try {
             UUID terminalID = UUID.randomUUID();
-            ShellWeb terminal = new ShellWeb(terminalID, url);
+            ShellWeb terminal = new ShellWeb(terminalID, this.url);
             MediatorGui.frame().getConsoles().put(terminalID, terminal);
             
             LightScrollPane scroller = new LightScrollPane(terminal);
@@ -72,12 +73,12 @@ public class CreateShellTab extends CreateTab implements InteractionCommand {
             MediatorGui.tabResults().setSelectedComponent(scroller);
     
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader(HelperUi.ICON_SHELL_SERVER);
+            TabHeader header = new TabHeader("Web shell ", HelperUi.ICON_SHELL_SERVER);
     
             MediatorGui.tabResults().setToolTipTextAt(
                 MediatorGui.tabResults().indexOfComponent(scroller),
-                "<html><b>URL</b><br>" + url + RessourceAccess.FILENAME_WEBSHELL
-                + "<br><b>Path</b><br>" + path + RessourceAccess.FILENAME_WEBSHELL + "</html>"
+                "<html><b>URL</b><br>" + this.url + RessourceAccess.FILENAME_WEBSHELL
+                + "<br><b>Path</b><br>" + this.path + RessourceAccess.FILENAME_WEBSHELL + "</html>"
             );
     
             // Apply the custom header to the tab
@@ -88,4 +89,5 @@ public class CreateShellTab extends CreateTab implements InteractionCommand {
             LOGGER.warn("Incorrect shell Url", e);
         }
     }
+    
 }

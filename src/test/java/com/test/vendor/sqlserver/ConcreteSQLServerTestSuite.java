@@ -23,4 +23,5 @@ public class ConcreteSQLServerTestSuite extends AbstractTestSuite {
         
         requestJdbc();
     }
+    
 }

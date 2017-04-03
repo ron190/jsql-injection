@@ -52,7 +52,6 @@ public class SystemUtils {
      */
     protected static final String OS_NAME = getSystemProperty("os.name");
 
-
     /**
      * The {@code os.version} System Property. Operating system version.<p>
      *
@@ -60,7 +59,6 @@ public class SystemUtils {
      * access to read this property or the property does not exist.
      */
     protected static final String OS_VERSION = getSystemProperty("os.version");
-
 
     /**
      * The {@code os.name} System Property. Operating system name.<p>
@@ -70,7 +68,6 @@ public class SystemUtils {
      */
     protected static final String JAVA_VERSION = getSystemProperty("java.version");
 
-
     // Requesting the OS and OS Version ***************************************
 
     /**
@@ -79,13 +76,11 @@ public class SystemUtils {
     public static final boolean IS_OS_LINUX =
         startsWith(OS_NAME, "Linux") || startsWith(OS_NAME, "LINUX");
 
-
     /**
      * True if this is the Mac OS.
      */
     public static final boolean IS_OS_MAC =
         startsWith(OS_NAME, "Mac OS");
-
 
     /**
      * True if this is Solaris.
@@ -93,13 +88,11 @@ public class SystemUtils {
     public static final boolean IS_OS_SOLARIS =
         startsWith(OS_NAME, "Solaris");
 
-
     /**
      * True if this is Windows.
      */
     public static final boolean IS_OS_WINDOWS =
         startsWith(OS_NAME, "Windows");
-
 
     /**
      * True if this is Windows 98.
@@ -107,13 +100,11 @@ public class SystemUtils {
     public static final boolean IS_OS_WINDOWS_98 =
         startsWith(OS_NAME, "Windows 9") && startsWith(OS_VERSION, "4.1");
 
-
     /**
      * True if this is Windows ME.
      */
     public static final boolean IS_OS_WINDOWS_ME =
         startsWith(OS_NAME, "Windows") && startsWith(OS_VERSION, "4.9");
-
 
     /**
      * True if this is Windows 2000.
@@ -121,13 +112,11 @@ public class SystemUtils {
     public static final boolean IS_OS_WINDOWS_2000 =
         startsWith(OS_NAME, "Windows") && startsWith(OS_VERSION, "5.0");
 
-
     /**
      * True if this is Windows XP.
      */
     public static final boolean IS_OS_WINDOWS_XP =
         startsWith(OS_NAME, "Windows") && startsWith(OS_VERSION, "5.1");
-
 
     /**
      * True if this is Windows Vista or Server 2008.
@@ -135,13 +124,11 @@ public class SystemUtils {
     public static final boolean IS_OS_WINDOWS_VISTA =
         startsWith(OS_NAME, "Windows") && startsWith(OS_VERSION, "6.0");
 
-
     /**
      * True if this is Windows 7.
      */
     public static final boolean IS_OS_WINDOWS_7 =
         startsWith(OS_NAME, "Windows") && startsWith(OS_VERSION, "6.1");
-
 
     /**
      * True if this is Windows 8.
@@ -149,13 +136,11 @@ public class SystemUtils {
     public static final boolean IS_OS_WINDOWS_8 =
         startsWith(OS_NAME, "Windows") && startsWith(OS_VERSION, "6.2");
 
-
     /**
      * True if this is Windows Vista/Server 2008/7/2008 R2/8.
      */
     public static final boolean IS_OS_WINDOWS_6_OR_LATER =
         startsWith(OS_NAME, "Windows") && startsWith(OS_VERSION, "6.");
-
 
     // Requesting the Java Version ********************************************
 
@@ -165,20 +150,17 @@ public class SystemUtils {
     public static final boolean IS_JAVA_6 =
         startsWith(JAVA_VERSION, "1.6");
 
-
     /**
      * True if this is Java 7. We check for a prefix of 1.7.
      */
     public static final boolean IS_JAVA_7 =
         startsWith(JAVA_VERSION, "1.7");
 
-
     /**
      * True if this is Java 7.x or later. We check that it's not 1.6.
      */
     public static final boolean IS_JAVA_7_OR_LATER =
            !IS_JAVA_6;
-
 
     /**
      * True if this is Java 7. We check for a prefix of 1.7.
@@ -187,7 +169,6 @@ public class SystemUtils {
      */
     public static final boolean IS_JAVA_8 =
         startsWith(JAVA_VERSION, "1.8");
-
 
     /**
      * True if this is Java 8.x or later.
@@ -198,7 +179,6 @@ public class SystemUtils {
     public static final boolean IS_JAVA_8_OR_LATER =
            !IS_JAVA_6 && !IS_JAVA_7;
 
-
     // Visual Properties ******************************************************
 
     /**
@@ -208,14 +188,12 @@ public class SystemUtils {
      */
     public static final boolean HAS_MODERN_RASTERIZER = hasModernRasterizer();
 
-
     /**
      * True if the Windows XP Look&amp;Feel is enabled.
      *
      * @since 1.2
      */
     public static final boolean IS_LAF_WINDOWS_XP_ENABLED = isWindowsXPLafEnabled();
-
 
     /**
      * Is true if this environment's default toolkit reports a screen resolution
@@ -225,17 +203,14 @@ public class SystemUtils {
      */
     public static final boolean IS_LOW_RESOLUTION = isLowResolution();
 
-
     // Internal ***************************************************************
 
     private static final String AWT_UTILITIES_CLASS_NAME =
         "com.sun.awt.AWTUtilities";
 
-
     protected SystemUtils() {
         // Override default constructor; prevents instantiation.
     }
-
 
     /**
      * Tries to look up the System property for the given key.
@@ -257,11 +232,9 @@ public class SystemUtils {
         }
     }
 
-
     protected static boolean startsWith(String str, String prefix) {
         return str != null && str.startsWith(prefix);
     }
-
 
     /**
      * Checks and answers whether this Java runtime has a modern rasterizer
@@ -280,7 +253,6 @@ public class SystemUtils {
             return false;
         }
     }
-
 
     /**
      * Checks and answers whether the Windows XP style is enabled.
@@ -304,7 +276,6 @@ public class SystemUtils {
              && getSystemProperty("swing.noxp") == null;
     }
 
-
     private static boolean isLowResolution() {
         try {
             return Toolkit.getDefaultToolkit().getScreenResolution() < 120;
@@ -312,6 +283,5 @@ public class SystemUtils {
             return true;
         }
     }
-
 
 }

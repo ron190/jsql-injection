@@ -25,6 +25,7 @@ import com.jsql.view.swing.tree.model.NodeModelColumn;
  * Add the columns to corresponding table.
  */
 public class AddColumns implements InteractionCommand {
+	
     /**
      * Columns retreived by the view.
      */
@@ -36,7 +37,7 @@ public class AddColumns implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public AddColumns(Object[] interactionParams) {
         // Get list of columns from the model
-        columns = (List<Column>) interactionParams[0];
+        this.columns = (List<Column>) interactionParams[0];
     }
 
     @Override
@@ -48,7 +49,7 @@ public class AddColumns implements InteractionCommand {
         DefaultMutableTreeNode tableNode = null;
 
         // Loop into the list of columns
-        for (Column column: columns) {
+        for (Column column: this.columns) {
             // Create a node model with the column element
             AbstractNodeModel newTreeNodeModel = new NodeModelColumn(column);
 
@@ -71,4 +72,5 @@ public class AddColumns implements InteractionCommand {
             ((AbstractNodeModel) tableNode.getUserObject()).isLoaded = true;
         }
     }
+    
 }
