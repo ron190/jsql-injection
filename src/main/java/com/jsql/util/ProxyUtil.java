@@ -81,7 +81,7 @@ public class ProxyUtil {
         ProxyUtil.setUsingProxy(prefs.getBoolean("isUsingProxy", false));
 
         // Default TOR config
-        ProxyUtil.setProxyAddress(prefs.get("proxyAddress", "localhost"));
+        ProxyUtil.setProxyAddress(prefs.get("proxyAddress", "127.0.0.1"));
         ProxyUtil.setProxyPort(prefs.get("proxyPort", "8118"));
         
         // Change the JVM configuration
