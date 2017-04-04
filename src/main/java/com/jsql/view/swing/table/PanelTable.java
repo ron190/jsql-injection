@@ -92,15 +92,15 @@ public class PanelTable extends JPanel {
         table.setCellSelectionEnabled(true);
         table.setGridColor(Color.LIGHT_GRAY);
 
-        final TableCellRenderer tcrOs = table.getTableHeader().getDefaultRenderer();
-        final DefaultTableCellRenderer tcrOs2 = new DefaultTableCellRenderer();
+        final TableCellRenderer cellRendererHeader = table.getTableHeader().getDefaultRenderer();
+        final DefaultTableCellRenderer cellRendererDefault = new DefaultTableCellRenderer();
         table.getTableHeader().setDefaultRenderer(new TableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(
                 JTable table, Object value, boolean isSelected, boolean hasFocus,
                 int row, int column
             ) {
-                JLabel lbl = (JLabel) tcrOs.getTableCellRendererComponent(
+                JLabel lbl = (JLabel) cellRendererHeader.getTableCellRendererComponent(
                     table, StringUtil.detectUtf8HtmlNoWrap(" "+ value +" "), isSelected, hasFocus, row, column
                 );
                 lbl.setBorder(
@@ -119,8 +119,10 @@ public class PanelTable extends JPanel {
                 JTable table, Object value, boolean isSelected, boolean hasFocus,
                 int row, int column
             ) {
-                JLabel lbl = (JLabel) tcrOs2.getTableCellRendererComponent(
-                    table, StringUtil.detectUtf8HtmlNoWrap(value.toString()), isSelected, hasFocus, row, column
+                // Prepare cell value to be utf8 inspected
+                String cellValue = value != null ? value.toString() : "";
+                JLabel lbl = (JLabel) cellRendererDefault.getTableCellRendererComponent(
+                    table, StringUtil.detectUtf8HtmlNoWrap(cellValue), isSelected, hasFocus, row, column
                 );
                 return lbl;
             }

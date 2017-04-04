@@ -28,6 +28,7 @@ import java.util.prefs.Preferences;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -204,9 +205,9 @@ public class JFrameView extends JFrame implements Observer {
         MediatorGui.managerDatabase().panelStrategy.setText("<Strategy auto>");
         for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
             MediatorGui.managerDatabase().panelStrategy.getItem(i).setSelected(false);
-            MediatorGui.managerDatabase().panelStrategy.setEnabled(false);
+            MediatorGui.managerDatabase().panelStrategy.getItem(i).setEnabled(false);
         }
-        MediatorGui.managerDatabase().panelStrategy.setEnabled(false);
+        ((JMenu) MediatorGui.managerDatabase().panelStrategy.getItem(2)).removeAll();
         
         this.mapNodes.clear();
         this.mapShells.clear();

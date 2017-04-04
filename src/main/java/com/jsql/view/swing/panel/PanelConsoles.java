@@ -72,7 +72,6 @@ import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.tab.MouseTabbedPane;
 import com.jsql.view.swing.tab.TabConsoles;
 import com.jsql.view.swing.text.JPopupTextArea;
-import com.jsql.view.swing.text.JPopupTextPane;
 import com.jsql.view.swing.text.JTextPanePlaceholder;
 
 /**
@@ -118,7 +117,7 @@ public class PanelConsoles extends JPanel {
 
     public JTextArea networkTabUrl = new JPopupTextArea("Request URL").getProxy();
     public JTextArea networkTabResponse = new JPopupTextArea("Header server response").getProxy();
-    public JTextPane networkTabSource = new JPopupTextPane("Raw page source").getProxy();
+    public JTextArea networkTabSource = new JPopupTextArea("Raw page source").getProxy();
     public JTextPane networkTabPreview = new JTextPanePlaceholder("Web browser rendering");
     public JTextArea networkTabHeader = new JPopupTextArea("Header client request").getProxy();
     public JTextArea networkTabParam = new JPopupTextArea("HTTP POST parameters").getProxy();
@@ -286,7 +285,6 @@ public class PanelConsoles extends JPanel {
         networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_URL_LABEL"), new LightScrollPane(1, 1, 0, 0, networkTabUrl));
         networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_RESPONSE_LABEL"), new LightScrollPane(1, 1, 0, 0, networkTabResponse));
         
-        networkTabSource.setEditorKit(new HTMLEditorKitTextPaneWrap()); 
         networkTabPreview.setEditorKit(new HTMLEditorKitTextPaneWrap()); 
         
         networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_SOURCE_LABEL"), new LightScrollPane(1, 1, 0, 0, networkTabSource));
@@ -311,6 +309,7 @@ public class PanelConsoles extends JPanel {
         networkTabParam.setLineWrap(true);
         networkTabResponse.setLineWrap(true);
         networkTabUrl.setLineWrap(true);
+        networkTabSource.setLineWrap(true);
         
         networkTabPreview.setContentType("text/html");
         networkTabPreview.setEditable(false);

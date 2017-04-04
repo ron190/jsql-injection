@@ -275,7 +275,7 @@ public class VendorXml extends AbstractVendorDefault {
     public String sqlTestErrorBased() {
         return 
             " "+ 
-            this.xmlModel.getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getErrorIndex()).getQuery()
+            this.xmlModel.getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getIndexMethodByUser()).getQuery()
             .replace("${WINDOW}", this.xmlModel.getStrategy().getConfiguration().getSlidingWindow())
             .replace("${INJECTION}", this.xmlModel.getStrategy().getConfiguration().getFailsafe().replace("${INDICE}", "0"))
             .replace("${INDEX}", "1");
@@ -286,11 +286,11 @@ public class VendorXml extends AbstractVendorDefault {
         return 
             " "+ 
             VendorXml.replaceTags(
-                this.xmlModel.getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getErrorIndex()).getQuery()
+                this.xmlModel.getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getIndexMethodByUser()).getQuery()
                 .replace("${WINDOW}", this.xmlModel.getStrategy().getConfiguration().getSlidingWindow())
                 .replace("${INJECTION}", sqlQuery)
                 .replace("${INDEX}", ""+startPosition)
-                .replace("${CAPACITY}", ""+this.xmlModel.getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getErrorIndex()).getCapacity())
+                .replace("${CAPACITY}", ""+this.xmlModel.getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getIndexMethodByUser()).getCapacity())
             );
     }
 

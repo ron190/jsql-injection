@@ -242,6 +242,10 @@ public class DataAccess {
      * @throws JSqlException when injection failure or stopped by user
      */
     public static List<Table> listTables(Database database) throws JSqlException {
+        // Reset stoppedByUser if list of Databases is partial
+        // and some Tables are still reachable
+        MediatorModel.model().setIsStoppedByUser(false);
+        
         List<Table> tables = new ArrayList<>();
         
         // Inform the view that database has just been used

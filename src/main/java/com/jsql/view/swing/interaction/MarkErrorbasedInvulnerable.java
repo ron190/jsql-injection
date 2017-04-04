@@ -10,6 +10,11 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import java.util.Map;
+
+import javax.swing.JMenu;
+
+import com.jsql.model.bean.util.TypeHeader;
 import com.jsql.model.injection.strategy.Strategy;
 import com.jsql.view.swing.MediatorGui;
 
@@ -18,18 +23,23 @@ import com.jsql.view.swing.MediatorGui;
  */
 public class MarkErrorbasedInvulnerable implements InteractionCommand {
 	
+    private Map<TypeHeader, Object> mapHeader;
+    private int indexMethodError;
+    
     /**
      * @param interactionParams
      */
+    @SuppressWarnings("unchecked")
     public MarkErrorbasedInvulnerable(Object[] interactionParams) {
-        // Do nothing
+        this.mapHeader = (Map<TypeHeader, Object>) interactionParams[0];
+        this.indexMethodError = (int) mapHeader.get(TypeHeader.SOURCE);
     }
 
     @Override
     public void execute() {
         for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
             if (MediatorGui.managerDatabase().panelStrategy.getItem(i).getText().equals(Strategy.ERRORBASED.toString())) {
-                MediatorGui.managerDatabase().panelStrategy.getItem(i).setEnabled(false);
+                ((JMenu) MediatorGui.managerDatabase().panelStrategy.getItem(i)).getItem(indexMethodError).setEnabled(false);
                 break;
             }
         }

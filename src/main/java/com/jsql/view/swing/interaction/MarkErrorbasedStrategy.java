@@ -30,15 +30,14 @@ public class MarkErrorbasedStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.managerDatabase().panelStrategy.setEnabled(true);
         MediatorGui.managerDatabase().panelStrategy.setText(Strategy.ERRORBASED.toString());
         for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
             if (((JMenu) MediatorGui.managerDatabase().panelStrategy.getMenuComponent(2)).getItem(i).getText().equals(
-                MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getErrorIndex()).getName()
+                MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getIndexMethodByUser()).getName()
             )) {
                 ((JMenu) MediatorGui.managerDatabase().panelStrategy.getMenuComponent(2)).getItem(i).setSelected(true);
                 MediatorGui.managerDatabase().panelStrategy.setText(
-                    MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getErrorIndex()).getName()
+                    MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getIndexMethodByUser()).getName()
                 );
                 break;
             }

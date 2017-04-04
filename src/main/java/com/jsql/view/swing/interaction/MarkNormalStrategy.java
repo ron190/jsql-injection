@@ -27,7 +27,6 @@ public class MarkNormalStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.managerDatabase().panelStrategy.setEnabled(true);
         MediatorGui.managerDatabase().panelStrategy.setText(Strategy.NORMAL.toString());
         for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
             if (MediatorGui.managerDatabase().panelStrategy.getItem(i).getText().equals(Strategy.NORMAL.toString())) {

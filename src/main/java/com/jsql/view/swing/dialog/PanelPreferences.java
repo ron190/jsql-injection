@@ -280,7 +280,7 @@ public class PanelPreferences extends JPanel {
                     textKerberosLoginConf.getText()
                 );
 
-                LOGGER.info("Preferences saved");
+                LOGGER.debug("Preferences saved");
             }
         });
 

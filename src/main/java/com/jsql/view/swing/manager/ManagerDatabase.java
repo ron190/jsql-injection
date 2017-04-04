@@ -122,21 +122,18 @@ public class ManagerDatabase extends JPanel implements Manager {
         );
         
         this.panelStrategy = new ComboMenu("<Strategy auto>");
-        this.panelStrategy.setEnabled(false);
         
         this.itemRadioStrategyError = new JMenu[1];
         
         for (final Strategy strategy: Strategy.values()) {
             if (strategy != Strategy.UNDEFINED) {
                 MenuElement itemRadioStrategy;
+                
                 if (strategy == Strategy.ERRORBASED) {
                     itemRadioStrategy = new JMenu(strategy.toString());
                     this.itemRadioStrategyError[0] = (JMenu) itemRadioStrategy;
-                    
-                    this.panelStrategy.add((JMenuItem) itemRadioStrategy);
                 } else {
                     itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString());
-                    ((JComponent) itemRadioStrategy).setEnabled(false);
                     ((AbstractButton) itemRadioStrategy).addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
@@ -144,11 +141,12 @@ public class ManagerDatabase extends JPanel implements Manager {
                             MediatorModel.model().setStrategy(strategy);
                         }
                     });
-                    ((JComponent) itemRadioStrategy).setToolTipText(I18n.valueByKey("STRATEGY_"+ strategy.name() +"_TOOLTIP"));
-                    
-                    this.panelStrategy.add((JMenuItem) itemRadioStrategy);
                     this.groupStrategy.add((AbstractButton) itemRadioStrategy);
                 }
+                
+                this.panelStrategy.add((JMenuItem) itemRadioStrategy);
+                ((JComponent) itemRadioStrategy).setToolTipText(I18n.valueByKey("STRATEGY_"+ strategy.name() +"_TOOLTIP"));
+                ((JComponent) itemRadioStrategy).setEnabled(false);
             }
         }
         
@@ -163,12 +161,6 @@ public class ManagerDatabase extends JPanel implements Manager {
                 public void actionPerformed(ActionEvent e) {
                     ManagerDatabase.this.panelVendor.setText(vendor.toString());
                     MediatorModel.model().vendorByUser = vendor;
-                    
-                    if (vendor == Vendor.AUTO) {
-                        ManagerDatabase.this.initErrorMethods(MediatorModel.model().vendor);
-                    } else {
-                        ManagerDatabase.this.initErrorMethods(vendor);
-                    }
                 }
             });
             this.panelVendor.add(itemRadioVendor);
@@ -188,18 +180,19 @@ public class ManagerDatabase extends JPanel implements Manager {
         
         Integer i[] = {0};
         if (vendor != Vendor.AUTO && vendor.instance().getXmlModel().getStrategy().getError() != null)
-        for (Method a: vendor.instance().getXmlModel().getStrategy().getError().getMethod()) {
-            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(a.getName());
+        for (Method methodError: vendor.instance().getXmlModel().getStrategy().getError().getMethod()) {
+            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(methodError.getName());
+            itemRadioVendor.setEnabled(false);
             this.itemRadioStrategyError[0].add(itemRadioVendor);
             this.groupStrategy.add((AbstractButton) itemRadioVendor);
             
-            final int p = new Integer(i[0]);
+            final int indexError = new Integer(i[0]);
             ((AbstractButton) itemRadioVendor).addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    ManagerDatabase.this.panelStrategy.setText(a.getName());
+                    ManagerDatabase.this.panelStrategy.setText(methodError.getName());
                     MediatorModel.model().setStrategy(Strategy.ERRORBASED);
-                    ((ErrorbasedStrategy)Strategy.ERRORBASED.instance()).setErrorIndex(p);
+                    ((ErrorbasedStrategy)Strategy.ERRORBASED.instance()).setIndexMethodByUser(indexError);
                 }
             });
             

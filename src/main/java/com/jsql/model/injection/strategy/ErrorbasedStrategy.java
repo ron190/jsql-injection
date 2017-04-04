@@ -26,18 +26,24 @@ public class ErrorbasedStrategy extends AbstractStrategy {
 
     @Override
     public void checkApplicability() {
+        // Reset applicability of new Vendor
+        this.isApplicable = false;
+        this.tabCapacityMethod = null;
         
-        if (MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError() == null) {
+        if (
+            MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError() == null
+        ) {
             LOGGER.info("No Error based strategy known for "+ MediatorModel.model().vendor +".");
             return;
         } else {
             LOGGER.trace("Error based test...");
         }
         
-        this.errorCapacity = new String[MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError().getMethod().size()];
+        this.tabCapacityMethod = new String[MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError().getMethod().size()];
         int indexErrorMethod = 0;
         int errorCapacity = 0;
         for (Method errorMethod: MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError().getMethod()) {
+            boolean methodIsApplicable = false;
             LOGGER.trace("Testing "+ errorMethod.getName() +"...");
         
             String performanceSourcePage = MediatorModel.model().injectWithoutIndex(
@@ -51,16 +57,19 @@ public class ErrorbasedStrategy extends AbstractStrategy {
                 )
             );
     
-            isApplicable = performanceSourcePage.matches(
+            if (performanceSourcePage.matches(
                 VendorXml.replaceTags(
                     "(?s).*"+ 
                     MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getFailsafe()
                     .replace("${INDICE}","0")
                     .replace("0%2b1", "1") +".*"
                 )
-            );
+            )) {
+                methodIsApplicable = true;
+                this.isApplicable = true;
+            };
             
-            if (this.isApplicable) {
+            if (methodIsApplicable) {
                 LOGGER.debug("Vulnerable to "+ errorMethod.getName());
                 this.allow(indexErrorMethod);
                 
@@ -79,10 +88,10 @@ public class ErrorbasedStrategy extends AbstractStrategy {
                 Matcher regexSearch = Pattern.compile("(?s)"+ DataAccess.LEAD +"(#+)").matcher(performanceErrorBasedSourcePage);
                 while (regexSearch.find()) {
                     if (errorCapacity < regexSearch.group(1).length()) {
-                        errorIndex = indexErrorMethod;
+                        indexMethodByUser = indexErrorMethod;
                     }
                     errorCapacity = regexSearch.group(1).length();
-                    this.errorCapacity[indexErrorMethod] = errorCapacity+"";
+                    this.tabCapacityMethod[indexErrorMethod] = errorCapacity+"";
                 }
             } else {
                 this.unallow(indexErrorMethod);
@@ -132,7 +141,7 @@ public class ErrorbasedStrategy extends AbstractStrategy {
     
     @Override
     public String getPerformanceLength() {
-        return errorCapacity[errorIndex] +"" ;
+        return tabCapacityMethod[indexMethodByUser] +"" ;
     }
     
     @Override
@@ -140,15 +149,14 @@ public class ErrorbasedStrategy extends AbstractStrategy {
         return "Error based";
     }
     
-    String[] errorCapacity;
+    public String[] tabCapacityMethod;
+    public int indexMethodByUser = 0;
     
-    int errorIndex = 0;
-    
-    public Integer getErrorIndex() {
-        return errorIndex;
+    public Integer getIndexMethodByUser() {
+        return indexMethodByUser;
     }
-    public void setErrorIndex(int i) {
-        errorIndex = i;
+    public void setIndexMethodByUser(int i) {
+        indexMethodByUser = i;
     }
     
 }

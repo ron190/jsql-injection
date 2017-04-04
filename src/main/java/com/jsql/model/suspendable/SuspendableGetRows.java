@@ -32,9 +32,6 @@ import com.jsql.util.ThreadUtil;
  */
 public class SuspendableGetRows extends AbstractSuspendable<String> {
     
-	/**
-	 * 
-	 */
     @Override
     public String run(Object... args) throws JSqlException {
         String initialSQLQuery = (String) args[0];
