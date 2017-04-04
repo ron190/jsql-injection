@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.model.bean.util.TypeHeader;
+import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
 

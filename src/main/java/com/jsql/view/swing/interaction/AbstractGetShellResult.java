@@ -12,6 +12,7 @@ package com.jsql.view.swing.interaction;
 
 import java.util.UUID;
 
+import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.shell.AbstractShell;
 

@@ -649,7 +649,6 @@ public class Menubar extends JMenuBar {
         I18n.addComponentForKey("MENUBAR_PREFERENCES", preferences);
         
         // Render the Preferences dialog behind scene
-//        final DialogPreferences dialoguePreferences = new DialogPreferences();
         preferences.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -674,7 +673,6 @@ public class Menubar extends JMenuBar {
                     }
                 };
 
-//                LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, dialoguePreferences.mainPanel2);
                 LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, new PanelPreferences());
                 scroller.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
                 

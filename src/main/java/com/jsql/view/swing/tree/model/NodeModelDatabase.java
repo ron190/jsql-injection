@@ -10,9 +10,6 @@
  ******************************************************************************/
 package com.jsql.view.swing.tree.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.Icon;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingWorker;
@@ -21,12 +18,8 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.Database;
-import com.jsql.model.bean.database.Table;
-import com.jsql.model.bean.util.Request;
-import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 
@@ -66,33 +59,13 @@ public class NodeModelDatabase extends AbstractNodeModel {
             treeModel.reload(MediatorGui.frame().getTreeNodeModels().get(this.elementDatabase));
             
             new SwingWorker<Object, Object>() {
+                
                 @Override
                 protected Object doInBackground() throws Exception {
                 	Thread.currentThread().setName("SwingWorkerNodeModelDatabase");
                     return DataAccess.listTables(selectedDatabase);
                 }
                 
-                @Override
-                @SuppressWarnings("unchecked")
-                protected void done() {
-                    List<Table> tables = new ArrayList<>();
-                    try {
-                        tables = (List<Table>) get();
-                    } catch (Throwable e) {
-                        LOGGER.warn(e, e);
-                    } finally {
-                    	// TODO do in model
-                        Request requestAddTables = new Request();
-                        requestAddTables.setMessage(TypeRequest.ADD_TABLES);
-                        requestAddTables.setParameters(tables);
-                        MediatorModel.model().sendToViews(requestAddTables);
-                  
-                        Request requestEndProgress = new Request();
-                        requestEndProgress.setMessage(TypeRequest.END_PROGRESS);
-                        requestEndProgress.setParameters(selectedDatabase);
-                        MediatorModel.model().sendToViews(requestEndProgress);
-                    }
-                }
             }.execute();
             
             this.isRunning = true;

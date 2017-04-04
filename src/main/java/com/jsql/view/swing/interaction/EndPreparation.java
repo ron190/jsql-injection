@@ -12,6 +12,7 @@ package com.jsql.view.swing.interaction;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
+import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 
 /**

@@ -15,7 +15,7 @@ import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
@@ -49,9 +49,9 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
      * @param inj SQL query
      * @param suspendable Action a user can stop
      * @return Final string: SQLiABCDEF...
-     * @throws StoppedByUserException
+     * @throws StoppedByUserSlidingException
      */
-    public String inject(String inj, AbstractSuspendable<String> suspendable) throws StoppedByUserException {
+    public String inject(String inj, AbstractSuspendable<String> suspendable) throws StoppedByUserSlidingException {
         /**
          *  List of the characters, each one represented by an array of 8 bits
          *  e.g SQLi: bytes[0] => 01010011:S, bytes[1] => 01010001:Q ...
@@ -92,7 +92,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
                 }
 
                 // TODO Get current progress and display
-                StoppedByUserException e = new StoppedByUserException();
+                StoppedByUserSlidingException e = new StoppedByUserSlidingException();
                 String result = "";
                 for (char[] c: bytes) {
                     try {
@@ -219,7 +219,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
      * @return true if blind method is confirmed
      * @throws InjectionFailureException
      */
-    public abstract boolean isInjectable() throws StoppedByUserException;
+    public abstract boolean isInjectable() throws StoppedByUserSlidingException;
     
     /**
      * Display a message to explain how is blid/time working.

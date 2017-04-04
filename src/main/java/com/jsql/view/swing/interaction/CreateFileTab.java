@@ -14,6 +14,7 @@ import java.awt.Font;
 
 import javax.swing.JTextArea;
 
+import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.LightScrollPane;

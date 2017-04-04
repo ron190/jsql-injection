@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.scan.interaction;
+package com.jsql.view.interaction;
 
 /**
  * Action ordered by the Model and applied to the View.

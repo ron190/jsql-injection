@@ -15,6 +15,7 @@ import java.awt.Font;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 
 /**

@@ -10,12 +10,15 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import java.awt.ComponentOrientation;
 import java.util.Arrays;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import com.jsql.i18n.I18n;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.util.StringUtil;
+import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tab.TabHeader;
 import com.jsql.view.swing.table.PanelTable;
@@ -72,6 +75,7 @@ public class CreateValuesTab extends CreateTab implements InteractionCommand {
             
             // Create a new tab: add header and table
             MediatorGui.tabResults().addTab(StringUtil.detectUtf8(this.table.toString()), newTableJPanel);
+            newTableJPanel.setComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
             
             // Focus on the new tab
             MediatorGui.tabResults().setSelectedComponent(newTableJPanel);

@@ -47,7 +47,7 @@ import com.jsql.model.bean.util.TypeHeader;
 import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
@@ -193,7 +193,7 @@ public class RessourceAccess {
      * @param pathShell Remote path othe file
      * @param url
      * @throws InjectionFailureException
-     * @throws StoppedByUserException
+     * @throws StoppedByUserSlidingException
      */
     public static void createWebShell(String pathShell, String urlShell) throws JSqlException {
         if (!RessourceAccess.isReadingAllowed()) {
@@ -333,7 +333,7 @@ public class RessourceAccess {
      * @param username User name for current database
      * @param password User password for current database
      * @throws InjectionFailureException
-     * @throws StoppedByUserException
+     * @throws StoppedByUserSlidingException
      */
     public static void createSqlShell(String pathShell, String urlShell, String username, String password) throws JSqlException {
         if (!RessourceAccess.isReadingAllowed()) {
@@ -792,7 +792,7 @@ public class RessourceAccess {
         
         // Get back the normal view
         // TODO Don't play with View on Model
-        MediatorModel.model().addObserver(MediatorGui.frame());
+        MediatorModel.model().addObserver(MediatorGui.frame().getObserver());
         
         MediatorModel.model().isScanning = false;
         MediatorModel.model().setIsStoppedByUser(false);

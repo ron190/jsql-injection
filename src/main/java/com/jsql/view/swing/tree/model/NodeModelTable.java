@@ -76,19 +76,17 @@ public class NodeModelTable extends AbstractNodeModel {
     public void runAction() {
         final Table selectedTable = (Table) this.elementDatabase;
         
-        if (/*!this.isLoaded && */!this.isRunning) {
+        if (!this.isRunning) {
             MediatorGui.frame().getTreeNodeModels().get(this.elementDatabase).removeAllChildren();
             DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
             treeModel.reload(MediatorGui.frame().getTreeNodeModels().get(this.elementDatabase));
             
-            new SwingWorker<Object, Object>(){
+            new SwingWorker<Object, Object>() {
 
                 @Override
                 protected Object doInBackground() throws Exception {
-                	// TODO start/end progress
                 	Thread.currentThread().setName("SwingWorkerNodeModelTable");
-                    DataAccess.listColumns(selectedTable);
-                    return null;
+                    return DataAccess.listColumns(selectedTable);
                 }
                 
             }.execute();

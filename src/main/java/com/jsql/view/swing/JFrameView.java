@@ -16,13 +16,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.UUID;
 import java.util.prefs.Preferences;
 
@@ -39,10 +35,9 @@ import org.apache.log4j.Logger;
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
-import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.vendor.Vendor;
+import com.jsql.view.interaction.ObserverInteraction;
 import com.jsql.view.swing.action.ActionHandler;
-import com.jsql.view.swing.interaction.InteractionCommand;
 import com.jsql.view.swing.menubar.Menubar;
 import com.jsql.view.swing.panel.PanelAddressBar;
 import com.jsql.view.swing.panel.SplitHorizontalTopBottom;
@@ -58,7 +53,7 @@ import com.jsql.view.swing.shell.AbstractShell;
  * - at the bottom: information labels.
  */
 @SuppressWarnings("serial")
-public class JFrameView extends JFrame implements Observer {
+public class JFrameView extends JFrame {
 	
     /**
      * Log4j logger sent to view.
@@ -82,6 +77,8 @@ public class JFrameView extends JFrame implements Observer {
      *  the view access its graphic component to update.
      */
     private Map<AbstractElementDatabase, DefaultMutableTreeNode> mapNodes = new HashMap<>();
+    
+    private ObserverInteraction observer = new ObserverInteraction("com.jsql.view.swing.interaction");
     
     /**
      * Build the GUI: add app icon, tree icons, the 3 main panels.
@@ -168,33 +165,38 @@ public class JFrameView extends JFrame implements Observer {
         menubar.switchLocale(Locale.ENGLISH, I18n.getLocaleDefault());
     }
 
-    /**
-     * Observer pattern.<br>
-     * Receive an update order from the model:<br>
-     * - Use the Request message to get the Interaction class,<br>
-     * - Pass the parameters to that class.
-     */
-    @Override
-    public void update(Observable model, Object newInteraction) {
-        Request interaction = (Request) newInteraction;
+//    /**
+//     * Observer pattern.<br>
+//     * Receive an update order from the model:<br>
+//     * - Use the Request message to get the Interaction class,<br>
+//     * - Pass the parameters to that class.
+//     */
+//    @Override
+//    public void update(Observable model, Object newInteraction) {
+//        Request interaction = (Request) newInteraction;
+//
+//        try {
+//            Class<?> cl = Class.forName("com.jsql.view.swing.interaction."+ interaction.getMessage());
+//            Class<?>[] types = new Class[]{Object[].class};
+//            Constructor<?> ct = cl.getConstructor(types);
+//
+//            InteractionCommand interactionCommand = (InteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
+//            interactionCommand.execute();
+//        } catch (ClassNotFoundException e) {
+//            // Ignore unused interaction message
+//        } catch (
+//            InstantiationException | 
+//            IllegalAccessException | NoSuchMethodException | 
+//            SecurityException | IllegalArgumentException | 
+//            InvocationTargetException e
+//        ) {
+//            LOGGER.error(e, e);
+//        }
+//    }
+    
 
-        try {
-            Class<?> cl = Class.forName("com.jsql.view.swing.interaction."+ interaction.getMessage());
-            Class<?>[] types = new Class[]{Object[].class};
-            Constructor<?> ct = cl.getConstructor(types);
-
-            InteractionCommand interactionCommand = (InteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
-            interactionCommand.execute();
-        } catch (ClassNotFoundException e) {
-            // Ignore unused interaction message
-        } catch (
-            InstantiationException | 
-            IllegalAccessException | NoSuchMethodException | 
-            SecurityException | IllegalArgumentException | 
-            InvocationTargetException e
-        ) {
-            LOGGER.error(e, e);
-        }
+    public ObserverInteraction getObserver() {
+        return observer;
     }
 
     /**

@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.suspendable.callable.CallablePageSource;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
@@ -169,7 +169,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         while (0 < total) {
 
             if (this.isSuspended()) {
-                throw new StoppedByUserException();
+                throw new StoppedByUserSlidingException();
             }
             
             try {

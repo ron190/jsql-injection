@@ -16,7 +16,7 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.util.StringUtil;
 import com.jsql.util.ThreadUtil;
@@ -59,7 +59,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         while (true) {
 
             if (this.isSuspended()) {
-                StoppedByUserException e = new StoppedByUserException();
+                StoppedByUserSlidingException e = new StoppedByUserSlidingException();
                 e.setSlidingWindowAllRows(slidingWindowAllRows);
                 e.setSlidingWindowCurrentRows(slidingWindowCurrentRow);
                 throw e;

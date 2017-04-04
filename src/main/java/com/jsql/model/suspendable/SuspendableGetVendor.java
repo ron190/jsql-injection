@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.model.suspendable.callable.CallablePageSource;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
@@ -33,7 +33,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
      * 
      */
     @Override
-    public Vendor run(Object... args) throws StoppedByUserException {
+    public Vendor run(Object... args) throws StoppedByUserSlidingException {
         Vendor vendor = null;
         
         if (MediatorModel.model().vendorByUser != Vendor.AUTO) {
@@ -60,7 +60,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
         while (0 < total) {
 
             if (this.isSuspended()) {
-                throw new StoppedByUserException();
+                throw new StoppedByUserSlidingException();
             }
             
             try {

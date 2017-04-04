@@ -14,7 +14,7 @@ import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.model.suspendable.SuspendableGetIndexes;
 import com.jsql.util.StringUtil;
@@ -75,7 +75,7 @@ public class NormalStrategy extends AbstractStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserException {
+    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
         return MediatorModel.model().injectWithIndexes(MediatorModel.model().vendor.instance().sqlNormal(sqlQuery, startPosition));
     }
 

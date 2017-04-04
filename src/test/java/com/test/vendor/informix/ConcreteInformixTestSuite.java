@@ -9,7 +9,7 @@ public class ConcreteInformixTestSuite extends AbstractTestSuite {
         this.jdbcURL = "jdbc:informix-sqli://fe80::1125:78c0:ef17:8ab5%17:7360/sysmaster:user=informix;password=test;INFORMIXSERVER=ol_informix1210_2";
         
         this.jdbcUser = "";
-        this.jdbcPassword = "";
+        this.jdbcPass = "";
         this.jsqlDatabaseName = "sysutils";
         this.jsqlTableName = "sysusers";
         this.jsqlColumnName = "username";

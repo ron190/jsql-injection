@@ -7,7 +7,7 @@ public class ConcretePostgreTestSuite extends AbstractTestSuite {
     public ConcretePostgreTestSuite () {
         this.jdbcURL = "jdbc:postgresql://"+ AbstractTestSuite.HOSTNAME +":5432/postgres";
         this.jdbcUser = "postgres";
-        this.jdbcPassword = "pg";
+        this.jdbcPass = "pg";
         this.jsqlDatabaseName = "information_schema";
         this.jsqlTableName = "sql_parts";
         this.jsqlColumnName = "feature_id";

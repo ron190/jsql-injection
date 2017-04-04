@@ -11,7 +11,7 @@ public class ConcreteCubridTestSuite extends AbstractTestSuite {
         this.jdbcURL = "jdbc:cubrid:"+ AbstractTestSuite.HOSTNAME +":33000:demodb:::";
         
         this.jdbcUser = "";
-        this.jdbcPassword = "";
+        this.jdbcPass = "";
         this.jsqlDatabaseName = "PUBLIC";
         this.jsqlTableName = "code";
         this.jsqlColumnName = "f_name";

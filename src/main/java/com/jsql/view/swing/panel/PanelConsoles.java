@@ -334,9 +334,9 @@ public class PanelConsoles extends JPanel {
                     
                     networkTabSource.setText(StringUtil.detectUtf8Html(networkData.getSource()));
                     
+                    // Reset EditorKit to disable previous document effect
+                    networkTabPreview.getEditorKit().createDefaultDocument();
                     networkTabPreview.setText("<html>"+ StringUtil.detectUtf8(networkData.getSource()) + "</html>");
-                    // ^^^^ Report EmptyStackException #1551 
-                    // To avoid this, create a new document, getEditorKit().createDefaultDocument(), and replace the existing Document with the new one.
                 }
             }
         });

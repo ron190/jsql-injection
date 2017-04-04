@@ -9,7 +9,7 @@ import com.jsql.model.bean.util.TypeHeader;
 import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.ConnectionUtil;
 
@@ -35,7 +35,7 @@ public abstract class AbstractStrategy {
      * Test if this strategy can be used to inject SQL.
      * @return
      * @throws InjectionFailureException
-     * @throws StoppedByUserException
+     * @throws StoppedByUserSlidingException
      */
     public abstract void checkApplicability() throws JSqlException;
     
@@ -93,7 +93,7 @@ public abstract class AbstractStrategy {
      * Start the strategy work.
      * @return Source code
      */
-    public abstract String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserException;
+    public abstract String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException;
     
     /**
      * Change the strategy of the model to current strategy.

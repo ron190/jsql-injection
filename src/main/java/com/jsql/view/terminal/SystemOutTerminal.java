@@ -10,15 +10,7 @@ package com.jsql.view.terminal;
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Observable;
-import java.util.Observer;
-
-import org.apache.log4j.Logger;
-
-import com.jsql.model.bean.util.Request;
-import com.jsql.view.swing.interaction.InteractionCommand;
+import com.jsql.view.interaction.ObserverInteraction;
 
 /**
  * View in the MVC pattern, defines all the components
@@ -28,38 +20,44 @@ import com.jsql.view.swing.interaction.InteractionCommand;
  * - at the center: tree on the left, table on the right,<br>
  * - at the bottom: information labels.
  */
-public class SystemOutTerminal implements Observer {
-	
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
+public class SystemOutTerminal extends ObserverInteraction {
 
-    /**
-     * Observer pattern.<br>
-     * Receive an update order from the model:<br>
-     * - Use the Request message to get the Interaction class,<br>
-     * - Pass the parameters to that class.
-     */
-    @Override
-    public void update(Observable model, Object newInteraction) {
-        Request interaction = (Request) newInteraction;
-
-        try {
-            Class<?> cl = Class.forName("com.jsql.view.terminal.interaction."+ interaction.getMessage());
-            Class<?>[] types = new Class[]{Object[].class};
-            Constructor<?> ct = cl.getConstructor(types);
-
-            InteractionCommand o2 = (InteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
-            o2.execute();
-        } catch (ClassNotFoundException e) {
-            // Ignore unused interaction message
-        } catch (
-            InstantiationException | IllegalAccessException | NoSuchMethodException | 
-            SecurityException | IllegalArgumentException | InvocationTargetException e
-        ) {
-            LOGGER.error(e, e);
-        }
+    public SystemOutTerminal() {
+        super("com.jsql.view.terminal.interaction");
     }
+    
+    
+	
+//    /**
+//     * Log4j logger sent to view.
+//     */
+//    private static final Logger LOGGER = Logger.getRootLogger();
+
+//    /**
+//     * Observer pattern.<br>
+//     * Receive an update order from the model:<br>
+//     * - Use the Request message to get the Interaction class,<br>
+//     * - Pass the parameters to that class.
+//     */
+//    @Override
+//    public void update(Observable model, Object newInteraction) {
+//        Request interaction = (Request) newInteraction;
+//
+//        try {
+//            Class<?> cl = Class.forName("com.jsql.view.terminal.interaction."+ interaction.getMessage());
+//            Class<?>[] types = new Class[]{Object[].class};
+//            Constructor<?> ct = cl.getConstructor(types);
+//
+//            InteractionCommand o2 = (InteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
+//            o2.execute();
+//        } catch (ClassNotFoundException e) {
+//            // Ignore unused interaction message
+//        } catch (
+//            InstantiationException | IllegalAccessException | NoSuchMethodException | 
+//            SecurityException | IllegalArgumentException | InvocationTargetException e
+//        ) {
+//            LOGGER.error(e, e);
+//        }
+//    }
     
 }

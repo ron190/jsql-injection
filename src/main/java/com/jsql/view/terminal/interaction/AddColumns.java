@@ -15,7 +15,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.bean.database.Column;
-import com.jsql.view.swing.interaction.InteractionCommand;
+import com.jsql.view.interaction.InteractionCommand;
 
 /**
  * Add the columns to corresponding table.

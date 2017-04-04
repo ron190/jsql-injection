@@ -4,7 +4,7 @@ import java.util.concurrent.Callable;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 
 /**
@@ -56,7 +56,7 @@ public class CallableFile implements Callable<CallableFile> {
         } catch (InjectionFailureException e) {
             // Ignore
             // Usually thrown if File does not exist
-        } catch (StoppedByUserException e) {
+        } catch (StoppedByUserSlidingException e) {
             // Get partial source
             if (!"".equals(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();

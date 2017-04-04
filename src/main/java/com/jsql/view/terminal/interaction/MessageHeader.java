@@ -15,7 +15,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.bean.util.TypeHeader;
-import com.jsql.view.swing.interaction.InteractionCommand;
+import com.jsql.view.interaction.InteractionCommand;
 
 /**
  * Append a text to the tab Header.

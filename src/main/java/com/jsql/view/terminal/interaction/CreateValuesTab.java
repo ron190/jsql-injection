@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.interaction.InteractionCommand;
+import com.jsql.view.interaction.InteractionCommand;
 
 /**
  * Create a new tab for the values.

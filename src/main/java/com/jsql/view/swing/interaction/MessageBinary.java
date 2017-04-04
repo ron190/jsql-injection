@@ -13,6 +13,7 @@ package com.jsql.view.swing.interaction;
 import java.awt.Component;
 import java.awt.Font;
 
+import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 
 /**

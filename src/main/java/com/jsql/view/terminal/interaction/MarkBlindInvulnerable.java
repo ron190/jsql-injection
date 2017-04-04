@@ -12,7 +12,7 @@ package com.jsql.view.terminal.interaction;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.interaction.InteractionCommand;
+import com.jsql.view.interaction.InteractionCommand;
 
 /**
  * Mark the injection as invulnerable to a blind injection.

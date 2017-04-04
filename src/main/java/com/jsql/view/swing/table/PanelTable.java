@@ -66,7 +66,7 @@ public class PanelTable extends JPanel {
      */
     public JTable table;
     
-    private FixedColumnTable tableFixedColumn = new FixedColumnTable();
+    public FixedColumnTable tableFixedColumn = new FixedColumnTable();
 
     /**
      * Create a panel containing a table to display injection values.
@@ -100,16 +100,16 @@ public class PanelTable extends JPanel {
                 JTable table, Object value, boolean isSelected, boolean hasFocus,
                 int row, int column
             ) {
-                JLabel lbl = (JLabel) cellRendererHeader.getTableCellRendererComponent(
+                JLabel label = (JLabel) cellRendererHeader.getTableCellRendererComponent(
                     table, StringUtil.detectUtf8HtmlNoWrap(" "+ value +" "), isSelected, hasFocus, row, column
                 );
-                lbl.setBorder(
+                label.setBorder(
                     BorderFactory.createCompoundBorder(
                         BorderFactory.createMatteBorder(1, 0, 1, 1, Color.LIGHT_GRAY),
                         BorderFactory.createEmptyBorder(0, 5, 0, 5)
                     )
                 );
-                return lbl;
+                return label;
             }
         });
         
@@ -121,10 +121,10 @@ public class PanelTable extends JPanel {
             ) {
                 // Prepare cell value to be utf8 inspected
                 String cellValue = value != null ? value.toString() : "";
-                JLabel lbl = (JLabel) cellRendererDefault.getTableCellRendererComponent(
+                JLabel label = (JLabel) cellRendererDefault.getTableCellRendererComponent(
                     table, StringUtil.detectUtf8HtmlNoWrap(cellValue), isSelected, hasFocus, row, column
                 );
-                return lbl;
+                return label;
             }
         });
 
@@ -200,7 +200,6 @@ public class PanelTable extends JPanel {
             public void adjustmentValueChanged(AdjustmentEvent e) {
                 // The user scrolled the List (using the bar, mouse wheel or something else):
                 if (e.getAdjustmentType() == AdjustmentEvent.TRACK){
-                    // Jump to the next "block" (which is a row".
                     e.getAdjustable().setBlockIncrement(100);
                     e.getAdjustable().setUnitIncrement(100);
                 }

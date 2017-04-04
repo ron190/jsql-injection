@@ -10,6 +10,8 @@
  ******************************************************************************/
 package com.jsql.view.scan.interaction;
 
+import com.jsql.view.interaction.InteractionCommand;
+
 /**
  * Append a text to the tab Header.
  */

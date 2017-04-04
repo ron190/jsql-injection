@@ -6,14 +6,23 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 ![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) or [BlackArch Linux](http://www.blackarch.org/).
 
 [![License: GPLv2](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/gplv2.png)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
-[![Java](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/java.png)](http://www.oracle.com/technetwork/java/javase/jdk7-relnotes-418459.html#changes)
 [![JUnit](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/junit.png)](http://junit.org)
 [![Maven](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/maven.png)](https://maven.apache.org/)
 [![SonarQube](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/sonar.png)](http://www.sonarqube.org/)<br>
 [![Twitter](https://github.com/ron190/jsql-injection/raw/master/web/images/twitter.png)](https://twitter.com/ron190jsql)
 
+## Features
+- Automatic injection for 18 types of database: Access, CUBRID, DB2, Derby, Firebird, H2, HSQLDB, Informix, Ingres, MariaDB, MaxDB, MySQL, Oracle, PostgreSQL, SQLite, SQL Server, Sybase and Teradata
+- Multiple injection strategies: Normal, Error, Blind and Time
+- SQL Engine to study and optimize SQL expressions
+- Display Web shell and SQL shell
+- Find administration pages
+- Read files from the host
+- Bruteforce of password hash
+- Community translation system
+
 ## Installation
-Install [Java](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) of jSQL and double-click on the .jar to launch the software.<br>
+Install [Java 8](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) of jSQL and double-click on the .jar to launch the software.<br>
 You can also type `java -jar jsql-injection-v0.78.jar` in your terminal to start the program.
 
 ## v0.78 [[download here](https://github.com/ron190/jsql-injection/releases/download/v0.78/jsql-injection-v0.78.jar)]
@@ -34,7 +43,7 @@ You can also type `java -jar jsql-injection-v0.78.jar` in your terminal to start
 
 ## Change log
 
-**v0.78** `SQL Engine, MySQL BIGINT Overflow, Translations: es pt de it nl id, GUI improvements`
+**v0.78** `SQL Engine, MySQL BIGINT Overflow, Translations: es pt de it nl id, GUI improvements, New Database flavor: Access`
 
 **v0.76** `Czech translation, 17 Database flavors including SQLite`
 

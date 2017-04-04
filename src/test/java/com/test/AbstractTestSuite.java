@@ -40,7 +40,7 @@ public abstract class AbstractTestSuite {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    public static final String HOSTNAME = "127.0.0.1";
+    public static final String HOSTNAME = "localhost";
     
     private List<String> databaseToFind = new ArrayList<>();
     private List<String> tableToFind = new ArrayList<>();
@@ -49,7 +49,7 @@ public abstract class AbstractTestSuite {
     
     protected String jdbcURL;
     protected String jdbcUser;
-    protected String jdbcPassword;
+    protected String jdbcPass;
     
     protected String jdbcQueryForDatabaseNames;
     protected String jdbcQueryForTableNames;
@@ -80,7 +80,7 @@ public abstract class AbstractTestSuite {
         PrintWriter out = new PrintWriter(System.out, true);
         DriverManager.setLogWriter(out);
         
-        try (Connection conn = DriverManager.getConnection(jdbcURL, jdbcUser, jdbcPassword)) {
+        try (Connection conn = DriverManager.getConnection(jdbcURL, jdbcUser, jdbcPass)) {
             Statement stmt = conn.createStatement();
             ResultSet res = stmt.executeQuery(jdbcQueryForDatabaseNames);
             while (res.next()) {

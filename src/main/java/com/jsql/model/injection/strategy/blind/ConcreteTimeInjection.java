@@ -11,7 +11,7 @@ import java.util.concurrent.Future;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 /**
@@ -145,9 +145,9 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
     }
 
     @Override
-    public boolean isInjectable() throws StoppedByUserException {
+    public boolean isInjectable() throws StoppedByUserSlidingException {
         if (MediatorModel.model().isStoppedByUser()) {
-            throw new StoppedByUserException();
+            throw new StoppedByUserSlidingException();
         }
 
         if (MediatorModel.model().vendor.instance().sqlTestBlindFirst() == null) {

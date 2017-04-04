@@ -196,6 +196,8 @@ public class DataAccess {
             } else if (!e.getSlidingWindowCurrentRows().equals("")) {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage(), e);
         }
 
         // Parse all data we have retrieved
@@ -210,8 +212,9 @@ public class DataAccess {
                 .matcher(resultToParse);
 
         if (!regexSearch.find()) {
-            throw new InjectionFailureException("Unrecognized name of databases");
+            throw new InjectionFailureException("Name of databases not found");
         }
+        
         regexSearch.reset();
 
         // Build an array of Database objects from the data we have parsed
@@ -274,6 +277,8 @@ public class DataAccess {
             } else if (!e.getSlidingWindowCurrentRows().equals("")) {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage(), e);
         }
 
         // Parse all the data we have retrieved
@@ -287,22 +292,30 @@ public class DataAccess {
         		)
                 .matcher(resultToParse);
         
+        Request requestEndProgress = new Request();
+        requestEndProgress.setMessage(TypeRequest.END_PROGRESS);
+        requestEndProgress.setParameters(database);
+        MediatorModel.model().sendToViews(requestEndProgress);
+        
         if (!regexSearch.find()) {
-            throw new InjectionFailureException("Unrecognized name of tables");
-        } else {
-            regexSearch.reset();
-            
-            // Build an array of Table objects from the data we have parsed
-            while (regexSearch.find()) {
-                String tableName = regexSearch.group(1);
-                String rowCount  = regexSearch.group(2);
-                
-                Table newTable = new Table(tableName, rowCount, database);
-                tables.add(newTable);
-            }
+            throw new InjectionFailureException("Name of tables not found");
         }
         
-        // TODO end progress ?
+        regexSearch.reset();
+        
+        // Build an array of Table objects from the data we have parsed
+        while (regexSearch.find()) {
+            String tableName = regexSearch.group(1);
+            String rowCount  = regexSearch.group(2);
+            
+            Table newTable = new Table(tableName, rowCount, database);
+            tables.add(newTable);
+        }
+        
+        Request requestAddTables = new Request();
+        requestAddTables.setMessage(TypeRequest.ADD_TABLES);
+        requestAddTables.setParameters(tables);
+        MediatorModel.model().sendToViews(requestAddTables);
         
         return tables;
     }
@@ -344,6 +357,8 @@ public class DataAccess {
             } else if (!e.getSlidingWindowCurrentRows().equals("")) {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage(), e);
         }
 
         // TODO send to SQLite
@@ -372,29 +387,29 @@ public class DataAccess {
         		)
                 .matcher(resultToParse);
 
-        if (!regexSearch.find()) {
-            throw new InjectionFailureException("Unrecognized name of columns");
-        } else {
-            regexSearch.reset();
-
-            // Build an array of Column objects from the data we have parsed
-            while (regexSearch.find()) {
-                String nameColumn = regexSearch.group(1);
-
-                Column column = new Column(nameColumn, table);
-                columns.add(column);
-            }
-
-            Request requestAddColumns = new Request();
-            requestAddColumns.setMessage(TypeRequest.ADD_COLUMNS);
-            requestAddColumns.setParameters(columns);
-            MediatorModel.model().sendToViews(requestAddColumns);
-        }
-
         Request requestEndProgress = new Request();
         requestEndProgress.setMessage(TypeRequest.END_INDETERMINATE_PROGRESS);
         requestEndProgress.setParameters(table);
         MediatorModel.model().sendToViews(requestEndProgress);
+
+        if (!regexSearch.find()) {
+            throw new InjectionFailureException("Name of columns not found");
+        }
+
+        regexSearch.reset();
+
+        // Build an array of Column objects from the data we have parsed
+        while (regexSearch.find()) {
+            String nameColumn = regexSearch.group(1);
+
+            Column column = new Column(nameColumn, table);
+            columns.add(column);
+        }
+
+        Request requestAddColumns = new Request();
+        requestAddColumns.setMessage(TypeRequest.ADD_COLUMNS);
+        requestAddColumns.setParameters(columns);
+        MediatorModel.model().sendToViews(requestAddColumns);
         
         return columns;
     }
@@ -433,15 +448,27 @@ public class DataAccess {
          */
         String[] arrayColumns = columnsName.toArray(new String[columnsName.size()]);
 
-        // TODO try catch for partial result
-        String[] pageSource = {""};
-        String resultToParse = new SuspendableGetRows().run(
-            MediatorModel.model().vendor.instance().sqlRows(arrayColumns, database, table),
-            pageSource, 
-            true, 
-            rowCount, 
-            table
-        );
+        String resultToParse = "";
+        try {
+            String[] pageSource = {""};
+            resultToParse = new SuspendableGetRows().run(
+                MediatorModel.model().vendor.instance().sqlRows(arrayColumns, database, table),
+                pageSource, 
+                true, 
+                rowCount, 
+                table
+            );
+        } catch (SlidingException e) {
+            LOGGER.warn(e.getMessage(), e);
+            // Get pieces of data already retreive instead of losing them
+            if (!e.getSlidingWindowAllRows().equals("")) {
+                resultToParse = e.getSlidingWindowAllRows();
+            } else if (!e.getSlidingWindowCurrentRows().equals("")) {
+                resultToParse = e.getSlidingWindowCurrentRows();
+            }
+        } catch (Exception e) {
+            LOGGER.warn(e.getMessage(), e);
+        }
 
         // Parse all the data we have retrieved
         Matcher regexSearch = 
@@ -458,8 +485,9 @@ public class DataAccess {
                 .matcher(resultToParse);
 
         if (!regexSearch.find()) {
-            MediatorModel.model().sendResponseFromSite("Fetching values fails (row count can be inaccurate)", pageSource[0].trim());
+            throw new InjectionFailureException("Fetching values fails");
         }
+        
         regexSearch.reset();
 
         int rowsFound = 0;

@@ -27,7 +27,9 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.util.StringUtil;
-import com.jsql.view.swing.bruteforce.HashBruter;
+import com.jsql.view.swing.bruteforce.Adler32;
+import com.jsql.view.swing.bruteforce.Crc16;
+import com.jsql.view.swing.bruteforce.Crc64;
 import com.jsql.view.swing.manager.ManagerCoder;
 
 /**
@@ -85,10 +87,10 @@ public class ActionCoder implements ActionListener {
             this.coderManager.result.setText(encodedPasswordInString);
             
         } else if ("Adler32".contains(choice)) {
-            this.coderManager.result.setText(HashBruter.generateAdler32(this.coderManager.textInput.getText()));
+            this.coderManager.result.setText(Adler32.generateAdler32(this.coderManager.textInput.getText()));
             
         } else if ("Crc16".contains(choice)) {
-            this.coderManager.result.setText(HashBruter.generateCRC16(this.coderManager.textInput.getText()));
+            this.coderManager.result.setText(Crc16.generateCRC16(this.coderManager.textInput.getText()));
             
         } else if ("Crc32".contains(choice)) {
             byte[] bytes = this.coderManager.textInput.getText().getBytes();
@@ -98,7 +100,7 @@ public class ActionCoder implements ActionListener {
             this.coderManager.result.setText(Long.toString(lngChecksum));
             
         } else if ("Crc64".contains(choice)) {
-            this.coderManager.result.setText(HashBruter.generateCRC64(this.coderManager.textInput.getText().getBytes()));
+            this.coderManager.result.setText(Crc64.generateCRC64(this.coderManager.textInput.getText().getBytes()));
             
         } else if ("Mysql".equals(choice)) {
             try {

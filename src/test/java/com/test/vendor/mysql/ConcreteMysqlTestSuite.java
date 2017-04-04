@@ -7,7 +7,7 @@ public class ConcreteMysqlTestSuite extends AbstractTestSuite {
     public ConcreteMysqlTestSuite () {
         this.jdbcURL = "jdbc:mysql://"+ AbstractTestSuite.HOSTNAME +":3306/perf-test";
         this.jdbcUser = "root";
-        this.jdbcPassword = "test";
+        this.jdbcPass = "test";
         this.jsqlDatabaseName = "perf-test";
         this.jsqlTableName = "table-perf5";
         this.jsqlColumnName = "libelle1";

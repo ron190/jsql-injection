@@ -9,7 +9,7 @@ public class ConcreteIngresTestSuite extends AbstractTestSuite {
         this.jdbcURL = "jdbc:ingres://"+ AbstractTestSuite.HOSTNAME +":II7/demodb";
         
         this.jdbcUser = "";
-        this.jdbcPassword = "";
+        this.jdbcPass = "";
         this.jsqlDatabaseName = "watthieu-x64";
         this.jsqlTableName = "country";
         this.jsqlColumnName = "ct_code";

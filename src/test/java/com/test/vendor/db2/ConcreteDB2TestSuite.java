@@ -7,7 +7,7 @@ public class ConcreteDB2TestSuite extends AbstractTestSuite {
     public ConcreteDB2TestSuite () {
         this.jdbcURL = "jdbc:db2://"+ AbstractTestSuite.HOSTNAME +":50000/DB2";
         this.jdbcUser = "db2admin";
-        this.jdbcPassword = "ec3-benjo";
+        this.jdbcPass = "ec3-benjo";
         this.jsqlDatabaseName = "SYSTOOLS";
         this.jsqlTableName = "POLICY";
         this.jsqlColumnName = "NAME";

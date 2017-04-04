@@ -9,7 +9,7 @@ import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeRequest;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.vendor.Model.Strategy.Error.Method;
 import com.jsql.model.injection.vendor.VendorXml;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -23,6 +23,10 @@ public class ErrorbasedStrategy extends AbstractStrategy {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
+    
+    public String[] tabCapacityMethod;
+    
+    public int indexMethodByUser = 0;
 
     @Override
     public void checkApplicability() {
@@ -122,7 +126,7 @@ public class ErrorbasedStrategy extends AbstractStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, /*TODO parametre inutile? */AbstractSuspendable<String> stoppable) throws StoppedByUserException {
+    public String inject(String sqlQuery, String startPosition, /*TODO parametre inutile? */AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
         return MediatorModel.model().injectWithoutIndex(
             MediatorModel.model().getCharInsertion() +
             MediatorModel.model().vendor.instance().sqlErrorBased(sqlQuery, startPosition)
@@ -148,9 +152,6 @@ public class ErrorbasedStrategy extends AbstractStrategy {
     public String getName() {
         return "Error based";
     }
-    
-    public String[] tabCapacityMethod;
-    public int indexMethodByUser = 0;
     
     public Integer getIndexMethodByUser() {
         return indexMethodByUser;

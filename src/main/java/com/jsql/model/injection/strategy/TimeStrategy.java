@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeRequest;
-import com.jsql.model.exception.StoppedByUserException;
+import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.ConcreteTimeInjection;
 import com.jsql.model.suspendable.AbstractSuspendable;
 
@@ -35,7 +35,7 @@ public class TimeStrategy extends AbstractStrategy {
     private ConcreteTimeInjection timeInjection;
     
     @Override
-    public void checkApplicability() throws StoppedByUserException {
+    public void checkApplicability() throws StoppedByUserSlidingException {
         LOGGER.trace("Time based test...");
         
         this.timeInjection = new ConcreteTimeInjection();
@@ -61,7 +61,7 @@ public class TimeStrategy extends AbstractStrategy {
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserException {
+    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
         return this.timeInjection.inject(
             MediatorModel.model().vendor.instance().sqlTime(sqlQuery, startPosition),
             stoppable

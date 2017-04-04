@@ -11,6 +11,7 @@
 package com.jsql.view.swing.interaction;
 
 import com.jsql.model.injection.strategy.Strategy;
+import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 
 /**

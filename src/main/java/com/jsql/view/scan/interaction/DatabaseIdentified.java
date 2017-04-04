@@ -17,6 +17,7 @@ import javax.swing.ListModel;
 
 import com.jsql.model.bean.util.TypeHeader;
 import com.jsql.model.injection.vendor.Vendor;
+import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.ListItem;
 

@@ -7,7 +7,7 @@ public class ConcreteOracleTestSuite extends AbstractTestSuite {
     public ConcreteOracleTestSuite () {
         this.jdbcURL = "jdbc:oracle:thin:@"+ AbstractTestSuite.HOSTNAME +":1521:xe";
         this.jdbcUser = "system";
-        this.jdbcPassword = "test";
+        this.jdbcPass = "test";
         this.jsqlDatabaseName = "HR";
         this.jsqlTableName = "REGIONS";
         this.jsqlColumnName = "REGION_NAME";

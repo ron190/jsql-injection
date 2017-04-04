@@ -60,7 +60,7 @@ public class MainApplication {
             JFrameView view = new JFrameView();
             MediatorGui.register(view);
             
-            model.addObserver(view);
+            model.addObserver(view.getObserver());
         } catch (HeadlessException e) {
             LOGGER.error("HeadlessException, command line execution in jSQL not supported yet: "+ e, e);
             return;

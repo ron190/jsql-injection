@@ -121,6 +121,10 @@ public final class StringUtil {
     }
     
     public static String detectUtf8Html(String text, Boolean nowrap) {
+        if (text == null) {
+            return "";
+        }
+        
         UniversalDetector detector = new UniversalDetector(null);
         detector.handleData(text.getBytes(), 0, text.length() - 1);
         detector.dataEnd();
@@ -135,6 +139,10 @@ public final class StringUtil {
     }
     
     public static String detectUtf8(String text) {
+        if (text == null) {
+            return "";
+        }
+        
         UniversalDetector detector = new UniversalDetector(null);
         detector.handleData(text.getBytes(), 0, text.length() - 1);
         detector.dataEnd();
