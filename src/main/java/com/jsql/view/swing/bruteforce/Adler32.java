@@ -3,6 +3,10 @@ package com.jsql.view.swing.bruteforce;
 import java.util.zip.Checksum;
 
 public class Adler32 {
+    
+    private Adler32() {
+        
+    }
 
     public static String generateAdler32(String baseString) {
         //Convert string to bytes

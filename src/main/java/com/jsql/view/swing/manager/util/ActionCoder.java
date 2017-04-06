@@ -30,6 +30,7 @@ import com.jsql.util.StringUtil;
 import com.jsql.view.swing.bruteforce.Adler32;
 import com.jsql.view.swing.bruteforce.Crc16;
 import com.jsql.view.swing.bruteforce.Crc64;
+import com.jsql.view.swing.bruteforce.DigestMD4;
 import com.jsql.view.swing.manager.ManagerCoder;
 
 /**
@@ -76,7 +77,7 @@ public class ActionCoder implements ActionListener {
             }
             
         } else if ("Md4".contains(choice)) {
-            MessageDigest md = new MD4();
+            MessageDigest md = new DigestMD4();
 
             String passwordString = new String(this.coderManager.textInput.getText().toCharArray());
             byte[] passwordByte = passwordString.getBytes();

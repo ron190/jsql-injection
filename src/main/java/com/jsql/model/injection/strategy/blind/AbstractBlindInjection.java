@@ -93,18 +93,18 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
 
                 // TODO Get current progress and display
                 StoppedByUserSlidingException e = new StoppedByUserSlidingException();
-                String result = "";
+                StringBuilder result = new StringBuilder();
                 for (char[] c: bytes) {
                     try {
                         int charCode = Integer.parseInt(new String(c), 2);
                         String str = Character.toString((char) charCode);
-                        result += str;
+                        result.append(str);
                     } catch (NumberFormatException err) {
                         // Byte string not fully constructed : 0x1x010x
                         // Ignore
                     }
                 }
-                e.setSlidingWindowAllRows(result); 
+                e.setSlidingWindowAllRows(result.toString()); 
                 throw e;
             }
             
@@ -177,14 +177,14 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
         }
 
         // Build the complete final string from array of bits
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (char[] c: bytes) {
             int charCode = Integer.parseInt(new String(c), 2);
             String str = Character.toString((char) charCode);
-            result += str;
+            result.append(str);
         }
         
-        return result;
+        return result.toString();
     }
 
     /**

@@ -2,6 +2,10 @@ package com.jsql.view.swing.bruteforce;
 
 public class Crc16 {
     
+    private Crc16() {
+        
+    }
+    
     /*************************************************************************
      *  Compilation:  javac CRC16.java
      *  Execution:    java CRC16 s

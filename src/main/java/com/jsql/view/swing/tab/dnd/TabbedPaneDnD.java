@@ -8,8 +8,6 @@ import java.awt.dnd.DragSource;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -29,7 +27,7 @@ import com.jsql.view.swing.action.ActionCloseTabResult;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
 @SuppressWarnings("serial")
-public class DnDTabbedPane extends JTabbedPane {
+public class TabbedPaneDnD extends JTabbedPane {
 	
     /**
      * Log4j logger sent to view.
@@ -52,31 +50,28 @@ public class DnDTabbedPane extends JTabbedPane {
 
     private DropMode dropMode = DropMode.INSERT;
     
-    private transient DropLocation dropLocation;
+    private transient DropLocationDnD dropLocation;
 
-    public DnDTabbedPane() {
+    public TabbedPaneDnD() {
         Handler h = new Handler();
         addMouseListener(h);
         addMouseMotionListener(h);
         
-        addMouseWheelListener(new MouseWheelListener() {
-            @Override
-            public void mouseWheelMoved(MouseWheelEvent e) {
-                JTabbedPane tabPane = (JTabbedPane)e.getSource();
-                
-                int dir = -e.getWheelRotation();
-                int selIndex = tabPane.getSelectedIndex();
-                int maxIndex = tabPane.getTabCount() - 1;
-                
-                if ((selIndex == 0 && dir < 0) || (selIndex == maxIndex && dir > 0)) {
-                    selIndex = maxIndex - selIndex;
-                } else {
-                    selIndex += dir;
-                }
-                
-                if (0 <= selIndex && selIndex < tabPane.getTabCount()) {
-                    tabPane.setSelectedIndex(selIndex);
-                }
+        addMouseWheelListener(mouseWheelEvent -> {
+            JTabbedPane tabPane = (JTabbedPane) mouseWheelEvent.getSource();
+            
+            int dir = -mouseWheelEvent.getWheelRotation();
+            int selIndex = tabPane.getSelectedIndex();
+            int maxIndex = tabPane.getTabCount() - 1;
+            
+            if ((selIndex == 0 && dir < 0) || (selIndex == maxIndex && dir > 0)) {
+                selIndex = maxIndex - selIndex;
+            } else {
+                selIndex += dir;
+            }
+            
+            if (0 <= selIndex && selIndex < tabPane.getTabCount()) {
+                tabPane.setSelectedIndex(selIndex);
             }
         });
         
@@ -86,12 +81,12 @@ public class DnDTabbedPane extends JTabbedPane {
         setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
     }
     
-    public static final class DropLocation extends TransferHandler.DropLocation {
+    public static final class DropLocationDnD extends TransferHandler.DropLocation {
         private final int index;
 
         private boolean isDropable = true;
         
-        private DropLocation(Point p, int index) {
+        private DropLocationDnD(Point p, int index) {
             super(p);
             this.index = index;
         }
@@ -159,16 +154,16 @@ public class DnDTabbedPane extends JTabbedPane {
         }
     }
     
-    public DropLocation dropLocationForPointLocal(Point p) {
+    public DropLocationDnD dropLocationForPointLocal(Point p) {
         switch (dropMode) {
             case INSERT:
                 for (int i = 0 ; i < getTabCount() ; i++) {
                     if (getBoundsAt(i).contains(p)) {
-                        return new DropLocation(p, i);
+                        return new DropLocationDnD(p, i);
                     }
                 }
                 if (getTabAreaBounds().contains(p)) {
-                    return new DropLocation(p, getTabCount());
+                    return new DropLocationDnD(p, getTabCount());
                 }
             break;
             
@@ -179,20 +174,20 @@ public class DnDTabbedPane extends JTabbedPane {
                 assert false : "Unexpected drop mode";
         }
         
-        return new DropLocation(p, -1);
+        return new DropLocationDnD(p, -1);
     }
     
-    public final DropLocation getDropLocation() {
+    public final DropLocationDnD getDropLocation() {
         return dropLocation;
     }
     
-    public Object setDropLocationLocal(TransferHandler.DropLocation location, Object state, boolean isDroping) {
-        DropLocation old = dropLocation;
+    public Object setDropLocationLocal(TransferHandler.DropLocation location, boolean isDroping) {
+        DropLocationDnD old = dropLocation;
         
         if (location == null || !isDroping) {
-            dropLocation = new DropLocation(new Point(), -1);
-        } else if (location instanceof DropLocation) {
-            dropLocation = (DropLocation) location;
+            dropLocation = new DropLocationDnD(new Point(), -1);
+        } else if (location instanceof DropLocationDnD) {
+            dropLocation = (DropLocationDnD) location;
         }
         
         firePropertyChange("dropLocation", old, dropLocation);
@@ -262,7 +257,7 @@ public class DnDTabbedPane extends JTabbedPane {
     }
     
     public Rectangle getDropLineRect() {
-        DropLocation loc = getDropLocation();
+        DropLocationDnD loc = getDropLocation();
         if (loc == null || !loc.isDropable()) {
             return null;
         }
@@ -331,18 +326,18 @@ public class DnDTabbedPane extends JTabbedPane {
         Handler() {
             try {
                 gestureMotionThreshold = DragSource.getDragThreshold();
-            } catch(RuntimeException e) {
+            } catch(ExceptionInInitializerError e) {
                 // Fix #2205
                 LOGGER.error(e, e);
             }
         }
         
-        private void repaintDropLocation(DropLocation loc) {
+        private void repaintDropLocation() {
             Component c = getRootPane().getGlassPane();
             
-            if (c instanceof GhostGlassPane) {
-                GhostGlassPane glassPane = (GhostGlassPane) c;
-                glassPane.setTargetTabbedPane(DnDTabbedPane.this);
+            if (c instanceof PanelGhostGlass) {
+                PanelGhostGlass glassPane = (PanelGhostGlass) c;
+                glassPane.setTargetTabbedPane(TabbedPaneDnD.this);
                 glassPane.repaint();
             }
         }
@@ -353,14 +348,14 @@ public class DnDTabbedPane extends JTabbedPane {
             String propertyName = e.getPropertyName();
             
             if ("dropLocation".equals(propertyName)) {
-                repaintDropLocation(getDropLocation());
+                repaintDropLocation();
             }
         }
         
         // MouseListener
         @Override
         public void mousePressed(MouseEvent e) {
-            DnDTabbedPane src = (DnDTabbedPane) e.getSource();
+            TabbedPaneDnD src = (TabbedPaneDnD) e.getSource();
             if (src.getTabCount() <= 1) {
                 startPt = null;
                 return;
@@ -380,14 +375,14 @@ public class DnDTabbedPane extends JTabbedPane {
             Point tabPt = e.getPoint();
             
             if (startPt != null && Math.sqrt(Math.pow(tabPt.x - startPt.x, 2) + Math.pow(tabPt.y - startPt.y, 2)) > gestureMotionThreshold) {
-                DnDTabbedPane src = (DnDTabbedPane) e.getSource();
+                TabbedPaneDnD src = (TabbedPaneDnD) e.getSource();
                 TransferHandler th = src.getTransferHandler();
                 dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
                 
                 th.exportAsDrag(src, e, TransferHandler.MOVE);
                 lineRect.setRect(0, 0, 0, 0);
                 src.getRootPane().getGlassPane().setVisible(true);
-                src.setDropLocationLocal(new DropLocation(tabPt, -1), null, true);
+                src.setDropLocationLocal(new DropLocationDnD(tabPt, -1), true);
                 startPt = null;
             }
         }
@@ -395,7 +390,7 @@ public class DnDTabbedPane extends JTabbedPane {
         @Override
         public void mouseClicked(MouseEvent e) {
             Point tabPt = e.getPoint();
-            DnDTabbedPane src = (DnDTabbedPane) e.getSource();
+            TabbedPaneDnD src = (TabbedPaneDnD) e.getSource();
             
             int i = src.indexAtLocation(tabPt.x, tabPt.y);
             

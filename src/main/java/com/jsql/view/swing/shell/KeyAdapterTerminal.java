@@ -61,8 +61,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
             final int caretPosition = terminal.getCaretPosition();
     
             // Get current line
-            int lineNumber = 0;
-            lineNumber = terminal.getLineOfOffset(caretPosition);
+            int lineNumber = terminal.getLineOfOffset(caretPosition);
     
             // Cancel every user keyboard input if another command has just been send
             if (terminal.isEdited[0]) {
@@ -91,17 +90,14 @@ public class KeyAdapterTerminal extends KeyAdapter {
                 }
     
                 // SwingUtilities instead of Thread to avoid some flickering
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        // Inside Swing thread to avoid flickering
-                        terminal.append("\n");
-                        if (!"".equals(cmd[0].trim())) {
-                            terminal.setCaretPosition(terminal.getDocument().getLength());
-                            terminal.action(cmd[0], terminal.uuidShell, terminal.urlShell, terminal.loginPassword);
-                        } else {
-                            terminal.reset();
-                        }
+                SwingUtilities.invokeLater(() -> {
+                    // Inside Swing thread to avoid flickering
+                    terminal.append("\n");
+                    if (!"".equals(cmd[0].trim())) {
+                        terminal.setCaretPosition(terminal.getDocument().getLength());
+                        terminal.action(cmd[0], terminal.uuidShell, terminal.urlShell, terminal.loginPassword);
+                    } else {
+                        terminal.reset();
                     }
                 });
     
@@ -150,17 +146,9 @@ public class KeyAdapterTerminal extends KeyAdapter {
                 }
     
             // Go to the left until prompt
-            } else if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {
-                int columnnum = 1;
-                columnnum = caretPosition - terminal.getLineStartOffset(lineNumber);
-
-                if (columnnum <= terminal.prompt.length()) {
-                    keyEvent.consume();
-                }
-    
-            // Delete to the left until prompt
-            } else if (keyEvent.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+            } else if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT || keyEvent.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
                 int columnnum = caretPosition - terminal.getLineStartOffset(lineNumber);
+
                 if (columnnum <= terminal.prompt.length()) {
                     keyEvent.consume();
                 }

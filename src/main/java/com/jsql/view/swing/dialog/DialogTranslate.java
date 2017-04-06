@@ -15,7 +15,6 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -97,12 +96,7 @@ public class DialogTranslate extends JDialog {
         this.setIconImages(HelperUi.getIcons());
 
         // Action for ESCAPE key
-        ActionListener escapeListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DialogTranslate.this.dispose();
-            }
-        };
+        ActionListener escapeListener = actionEvent -> DialogTranslate.this.dispose();
 
         this.getRootPane().registerKeyboardAction(
             escapeListener, 
@@ -127,25 +121,22 @@ public class DialogTranslate extends JDialog {
         
         this.buttonSend.addMouseListener(new FlatButtonMouseAdapter(this.buttonSend));
         
-        this.buttonSend.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (textToTranslate[0].getText().equals(textBeforeChange)) {
-                    LOGGER.warn("Nothing changed, translate a piece of text then click on Send");
-                    return;
-                }
-                
-                String clientDescription = 
-                    // Escape Markdown character # for h1 in .properties
-                    textToTranslate[0].getText()
-                        .replaceAll("\\\\", "\\\\\\\\")
-                        .replaceAll("(?m)^#", "\\\\#")
-                        .replaceAll("<", "\\\\<")
-                ;
-                  
-                GitUtil.sendReport(clientDescription, ShowOnConsole.YES, DialogTranslate.this.language +" translation");
-                DialogTranslate.this.setVisible(false);
+        this.buttonSend.addActionListener(actionEvent -> {
+            if (textToTranslate[0].getText().equals(textBeforeChange)) {
+                LOGGER.warn("Nothing changed, translate a piece of text then click on Send");
+                return;
             }
+            
+            String clientDescription = 
+                // Escape Markdown character # for h1 in .properties
+                textToTranslate[0].getText()
+                    .replaceAll("\\\\", "\\\\\\\\")
+                    .replaceAll("(?m)^#", "\\\\#")
+                    .replaceAll("<", "\\\\<")
+            ;
+              
+            GitUtil.sendReport(clientDescription, ShowOnConsole.YES, DialogTranslate.this.language +" translation");
+            DialogTranslate.this.setVisible(false);
         });
 
         this.setLayout(new BorderLayout());
@@ -234,7 +225,7 @@ public class DialogTranslate extends JDialog {
             	
                 OrderedProperties sourceProperties = new OrderedProperties();       
                 Properties languageProperties = new Properties();       
-                String propertiesToTranslate = "";
+                StringBuilder propertiesToTranslate = new StringBuilder();
                 
                 if (language == Language.OT) {
                     progressBarTranslation.setVisible(false);
@@ -281,15 +272,15 @@ public class DialogTranslate extends JDialog {
                 } finally {
                     for (Entry<String, String> key: sourceProperties.entrySet()) {
                         if (language == Language.OT || languageProperties.size() == 0) {
-                            propertiesToTranslate += "\n\n"+ key.getKey() +"="+ key.getValue().replace("{@|@}","\\\n");
+                            propertiesToTranslate.append("\n\n"+ key.getKey() +"="+ key.getValue().replace("{@|@}","\\\n"));
                         } else {
                             if (!languageProperties.containsKey(key.getKey())) {
-                                propertiesToTranslate += "\n\n"+ key.getKey() +"="+ key.getValue().replace("{@|@}","\\\n");
+                                propertiesToTranslate.append("\n\n"+ key.getKey() +"="+ key.getValue().replace("{@|@}","\\\n"));
                             }
                         }
                     }
                     
-                    textBeforeChange = propertiesToTranslate.trim();
+                    textBeforeChange = propertiesToTranslate.toString().trim();
                     
                     buttonSend.setEnabled(true);
                     textToTranslate[0].setText(textBeforeChange);

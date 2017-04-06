@@ -14,8 +14,6 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.KeyStroke;
-import javax.swing.event.UndoableEditEvent;
-import javax.swing.event.UndoableEditListener;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.undo.CannotRedoException;
@@ -53,12 +51,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
         Document doc = this.getProxy().getDocument();
 
         // Listen for undo and redo events
-        doc.addUndoableEditListener(new UndoableEditListener() {
-            @Override
-            public void undoableEditHappened(UndoableEditEvent evt) {
-                undo.addEdit(evt.getEdit());
-            }
-        });
+        doc.addUndoableEditListener(undoableEditEvent -> undo.addEdit(undoableEditEvent.getEdit()));
 
         // Create an undo action and add it to the text component
         final String undoIdentifier = "Undo";

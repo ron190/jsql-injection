@@ -11,8 +11,8 @@
 package com.jsql.view.swing.list;
 
 import java.awt.ComponentOrientation;
+import java.awt.IllegalComponentStateException;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -29,6 +29,8 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.i18n.I18n;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.view.swing.HelperUi;
@@ -37,6 +39,11 @@ import com.jsql.view.swing.HelperUi;
  * A Mouse action to display a popupmenu on a JList.
  */
 public class MouseAdapterMenuAction extends MouseAdapter {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 	
     /**
      * JList to add popupmenu.
@@ -54,12 +61,12 @@ public class MouseAdapterMenuAction extends MouseAdapter {
     
     /**
      * Displays a popup menu for JList.
-     * @param e Mouse event
+     * @param mouseEvent Mouse event
      */
     @SuppressWarnings("unchecked")
-    public void showPopup(final MouseEvent e) {
-        if (e.isPopupTrigger()) {
-            JList<ListItem> list = (JList<ListItem>) e.getSource();
+    public void showPopup(final MouseEvent mouseEvent) {
+        if (mouseEvent.isPopupTrigger()) {
+            JList<ListItem> list = (JList<ListItem>) mouseEvent.getSource();
 
             JPopupMenu popupMenuList = new JPopupMenu();
 
@@ -148,79 +155,54 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 
             mnNew.addActionListener(new MenuActionNewValue(dndList));
 
-            mnImport.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent arg0) {
-                    int choice = importFileDialog.showOpenDialog(dndList.getTopLevelAncestor());
-                    if (choice == JFileChooser.APPROVE_OPTION) {
-                        dndList.dropPasteFile(
-                            Arrays.asList(importFileDialog.getSelectedFiles()), 
-                            dndList.locationToIndex(e.getPoint())
-                        );
-                    }
+            mnImport.addActionListener(actionEvent -> {
+                int choice = importFileDialog.showOpenDialog(dndList.getTopLevelAncestor());
+                if (choice == JFileChooser.APPROVE_OPTION) {
+                    dndList.dropPasteFile(
+                        Arrays.asList(importFileDialog.getSelectedFiles()), 
+                        dndList.locationToIndex(mouseEvent.getPoint())
+                    );
                 }
             });
 
-            mnCopy.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Action action = dndList.getActionMap().get(TransferHandler.getCopyAction().getValue(Action.NAME));
-                    if (action != null) {
-                        action.actionPerformed(
-                            new ActionEvent(dndList, ActionEvent.ACTION_PERFORMED, null)
-                        );
-                    }
+            mnCopy.addActionListener(actionEvent -> {
+                Action action = dndList.getActionMap().get(TransferHandler.getCopyAction().getValue(Action.NAME));
+                if (action != null) {
+                    action.actionPerformed(
+                        new ActionEvent(dndList, ActionEvent.ACTION_PERFORMED, null)
+                    );
                 }
             });
 
-            mnCut.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Action action = dndList.getActionMap().get(TransferHandler.getCutAction().getValue(Action.NAME));
-                    if (action != null) {
-                        action.actionPerformed(
-                            new ActionEvent(dndList, ActionEvent.ACTION_PERFORMED, null)
-                        );
-                    }
+            mnCut.addActionListener(actionEvent -> {
+                Action action = dndList.getActionMap().get(TransferHandler.getCutAction().getValue(Action.NAME));
+                if (action != null) {
+                    action.actionPerformed(
+                        new ActionEvent(dndList, ActionEvent.ACTION_PERFORMED, null)
+                    );
                 }
             });
 
-            mnPaste.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Action action = dndList.getActionMap().get(TransferHandler.getPasteAction().getValue(Action.NAME));
-                    if (action != null) {
-                        action.actionPerformed(
-                            new ActionEvent(dndList, ActionEvent.ACTION_PERFORMED, null)
-                        );
-                    }
+            mnPaste.addActionListener(actionEvent -> {
+                Action action = dndList.getActionMap().get(TransferHandler.getPasteAction().getValue(Action.NAME));
+                if (action != null) {
+                    action.actionPerformed(
+                        new ActionEvent(dndList, ActionEvent.ACTION_PERFORMED, null)
+                    );
                 }
             });
 
-            mnDelete.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent arg0) {
-                    dndList.removeSelectedItem();
-                }
-            });
+            mnDelete.addActionListener(actionEvent -> dndList.removeSelectedItem());
 
             mnExport.addActionListener(new MenuActionExport(dndList));
 
-            mnRestoreDefault.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent arg0) {
-                    dndList.restore();
-                }
-            });
+            mnRestoreDefault.addActionListener(actionEvent -> dndList.restore());
 
-            mnSelectAll.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent arg0) {
-                    int start = 0;
-                    int end = dndList.getModel().getSize() - 1;
-                    if (end >= 0) {
-                        dndList.setSelectionInterval(start, end);
-                    }
+            mnSelectAll.addActionListener(actionEvent -> {
+                int start = 0;
+                int end = dndList.getModel().getSize() - 1;
+                if (end >= 0) {
+                    dndList.setSelectionInterval(start, end);
                 }
             });
 
@@ -240,19 +222,24 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             
             popupMenuList.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
 
-            popupMenuList.show(
-                list,
-                ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
-                ? e.getX() - popupMenuList.getWidth()
-                : e.getX(), 
-                e.getY()
-            );
+            // Fix #26274: IllegalComponentStateException on show()
+            try {
+                popupMenuList.show(
+                    list,
+                    ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+                    ? mouseEvent.getX() - popupMenuList.getWidth()
+                    : mouseEvent.getX(), 
+                    mouseEvent.getY()
+                );
+            } catch (IllegalComponentStateException e) {
+                LOGGER.error(e, e);
+            }
             
             popupMenuList.setLocation(
                 ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
-                ? e.getXOnScreen() - popupMenuList.getWidth()
-                : e.getXOnScreen(), 
-                e.getYOnScreen()
+                ? mouseEvent.getXOnScreen() - popupMenuList.getWidth()
+                : mouseEvent.getXOnScreen(), 
+                mouseEvent.getYOnScreen()
             );
         }
     }

@@ -84,9 +84,8 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public void layout() {
-        super.layout();
+    public void doLayout() {
+        super.doLayout();
 
         // increase divider width or height
         BasicSplitPaneDivider divider = ((BasicSplitPaneUI) getUI()).getDivider();

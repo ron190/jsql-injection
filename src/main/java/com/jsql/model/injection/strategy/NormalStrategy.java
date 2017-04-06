@@ -2,7 +2,6 @@ package com.jsql.model.injection.strategy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -111,8 +110,8 @@ public class NormalStrategy extends AbstractStrategy {
         // Make url shorter, replace useless indexes from 1337[index]7331 to 1
         String indexesInUrl = MediatorModel.model().getIndexesInUrl().replaceAll("1337(?!"+ StringUtil.join(indexes, "|") +"7331)\\d*7331", "1");
 
-        // Replace correct indexes from 1337[index]7331 to
-        // ==> ${LEAD}[index]######...######${TRAIL}
+        // Replace correct indexes from 1337(index)7331 to
+        // ==> ${LEAD}(index)######...######
         // Search for index that displays the most #
         String performanceQuery = MediatorModel.model().vendor.instance().sqlCapacity(indexes);
         String performanceSourcePage = MediatorModel.model().injectWithoutIndex(performanceQuery);
@@ -144,15 +143,7 @@ public class NormalStrategy extends AbstractStrategy {
         }
 
         // Sort by length of #######...#######
-        Arrays.sort(lengthFields, new Comparator<Integer[]>() {
-        	// TODO java 8
-            @Override
-            public int compare(Integer[] s1, Integer[] s2) {
-                Integer t1 = s1[0];
-                Integer t2 = s2[0];
-                return t1.compareTo(t2);
-            }
-        });
+        Arrays.sort(lengthFields, (Integer[] s1, Integer[] s2) -> s1[0].compareTo(s2[0]));
         
         this.performanceLength = lengthFields[lengthFields.length - 1][0].toString();
 

@@ -16,8 +16,6 @@ import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
-
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.Database;
 import com.jsql.view.swing.HelperUi;
@@ -27,11 +25,6 @@ import com.jsql.view.swing.MediatorGui;
  * Database model displaying the database icon on the label.
  */
 public class NodeModelDatabase extends AbstractNodeModel {
-	
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * Node as a database model.

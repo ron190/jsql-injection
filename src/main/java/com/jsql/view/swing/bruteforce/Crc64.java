@@ -2,6 +2,10 @@ package com.jsql.view.swing.bruteforce;
 
 public class Crc64 {
     
+    private Crc64() {
+        
+    }
+    
     /*******************************************************************************
      * Copyright (c) 2009, 2012 Mountainminds GmbH & Co. KG and Contributors
      * All rights reserved. This program and the accompanying materials

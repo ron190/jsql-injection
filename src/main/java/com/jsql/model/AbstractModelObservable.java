@@ -58,12 +58,9 @@ public abstract class AbstractModelObservable extends Observable {
      * @param interaction The evenement bean corresponding to the interaction
      */
     public void sendToViews(final Request interaction) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                AbstractModelObservable.this.setChanged();
-                AbstractModelObservable.this.notifyObservers(interaction);
-            }
+        SwingUtilities.invokeLater(() -> {
+            AbstractModelObservable.this.setChanged();
+            AbstractModelObservable.this.notifyObservers(interaction);
         });
     }
 

@@ -356,10 +356,10 @@ public final class ShadowPopup extends Popup {
                     JComponent c = (JComponent) layeredPane;
                     boolean doubleBuffered = c.isDoubleBuffered();
                     c.setDoubleBuffered(false);
+                    // Fix #3127, Fix #6772 Multiple Exceptions on paintAll()
                     try {
                         c.paintAll(g);
-                    } catch(IllegalArgumentException e) {
-                        // Fix #3127
+                    } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
                         LOGGER.error(e, e);
                     }
                     c.setDoubleBuffered(doubleBuffered);

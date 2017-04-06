@@ -1,5 +1,6 @@
 package com.jsql;
 
+import java.awt.AWTError;
 import java.awt.HeadlessException;
 import java.net.URISyntaxException;
 
@@ -63,6 +64,10 @@ public class MainApplication {
             model.addObserver(view.getObserver());
         } catch (HeadlessException e) {
             LOGGER.error("HeadlessException, command line execution in jSQL not supported yet: "+ e, e);
+            return;
+        } catch (AWTError e) {
+            // Fix #22668: Assistive Technology not found
+            LOGGER.error("Java Access Bridge missing or corrupt, check your access bridge definition in JDK_HOME/jre/lib/accessibility.properties: "+ e, e);
             return;
         }
         

@@ -75,12 +75,7 @@ public class LightScrollPane extends JComponent {
             @Override
             public void layoutContainer(Container parent) {
                 viewport.setBounds(0, 0, getWidth(), getHeight() - 1);
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        displayScrollBarsIfNecessary(viewport);
-                    }
-                });
+                SwingUtilities.invokeLater(() -> LightScrollPane.this.displayScrollBarsIfNecessary(viewport));
             }
         });
         

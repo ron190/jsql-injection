@@ -1,7 +1,7 @@
 package com.jsql.model.injection.vendor;
 
 
-public abstract class AbstractVendorDefault extends AbstractVendor {
+public abstract class AbstractVendorDefault implements AbstractVendor {
     
     protected Model xmlModel;
 	

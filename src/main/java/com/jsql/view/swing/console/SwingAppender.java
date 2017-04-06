@@ -72,12 +72,11 @@ public class SwingAppender extends WriterAppender {
      */
     @Override
     public void append(final LoggingEvent event) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                insertText(layout.format(event), event.getLevel(), event.getThrowableInformation());
-            }
-        });
+        SwingUtilities.invokeLater(() -> this.insertText(
+            layout.format(event), 
+            event.getLevel(), 
+            event.getThrowableInformation()
+        ));
     }
 
     /**
@@ -140,7 +139,7 @@ public class SwingAppender extends WriterAppender {
                 break;
                 
             case Level.FATAL_INT:
-                // Ignore exception during report of exception
+                // Ignore exception
                 break;
                 
             case Level.ALL_INT:

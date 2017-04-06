@@ -191,9 +191,9 @@ public class DataAccess {
         } catch (SlidingException e) {
             LOGGER.warn(e.getMessage(), e);
             // Get pieces of data already retreive instead of losing them
-            if (!e.getSlidingWindowAllRows().equals("")) {
+            if (!"".equals(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
-            } else if (!e.getSlidingWindowCurrentRows().equals("")) {
+            } else if (!"".equals(e.getSlidingWindowCurrentRows())) {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
         } catch (Exception e) {
@@ -272,9 +272,9 @@ public class DataAccess {
         } catch (SlidingException e) {
             LOGGER.warn(e.getMessage(), e);
             // Get pieces of data already retreive instead of losing them
-            if (!e.getSlidingWindowAllRows().equals("")) {
+            if (!"".equals(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
-            } else if (!e.getSlidingWindowCurrentRows().equals("")) {
+            } else if (!"".equals(e.getSlidingWindowCurrentRows())) {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
         } catch (Exception e) {
@@ -352,9 +352,9 @@ public class DataAccess {
         } catch (SlidingException e) {
             LOGGER.warn(e.getMessage(), e);
             // Get pieces of data already retreive instead of losing them
-            if (!e.getSlidingWindowAllRows().equals("")) {
+            if (!"".equals(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
-            } else if (!e.getSlidingWindowCurrentRows().equals("")) {
+            } else if (!"".equals(e.getSlidingWindowCurrentRows())) {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
         } catch (Exception e) {
@@ -364,16 +364,16 @@ public class DataAccess {
         // TODO send to SQLite
         // Build SQLite columns
         if (MediatorModel.model().vendor == Vendor.SQLITE) {
-            String resultSQLite = "";
+            StringBuilder resultSQLite = new StringBuilder();
             String resultTmp = resultToParse.replaceFirst(".+?\\(", "").trim().replaceAll("\\)$", "");
             resultTmp = resultTmp.replaceAll("\\(.+?\\)", "");
             for (String columnNameAndType: resultTmp.split(",")) {
                 String columnName = columnNameAndType.trim().split(" ")[0];
                 if (!"CONSTRAINT".equals(columnName) && !"UNIQUE".equals(columnName)) {
-                    resultSQLite += (char) 4 + columnName + (char) 5 + "0" + (char) 4 + (char) 6;
+                    resultSQLite.append((char) 4 + columnName + (char) 5 + "0" + (char) 4 + (char) 6);
                 }
             }
-            resultToParse = resultSQLite;
+            resultToParse = resultSQLite.toString();
         }
         
         // Parse all the data we have retrieved
@@ -461,9 +461,9 @@ public class DataAccess {
         } catch (SlidingException e) {
             LOGGER.warn(e.getMessage(), e);
             // Get pieces of data already retreive instead of losing them
-            if (!e.getSlidingWindowAllRows().equals("")) {
+            if (!"".equals(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
-            } else if (!e.getSlidingWindowCurrentRows().equals("")) {
+            } else if (!"".equals(e.getSlidingWindowCurrentRows())) {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
         } catch (Exception e) {
@@ -500,7 +500,7 @@ public class DataAccess {
             int instances = Integer.parseInt(regexSearch.group(2));
 
             listValues.add(new ArrayList<String>());
-            listValues.get(rowsFound).add(rowsFound + 1 +"");
+            listValues.get(rowsFound).add(Integer.toString(rowsFound + 1));
             listValues.get(rowsFound).add("x"+ instances);
             for (String cellValue: values.split("\\x7F", -1)) {
                 listValues.get(rowsFound).add(cellValue);

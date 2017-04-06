@@ -73,6 +73,7 @@ public class ActionLoadStop implements ActionListener {
         } else {
             AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.nodeModel.elementDatabase);
             
+            // Fix #21394: NullPointerException on stop()
             if (suspendableTask != null) {
                 suspendableTask.stop();
             }

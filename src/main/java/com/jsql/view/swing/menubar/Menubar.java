@@ -58,8 +58,8 @@ import com.jsql.view.swing.action.ActionSaveTab;
 import com.jsql.view.swing.dialog.DialogAbout;
 import com.jsql.view.swing.dialog.DialogTranslate;
 import com.jsql.view.swing.dialog.Language;
-import com.jsql.view.swing.dialog.PanelPreferences;
 import com.jsql.view.swing.interaction.CreateTab;
+import com.jsql.view.swing.panel.PanelPreferences;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.sql.SqlEngine;
 import com.jsql.view.swing.tab.TabHeader;
@@ -146,12 +146,7 @@ public class Menubar extends JMenuBar {
         JMenuItem itemExit = new JMenuItem(I18n.valueByKey("MENUBAR_FILE_EXIT"), 'x');
         I18n.addComponentForKey("MENUBAR_FILE_EXIT", itemExit);
         itemExit.setIcon(HelperUi.ICON_EMPTY);
-        itemExit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                MediatorGui.frame().dispose();
-            }
-        });
+        itemExit.addActionListener(actionEvent -> MediatorGui.frame().dispose());
 
         ActionHandler.addShortcut(Menubar.this);
 
@@ -170,14 +165,11 @@ public class Menubar extends JMenuBar {
         I18n.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
         itemCopy.setIcon(HelperUi.ICON_EMPTY);
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
-        itemCopy.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (MediatorGui.tabResults().getSelectedComponent() instanceof PanelTable) {
-                    ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).copyTable();
-                } else if (MediatorGui.tabResults().getSelectedComponent() instanceof JScrollPane) {
-                    ((JTextArea) ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView()).copy();
-                }
+        itemCopy.addActionListener(actionEvent -> {
+            if (MediatorGui.tabResults().getSelectedComponent() instanceof PanelTable) {
+                ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).copyTable();
+            } else if (MediatorGui.tabResults().getSelectedComponent() instanceof JScrollPane) {
+                ((JTextArea) ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView()).copy();
             }
         });
 
@@ -185,16 +177,13 @@ public class Menubar extends JMenuBar {
         I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
         itemSelectAll.setIcon(HelperUi.ICON_EMPTY);
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-        itemSelectAll.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (MediatorGui.tabResults().getSelectedComponent() instanceof PanelTable) {
-                    ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).selectTable();
-                // Textarea need focus to select all
-                } else if (MediatorGui.tabResults().getSelectedComponent() instanceof JScrollPane) {
-                    ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView().requestFocusInWindow();
-                    ((JTextArea) ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView()).selectAll();
-                }
+        itemSelectAll.addActionListener(actionEvent -> {
+            if (MediatorGui.tabResults().getSelectedComponent() instanceof PanelTable) {
+                ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).selectTable();
+            // Textarea need focus to select all
+            } else if (MediatorGui.tabResults().getSelectedComponent() instanceof JScrollPane) {
+                ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView().requestFocusInWindow();
+                ((JTextArea) ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView()).selectAll();
             }
         });
 
@@ -223,24 +212,14 @@ public class Menubar extends JMenuBar {
                 Locale.getDefault().getLanguage()
             )
         );
-        itemEnglish.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Menubar.this.switchLocale(Locale.ROOT);                
-            }
-        });
+        itemEnglish.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.ROOT));
         
         itemArab = new JRadioButtonMenuItem(
             "<html><span style=\"font-family:'Monospace'\">"+ new Locale("ar").getDisplayLanguage(new Locale("ar")) +"</span></html>",
             HelperUi.ICON_FLAG_AR, 
             new Locale("ar").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        itemArab.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Menubar.this.switchLocale(new Locale("ar"));                
-            }
-        });
+        itemArab.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("ar")));
         itemArab.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         
         itemRussian = new JRadioButtonMenuItem(
@@ -248,132 +227,77 @@ public class Menubar extends JMenuBar {
             HelperUi.ICON_FLAG_RU, 
             new Locale("ru").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        itemRussian.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Menubar.this.switchLocale(new Locale("ru"));                
-            }
-        });
+        itemRussian.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("ru")));
         
         itemCzech = new JRadioButtonMenuItem(
             new Locale("cs").getDisplayLanguage(new Locale("cs")),
             HelperUi.ICON_FLAG_CS, 
             new Locale("cs").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        itemCzech.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Menubar.this.switchLocale(new Locale("cs"));                
-            }
-        });
+        itemCzech.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("cs")));
         
         itemItalian = new JRadioButtonMenuItem(
             new Locale("it").getDisplayLanguage(new Locale("it")),
             HelperUi.ICON_FLAG_IT, 
             new Locale("it").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        itemItalian.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Menubar.this.switchLocale(new Locale("it"));                
-            }
-        });
+        itemItalian.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("it")));
         
         itemIndonesian = new JRadioButtonMenuItem(
             new Locale("in", "ID").getDisplayLanguage(new Locale("in", "ID")),
             HelperUi.ICON_FLAG_IN_ID, 
             new Locale("in", "ID").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        itemIndonesian.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Menubar.this.switchLocale(new Locale("in", "ID"));                
-            }
-        });
+        itemIndonesian.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("in", "ID")));
         
         itemDutch = new JRadioButtonMenuItem(
             new Locale("nl").getDisplayLanguage(new Locale("nl")),
             HelperUi.ICON_FLAG_NL, 
             new Locale("nl").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        itemDutch.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Menubar.this.switchLocale(new Locale("nl"));                
-            }
-        });
+        itemDutch.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("nl")));
         
         itemGerman = new JRadioButtonMenuItem(
             new Locale("de").getDisplayLanguage(new Locale("de")),
             HelperUi.ICON_FLAG_DE, 
             new Locale("de").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        itemGerman.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Menubar.this.switchLocale(new Locale("de"));                
-            }
-        });
+        itemGerman.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("de")));
         
         itemTurkish = new JRadioButtonMenuItem(
             new Locale("tr").getDisplayLanguage(new Locale("tr")),
             HelperUi.ICON_FLAG_TR, 
             new Locale("tr").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        itemTurkish.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Menubar.this.switchLocale(new Locale("tr"));                
-            }
-        });
+        itemTurkish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("tr")));
         
         itemFrench = new JRadioButtonMenuItem(
             new Locale("fr").getDisplayLanguage(new Locale("fr")),
             HelperUi.ICON_FLAG_FR, 
             new Locale("fr").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        itemFrench.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Menubar.this.switchLocale(new Locale("fr"));                
-            }
-        });
+        itemFrench.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("fr")));
         
         itemSpanish = new JRadioButtonMenuItem(
             new Locale("es").getDisplayLanguage(new Locale("es")),
             HelperUi.ICON_FLAG_ES, 
             new Locale("es").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        itemSpanish.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Menubar.this.switchLocale(new Locale("es"));                
-            }
-        });
+        itemSpanish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("es")));
         
         itemPortuguese = new JRadioButtonMenuItem(
             new Locale("pt").getDisplayLanguage(new Locale("pt")),
             HelperUi.ICON_FLAG_PT, 
             new Locale("pt").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        itemPortuguese.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Menubar.this.switchLocale(new Locale("pt"));                
-            }
-        });
+        itemPortuguese.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("pt")));
         
         itemChinese = new JRadioButtonMenuItem(
             "<html><span style=\"font-family:'Monospace'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span></html>",
             HelperUi.ICON_FLAG_ZH, 
             new Locale("zh").getLanguage().equals(Locale.getDefault().getLanguage())
         );
-        itemChinese.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Menubar.this.switchLocale(new Locale("zh"));                
-            }
-        });
+        itemChinese.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("zh")));
         
         menuTranslation.add(itemEnglish);
         menuTranslation.add(itemChinese);
@@ -571,51 +495,39 @@ public class Menubar extends JMenuBar {
             );
         }
 
-        chunkMenu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (chunkMenu.isSelected()) {
-                    MediatorGui.panelConsoles().insertChunkTab();
-                } else {
-                    // Works even with i18n label
-                    MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab("Chunk"));
-                }
+        chunkMenu.addActionListener(actionEvent -> {
+            if (chunkMenu.isSelected()) {
+                MediatorGui.panelConsoles().insertChunkTab();
+            } else {
+                // Works even with i18n label
+                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab("Chunk"));
             }
         });
         
-        binaryMenu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (binaryMenu.isSelected()) {
-                    MediatorGui.panelConsoles().insertBinaryTab();
-                } else {
-                    // Works even with i18n label
-                    MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab("Boolean"));
-                }
+        binaryMenu.addActionListener(actionEvent -> {
+            if (binaryMenu.isSelected()) {
+                MediatorGui.panelConsoles().insertBinaryTab();
+            } else {
+                // Works even with i18n label
+                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab("Boolean"));
             }
         });
         
-        networkMenu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (networkMenu.isSelected()) {
-                    MediatorGui.panelConsoles().insertNetworkTab();
-                } else {
-                    // Works even with i18n label
-                    MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab("Network"));
-                }
+        networkMenu.addActionListener(actionEvent -> {
+            if (networkMenu.isSelected()) {
+                MediatorGui.panelConsoles().insertNetworkTab();
+            } else {
+                // Works even with i18n label
+                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab("Network"));
             }
         });
         
-        javaDebugMenu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (javaDebugMenu.isSelected()) {
-                    MediatorGui.panelConsoles().insertJavaDebugTab();
-                } else {
-                    // Works even with i18n label
-                    MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab("Java"));
-                }
+        javaDebugMenu.addActionListener(actionEvent -> {
+            if (javaDebugMenu.isSelected()) {
+                MediatorGui.panelConsoles().insertJavaDebugTab();
+            } else {
+                // Works even with i18n label
+                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab("Java"));
             }
         });
 
@@ -636,12 +548,7 @@ public class Menubar extends JMenuBar {
         for (int position = 0 ; position < menuView.getItemCount() ; position++) {
             final JMenuItem itemMenu = menuView.getItem(position);
             final int positionFinal = position;
-            itemMenu.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent arg0) {
-                    MediatorGui.tabManagers().setSelectedIndex(positionFinal);
-                }
-            });
+            itemMenu.addActionListener(actionEvent -> MediatorGui.tabManagers().setSelectedIndex(positionFinal));
         }
 
         JMenuItem preferences = new JMenuItem(I18n.valueByKey("MENUBAR_PREFERENCES"), 'P');
@@ -649,81 +556,73 @@ public class Menubar extends JMenuBar {
         I18n.addComponentForKey("MENUBAR_PREFERENCES", preferences);
         
         // Render the Preferences dialog behind scene
-        preferences.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                for (int i = 0; i < MediatorGui.tabResults().getTabCount() ; i++) {
-                    if (MediatorGui.tabResults().getTitleAt(i).equals("Preferences")) {
-                        MediatorGui.tabResults().setSelectedIndex(i);
-                        return;
-                    }
+        preferences.addActionListener(actionEvent -> {
+            for (int i = 0; i < MediatorGui.tabResults().getTabCount() ; i++) {
+                if ("Preferences".equals(MediatorGui.tabResults().getTitleAt(i))) {
+                    MediatorGui.tabResults().setSelectedIndex(i);
+                    return;
                 }
-                
-                CreateTab.initializeSplitOrientation();
-                
-                AdjustmentListener singleItemScroll = new AdjustmentListener() {
-                    @Override
-                    public void adjustmentValueChanged(AdjustmentEvent e) {
-                        // The user scrolled the List (using the bar, mouse wheel or something else):
-                        if (e.getAdjustmentType() == AdjustmentEvent.TRACK){
-                            // Jump to the next "block" (which is a row".
-                            e.getAdjustable().setBlockIncrement(100);
-                            e.getAdjustable().setUnitIncrement(100);
-                        }
-                    }
-                };
-
-                LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, new PanelPreferences());
-                scroller.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
-                
-                MediatorGui.tabResults().addTab("Preferences", scroller);
-
-                // Focus on the new tab
-                MediatorGui.tabResults().setSelectedComponent(scroller);
-
-                // Create a custom tab header with close button
-                TabHeader header = new TabHeader("Preferences ", HelperUi.ICON_FILE_SERVER);
-
-                MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), "Preferences");
-
-                // Apply the custom header to the tab
-                MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(scroller), header);
             }
+            
+            CreateTab.initializeSplitOrientation();
+            
+            AdjustmentListener singleItemScroll = adjustmentEvent -> {
+                // The user scrolled the List (using the bar, mouse wheel or something else):
+                if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK){
+                    // Jump to the next "block" (which is a row".
+                    adjustmentEvent.getAdjustable().setBlockIncrement(100);
+                    adjustmentEvent.getAdjustable().setUnitIncrement(100);
+                }
+            };
+
+            LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, new PanelPreferences());
+            scroller.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
+            
+            MediatorGui.tabResults().addTab("Preferences", scroller);
+
+            // Focus on the new tab
+            MediatorGui.tabResults().setSelectedComponent(scroller);
+
+            // Create a custom tab header with close button
+            TabHeader header = new TabHeader("Preferences ", HelperUi.ICON_FILE_SERVER);
+
+            MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), "Preferences");
+
+            // Apply the custom header to the tab
+            MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(scroller), header);
         });
-        menuWindows.add(preferences);
         
         JMenuItem sqlEngine = new JMenuItem("SQL Engine");
         
         // Render the Preferences dialog behind scene
-        sqlEngine.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                for (int i = 0; i < MediatorGui.tabResults().getTabCount() ; i++) {
-                    if (MediatorGui.tabResults().getTitleAt(i).equals("SQL Engine")) {
-                        MediatorGui.tabResults().setSelectedIndex(i);
-                        return;
-                    }
+        sqlEngine.addActionListener(actionEvent -> {
+            for (int i = 0; i < MediatorGui.tabResults().getTabCount() ; i++) {
+                if ("SQL Engine".equals(MediatorGui.tabResults().getTitleAt(i))) {
+                    MediatorGui.tabResults().setSelectedIndex(i);
+                    return;
                 }
-                
-                CreateTab.initializeSplitOrientation();
-
-                SqlEngine panelSqlEngine = new SqlEngine();
-                
-                MediatorGui.tabResults().addTab("SQL Engine", panelSqlEngine);
-
-                // Focus on the new tab
-                MediatorGui.tabResults().setSelectedComponent(panelSqlEngine);
-
-                // Create a custom tab header with close button
-                TabHeader header = new TabHeader("SQL Engine ", HelperUi.ICON_FILE_SERVER);
-
-                MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(panelSqlEngine), "SQL Engine");
-
-                // Apply the custom header to the tab
-                MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(panelSqlEngine), header);
             }
+            
+            CreateTab.initializeSplitOrientation();
+
+            SqlEngine panelSqlEngine = new SqlEngine();
+            
+            MediatorGui.tabResults().addTab("SQL Engine", panelSqlEngine);
+
+            // Focus on the new tab
+            MediatorGui.tabResults().setSelectedComponent(panelSqlEngine);
+
+            // Create a custom tab header with close button
+            TabHeader header = new TabHeader("SQL Engine ", HelperUi.ICON_FILE_SERVER);
+
+            MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(panelSqlEngine), "SQL Engine");
+
+            // Apply the custom header to the tab
+            MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(panelSqlEngine), header);
         });
+        
         menuWindows.add(sqlEngine);
+        menuWindows.add(preferences);
 
         // Help Menu > about
         JMenu menuHelp = new JMenu(I18n.valueByKey("MENUBAR_HELP"));
@@ -738,18 +637,15 @@ public class Menubar extends JMenuBar {
 
         // Render the About dialog behind scene
         final DialogAbout aboutDiag = new DialogAbout();
-        itemHelp.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                // Center the dialog
-                if (!aboutDiag.isVisible()) {
-                    aboutDiag.reinit();
-                    // needed here for button focus
-                    aboutDiag.setVisible(true);
-                    aboutDiag.requestButtonFocus();
-                }
+        itemHelp.addActionListener(actionEvent -> {
+            // Center the dialog
+            if (!aboutDiag.isVisible()) {
+                aboutDiag.reinit();
+                // needed here for button focus
                 aboutDiag.setVisible(true);
+                aboutDiag.requestButtonFocus();
             }
+            aboutDiag.setVisible(true);
         });
         itemUpdate.addActionListener(new ActionCheckUpdate());
         
@@ -763,40 +659,37 @@ public class Menubar extends JMenuBar {
         JMenuItem itemReportIssue = new JMenuItem(I18n.valueByKey("MENUBAR_COMMUNITY_REPORTISSUE"), 'R');
         itemReportIssue.setIcon(HelperUi.ICON_EMPTY);
         I18n.addComponentForKey("MENUBAR_COMMUNITY_REPORTISSUE", itemReportIssue);
-        itemReportIssue.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                JPanel panel = new JPanel(new BorderLayout());
-                final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
-                textarea.setText("Username: -\n\nSubject: -\n\nDescription: -");
-                panel.add(new JLabel("Describe your issue or the bug you encountered " + ":"), BorderLayout.NORTH);
-                panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
-                
-                panel.setPreferredSize(new Dimension(400, 250));
-                panel.setMinimumSize(new Dimension(400, 250));
-                
-                textarea.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mousePressed(MouseEvent e) {
-                        super.mousePressed(e);
-                        textarea.requestFocusInWindow();
-                    }
-                });
-
-                int result = JOptionPane.showOptionDialog(
-                    MediatorGui.frame(),
-                    panel,
-                    "Report an issue or a bug",
-                    JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.QUESTION_MESSAGE,
-                    null,
-                    new String[]{"Report", I18n.valueByKey("LIST_ADD_VALUE_CANCEL")},
-                    I18n.valueByKey("LIST_ADD_VALUE_CANCEL")
-                );
-
-                if (!"".equals(textarea.getText()) && result == JOptionPane.YES_OPTION) {
-                    GitUtil.sendReport(textarea.getText(), ShowOnConsole.YES, "Report");
+        itemReportIssue.addActionListener(actionEvent -> {
+            JPanel panel = new JPanel(new BorderLayout());
+            final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
+            textarea.setText("Username: -\n\nSubject: -\n\nDescription: -");
+            panel.add(new JLabel("Describe your issue or the bug you encountered " + ":"), BorderLayout.NORTH);
+            panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
+            
+            panel.setPreferredSize(new Dimension(400, 250));
+            panel.setMinimumSize(new Dimension(400, 250));
+            
+            textarea.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    super.mousePressed(e);
+                    textarea.requestFocusInWindow();
                 }
+            });
+
+            int result = JOptionPane.showOptionDialog(
+                MediatorGui.frame(),
+                panel,
+                "Report an issue or a bug",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                new String[]{"Report", I18n.valueByKey("LIST_ADD_VALUE_CANCEL")},
+                I18n.valueByKey("LIST_ADD_VALUE_CANCEL")
+            );
+
+            if (!"".equals(textarea.getText()) && result == JOptionPane.YES_OPTION) {
+                GitUtil.sendReport(textarea.getText(), ShowOnConsole.YES, "Report");
             }
         });
         

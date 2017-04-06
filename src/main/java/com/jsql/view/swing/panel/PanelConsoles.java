@@ -46,10 +46,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.OverlayLayout;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -65,6 +61,8 @@ import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.console.JavaConsoleAdapter;
 import com.jsql.view.swing.console.SimpleConsoleAdapter;
 import com.jsql.view.swing.console.SwingAppender;
+import com.jsql.view.swing.panel.util.HTMLEditorKitTextPaneWrap;
+import com.jsql.view.swing.panel.util.SplitHorizontalTopBottom;
 import com.jsql.view.swing.popupmenu.JPopupMenuTable;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -243,20 +241,15 @@ public class PanelConsoles extends JPanel {
         
         final TableCellRenderer tcrOs = this.networkTable.getTableHeader().getDefaultRenderer();
         this.networkTable.getTableHeader().setDefaultRenderer(
-            new TableCellRenderer() {
-                @Override
-                public Component getTableCellRendererComponent(
-                    JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
-                ) {
-                    JLabel lbl = (JLabel) tcrOs.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                    lbl.setBorder(
-                        BorderFactory.createCompoundBorder(
-                            BorderFactory.createMatteBorder(0, 0, 1, 1, Color.LIGHT_GRAY), 
-                            BorderFactory.createEmptyBorder(0, 5, 0, 5)
-                        )
-                    );
-                    return lbl;
-                }
+            (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
+                JLabel lbl = (JLabel) tcrOs.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                lbl.setBorder(
+                    BorderFactory.createCompoundBorder(
+                        BorderFactory.createMatteBorder(0, 0, 1, 1, Color.LIGHT_GRAY), 
+                        BorderFactory.createEmptyBorder(0, 5, 0, 5)
+                    )
+                );
+                return lbl;
             }
         );
         
@@ -264,15 +257,12 @@ public class PanelConsoles extends JPanel {
         scroller.scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         scroller.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         
-        AdjustmentListener singleItemScroll = new AdjustmentListener() {
-            @Override
-            public void adjustmentValueChanged(AdjustmentEvent e) {
-                // The user scrolled the List (using the bar, mouse wheel or something else):
-                if (e.getAdjustmentType() == AdjustmentEvent.TRACK){
-                    // Jump to the next "block" (which is a row".
-                    e.getAdjustable().setBlockIncrement(100);
-                    e.getAdjustable().setUnitIncrement(100);
-                }
+        AdjustmentListener singleItemScroll = adjustmentEvent -> {
+            // The user scrolled the List (using the bar, mouse wheel or something else):
+            if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK){
+                // Jump to the next "block" (which is a row".
+                adjustmentEvent.getAdjustable().setBlockIncrement(100);
+                adjustmentEvent.getAdjustable().setUnitIncrement(100);
             }
         };
 
@@ -316,28 +306,25 @@ public class PanelConsoles extends JPanel {
         
         this.networkTable.getColumnModel().getColumn(1).setPreferredWidth(500);
         
-        this.networkTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent event) {
-                // prevent double event
-                if (!event.getValueIsAdjusting() && PanelConsoles.this.networkTable.getSelectedRow() > -1) {
-                    HttpHeader networkData = listHttpHeader.get(PanelConsoles.this.networkTable.getSelectedRow());
-                    networkTabHeader.setText(networkData.getHeader());
-                    networkTabParam.setText(networkData.getPost());
-                    networkTabUrl.setText(networkData.getUrl());
-                    
-                    networkTabResponse.setText("");
-                    for(String key: networkData.getResponse().keySet()) {
-                        networkTabResponse.append(key + ": " + networkData.getResponse().get(key));
-                        networkTabResponse.append("\n");
-                    }
-                    
-                    networkTabSource.setText(StringUtil.detectUtf8Html(networkData.getSource()));
-                    
-                    // Reset EditorKit to disable previous document effect
-                    networkTabPreview.getEditorKit().createDefaultDocument();
-                    networkTabPreview.setText("<html>"+ StringUtil.detectUtf8(networkData.getSource()) + "</html>");
+        this.networkTable.getSelectionModel().addListSelectionListener(event -> {
+            // prevent double event
+            if (!event.getValueIsAdjusting() && PanelConsoles.this.networkTable.getSelectedRow() > -1) {
+                HttpHeader networkData = listHttpHeader.get(PanelConsoles.this.networkTable.getSelectedRow());
+                networkTabHeader.setText(networkData.getHeader());
+                networkTabParam.setText(networkData.getPost());
+                networkTabUrl.setText(networkData.getUrl());
+                
+                networkTabResponse.setText("");
+                for(String key: networkData.getResponse().keySet()) {
+                    networkTabResponse.append(key + ": " + networkData.getResponse().get(key));
+                    networkTabResponse.append("\n");
                 }
+                
+                networkTabSource.setText(StringUtil.detectUtf8Html(networkData.getSource()));
+                
+                // Reset EditorKit to disable previous document effect
+                networkTabPreview.getEditorKit().createDefaultDocument();
+                networkTabPreview.setText("<html>"+ StringUtil.detectUtf8(networkData.getSource()) + "</html>");
             }
         });
 
@@ -374,16 +361,13 @@ public class PanelConsoles extends JPanel {
             this.insertBinaryTab();
         }
 
-        MediatorGui.tabConsoles().addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent arg0) {
-                JTabbedPane tabs = MediatorGui.tabConsoles();
-                if (tabs.getSelectedIndex() > -1) {
-                    Component currentTabHeader = tabs.getTabComponentAt(tabs.getSelectedIndex());
-                    if (currentTabHeader != null) {
-                        currentTabHeader.setFont(currentTabHeader.getFont().deriveFont(Font.PLAIN));
-                        currentTabHeader.setForeground(Color.BLACK);
-                    }
+        MediatorGui.tabConsoles().addChangeListener(changeEvent -> {
+            JTabbedPane tabs = MediatorGui.tabConsoles();
+            if (tabs.getSelectedIndex() > -1) {
+                Component currentTabHeader = tabs.getTabComponentAt(tabs.getSelectedIndex());
+                if (currentTabHeader != null) {
+                    currentTabHeader.setFont(currentTabHeader.getFont().deriveFont(Font.PLAIN));
+                    currentTabHeader.setForeground(Color.BLACK);
                 }
             }
         });

@@ -110,7 +110,7 @@ public class I18n {
      */
     public static void checkCurrentLanguage() throws URISyntaxException {
         URL path = I18n.class.getResource("/com/jsql/i18n/jsql_"+ Locale.getDefault().getLanguage() +".properties");
-        if (!Locale.getDefault().getLanguage().equals("en") && path == null) { 
+        if (!"en".equals(Locale.getDefault().getLanguage()) && path == null) { 
             String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
             LOGGER.debug(
                 "Language "+ languageHost +" is not supported, "

@@ -13,8 +13,6 @@ package com.jsql.view.swing.manager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -98,39 +96,31 @@ public class ManagerScan extends AbstractManagerList {
         
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
         
-        this.run.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                if (listFile.getSelectedValuesList().isEmpty()) {
-                    LOGGER.warn("Select URL(s) to scan");
-                    return;
-                }
-                
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        
-                        if (ManagerScan.this.run.getState() == StateButton.STARTABLE) {
-                            ManagerScan.this.run.setText("Stop");
-                            ManagerScan.this.run.setState(StateButton.STOPPABLE);
-                            ManagerScan.this.loader.setVisible(true);
-                            
-                            DefaultListModel<ListItem> listModel = (DefaultListModel<ListItem>) listFile.getModel();
-                            for (int i = 0 ; i < listModel.getSize() ; i++) {
-                                listModel.get(i).reset();
-                            }
-                            
-                            RessourceAccess.scanList(listFile.getSelectedValuesList());
-                        } else {
-                            RessourceAccess.setScanStopped(true);
-                            MediatorModel.model().setIsStoppedByUser(true);
-                            ManagerScan.this.run.setEnabled(false);
-                            ManagerScan.this.run.setState(StateButton.STOPPING);
-                        }
-                        
-                    }
-                }, "ThreadScan").start();
+        this.run.addActionListener(actionEvent -> {
+            if (listFile.getSelectedValuesList().isEmpty()) {
+                LOGGER.warn("Select URL(s) to scan");
+                return;
             }
+            
+            new Thread(() -> {
+                if (ManagerScan.this.run.getState() == StateButton.STARTABLE) {
+                    ManagerScan.this.run.setText("Stop");
+                    ManagerScan.this.run.setState(StateButton.STOPPABLE);
+                    ManagerScan.this.loader.setVisible(true);
+                    
+                    DefaultListModel<ListItem> listModel = (DefaultListModel<ListItem>) listFile.getModel();
+                    for (int i = 0 ; i < listModel.getSize() ; i++) {
+                        listModel.get(i).reset();
+                    }
+                    
+                    RessourceAccess.scanList(listFile.getSelectedValuesList());
+                } else {
+                    RessourceAccess.setScanStopped(true);
+                    MediatorModel.model().setIsStoppedByUser(true);
+                    ManagerScan.this.run.setEnabled(false);
+                    ManagerScan.this.run.setState(StateButton.STOPPING);
+                }
+            }, "ThreadScan").start();
         });
 
         this.loader.setVisible(false);

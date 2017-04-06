@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  *******************************************************************************/
-package com.jsql.view.swing.panel;
+package com.jsql.view.swing.panel.util;
 
 import java.awt.Dimension;
 

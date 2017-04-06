@@ -12,10 +12,6 @@ import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.event.RowSorterEvent;
-import javax.swing.event.RowSorterListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -134,28 +130,18 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         this.fixedTable.getColumnModel().getColumn(1).setResizable(false);
         this.fixedTable.getColumnModel().getColumn(1).setPreferredWidth(38);
 
-        this.mainTable.getRowSorter().addRowSorterListener(
-            new RowSorterListener() {
-                @Override
-                public void sorterChanged(RowSorterEvent e) {
-                    modelFixedTable.fireTableDataChanged();
-                    
-                    // Copy data from hidden column in main table
-                    for (int i = 0 ; i < FixedColumnTable.this.mainTable.getRowCount() ; i++) {
-                        FixedColumnTable.this.fixedTable.setValueAt(FixedColumnTable.this.mainTable.getValueAt(i, 0), i, 0);
-                        FixedColumnTable.this.fixedTable.setValueAt(FixedColumnTable.this.mainTable.getValueAt(i, 1), i, 1);
-                    }
-                }
+        this.mainTable.getRowSorter().addRowSorterListener(rowSorterEvent -> {
+            modelFixedTable.fireTableDataChanged();
+            
+            // Copy data from hidden column in main table
+            for (int i = 0 ; i < FixedColumnTable.this.mainTable.getRowCount() ; i++) {
+                FixedColumnTable.this.fixedTable.setValueAt(FixedColumnTable.this.mainTable.getValueAt(i, 0), i, 0);
+                FixedColumnTable.this.fixedTable.setValueAt(FixedColumnTable.this.mainTable.getValueAt(i, 1), i, 1);
             }
-        );
+        });
         
-        this.mainTable.getSelectionModel().addListSelectionListener(
-            new ListSelectionListener() {
-                @Override
-                public void valueChanged(ListSelectionEvent e) {
-                    modelFixedTable.fireTableRowsUpdated(0, modelFixedTable.getRowCount() - 1);
-                }
-            }
+        this.mainTable.getSelectionModel().addListSelectionListener(listSelectionEvent -> 
+            modelFixedTable.fireTableRowsUpdated(0, modelFixedTable.getRowCount() - 1)
         );
         
         // Copy data from first colum of main table to fixed column

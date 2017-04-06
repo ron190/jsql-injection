@@ -3,55 +3,55 @@ package com.jsql.model.injection.vendor;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 
-public abstract class AbstractVendor {    
+interface AbstractVendor {    
     
-    public abstract String sqlInfos();
-    public abstract String sqlDatabases();
-    public abstract String sqlTables(Database database);
-    public abstract String sqlColumns(Table table);
-    public abstract String sqlRows(String[] arrayColumns, Database database, Table table);
+    public String sqlInfos();
+    public String sqlDatabases();
+    public String sqlTables(Database database);
+    public String sqlColumns(Table table);
+    public String sqlRows(String[] arrayColumns, Database database, Table table);
 
-    public abstract String sqlNormal(String sqlQuery, String startPosition);
+    public String sqlNormal(String sqlQuery, String startPosition);
     
-    public abstract String sqlCapacity(String[] indexes);
-    public abstract String sqlIndices(Integer nbFields);
-    public abstract String sqlOrderBy();
+    public String sqlCapacity(String[] indexes);
+    public String sqlIndices(Integer nbFields);
+    public String sqlOrderBy();
     
-    public abstract String sqlLimit(Integer limitSQLResult);
+    public String sqlLimit(Integer limitSQLResult);
     
-    public abstract String sqlPrivilegeTest();
+    public String sqlPrivilegeTest();
 
-    public abstract String sqlFileRead(String filePath);
+    public String sqlFileRead(String filePath);
 
-    public abstract String sqlTextIntoFile(String content, String filePath);
+    public String sqlTextIntoFile(String content, String filePath);
 
-    public abstract String[] getListFalseTest();
+    public String[] getListFalseTest();
 
-    public abstract String[] getListTrueTest();
+    public String[] getListTrueTest();
 
-    public abstract String sqlTestBlindFirst();
+    public String sqlTestBlindFirst();
 
-    public abstract String sqlTestBlind(String check);
+    public String sqlTestBlind(String check);
 
-    public abstract String sqlBitTestBlind(String inj, int indexCharacter, int bit);
+    public String sqlBitTestBlind(String inj, int indexCharacter, int bit);
 
-    public abstract String sqlLengthTestBlind(String inj, int indexCharacter);
+    public String sqlLengthTestBlind(String inj, int indexCharacter);
 
-    public abstract String sqlTimeTest(String check);
+    public String sqlTimeTest(String check);
 
-    public abstract String sqlBitTestTime(String inj, int indexCharacter, int bit);
+    public String sqlBitTestTime(String inj, int indexCharacter, int bit);
 
-    public abstract String sqlLengthTestTime(String inj, int indexCharacter);
+    public String sqlLengthTestTime(String inj, int indexCharacter);
 
-    public abstract String sqlBlind(String sqlQuery, String startPosition);
+    public String sqlBlind(String sqlQuery, String startPosition);
 
-    public abstract String sqlCapacityErrorBased();
-    public abstract String sqlTestErrorBased();
-    public abstract String sqlErrorBasedCapacity();
-    public abstract Model getXmlModel();
+    public String sqlCapacityErrorBased();
+    public String sqlTestErrorBased();
+    public String sqlErrorBasedCapacity();
+    public Model getXmlModel();
 
-    public abstract String sqlErrorBased(String sqlQuery, String startPosition);
+    public String sqlErrorBased(String sqlQuery, String startPosition);
 
-    public abstract String sqlTime(String sqlQuery, String startPosition);
+    public String sqlTime(String sqlQuery, String startPosition);
     
 }

@@ -1,4 +1,4 @@
-package com.jsql.view.swing.panel;
+package com.jsql.view.swing.panel.util;
 
 import javax.swing.SizeRequirements;
 import javax.swing.text.Element;

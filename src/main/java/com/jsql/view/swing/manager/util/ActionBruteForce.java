@@ -107,13 +107,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
         hashBruter.setHash(this.bruteForceManager.hash.getText().toUpperCase().replaceAll("[^a-zA-Z0-9]", "").trim());
 
         // Begin the unhashing process
-        Thread thread = new Thread(new Runnable() { 
-            @Override
-            public void run() { 
-                hashBruter.tryBruteForce(); 
-            } 
-        }, "ThreadRunBruteForce");
-        thread.start();
+        new Thread(hashBruter::tryBruteForce, "ThreadRunBruteForce").start();
 
         while (!hashBruter.isDone() && !hashBruter.isFound() && !this.isStopped) {
             hashBruter.setEndtime(System.nanoTime());

@@ -1,4 +1,4 @@
-package com.jsql.view.swing.manager.util;
+package com.jsql.view.swing.bruteforce;
 
 // This file is currently unlocked (change this line if you lock the file)
 //
@@ -34,7 +34,7 @@ import java.security.MessageDigest;
  * <p><b>$Revision: 1.2 $</b>
  * @author  Raif S. Naffah
  */
-public class MD4 extends MessageDigest implements Cloneable {
+public class DigestMD4 extends MessageDigest implements Cloneable {
     
 	// MD4 specific object variables
 	//...........................................................................
@@ -68,7 +68,7 @@ public class MD4 extends MessageDigest implements Cloneable {
 	// Constructors
 	//...........................................................................
 
-    public MD4() {
+    public DigestMD4() {
         super("MD4");
         engineReset();
     }
@@ -76,7 +76,7 @@ public class MD4 extends MessageDigest implements Cloneable {
     /**
      *    This constructor is here to implement cloneability of this class.
      */
-    private MD4(MD4 md) {
+    private DigestMD4(DigestMD4 md) {
         this();
         context = (int[]) md.context.clone();
         buffer = (byte[]) md.buffer.clone();
@@ -92,7 +92,7 @@ public class MD4 extends MessageDigest implements Cloneable {
      */
     @Override
     public Object clone() { 
-        return new MD4(this); 
+        return new DigestMD4(this); 
     }
 
 

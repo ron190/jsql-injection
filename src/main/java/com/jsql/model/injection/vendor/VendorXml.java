@@ -195,10 +195,12 @@ public class VendorXml extends AbstractVendorDefault {
         return 
             " "+ 
             this.xmlModel.getStrategy().getBoolean().getBlind()
-            .replace("${TEST}", this.xmlModel.getStrategy().getBoolean().getTest().getBit()
-            .replace("${INJECTION}", inj)
-            .replace("${INDEX}", ""+ indexCharacter)
-            .replace("${BIT}", ""+ bit));
+            .replace("${TEST}", 
+                this.xmlModel.getStrategy().getBoolean().getTest().getBit()
+                .replace("${INJECTION}", inj)
+                .replace("${INDEX}", Integer.toString(indexCharacter))
+                .replace("${BIT}", Integer.toString(bit))
+            );
     }
 
     @Override
@@ -206,9 +208,11 @@ public class VendorXml extends AbstractVendorDefault {
         return 
             " "+ 
             this.xmlModel.getStrategy().getBoolean().getBlind()
-            .replace("${TEST}", this.xmlModel.getStrategy().getBoolean().getTest().getLength()
-            .replace("${INJECTION}", inj)
-            .replace("${INDEX}", ""+ indexCharacter));
+            .replace("${TEST}", 
+                this.xmlModel.getStrategy().getBoolean().getTest().getLength()
+                .replace("${INJECTION}", inj)
+                .replace("${INDEX}", Integer.toString(indexCharacter))
+            );
     }
 
     @Override
@@ -220,7 +224,7 @@ public class VendorXml extends AbstractVendorDefault {
                 " "+ 
                 this.xmlModel.getStrategy().getBoolean().getTime()
                 .replace("${TEST}", check)
-                .replace("${SLEEP_TIME}", ""+ ConcreteTimeInjection.SLEEP_TIME);
+                .replace("${SLEEP_TIME}", Long.toString(ConcreteTimeInjection.SLEEP_TIME));
         }
         
         return sqlTime;
@@ -231,11 +235,13 @@ public class VendorXml extends AbstractVendorDefault {
         return 
             " "+ 
             this.xmlModel.getStrategy().getBoolean().getTime()
-            .replace("${TEST}", this.xmlModel.getStrategy().getBoolean().getTest().getBit()
-            .replace("${INJECTION}", inj)
-            .replace("${INDEX}", ""+ indexCharacter)
-            .replace("${BIT}", ""+ bit))
-            .replace("${SLEEP_TIME}", ""+ ConcreteTimeInjection.SLEEP_TIME);
+            .replace("${TEST}", 
+                this.xmlModel.getStrategy().getBoolean().getTest().getBit()
+                .replace("${INJECTION}", inj)
+                .replace("${INDEX}", Integer.toString(indexCharacter))
+                .replace("${BIT}", Integer.toString(bit))
+            )
+            .replace("${SLEEP_TIME}", Long.toString(ConcreteTimeInjection.SLEEP_TIME));
     }
 
     @Override
@@ -243,10 +249,12 @@ public class VendorXml extends AbstractVendorDefault {
         return 
             " "+ 
             this.xmlModel.getStrategy().getBoolean().getTime()
-            .replace("${TEST}", this.xmlModel.getStrategy().getBoolean().getTest().getLength()
-            .replace("${INJECTION}", inj)
-            .replace("${INDEX}", ""+ indexCharacter))
-            .replace("${SLEEP_TIME}", ""+ ConcreteTimeInjection.SLEEP_TIME);
+            .replace("${TEST}", 
+                this.xmlModel.getStrategy().getBoolean().getTest().getLength()
+                .replace("${INJECTION}", inj)
+                .replace("${INDEX}", Integer.toString(indexCharacter))
+            )
+            .replace("${SLEEP_TIME}", Long.toString(ConcreteTimeInjection.SLEEP_TIME));
     }
 
     @Override
@@ -290,7 +298,7 @@ public class VendorXml extends AbstractVendorDefault {
                 .replace("${WINDOW}", this.xmlModel.getStrategy().getConfiguration().getSlidingWindow())
                 .replace("${INJECTION}", sqlQuery)
                 .replace("${INDEX}", ""+startPosition)
-                .replace("${CAPACITY}", ""+this.xmlModel.getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getIndexMethodByUser()).getCapacity())
+                .replace("${CAPACITY}", Integer.toString(this.xmlModel.getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getIndexMethodByUser()).getCapacity()))
             );
     }
 
@@ -325,8 +333,8 @@ public class VendorXml extends AbstractVendorDefault {
         
         int indice = 1;
         for (  ; indice <= nbFields ; indice++) {
-            fields.add(this.xmlModel.getStrategy().getConfiguration().getFailsafe().replace("${INDICE}", ""+ indice));
-            replaceTag = this.xmlModel.getStrategy().getConfiguration().getFailsafe().replace("${INDICE}", ""+ indice);
+            fields.add(this.xmlModel.getStrategy().getConfiguration().getFailsafe().replace("${INDICE}", Integer.toString(indice)));
+            replaceTag = this.xmlModel.getStrategy().getConfiguration().getFailsafe().replace("${INDICE}", Integer.toString(indice));
         }
         indice--;
         
@@ -348,7 +356,7 @@ public class VendorXml extends AbstractVendorDefault {
         int limitBoundary = this.xmlModel.getStrategy().getConfiguration().getLimitBoundary();
         return 
             this.xmlModel.getStrategy().getConfiguration().getLimit()
-            .replace("${LIMIT}", ""+ (limitSQLResult + limitBoundary));
+            .replace("${LIMIT}", Integer.toString(limitSQLResult + limitBoundary));
     }
     
     public static String replaceTags(String sqlRequest) {

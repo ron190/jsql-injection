@@ -281,6 +281,7 @@ public class InjectionModel extends AbstractModelObservable {
             urlObject = new URL(urlInjection);
         } catch (MalformedURLException e) {
             LOGGER.warn("Incorrect Query Url: "+ e, e);
+            return "";
         }
 
         /**
@@ -591,12 +592,7 @@ public class InjectionModel extends AbstractModelObservable {
                 this.beginInjection();
             } else {
                 // Start the model injection process in a thread
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        InjectionModel.this.beginInjection();
-                    }
-                }, "ThreadBeginInjection").start();
+                new Thread(InjectionModel.this::beginInjection, "ThreadBeginInjection").start();
             }
         } catch (MalformedURLException e) {
             LOGGER.warn("Incorrect Url: "+ e, e);

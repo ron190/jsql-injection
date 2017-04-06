@@ -12,8 +12,6 @@ package com.jsql.view.swing.manager;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -134,12 +132,9 @@ public class ManagerDatabase extends JPanel implements Manager {
                     this.itemRadioStrategyError[0] = (JMenu) itemRadioStrategy;
                 } else {
                     itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString());
-                    ((AbstractButton) itemRadioStrategy).addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            ManagerDatabase.this.panelStrategy.setText(strategy.toString());
-                            MediatorModel.model().setStrategy(strategy);
-                        }
+                    ((AbstractButton) itemRadioStrategy).addActionListener(actionEvent -> {
+                        ManagerDatabase.this.panelStrategy.setText(strategy.toString());
+                        MediatorModel.model().setStrategy(strategy);
                     });
                     this.groupStrategy.add((AbstractButton) itemRadioStrategy);
                 }
@@ -156,12 +151,9 @@ public class ManagerDatabase extends JPanel implements Manager {
         
         for (final Vendor vendor: Vendor.values()) {
             JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == Vendor.AUTO);
-            itemRadioVendor.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ManagerDatabase.this.panelVendor.setText(vendor.toString());
-                    MediatorModel.model().vendorByUser = vendor;
-                }
+            itemRadioVendor.addActionListener(actionEvent -> {
+                ManagerDatabase.this.panelVendor.setText(vendor.toString());
+                MediatorModel.model().vendorByUser = vendor;
             });
             this.panelVendor.add(itemRadioVendor);
             groupVendor.add(itemRadioVendor);
@@ -186,14 +178,11 @@ public class ManagerDatabase extends JPanel implements Manager {
             this.itemRadioStrategyError[0].add(itemRadioVendor);
             this.groupStrategy.add((AbstractButton) itemRadioVendor);
             
-            final int indexError = new Integer(i[0]);
-            ((AbstractButton) itemRadioVendor).addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    ManagerDatabase.this.panelStrategy.setText(methodError.getName());
-                    MediatorModel.model().setStrategy(Strategy.ERRORBASED);
-                    ((ErrorbasedStrategy)Strategy.ERRORBASED.instance()).setIndexMethodByUser(indexError);
-                }
+            final int indexError = i[0];
+            ((AbstractButton) itemRadioVendor).addActionListener(actionEvent -> {
+                ManagerDatabase.this.panelStrategy.setText(methodError.getName());
+                MediatorModel.model().setStrategy(Strategy.ERRORBASED);
+                ((ErrorbasedStrategy)Strategy.ERRORBASED.instance()).setIndexMethodByUser(indexError);
             });
             
             i[0]++;

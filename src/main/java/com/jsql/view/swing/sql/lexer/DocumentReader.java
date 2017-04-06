@@ -80,6 +80,7 @@ class DocumentReader extends Reader {
      * Has no effect.  This reader can be used even after
      * it has been closed.
      */
+    @Override
     public void close() {
     }
 
@@ -88,6 +89,7 @@ class DocumentReader extends Reader {
      *
      * @param readAheadLimit ignored.
      */
+    @Override
     public void mark(int readAheadLimit){
         mark = position;
     }
@@ -97,6 +99,7 @@ class DocumentReader extends Reader {
      *
      * @return true
      */
+    @Override
     public boolean markSupported(){
         return true;
     }
@@ -106,6 +109,7 @@ class DocumentReader extends Reader {
      *
      * @return the character or -1 if the end of the document has been reached.
      */
+    @Override
     public int read(){
         if (position < document.getLength()){
             try {
@@ -127,6 +131,7 @@ class DocumentReader extends Reader {
      * @param cbuf the buffer to fill.
      * @return the number of characters read or -1 if no more characters are available in the document.
      */
+    @Override
     public int read(char[] cbuf){
         return read(cbuf, 0, cbuf.length);
     }
@@ -140,6 +145,7 @@ class DocumentReader extends Reader {
      * @param len maximum number of characters to put in the buffer.
      * @return the number of characters read or -1 if no more characters are available in the document.
      */
+    @Override
     public int read(char[] cbuf, int off, int len){
         if (position < document.getLength()){
             int length = len;
@@ -167,6 +173,7 @@ class DocumentReader extends Reader {
     /**
      * @return true
      */
+    @Override
     public boolean ready() {
         return true;
     }
@@ -174,6 +181,7 @@ class DocumentReader extends Reader {
     /**
      * Reset this reader to the last mark, or the beginning of the document if a mark has not been set.
      */
+    @Override
     public void reset(){
         if (mark == -1){
             position = 0;
@@ -191,6 +199,7 @@ class DocumentReader extends Reader {
      * @param n number of characters to skip.
      * @return the actual number of characters skipped.
      */
+    @Override
     public long skip(long n){
         if (position + n <= document.getLength()){
             position += n;
@@ -198,7 +207,7 @@ class DocumentReader extends Reader {
         } else {
             long oldPos = position;
             position = document.getLength();
-            return (document.getLength() - oldPos);
+            return document.getLength() - oldPos;
         }
     }
 

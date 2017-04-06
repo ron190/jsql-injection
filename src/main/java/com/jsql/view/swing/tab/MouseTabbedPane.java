@@ -11,8 +11,6 @@
 package com.jsql.view.swing.tab;
 
 import java.awt.ComponentOrientation;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -22,8 +20,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import org.apache.commons.lang3.SerializationUtils;
 
@@ -48,12 +44,7 @@ public class MouseTabbedPane extends JTabbedPane {
         this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
         // Give focus on tab change
-        this.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent arg0) {
-                MouseTabbedPane.this.requestFocusInWindow();
-            }
-        });
+        this.addChangeListener(changeEvent -> MouseTabbedPane.this.requestFocusInWindow());
 
         // Hotkeys ctrl-TAB, ctrl-shift-TAB
         ActionHandler.addShortcut(this);
@@ -81,12 +72,7 @@ public class MouseTabbedPane extends JTabbedPane {
                     menu.add(itemMenu);
                     
                     final int positionFinal = position;
-                    itemMenu.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent arg0) {
-                            MediatorGui.tabManagers().setSelectedIndex(positionFinal);
-                        }
-                    });
+                    itemMenu.addActionListener(actionEvent -> MediatorGui.tabManagers().setSelectedIndex(positionFinal));
                 }
 
                 menu.show(tabPane, e.getX(), e.getY());

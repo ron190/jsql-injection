@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.swing.panel;
+package com.jsql.view.swing.panel.util;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -27,6 +27,7 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.panel.PanelConsoles;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.tab.TabResults;

@@ -50,7 +50,7 @@ public class ActionSaveTab extends AbstractAction {
 
     public ActionSaveTab() {
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-        this.putValue(Action.MNEMONIC_KEY, new Integer(KeyEvent.VK_S));
+        this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
         this.putValue(Action.NAME, "Save Tab As...");
         this.putValue(Action.SMALL_ICON, HelperUi.ICON_EMPTY);
     }
@@ -71,7 +71,7 @@ public class ActionSaveTab extends AbstractAction {
     }
     
     private void saveTablePanel() {
-        JTable table = ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).table;
+        JTable table = ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).tableValues;
         
         if (table == null) {
             return;
@@ -83,9 +83,8 @@ public class ActionSaveTab extends AbstractAction {
             
             PreferencesUtil.set(filechooser.getCurrentDirectory().toString());
 
-            try {
+            try (FileWriter excel = new FileWriter(file)) {
                 TableModel model = table.getModel();
-                FileWriter excel = new FileWriter(file);
                 
                 for (int i = 2 ; i < model.getColumnCount() ; i++) {
                     excel.write(model.getColumnName(i) + "\t");
@@ -109,9 +108,6 @@ public class ActionSaveTab extends AbstractAction {
                     }
                     excel.write("\n");
                 }
-                
-                excel.close();
-                
             } catch (IOException e) {
                 LOGGER.warn("Error writing to "+ file.getName(), e);
             }

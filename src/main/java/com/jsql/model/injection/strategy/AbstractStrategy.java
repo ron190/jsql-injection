@@ -109,6 +109,7 @@ public abstract class AbstractStrategy {
      * Get the injection strategy name.
      */
     public abstract String getName();
+    
     public Integer getIndexMethodByUser() {
         return 0;
     }

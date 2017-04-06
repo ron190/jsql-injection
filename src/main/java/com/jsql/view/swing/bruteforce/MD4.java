@@ -2,12 +2,14 @@ package com.jsql.view.swing.bruteforce;
 
 import java.security.MessageDigest;
 
-import com.jsql.view.swing.manager.util.MD4;
-
-public class Md4 {
+public class MD4 {
+    
+    private MD4() {
+        
+    }
 
     public static String generateMd4(String passwordString) {
-        MessageDigest md = new MD4();
+        MessageDigest md = new DigestMD4();
 
         byte[] passwordByte = passwordString.getBytes();
         md.update(passwordByte, 0, passwordByte.length);

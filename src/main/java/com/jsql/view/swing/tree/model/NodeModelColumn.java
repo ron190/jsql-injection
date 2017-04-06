@@ -43,8 +43,7 @@ public class NodeModelColumn extends AbstractNodeModel {
 
     @Override
     public Component getComponent(
-        JTree tree, Object nodeRenderer, boolean selected, boolean expanded, 
-        boolean leaf, int row, boolean hasFocus
+        final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, int row,boolean hasFocus
     ) {
         JCheckBox checkbox = new JCheckBox(this.toString(), this.isSelected);
         checkbox.setFont(

@@ -156,6 +156,7 @@ class Colorer extends Thread {
 	 * The colorer runs forever and may sleep for long periods of time. It
 	 * should be interrupted every time there is something for it to do.
 	 */
+	@Override
 	public void run() {
 		while(document.get() != null) {
 			try {
@@ -205,7 +206,7 @@ class Colorer extends Thread {
 		DocPosition endRequest = new DocPosition(position + Math.abs(adjustment));
 		DocPosition dp;
 		DocPosition dpStart = null;
-		DocPosition dpEnd = null;
+		DocPosition dpEnd;
 
 		// find the starting position. We must start at least one
 		// token before the current position
@@ -295,7 +296,7 @@ class Colorer extends Thread {
 					// text that we colored
 					dpEnd = new DocPosition(t.getCharEnd());
 				}
-				lastPosition = (t.getCharEnd() + change);
+				lastPosition = t.getCharEnd() + change;
 				// The other more complicated reason for doing no
 				// more highlighting
 				// is that all the colors are the same from here on

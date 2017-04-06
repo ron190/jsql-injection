@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
@@ -163,12 +161,7 @@ public class JScrollIndicator extends JLayeredPane {
                 }
             });
 
-            addAdjustmentListener(new AdjustmentListener() {
-                @Override
-                public void adjustmentValueChanged(AdjustmentEvent e) {
-                    scrollUI.setVisible();
-                }
-            });
+            addAdjustmentListener(adjustmentEvent -> scrollUI.setVisible());
         }
 
         @Override

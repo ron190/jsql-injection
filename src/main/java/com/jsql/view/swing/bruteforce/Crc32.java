@@ -4,6 +4,10 @@ import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
 public class Crc32 {
+    
+    private Crc32() {
+        
+    }
 
     public static String generateCRC32(String baseString) {
         //Convert string to bytes

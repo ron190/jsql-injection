@@ -41,8 +41,7 @@ public class NodeModelEmpty extends AbstractNodeModel {
 
     @Override
     public Component getComponent(
-        JTree tree, Object nodeRenderer, boolean selected, 
-        boolean expanded, boolean leaf, int row, boolean hasFocus
+        final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, int row,boolean hasFocus
     ) {
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         JPanel emptyPanel = new JPanel(new BorderLayout());
@@ -50,7 +49,7 @@ public class NodeModelEmpty extends AbstractNodeModel {
         emptyPanel.add(text);
         text.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         
-        if (selected) {
+        if (isSelected) {
             emptyPanel.setBackground(HelperUi.COLOR_SELECTION_BACKGROUND);
             text.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.COLOR_BLU));
         } else {

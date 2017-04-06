@@ -166,20 +166,10 @@ public class ManagerBruteForce extends JPanel implements Manager {
         thirdLine.add(this.exclude);
 
         this.minimumLength = new JSpinner(
-            new SpinnerNumberModel(
-                new Integer(1),
-                new Integer(1),
-                new Integer(10000),
-                new Integer(1)
-            )
+            new SpinnerNumberModel(1, 1, 10000, 1)
         );
         this.maximumLength = new JSpinner(
-            new SpinnerNumberModel(
-                new Integer(5),
-                new Integer(1),
-                new Integer(10000),
-                new Integer(1)
-            )
+            new SpinnerNumberModel(5, 1, 10000, 1)
         );
         
         this.minimumLength.setToolTipText(I18n.valueByKey("BRUTEFORCE_MIN_TOOLTIP"));

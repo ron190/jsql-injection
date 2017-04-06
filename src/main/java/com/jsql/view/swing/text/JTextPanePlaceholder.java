@@ -36,7 +36,7 @@ public class JTextPanePlaceholder extends JTextPane {
      */
     public JTextPanePlaceholder(String placeholder, String value) {
         this(placeholder);
-        setText(value);
+        this.setText(value);
     }
     
     /**
@@ -49,7 +49,7 @@ public class JTextPanePlaceholder extends JTextPane {
 
     @Override
     public void paint(Graphics g) {
-        // Fix #4012
+        // Fix #4012: ArrayIndexOutOfBoundsException on paint()
         try {
             super.paint(g);
         } catch (ArrayIndexOutOfBoundsException e) {

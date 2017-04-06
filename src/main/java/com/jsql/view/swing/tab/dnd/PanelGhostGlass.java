@@ -11,16 +11,16 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 @SuppressWarnings("serial")
-public class GhostGlassPane extends JPanel {
+public class PanelGhostGlass extends JPanel {
     
-    private DnDTabbedPane tabbedPane;
+    private TabbedPaneDnD tabbedPane;
     
-    public GhostGlassPane(DnDTabbedPane tabbedPane) {
+    public PanelGhostGlass(TabbedPaneDnD tabbedPane) {
         this.tabbedPane = tabbedPane;
         setOpaque(false);
     }
     
-    public void setTargetTabbedPane(DnDTabbedPane tab) {
+    public void setTargetTabbedPane(TabbedPaneDnD tab) {
         tabbedPane = tab;
     }
     

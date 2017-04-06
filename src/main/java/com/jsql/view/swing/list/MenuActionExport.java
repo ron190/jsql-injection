@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 
 import javax.swing.JFileChooser;
@@ -50,51 +51,53 @@ public class MenuActionExport implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        try {
-            @SuppressWarnings("serial")
-            final JFileChooser importFileDialog = new JFileChooser(PreferencesUtil.getPathFile()) {
-                @Override
-                public void approveSelection() {
-                    File file = this.getSelectedFile();
-                    if (getDialogType() == SAVE_DIALOG) {
-                        if (file.exists()) {
-                            int replace = JOptionPane.showConfirmDialog(
-                                this,
-                                file.getName() + " " +I18n.valueByKey("LIST_EXPORT_CONFIRM_LABEL"), I18n.valueByKey("LIST_EXPORT_CONFIRM_TITLE"),
-                                JOptionPane.YES_NO_OPTION
-                            );
-                            switch (replace) {
-                                case JOptionPane.YES_OPTION:
-                                    super.approveSelection();
-                                    return;
-                                case JOptionPane.NO_OPTION:
-                                case JOptionPane.CLOSED_OPTION: 
-                                    return;
-                                case JOptionPane.CANCEL_OPTION:
-                                    cancelSelection();
-                                    return;
-                                default:
-                                    break;
-                            }
-                        } else {
-                            super.approveSelection();
+        @SuppressWarnings("serial")
+        final JFileChooser importFileDialog = new JFileChooser(PreferencesUtil.getPathFile()) {
+            @Override
+            public void approveSelection() {
+                File file = this.getSelectedFile();
+                if (getDialogType() == SAVE_DIALOG) {
+                    if (file.exists()) {
+                        int replace = JOptionPane.showConfirmDialog(
+                            this,
+                            file.getName() + " " +I18n.valueByKey("LIST_EXPORT_CONFIRM_LABEL"), I18n.valueByKey("LIST_EXPORT_CONFIRM_TITLE"),
+                            JOptionPane.YES_NO_OPTION
+                        );
+                        switch (replace) {
+                            case JOptionPane.YES_OPTION:
+                                super.approveSelection();
+                                return;
+                            case JOptionPane.NO_OPTION:
+                            case JOptionPane.CLOSED_OPTION: 
+                                return;
+                            case JOptionPane.CANCEL_OPTION:
+                                cancelSelection();
+                                return;
+                            default:
+                                break;
                         }
+                    } else {
+                        super.approveSelection();
                     }
                 }
-            };
-            importFileDialog.setDialogTitle(I18n.valueByKey("LIST_EXPORT_TITLE"));
-            int choice = importFileDialog.showSaveDialog(myList.getTopLevelAncestor());
-            if (choice != JFileChooser.APPROVE_OPTION) {
-                return;
             }
+        };
+        importFileDialog.setDialogTitle(I18n.valueByKey("LIST_EXPORT_TITLE"));
+        int choice = importFileDialog.showSaveDialog(myList.getTopLevelAncestor());
+        if (choice != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
 
-            PrintStream out = new PrintStream(new FileOutputStream(importFileDialog.getSelectedFile()));
+        try (
+            FileOutputStream file = new FileOutputStream(importFileDialog.getSelectedFile())
+        ) {
+            PrintStream out = new PrintStream(file);
             int len = myList.getModel().getSize();
             for (int i = 0 ; i < len ; i++) {
                 out.println(myList.getModel().getElementAt(i).toString());
             }
             out.close();
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             LOGGER.error(e, e);
         }
     }

@@ -233,42 +233,38 @@ public class DnDList extends JList<ListItem> {
             endPosition[0] = 0;
         }
         
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                
-                for (Iterator<File> iterator = (filesToImport).iterator() ; iterator.hasNext() ; ) {
-                    try (BufferedReader fileReader = new BufferedReader(new FileReader(iterator.next()))) {
-                        String line;
-                        while ((line = fileReader.readLine()) != null) {
-                            if (
-                                !"".equals(line)
-                                // Fix Report #60
-                                && 0 <= endPosition[0] && endPosition[0] <= listModel.size()
-                            ) {
-                                listModel.add(endPosition[0]++, new ListItem(line.replace("\\", "/")));
-                            }
+        SwingUtilities.invokeLater(() -> {
+            for (Iterator<File> iterator = (filesToImport).iterator() ; iterator.hasNext() ; ) {
+                try (BufferedReader fileReader = new BufferedReader(new FileReader(iterator.next()))) {
+                    String line;
+                    while ((line = fileReader.readLine()) != null) {
+                        if (
+                            !"".equals(line)
+                            // Fix Report #60
+                            && 0 <= endPosition[0] && endPosition[0] <= listModel.size()
+                        ) {
+                            listModel.add(endPosition[0]++, new ListItem(line.replace("\\", "/")));
                         }
-                    } catch (IOException e) {
-                        LOGGER.error(e, e);
                     }
-                }
-                
-                if (!listModel.isEmpty()) {
-                    DnDList.this.setSelectionInterval(startPosition[0], endPosition[0] - 1);
-                }
-                
-                try {
-                    DnDList.this.scrollRectToVisible(
-                        DnDList.this.getCellBounds(
-                            DnDList.this.getMinSelectionIndex(), 
-                            DnDList.this.getMaxSelectionIndex()
-                        )
-                    );
-                } catch (NullPointerException e) {
-                    // Report NullPointerException #1571 : manual scroll elsewhere then run action
+                } catch (IOException e) {
                     LOGGER.error(e, e);
                 }
+            }
+            
+            if (!listModel.isEmpty()) {
+                DnDList.this.setSelectionInterval(startPosition[0], endPosition[0] - 1);
+            }
+            
+            try {
+                DnDList.this.scrollRectToVisible(
+                    DnDList.this.getCellBounds(
+                        DnDList.this.getMinSelectionIndex(), 
+                        DnDList.this.getMaxSelectionIndex()
+                    )
+                );
+            } catch (NullPointerException e) {
+                // Report NullPointerException #1571 : manual scroll elsewhere then run action
+                LOGGER.error(e, e);
             }
         });
         

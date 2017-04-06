@@ -64,6 +64,7 @@ class DocPosition {
      *
      * @return if this DocPosition represents the same position as another.
      */
+    @Override
     public boolean equals(Object obj){
         if (obj instanceof DocPosition){
             DocPosition d = (DocPosition)(obj);
@@ -82,7 +83,8 @@ class DocPosition {
      *
      * @return A string representing the position.
      */
+    @Override
     public String toString(){
-        return "" + position;
+        return Integer.toString(position);
     }
 }

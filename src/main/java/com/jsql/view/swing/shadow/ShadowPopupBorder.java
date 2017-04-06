@@ -39,6 +39,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.border.AbstractBorder;
 
+import org.apache.log4j.Logger;
+
 /**
  * A border with a drop shadow intended to be used as the outer border
  * of popups. Can paint the screen background if used with heavy-weight
@@ -52,6 +54,11 @@ import javax.swing.border.AbstractBorder;
  */
 @SuppressWarnings("serial")
 public final class ShadowPopupBorder extends AbstractBorder {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * The drop shadow needs 5 pixels at the bottom and the right hand side.
@@ -86,23 +93,28 @@ public final class ShadowPopupBorder extends AbstractBorder {
      */
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        // fake drop shadow effect in case of heavy weight popups
-        JComponent popup = (JComponent) c;
-        Image hShadowBg = (Image) popup.getClientProperty(ShadowPopupFactory.PROP_HORIZONTAL_BACKGROUND);
-        if (hShadowBg != null) {
-            g.drawImage(hShadowBg, x, y + height - 5, c);
+        // Fix #7497, Fix #8247, Fix #8332: BufImgSurfaceData cannot be cast to XRSurfaceData on drawImage()
+        try {
+            // fake drop shadow effect in case of heavy weight popups
+            JComponent popup = (JComponent) c;
+            Image hShadowBg = (Image) popup.getClientProperty(ShadowPopupFactory.PROP_HORIZONTAL_BACKGROUND);
+            if (hShadowBg != null) {
+                g.drawImage(hShadowBg, x, y + height - 5, c);
+            }
+            Image vShadowBg = (Image) popup.getClientProperty(ShadowPopupFactory.PROP_VERTICAL_BACKGROUND);
+            if (vShadowBg != null) {
+                g.drawImage(vShadowBg, x + width - 5, y, c);
+            }
+    
+            // draw drop shadow
+            g.drawImage(shadow, x +  5, y + height - 5, x + 10, y + height, 0, 6, 5, 11, null, c);
+            g.drawImage(shadow, x + 10, y + height - 5, x + width - 5, y + height, 5, 6, 6, 11, null, c);
+            g.drawImage(shadow, x + width - 5, y + 5, x + width, y + 10, 6, 0, 11, 5, null, c);
+            g.drawImage(shadow, x + width - 5, y + 10, x + width, y + height - 5, 6, 5, 11, 6, null, c);
+            g.drawImage(shadow, x + width - 5, y + height - 5, x + width, y + height, 6, 6, 11, 11, null, c);
+        } catch (ClassCastException e) {
+            LOGGER.error(e, e);
         }
-        Image vShadowBg = (Image) popup.getClientProperty(ShadowPopupFactory.PROP_VERTICAL_BACKGROUND);
-        if (vShadowBg != null) {
-            g.drawImage(vShadowBg, x + width - 5, y, c);
-        }
-
-        // draw drop shadow
-        g.drawImage(shadow, x +  5, y + height - 5, x + 10, y + height, 0, 6, 5, 11, null, c);
-        g.drawImage(shadow, x + 10, y + height - 5, x + width - 5, y + height, 5, 6, 6, 11, null, c);
-        g.drawImage(shadow, x + width - 5, y + 5, x + width, y + 10, 6, 0, 11, 5, null, c);
-        g.drawImage(shadow, x + width - 5, y + 10, x + width, y + height - 5, 6, 5, 11, 6, null, c);
-        g.drawImage(shadow, x + width - 5, y + height - 5, x + width, y + height, 6, 6, 11, 11, null, c);
     }
 
 

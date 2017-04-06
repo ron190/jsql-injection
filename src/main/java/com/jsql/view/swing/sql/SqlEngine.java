@@ -69,7 +69,7 @@ public class SqlEngine extends JPanel {
         
         public void setAttribute() {
             try {
-                if (attributeSetter != null && !this.getText().equals("")) {
+                if (attributeSetter != null && !"".equals(this.getText())) {
                     attributeSetter.getSetter().invoke(attributeSetter.getAttribute(), this.getText());
                 }
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
@@ -230,9 +230,9 @@ public class SqlEngine extends JPanel {
         listVendors.removeIf(i -> i == Vendor.AUTO);
         
         JComboBox<Vendor> comboBoxVendors = new JComboBox<>(listVendors.toArray(new Vendor[0]));
-        comboBoxVendors.addItemListener(e -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                xmlModel = ((Vendor) e.getItem()).instance().getXmlModel();
+        comboBoxVendors.addItemListener(itemEvent -> {
+            if (itemEvent.getStateChange() == ItemEvent.SELECTED) {
+                xmlModel = ((Vendor) itemEvent.getItem()).instance().getXmlModel();
                 this.changeVendor();
             }
         });
@@ -346,7 +346,7 @@ public class SqlEngine extends JPanel {
                 JPanel panelLimit = new JPanel();
                 panelLimit.setLayout(new BoxLayout(panelLimit, BoxLayout.LINE_AXIS));
                 panelLimit.add(new JLabel(" Overflow limit: "));
-                panelLimit.add(new JTextField("" + methodError.getCapacity()));
+                panelLimit.add(new JTextField(Integer.toString(methodError.getCapacity())));
                 
                 panelError.add(panelLimit, BorderLayout.SOUTH);
     
@@ -356,7 +356,7 @@ public class SqlEngine extends JPanel {
     }
     
     private void showSql(Model model) {
-        mapTextPaneToXml.stream().forEach(t -> t.setText(""));
+        mapTextPaneToXml.stream().forEach(textPaneLexer -> textPaneLexer.setText(""));
 
         textareaDatabase.setText(model.getResource().getSchema().getDatabase().trim());
         textareaTable.setText(model.getResource().getSchema().getTable().trim());
@@ -426,7 +426,7 @@ public class SqlEngine extends JPanel {
     
     private void changeVendor() {
         mapTextPaneToXml.stream().forEach(SqlEngine::resetLexer);
-        mapTextPaneToXml.stream().forEach(t -> t.switchSetterToVendor());
+        mapTextPaneToXml.stream().forEach(textPaneLexer -> textPaneLexer.switchSetterToVendor());
         SqlEngine.this.showSql(xmlModel);
     }
 

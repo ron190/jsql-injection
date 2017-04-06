@@ -4,7 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.injection.strategy.blind.diff_match_patch.Diff;
+import com.jsql.model.injection.strategy.blind.patch.Diff;
+import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
 
 /**
  * Define a call HTTP to the server, require the associated url, character
@@ -18,7 +19,7 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
      */
     private LinkedList<Diff> opcodes = new LinkedList<>();
     
-    private static final diff_match_patch DIFFMATCHPATCH = new diff_match_patch();
+    private static final DiffMatchPatch DIFFMATCHPATCH = new DiffMatchPatch();
 
     /**
      * Constructor for preparation and blind confirmation.
@@ -60,6 +61,8 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
     @Override
     public boolean isTrue() {
         for (Diff falseDiff: ConcreteBlindInjection.getConstantFalseMark()) {
+            // Fix #4386: NullPointerException on contains()
+            // opcodes is initialized to an empty new LinkedList<>()
             if (this.opcodes.contains(falseDiff)) {
                 return false;
             }

@@ -13,8 +13,6 @@ package com.jsql.view.swing.tree.model;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
@@ -166,12 +164,7 @@ public abstract class AbstractNodeModel {
         mnRestart.setIcon(HelperUi.ICON_EMPTY);
 
         mnRestart.setEnabled(!this.isRunning);
-        mnRestart.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AbstractNodeModel.this.runAction();
-            }
-        });
+        mnRestart.addActionListener(actionEvent -> AbstractNodeModel.this.runAction());
         
         popupMenu.add(new JSeparator());
         popupMenu.add(mnRestart);
@@ -207,9 +200,9 @@ public abstract class AbstractNodeModel {
      * @param hasFocus
      * @return
      */
-    public Component getComponent(final JTree tree, Object nodeRenderer,
-            final boolean isSelected, boolean isExpanded, boolean isLeaf, int row,
-            boolean hasFocus) {
+    public Component getComponent(
+        final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, int row,boolean hasFocus
+    ) {
 
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         final PanelNode panel = new PanelNode(tree, currentNode);

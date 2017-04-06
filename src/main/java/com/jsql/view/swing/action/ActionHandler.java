@@ -11,13 +11,10 @@
 package com.jsql.view.swing.action;
 
 import java.awt.AWTKeyStroke;
-import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -56,18 +53,12 @@ public final class ActionHandler {
     public static void addTextFieldShortcutSelectAll() {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(
             "permanentFocusOwner", 
-            new PropertyChangeListener() {
-                @Override
-                public void propertyChange(final PropertyChangeEvent e) {
-                    if (e.getNewValue() instanceof JTextField) {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                JTextField textField = (JTextField) e.getNewValue();
-                                textField.selectAll();
-                            }
-                        });
-                    }
+            propertyChangeEvent -> {
+                if (propertyChangeEvent.getNewValue() instanceof JTextField) {
+                    SwingUtilities.invokeLater(() -> {
+                        JTextField textField = (JTextField) propertyChangeEvent.getNewValue();
+                        textField.selectAll();
+                    });
                 }
             }
         );
@@ -178,54 +169,42 @@ public final class ActionHandler {
         final boolean[] wasAltPressed = {false};
         
         /* Hide Menubar when focusing any component */
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(
-            "permanentFocusOwner", 
-            new PropertyChangeListener() {
-                @Override
-                public void propertyChange(final PropertyChangeEvent e) {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (!MediatorGui.panelAddressBar().advanceIsActivated) {
-                                menubar.setVisible(false);
-                            }
-                        }
-                    });
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", 
+            propertyChangeEvent -> SwingUtilities.invokeLater(() -> {
+                if (!MediatorGui.panelAddressBar().advanceIsActivated) {
+                    menubar.setVisible(false);
                 }
-            }
+            })
         );
         
         /* Show/Hide the Menubar with Alt key */
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
-            @Override
-            public boolean dispatchKeyEvent(KeyEvent e) {
-                if (e.isAltDown() && e.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D)) {
-                    MediatorGui.panelAddressBar().textFieldAddress.requestFocusInWindow();
-                    MediatorGui.panelAddressBar().textFieldAddress.selectAll();
-                    wasAltDPressed[0] = true;
-                    return true;
-                } else if (
-                    e.getKeyCode() == KeyEvent.VK_ALT && 
-                    e.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)
-                ) {
-                    if (!wasAltDPressed[0] && !wasAltPressed[0]) {
-                        if (!MediatorGui.panelAddressBar().advanceIsActivated) {
-                            menubar.setVisible(!menubar.isVisible());
-                        }
-                    } else {
-                        wasAltDPressed[0] = false;
-                        wasAltPressed[0] = false;
-                    }
-                    return true;
-                } else if (e.isAltDown() && e.getKeyCode() == KeyEvent.VK_ALT) {
-                    if (!MediatorGui.panelAddressBar().advanceIsActivated && menubar.isVisible()) {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyEvent -> {
+            if (keyEvent.isAltDown() && keyEvent.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D)) {
+                MediatorGui.panelAddressBar().textFieldAddress.requestFocusInWindow();
+                MediatorGui.panelAddressBar().textFieldAddress.selectAll();
+                wasAltDPressed[0] = true;
+                return true;
+            } else if (
+                keyEvent.getKeyCode() == KeyEvent.VK_ALT && 
+                keyEvent.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)
+            ) {
+                if (!wasAltDPressed[0] && !wasAltPressed[0]) {
+                    if (!MediatorGui.panelAddressBar().advanceIsActivated) {
                         menubar.setVisible(!menubar.isVisible());
-                        wasAltPressed[0] = true;
                     }
-                    return true;
+                } else {
+                    wasAltDPressed[0] = false;
+                    wasAltPressed[0] = false;
                 }
-                return false;
+                return true;
+            } else if (keyEvent.isAltDown() && keyEvent.getKeyCode() == KeyEvent.VK_ALT) {
+                if (!MediatorGui.panelAddressBar().advanceIsActivated && menubar.isVisible()) {
+                    menubar.setVisible(!menubar.isVisible());
+                    wasAltPressed[0] = true;
+                }
+                return true;
             }
+            return false;
         });
     }
     

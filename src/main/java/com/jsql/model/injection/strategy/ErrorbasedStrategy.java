@@ -57,7 +57,7 @@ public class ErrorbasedStrategy extends AbstractStrategy {
                     .replace("${WINDOW}", MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getSlidingWindow())
                     .replace("${INJECTION}", MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getFailsafe().replace("${INDICE}","0"))
                     .replace("${INDEX}", "1")
-                    .replace("${CAPACITY}", ""+errorMethod.getCapacity())
+                    .replace("${CAPACITY}", Integer.toString(errorMethod.getCapacity()))
                 )
             );
     
@@ -71,7 +71,7 @@ public class ErrorbasedStrategy extends AbstractStrategy {
             )) {
                 methodIsApplicable = true;
                 this.isApplicable = true;
-            };
+            }
             
             if (methodIsApplicable) {
                 LOGGER.debug("Vulnerable to "+ errorMethod.getName());
@@ -85,7 +85,7 @@ public class ErrorbasedStrategy extends AbstractStrategy {
                         .replace("${WINDOW}", MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getSlidingWindow())
                         .replace("${INJECTION}", MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getCalibrator())
                         .replace("${INDEX}", "1")
-                        .replace("${CAPACITY}", (""+errorMethod.getCapacity()))
+                        .replace("${CAPACITY}", Integer.toString(errorMethod.getCapacity()))
                     )
                 );
                 
@@ -95,7 +95,7 @@ public class ErrorbasedStrategy extends AbstractStrategy {
                         indexMethodByUser = indexErrorMethod;
                     }
                     errorCapacity = regexSearch.group(1).length();
-                    this.tabCapacityMethod[indexErrorMethod] = errorCapacity+"";
+                    this.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacity);
                 }
             } else {
                 this.unallow(indexErrorMethod);
@@ -153,9 +153,11 @@ public class ErrorbasedStrategy extends AbstractStrategy {
         return "Error based";
     }
     
+    @Override
     public Integer getIndexMethodByUser() {
         return indexMethodByUser;
     }
+    
     public void setIndexMethodByUser(int i) {
         indexMethodByUser = i;
     }

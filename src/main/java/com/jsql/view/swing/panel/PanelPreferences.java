@@ -1,9 +1,7 @@
-package com.jsql.view.swing.dialog;
+package com.jsql.view.swing.panel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -23,6 +21,7 @@ import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.util.ProxyUtil;
 import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.dialog.ActionCheckIP;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 
@@ -79,12 +78,9 @@ public class PanelPreferences extends JPanel {
         final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", PreferencesUtil.isCheckUpdateActivated());
         checkboxIsCheckingUpdate.setFocusable(false);
         JButton labelIsCheckingUpdate = new JButton("Check update at startup");
-        labelIsCheckingUpdate.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                checkboxIsCheckingUpdate.setSelected(!checkboxIsCheckingUpdate.isSelected());
-            }
-        });
+        labelIsCheckingUpdate.addActionListener(actionEvent -> 
+            checkboxIsCheckingUpdate.setSelected(!checkboxIsCheckingUpdate.isSelected())
+        );
         
         String tooltipIsReportingBugs = "Send unhandled exception to developer in order to fix issues.";
         final JCheckBox checkboxIsReportingBugs = new JCheckBox("", PreferencesUtil.isReportingBugs());
@@ -92,12 +88,9 @@ public class PanelPreferences extends JPanel {
         checkboxIsReportingBugs.setFocusable(false);
         JButton labelIsReportingBugs = new JButton("Report unhandled exceptions");
         labelIsReportingBugs.setToolTipText(tooltipIsReportingBugs);
-        labelIsReportingBugs.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                checkboxIsReportingBugs.setSelected(!checkboxIsReportingBugs.isSelected());
-            }
-        });
+        labelIsReportingBugs.addActionListener(actionEvent -> 
+            checkboxIsReportingBugs.setSelected(!checkboxIsReportingBugs.isSelected())
+        );
         
         String tooltipIsEvading = "Use complex SQL syntaxes to bypass protection (slower).";
         final JCheckBox checkboxIsEvading = new JCheckBox("", PreferencesUtil.isEvasionEnabled());
@@ -105,12 +98,9 @@ public class PanelPreferences extends JPanel {
         checkboxIsEvading.setFocusable(false);
         JButton labelIsEvading = new JButton("Enable evasion");
         labelIsEvading.setToolTipText(tooltipIsEvading);
-        labelIsEvading.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                checkboxIsEvading.setSelected(!checkboxIsEvading.isSelected());
-            }
-        });
+        labelIsEvading.addActionListener(actionEvent -> 
+            checkboxIsEvading.setSelected(!checkboxIsEvading.isSelected())
+        );
         
         String tooltipIsFollowingRedirection = "Force redirection when the page has moved (e.g. HTTP/1.1 302 Found).";
         final JCheckBox checkboxIsFollowingRedirection = new JCheckBox("", PreferencesUtil.isFollowingRedirection());
@@ -118,12 +108,9 @@ public class PanelPreferences extends JPanel {
         checkboxIsFollowingRedirection.setFocusable(false);
         JButton labelIsFollowingRedirection = new JButton("Follow HTTP redirection");
         labelIsFollowingRedirection.setToolTipText(tooltipIsFollowingRedirection);
-        labelIsFollowingRedirection.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                checkboxIsFollowingRedirection.setSelected(!checkboxIsFollowingRedirection.isSelected());
-            }
-        });
+        labelIsFollowingRedirection.addActionListener(actionEvent -> 
+            checkboxIsFollowingRedirection.setSelected(!checkboxIsFollowingRedirection.isSelected())
+        );
 
         LineBorder roundedLineBorder = new LineBorder(Color.LIGHT_GRAY, 1, true);
         TitledBorder roundedTitledBorder = new TitledBorder(roundedLineBorder, "General");
@@ -156,12 +143,9 @@ public class PanelPreferences extends JPanel {
         checkboxIsUsingProxy.setToolTipText(tooltipIsUsingProxy);
         checkboxIsUsingProxy.setFocusable(false);
 
-        labelIsUsingProxy.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                checkboxIsUsingProxy.setSelected(!checkboxIsUsingProxy.isSelected());
-            }
-        });
+        labelIsUsingProxy.addActionListener(actionEvent -> 
+            checkboxIsUsingProxy.setSelected(!checkboxIsUsingProxy.isSelected())
+        );
         
         // Digest label
         JLabel labelDigestAuthenticationUsername = new JLabel("Username  ");
@@ -227,23 +211,17 @@ public class PanelPreferences extends JPanel {
         checkboxUseKerberos.setToolTipText(tooltipUseKerberos);
         checkboxUseKerberos.setFocusable(false);
         
-        labelUseKerberos.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                checkboxUseKerberos.setSelected(!checkboxUseKerberos.isSelected());
-                if (checkboxUseKerberos.isSelected()) {
-                    checkboxUseDigestAuthentication.setSelected(false);
-                }
+        labelUseKerberos.addActionListener(actionEvent -> {
+            checkboxUseKerberos.setSelected(!checkboxUseKerberos.isSelected());
+            if (checkboxUseKerberos.isSelected()) {
+                checkboxUseDigestAuthentication.setSelected(false);
             }
         });
         
-        labelUseDigestAuthentication.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                checkboxUseDigestAuthentication.setSelected(!checkboxUseDigestAuthentication.isSelected());
-                if (checkboxUseDigestAuthentication.isSelected()) {
-                    checkboxUseKerberos.setSelected(false);
-                }
+        labelUseDigestAuthentication.addActionListener(actionEvent -> {
+            checkboxUseDigestAuthentication.setSelected(!checkboxUseDigestAuthentication.isSelected());
+            if (checkboxUseDigestAuthentication.isSelected()) {
+                checkboxUseKerberos.setSelected(false);
             }
         });
         
@@ -255,33 +233,30 @@ public class PanelPreferences extends JPanel {
         textDigestAuthenticationUsername.setFont(HelperUi.FONT_SEGOE_BIG);
         textDigestAuthenticationPassword.setFont(HelperUi.FONT_SEGOE_BIG);
         
-        buttonApply.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                PreferencesUtil.set(
-                    checkboxIsCheckingUpdate.isSelected(), 
-                    checkboxIsReportingBugs.isSelected(), 
-                    checkboxIsEvading.isSelected(), 
-                    checkboxIsFollowingRedirection.isSelected()
-                );
-                
-                ProxyUtil.set(
-                    checkboxIsUsingProxy.isSelected(), 
-                    textProxyAddress.getText(), 
-                    textProxyPort.getText()
-                );
-                
-                AuthenticationUtil.set(
-                    checkboxUseDigestAuthentication.isSelected(), 
-                    textDigestAuthenticationUsername.getText(), 
-                    textDigestAuthenticationPassword.getText(),
-                    checkboxUseKerberos.isSelected(),
-                    textKerberosKrb5Conf.getText(),
-                    textKerberosLoginConf.getText()
-                );
+        buttonApply.addActionListener(actionEvent -> {
+            PreferencesUtil.set(
+                checkboxIsCheckingUpdate.isSelected(), 
+                checkboxIsReportingBugs.isSelected(), 
+                checkboxIsEvading.isSelected(), 
+                checkboxIsFollowingRedirection.isSelected()
+            );
+            
+            ProxyUtil.set(
+                checkboxIsUsingProxy.isSelected(), 
+                textProxyAddress.getText(), 
+                textProxyPort.getText()
+            );
+            
+            AuthenticationUtil.set(
+                checkboxUseDigestAuthentication.isSelected(), 
+                textDigestAuthenticationUsername.getText(), 
+                textDigestAuthenticationPassword.getText(),
+                checkboxUseKerberos.isSelected(),
+                textKerberosKrb5Conf.getText(),
+                textKerberosLoginConf.getText()
+            );
 
-                LOGGER.debug("Preferences saved");
-            }
+            LOGGER.debug("Preferences saved");
         });
 
         labelIsCheckingUpdate.setHorizontalAlignment(JButton.LEFT);
@@ -316,10 +291,6 @@ public class PanelPreferences extends JPanel {
         JLabel proxyInfo = new JLabel(" / Define proxy settings (e.g. TOR)");
         proxyField.setBorder(BorderFactory.createEmptyBorder(0, 0, 6, 0));
         
-//        JLabel httpClientField = new JLabel("<html><b>Http client</b></html>", JLabel.RIGHT);
-//        JLabel httpClientInfo = new JLabel(" / User agent, Header");
-//        httpClientField.setBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0));
-        
         JLabel authenticationField = new JLabel("<html><b>Authentication</b></html>", JLabel.RIGHT);
         JLabel authenticationInfo = new JLabel(" / Basic, Digest, NTLM or Kerberos");
         authenticationField.setBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0));
@@ -338,7 +309,6 @@ public class PanelPreferences extends JPanel {
                     .addComponent(checkboxIsUsingProxy)
                     .addComponent(labelProxyAddress)
                     .addComponent(labelProxyPort)
-//                    .addComponent(httpClientField)
                     .addComponent(authenticationField)
                     .addComponent(checkboxUseDigestAuthentication)
                     .addComponent(labelDigestAuthenticationUsername)
@@ -358,7 +328,6 @@ public class PanelPreferences extends JPanel {
                     .addComponent(labelIsUsingProxy)
                     .addComponent(textProxyAddress)
                     .addComponent(textProxyPort)
-//                    .addComponent(httpClientInfo)
                     .addComponent(authenticationInfo)
                     .addComponent(labelUseDigestAuthentication)
                     .addComponent(textDigestAuthenticationUsername)
@@ -397,11 +366,6 @@ public class PanelPreferences extends JPanel {
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(labelProxyPort)
                         .addComponent(textProxyPort)
-//                ).addGroup(
-//                    settingLayout
-//                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
-//                        .addComponent(httpClientInfo)
-//                        .addComponent(httpClientField)
                 ).addGroup(
                     settingLayout
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)

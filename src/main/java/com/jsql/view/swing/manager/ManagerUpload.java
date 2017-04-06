@@ -12,8 +12,6 @@ package com.jsql.view.swing.manager;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -118,46 +116,37 @@ public class ManagerUpload extends AbstractManagerList {
         
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
         
-        this.run.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                if (ManagerUpload.this.listPaths.getSelectedValuesList().isEmpty()) {
-                    LOGGER.warn("Select directory(ies) to upload a file into");
-                    return;
-                }
+        this.run.addActionListener(actionEvent -> {
+            if (ManagerUpload.this.listPaths.getSelectedValuesList().isEmpty()) {
+                LOGGER.warn("Select directory(ies) to upload a file into");
+                return;
+            }
 
-                final JFileChooser filechooser = new JFileChooser(PreferencesUtil.getPathFile());
-                filechooser.setDialogTitle(I18n.valueByKey("UPLOAD_DIALOG_TEXT"));
-                
-                try {
-                    int returnVal = filechooser.showOpenDialog(MediatorGui.frame());
-                    if (returnVal == JFileChooser.APPROVE_OPTION) {
-                        for (final Object path: ManagerUpload.this.listPaths.getSelectedValuesList()) {
-                            
-                            new Thread(
-                                new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        File file = filechooser.getSelectedFile();
-                                        try {
-                                            ManagerUpload.this.loader.setVisible(true);
-                                            RessourceAccess.uploadFile(path.toString(), shellURL.getText(), file);
-                                        } catch (JSqlException e) {
-                                            LOGGER.warn("Payload creation error: "+ e, e);
-                                        } catch (IOException e) {
-                                            LOGGER.warn("Posting file failed: "+ e, e);
-                                        }
-                                    }
-                                },
-                                "ThreadUpload"
-                            ).start();
-                            
-                        }
+            final JFileChooser filechooser = new JFileChooser(PreferencesUtil.getPathFile());
+            filechooser.setDialogTitle(I18n.valueByKey("UPLOAD_DIALOG_TEXT"));
+            
+            try {
+                int returnVal = filechooser.showOpenDialog(MediatorGui.frame());
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    for (final Object path: ManagerUpload.this.listPaths.getSelectedValuesList()) {
+                        
+                        new Thread(() -> {
+                            File file = filechooser.getSelectedFile();
+                            try {
+                                ManagerUpload.this.loader.setVisible(true);
+                                RessourceAccess.uploadFile(path.toString(), shellURL.getText(), file);
+                            } catch (JSqlException ex) {
+                                LOGGER.warn("Payload creation error: "+ ex, ex);
+                            } catch (IOException ex) {
+                                LOGGER.warn("Posting file failed: "+ ex, ex);
+                            }
+                        }, "ThreadUpload").start();
+                        
                     }
-                } catch(NullPointerException e) {
-                    // Fix #2402 on showOpenDialog()
-                    LOGGER.error(e, e);
                 }
+            } catch(NullPointerException ex) {
+                // Fix #2402 on showOpenDialog()
+                LOGGER.error(ex, ex);
             }
         });
 

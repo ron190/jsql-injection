@@ -13,6 +13,7 @@ package com.jsql.view.interaction;
 /**
  * Action ordered by the Model and applied to the View.
  */
+@FunctionalInterface
 public interface InteractionCommand {
 	
     /**

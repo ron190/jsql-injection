@@ -132,6 +132,7 @@ public class HighlightedDocument extends DefaultStyledDocument {
 	//
 	// Intercept inserts and removes to color them.
 	//
+	@Override
 	public void insertString(int offs, String str, AttributeSet a)
 			throws BadLocationException {
 		synchronized (docLock) {
@@ -141,6 +142,7 @@ public class HighlightedDocument extends DefaultStyledDocument {
 		}
 	}
 
+	@Override
 	public void remove(int offs, int len) throws BadLocationException {
 		synchronized (docLock) {
 			super.remove(offs, len);

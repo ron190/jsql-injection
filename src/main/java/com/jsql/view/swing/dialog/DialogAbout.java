@@ -16,7 +16,6 @@ import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.Dialog;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -42,7 +41,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
 
 import org.apache.log4j.Logger;
 
@@ -86,12 +84,7 @@ public class DialogAbout extends JDialog {
         this.setIconImages(HelperUi.getIcons());
 
         // Action for ESCAPE key
-        ActionListener escapeListener = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                DialogAbout.this.dispose();
-            }
-        };
+        ActionListener escapeListener = actionEvent -> DialogAbout.this.dispose();
 
         this.getRootPane().registerKeyboardAction(
             escapeListener, 
@@ -118,14 +111,15 @@ public class DialogAbout extends JDialog {
             BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.COLOR_BLU),
             BorderFactory.createEmptyBorder(2, 20, 2, 20))
         );
-        buttonWebpage.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                try {
-                    Desktop.getDesktop().browse(new URI("https://github.com/ron190/jsql-injection"));
-                } catch (IOException | URISyntaxException | UnsupportedOperationException e) {
-                    LOGGER.warn(e, e);
-                }
+        buttonWebpage.addActionListener(ev -> {
+            try {
+                Desktop.getDesktop().browse(new URI("https://github.com/ron190/jsql-injection"));
+            } catch (IOException e) {
+                LOGGER.warn("Browsing to Url failed", e);
+            } catch (URISyntaxException e) {
+                LOGGER.warn("Incorrect Url", e);
+            } catch (UnsupportedOperationException e) {
+                LOGGER.warn("BROWSE action not supported on current platform", e);
             }
         });
         
@@ -155,7 +149,7 @@ public class DialogAbout extends JDialog {
             text[0] = new JEditorPane();
             text[0].setContentType("text/html");
 
-            String result = "";
+            StringBuilder result = new StringBuilder();
             
             try (
                 InputStream in = DialogAbout.class.getResourceAsStream("about.htm");
@@ -163,11 +157,11 @@ public class DialogAbout extends JDialog {
             ) {
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    result += line;
+                    result.append(line);
                 }
             }
 
-            text[0].setText(result.replace("%JSQLVERSION%", InjectionModel.VERSION_JSQL));
+            text[0].setText(result.toString().replace("%JSQLVERSION%", InjectionModel.VERSION_JSQL));
         } catch (IOException e) {
             LOGGER.error(e, e);
         }
@@ -194,17 +188,16 @@ public class DialogAbout extends JDialog {
 
         text[0].setComponentPopupMenu(new JPopupMenuText(text[0]));
 
-        text[0].addHyperlinkListener(new HyperlinkListener() {
-            @Override
-            public void hyperlinkUpdate(HyperlinkEvent linkEvent) {
-                if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {
-                    try {
-                        Desktop.getDesktop().browse(linkEvent.getURL().toURI());
-                    } catch (IOException e) {
-                        LOGGER.warn("Browsing to Url failed", e);
-                    } catch (URISyntaxException e) {
-                        LOGGER.error("Incorrect Url", e);
-                    }
+        text[0].addHyperlinkListener(linkEvent -> {
+            if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {
+                try {
+                    Desktop.getDesktop().browse(linkEvent.getURL().toURI());
+                } catch (IOException e) {
+                    LOGGER.warn("Browsing to Url failed", e);
+                } catch (URISyntaxException e) {
+                    LOGGER.warn("Incorrect Url", e);
+                } catch (UnsupportedOperationException e) {
+                    LOGGER.warn("BROWSE action not supported on current platform", e);
                 }
             }
         });

@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.model.injection.strategy.blind;
+package com.jsql.model.injection.strategy.blind.patch;
 
 /*
  * Diff Match and Patch
@@ -55,7 +55,7 @@ import java.util.regex.Pattern;
  * Class containing the diff, match and patch methods.
  * Also contains the behaviour settings.
  */
-public class diff_match_patch {
+public class DiffMatchPatch {
 
     // Defaults.
     // Set these on your diff_match_patch instance to override the defaults.
@@ -328,19 +328,19 @@ public class diff_match_patch {
         diffs.add(new Diff(Operation.EQUAL, ""));
         int count_delete = 0;
         int count_insert = 0;
-        String text_delete = "";
-        String text_insert = "";
+        StringBuilder text_delete = new StringBuilder();
+        StringBuilder text_insert = new StringBuilder();
         ListIterator<Diff> pointer = diffs.listIterator();
         Diff thisDiff = pointer.next();
         while (thisDiff != null) {
             switch (thisDiff.operation) {
             case INSERT:
                 count_insert++;
-                text_insert += thisDiff.text;
+                text_insert.append(thisDiff.text);
                 break;
             case DELETE:
                 count_delete++;
-                text_delete += thisDiff.text;
+                text_delete.append(thisDiff.text);
                 break;
             case EQUAL:
                 // Upon reaching an equality, check for prior redundancies.
@@ -351,15 +351,14 @@ public class diff_match_patch {
                         pointer.previous();
                         pointer.remove();
                     }
-                    for (Diff newDiff : diff_main(text_delete, text_insert, false,
-                            deadline)) {
+                    for (Diff newDiff : diff_main(text_delete.toString(), text_insert.toString(), false, deadline)) {
                         pointer.add(newDiff);
                     }
                 }
                 count_insert = 0;
                 count_delete = 0;
-                text_delete = "";
-                text_insert = "";
+                text_delete.setLength(0);
+                text_insert.setLength(0);
                 break;
             }
             thisDiff = pointer.hasNext() ? pointer.next() : null;
@@ -698,11 +697,9 @@ public class diff_match_patch {
         }
 
         // First check if the second quarter is the seed for a half-match.
-        String[] hm1 = diff_halfMatchI(longtext, shorttext,
-                (longtext.length() + 3) / 4);
+        String[] hm1 = diff_halfMatchI(longtext, shorttext, (longtext.length() + 3) / 4);
         // Check again based on the third quarter.
-        String[] hm2 = diff_halfMatchI(longtext, shorttext,
-                (longtext.length() + 1) / 2);
+        String[] hm2 = diff_halfMatchI(longtext, shorttext, (longtext.length() + 1) / 2);
         String[] hm;
         if (hm1 == null && hm2 == null) {
             return null;
@@ -718,7 +715,6 @@ public class diff_match_patch {
         // A half-match was found, sort out the return data.
         if (text1.length() > text2.length()) {
             return hm;
-            //return new String[]{hm[0], hm[1], hm[2], hm[3], hm[4]};
         } else {
             return new String[]{hm[2], hm[3], hm[0], hm[1], hm[4]};
         }
@@ -802,11 +798,11 @@ public class diff_match_patch {
                 }
                 // Eliminate an equality that is smaller or equal to the edits on both
                 // sides of it.
-                if (lastequality != null && (lastequality.length()
-                        <= Math.max(length_insertions1, length_deletions1))
-                        && (lastequality.length()
-                                <= Math.max(length_insertions2, length_deletions2))) {
-                    //System.out.println("Splitting: '" + lastequality + "'");
+                if (
+                    lastequality != null 
+                    && lastequality.length() <= Math.max(length_insertions1, length_deletions1)
+                    && lastequality.length() <= Math.max(length_insertions2, length_deletions2)
+                ) {
                     // Walk back to offending equality.
                     while (thisDiff != equalities.lastElement()) {
                         thisDiff = pointer.previous();
@@ -919,9 +915,9 @@ public class diff_match_patch {
      * @param diffs LinkedList of Diff objects.
      */
     public void diff_cleanupSemanticLossless(List<Diff> diffs) {
-        String equality1;
+        StringBuilder equality1 = new StringBuilder();
         String edit;
-        String equality2;
+        StringBuilder equality2 = new StringBuilder();
         String commonString;
         int commonOffset;
         int score;
@@ -939,38 +935,44 @@ public class diff_match_patch {
             if (prevDiff.operation == Operation.EQUAL &&
                     nextDiff.operation == Operation.EQUAL) {
                 // This is a single edit surrounded by equalities.
-                equality1 = prevDiff.text;
+                equality1.setLength(0);
+                equality1.append(prevDiff.text);
                 edit = thisDiff.text;
-                equality2 = nextDiff.text;
+                equality2.setLength(0);
+                equality2.append(nextDiff.text);
 
                 // First, shift the edit as far left as possible.
-                commonOffset = diff_commonSuffix(equality1, edit);
+                commonOffset = diff_commonSuffix(equality1.toString(), edit);
                 if (commonOffset != 0) {
                     commonString = edit.substring(edit.length() - commonOffset);
-                    equality1 = equality1.substring(0, equality1.length() - commonOffset);
+                    String substring = equality1.substring(0, equality1.length() - commonOffset);
+                    equality1.setLength(0);
+                    equality1.append(substring);
                     edit = commonString + edit.substring(0, edit.length() - commonOffset);
-                    equality2 = commonString + equality2;
+                    equality2.insert(0, commonString);
                 }
 
                 // Second, step character by character right, looking for the best fit.
-                bestEquality1 = equality1;
+                bestEquality1 = equality1.toString();
                 bestEdit = edit;
-                bestEquality2 = equality2;
-                bestScore = diff_cleanupSemanticScore(equality1, edit)
-                        + diff_cleanupSemanticScore(edit, equality2);
+                bestEquality2 = equality2.toString();
+                bestScore = diff_cleanupSemanticScore(equality1.toString(), edit)
+                        + diff_cleanupSemanticScore(edit, equality2.toString());
                 while (edit.length() != 0 && equality2.length() != 0
                         && edit.charAt(0) == equality2.charAt(0)) {
-                    equality1 += edit.charAt(0);
+                    equality1.append(Character.toString(edit.charAt(0)));
                     edit = edit.substring(1) + equality2.charAt(0);
-                    equality2 = equality2.substring(1);
-                    score = diff_cleanupSemanticScore(equality1, edit)
-                            + diff_cleanupSemanticScore(edit, equality2);
+                    String substring = equality2.substring(1);
+                    equality2.setLength(0);
+                    equality2.append(substring);
+                    score = diff_cleanupSemanticScore(equality1.toString(), edit)
+                            + diff_cleanupSemanticScore(edit, equality2.toString());
                     // The >= encourages trailing rather than leading whitespace on edits.
                     if (score >= bestScore) {
                         bestScore = score;
-                        bestEquality1 = equality1;
+                        bestEquality1 = equality1.toString();
                         bestEdit = edit;
-                        bestEquality2 = equality2;
+                        bestEquality2 = equality2.toString();
                     }
                 }
 
@@ -1106,12 +1108,16 @@ public class diff_match_patch {
                  * <ins>A</del>X<ins>C</ins><del>D</del>
                  * <ins>A</ins><del>B</del>X<del>C</del>
                  */
-                if (lastequality != null
-                        && ((pre_ins && pre_del && post_ins && post_del)
-                                || ((lastequality.length() < Diff_EditCost / 2)
-                                        && ((pre_ins ? 1 : 0) + (pre_del ? 1 : 0)
-                                                + (post_ins ? 1 : 0) + (post_del ? 1 : 0)) == 3))) {
-                    //System.out.println("Splitting: '" + lastequality + "'");
+                if (
+                    lastequality != null
+                    && (
+                        (pre_ins && pre_del && post_ins && post_del)
+                        || (
+                            (lastequality.length() < Diff_EditCost / 2)
+                            && ((pre_ins ? 1 : 0) + (pre_del ? 1 : 0) + (post_ins ? 1 : 0) + (post_del ? 1 : 0)) == 3
+                        )
+                    )
+                ) {
                     // Walk back to offending equality.
                     while (thisDiff != equalities.lastElement()) {
                         thisDiff = pointer.previous();
@@ -1171,8 +1177,8 @@ public class diff_match_patch {
         ListIterator<Diff> pointer = diffs.listIterator();
         int count_delete = 0;
         int count_insert = 0;
-        String text_delete = "";
-        String text_insert = "";
+        StringBuilder text_delete = new StringBuilder();
+        StringBuilder text_insert = new StringBuilder();
         Diff thisDiff = pointer.next();
         Diff prevEqual = null;
         int commonlength;
@@ -1180,12 +1186,12 @@ public class diff_match_patch {
             switch (thisDiff.operation) {
             case INSERT:
                 count_insert++;
-                text_insert += thisDiff.text;
+                text_insert.append(thisDiff.text);
                 prevEqual = null;
                 break;
             case DELETE:
                 count_delete++;
-                text_delete += thisDiff.text;
+                text_delete.append(thisDiff.text);
                 prevEqual = null;
                 break;
             case EQUAL:
@@ -1203,7 +1209,7 @@ public class diff_match_patch {
                     }
                     if (both_types) {
                         // Factor out any common prefixies.
-                        commonlength = diff_commonPrefix(text_insert, text_delete);
+                        commonlength = diff_commonPrefix(text_insert.toString(), text_delete.toString());
                         if (commonlength != 0) {
                             if (pointer.hasPrevious()) {
                                 thisDiff = pointer.previous();
@@ -1215,28 +1221,33 @@ public class diff_match_patch {
                                 pointer.add(new Diff(Operation.EQUAL,
                                         text_insert.substring(0, commonlength)));
                             }
-                            text_insert = text_insert.substring(commonlength);
-                            text_delete = text_delete.substring(commonlength);
+                            String substringIns = text_insert.substring(commonlength);
+                            text_insert.setLength(0);
+                            text_insert.append(substringIns);
+                            String substringDel = text_delete.substring(commonlength);
+                            text_delete.setLength(0);
+                            text_delete.append(substringDel);
                         }
                         // Factor out any common suffixies.
-                        commonlength = diff_commonSuffix(text_insert, text_delete);
+                        commonlength = diff_commonSuffix(text_insert.toString(), text_delete.toString());
                         if (commonlength != 0) {
                             thisDiff = pointer.next();
-                            thisDiff.text = text_insert.substring(text_insert.length()
-                                    - commonlength) + thisDiff.text;
-                            text_insert = text_insert.substring(0, text_insert.length()
-                                    - commonlength);
-                            text_delete = text_delete.substring(0, text_delete.length()
-                                    - commonlength);
+                            thisDiff.text = text_insert.substring(text_insert.length() - commonlength) + thisDiff.text;
+                            String substringIns = text_insert.substring(0, text_insert.length() - commonlength);
+                            text_insert.setLength(0);
+                            text_insert.append(substringIns);
+                            String substringDel = text_delete.substring(0, text_delete.length() - commonlength);
+                            text_delete.setLength(0);
+                            text_delete.append(substringDel);
                             pointer.previous();
                         }
                     }
                     // Insert the merged records.
                     if (text_delete.length() != 0) {
-                        pointer.add(new Diff(Operation.DELETE, text_delete));
+                        pointer.add(new Diff(Operation.DELETE, text_delete.toString()));
                     }
                     if (text_insert.length() != 0) {
-                        pointer.add(new Diff(Operation.INSERT, text_insert));
+                        pointer.add(new Diff(Operation.INSERT, text_insert.toString()));
                     }
                     // Step forward to the equality.
                     thisDiff = pointer.hasNext() ? pointer.next() : null;
@@ -1249,8 +1260,8 @@ public class diff_match_patch {
                 }
                 count_insert = 0;
                 count_delete = 0;
-                text_delete = "";
-                text_insert = "";
+                text_delete.setLength(0);
+                text_insert.setLength(0);
                 prevEqual = thisDiff;
                 break;
             }
@@ -1466,7 +1477,7 @@ public class diff_match_patch {
         if (delta.length() != 0) {
             // Strip off trailing tab character.
             delta = delta.substring(0, delta.length() - 1);
-            delta = unescapeForEncodeUriCompatability(delta);
+            delta = Patch.unescapeForEncodeUriCompatability(delta);
         }
         return delta;
     }
@@ -1818,6 +1829,7 @@ public class diff_match_patch {
      * @return LinkedList of Patch objects.
      * @deprecated Prefer patch_make(String text1, LinkedList<Diff> diffs).
      */
+    @Deprecated
     public List<Patch> patch_make(String text1, String text2,
             LinkedList<Diff> diffs) {
         return patch_make(text1, diffs);
@@ -2051,9 +2063,9 @@ public class diff_match_patch {
      */
     public String patch_addPadding(LinkedList<Patch> patches) {
         short paddingLength = this.Patch_Margin;
-        String nullPadding = "";
+        StringBuilder nullPadding = new StringBuilder();
         for (short x = 1; x <= paddingLength; x++) {
-            nullPadding += String.valueOf((char) x);
+            nullPadding.append(String.valueOf((char) x));
         }
 
         // Bump all the patches forward.
@@ -2067,7 +2079,7 @@ public class diff_match_patch {
         LinkedList<Diff> diffs = patch.diffs;
         if (diffs.isEmpty() || diffs.getFirst().operation != Operation.EQUAL) {
             // Add nullPadding equality.
-            diffs.addFirst(new Diff(Operation.EQUAL, nullPadding));
+            diffs.addFirst(new Diff(Operation.EQUAL, nullPadding.toString()));
             patch.start1 -= paddingLength;  // Should be 0.
             patch.start2 -= paddingLength;  // Should be 0.
             patch.length1 += paddingLength;
@@ -2089,7 +2101,7 @@ public class diff_match_patch {
         diffs = patch.diffs;
         if (diffs.isEmpty() || diffs.getLast().operation != Operation.EQUAL) {
             // Add nullPadding equality.
-            diffs.addLast(new Diff(Operation.EQUAL, nullPadding));
+            diffs.addLast(new Diff(Operation.EQUAL, nullPadding.toString()));
             patch.length1 += paddingLength;
             patch.length2 += paddingLength;
         } else if (paddingLength > diffs.getLast().text.length()) {
@@ -2101,7 +2113,7 @@ public class diff_match_patch {
             patch.length2 += extraLength;
         }
 
-        return nullPadding;
+        return nullPadding.toString();
     }
 
     /**
@@ -2315,180 +2327,4 @@ public class diff_match_patch {
         return patches;
     }
 
-
-    /**
-     * Class representing one diff operation.
-     */
-    public static class Diff implements Comparable<Diff>  {
-        /**
-         * One of: INSERT, DELETE or EQUAL.
-         */
-        public Operation operation;
-        /**
-         * The text associated with this diff operation.
-         */
-        public String text;
-
-        /**
-         * Constructor.  Initializes the diff with the provided values.
-         * @param operation One of INSERT, DELETE or EQUAL.
-         * @param text The text being applied.
-         */
-        public Diff(Operation operation, String text) {
-            // Construct a diff with the specified operation and text.
-            this.operation = operation;
-            this.text = text;
-        }
-
-        /**
-         * Display a human-readable version of this Diff.
-         * @return text version.
-         */
-        @Override
-        public String toString() {
-            String prettyText = this.text.replace('\n', '\u00b6');
-            return "Diff(" + this.operation + ",\"" + prettyText + "\")";
-        }
-
-        /**
-         * Create a numeric hash value for a Diff.
-         * This function is not used by DMP.
-         * @return Hash value.
-         */
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = (operation == null) ? 0 : operation.hashCode();
-            result += prime * ((text == null) ? 0 : text.hashCode());
-            return result;
-        }
-
-        /**
-         * Is this Diff equivalent to another Diff?
-         * @param obj Another Diff to compare against.
-         * @return true or false.
-         */
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-            if (obj == null) {
-                return false;
-            }
-            if (getClass() != obj.getClass()) {
-                return false;
-            }
-            Diff other = (Diff) obj;
-            if (operation != other.operation) {
-                return false;
-            }
-            if (text == null) {
-                if (other.text != null) {
-                    return false;
-                }
-            } else if (!text.equals(other.text)) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public int compareTo(Diff arg0) {
-            // TODO Auto-generated method stub
-            return this.toString().equals(arg0.toString()) ? 0 : 1;
-        }
-    }
-
-
-    /**
-     * Class representing one patch operation.
-     */
-    public static class Patch {
-        public LinkedList<Diff> diffs;
-        public int start1;
-        public int start2;
-        public int length1;
-        public int length2;
-
-        /**
-         * Constructor.  Initializes with an empty list of diffs.
-         */
-        public Patch() {
-            this.diffs = new LinkedList<Diff>();
-        }
-
-        /**
-         * Emmulate GNU diff's format.
-         * Header: @@ -382,8 +481,9 @@
-         * Indicies are printed as 1-based, not 0-based.
-         * @return The GNU diff string.
-         */
-        @Override
-        public String toString() {
-            String coords1;
-            String coords2;
-            if (this.length1 == 0) {
-                coords1 = this.start1 + ",0";
-            } else if (this.length1 == 1) {
-                coords1 = Integer.toString(this.start1 + 1);
-            } else {
-                coords1 = (this.start1 + 1) + "," + this.length1;
-            }
-            if (this.length2 == 0) {
-                coords2 = this.start2 + ",0";
-            } else if (this.length2 == 1) {
-                coords2 = Integer.toString(this.start2 + 1);
-            } else {
-                coords2 = (this.start2 + 1) + "," + this.length2;
-            }
-            StringBuilder text = new StringBuilder();
-            text.append("@@ -").append(coords1).append(" +").append(coords2)
-            .append(" @@\n");
-            // Escape the body of the patch with %xx notation.
-            for (Diff aDiff : this.diffs) {
-                switch (aDiff.operation) {
-                case INSERT:
-                    text.append('+');
-                    break;
-                case DELETE:
-                    text.append('-');
-                    break;
-                case EQUAL:
-                    text.append(' ');
-                    break;
-                }
-                try {
-                    text.append(URLEncoder.encode(aDiff.text, "UTF-8").replace('+', ' '))
-                    .append("\n");
-                } catch (UnsupportedEncodingException e) {
-                    // Not likely on modern system.
-                    throw new IllegalArgumentException("This system does not support UTF-8.");
-                }
-            }
-            return unescapeForEncodeUriCompatability(text.toString());
-        }
-    }
-
-    /**
-     * Unescape selected chars for compatability with JavaScript's encodeURI.
-     * In speed critical applications this could be dropped since the
-     * receiving application will certainly decode these fine.
-     * Note that this function is case-sensitive.  Thus "%3f" would not be
-     * unescaped.  But this is ok because it is only called with the output of
-     * URLEncoder.encode which returns uppercase hex.
-     *
-     * Example: "%3F" -> "?", "%24" -> "$", etc.
-     *
-     * @param str The string to escape.
-     * @return The escaped string.
-     */
-    private static String unescapeForEncodeUriCompatability(String str) {
-        return str.replace("%21", "!").replace("%7E", "~")
-                .replace("%27", "'").replace("%28", "(").replace("%29", ")")
-                .replace("%3B", ";").replace("%2F", "/").replace("%3F", "?")
-                .replace("%3A", ":").replace("%40", "@").replace("%26", "&")
-                .replace("%3D", "=").replace("%2B", "+").replace("%24", "$")
-                .replace("%2C", ",").replace("%23", "#");
-    }
 }

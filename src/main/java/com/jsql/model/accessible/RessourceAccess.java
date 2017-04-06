@@ -23,7 +23,6 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -135,12 +134,11 @@ public class RessourceAccess {
         ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable("CallableGetAdminPage"));
         CompletionService<CallableAdminPage> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
         
-        String urlPart = "";
+        StringBuilder urlPart = new StringBuilder();
         for (String segment: directoryNames) {
-            urlPart += segment;
-
+            urlPart.append(segment);
             for (ListItem pageName: pageNames) {
-                taskCompletionService.submit(new CallableAdminPage(urlProtocol + urlPart + pageName.toString()));
+                taskCompletionService.submit(new CallableAdminPage(urlProtocol + urlPart.toString() + pageName.toString()));
             }
         }
 
@@ -259,15 +257,15 @@ public class RessourceAccess {
         connection.setReadTimeout(ConnectionUtil.TIMEOUT);
         connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
 
-        String pageSource = "";
+        StringBuilder pageSource = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                pageSource += line + "\n";
+                pageSource.append(line + "\n");
             }
         }
 
-        Matcher regexSearch = Pattern.compile("(?s)<"+ DataAccess.LEAD +">(.*)<"+ DataAccess.TRAIL +">").matcher(pageSource);
+        Matcher regexSearch = Pattern.compile("(?s)<"+ DataAccess.LEAD +">(.*)<"+ DataAccess.TRAIL +">").matcher(pageSource.toString());
         regexSearch.find();
 
         String result;
@@ -285,7 +283,7 @@ public class RessourceAccess {
         msgHeader.put(TypeHeader.POST, "");
         msgHeader.put(TypeHeader.HEADER, "");
         msgHeader.put(TypeHeader.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
-        msgHeader.put(TypeHeader.SOURCE, pageSource);
+        msgHeader.put(TypeHeader.SOURCE, pageSource.toString());
         
         Request request = new Request();
         request.setMessage(TypeRequest.MESSAGE_HEADER);
@@ -432,43 +430,37 @@ public class RessourceAccess {
                         indexLongestRowSearch[0]++
                     ) {
                         Collections.sort(
-                            listRows, 
-                            // TODO java 8
-                            new Comparator<List<String>>() {
-                                @Override
-                                public int compare(List<String> firstRow, List<String> secondRow) {
-                                    return secondRow.get(indexLongestRowSearch[0]).length() - firstRow.get(indexLongestRowSearch[0]).length();
-                                }
-                            }
+                            listRows,
+                            (firstRow, secondRow) -> secondRow.get(indexLongestRowSearch[0]).length() - firstRow.get(indexLongestRowSearch[0]).length()
                         );
 
                         listFieldsLength.add(listRows.get(0).get(indexLongestRowSearch[0]).length());
                     }
 
                     if (!"".equals(result)) {
-                        String tableText = "+";
+                        StringBuilder tableText = new StringBuilder("+");
                         for (Integer fieldLength: listFieldsLength) {
-                            tableText += "-"+ StringUtils.repeat("-", fieldLength) +"-+";
+                            tableText.append("-"+ StringUtils.repeat("-", fieldLength) +"-+");
                         }
-                        tableText += "\n";
+                        tableText.append("\n");
 
                         for (List<String> listFields: listRows) {
-                            tableText += "|";
+                            tableText.append("|");
                             int cursorPosition = 0;
                             for (String field: listFields) {
-                                tableText += " "+ field + StringUtils.repeat(" ", listFieldsLength.get(cursorPosition) - field.length()) +" |";
+                                tableText.append(" "+ field + StringUtils.repeat(" ", listFieldsLength.get(cursorPosition) - field.length()) +" |");
                                 cursorPosition++;
                             }
-                            tableText += "\n";
+                            tableText.append("\n");
                         }
 
-                        tableText += "+";
+                        tableText.append("+");
                         for (Integer fieldLength: listFieldsLength) {
-                            tableText += "-"+ StringUtils.repeat("-", fieldLength) +"-+";
+                            tableText.append("-"+ StringUtils.repeat("-", fieldLength) +"-+");
                         }
-                        tableText += "\n";
+                        tableText.append("\n");
                         
-                        result = tableText;
+                        result = tableText.toString();
                     }
                 }
             } else if (result.indexOf("<SQLm>") > -1) {
@@ -591,12 +583,12 @@ public class RessourceAccess {
                     char buff = 512;
                     int len;
                     byte[] data = new byte[buff];
-                    String result = "";
+                    StringBuilder result = new StringBuilder();
                     do {
                         len = streamInputFile.read(data);
     
                         if (len > 0) {
-                            result += new String(data, 0, len);
+                            result.append(new String(data, 0, len));
                         }
                     } while (len > 0);
     
@@ -611,7 +603,7 @@ public class RessourceAccess {
                     msgHeader.put(TypeHeader.POST, "");
                     msgHeader.put(TypeHeader.HEADER, "");
                     msgHeader.put(TypeHeader.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
-                    msgHeader.put(TypeHeader.SOURCE, result);
+                    msgHeader.put(TypeHeader.SOURCE, result.toString());
     
                     Request request = new Request();
                     request.setMessage(TypeRequest.MESSAGE_HEADER);

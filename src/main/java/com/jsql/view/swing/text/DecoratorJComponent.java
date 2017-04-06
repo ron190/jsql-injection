@@ -16,6 +16,7 @@ import javax.swing.JComponent;
  * Decorate a swing component.
  * @param <T> Component like JTextField or JTextArea to decorate
  */
+@FunctionalInterface
 interface DecoratorJComponent<T extends JComponent> {
 	
     /**

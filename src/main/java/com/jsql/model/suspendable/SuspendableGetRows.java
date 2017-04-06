@@ -41,18 +41,24 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         AbstractElementDatabase searchName = (AbstractElementDatabase) args[4];
         ThreadUtil.put(searchName, this);
 
-        String sqlQuery = new String(initialSQLQuery).replaceAll("\\{limit\\}", MediatorModel.model().vendor.instance().sqlLimit(0));
+        String sqlQuery = initialSQLQuery.replaceAll("\\{limit\\}", MediatorModel.model().vendor.instance().sqlLimit(0));
 
-        // TODO Fix #14417
-        AbstractStrategy strategy = MediatorModel.model().getStrategy().instance();
+        AbstractStrategy strategy;
+        // Fix #14417
+        // TODO Optionnal
+        if (MediatorModel.model().getStrategy() != null) {
+            strategy = MediatorModel.model().getStrategy().instance();
+        } else {
+            return "";
+        }
         
         /*
          * As we know the expected number of rows (numberToFind), then it stops injection if all rows are found,
          * keep track of rows we have reached (limitSQLResult) and use these to skip entire rows,
          * keep track of characters we have reached (startPosition) and use these to skip characters,
          */
-        String slidingWindowAllRows = "";
-        String slidingWindowCurrentRow = "";
+        StringBuilder slidingWindowAllRows = new StringBuilder();
+        StringBuilder slidingWindowCurrentRow = new StringBuilder();
         int sqlLimit = 0;
         int charPositionInCurrentRow = 1;
         
@@ -60,8 +66,8 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
 
             if (this.isSuspended()) {
                 StoppedByUserSlidingException e = new StoppedByUserSlidingException();
-                e.setSlidingWindowAllRows(slidingWindowAllRows);
-                e.setSlidingWindowCurrentRows(slidingWindowCurrentRow);
+                e.setSlidingWindowAllRows(slidingWindowAllRows.toString());
+                e.setSlidingWindowCurrentRows(slidingWindowCurrentRow.toString());
                 throw e;
             } else if (strategy == null) {
                 // Fix #1905 : NullPointerException on injectionStrategy.inject()
@@ -77,7 +83,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
              * ${LEAD}blahblah      blah] : continue substr()
              */
             // Parse all the data we have retrieved
-            Matcher regexAllLine = 
+            Matcher regexAtLeastOneRow = 
                 Pattern
                     .compile(MODE + LEAD +"(.{1,"+ strategy.getPerformanceLength() +"})")
                     .matcher(sourcePage[0]);
@@ -87,7 +93,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     .compile(MODE + LEAD + TRAIL_RGX)
                     .matcher(sourcePage[0]);
             
-            if (regexEndOfLine.find() && isUsingLimit && !"".equals(slidingWindowAllRows)) {
+            if (regexEndOfLine.find() && isUsingLimit && !"".equals(slidingWindowAllRows.toString())) {
                 // Update the view only if there are value to find, and if it's not the root (empty tree)
                 if (numberToFind > 0 && searchName != null) {
                     Request request = new Request();
@@ -103,7 +109,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
              * One row could be very long, longer than the database can provide
              * TODO Need verification
              */
-            if (!regexAllLine.find() && isUsingLimit && !"".equals(slidingWindowAllRows)) {
+            if (!regexAtLeastOneRow.find() && isUsingLimit && !"".equals(slidingWindowAllRows.toString())) {
                 // Update the view only if there are value to find, and if it's not the root (empty tree)
                 if (numberToFind > 0 && searchName != null) {
                     Request request = new Request();
@@ -118,14 +124,14 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
              * Add the result to the data already found.
              */
             try {
-                slidingWindowCurrentRow += regexAllLine.group(1);
+                slidingWindowCurrentRow.append(regexAtLeastOneRow.group(1));
 
                 Request request = new Request();
                 request.setMessage(TypeRequest.MESSAGE_CHUNK);
                 request.setParameters(
                     Pattern
                         .compile(MODE + TRAIL_RGX +".*")
-                        .matcher(regexAllLine.group(1))
+                        .matcher(regexAtLeastOneRow.group(1))
                         .replaceAll("\n")
                 );
                 MediatorModel.model().sendToViews(request);
@@ -149,7 +155,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             /*
              * Check how many rows we have collected from the beginning of that chunk
              */
-            regexAllLine = 
+            regexAtLeastOneRow = 
                 Pattern
                     .compile(
                         MODE 
@@ -163,7 +169,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     )
                     .matcher(slidingWindowCurrentRow);
             int nbCompleteLine = 0;
-            while (regexAllLine.find()) {
+            while (regexAtLeastOneRow.find()) {
                 nbCompleteLine++;
             }
 
@@ -182,24 +188,29 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
              * => hhxxxxxxxxjj00hhgghh...hiLQS
              */
             /* Design Pattern: State? */
-            if (nbCompleteLine>0 || slidingWindowCurrentRow.matches("(?s).*"+ TRAIL_RGX +".*")) {
+            if (nbCompleteLine>0 || slidingWindowCurrentRow.toString().matches("(?s).*"+ TRAIL_RGX +".*")) {
                 /*
                  * Remove everything after our result
                  * => hhxxxxxxxxjj00hhgghh...h |-> iLQSjunk
                  */
-                slidingWindowCurrentRow = 
+                String currentRow = slidingWindowCurrentRow.toString();
+                slidingWindowCurrentRow.setLength(0);
+                slidingWindowCurrentRow.append(
                     Pattern
                         .compile(MODE + TRAIL_RGX +".*")
-                        .matcher(slidingWindowCurrentRow)
-                        .replaceAll("");
-                slidingWindowAllRows += slidingWindowCurrentRow;
+                        .matcher(currentRow)
+                        .replaceAll("")
+                );
+                slidingWindowAllRows.append(slidingWindowCurrentRow.toString());
                 if (isUsingLimit) {
                     /*
                      * Remove everything not properly attached to the last row:
                      * 1. very start of a new row: XXXXXhhg[ghh]$
                      * 2. very end of the last row: XXXXX[jj00]$
                      */
-                    slidingWindowAllRows = 
+                    String allRowsLimit = slidingWindowAllRows.toString();
+                    slidingWindowAllRows.setLength(0);
+                    slidingWindowAllRows.append( 
                         Pattern
                             .compile(
                                 MODE +"("
@@ -208,9 +219,12 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                                     + SEPARATOR_QTE_RGX +"\\d*"
                                 +")$"
                             )
-                            .matcher(slidingWindowAllRows)
-                            .replaceAll("");
-                    slidingWindowCurrentRow = 
+                            .matcher(allRowsLimit)
+                            .replaceAll("")
+                    );
+                    String currentRowLimit = slidingWindowCurrentRow.toString();
+                    slidingWindowCurrentRow.setLength(0);
+                    slidingWindowCurrentRow.append(
                         Pattern
                             .compile(
                                 MODE +"("
@@ -219,13 +233,14 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                                     + SEPARATOR_QTE_RGX +"\\d*"
                                 +")$"
                             )
-                            .matcher(slidingWindowCurrentRow)
-                            .replaceAll("");
+                            .matcher(currentRowLimit)
+                            .replaceAll("")
+                    );
 
                     /*
                      * Check either if there is more than 1 row and if there is less than 1 complete row
                      */
-                    regexAllLine = 
+                    regexAtLeastOneRow = 
                         Pattern
                             .compile(
                                 MODE
@@ -236,7 +251,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                                 + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
                             )
                             .matcher(slidingWindowCurrentRow);
-                    Matcher regexSearch2a2 = 
+                    Matcher regexRowIncomplete = 
                         Pattern
                             .compile(
                                 MODE 
@@ -249,25 +264,28 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                      * If there is more than 1 row, delete the last incomplete one in order to restart properly from it at the next loop,
                      * else if there is 1 row but incomplete, mark it as cut with the letter c
                      */
-                    if (regexAllLine.find()) {
-                        slidingWindowAllRows = 
+                    if (regexAtLeastOneRow.find()) {
+                        String allLine = slidingWindowAllRows.toString();
+                        slidingWindowAllRows.setLength(0);
+                        slidingWindowAllRows.append(
                             Pattern
                                 .compile(
                                     MODE 
                                     + ENCLOSE_VALUE_RGX 
                                     + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
                                 )
-                                .matcher(slidingWindowAllRows)
-                                .replaceAll("");
-                    } else if (regexSearch2a2.find()) {
-                        slidingWindowAllRows += StringUtil.hexstr("05") + "1" + StringUtil.hexstr("0804");
+                                .matcher(allLine)
+                                .replaceAll("")
+                        );
+                    } else if (regexRowIncomplete.find()) {
+                        slidingWindowAllRows.append(StringUtil.hexstr("05") + "1" + StringUtil.hexstr("0804"));
                     }
 
                     /*
                      * Check how many rows we have collected from the very beginning of the query,
                      * then skip every rows we have already found via LIMIT
                      */
-                    regexAllLine = 
+                    regexAtLeastOneRow = 
                         /*
                          * Regex \\x{08}? not supported on Kali
                          * => \\x08? seems ok though
@@ -285,7 +303,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                             .matcher(slidingWindowAllRows);
 
                     nbCompleteLine = 0;
-                    while (regexAllLine.find()) {
+                    while (regexAtLeastOneRow.find()) {
                         nbCompleteLine++;
                     }
                     sqlLimit = nbCompleteLine;
@@ -322,7 +340,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                             .matcher(initialSQLQuery)
                             .replaceAll(MediatorModel.model().vendor.instance().sqlLimit(sqlLimit));
 
-                    slidingWindowCurrentRow = "";
+                    slidingWindowCurrentRow.setLength(0);
                 } else {
                     // Inform the view about the progression
                     if (numberToFind > 0 && searchName != null) {
@@ -341,7 +359,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         
         ThreadUtil.remove(searchName);
 
-        return slidingWindowAllRows;
+        return slidingWindowAllRows.toString();
     }
     
 }

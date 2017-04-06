@@ -13,8 +13,6 @@ package com.jsql.view.swing.manager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -100,43 +98,35 @@ public class ManagerFile extends AbstractManagerList {
         
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
         
-        this.run.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                if (listFile.getSelectedValuesList().isEmpty()) {
-                    LOGGER.warn("Select file(s) to read");
-                    return;
-                }
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        
-                        if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {
-                            ManagerFile.this.run.setText("Stop");
-                            ManagerFile.this.run.setState(StateButton.STOPPABLE);
-                            ManagerFile.this.loader.setVisible(true);
-                            
-                            MediatorGui.managerWebshell().clearSelection();
-                            MediatorGui.managerSqlshell().clearSelection();
-                            try {
-                                RessourceAccess.readFile(listFile.getSelectedValuesList());
-                            } catch (JSqlException | ExecutionException e) {
-                                LOGGER.warn(e, e);
-                            } catch (InterruptedException e) {
-                                LOGGER.warn("Interruption while waiting for Reading File termination", e);
-                                Thread.currentThread().interrupt();
-                            }
-
-                        } else {
-                            RessourceAccess.stopSearchingFile();
-                            ManagerFile.this.run.setEnabled(false);
-                            ManagerFile.this.run.setState(StateButton.STOPPING);
-                        }
-                        
-                    }
-                }, "ThreadReadFile").start();
+        this.run.addActionListener(actionEvent -> {
+            if (listFile.getSelectedValuesList().isEmpty()) {
+                LOGGER.warn("Select file(s) to read");
+                return;
             }
+
+            new Thread(() -> {
+                if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {
+                    ManagerFile.this.run.setText("Stop");
+                    ManagerFile.this.run.setState(StateButton.STOPPABLE);
+                    ManagerFile.this.loader.setVisible(true);
+                    
+                    MediatorGui.managerWebshell().clearSelection();
+                    MediatorGui.managerSqlshell().clearSelection();
+                    try {
+                        RessourceAccess.readFile(listFile.getSelectedValuesList());
+                    } catch (JSqlException | ExecutionException ex) {
+                        LOGGER.warn(ex, ex);
+                    } catch (InterruptedException ex) {
+                        LOGGER.warn("Interruption while waiting for Reading File termination", ex);
+                        Thread.currentThread().interrupt();
+                    }
+
+                } else {
+                    RessourceAccess.stopSearchingFile();
+                    ManagerFile.this.run.setEnabled(false);
+                    ManagerFile.this.run.setState(StateButton.STOPPING);
+                }
+            }, "ThreadReadFile").start();
         });
 
         this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.ICON_SQUARE_GREY, SwingConstants.LEFT);

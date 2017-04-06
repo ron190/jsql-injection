@@ -15,7 +15,6 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
@@ -119,21 +118,13 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         
         menu.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
 
-        itemCopyUrl.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                StringSelection stringSelection = new StringSelection(CreateAdminPageTab.this.url);
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(stringSelection, null);
-            }
+        itemCopyUrl.addActionListener(actionEvent -> {
+            StringSelection stringSelection = new StringSelection(CreateAdminPageTab.this.url);
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(stringSelection, null);
         });
 
-        itemSelectAll.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                browser.selectAll();
-            }
-        });
+        itemSelectAll.addActionListener(actionEvent -> browser.selectAll());
         
         browser.addFocusListener(new FocusAdapter() {
             @Override
@@ -185,12 +176,9 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         browser.requestFocusInWindow();
 
         // Get back to the top
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                scroller.scrollPane.getViewport().setViewPosition(new java.awt.Point(0, 0));
-            }
-        });
+        SwingUtilities.invokeLater(() -> 
+            scroller.scrollPane.getViewport().setViewPosition(new java.awt.Point(0, 0))
+        );
     }
     
 }

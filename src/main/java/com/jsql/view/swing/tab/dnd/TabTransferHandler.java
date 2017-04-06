@@ -25,9 +25,9 @@ public class TabTransferHandler extends TransferHandler {
 
     private final DataFlavor localObjectFlavor;
     
-    private DnDTabbedPane srcDnDTabbedPane = null;
+    private TabbedPaneDnD srcDnDTabbedPane = null;
     
-    private static GhostGlassPane glassPane;
+    private static PanelGhostGlass glassPane;
     
     public TabTransferHandler() {
         localObjectFlavor = new ActivationDataFlavor(TabResults.class, DataFlavor.javaJVMLocalObjectMimeType, "RightPaneAdapter");
@@ -35,8 +35,8 @@ public class TabTransferHandler extends TransferHandler {
     
     @Override
     protected Transferable createTransferable(JComponent c) {
-        if (c instanceof DnDTabbedPane) {
-            srcDnDTabbedPane = (DnDTabbedPane) c;
+        if (c instanceof TabbedPaneDnD) {
+            srcDnDTabbedPane = (TabbedPaneDnD) c;
         }
         return new DataHandler(c, localObjectFlavor.getMimeType());
     }
@@ -50,9 +50,9 @@ public class TabTransferHandler extends TransferHandler {
         support.setDropAction(MOVE);
         DropLocation tdl = support.getDropLocation();
         Point pt = tdl.getDropPoint();
-        DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
+        TabbedPaneDnD target = (TabbedPaneDnD) support.getComponent();
         target.autoScrollTest(pt);
-        DnDTabbedPane.DropLocation dl = target.dropLocationForPointLocal(pt);
+        TabbedPaneDnD.DropLocationDnD dl = target.dropLocationForPointLocal(pt);
         int idx = dl.getIndex();
         boolean isDropable = false;
 
@@ -84,21 +84,21 @@ public class TabTransferHandler extends TransferHandler {
         if (isDropable) {
             support.setShowDropLocation(true);
             dl.setDropable(true);
-            target.setDropLocationLocal(dl, null, true);
+            target.setDropLocationLocal(dl, true);
             return true;
         } else {
             support.setShowDropLocation(false);
             dl.setDropable(false);
-            target.setDropLocationLocal(dl, null, false);
+            target.setDropLocationLocal(dl, false);
             return false;
         }
     }
 
     @Override
     public int getSourceActions(JComponent c) {
-        DnDTabbedPane src = (DnDTabbedPane) c;
+        TabbedPaneDnD src = (TabbedPaneDnD) c;
         if (glassPane == null) {
-            glassPane = new GhostGlassPane(src);
+            glassPane = new PanelGhostGlass(src);
             c.getRootPane().setGlassPane(glassPane);
         }
         
@@ -116,10 +116,10 @@ public class TabTransferHandler extends TransferHandler {
             return false;
         }
 
-        DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
-        DnDTabbedPane.DropLocation dl = target.getDropLocation();
+        TabbedPaneDnD target = (TabbedPaneDnD) support.getComponent();
+        TabbedPaneDnD.DropLocationDnD dl = target.getDropLocation();
         try {
-            DnDTabbedPane src = (DnDTabbedPane) support.getTransferable().getTransferData(localObjectFlavor);
+            TabbedPaneDnD src = (TabbedPaneDnD) support.getTransferable().getTransferData(localObjectFlavor);
             int index = dl.getIndex();
             if (target == src) {
                 src.convertTab(src.dragTabIndex, index);
@@ -135,8 +135,8 @@ public class TabTransferHandler extends TransferHandler {
     
     @Override 
     protected void exportDone(JComponent c, Transferable data, int action) {
-        DnDTabbedPane src = (DnDTabbedPane) c;
-        src.setDropLocationLocal(null, null, false);
+        TabbedPaneDnD src = (TabbedPaneDnD) c;
+        src.setDropLocationLocal(null, false);
         src.repaint();
         glassPane.setVisible(false);
         src.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));

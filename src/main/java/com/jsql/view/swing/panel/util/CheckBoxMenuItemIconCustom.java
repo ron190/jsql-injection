@@ -1,4 +1,4 @@
-package com.jsql.view.swing.panel;
+package com.jsql.view.swing.panel.util;
 
 import java.awt.Component;
 import java.awt.Dimension;

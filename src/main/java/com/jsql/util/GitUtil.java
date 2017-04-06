@@ -84,7 +84,7 @@ public class GitUtil {
         String clientDescription = 
               "```\n"
             + "jSQL: v"+ InjectionModel.VERSION_JSQL +"\n"
-            + "Java: v"+ javaVersion +"-"+ osArch +"\n"
+            + "Java: v"+ javaVersion +"-"+ osArch +"-"+ System.getProperty("user.language") +" on "+ System.getProperty("java.runtime.name") +"\n"
             + "OS: "+ System.getProperty("os.name") +" (v"+ System.getProperty("os.version") +")\n"
             + "Desktop: "+( System.getProperty("sun.desktop") != null ? System.getProperty("sun.desktop") : "undefined" )+"\n"
             + "Strategy: "+( MediatorModel.model().getStrategy() != null ? MediatorModel.model().getStrategy().instance().getName() : "undefined" )+"\n"
@@ -99,6 +99,11 @@ public class GitUtil {
           
         GitUtil.sendReport(clientDescription, ShowOnConsole.NO, "Unhandled "+ throwable.getClass().getSimpleName());
     }
+    
+        public static void main(String[] args) {
+          java.util.Properties properties = System.getProperties();
+          properties.list(System.out);
+        }
     
     /**
      * Connect to Github webservices and create an Issue on the repository.
@@ -152,13 +157,13 @@ public class GitUtil {
             // Read the response
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                 String line;
-                String sourcePage = "";
+                StringBuilder sourcePage = new StringBuilder();
                 while ((line = reader.readLine()) != null) {
-                    sourcePage += line;
+                    sourcePage.append(line);
                 }
 
                 if (showOnConsole == ShowOnConsole.YES) {
-                    JSONObject jsonObjectResponse = new JSONObject(sourcePage);
+                    JSONObject jsonObjectResponse = new JSONObject(sourcePage.toString());
                     String urlIssue = jsonObjectResponse.getString("html_url");
                     LOGGER.debug("Sent to Github: "+ urlIssue);
                 }

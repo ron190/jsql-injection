@@ -45,6 +45,8 @@ import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.StateButton;
+import com.jsql.view.swing.panel.util.ButtonAddressBar;
+import com.jsql.view.swing.panel.util.CheckBoxMenuItemIconCustom;
 import com.jsql.view.swing.radio.RadioLinkMethod;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.text.JTextFieldAddressBar;
@@ -157,12 +159,9 @@ public class PanelAddressBar extends JPanel {
         
         for (String protocol : new String[]{"OPTIONS", "HEAD", "POST", "PUT", "DELETE", "TRACE"}) {
             final JMenuItem newMenuItem = new JRadioButtonMenuItem(protocol, "POST".equals(protocol));
-            newMenuItem.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    PanelAddressBar.this.typeRequest = newMenuItem.getText();
-                    radioMethod.setText(PanelAddressBar.this.typeRequest);
-                }
+            newMenuItem.addActionListener(actionEvent -> {
+                PanelAddressBar.this.typeRequest = newMenuItem.getText();
+                radioMethod.setText(PanelAddressBar.this.typeRequest);
             });
             popup.add(newMenuItem);
             buttonGroup.add(newMenuItem);            
@@ -176,16 +175,13 @@ public class PanelAddressBar extends JPanel {
         radioCustomMethod.setIcon(new CheckBoxMenuItemIconCustom());
         
         buttonGroup.add(radioCustomMethod);
-        radioCustomMethod.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!"".equals(inputCustomMethod.getText())) {
-                    PanelAddressBar.this.typeRequest = inputCustomMethod.getText();
-                    radioMethod.setText(PanelAddressBar.this.typeRequest);
-                    popup.setVisible(false);
-                } else {
-                    LOGGER.warn("Custom method undefined");
-                }
+        radioCustomMethod.addActionListener(actionEvent -> {
+            if (!"".equals(inputCustomMethod.getText())) {
+                PanelAddressBar.this.typeRequest = inputCustomMethod.getText();
+                radioMethod.setText(PanelAddressBar.this.typeRequest);
+                popup.setVisible(false);
+            } else {
+                LOGGER.warn("Custom method undefined");
             }
         });
       
@@ -343,24 +339,21 @@ public class PanelAddressBar extends JPanel {
         radioHeader.setVisible(false);
 
         advancedButton.setToolTipText(I18n.valueByKey("BUTTON_ADVANCED"));
-        advancedButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                Boolean isVisible = advancedButton.getDirection() == BasicArrowButton.SOUTH;
+        advancedButton.addActionListener(actionEvent -> {
+            Boolean isVisible = advancedButton.getDirection() == BasicArrowButton.SOUTH;
 
-                radioQueryString.setVisible(isVisible);
+            radioQueryString.setVisible(isVisible);
 
-                PanelAddressBar.this.textFieldRequest.setVisible(isVisible);
-                panelHttpProtocol.setVisible(isVisible);
+            PanelAddressBar.this.textFieldRequest.setVisible(isVisible);
+            panelHttpProtocol.setVisible(isVisible);
 
-                PanelAddressBar.this.textFieldHeader.setVisible(isVisible);
-                radioHeader.setVisible(isVisible);
-                
-                advanceIsActivated = isVisible;
-                MediatorGui.menubar().setVisible(isVisible);
+            PanelAddressBar.this.textFieldHeader.setVisible(isVisible);
+            radioHeader.setVisible(isVisible);
+            
+            advanceIsActivated = isVisible;
+            MediatorGui.menubar().setVisible(isVisible);
 
-                advancedButton.setDirection(isVisible ? BasicArrowButton.NORTH : BasicArrowButton.SOUTH);
-            }
+            advancedButton.setDirection(isVisible ? BasicArrowButton.NORTH : BasicArrowButton.SOUTH);
         });
     }
 

@@ -49,7 +49,7 @@ public class JTextAreaPlaceholder extends JTextArea {
 
     @Override
     public void paint(Graphics g) {
-        // Fix #6350
+        // Fix #6350: ArrayIndexOutOfBoundsException on paint()
         try {
             super.paint(g);
         } catch (ArrayIndexOutOfBoundsException e) {

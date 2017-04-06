@@ -111,6 +111,7 @@ public class AuthenticationUtil {
         
         // Check krb integrity
         if (AuthenticationUtil.isKerberos) {
+            // Fix #23877: NoClassDefFoundError on java/nio/file/Paths
         	if (!new File(AuthenticationUtil.pathKerberosKrb5).exists()) {
         		LOGGER.warn("Krb5 file not found: " + AuthenticationUtil.pathKerberosKrb5);
         	}

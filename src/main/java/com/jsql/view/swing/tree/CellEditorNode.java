@@ -61,8 +61,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
 
     @Override
     public Component getTreeCellEditorComponent(
-        JTree tree, Object nodeRenderer, boolean selected, 
-        boolean expanded, boolean leaf, int row
+        JTree tree, Object nodeRenderer, boolean selected, boolean expanded, boolean leaf, int row
     ) {
 
         Component componentRenderer = defaultTreeRenderer.getTreeCellRendererComponent(
@@ -70,9 +69,9 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
         );
 
         final DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
-        Object nodeModel = currentNode.getUserObject();
+        Object currentNodeModel = currentNode.getUserObject();
         try {
-            this.nodeModel = (AbstractNodeModel) nodeModel;
+            this.nodeModel = (AbstractNodeModel) currentNodeModel;
             if (componentRenderer instanceof JCheckBox) {
                 ((JCheckBox) componentRenderer).addActionListener(
                     new ActionCheckUncheck(this.nodeModel, currentNode)

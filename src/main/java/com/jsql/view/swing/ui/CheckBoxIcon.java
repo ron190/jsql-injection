@@ -10,7 +10,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import com.jsql.view.swing.panel.MetalUtilsCustom;
+import com.jsql.view.swing.panel.util.MetalUtilsCustom;
 
 @SuppressWarnings("serial")
 public class CheckBoxIcon implements Icon, UIResource, Serializable {

@@ -13,8 +13,6 @@ package com.jsql.view.swing.manager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -96,46 +94,37 @@ public class ManagerAdminPage extends AbstractManagerList {
 
         this.run.setToolTipText(I18n.valueByKey("ADMIN_PAGE_RUN_BUTTON_TOOLTIP"));
 
-        this.run.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                
-                if (listFile.getSelectedValuesList().isEmpty()) {
-                    LOGGER.warn("Select admin page(s) to find");
-                    return;
-                }
-                
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        
-                        if (ManagerAdminPage.this.run.getState() == StateButton.STARTABLE) {
-                            if ("".equals(MediatorGui.panelAddressBar().textFieldAddress.getText())) {
-                                LOGGER.warn("Enter the main address");
-                            } else {
-                                ManagerAdminPage.this.run.setText("Stop");
-                                ManagerAdminPage.this.run.setState(StateButton.STOPPABLE);
-                                ManagerAdminPage.this.loader.setVisible(true);
-                                
-                                try {
-                                    RessourceAccess.createAdminPages(
-                                        MediatorGui.panelAddressBar().textFieldAddress.getText(), 
-                                        listFile.getSelectedValuesList()
-                                    );
-                                } catch (InterruptedException e) {
-                                    LOGGER.error("Interruption while waiting for Opening Admin Page termination", e);
-                                    Thread.currentThread().interrupt();
-                                }
-                            }
-                        } else if (run.getState() == StateButton.STOPPABLE) {
-                            RessourceAccess.setSearchAdminStopped(true);
-                            ManagerAdminPage.this.run.setEnabled(false);
-                            ManagerAdminPage.this.run.setState(StateButton.STOPPING);
-                        }
-                        
-                    }
-                }, "ThreadAdminPage").start();
+        this.run.addActionListener(actionEvent -> {
+            if (listFile.getSelectedValuesList().isEmpty()) {
+                LOGGER.warn("Select admin page(s) to find");
+                return;
             }
+            
+            new Thread(() -> {
+                if (ManagerAdminPage.this.run.getState() == StateButton.STARTABLE) {
+                    if ("".equals(MediatorGui.panelAddressBar().textFieldAddress.getText())) {
+                        LOGGER.warn("Enter the main address");
+                    } else {
+                        ManagerAdminPage.this.run.setText("Stop");
+                        ManagerAdminPage.this.run.setState(StateButton.STOPPABLE);
+                        ManagerAdminPage.this.loader.setVisible(true);
+                        
+                        try {
+                            RessourceAccess.createAdminPages(
+                                MediatorGui.panelAddressBar().textFieldAddress.getText(), 
+                                listFile.getSelectedValuesList()
+                            );
+                        } catch (InterruptedException ex) {
+                            LOGGER.error("Interruption while waiting for Opening Admin Page termination", ex);
+                            Thread.currentThread().interrupt();
+                        }
+                    }
+                } else if (run.getState() == StateButton.STOPPABLE) {
+                    RessourceAccess.setSearchAdminStopped(true);
+                    ManagerAdminPage.this.run.setEnabled(false);
+                    ManagerAdminPage.this.run.setState(StateButton.STOPPING);
+                }
+            }, "ThreadAdminPage").start();
         });
 
         this.loader.setVisible(false);

@@ -167,16 +167,16 @@ public class ConnectionUtil {
         msgHeader.put(TypeHeader.URL, url);
         msgHeader.put(TypeHeader.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
         
-        String pageSource = "";
+        StringBuilder pageSource = new StringBuilder();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         String line;
         while ((line = reader.readLine()) != null) {
-            pageSource += line + "\n";
+            pageSource.append(line + "\n");
         }
         reader.close();
 
-        msgHeader.put(TypeHeader.SOURCE, pageSource);
+        msgHeader.put(TypeHeader.SOURCE, pageSource.toString());
         
         // Inform the view about the log infos
         Request request = new Request();
@@ -185,7 +185,7 @@ public class ConnectionUtil {
         MediatorModel.model().sendToViews(request);
         
         // TODO optional
-        return pageSource.trim();
+        return pageSource.toString().trim();
     }
     
     /**
@@ -360,19 +360,19 @@ public class ConnectionUtil {
         }
         
         // Request the web page to the server
-        String pageSource = "";
+        StringBuilder pageSource = new StringBuilder();
         Exception exception = null;
         
         String line;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
             while ((line = reader.readLine()) != null) {
-                pageSource += line + "\r\n";
+                pageSource.append(line + "\r\n");
             }
         } catch (IOException e) {
             exception = e;
         }
 
-        msgHeader.put(TypeHeader.SOURCE, pageSource);
+        msgHeader.put(TypeHeader.SOURCE, pageSource.toString());
         
         // Inform the view about the log infos
         Request request = new Request();
@@ -394,12 +394,17 @@ public class ConnectionUtil {
         Map<String, String> mapHeaders = new HashMap<>();
         
         for (int i = 0 ; ; i++) {
-            String headerName = connection.getHeaderFieldKey(i);
-            String headerValue = connection.getHeaderField(i);
-            if (headerName == null && headerValue == null) {
-                break;
+            // Fix #6456: IllegalArgumentException on getHeaderFieldKey()
+            try {
+                String headerName = connection.getHeaderFieldKey(i);
+                String headerValue = connection.getHeaderField(i);
+                if (headerName == null && headerValue == null) {
+                    break;
+                }
+                mapHeaders.put(headerName == null ? "Method" : headerName, headerValue);
+            } catch (IllegalArgumentException e) {
+                LOGGER.error(e, e);
             }
-            mapHeaders.put(headerName == null ? "Method" : headerName, headerValue);
         }
 
         return mapHeaders;

@@ -40,7 +40,7 @@ import com.jsql.view.interaction.ObserverInteraction;
 import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.menubar.Menubar;
 import com.jsql.view.swing.panel.PanelAddressBar;
-import com.jsql.view.swing.panel.SplitHorizontalTopBottom;
+import com.jsql.view.swing.panel.util.SplitHorizontalTopBottom;
 import com.jsql.view.swing.shadow.ShadowPopupFactory;
 import com.jsql.view.swing.shell.AbstractShell;
 
@@ -165,40 +165,6 @@ public class JFrameView extends JFrame {
         menubar.switchLocale(Locale.ENGLISH, I18n.getLocaleDefault());
     }
 
-//    /**
-//     * Observer pattern.<br>
-//     * Receive an update order from the model:<br>
-//     * - Use the Request message to get the Interaction class,<br>
-//     * - Pass the parameters to that class.
-//     */
-//    @Override
-//    public void update(Observable model, Object newInteraction) {
-//        Request interaction = (Request) newInteraction;
-//
-//        try {
-//            Class<?> cl = Class.forName("com.jsql.view.swing.interaction."+ interaction.getMessage());
-//            Class<?>[] types = new Class[]{Object[].class};
-//            Constructor<?> ct = cl.getConstructor(types);
-//
-//            InteractionCommand interactionCommand = (InteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
-//            interactionCommand.execute();
-//        } catch (ClassNotFoundException e) {
-//            // Ignore unused interaction message
-//        } catch (
-//            InstantiationException | 
-//            IllegalAccessException | NoSuchMethodException | 
-//            SecurityException | IllegalArgumentException | 
-//            InvocationTargetException e
-//        ) {
-//            LOGGER.error(e, e);
-//        }
-//    }
-    
-
-    public ObserverInteraction getObserver() {
-        return observer;
-    }
-
     /**
      * Empty the interface.
      */
@@ -233,10 +199,10 @@ public class JFrameView extends JFrame {
         MediatorGui.panelConsoles().chunkTab.setText("");
         MediatorGui.panelConsoles().binaryTab.setText("");
         
+        // Fix #4657, #1860: Multiple Exceptions on setRowCount()
         try {
             ((DefaultTableModel) MediatorGui.panelConsoles().networkTable.getModel()).setRowCount(0);
         } catch(NullPointerException | ArrayIndexOutOfBoundsException e) {
-            // Fix #4657, #1860
             LOGGER.error(e, e);
         }
         
@@ -264,6 +230,8 @@ public class JFrameView extends JFrame {
         MediatorGui.managerSqlshell().changePrivilegeIcon(HelperUi.ICON_SQUARE_GREY);
         MediatorGui.managerUpload().changePrivilegeIcon(HelperUi.ICON_SQUARE_GREY);
     }
+    
+    // Getters ans setters
 
     /**
      * Get list of terminal by unique identifier.
@@ -279,6 +247,10 @@ public class JFrameView extends JFrame {
      */
     public final Map<AbstractElementDatabase, DefaultMutableTreeNode> getTreeNodeModels() {
         return mapNodes;
+    }
+
+    public ObserverInteraction getObserver() {
+        return observer;
     }
     
 }

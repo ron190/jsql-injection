@@ -154,17 +154,14 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
             }
 
             for (final ListItem pathShell: AbstractManagerShell.this.listPaths.getSelectedValuesList()) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            AbstractManagerShell.this.createPayload(
-                                pathShell.toString(), 
-                                AbstractManagerShell.this.urlShell.getText()
-                            );
-                        } catch (JSqlException e) {
-                            LOGGER.warn("Payload creation error: "+ e, e);
-                        }
+                new Thread(() -> {
+                    try {
+                        AbstractManagerShell.this.createPayload(
+                            pathShell.toString(), 
+                            AbstractManagerShell.this.urlShell.getText()
+                        );
+                    } catch (JSqlException e) {
+                        LOGGER.warn("Payload creation error: "+ e, e);
                     }
                 }, "ThreadGetShell").start();
             }

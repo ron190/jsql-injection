@@ -84,7 +84,7 @@ public class MessageHeader implements InteractionCommand {
                 }
             }
         } catch(NullPointerException | IndexOutOfBoundsException e) {
-            // Fix #4658, #2653, #2224, #1797 on model.addRow()
+            // Fix #4658, #2224, #1797 on model.addRow()
             LOGGER.error(e, e);
         }
     }

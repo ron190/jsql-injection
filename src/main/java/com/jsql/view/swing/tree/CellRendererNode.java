@@ -27,13 +27,12 @@ public class CellRendererNode extends DefaultTreeCellRenderer {
     
     @Override
     public Component getTreeCellRendererComponent(
-        JTree tree, Object nodeRenderer, boolean selected, boolean expanded, 
-        boolean leaf, int row, boolean hasFocus
+        JTree tree, Object nodeRenderer, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus
     ) {
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         Object userObject = currentNode.getUserObject();
         AbstractNodeModel dataModel = (AbstractNodeModel) userObject;
-        return dataModel.getComponent(tree, nodeRenderer, selected, expanded, leaf, row, hasFocus);
+        return dataModel.getComponent(tree, nodeRenderer, selected, leaf, row, hasFocus);
     }
     
 }
