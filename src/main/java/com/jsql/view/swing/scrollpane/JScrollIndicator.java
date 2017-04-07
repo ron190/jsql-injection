@@ -21,6 +21,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.plaf.ScrollBarUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
+import org.apache.log4j.Logger;
+
 /**
  * A scrollpane like component, where the scroll bars are floating over the
  * scrollable view to indicate the current scroll positions.
@@ -35,6 +37,11 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
  */
 @SuppressWarnings("serial")
 public class JScrollIndicator extends JLayeredPane {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     public static final int SCROLL_BAR_ALPHA_ROLLOVER = 100;
     public static final int SCROLL_BAR_ALPHA = 25;
@@ -182,10 +189,15 @@ public class JScrollIndicator extends JLayeredPane {
         @Override
         public void repaint(Rectangle r) {
             JScrollIndicator scrollIndicator = JScrollIndicator.this;
-            Rectangle rect = SwingUtilities.convertRectangle(this, r, scrollIndicator);
-            rect.grow(1, 1);
-            // ensure for a translucent thumb, that the view is first painted
-            scrollIndicator.repaint(rect);
+            // Fix #15956: NullPointerException on convertRectangle()
+            try {
+                Rectangle rect = SwingUtilities.convertRectangle(this, r, scrollIndicator);
+                rect.grow(1, 1);
+                // ensure for a translucent thumb, that the view is first painted
+                scrollIndicator.repaint(rect);
+            } catch (NullPointerException e) {
+                LOGGER.error(e.getMessage(), e);
+            }
         }
     }
 

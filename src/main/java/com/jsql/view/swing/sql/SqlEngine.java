@@ -41,7 +41,7 @@ public class SqlEngine extends JPanel {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    private static Model xmlModel = MediatorModel.model().vendor.instance().getXmlModel();
+    private static Model xmlModel = MediatorModel.model().getVendor().instance().getXmlModel();
 
     private static final List<JTextPaneLexer> mapTextPaneToXml = new ArrayList<>();
     
@@ -210,7 +210,7 @@ public class SqlEngine extends JPanel {
             try {
                 this.method = attributeVendor.getClass().getMethod(nameSetter, String.class);
             } catch (NoSuchMethodException | SecurityException e) {
-                LOGGER.debug(e, e);
+                LOGGER.debug(e.getMessage(), e);
             }
         }
         
@@ -237,7 +237,7 @@ public class SqlEngine extends JPanel {
             }
         });
         
-        comboBoxVendors.setSelectedItem(MediatorModel.model().vendor);
+        comboBoxVendors.setSelectedItem(MediatorModel.model().getVendor());
         this.changeVendor();
         
         JTabbedPane tabsSchema = new JTabbedPane();

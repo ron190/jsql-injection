@@ -138,7 +138,7 @@ public class DataAccess {
 
         String resultToParse;
         resultToParse = new SuspendableGetRows().run(
-            MediatorModel.model().vendor.instance().sqlInfos(),
+            MediatorModel.model().getVendor().instance().sqlInfos(),
             sourcePage,
             false,
             0,
@@ -182,7 +182,7 @@ public class DataAccess {
         try {
             String[] sourcePage = {""};
             resultToParse = new SuspendableGetRows().run(
-                MediatorModel.model().vendor.instance().sqlDatabases(),
+                MediatorModel.model().getVendor().instance().sqlDatabases(),
                 sourcePage,
                 true,
                 0,
@@ -263,7 +263,7 @@ public class DataAccess {
         try {
             String[] pageSource = {""};
             resultToParse = new SuspendableGetRows().run(
-                MediatorModel.model().vendor.instance().sqlTables(database),
+                MediatorModel.model().getVendor().instance().sqlTables(database),
                 pageSource,
                 true,
                 Integer.parseInt(tableCount),
@@ -343,7 +343,7 @@ public class DataAccess {
         try {
             String[] pageSource = {""};
             resultToParse = new SuspendableGetRows().run(
-                MediatorModel.model().vendor.instance().sqlColumns(table),
+                MediatorModel.model().getVendor().instance().sqlColumns(table),
                 pageSource,
                 true,
                 0,
@@ -363,7 +363,7 @@ public class DataAccess {
 
         // TODO send to SQLite
         // Build SQLite columns
-        if (MediatorModel.model().vendor == Vendor.SQLITE) {
+        if (MediatorModel.model().getVendor() == Vendor.SQLITE) {
             StringBuilder resultSQLite = new StringBuilder();
             String resultTmp = resultToParse.replaceFirst(".+?\\(", "").trim().replaceAll("\\)$", "");
             resultTmp = resultTmp.replaceAll("\\(.+?\\)", "");
@@ -452,7 +452,7 @@ public class DataAccess {
         try {
             String[] pageSource = {""};
             resultToParse = new SuspendableGetRows().run(
-                MediatorModel.model().vendor.instance().sqlRows(arrayColumns, database, table),
+                MediatorModel.model().getVendor().instance().sqlRows(arrayColumns, database, table),
                 pageSource, 
                 true, 
                 rowCount, 

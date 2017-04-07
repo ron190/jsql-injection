@@ -132,7 +132,7 @@ public class PanelConsoles extends JPanel {
         this.chunkTab = new JPopupTextArea("Raw data extracted during injection").getProxy();
         this.chunkTab.setEditable(false);
         
-        this.binaryTab = new JPopupTextArea("Characters extracted during blind or time based injection").getProxy();
+        this.binaryTab = new JPopupTextArea("Characters extracted during blind or time injection").getProxy();
         this.binaryTab.setEditable(false);
         
         this.javaTab.getProxy().setEditable(false);

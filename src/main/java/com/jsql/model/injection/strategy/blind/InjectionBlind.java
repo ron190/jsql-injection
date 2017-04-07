@@ -18,7 +18,7 @@ import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 /**
  * A blind attack class using thread asynchronisation.
  */
-public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind> {
+public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
     
     /**
      * Log4j logger sent to view.
@@ -43,15 +43,15 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
      * If every false test are not in true mark and every true test are in
      * true test, then blind attack is confirmed.
      */
-    public ConcreteBlindInjection() {
+    public InjectionBlind() {
         // No blind
         if (this.falseTest.length == 0) {
-            LOGGER.info("Blind strategy is unknown for "+ MediatorModel.model().vendor +".");
+            LOGGER.info("Blind strategy is unknown for "+ MediatorModel.model().getVendor() +".");
             return;
         }
         
         // Call the SQL request which must be TRUE (usually ?id=1)
-        ConcreteBlindInjection.blankTrueMark = ConcreteBlindInjection.callUrl("");
+        InjectionBlind.blankTrueMark = InjectionBlind.callUrl("");
 
         // Check if the user wants to stop the preparation
         if (MediatorModel.model().isStoppedByUser()) {
@@ -112,7 +112,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
         try {
             listTagTrue = executorTagTrue.invokeAll(listCallableTagTrue);
         } catch (InterruptedException e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
             Thread.currentThread().interrupt();
         }
         executorTagTrue.shutdown();
@@ -127,10 +127,10 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
                 if (MediatorModel.model().isStoppedByUser()) {
                     return;
                 }
-                ConcreteBlindInjection.constantFalseMark.removeAll(trueTag.get().getOpcodes());
+                InjectionBlind.constantFalseMark.removeAll(trueTag.get().getOpcodes());
             }
         } catch (InterruptedException | ExecutionException e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -150,18 +150,18 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
             throw new StoppedByUserSlidingException();
         }
         
-        if (MediatorModel.model().vendor.instance().sqlTestBlindFirst() == null) {
+        if (MediatorModel.model().getVendor().instance().sqlTestBlindFirst() == null) {
             return false;
         }
         
-        CallableBlind blindTest = new CallableBlind(MediatorModel.model().vendor.instance().sqlTestBlindFirst());
+        CallableBlind blindTest = new CallableBlind(MediatorModel.model().getVendor().instance().sqlTestBlindFirst());
         try {
             blindTest.call();
         } catch (Exception e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
 
-        return blindTest.isTrue() && !ConcreteBlindInjection.constantFalseMark.isEmpty();
+        return blindTest.isTrue() && !InjectionBlind.constantFalseMark.isEmpty();
     }
 
     @Override
@@ -170,7 +170,7 @@ public class ConcreteBlindInjection extends AbstractBlindInjection<CallableBlind
             "A blind SQL request is true if the diff between "
             + "a correct page (e.g existing id) and current page "
             + "is not as the following: "
-            + ConcreteBlindInjection.constantFalseMark + "\n"
+            + InjectionBlind.constantFalseMark + "\n"
         ;
     }
 

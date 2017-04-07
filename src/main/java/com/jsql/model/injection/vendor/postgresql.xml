@@ -157,5 +157,15 @@ select
             <blind> and ${TEST}</blind>
             <time> and ''=''||(select CASE WHEN ${TEST} THEN''else pg_sleep(${SLEEP_TIME})END)</time>
         </boolean>
+        <error>
+            <method>
+                <name>CAST::text_numeric</name>
+                <query>
+/* Require FALSE statement, then OR */
+and 1=0 or 1=CAST((${WINDOW})::text AS NUMERIC)
+                </query>
+                <capacity>65536</capacity>
+            </method>
+        </error>
     </strategy>
 </model>

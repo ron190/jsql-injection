@@ -88,7 +88,7 @@ public class GitUtil {
             + "OS: "+ System.getProperty("os.name") +" (v"+ System.getProperty("os.version") +")\n"
             + "Desktop: "+( System.getProperty("sun.desktop") != null ? System.getProperty("sun.desktop") : "undefined" )+"\n"
             + "Strategy: "+( MediatorModel.model().getStrategy() != null ? MediatorModel.model().getStrategy().instance().getName() : "undefined" )+"\n"
-            + "Db engine: "+ MediatorModel.model().vendor.toString() +"\n"
+            + "Db engine: "+ MediatorModel.model().getVendor().toString() +"\n"
             + "```\n"
             + "```\n"
             + "Exception on "+ threadName +"\n"
@@ -144,7 +144,15 @@ public class GitUtil {
             connection.setDoOutput(true);
 
             // Set the content of the Issue
-            DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
+            DataOutputStream dataOut = null;
+            // Fix #27623: NoClassDefFoundError on getOutputStream()
+            // Implemented by jcifs.http.NtlmHttpURLConnection.getOutputStream()
+            try {
+                dataOut = new DataOutputStream(connection.getOutputStream());
+            } catch (NoClassDefFoundError e) {
+                LOGGER.warn("Read error: "+ e.getMessage(), e);
+                return;
+            }
             dataOut.writeBytes(
                 new JSONObject()
                     .put("title", reportTitle)
@@ -169,12 +177,12 @@ public class GitUtil {
                 }
             } catch (IOException e) {
                 if (showOnConsole == ShowOnConsole.YES) {
-                    LOGGER.warn("Read error: "+ e, e);
+                    LOGGER.warn("Read error: "+ e.getMessage(), e);
                 }
             }
         } catch (IOException e) {
             if (showOnConsole == ShowOnConsole.YES) {
-                LOGGER.warn("Error during Git report connection: "+ e, e);
+                LOGGER.warn("Error during Git report connection: "+ e.getMessage(), e);
             }
         }
     }

@@ -53,7 +53,7 @@ public class JTextFieldPlaceholder extends JTextField {
             super.paint(g);
         } catch (ClassCastException e) {
             // Fix #4301, ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData
-            LOGGER.error("Handled Exception: "+ e, e);
+            LOGGER.error(e.getMessage(), e);
         }
         
         if (this.getText().length() == 0) {

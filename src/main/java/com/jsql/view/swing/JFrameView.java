@@ -203,7 +203,7 @@ public class JFrameView extends JFrame {
         try {
             ((DefaultTableModel) MediatorGui.panelConsoles().networkTable.getModel()).setRowCount(0);
         } catch(NullPointerException | ArrayIndexOutOfBoundsException e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
         
         MediatorGui.panelConsoles().javaTab.getProxy().setText("");

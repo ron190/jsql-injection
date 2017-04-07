@@ -121,6 +121,7 @@ public final class StringUtil {
     }
     
     public static String detectUtf8Html(String text, Boolean nowrap) {
+        // Fix #35217: NullPointerException on getBytes()
         if (text == null) {
             return "";
         }

@@ -54,7 +54,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
             image = new ImageIcon(url).getImage();
         } catch (IllegalArgumentException e) {
             // Exception if globe.png is unavailable
-            LOGGER.error("Handled Exception: "+ e, e);
+            LOGGER.error(e.getMessage(), e);
         }
 
         Border border = UIManager.getBorder("TextField.border");
@@ -73,7 +73,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
                 this
             );
         } catch (ClassCastException e) {
-            LOGGER.error("Handled Exception: "+ e, e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
     

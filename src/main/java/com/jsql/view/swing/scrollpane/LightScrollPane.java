@@ -21,10 +21,17 @@ import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.view.swing.HelperUi;
 
 @SuppressWarnings("serial")
 public class LightScrollPane extends JComponent {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     public int scrollBarAlpha = 25;
     public int scrollBarAlphaRollover = 100;
@@ -74,7 +81,13 @@ public class LightScrollPane extends JComponent {
         scrollPane.setLayout(new ScrollPaneLayout() {
             @Override
             public void layoutContainer(Container parent) {
-                viewport.setBounds(0, 0, getWidth(), getHeight() - 1);
+                // Fix #13412: NullPointerException on setBounds()
+                // Implementation by sun.swing.SwingUtilities2.getFontMetrics()
+                try {
+                    viewport.setBounds(0, 0, getWidth(), getHeight() - 1);
+                } catch (NullPointerException e) {
+                    LOGGER.error(e, e);
+                }
                 SwingUtilities.invokeLater(() -> LightScrollPane.this.displayScrollBarsIfNecessary(viewport));
             }
         });

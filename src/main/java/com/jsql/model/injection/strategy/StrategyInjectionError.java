@@ -10,6 +10,8 @@ import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.vendor.Model.Strategy;
+import com.jsql.model.injection.vendor.Model.Strategy.Configuration;
 import com.jsql.model.injection.vendor.Model.Strategy.Error.Method;
 import com.jsql.model.injection.vendor.VendorXml;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -17,7 +19,7 @@ import com.jsql.model.suspendable.AbstractSuspendable;
 /**
  * Injection strategy using error attack.
  */
-public class ErrorbasedStrategy extends AbstractStrategy {
+public class StrategyInjectionError extends AbstractStrategy {
 	
     /**
      * Log4j logger sent to view.
@@ -26,7 +28,7 @@ public class ErrorbasedStrategy extends AbstractStrategy {
     
     public String[] tabCapacityMethod;
     
-    public int indexMethodByUser = 0;
+    public int indexMethod = 0;
 
     @Override
     public void checkApplicability() {
@@ -35,18 +37,20 @@ public class ErrorbasedStrategy extends AbstractStrategy {
         this.tabCapacityMethod = null;
         
         if (
-            MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError() == null
+            MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError() == null
         ) {
-            LOGGER.info("No Error based strategy known for "+ MediatorModel.model().vendor +".");
+            LOGGER.info("No Error strategy known for "+ MediatorModel.model().getVendor() +".");
             return;
-        } else {
-            LOGGER.trace("Error based test...");
         }
+
+        LOGGER.trace("Error test...");
+        Strategy strategyXml = MediatorModel.model().getVendor().instance().getXmlModel().getStrategy();
+        Configuration configurationXml = strategyXml.getConfiguration();
         
-        this.tabCapacityMethod = new String[MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError().getMethod().size()];
+        this.tabCapacityMethod = new String[strategyXml.getError().getMethod().size()];
         int indexErrorMethod = 0;
         int errorCapacity = 0;
-        for (Method errorMethod: MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError().getMethod()) {
+        for (Method errorMethod: strategyXml.getError().getMethod()) {
             boolean methodIsApplicable = false;
             LOGGER.trace("Testing "+ errorMethod.getName() +"...");
         
@@ -54,8 +58,8 @@ public class ErrorbasedStrategy extends AbstractStrategy {
                 MediatorModel.model().getCharInsertion() + 
                 " "+ VendorXml.replaceTags(
                     errorMethod.getQuery()
-                    .replace("${WINDOW}", MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getSlidingWindow())
-                    .replace("${INJECTION}", MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getFailsafe().replace("${INDICE}","0"))
+                    .replace("${WINDOW}", configurationXml.getSlidingWindow())
+                    .replace("${INJECTION}", configurationXml.getFailsafe().replace("${INDICE}","0"))
                     .replace("${INDEX}", "1")
                     .replace("${CAPACITY}", Integer.toString(errorMethod.getCapacity()))
                 )
@@ -64,9 +68,12 @@ public class ErrorbasedStrategy extends AbstractStrategy {
             if (performanceSourcePage.matches(
                 VendorXml.replaceTags(
                     "(?s).*"+ 
-                    MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getFailsafe()
+                    configurationXml.getFailsafe()
                     .replace("${INDICE}","0")
-                    .replace("0%2b1", "1") +".*"
+                    .replace("0%2b1", "1")
+                    // TODO postgres
+                    .replace("(133707331)::text", "133707331")
+                    +".*"
                 )
             )) {
                 methodIsApplicable = true;
@@ -74,29 +81,37 @@ public class ErrorbasedStrategy extends AbstractStrategy {
             }
             
             if (methodIsApplicable) {
-                LOGGER.debug("Vulnerable to "+ errorMethod.getName());
-                this.allow(indexErrorMethod);
-                
                 String performanceErrorBasedSourcePage = MediatorModel.model().injectWithoutIndex(
                     MediatorModel.model().getCharInsertion() 
                     + " " 
                     + VendorXml.replaceTags(
                         errorMethod.getQuery()
-                        .replace("${WINDOW}", MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getSlidingWindow())
-                        .replace("${INJECTION}", MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getConfiguration().getCalibrator())
+                        .replace("${WINDOW}", configurationXml.getSlidingWindow())
+                        .replace("${INJECTION}", configurationXml.getCalibrator())
                         .replace("${INDEX}", "1")
                         .replace("${CAPACITY}", Integer.toString(errorMethod.getCapacity()))
                     )
                 );
                 
                 Matcher regexSearch = Pattern.compile("(?s)"+ DataAccess.LEAD +"(#+)").matcher(performanceErrorBasedSourcePage);
-                while (regexSearch.find()) {
-                    if (errorCapacity < regexSearch.group(1).length()) {
-                        indexMethodByUser = indexErrorMethod;
+                if (regexSearch.find()) {
+                    regexSearch.reset();
+                    while (regexSearch.find()) {
+                        if (errorCapacity < regexSearch.group(1).length()) {
+                            indexMethod = indexErrorMethod;
+                        }
+                        errorCapacity = regexSearch.group(1).length();
+                        this.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacity);
                     }
-                    errorCapacity = regexSearch.group(1).length();
-                    this.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacity);
+                    LOGGER.debug("Vulnerable to "+ errorMethod.getName() +" using "+ Integer.toString(errorCapacity) +" characters");
+                } else {
+                    LOGGER.warn("Vulnerable to "+ errorMethod.getName() +" but unknown characters");
+                    methodIsApplicable = false;
                 }
+            }
+            
+            if (methodIsApplicable) {
+                this.allow(indexErrorMethod);
             } else {
                 this.unallow(indexErrorMethod);
             }
@@ -107,36 +122,42 @@ public class ErrorbasedStrategy extends AbstractStrategy {
 
     @Override
     public void allow() {
-        markVulnerable(TypeRequest.MARK_ERRORBASED_VULNERABLE);
+        this.markVulnerable(TypeRequest.MARK_ERRORBASED_VULNERABLE);
     }
 
     @Override
     public void unallow() {
-        markVulnerable(TypeRequest.MARK_ERRORBASED_INVULNERABLE);
+        this.markVulnerable(TypeRequest.MARK_ERRORBASED_INVULNERABLE);
     }
 
     @Override
     public void allow(int i) {
-        markVulnerable(TypeRequest.MARK_ERRORBASED_VULNERABLE, i);
+        this.markVulnerable(TypeRequest.MARK_ERRORBASED_VULNERABLE, i);
     }
 
     @Override
     public void unallow(int i) {
-        markVulnerable(TypeRequest.MARK_ERRORBASED_INVULNERABLE, i);
+        this.markVulnerable(TypeRequest.MARK_ERRORBASED_INVULNERABLE, i);
     }
 
     @Override
     public String inject(String sqlQuery, String startPosition, /*TODO parametre inutile? */AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
         return MediatorModel.model().injectWithoutIndex(
             MediatorModel.model().getCharInsertion() +
-            MediatorModel.model().vendor.instance().sqlErrorBased(sqlQuery, startPosition)
+            MediatorModel.model().getVendor().instance().sqlErrorBased(sqlQuery, startPosition)
         );
     }
 
     @Override
     public void activateStrategy() {
-        LOGGER.info("Using strategy ["+ this.getName() +"]");
-        MediatorModel.model().setStrategy(Strategy.ERRORBASED);
+        LOGGER.info(
+            "Using strategy ["
+            + this.getName() 
+            +" "+ 
+            MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(indexMethod).getName()
+            +"]"
+        );
+        MediatorModel.model().setStrategy(StrategyInjection.ERRORBASED);
         
         Request request = new Request();
         request.setMessage(TypeRequest.MARK_ERRORBASED_STRATEGY);
@@ -145,21 +166,21 @@ public class ErrorbasedStrategy extends AbstractStrategy {
     
     @Override
     public String getPerformanceLength() {
-        return tabCapacityMethod[indexMethodByUser] +"" ;
+        return tabCapacityMethod[indexMethod] ;
     }
     
     @Override
     public String getName() {
-        return "Error based";
+        return "Error";
     }
     
     @Override
-    public Integer getIndexMethodByUser() {
-        return indexMethodByUser;
+    public Integer getIndexMethod() {
+        return indexMethod;
     }
     
-    public void setIndexMethodByUser(int i) {
-        indexMethodByUser = i;
+    public void setIndexMethod(int i) {
+        indexMethod = i;
     }
     
 }

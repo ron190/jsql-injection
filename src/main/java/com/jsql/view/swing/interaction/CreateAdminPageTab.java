@@ -81,7 +81,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
                     .addAttributes(":all", "style")
             );
         } catch (IOException e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
 
         final JTextPane browser = new JTextPane();

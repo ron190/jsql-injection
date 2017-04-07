@@ -128,7 +128,7 @@ public class TabTransferHandler extends TransferHandler {
             }
             return true;
         } catch (Exception e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
         return false;
     }

@@ -78,7 +78,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
                 );
             }
         } catch (Exception e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
 
         return componentRenderer;

@@ -328,7 +328,7 @@ public class TabbedPaneDnD extends JTabbedPane {
                 gestureMotionThreshold = DragSource.getDragThreshold();
             } catch(ExceptionInInitializerError e) {
                 // Fix #2205
-                LOGGER.error(e, e);
+                LOGGER.error(e.getMessage(), e);
             }
         }
         

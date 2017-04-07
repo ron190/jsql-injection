@@ -19,19 +19,19 @@ import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
-public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>> {
+public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean<T>> {
     
     /**
      * Every FALSE SQL statements will be checked,
      * more statements means a more robust application
      */
-    protected String[] falseTest = MediatorModel.model().vendor.instance().getListFalseTest();
+    protected String[] falseTest = MediatorModel.model().getVendor().instance().getListFalseTest();
 
     /**
      * Every TRUE SQL statements will be checked,
      * more statements means a more robust application
      */
-    protected String[] trueTest = MediatorModel.model().vendor.instance().getListTrueTest();
+    protected String[] trueTest = MediatorModel.model().getVendor().instance().getListTrueTest();
 
     /**
      * Constant linked to a URL, true if that url
@@ -83,7 +83,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
                 try {
                     isTerminated = taskExecutor.awaitTermination(0, TimeUnit.SECONDS);
                 } catch (InterruptedException e) {
-                    LOGGER.error(e, e);
+                    LOGGER.error(e.getMessage(), e);
                     Thread.currentThread().interrupt();
                 }
                 if (!isTerminated) {
@@ -162,7 +162,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
                     }
                 }
             } catch (InterruptedException | ExecutionException e) {
-                LOGGER.error(e, e);
+                LOGGER.error(e.getMessage(), e);
             }
             
         }
@@ -172,7 +172,7 @@ public abstract class AbstractBlindInjection<T extends CallableAbstractBlind<T>>
             taskExecutor.shutdown();
             taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
             Thread.currentThread().interrupt();
         }
 

@@ -252,11 +252,12 @@ public final class ShadowPopup extends Popup {
         // has a preferred size less than or equal to 0.
         // We can't use the size, because it is(0, 0) for new popups.
         Dimension contentsPrefSize = new Dimension();
+        // Fix #4172: NullPointerException on getPreferredSize()
+        // Implementation by javax.swing.plaf.metal.MetalToolTipUI.getPreferredSize()
         try {
             contentsPrefSize = contents.getPreferredSize();
         } catch(NullPointerException e) {
-            // Fix #4172
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
         if (contentsPrefSize.width <= 0 || contentsPrefSize.height <= 0) {
             return;
@@ -360,7 +361,7 @@ public final class ShadowPopup extends Popup {
                     try {
                         c.paintAll(g);
                     } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
-                        LOGGER.error(e, e);
+                        LOGGER.error(e.getMessage(), e);
                     }
                     c.setDoubleBuffered(doubleBuffered);
                 } else {

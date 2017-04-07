@@ -21,7 +21,7 @@ import com.jsql.util.StringUtil;
 /**
  * Injection strategy using normal attack.
  */
-public class NormalStrategy extends AbstractStrategy {
+public class StrategyInjectionNormal extends AbstractStrategy {
 	
     /**
      * Log4j logger sent to view.
@@ -51,12 +51,12 @@ public class NormalStrategy extends AbstractStrategy {
         
         this.isApplicable = 
             (!"".equals(MediatorModel.model().getIndexesInUrl())) 
-            && new Integer(Strategy.NORMAL.instance().getPerformanceLength()) > 0
+            && new Integer(StrategyInjection.NORMAL.instance().getPerformanceLength()) > 0
             && this.visibleIndex != null
         ;
         
         if (this.isApplicable) {
-            LOGGER.debug("Vulnerable to Normal injection");
+            LOGGER.debug("Vulnerable to Normal injection using "+ this.performanceLength +" characters");
             allow();
         } else {
             unallow();
@@ -75,13 +75,13 @@ public class NormalStrategy extends AbstractStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
-        return MediatorModel.model().injectWithIndexes(MediatorModel.model().vendor.instance().sqlNormal(sqlQuery, startPosition));
+        return MediatorModel.model().injectWithIndexes(MediatorModel.model().getVendor().instance().sqlNormal(sqlQuery, startPosition));
     }
 
     @Override
     public void activateStrategy() {
         LOGGER.info("Using strategy ["+ this.getName() +"]");
-        MediatorModel.model().setStrategy(Strategy.NORMAL);
+        MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
         
         Request request = new Request();
         request.setMessage(TypeRequest.MARK_NORMAL_STRATEGY);
@@ -113,7 +113,7 @@ public class NormalStrategy extends AbstractStrategy {
         // Replace correct indexes from 1337(index)7331 to
         // ==> ${LEAD}(index)######...######
         // Search for index that displays the most #
-        String performanceQuery = MediatorModel.model().vendor.instance().sqlCapacity(indexes);
+        String performanceQuery = MediatorModel.model().getVendor().instance().sqlCapacity(indexes);
         String performanceSourcePage = MediatorModel.model().injectWithoutIndex(performanceQuery);
 
         // Build a 2D array of string with:
@@ -125,7 +125,8 @@ public class NormalStrategy extends AbstractStrategy {
             performanceResults.add(new String[]{regexSearch.group(1), regexSearch.group(2)});
         }
 
-        if (performanceResults.isEmpty()) {
+        // Fix #16243: NullPointerException on this.initialQuery.replaceAll() at end of method
+        if (performanceResults.isEmpty() || indexesInUrl == null) {
             this.performanceLength = "0";
             // TODO optional
             return null;

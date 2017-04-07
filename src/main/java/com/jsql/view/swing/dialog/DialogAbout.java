@@ -163,7 +163,7 @@ public class DialogAbout extends JDialog {
 
             text[0].setText(result.toString().replace("%JSQLVERSION%", InjectionModel.VERSION_JSQL));
         } catch (IOException e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
 
         text[0].addMouseListener(new MouseAdapter() {

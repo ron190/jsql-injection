@@ -109,7 +109,7 @@ public abstract class AbstractShell extends JTextPane {
             // TODO: incompatible with Java 9
             this.putClientProperty(SwingUtilities2.AA_TEXT_PROPERTY_KEY, null);
         } catch (NoSuchFieldError e) {
-            LOGGER.error("Handled Exception: "+ e, e);
+            LOGGER.error(e.getMessage(), e);
         }
 
         this.displayPrompt(true);
@@ -179,7 +179,7 @@ public abstract class AbstractShell extends JTextPane {
             Document doc = this.getDocument();
             doc.insertString(doc.getLength(), string, null);
         } catch (BadLocationException e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
     
@@ -229,7 +229,7 @@ public abstract class AbstractShell extends JTextPane {
                 prompt += string;
             }
         } catch (BadLocationException e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
 

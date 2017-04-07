@@ -159,7 +159,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             taskCompletionService.submit(
                 new CallablePageSource(
                     insertionCharacter + 
-                    MediatorModel.model().vendor.instance().sqlOrderBy(),
+                    MediatorModel.model().getVendor().instance().sqlOrderBy(),
                     insertionCharacter
                 )
             );

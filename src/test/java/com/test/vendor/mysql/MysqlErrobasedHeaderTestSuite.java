@@ -6,7 +6,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.injection.method.MethodInjection;
-import com.jsql.model.injection.strategy.Strategy;
+import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.AbstractTestSuite;
@@ -27,7 +27,7 @@ public class MysqlErrobasedHeaderTestSuite extends ConcreteMysqlTestSuite {
 
         MediatorModel.model().beginInjection();
 
-        MediatorModel.model().setStrategy(Strategy.ERRORBASED);
+        MediatorModel.model().setStrategy(StrategyInjection.ERRORBASED);
     }
     
 }

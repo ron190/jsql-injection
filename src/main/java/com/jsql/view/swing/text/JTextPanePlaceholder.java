@@ -53,7 +53,7 @@ public class JTextPanePlaceholder extends JTextPane {
         try {
             super.paint(g);
         } catch (ArrayIndexOutOfBoundsException e) {
-            LOGGER.error("Handled Exception: "+ e, e);
+            LOGGER.error(e.getMessage(), e);
         }
         
         // Default empty JTextPane is 110 units long, so to get placeholder we need to test for this value

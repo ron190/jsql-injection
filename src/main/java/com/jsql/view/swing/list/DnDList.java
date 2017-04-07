@@ -178,7 +178,7 @@ public class DnDList extends JList<ListItem> {
             );
         } catch (NullPointerException e) {
             // Report NullPointerException #1571 : manual scroll elsewhere then run action
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
 
@@ -247,7 +247,7 @@ public class DnDList extends JList<ListItem> {
                         }
                     }
                 } catch (IOException e) {
-                    LOGGER.error(e, e);
+                    LOGGER.error(e.getMessage(), e);
                 }
             }
             
@@ -264,7 +264,7 @@ public class DnDList extends JList<ListItem> {
                 );
             } catch (NullPointerException e) {
                 // Report NullPointerException #1571 : manual scroll elsewhere then run action
-                LOGGER.error(e, e);
+                LOGGER.error(e.getMessage(), e);
             }
         });
         

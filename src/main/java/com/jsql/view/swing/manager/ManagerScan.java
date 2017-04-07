@@ -67,7 +67,7 @@ public class ManagerScan extends AbstractManagerList {
             }
             reader.close();
         } catch (IOException e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
 
         final DnDList listFile = new DnDList(pathsList);

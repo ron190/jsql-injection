@@ -64,7 +64,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
                             undo.undo();
                         }
                     } catch (CannotUndoException e) {
-                        LOGGER.error(e, e);
+                        LOGGER.error(e.getMessage(), e);
                     }
                 }
            }
@@ -84,7 +84,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
                             undo.redo();
                         }
                     } catch (CannotRedoException e) {
-                        LOGGER.error(e, e);
+                        LOGGER.error(e.getMessage(), e);
                     }
                 }
             }

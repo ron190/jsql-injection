@@ -16,13 +16,13 @@ import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.strategy.blind.ConcreteTimeInjection;
+import com.jsql.model.injection.strategy.blind.InjectionTime;
 import com.jsql.model.suspendable.AbstractSuspendable;
 
 /**
  * Injection strategy using time attack.
  */
-public class TimeStrategy extends AbstractStrategy {
+public class StrategyInjectionTime extends AbstractStrategy {
 	
     /**
      * Log4j logger sent to view.
@@ -32,13 +32,13 @@ public class TimeStrategy extends AbstractStrategy {
     /**
      * Injection method using time attack.
      */
-    private ConcreteTimeInjection timeInjection;
+    private InjectionTime timeInjection;
     
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
-        LOGGER.trace("Time based test...");
+        LOGGER.trace("Time test...");
         
-        this.timeInjection = new ConcreteTimeInjection();
+        this.timeInjection = new InjectionTime();
         
         this.isApplicable = this.timeInjection.isInjectable();
         
@@ -63,7 +63,7 @@ public class TimeStrategy extends AbstractStrategy {
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
         return this.timeInjection.inject(
-            MediatorModel.model().vendor.instance().sqlTime(sqlQuery, startPosition),
+            MediatorModel.model().getVendor().instance().sqlTime(sqlQuery, startPosition),
             stoppable
         );
     }
@@ -71,7 +71,7 @@ public class TimeStrategy extends AbstractStrategy {
     @Override
     public void activateStrategy() {
         LOGGER.info("Using strategy ["+ this.getName() +"]");
-        MediatorModel.model().setStrategy(Strategy.TIME);
+        MediatorModel.model().setStrategy(StrategyInjection.TIME);
         
         Request requestMessageBinary = new Request();
         requestMessageBinary.setMessage(TypeRequest.MESSAGE_BINARY);

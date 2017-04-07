@@ -59,7 +59,7 @@ public class ImageOverlap extends ImageIcon {
                 null
             );
         } catch (IOException e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
     

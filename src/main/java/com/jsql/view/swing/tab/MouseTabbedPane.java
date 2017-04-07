@@ -21,7 +21,9 @@ import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang3.SerializationException;
 import org.apache.commons.lang3.SerializationUtils;
+import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.view.swing.MediatorGui;
@@ -33,6 +35,11 @@ import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
  */
 @SuppressWarnings("serial")
 public class MouseTabbedPane extends JTabbedPane {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 	
     /**
      * Create tabs with ctrl-TAB, mousewheel and new UI.
@@ -68,11 +75,16 @@ public class MouseTabbedPane extends JTabbedPane {
                 JPopupMenu menu = new JPopupMenu();
 
                 for (int position = 0 ; position < MediatorGui.menubar().menuView.getMenuComponentCount() ; position++) {
-                    JMenuItem itemMenu = (JMenuItem) SerializationUtils.clone(MediatorGui.menubar().menuView.getMenuComponent(position));
-                    menu.add(itemMenu);
-                    
-                    final int positionFinal = position;
-                    itemMenu.addActionListener(actionEvent -> MediatorGui.tabManagers().setSelectedIndex(positionFinal));
+                    // Fix #35348: SerializationException on clone()
+                    try {
+                        JMenuItem itemMenu = (JMenuItem) SerializationUtils.clone(MediatorGui.menubar().menuView.getMenuComponent(position));
+                        menu.add(itemMenu);
+                        
+                        final int positionFinal = position;
+                        itemMenu.addActionListener(actionEvent -> MediatorGui.tabManagers().setSelectedIndex(positionFinal));
+                    } catch (SerializationException ex) {
+                        LOGGER.error(ex, ex);
+                    }
                 }
 
                 menu.show(tabPane, e.getX(), e.getY());

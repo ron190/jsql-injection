@@ -42,7 +42,7 @@ public class ArrowIcon implements Icon, SwingConstants {
             iconRenderer.paintTriangle(g, x, y + 3, size, direction, isEnabled);
         } catch(ClassCastException e) {
             // Fix #4731
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
 

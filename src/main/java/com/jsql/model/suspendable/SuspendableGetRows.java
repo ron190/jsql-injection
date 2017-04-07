@@ -9,6 +9,7 @@ import static com.jsql.model.accessible.DataAccess.TRAIL_RGX;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
@@ -41,7 +42,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         AbstractElementDatabase searchName = (AbstractElementDatabase) args[4];
         ThreadUtil.put(searchName, this);
 
-        String sqlQuery = initialSQLQuery.replaceAll("\\{limit\\}", MediatorModel.model().vendor.instance().sqlLimit(0));
+        String sqlQuery = initialSQLQuery.replaceAll("\\{limit\\}", MediatorModel.model().getVendor().instance().sqlLimit(0));
 
         AbstractStrategy strategy;
         // Fix #14417
@@ -83,11 +84,19 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
              * ${LEAD}blahblah      blah] : continue substr()
              */
             // Parse all the data we have retrieved
-            Matcher regexAtLeastOneRow = 
-                Pattern
-                    .compile(MODE + LEAD +"(.{1,"+ strategy.getPerformanceLength() +"})")
-                    .matcher(sourcePage[0]);
+            Matcher regexAtLeastOneRow;
+            try {
+                regexAtLeastOneRow = 
+                    Pattern
+                        .compile(MODE + LEAD +"(.{1,"+ strategy.getPerformanceLength() +"})")
+                        .matcher(sourcePage[0]);
+            } catch (PatternSyntaxException e) {
+                // Fix #35382 : PatternSyntaxException null on SQLi(.{1,null})
+                throw new InjectionFailureException("Row parsing failed using capacity");
+            }
             
+            // TODO: prevent to find the last line directly: MODE + LEAD + .* + TRAIL_RGX
+            // It creates extra query which can be endless if not nullified
             Matcher regexEndOfLine = 
                 Pattern
                     .compile(MODE + LEAD + TRAIL_RGX)
@@ -338,7 +347,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                         Pattern
                             .compile(MODE +"\\{limit\\}")
                             .matcher(initialSQLQuery)
-                            .replaceAll(MediatorModel.model().vendor.instance().sqlLimit(sqlLimit));
+                            .replaceAll(MediatorModel.model().getVendor().instance().sqlLimit(sqlLimit));
 
                     slidingWindowCurrentRow.setLength(0);
                 } else {

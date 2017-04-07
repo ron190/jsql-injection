@@ -32,8 +32,8 @@ import javax.swing.tree.TreeSelectionModel;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
-import com.jsql.model.injection.strategy.ErrorbasedStrategy;
-import com.jsql.model.injection.strategy.Strategy;
+import com.jsql.model.injection.strategy.StrategyInjectionError;
+import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.model.injection.vendor.Model.Strategy.Error.Method;
 import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.view.swing.HelperUi;
@@ -123,11 +123,11 @@ public class ManagerDatabase extends JPanel implements Manager {
         
         this.itemRadioStrategyError = new JMenu[1];
         
-        for (final Strategy strategy: Strategy.values()) {
-            if (strategy != Strategy.UNDEFINED) {
+        for (final StrategyInjection strategy: StrategyInjection.values()) {
+            if (strategy != StrategyInjection.UNDEFINED) {
                 MenuElement itemRadioStrategy;
                 
-                if (strategy == Strategy.ERRORBASED) {
+                if (strategy == StrategyInjection.ERRORBASED) {
                     itemRadioStrategy = new JMenu(strategy.toString());
                     this.itemRadioStrategyError[0] = (JMenu) itemRadioStrategy;
                 } else {
@@ -153,7 +153,7 @@ public class ManagerDatabase extends JPanel implements Manager {
             JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == Vendor.AUTO);
             itemRadioVendor.addActionListener(actionEvent -> {
                 ManagerDatabase.this.panelVendor.setText(vendor.toString());
-                MediatorModel.model().vendorByUser = vendor;
+                MediatorModel.model().setVendorByUser(vendor);
             });
             this.panelVendor.add(itemRadioVendor);
             groupVendor.add(itemRadioVendor);
@@ -181,8 +181,8 @@ public class ManagerDatabase extends JPanel implements Manager {
             final int indexError = i[0];
             ((AbstractButton) itemRadioVendor).addActionListener(actionEvent -> {
                 ManagerDatabase.this.panelStrategy.setText(methodError.getName());
-                MediatorModel.model().setStrategy(Strategy.ERRORBASED);
-                ((ErrorbasedStrategy)Strategy.ERRORBASED.instance()).setIndexMethodByUser(indexError);
+                MediatorModel.model().setStrategy(StrategyInjection.ERRORBASED);
+                ((StrategyInjectionError)StrategyInjection.ERRORBASED.instance()).setIndexMethod(indexError);
             });
             
             i[0]++;

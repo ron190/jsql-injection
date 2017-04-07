@@ -47,7 +47,7 @@ public class CallableFile implements Callable<CallableFile> {
         String resultToParse = "";
         try {
             resultToParse = this.suspendableReadFile.run(
-                MediatorModel.model().vendor.instance().sqlFileRead(this.pathFile),
+                MediatorModel.model().getVendor().instance().sqlFileRead(this.pathFile),
                 sourcePage,
                 false,
                 1,

@@ -222,16 +222,17 @@ public class ActionCoder implements ActionListener {
                     URLEncoder.encode(this.coderManager.textInput.getText(), "UTF-8")
                 );
             } catch (UnsupportedEncodingException e) {
-                LOGGER.warn("Encoding to UTF-8 failed: "+ e, e);
+                LOGGER.warn("Encoding to UTF-8 failed: "+ e.getMessage(), e);
             }
             
         } else if ("Decode from Url".equalsIgnoreCase(choice)) {
+            // Fix #16068: IllegalArgumentException on URLDecoder.decode() when input contains %
             try {
                 this.coderManager.result.setText(
                     URLDecoder.decode(this.coderManager.textInput.getText(), "UTF-8")
                 );
-            } catch (UnsupportedEncodingException e) {
-                LOGGER.warn("Decoding to UTF-8 failed: "+ e, e);
+            } catch (IllegalArgumentException | UnsupportedEncodingException e) {
+                LOGGER.warn("Decoding failed: "+ e.getMessage(), e);
             }
             
         } else {

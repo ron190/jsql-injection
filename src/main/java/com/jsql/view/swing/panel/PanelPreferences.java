@@ -21,7 +21,7 @@ import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.util.ProxyUtil;
 import com.jsql.view.swing.HelperUi;
-import com.jsql.view.swing.dialog.ActionCheckIP;
+import com.jsql.view.swing.action.ActionCheckIP;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 

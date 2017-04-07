@@ -27,13 +27,14 @@ import javax.swing.text.StyleConstants;
 import com.jsql.view.swing.HelperUi;
 
 class TokenStyles {
+    
 	private TokenStyles() { } // disable constructor
 	
 	/**
 	 * A hash table containing the text styles. Simple attribute sets are hashed
 	 * by name (String)
 	 */
-	private static HashMap styles = new HashMap();
+	private static HashMap<String, SimpleAttributeSet> styles = new HashMap<>();
 
 	/**
 	 * Create the styles and place them in the hash table.
@@ -44,24 +45,24 @@ class TokenStyles {
 		Color darkGreen = Color.GREEN.darker();
 		Color darkPurple = new Color(0xA020F0).darker();
 
-		addStyle("body", Color.WHITE, Color.BLACK, false, false);
-		addStyle("tag", Color.WHITE, Color.BLUE, true, false);
-		addStyle("endtag", Color.WHITE, Color.BLUE, false, false);
-		addStyle("reference", Color.WHITE, Color.BLACK, false, false);
-		addStyle("name", Color.WHITE, maroon, true, false);
-		addStyle("value", Color.WHITE, maroon, false, true);
-		addStyle("text", Color.WHITE, Color.BLACK, true, false);
-		addStyle("reservedWord", Color.WHITE, Color.BLUE, false, false);
-		addStyle("identifier", Color.WHITE, Color.BLACK, false, false);
-		addStyle("literal", Color.WHITE, maroon, false, false);
-		addStyle("separator", Color.WHITE, darkBlue, false, false);
-		addStyle("operator", Color.WHITE, Color.BLACK, true, false);
-		addStyle("comment", Color.WHITE, darkGreen, false, false);
-		addStyle("preprocessor", Color.WHITE, darkPurple, false, false);
-		addStyle("whitespace", Color.WHITE, Color.BLACK, false, false);
-		addStyle("error", Color.WHITE, Color.RED, false, false);
-		addStyle("unknown", Color.WHITE, Color.ORANGE, false, false);
-		addStyle("grayedOut", Color.WHITE, Color.GRAY, false, false);
+		TokenStyles.addStyle("body", Color.WHITE, Color.BLACK, false, false);
+		TokenStyles.addStyle("tag", Color.WHITE, Color.BLUE, true, false);
+		TokenStyles.addStyle("endtag", Color.WHITE, Color.BLUE, false, false);
+		TokenStyles.addStyle("reference", Color.WHITE, Color.BLACK, false, false);
+		TokenStyles.addStyle("name", Color.WHITE, maroon, true, false);
+		TokenStyles.addStyle("value", Color.WHITE, maroon, false, true);
+		TokenStyles.addStyle("text", Color.WHITE, Color.BLACK, true, false);
+		TokenStyles.addStyle("reservedWord", Color.WHITE, Color.BLUE, false, false);
+		TokenStyles.addStyle("identifier", Color.WHITE, Color.BLACK, false, false);
+		TokenStyles.addStyle("literal", Color.WHITE, maroon, false, false);
+		TokenStyles.addStyle("separator", Color.WHITE, darkBlue, false, false);
+		TokenStyles.addStyle("operator", Color.WHITE, Color.BLACK, true, false);
+		TokenStyles.addStyle("comment", Color.WHITE, darkGreen, false, false);
+		TokenStyles.addStyle("preprocessor", Color.WHITE, darkPurple, false, false);
+		TokenStyles.addStyle("whitespace", Color.WHITE, Color.BLACK, false, false);
+		TokenStyles.addStyle("error", Color.WHITE, Color.RED, false, false);
+		TokenStyles.addStyle("unknown", Color.WHITE, Color.ORANGE, false, false);
+		TokenStyles.addStyle("grayedOut", Color.WHITE, Color.GRAY, false, false);
 	}
 	
 	private static void addStyle(String name, Color bg, Color fg, boolean bold,
@@ -85,6 +86,6 @@ class TokenStyles {
 	 * @return the style
 	 */
 	public static AttributeSet getStyle(String styleName) {
-		return (AttributeSet) styles.get(styleName);
+		return TokenStyles.styles.get(styleName);
 	}
 }

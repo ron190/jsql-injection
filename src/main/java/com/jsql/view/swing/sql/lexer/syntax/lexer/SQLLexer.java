@@ -30,11 +30,7 @@
 
 package com.jsql.view.swing.sql.lexer.syntax.lexer;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 /**
  * SQLLexer is a SQL language lexer. Created with JFlex. An example of how it is

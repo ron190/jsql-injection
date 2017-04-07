@@ -66,7 +66,7 @@ public class CertificateUtil {
             sc.init(null, trustAllCerts, new java.security.SecureRandom());
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
         } catch (Exception e) {
-            LOGGER.warn("Error ignoring untrusted SSL: "+ e, e);
+            LOGGER.warn("Error ignoring untrusted SSL: "+ e.getMessage(), e);
         }
         
         // Ignore CertificateException: No subject alternative names present

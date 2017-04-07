@@ -353,7 +353,7 @@ public final class HelperUi {
             images.add(ImageIO.read(HelperUi.URL_ICON_32));
             images.add(ImageIO.read(HelperUi.URL_ICON_16));
         } catch (IOException e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
         return images;
     }

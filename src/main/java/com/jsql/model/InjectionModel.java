@@ -40,8 +40,8 @@ import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.MethodInjection;
-import com.jsql.model.injection.strategy.NormalStrategy;
-import com.jsql.model.injection.strategy.Strategy;
+import com.jsql.model.injection.strategy.StrategyInjectionNormal;
+import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
 import com.jsql.model.suspendable.SuspendableGetVendor;
@@ -109,18 +109,18 @@ public class InjectionModel extends AbstractModelObservable {
      * Database vendor currently used.
      * It can be switched to another vendor by automatic detection or manual selection.
      */
-    public Vendor vendor = Vendor.MYSQL;
-    
+    private Vendor vendor = Vendor.MYSQL;
+
     /**
      * Database vendor selected by user (default UNDEFINED).
      * If not UNDEFINED then the next injection will be forced to use the selected vendor. 
      */
-    public Vendor vendorByUser = Vendor.AUTO;
+    private Vendor vendorByUser = Vendor.AUTO;
     
     /**
      * Current injection strategy.
      */
-    private Strategy strategy;
+    private StrategyInjection strategy;
     
     /**
      * Allow to directly start an injection after a failed one
@@ -137,7 +137,7 @@ public class InjectionModel extends AbstractModelObservable {
     
     public void resetModel() {
         this.charInsertion = null;
-        ((NormalStrategy) Strategy.NORMAL.instance()).setVisibleIndex(null);
+        ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).setVisibleIndex(null);
         this.indexesInUrl = null;
         
         this.versionDatabase = null;
@@ -204,24 +204,24 @@ public class InjectionModel extends AbstractModelObservable {
 
             // Test each injection methods: time, blind, error, normal
             // TODO separate method
-            Strategy.TIME.instance().checkApplicability();
-            Strategy.BLIND.instance().checkApplicability();
-            Strategy.ERRORBASED.instance().checkApplicability();
-            Strategy.NORMAL.instance().checkApplicability();
+            StrategyInjection.TIME.instance().checkApplicability();
+            StrategyInjection.BLIND.instance().checkApplicability();
+            StrategyInjection.ERRORBASED.instance().checkApplicability();
+            StrategyInjection.NORMAL.instance().checkApplicability();
 
             // Choose the most efficient method: normal > error > blind > time
             // TODO separate method
-            if (Strategy.NORMAL.instance().isApplicable()) {
-                Strategy.NORMAL.instance().activateStrategy();
+            if (StrategyInjection.NORMAL.instance().isApplicable()) {
+                StrategyInjection.NORMAL.instance().activateStrategy();
                 
-            } else if (Strategy.ERRORBASED.instance().isApplicable()) {
-                Strategy.ERRORBASED.instance().activateStrategy();
+            } else if (StrategyInjection.ERRORBASED.instance().isApplicable()) {
+                StrategyInjection.ERRORBASED.instance().activateStrategy();
                 
-            } else if (Strategy.BLIND.instance().isApplicable()) {
-                Strategy.BLIND.instance().activateStrategy();
+            } else if (StrategyInjection.BLIND.instance().isApplicable()) {
+                StrategyInjection.BLIND.instance().activateStrategy();
                 
-            } else if (Strategy.TIME.instance().isApplicable()) {
-                Strategy.TIME.instance().activateStrategy();
+            } else if (StrategyInjection.TIME.instance().isApplicable()) {
+                StrategyInjection.TIME.instance().activateStrategy();
                 
             } else if (PreferencesUtil.isEvasionEnabled() && this.stepSecurity < 3) {
                 // No injection possible, increase evasion level and restart whole process
@@ -258,9 +258,6 @@ public class InjectionModel extends AbstractModelObservable {
         }
     }
     
-    public void chooseVendor() {}
-    public void chooseStrategy() {}
-
     /**
      * Run a HTTP connection to the web server.
      * @param dataInjection SQL query
@@ -280,7 +277,7 @@ public class InjectionModel extends AbstractModelObservable {
         try {
             urlObject = new URL(urlInjection);
         } catch (MalformedURLException e) {
-            LOGGER.warn("Incorrect Query Url: "+ e, e);
+            LOGGER.warn("Incorrect Query Url: "+ e.getMessage(), e);
             return "";
         }
 
@@ -325,7 +322,7 @@ public class InjectionModel extends AbstractModelObservable {
 
                 urlObject = new URL(urlInjection);
             } catch (MalformedURLException e) {
-                LOGGER.warn("Incorrect Evasion Url: "+ e, e);
+                LOGGER.warn("Incorrect Evasion Url: "+ e.getMessage(), e);
             }
         }
         
@@ -397,7 +394,7 @@ public class InjectionModel extends AbstractModelObservable {
                     
                     msgHeader.put(TypeHeader.POST, this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.getRequest(), isUsingIndex, dataInjection));
                 } catch (IOException e) {
-                    LOGGER.warn("Error during Request connection "+ e, e);
+                    LOGGER.warn("Error during Request connection: "+ e.getMessage(), e);
                 }
             }
             
@@ -432,19 +429,13 @@ public class InjectionModel extends AbstractModelObservable {
             // Exception for Block Opening Connection
             IOException | LoginException | GSSException | PrivilegedActionException e
         ) {
-            LOGGER.warn("Error during connection: "+ e, e);
+            LOGGER.warn("Error during connection: "+ e.getMessage(), e);
         }
 
         // return the source code of the page
         return pageSource;
     }
     
-    public void getEvadedQuery() {}
-    public void configureConnection() {}
-    public void configureHeader() {}
-    public void configureRequest() {}
-    public void getSource() {}
-
     /**
      * Build correct data for GET, POST, HEADER.<br>
      * Each can be:<br>
@@ -465,7 +456,7 @@ public class InjectionModel extends AbstractModelObservable {
                 return 
                     paramLead.replace("*", 
                         this.indexesInUrl.replaceAll(
-                            "1337" + ((NormalStrategy) Strategy.NORMAL.instance()).getVisibleIndex() + "7331",
+                            "1337" + ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).getVisibleIndex() + "7331",
                             /**
                              * Oracle column often contains $, which is reserved for regex.
                              * => need to be escape with quoteReplacement()
@@ -492,7 +483,7 @@ public class InjectionModel extends AbstractModelObservable {
                 query = 
                     paramLead.replace("*", 
                         this.indexesInUrl.replaceAll(
-                            "1337" + ((NormalStrategy) Strategy.NORMAL.instance()).getVisibleIndex() + "7331",
+                            "1337" + ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).getVisibleIndex() + "7331",
                             /**
                              * Oracle column often contains $, which is reserved for regex.
                              * => need to be escape with quoteReplacement()
@@ -509,7 +500,7 @@ public class InjectionModel extends AbstractModelObservable {
                 query = 
                     paramLead 
                     + this.indexesInUrl.replaceAll(
-                        "1337" + ((NormalStrategy) Strategy.NORMAL.instance()).getVisibleIndex() + "7331",
+                        "1337" + ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).getVisibleIndex() + "7331",
                         /**
                          * Oracle column often contains $, which is reserved for regex.
                          * => need to be escape with quoteReplacement()
@@ -554,28 +545,28 @@ public class InjectionModel extends AbstractModelObservable {
      * started in a new thread via model function inputValidation().
      */
     public void controlInput(
-        String dataQuery, String dataRequest, String dataHeader, MethodInjection methodInjection, 
+        String urlQuery, String dataRequest, String dataHeader, MethodInjection methodInjection, 
         String typeRequest, Boolean isScanning
     ) {
         try {
         	// TODO seperate method in ConnectionUtil
-            if ("".equals(dataQuery)) {
-                throw new MalformedURLException();
+            URL url = new URL(urlQuery);
+            if ("".equals(urlQuery) || "".equals(url.getHost())) {
+                throw new MalformedURLException("empty URL");
             }
             
-            ConnectionUtil.setUrlByUser(dataQuery);
+            ConnectionUtil.setUrlByUser(urlQuery);
             
             // Parse url and GET query string
             ConnectionUtil.setQueryString("");
-            Matcher regexSearch = Pattern.compile("(.*)(\\?.*)").matcher(dataQuery);
+            Matcher regexSearch = Pattern.compile("(.*)(\\?.*)").matcher(urlQuery);
             if (regexSearch.find()) {
-                URL url = new URL(dataQuery);
                 ConnectionUtil.setUrlBase(regexSearch.group(1));
                 if (!"".equals(url.getQuery())) {
                     ConnectionUtil.setQueryString(regexSearch.group(2));
                 }
             } else {
-                ConnectionUtil.setUrlBase(dataQuery);
+                ConnectionUtil.setUrlBase(urlQuery);
             }
             
             // Define other methods
@@ -595,7 +586,7 @@ public class InjectionModel extends AbstractModelObservable {
                 new Thread(InjectionModel.this::beginInjection, "ThreadBeginInjection").start();
             }
         } catch (MalformedURLException e) {
-            LOGGER.warn("Incorrect Url: "+ e, e);
+            LOGGER.warn("Incorrect Url: "+ e.getMessage(), e);
             
             // Incorrect URL, reset the start button
             Request request = new Request();
@@ -604,13 +595,15 @@ public class InjectionModel extends AbstractModelObservable {
         }
     }
     
-    public void configureInjection () {}
-    public void processInjection () {}
-
     public void displayVersion() {
         String versionJava = System.getProperty("java.version");
         String nameSystemArchitecture = System.getProperty("os.arch");
-        LOGGER.trace("jSQL Injection v" + VERSION_JSQL + " on java "+ versionJava +"-"+ nameSystemArchitecture);
+        LOGGER.trace(
+            "jSQL Injection v" + VERSION_JSQL 
+            + " on Java "+ versionJava 
+            +"-"+ nameSystemArchitecture 
+            +"-"+ System.getProperty("user.language") 
+        );
     }
     
     public String getDatabaseInfos() {
@@ -628,11 +621,27 @@ public class InjectionModel extends AbstractModelObservable {
     
     // Getters and setters
     
-    public Strategy getStrategy() {
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
+    public Vendor getVendorByUser() {
+        return vendorByUser;
+    }
+
+    public void setVendorByUser(Vendor vendorByUser) {
+        this.vendorByUser = vendorByUser;
+    }
+    
+    public StrategyInjection getStrategy() {
     	return this.strategy;
     }
 
-    public void setStrategy(Strategy strategy) {
+    public void setStrategy(StrategyInjection strategy) {
         this.strategy = strategy;
     }
 

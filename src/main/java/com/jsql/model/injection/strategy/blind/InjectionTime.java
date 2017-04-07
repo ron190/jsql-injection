@@ -17,7 +17,7 @@ import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 /**
  * A time attack class using thread asynchronisation.
  */
-public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> {
+public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
 	
     /**
      * Log4j logger sent to view.
@@ -43,10 +43,10 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
      * If every false requests are under 5 seconds and every true are below 5 seconds,
      * then time attack is confirmed. 
      */
-    public ConcreteTimeInjection() {
+    public InjectionTime() {
         // No blind
         if (this.falseTest.length == 0) {
-            LOGGER.info("Time strategy is unknown for "+ MediatorModel.model().vendor +".");
+            LOGGER.info("Time strategy is unknown for "+ MediatorModel.model().getVendor() +".");
             return;
         }
         
@@ -150,15 +150,15 @@ public class ConcreteTimeInjection extends AbstractBlindInjection<CallableTime> 
             throw new StoppedByUserSlidingException();
         }
 
-        if (MediatorModel.model().vendor.instance().sqlTestBlindFirst() == null) {
+        if (MediatorModel.model().getVendor().instance().sqlTestBlindFirst() == null) {
             return false;
         }
         
-        CallableTime blindTest = new CallableTime(MediatorModel.model().vendor.instance().sqlTestBlindFirst());
+        CallableTime blindTest = new CallableTime(MediatorModel.model().getVendor().instance().sqlTestBlindFirst());
         try {
             blindTest.call();
         } catch (Exception e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
 
         return this.isTimeInjectable && blindTest.isTrue();

@@ -54,7 +54,7 @@ public class ScanListTerminal extends ObserverInteraction {
 //            InstantiationException | IllegalAccessException | NoSuchMethodException | 
 //            SecurityException | IllegalArgumentException | InvocationTargetException e
 //        ) {
-//            LOGGER.error(e, e);
+//            LOGGER.error(e.getMessage(), e);
 //        }
 //    }
     

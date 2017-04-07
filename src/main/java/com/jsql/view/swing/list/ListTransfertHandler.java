@@ -121,7 +121,7 @@ public class ListTransfertHandler extends TransferHandler {
                             }
                         }
                     } catch (UnsupportedFlavorException | IOException e) {
-                        LOGGER.error(e, e);
+                        LOGGER.error(e.getMessage(), e);
                     }
                 }
 
@@ -143,7 +143,7 @@ public class ListTransfertHandler extends TransferHandler {
                         childIndex
                     );
                 } catch (UnsupportedFlavorException | IOException e) {
-                    LOGGER.error(e, e);
+                    LOGGER.error(e.getMessage(), e);
                 }
             }
         //This is a paste
@@ -182,8 +182,9 @@ public class ListTransfertHandler extends TransferHandler {
                                 list.getMaxSelectionIndex()
                             )
                         );
-                    } catch (UnsupportedFlavorException | IOException e) {
-                        LOGGER.error(e, e);
+                    } catch (NullPointerException | UnsupportedFlavorException | IOException e) {
+                        // Fix #8831: Multiple Exception on scrollRectToVisible()
+                        LOGGER.error(e.getMessage(), e);
                     }
                 } else if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                     try {
@@ -198,7 +199,7 @@ public class ListTransfertHandler extends TransferHandler {
                             selectedIndex
                         );
                     } catch (UnsupportedFlavorException | IOException e) {
-                        LOGGER.error(e, e);
+                        LOGGER.error(e.getMessage(), e);
                     }
                 }
             }

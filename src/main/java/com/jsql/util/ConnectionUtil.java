@@ -143,7 +143,7 @@ public class ConnectionUtil {
             // Disable caching of authentication like Kerberos
             connection.disconnect();
         } catch (Exception e) {
-            throw new InjectionFailureException("Connection failed: "+ e, e);
+            throw new InjectionFailureException("Connection failed: "+ e.getMessage(), e);
         }
     }
     
@@ -265,7 +265,7 @@ public class ConnectionUtil {
                 privateFieldReadTimeout.setAccessible(true);
                 privateFieldReadTimeout.setInt(privateURLConnection, ConnectionUtil.TIMEOUT);
             } catch (Exception e) {
-                LOGGER.warn("Fix jcifs timeout failed: "+ e, e);
+                LOGGER.warn("Fix jcifs timeout failed: "+ e.getMessage(), e);
             }
         }
     }
@@ -288,7 +288,7 @@ public class ConnectionUtil {
                     connection.addRequestProperty(keyHeader, URLDecoder.decode(valueHeader, "UTF-8"));
                 }
             } catch (UnsupportedEncodingException e) {
-                LOGGER.warn("Unsupported header encoding "+ e, e);
+                LOGGER.warn("Unsupported header encoding: "+ e.getMessage(), e);
             }
         }
     }
@@ -395,6 +395,7 @@ public class ConnectionUtil {
         
         for (int i = 0 ; ; i++) {
             // Fix #6456: IllegalArgumentException on getHeaderFieldKey()
+            // Implementation by sun.net.www.protocol.http.HttpURLConnection.getHeaderFieldKey()
             try {
                 String headerName = connection.getHeaderFieldKey(i);
                 String headerValue = connection.getHeaderField(i);
@@ -403,7 +404,7 @@ public class ConnectionUtil {
                 }
                 mapHeaders.put(headerName == null ? "Method" : headerName, headerValue);
             } catch (IllegalArgumentException e) {
-                LOGGER.error(e, e);
+                LOGGER.error(e.getMessage(), e);
             }
         }
 

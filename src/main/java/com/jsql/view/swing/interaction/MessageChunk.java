@@ -55,7 +55,7 @@ public class MessageChunk implements InteractionCommand {
             }            
         } catch(ArrayIndexOutOfBoundsException e) {
             // Fix #4770 on chunkTab.append()
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
     

@@ -72,7 +72,7 @@ public class ManagerUpload extends AbstractManagerList {
             }
             reader.close();
         } catch (IOException e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
 
         this.listPaths = new DnDList(pathsList);
@@ -125,6 +125,7 @@ public class ManagerUpload extends AbstractManagerList {
             final JFileChooser filechooser = new JFileChooser(PreferencesUtil.getPathFile());
             filechooser.setDialogTitle(I18n.valueByKey("UPLOAD_DIALOG_TEXT"));
             
+            // Fix #2402: NullPointerException on showOpenDialog()
             try {
                 int returnVal = filechooser.showOpenDialog(MediatorGui.frame());
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -145,7 +146,6 @@ public class ManagerUpload extends AbstractManagerList {
                     }
                 }
             } catch(NullPointerException ex) {
-                // Fix #2402 on showOpenDialog()
                 LOGGER.error(ex, ex);
             }
         });

@@ -16,9 +16,10 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 - Multiple injection strategies: Normal, Error, Blind and Time
 - SQL Engine for studying and optimizing SQL expressions
 - Web shell and SQL shell creation and vizualisation
-- Find administration pages
+- Search for administration pages
 - Read files from the host
-- Bruteforce of password hash
+- Bruteforce hash of password
+- Code and decode a string
 - Community translation system
 
 ## Installation
@@ -40,11 +41,11 @@ You can also type `java -jar jsql-injection-v0.78.jar` in your terminal to start
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## Roadmap
-`WAF detection, Bruteforce of HTTP Auth, Arabic translation, Command line interface.`
+`Injection strategy: Routed query / Multibyte / User Variable / Order and Group By, WAF detection, Bruteforce of HTTP Auth, Arabic translation, Command line interface.`
 
 ## Change log
 
-**v0.78** `SQL Engine, MySQL BIGINT Overflow, Translations: es pt de it nl id, GUI improvements, New Database flavor: Access`
+**v0.78** `SQL Engine, MySQL Error strategy: BIGINT, Translations: es pt de it nl id, GUI improvements, Database flavor: Access`
 
 **v0.76** `Czech translation, 17 Database flavors including SQLite`
 

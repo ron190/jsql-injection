@@ -16,13 +16,13 @@ import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.strategy.blind.ConcreteBlindInjection;
+import com.jsql.model.injection.strategy.blind.InjectionBlind;
 import com.jsql.model.suspendable.AbstractSuspendable;
 
 /**
  * Injection strategy using blind attack.
  */
-public class BlindStrategy extends AbstractStrategy {
+public class StrategyInjectionBlind extends AbstractStrategy {
 	
     /**
      * Log4j logger sent to view.
@@ -32,13 +32,13 @@ public class BlindStrategy extends AbstractStrategy {
     /**
      * Blind injection object.
      */
-    private ConcreteBlindInjection blind;
+    private InjectionBlind blind;
     
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
         LOGGER.trace("Blind test...");
         
-        this.blind = new ConcreteBlindInjection();
+        this.blind = new InjectionBlind();
         
         this.isApplicable = this.blind.isInjectable();
         
@@ -63,7 +63,7 @@ public class BlindStrategy extends AbstractStrategy {
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
         return this.blind.inject(
-            MediatorModel.model().vendor.instance().sqlBlind(sqlQuery, startPosition),
+            MediatorModel.model().getVendor().instance().sqlBlind(sqlQuery, startPosition),
             stoppable
         );
     }
@@ -71,7 +71,7 @@ public class BlindStrategy extends AbstractStrategy {
     @Override
     public void activateStrategy() {
         LOGGER.info("Using strategy ["+ this.getName() +"]");
-        MediatorModel.model().setStrategy(Strategy.BLIND);
+        MediatorModel.model().setStrategy(StrategyInjection.BLIND);
         
         Request requestMessageBinary = new Request();
         requestMessageBinary.setMessage(TypeRequest.MESSAGE_BINARY);

@@ -74,7 +74,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
             }
             reader.close();
         } catch (IOException e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
 
         this.listPaths = new DnDList(pathsList);
@@ -148,7 +148,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                 try {
                     new URL(AbstractManagerShell.this.urlShell.getText());
                 } catch (MalformedURLException e) {
-                    LOGGER.warn("Incorrect URL: "+ e, e);
+                    LOGGER.warn("Incorrect URL: "+ e.getMessage(), e);
                     return;
                 }
             }
@@ -161,7 +161,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                             AbstractManagerShell.this.urlShell.getText()
                         );
                     } catch (JSqlException e) {
-                        LOGGER.warn("Payload creation error: "+ e, e);
+                        LOGGER.warn("Payload creation error: "+ e.getMessage(), e);
                     }
                 }, "ThreadGetShell").start();
             }

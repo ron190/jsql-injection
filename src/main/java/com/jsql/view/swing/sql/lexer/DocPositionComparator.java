@@ -23,7 +23,8 @@ import java.util.Comparator;
  * A comparator appropriate for use with Collections of
  * DocPositions.
  */
-class DocPositionComparator implements Comparator {
+class DocPositionComparator implements Comparator<DocPosition> {
+    
 	public static final DocPositionComparator instance = new DocPositionComparator();
 	
 	private DocPositionComparator() { }
@@ -48,7 +49,7 @@ class DocPositionComparator implements Comparator {
      * @return negative if first < second, 0 if equal, positive if first > second
      */
 	@Override
-    public int compare(Object o1, Object o2){
+    public int compare(DocPosition o1, DocPosition o2){
         if (o1 instanceof DocPosition && o2 instanceof DocPosition){
             DocPosition d1 = (DocPosition)(o1);
             DocPosition d2 = (DocPosition)(o2);

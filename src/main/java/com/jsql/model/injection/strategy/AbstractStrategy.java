@@ -110,7 +110,7 @@ public abstract class AbstractStrategy {
      */
     public abstract String getName();
     
-    public Integer getIndexMethodByUser() {
+    public Integer getIndexMethod() {
         return 0;
     }
 

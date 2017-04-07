@@ -232,7 +232,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
                     mouseEvent.getY()
                 );
             } catch (IllegalComponentStateException e) {
-                LOGGER.error(e, e);
+                LOGGER.error(e.getMessage(), e);
             }
             
             popupMenuList.setLocation(

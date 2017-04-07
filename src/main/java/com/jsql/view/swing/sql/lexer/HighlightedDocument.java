@@ -32,8 +32,11 @@ import com.jsql.view.swing.sql.lexer.syntax.lexer.SQLLexer;
  * A <a href="http://ostermiller.org/syntax/editor.html">demonstration text
  * editor</a> that uses syntax highlighting.
  */
+@SuppressWarnings("serial")
 public class HighlightedDocument extends DefaultStyledDocument {
+    
 	public static final Object SQL_STYLE = SQLLexer.class;
+	
 	public static final Object GRAYED_OUT_STYLE = new Object();
 
 	/**
@@ -108,11 +111,11 @@ public class HighlightedDocument extends DefaultStyledDocument {
 
 		if (!(value instanceof Class))
 			value = HighlightedDocument.SQL_STYLE;
-		Class source = (Class) value;
-		Class[] parms = { Reader.class };
+		Class<?> source = (Class<?>) value;
+		Class<?>[] parms = { Reader.class };
 		Object[] args = { documentReader };
 		try {
-			Constructor cons = source.getConstructor(parms);
+			Constructor<?> cons = source.getConstructor(parms);
 			syntaxLexer = (Lexer) cons.newInstance(args);
 			globalStyle = null;
 			colorAll();

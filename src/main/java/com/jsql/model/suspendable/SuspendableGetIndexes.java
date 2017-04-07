@@ -47,7 +47,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
             taskCompletionService.submit(
                 new CallablePageSource(
                     MediatorModel.model().getCharInsertion() + 
-                    MediatorModel.model().vendor.instance().sqlIndices(nbIndex)
+                    MediatorModel.model().getVendor().instance().sqlIndices(nbIndex)
                 )
             );
         }
@@ -72,7 +72,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
                     taskCompletionService.submit(
                         new CallablePageSource(
                             MediatorModel.model().getCharInsertion() + 
-                            MediatorModel.model().vendor.instance().sqlIndices(nbIndex)
+                            MediatorModel.model().getVendor().instance().sqlIndices(nbIndex)
                         )
                     );
                     nbIndex++;

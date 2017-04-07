@@ -9,7 +9,7 @@ import com.jsql.model.MediatorModel;
  * Define a call HTTP to the server, require the associated url, character position and bit.
  * diffSeconds represents the response time of the current page
  */
-public class CallableTime extends CallableAbstractBlind<CallableTime> {
+public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     
     /**
      * Time before the url call.
@@ -31,7 +31,7 @@ public class CallableTime extends CallableAbstractBlind<CallableTime> {
      * @param inj
      */
     public CallableTime(String inj) {
-        this.blindUrl = MediatorModel.model().vendor.instance().sqlTimeTest(inj);
+        this.blindUrl = MediatorModel.model().getVendor().instance().sqlTimeTest(inj);
     }
     
     /**
@@ -41,19 +41,19 @@ public class CallableTime extends CallableAbstractBlind<CallableTime> {
      * @param bit
      */
     public CallableTime(String inj, int indexCharacter, int bit) {
-        this.blindUrl = MediatorModel.model().vendor.instance().sqlBitTestTime(inj, indexCharacter, bit);
+        this.blindUrl = MediatorModel.model().getVendor().instance().sqlBitTestTime(inj, indexCharacter, bit);
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
     }
 
     public CallableTime(String inj, int indexCharacter, boolean isTestingLength) {
-        this.blindUrl = MediatorModel.model().vendor.instance().sqlLengthTestTime(inj, indexCharacter);
+        this.blindUrl = MediatorModel.model().getVendor().instance().sqlLengthTestTime(inj, indexCharacter);
         this.isTestingLength = isTestingLength;
     }
     
     @Override
     public boolean isTrue() {
-        return this.diffSeconds < ConcreteTimeInjection.SLEEP_TIME;
+        return this.diffSeconds < InjectionTime.SLEEP_TIME;
     }
 
     /**
@@ -64,7 +64,7 @@ public class CallableTime extends CallableAbstractBlind<CallableTime> {
     @Override
     public CallableTime call() throws Exception {
         this.calendar1.setTime(new Date());
-        ConcreteTimeInjection.callUrl(blindUrl);
+        InjectionTime.callUrl(blindUrl);
         this.calendar2.setTime(new Date());
         long milliseconds1 = calendar1.getTimeInMillis();
         long milliseconds2 = calendar2.getTimeInMillis();

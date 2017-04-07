@@ -51,7 +51,7 @@ public class ProgressBarPausable extends JProgressBar {
                     null
                 );
             } catch (IOException e) {
-                LOGGER.error(e, e);
+                LOGGER.error(e.getMessage(), e);
             }
         }
     }

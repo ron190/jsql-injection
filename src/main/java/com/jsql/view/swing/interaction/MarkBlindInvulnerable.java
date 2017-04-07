@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.model.injection.strategy.Strategy;
+import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 
@@ -29,7 +29,7 @@ public class MarkBlindInvulnerable implements InteractionCommand {
     @Override
     public void execute() {
         for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
-            if (MediatorGui.managerDatabase().panelStrategy.getItem(i).getText().equals(Strategy.BLIND.toString())) {
+            if (MediatorGui.managerDatabase().panelStrategy.getItem(i).getText().equals(StrategyInjection.BLIND.toString())) {
                 MediatorGui.managerDatabase().panelStrategy.getItem(i).setEnabled(false);
                 break;
             }

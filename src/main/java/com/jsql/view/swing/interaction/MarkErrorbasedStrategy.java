@@ -13,7 +13,7 @@ package com.jsql.view.swing.interaction;
 import javax.swing.JMenu;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.injection.strategy.Strategy;
+import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 
@@ -31,14 +31,14 @@ public class MarkErrorbasedStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.managerDatabase().panelStrategy.setText(Strategy.ERRORBASED.toString());
+        MediatorGui.managerDatabase().panelStrategy.setText(StrategyInjection.ERRORBASED.toString());
         for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
             if (((JMenu) MediatorGui.managerDatabase().panelStrategy.getMenuComponent(2)).getItem(i).getText().equals(
-                MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getIndexMethodByUser()).getName()
+                MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(StrategyInjection.ERRORBASED.instance().getIndexMethod()).getName()
             )) {
                 ((JMenu) MediatorGui.managerDatabase().panelStrategy.getMenuComponent(2)).getItem(i).setSelected(true);
                 MediatorGui.managerDatabase().panelStrategy.setText(
-                    MediatorModel.model().vendor.instance().getXmlModel().getStrategy().getError().getMethod().get(Strategy.ERRORBASED.instance().getIndexMethodByUser()).getName()
+                    MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(StrategyInjection.ERRORBASED.instance().getIndexMethod()).getName()
                 );
                 break;
             }

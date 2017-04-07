@@ -28,75 +28,75 @@ public class SQLToken extends Token {
     /**
      * A reserved word (keyword)
      */
-    public final static int RESERVED_WORD = 0x100;
+    public static final int RESERVED_WORD = 0x100;
 
     /**
      * A variable, name, or other identifier
      */
-    public final static int IDENTIFIER = 0x200;
+    public static final int IDENTIFIER = 0x200;
 
     /**
      * A string literal
      */
-    public final static int LITERAL_STRING = 0x300;
+    public static final int LITERAL_STRING = 0x300;
     /**
      * A bit-string
      */
-    public final static int LITERAL_BIT_STRING = 0x310;
+    public static final int LITERAL_BIT_STRING = 0x310;
     /**
      * An integer
      */
-    public final static int LITERAL_INTEGER = 0x320;
+    public static final int LITERAL_INTEGER = 0x320;
     /**
      * A floating point
      */
-    public final static int LITERAL_FLOAT = 0x330;
+    public static final int LITERAL_FLOAT = 0x330;
 
     /**
      * A separator
      */
-    public final static int SEPARATOR = 0x400;
+    public static final int SEPARATOR = 0x400;
 
     /**
      * An operator
      */
-    public final static int OPERATOR = 0x500;
+    public static final int OPERATOR = 0x500;
 
     /**
      * C style comment, (except possibly nested)
      */
-    public final static int COMMENT_TRADITIONAL = 0xD00;
+    public static final int COMMENT_TRADITIONAL = 0xD00;
 
     /**
      * a -- to end of line comment.
      */
-    public final static int COMMENT_END_OF_LINE = 0xD10;
+    public static final int COMMENT_END_OF_LINE = 0xD10;
 
     /**
      * White space
      */
-    public final static int WHITE_SPACE = 0xE00;
+    public static final int WHITE_SPACE = 0xE00;
 
     /**
      * An error
      */
-    public final static int ERROR = 0xF00;
+    public static final int ERROR = 0xF00;
     /**
      * An comment start embedded in an operator
      */
-    public final static int ERROR_UNCLOSED_COMMENT = 0xF02;
+    public static final int ERROR_UNCLOSED_COMMENT = 0xF02;
     /**
      * An comment start embedded in an operator
      */
-    public final static int ERROR_UNCLOSED_STRING = 0xF03;
+    public static final int ERROR_UNCLOSED_STRING = 0xF03;
     /**
      * An comment start embedded in an operator
      */
-    public final static int ERROR_UNCLOSED_BIT_STRING = 0xF04;
+    public static final int ERROR_UNCLOSED_BIT_STRING = 0xF04;
     /**
      * An comment start embedded in an operator
      */
-    public final static int ERROR_BAD_BIT_STRING = 0xF05;
+    public static final int ERROR_BAD_BIT_STRING = 0xF05;
 
     private int ID;
     private String contents;

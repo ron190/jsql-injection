@@ -36,8 +36,8 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
     public Vendor run(Object... args) throws StoppedByUserSlidingException {
         Vendor vendor = null;
         
-        if (MediatorModel.model().vendorByUser != Vendor.AUTO) {
-            return MediatorModel.model().vendorByUser;
+        if (MediatorModel.model().getVendorByUser() != Vendor.AUTO) {
+            return MediatorModel.model().getVendorByUser();
         }
         
         // Parallelize the search and let the user stops the process if needed.
@@ -239,7 +239,7 @@ select '"'"'
             taskExecutor.shutdown();
             taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
             Thread.currentThread().interrupt();
         }
         

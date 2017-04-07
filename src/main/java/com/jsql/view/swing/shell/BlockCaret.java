@@ -82,7 +82,7 @@ public class BlockCaret extends DefaultCaret {
             }
             dotChar = comp.getText(dot, 1).charAt(0);
         } catch (BadLocationException e) {
-            LOGGER.error("Handled Exception: "+ e, e);
+            LOGGER.error(e.getMessage(), e);
             return;
         }
 

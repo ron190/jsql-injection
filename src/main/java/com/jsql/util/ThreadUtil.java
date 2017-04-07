@@ -10,8 +10,11 @@
  ******************************************************************************/
 package com.jsql.util;
 
+import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
 
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -23,6 +26,11 @@ import com.jsql.model.suspendable.AbstractSuspendable;
  * actives one is freed.
  */
 public final class ThreadUtil {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 	
     /**
      * List of running jobs associated to a database injection task.
@@ -70,10 +78,15 @@ public final class ThreadUtil {
      * they were instanciated in order to be garbage collected. 
      */
     public static void reset() {
-        for (AbstractSuspendable<?> suspendable : ThreadUtil.suspendables.values()) {
-            suspendable.stop();
+        // Fix #8258: ConcurrentModificationException on java.util.HashMap$ValueIterator.next()
+        try {
+            for (AbstractSuspendable<?> suspendable : ThreadUtil.suspendables.values()) {
+                suspendable.stop();
+            }
+            ThreadUtil.suspendables.clear();
+        } catch (ConcurrentModificationException e) {
+            LOGGER.error(e, e);
         }
-        ThreadUtil.suspendables.clear();
     }
     
 }

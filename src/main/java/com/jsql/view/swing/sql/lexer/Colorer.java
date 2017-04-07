@@ -56,7 +56,7 @@ class Colorer extends Thread {
 	 * it is no longer being used. At that point, this thread will
 	 * shut down itself.
 	 */
-	private WeakReference document;
+	private WeakReference<HighlightedDocument> document;
 
 	/**
 	 * Keep a list of places in the file that it is safe to restart the
@@ -65,7 +65,7 @@ class Colorer extends Thread {
 	 * we need to be able to retrieve ranges from it, it is stored in a
 	 * balanced tree.
 	 */
-	private TreeSet iniPositions = new TreeSet(DocPositionComparator.instance);
+	private TreeSet<DocPosition> iniPositions = new TreeSet<DocPosition>(DocPositionComparator.instance);
 
 	/**
 	 * As we go through and remove invalid positions we will also be finding
@@ -74,12 +74,12 @@ class Colorer extends Thread {
 	 * positions and simply add it to the list of positions once all the old
 	 * positions have been removed.
 	 */
-	private HashSet newPositions = new HashSet();
+	private HashSet<DocPosition> newPositions = new HashSet<DocPosition>();
 
 	/**
 	 * Vector that stores the communication between the two threads.
 	 */
-	private volatile LinkedList events = new LinkedList();
+	private volatile LinkedList<RecolorEvent> events = new LinkedList<RecolorEvent>();
 
 	/**
 	 * When accessing the linked list, we need to create a critical section.
@@ -106,7 +106,7 @@ class Colorer extends Thread {
 	 */
 	public Colorer(HighlightedDocument document) {
 	    super("Colorer");
-		this.document = new WeakReference(document);
+		this.document = new WeakReference<HighlightedDocument>(document);
 	}
 
 	/**
@@ -128,7 +128,7 @@ class Colorer extends Thread {
 		synchronized (eventsLock) {
 			if(!events.isEmpty()) {
 				// check whether to coalesce with current last element
-				RecolorEvent curLast = (RecolorEvent) events.getLast();
+				RecolorEvent curLast = events.getLast();
 				if(adjustment < 0 && curLast.adjustment < 0) {
 					// both are removals
 					if(position == curLast.position) {
@@ -170,7 +170,7 @@ class Colorer extends Thread {
 						eventsLock.wait(1000);
 					}
 					if (!events.isEmpty()) {
-					    re = (RecolorEvent) events.removeFirst();
+					    re = events.removeFirst();
 					}
 				}
 				processEvent(re.position, re.adjustment);
@@ -180,7 +180,7 @@ class Colorer extends Thread {
 	}
 	
 	private void processEvent(int position, int adjustment) {
-		HighlightedDocument doc = (HighlightedDocument) document.get();
+		HighlightedDocument doc = document.get();
 		if(doc == null) return;
 		
 		// slurp everything up into local variables in case another
@@ -200,8 +200,8 @@ class Colorer extends Thread {
 			return;
 		}
 		
-		SortedSet workingSet;
-		Iterator workingIt;
+		SortedSet<DocPosition> workingSet;
+		Iterator<DocPosition> workingIt;
 		DocPosition startRequest = new DocPosition(position);
 		DocPosition endRequest = new DocPosition(position + Math.abs(adjustment));
 		DocPosition dp;
@@ -214,7 +214,7 @@ class Colorer extends Thread {
 			// all the good positions before
 			workingSet = iniPositions.headSet(startRequest);
 			// the last of the stuff before
-			dpStart = (DocPosition) workingSet.last();
+			dpStart = workingSet.last();
 		} catch (NoSuchElementException x) {
 			// if there were no good positions before the requested
 			// start,
@@ -239,7 +239,7 @@ class Colorer extends Thread {
 		workingSet = iniPositions.tailSet(startRequest);
 		workingIt = workingSet.iterator();
 		while (workingIt.hasNext()) {
-			((DocPosition) workingIt.next()).adjustPosition(adjustment);
+			workingIt.next().adjustPosition(adjustment);
 		}
 
 		// now go through and highlight as much as needed
@@ -247,7 +247,7 @@ class Colorer extends Thread {
 		workingIt = workingSet.iterator();
 		dp = null;
 		if (workingIt.hasNext()) {
-			dp = (DocPosition) workingIt.next();
+			dp = workingIt.next();
 		}
 		try {
 			Token t;
@@ -325,7 +325,7 @@ class Colorer extends Thread {
 							dp = null;
 						} else if (workingIt.hasNext()) {
 							// didn't find it, try again.
-							dp = (DocPosition) workingIt.next();
+							dp = workingIt.next();
 						} else {
 							// didn't find it, and there is no more
 							// info from last

@@ -12,7 +12,7 @@ import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch;
  * position and bit. Opcodes represents the differences between
  * the TRUE page, and the resulting page.
  */
-public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
+public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     
     /**
      * List of differences found between the TRUE page, and the present page.
@@ -26,7 +26,7 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
      * @param inj
      */
     public CallableBlind(String inj) {
-        this.blindUrl = MediatorModel.model().vendor.instance().sqlTestBlind(inj);
+        this.blindUrl = MediatorModel.model().getVendor().instance().sqlTestBlind(inj);
     }
     
     /**
@@ -36,7 +36,7 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
      * @param bit
      */
     public CallableBlind(String inj, int indexCharacter, int bit) {
-        this.blindUrl = MediatorModel.model().vendor.instance().sqlBitTestBlind(inj, indexCharacter, bit);
+        this.blindUrl = MediatorModel.model().getVendor().instance().sqlBitTestBlind(inj, indexCharacter, bit);
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
     }
@@ -48,7 +48,7 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
      * @param isTestingLength
      */
     public CallableBlind(String inj, int indexCharacter, boolean isTestingLength) {
-        this.blindUrl = MediatorModel.model().vendor.instance().sqlLengthTestBlind(inj, indexCharacter);
+        this.blindUrl = MediatorModel.model().getVendor().instance().sqlLengthTestBlind(inj, indexCharacter);
         this.isTestingLength = isTestingLength;
     }
 
@@ -60,7 +60,7 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
      */
     @Override
     public boolean isTrue() {
-        for (Diff falseDiff: ConcreteBlindInjection.getConstantFalseMark()) {
+        for (Diff falseDiff: InjectionBlind.getConstantFalseMark()) {
             // Fix #4386: NullPointerException on contains()
             // opcodes is initialized to an empty new LinkedList<>()
             if (this.opcodes.contains(falseDiff)) {
@@ -77,9 +77,9 @@ public class CallableBlind extends CallableAbstractBlind<CallableBlind> {
      */
     @Override
     public CallableBlind call() throws Exception {
-        String ctnt = ConcreteBlindInjection.callUrl(this.blindUrl);
-        this.opcodes = DIFFMATCHPATCH.diff_main(ConcreteBlindInjection.getBlankTrueMark(), ctnt, true);
-        DIFFMATCHPATCH.diff_cleanupEfficiency(this.opcodes);
+        String ctnt = InjectionBlind.callUrl(this.blindUrl);
+        this.opcodes = DIFFMATCHPATCH.diffMain(InjectionBlind.getBlankTrueMark(), ctnt, true);
+        DIFFMATCHPATCH.diffCleanupEfficiency(this.opcodes);
         return this;
     }
     

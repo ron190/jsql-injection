@@ -10,7 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import com.jsql.model.injection.strategy.Strategy;
+import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 
@@ -28,9 +28,9 @@ public class MarkTimebasedStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.managerDatabase().panelStrategy.setText(Strategy.TIME.toString());
+        MediatorGui.managerDatabase().panelStrategy.setText(StrategyInjection.TIME.toString());
         for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
-            if (MediatorGui.managerDatabase().panelStrategy.getItem(i).getText().equals(Strategy.TIME.toString())) {
+            if (MediatorGui.managerDatabase().panelStrategy.getItem(i).getText().equals(StrategyInjection.TIME.toString())) {
                 MediatorGui.managerDatabase().panelStrategy.getItem(i).setSelected(true);
                 break;
             }

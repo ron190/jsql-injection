@@ -69,7 +69,7 @@ public class ManagerFile extends AbstractManagerList {
             }
             reader.close();
         } catch (IOException e) {
-            LOGGER.error(e, e);
+            LOGGER.error(e.getMessage(), e);
         }
 
         final DnDList listFile = new DnDList(pathList);

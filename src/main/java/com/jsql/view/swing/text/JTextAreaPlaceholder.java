@@ -52,11 +52,12 @@ public class JTextAreaPlaceholder extends JTextArea {
         // Fix #6350: ArrayIndexOutOfBoundsException on paint()
         try {
             super.paint(g);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            LOGGER.error("Handled Exception: "+ e, e);
+        } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
+            LOGGER.error(e.getMessage(), e);
         }
         
-        if (this.getText().length() == 0) {
+        // Fix #26937: NullPointerException on this.getText().length()
+        if (this.getText() != null && this.getText().length() == 0) {
             int w = this.getWidth();
             
             ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);

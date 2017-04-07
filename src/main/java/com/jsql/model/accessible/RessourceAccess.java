@@ -205,14 +205,14 @@ public class RessourceAccess {
             pathShellFixed += "/";
         }
         MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().vendor.instance().sqlTextIntoFile(payloadWeb, pathShellFixed + FILENAME_WEBSHELL)
+            MediatorModel.model().getVendor().instance().sqlTextIntoFile(payloadWeb, pathShellFixed + FILENAME_WEBSHELL)
         );
 
         String resultInjection;
         String[] sourcePage = {""};
         try {
             resultInjection = new SuspendableGetRows().run(
-                MediatorModel.model().vendor.instance().sqlFileRead(pathShellFixed + FILENAME_WEBSHELL),
+                MediatorModel.model().getVendor().instance().sqlFileRead(pathShellFixed + FILENAME_WEBSHELL),
                 sourcePage,
                 false,
                 1,
@@ -312,9 +312,9 @@ public class RessourceAccess {
                 result = "No result.\nTry \""+ command.trim() +" 2>&1\" to get a system error message.\n";
             }
         } catch (UnsupportedEncodingException e) {
-            LOGGER.warn("Encoding command to ISO-8859-1 failed: "+ e, e);
+            LOGGER.warn("Encoding command to ISO-8859-1 failed: "+ e.getMessage(), e);
         } catch (IOException e) {
-            LOGGER.warn("Shell execution error: "+ e, e);
+            LOGGER.warn("Shell execution error: "+ e.getMessage(), e);
         } finally {
             // Unfroze interface
             Request request = new Request();
@@ -354,14 +354,14 @@ public class RessourceAccess {
         }
         
         MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().vendor.instance().sqlTextIntoFile(payloadSQL, pathShellFixed + FILENAME_SQLSHELL)
+            MediatorModel.model().getVendor().instance().sqlTextIntoFile(payloadSQL, pathShellFixed + FILENAME_SQLSHELL)
         );
 
         String resultInjection = "";
         String[] sourcePage = {""};
         try {
             resultInjection = new SuspendableGetRows().run(
-                MediatorModel.model().vendor.instance().sqlFileRead(pathShellFixed + FILENAME_SQLSHELL),
+                MediatorModel.model().getVendor().instance().sqlFileRead(pathShellFixed + FILENAME_SQLSHELL),
                 sourcePage,
                 false,
                 1,
@@ -469,9 +469,9 @@ public class RessourceAccess {
                 result = result.replace("<SQLe>", "") + "\n";
             }
         } catch (UnsupportedEncodingException e) {
-            LOGGER.warn("Encoding command to ISO-8859-1 failed: "+ e, e);
+            LOGGER.warn("Encoding command to ISO-8859-1 failed: "+ e.getMessage(), e);
         } catch (IOException e) {
-            LOGGER.warn("Shell execution error: "+ e, e);
+            LOGGER.warn("Shell execution error: "+ e.getMessage(), e);
         } finally {
             // Unfroze interface
             Request request = new Request();
@@ -502,14 +502,14 @@ public class RessourceAccess {
         }
         
         MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().vendor.instance().sqlTextIntoFile("<"+ DataAccess.LEAD +">"+ sourceShellToInject +"<"+ DataAccess.TRAIL +">", pathShellFixed + FILENAME_UPLOAD)
+            MediatorModel.model().getVendor().instance().sqlTextIntoFile("<"+ DataAccess.LEAD +">"+ sourceShellToInject +"<"+ DataAccess.TRAIL +">", pathShellFixed + FILENAME_UPLOAD)
         );
 
         String[] sourcePage = {""};
         String sourceShellInjected;
         try {
             sourceShellInjected = new SuspendableGetRows().run(
-                MediatorModel.model().vendor.instance().sqlFileRead(pathShellFixed + FILENAME_UPLOAD),
+                MediatorModel.model().getVendor().instance().sqlFileRead(pathShellFixed + FILENAME_UPLOAD),
                 sourcePage,
                 false,
                 1,
@@ -629,7 +629,7 @@ public class RessourceAccess {
         String[] sourcePage = {""};
 
         String resultInjection = new SuspendableGetRows().run(
-            MediatorModel.model().vendor.instance().sqlPrivilegeTest(),
+            MediatorModel.model().getVendor().instance().sqlPrivilegeTest(),
             sourcePage,
             false,
             1,
