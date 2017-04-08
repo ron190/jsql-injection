@@ -86,18 +86,18 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             // Parse all the data we have retrieved
             Matcher regexAtLeastOneRow;
             try {
-                regexAtLeastOneRow = 
+                regexAtLeastOneRow =
                     Pattern
                         .compile(MODE + LEAD +"(.{1,"+ strategy.getPerformanceLength() +"})")
                         .matcher(sourcePage[0]);
             } catch (PatternSyntaxException e) {
                 // Fix #35382 : PatternSyntaxException null on SQLi(.{1,null})
-                throw new InjectionFailureException("Row parsing failed using capacity");
+                throw new InjectionFailureException("Row parsing failed using capacity", e);
             }
             
             // TODO: prevent to find the last line directly: MODE + LEAD + .* + TRAIL_RGX
             // It creates extra query which can be endless if not nullified
-            Matcher regexEndOfLine = 
+            Matcher regexEndOfLine =
                 Pattern
                     .compile(MODE + LEAD + TRAIL_RGX)
                     .matcher(sourcePage[0]);
@@ -164,16 +164,16 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             /*
              * Check how many rows we have collected from the beginning of that chunk
              */
-            regexAtLeastOneRow = 
+            regexAtLeastOneRow =
                 Pattern
                     .compile(
-                        MODE 
+                        MODE
                         +"("
-                            + ENCLOSE_VALUE_RGX 
+                            + ENCLOSE_VALUE_RGX
                             + "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)"
-                            + SEPARATOR_QTE_RGX 
+                            + SEPARATOR_QTE_RGX
                             + "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?"
-                            + ENCLOSE_VALUE_RGX 
+                            + ENCLOSE_VALUE_RGX
                         + ")"
                     )
                     .matcher(slidingWindowCurrentRow);
@@ -219,7 +219,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                      */
                     String allRowsLimit = slidingWindowAllRows.toString();
                     slidingWindowAllRows.setLength(0);
-                    slidingWindowAllRows.append( 
+                    slidingWindowAllRows.append(
                         Pattern
                             .compile(
                                 MODE +"("
@@ -249,22 +249,22 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     /*
                      * Check either if there is more than 1 row and if there is less than 1 complete row
                      */
-                    regexAtLeastOneRow = 
+                    regexAtLeastOneRow =
                         Pattern
                             .compile(
                                 MODE
                                 + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]"
-                                + ENCLOSE_VALUE_RGX 
-                                + SEPARATOR_CELL_RGX 
-                                + ENCLOSE_VALUE_RGX 
+                                + ENCLOSE_VALUE_RGX
+                                + SEPARATOR_CELL_RGX
+                                + ENCLOSE_VALUE_RGX
                                 + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
                             )
                             .matcher(slidingWindowCurrentRow);
-                    Matcher regexRowIncomplete = 
+                    Matcher regexRowIncomplete =
                         Pattern
                             .compile(
-                                MODE 
-                                + ENCLOSE_VALUE_RGX 
+                                MODE
+                                + ENCLOSE_VALUE_RGX
                                 + "[^\\x01-\\x03\\x05-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
                             )
                             .matcher(slidingWindowCurrentRow);
@@ -279,8 +279,8 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                         slidingWindowAllRows.append(
                             Pattern
                                 .compile(
-                                    MODE 
-                                    + ENCLOSE_VALUE_RGX 
+                                    MODE
+                                    + ENCLOSE_VALUE_RGX
                                     + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]+?$"
                                 )
                                 .matcher(allLine)
@@ -294,7 +294,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                      * Check how many rows we have collected from the very beginning of the query,
                      * then skip every rows we have already found via LIMIT
                      */
-                    regexAtLeastOneRow = 
+                    regexAtLeastOneRow =
                         /*
                          * Regex \\x{08}? not supported on Kali
                          * => \\x08? seems ok though
@@ -302,11 +302,11 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                         Pattern
                             .compile(
                                 MODE +"("
-                                    + ENCLOSE_VALUE_RGX 
+                                    + ENCLOSE_VALUE_RGX
                                     + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?"
-                                    + SEPARATOR_QTE_RGX 
+                                    + SEPARATOR_QTE_RGX
                                     + "[^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?\\x08?"
-                                    + ENCLOSE_VALUE_RGX 
+                                    + ENCLOSE_VALUE_RGX
                                 +")"
                             )
                             .matcher(slidingWindowAllRows);
@@ -343,7 +343,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                      *  Add the LIMIT statement to the next SQL query and reset variables.
                      *  Put the character cursor to the beginning of the line, and reset the result of the current query
                      */
-                    sqlQuery = 
+                    sqlQuery =
                         Pattern
                             .compile(MODE +"\\{limit\\}")
                             .matcher(initialSQLQuery)

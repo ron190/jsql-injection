@@ -24,7 +24,7 @@ import com.jsql.i18n.I18n;
 public class ReplaceFileChooser extends JFileChooser {
 	
     /**
-     * Create a file chooser with a replace confirm dialog. 
+     * Create a file chooser with a replace confirm dialog.
      * @param s
      */
     public ReplaceFileChooser(String s) {

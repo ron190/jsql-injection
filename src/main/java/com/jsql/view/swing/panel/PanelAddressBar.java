@@ -33,6 +33,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
 import javax.swing.JToolTip;
+import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
 import org.apache.log4j.Logger;
@@ -112,12 +113,12 @@ public class PanelAddressBar extends JPanel {
                 return tipI18n;
             }
         };
-        textFieldAddress = new JTextFieldAddressBar(fieldWithIcon).getProxy();
+        this.textFieldAddress = new JTextFieldAddressBar(fieldWithIcon).getProxy();
         I18n.addComponentForKey("ADDRESS_BAR", fieldWithIcon);
         I18n.addComponentForKey("FIELD_QUERYSTRING_TOOLTIP", j[0]);
         
         final JToolTipI18n[] j2 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("FIELD_REQUEST_TOOLTIP"))};
-        textFieldRequest = new JPopupTextField(new JTextFieldPlaceholder("e.g. key=value&injectMe="){
+        this.textFieldRequest = new JPopupTextField(new JTextFieldPlaceholder("e.g. key=value&injectMe="){
             @Override
             public JToolTip createToolTip() {
                 JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("FIELD_REQUEST_TOOLTIP"));
@@ -128,7 +129,7 @@ public class PanelAddressBar extends JPanel {
         I18n.addComponentForKey("FIELD_REQUEST_TOOLTIP", j2[0]);
         
         final JToolTipI18n[] j3 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("FIELD_HEADER_TOOLTIP"))};
-        textFieldHeader = new JPopupTextField(new JTextFieldPlaceholder("e.g. key:value\\r\\nCookie:cKey=cValue\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\ninjectMe:"){
+        this.textFieldHeader = new JPopupTextField(new JTextFieldPlaceholder("e.g. key:value\\r\\nCookie:cKey=cValue\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\ninjectMe:"){
             @Override
             public JToolTip createToolTip() {
                 JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("FIELD_HEADER_TOOLTIP"));
@@ -147,7 +148,7 @@ public class PanelAddressBar extends JPanel {
         panelHttpProtocol.setMaximumSize(new Dimension(Integer.MAX_VALUE, 16));
         panelHttpProtocol.setBorder(null);
         
-        JButton buttonRequestMethod = new BasicArrowButton(BasicArrowButton.SOUTH);
+        JButton buttonRequestMethod = new BasicArrowButton(SwingConstants.SOUTH);
         buttonRequestMethod.setBorderPainted(false);
         buttonRequestMethod.setOpaque(false);
         
@@ -164,7 +165,7 @@ public class PanelAddressBar extends JPanel {
                 radioMethod.setText(PanelAddressBar.this.typeRequest);
             });
             popup.add(newMenuItem);
-            buttonGroup.add(newMenuItem);            
+            buttonGroup.add(newMenuItem);
         }
         
         JPanel panelCustomMethod = new JPanel(new BorderLayout());
@@ -200,17 +201,17 @@ public class PanelAddressBar extends JPanel {
                 }
                 
                 popup.show(
-                    e.getComponent(), 
+                    e.getComponent(),
                     ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
                     ? e.getComponent().getX() - e.getComponent().getWidth() - popup.getWidth()
-                    : e.getComponent().getX(), 
+                    : e.getComponent().getX(),
                     e.getComponent().getY() + e.getComponent().getWidth()
                 );
                 
                 popup.setLocation(
                     ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
                     ? e.getComponent().getLocationOnScreen().x + e.getComponent().getWidth() - popup.getWidth()
-                    : e.getComponent().getLocationOnScreen().x, 
+                    : e.getComponent().getLocationOnScreen().x,
                     e.getComponent().getLocationOnScreen().y + e.getComponent().getWidth()
                 );
             }
@@ -284,7 +285,7 @@ public class PanelAddressBar extends JPanel {
         loaderInTextfield.install(this.textFieldAddress);
         this.loader.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 
-        final BasicArrowButton advancedButton = new BasicArrowButton(BasicArrowButton.SOUTH);
+        final BasicArrowButton advancedButton = new BasicArrowButton(SwingConstants.SOUTH);
         advancedButton.setBorderPainted(false);
         advancedButton.setOpaque(false);
 
@@ -340,7 +341,7 @@ public class PanelAddressBar extends JPanel {
 
         advancedButton.setToolTipText(I18n.valueByKey("BUTTON_ADVANCED"));
         advancedButton.addActionListener(actionEvent -> {
-            Boolean isVisible = advancedButton.getDirection() == BasicArrowButton.SOUTH;
+            Boolean isVisible = advancedButton.getDirection() == SwingConstants.SOUTH;
 
             radioQueryString.setVisible(isVisible);
 
@@ -350,10 +351,10 @@ public class PanelAddressBar extends JPanel {
             PanelAddressBar.this.textFieldHeader.setVisible(isVisible);
             radioHeader.setVisible(isVisible);
             
-            advanceIsActivated = isVisible;
+            this.advanceIsActivated = isVisible;
             MediatorGui.menubar().setVisible(isVisible);
 
-            advancedButton.setDirection(isVisible ? BasicArrowButton.NORTH : BasicArrowButton.SOUTH);
+            advancedButton.setDirection(isVisible ? SwingConstants.NORTH : SwingConstants.SOUTH);
         });
     }
 
@@ -376,17 +377,17 @@ public class PanelAddressBar extends JPanel {
         protected void startInjection() {
             int option = 0;
             // Ask the user confirmation if injection already built
-            if (MediatorModel.model().injectionAlreadyBuilt) {
+            if (MediatorModel.model().isInjectionAlreadyBuilt()) {
                 option = JOptionPane.showConfirmDialog(
-                    null, 
+                    null,
                     I18n.valueByKey("DIALOG_NEW_INJECTION_TEXT"),
-                    I18n.valueByKey("DIALOG_NEW_INJECTION_TITLE"), 
+                    I18n.valueByKey("DIALOG_NEW_INJECTION_TITLE"),
                     JOptionPane.OK_CANCEL_OPTION
                 );
             }
 
             // Then start injection
-            if (!MediatorModel.model().injectionAlreadyBuilt || option == JOptionPane.OK_OPTION) {
+            if (!MediatorModel.model().isInjectionAlreadyBuilt() || option == JOptionPane.OK_OPTION) {
                 PanelAddressBar.this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_STOP_TOOLTIP"));
                 PanelAddressBar.this.buttonInUrl.setInjectionRunning();
                 PanelAddressBar.this.loader.setVisible(true);

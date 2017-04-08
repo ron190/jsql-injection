@@ -43,7 +43,7 @@ public class ActionLoadStop implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
-        DefaultMutableTreeNode tableNode = currentTableNode;
+        DefaultMutableTreeNode tableNode = this.currentTableNode;
         final List<Column> columnsToSearch = new ArrayList<>();
 
         int tableChildCount = treeModel.getChildCount(tableNode);

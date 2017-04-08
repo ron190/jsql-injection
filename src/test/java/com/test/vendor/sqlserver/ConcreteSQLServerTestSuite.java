@@ -17,11 +17,11 @@ public class ConcreteSQLServerTestSuite extends AbstractTestSuite {
         this.jdbcColumnForColumnName = "name";
         
         this.jdbcQueryForDatabaseNames = "select name from master..sysdatabases";
-        this.jdbcQueryForTableNames = "select name from test..sysobjects WHERE xtype='U'";   
-        this.jdbcQueryForColumnNames = "select c.name FROM test..syscolumns c, test..sysobjects t WHERE c.id=t.id AND t.name='table_test_1'";  
-        this.jdbcQueryForValues = "select LTRIM(RTRIM(test)) test FROM test.dbo.table_test_1";   
+        this.jdbcQueryForTableNames = "select name from test..sysobjects WHERE xtype='U'";
+        this.jdbcQueryForColumnNames = "select c.name FROM test..syscolumns c, test..sysobjects t WHERE c.id=t.id AND t.name='table_test_1'";
+        this.jdbcQueryForValues = "select LTRIM(RTRIM(test)) test FROM test.dbo.table_test_1";
         
-        requestJdbc();
+        this.requestJdbc();
     }
     
 }

@@ -40,7 +40,7 @@ public class EndProgress implements InteractionCommand {
         // Tree model, update the tree (refresh, add node, etc)
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
 
-        // Report NullPointerException #1671 
+        // Report NullPointerException #1671
         DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(this.dataElementDatabase);
         
         if (node != null) {
@@ -54,7 +54,7 @@ public class EndProgress implements InteractionCommand {
             progressingTreeNodeModel.indexProgress = 0;
             
             // Update the node and progressbar
-            treeModel.nodeChanged(node); 
+            treeModel.nodeChanged(node);
         }
     }
     

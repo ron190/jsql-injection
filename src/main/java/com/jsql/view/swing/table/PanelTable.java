@@ -26,7 +26,6 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
@@ -63,9 +62,7 @@ public class PanelTable extends JPanel {
     /**
      * Table to display in the panel.
      */
-    public JTable tableValues;
-    
-    public FixedColumnTable tableFixedColumn = new FixedColumnTable();
+    private JTable tableValues;
 
     /**
      * Create a panel containing a table to display injection values.
@@ -76,24 +73,24 @@ public class PanelTable extends JPanel {
     public PanelTable(String[][] data, String[] columnNames) {
         super(new BorderLayout());
 
-        tableValues = new JTable(data, columnNames) {
+        this.tableValues = new JTable(data, columnNames) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
 
-        tableValues.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        tableValues.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        tableValues.setColumnSelectionAllowed(true);
-        tableValues.setRowHeight(20);
-        tableValues.setRowSelectionAllowed(true);
-        tableValues.setCellSelectionEnabled(true);
-        tableValues.setGridColor(Color.LIGHT_GRAY);
+        this.tableValues.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        this.tableValues.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        this.tableValues.setColumnSelectionAllowed(true);
+        this.tableValues.setRowHeight(20);
+        this.tableValues.setRowSelectionAllowed(true);
+        this.tableValues.setCellSelectionEnabled(true);
+        this.tableValues.setGridColor(Color.LIGHT_GRAY);
 
-        final TableCellRenderer cellRendererHeader = tableValues.getTableHeader().getDefaultRenderer();
+        final TableCellRenderer cellRendererHeader = this.tableValues.getTableHeader().getDefaultRenderer();
         final DefaultTableCellRenderer cellRendererDefault = new DefaultTableCellRenderer();
-        tableValues.getTableHeader().setDefaultRenderer(
+        this.tableValues.getTableHeader().setDefaultRenderer(
             (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
             JLabel label = (JLabel) cellRendererHeader.getTableCellRendererComponent(
                 table, StringUtil.detectUtf8HtmlNoWrap(" "+ value +" "), isSelected, hasFocus, row, column
@@ -107,7 +104,7 @@ public class PanelTable extends JPanel {
             return label;
         });
         
-        tableValues.setDefaultRenderer(tableValues.getColumnClass(2), 
+        this.tableValues.setDefaultRenderer(this.tableValues.getColumnClass(2),
             (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
             // Prepare cell value to be utf8 inspected
             String cellValue = value != null ? value.toString() : "";
@@ -117,16 +114,14 @@ public class PanelTable extends JPanel {
             return label;
         });
 
-        tableValues.getTableHeader().setReorderingAllowed(false);
+        this.tableValues.getTableHeader().setReorderingAllowed(false);
 
-        tableValues.setComponentPopupMenu(new JPopupMenuTable(tableValues));
+        this.tableValues.setDragEnabled(true);
 
-        tableValues.setDragEnabled(true);
-
-        tableValues.addMouseListener(new MouseAdapter() {
+        this.tableValues.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                tableValues.requestFocusInWindow();
+                PanelTable.this.tableValues.requestFocusInWindow();
 
                 if (SwingUtilities.isRightMouseButton(e)) {
                     /**
@@ -135,12 +130,12 @@ public class PanelTable extends JPanel {
                      */
                     Point p = e.getPoint();
 
-                    int rowNumber = tableValues.rowAtPoint(p);
-                    int colNumber = tableValues.columnAtPoint(p);
+                    int rowNumber = PanelTable.this.tableValues.rowAtPoint(p);
+                    int colNumber = PanelTable.this.tableValues.columnAtPoint(p);
 
-                    DefaultListSelectionModel modelRow = (DefaultListSelectionModel) tableValues
+                    DefaultListSelectionModel modelRow = (DefaultListSelectionModel) PanelTable.this.tableValues
                             .getSelectionModel();
-                    DefaultListSelectionModel modelColumn = (DefaultListSelectionModel) tableValues
+                    DefaultListSelectionModel modelColumn = (DefaultListSelectionModel) PanelTable.this.tableValues
                             .getColumnModel().getSelectionModel();
 
                     modelRow.moveLeadSelectionIndex(rowNumber);
@@ -149,38 +144,38 @@ public class PanelTable extends JPanel {
             }
         });
 
-        tableValues.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
-            KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0), 
+        this.tableValues.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+            KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0),
             null
         );
-        tableValues.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
-            KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK), 
+        this.tableValues.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
+            KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_DOWN_MASK),
             null
         );
 
         Set<AWTKeyStroke> forward = new HashSet<>(
-            tableValues.getFocusTraversalKeys(
+            this.tableValues.getFocusTraversalKeys(
                 KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS
             )
         );
         forward.add(KeyStroke.getKeyStroke("TAB"));
-        tableValues.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forward);
+        this.tableValues.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forward);
         
         Set<AWTKeyStroke> backward = new HashSet<>(
-            tableValues.getFocusTraversalKeys(
+            this.tableValues.getFocusTraversalKeys(
                 KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS
             )
         );
         backward.add(KeyStroke.getKeyStroke("shift TAB"));
-        tableValues.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backward);
+        this.tableValues.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backward);
 
-        AdjusterTableColumn columnAdjuster = new AdjusterTableColumn(tableValues);
+        AdjusterTableColumn columnAdjuster = new AdjusterTableColumn(this.tableValues);
         columnAdjuster.adjustColumns();
 
-        final TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(tableValues.getModel());
-        tableValues.setRowSorter(rowSorter);
+        final TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(this.tableValues.getModel());
+        this.tableValues.setRowSorter(rowSorter);
         
-        JScrollIndicator scroller = new JScrollIndicator(tableValues);
+        JScrollIndicator scroller = new JScrollIndicator(this.tableValues);
         scroller.scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         scroller.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         
@@ -195,6 +190,7 @@ public class PanelTable extends JPanel {
         scroller.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
         scroller.scrollPane.getHorizontalScrollBar().addAdjustmentListener(singleItemScroll);
 
+        FixedColumnTable tableFixedColumn = new FixedColumnTable();
         tableFixedColumn.fixColumnSize(2, scroller.scrollPane);
         
         this.add(scroller, BorderLayout.CENTER);
@@ -205,24 +201,11 @@ public class PanelTable extends JPanel {
         final JTextField textFilter = new JTextFieldPlaceholder("Find in table");
         panelSearch.add(textFilter, BorderLayout.CENTER);
 
-        tableValues.getActionMap().put("search", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                panelSearch.setVisible(true);
-                textFilter.requestFocusInWindow();
-            }
-        });
-        tableValues.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK), "search");
+        Action actionShowSearchTable = new ActionShowSearchTable(panelSearch, textFilter);
+        this.tableValues.getActionMap().put("search", actionShowSearchTable);
+        this.tableValues.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK), "search");
 
-        class ActionCloseSearch extends AbstractAction {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                panelSearch.setVisible(false);
-                tableValues.requestFocusInWindow();
-            }
-        }
-        
-        Action actionCloseSearch = new ActionCloseSearch();
+        Action actionCloseSearch = new ActionCloseSearch(textFilter, panelSearch, this);
         textFilter.getActionMap().put("close", actionCloseSearch);
         textFilter.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
 
@@ -254,6 +237,8 @@ public class PanelTable extends JPanel {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
         });
+
+        this.tableValues.setComponentPopupMenu(new JPopupMenuTable(this.tableValues, actionShowSearchTable));
         
         JButton buttonCloseSearch = new ButtonClose();
         buttonCloseSearch.addActionListener(actionCloseSearch);
@@ -262,7 +247,7 @@ public class PanelTable extends JPanel {
         panelSearch.setVisible(false);
 
         Comparator<Object> comparatorNumeric = new ComparatorColumn<>();
-        for (int i = 0 ; i < tableValues.getColumnCount() ; i++) {
+        for (int i = 0 ; i < this.tableValues.getColumnCount() ; i++) {
             rowSorter.setComparator(i, comparatorNumeric);
         }
     }
@@ -271,15 +256,21 @@ public class PanelTable extends JPanel {
      * Select every cells.
      */
     public void selectTable() {
-        tableValues.selectAll();
+        this.tableValues.selectAll();
     }
 
     /**
      * Perform copy event on current table.
      */
     public void copyTable() {
-        ActionEvent nev = new ActionEvent(tableValues, ActionEvent.ACTION_PERFORMED, "copy");
-        tableValues.getActionMap().get(nev.getActionCommand()).actionPerformed(nev);
+        ActionEvent nev = new ActionEvent(this.tableValues, ActionEvent.ACTION_PERFORMED, "copy");
+        this.tableValues.getActionMap().get(nev.getActionCommand()).actionPerformed(nev);
+    }
+
+    // Getter and setter
+    
+    public JTable getTableValues() {
+        return this.tableValues;
     }
     
 }

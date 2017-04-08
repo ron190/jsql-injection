@@ -124,9 +124,9 @@ public final class HelperUi {
     public static final Icon ICON_EMPTY = new ImageIcon(new BufferedImage(16, 16, BufferedImage.TRANSLUCENT));
     public static final Icon ICON_ZERO_SIZE = new ImageIcon() {
         @Override
-        public void paintIcon(Component c, Graphics g, int x, int y) { 
+        public void paintIcon(Component c, Graphics g, int x, int y) {
             // Do nothing
-        } 
+        }
     };
 
     public static final String PATH_PAUSE = "/com/jsql/view/swing/resources/images/icons/pause.png";
@@ -176,8 +176,8 @@ public final class HelperUi {
 
     public static final Font FONT_SEGOE = new Font("Segoe UI", Font.PLAIN, UIManager.getDefaults().getFont("TextPane.font").getSize());
     public static final Font FONT_SEGOE_BIG = new Font(
-        UIManager.getDefaults().getFont("TextField.font").getName(), 
-        Font.PLAIN, 
+        UIManager.getDefaults().getFont("TextField.font").getName(),
+        Font.PLAIN,
         UIManager.getDefaults().getFont("TextField.font").getSize() + 2
     );
     public static final Font FONT_UBUNTU = new Font(FONT_NAME, Font.PLAIN, UIManager.getDefaults().getFont("TextArea.font").getSize() + 2);

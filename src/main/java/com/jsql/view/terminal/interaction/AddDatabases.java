@@ -38,13 +38,13 @@ public class AddDatabases implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public AddDatabases(Object[] interactionParams) {
         // Get list of databases from the model
-        databases = (List<Database>) interactionParams[0];
+        this.databases = (List<Database>) interactionParams[0];
     }
 
     @Override
     public void execute() {
         // Loop into the list of databases
-        for (Database database: databases) {
+        for (Database database: this.databases) {
             LOGGER.info(database);
         }
         LOGGER.info("\n");

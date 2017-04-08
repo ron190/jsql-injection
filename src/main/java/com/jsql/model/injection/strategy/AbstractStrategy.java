@@ -28,7 +28,7 @@ public abstract class AbstractStrategy {
      * @return True if strategy can be used, false otherwise.
      */
     public boolean isApplicable() {
-        return isApplicable;
+        return this.isApplicable;
     }
 
     /**

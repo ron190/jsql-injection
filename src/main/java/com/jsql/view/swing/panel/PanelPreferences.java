@@ -12,6 +12,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
@@ -42,8 +43,8 @@ public class PanelPreferences extends JPanel {
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.LINE_AXIS));
         mainPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 
-        buttonApply = new JButton("Apply");
-        buttonApply.setBorder(
+        this.buttonApply = new JButton("Apply");
+        this.buttonApply.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.COLOR_BLU),
                 BorderFactory.createEmptyBorder(2, 7, 2, 7)
@@ -64,21 +65,21 @@ public class PanelPreferences extends JPanel {
         
         buttonCheckIp.addMouseListener(new FlatButtonMouseAdapter(buttonCheckIp));
         
-        buttonApply.setContentAreaFilled(false);
-        buttonApply.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        buttonApply.setBackground(new Color(200, 221, 242));
+        this.buttonApply.setContentAreaFilled(false);
+        this.buttonApply.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        this.buttonApply.setBackground(new Color(200, 221, 242));
         
-        buttonApply.addMouseListener(new FlatButtonMouseAdapter(buttonApply));
+        this.buttonApply.addMouseListener(new FlatButtonMouseAdapter(this.buttonApply));
 
         mainPanel.add(buttonCheckIp);
         mainPanel.add(Box.createGlue());
-        mainPanel.add(buttonApply);
+        mainPanel.add(this.buttonApply);
         this.add(mainPanel, BorderLayout.SOUTH);
 
         final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", PreferencesUtil.isCheckUpdateActivated());
         checkboxIsCheckingUpdate.setFocusable(false);
         JButton labelIsCheckingUpdate = new JButton("Check update at startup");
-        labelIsCheckingUpdate.addActionListener(actionEvent -> 
+        labelIsCheckingUpdate.addActionListener(actionEvent ->
             checkboxIsCheckingUpdate.setSelected(!checkboxIsCheckingUpdate.isSelected())
         );
         
@@ -88,7 +89,7 @@ public class PanelPreferences extends JPanel {
         checkboxIsReportingBugs.setFocusable(false);
         JButton labelIsReportingBugs = new JButton("Report unhandled exceptions");
         labelIsReportingBugs.setToolTipText(tooltipIsReportingBugs);
-        labelIsReportingBugs.addActionListener(actionEvent -> 
+        labelIsReportingBugs.addActionListener(actionEvent ->
             checkboxIsReportingBugs.setSelected(!checkboxIsReportingBugs.isSelected())
         );
         
@@ -98,7 +99,7 @@ public class PanelPreferences extends JPanel {
         checkboxIsEvading.setFocusable(false);
         JButton labelIsEvading = new JButton("Enable evasion");
         labelIsEvading.setToolTipText(tooltipIsEvading);
-        labelIsEvading.addActionListener(actionEvent -> 
+        labelIsEvading.addActionListener(actionEvent ->
             checkboxIsEvading.setSelected(!checkboxIsEvading.isSelected())
         );
         
@@ -108,7 +109,7 @@ public class PanelPreferences extends JPanel {
         checkboxIsFollowingRedirection.setFocusable(false);
         JButton labelIsFollowingRedirection = new JButton("Follow HTTP redirection");
         labelIsFollowingRedirection.setToolTipText(tooltipIsFollowingRedirection);
-        labelIsFollowingRedirection.addActionListener(actionEvent -> 
+        labelIsFollowingRedirection.addActionListener(actionEvent ->
             checkboxIsFollowingRedirection.setSelected(!checkboxIsFollowingRedirection.isSelected())
         );
 
@@ -124,7 +125,7 @@ public class PanelPreferences extends JPanel {
                 BorderFactory.createCompoundBorder(
                     BorderFactory.createEmptyBorder(5, 5, 5, 5),
                     roundedTitledBorder
-                ), 
+                ),
                 BorderFactory.createEmptyBorder(5, 5, 5, 5)
             )
         );
@@ -143,7 +144,7 @@ public class PanelPreferences extends JPanel {
         checkboxIsUsingProxy.setToolTipText(tooltipIsUsingProxy);
         checkboxIsUsingProxy.setFocusable(false);
 
-        labelIsUsingProxy.addActionListener(actionEvent -> 
+        labelIsUsingProxy.addActionListener(actionEvent ->
             checkboxIsUsingProxy.setSelected(!checkboxIsUsingProxy.isSelected())
         );
         
@@ -151,7 +152,7 @@ public class PanelPreferences extends JPanel {
         JLabel labelDigestAuthenticationUsername = new JLabel("Username  ");
         JLabel labelDigestAuthenticationPassword = new JLabel("Password  ");
         final JButton labelUseDigestAuthentication = new JButton("Enable Basic, Digest, NTLM");
-        String tooltipUseDigestAuthentication = 
+        String tooltipUseDigestAuthentication =
                 "<html>"
                 + "Enable <b>Basic</b>, <b>Digest</b>, <b>NTLM</b> authentication (e.g. WWW-Authenticate).<br>"
                 + "Then define username and password for the host.<br>"
@@ -170,7 +171,7 @@ public class PanelPreferences extends JPanel {
         JLabel labelKerberosLoginConf = new JLabel("login.conf  ");
         JLabel labelKerberosKrb5Conf = new JLabel("krb5.conf  ");
         final JButton labelUseKerberos = new JButton("Enable Kerberos");
-        String tooltipUseKerberos = 
+        String tooltipUseKerberos =
             "<html>"
             + "Activate Kerberos authentication, then define path to <b>login.conf</b> and <b>krb5.conf</b>.<br>"
             + "Path to <b>.keytab</b> file is defined in login.conf ; name of <b>principal</b> must be correct.<br>"
@@ -233,23 +234,23 @@ public class PanelPreferences extends JPanel {
         textDigestAuthenticationUsername.setFont(HelperUi.FONT_SEGOE_BIG);
         textDigestAuthenticationPassword.setFont(HelperUi.FONT_SEGOE_BIG);
         
-        buttonApply.addActionListener(actionEvent -> {
+        this.buttonApply.addActionListener(actionEvent -> {
             PreferencesUtil.set(
-                checkboxIsCheckingUpdate.isSelected(), 
-                checkboxIsReportingBugs.isSelected(), 
-                checkboxIsEvading.isSelected(), 
+                checkboxIsCheckingUpdate.isSelected(),
+                checkboxIsReportingBugs.isSelected(),
+                checkboxIsEvading.isSelected(),
                 checkboxIsFollowingRedirection.isSelected()
             );
             
             ProxyUtil.set(
-                checkboxIsUsingProxy.isSelected(), 
-                textProxyAddress.getText(), 
+                checkboxIsUsingProxy.isSelected(),
+                textProxyAddress.getText(),
                 textProxyPort.getText()
             );
             
             AuthenticationUtil.set(
-                checkboxUseDigestAuthentication.isSelected(), 
-                textDigestAuthenticationUsername.getText(), 
+                checkboxUseDigestAuthentication.isSelected(),
+                textDigestAuthenticationUsername.getText(),
                 textDigestAuthenticationPassword.getText(),
                 checkboxUseKerberos.isSelected(),
                 textKerberosKrb5Conf.getText(),
@@ -259,43 +260,43 @@ public class PanelPreferences extends JPanel {
             LOGGER.debug("Preferences saved");
         });
 
-        labelIsCheckingUpdate.setHorizontalAlignment(JButton.LEFT);
+        labelIsCheckingUpdate.setHorizontalAlignment(SwingConstants.LEFT);
         labelIsCheckingUpdate.setBorderPainted(false);
-        labelIsCheckingUpdate.setContentAreaFilled(false); 
+        labelIsCheckingUpdate.setContentAreaFilled(false);
         
-        labelIsReportingBugs.setHorizontalAlignment(JButton.LEFT);
+        labelIsReportingBugs.setHorizontalAlignment(SwingConstants.LEFT);
         labelIsReportingBugs.setBorderPainted(false);
-        labelIsReportingBugs.setContentAreaFilled(false); 
+        labelIsReportingBugs.setContentAreaFilled(false);
         
-        labelIsEvading.setHorizontalAlignment(JButton.LEFT);
+        labelIsEvading.setHorizontalAlignment(SwingConstants.LEFT);
         labelIsEvading.setBorderPainted(false);
-        labelIsEvading.setContentAreaFilled(false); 
+        labelIsEvading.setContentAreaFilled(false);
         
-        labelIsFollowingRedirection.setHorizontalAlignment(JButton.LEFT);
+        labelIsFollowingRedirection.setHorizontalAlignment(SwingConstants.LEFT);
         labelIsFollowingRedirection.setBorderPainted(false);
-        labelIsFollowingRedirection.setContentAreaFilled(false); 
+        labelIsFollowingRedirection.setContentAreaFilled(false);
         
-        labelIsUsingProxy.setHorizontalAlignment(JButton.LEFT);
+        labelIsUsingProxy.setHorizontalAlignment(SwingConstants.LEFT);
         labelIsUsingProxy.setBorderPainted(false);
-        labelIsUsingProxy.setContentAreaFilled(false); 
+        labelIsUsingProxy.setContentAreaFilled(false);
         
-        labelUseDigestAuthentication.setHorizontalAlignment(JButton.LEFT);
+        labelUseDigestAuthentication.setHorizontalAlignment(SwingConstants.LEFT);
         labelUseDigestAuthentication.setBorderPainted(false);
-        labelUseDigestAuthentication.setContentAreaFilled(false); 
+        labelUseDigestAuthentication.setContentAreaFilled(false);
         
-        labelUseKerberos.setHorizontalAlignment(JButton.LEFT);
+        labelUseKerberos.setHorizontalAlignment(SwingConstants.LEFT);
         labelUseKerberos.setBorderPainted(false);
-        labelUseKerberos.setContentAreaFilled(false); 
+        labelUseKerberos.setContentAreaFilled(false);
         
-        JLabel proxyField = new JLabel("<html><b>Proxy</b></html>", JLabel.RIGHT);
+        JLabel proxyField = new JLabel("<html><b>Proxy</b></html>", SwingConstants.RIGHT);
         JLabel proxyInfo = new JLabel(" / Define proxy settings (e.g. TOR)");
         proxyField.setBorder(BorderFactory.createEmptyBorder(0, 0, 6, 0));
         
-        JLabel authenticationField = new JLabel("<html><b>Authentication</b></html>", JLabel.RIGHT);
+        JLabel authenticationField = new JLabel("<html><b>Authentication</b></html>", SwingConstants.RIGHT);
         JLabel authenticationInfo = new JLabel(" / Basic, Digest, NTLM or Kerberos");
         authenticationField.setBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0));
         
-        JLabel preferencesField = new JLabel("<html><b>Other</b></html>", JLabel.RIGHT);
+        JLabel preferencesField = new JLabel("<html><b>Other</b></html>", SwingConstants.RIGHT);
         JLabel preferencesInfo = new JLabel(" / Standard options");
         preferencesField.setBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0));
         

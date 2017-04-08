@@ -39,8 +39,8 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        if (bruteForceManager.run.getState() == StateButton.STOPPABLE) {
-            this.bruteForceManager.run.setEnabled(false);
+        if (this.bruteForceManager.getRun().getState() == StateButton.STOPPABLE) {
+            this.bruteForceManager.getRun().setEnabled(false);
             this.isStopped = true;
         } else {
             try {
@@ -62,7 +62,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
                 LOGGER.warn(I18n.valueByKey("BRUTEFORCE_CHARACTER_RANGE"));
                 return;
             } else if (
-                Integer.parseInt(this.bruteForceManager.maximumLength.getValue().toString()) < 
+                Integer.parseInt(this.bruteForceManager.maximumLength.getValue().toString()) <
                 Integer.parseInt(this.bruteForceManager.minimumLength.getValue().toString())
             ) {
                 LOGGER.warn(I18n.valueByKey("BRUTEFORCE_INCORRECT_MIN_MAX_LENGTH"));
@@ -76,8 +76,8 @@ public class ActionBruteForce implements ActionListener, Runnable {
     @Override
     public void run() {
         // Reset the panel
-        this.bruteForceManager.run.setText(I18n.valueByKey("BRUTEFORCE_STOP"));
-        this.bruteForceManager.run.setState(StateButton.STOPPABLE);
+        this.bruteForceManager.getRun().setText(I18n.valueByKey("BRUTEFORCE_STOP"));
+        this.bruteForceManager.getRun().setState(StateButton.STOPPABLE);
         this.bruteForceManager.loader.setVisible(true);
         this.bruteForceManager.result.setText(null);
 
@@ -139,13 +139,13 @@ public class ActionBruteForce implements ActionListener, Runnable {
                     + Math.round(Math.floor(remainingDuration / 60f / 60f % 24))      + I18n.valueByKey("BRUTEFORCE_HOURS") + " "
                     + Math.round(Math.floor(remainingDuration / 60f % 60))            + I18n.valueByKey("BRUTEFORCE_MINUTES") + " "
                     + Math.round(remainingDuration % 60)                              + I18n.valueByKey("BRUTEFORCE_SECONDS") + "\n"
-                ); 
+                );
             }
 
             this.bruteForceManager.result.append(
                 I18n.valueByKey("BRUTEFORCE_PERCENT_DONE")
-                + ": " 
-                + (100 * (float) hashBruter.getCounter() / hashBruter.getNumberOfPossibilities()) 
+                + ": "
+                + (100 * (float) hashBruter.getCounter() / hashBruter.getNumberOfPossibilities())
                 + "%"
             );
 
@@ -178,9 +178,9 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
         this.isStopped = false;
         this.bruteForceManager.loader.setVisible(false);
-        this.bruteForceManager.run.setText(I18n.valueByKey("BRUTEFORCE_START"));
-        this.bruteForceManager.run.setEnabled(true);
-        this.bruteForceManager.run.setState(StateButton.STARTABLE);
+        this.bruteForceManager.getRun().setText(I18n.valueByKey("BRUTEFORCE_START"));
+        this.bruteForceManager.getRun().setEnabled(true);
+        this.bruteForceManager.getRun().setState(StateButton.STARTABLE);
     }
     
 }

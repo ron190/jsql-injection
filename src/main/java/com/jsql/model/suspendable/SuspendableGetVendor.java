@@ -131,7 +131,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                  * Fatal error: Uncaught exception 'PDOException' with message 'SQLSTATE[42000]: [Microsoft][SQL Server Native Client 11.0][SQL Server]Unclosed quotation mark after the character string
                  * 
                  * jdbc
-                 * Unclosed quotation mark after the character string '''. [SQL State=S0001, DB Errorcode=105] 
+                 * Unclosed quotation mark after the character string '''. [SQL State=S0001, DB Errorcode=105]
                  */
                 else if (Pattern.compile(".*SQL Server.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.SQLSERVER;
@@ -143,8 +143,8 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                 Warning: db2_fetch_array() [function.db2-fetch-array]: Column information cannot be retrieved in x\db2_simulate_get.php on line 17
 
                  * jdbc
-                 * DB2 SQL Error: SQLCODE=-10, SQLSTATE=42603, SQLERRMC="', DRIVER=3.69.24 [SQL State=42603, DB Errorcode=-10] 
-                Next: DB2 SQL Error: SQLCODE=-727, SQLSTATE=56098, SQLERRMC=2;-10;42603;"', DRIVER=3.69.24 [SQL State=56098, DB Errorcode=-727] 
+                 * DB2 SQL Error: SQLCODE=-10, SQLSTATE=42603, SQLERRMC="', DRIVER=3.69.24 [SQL State=42603, DB Errorcode=-10]
+                Next: DB2 SQL Error: SQLCODE=-727, SQLSTATE=56098, SQLERRMC=2;-10;42603;"', DRIVER=3.69.24 [SQL State=56098, DB Errorcode=-727]
                  */
                 else if (Pattern.compile(".*function\\.db2.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.DB2;
@@ -154,7 +154,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                  * Query failed: line 1, Non-terminated string
                  * 
                  * jdbc
-                 * Unmatched quote, parenthesis, bracket or brace. [SQL State=42000, DB Errorcode=802835] 
+                 * Unmatched quote, parenthesis, bracket or brace. [SQL State=42000, DB Errorcode=802835]
                  */
                 else if (Pattern.compile(".*Non-terminated string.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.INGRES;
@@ -170,7 +170,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                 Warning: sybase_fetch_row() expects parameter 1 to be resource, boolean given in x\sybase_simulate_get.php on line 14
                 
                 jdbc
-                Invalid SQL statement or JDBC escape, terminating '"' not found. [SQL State=22025] 
+                Invalid SQL statement or JDBC escape, terminating '"' not found. [SQL State=22025]
                  */
                 else if (Pattern.compile(".*function\\.sybase.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.SYBASE;
@@ -178,7 +178,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                 
                 /**
                  *  Warning: maxdb::query() [maxdb.query]: -3014 POS(40) Invalid end of SQL statement [42000] in x\maxdb_simulate_get.php on line 40
-                 *  
+                 * 
                  * jdbc
                  * [-3014] (at 12): Invalid end of SQL statement
 
@@ -193,7 +193,7 @@ select '"'"'
                  * SQLSTATE[HY000]: General error: -11060 [Informix][Informix ODBC Driver]General error. (SQLPrepare[-11060] at ext\PDO_INFORMIX-1.3.1\informix_driver.c:131)
                  * 
                  * jdbc
-                 * Found a quote for which there is no matching quote. [SQL State=IX000, DB Errorcode=-282] 
+                 * Found a quote for which there is no matching quote. [SQL State=IX000, DB Errorcode=-282]
                  */
                 else if (Pattern.compile(".*Informix.*", Pattern.DOTALL).matcher(pageSource).matches()) {
                     vendor = Vendor.INFORMIX;

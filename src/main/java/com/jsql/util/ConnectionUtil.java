@@ -29,6 +29,7 @@ import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeHeader;
 import com.jsql.model.bean.util.TypeRequest;
+import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.injection.method.MethodInjection;
 
@@ -103,7 +104,7 @@ public class ConnectionUtil {
         HttpURLConnection connection = null;
         try {
             if (AuthenticationUtil.isKerberos()) {
-                String loginKerberos = 
+                String loginKerberos =
                     Pattern
                         .compile("(?s)\\{.*")
                         .matcher(
@@ -201,6 +202,10 @@ public class ConnectionUtil {
         try {
             connection.setRequestMethod(customMethod);
         } catch (final ProtocolException pe) {
+            // Ignore
+            IgnoreMessageException exceptionIgnored = new IgnoreMessageException(pe);
+            LOGGER.trace(exceptionIgnored, exceptionIgnored);
+            
             try {
                 final Class<?> httpURLConnectionClass = connection.getClass();
                 final Class<?> parentClass = httpURLConnectionClass.getSuperclass();
@@ -243,6 +248,10 @@ public class ConnectionUtil {
         } catch (Exception e) {
             // Ignore Fix
             connectionIsWrapped = false;
+
+            // Ignore
+            IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+            LOGGER.trace(exceptionIgnored, exceptionIgnored);
         }
         
         if (connectionIsWrapped) {
@@ -315,8 +324,8 @@ public class ConnectionUtil {
         
         Map<String, String> mapResponse = (Map<String, String>) msgHeader.get(TypeHeader.RESPONSE);
         if (
-            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
-            && mapResponse.containsKey("WWW-Authenticate") 
+            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode()))
+            && mapResponse.containsKey("WWW-Authenticate")
             && mapResponse.get("WWW-Authenticate") != null
             && mapResponse.get("WWW-Authenticate").startsWith("Basic ")
         ) {
@@ -327,8 +336,8 @@ public class ConnectionUtil {
             );
         
         } else if (
-            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
-            && mapResponse.containsKey("WWW-Authenticate") 
+            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode()))
+            && mapResponse.containsKey("WWW-Authenticate")
             && "NTLM".equals(mapResponse.get("WWW-Authenticate"))
         ) {
             LOGGER.warn(
@@ -338,8 +347,8 @@ public class ConnectionUtil {
             );
         
         } else if (
-            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
-            && mapResponse.containsKey("WWW-Authenticate") 
+            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode()))
+            && mapResponse.containsKey("WWW-Authenticate")
             && mapResponse.get("WWW-Authenticate") != null
             && mapResponse.get("WWW-Authenticate").startsWith("Digest ")
         ) {
@@ -349,8 +358,8 @@ public class ConnectionUtil {
             );
         
         } else if (
-            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode())) 
-            && mapResponse.containsKey("WWW-Authenticate") 
+            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode()))
+            && mapResponse.containsKey("WWW-Authenticate")
             && "Negotiate".equals(mapResponse.get("WWW-Authenticate"))
         ) {
             LOGGER.warn(

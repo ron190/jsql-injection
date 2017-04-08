@@ -37,7 +37,7 @@ public class GitUtil {
     
     /**
      * Define explicit labels to declare method parameters.
-     * Used for code readability only. 
+     * Used for code readability only.
      */
     public enum ShowOnConsole {
         YES,
@@ -55,7 +55,7 @@ public class GitUtil {
      */
     public static void checkUpdate(ShowOnConsole displayUpdateMessage) {
         if (displayUpdateMessage == ShowOnConsole.YES) {
-            LOGGER.trace(I18n.valueByKey("UPDATE_LOADING"));    
+            LOGGER.trace(I18n.valueByKey("UPDATE_LOADING"));
         }
         
         try {
@@ -81,7 +81,7 @@ public class GitUtil {
         String javaVersion = System.getProperty("java.version");
         String osArch = System.getProperty("os.arch");
         
-        String clientDescription = 
+        String clientDescription =
               "```\n"
             + "jSQL: v"+ InjectionModel.VERSION_JSQL +"\n"
             + "Java: v"+ javaVersion +"-"+ osArch +"-"+ System.getProperty("user.language") +" on "+ System.getProperty("java.runtime.name") +"\n"
@@ -99,11 +99,6 @@ public class GitUtil {
           
         GitUtil.sendReport(clientDescription, ShowOnConsole.NO, "Unhandled "+ throwable.getClass().getSimpleName());
     }
-    
-        public static void main(String[] args) {
-          java.util.Properties properties = System.getProperties();
-          properties.list(System.out);
-        }
     
     /**
      * Connect to Github webservices and create an Issue on the repository.
@@ -134,7 +129,7 @@ public class GitUtil {
             
             // Authenticate as jsql-robot
             connection.setRequestProperty(
-                "Authorization", 
+                "Authorization",
                 // TODO define in properties
                 "token "+ StringUtils.newStringUtf8(Base64.decodeBase64("NGQ1YzdkYWE1NDQwYzdkNTk1YTZlODQzYzFlODlkZmMzNzQ1NDhlNg=="))
             );

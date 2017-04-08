@@ -3,15 +3,15 @@ package com.jsql.view.swing.table;
 import java.awt.Color;
 import java.awt.Component;
 
-import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
 @SuppressWarnings("serial")
 public class RowHeaderRenderer extends DefaultTableCellRenderer {
 	
     public RowHeaderRenderer() {
-        this.setHorizontalAlignment(JLabel.CENTER);
+        this.setHorizontalAlignment(SwingConstants.CENTER);
     }
 
     @Override

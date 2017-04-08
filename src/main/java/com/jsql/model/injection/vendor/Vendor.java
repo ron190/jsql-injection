@@ -32,7 +32,7 @@ public enum Vendor {
     }
     
     public AbstractVendorDefault instance() {
-        return instanceVendor;
+        return this.instanceVendor;
     }
     
     @Override

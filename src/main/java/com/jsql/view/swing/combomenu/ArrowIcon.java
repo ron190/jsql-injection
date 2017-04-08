@@ -33,13 +33,13 @@ public class ArrowIcon implements Icon, SwingConstants {
         this.iconSize = iconSize;
         this.direction = direction;
         this.isEnabled = isEnabled;
-        iconRenderer = new BasicArrowButton(direction);
+        this.iconRenderer = new BasicArrowButton(direction);
     }
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
         try {
-            iconRenderer.paintTriangle(g, x, y + 3, size, direction, isEnabled);
+            this.iconRenderer.paintTriangle(g, x, y + 3, this.size, this.direction, this.isEnabled);
         } catch(ClassCastException e) {
             // Fix #4731
             LOGGER.error(e.getMessage(), e);
@@ -48,23 +48,23 @@ public class ArrowIcon implements Icon, SwingConstants {
 
     @Override
     public int getIconWidth() {
-        switch (direction) {
+        switch (this.direction) {
             case NORTH:
-            case SOUTH: return iconSize;
+            case SOUTH: return this.iconSize;
             case EAST:
-            case WEST: 
-            default: return size;
+            case WEST:
+            default: return this.size;
         }
     }
 
     @Override
     public int getIconHeight() {
-        switch (direction) {
+        switch (this.direction) {
             case NORTH:
-            case SOUTH: return size;
+            case SOUTH: return this.size;
             case EAST:
-            case WEST: 
-            default: return iconSize;
+            case WEST:
+            default: return this.iconSize;
         }
     }
     

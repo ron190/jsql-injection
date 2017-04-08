@@ -33,7 +33,7 @@ public class EndPreparation implements InteractionCommand {
         MediatorGui.panelAddressBar().buttonInUrl.setInjectionReady();
         MediatorGui.panelAddressBar().loader.setVisible(false);
 
-        if (MediatorModel.model().injectionAlreadyBuilt) {
+        if (MediatorModel.model().isInjectionAlreadyBuilt()) {
             MediatorGui.managerFile().setButtonEnable(true);
             MediatorGui.managerWebshell().setButtonEnable(true);
             MediatorGui.managerSqlshell().setButtonEnable(true);

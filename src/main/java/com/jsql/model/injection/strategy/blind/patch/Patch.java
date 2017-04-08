@@ -8,17 +8,18 @@ import java.util.LinkedList;
  * Class representing one patch operation.
  */
 public class Patch {
-    public LinkedList<Diff> diffs;
-    public int start1;
-    public int start2;
-    public int length1;
-    public int length2;
+    
+    private LinkedList<Diff> diffs;
+    private int start1;
+    private int start2;
+    private int length1;
+    private int length2;
 
     /**
      * Constructor.  Initializes with an empty list of diffs.
      */
     public Patch() {
-        this.diffs = new LinkedList<Diff>();
+        this.diffs = new LinkedList<>();
     }
 
     /**
@@ -50,7 +51,7 @@ public class Patch {
         .append(" @@\n");
         // Escape the body of the patch with %xx notation.
         for (Diff aDiff : this.diffs) {
-            switch (aDiff.operation) {
+            switch (aDiff.getOperation()) {
             case INSERT:
                 text.append('+');
                 break;
@@ -62,11 +63,11 @@ public class Patch {
                 break;
             }
             try {
-                text.append(URLEncoder.encode(aDiff.text, "UTF-8").replace('+', ' '))
+                text.append(URLEncoder.encode(aDiff.getText(), "UTF-8").replace('+', ' '))
                 .append("\n");
             } catch (UnsupportedEncodingException e) {
                 // Not likely on modern system.
-                throw new IllegalArgumentException("This system does not support UTF-8.");
+                throw new IllegalArgumentException("This system does not support UTF-8.", e);
             }
         }
         return unescapeForEncodeUriCompatability(text.toString());
@@ -93,4 +94,44 @@ public class Patch {
                 .replace("%3D", "=").replace("%2B", "+").replace("%24", "$")
                 .replace("%2C", ",").replace("%23", "#");
     }
+    
+    // Getter and setter
+
+    public LinkedList<Diff> getDiffs() {
+        return this.diffs;
+    }
+
+    public int getStart1() {
+        return this.start1;
+    }
+
+    public void setStart1(int start1) {
+        this.start1 = start1;
+    }
+
+    public int getStart2() {
+        return this.start2;
+    }
+
+    public void setStart2(int start2) {
+        this.start2 = start2;
+    }
+
+    public int getLength1() {
+        return this.length1;
+    }
+
+    public void setLength1(int length1) {
+        this.length1 = length1;
+    }
+
+    public int getLength2() {
+        return this.length2;
+    }
+
+    public int setLength2(int length2) {
+        this.length2 = length2;
+        return length2;
+    }
+    
 }

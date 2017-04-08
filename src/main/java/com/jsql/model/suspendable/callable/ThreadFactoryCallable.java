@@ -12,7 +12,7 @@ public class ThreadFactoryCallable implements ThreadFactory {
     
     @Override
     public Thread newThread(Runnable runnable) {
-        return new Thread(runnable, nameThread);
+        return new Thread(runnable, this.nameThread);
     }
     
 }

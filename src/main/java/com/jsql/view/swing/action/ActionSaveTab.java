@@ -57,31 +57,31 @@ public class ActionSaveTab extends AbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        filechooser.setDialogTitle("Save Tab As");
+        this.filechooser.setDialogTitle("Save Tab As");
 
         Component component = MediatorGui.tabResults().getSelectedComponent();
         if (component instanceof PanelTable) {
-            saveTablePanel();
+            this.saveTablePanel();
         } else if (
             component instanceof LightScrollPane
-            && (((LightScrollPane) component).scrollPane.getViewport()).getView() instanceof JTextComponent
+            && ((LightScrollPane) component).scrollPane.getViewport().getView() instanceof JTextComponent
         ) {
             this.saveJTextComponent();
         }
     }
     
     private void saveTablePanel() {
-        JTable table = ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).tableValues;
+        JTable table = ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).getTableValues();
         
         if (table == null) {
             return;
         }
 
-        int returnVal = filechooser.showSaveDialog(MediatorGui.frame());
+        int returnVal = this.filechooser.showSaveDialog(MediatorGui.frame());
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = filechooser.getSelectedFile();
+            File file = this.filechooser.getSelectedFile();
             
-            PreferencesUtil.set(filechooser.getCurrentDirectory().toString());
+            PreferencesUtil.set(this.filechooser.getCurrentDirectory().toString());
 
             try (FileWriter excel = new FileWriter(file)) {
                 TableModel model = table.getModel();
@@ -115,18 +115,18 @@ public class ActionSaveTab extends AbstractAction {
     }
     
     private void saveJTextComponent() {
-        JTextComponent textArea = 
-            (JTextComponent) (((LightScrollPane) MediatorGui.tabResults().getSelectedComponent()).scrollPane.getViewport()).getView();
+        JTextComponent textArea =
+            (JTextComponent) ((LightScrollPane) MediatorGui.tabResults().getSelectedComponent()).scrollPane.getViewport().getView();
         
         if (textArea == null) {
             return;
         }
         
-        int returnVal = filechooser.showSaveDialog(MediatorGui.frame());
+        int returnVal = this.filechooser.showSaveDialog(MediatorGui.frame());
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            File file = filechooser.getSelectedFile();
+            File file = this.filechooser.getSelectedFile();
             
-            PreferencesUtil.set(filechooser.getCurrentDirectory().toString());
+            PreferencesUtil.set(this.filechooser.getCurrentDirectory().toString());
             
             try (BufferedWriter fileOut = new BufferedWriter(new FileWriter(file))) {
                 textArea.write(fileOut);

@@ -45,7 +45,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
     /**
      * Button running the attack.
      */
-    public JButtonStateful run;
+    private JButtonStateful run;
     
     /**
      * Input for hash to brute force.
@@ -73,7 +73,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
     public JCheckBox numericCharacters;
     
     /**
-     * Enable injection of special characters. 
+     * Enable injection of special characters.
      */
     public JCheckBox specialCharacters;
     
@@ -98,12 +98,12 @@ public class ManagerBruteForce extends JPanel implements Manager {
     public JTextArea result;
     
     /**
-     * Animated GIF displayed during attack. 
+     * Animated GIF displayed during attack.
      */
     public JLabel loader;
 
     /**
-     * Create a panel to run brute force attack. 
+     * Create a panel to run brute force attack.
      */
     public ManagerBruteForce() {
         super(new BorderLayout());
@@ -132,7 +132,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
 
         this.hashTypes = new JComboBox<>(
             new String[]{
-                "Adler32", "Crc16", "Crc32", "Crc64", "Md2", "Md4", 
+                "Adler32", "Crc16", "Crc32", "Crc64", "Md2", "Md4",
                 "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "mysql"
             }
         );
@@ -234,6 +234,16 @@ public class ManagerBruteForce extends JPanel implements Manager {
         this.run.addActionListener(new ActionBruteForce(this));
 
         this.add(lastLine, BorderLayout.SOUTH);
+    }
+    
+    // Getter and setter
+
+    public JButtonStateful getRun() {
+        return this.run;
+    }
+
+    public void setRun(JButtonStateful run) {
+        this.run = run;
     }
     
 }

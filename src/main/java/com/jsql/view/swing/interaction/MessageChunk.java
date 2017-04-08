@@ -43,8 +43,8 @@ public class MessageChunk implements InteractionCommand {
     @Override
     public void execute() {
         try {
-            MediatorGui.panelConsoles().chunkTab.append(this.text);
-            MediatorGui.panelConsoles().chunkTab.setCaretPosition(MediatorGui.panelConsoles().chunkTab.getDocument().getLength());
+            MediatorGui.panelConsoles().getChunkTab().append(this.text);
+            MediatorGui.panelConsoles().getChunkTab().setCaretPosition(MediatorGui.panelConsoles().getChunkTab().getDocument().getLength());
             
             int tabIndex = MediatorGui.tabConsoles().indexOfTab("Chunk");
             if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
@@ -52,7 +52,7 @@ public class MessageChunk implements InteractionCommand {
                 if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
                     tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
                 }
-            }            
+            }
         } catch(ArrayIndexOutOfBoundsException e) {
             // Fix #4770 on chunkTab.append()
             LOGGER.error(e.getMessage(), e);

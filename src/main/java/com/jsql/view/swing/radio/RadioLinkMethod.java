@@ -24,24 +24,24 @@ public class RadioLinkMethod extends AbstractRadioLink {
     /**
      * A default radio label.
      * @param string Text for radio label
-     * @param method 
+     * @param method
      */
     public RadioLinkMethod(String string, MethodInjection method) {
         super(string);
         this.init();
-        methodInjection = method;
+        this.methodInjection = method;
     }
 
     /**
      * A default radio label selected.
      * @param string Text for radio label
      * @param isSelected True if radio label should be selected
-     * @param method 
+     * @param method
      */
     public RadioLinkMethod(String string, boolean isSelected, MethodInjection method) {
         super(string, isSelected);
         this.init();
-        methodInjection = method;
+        this.methodInjection = method;
     }
 
     /**

@@ -74,11 +74,11 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
                     gg.setColor(Color.GRAY);
                     gg.setStroke(
                         new BasicStroke(
-                            1, 
-                            BasicStroke.CAP_BUTT, 
-                            BasicStroke.JOIN_BEVEL, 
-                            0, 
-                            new float[]{1}, 
+                            1,
+                            BasicStroke.CAP_BUTT,
+                            BasicStroke.JOIN_BEVEL,
+                            0,
+                            new float[]{1},
                             0
                         )
                     );

@@ -39,7 +39,7 @@ public class ListItem {
     }
 
     public String getInternalString() {
-        return internalString;
+        return this.internalString;
     }
 
     public void setInternalString(String internalString) {
@@ -47,7 +47,7 @@ public class ListItem {
     }
 
     public Boolean getIsVulnerable() {
-        return isVulnerable;
+        return this.isVulnerable;
     }
 
     public void setIsVulnerable(Boolean isVulnerable) {
@@ -55,7 +55,7 @@ public class ListItem {
     }
 
     public Boolean getIsDatabaseConfirmed() {
-        return isDatabaseConfirmed;
+        return this.isDatabaseConfirmed;
     }
 
     public void setIsDatabaseConfirmed(Boolean isDatabaseConfirmed) {

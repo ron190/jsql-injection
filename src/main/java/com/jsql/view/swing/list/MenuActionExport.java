@@ -55,7 +55,7 @@ public class MenuActionExport implements ActionListener {
             @Override
             public void approveSelection() {
                 File file = this.getSelectedFile();
-                if (getDialogType() == SAVE_DIALOG) {
+                if (this.getDialogType() == SAVE_DIALOG) {
                     if (file.exists()) {
                         int replace = JOptionPane.showConfirmDialog(
                             this,
@@ -67,10 +67,10 @@ public class MenuActionExport implements ActionListener {
                                 super.approveSelection();
                                 return;
                             case JOptionPane.NO_OPTION:
-                            case JOptionPane.CLOSED_OPTION: 
+                            case JOptionPane.CLOSED_OPTION:
                                 return;
                             case JOptionPane.CANCEL_OPTION:
-                                cancelSelection();
+                                this.cancelSelection();
                                 return;
                             default:
                                 break;
@@ -82,7 +82,7 @@ public class MenuActionExport implements ActionListener {
             }
         };
         importFileDialog.setDialogTitle(I18n.valueByKey("LIST_EXPORT_TITLE"));
-        int choice = importFileDialog.showSaveDialog(myList.getTopLevelAncestor());
+        int choice = importFileDialog.showSaveDialog(this.myList.getTopLevelAncestor());
         if (choice != JFileChooser.APPROVE_OPTION) {
             return;
         }
@@ -91,9 +91,9 @@ public class MenuActionExport implements ActionListener {
             FileOutputStream file = new FileOutputStream(importFileDialog.getSelectedFile())
         ) {
             PrintStream out = new PrintStream(file);
-            int len = myList.getModel().getSize();
+            int len = this.myList.getModel().getSize();
             for (int i = 0 ; i < len ; i++) {
-                out.println(myList.getModel().getElementAt(i).toString());
+                out.println(this.myList.getModel().getElementAt(i).toString());
             }
             out.close();
         } catch (IOException e) {

@@ -33,7 +33,7 @@ public class MarkErrorbasedVulnerable implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public MarkErrorbasedVulnerable(Object[] interactionParams) {
         this.mapHeader = (Map<TypeHeader, Object>) interactionParams[0];
-        this.indexMethodError = (int) mapHeader.get(TypeHeader.SOURCE);
+        this.indexMethodError = (int) this.mapHeader.get(TypeHeader.SOURCE);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class MarkErrorbasedVulnerable implements InteractionCommand {
         for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
             if (MediatorGui.managerDatabase().panelStrategy.getItem(i).getText().equals(StrategyInjection.ERRORBASED.toString())) {
                 MediatorGui.managerDatabase().panelStrategy.getItem(i).setEnabled(true);
-                ((JMenu) MediatorGui.managerDatabase().panelStrategy.getItem(i)).getItem(indexMethodError).setEnabled(true);
+                ((JMenu) MediatorGui.managerDatabase().panelStrategy.getItem(i)).getItem(this.indexMethodError).setEnabled(true);
                 break;
             }
         }

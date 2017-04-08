@@ -44,7 +44,7 @@ public class UpdateProgress implements InteractionCommand {
 
     @Override
     public void execute() {
-        DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(dataElementDatabase);
+        DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(this.dataElementDatabase);
         // Fix Report #1368: ignore if no element database
         if (node != null) {
             // Get the node

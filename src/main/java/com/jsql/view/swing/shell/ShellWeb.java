@@ -25,7 +25,7 @@ public class ShellWeb extends AbstractShell {
      * Build a webshell instance.
      * @param terminalID Unique identifier to discriminate beyond multiple opened terminals
      * @param urlShell URL of current shell
-     * @throws MalformedURLException 
+     * @throws MalformedURLException
      */
     public ShellWeb(UUID terminalID, String urlShell) throws MalformedURLException {
         super(terminalID, urlShell, "system");

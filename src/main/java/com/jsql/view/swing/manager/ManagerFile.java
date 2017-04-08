@@ -87,7 +87,7 @@ public class ManagerFile extends AbstractManagerList {
             )
         );
         
-        this.run = new JButtonStateful(defaultText);
+        this.run = new JButtonStateful(this.defaultText);
 
         this.run.setToolTipText(I18n.valueByKey("FILE_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);

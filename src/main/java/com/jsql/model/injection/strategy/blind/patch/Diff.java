@@ -5,15 +5,17 @@ import com.jsql.model.injection.strategy.blind.patch.DiffMatchPatch.Operation;
 /**
  * Class representing one diff operation.
  */
-public class Diff implements Comparable<Diff>  {
+public class Diff implements Comparable<Diff> {
+    
     /**
      * One of: INSERT, DELETE or EQUAL.
      */
-    public Operation operation;
+    private Operation operation;
+    
     /**
      * The text associated with this diff operation.
      */
-    public String text;
+    private String text;
 
     /**
      * Constructor.  Initializes the diff with the provided values.
@@ -44,8 +46,8 @@ public class Diff implements Comparable<Diff>  {
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = (operation == null) ? 0 : operation.hashCode();
-        result += prime * ((text == null) ? 0 : text.hashCode());
+        int result = this.operation == null ? 0 : this.operation.hashCode();
+        result += prime * (this.text == null ? 0 : this.text.hashCode());
         return result;
     }
 
@@ -62,18 +64,18 @@ public class Diff implements Comparable<Diff>  {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (this.getClass() != obj.getClass()) {
             return false;
         }
         Diff other = (Diff) obj;
-        if (operation != other.operation) {
+        if (this.operation != other.operation) {
             return false;
         }
-        if (text == null) {
+        if (this.text == null) {
             if (other.text != null) {
                 return false;
             }
-        } else if (!text.equals(other.text)) {
+        } else if (!this.text.equals(other.text)) {
             return false;
         }
         return true;
@@ -83,5 +85,23 @@ public class Diff implements Comparable<Diff>  {
     public int compareTo(Diff arg0) {
         // TODO Auto-generated method stub
         return this.toString().equals(arg0.toString()) ? 0 : 1;
+    }
+    
+    // Getter and setter
+
+    public Operation getOperation() {
+        return this.operation;
+    }
+
+    public void setOperation(Operation operation) {
+        this.operation = operation;
+    }
+
+    public String getText() {
+        return this.text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

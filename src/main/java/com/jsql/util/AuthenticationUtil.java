@@ -19,9 +19,9 @@ import sun.net.www.protocol.http.AuthCacheValue;
 /**
  * Manage authentication protocols Basic, Digest, NTLM and Kerberos.
  * Java class Authenticator processes Basic, Digest and NTLM, library spnego
- * processes kerberos. Library jcifs eases the configuration by providing 
+ * processes kerberos. Library jcifs eases the configuration by providing
  * a way to define authent directly in the URL and it's also compatible
- * with protocol Negotiate. 
+ * with protocol Negotiate.
  */
 public class AuthenticationUtil {
 	
@@ -121,8 +121,8 @@ public class AuthenticationUtil {
         }
         
         // Activate standard authentication
-        // TODO: java.lang.IllegalAccessError: class com.jsql.tool.AuthenticationTools (in unnamed module @0x266d09) 
-        // cannot access class sun.net.www.protocol.http.AuthCacheImpl (in module java.base) because module java.base 
+        // TODO: java.lang.IllegalAccessError: class com.jsql.tool.AuthenticationTools (in unnamed module @0x266d09)
+        // cannot access class sun.net.www.protocol.http.AuthCacheImpl (in module java.base) because module java.base
         // does not export sun.net.www.protocol.http to unnamed module @0x266d09
         AuthCacheValue.setAuthCache(new AuthCacheImpl());
         
@@ -131,7 +131,7 @@ public class AuthenticationUtil {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication (
-                        AuthenticationUtil.usernameAuthentication, 
+                        AuthenticationUtil.usernameAuthentication,
                         AuthenticationUtil.passwordAuthentication.toCharArray()
                     );
                 }
@@ -145,11 +145,11 @@ public class AuthenticationUtil {
         // Manage the restart of application if required
         // TODO Remove from model
         if (
-            isRestartRequired && 
+            isRestartRequired &&
             JOptionPane.showConfirmDialog(
-                MediatorGui.frame(), 
-                "File krb5.conf has changed, please restart.", 
-                "Restart", 
+                MediatorGui.frame(),
+                "File krb5.conf has changed, please restart.",
+                "Restart",
                 JOptionPane.YES_NO_OPTION
             ) == JOptionPane.YES_OPTION
         ) {
@@ -185,7 +185,7 @@ public class AuthenticationUtil {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication (
-                        AuthenticationUtil.usernameAuthentication, 
+                        AuthenticationUtil.usernameAuthentication,
                         AuthenticationUtil.passwordAuthentication.toCharArray()
                     );
                 }
@@ -206,7 +206,7 @@ public class AuthenticationUtil {
         if (AuthenticationUtil.isKerberos) {
             if (System.getProperty("java.protocol.handler.pkgs") != null) {
                 System.setProperty(
-                    "java.protocol.handler.pkgs", 
+                    "java.protocol.handler.pkgs",
                     System.getProperty("java.protocol.handler.pkgs")
                         .replace("|jcifs", "")
                         .replace("jcifs", "")

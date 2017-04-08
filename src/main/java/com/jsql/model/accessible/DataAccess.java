@@ -24,6 +24,7 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeRequest;
+import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.SlidingException;
@@ -85,14 +86,14 @@ public class DataAccess {
     
     /**
      * Regex character enclosing a table cell returned by injection.
-     * It allows to detect the correct end of a table cell data during parsing. 
+     * It allows to detect the correct end of a table cell data during parsing.
      * Expected schema of a table cell data is x04[table cell]x05[number of occurences]x04
      */
     public static final String ENCLOSE_VALUE_RGX = "\\x04";
     
     /**
      * SQL character enclosing a table cell returned by injection.
-     * It allows to detect the correct end of a table cell data during parsing. 
+     * It allows to detect the correct end of a table cell data during parsing.
      * Expected schema of a table cell data is %04[table cell]%05[number of occurences]%04
      */
     public static final String ENCLOSE_VALUE_SQL = "%04";
@@ -201,12 +202,12 @@ public class DataAccess {
         }
 
         // Parse all data we have retrieved
-        Matcher regexSearch = 
+        Matcher regexSearch =
             Pattern
                 .compile(
-            		MODE 
-            		+ ENCLOSE_VALUE_RGX 
-            		+ CELL_TABLE 
+            		MODE
+            		+ ENCLOSE_VALUE_RGX
+            		+ CELL_TABLE
             		+ ENCLOSE_VALUE_RGX
         		)
                 .matcher(resultToParse);
@@ -285,9 +286,9 @@ public class DataAccess {
         Matcher regexSearch =
             Pattern
                 .compile(
-            		MODE 
-            		+ ENCLOSE_VALUE_RGX 
-            		+ CELL_TABLE 
+            		MODE
+            		+ ENCLOSE_VALUE_RGX
+            		+ CELL_TABLE
             		+ ENCLOSE_VALUE_RGX
         		)
                 .matcher(resultToParse);
@@ -377,12 +378,12 @@ public class DataAccess {
         }
         
         // Parse all the data we have retrieved
-        Matcher regexSearch = 
+        Matcher regexSearch =
             Pattern
                 .compile(
-            		MODE 
-            		+ ENCLOSE_VALUE_RGX 
-            		+ CELL_TABLE 
+            		MODE
+            		+ ENCLOSE_VALUE_RGX
+            		+ CELL_TABLE
             		+ ENCLOSE_VALUE_RGX
         		)
                 .matcher(resultToParse);
@@ -453,9 +454,9 @@ public class DataAccess {
             String[] pageSource = {""};
             resultToParse = new SuspendableGetRows().run(
                 MediatorModel.model().getVendor().instance().sqlRows(arrayColumns, database, table),
-                pageSource, 
-                true, 
-                rowCount, 
+                pageSource,
+                true,
+                rowCount,
                 table
             );
         } catch (SlidingException e) {
@@ -471,14 +472,14 @@ public class DataAccess {
         }
 
         // Parse all the data we have retrieved
-        Matcher regexSearch = 
+        Matcher regexSearch =
             Pattern
             	// TODO requete differente
                 .compile(
-            		MODE 
-            		+ ENCLOSE_VALUE_RGX 
+            		MODE
+            		+ ENCLOSE_VALUE_RGX
             		+ "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)"
-            		+ SEPARATOR_QTE_RGX 
+            		+ SEPARATOR_QTE_RGX
             		+ "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?"
             		+ ENCLOSE_VALUE_RGX
         		)
@@ -522,7 +523,11 @@ public class DataAccess {
                     tableDatas[indexRow][indexColumn] = listValues.get(indexRow).get(indexColumn);
                 } catch (IndexOutOfBoundsException e) {
                     isIncomplete = true;
-                    LOGGER.trace("Incomplete line found", e);
+                    LOGGER.trace("Incomplete line found");
+                    
+                    // Ignore
+                    IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                    LOGGER.trace(exceptionIgnored, exceptionIgnored);
                 }
             }
             if (isIncomplete) {

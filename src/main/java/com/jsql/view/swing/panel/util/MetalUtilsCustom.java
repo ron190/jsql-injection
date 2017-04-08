@@ -249,7 +249,7 @@ public class MetalUtilsCustom {
             synchronized(c.getTreeLock()) {
                 this.w = w;
                 this.h = h;
-                paint(c, g, x, y, imageWidth, imageHeight,
+                this.paint(c, g, x, y, imageWidth, imageHeight,
                       gradient, isVertical);
             }
         }
@@ -263,7 +263,7 @@ public class MetalUtilsCustom {
             boolean isVertical = ((Boolean)args[1]).booleanValue();
             // Render to the VolatileImage
             if (isVertical) {
-                drawVerticalGradient(g2,
+                this.drawVerticalGradient(g2,
                                      ((Number)gradient.get(0)).floatValue(),
                                      ((Number)gradient.get(1)).floatValue(),
                                      (Color)gradient.get(2),
@@ -271,7 +271,7 @@ public class MetalUtilsCustom {
                                      (Color)gradient.get(4), w, h);
             }
             else {
-                drawHorizontalGradient(g2,
+                this.drawHorizontalGradient(g2,
                                       ((Number)gradient.get(0)).floatValue(),
                                       ((Number)gradient.get(1)).floatValue(),
                                       (Color)gradient.get(2),
@@ -288,17 +288,17 @@ public class MetalUtilsCustom {
             // Render to the screen
             g.translate(x, y);
             if (isVertical) {
-                for (int counter = 0 ; counter < w ; counter += IMAGE_SIZE) {
-                    int tileSize = Math.min(IMAGE_SIZE, w - counter);
-                    g.drawImage(image, counter, 0, counter + tileSize, h,
-                                0, 0, tileSize, h, null);
+                for (int counter = 0 ; counter < this.w ; counter += IMAGE_SIZE) {
+                    int tileSize = Math.min(IMAGE_SIZE, this.w - counter);
+                    g.drawImage(image, counter, 0, counter + tileSize, this.h,
+                                0, 0, tileSize, this.h, null);
                 }
             }
             else {
-                for (int counter = 0 ; counter < h ; counter += IMAGE_SIZE) {
-                    int tileSize = Math.min(IMAGE_SIZE, h - counter);
-                    g.drawImage(image, 0, counter, w, counter + tileSize,
-                                0, 0, w, tileSize, null);
+                for (int counter = 0 ; counter < this.h ; counter += IMAGE_SIZE) {
+                    int tileSize = Math.min(IMAGE_SIZE, this.h - counter);
+                    g.drawImage(image, 0, counter, this.w, counter + tileSize,
+                                0, 0, this.w, tileSize, null);
                 }
             }
             g.translate(-x, -y);
@@ -310,7 +310,7 @@ public class MetalUtilsCustom {
             int mid = (int)(ratio1 * h);
             int mid2 = (int)(ratio2 * h);
             if (mid > 0) {
-                g.setPaint(getGradient((float)0, (float)0, c1, (float)0,
+                g.setPaint(this.getGradient((float)0, (float)0, c1, (float)0,
                                        (float)mid, c2));
                 g.fillRect(0, 0, w, mid);
             }
@@ -319,12 +319,12 @@ public class MetalUtilsCustom {
                 g.fillRect(0, mid, w, mid2);
             }
             if (mid > 0) {
-                g.setPaint(getGradient((float)0, (float)mid + mid2, c2,
+                g.setPaint(this.getGradient((float)0, (float)mid + mid2, c2,
                                        (float)0, (float)mid * 2 + mid2, c1));
                 g.fillRect(0, mid + mid2, w, mid);
             }
             if (h - mid * 2 - mid2 > 0) {
-                g.setPaint(getGradient((float)0, (float)mid * 2 + mid2, c1,
+                g.setPaint(this.getGradient((float)0, (float)mid * 2 + mid2, c1,
                                        (float)0, (float)h, c3));
                 g.fillRect(0, mid * 2 + mid2, w, h - mid * 2 - mid2);
             }
@@ -336,7 +336,7 @@ public class MetalUtilsCustom {
             int mid = (int)(ratio1 * w);
             int mid2 = (int)(ratio2 * w);
             if (mid > 0) {
-                g.setPaint(getGradient((float)0, (float)0, c1,
+                g.setPaint(this.getGradient((float)0, (float)0, c1,
                                        (float)mid, (float)0, c2));
                 g.fillRect(0, 0, mid, h);
             }
@@ -345,12 +345,12 @@ public class MetalUtilsCustom {
                 g.fillRect(mid, 0, mid2, h);
             }
             if (mid > 0) {
-                g.setPaint(getGradient((float)mid + mid2, (float)0, c2,
+                g.setPaint(this.getGradient((float)mid + mid2, (float)0, c2,
                                        (float)mid * 2 + mid2, (float)0, c1));
                 g.fillRect(mid + mid2, 0, mid, h);
             }
             if (w - mid * 2 - mid2 > 0) {
-                g.setPaint(getGradient((float)mid * 2 + mid2, (float)0, c1,
+                g.setPaint(this.getGradient((float)mid * 2 + mid2, (float)0, c1,
                                        w, (float)0, c3));
                 g.fillRect(mid * 2 + mid2, 0, w - mid * 2 - mid2, h);
             }
@@ -401,7 +401,7 @@ public class MetalUtilsCustom {
         private float factor;
 
         OceanDisabledButtonImageFilter(int min, int max) {
-            canFilterIndexColorModel = true;
+            this.canFilterIndexColorModel = true;
             this.min = (float)min;
             this.factor = (max - min) / 255f;
         }
@@ -411,10 +411,9 @@ public class MetalUtilsCustom {
             // Coefficients are from the sRGB color space:
             int gray = Math.min(255, (int)(((0.2125f * ((rgb >> 16) & 0xFF)) +
                     (0.7154f * ((rgb >> 8) & 0xFF)) +
-                    (0.0721f * (rgb & 0xFF)) + .5f) * factor + min));
+                    (0.0721f * (rgb & 0xFF)) + .5f) * this.factor + this.min));
 
-            return (rgb & 0xff000000) | (gray << 16) | (gray << 8) |
-                (gray << 0);
+            return (rgb & 0xff000000) | (gray << 16) | (gray << 8) | gray;
         }
     }
 
@@ -424,7 +423,7 @@ public class MetalUtilsCustom {
      */
     private static class OceanToolBarImageFilter extends RGBImageFilter {
         OceanToolBarImageFilter() {
-            canFilterIndexColorModel = true;
+            this.canFilterIndexColorModel = true;
         }
 
         @Override
@@ -433,8 +432,7 @@ public class MetalUtilsCustom {
             int g = (rgb >> 8) & 0xff;
             int b = rgb & 0xff;
             int gray = Math.max(Math.max(r, g), b);
-            return (rgb & 0xff000000) | (gray << 16) | (gray << 8) |
-                (gray << 0);
+            return (rgb & 0xff000000) | (gray << 16) | (gray << 8) | gray;
         }
     }
     

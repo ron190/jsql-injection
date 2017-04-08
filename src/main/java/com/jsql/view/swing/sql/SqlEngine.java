@@ -1,6 +1,7 @@
 package com.jsql.view.swing.sql;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
@@ -16,10 +17,10 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.OverlayLayout;
+import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -55,7 +56,7 @@ public class SqlEngine extends JPanel {
     
     private static class JTextPaneLexer extends JTextPane implements JTextPaneObjectMethod {
         
-        public AttributeSetterForVendor attributeSetter = null;
+        protected transient AttributeSetterForVendor attributeSetter = null;
         
         public JTextPaneLexer(boolean isGeneric) {
             if (isGeneric) {
@@ -67,10 +68,10 @@ public class SqlEngine extends JPanel {
             this(true);
         }
         
-        public void setAttribute() {
+        protected void setAttribute() {
             try {
-                if (attributeSetter != null && !"".equals(this.getText())) {
-                    attributeSetter.getSetter().invoke(attributeSetter.getAttribute(), this.getText());
+                if (this.attributeSetter != null && !"".equals(this.getText())) {
+                    this.attributeSetter.getSetter().invoke(this.attributeSetter.getAttribute(), this.getText());
                 }
             } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e1) {
                 LOGGER.debug(e1, e1);
@@ -82,69 +83,69 @@ public class SqlEngine extends JPanel {
     private static final JTextPaneLexer textareaDatabase = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema(), "setDatabase");
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema(), "setDatabase");
         }
     };
     private static final JTextPaneLexer textareaTable = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema(), "setTable");
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema(), "setTable");
         }
     };
     private static final JTextPaneLexer textareaColumn = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema(), "setColumn");
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema(), "setColumn");
         }
     };
     private static final JTextPaneLexer textareaInfo = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            attributeSetter = new AttributeSetterForVendor(xmlModel.getResource(), "setInfo");
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource(), "setInfo");
         }
     };
      
     private static final JTextPaneLexer textareaSlidingWindow = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getConfiguration(), "setSlidingWindow");
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getConfiguration(), "setSlidingWindow");
         }
     };
     private static final JTextPaneLexer textareaLimit = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getConfiguration(), "setLimit");
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getConfiguration(), "setLimit");
         }
     };
     private static final JTextPaneLexer textareaFailsafe = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getConfiguration(), "setFailsafe");
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getConfiguration(), "setFailsafe");
         }
     };
     private static final JTextPaneLexer textareaCalibrator = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getConfiguration(), "setCalibrator");
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getConfiguration(), "setCalibrator");
         }
     };
      
     private static final JTextPaneLexer textareaIndices = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getNormal(), "setIndices");
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getNormal(), "setIndices");
         }
     };
     private static final JTextPaneLexer textareaCapacity = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getNormal(), "setCapacity");
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getNormal(), "setCapacity");
         }
     };
     private static final JTextPaneLexer textareaOrderBy = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getNormal(), "setOrderBy");
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getNormal(), "setOrderBy");
         }
     };
      
@@ -152,7 +153,7 @@ public class SqlEngine extends JPanel {
         @Override
         public void switchSetterToVendor() {
             if (xmlModel.getStrategy().getBoolean() != null) {
-                attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getBoolean(), "setBlind");
+                this.attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getBoolean(), "setBlind");
             }
         }
     };
@@ -160,7 +161,7 @@ public class SqlEngine extends JPanel {
         @Override
         public void switchSetterToVendor() {
             if (xmlModel.getStrategy().getBoolean() != null) {
-                attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getBoolean(), "setTime");
+                this.attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getBoolean(), "setTime");
             }
         }
     };
@@ -168,7 +169,7 @@ public class SqlEngine extends JPanel {
         @Override
         public void switchSetterToVendor() {
             if (xmlModel.getStrategy().getBoolean() != null) {
-                attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getBoolean().getTest(), "setBit");
+                this.attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getBoolean().getTest(), "setBit");
             }
         }
     };
@@ -176,7 +177,7 @@ public class SqlEngine extends JPanel {
         @Override
         public void switchSetterToVendor() {
             if (xmlModel.getStrategy().getBoolean() != null) {
-                attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getBoolean().getTest(), "setLength");
+                this.attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getBoolean().getTest(), "setLength");
             }
         }
     };
@@ -184,19 +185,19 @@ public class SqlEngine extends JPanel {
     private static final JTextPaneLexer textareaQuery = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema().getRow(), "setQuery");
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema().getRow(), "setQuery");
         }
     };
     private static final JTextPaneLexer textareaField = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema().getRow().getFields(), "setField");
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema().getRow().getFields(), "setField");
         }
     };
     private static final JTextPaneLexer textareaConcat = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
-            attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema().getRow().getFields(), "setConcat");
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema().getRow().getFields(), "setConcat");
         }
     };
     
@@ -215,11 +216,11 @@ public class SqlEngine extends JPanel {
         }
         
         public Object getAttribute() {
-            return attributeVendor;
+            return this.attributeVendor;
         }
 
         public java.lang.reflect.Method getSetter() {
-            return method;
+            return this.method;
         }
         
     }
@@ -260,7 +261,7 @@ public class SqlEngine extends JPanel {
         panelStrategy.add(tabsStrategy, BorderLayout.CENTER);
         panelStrategy.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
         
-        JTabbedPane tabsBottom = new JTabbedPane(JTabbedPane.BOTTOM);
+        JTabbedPane tabsBottom = new JTabbedPane(SwingConstants.BOTTOM);
         tabsBottom.addTab("Structure", panelSchema);
         tabsBottom.addTab("Strategy", panelStrategy);
 
@@ -277,7 +278,6 @@ public class SqlEngine extends JPanel {
         tabsBoolean.addTab("Time", new LightScrollPane(1, 0, 1, 0, textareaTime));
         tabsBoolean.addTab("Bit", new LightScrollPane(1, 0, 1, 0, textareaBlindTimeBit));
         tabsBoolean.addTab("Length", new LightScrollPane(1, 0, 1, 0, textareaBlindTimeLength));
-//        tabsBoolean.addTab("Tests", new LightScrollPane(1, 0, 1, 0, new JPanel()));
         
         JPanel panelBoolean = new JPanel(new BorderLayout());
         panelBoolean.add(tabsBoolean, BorderLayout.CENTER);
@@ -317,13 +317,13 @@ public class SqlEngine extends JPanel {
 
         // Do Overlay
         panelCombo.setAlignmentX(FlowLayout.TRAILING);
-        panelCombo.setAlignmentY(JTextArea.BOTTOM_ALIGNMENT);
+        panelCombo.setAlignmentY(Component.BOTTOM_ALIGNMENT);
         tabsBottom.setAlignmentX(FlowLayout.LEADING);
-        tabsBottom.setAlignmentY(JTextArea.BOTTOM_ALIGNMENT);
+        tabsBottom.setAlignmentY(Component.BOTTOM_ALIGNMENT);
     }
     
     private void initErrorTabs() {
-        tabError.removeAll();
+        this.tabError.removeAll();
         
         if (xmlModel.getStrategy().getError() != null) {
             for (Method methodError : xmlModel.getStrategy().getError().getMethod()) {
@@ -333,7 +333,7 @@ public class SqlEngine extends JPanel {
                 JTextPaneLexer textPane = new JTextPaneLexer(false) {
                     @Override
                     public void switchSetterToVendor() {
-                        attributeSetter = new AttributeSetterForVendor(m[0], "setQuery");
+                        this.attributeSetter = new AttributeSetterForVendor(m[0], "setQuery");
                     }
                 };
                 
@@ -350,7 +350,7 @@ public class SqlEngine extends JPanel {
                 
                 panelError.add(panelLimit, BorderLayout.SOUTH);
     
-                tabError.addTab(methodError.getName(), panelError);
+                this.tabError.addTab(methodError.getName(), panelError);
             }
         }
     }
@@ -404,17 +404,17 @@ public class SqlEngine extends JPanel {
             
             @Override
             public void changedUpdate(DocumentEvent e) {
-                warn();
+                this.warn();
             }
             
             @Override
             public void removeUpdate(DocumentEvent e) {
-                warn();
+                this.warn();
             }
             
             @Override
             public void insertUpdate(DocumentEvent e) {
-                warn();
+                this.warn();
             }
             
             public void warn() {

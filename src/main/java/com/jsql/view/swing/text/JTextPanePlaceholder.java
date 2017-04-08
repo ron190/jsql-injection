@@ -62,11 +62,11 @@ public class JTextPanePlaceholder extends JTextPane {
             
             ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
             
-            Insets ins = getInsets();
+            Insets ins = this.getInsets();
             FontMetrics fm = g.getFontMetrics();
             
-            int c0 = getBackground().getRGB();
-            int c1 = getForeground().getRGB();
+            int c0 = this.getBackground().getRGB();
+            int c1 = this.getForeground().getRGB();
             int m = 0xfefefefe;
             int c2 = ((c0 & m) >>> 1) + ((c1 & m) >>> 1);
             
@@ -74,7 +74,7 @@ public class JTextPanePlaceholder extends JTextPane {
             g.setFont(this.getFont().deriveFont(Font.ITALIC));
             
             g.drawString(
-                this.placeholderText, 
+                this.placeholderText,
                 this.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT
                     ? w - (fm.stringWidth(this.placeholderText) + ins.left + 2)
                     : ins.left + 2,

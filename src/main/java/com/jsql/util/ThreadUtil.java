@@ -66,7 +66,7 @@ public final class ThreadUtil {
     
     /**
      * Remove the thread corresponding to the component in order to be
-     * garbage collected. The thread should be stopped prior the deletion. 
+     * garbage collected. The thread should be stopped prior the deletion.
      * @param elementDatabase component associated to thread
      */
     public static void remove(AbstractElementDatabase elementDatabase) {
@@ -75,7 +75,7 @@ public final class ThreadUtil {
     
     /**
      * Force to stop every threads still running and empty the list where
-     * they were instanciated in order to be garbage collected. 
+     * they were instanciated in order to be garbage collected.
      */
     public static void reset() {
         // Fix #8258: ConcurrentModificationException on java.util.HashMap$ValueIterator.next()

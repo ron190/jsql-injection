@@ -23,11 +23,11 @@ public final class StringUtil {
     /**
      * Define the schema of convertion to html entities.
      */
-    private static final CharEncoder DECIMAL_HTML_ENCODER = new CharEncoder("&#", ";", 10); 
+    private static final CharEncoder DECIMAL_HTML_ENCODER = new CharEncoder("&#", ";", 10);
     
     /**
      * This utility class defines a schema used to encode a text into a specialized
-     * representation 
+     * representation
      */
     private static class CharEncoder {
     	
@@ -43,9 +43,9 @@ public final class StringUtil {
         
         void encode(char c, StringBuilder buff) {
             buff
-            	.append(prefix)
-            	.append(Integer.toString(c, radix))
-            	.append(suffix);
+            	.append(this.prefix)
+            	.append(Integer.toString(c, this.radix))
+            	.append(this.suffix);
         }
         
     }
@@ -73,12 +73,13 @@ public final class StringUtil {
      */
     private static String encode(String text, CharEncoder encoder) {
         StringBuilder buff = new StringBuilder();
-        for ( int i = 0 ; i < text.length() ; i++)
+        for ( int i = 0 ; i < text.length() ; i++) {
             if (text.charAt(i) > 128) {
                 encoder.encode(text.charAt(i), buff);
             } else {
                 buff.append(text.charAt(i));
             }
+        }
         return ""+ buff;
     }
     

@@ -51,7 +51,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         }
         
         // Call the SQL request which must be TRUE (usually ?id=1)
-        InjectionBlind.blankTrueMark = InjectionBlind.callUrl("");
+        InjectionBlind.blankTrueMark = AbstractInjectionBoolean.callUrl("");
 
         // Check if the user wants to stop the preparation
         if (MediatorModel.model().isStoppedByUser()) {
@@ -103,7 +103,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
          */
         ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagTrue"));
         Collection<CallableBlind> listCallableTagTrue = new ArrayList<>();
-        for (String urlTest: trueTest) {
+        for (String urlTest: this.trueTest) {
             listCallableTagTrue.add(new CallableBlind(urlTest));
         }
         
@@ -166,7 +166,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
 
     @Override
     public String getInfoMessage() {
-        return 
+        return
             "A blind SQL request is true if the diff between "
             + "a correct page (e.g existing id) and current page "
             + "is not as the following: "

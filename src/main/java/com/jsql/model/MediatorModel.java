@@ -1,7 +1,7 @@
 package com.jsql.model;
 
 /**
- * Mediator registering usefull components in a loose dependance way.  
+ * Mediator registering usefull components in a loose dependance way.
  */
 public class MediatorModel {
     

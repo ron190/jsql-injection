@@ -26,7 +26,7 @@ public class ShellSql extends AbstractShell {
      * @param terminalID Unique identifier to discriminate beyond multiple opened terminals
      * @param urlShell URL of current shell
      * @param args User and password
-     * @throws MalformedURLException 
+     * @throws MalformedURLException
      */
     public ShellSql(UUID terminalID, String urlShell, String... args) throws MalformedURLException {
         super(terminalID, urlShell, "sql");

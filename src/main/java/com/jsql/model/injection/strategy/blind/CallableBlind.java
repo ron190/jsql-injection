@@ -77,7 +77,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
      */
     @Override
     public CallableBlind call() throws Exception {
-        String ctnt = InjectionBlind.callUrl(this.blindUrl);
+        String ctnt = AbstractInjectionBoolean.callUrl(this.blindUrl);
         this.opcodes = DIFFMATCHPATCH.diffMain(InjectionBlind.getBlankTrueMark(), ctnt, true);
         DIFFMATCHPATCH.diffCleanupEfficiency(this.opcodes);
         return this;

@@ -54,7 +54,7 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
         
         URL targetUrl = null;
         try {
-            targetUrl = new URL(urlAdminPage);
+            targetUrl = new URL(this.urlAdminPage);
         } catch (MalformedURLException e) {
             isUrlIncorrect = true;
         }
@@ -62,9 +62,9 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
         if (
             RessourceAccess.isSearchAdminStopped()
             || isUrlIncorrect
-            || targetUrl.getHost().equals("")
+            || "".equals(targetUrl.getHost())
         ) {
-            LOGGER.warn("Incorrect URL: "+ urlAdminPage);
+            LOGGER.warn("Incorrect URL: "+ this.urlAdminPage);
             return this;
         }
             
@@ -75,10 +75,10 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
         connection.setRequestProperty("Expires", "-1");
         
         connection.setRequestMethod("HEAD");
-        responseCodeHttp = ObjectUtils.firstNonNull(connection.getHeaderField(0), "");
+        this.responseCodeHttp = ObjectUtils.firstNonNull(connection.getHeaderField(0), "");
 
         Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
-        msgHeader.put(TypeHeader.URL, urlAdminPage);
+        msgHeader.put(TypeHeader.URL, this.urlAdminPage);
         msgHeader.put(TypeHeader.POST, "");
         msgHeader.put(TypeHeader.HEADER, "");
         msgHeader.put(TypeHeader.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
@@ -97,13 +97,13 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
      * @return true if HTTP code start with 2 or 3
      */
     public boolean isHttpResponseOk() {
-        return responseCodeHttp.matches(".+[23]\\d\\d.+");
+        return this.responseCodeHttp.matches(".+[23]\\d\\d.+");
     }
     
     // Getters and setters
     
     public String getUrl() {
-        return urlAdminPage;
+        return this.urlAdminPage;
     }
     
 }

@@ -25,7 +25,7 @@ import com.jsql.i18n.I18n;
 import com.jsql.view.swing.HelperUi;
 
 /**
- * Open another jSQL instance in new process. 
+ * Open another jSQL instance in new process.
  */
 @SuppressWarnings("serial")
 public class ActionNewWindow extends AbstractAction {
@@ -48,11 +48,11 @@ public class ActionNewWindow extends AbstractAction {
         String separator = System.getProperty("file.separator");
         String classpath = System.getProperty("java.class.path");
         String path = System.getProperty("java.home") + separator + "bin" + separator + "java";
-        ProcessBuilder processBuilder = 
+        ProcessBuilder processBuilder =
             new ProcessBuilder(
-                path, 
-                "-cp", 
-                classpath, 
+                path,
+                "-cp",
+                classpath,
                 MainApplication.class.getName()
             )
         ;
@@ -60,7 +60,7 @@ public class ActionNewWindow extends AbstractAction {
             processBuilder.start();
         } catch (IOException e) {
             LOGGER.error(I18n.valueByKey("NEW_WINDOW_ERROR"), e);
-        }        
+        }
     }
     
 }

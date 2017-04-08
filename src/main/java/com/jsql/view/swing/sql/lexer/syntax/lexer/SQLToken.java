@@ -162,7 +162,7 @@ public class SQLToken extends Token {
      */
     @Override
     public int getState() {
-        return state;
+        return this.state;
     }
 
     /**
@@ -172,7 +172,7 @@ public class SQLToken extends Token {
      */
     @Override
     public int getID() {
-        return ID;
+        return this.ID;
     }
 
     /**
@@ -182,7 +182,7 @@ public class SQLToken extends Token {
      */
     @Override
     public String getContents() {
-        return contents;
+        return this.contents;
     }
 
     /**
@@ -192,7 +192,7 @@ public class SQLToken extends Token {
      */
     @Override
     public int getLineNumber() {
-        return lineNumber;
+        return this.lineNumber;
     }
 
     /**
@@ -203,7 +203,7 @@ public class SQLToken extends Token {
      */
     @Override
     public int getCharBegin() {
-        return charBegin;
+        return this.charBegin;
     }
 
     /**
@@ -213,7 +213,7 @@ public class SQLToken extends Token {
      */
     @Override
     public int getCharEnd() {
-        return charEnd;
+        return this.charEnd;
     }
 
     /**
@@ -224,7 +224,7 @@ public class SQLToken extends Token {
      * @return true if this token is a reserved word, false otherwise
      */
     public boolean isReservedWord() {
-        return (ID >> 8) == 0x1;
+        return (this.ID >> 8) == 0x1;
     }
 
     /**
@@ -235,7 +235,7 @@ public class SQLToken extends Token {
      * @return true if this token is an identifier, false otherwise
      */
     public boolean isIdentifier() {
-        return (ID >> 8) == 0x2;
+        return (this.ID >> 8) == 0x2;
     }
 
     /**
@@ -246,7 +246,7 @@ public class SQLToken extends Token {
      * @return true if this token is a literal, false otherwise
      */
     public boolean isLiteral() {
-        return (ID >> 8) == 0x3;
+        return (this.ID >> 8) == 0x3;
     }
 
     /**
@@ -257,7 +257,7 @@ public class SQLToken extends Token {
      * @return true if this token is a Separator, false otherwise
      */
     public boolean isSeparator() {
-        return (ID >> 8) == 0x4;
+        return (this.ID >> 8) == 0x4;
     }
 
     /**
@@ -268,7 +268,7 @@ public class SQLToken extends Token {
      * @return true if this token is a Operator, false otherwise
      */
     public boolean isOperator() {
-        return (ID >> 8) == 0x5;
+        return (this.ID >> 8) == 0x5;
     }
 
     /**
@@ -278,7 +278,7 @@ public class SQLToken extends Token {
      */
     @Override
     public boolean isComment() {
-        return (ID >> 8) == 0xD;
+        return (this.ID >> 8) == 0xD;
     }
 
     /**
@@ -289,7 +289,7 @@ public class SQLToken extends Token {
      */
     @Override
     public boolean isWhiteSpace() {
-        return (ID >> 8) == 0xE;
+        return (this.ID >> 8) == 0xE;
     }
 
     /**
@@ -300,7 +300,7 @@ public class SQLToken extends Token {
      */
     @Override
     public boolean isError() {
-        return (ID >> 8) == 0xF;
+        return (this.ID >> 8) == 0xF;
     }
 
     /**
@@ -311,21 +311,21 @@ public class SQLToken extends Token {
      */
     @Override
     public String getDescription() {
-        if (isReservedWord()) {
+        if (this.isReservedWord()) {
             return "reservedWord";
-        } else if (isIdentifier()) {
+        } else if (this.isIdentifier()) {
             return "identifier";
-        } else if (isLiteral()) {
+        } else if (this.isLiteral()) {
             return "literal";
-        } else if (isSeparator()) {
+        } else if (this.isSeparator()) {
             return "separator";
-        } else if (isOperator()) {
+        } else if (this.isOperator()) {
             return "operator";
-        } else if (isComment()) {
+        } else if (this.isComment()) {
             return "comment";
-        } else if (isWhiteSpace()) {
+        } else if (this.isWhiteSpace()) {
             return "whitespace";
-        } else if (isError()) {
+        } else if (this.isError()) {
             return "error";
         } else {
             return "unknown";
@@ -341,23 +341,23 @@ public class SQLToken extends Token {
     @Override
     public String errorString() {
         String s;
-        if (isError()) {
-            s = "Error on line " + lineNumber + ": ";
-            switch (ID) {
+        if (this.isError()) {
+            s = "Error on line " + this.lineNumber + ": ";
+            switch (this.ID) {
             case ERROR:
-                s += "Unexpected token: " + contents;
+                s += "Unexpected token: " + this.contents;
                 break;
             case ERROR_UNCLOSED_COMMENT:
-                s += "Unclosed comment: " + contents;
+                s += "Unclosed comment: " + this.contents;
                 break;
             case ERROR_UNCLOSED_STRING:
-                s += "Unclosed string literal: " + contents;
+                s += "Unclosed string literal: " + this.contents;
                 break;
             case ERROR_UNCLOSED_BIT_STRING:
-                s += "Unclosed bit-string literal: " + contents;
+                s += "Unclosed bit-string literal: " + this.contents;
                 break;
             case ERROR_BAD_BIT_STRING:
-                s += "Bit-strings can only contain 0 and 1: " + contents;
+                s += "Bit-strings can only contain 0 and 1: " + this.contents;
                 break;
             }
 
@@ -376,8 +376,8 @@ public class SQLToken extends Token {
      */
     @Override
     public String toString() {
-        return "Token #" + Integer.toHexString(ID) + ": " + getDescription() + " Line " + lineNumber + " from "
-                + charBegin + " to " + charEnd + " : " + contents;
+        return "Token #" + Integer.toHexString(this.ID) + ": " + this.getDescription() + " Line " + this.lineNumber + " from "
+                + this.charBegin + " to " + this.charEnd + " : " + this.contents;
     }
 
 }

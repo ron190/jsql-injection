@@ -70,22 +70,22 @@ public final class OrderedProperties {
      * See {@link Properties#getProperty(String)}.
      */
     public String getProperty(String key) {
-        return properties.get(key);
+        return this.properties.get(key);
     }
 
     /**
      * See {@link Properties#getProperty(String, String)}.
      */
     public String getProperty(String key, String defaultValue) {
-        String value = properties.get(key);
-        return (value == null) ? defaultValue : value;
+        String value = this.properties.get(key);
+        return value == null ? defaultValue : value;
     }
 
     /**
      * See {@link Properties#setProperty(String, String)}.
      */
     public String setProperty(String key, String value) {
-        return properties.put(key, value);
+        return this.properties.put(key, value);
     }
 
     /**
@@ -97,7 +97,7 @@ public final class OrderedProperties {
      * @return the previous value of the property, or <tt>null</tt> if there was no property with the specified key
      */
     public String removeProperty(String key) {
-        return properties.remove(key);
+        return this.properties.remove(key);
     }
 
     /**
@@ -106,42 +106,42 @@ public final class OrderedProperties {
      * @param key the key whose presence is to be tested
      */
     public boolean containsProperty(String key) {
-        return properties.containsKey(key);
+        return this.properties.containsKey(key);
     }
 
     /**
      * See {@link Properties#size()}.
      */
     public int size() {
-        return properties.size();
+        return this.properties.size();
     }
 
     /**
      * See {@link Properties#isEmpty()}.
      */
     public boolean isEmpty() {
-        return properties.isEmpty();
+        return this.properties.isEmpty();
     }
 
     /**
      * See {@link Properties#propertyNames()}.
      */
     public Enumeration<String> propertyNames() {
-        return new Vector<String>(properties.keySet()).elements();
+        return new Vector<>(this.properties.keySet()).elements();
     }
 
     /**
      * See {@link Properties#stringPropertyNames()}.
      */
     public Set<String> stringPropertyNames() {
-        return new LinkedHashSet<String>(properties.keySet());
+        return new LinkedHashSet<>(this.properties.keySet());
     }
 
     /**
      * See {@link Properties#entrySet()}.
      */
     public Set<Map.Entry<String, String>> entrySet() {
-        return new LinkedHashSet<Map.Entry<String, String>>(properties.entrySet());
+        return new LinkedHashSet<>(this.properties.entrySet());
     }
 
     /**
@@ -173,7 +173,7 @@ public final class OrderedProperties {
      */
     public void store(OutputStream stream, String comments) throws IOException {
         CustomProperties customProperties = new CustomProperties(this.properties);
-        if (suppressDate) {
+        if (this.suppressDate) {
             customProperties.store(new DateSuppressingPropertiesBufferedWriter(new OutputStreamWriter(stream, "8859_1")), comments);
         } else {
             customProperties.store(stream, comments);
@@ -185,7 +185,7 @@ public final class OrderedProperties {
      */
     public void store(Writer writer, String comments) throws IOException {
         CustomProperties customProperties = new CustomProperties(this.properties);
-        if (suppressDate) {
+        if (this.suppressDate) {
             customProperties.store(new DateSuppressingPropertiesBufferedWriter(writer), comments);
         } else {
             customProperties.store(writer, comments);
@@ -243,30 +243,30 @@ public final class OrderedProperties {
             return true;
         }
 
-        if (other == null || getClass() != other.getClass()) {
+        if (other == null || this.getClass() != other.getClass()) {
             return false;
         }
 
         OrderedProperties that = (OrderedProperties) other;
-        return Arrays.equals(properties.entrySet().toArray(), that.properties.entrySet().toArray());
+        return Arrays.equals(this.properties.entrySet().toArray(), that.properties.entrySet().toArray());
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(properties.entrySet().toArray());
+        return Arrays.hashCode(this.properties.entrySet().toArray());
     }
 
     private void writeObject(ObjectOutputStream stream) throws IOException {
         stream.defaultWriteObject();
-        stream.writeObject(properties);
-        stream.writeBoolean(suppressDate);
+        stream.writeObject(this.properties);
+        stream.writeBoolean(this.suppressDate);
     }
 
     @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         stream.defaultReadObject();
-        properties = (Map<String, String>) stream.readObject();
-        suppressDate = stream.readBoolean();
+        this.properties = (Map<String, String>) stream.readObject();
+        this.suppressDate = stream.readBoolean();
     }
 
     /**
@@ -274,7 +274,7 @@ public final class OrderedProperties {
      */
     @Override
     public String toString() {
-        return properties.toString();
+        return this.properties.toString();
     }
 
     /**
@@ -339,10 +339,10 @@ public final class OrderedProperties {
          * @return the new instance
          */
         public OrderedProperties build() {
-            Map<String, String> properties = (this.comparator != null) ?
-                    new TreeMap<String, String>(comparator) :
-                    new LinkedHashMap<String, String>();
-            return new OrderedProperties(properties, suppressDate);
+            Map<String, String> properties = this.comparator != null ?
+                    new TreeMap<>(this.comparator) :
+                    new LinkedHashMap<>();
+            return new OrderedProperties(properties, this.suppressDate);
         }
 
     }
@@ -362,27 +362,27 @@ public final class OrderedProperties {
 
         @Override
         public Object get(Object key) {
-            return targetProperties.get(key);
+            return this.targetProperties.get(key);
         }
 
         @Override
         public Object put(Object key, Object value) {
-            return targetProperties.put((String) key, (String) value);
+            return this.targetProperties.put((String) key, (String) value);
         }
 
         @Override
         public String getProperty(String key) {
-            return targetProperties.get(key);
+            return this.targetProperties.get(key);
         }
 
         @Override
         public Enumeration<Object> keys() {
-            return new Vector<Object>(targetProperties.keySet()).elements();
+            return new Vector<Object>(this.targetProperties.keySet()).elements();
         }
 
         @Override
         public Set<Object> keySet() {
-            return new LinkedHashSet<Object>(targetProperties.keySet());
+            return new LinkedHashSet<>(this.targetProperties.keySet());
         }
 
     }
@@ -405,18 +405,18 @@ public final class OrderedProperties {
 
         @Override
         public void write(String string) throws IOException {
-            if (currentComment != null) {
-                currentComment.append(string);
+            if (this.currentComment != null) {
+                this.currentComment.append(string);
                 if (string.endsWith(LINE_SEPARATOR)) {
-                    if (previousComment != null) {
-                        super.write(previousComment);
+                    if (this.previousComment != null) {
+                        super.write(this.previousComment);
                     }
 
-                    previousComment = currentComment.toString();
-                    currentComment = null;
+                    this.previousComment = this.currentComment.toString();
+                    this.currentComment = null;
                 }
             } else if (string.startsWith("#")) {
-                currentComment = new StringBuilder(string);
+                this.currentComment = new StringBuilder(string);
             } else {
                 super.write(string);
             }

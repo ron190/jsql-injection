@@ -41,7 +41,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
     /**
      * Create time attack initialisation.
      * If every false requests are under 5 seconds and every true are below 5 seconds,
-     * then time attack is confirmed. 
+     * then time attack is confirmed.
      */
     public InjectionTime() {
         // No blind
@@ -61,7 +61,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
          */
         ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagFalse"));
         Collection<CallableTime> listCallableTagFalse = new ArrayList<>();
-        for (String urlTest: falseTest) {
+        for (String urlTest: this.falseTest) {
             listCallableTagFalse.add(new CallableTime(urlTest));
         }
         
@@ -86,7 +86,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
                     return;
                 }
                 if (tagFalse.get().isTrue()) {
-                    isTimeInjectable = false;
+                    this.isTimeInjectable = false;
                     return;
                 }
             }
@@ -100,7 +100,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
          */
         ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagTrue"));
         Collection<CallableTime> listCallableTagTrue = new ArrayList<>();
-        for (String urlTest: trueTest) {
+        for (String urlTest: this.trueTest) {
             listCallableTagTrue.add(new CallableTime(urlTest));
         }
         
@@ -125,7 +125,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
                     return;
                 }
                 if (!falseMark.get().isTrue()) {
-                    isTimeInjectable = false;
+                    this.isTimeInjectable = false;
                     return;
                 }
             }

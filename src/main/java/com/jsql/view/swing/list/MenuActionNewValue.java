@@ -39,7 +39,7 @@ public class MenuActionNewValue implements ActionListener {
     
     /**
      * Create action to add new item list.
-     * @param myList List to add new items. 
+     * @param myList List to add new items.
      */
     public MenuActionNewValue(DnDList myList) {
         this.myList = myList;
@@ -66,7 +66,7 @@ public class MenuActionNewValue implements ActionListener {
         });
 
         int result = JOptionPane.showOptionDialog(
-            myList.getTopLevelAncestor(),
+            this.myList.getTopLevelAncestor(),
             panel,
             I18n.valueByKey("LIST_ADD_VALUE_TITLE"),
             JOptionPane.OK_CANCEL_OPTION,
@@ -78,25 +78,25 @@ public class MenuActionNewValue implements ActionListener {
 
         if (!"".equals(textarea.getText()) && result == JOptionPane.YES_OPTION) {
             int lastIndex = 0;
-            if (myList.getSelectedIndex() > 0) {
-                lastIndex = myList.getSelectedIndex();
+            if (this.myList.getSelectedIndex() > 0) {
+                lastIndex = this.myList.getSelectedIndex();
             }
 
             int firstIndex = lastIndex;
             for (String newItem: textarea.getText().split("\\n")) {
                 if (!"".equals(newItem)) {
-                    ((DefaultListModel<ListItem>) myList.getModel()).add(
-                        lastIndex++, 
+                    ((DefaultListModel<ListItem>) this.myList.getModel()).add(
+                        lastIndex++,
                         new ListItem(newItem.replace("\\", "/")
                     ));
                 }
             }
 
-            myList.setSelectionInterval(firstIndex, lastIndex - 1);
-            myList.scrollRectToVisible(
-                myList.getCellBounds(
-                    myList.getMinSelectionIndex(),
-                    myList.getMaxSelectionIndex()
+            this.myList.setSelectionInterval(firstIndex, lastIndex - 1);
+            this.myList.scrollRectToVisible(
+                this.myList.getCellBounds(
+                    this.myList.getMinSelectionIndex(),
+                    this.myList.getMaxSelectionIndex()
                 )
             );
 

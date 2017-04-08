@@ -17,16 +17,16 @@ public class FlatButtonMouseAdapter extends MouseAdapter {
     }
     
     @Override public void mouseEntered(MouseEvent e) {
-        if (buttonFlat.isEnabled()) {
-            buttonFlat.setContentAreaFilled(true);
-            buttonFlat.setBorder(HelperUi.BORDER_ROUND_BLU);
+        if (this.buttonFlat.isEnabled()) {
+            this.buttonFlat.setContentAreaFilled(true);
+            this.buttonFlat.setBorder(HelperUi.BORDER_ROUND_BLU);
         }
     }
 
     @Override public void mouseExited(MouseEvent e) {
-        if (buttonFlat.isEnabled()) {
-            buttonFlat.setContentAreaFilled(false);
-            buttonFlat.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        if (this.buttonFlat.isEnabled()) {
+            this.buttonFlat.setContentAreaFilled(false);
+            this.buttonFlat.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         }
     }
     

@@ -74,7 +74,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
                 Jsoup.connect(this.url).get().html()
                     .replaceAll("<img.*>", "")
                     .replaceAll("<input.*type=\"?hidden\"?.*>", "")
-                    .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>") 
+                    .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
                     .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
                 Whitelist.relaxed()
                     .addTags("center", "div", "span")
@@ -151,7 +151,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
                     menu.setLocation(
                         ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
                         ? evt.getXOnScreen() - menu.getWidth()
-                        : evt.getXOnScreen(), 
+                        : evt.getXOnScreen(),
                         evt.getYOnScreen()
                     );
                 }
@@ -159,15 +159,15 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         });
 
         final LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, browser);
-        MediatorGui.tabResults().addTab(url.replaceAll(".*/", "") +" ", scroller);
+        MediatorGui.tabResults().addTab(this.url.replaceAll(".*/", "") +" ", scroller);
 
         // Focus on the new tab
         MediatorGui.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(url.replaceAll(".*/", "") +" ", HelperUi.ICON_ADMIN_SERVER);
+        TabHeader header = new TabHeader(this.url.replaceAll(".*/", "") +" ", HelperUi.ICON_ADMIN_SERVER);
 
-        MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), "<html>"+ url +"</html>");
+        MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), "<html>"+ this.url +"</html>");
 
         // Apply the custom header to the tab
         MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(scroller), header);
@@ -176,7 +176,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         browser.requestFocusInWindow();
 
         // Get back to the top
-        SwingUtilities.invokeLater(() -> 
+        SwingUtilities.invokeLater(() ->
             scroller.scrollPane.getViewport().setViewPosition(new java.awt.Point(0, 0))
         );
     }

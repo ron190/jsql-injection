@@ -70,7 +70,7 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
 
     public DigestMD4() {
         super("MD4");
-        engineReset();
+        this.engineReset();
     }
 
     /**
@@ -78,9 +78,9 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
      */
     private DigestMD4(DigestMD4 md) {
         this();
-        context = (int[]) md.context.clone();
-        buffer = (byte[]) md.buffer.clone();
-        count = md.count;
+        this.context = (int[]) md.context.clone();
+        this.buffer = (byte[]) md.buffer.clone();
+        this.count = md.count;
     }
 
 
@@ -91,8 +91,8 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
      * Returns a copy of this MD object.
      */
     @Override
-    public Object clone() { 
-        return new DigestMD4(this); 
+    public Object clone() {
+        return new DigestMD4(this);
     }
 
 
@@ -107,13 +107,13 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
     public void engineReset() {
         // initial values of MD4 i.e. A, B, C, D
         // as per rfc-1320; they are low-order byte first
-        context[0] = 0x67452301;
-        context[1] = 0xEFCDAB89;
-        context[2] = 0x98BADCFE;
-        context[3] = 0x10325476;
-        count = 0L;
+        this.context[0] = 0x67452301;
+        this.context[1] = 0xEFCDAB89;
+        this.context[2] = 0x98BADCFE;
+        this.context[3] = 0x10325476;
+        this.count = 0L;
         for (int i = 0; i < BLOCK_LENGTH; i++) {
-            buffer[i] = 0;
+            this.buffer[i] = 0;
         }
     }
 
@@ -123,11 +123,11 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
     @Override
     public void engineUpdate(byte b) {
         // compute number of bytes still unhashed; ie. present in buffer
-        int i = (int)(count % BLOCK_LENGTH);
-        count++;                                        // update number of bytes
-        buffer[i] = b;
+        int i = (int)(this.count % BLOCK_LENGTH);
+        this.count++;                                        // update number of bytes
+        this.buffer[i] = b;
         if (i == BLOCK_LENGTH - 1) {
-            transform(buffer, 0);
+            this.transform(this.buffer, 0);
         }
     }
 
@@ -151,23 +151,23 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
         }
         
         // compute number of bytes still unhashed; ie. present in buffer
-        int bufferNdx = (int)(count % BLOCK_LENGTH);
-        count += len;                                        // update number of bytes
+        int bufferNdx = (int)(this.count % BLOCK_LENGTH);
+        this.count += len;                                        // update number of bytes
         int partLen = BLOCK_LENGTH - bufferNdx;
         int i = 0;
         if (len >= partLen) {
-            System.arraycopy(input, offset, buffer, bufferNdx, partLen);
+            System.arraycopy(input, offset, this.buffer, bufferNdx, partLen);
 
-            transform(buffer, 0);
+            this.transform(this.buffer, 0);
 
             for (i = partLen; i + BLOCK_LENGTH - 1 < len; i+= BLOCK_LENGTH) {
-                transform(input, offset + i);
+                this.transform(input, offset + i);
             }
             bufferNdx = 0;
         }
         // buffer remaining input
         if (i < len) {
-            System.arraycopy(input, offset + i, buffer, bufferNdx, len - i);
+            System.arraycopy(input, offset + i, this.buffer, bufferNdx, len - i);
         }
     }
 
@@ -181,7 +181,7 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
     @Override
     public byte[] engineDigest() {
         // pad output to 56 mod 64; as RFC1320 puts it: congruent to 448 mod 512
-        int bufferNdx = (int)(count % BLOCK_LENGTH);
+        int bufferNdx = (int)(this.count % BLOCK_LENGTH);
         int padLen = bufferNdx < 56 ? 56 - bufferNdx : 120 - bufferNdx;
 
         // padding is alwas binary 1 followed by binary 0s
@@ -192,21 +192,21 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
         // save number of bits, casting the long to an array of 8 bytes
         // save low-order byte first.
         for (int i = 0; i < 8; i++) {
-            tail[padLen + i] = (byte)((count * 8) >>> (8 * i));
+            tail[padLen + i] = (byte)((this.count * 8) >>> (8 * i));
         }
         
-        engineUpdate(tail, 0, tail.length);
+        this.engineUpdate(tail, 0, tail.length);
 
         byte[] result = new byte[16];
         // cast this MD4's context (array of 4 ints) into an array of 16 bytes.
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                result[i * 4 + j] = (byte)(context[i] >>> (8 * j));
+                result[i * 4 + j] = (byte)(this.context[i] >>> (8 * j));
             }
         }
     
         // reset the engine
-        engineReset();
+        this.engineReset();
         return result;
     }
 
@@ -228,72 +228,72 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
         // encodes 64 bytes from input block into an array of 16 32-bit
         // entities. Use A as a temp var.
         for (int i = 0; i < 16; i++) {
-            X[i] = (block[offset++] & 0xFF)       |
+            this.X[i] = (block[offset++] & 0xFF)       |
                    (block[offset++] & 0xFF) <<  8 |
                    (block[offset++] & 0xFF) << 16 |
                    (block[offset++] & 0xFF) << 24;
         }
 
-        int A = context[0];
-        int B = context[1];
-        int C = context[2];
-        int D = context[3];
+        int A = this.context[0];
+        int B = this.context[1];
+        int C = this.context[2];
+        int D = this.context[3];
 
-        A = FF(A, B, C, D, X[ 0],  3);
-        D = FF(D, A, B, C, X[ 1],  7);
-        C = FF(C, D, A, B, X[ 2], 11);
-        B = FF(B, C, D, A, X[ 3], 19);
-        A = FF(A, B, C, D, X[ 4],  3);
-        D = FF(D, A, B, C, X[ 5],  7);
-        C = FF(C, D, A, B, X[ 6], 11);
-        B = FF(B, C, D, A, X[ 7], 19);
-        A = FF(A, B, C, D, X[ 8],  3);
-        D = FF(D, A, B, C, X[ 9],  7);
-        C = FF(C, D, A, B, X[10], 11);
-        B = FF(B, C, D, A, X[11], 19);
-        A = FF(A, B, C, D, X[12],  3);
-        D = FF(D, A, B, C, X[13],  7);
-        C = FF(C, D, A, B, X[14], 11);
-        B = FF(B, C, D, A, X[15], 19);
+        A = this.FF(A, B, C, D, this.X[ 0],  3);
+        D = this.FF(D, A, B, C, this.X[ 1],  7);
+        C = this.FF(C, D, A, B, this.X[ 2], 11);
+        B = this.FF(B, C, D, A, this.X[ 3], 19);
+        A = this.FF(A, B, C, D, this.X[ 4],  3);
+        D = this.FF(D, A, B, C, this.X[ 5],  7);
+        C = this.FF(C, D, A, B, this.X[ 6], 11);
+        B = this.FF(B, C, D, A, this.X[ 7], 19);
+        A = this.FF(A, B, C, D, this.X[ 8],  3);
+        D = this.FF(D, A, B, C, this.X[ 9],  7);
+        C = this.FF(C, D, A, B, this.X[10], 11);
+        B = this.FF(B, C, D, A, this.X[11], 19);
+        A = this.FF(A, B, C, D, this.X[12],  3);
+        D = this.FF(D, A, B, C, this.X[13],  7);
+        C = this.FF(C, D, A, B, this.X[14], 11);
+        B = this.FF(B, C, D, A, this.X[15], 19);
 
-        A = GG(A, B, C, D, X[ 0],  3);
-        D = GG(D, A, B, C, X[ 4],  5);
-        C = GG(C, D, A, B, X[ 8],  9);
-        B = GG(B, C, D, A, X[12], 13);
-        A = GG(A, B, C, D, X[ 1],  3);
-        D = GG(D, A, B, C, X[ 5],  5);
-        C = GG(C, D, A, B, X[ 9],  9);
-        B = GG(B, C, D, A, X[13], 13);
-        A = GG(A, B, C, D, X[ 2],  3);
-        D = GG(D, A, B, C, X[ 6],  5);
-        C = GG(C, D, A, B, X[10],  9);
-        B = GG(B, C, D, A, X[14], 13);
-        A = GG(A, B, C, D, X[ 3],  3);
-        D = GG(D, A, B, C, X[ 7],  5);
-        C = GG(C, D, A, B, X[11],  9);
-        B = GG(B, C, D, A, X[15], 13);
+        A = this.GG(A, B, C, D, this.X[ 0],  3);
+        D = this.GG(D, A, B, C, this.X[ 4],  5);
+        C = this.GG(C, D, A, B, this.X[ 8],  9);
+        B = this.GG(B, C, D, A, this.X[12], 13);
+        A = this.GG(A, B, C, D, this.X[ 1],  3);
+        D = this.GG(D, A, B, C, this.X[ 5],  5);
+        C = this.GG(C, D, A, B, this.X[ 9],  9);
+        B = this.GG(B, C, D, A, this.X[13], 13);
+        A = this.GG(A, B, C, D, this.X[ 2],  3);
+        D = this.GG(D, A, B, C, this.X[ 6],  5);
+        C = this.GG(C, D, A, B, this.X[10],  9);
+        B = this.GG(B, C, D, A, this.X[14], 13);
+        A = this.GG(A, B, C, D, this.X[ 3],  3);
+        D = this.GG(D, A, B, C, this.X[ 7],  5);
+        C = this.GG(C, D, A, B, this.X[11],  9);
+        B = this.GG(B, C, D, A, this.X[15], 13);
 
-        A = HH(A, B, C, D, X[ 0],  3);
-        D = HH(D, A, B, C, X[ 8],  9);
-        C = HH(C, D, A, B, X[ 4], 11);
-        B = HH(B, C, D, A, X[12], 15);
-        A = HH(A, B, C, D, X[ 2],  3);
-        D = HH(D, A, B, C, X[10],  9);
-        C = HH(C, D, A, B, X[ 6], 11);
-        B = HH(B, C, D, A, X[14], 15);
-        A = HH(A, B, C, D, X[ 1],  3);
-        D = HH(D, A, B, C, X[ 9],  9);
-        C = HH(C, D, A, B, X[ 5], 11);
-        B = HH(B, C, D, A, X[13], 15);
-        A = HH(A, B, C, D, X[ 3],  3);
-        D = HH(D, A, B, C, X[11],  9);
-        C = HH(C, D, A, B, X[ 7], 11);
-        B = HH(B, C, D, A, X[15], 15);
+        A = this.HH(A, B, C, D, this.X[ 0],  3);
+        D = this.HH(D, A, B, C, this.X[ 8],  9);
+        C = this.HH(C, D, A, B, this.X[ 4], 11);
+        B = this.HH(B, C, D, A, this.X[12], 15);
+        A = this.HH(A, B, C, D, this.X[ 2],  3);
+        D = this.HH(D, A, B, C, this.X[10],  9);
+        C = this.HH(C, D, A, B, this.X[ 6], 11);
+        B = this.HH(B, C, D, A, this.X[14], 15);
+        A = this.HH(A, B, C, D, this.X[ 1],  3);
+        D = this.HH(D, A, B, C, this.X[ 9],  9);
+        C = this.HH(C, D, A, B, this.X[ 5], 11);
+        B = this.HH(B, C, D, A, this.X[13], 15);
+        A = this.HH(A, B, C, D, this.X[ 3],  3);
+        D = this.HH(D, A, B, C, this.X[11],  9);
+        C = this.HH(C, D, A, B, this.X[ 7], 11);
+        B = this.HH(B, C, D, A, this.X[15], 15);
 
-        context[0] += A;
-        context[1] += B;
-        context[2] += C;
-        context[3] += D;
+        this.context[0] += A;
+        this.context[1] += B;
+        this.context[2] += C;
+        this.context[3] += D;
     }
 
     // The basic MD4 atomic functions.

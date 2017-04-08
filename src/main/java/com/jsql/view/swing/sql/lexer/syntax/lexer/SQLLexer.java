@@ -982,12 +982,6 @@ public class SQLLexer implements Lexer {
     /** the number of characters up to the start of the matched text */
     private int yychar;
 
-    /**
-     * the number of characters from the last newline up to the start of the
-     * matched text
-     */
-    private int yycolumn;
-
     /** zzAtEOF == true <=> the scanner is at the EOF */
     private boolean zzAtEOF;
 
@@ -1012,9 +1006,9 @@ public class SQLLexer implements Lexer {
      * are returned as tokens.
      */
     public Token getNextToken(boolean returnComments, boolean returnWhiteSpace) throws IOException {
-        Token t = getNextToken();
+        Token t = this.getNextToken();
         while (t != null && ((!returnWhiteSpace && t.isWhiteSpace()) || (!returnComments && t.isComment()))) {
-            t = getNextToken();
+            t = this.getNextToken();
         }
         return t;
     }
@@ -1041,10 +1035,9 @@ public class SQLLexer implements Lexer {
      */
     @Override
     public void reset(java.io.Reader reader, int yyline, int yychar, int yycolumn) throws IOException {
-        yyreset(reader);
+        this.yyreset(reader);
         this.yyline = yyline;
         this.yychar = yychar;
-        this.yycolumn = yycolumn;
     }
 
     /**
@@ -1089,47 +1082,47 @@ public class SQLLexer implements Lexer {
     private boolean zzRefill() throws java.io.IOException {
 
         /* first: make room (if you can) */
-        if (zzStartRead > 0) {
-            zzEndRead += zzFinalHighSurrogate;
-            zzFinalHighSurrogate = 0;
-            System.arraycopy(zzBuffer, zzStartRead, zzBuffer, 0, zzEndRead - zzStartRead);
+        if (this.zzStartRead > 0) {
+            this.zzEndRead += this.zzFinalHighSurrogate;
+            this.zzFinalHighSurrogate = 0;
+            System.arraycopy(this.zzBuffer, this.zzStartRead, this.zzBuffer, 0, this.zzEndRead - this.zzStartRead);
 
             /* translate stored positions */
-            zzEndRead -= zzStartRead;
-            zzCurrentPos -= zzStartRead;
-            zzMarkedPos -= zzStartRead;
-            zzStartRead = 0;
+            this.zzEndRead -= this.zzStartRead;
+            this.zzCurrentPos -= this.zzStartRead;
+            this.zzMarkedPos -= this.zzStartRead;
+            this.zzStartRead = 0;
         }
 
         /* is the buffer big enough? */
-        if (zzCurrentPos >= zzBuffer.length - zzFinalHighSurrogate) {
+        if (this.zzCurrentPos >= this.zzBuffer.length - this.zzFinalHighSurrogate) {
             /* if not: blow it up */
-            char newBuffer[] = new char[zzBuffer.length * 2];
-            System.arraycopy(zzBuffer, 0, newBuffer, 0, zzBuffer.length);
-            zzBuffer = newBuffer;
-            zzEndRead += zzFinalHighSurrogate;
-            zzFinalHighSurrogate = 0;
+            char newBuffer[] = new char[this.zzBuffer.length * 2];
+            System.arraycopy(this.zzBuffer, 0, newBuffer, 0, this.zzBuffer.length);
+            this.zzBuffer = newBuffer;
+            this.zzEndRead += this.zzFinalHighSurrogate;
+            this.zzFinalHighSurrogate = 0;
         }
 
         /* fill the buffer with new input */
-        int requested = zzBuffer.length - zzEndRead;
-        int numRead = zzReader.read(zzBuffer, zzEndRead, requested);
+        int requested = this.zzBuffer.length - this.zzEndRead;
+        int numRead = this.zzReader.read(this.zzBuffer, this.zzEndRead, requested);
 
         /* not supposed to occur according to specification of java.io.Reader */
         if (numRead == 0) {
             throw new java.io.IOException("Reader returned 0 characters. See JFlex examples for workaround.");
         }
         if (numRead > 0) {
-            zzEndRead += numRead;
+            this.zzEndRead += numRead;
             /*
              * If numRead == requested, we might have requested to few chars to
              * encode a full Unicode character. We assume that a Reader would
              * otherwise never return half characters.
              */
             if (numRead == requested) {
-                if (Character.isHighSurrogate(zzBuffer[zzEndRead - 1])) {
-                    --zzEndRead;
-                    zzFinalHighSurrogate = 1;
+                if (Character.isHighSurrogate(this.zzBuffer[this.zzEndRead - 1])) {
+                    --this.zzEndRead;
+                    this.zzFinalHighSurrogate = 1;
                 }
             }
             /* potentially more input available */
@@ -1144,11 +1137,11 @@ public class SQLLexer implements Lexer {
      * Closes the input stream.
      */
     public final void yyclose() throws java.io.IOException {
-        zzAtEOF = true; /* indicate end of file */
-        zzEndRead = zzStartRead; /* invalidate buffer */
+        this.zzAtEOF = true; /* indicate end of file */
+        this.zzEndRead = this.zzStartRead; /* invalidate buffer */
 
-        if (zzReader != null)
-            zzReader.close();
+        if (this.zzReader != null)
+            this.zzReader.close();
     }
 
     /**
@@ -1166,22 +1159,22 @@ public class SQLLexer implements Lexer {
      *            the new input stream
      */
     public final void yyreset(java.io.Reader reader) {
-        zzReader = reader;
-        zzAtEOF = false;
-        zzEndRead = zzStartRead = 0;
-        zzCurrentPos = zzMarkedPos = 0;
-        zzFinalHighSurrogate = 0;
-        yyline = yychar = yycolumn = 0;
-        zzLexicalState = YYINITIAL;
-        if (zzBuffer.length > ZZ_BUFFERSIZE)
-            zzBuffer = new char[ZZ_BUFFERSIZE];
+        this.zzReader = reader;
+        this.zzAtEOF = false;
+        this.zzEndRead = this.zzStartRead = 0;
+        this.zzCurrentPos = this.zzMarkedPos = 0;
+        this.zzFinalHighSurrogate = 0;
+        this.yyline = this.yychar = 0;
+        this.zzLexicalState = YYINITIAL;
+        if (this.zzBuffer.length > ZZ_BUFFERSIZE)
+            this.zzBuffer = new char[ZZ_BUFFERSIZE];
     }
 
     /**
      * Returns the current lexical state.
      */
     public final int yystate() {
-        return zzLexicalState;
+        return this.zzLexicalState;
     }
 
     /**
@@ -1191,14 +1184,14 @@ public class SQLLexer implements Lexer {
      *            the new lexical state
      */
     public final void yybegin(int newState) {
-        zzLexicalState = newState;
+        this.zzLexicalState = newState;
     }
 
     /**
      * Returns the text matched by the current regular expression.
      */
     public final String yytext() {
-        return new String(zzBuffer, zzStartRead, zzMarkedPos - zzStartRead);
+        return new String(this.zzBuffer, this.zzStartRead, this.zzMarkedPos - this.zzStartRead);
     }
 
     /**
@@ -1213,14 +1206,14 @@ public class SQLLexer implements Lexer {
      * @return the character at position pos
      */
     public final char yycharat(int pos) {
-        return zzBuffer[zzStartRead + pos];
+        return this.zzBuffer[this.zzStartRead + pos];
     }
 
     /**
      * Returns the length of the matched text region.
      */
     public final int yylength() {
-        return zzMarkedPos - zzStartRead;
+        return this.zzMarkedPos - this.zzStartRead;
     }
 
     /**
@@ -1258,10 +1251,10 @@ public class SQLLexer implements Lexer {
      *            not be greater than yylength()!
      */
     public void yypushback(int number) {
-        if (number > yylength())
-            zzScanError(ZZ_PUSHBACK_2BIG);
+        if (number > this.yylength())
+            this.zzScanError(ZZ_PUSHBACK_2BIG);
 
-        zzMarkedPos -= number;
+        this.zzMarkedPos -= number;
     }
 
     /**
@@ -1280,8 +1273,8 @@ public class SQLLexer implements Lexer {
         // cached fields:
         int zzCurrentPosL;
         int zzMarkedPosL;
-        int zzEndReadL = zzEndRead;
-        char[] zzBufferL = zzBuffer;
+        int zzEndReadL = this.zzEndRead;
+        char[] zzBufferL = this.zzBuffer;
         char[] zzCMapL = ZZ_CMAP;
 
         int[] zzTransL = ZZ_TRANS;
@@ -1289,14 +1282,14 @@ public class SQLLexer implements Lexer {
         int[] zzAttrL = ZZ_ATTRIBUTE;
 
         while (true) {
-            zzMarkedPosL = zzMarkedPos;
+            zzMarkedPosL = this.zzMarkedPos;
 
-            yychar += zzMarkedPosL - zzStartRead;
+            this.yychar += zzMarkedPosL - this.zzStartRead;
 
             boolean zzR = false;
             int zzCh;
             int zzCharCount;
-            for (zzCurrentPosL = zzStartRead; zzCurrentPosL < zzMarkedPosL; zzCurrentPosL += zzCharCount) {
+            for (zzCurrentPosL = this.zzStartRead; zzCurrentPosL < zzMarkedPosL; zzCurrentPosL += zzCharCount) {
                 zzCh = Character.codePointAt(zzBufferL, zzCurrentPosL, zzMarkedPosL);
                 zzCharCount = Character.charCount(zzCh);
                 switch (zzCh) {
@@ -1305,18 +1298,18 @@ public class SQLLexer implements Lexer {
                 case '\u0085':
                 case '\u2028':
                 case '\u2029':
-                    yyline++;
+                    this.yyline++;
                     zzR = false;
                     break;
                 case '\r':
-                    yyline++;
+                    this.yyline++;
                     zzR = true;
                     break;
                 case '\n':
                     if (zzR)
                         zzR = false;
                     else {
-                        yyline++;
+                        this.yyline++;
                     }
                     break;
                 default:
@@ -1330,31 +1323,31 @@ public class SQLLexer implements Lexer {
                 boolean zzPeek;
                 if (zzMarkedPosL < zzEndReadL)
                     zzPeek = zzBufferL[zzMarkedPosL] == '\n';
-                else if (zzAtEOF)
+                else if (this.zzAtEOF)
                     zzPeek = false;
                 else {
-                    boolean eof = zzRefill();
-                    zzEndReadL = zzEndRead;
-                    zzMarkedPosL = zzMarkedPos;
-                    zzBufferL = zzBuffer;
+                    boolean eof = this.zzRefill();
+                    zzEndReadL = this.zzEndRead;
+                    zzMarkedPosL = this.zzMarkedPos;
+                    zzBufferL = this.zzBuffer;
                     if (eof)
                         zzPeek = false;
                     else
                         zzPeek = zzBufferL[zzMarkedPosL] == '\n';
                 }
                 if (zzPeek)
-                    yyline--;
+                    this.yyline--;
             }
             zzAction = -1;
 
-            zzCurrentPosL = zzCurrentPos = zzStartRead = zzMarkedPosL;
+            zzCurrentPosL = this.zzCurrentPos = this.zzStartRead = zzMarkedPosL;
 
-            zzState = ZZ_LEXSTATE[zzLexicalState];
+            this.zzState = ZZ_LEXSTATE[this.zzLexicalState];
 
             // set up zzAction for empty match case:
-            int zzAttributes = zzAttrL[zzState];
+            int zzAttributes = zzAttrL[this.zzState];
             if ((zzAttributes & 1) == 1) {
-                zzAction = zzState;
+                zzAction = this.zzState;
             }
 
             zzForAction: {
@@ -1363,19 +1356,19 @@ public class SQLLexer implements Lexer {
                     if (zzCurrentPosL < zzEndReadL) {
                         zzInput = Character.codePointAt(zzBufferL, zzCurrentPosL, zzEndReadL);
                         zzCurrentPosL += Character.charCount(zzInput);
-                    } else if (zzAtEOF) {
+                    } else if (this.zzAtEOF) {
                         zzInput = YYEOF;
                         break zzForAction;
                     } else {
                         // store back cached positions
-                        zzCurrentPos = zzCurrentPosL;
-                        zzMarkedPos = zzMarkedPosL;
-                        boolean eof = zzRefill();
+                        this.zzCurrentPos = zzCurrentPosL;
+                        this.zzMarkedPos = zzMarkedPosL;
+                        boolean eof = this.zzRefill();
                         // get translated positions and possibly new buffer
-                        zzCurrentPosL = zzCurrentPos;
-                        zzMarkedPosL = zzMarkedPos;
-                        zzBufferL = zzBuffer;
-                        zzEndReadL = zzEndRead;
+                        zzCurrentPosL = this.zzCurrentPos;
+                        zzMarkedPosL = this.zzMarkedPos;
+                        zzBufferL = this.zzBuffer;
+                        zzEndReadL = this.zzEndRead;
                         if (eof) {
                             zzInput = YYEOF;
                             break zzForAction;
@@ -1384,14 +1377,14 @@ public class SQLLexer implements Lexer {
                             zzCurrentPosL += Character.charCount(zzInput);
                         }
                     }
-                    int zzNext = zzTransL[zzRowMapL[zzState] + zzCMapL[zzInput]];
+                    int zzNext = zzTransL[zzRowMapL[this.zzState] + zzCMapL[zzInput]];
                     if (zzNext == -1)
                         break zzForAction;
-                    zzState = zzNext;
+                    this.zzState = zzNext;
 
-                    zzAttributes = zzAttrL[zzState];
+                    zzAttributes = zzAttrL[this.zzState];
                     if ((zzAttributes & 1) == 1) {
-                        zzAction = zzState;
+                        zzAction = this.zzState;
                         zzMarkedPosL = zzCurrentPosL;
                         if ((zzAttributes & 8) == 8)
                             break zzForAction;
@@ -1401,17 +1394,17 @@ public class SQLLexer implements Lexer {
             }
 
             // store back cached position
-            zzMarkedPos = zzMarkedPosL;
+            this.zzMarkedPos = zzMarkedPosL;
 
-            if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
-                zzAtEOF = true;
-                switch (zzLexicalState) {
+            if (zzInput == YYEOF && this.zzStartRead == this.zzCurrentPos) {
+                this.zzAtEOF = true;
+                switch (this.zzLexicalState) {
                 case COMMENT: {
-                    nextState = YYINITIAL;
-                    lastToken = SQLToken.ERROR_UNCLOSED_COMMENT;
-                    SQLToken t = new SQLToken(lastToken, commentBuffer.toString(), commentStartLine, commentStartChar,
-                            commentStartChar + commentBuffer.length(), nextState);
-                    yybegin(nextState);
+                    this.nextState = YYINITIAL;
+                    this.lastToken = SQLToken.ERROR_UNCLOSED_COMMENT;
+                    SQLToken t = new SQLToken(this.lastToken, this.commentBuffer.toString(), this.commentStartLine, this.commentStartChar,
+                            this.commentStartChar + this.commentBuffer.length(), this.nextState);
+                    this.yybegin(this.nextState);
                     return t;
                 }
                 case 964:
@@ -1422,187 +1415,187 @@ public class SQLLexer implements Lexer {
             } else {
                 switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
                 case 1: {
-                    nextState = YYINITIAL;
-                    lastToken = SQLToken.WHITE_SPACE;
-                    String text = yytext();
-                    SQLToken t = new SQLToken(lastToken, text, yyline, yychar, yychar + text.length(), nextState);
-                    yybegin(nextState);
+                    this.nextState = YYINITIAL;
+                    this.lastToken = SQLToken.WHITE_SPACE;
+                    String text = this.yytext();
+                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);
+                    this.yybegin(this.nextState);
                     return t;
                 }
                 case 19:
                     break;
                 case 2: {
-                    nextState = COMMENT;
-                    commentBuffer.append(yytext());
-                    yybegin(nextState);
+                    this.nextState = COMMENT;
+                    this.commentBuffer.append(this.yytext());
+                    this.yybegin(this.nextState);
                 }
                 case 20:
                     break;
                 case 3: {
-                    nextState = YYINITIAL;
-                    lastToken = SQLToken.IDENTIFIER;
-                    String text = yytext();
-                    SQLToken t = new SQLToken(lastToken, text, yyline, yychar, yychar + text.length(), nextState);
-                    yybegin(nextState);
+                    this.nextState = YYINITIAL;
+                    this.lastToken = SQLToken.IDENTIFIER;
+                    String text = this.yytext();
+                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);
+                    this.yybegin(this.nextState);
                     return t;
                 }
                 case 21:
                     break;
                 case 4: {
-                    nextState = YYINITIAL;
-                    lastToken = SQLToken.RESERVED_WORD;
-                    String text = yytext();
-                    SQLToken t = new SQLToken(lastToken, text, yyline, yychar, yychar + text.length(), nextState);
-                    yybegin(nextState);
+                    this.nextState = YYINITIAL;
+                    this.lastToken = SQLToken.RESERVED_WORD;
+                    String text = this.yytext();
+                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);
+                    this.yybegin(this.nextState);
                     return t;
                 }
                 case 22:
                     break;
                 case 5: {
-                    nextState = YYINITIAL;
-                    lastToken = SQLToken.ERROR;
-                    String text = yytext();
-                    SQLToken t = new SQLToken(lastToken, text, yyline, yychar, yychar + text.length(), nextState);
-                    yybegin(nextState);
+                    this.nextState = YYINITIAL;
+                    this.lastToken = SQLToken.ERROR;
+                    String text = this.yytext();
+                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);
+                    this.yybegin(this.nextState);
                     return t;
                 }
                 case 23:
                     break;
                 case 6: {
-                    nextState = YYINITIAL;
-                    lastToken = SQLToken.OPERATOR;
-                    String text = yytext();
-                    SQLToken t = new SQLToken(lastToken, text, yyline, yychar, yychar + text.length(), nextState);
-                    yybegin(nextState);
+                    this.nextState = YYINITIAL;
+                    this.lastToken = SQLToken.OPERATOR;
+                    String text = this.yytext();
+                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);
+                    this.yybegin(this.nextState);
                     return t;
                 }
                 case 24:
                     break;
                 case 7: {
-                    nextState = YYINITIAL;
-                    lastToken = SQLToken.LITERAL_INTEGER;
-                    String text = yytext();
-                    SQLToken t = new SQLToken(lastToken, text, yyline, yychar, yychar + text.length(), nextState);
-                    yybegin(nextState);
+                    this.nextState = YYINITIAL;
+                    this.lastToken = SQLToken.LITERAL_INTEGER;
+                    String text = this.yytext();
+                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);
+                    this.yybegin(this.nextState);
                     return t;
                 }
                 case 25:
                     break;
                 case 8: {
-                    nextState = YYINITIAL;
-                    lastToken = SQLToken.SEPARATOR;
-                    String text = yytext();
-                    SQLToken t = new SQLToken(lastToken, text, yyline, yychar, yychar + text.length(), nextState);
-                    yybegin(nextState);
+                    this.nextState = YYINITIAL;
+                    this.lastToken = SQLToken.SEPARATOR;
+                    String text = this.yytext();
+                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);
+                    this.yybegin(this.nextState);
                     return t;
                 }
                 case 26:
                     break;
                 case 9: {
-                    commentNestCount--;
-                    commentBuffer.append(yytext());
-                    if (commentNestCount == 0) {
-                        nextState = YYINITIAL;
-                        lastToken = SQLToken.COMMENT_TRADITIONAL;
-                        SQLToken t = new SQLToken(lastToken, commentBuffer.toString(), commentStartLine,
-                                commentStartChar, commentStartChar + commentBuffer.length(), nextState);
-                        yybegin(nextState);
+                    this.commentNestCount--;
+                    this.commentBuffer.append(this.yytext());
+                    if (this.commentNestCount == 0) {
+                        this.nextState = YYINITIAL;
+                        this.lastToken = SQLToken.COMMENT_TRADITIONAL;
+                        SQLToken t = new SQLToken(this.lastToken, this.commentBuffer.toString(), this.commentStartLine,
+                                this.commentStartChar, this.commentStartChar + this.commentBuffer.length(), this.nextState);
+                        this.yybegin(this.nextState);
                         return t;
                     }
                 }
                 case 27:
                     break;
                 case 10: {
-                    nextState = YYINITIAL;
-                    lastToken = SQLToken.COMMENT_END_OF_LINE;
-                    String text = yytext();
-                    SQLToken t = new SQLToken(lastToken, text, yyline, yychar, yychar + text.length(), nextState);
-                    yybegin(nextState);
+                    this.nextState = YYINITIAL;
+                    this.lastToken = SQLToken.COMMENT_END_OF_LINE;
+                    String text = this.yytext();
+                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);
+                    this.yybegin(this.nextState);
                     return t;
                 }
                 case 28:
                     break;
                 case 11: {
-                    nextState = YYINITIAL;
-                    lastToken = SQLToken.LITERAL_FLOAT;
-                    String text = yytext();
-                    SQLToken t = new SQLToken(lastToken, text, yyline, yychar, yychar + text.length(), nextState);
-                    yybegin(nextState);
+                    this.nextState = YYINITIAL;
+                    this.lastToken = SQLToken.LITERAL_FLOAT;
+                    String text = this.yytext();
+                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);
+                    this.yybegin(this.nextState);
                     return t;
                 }
                 case 29:
                     break;
                 case 12: {
-                    nextState = YYINITIAL;
-                    lastToken = SQLToken.LITERAL_STRING;
-                    String text = yytext();
-                    SQLToken t = new SQLToken(lastToken, text, yyline, yychar, yychar + text.length(), nextState);
-                    yybegin(nextState);
+                    this.nextState = YYINITIAL;
+                    this.lastToken = SQLToken.LITERAL_STRING;
+                    String text = this.yytext();
+                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);
+                    this.yybegin(this.nextState);
                     return t;
                 }
                 case 30:
                     break;
                 case 13: {
-                    nextState = YYINITIAL;
-                    lastToken = SQLToken.ERROR_UNCLOSED_STRING;
-                    String text = yytext();
-                    SQLToken t = new SQLToken(lastToken, text, yyline, yychar, yychar + text.length(), nextState);
-                    yybegin(nextState);
+                    this.nextState = YYINITIAL;
+                    this.lastToken = SQLToken.ERROR_UNCLOSED_STRING;
+                    String text = this.yytext();
+                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);
+                    this.yybegin(this.nextState);
                     return t;
                 }
                 case 31:
                     break;
                 case 14: {
-                    nextState = COMMENT;
-                    commentBuffer.setLength(0);
-                    commentBuffer.append(yytext());
-                    commentNestCount = 1;
-                    commentStartLine = yyline;
-                    commentStartChar = yychar;
-                    yybegin(nextState);
+                    this.nextState = COMMENT;
+                    this.commentBuffer.setLength(0);
+                    this.commentBuffer.append(this.yytext());
+                    this.commentNestCount = 1;
+                    this.commentStartLine = this.yyline;
+                    this.commentStartChar = this.yychar;
+                    this.yybegin(this.nextState);
                 }
                 case 32:
                     break;
                 case 15: {
-                    nextState = COMMENT;
-                    commentBuffer.append(yytext());
-                    commentNestCount++;
-                    yybegin(nextState);
+                    this.nextState = COMMENT;
+                    this.commentBuffer.append(this.yytext());
+                    this.commentNestCount++;
+                    this.yybegin(this.nextState);
                 }
                 case 33:
                     break;
                 case 16: {
-                    nextState = YYINITIAL;
-                    lastToken = SQLToken.ERROR_UNCLOSED_BIT_STRING;
-                    String text = yytext();
-                    SQLToken t = new SQLToken(lastToken, text, yyline, yychar, yychar + text.length(), nextState);
-                    yybegin(nextState);
+                    this.nextState = YYINITIAL;
+                    this.lastToken = SQLToken.ERROR_UNCLOSED_BIT_STRING;
+                    String text = this.yytext();
+                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);
+                    this.yybegin(this.nextState);
                     return t;
                 }
                 case 34:
                     break;
                 case 17: {
-                    nextState = YYINITIAL;
-                    lastToken = SQLToken.ERROR_BAD_BIT_STRING;
-                    String text = yytext();
-                    SQLToken t = new SQLToken(lastToken, text, yyline, yychar, yychar + text.length(), nextState);
-                    yybegin(nextState);
+                    this.nextState = YYINITIAL;
+                    this.lastToken = SQLToken.ERROR_BAD_BIT_STRING;
+                    String text = this.yytext();
+                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);
+                    this.yybegin(this.nextState);
                     return t;
                 }
                 case 35:
                     break;
                 case 18: {
-                    nextState = YYINITIAL;
-                    lastToken = SQLToken.LITERAL_BIT_STRING;
-                    String text = yytext();
-                    SQLToken t = new SQLToken(lastToken, text, yyline, yychar, yychar + text.length(), nextState);
-                    yybegin(nextState);
+                    this.nextState = YYINITIAL;
+                    this.lastToken = SQLToken.LITERAL_BIT_STRING;
+                    String text = this.yytext();
+                    SQLToken t = new SQLToken(this.lastToken, text, this.yyline, this.yychar, this.yychar + text.length(), this.nextState);
+                    this.yybegin(this.nextState);
                     return t;
                 }
                 case 36:
                     break;
                 default:
-                    zzScanError(ZZ_NO_MATCH);
+                    this.zzScanError(ZZ_NO_MATCH);
                 }
             }
         }

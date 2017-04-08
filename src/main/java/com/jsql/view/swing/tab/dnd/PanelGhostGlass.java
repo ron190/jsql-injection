@@ -17,19 +17,19 @@ public class PanelGhostGlass extends JPanel {
     
     public PanelGhostGlass(TabbedPaneDnD tabbedPane) {
         this.tabbedPane = tabbedPane;
-        setOpaque(false);
+        this.setOpaque(false);
     }
     
     public void setTargetTabbedPane(TabbedPaneDnD tab) {
-        tabbedPane = tab;
+        this.tabbedPane = tab;
     }
     
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
-        Rectangle rect = tabbedPane.getDropLineRect();
+        Rectangle rect = this.tabbedPane.getDropLineRect();
         if(rect!=null) {
-            Rectangle r = SwingUtilities.convertRectangle(tabbedPane, rect, this);
+            Rectangle r = SwingUtilities.convertRectangle(this.tabbedPane, rect, this);
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
             g2.setColor(new Color(34, 177, 76));
             g2.fill(r);

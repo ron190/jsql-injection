@@ -42,20 +42,20 @@ public class MessageHeader implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
         Map<String, Object> params = (Map<String, Object>) interactionParams[0];
-        url = (String) params.get(TypeHeader.URL);
-        post = (String) params.get(TypeHeader.POST);
-        header = (String) params.get(TypeHeader.HEADER);
-        response = (Map<String, String>) params.get(TypeHeader.RESPONSE);
+        this.url = (String) params.get(TypeHeader.URL);
+        this.post = (String) params.get(TypeHeader.POST);
+        this.header = (String) params.get(TypeHeader.HEADER);
+        this.response = (Map<String, String>) params.get(TypeHeader.RESPONSE);
     }
 
     @Override
     public void execute() {
-        LOGGER.info("Method: " + response.get("Method"));
-        LOGGER.info("Url: " + url);
-        LOGGER.info("Post: " + post);
-        LOGGER.info("Header: " + header);
-        LOGGER.info("Content-Length: " + response.get("Content-Length"));
-        LOGGER.info("Content-Type: " + response.get("Content-Type"));
+        LOGGER.info("Method: " + this.response.get("Method"));
+        LOGGER.info("Url: " + this.url);
+        LOGGER.info("Post: " + this.post);
+        LOGGER.info("Header: " + this.header);
+        LOGGER.info("Content-Length: " + this.response.get("Content-Length"));
+        LOGGER.info("Content-Type: " + this.response.get("Content-Type"));
         LOGGER.info("\n");
     }
     

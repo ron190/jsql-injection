@@ -48,9 +48,9 @@ public class TabHeader extends JPanel implements MouseListener {
         this.setOpaque(false);
 
         // Set the text of tab
-        tabTitleLabel = new JLabel();
-        tabTitleLabel.setIcon(imageIcon);
-        this.add(tabTitleLabel);
+        this.tabTitleLabel = new JLabel();
+        this.tabTitleLabel.setIcon(imageIcon);
+        this.add(this.tabTitleLabel);
 
         JButton tabCloseButton = new ButtonClose();
         tabCloseButton.addMouseListener(this);
@@ -60,12 +60,12 @@ public class TabHeader extends JPanel implements MouseListener {
 
     public TabHeader(String label, Icon imageIcon) {
         this(imageIcon);
-        tabTitleLabel.setText(label);
+        this.tabTitleLabel.setText(label);
     }
     
     public TabHeader(String label) {
         this();
-        tabTitleLabel.setText(label);
+        this.tabTitleLabel.setText(label);
     }
 
     /**

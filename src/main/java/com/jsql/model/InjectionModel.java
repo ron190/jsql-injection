@@ -37,11 +37,12 @@ import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeHeader;
 import com.jsql.model.bean.util.TypeRequest;
+import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.MethodInjection;
-import com.jsql.model.injection.strategy.StrategyInjectionNormal;
 import com.jsql.model.injection.strategy.StrategyInjection;
+import com.jsql.model.injection.strategy.StrategyInjectionNormal;
 import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
 import com.jsql.model.suspendable.SuspendableGetVendor;
@@ -113,7 +114,7 @@ public class InjectionModel extends AbstractModelObservable {
 
     /**
      * Database vendor selected by user (default UNDEFINED).
-     * If not UNDEFINED then the next injection will be forced to use the selected vendor. 
+     * If not UNDEFINED then the next injection will be forced to use the selected vendor.
      */
     private Vendor vendorByUser = Vendor.AUTO;
     
@@ -126,9 +127,9 @@ public class InjectionModel extends AbstractModelObservable {
      * Allow to directly start an injection after a failed one
      * without asking the user 'Start a new injection?'.
      */
-    public boolean injectionAlreadyBuilt = false;
+    private boolean injectionAlreadyBuilt = false;
     
-    public boolean isScanning = false;
+    private boolean isScanning = false;
 
     /**
      * Current evasion step, 0 is 'no evasion'
@@ -234,7 +235,7 @@ public class InjectionModel extends AbstractModelObservable {
                 this.sendToViews(request);
                 
                 // sinon perte de insertionCharacter entre 2 injections
-                ConnectionUtil.setQueryString(ConnectionUtil.getQueryString() + charInsertion);
+                ConnectionUtil.setQueryString(ConnectionUtil.getQueryString() + this.charInsertion);
                 this.beginInjection();
                 
                 return;
@@ -290,13 +291,13 @@ public class InjectionModel extends AbstractModelObservable {
             urlInjection += this.buildQuery(MethodInjection.QUERY, ConnectionUtil.getQueryString(), isUsingIndex, dataInjection);
             try {
                 // Evasion
-                if (stepSecurity == 1) {
+                if (this.stepSecurity == 1) {
                     // Replace character '+'
                     urlInjection = urlInjection
                         .replaceAll("--\\+", "--")
                         .replaceAll("7330%2b1", "7331");
                     
-                } else if (stepSecurity == 2) {
+                } else if (this.stepSecurity == 2) {
                     // Change case
                     urlInjection = urlInjection
                         .replaceAll("union\\+", "uNiOn+")
@@ -306,7 +307,7 @@ public class InjectionModel extends AbstractModelObservable {
                         .replaceAll("where\\+", "wHeRe+")
                         .replaceAll("([AE])=0x", "$1+lIkE+0x");
                     
-                } else if (stepSecurity == 3) {                 
+                } else if (this.stepSecurity == 3) {
                     // Change Case and Space
                     urlInjection = urlInjection
                         .replaceAll("union\\+", "uNiOn/**/")
@@ -335,7 +336,7 @@ public class InjectionModel extends AbstractModelObservable {
             // TODO separate method
             // Block Opening Connection
             if (AuthenticationUtil.isKerberos()) {
-                String kerberosConfiguration = 
+                String kerberosConfiguration =
                     Pattern
                         .compile("(?s)\\{.*")
                         .matcher(StringUtils.join(Files.readAllLines(Paths.get(AuthenticationUtil.getPathKerberosLogin()), Charset.defaultCharset()), ""))
@@ -412,6 +413,10 @@ public class InjectionModel extends AbstractModelObservable {
             } catch (IOException e) {
                 // Ignore connection errors like 403, 406
                 // Http status code already logged in Network tab
+
+                // Ignore
+                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
             // Disable caching of authentication like Kerberos
@@ -453,8 +458,8 @@ public class InjectionModel extends AbstractModelObservable {
             if (!isUsingIndex) {
                 return paramLead.replace("*", sqlTrail);
             } else {
-                return 
-                    paramLead.replace("*", 
+                return
+                    paramLead.replace("*",
                         this.indexesInUrl.replaceAll(
                             "1337" + ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).getVisibleIndex() + "7331",
                             /**
@@ -480,8 +485,8 @@ public class InjectionModel extends AbstractModelObservable {
             if (!isUsingIndex) {
                 query = paramLead.replace("*", sqlTrail);
             } else {
-                query = 
-                    paramLead.replace("*", 
+                query =
+                    paramLead.replace("*",
                         this.indexesInUrl.replaceAll(
                             "1337" + ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).getVisibleIndex() + "7331",
                             /**
@@ -497,8 +502,8 @@ public class InjectionModel extends AbstractModelObservable {
             if (!isUsingIndex) {
                 query = paramLead + sqlTrail;
             } else {
-                query = 
-                    paramLead 
+                query =
+                    paramLead
                     + this.indexesInUrl.replaceAll(
                         "1337" + ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).getVisibleIndex() + "7331",
                         /**
@@ -522,13 +527,11 @@ public class InjectionModel extends AbstractModelObservable {
             // Replace spaces
             .replaceAll("\\s+", "+")
             // Add ending line comment, except for INGRES
-            +(vendor != Vendor.INGRES ? "--+" : "");
+            +(this.vendor != Vendor.INGRES ? "--+" : "");
         
         return query;
     }
     
-    public void getQuery (String paramLead, boolean isUsingIndex, String sqlTrail) {}
-
     /**
      * Display source code in console.
      * @param message Error message
@@ -545,7 +548,7 @@ public class InjectionModel extends AbstractModelObservable {
      * started in a new thread via model function inputValidation().
      */
     public void controlInput(
-        String urlQuery, String dataRequest, String dataHeader, MethodInjection methodInjection, 
+        String urlQuery, String dataRequest, String dataHeader, MethodInjection methodInjection,
         String typeRequest, Boolean isScanning
     ) {
         try {
@@ -599,15 +602,15 @@ public class InjectionModel extends AbstractModelObservable {
         String versionJava = System.getProperty("java.version");
         String nameSystemArchitecture = System.getProperty("os.arch");
         LOGGER.trace(
-            "jSQL Injection v" + VERSION_JSQL 
-            + " on Java "+ versionJava 
-            +"-"+ nameSystemArchitecture 
-            +"-"+ System.getProperty("user.language") 
+            "jSQL Injection v" + VERSION_JSQL
+            + " on Java "+ versionJava
+            +"-"+ nameSystemArchitecture
+            +"-"+ System.getProperty("user.language")
         );
     }
     
     public String getDatabaseInfos() {
-        return 
+        return
     		"Database ["+ this.nameDatabase +"] "
             + "on "+ this.vendor +" ["+ this.versionDatabase +"] "
             + "for user ["+ this.username +"]";
@@ -622,15 +625,11 @@ public class InjectionModel extends AbstractModelObservable {
     // Getters and setters
     
     public Vendor getVendor() {
-        return vendor;
-    }
-
-    public void setVendor(Vendor vendor) {
-        this.vendor = vendor;
+        return this.vendor;
     }
 
     public Vendor getVendorByUser() {
-        return vendorByUser;
+        return this.vendorByUser;
     }
 
     public void setVendorByUser(Vendor vendorByUser) {
@@ -663,5 +662,13 @@ public class InjectionModel extends AbstractModelObservable {
 
     public void setIndexesInUrl(String indexesInUrl) {
         this.indexesInUrl = indexesInUrl;
+    }
+
+    public boolean isInjectionAlreadyBuilt() {
+        return injectionAlreadyBuilt;
+    }
+
+    public void setIsScanning(boolean isScanning) {
+        this.isScanning = isScanning;
     }
 }

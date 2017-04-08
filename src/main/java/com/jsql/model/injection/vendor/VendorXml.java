@@ -31,8 +31,8 @@ import org.apache.log4j.Logger;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
-import com.jsql.model.injection.strategy.StrategyInjectionNormal;
 import com.jsql.model.injection.strategy.StrategyInjection;
+import com.jsql.model.injection.strategy.StrategyInjectionNormal;
 import com.jsql.model.injection.strategy.blind.InjectionTime;
 import com.jsql.util.StringUtil;
 
@@ -65,7 +65,7 @@ public class VendorXml extends AbstractVendorDefault {
 
     @Override
     public String sqlTables(Database database) {
-        return 
+        return
             this.xmlModel.getResource().getSchema().getTable()
             .replace("${DATABASE.HEX}", Hex.encodeHexString(database.toString().getBytes()))
             .replace("${DATABASE}", database.toString());
@@ -73,7 +73,7 @@ public class VendorXml extends AbstractVendorDefault {
 
     @Override
     public String sqlColumns(Table table) {
-        return 
+        return
             this.xmlModel.getResource().getSchema().getColumn()
             .replace("${DATABASE.HEX}", Hex.encodeHexString(table.getParent().toString().getBytes()))
             .replace("${TABLE.HEX}", Hex.encodeHexString(table.toString().getBytes()))
@@ -119,12 +119,12 @@ public class VendorXml extends AbstractVendorDefault {
             LOGGER.error(e.getMessage(), e);
         }
         
-        return 
+        return
             this.xmlModel.getResource().getSchema().getRow().getQuery()
             .replace(
-                "${FIELDS}", 
-                leadSqlField 
-                + StringUtil.join(namesColumnUtf8, trailSqlField + sqlConcatFields + leadSqlField) 
+                "${FIELDS}",
+                leadSqlField
+                + StringUtil.join(namesColumnUtf8, trailSqlField + sqlConcatFields + leadSqlField)
                 + trailSqlField
             )
             .replace("${DATABASE}", nameDatabaseUtf8)
@@ -133,20 +133,20 @@ public class VendorXml extends AbstractVendorDefault {
 
     @Override
     public String sqlPrivilegeTest() {
-        return 
+        return
             this.xmlModel.getResource().getFile().getPrivilege();
     }
 
     @Override
     public String sqlFileRead(String filePath) {
-        return 
+        return
             this.xmlModel.getResource().getFile().getRead()
             .replace("${FILEPATH.HEX}", Hex.encodeHexString(filePath.getBytes()));
     }
 
     @Override
     public String sqlTextIntoFile(String content, String filePath) {
-        return 
+        return
             MediatorModel.model().getIndexesInUrl()
             .replaceAll(
                 "1337" + ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).getVisibleIndex() + "7331",
@@ -160,42 +160,42 @@ public class VendorXml extends AbstractVendorDefault {
 
     @Override
     public String[] getListFalseTest() {
-        return 
-            this.xmlModel.getStrategy().getBoolean() != null 
+        return
+            this.xmlModel.getStrategy().getBoolean() != null
             ? this.xmlModel.getStrategy().getBoolean().getTest().getFalse().toArray(new String[0])
             : new String[0];
     }
 
     @Override
     public String[] getListTrueTest() {
-        return 
-            this.xmlModel.getStrategy().getBoolean() != null 
+        return
+            this.xmlModel.getStrategy().getBoolean() != null
             ? this.xmlModel.getStrategy().getBoolean().getTest().getTrue().toArray(new String[0])
             : new String[0];
     }
 
     @Override
     public String sqlTestBlindFirst() {
-        return 
-            this.xmlModel.getStrategy().getBoolean() != null 
+        return
+            this.xmlModel.getStrategy().getBoolean() != null
             ? this.xmlModel.getStrategy().getBoolean().getTest().getInitialization()
             : null;
     }
 
     @Override
     public String sqlTestBlind(String check) {
-        return 
-            " "+ 
+        return
+            " "+
             this.xmlModel.getStrategy().getBoolean().getBlind()
             .replace("${TEST}", check);
     }
 
     @Override
     public String sqlBitTestBlind(String inj, int indexCharacter, int bit) {
-        return 
-            " "+ 
+        return
+            " "+
             this.xmlModel.getStrategy().getBoolean().getBlind()
-            .replace("${TEST}", 
+            .replace("${TEST}",
                 this.xmlModel.getStrategy().getBoolean().getTest().getBit()
                 .replace("${INJECTION}", inj)
                 .replace("${INDEX}", Integer.toString(indexCharacter))
@@ -205,10 +205,10 @@ public class VendorXml extends AbstractVendorDefault {
 
     @Override
     public String sqlLengthTestBlind(String inj, int indexCharacter) {
-        return 
-            " "+ 
+        return
+            " "+
             this.xmlModel.getStrategy().getBoolean().getBlind()
-            .replace("${TEST}", 
+            .replace("${TEST}",
                 this.xmlModel.getStrategy().getBoolean().getTest().getLength()
                 .replace("${INJECTION}", inj)
                 .replace("${INDEX}", Integer.toString(indexCharacter))
@@ -220,8 +220,8 @@ public class VendorXml extends AbstractVendorDefault {
         String sqlTime = super.sqlTimeTest(check);
         
         if (this.xmlModel.getStrategy().getBoolean().getTime() != null) {
-            sqlTime = 
-                " "+ 
+            sqlTime =
+                " "+
                 this.xmlModel.getStrategy().getBoolean().getTime()
                 .replace("${TEST}", check)
                 .replace("${SLEEP_TIME}", Long.toString(InjectionTime.SLEEP_TIME));
@@ -232,10 +232,10 @@ public class VendorXml extends AbstractVendorDefault {
 
     @Override
     public String sqlBitTestTime(String inj, int indexCharacter, int bit) {
-        return 
-            " "+ 
+        return
+            " "+
             this.xmlModel.getStrategy().getBoolean().getTime()
-            .replace("${TEST}", 
+            .replace("${TEST}",
                 this.xmlModel.getStrategy().getBoolean().getTest().getBit()
                 .replace("${INJECTION}", inj)
                 .replace("${INDEX}", Integer.toString(indexCharacter))
@@ -246,10 +246,10 @@ public class VendorXml extends AbstractVendorDefault {
 
     @Override
     public String sqlLengthTestTime(String inj, int indexCharacter) {
-        return 
-            " "+ 
+        return
+            " "+
             this.xmlModel.getStrategy().getBoolean().getTime()
-            .replace("${TEST}", 
+            .replace("${TEST}",
                 this.xmlModel.getStrategy().getBoolean().getTest().getLength()
                 .replace("${INJECTION}", inj)
                 .replace("${INDEX}", Integer.toString(indexCharacter))
@@ -259,7 +259,7 @@ public class VendorXml extends AbstractVendorDefault {
 
     @Override
     public String sqlBlind(String sqlQuery, String startPosition) {
-        return 
+        return
             VendorXml.replaceTags(
                 this.xmlModel.getStrategy().getConfiguration().getSlidingWindow()
                 .replace("${INJECTION}", sqlQuery)
@@ -270,7 +270,7 @@ public class VendorXml extends AbstractVendorDefault {
 
     @Override
     public String sqlTime(String sqlQuery, String startPosition) {
-        return 
+        return
             VendorXml.replaceTags(
                 this.xmlModel.getStrategy().getConfiguration().getSlidingWindow()
                 .replace("${INJECTION}", sqlQuery)
@@ -281,8 +281,8 @@ public class VendorXml extends AbstractVendorDefault {
 
     @Override
     public String sqlTestErrorBased() {
-        return 
-            " "+ 
+        return
+            " "+
             this.xmlModel.getStrategy().getError().getMethod().get(StrategyInjection.ERRORBASED.instance().getIndexMethod()).getQuery()
             .replace("${WINDOW}", this.xmlModel.getStrategy().getConfiguration().getSlidingWindow())
             .replace("${INJECTION}", this.xmlModel.getStrategy().getConfiguration().getFailsafe().replace("${INDICE}", "0"))
@@ -291,8 +291,8 @@ public class VendorXml extends AbstractVendorDefault {
 
     @Override
     public String sqlErrorBased(String sqlQuery, String startPosition) {
-        return 
-            " "+ 
+        return
+            " "+
             VendorXml.replaceTags(
                 this.xmlModel.getStrategy().getError().getMethod().get(StrategyInjection.ERRORBASED.instance().getIndexMethod()).getQuery()
                 .replace("${WINDOW}", this.xmlModel.getStrategy().getConfiguration().getSlidingWindow())
@@ -304,7 +304,7 @@ public class VendorXml extends AbstractVendorDefault {
 
     @Override
     public String sqlNormal(String sqlQuery, String startPosition) {
-        return 
+        return
             VendorXml.replaceTags(
                 this.xmlModel.getStrategy().getConfiguration().getSlidingWindow()
                 .replace("${INJECTION}", sqlQuery)
@@ -315,7 +315,7 @@ public class VendorXml extends AbstractVendorDefault {
 
     @Override
     public String sqlCapacity(String[] indexes) {
-        return 
+        return
             MediatorModel.model().getIndexesInUrl().replaceAll(
                 "1337("+ StringUtil.join(indexes, "|") +")7331",
                 VendorXml.replaceTags(
@@ -329,7 +329,7 @@ public class VendorXml extends AbstractVendorDefault {
     @Override
     public String sqlIndices(Integer nbFields) {
         String replaceTag = "";
-        List<String> fields = new ArrayList<>(); 
+        List<String> fields = new ArrayList<>();
         
         int indice = 1;
         for (  ; indice <= nbFields ; indice++) {
@@ -338,8 +338,8 @@ public class VendorXml extends AbstractVendorDefault {
         }
         indice--;
         
-        return 
-            " "+ 
+        return
+            " "+
             this.xmlModel.getStrategy().getNormal().getIndices()
             .replace("${INDICES}", StringUtil.join(fields.toArray(new String[fields.size()]), ","))
             .replace("${INDICE_UNIQUE}", replaceTag)
@@ -354,13 +354,13 @@ public class VendorXml extends AbstractVendorDefault {
     @Override
     public String sqlLimit(Integer limitSQLResult) {
         int limitBoundary = this.xmlModel.getStrategy().getConfiguration().getLimitBoundary();
-        return 
+        return
             this.xmlModel.getStrategy().getConfiguration().getLimit()
             .replace("${LIMIT}", Integer.toString(limitSQLResult + limitBoundary));
     }
     
     public static String replaceTags(String sqlRequest) {
-        return 
+        return
             sqlRequest
             .replace("${ENCLOSE_VALUE_SQL}", ENCLOSE_VALUE_SQL)
             .replace("${ENCLOSE_VALUE_HEX}", ENCLOSE_VALUE_HEX)

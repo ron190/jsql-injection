@@ -58,29 +58,29 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
     }
     
     public void disableDragSize() {
-        dividerDragSize = 0;
+        this.dividerDragSize = 0;
     }
     
     public void enableDragSize() {
-        dividerDragSize = 9;
+        this.dividerDragSize = 9;
     }
 
     public int getDividerDragSize() {
-        return dividerDragSize;
+        return this.dividerDragSize;
     }
 
     public void setDividerDragSize(int dividerDragSize) {
         this.dividerDragSize = dividerDragSize;
-        revalidate();
+        this.revalidate();
     }
 
     public int getDividerDragOffset() {
-        return dividerDragOffset;
+        return this.dividerDragOffset;
     }
 
     public void setDividerDragOffset(int dividerDragOffset) {
         this.dividerDragOffset = dividerDragOffset;
-        revalidate();
+        this.revalidate();
     }
 
     @Override
@@ -88,22 +88,22 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
         super.doLayout();
 
         // increase divider width or height
-        BasicSplitPaneDivider divider = ((BasicSplitPaneUI) getUI()).getDivider();
+        BasicSplitPaneDivider divider = ((BasicSplitPaneUI) this.getUI()).getDivider();
         Rectangle bounds = divider.getBounds();
-        if (orientation == HORIZONTAL_SPLIT) {
-            bounds.x -= dividerDragOffset;
-            bounds.width = dividerDragSize;
+        if (this.orientation == HORIZONTAL_SPLIT) {
+            bounds.x -= this.dividerDragOffset;
+            bounds.width = this.dividerDragSize;
         } else {
-            bounds.y -= dividerDragOffset;
-            bounds.height = dividerDragSize;
+            bounds.y -= this.dividerDragOffset;
+            bounds.height = this.dividerDragSize;
         }
         divider.setBounds(bounds);
     }
 
     @Override
     public void updateUI() {
-        setUI(new SplitPaneWithZeroSizeDividerUI());
-        revalidate();
+        this.setUI(new SplitPaneWithZeroSizeDividerUI());
+        this.revalidate();
     }
 
     private class SplitPaneWithZeroSizeDividerUI extends BasicSplitPaneUI {
@@ -117,7 +117,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
         public ZeroSizeDivider(BasicSplitPaneUI ui) {
             super(ui);
             super.setBorder(null);
-            setBackground(HelperUi.COLOR_COMPONENT_BORDER);
+            this.setBackground(HelperUi.COLOR_COMPONENT_BORDER);
         }
 
         @Override
@@ -127,32 +127,32 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
 
         @Override
         public void paint(Graphics g) {
-            g.setColor(getBackground());
-            if (orientation == HORIZONTAL_SPLIT) {
+            g.setColor(this.getBackground());
+            if (this.orientation == HORIZONTAL_SPLIT) {
                 g.drawLine(
-                    dividerDragOffset,
+                    JSplitPaneWithZeroSizeDivider.this.dividerDragOffset,
                     0,
-                    dividerDragOffset,
-                    getHeight() - 1
+                    JSplitPaneWithZeroSizeDivider.this.dividerDragOffset,
+                    this.getHeight() - 1
                 );
             } else {
                 g.drawLine(
                     0,
-                    dividerDragOffset,
-                    getWidth() - 1,
-                    dividerDragOffset
+                    JSplitPaneWithZeroSizeDivider.this.dividerDragOffset,
+                    this.getWidth() - 1,
+                    JSplitPaneWithZeroSizeDivider.this.dividerDragOffset
                 );
             }
         }
 
         @Override
         protected void dragDividerTo(int location) {
-            super.dragDividerTo(location + dividerDragOffset);
+            super.dragDividerTo(location + JSplitPaneWithZeroSizeDivider.this.dividerDragOffset);
         }
 
         @Override
         protected void finishDraggingTo(int location) {
-            super.finishDraggingTo(location + dividerDragOffset);
+            super.finishDraggingTo(location + JSplitPaneWithZeroSizeDivider.this.dividerDragOffset);
         }
     }
     

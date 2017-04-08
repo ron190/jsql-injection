@@ -27,7 +27,9 @@ class DocPositionComparator implements Comparator<DocPosition> {
     
 	public static final DocPositionComparator instance = new DocPositionComparator();
 	
-	private DocPositionComparator() { }
+	private DocPositionComparator() {
+	    
+	}
 	
     /**
      * Does this Comparator equal another?
@@ -50,17 +52,9 @@ class DocPositionComparator implements Comparator<DocPosition> {
      */
 	@Override
     public int compare(DocPosition o1, DocPosition o2){
-        if (o1 instanceof DocPosition && o2 instanceof DocPosition){
-            DocPosition d1 = (DocPosition)(o1);
-            DocPosition d2 = (DocPosition)(o2);
-            return d1.getPosition() - d2.getPosition();
-        } else if (o1 instanceof DocPosition || o1.hashCode() < o2.hashCode()){
-            return -1;
-        } else if (o2 instanceof DocPosition || o2.hashCode() > o1.hashCode()){
-            return 1;
-        } else {
-            return 0;
-        }
+	    DocPosition d1 = o1;
+        DocPosition d2 = o2;
+        return d1.getPosition() - d2.getPosition();
     }
 }
 

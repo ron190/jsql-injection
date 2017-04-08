@@ -25,6 +25,8 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.view.swing.sql.lexer.syntax.lexer.Lexer;
 import com.jsql.view.swing.sql.lexer.syntax.lexer.SQLLexer;
 
@@ -35,6 +37,11 @@ import com.jsql.view.swing.sql.lexer.syntax.lexer.SQLLexer;
 @SuppressWarnings("serial")
 public class HighlightedDocument extends DefaultStyledDocument {
     
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
+    
 	public static final Object SQL_STYLE = SQLLexer.class;
 	
 	public static final Object GRAYED_OUT_STYLE = new Object();
@@ -43,26 +50,26 @@ public class HighlightedDocument extends DefaultStyledDocument {
 	 * A reader wrapped around the document so that the document can be fed into
 	 * the lexer.
 	 */
-	private DocumentReader documentReader;
+	private transient DocumentReader documentReader;
 	
 	/** If non-null, all is drawn with this style (no lexing). */
-	private AttributeSet globalStyle = null;
+	private transient AttributeSet globalStyle = null;
 
 	/**
 	 * The lexer that tells us what colors different words should be.
 	 */
-	private Lexer syntaxLexer;
+	private transient Lexer syntaxLexer;
 
 	/**
 	 * A thread that handles the actual coloring.
 	 */
-	private Colorer colorer;
+	private transient Colorer colorer;
 
 	/**
 	 * A lock for modifying the document, or for actions that depend on the
 	 * document not being modified.
 	 */
-	private Object docLock = new Object();
+	private transient Object docLock = new Object();
 
 	/**
 	 * Create a new Demo
@@ -70,19 +77,19 @@ public class HighlightedDocument extends DefaultStyledDocument {
 	public HighlightedDocument() {
 
 		// Start the thread that does the coloring
-		colorer = new Colorer(this);
-		colorer.start();
+		this.colorer = new Colorer(this);
+		this.colorer.start();
 
 		// create the new document.
-		documentReader = new DocumentReader(this);
-		syntaxLexer = new SQLLexer(documentReader);
+		this.documentReader = new DocumentReader(this);
+		this.syntaxLexer = new SQLLexer(this.documentReader);
 	}
 
 	/**
 	 * Color or recolor the entire document
 	 */
 	public void colorAll() {
-		color(0, getLength());
+		this.color(0, this.getLength());
 	}
 
 	/**
@@ -95,40 +102,41 @@ public class HighlightedDocument extends DefaultStyledDocument {
 	 *            amount of text inserted or removed at the starting point.
 	 */
 	public void color(int position, int adjustment) {
-		colorer.color(position, adjustment);
+		this.colorer.color(position, adjustment);
 	}
 	
 	public void setGlobalStyle(AttributeSet value) {
-		globalStyle = value;
-		colorAll();
+		this.globalStyle = value;
+		this.colorAll();
 	}
 
 	public void setHighlightStyle(Object value) {
 		if (value == HighlightedDocument.GRAYED_OUT_STYLE) {
-			setGlobalStyle(TokenStyles.getStyle("grayedOut"));
+			this.setGlobalStyle(TokenStyles.getStyle("grayedOut"));
 			return;
 		}
 
-		if (!(value instanceof Class))
-			value = HighlightedDocument.SQL_STYLE;
+		if (!(value instanceof Class)) {
+            value = HighlightedDocument.SQL_STYLE;
+        }
 		Class<?> source = (Class<?>) value;
 		Class<?>[] parms = { Reader.class };
-		Object[] args = { documentReader };
+		Object[] args = { this.documentReader };
 		try {
 			Constructor<?> cons = source.getConstructor(parms);
-			syntaxLexer = (Lexer) cons.newInstance(args);
-			globalStyle = null;
-			colorAll();
+			this.syntaxLexer = (Lexer) cons.newInstance(args);
+			this.globalStyle = null;
+			this.colorAll();
 		} catch (SecurityException e) {
-			System.err.println("HighlightEditor.SecurityException");
+			LOGGER.error("HighlightEditor.SecurityException", e);
 		} catch (NoSuchMethodException e) {
-			System.err.println("HighlightEditor.NoSuchMethod");
+			LOGGER.error("HighlightEditor.NoSuchMethod", e);
 		} catch (InstantiationException e) {
-			System.err.println("HighlightEditor.InstantiationException");
+			LOGGER.error("HighlightEditor.InstantiationException", e);
 		} catch (InvocationTargetException e) {
-			System.err.println("HighlightEditor.InvocationTargetException");
+			LOGGER.error("HighlightEditor.InvocationTargetException", e);
 		} catch (IllegalAccessException e) {
-			System.err.println("HighlightEditor.IllegalAccessException");
+			LOGGER.error("HighlightEditor.IllegalAccessException", e);
 		}
 	}
 	
@@ -138,30 +146,30 @@ public class HighlightedDocument extends DefaultStyledDocument {
 	@Override
 	public void insertString(int offs, String str, AttributeSet a)
 			throws BadLocationException {
-		synchronized (docLock) {
+		synchronized (this.docLock) {
 			super.insertString(offs, str, a);
-			color(offs, str.length());
-			documentReader.update(offs, str.length());
+			this.color(offs, str.length());
+			this.documentReader.update(offs, str.length());
 		}
 	}
 
 	@Override
 	public void remove(int offs, int len) throws BadLocationException {
-		synchronized (docLock) {
+		synchronized (this.docLock) {
 			super.remove(offs, len);
-			color(offs, -len);
-			documentReader.update(offs, -len);
+			this.color(offs, -len);
+			this.documentReader.update(offs, -len);
 		}
 	}
 
 	// methods for Colorer to retrieve information
-	DocumentReader getDocumentReader() { return documentReader; }
-	Object getDocumentLock() { return docLock; }
-	Lexer getSyntaxLexer() { return syntaxLexer; }
-	AttributeSet getGlobalStyle() { return globalStyle; }
+	DocumentReader getDocumentReader() { return this.documentReader; }
+	Object getDocumentLock() { return this.docLock; }
+	Lexer getSyntaxLexer() { return this.syntaxLexer; }
+	AttributeSet getGlobalStyle() { return this.globalStyle; }
 
     public void stopColorer() {
-        colorer.stopColorer();
+        this.colorer.stopColorer();
     }
     
 }

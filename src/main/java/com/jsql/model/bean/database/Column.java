@@ -37,7 +37,7 @@ public class Column extends AbstractElementDatabase {
      */
     @Override
     public AbstractElementDatabase getParent() {
-        return parentTable;
+        return this.parentTable;
     }
 
     /**
@@ -55,7 +55,7 @@ public class Column extends AbstractElementDatabase {
      */
     @Override
     public String getLabel() {
-        return toString();
+        return this.toString();
     }
     
 }

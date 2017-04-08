@@ -75,7 +75,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      * Hide the loader icon.
      */
     public void hideLoader() {
-        loader.setVisible(false);
+        this.loader.setVisible(false);
     }
 
     /**
@@ -90,7 +90,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      * @param isEnable The new state of the button
      */
     public void setButtonEnable(boolean isEnable) {
-        run.setEnabled(isEnable);
+        this.run.setEnabled(isEnable);
     }
 
     /**
@@ -98,14 +98,14 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      * @param icon The new icon
      */
     public void changePrivilegeIcon(Icon icon) {
-        privilege.setIcon(icon);
+        this.privilege.setIcon(icon);
     }
 
     /**
      * Restore the default text to the button after a search.
      */
     public void restoreButtonText() {
-        run.setText(defaultText);
+        this.run.setText(this.defaultText);
     }
     
     /**
@@ -117,7 +117,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
     }
     
     public void setStateButton(StateButton stateButton) {
-        run.setState(stateButton);
+        this.run.setState(stateButton);
     }
     
 }

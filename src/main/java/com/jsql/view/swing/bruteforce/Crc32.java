@@ -29,6 +29,6 @@ public class Crc32 {
          * getValue method of CRC32 class.
          */
         return String.valueOf(checksum.getValue());
-    }   
+    }
     
 }

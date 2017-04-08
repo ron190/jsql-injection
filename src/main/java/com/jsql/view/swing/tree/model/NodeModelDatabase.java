@@ -65,12 +65,12 @@ public class NodeModelDatabase extends AbstractNodeModel {
         }
     }
 
-    @Override 
+    @Override
     public boolean isPopupDisplayable() {
         return this.isLoaded || !this.isLoaded && this.isRunning;
     }
 
-    @Override 
+    @Override
     void buildMenu(JPopupMenu tablePopupMenu, TreePath path) {
         // Do nothing
     }

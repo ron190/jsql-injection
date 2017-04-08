@@ -32,8 +32,8 @@ import javax.swing.tree.TreeSelectionModel;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
-import com.jsql.model.injection.strategy.StrategyInjectionError;
 import com.jsql.model.injection.strategy.StrategyInjection;
+import com.jsql.model.injection.strategy.StrategyInjectionError;
 import com.jsql.model.injection.vendor.Model.Strategy.Error.Method;
 import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.view.swing.HelperUi;
@@ -114,7 +114,7 @@ public class ManagerDatabase extends JPanel implements Manager {
         
         panelLineBottom.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER), 
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
@@ -170,22 +170,23 @@ public class ManagerDatabase extends JPanel implements Manager {
     public void initErrorMethods(Vendor vendor) {
         this.itemRadioStrategyError[0].removeAll();
         
-        Integer i[] = {0};
-        if (vendor != Vendor.AUTO && vendor.instance().getXmlModel().getStrategy().getError() != null)
-        for (Method methodError: vendor.instance().getXmlModel().getStrategy().getError().getMethod()) {
-            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(methodError.getName());
-            itemRadioVendor.setEnabled(false);
-            this.itemRadioStrategyError[0].add(itemRadioVendor);
-            this.groupStrategy.add((AbstractButton) itemRadioVendor);
-            
-            final int indexError = i[0];
-            ((AbstractButton) itemRadioVendor).addActionListener(actionEvent -> {
-                ManagerDatabase.this.panelStrategy.setText(methodError.getName());
-                MediatorModel.model().setStrategy(StrategyInjection.ERRORBASED);
-                ((StrategyInjectionError)StrategyInjection.ERRORBASED.instance()).setIndexMethod(indexError);
-            });
-            
-            i[0]++;
+        Integer[] i = {0};
+        if (vendor != Vendor.AUTO && vendor.instance().getXmlModel().getStrategy().getError() != null) {
+            for (Method methodError: vendor.instance().getXmlModel().getStrategy().getError().getMethod()) {
+                JMenuItem itemRadioVendor = new JRadioButtonMenuItem(methodError.getName());
+                itemRadioVendor.setEnabled(false);
+                this.itemRadioStrategyError[0].add(itemRadioVendor);
+                this.groupStrategy.add(itemRadioVendor);
+                
+                final int indexError = i[0];
+                ((AbstractButton) itemRadioVendor).addActionListener(actionEvent -> {
+                    ManagerDatabase.this.panelStrategy.setText(methodError.getName());
+                    MediatorModel.model().setStrategy(StrategyInjection.ERRORBASED);
+                    ((StrategyInjectionError)StrategyInjection.ERRORBASED.instance()).setIndexMethod(indexError);
+                });
+                
+                i[0]++;
+            }
         }
     }
     

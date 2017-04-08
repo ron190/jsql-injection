@@ -46,33 +46,33 @@ public class BlockCaret extends DefaultCaret {
         }
 
         // give values to x,y,width,height (inherited from java.awt.Rectangle)
-        x = r.x;
-        y = r.y;
-        height = r.height;
+        this.x = r.x;
+        this.y = r.y;
+        this.height = r.height;
         // A value for width was probably set by paint(), which we leave alone.
         // But the first call to damage() precedes the first call to paint(), so
         // in this case we must be prepared to set a valid width, or else
         // paint()
         // will receive a bogus clip area and caret will not get drawn properly.
-        if (width <= 0) {
-            width = getComponent().getWidth();
+        if (this.width <= 0) {
+            this.width = this.getComponent().getWidth();
         }
 
         //Calls getComponent().repaint(x, y, width, height) to erase
-        repaint();
+        this.repaint();
         // previous location of caret. Sometimes one call isn't enough.
-        repaint();
+        this.repaint();
     }
 
     @Override
     public void paint(Graphics g) {
-        JTextComponent comp = getComponent();
+        JTextComponent comp = this.getComponent();
 
         if (comp == null) {
             return;
         }
 
-        int dot = getDot();
+        int dot = this.getDot();
         Rectangle r = null;
         char dotChar;
         try {
@@ -90,11 +90,11 @@ public class BlockCaret extends DefaultCaret {
             dotChar = '_';
         }
 
-        if ((x != r.x) || (y != r.y)) {
+        if (this.x != r.x || this.y != r.y) {
             // paint() has been called directly, without a previous call to
             // damage(), so do some cleanup. (This happens, for example, when
             // the text component is resized.)
-            damage(r);
+            this.damage(r);
             return;
         }
 
@@ -103,9 +103,9 @@ public class BlockCaret extends DefaultCaret {
         // do this to draw in XOR mode
         g.setXORMode(comp.getBackground());
 
-        width = g.getFontMetrics().charWidth(dotChar);
-        if (isVisible()) {
-            g.fillRect(r.x, r.y, width, r.height);
+        this.width = g.getFontMetrics().charWidth(dotChar);
+        if (this.isVisible()) {
+            g.fillRect(r.x, r.y, this.width, r.height);
         }
     }
     

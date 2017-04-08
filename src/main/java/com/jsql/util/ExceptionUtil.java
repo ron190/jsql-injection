@@ -35,7 +35,7 @@ public class ExceptionUtil {
             
             //  Report #214: ignore if OutOfMemoryError: Java heap space
             if (
-                PreferencesUtil.isReportingBugs() 
+                PreferencesUtil.isReportingBugs()
                 && !(throwable instanceof OutOfMemoryError)
             ) {
             	GitUtil.sendUnhandledException(thread.getName(), throwable);
@@ -55,7 +55,7 @@ public class ExceptionUtil {
 
     	// Event dispatching thread Exception
     	try {
-			SwingUtilities.invokeAndWait(() -> 
+			SwingUtilities.invokeAndWait(() ->
 		        // We are in the event dispatching thread
 				Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler())
 		    );

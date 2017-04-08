@@ -2,7 +2,10 @@ package com.jsql.model.accessible;
 
 import java.util.concurrent.Callable;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.MediatorModel;
+import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
@@ -12,6 +15,11 @@ import com.jsql.model.suspendable.SuspendableGetRows;
  * User can interrupt the process and get a partial result of the file content.
  */
 public class CallableFile implements Callable<CallableFile> {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 	
     /**
      * Path to the file to read.
@@ -54,8 +62,11 @@ public class CallableFile implements Callable<CallableFile> {
                 null
             );
         } catch (InjectionFailureException e) {
-            // Ignore
             // Usually thrown if File does not exist
+            
+            // Ignore
+            IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+            LOGGER.trace(exceptionIgnored, exceptionIgnored);
         } catch (StoppedByUserSlidingException e) {
             // Get partial source
             if (!"".equals(e.getSlidingWindowAllRows())) {
@@ -63,6 +74,10 @@ public class CallableFile implements Callable<CallableFile> {
             } else if (!"".equals(e.getSlidingWindowCurrentRows())) {
                 resultToParse = e.getSlidingWindowCurrentRows();
             }
+            
+            // Ignore
+            IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+            LOGGER.trace(exceptionIgnored, exceptionIgnored);
         }
         this.sourceFile = resultToParse;
         

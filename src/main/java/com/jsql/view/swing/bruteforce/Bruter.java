@@ -3,7 +3,16 @@ package com.jsql.view.swing.bruteforce;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import com.jsql.model.exception.IgnoreMessageException;
+
 public class Bruter {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     List<String> characters = new ArrayList<>();
     
@@ -32,7 +41,7 @@ public class Bruter {
     boolean paused = false;
 
     public boolean isFound() {
-        return found;
+        return this.found;
     }
 
     public void setPaused(boolean paused) {
@@ -40,7 +49,7 @@ public class Bruter {
     }
 
     public boolean isPaused() {
-        return paused;
+        return this.paused;
     }
 
     public void setFound(boolean found) {
@@ -56,7 +65,7 @@ public class Bruter {
     }
 
     public long getRemainder() {
-        return getNumberOfPossibilities() - this.count;
+        return this.getNumberOfPossibilities() - this.count;
     }
 
     public long getNumberOfPossibilities() {
@@ -114,8 +123,12 @@ public class Bruter {
     public int getPerSecond() {
         int i;
         try {
-            i = (int) (getCounter() / calculateTimeDifference());
-        } catch (Exception ex) {
+            i = (int) (this.getCounter() / this.calculateTimeDifference());
+        } catch (Exception e) {
+            // Ignore
+            IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+            LOGGER.trace(exceptionIgnored, exceptionIgnored);
+            
             // Ignore division by zero
             return 0;
         }
@@ -123,7 +136,7 @@ public class Bruter {
     }
 
     public String calculateTimeElapsed() {
-        long timeTaken = calculateTimeDifference();
+        long timeTaken = this.calculateTimeDifference();
         this.seconds = (int) timeTaken;
         if (this.seconds > 60) {
             this.minutes = this.seconds / 60;
@@ -144,10 +157,10 @@ public class Bruter {
                     this.days = this.days - 1;
                 }
             }
-            this.seconds -= (this.minutes * 60);
-            this.minutes -= (this.hours * 60);
-            this.hours -= (this.days * 24);
-            this.days -= (this.hours * 24);
+            this.seconds -= this.minutes * 60;
+            this.minutes -= this.hours * 60;
+            this.hours -= this.days * 24;
+            this.days -= this.hours * 24;
         }
         return "Time elapsed: "+ this.days +"days "+ this.hours +"h "+ this.minutes +"min "+ this.seconds +"s";
     }
@@ -159,8 +172,8 @@ public class Bruter {
     public boolean excludeChars(String s) {
         char[] arrayChars = s.toCharArray();
         
-        for (int i = 0; i < arrayChars.length; i++) {
-            this.characters.remove(Character.toString(arrayChars[i]));
+        for (char arrayChar : arrayChars) {
+            this.characters.remove(Character.toString(arrayChar));
         }
         
         return this.characters.size() >= this.maxLength;

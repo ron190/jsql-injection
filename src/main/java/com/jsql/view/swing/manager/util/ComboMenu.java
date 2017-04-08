@@ -3,7 +3,6 @@ package com.jsql.view.swing.manager.util;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
-import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.SwingConstants;
 
@@ -13,14 +12,14 @@ import com.jsql.view.swing.combomenu.BlankIcon;
 @SuppressWarnings("serial")
 public class ComboMenu extends JMenu {
 	
-    ArrowIcon iconRenderer;
+    private transient ArrowIcon iconRenderer;
 
     public ComboMenu(String label) {
         super(label);
-        iconRenderer = new ArrowIcon(SwingConstants.SOUTH, true);
+        this.iconRenderer = new ArrowIcon(SwingConstants.SOUTH, true);
         this.setBorderPainted(false);
         this.setIcon(new BlankIcon(null, 11));
-        this.setHorizontalTextPosition(JButton.RIGHT);
+        this.setHorizontalTextPosition(SwingConstants.RIGHT);
     }
 
     @Override
@@ -28,8 +27,8 @@ public class ComboMenu extends JMenu {
         super.paintComponent(g);
         Dimension d = this.getPreferredSize();
         int x = Math.max(0, 10);
-        int y = Math.max(0, (d.height - iconRenderer.getIconHeight()) / 2 - 1);
-        iconRenderer.paintIcon(this, g, x, y);
+        int y = Math.max(0, (d.height - this.iconRenderer.getIconHeight()) / 2 - 1);
+        this.iconRenderer.paintIcon(this, g, x, y);
     }
     
 }

@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -29,14 +28,14 @@ public class MenuBarCoder extends JMenuBar {
     }
 
     public static class ComboMenu extends JMenu {
-        ArrowIcon iconRenderer;
+        private transient ArrowIcon iconRenderer;
 
         public ComboMenu(String label) {
             super(label);
             this.iconRenderer = new ArrowIcon(SwingConstants.SOUTH, true);
             this.setBorderPainted(false);
             this.setIcon(new BlankIcon(null, 11));
-            this.setHorizontalTextPosition(JButton.LEFT);
+            this.setHorizontalTextPosition(SwingConstants.LEFT);
         }
 
         @Override
@@ -51,10 +50,10 @@ public class MenuBarCoder extends JMenuBar {
     
     public MenuBarCoder(JMenu menu) {
         this.menu = menu;
-
+        
         MenuItemListener listener = new MenuItemListener();
         this.setListener(menu, listener);
-
+        
         this.add(menu);
     }
 
@@ -70,12 +69,12 @@ public class MenuBarCoder extends JMenuBar {
         }
     }
 
-    public String getSelectedItem() {
-        return MenuBarCoder.this.menu.getText();
-    }
-
     public static JMenu createMenu(String label) {
         return new ComboMenu(label);
+    }
+    
+    public String getSelectedItem() {
+        return this.menu.getText();
     }
     
 }

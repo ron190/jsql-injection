@@ -36,12 +36,12 @@ public class CreateValuesTab implements InteractionCommand {
      */
     public CreateValuesTab(Object[] interactionParams) {
         // 2D array of values
-        data = (String[][]) interactionParams[1];
+        this.data = (String[][]) interactionParams[1];
     }
 
     @Override
     public void execute() {
-        LOGGER.info("CreateValuesTab: " + Arrays.deepToString(data) +"\n");
+        LOGGER.info("CreateValuesTab: " + Arrays.deepToString(this.data) +"\n");
         LOGGER.info("\n");
     }
     

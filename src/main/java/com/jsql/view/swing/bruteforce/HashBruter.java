@@ -24,7 +24,7 @@ public class HashBruter extends Bruter {
                 break;
             } else {
                 
-                while (paused) {
+                while (this.paused) {
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
@@ -49,7 +49,7 @@ public class HashBruter extends Bruter {
     }
 
     private void generateAllPossibleCombinations(String baseString, int length) throws NoSuchAlgorithmException, InterruptedException {
-        while (paused) {
+        while (this.paused) {
             Thread.sleep(500);
         }
         
@@ -78,10 +78,10 @@ public class HashBruter extends Bruter {
                     this.found = true;
                     this.done = true;
                 }
-                count++;
+                this.count++;
             } else if (baseString.length() < length) {
-                for (int n = 0; n < characters.size(); n++) {
-                    this.generateAllPossibleCombinations(baseString + characters.get(n), length);
+                for (int n = 0; n < this.characters.size(); n++) {
+                    this.generateAllPossibleCombinations(baseString + this.characters.get(n), length);
                 }
             }
         }

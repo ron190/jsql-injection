@@ -58,7 +58,7 @@ public class Table extends AbstractElementDatabase {
      */
     @Override
     public int getChildCount() {
-        return Integer.parseInt(rowCount);
+        return Integer.parseInt(this.rowCount);
     }
 
     /**
@@ -69,20 +69,20 @@ public class Table extends AbstractElementDatabase {
     @Override
     public String getLabel() {
         String nbRow;
-        if ("information_schema".equals(parentDatabase.toString())) {
+        if ("information_schema".equals(this.parentDatabase.toString())) {
             nbRow = "?";
         } else {
-            nbRow = rowCount;
+            nbRow = this.rowCount;
         }
         
         // Report #138: detect incorrect number of rows
         String sPlural = "";
         try {
-            if (Integer.parseInt(rowCount) > 1) {
+            if (Integer.parseInt(this.rowCount) > 1) {
                 sPlural = "s";
             }
         } catch (NumberFormatException e) {
-            rowCount = "0";
+            this.rowCount = "0";
             LOGGER.warn("Incorrect number of rows.");
         }
         

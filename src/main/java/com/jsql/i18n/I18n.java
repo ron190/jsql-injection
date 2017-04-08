@@ -15,9 +15,9 @@ import org.apache.log4j.Logger;
 /**
  * Utility class managing different text translations like english, chinese and arabic.
  * It retreives text in the current language of the system and also the one choosed
- * manually by user. 
+ * manually by user.
  * If the current system language is not supported then the user is proposed to use
- * the community translation protocol.  
+ * the community translation protocol.
  * TODO: add graphical component methods to the view
  */
 public class I18n {
@@ -105,12 +105,12 @@ public class I18n {
     
     /**
      * Verify if there is a language properties file corresponding to the current system language.
-     * If not then it invites the user to use the translation process. 
-     * @throws URISyntaxException 
+     * If not then it invites the user to use the translation process.
+     * @throws URISyntaxException
      */
     public static void checkCurrentLanguage() throws URISyntaxException {
         URL path = I18n.class.getResource("/com/jsql/i18n/jsql_"+ Locale.getDefault().getLanguage() +".properties");
-        if (!"en".equals(Locale.getDefault().getLanguage()) && path == null) { 
+        if (!"en".equals(Locale.getDefault().getLanguage()) && path == null) {
             String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
             LOGGER.debug(
                 "Language "+ languageHost +" is not supported, "

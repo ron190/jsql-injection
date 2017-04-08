@@ -17,11 +17,11 @@ public class ConcretePostgreTestSuite extends AbstractTestSuite {
         this.jdbcColumnForColumnName = "column_name";
         
         this.jdbcQueryForDatabaseNames = "SELECT table_schema FROM information_schema.tables";
-        this.jdbcQueryForTableNames =    "select TABLE_NAME from INFORMATION_SCHEMA.tables where TABLE_SCHEMA='"+ jsqlDatabaseName +"'";   
-        this.jdbcQueryForColumnNames =   "select COLUMN_NAME from information_schema.columns where TABLE_SCHEMA='"+ jsqlDatabaseName +"' and TABLE_NAME='"+ jsqlTableName +"'";  
-        this.jdbcQueryForValues =    "select "+ jsqlColumnName +" from "+ jsqlDatabaseName +"."+ jsqlTableName; 
+        this.jdbcQueryForTableNames =    "select TABLE_NAME from INFORMATION_SCHEMA.tables where TABLE_SCHEMA='"+ this.jsqlDatabaseName +"'";
+        this.jdbcQueryForColumnNames =   "select COLUMN_NAME from information_schema.columns where TABLE_SCHEMA='"+ this.jsqlDatabaseName +"' and TABLE_NAME='"+ this.jsqlTableName +"'";
+        this.jdbcQueryForValues =    "select "+ this.jsqlColumnName +" from "+ this.jsqlDatabaseName +"."+ this.jsqlTableName;
         
-        requestJdbc();
+        this.requestJdbc();
     }
     
 }

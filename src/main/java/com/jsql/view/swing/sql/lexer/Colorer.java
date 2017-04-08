@@ -28,6 +28,9 @@ import java.util.TreeSet;
 
 import javax.swing.text.AttributeSet;
 
+import org.apache.log4j.Logger;
+
+import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.view.swing.sql.lexer.syntax.lexer.Lexer;
 import com.jsql.view.swing.sql.lexer.syntax.lexer.Token;
 
@@ -36,6 +39,12 @@ import com.jsql.view.swing.sql.lexer.syntax.lexer.Token;
  * colored are messaged to the thread and put in a list.
  */
 class Colorer extends Thread {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
+    
 	/**
 	 * A simple wrapper representing something that needs to be colored. Placed
 	 * into an object so that it can be stored in a Vector.
@@ -65,7 +74,7 @@ class Colorer extends Thread {
 	 * we need to be able to retrieve ranges from it, it is stored in a
 	 * balanced tree.
 	 */
-	private TreeSet<DocPosition> iniPositions = new TreeSet<DocPosition>(DocPositionComparator.instance);
+	private TreeSet<DocPosition> iniPositions = new TreeSet<>(DocPositionComparator.instance);
 
 	/**
 	 * As we go through and remove invalid positions we will also be finding
@@ -74,12 +83,12 @@ class Colorer extends Thread {
 	 * positions and simply add it to the list of positions once all the old
 	 * positions have been removed.
 	 */
-	private HashSet<DocPosition> newPositions = new HashSet<DocPosition>();
+	private HashSet<DocPosition> newPositions = new HashSet<>();
 
 	/**
 	 * Vector that stores the communication between the two threads.
 	 */
-	private volatile LinkedList<RecolorEvent> events = new LinkedList<RecolorEvent>();
+	private volatile LinkedList<RecolorEvent> events = new LinkedList<>();
 
 	/**
 	 * When accessing the linked list, we need to create a critical section.
@@ -106,7 +115,7 @@ class Colorer extends Thread {
 	 */
 	public Colorer(HighlightedDocument document) {
 	    super("Colorer");
-		this.document = new WeakReference<HighlightedDocument>(document);
+		this.document = new WeakReference<>(document);
 	}
 
 	/**
@@ -118,17 +127,17 @@ class Colorer extends Thread {
 		// figure out if this adjustment effects the current run.
 		// if it does, then adjust the place in the document
 		// that gets highlighted.
-		if (position < lastPosition) {
-			if (lastPosition < position - adjustment) {
-				change -= lastPosition - position;
+		if (position < this.lastPosition) {
+			if (this.lastPosition < position - adjustment) {
+				this.change -= this.lastPosition - position;
 			} else {
-				change += adjustment;
+				this.change += adjustment;
 			}
 		}
-		synchronized (eventsLock) {
-			if(!events.isEmpty()) {
+		synchronized (this.eventsLock) {
+			if(!this.events.isEmpty()) {
 				// check whether to coalesce with current last element
-				RecolorEvent curLast = events.getLast();
+				RecolorEvent curLast = this.events.getLast();
 				if(adjustment < 0 && curLast.adjustment < 0) {
 					// both are removals
 					if(position == curLast.position) {
@@ -147,8 +156,8 @@ class Colorer extends Thread {
 					}
 				}
 			}
-			events.add(new RecolorEvent(position, adjustment));
-			eventsLock.notifyAll();
+			this.events.add(new RecolorEvent(position, adjustment));
+			this.eventsLock.notifyAll();
 		}
 	}
 
@@ -158,37 +167,39 @@ class Colorer extends Thread {
 	 */
 	@Override
 	public void run() {
-		while(document.get() != null) {
+		while(this.document.get() != null) {
 			try {
 				RecolorEvent re = new RecolorEvent(0, 0);
-				synchronized (eventsLock) {
+				synchronized (this.eventsLock) {
 					// get the next event to process - stalling until the
 					// event becomes available
-					while(events.isEmpty() && document.get() != null) {
+					while(this.events.isEmpty() && this.document.get() != null) {
 						// stop waiting after a second in case document
 						// has been cleared.
-						eventsLock.wait(1000);
+						this.eventsLock.wait(1000);
 					}
-					if (!events.isEmpty()) {
-					    re = events.removeFirst();
+					if (!this.events.isEmpty()) {
+					    re = this.events.removeFirst();
 					}
 				}
-				processEvent(re.position, re.adjustment);
+				this.processEvent(re.position, re.adjustment);
 				Thread.sleep(100);
 			} catch(InterruptedException e) { }
 		}
 	}
 	
 	private void processEvent(int position, int adjustment) {
-		HighlightedDocument doc = document.get();
-		if(doc == null) return;
+		HighlightedDocument doc = this.document.get();
+		if(doc == null) {
+            return;
+        }
 		
 		// slurp everything up into local variables in case another
 		// thread changes them during coloring process
 		AttributeSet globalStyle = doc.getGlobalStyle();
 		Lexer syntaxLexer = doc.getSyntaxLexer();
 		DocumentReader documentReader = doc.getDocumentReader();
-		Object docLock = doc.getDocumentLock(); 
+		Object docLock = doc.getDocumentLock();
 
 		if(globalStyle != null) {
 			int start = Math.min(position, position + adjustment);
@@ -212,20 +223,24 @@ class Colorer extends Thread {
 		// token before the current position
 		try {
 			// all the good positions before
-			workingSet = iniPositions.headSet(startRequest);
+			workingSet = this.iniPositions.headSet(startRequest);
 			// the last of the stuff before
 			dpStart = workingSet.last();
-		} catch (NoSuchElementException x) {
+		} catch (NoSuchElementException e) {
 			// if there were no good positions before the requested
 			// start,
 			// we can always start at the very beginning.
 			dpStart = new DocPosition(0);
+			
+			// Ignore
+            IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+            LOGGER.trace(exceptionIgnored, exceptionIgnored);
 		}
 
 		// if stuff was removed, take any removed positions off the
 		// list.
 		if (adjustment < 0) {
-			workingSet = iniPositions.subSet(startRequest,
+			workingSet = this.iniPositions.subSet(startRequest,
 					endRequest);
 			workingIt = workingSet.iterator();
 			while (workingIt.hasNext()) {
@@ -236,14 +251,14 @@ class Colorer extends Thread {
 
 		// adjust the positions of everything after the
 		// insertion/removal.
-		workingSet = iniPositions.tailSet(startRequest);
+		workingSet = this.iniPositions.tailSet(startRequest);
 		workingIt = workingSet.iterator();
 		while (workingIt.hasNext()) {
 			workingIt.next().adjustPosition(adjustment);
 		}
 
 		// now go through and highlight as much as needed
-		workingSet = iniPositions.tailSet(dpStart);
+		workingSet = this.iniPositions.tailSet(dpStart);
 		workingIt = workingSet.iterator();
 		dp = null;
 		if (workingIt.hasNext()) {
@@ -282,13 +297,13 @@ class Colorer extends Thread {
 				// need to stop there.
 				t = syntaxLexer.getNextToken();
 			}
-			newPositions.add(dpStart);
+			this.newPositions.add(dpStart);
 			while (!done && t != null) {
 				// this is the actual command that colors the stuff.
 				// Color stuff with the description of the styles
 				// stored in tokenStyles.
 				if (t.getCharEnd() <= doc.getLength()) {
-					doc.setCharacterAttributes(t.getCharBegin() + change,
+					doc.setCharacterAttributes(t.getCharBegin() + this.change,
 							t.getCharEnd()	- t.getCharBegin(),
 							TokenStyles.getStyle(t.getDescription()),
 							true);
@@ -296,7 +311,7 @@ class Colorer extends Thread {
 					// text that we colored
 					dpEnd = new DocPosition(t.getCharEnd());
 				}
-				lastPosition = t.getCharEnd() + change;
+				this.lastPosition = t.getCharEnd() + this.change;
 				// The other more complicated reason for doing no
 				// more highlighting
 				// is that all the colors are the same from here on
@@ -338,7 +353,7 @@ class Colorer extends Thread {
 					// so that we can do this check next time,
 					// record all the
 					// initial states from this time.
-					newPositions.add(dpEnd);
+					this.newPositions.add(dpEnd);
 				}
 				synchronized (docLock) {
 					t = syntaxLexer.getNextToken();
@@ -350,7 +365,7 @@ class Colorer extends Thread {
 			// we started doing the highlighting right up through
 			// the last
 			// bit of text we touched.
-			workingIt = iniPositions.subSet(dpStart, dpEnd)
+			workingIt = this.iniPositions.subSet(dpStart, dpEnd)
 					.iterator();
 			while (workingIt.hasNext()) {
 				workingIt.next();
@@ -359,7 +374,7 @@ class Colorer extends Thread {
 
 			// Remove all the positions that are after the end of
 			// the file.:
-			workingIt = iniPositions.tailSet(
+			workingIt = this.iniPositions.tailSet(
 					new DocPosition(doc.getLength())).iterator();
 			while (workingIt.hasNext()) {
 				workingIt.next();
@@ -368,18 +383,21 @@ class Colorer extends Thread {
 
 			// and put the new initial positions that we have found
 			// on the list.
-			iniPositions.addAll(newPositions);
-			newPositions.clear();
-		} catch (IOException x) {
+			this.iniPositions.addAll(this.newPositions);
+			this.newPositions.clear();
+		} catch (IOException e) {
+		    // Ignore
+            IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+            LOGGER.trace(exceptionIgnored, exceptionIgnored);
 		}
 		synchronized (docLock) {
-			lastPosition = -1;
-			change = 0;
+			this.lastPosition = -1;
+			this.change = 0;
 		}
 	}
 	
 	public void stopColorer() {
-	    document.clear();
+	    this.document.clear();
 	}
 	
 }

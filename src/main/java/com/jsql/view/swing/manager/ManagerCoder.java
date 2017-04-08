@@ -50,19 +50,19 @@ import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 public class ManagerCoder extends JPanel implements Manager {
 	
     /**
-     * User input to encode. 
+     * User input to encode.
      */
-    public JTextArea textInput;
+    private JTextArea textInput;
 
     /**
-     * Encoding choosed by user. 
+     * Encoding choosed by user.
      */
-    public JMenuItem encoding;
+    private JMenuItem encoding;
 
     /**
      * JTextArea displaying result of encoding/decoding.
      */
-    public JTextArea result;
+    private JTextArea result;
 
     /**
      * Create a panel to encode a string.
@@ -189,7 +189,7 @@ public class ManagerCoder extends JPanel implements Manager {
     }
 
     /**
-     * Unzip a String encoded from base64 or hexadecimal. 
+     * Unzip a String encoded from base64 or hexadecimal.
      * @param str String to unzip
      * @return String unzipped
      * @throws IOException
@@ -237,6 +237,20 @@ public class ManagerCoder extends JPanel implements Manager {
             this.byte2hex(block[i], buf);
         }
         return buf.toString();
+    }
+    
+    // Getter and setter
+
+    public JTextArea getTextInput() {
+        return textInput;
+    }
+
+    public JMenuItem getEncoding() {
+        return encoding;
+    }
+
+    public JTextArea getResult() {
+        return result;
     }
     
 }

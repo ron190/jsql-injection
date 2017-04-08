@@ -1,5 +1,6 @@
 package com.jsql.view.swing.scrollpane;
 
+import java.awt.Adjustable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
@@ -17,12 +18,14 @@ import javax.swing.JLayeredPane;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.view.swing.HelperUi;
 
 @SuppressWarnings("serial")
@@ -59,80 +62,80 @@ public class LightScrollPane extends JComponent {
     }
     
     public LightScrollPane(JComponent component) {
-        scrollPane = new JScrollPanePixelBorder(component);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        this.scrollPane = new JScrollPanePixelBorder(component);
+        this.scrollPane.setBorder(BorderFactory.createEmptyBorder());
         
-        verticalScrollBar = scrollPane.getVerticalScrollBar();
-        verticalScrollBar.setVisible(false);
-        verticalScrollBar.setOpaque(false);
-        verticalScrollBar.setUI(new MyScrollBarUI());
+        this.verticalScrollBar = this.scrollPane.getVerticalScrollBar();
+        this.verticalScrollBar.setVisible(false);
+        this.verticalScrollBar.setOpaque(false);
+        this.verticalScrollBar.setUI(new MyScrollBarUI());
 
-        horizontalScrollBar = scrollPane.getHorizontalScrollBar();
-        horizontalScrollBar.setVisible(false);
-        horizontalScrollBar.setOpaque(false);
-        horizontalScrollBar.setUI(new MyScrollBarUI());
+        this.horizontalScrollBar = this.scrollPane.getHorizontalScrollBar();
+        this.horizontalScrollBar.setVisible(false);
+        this.horizontalScrollBar.setOpaque(false);
+        this.horizontalScrollBar.setUI(new MyScrollBarUI());
 
         JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setLayer(verticalScrollBar, JLayeredPane.PALETTE_LAYER);
-        layeredPane.setLayer(horizontalScrollBar, JLayeredPane.PALETTE_LAYER);
+        layeredPane.setLayer(this.verticalScrollBar, JLayeredPane.PALETTE_LAYER);
+        layeredPane.setLayer(this.horizontalScrollBar, JLayeredPane.PALETTE_LAYER);
 
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setLayout(new ScrollPaneLayout() {
+        this.scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        this.scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        this.scrollPane.setLayout(new ScrollPaneLayout() {
             @Override
             public void layoutContainer(Container parent) {
                 // Fix #13412: NullPointerException on setBounds()
                 // Implementation by sun.swing.SwingUtilities2.getFontMetrics()
                 try {
-                    viewport.setBounds(0, 0, getWidth(), getHeight() - 1);
+                    this.viewport.setBounds(0, 0, LightScrollPane.this.getWidth(), LightScrollPane.this.getHeight() - 1);
                 } catch (NullPointerException e) {
                     LOGGER.error(e, e);
                 }
-                SwingUtilities.invokeLater(() -> LightScrollPane.this.displayScrollBarsIfNecessary(viewport));
+                SwingUtilities.invokeLater(() -> LightScrollPane.this.displayScrollBarsIfNecessary(this.viewport));
             }
         });
         
-        layeredPane.add(horizontalScrollBar);
-        layeredPane.add(verticalScrollBar);
-        layeredPane.add(scrollPane);
+        layeredPane.add(this.horizontalScrollBar);
+        layeredPane.add(this.verticalScrollBar);
+        layeredPane.add(this.scrollPane);
 
-        setLayout(new BorderLayout() {
+        this.setLayout(new BorderLayout() {
             @Override
             public void layoutContainer(Container target) {
                 super.layoutContainer(target);
-                int width = getWidth();
-                int height = getHeight();
-                scrollPane.setBounds(0, 0, width, height);
+                int width = LightScrollPane.this.getWidth();
+                int height = LightScrollPane.this.getHeight();
+                LightScrollPane.this.scrollPane.setBounds(0, 0, width, height);
 
                 int scrollBarSize = THUMB_SIZE;
-                int cornerOffset = verticalScrollBar.isVisible() && horizontalScrollBar.isVisible() ? scrollBarSize : 0;
-                if (verticalScrollBar.isVisible()) {
-                    verticalScrollBar.setBounds(
+                int cornerOffset = LightScrollPane.this.verticalScrollBar.isVisible() && LightScrollPane.this.horizontalScrollBar.isVisible() ? scrollBarSize : 0;
+                if (LightScrollPane.this.verticalScrollBar.isVisible()) {
+                    LightScrollPane.this.verticalScrollBar.setBounds(
                         LightScrollPane.this.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT
                         ? 0
-                        : width - scrollBarSize, 
-                        0, 
-                        scrollBarSize, 
+                        : width - scrollBarSize,
+                        0,
+                        scrollBarSize,
                         height - cornerOffset
                     );
                 }
-                if (horizontalScrollBar.isVisible()) {
-                    horizontalScrollBar.setBounds(
-                        0, 
-                        height - scrollBarSize, 
-                        width - cornerOffset, 
+                if (LightScrollPane.this.horizontalScrollBar.isVisible()) {
+                    LightScrollPane.this.horizontalScrollBar.setBounds(
+                        0,
+                        height - scrollBarSize,
+                        width - cornerOffset,
                         scrollBarSize
                     );
                 }
             }
         });
-        add(layeredPane, BorderLayout.CENTER);
+        this.add(layeredPane, BorderLayout.CENTER);
         layeredPane.setBackground(Color.BLUE);
     }
 
     private void displayScrollBarsIfNecessary(JViewport viewPort) {
-        displayVerticalScrollBarIfNecessary(viewPort);
-        displayHorizontalScrollBarIfNecessary(viewPort);
+        this.displayVerticalScrollBarIfNecessary(viewPort);
+        this.displayHorizontalScrollBarIfNecessary(viewPort);
     }
 
     private void displayVerticalScrollBarIfNecessary(JViewport viewPort) {
@@ -140,7 +143,7 @@ public class LightScrollPane extends JComponent {
         Dimension viewSize = viewPort.getViewSize();
         boolean isDisplayingVerticalScrollBar =
                 viewSize.getHeight() > viewRect.getHeight();
-        verticalScrollBar.setVisible(isDisplayingVerticalScrollBar);
+        this.verticalScrollBar.setVisible(isDisplayingVerticalScrollBar);
     }
 
     private void displayHorizontalScrollBarIfNecessary(JViewport viewPort) {
@@ -148,16 +151,16 @@ public class LightScrollPane extends JComponent {
         Dimension viewSize = viewPort.getViewSize();
         boolean isDisplayingHorizontalScrollBar =
                 viewSize.getWidth() > viewRect.getWidth();
-        horizontalScrollBar.setVisible(isDisplayingHorizontalScrollBar);
+        this.horizontalScrollBar.setVisible(isDisplayingHorizontalScrollBar);
     }
 
     private static class MyScrollBarButton extends JButton {
         private MyScrollBarButton() {
-            setOpaque(false);
-            setFocusable(false);
-            setFocusPainted(false);
-            setBorderPainted(false);
-            setBorder(BorderFactory.createEmptyBorder());
+            this.setOpaque(false);
+            this.setFocusable(false);
+            this.setFocusPainted(false);
+            this.setBorderPainted(false);
+            this.setBorder(BorderFactory.createEmptyBorder());
         }
     }
 
@@ -184,21 +187,21 @@ public class LightScrollPane extends JComponent {
         
         @Override
         protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
-            int alpha = isThumbRollover() ? scrollBarAlphaRollover : scrollBarAlpha;
-            int orientation = scrollbar.getOrientation();
+            int alpha = this.isThumbRollover() ? LightScrollPane.this.scrollBarAlphaRollover : LightScrollPane.this.scrollBarAlpha;
+            int orientation = this.scrollbar.getOrientation();
             int x = thumbBounds.x + THUMB_BORDER_SIZE;
             int y = thumbBounds.y + THUMB_BORDER_SIZE;
 
-            int width = 
-                orientation == JScrollBar.VERTICAL
+            int width =
+                orientation == Adjustable.VERTICAL
                 ? THUMB_SIZE
-                : thumbBounds.width - (THUMB_BORDER_SIZE * 2)
+                : thumbBounds.width - THUMB_BORDER_SIZE * 2
             ;
             width = Math.max(width, THUMB_SIZE);
 
-            int height = 
-                orientation == JScrollBar.VERTICAL
-                ? thumbBounds.height - (THUMB_BORDER_SIZE * 2) 
+            int height =
+                orientation == Adjustable.VERTICAL
+                ? thumbBounds.height - THUMB_BORDER_SIZE * 2
                 : THUMB_SIZE
             ;
             height = Math.max(height, THUMB_SIZE);
@@ -209,9 +212,13 @@ public class LightScrollPane extends JComponent {
             // Fix Mac OS Color.DARK_GRAY and alpha incompatibility
             Color colorThumbAlpha;
             try {
-                colorThumbAlpha = new Color(colorThumb.getRed(), colorThumb.getGreen(), colorThumb.getBlue(), alpha);                
+                colorThumbAlpha = new Color(LightScrollPane.this.colorThumb.getRed(), LightScrollPane.this.colorThumb.getGreen(), LightScrollPane.this.colorThumb.getBlue(), alpha);
             } catch (NullPointerException e) {
-                colorThumbAlpha = Color.GRAY;                
+                colorThumbAlpha = Color.GRAY;
+                
+                // Ignore
+                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             graphics2D.setColor(colorThumbAlpha);
             

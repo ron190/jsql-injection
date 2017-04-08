@@ -9,10 +9,12 @@ import javax.swing.text.StyleConstants;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.PatternLayout;
+import org.apache.log4j.Priority;
 import org.apache.log4j.WriterAppender;
 import org.apache.log4j.spi.LoggingEvent;
 import org.apache.log4j.spi.ThrowableInformation;
 
+import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.view.swing.HelperUi;
 
 /**
@@ -73,8 +75,8 @@ public class SwingAppender extends WriterAppender {
     @Override
     public void append(final LoggingEvent event) {
         SwingUtilities.invokeLater(() -> this.insertText(
-            layout.format(event), 
-            event.getLevel(), 
+            this.layout.format(event),
+            event.getLevel(),
             event.getThrowableInformation()
         ));
     }
@@ -108,11 +110,13 @@ public class SwingAppender extends WriterAppender {
         
         switch (level.toInt()) {
             case Level.TRACE_INT:
-                consoleTextPane.append(message, TRACE);
-                consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
+                if (throwableInformation == null || throwableInformation != null && !(throwableInformation.getThrowable() instanceof IgnoreMessageException)) {
+                    consoleTextPane.append(message, TRACE);
+                    consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
+                }
                 break;
                 
-            case Level.ERROR_INT:
+            case Priority.ERROR_INT:
                 javaTextPane.append(message, WARN);
                 javaTextPane.getProxy().setCaretPosition(javaTextPane.getProxy().getDocument().getLength());
                 
@@ -123,26 +127,26 @@ public class SwingAppender extends WriterAppender {
                 }
                 break;
                 
-            case Level.WARN_INT:
+            case Priority.WARN_INT:
                 consoleTextPane.append(message, WARN);
                 consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
                 break;
                 
-            case Level.INFO_INT:
+            case Priority.INFO_INT:
                 consoleTextPane.append(message, INFO);
                 consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
                 break;
                 
-            case Level.DEBUG_INT:
+            case Priority.DEBUG_INT:
                 consoleTextPane.append(message, DEBUG);
                 consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
                 break;
                 
-            case Level.FATAL_INT:
+            case Priority.FATAL_INT:
                 // Ignore exception
                 break;
                 
-            case Level.ALL_INT:
+            case Priority.ALL_INT:
             default:
                 consoleTextPane.append(message, ALL);
                 consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());

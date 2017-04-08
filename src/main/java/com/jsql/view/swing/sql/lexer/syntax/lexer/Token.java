@@ -20,10 +20,23 @@ package com.jsql.view.swing.sql.lexer.syntax.lexer;
 /**
  * A generic token class.
  */
-public abstract class Token{
+public abstract class Token {
+
+    /**
+     * The state of the tokenizer is undefined.
+     */
+    public static final int UNDEFINED_STATE = -1;
+
+    /**
+     * The initial state of the tokenizer.
+     * Anytime the tokenizer returns to this state,
+     * the tokenizer could be restarted from that point
+     * with side effects.
+     */
+    public static final int INITIAL_STATE = 0;
 
 	/**
-	 * A unique ID for this type of token. 
+	 * A unique ID for this type of token.
 	 * Typically, ID numbers for each type will
 	 * be static variables of the Token class.
 	 * 
@@ -36,7 +49,7 @@ public abstract class Token{
 	 * be appropriate for syntax highlighting.  For example
 	 * "comment" might be returned for a comment.  This should
 	 * make it easy to do html syntax highlighting.  Just use
-	 * style sheets to define classes with the same name as 
+	 * style sheets to define classes with the same name as
 	 * the description and write the token in the html file
 	 * with that css class name.
      *
@@ -72,29 +85,29 @@ public abstract class Token{
 	public abstract boolean isWhiteSpace();
 	
 	/**
-	 * Determine if this token is an error.  Lets face it, not all code 
+	 * Determine if this token is an error.  Lets face it, not all code
 	 * conforms to spec. The lexer might know about an error
-	 * if a string literal is not closed, for example. 
+	 * if a string literal is not closed, for example.
 	 *
 	 * @return true if this token is an error.
 	 */
   	public abstract boolean isError();
 	
-	/** 
+	/**
      * get the line number of the input on which this token started
      * 
      * @return the line number of the input on which this token started
      */
     public abstract int getLineNumber();
 
-    /** 
+    /**
      * get the offset into the input in characters at which this token started
      *
      * @return the offset into the input in characters at which this token started
      */
     public abstract int getCharBegin();
 
-    /** 
+    /**
      * get the offset into the input in characters at which this token ended
      *
      * @return the offset into the input in characters at which this token ended
@@ -107,19 +120,6 @@ public abstract class Token{
      * @return a  String that explains the error, if this token is an error, null otherwise.
      */
     public abstract String errorString();
-
-    /**
-     * The state of the tokenizer is undefined.
-     */
-    public static final int UNDEFINED_STATE = -1;
-
-    /**
-     * The initial state of the tokenizer.
-     * Anytime the tokenizer returns to this state,
-     * the tokenizer could be restarted from that point
-     * with side effects.
-     */
-    public static final int INITIAL_STATE = 0;
 
     /**
      * Get an integer representing the state the tokenizer is in after

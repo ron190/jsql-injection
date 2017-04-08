@@ -78,7 +78,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         }
 
         this.listPaths = new DnDList(pathsList);
-        listPaths.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
+        this.listPaths.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
         this.add(new LightScrollPane(1, 0, 0, 0, this.listPaths), BorderLayout.CENTER);
         
         JPanel southPanel = new JPanel();
@@ -157,7 +157,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                 new Thread(() -> {
                     try {
                         AbstractManagerShell.this.createPayload(
-                            pathShell.toString(), 
+                            pathShell.toString(),
                             AbstractManagerShell.this.urlShell.getText()
                         );
                     } catch (JSqlException e) {

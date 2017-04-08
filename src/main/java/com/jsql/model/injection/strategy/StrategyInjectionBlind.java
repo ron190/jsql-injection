@@ -75,7 +75,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
         
         Request requestMessageBinary = new Request();
         requestMessageBinary.setMessage(TypeRequest.MESSAGE_BINARY);
-        requestMessageBinary.setParameters(blind.getInfoMessage());
+        requestMessageBinary.setParameters(this.blind.getInfoMessage());
         MediatorModel.model().sendToViews(requestMessageBinary);
         
         Request requestMarkBlindStrategy = new Request();

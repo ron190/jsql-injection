@@ -18,7 +18,7 @@ public enum StrategyInjection {
     }
     
     public AbstractStrategy instance() {
-        return instanceStrategy;
+        return this.instanceStrategy;
     }
     
     @Override

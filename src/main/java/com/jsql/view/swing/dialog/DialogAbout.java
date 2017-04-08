@@ -40,6 +40,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.WindowConstants;
 import javax.swing.event.HyperlinkEvent;
 
 import org.apache.log4j.Logger;
@@ -78,7 +79,7 @@ public class DialogAbout extends JDialog {
     public DialogAbout() {
         super(MediatorGui.frame(), "About jSQL Injection", Dialog.ModalityType.MODELESS);
 
-        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
         // Define a small and large app icon
         this.setIconImages(HelperUi.getIcons());
@@ -87,8 +88,8 @@ public class DialogAbout extends JDialog {
         ActionListener escapeListener = actionEvent -> DialogAbout.this.dispose();
 
         this.getRootPane().registerKeyboardAction(
-            escapeListener, 
-            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), 
+            escapeListener,
+            KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
             JComponent.WHEN_IN_FOCUSED_WINDOW
         );
 
@@ -129,11 +130,11 @@ public class DialogAbout extends JDialog {
         
         buttonWebpage.addMouseListener(new FlatButtonMouseAdapter(buttonWebpage));
         
-        buttonClose.setContentAreaFilled(false);
-        buttonClose.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        buttonClose.setBackground(new Color(200, 221, 242));
+        this.buttonClose.setContentAreaFilled(false);
+        this.buttonClose.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        this.buttonClose.setBackground(new Color(200, 221, 242));
         
-        buttonClose.addMouseListener(new FlatButtonMouseAdapter(buttonClose));
+        this.buttonClose.addMouseListener(new FlatButtonMouseAdapter(this.buttonClose));
         
         lastLine.add(buttonWebpage);
         lastLine.add(Box.createGlue());

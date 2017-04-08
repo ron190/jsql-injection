@@ -10,6 +10,7 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JViewport;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
@@ -102,7 +103,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         this.fixedTable.getTableHeader().setDefaultRenderer(new RowHeaderRenderer() {
             @Override
             public Component getTableCellRendererComponent(
-                JTable table, Object value, boolean isSelected, 
+                JTable table, Object value, boolean isSelected,
                 boolean hasFocus, int row, int column
             ) {
                 JComponent label = (JComponent) super.getTableCellRendererComponent(
@@ -140,7 +141,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
             }
         });
         
-        this.mainTable.getSelectionModel().addListSelectionListener(listSelectionEvent -> 
+        this.mainTable.getSelectionModel().addListSelectionListener(listSelectionEvent ->
             modelFixedTable.fireTableRowsUpdated(0, modelFixedTable.getRowCount() - 1)
         );
         
@@ -153,7 +154,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         //  Add the fixed table to the scroll pane
         this.fixedTable.setPreferredScrollableViewportSize(this.fixedTable.getPreferredSize());
         scrollPane.setRowHeaderView(this.fixedTable);
-        scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER, this.fixedTable.getTableHeader());
+        scrollPane.setCorner(ScrollPaneConstants.UPPER_LEFT_CORNER, this.fixedTable.getTableHeader());
 
         // Synchronize scrolling of the row header with the main table
         scrollPane.getRowHeader().addChangeListener(this);
@@ -166,7 +167,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
     public void stateChanged(ChangeEvent e) {
         //  Sync the scroll pane scrollbar with the row header
         JViewport viewport = (JViewport) e.getSource();
-        scrollPane.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
+        this.scrollPane.getVerticalScrollBar().setValue(viewport.getViewPosition().y);
     }
     
     /**
@@ -180,7 +181,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         }
 
         if ("model".equals(e.getPropertyName())) {
-            this.fixedTable.setModel(mainTable.getModel());
+            this.fixedTable.setModel(this.mainTable.getModel());
         }
     }
     

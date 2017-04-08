@@ -89,7 +89,7 @@ public abstract class AbstractShell extends JTextPane {
      * @param uuidShell Unique identifier to discriminate beyond multiple opened terminals
      * @param urlShell URL of current shell
      * @param labelShell Type of shell to display on prompt
-     * @throws MalformedURLException 
+     * @throws MalformedURLException
      */
     public AbstractShell(UUID uuidShell, String urlShell, String labelShell) throws MalformedURLException {
         this.uuidShell = uuidShell;
@@ -97,7 +97,7 @@ public abstract class AbstractShell extends JTextPane {
         this.labelShell = labelShell;
 
         URL url = new URL(urlShell);
-        host = url.getHost();
+        this.host = url.getHost();
 
         this.setFont(new Font(HelperUi.FONT_NAME, Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize()));
         this.setCaret(new BlockCaret());
@@ -105,7 +105,7 @@ public abstract class AbstractShell extends JTextPane {
         this.setForeground(Color.LIGHT_GRAY);
 
         try {
-            // Disable antialiasing 
+            // Disable antialiasing
             // TODO: incompatible with Java 9
             this.putClientProperty(SwingUtilities2.AA_TEXT_PROPERTY_KEY, null);
         } catch (NoSuchFieldError e) {
@@ -187,7 +187,7 @@ public abstract class AbstractShell extends JTextPane {
      * Simply display colored prompt.
      */
     public void displayPrompt() {
-        displayPrompt(false);
+        this.displayPrompt(false);
     }
 
     /**
@@ -195,7 +195,7 @@ public abstract class AbstractShell extends JTextPane {
      * @return Style for document
      */
     public Style getStyle() {
-        return style;
+        return this.style;
     }
     
     /**
@@ -203,16 +203,16 @@ public abstract class AbstractShell extends JTextPane {
      * @param isAddingPrompt Should we measure prompt length?
      */
     public void displayPrompt(boolean isAddingPrompt) {
-        StyleConstants.setUnderline(style, true);
-        appendPrompt("jsql", Color.LIGHT_GRAY, isAddingPrompt);
-        StyleConstants.setUnderline(style, false);
+        StyleConstants.setUnderline(this.style, true);
+        this.appendPrompt("jsql", Color.LIGHT_GRAY, isAddingPrompt);
+        StyleConstants.setUnderline(this.style, false);
 
-        appendPrompt(" " + this.labelShell, Color.LIGHT_GRAY, isAddingPrompt);
-        appendPrompt("[", new Color(50, 191, 50), isAddingPrompt);
-        appendPrompt(host, new Color(191, 191, 25), isAddingPrompt);
-        appendPrompt("]", new Color(50, 191, 50), isAddingPrompt);
-        appendPrompt(" >", new Color(191, 100, 100), isAddingPrompt);
-        appendPrompt(" ", Color.LIGHT_GRAY, isAddingPrompt);
+        this.appendPrompt(" " + this.labelShell, Color.LIGHT_GRAY, isAddingPrompt);
+        this.appendPrompt("[", new Color(50, 191, 50), isAddingPrompt);
+        this.appendPrompt(this.host, new Color(191, 191, 25), isAddingPrompt);
+        this.appendPrompt("]", new Color(50, 191, 50), isAddingPrompt);
+        this.appendPrompt(" >", new Color(191, 100, 100), isAddingPrompt);
+        this.appendPrompt(" ", Color.LIGHT_GRAY, isAddingPrompt);
     }
 
     /**
@@ -223,10 +223,10 @@ public abstract class AbstractShell extends JTextPane {
      */
     private void appendPrompt(String string, Color color, boolean isAddingPrompt) {
         try {
-            StyleConstants.setForeground(style, color);
-            styledDocument.insertString(styledDocument.getLength(), string, style);
+            StyleConstants.setForeground(this.style, color);
+            this.styledDocument.insertString(this.styledDocument.getLength(), string, this.style);
             if (isAddingPrompt) {
-                prompt += string;
+                this.prompt += string;
             }
         } catch (BadLocationException e) {
             LOGGER.error(e.getMessage(), e);
@@ -244,22 +244,22 @@ public abstract class AbstractShell extends JTextPane {
             AbstractShell.this.setCaretPosition(AbstractShell.this.getDocument().getLength());
         }
         
-        @Override 
+        @Override
         public void mouseReleased(MouseEvent e) {
             e.consume();
         }
         
-        @Override 
+        @Override
         public void mouseExited(MouseEvent e) {
             e.consume();
         }
         
-        @Override 
+        @Override
         public void mouseEntered(MouseEvent e) {
             e.consume();
         }
         
-        @Override 
+        @Override
         public void mouseClicked(MouseEvent e) {
             e.consume();
         }
@@ -270,7 +270,7 @@ public abstract class AbstractShell extends JTextPane {
      */
     @Override
     public boolean getScrollableTracksViewportWidth() {
-        return getUI().getPreferredSize(this).width <= getParent().getSize().width;
+        return this.getUI().getPreferredSize(this).width <= this.getParent().getSize().width;
     }
 
     /**

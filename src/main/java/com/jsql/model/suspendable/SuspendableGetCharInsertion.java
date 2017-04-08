@@ -55,49 +55,49 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             throw new InjectionFailureException("Character * must be used once in Query String, Request or Header parameters");
             
         } else if (
-            ConnectionUtil.getQueryString().contains("*") 
+            ConnectionUtil.getQueryString().contains("*")
             && ConnectionUtil.getMethodInjection() != MethodInjection.QUERY
         ) {
             throw new InjectionFailureException("Activate method GET to use character * or remove it from GET parameters");
             
         } else if (
-            ConnectionUtil.getRequest().contains("*") 
+            ConnectionUtil.getRequest().contains("*")
             && ConnectionUtil.getMethodInjection() != MethodInjection.REQUEST
         ) {
             throw new InjectionFailureException("Activate one of Request method to use character * or remove it from Request parameters");
             
         } else if (
-            ConnectionUtil.getHeader().contains("*") 
+            ConnectionUtil.getHeader().contains("*")
             && ConnectionUtil.getMethodInjection() != MethodInjection.HEADER
         ) {
             throw new InjectionFailureException("Activate method Header to use character * or remove it from Header parameters");
             
-        } 
+        }
         
         // Query String
         else if (
-            ConnectionUtil.getMethodInjection() == MethodInjection.QUERY 
+            ConnectionUtil.getMethodInjection() == MethodInjection.QUERY
             && (ConnectionUtil.getQueryString() == null || "".equals(ConnectionUtil.getQueryString()))
         ) {
             throw new InjectionFailureException("No query string");
             
         } else if (
-            !"".equals(ConnectionUtil.getQueryString()) 
+            !"".equals(ConnectionUtil.getQueryString())
             && ConnectionUtil.getQueryString().matches("[^\\w]*=.*")
         ) {
             throw new InjectionFailureException("Incorrect Query String");
             
-        } 
+        }
         
         // Request/Header data
         else if (
-            !"".equals(ConnectionUtil.getRequest()) 
+            !"".equals(ConnectionUtil.getRequest())
             && ConnectionUtil.getRequest().indexOf('=') < 0
         ) {
             throw new InjectionFailureException("Incorrect Request format");
             
         } else if (
-            !"".equals(ConnectionUtil.getHeader()) 
+            !"".equals(ConnectionUtil.getHeader())
             && ConnectionUtil.getHeader().indexOf(':') < 0
         ) {
             throw new InjectionFailureException("Incorrect Header format");
@@ -158,7 +158,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         for (String insertionCharacter : new String[] {"0", "0'", "'", "-1", "1", "\"", "-1)", "-1))"}) {
             taskCompletionService.submit(
                 new CallablePageSource(
-                    insertionCharacter + 
+                    insertionCharacter +
                     MediatorModel.model().getVendor().instance().sqlOrderBy(),
                     insertionCharacter
                 )
@@ -179,7 +179,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 
                 if (
                     // the correct character: mysql
-                    Pattern.compile(".*Unknown column '1337' in 'order clause'.*", Pattern.DOTALL).matcher(pageSource).matches() || 
+                    Pattern.compile(".*Unknown column '1337' in 'order clause'.*", Pattern.DOTALL).matcher(pageSource).matches() ||
                     Pattern.compile(".*supplied argument is not a valid MySQL result resource.*", Pattern.DOTALL).matcher(pageSource).matches() ||
 
                     // the correct character: postgresql

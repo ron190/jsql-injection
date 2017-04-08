@@ -27,16 +27,7 @@ class DocPosition {
      * The actual position
      */
     private int position;
-
-    /**
-     * Get the position represented by this DocPosition
-     *
-     * @return the position
-     */
-    int getPosition(){
-        return position;
-    }
-
+    
     /**
      * Construct a DocPosition from the given offset into the document.
      *
@@ -44,6 +35,15 @@ class DocPosition {
      */
     public DocPosition(int position){
         this.position = position;
+    }
+
+    /**
+     * Get the position represented by this DocPosition
+     *
+     * @return the position
+     */
+    int getPosition(){
+        return this.position;
     }
 
     /**
@@ -55,7 +55,7 @@ class DocPosition {
      * @return the DocPosition, adjusted properly.
      */
     public DocPosition adjustPosition(int adjustment){
-        position += adjustment;
+        this.position += adjustment;
         return this;
     }
 
@@ -67,7 +67,7 @@ class DocPosition {
     @Override
     public boolean equals(Object obj){
         if (obj instanceof DocPosition){
-            DocPosition d = (DocPosition)(obj);
+            DocPosition d = (DocPosition)obj;
             if (this.position == d.position){
                 return true;
             } else {
@@ -85,6 +85,6 @@ class DocPosition {
      */
     @Override
     public String toString(){
-        return Integer.toString(position);
+        return Integer.toString(this.position);
     }
 }

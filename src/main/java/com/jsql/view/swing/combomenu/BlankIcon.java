@@ -18,27 +18,27 @@ public class BlankIcon implements Icon {
 
     public BlankIcon(Color color, int size) {
 
-        fillColor = color;
+        this.fillColor = color;
 
         this.size = size;
     }
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        if (fillColor != null) {
-            g.setColor(fillColor);
-            g.drawRect(x, y, size-1, size-1);
+        if (this.fillColor != null) {
+            g.setColor(this.fillColor);
+            g.drawRect(x, y, this.size-1, this.size-1);
         }
     }
 
     @Override
     public int getIconWidth() {
-        return size;
+        return this.size;
     }
 
     @Override
     public int getIconHeight() {
-        return size;
+        return this.size;
     }
     
 }

@@ -30,20 +30,20 @@ public class TabTransferHandler extends TransferHandler {
     private static PanelGhostGlass glassPane;
     
     public TabTransferHandler() {
-        localObjectFlavor = new ActivationDataFlavor(TabResults.class, DataFlavor.javaJVMLocalObjectMimeType, "RightPaneAdapter");
+        this.localObjectFlavor = new ActivationDataFlavor(TabResults.class, DataFlavor.javaJVMLocalObjectMimeType, "RightPaneAdapter");
     }
     
     @Override
     protected Transferable createTransferable(JComponent c) {
         if (c instanceof TabbedPaneDnD) {
-            srcDnDTabbedPane = (TabbedPaneDnD) c;
+            this.srcDnDTabbedPane = (TabbedPaneDnD) c;
         }
-        return new DataHandler(c, localObjectFlavor.getMimeType());
+        return new DataHandler(c, this.localObjectFlavor.getMimeType());
     }
     
     @Override
     public boolean canImport(TransferSupport support) {
-        if (!support.isDrop() || !support.isDataFlavorSupported(localObjectFlavor)) {
+        if (!support.isDrop() || !support.isDataFlavorSupported(this.localObjectFlavor)) {
             return false;
         }
         
@@ -56,17 +56,17 @@ public class TabTransferHandler extends TransferHandler {
         int idx = dl.getIndex();
         boolean isDropable = false;
 
-        if (target == srcDnDTabbedPane) {
-            isDropable = 
-                target.getTabAreaBounds().contains(pt) && 
-                idx >= 0 && 
-                idx != target.dragTabIndex && 
+        if (target == this.srcDnDTabbedPane) {
+            isDropable =
+                target.getTabAreaBounds().contains(pt) &&
+                idx >= 0 &&
+                idx != target.dragTabIndex &&
                 idx != target.dragTabIndex + 1
             ;
         } else {
             if (
-                srcDnDTabbedPane != null && 
-                target != srcDnDTabbedPane.getComponentAt(srcDnDTabbedPane.dragTabIndex)
+                this.srcDnDTabbedPane != null &&
+                target != this.srcDnDTabbedPane.getComponentAt(this.srcDnDTabbedPane.dragTabIndex)
             ) {
                 isDropable = target.getTabAreaBounds().contains(pt) && idx >= 0;
             }
@@ -112,14 +112,14 @@ public class TabTransferHandler extends TransferHandler {
     
     @Override
     public boolean importData(TransferSupport support) {
-        if (!canImport(support)) {
+        if (!this.canImport(support)) {
             return false;
         }
 
         TabbedPaneDnD target = (TabbedPaneDnD) support.getComponent();
         TabbedPaneDnD.DropLocationDnD dl = target.getDropLocation();
         try {
-            TabbedPaneDnD src = (TabbedPaneDnD) support.getTransferable().getTransferData(localObjectFlavor);
+            TabbedPaneDnD src = (TabbedPaneDnD) support.getTransferable().getTransferData(this.localObjectFlavor);
             int index = dl.getIndex();
             if (target == src) {
                 src.convertTab(src.dragTabIndex, index);
@@ -133,7 +133,7 @@ public class TabTransferHandler extends TransferHandler {
         return false;
     }
     
-    @Override 
+    @Override
     protected void exportDone(JComponent c, Transferable data, int action) {
         TabbedPaneDnD src = (TabbedPaneDnD) c;
         src.setDropLocationLocal(null, false);

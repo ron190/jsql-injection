@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
 import com.jsql.model.InjectionModel;
@@ -46,7 +47,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
     
     /**
      * Name of preference for splitter horizontal.
-     * Reset divider position for current application version. 
+     * Reset divider position for current application version.
      */
     public static final String NAME_H_SPLITPANE = "horizontalSplitter-" + InjectionModel.VERSION_JSQL;
 
@@ -67,7 +68,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
     
     /**
      * Create main panel with Manager panels on the left, result tabs on the right,
-     * and consoles in the bottom. 
+     * and consoles in the bottom.
      */
     public SplitHorizontalTopBottom() {
         super(JSplitPane.VERTICAL_SPLIT);
@@ -84,13 +85,13 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         this.splitVerticalLeftRight.setLeftComponent(MediatorGui.tabManagers());
         
         final ImageIcon imagePlaceholder = new ImageIcon(SplitHorizontalTopBottom.class.getResource("/com/jsql/view/swing/resources/images/bug.png"));
-        labelPlaceholderResult = new JLabel(imagePlaceholder);
-        labelPlaceholderResult.setMinimumSize(new Dimension(100, 0));
+        this.labelPlaceholderResult = new JLabel(imagePlaceholder);
+        this.labelPlaceholderResult.setMinimumSize(new Dimension(100, 0));
 
-        labelPlaceholderResult.setAlignmentX(Component.CENTER_ALIGNMENT);
-        labelPlaceholderResult.setAlignmentY(Component.CENTER_ALIGNMENT);
+        this.labelPlaceholderResult.setAlignmentX(Component.CENTER_ALIGNMENT);
+        this.labelPlaceholderResult.setAlignmentY(Component.CENTER_ALIGNMENT);
       
-        this.splitVerticalLeftRight.setRightComponent(labelPlaceholderResult);
+        this.splitVerticalLeftRight.setRightComponent(this.labelPlaceholderResult);
         this.splitVerticalLeftRight.setDividerLocation(verticalSplitter);
         this.splitVerticalLeftRight.setDividerSize(0);
         this.splitVerticalLeftRight.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
@@ -99,13 +100,13 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         this.setBorder(null);
 
         JPanel panelManagerResult = new JPanel(new BorderLayout());
-        panelManagerResult.add(splitVerticalLeftRight, BorderLayout.CENTER);
+        panelManagerResult.add(this.splitVerticalLeftRight, BorderLayout.CENTER);
 
         PANEL_HIDDEN_CONSOLES.setLayout(new BorderLayout());
         PANEL_HIDDEN_CONSOLES.setOpaque(false);
         PANEL_HIDDEN_CONSOLES.setPreferredSize(new Dimension(17, 22));
         PANEL_HIDDEN_CONSOLES.setMaximumSize(new Dimension(17, 22));
-        JButton buttonHideConsoles = new BasicArrowButton(BasicArrowButton.NORTH);
+        JButton buttonHideConsoles = new BasicArrowButton(SwingConstants.NORTH);
         buttonHideConsoles.setBorderPainted(false);
         buttonHideConsoles.setOpaque(false);
 

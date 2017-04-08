@@ -1,27 +1,27 @@
 package com.jsql.view.swing.bruteforce;
 
+/*************************************************************************
+ *  Compilation:  javac CRC16.java
+ *  Execution:    java CRC16 s
+ * 
+ *  Reads in a string s as a command-line argument, and prints out
+ *  its 16-bit Cyclic Redundancy Check (CRC16). Uses a lookup table.
+ *
+ *  Reference:  http://www.gelato.unsw.edu.au/lxr/source/lib/crc16.c
+ *
+ *  % java CRC16 123456789
+ *  CRC16 = bb3d
+ *
+ * Uses irreducible polynomial:  1 + x^2 + x^15 + x^16
+ *
+ *
+ *************************************************************************/
 public class Crc16 {
     
     private Crc16() {
         
     }
     
-    /*************************************************************************
-     *  Compilation:  javac CRC16.java
-     *  Execution:    java CRC16 s
-     *  
-     *  Reads in a string s as a command-line argument, and prints out
-     *  its 16-bit Cyclic Redundancy Check (CRC16). Uses a lookup table.
-     *
-     *  Reference:  http://www.gelato.unsw.edu.au/lxr/source/lib/crc16.c
-     *
-     *  % java CRC16 123456789
-     *  CRC16 = bb3d
-     *
-     * Uses irreducible polynomial:  1 + x^2 + x^15 + x^16
-     *
-     *
-     *************************************************************************/
     public static String generateCRC16(String baseString) {
         int[] table = {
             0x0000, 0xC0C1, 0xC181, 0x0140, 0xC301, 0x03C0, 0x0280, 0xC241,

@@ -33,12 +33,12 @@ public class MessageBinary implements InteractionCommand {
      * @param interactionParams Text to append
      */
     public MessageBinary(Object[] interactionParams) {
-        text = (String) interactionParams[0];
+        this.text = (String) interactionParams[0];
     }
 
     @Override
     public void execute() {
-        LOGGER.info(text);
+        LOGGER.info(this.text);
         LOGGER.info("\n");
     }
     

@@ -3,7 +3,7 @@ package com.jsql.model.injection.vendor;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 
-interface AbstractVendor {    
+interface AbstractVendor {
     
     public String sqlInfos();
     public String sqlDatabases();

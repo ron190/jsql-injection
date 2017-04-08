@@ -67,7 +67,7 @@ public class AddTables implements InteractionCommand {
             // Get the parent database
             databaseNode = MediatorGui.frame().getTreeNodeModels().get(table.getParent());
             
-            // Report NullPointerException #1670 
+            // Report NullPointerException #1670
             if (databaseNode != null) {
                 // Add the table to the database
                 treeModel.insertNodeInto(newNode, databaseNode, databaseNode.getChildCount());

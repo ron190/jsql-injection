@@ -43,12 +43,12 @@ public class NodeModelColumn extends AbstractNodeModel {
 
     @Override
     public Component getComponent(
-        final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, int row,boolean hasFocus
+        final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, boolean hasFocus
     ) {
         JCheckBox checkbox = new JCheckBox(this.toString(), this.isSelected);
         checkbox.setFont(
             checkbox.getFont().deriveFont(
-                Font.PLAIN | Font.ITALIC, 
+                Font.PLAIN | Font.ITALIC,
                 checkbox.getFont().getSize()
             )
         );
@@ -60,31 +60,31 @@ public class NodeModelColumn extends AbstractNodeModel {
         return checkbox;
     }
 
-    @Override 
+    @Override
     Icon getLeafIcon(boolean leaf) {
         // Do nothing
         return null;
     }
     
-    @Override 
+    @Override
     public void runAction() {
         // Do nothing
     }
     
-    @Override 
+    @Override
     void buildMenu(JPopupMenu tablePopupMenu, TreePath path) {
         // Do nothing
     }
     
-    @Override 
+    @Override
     public void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
         // Do nothing
     }
     
-    @Override 
+    @Override
     public boolean isPopupDisplayable() {
         // Do nothing
-        return false; 
+        return false;
     }
     
 }

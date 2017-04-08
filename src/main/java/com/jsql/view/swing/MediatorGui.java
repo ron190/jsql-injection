@@ -17,7 +17,7 @@ import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.tab.TabResults;
 
 /**
- * Mediator for loosely coupled components.  
+ * Mediator for loosely coupled components.
  */
 public final class MediatorGui {
     

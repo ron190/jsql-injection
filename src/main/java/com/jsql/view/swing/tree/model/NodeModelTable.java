@@ -161,7 +161,7 @@ public class NodeModelTable extends AbstractNodeModel {
         tablePopupMenu.add(menuItemUncheckAll);
     }
     
-    @Override 
+    @Override
     public boolean isPopupDisplayable() {
         return this.isLoaded || !this.isLoaded && this.isRunning;
     }

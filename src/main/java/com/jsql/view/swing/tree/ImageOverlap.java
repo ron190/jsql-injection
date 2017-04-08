@@ -51,11 +51,11 @@ public class ImageOverlap extends ImageIcon {
     public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
         super.paintIcon(c, g, x, y);
         try {
-            BufferedImage im2 = ImageIO.read(ImageOverlap.class.getResource(iconPathOverlap));
+            BufferedImage im2 = ImageIO.read(ImageOverlap.class.getResource(this.iconPathOverlap));
             g.drawImage(
-                im2, 
-                (this.getIconWidth() - im2.getWidth()) / 2, 
-                (this.getIconHeight() - im2.getHeight()) / 2, 
+                im2,
+                (this.getIconWidth() - im2.getWidth()) / 2,
+                (this.getIconHeight() - im2.getHeight()) / 2,
                 null
             );
         } catch (IOException e) {

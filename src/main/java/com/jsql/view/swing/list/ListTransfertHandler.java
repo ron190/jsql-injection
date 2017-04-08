@@ -51,10 +51,10 @@ public class ListTransfertHandler extends TransferHandler {
     @Override
     protected Transferable createTransferable(JComponent c) {
         DnDList list = (DnDList) c;
-        dragPaths = list.getSelectedValuesList();
+        this.dragPaths = list.getSelectedValuesList();
 
         StringBuilder stringTransferable = new StringBuilder();
-        for (ListItem itemPath: dragPaths) {
+        for (ListItem itemPath: this.dragPaths) {
             stringTransferable.append(itemPath + "\n");
         }
 
@@ -67,18 +67,18 @@ public class ListTransfertHandler extends TransferHandler {
         if (action == TransferHandler.MOVE) {
             JList<ListItem> list = (JList<ListItem>) c;
             DefaultListModel<ListItem> model = (DefaultListModel<ListItem>) list.getModel();
-            for (ListItem itemPath: dragPaths) {
+            for (ListItem itemPath: this.dragPaths) {
                 model.remove(model.indexOf(itemPath));
             }
             
-            dragPaths = null;
+            this.dragPaths = null;
         }
     }
 
     @Override
     public boolean canImport(TransferSupport support) {
-        return 
-            support.isDataFlavorSupported(DataFlavor.stringFlavor) || 
+        return
+            support.isDataFlavorSupported(DataFlavor.stringFlavor) ||
             support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)
         ;
     }
@@ -86,7 +86,7 @@ public class ListTransfertHandler extends TransferHandler {
     @SuppressWarnings("unchecked")
     @Override
     public boolean importData(TransferSupport support) {
-        if (!canImport(support)) {
+        if (!this.canImport(support)) {
             return false;
         }
 
@@ -101,8 +101,8 @@ public class ListTransfertHandler extends TransferHandler {
                 List<Integer> selectAfterDrop = new ArrayList<>();
 
                 // DnD from list
-                if (dragPaths != null && !dragPaths.isEmpty()) {
-                    for (ListItem value: dragPaths) {
+                if (this.dragPaths != null && !this.dragPaths.isEmpty()) {
+                    for (ListItem value: this.dragPaths) {
                         if (!"".equals(value.toString())) {
                             //! FUUuu
                             ListItem newValue = new ListItem(value.toString().replace("\\", "/"));
@@ -113,7 +113,7 @@ public class ListTransfertHandler extends TransferHandler {
                 // DnD from outside
                 } else {
                     try {
-                        String importString = (String) (support.getTransferable().getTransferData(DataFlavor.stringFlavor));
+                        String importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
                         for (String value: importString.split("\\n")) {
                             if (!"".equals(value)) {
                                 selectAfterDrop.add(childIndex);
@@ -139,7 +139,7 @@ public class ListTransfertHandler extends TransferHandler {
 
                 try {
                     list.dropPasteFile(
-                        (List<File>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor), 
+                        (List<File>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor),
                         childIndex
                     );
                 } catch (UnsupportedFlavorException | IOException e) {

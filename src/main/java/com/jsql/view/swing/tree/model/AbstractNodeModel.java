@@ -113,7 +113,7 @@ public abstract class AbstractNodeModel {
      * @return Parent
      */
     protected AbstractElementDatabase getParent() {
-        return elementDatabase.getParent();
+        return this.elementDatabase.getParent();
     }
 
     /**
@@ -128,8 +128,8 @@ public abstract class AbstractNodeModel {
         AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.elementDatabase);
 
         JMenuItem mnLoad = new JMenuItem(
-            this.isRunning 
-                ? I18n.valueByKey("THREAD_STOP") 
+            this.isRunning
+                ? I18n.valueByKey("THREAD_STOP")
                 : I18n.valueByKey("THREAD_LOAD"),
             'o'
         );
@@ -142,9 +142,9 @@ public abstract class AbstractNodeModel {
 
         JMenuItem mnPause = new JMenuItem(
             // Report #133: ignore if thread not found
-            (suspendableTask != null && suspendableTask.isPaused())
+            suspendableTask != null && suspendableTask.isPaused()
                 ? I18n.valueByKey("THREAD_RESUME")
-                : I18n.valueByKey("THREAD_PAUSE"), 
+                : I18n.valueByKey("THREAD_PAUSE"),
             's'
         );
         mnPause.setIcon(HelperUi.ICON_EMPTY);
@@ -174,17 +174,17 @@ public abstract class AbstractNodeModel {
         popupMenu.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
 
         popupMenu.show(
-            MediatorGui.treeDatabase(), 
+            MediatorGui.treeDatabase(),
             ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
             ? e.getX() - popupMenu.getWidth()
-            : e.getX(), 
+            : e.getX(),
             e.getY()
         );
         
         popupMenu.setLocation(
             ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
             ? e.getXOnScreen() - popupMenu.getWidth()
-            : e.getXOnScreen(), 
+            : e.getXOnScreen(),
             e.getYOnScreen()
         );
     }
@@ -201,7 +201,7 @@ public abstract class AbstractNodeModel {
      * @return
      */
     public Component getComponent(
-        final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, int row,boolean hasFocus
+        final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, boolean hasFocus
     ) {
 
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
@@ -221,7 +221,7 @@ public abstract class AbstractNodeModel {
         }
 
         if (this.isLoading) {
-            displayProgress(panel, currentNode);
+            this.displayProgress(panel, currentNode);
             panel.hideIcon();
         } else if (this.isProgressing) {
             panel.showLoader();
@@ -232,7 +232,7 @@ public abstract class AbstractNodeModel {
                 ImageIcon animatedGIFPaused = new ImageOverlap(HelperUi.PATH_PROGRESSBAR, HelperUi.PATH_PAUSE);
                 animatedGIFPaused.setImageObserver(
                     new ImageObserverAnimated(
-                        MediatorGui.treeDatabase(), 
+                        MediatorGui.treeDatabase(),
                         currentNode
                     )
                 );
@@ -276,7 +276,7 @@ public abstract class AbstractNodeModel {
     public abstract boolean isPopupDisplayable();
     
     /**
-     * Get icon displayed next to the node text. 
+     * Get icon displayed next to the node text.
      * @param isLeaf True will display an arrow icon, false won't
      * @return Icon to display
      */
@@ -290,7 +290,7 @@ public abstract class AbstractNodeModel {
     
     @Override
     public String toString() {
-        return elementDatabase != null ? this.elementDatabase.getLabel() : emptyObject;
+        return this.elementDatabase != null ? this.elementDatabase.getLabel() : this.emptyObject;
     }
     
 }

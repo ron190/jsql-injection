@@ -22,7 +22,7 @@ public class ConcreteCubridTestSuite extends AbstractTestSuite {
         
         this.jdbcQueryForDatabaseNames = "select "+ this.jdbcColumnForDatabaseName +" from db_class";
         
-        this.jdbcQueryForTableNames = "select "+ this.jdbcColumnForTableName +" from db_class where owner_name='"+ this.jsqlDatabaseName +"'";   
+        this.jdbcQueryForTableNames = "select "+ this.jdbcColumnForTableName +" from db_class where owner_name='"+ this.jsqlDatabaseName +"'";
         
         this.jdbcQueryForColumnNames = ""
             + "select "+ this.jdbcColumnForColumnName +" "
@@ -30,11 +30,11 @@ public class ConcreteCubridTestSuite extends AbstractTestSuite {
                 + "db_attribute c inner join db_class t on t.class_name = c.class_name "
             + "where "
                 + "t.owner_name='"+ this.jsqlDatabaseName +"' "
-                + "and t.class_name='"+ this.jsqlTableName +"'";  
+                + "and t.class_name='"+ this.jsqlTableName +"'";
         
-        this.jdbcQueryForValues = "SELECT "+ this.jsqlColumnName +" FROM "+ this.jsqlDatabaseName +"."+ this.jsqlTableName;   
+        this.jdbcQueryForValues = "SELECT "+ this.jsqlColumnName +" FROM "+ this.jsqlDatabaseName +"."+ this.jsqlTableName;
         
-        requestJdbc();
+        this.requestJdbc();
     }
     
 }

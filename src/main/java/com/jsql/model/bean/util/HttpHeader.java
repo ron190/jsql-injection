@@ -50,7 +50,7 @@ public class HttpHeader {
      * @return GET text
      */
     public String getUrl() {
-        return url;
+        return this.url;
     }
 
     /**
@@ -58,7 +58,7 @@ public class HttpHeader {
      * @return POST text
      */
     public String getPost() {
-        return post;
+        return this.post;
     }
 
     /**
@@ -66,7 +66,7 @@ public class HttpHeader {
      * @return Header text
      */
     public String getHeader() {
-        return header;
+        return this.header;
     }
 
     /**
@@ -74,16 +74,16 @@ public class HttpHeader {
      * @return Response source code
      */
     public Map<String, String> getResponse() {
-        return response;
+        return this.response;
     }
 
     @Override
     public String toString() {
-        return url;
+        return this.url;
     }
 
     public String getSource() {
-        return source;
+        return this.source;
     }
     
 }

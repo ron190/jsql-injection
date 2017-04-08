@@ -25,37 +25,5 @@ public class ScanListTerminal extends ObserverInteraction {
     public ScanListTerminal() {
         super("com.jsql.view.scan.interaction");
     }
-	
-//    /**
-//     * Log4j logger sent to view.
-//     */
-//    private static final Logger LOGGER = Logger.getRootLogger();
-//
-//    /**
-//     * Observer pattern.<br>
-//     * Receive an update order from the model:<br>
-//     * - Use the Request message to get the Interaction class,<br>
-//     * - Pass the parameters to that class.
-//     */
-//    @Override
-//    public void update(Observable model, Object newInteraction) {
-//        Request interaction = (Request) newInteraction;
-//
-//        try {
-//            Class<?> cl = Class.forName("com.jsql.view.scan.interaction."+ interaction.getMessage());
-//            Class<?>[] types = new Class[]{Object[].class};
-//            Constructor<?> ct = cl.getConstructor(types);
-//
-//            InteractionCommand o2 = (InteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
-//            o2.execute();
-//        } catch (ClassNotFoundException e) {
-//            // Ignore unused interaction message
-//        } catch (
-//            InstantiationException | IllegalAccessException | NoSuchMethodException | 
-//            SecurityException | IllegalArgumentException | InvocationTargetException e
-//        ) {
-//            LOGGER.error(e.getMessage(), e);
-//        }
-//    }
     
 }

@@ -55,6 +55,8 @@ import javax.swing.border.Border;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.exception.IgnoreMessageException;
+
 /**
  * Does all the magic for getting popups with drop shadows.
  * It adds the drop shadow border to the Popup,
@@ -194,25 +196,25 @@ public final class ShadowPopup extends Popup {
      */
     @Override
     public void hide() {
-        if (contents == null) {
+        if (this.contents == null) {
             return;
         }
 
-        JComponent parent = (JComponent) contents.getParent();
-        popup.hide();
+        JComponent parent = (JComponent) this.contents.getParent();
+        this.popup.hide();
         if ((parent != null) && parent.getBorder() == SHADOW_BORDER) {
-            parent.setBorder(oldBorder);
-            parent.setOpaque(oldOpaque);
-            oldBorder = null;
-            if (heavyWeightContainer != null) {
+            parent.setBorder(this.oldBorder);
+            parent.setOpaque(this.oldOpaque);
+            this.oldBorder = null;
+            if (this.heavyWeightContainer != null) {
                 parent.putClientProperty(ShadowPopupFactory.PROP_HORIZONTAL_BACKGROUND, null);
                 parent.putClientProperty(ShadowPopupFactory.PROP_VERTICAL_BACKGROUND, null);
-                heavyWeightContainer = null;
+                this.heavyWeightContainer = null;
             }
         }
-        owner = null;
-        contents = null;
-        popup = null;
+        this.owner = null;
+        this.contents = null;
+        this.popup = null;
         recycle(this);
     }
 
@@ -223,10 +225,10 @@ public final class ShadowPopup extends Popup {
      */
     @Override
     public void show() {
-        if (heavyWeightContainer != null) {
-            snapshot();
+        if (this.heavyWeightContainer != null) {
+            this.snapshot();
         }
-        popup.show();
+        this.popup.show();
     }
 
     /**
@@ -267,18 +269,18 @@ public final class ShadowPopup extends Popup {
             if (p instanceof JWindow || p instanceof Panel) {
                 // Workaround for the gray rect problem.
                 p.setBackground(contents.getBackground());
-                heavyWeightContainer = p;
+                this.heavyWeightContainer = p;
                 break;
             }
         }
         JComponent parent = (JComponent) contents.getParent();
-        oldOpaque = parent.isOpaque();
-        oldBorder = parent.getBorder();
+        this.oldOpaque = parent.isOpaque();
+        this.oldBorder = parent.getBorder();
         parent.setOpaque(false);
         parent.setBorder(SHADOW_BORDER);
         // Pack it because we have changed the border.
-        if (heavyWeightContainer != null) {
-            heavyWeightContainer.setSize(heavyWeightContainer.getPreferredSize());
+        if (this.heavyWeightContainer != null) {
+            this.heavyWeightContainer.setSize(this.heavyWeightContainer.getPreferredSize());
         } else {
             parent.setSize(parent.getPreferredSize());
         }
@@ -301,7 +303,7 @@ public final class ShadowPopup extends Popup {
      */
     private void snapshot() {
         try {
-            Dimension size = heavyWeightContainer.getPreferredSize();
+            Dimension size = this.heavyWeightContainer.getPreferredSize();
             int width = size.width;
             int height = size.height;
 
@@ -313,18 +315,18 @@ public final class ShadowPopup extends Popup {
 
             Robot robot = new Robot(); // uses the default screen device
 
-            RECT.setBounds(x, y + height - SHADOW_SIZE, width, SHADOW_SIZE);
+            RECT.setBounds(this.x, this.y + height - SHADOW_SIZE, width, SHADOW_SIZE);
             BufferedImage hShadowBg = robot.createScreenCapture(RECT);
 
-            RECT.setBounds(x + width - SHADOW_SIZE, y, SHADOW_SIZE,
+            RECT.setBounds(this.x + width - SHADOW_SIZE, this.y, SHADOW_SIZE,
                     height - SHADOW_SIZE);
             BufferedImage vShadowBg = robot.createScreenCapture(RECT);
 
-            JComponent parent = (JComponent) contents.getParent();
+            JComponent parent = (JComponent) this.contents.getParent();
             parent.putClientProperty(ShadowPopupFactory.PROP_HORIZONTAL_BACKGROUND, hShadowBg);
             parent.putClientProperty(ShadowPopupFactory.PROP_VERTICAL_BACKGROUND, vShadowBg);
 
-            Container layeredPane = getLayeredPane();
+            Container layeredPane = this.getLayeredPane();
             if (layeredPane == null) {
                 // This could happen if owner is null.
                 return;
@@ -333,8 +335,8 @@ public final class ShadowPopup extends Popup {
             int layeredPaneWidth = layeredPane.getWidth();
             int layeredPaneHeight = layeredPane.getHeight();
 
-            POINT.x = x;
-            POINT.y = y;
+            POINT.x = this.x;
+            POINT.y = this.y;
             SwingUtilities.convertPointFromScreen(POINT, layeredPane);
 
             // If needed paint dirty region of the horizontal snapshot.
@@ -399,6 +401,10 @@ public final class ShadowPopup extends Popup {
             }
         } catch (AWTException | SecurityException e) {
             canSnapshot = false;
+            
+            // Ignore
+            IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+            LOGGER.trace(exceptionIgnored, exceptionIgnored);
         }
     }
 
@@ -408,10 +414,10 @@ public final class ShadowPopup extends Popup {
     private Container getLayeredPane() {
         // The code below is copied from PopupFactory#LightWeightPopup#show()
         Container parent = null;
-        if (owner != null) {
-            parent = owner instanceof Container
-                    ? (Container) owner
-                    : owner.getParent();
+        if (this.owner != null) {
+            parent = this.owner instanceof Container
+                    ? (Container) this.owner
+                    : this.owner.getParent();
         }
         // Try to find a JLayeredPane and Window to add
         for (Container p = parent; p != null; p = p.getParent()) {

@@ -62,7 +62,7 @@ public class JColoredConsole extends JPopupTextPane {
                 attribut
             );
 
-            int tabIndex = MediatorGui.tabConsoles().indexOfTab(tabName);
+            int tabIndex = MediatorGui.tabConsoles().indexOfTab(this.tabName);
             if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
                 Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
                 if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
@@ -73,7 +73,7 @@ public class JColoredConsole extends JPopupTextPane {
         } catch (Exception e) {
             // Report #863: exception during report of exception
             // Route message to fatal and stderr
-            LOGGER.fatal(message, e);
+            LOGGER.trace(message, e);
         }
     }
     

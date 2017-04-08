@@ -22,6 +22,10 @@ import java.io.Reader;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.BadLocationException;
 
+import org.apache.log4j.Logger;
+
+import com.jsql.model.exception.IgnoreMessageException;
+
 /**
  * A reader interface for an abstract document.  Since
  * the syntax highlighting packages only accept Stings and
@@ -33,6 +37,36 @@ import javax.swing.text.BadLocationException;
  * we want to read next, and reseting the lexer.
  */
 class DocumentReader extends Reader {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
+    
+    /**
+     * Current position in the document. Incremented
+     * whenever a character is read.
+     */
+    private long position = 0;
+    
+    /**
+     * Saved position used in the mark and reset methods.
+     */
+    private long mark = -1;
+    
+    /**
+     * The document that we are working with.
+     */
+    private AbstractDocument document;
+    
+    /**
+     * Construct a reader on the given document.
+     *
+     * @param document the document to be read.
+     */
+    public DocumentReader(AbstractDocument document){
+        this.document = document;
+    }
 
     /**
      * Modifying the document while the reader is working is like
@@ -52,31 +86,6 @@ class DocumentReader extends Reader {
     }
 
     /**
-     * Current position in the document. Incremented
-     * whenever a character is read.
-     */
-    private long position = 0;
-
-    /**
-     * Saved position used in the mark and reset methods.
-     */
-    private long mark = -1;
-
-    /**
-     * The document that we are working with.
-     */
-    private AbstractDocument document;
-
-    /**
-     * Construct a reader on the given document.
-     *
-     * @param document the document to be read.
-     */
-    public DocumentReader(AbstractDocument document){
-        this.document = document;
-    }
-
-    /**
      * Has no effect.  This reader can be used even after
      * it has been closed.
      */
@@ -91,7 +100,7 @@ class DocumentReader extends Reader {
      */
     @Override
     public void mark(int readAheadLimit){
-        mark = position;
+        this.mark = this.position;
     }
 
     /**
@@ -111,12 +120,15 @@ class DocumentReader extends Reader {
      */
     @Override
     public int read(){
-        if (position < document.getLength()){
+        if (this.position < this.document.getLength()){
             try {
-                char c = document.getText((int)position, 1).charAt(0);
-                position++;
+                char c = this.document.getText((int)this.position, 1).charAt(0);
+                this.position++;
                 return c;
-            } catch (BadLocationException x){
+            } catch (BadLocationException e){
+                // Ignore
+                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                LOGGER.trace(exceptionIgnored, exceptionIgnored);
                 return -1;
             }
         } else {
@@ -133,7 +145,7 @@ class DocumentReader extends Reader {
      */
     @Override
     public int read(char[] cbuf){
-        return read(cbuf, 0, cbuf.length);
+        return this.read(cbuf, 0, cbuf.length);
     }
 
     /**
@@ -147,22 +159,25 @@ class DocumentReader extends Reader {
      */
     @Override
     public int read(char[] cbuf, int off, int len){
-        if (position < document.getLength()){
+        if (this.position < this.document.getLength()){
             int length = len;
-            if (position + length >= document.getLength()){
-                length = document.getLength() - (int)position;
+            if (this.position + length >= this.document.getLength()){
+                length = this.document.getLength() - (int)this.position;
             }
             if (off + length >= cbuf.length){
                 length = cbuf.length - off;
             }
             try {
-                String s = document.getText((int)position, length);
-                position += length;
+                String s = this.document.getText((int)this.position, length);
+                this.position += length;
                 for (int i=0; i<length; i++){
                     cbuf[off+i] = s.charAt(i);
                 }
                 return length;
-            } catch (BadLocationException x){
+            } catch (BadLocationException e){
+                // Ignore
+                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                LOGGER.trace(exceptionIgnored, exceptionIgnored);
                 return -1;
             }
         } else {
@@ -183,12 +198,12 @@ class DocumentReader extends Reader {
      */
     @Override
     public void reset(){
-        if (mark == -1){
-            position = 0;
+        if (this.mark == -1){
+            this.position = 0;
         } else {
-            position = mark;
+            this.position = this.mark;
         }
-        mark = -1;
+        this.mark = -1;
     }
 
     /**
@@ -201,13 +216,13 @@ class DocumentReader extends Reader {
      */
     @Override
     public long skip(long n){
-        if (position + n <= document.getLength()){
-            position += n;
+        if (this.position + n <= this.document.getLength()){
+            this.position += n;
             return n;
         } else {
-            long oldPos = position;
-            position = document.getLength();
-            return document.getLength() - oldPos;
+            long oldPos = this.position;
+            this.position = this.document.getLength();
+            return this.document.getLength() - oldPos;
         }
     }
 
@@ -217,10 +232,11 @@ class DocumentReader extends Reader {
      * @param n the offset to which to seek.
      */
     public void seek(long n){
-        if (n <= document.getLength()){
-            position = n;
+        if (n <= this.document.getLength()){
+            this.position = n;
         } else {
-            position = document.getLength();
+            this.position = this.document.getLength();
         }
     }
+    
 }

@@ -26,9 +26,9 @@ public class StrategyInjectionError extends AbstractStrategy {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-    public String[] tabCapacityMethod;
+    private String[] tabCapacityMethod;
     
-    public int indexMethod = 0;
+    private int indexMethod = 0;
 
     @Override
     public void checkApplicability() {
@@ -36,16 +36,15 @@ public class StrategyInjectionError extends AbstractStrategy {
         this.isApplicable = false;
         this.tabCapacityMethod = null;
         
-        if (
-            MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError() == null
-        ) {
+        Strategy strategyXml = MediatorModel.model().getVendor().instance().getXmlModel().getStrategy();
+        Configuration configurationXml = strategyXml.getConfiguration();
+        
+        if (strategyXml.getError() == null) {
             LOGGER.info("No Error strategy known for "+ MediatorModel.model().getVendor() +".");
             return;
         }
 
         LOGGER.trace("Error test...");
-        Strategy strategyXml = MediatorModel.model().getVendor().instance().getXmlModel().getStrategy();
-        Configuration configurationXml = strategyXml.getConfiguration();
         
         this.tabCapacityMethod = new String[strategyXml.getError().getMethod().size()];
         int indexErrorMethod = 0;
@@ -55,7 +54,7 @@ public class StrategyInjectionError extends AbstractStrategy {
             LOGGER.trace("Testing "+ errorMethod.getName() +"...");
         
             String performanceSourcePage = MediatorModel.model().injectWithoutIndex(
-                MediatorModel.model().getCharInsertion() + 
+                MediatorModel.model().getCharInsertion() +
                 " "+ VendorXml.replaceTags(
                     errorMethod.getQuery()
                     .replace("${WINDOW}", configurationXml.getSlidingWindow())
@@ -67,7 +66,7 @@ public class StrategyInjectionError extends AbstractStrategy {
     
             if (performanceSourcePage.matches(
                 VendorXml.replaceTags(
-                    "(?s).*"+ 
+                    "(?s).*"+
                     configurationXml.getFailsafe()
                     .replace("${INDICE}","0")
                     .replace("0%2b1", "1")
@@ -82,8 +81,8 @@ public class StrategyInjectionError extends AbstractStrategy {
             
             if (methodIsApplicable) {
                 String performanceErrorBasedSourcePage = MediatorModel.model().injectWithoutIndex(
-                    MediatorModel.model().getCharInsertion() 
-                    + " " 
+                    MediatorModel.model().getCharInsertion()
+                    + " "
                     + VendorXml.replaceTags(
                         errorMethod.getQuery()
                         .replace("${WINDOW}", configurationXml.getSlidingWindow())
@@ -98,7 +97,7 @@ public class StrategyInjectionError extends AbstractStrategy {
                     regexSearch.reset();
                     while (regexSearch.find()) {
                         if (errorCapacity < regexSearch.group(1).length()) {
-                            indexMethod = indexErrorMethod;
+                            this.indexMethod = indexErrorMethod;
                         }
                         errorCapacity = regexSearch.group(1).length();
                         this.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacity);
@@ -152,9 +151,9 @@ public class StrategyInjectionError extends AbstractStrategy {
     public void activateStrategy() {
         LOGGER.info(
             "Using strategy ["
-            + this.getName() 
-            +" "+ 
-            MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(indexMethod).getName()
+            + this.getName()
+            +" "+
+            MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethod).getName()
             +"]"
         );
         MediatorModel.model().setStrategy(StrategyInjection.ERRORBASED);
@@ -166,7 +165,7 @@ public class StrategyInjectionError extends AbstractStrategy {
     
     @Override
     public String getPerformanceLength() {
-        return tabCapacityMethod[indexMethod] ;
+        return this.tabCapacityMethod[this.indexMethod] ;
     }
     
     @Override
@@ -176,11 +175,11 @@ public class StrategyInjectionError extends AbstractStrategy {
     
     @Override
     public Integer getIndexMethod() {
-        return indexMethod;
+        return this.indexMethod;
     }
     
     public void setIndexMethod(int i) {
-        indexMethod = i;
+        this.indexMethod = i;
     }
     
 }

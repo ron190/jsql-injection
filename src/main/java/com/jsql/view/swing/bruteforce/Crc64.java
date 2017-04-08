@@ -1,35 +1,35 @@
 package com.jsql.view.swing.bruteforce;
 
+/*******************************************************************************
+ * Copyright (c) 2009, 2012 Mountainminds GmbH & Co. KG and Contributors
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Marc R. Hoffmann - initial API and implementation
+ * 
+ *******************************************************************************/
+
+/**
+ * CRC64 checksum calculator based on the polynom specified in ISO 3309. The
+ * implementation is based on the following publications:
+ * 
+ * <ul>
+ * <li>http://en.wikipedia.org/wiki/Cyclic_redundancy_check</li>
+ * <li>http://www.geocities.com/SiliconValley/Pines/8659/crc.htm</li>
+ * </ul>
+ */
 public class Crc64 {
+    
+    private static final long POLY64REV = 0xd800000000000000L;
+    
+    private static final long[] LOOKUPTABLE;
     
     private Crc64() {
         
     }
-    
-    /*******************************************************************************
-     * Copyright (c) 2009, 2012 Mountainminds GmbH & Co. KG and Contributors
-     * All rights reserved. This program and the accompanying materials
-     * are made available under the terms of the Eclipse Public License v1.0
-     * which accompanies this distribution, and is available at
-     * http://www.eclipse.org/legal/epl-v10.html
-     *
-     * Contributors:
-     *    Marc R. Hoffmann - initial API and implementation
-     *    
-     *******************************************************************************/
-    
-    /**
-     * CRC64 checksum calculator based on the polynom specified in ISO 3309. The
-     * implementation is based on the following publications:
-     * 
-     * <ul>
-     * <li>http://en.wikipedia.org/wiki/Cyclic_redundancy_check</li>
-     * <li>http://www.geocities.com/SiliconValley/Pines/8659/crc.htm</li>
-     * </ul>
-     */
-    private static final long POLY64REV = 0xd800000000000000L;
-
-    private static final long[] LOOKUPTABLE;
 
     static {
         LOOKUPTABLE = new long[0x100];

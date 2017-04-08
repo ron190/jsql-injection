@@ -65,7 +65,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         CompletionService<T> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         // Send the first binary question: is the SQL result empty?
-        taskCompletionService.submit(getCallable(inj, 0, IS_TESTING_LENGTH));
+        taskCompletionService.submit(this.getCallable(inj, 0, IS_TESTING_LENGTH));
         // Increment the number of active tasks
         int submittedTasks = 1;
 
@@ -104,7 +104,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                         // Ignore
                     }
                 }
-                e.setSlidingWindowAllRows(result.toString()); 
+                e.setSlidingWindowAllRows(result.toString());
                 throw e;
             }
             
@@ -125,10 +125,10 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                         // New undefined bits of the next character
                         bytes.add(new char[]{'x', 'x', 'x', 'x', 'x', 'x', 'x', 'x'});
                         // Test if it's the end of the line
-                        taskCompletionService.submit(getCallable(inj, indexCharacter, IS_TESTING_LENGTH));
+                        taskCompletionService.submit(this.getCallable(inj, indexCharacter, IS_TESTING_LENGTH));
                         // Test the 8 bits for the next character, save its position and current bit for later
                         for (int bit: new int[]{1, 2, 4, 8, 16, 32, 64, 128}) {
-                            taskCompletionService.submit(getCallable(inj, indexCharacter, bit));
+                            taskCompletionService.submit(this.getCallable(inj, indexCharacter, bit));
                         }
                         // Add all 9 new tasks
                         submittedTasks += 9;

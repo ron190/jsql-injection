@@ -26,11 +26,8 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-
-import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
@@ -54,11 +51,6 @@ import com.jsql.view.swing.shell.AbstractShell;
  */
 @SuppressWarnings("serial")
 public class JFrameView extends JFrame {
-	
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Main center panel, composed by left and right tabs.
@@ -76,9 +68,9 @@ public class JFrameView extends JFrame {
      *  The injection model send a database element to the view, then
      *  the view access its graphic component to update.
      */
-    private Map<AbstractElementDatabase, DefaultMutableTreeNode> mapNodes = new HashMap<>();
+    private transient Map<AbstractElementDatabase, DefaultMutableTreeNode> mapNodes = new HashMap<>();
     
-    private ObserverInteraction observer = new ObserverInteraction("com.jsql.view.swing.interaction");
+    private transient ObserverInteraction observer = new ObserverInteraction("com.jsql.view.swing.interaction");
     
     /**
      * Build the GUI: add app icon, tree icons, the 3 main panels.
@@ -119,13 +111,13 @@ public class JFrameView extends JFrame {
             public void windowClosing(WindowEvent e) {
                 Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
                 prefs.putInt(
-                    SplitHorizontalTopBottom.NAME_V_SPLITPANE, 
+                    SplitHorizontalTopBottom.NAME_V_SPLITPANE,
                     JFrameView.this.splitHorizontalTopBottom.splitVerticalLeftRight.getDividerLocation()
                 );
                 
                 // Divider location change when window is maximized, we can't save getDividerLocation()
                 prefs.putInt(
-                    SplitHorizontalTopBottom.NAME_H_SPLITPANE, 
+                    SplitHorizontalTopBottom.NAME_H_SPLITPANE,
                     JFrameView.this.splitHorizontalTopBottom.getHeight() - JFrameView.this.splitHorizontalTopBottom.getDividerLocation()
                 );
                 
@@ -194,25 +186,6 @@ public class JFrameView extends JFrame {
         // Refresh the tree
         treeModel.reload();
         MediatorGui.treeDatabase().setRootVisible(true);
-
-        // Empty infos tabs
-        MediatorGui.panelConsoles().chunkTab.setText("");
-        MediatorGui.panelConsoles().binaryTab.setText("");
-        
-        // Fix #4657, #1860: Multiple Exceptions on setRowCount()
-        try {
-            ((DefaultTableModel) MediatorGui.panelConsoles().networkTable.getModel()).setRowCount(0);
-        } catch(NullPointerException | ArrayIndexOutOfBoundsException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        
-        MediatorGui.panelConsoles().javaTab.getProxy().setText("");
-        
-        MediatorGui.panelConsoles().networkTabHeader.setText("");
-        MediatorGui.panelConsoles().networkTabParam.setText("");
-        MediatorGui.panelConsoles().networkTabResponse.setText("");
-        MediatorGui.panelConsoles().networkTabSource.setText("");
-        MediatorGui.panelConsoles().networkTabPreview.setText("");
         
         for (int i = 0 ; i < MediatorGui.tabConsoles().getTabCount() ; i++) {
             Component tabComponent = MediatorGui.tabConsoles().getTabComponentAt(i);
@@ -238,7 +211,7 @@ public class JFrameView extends JFrame {
      * @return Map of key/value UUID => Terminal
      */
     public final Map<UUID, AbstractShell> getConsoles() {
-        return mapShells;
+        return this.mapShells;
     }
     
     /**
@@ -246,11 +219,11 @@ public class JFrameView extends JFrame {
      *  @return Tree model
      */
     public final Map<AbstractElementDatabase, DefaultMutableTreeNode> getTreeNodeModels() {
-        return mapNodes;
+        return this.mapNodes;
     }
 
     public ObserverInteraction getObserver() {
-        return observer;
+        return this.observer;
     }
     
 }

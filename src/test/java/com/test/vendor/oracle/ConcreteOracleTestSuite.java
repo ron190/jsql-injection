@@ -17,11 +17,11 @@ public class ConcreteOracleTestSuite extends AbstractTestSuite {
         this.jdbcColumnForColumnName = "column_name";
         
         this.jdbcQueryForDatabaseNames = "SELECT owner FROM all_tables";
-        this.jdbcQueryForTableNames = "SELECT table_name FROM all_tables where owner='HR'";   
-        this.jdbcQueryForColumnNames = "SELECT column_name FROM all_tab_columns where owner='HR' and table_name='REGIONS'";  
-        this.jdbcQueryForValues = "SELECT REGION_NAME FROM HR.REGIONS";   
+        this.jdbcQueryForTableNames = "SELECT table_name FROM all_tables where owner='HR'";
+        this.jdbcQueryForColumnNames = "SELECT column_name FROM all_tab_columns where owner='HR' and table_name='REGIONS'";
+        this.jdbcQueryForValues = "SELECT REGION_NAME FROM HR.REGIONS";
         
-        requestJdbc();
+        this.requestJdbc();
     }
     
 }

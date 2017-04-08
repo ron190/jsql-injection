@@ -49,28 +49,28 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         // Define visibleIndex, i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML source
         this.visibleIndex = this.getVisibleIndex(MediatorModel.model().getSrcSuccess());
         
-        this.isApplicable = 
-            (!"".equals(MediatorModel.model().getIndexesInUrl())) 
+        this.isApplicable =
+            !"".equals(MediatorModel.model().getIndexesInUrl())
             && new Integer(StrategyInjection.NORMAL.instance().getPerformanceLength()) > 0
             && this.visibleIndex != null
         ;
         
         if (this.isApplicable) {
             LOGGER.debug("Vulnerable to Normal injection using "+ this.performanceLength +" characters");
-            allow();
+            this.allow();
         } else {
-            unallow();
+            this.unallow();
         }
     }
 
     @Override
     public void allow() {
-        markVulnerable(TypeRequest.MARK_NORMAL_VULNERABLE);
+        this.markVulnerable(TypeRequest.MARK_NORMAL_VULNERABLE);
     }
 
     @Override
     public void unallow() {
-        markVulnerable(TypeRequest.MARK_NORMAL_INVULNERABLE);
+        this.markVulnerable(TypeRequest.MARK_NORMAL_INVULNERABLE);
     }
 
     @Override
@@ -170,7 +170,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     }
     
     public String getVisibleIndex() {
-        return visibleIndex;
+        return this.visibleIndex;
     }
 
     public void setVisibleIndex(String visibleIndex) {

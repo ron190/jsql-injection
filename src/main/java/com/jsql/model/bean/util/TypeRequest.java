@@ -54,7 +54,7 @@ public enum TypeRequest {
     
     @Override
     public String toString() {
-        return name;
+        return this.name;
     }
     
 }

@@ -79,7 +79,7 @@ public class ManagerAdminPage extends AbstractManagerList {
 
         lastLine.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER), 
+                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
@@ -111,7 +111,7 @@ public class ManagerAdminPage extends AbstractManagerList {
                         
                         try {
                             RessourceAccess.createAdminPages(
-                                MediatorGui.panelAddressBar().textFieldAddress.getText(), 
+                                MediatorGui.panelAddressBar().textFieldAddress.getText(),
                                 listFile.getSelectedValuesList()
                             );
                         } catch (InterruptedException ex) {
@@ -119,7 +119,7 @@ public class ManagerAdminPage extends AbstractManagerList {
                             Thread.currentThread().interrupt();
                         }
                     }
-                } else if (run.getState() == StateButton.STOPPABLE) {
+                } else if (this.run.getState() == StateButton.STOPPABLE) {
                     RessourceAccess.setSearchAdminStopped(true);
                     ManagerAdminPage.this.run.setEnabled(false);
                     ManagerAdminPage.this.run.setState(StateButton.STOPPING);

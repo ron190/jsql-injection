@@ -52,24 +52,24 @@ public class MessageHeader implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
         this.params = (Map<String, Object>) interactionParams[0];
-        url = (String) this.params.get(TypeHeader.URL);
-        post = (String) this.params.get(TypeHeader.POST);
-        header = (String) this.params.get(TypeHeader.HEADER);
-        response = (Map<String, String>) this.params.get(TypeHeader.RESPONSE);
-        source = (String) this.params.get(TypeHeader.SOURCE);
+        this.url = (String) this.params.get(TypeHeader.URL);
+        this.post = (String) this.params.get(TypeHeader.POST);
+        this.header = (String) this.params.get(TypeHeader.HEADER);
+        this.response = (Map<String, String>) this.params.get(TypeHeader.RESPONSE);
+        this.source = (String) this.params.get(TypeHeader.SOURCE);
     }
 
     @Override
     public void execute() {
         MediatorGui.panelConsoles().addHeader(new HttpHeader(this.url, this.post, this.header, this.response, this.source));
         
-        JViewport viewport = ((JScrollIndicator) MediatorGui.panelConsoles().network.getLeftComponent()).scrollPane.getViewport();
+        JViewport viewport = ((JScrollIndicator) MediatorGui.panelConsoles().getNetwork().getLeftComponent()).scrollPane.getViewport();
         JTable table = (JTable) viewport.getView();
         
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         
         try {
-            model.addRow(new Object[]{response.get("Method"), this.url, this.response.get("Content-Length"), response.get("Content-Type")});
+            model.addRow(new Object[]{this.response.get("Method"), this.url, this.response.get("Content-Length"), this.response.get("Content-Type")});
             
             Rectangle rect = table.getCellRect(table.getRowCount() - 1, 0, true);
             Point pt = viewport.getViewPosition();

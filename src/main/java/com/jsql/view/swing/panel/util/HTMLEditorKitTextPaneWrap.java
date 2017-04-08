@@ -30,12 +30,12 @@ public class HTMLEditorKitTextPaneWrap extends HTMLEditorKit {
                         @Override
                         public View breakView(int axis, int p0, float pos, float len) {
                             if (axis == View.X_AXIS) {
-                                checkPainter();
-                                int p1 = getGlyphPainter().getBoundedPosition(this, p0, pos, len);
-                                if (p0 == getStartOffset() && p1 == getEndOffset()) {
+                                this.checkPainter();
+                                int p1 = this.getGlyphPainter().getBoundedPosition(this, p0, pos, len);
+                                if (p0 == this.getStartOffset() && p1 == this.getEndOffset()) {
                                     return this;
                                 }
-                                return createFragment(p0, p1);
+                                return this.createFragment(p0, p1);
                             }
                             return this;
                         }
@@ -49,8 +49,8 @@ public class HTMLEditorKitTextPaneWrap extends HTMLEditorKit {
                             if (r == null) {
                                 r = new SizeRequirements();
                             }
-                            float pref = layoutPool.getPreferredSpan(axis);
-                            float min = layoutPool.getMinimumSpan(axis);
+                            float pref = this.layoutPool.getPreferredSpan(axis);
+                            float min = this.layoutPool.getMinimumSpan(axis);
                             // Don't include insets, Box.getXXXSpan will include
                             // them.
                             r.minimum = (int) min;

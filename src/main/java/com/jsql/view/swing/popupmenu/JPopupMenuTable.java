@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTable;
@@ -64,21 +65,6 @@ public class JPopupMenuTable extends JPopupMenu {
         selectAllItem.setIcon(HelperUi.ICON_EMPTY);
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         this.add(selectAllItem);
-        
-//        this.addSeparator();
-//        
-//        JMenuItem search = new JMenuItem();
-//        search.setAction(new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                //TODO
-//            }
-//        });
-//        search.setText("Search...");
-//        search.setMnemonic('S');
-//        search.setIcon(HelperUi.ICON_EMPTY);
-//        search.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
-//        this.add(search);
 
         // Show menu next mouse pointer
         this.addPopupMenuListener(new PopupMenuListener() {
@@ -95,6 +81,20 @@ public class JPopupMenuTable extends JPopupMenu {
                 // Do nothing
             }
         });
+    }
+
+    public JPopupMenuTable(JTable tableValues, Action actionShowSearchTable) {
+        this(tableValues);
+        
+        this.addSeparator();
+
+        JMenuItem search = new JMenuItem();
+        search.setAction(actionShowSearchTable);
+        search.setText("Search...");
+        search.setMnemonic('S');
+        search.setIcon(HelperUi.ICON_EMPTY);
+        search.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, ActionEvent.CTRL_MASK));
+        this.add(search);
     }
 
     /**
@@ -114,8 +114,8 @@ public class JPopupMenuTable extends JPopupMenu {
         @Override
         public void actionPerformed(ActionEvent e) {
             ActionEvent copyEvent = new ActionEvent(
-                JPopupMenuTable.this.table, 
-                ActionEvent.ACTION_PERFORMED, 
+                JPopupMenuTable.this.table,
+                ActionEvent.ACTION_PERFORMED,
                 "copy"
             );
             JPopupMenuTable.this.table.getActionMap().get(copyEvent.getActionCommand()).actionPerformed(copyEvent);

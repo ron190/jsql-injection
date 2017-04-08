@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -66,15 +65,15 @@ public class DnDList extends JList<ListItem> {
      * @param newList List to decorate
      */
     public DnDList(List<String> newList) {
-        defaultList = newList;
+        this.defaultList = newList;
 
-        listModel = new DefaultListModel<>();
+        this.listModel = new DefaultListModel<>();
 
         for (String path: newList) {
-            listModel.addElement(new ListItem(path));
+            this.listModel.addElement(new ListItem(path));
         }
 
-        this.setModel(listModel);
+        this.setModel(this.listModel);
         
         this.addMouseListener(new MouseAdapterMenuAction(this));
 
@@ -89,12 +88,12 @@ public class DnDList extends JList<ListItem> {
                 List<ListItem> selectedValues = DnDList.this.getSelectedValuesList();
                 List<ListItem> siblings = new ArrayList<>();
                 for (ListItem value: selectedValues) {
-                    int valueIndex = listModel.indexOf(value);
+                    int valueIndex = DnDList.this.listModel.indexOf(value);
 
-                    if (valueIndex < listModel.size() - 1) {
-                        siblings.add(listModel.get(valueIndex + 1));
+                    if (valueIndex < DnDList.this.listModel.size() - 1) {
+                        siblings.add(DnDList.this.listModel.get(valueIndex + 1));
                     } else if (valueIndex > 0) {
-                        siblings.add(listModel.get(valueIndex - 1));
+                        siblings.add(DnDList.this.listModel.get(valueIndex - 1));
                     }
                 }
 
@@ -160,9 +159,9 @@ public class DnDList extends JList<ListItem> {
 
         List<ListItem> selectedValues = this.getSelectedValuesList();
         for (ListItem itemSelected: selectedValues) {
-            int l = listModel.indexOf(itemSelected);
-            listModel.removeElement(itemSelected);
-            if (l == listModel.getSize()) {
+            int l = this.listModel.indexOf(itemSelected);
+            this.listModel.removeElement(itemSelected);
+            if (l == this.listModel.getSize()) {
                 this.setSelectedIndex(l - 1);
             } else {
                 this.setSelectedIndex(l);
@@ -192,9 +191,7 @@ public class DnDList extends JList<ListItem> {
             return;
         }
         
-        for (Iterator<File> it = filesToImport.iterator() ; it.hasNext() ; ) {
-            File fileToImport = it.next();
-
+        for (File fileToImport : filesToImport) {
             // Report NoSuchMethodError #1617
             if (!FilenameUtils.getExtension(fileToImport.getPath()).matches("txt|csv|ini")) {
                 JOptionPane.showMessageDialog(
@@ -228,22 +225,22 @@ public class DnDList extends JList<ListItem> {
         }
         
         if (answer == JOptionPane.YES_OPTION) {
-            listModel.clear();
+            this.listModel.clear();
             startPosition[0] = 0;
             endPosition[0] = 0;
         }
         
         SwingUtilities.invokeLater(() -> {
-            for (Iterator<File> iterator = (filesToImport).iterator() ; iterator.hasNext() ; ) {
-                try (BufferedReader fileReader = new BufferedReader(new FileReader(iterator.next()))) {
+            for (File file : filesToImport) {
+                try (BufferedReader fileReader = new BufferedReader(new FileReader(file))) {
                     String line;
                     while ((line = fileReader.readLine()) != null) {
                         if (
                             !"".equals(line)
                             // Fix Report #60
-                            && 0 <= endPosition[0] && endPosition[0] <= listModel.size()
+                            && 0 <= endPosition[0] && endPosition[0] <= this.listModel.size()
                         ) {
-                            listModel.add(endPosition[0]++, new ListItem(line.replace("\\", "/")));
+                            this.listModel.add(endPosition[0]++, new ListItem(line.replace("\\", "/")));
                         }
                     }
                 } catch (IOException e) {
@@ -251,14 +248,14 @@ public class DnDList extends JList<ListItem> {
                 }
             }
             
-            if (!listModel.isEmpty()) {
+            if (!this.listModel.isEmpty()) {
                 DnDList.this.setSelectionInterval(startPosition[0], endPosition[0] - 1);
             }
             
             try {
                 DnDList.this.scrollRectToVisible(
                     DnDList.this.getCellBounds(
-                        DnDList.this.getMinSelectionIndex(), 
+                        DnDList.this.getMinSelectionIndex(),
                         DnDList.this.getMaxSelectionIndex()
                     )
                 );

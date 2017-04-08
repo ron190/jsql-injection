@@ -19,7 +19,7 @@ import com.jsql.view.swing.HelperUi;
 public class RadioMethodMouseAdapter extends MouseAdapter {
 	
     /**
-     * Font to display on mouse exit: underline or bold. 
+     * Font to display on mouse exit: underline or bold.
      */
     private Font original;
 
@@ -31,7 +31,7 @@ public class RadioMethodMouseAdapter extends MouseAdapter {
         
         if (radio.isActivable() && SwingUtilities.isLeftMouseButton(e)) {
             for (JLabel label: radio.getGroup()) {
-                if (((JLabel) e.getComponent()) != label) {
+                if ((JLabel) e.getComponent() != label) {
                     label.setFont(HelperUi.FONT_SEGOE);
                 } else {
                     radio.action();
@@ -40,7 +40,7 @@ public class RadioMethodMouseAdapter extends MouseAdapter {
 
             radio.setUnderlined();
 
-            original = e.getComponent().getFont();
+            this.original = e.getComponent().getFont();
             radio.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }
@@ -51,7 +51,7 @@ public class RadioMethodMouseAdapter extends MouseAdapter {
         
         AbstractRadioLink radio = (AbstractRadioLink) e.getComponent();
         
-        original = e.getComponent().getFont();
+        this.original = e.getComponent().getFont();
 
         if (radio.isActivable()) {
             Font font = radio.getFont();
@@ -68,7 +68,7 @@ public class RadioMethodMouseAdapter extends MouseAdapter {
         
         AbstractRadioLink radio = (AbstractRadioLink) e.getComponent();
         
-        radio.setFont(original);
+        radio.setFont(this.original);
         radio.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
     

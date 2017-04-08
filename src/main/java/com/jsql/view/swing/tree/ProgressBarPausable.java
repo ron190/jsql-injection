@@ -45,9 +45,9 @@ public class ProgressBarPausable extends JProgressBar {
             try {
                 BufferedImage im2 = ImageIO.read(ProgressBarPausable.class.getResource(HelperUi.PATH_PAUSE));
                 g.drawImage(
-                    im2, 
-                    (this.getWidth() - im2.getWidth()) / 2, 
-                    (this.getHeight() - im2.getHeight()) / 2, 
+                    im2,
+                    (this.getWidth() - im2.getWidth()) / 2,
+                    (this.getHeight() - im2.getHeight()) / 2,
                     null
                 );
             } catch (IOException e) {

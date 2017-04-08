@@ -1,5 +1,6 @@
 package com.jsql.view.swing.scrollpane;
 
+import java.awt.Adjustable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,6 +18,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.ScrollBarUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -64,8 +66,8 @@ public class JScrollIndicator extends JLayeredPane {
      * @param view the component to display in the scrollpane's viewport
      */
     public JScrollIndicator(final JComponent view) {
-        this(view, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
-            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        this(view, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     }
 
     /**
@@ -85,22 +87,22 @@ public class JScrollIndicator extends JLayeredPane {
      * @param hsbPolicy an integer that specifies the horizontal scrollbar policy
      */
     public JScrollIndicator(final JComponent view, int vsbPolicy, int hsbPolicy) {
-        scrollPane = new JScrollPane(view, vsbPolicy, hsbPolicy);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        add(scrollPane, JLayeredPane.DEFAULT_LAYER);
+        this.scrollPane = new JScrollPane(view, vsbPolicy, hsbPolicy);
+        this.scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        this.add(this.scrollPane, JLayeredPane.DEFAULT_LAYER);
 
-        controlPanel = new ControlPanel(scrollPane);
-        add(controlPanel, JLayeredPane.PALETTE_LAYER);
+        this.controlPanel = new ControlPanel(this.scrollPane);
+        this.add(this.controlPanel, JLayeredPane.PALETTE_LAYER);
 
-        addComponentListener(
+        this.addComponentListener(
             new ComponentAdapter() {
                 @Override
                 public void componentResized(ComponentEvent e) {
                     // listen to changes of JLayeredPane size
-                    scrollPane.setSize(getSize());
-                    scrollPane.getViewport().revalidate();
-                    controlPanel.setSize(getSize());
-                    controlPanel.revalidate();
+                    JScrollIndicator.this.scrollPane.setSize(JScrollIndicator.this.getSize());
+                    JScrollIndicator.this.scrollPane.getViewport().revalidate();
+                    JScrollIndicator.this.controlPanel.setSize(JScrollIndicator.this.getSize());
+                    JScrollIndicator.this.controlPanel.revalidate();
                 }
             }
         );
@@ -115,7 +117,7 @@ public class JScrollIndicator extends JLayeredPane {
      * @return
      */
     public JScrollPane getScrollPane() {
-        return scrollPane;
+        return this.scrollPane;
     }
 
     private class ControlPanel extends JPanel {
@@ -124,21 +126,21 @@ public class JScrollIndicator extends JLayeredPane {
         private final JMyScrollBar hScrollBar;
 
         private ControlPanel(JScrollPane scrollPane) {
-            setLayout(new BorderLayout());
-            setOpaque(false);
+            this.setLayout(new BorderLayout());
+            this.setOpaque(false);
 
-            vScrollBar = new JMyScrollBar(JScrollBar.VERTICAL);
-            scrollPane.setVerticalScrollBar(vScrollBar);
-            scrollPane.remove(vScrollBar);
-            if (scrollPane.getVerticalScrollBarPolicy() != JScrollPane.VERTICAL_SCROLLBAR_NEVER) {
-                add(vScrollBar, BorderLayout.EAST);
+            this.vScrollBar = new JMyScrollBar(Adjustable.VERTICAL);
+            scrollPane.setVerticalScrollBar(this.vScrollBar);
+            scrollPane.remove(this.vScrollBar);
+            if (scrollPane.getVerticalScrollBarPolicy() != ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER) {
+                this.add(this.vScrollBar, BorderLayout.EAST);
             }
 
-            hScrollBar = new JMyScrollBar(JScrollBar.HORIZONTAL);
-            scrollPane.setHorizontalScrollBar(hScrollBar);
-            scrollPane.remove(hScrollBar);
-            if (scrollPane.getHorizontalScrollBarPolicy() != JScrollPane.HORIZONTAL_SCROLLBAR_NEVER) {
-                add(hScrollBar, BorderLayout.SOUTH);
+            this.hScrollBar = new JMyScrollBar(Adjustable.HORIZONTAL);
+            scrollPane.setHorizontalScrollBar(this.hScrollBar);
+            scrollPane.remove(this.hScrollBar);
+            if (scrollPane.getHorizontalScrollBarPolicy() != ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER) {
+                this.add(this.hScrollBar, BorderLayout.SOUTH);
             }
         }
     }
@@ -150,25 +152,25 @@ public class JScrollIndicator extends JLayeredPane {
         public JMyScrollBar(int direction) {
             super(direction);
 
-            scrollUI = new MyScrollBarUI(this);
-            super.setUI(scrollUI);
+            this.scrollUI = new MyScrollBarUI(this);
+            super.setUI(this.scrollUI);
             this.setUnitIncrement(64);
             int size = THUMB_THICKNESS + THUMB_MARGIN;
-            setPreferredSize(new Dimension(size, size));
-            scrollUI.setVisible();
-            addMouseListener(new MouseAdapter() {
+            this.setPreferredSize(new Dimension(size, size));
+            this.scrollUI.setVisible();
+            this.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    scrollUI.setVisible();
+                    JMyScrollBar.this.scrollUI.setVisible();
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    scrollUI.setVisible();
+                    JMyScrollBar.this.scrollUI.setVisible();
                 }
             });
 
-            addAdjustmentListener(adjustmentEvent -> scrollUI.setVisible());
+            this.addAdjustmentListener(adjustmentEvent -> this.scrollUI.setVisible());
         }
 
         @Override
@@ -183,7 +185,7 @@ public class JScrollIndicator extends JLayeredPane {
 
         @Override
         public void paint(Graphics g) {
-            scrollUI.paintThumb(g); // just the thumb
+            this.scrollUI.paintThumb(g); // just the thumb
         }
 
         @Override
@@ -211,15 +213,15 @@ public class JScrollIndicator extends JLayeredPane {
 
         @Override
         protected void installComponents() {
-            incrButton = new JButton();
-            decrButton = new JButton();
-            if (myScrollBar.getOrientation() == JScrollBar.HORIZONTAL) {
+            this.incrButton = new JButton();
+            this.decrButton = new JButton();
+            if (this.myScrollBar.getOrientation() == Adjustable.HORIZONTAL) {
                 int size = THUMB_THICKNESS + THUMB_MARGIN; // let lower right corner empty
-                incrButton.setPreferredSize(new Dimension(size, size));
+                this.incrButton.setPreferredSize(new Dimension(size, size));
             } else {
-                incrButton.setPreferredSize(new Dimension(THUMB_MARGIN, THUMB_MARGIN));
+                this.incrButton.setPreferredSize(new Dimension(THUMB_MARGIN, THUMB_MARGIN));
             }
-            decrButton.setPreferredSize(new Dimension(THUMB_MARGIN, THUMB_MARGIN));
+            this.decrButton.setPreferredSize(new Dimension(THUMB_MARGIN, THUMB_MARGIN));
         }
 
         @Override
@@ -227,30 +229,30 @@ public class JScrollIndicator extends JLayeredPane {
             super.installDefaults();
 
             // ensure the minimum size of the thumb
-            int w = minimumThumbSize.width;
-            int h = minimumThumbSize.height;
-            if (myScrollBar.getOrientation() == JScrollBar.VERTICAL) {
-                h = Math.max(h, Math.min(maximumThumbSize.height, THUMB_MIN_SIZE));
+            int w = this.minimumThumbSize.width;
+            int h = this.minimumThumbSize.height;
+            if (this.myScrollBar.getOrientation() == Adjustable.VERTICAL) {
+                h = Math.max(h, Math.min(this.maximumThumbSize.height, THUMB_MIN_SIZE));
             } else {
-                w = Math.max(w, Math.min(maximumThumbSize.width, THUMB_MIN_SIZE));
+                w = Math.max(w, Math.min(this.maximumThumbSize.width, THUMB_MIN_SIZE));
             }
-            minimumThumbSize = new Dimension(w, h);
+            this.minimumThumbSize = new Dimension(w, h);
         }
 
         private void paintThumb(Graphics g) {
-            int alphaThumb = isThumbRollover() ? SCROLL_BAR_ALPHA_ROLLOVER : SCROLL_BAR_ALPHA;
+            int alphaThumb = this.isThumbRollover() ? SCROLL_BAR_ALPHA_ROLLOVER : SCROLL_BAR_ALPHA;
 
-            g.setColor(new Color(getAlphaColor(THUMB_COLOR).getRed(),
-                    getAlphaColor(THUMB_COLOR).getGreen(), getAlphaColor(THUMB_COLOR).getBlue(), alphaThumb));
+            g.setColor(new Color(this.getAlphaColor(THUMB_COLOR).getRed(),
+                    this.getAlphaColor(THUMB_COLOR).getGreen(), this.getAlphaColor(THUMB_COLOR).getBlue(), alphaThumb));
             
-            Rectangle thumbBounds = getThumbBounds();
+            Rectangle thumbBounds = this.getThumbBounds();
 
             int x = thumbBounds.x;
             int y = thumbBounds.y;
             int w = thumbBounds.width;
             int h = thumbBounds.height;
 
-            if (myScrollBar.getOrientation() == JScrollBar.VERTICAL) {
+            if (this.myScrollBar.getOrientation() == Adjustable.VERTICAL) {
                 w -= THUMB_MARGIN;
             } else {
                 h -= THUMB_MARGIN;
@@ -260,21 +262,21 @@ public class JScrollIndicator extends JLayeredPane {
         }
 
         private Color getAlphaColor(Color color) {
-            if (alpha == 1.0f) {
+            if (this.alpha == 1.0f) {
                 return color;
             }
             int rgb = color.getRGB() & 0xFFFFFF; // color without alpha values
-            rgb |= ((int)(alpha*255)) << 24; // add alpha value
+            rgb |= (int)(this.alpha*255) << 24; // add alpha value
             return new Color(rgb, true);
         }
 
         public void setAlpha(float alpha) {
             this.alpha = alpha;
-            myScrollBar.repaint(getThumbBounds());
+            this.myScrollBar.repaint(this.getThumbBounds());
         }
 
         public void setVisible() {
-            myScrollBar.repaint(getThumbBounds());
+            this.myScrollBar.repaint(this.getThumbBounds());
         }
     }
     

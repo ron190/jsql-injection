@@ -31,7 +31,7 @@ public class Request {
      * @return Name of interraction
      */
     public TypeRequest getMessage() {
-        return message;
+        return this.message;
     }
 
     /**
@@ -39,7 +39,7 @@ public class Request {
      * @return List of parameter(s).
      */
     public Object[] getParameters() {
-        return parameters;
+        return this.parameters;
     }
 
     /**

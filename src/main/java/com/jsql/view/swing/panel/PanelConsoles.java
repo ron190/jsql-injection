@@ -52,6 +52,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.text.DefaultCaret;
 
+import org.apache.log4j.Logger;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
+
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.HttpHeader;
@@ -77,48 +81,53 @@ import com.jsql.view.swing.text.JTextPanePlaceholder;
  */
 @SuppressWarnings("serial")
 public class PanelConsoles extends JPanel {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 	
     /**
      * Console for default application messages.
      */
-    public SimpleConsoleAdapter consoleTab = new SimpleConsoleAdapter("Console", "You should not see that!!");
+    private SimpleConsoleAdapter consoleTab = new SimpleConsoleAdapter("Console", "You should not see that!!");
 
     /**
      * Console for java exception messages.
      */
-    public JavaConsoleAdapter javaTab = new JavaConsoleAdapter("Java", "Java unhandled exception");
+    private JavaConsoleAdapter javaTab = new JavaConsoleAdapter("Java", "Java unhandled exception");
     
     /**
      * Console for raw SQL results.
      */
-    public JTextArea chunkTab;
+    private JTextArea chunkTab;
 
     /**
      * Panel displaying table of HTTP requests and responses.
      */
-    public JSplitPaneWithZeroSizeDivider network;
+    private JSplitPaneWithZeroSizeDivider network;
 
     /**
      * Console for binary representation of characters found with blind/time injection.
      */
-    public JTextArea binaryTab;
+    private JTextArea binaryTab;
 
     /**
      * List of HTTP injection requests and responses.
      */
-    private List<HttpHeader> listHttpHeader = new ArrayList<>();
+    private transient List<HttpHeader> listHttpHeader = new ArrayList<>();
 
     /**
      * Table in Network tab displaying HTTP requests.
      */
-    public JTable networkTable;
+    private JTable networkTable;
 
-    public JTextArea networkTabUrl = new JPopupTextArea("Request URL").getProxy();
-    public JTextArea networkTabResponse = new JPopupTextArea("Header server response").getProxy();
-    public JTextArea networkTabSource = new JPopupTextArea("Raw page source").getProxy();
-    public JTextPane networkTabPreview = new JTextPanePlaceholder("Web browser rendering");
-    public JTextArea networkTabHeader = new JPopupTextArea("Header client request").getProxy();
-    public JTextArea networkTabParam = new JPopupTextArea("HTTP POST parameters").getProxy();
+    private JTextArea networkTabUrl = new JPopupTextArea("Request URL").getProxy();
+    private JTextArea networkTabResponse = new JPopupTextArea("Header server response").getProxy();
+    private JTextArea networkTabSource = new JPopupTextArea("Raw page source").getProxy();
+    private JTextPane networkTabPreview = new JTextPanePlaceholder("Web browser rendering");
+    private JTextArea networkTabHeader = new JPopupTextArea("Header client request").getProxy();
+    private JTextArea networkTabParam = new JPopupTextArea("HTTP POST parameters").getProxy();
     
     /**
      * Create panel at the bottom with differents consoles to report injection process.
@@ -182,16 +191,16 @@ public class PanelConsoles extends JPanel {
 
         this.networkTable.setModel(new DefaultTableModel() {
             private String[] columns = {
-                I18n.valueByKey("NETWORK_TAB_METHOD_COLUMN"), 
-                I18n.valueByKey("NETWORK_TAB_URL_COLUMN"), 
-                I18n.valueByKey("NETWORK_TAB_SIZE_COLUMN"), 
+                I18n.valueByKey("NETWORK_TAB_METHOD_COLUMN"),
+                I18n.valueByKey("NETWORK_TAB_URL_COLUMN"),
+                I18n.valueByKey("NETWORK_TAB_SIZE_COLUMN"),
                 I18n.valueByKey("NETWORK_TAB_TYPE_COLUMN")
             };
 
             @Override
             public int getColumnCount() {
                 return this.columns.length;
-            } 
+            }
 
             @Override
             public String getColumnName(int index) {
@@ -219,7 +228,7 @@ public class PanelConsoles extends JPanel {
         
         class CenterRenderer extends DefaultTableCellRenderer {
             public CenterRenderer() {
-                this.setHorizontalAlignment(JLabel.CENTER);
+                this.setHorizontalAlignment(SwingConstants.CENTER);
             }
         }
 
@@ -245,7 +254,7 @@ public class PanelConsoles extends JPanel {
                 JLabel lbl = (JLabel) tcrOs.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 lbl.setBorder(
                     BorderFactory.createCompoundBorder(
-                        BorderFactory.createMatteBorder(0, 0, 1, 1, Color.LIGHT_GRAY), 
+                        BorderFactory.createMatteBorder(0, 0, 1, 1, Color.LIGHT_GRAY),
                         BorderFactory.createEmptyBorder(0, 5, 0, 5)
                     )
                 );
@@ -272,59 +281,74 @@ public class PanelConsoles extends JPanel {
         this.network.setLeftComponent(scroller);
         
         MouseTabbedPane networkDetailTabs = new MouseTabbedPane();
-        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_URL_LABEL"), new LightScrollPane(1, 1, 0, 0, networkTabUrl));
-        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_RESPONSE_LABEL"), new LightScrollPane(1, 1, 0, 0, networkTabResponse));
+        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_URL_LABEL"), new LightScrollPane(1, 1, 0, 0, this.networkTabUrl));
+        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_RESPONSE_LABEL"), new LightScrollPane(1, 1, 0, 0, this.networkTabResponse));
         
-        networkTabPreview.setEditorKit(new HTMLEditorKitTextPaneWrap()); 
+        this.networkTabPreview.setEditorKit(new HTMLEditorKitTextPaneWrap());
         
-        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_SOURCE_LABEL"), new LightScrollPane(1, 1, 0, 0, networkTabSource));
-        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_PREVIEW_LABEL"), new LightScrollPane(1, 1, 0, 0, networkTabPreview));
-        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_HEADERS_LABEL"), new LightScrollPane(1, 1, 0, 0, networkTabHeader));
-        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_PARAMS_LABEL"), new LightScrollPane(1, 1, 0, 0, networkTabParam));
+        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_SOURCE_LABEL"), new LightScrollPane(1, 1, 0, 0, this.networkTabSource));
+        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_PREVIEW_LABEL"), new LightScrollPane(1, 1, 0, 0, this.networkTabPreview));
+        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_HEADERS_LABEL"), new LightScrollPane(1, 1, 0, 0, this.networkTabHeader));
+        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_PARAMS_LABEL"), new LightScrollPane(1, 1, 0, 0, this.networkTabParam));
         
-        DefaultCaret caret = (DefaultCaret) networkTabResponse.getCaret();
+        DefaultCaret caret = (DefaultCaret) this.networkTabResponse.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) networkTabSource.getCaret();
+        caret = (DefaultCaret) this.networkTabSource.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) networkTabPreview.getCaret();
+        caret = (DefaultCaret) this.networkTabPreview.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) networkTabHeader.getCaret();
+        caret = (DefaultCaret) this.networkTabHeader.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) networkTabParam.getCaret();
+        caret = (DefaultCaret) this.networkTabParam.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) networkTabUrl.getCaret();
+        caret = (DefaultCaret) this.networkTabUrl.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
         
-        networkTabHeader.setLineWrap(true);
-        networkTabParam.setLineWrap(true);
-        networkTabResponse.setLineWrap(true);
-        networkTabUrl.setLineWrap(true);
-        networkTabSource.setLineWrap(true);
+        this.networkTabHeader.setLineWrap(true);
+        this.networkTabParam.setLineWrap(true);
+        this.networkTabResponse.setLineWrap(true);
+        this.networkTabUrl.setLineWrap(true);
+        this.networkTabSource.setLineWrap(true);
         
-        networkTabPreview.setContentType("text/html");
-        networkTabPreview.setEditable(false);
+        this.networkTabPreview.setContentType("text/html");
+        this.networkTabPreview.setEditable(false);
         
         this.networkTable.getColumnModel().getColumn(1).setPreferredWidth(500);
         
         this.networkTable.getSelectionModel().addListSelectionListener(event -> {
             // prevent double event
             if (!event.getValueIsAdjusting() && PanelConsoles.this.networkTable.getSelectedRow() > -1) {
-                HttpHeader networkData = listHttpHeader.get(PanelConsoles.this.networkTable.getSelectedRow());
-                networkTabHeader.setText(networkData.getHeader());
-                networkTabParam.setText(networkData.getPost());
-                networkTabUrl.setText(networkData.getUrl());
+                HttpHeader networkData = this.listHttpHeader.get(PanelConsoles.this.networkTable.getSelectedRow());
+                this.networkTabHeader.setText(networkData.getHeader());
+                this.networkTabParam.setText(networkData.getPost());
+                this.networkTabUrl.setText(networkData.getUrl());
                 
-                networkTabResponse.setText("");
+                this.networkTabResponse.setText("");
                 for(String key: networkData.getResponse().keySet()) {
-                    networkTabResponse.append(key + ": " + networkData.getResponse().get(key));
-                    networkTabResponse.append("\n");
+                    this.networkTabResponse.append(key + ": " + networkData.getResponse().get(key));
+                    this.networkTabResponse.append("\n");
                 }
                 
-                networkTabSource.setText(StringUtil.detectUtf8Html(networkData.getSource()));
+                this.networkTabSource.setText(StringUtil.detectUtf8Html(networkData.getSource()).replaceAll("#{5,}", "#*"));
                 
                 // Reset EditorKit to disable previous document effect
-                networkTabPreview.getEditorKit().createDefaultDocument();
-                networkTabPreview.setText("<html>"+ StringUtil.detectUtf8(networkData.getSource()) + "</html>");
+                this.networkTabPreview.getEditorKit().createDefaultDocument();
+                
+                // TODO: test if proxy is used by jsoup
+                // Previous test for 2xx Success and 3xx Redirection was Header only,
+                // now get the HTML content
+                this.networkTabPreview.setText(
+                    Jsoup.clean(
+                        "<html>"+ StringUtil.detectUtf8(networkData.getSource()).replaceAll("#{5,}", "#*") + "</html>"
+                            .replaceAll("<img.*>", "")
+                            .replaceAll("<input.*type=\"?hidden\"?.*>", "")
+                            .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
+                            .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
+                        Whitelist.relaxed()
+                            .addTags("center", "div", "span")
+                            .addAttributes(":all", "style")
+                    )
+                );
             }
         });
 
@@ -374,7 +398,7 @@ public class PanelConsoles extends JPanel {
 
         this.setLayout(new OverlayLayout(this));
 
-        BasicArrowButton showBottomButton = new BasicArrowButton(BasicArrowButton.SOUTH);
+        BasicArrowButton showBottomButton = new BasicArrowButton(SwingConstants.SOUTH);
         showBottomButton.setBorderPainted(false);
         showBottomButton.setPreferredSize(showBottomButton.getPreferredSize());
         showBottomButton.setMaximumSize(showBottomButton.getPreferredSize());
@@ -394,9 +418,9 @@ public class PanelConsoles extends JPanel {
 
         // Do Overlay
         arrowDownPanel.setAlignmentX(FlowLayout.TRAILING);
-        arrowDownPanel.setAlignmentY(JTextArea.TOP_ALIGNMENT);
+        arrowDownPanel.setAlignmentY(Component.TOP_ALIGNMENT);
         MediatorGui.tabConsoles().setAlignmentX(FlowLayout.LEADING);
-        MediatorGui.tabConsoles().setAlignmentY(JTextArea.TOP_ALIGNMENT);
+        MediatorGui.tabConsoles().setAlignmentY(Component.TOP_ALIGNMENT);
 
         this.chunkTab.setLineWrap(true);
         this.binaryTab.setLineWrap(true);
@@ -436,7 +460,7 @@ public class PanelConsoles extends JPanel {
 
         JLabel labelBinary = new JLabel(I18n.valueByKey("CONSOLE_BINARY_LABEL"), HelperUi.ICON_BINARY, SwingConstants.CENTER);
         MediatorGui.tabConsoles().setTabComponentAt(
-            MediatorGui.tabConsoles().indexOfTab("Boolean"), 
+            MediatorGui.tabConsoles().indexOfTab("Boolean"),
             labelBinary
         );
         I18n.addComponentForKey("CONSOLE_BINARY_LABEL", labelBinary);
@@ -456,7 +480,7 @@ public class PanelConsoles extends JPanel {
 
         JLabel labelNetwork = new JLabel(I18n.valueByKey("CONSOLE_NETWORK_LABEL"), HelperUi.ICON_HEADER, SwingConstants.CENTER);
         MediatorGui.tabConsoles().setTabComponentAt(
-            MediatorGui.tabConsoles().indexOfTab("Network"), 
+            MediatorGui.tabConsoles().indexOfTab("Network"),
             labelNetwork
         );
         I18n.addComponentForKey("CONSOLE_NETWORK_LABEL", labelNetwork);
@@ -476,7 +500,7 @@ public class PanelConsoles extends JPanel {
 
         JLabel labelJava = new JLabel(I18n.valueByKey("CONSOLE_JAVA_LABEL"), HelperUi.ICON_CUP, SwingConstants.CENTER);
         MediatorGui.tabConsoles().setTabComponentAt(
-            MediatorGui.tabConsoles().indexOfTab("Java"), 
+            MediatorGui.tabConsoles().indexOfTab("Java"),
             labelJava
         );
         I18n.addComponentForKey("CONSOLE_JAVA_LABEL", labelJava);
@@ -488,6 +512,48 @@ public class PanelConsoles extends JPanel {
     
     public void reset() {
         this.listHttpHeader.clear();
+        
+        // Empty infos tabs
+        this.getChunkTab().setText("");
+        this.getBinaryTab().setText("");
+        
+        // Fix #4657, #1860: Multiple Exceptions on setRowCount()
+        try {
+            ((DefaultTableModel) this.getNetworkTable().getModel()).setRowCount(0);
+        } catch(NullPointerException | ArrayIndexOutOfBoundsException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+        
+        this.getJavaTab().getProxy().setText("");
+        
+        this.networkTabUrl.setText("");
+        this.networkTabHeader.setText("");
+        this.networkTabParam.setText("");
+        this.networkTabResponse.setText("");
+        this.networkTabSource.setText("");
+        this.networkTabPreview.setText("");
+    }
+    
+    // Getter and setter
+
+    public JavaConsoleAdapter getJavaTab() {
+        return this.javaTab;
+    }
+
+    public JTextArea getChunkTab() {
+        return this.chunkTab;
+    }
+
+    public JSplitPaneWithZeroSizeDivider getNetwork() {
+        return this.network;
+    }
+
+    public JTextArea getBinaryTab() {
+        return this.binaryTab;
+    }
+
+    public JTable getNetworkTable() {
+        return this.networkTable;
     }
     
 }

@@ -20,13 +20,13 @@ public class ConcreteIngresTestSuite extends AbstractTestSuite {
         
         this.jdbcQueryForDatabaseNames = "select distinct trim(schema_name) schema_name from iischema";
         
-        this.jdbcQueryForTableNames = "select distinct trim(table_name) table_name from iiingres_tables where table_owner = 'watthieu-x64'";   
+        this.jdbcQueryForTableNames = "select distinct trim(table_name) table_name from iiingres_tables where table_owner = 'watthieu-x64'";
         
-        this.jdbcQueryForColumnNames = "select distinct trim(column_name) column_name from iiocolumns where table_owner = 'watthieu-x64' and table_name = 'country'";  
+        this.jdbcQueryForColumnNames = "select distinct trim(column_name) column_name from iiocolumns where table_owner = 'watthieu-x64' and table_name = 'country'";
         
-        this.jdbcQueryForValues = "select distinct ct_code from \"watthieu-x64\".country";   
+        this.jdbcQueryForValues = "select distinct ct_code from \"watthieu-x64\".country";
         
-        requestJdbc();
+        this.requestJdbc();
         
     }
     

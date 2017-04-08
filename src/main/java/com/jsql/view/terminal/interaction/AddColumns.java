@@ -38,13 +38,13 @@ public class AddColumns implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public AddColumns(Object[] interactionParams) {
         // Get list of columns from the model
-        columns = (List<Column>) interactionParams[0];
+        this.columns = (List<Column>) interactionParams[0];
     }
 
     @Override
     public void execute() {
         // Loop into the list of columns
-        for (Column column: columns) {
+        for (Column column: this.columns) {
             LOGGER.info(column);
         }
         LOGGER.info("\n");

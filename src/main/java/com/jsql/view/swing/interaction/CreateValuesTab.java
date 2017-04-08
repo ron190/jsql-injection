@@ -58,7 +58,7 @@ public class CreateValuesTab extends CreateTab implements InteractionCommand {
 
     @Override
     public void execute() {
-        // Report NullPointerException #1683 
+        // Report NullPointerException #1683
         DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(this.table);
         
         if (node != null) {
@@ -93,7 +93,7 @@ public class CreateValuesTab extends CreateTab implements InteractionCommand {
             
             // Apply the custom header to the tab
             MediatorGui.tabResults().setTabComponentAt(
-                MediatorGui.tabResults().indexOfComponent(newTableJPanel), 
+                MediatorGui.tabResults().indexOfComponent(newTableJPanel),
                 header
             );
         }

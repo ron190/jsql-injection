@@ -20,13 +20,13 @@ public class ConcreteInformixTestSuite extends AbstractTestSuite {
         
         this.jdbcQueryForDatabaseNames = "select distinct trim(name) name from sysmaster:sysdatabases";
         
-        this.jdbcQueryForTableNames = "select distinct trim(tabname) tabname from sysutils:systables";   
+        this.jdbcQueryForTableNames = "select distinct trim(tabname) tabname from sysutils:systables";
         
-        this.jdbcQueryForColumnNames = "select distinct colname from sysutils:syscolumns c join sysutils:systables t on c.tabid = t.tabid where tabname='sysusers'";  
+        this.jdbcQueryForColumnNames = "select distinct colname from sysutils:syscolumns c join sysutils:systables t on c.tabid = t.tabid where tabname='sysusers'";
         
-        this.jdbcQueryForValues = "select distinct trim(username) username from sysutils:sysusers";   
+        this.jdbcQueryForValues = "select distinct trim(username) username from sysutils:sysusers";
         
-        requestJdbc();
+        this.requestJdbc();
         
     }
     

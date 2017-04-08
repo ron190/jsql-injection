@@ -64,10 +64,10 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     @Override
     public CallableTime call() throws Exception {
         this.calendar1.setTime(new Date());
-        InjectionTime.callUrl(blindUrl);
+        AbstractInjectionBoolean.callUrl(this.blindUrl);
         this.calendar2.setTime(new Date());
-        long milliseconds1 = calendar1.getTimeInMillis();
-        long milliseconds2 = calendar2.getTimeInMillis();
+        long milliseconds1 = this.calendar1.getTimeInMillis();
+        long milliseconds2 = this.calendar2.getTimeInMillis();
         long diff = milliseconds2 - milliseconds1;
         this.diffSeconds = diff / 1000;
         return this;

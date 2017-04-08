@@ -92,7 +92,7 @@ public class MouseTabbedPane extends JTabbedPane {
                 menu.setLocation(
                     ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
                     ? e.getXOnScreen() - menu.getWidth()
-                    : e.getXOnScreen(), 
+                    : e.getXOnScreen(),
                     e.getYOnScreen()
                 );
             }

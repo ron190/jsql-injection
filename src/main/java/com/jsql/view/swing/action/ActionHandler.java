@@ -52,7 +52,7 @@ public final class ActionHandler {
      */
     public static void addTextFieldShortcutSelectAll() {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(
-            "permanentFocusOwner", 
+            "permanentFocusOwner",
             propertyChangeEvent -> {
                 if (propertyChangeEvent.getNewValue() instanceof JTextField) {
                     SwingUtilities.invokeLater(() -> {
@@ -169,7 +169,7 @@ public final class ActionHandler {
         final boolean[] wasAltPressed = {false};
         
         /* Hide Menubar when focusing any component */
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner", 
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner",
             propertyChangeEvent -> SwingUtilities.invokeLater(() -> {
                 if (!MediatorGui.panelAddressBar().advanceIsActivated) {
                     menubar.setVisible(false);
@@ -185,7 +185,7 @@ public final class ActionHandler {
                 wasAltDPressed[0] = true;
                 return true;
             } else if (
-                keyEvent.getKeyCode() == KeyEvent.VK_ALT && 
+                keyEvent.getKeyCode() == KeyEvent.VK_ALT &&
                 keyEvent.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)
             ) {
                 if (!wasAltDPressed[0] && !wasAltPressed[0]) {

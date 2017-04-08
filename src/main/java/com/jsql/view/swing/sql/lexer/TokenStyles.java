@@ -28,13 +28,13 @@ import com.jsql.view.swing.HelperUi;
 
 class TokenStyles {
     
+    /**
+     * A hash table containing the text styles. Simple attribute sets are hashed
+     * by name (String)
+     */
+    private static HashMap<String, SimpleAttributeSet> styles = new HashMap<>();
+    
 	private TokenStyles() { } // disable constructor
-	
-	/**
-	 * A hash table containing the text styles. Simple attribute sets are hashed
-	 * by name (String)
-	 */
-	private static HashMap<String, SimpleAttributeSet> styles = new HashMap<>();
 
 	/**
 	 * Create the styles and place them in the hash table.

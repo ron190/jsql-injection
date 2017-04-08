@@ -37,13 +37,13 @@ public class AddTables implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public AddTables(Object[] interactionParams) {
-        tables = (List<Table>) interactionParams[0];
+        this.tables = (List<Table>) interactionParams[0];
     }
 
     @Override
     public void execute() {
         // Loop into the list of tables
-        for (Table table: tables) {
+        for (Table table: this.tables) {
             LOGGER.info(table);
         }
         LOGGER.info("\n");

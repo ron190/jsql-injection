@@ -13,7 +13,7 @@ public class ButtonClose extends JButton {
         super(HelperUi.ICON_CLOSE);
         
         Dimension closeButtonSize = new Dimension(
-            HelperUi.ICON_CLOSE.getIconWidth(), 
+            HelperUi.ICON_CLOSE.getIconWidth(),
             HelperUi.ICON_CLOSE.getIconHeight()
         );
         this.setPreferredSize(closeButtonSize);

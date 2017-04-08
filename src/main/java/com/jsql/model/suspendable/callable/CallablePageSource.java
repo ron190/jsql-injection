@@ -54,15 +54,15 @@ public class CallablePageSource implements Callable<CallablePageSource> {
     // Getters and setters
 
     public String getUrl() {
-        return url;
+        return this.url;
     }
     
     public String getContent() {
-        return content;
+        return this.content;
     }
     
     public String getInsertionCharacter() {
-        return insertionCharacter;
+        return this.insertionCharacter;
     }
     
 }

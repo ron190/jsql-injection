@@ -48,7 +48,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
      * Value contained in the editor.
      * Returned by getCellEditorValue().
      */
-    private AbstractNodeModel nodeModel;
+    private transient AbstractNodeModel nodeModel;
 
     /**
      * Build editor, add tree and mouse listener.
@@ -64,7 +64,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
         JTree tree, Object nodeRenderer, boolean selected, boolean expanded, boolean leaf, int row
     ) {
 
-        Component componentRenderer = defaultTreeRenderer.getTreeCellRendererComponent(
+        Component componentRenderer = this.defaultTreeRenderer.getTreeCellRendererComponent(
             tree, nodeRenderer, true, expanded, leaf, row, true
         );
 
@@ -131,12 +131,12 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
 
     @Override
     public void mousePressed(MouseEvent e) {
-        showPopup(e);
+        this.showPopup(e);
     }
     
     @Override
     public void mouseReleased(MouseEvent e) {
-        showPopup(e);
+        this.showPopup(e);
     }
 
     @Override

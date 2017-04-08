@@ -41,7 +41,7 @@ public class NodeModelEmpty extends AbstractNodeModel {
 
     @Override
     public Component getComponent(
-        final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, int row,boolean hasFocus
+        final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, boolean hasFocus
     ) {
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         JPanel emptyPanel = new JPanel(new BorderLayout());
@@ -60,28 +60,28 @@ public class NodeModelEmpty extends AbstractNodeModel {
         return emptyPanel;
     }
 
-    @Override 
+    @Override
     Icon getLeafIcon(boolean leaf) {
         // No icon for default node
         return null;
     }
     
-    @Override 
+    @Override
     public void runAction() {
         // Not used
     }
     
-    @Override 
+    @Override
     void buildMenu(JPopupMenu tablePopupMenu, TreePath path) {
         // Not used
     }
     
-    @Override 
+    @Override
     public void showPopup(final DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
         // Not used
     }
     
-    @Override 
+    @Override
     public boolean isPopupDisplayable() {
         // Not used
         return false;

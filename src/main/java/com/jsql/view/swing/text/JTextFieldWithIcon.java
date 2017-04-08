@@ -25,7 +25,7 @@ import com.jsql.i18n.I18n;
 import com.jsql.view.swing.HelperUi;
 
 /**
- * A JTextField with globe icon displayed on the left. 
+ * A JTextField with globe icon displayed on the left.
  */
 @SuppressWarnings("serial")
 public class JTextFieldWithIcon extends JTextFieldPlaceholder {
@@ -60,7 +60,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
         Border border = UIManager.getBorder("TextField.border");
 
         int x = border.getBorderInsets(this).left;
-        int y = (getHeight() - 16) / 2;
+        int y = (this.getHeight() - 16) / 2;
 
         // Fix #1654 (Linux only) : ClassCastException: sun.awt.image.BufImgSurfaceData cannot be cast to sun.java2d.xr.XRSurfaceData
         try {
@@ -68,8 +68,8 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
                 image,
                 ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
                 ? JTextFieldWithIcon.this.getWidth() - (16 + x + 4)
-                : x + 4, 
-                y + 1, 
+                : x + 4,
+                y + 1,
                 this
             );
         } catch (ClassCastException e) {

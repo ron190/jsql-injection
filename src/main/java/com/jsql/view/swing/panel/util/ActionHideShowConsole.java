@@ -31,14 +31,14 @@ public class ActionHideShowConsole implements ActionListener {
 
     /**
      * Hide bottom panel if both main and bottom are visible, also
-     * displays an ersatz bar replacing tabbedpane.  
+     * displays an ersatz bar replacing tabbedpane.
      * Or else if only main panel is visible then displays bottom panel
      * and hide ersatz panel.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (
-            MediatorGui.frame().splitHorizontalTopBottom.getTopComponent().isVisible() && 
+            MediatorGui.frame().splitHorizontalTopBottom.getTopComponent().isVisible() &&
             MediatorGui.frame().splitHorizontalTopBottom.getBottomComponent().isVisible()
         ) {
             MediatorGui.frame().splitHorizontalTopBottom.getBottomComponent().setVisible(false);

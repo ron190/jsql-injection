@@ -69,10 +69,10 @@ public class JTextFieldPlaceholder extends JTextField {
             g.setFont(this.getFont().deriveFont(Font.ITALIC));
             FontMetrics fm = g.getFontMetrics();
             g.drawString(
-                placeholderText, 
+                this.placeholderText,
                 this.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT
-                ? w - (fm.stringWidth(placeholderText) + ins.left + 2)
-                : ins.left + 2, 
+                ? w - (fm.stringWidth(this.placeholderText) + ins.left + 2)
+                : ins.left + 2,
                 h / 2 + fm.getAscent() / 2 - 1
             );
         }

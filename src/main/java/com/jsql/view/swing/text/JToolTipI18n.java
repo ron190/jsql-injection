@@ -20,7 +20,7 @@ public class JToolTipI18n extends JToolTip {
 
     @Override
     public String getTipText() {
-        return textTooltip;
+        return this.textTooltip;
     }
     
 }

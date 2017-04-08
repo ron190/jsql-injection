@@ -89,7 +89,7 @@ public class CreateSQLShellTab extends CreateTab implements InteractionCommand {
     
             // Apply the custom header to the tab
             MediatorGui.tabResults().setTabComponentAt(
-                MediatorGui.tabResults().indexOfComponent(scroller), 
+                MediatorGui.tabResults().indexOfComponent(scroller),
                 header
             );
     

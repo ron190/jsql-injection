@@ -50,7 +50,7 @@ public class Database extends AbstractElementDatabase {
      */
     @Override
     public int getChildCount() {
-        return Integer.parseInt(tableCount);
+        return Integer.parseInt(this.tableCount);
     }
 
     /**
@@ -62,15 +62,15 @@ public class Database extends AbstractElementDatabase {
         // Report #1500: detect incorrect number of tables
         String sPlural = "";
         try {
-            if (Integer.parseInt(tableCount) > 1) {
+            if (Integer.parseInt(this.tableCount) > 1) {
                 sPlural = "s";
             }
         } catch (NumberFormatException e) {
-            tableCount = "0";
+            this.tableCount = "0";
             LOGGER.warn("Incorrect number of tables.");
         }
         
-        return this.elementValue +" ("+ tableCount +" table"+ sPlural +")";
+        return this.elementValue +" ("+ this.tableCount +" table"+ sPlural +")";
     }
     
 }

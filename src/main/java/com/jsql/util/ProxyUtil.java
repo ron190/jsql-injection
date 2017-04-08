@@ -102,8 +102,8 @@ public class ProxyUtil {
         boolean proxyIsResponding = true;
         
         if (
-            ProxyUtil.isUsingProxy() && 
-            !"".equals(ProxyUtil.getProxyAddress()) && 
+            ProxyUtil.isUsingProxy() &&
+            !"".equals(ProxyUtil.getProxyAddress()) &&
             !"".equals(ProxyUtil.getProxyPort())
         ) {
             try {

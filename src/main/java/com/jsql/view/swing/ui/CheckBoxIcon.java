@@ -21,8 +21,8 @@ public class CheckBoxIcon implements Icon, UIResource, Serializable {
         ButtonModel model = ((JCheckBoxMenuItem)c).getModel();
 
         g.translate(x, y);
-        int w = getIconWidth();
-        int h = getIconHeight();
+        int w = this.getIconWidth();
+        int h = this.getIconHeight();
         if ( model.isEnabled() ) {
             if (model.isPressed() && model.isArmed()) {
                 g.setColor(MetalLookAndFeel.getControlShadow());
@@ -54,30 +54,30 @@ public class CheckBoxIcon implements Icon, UIResource, Serializable {
         }
         g.translate(-x, -y);
         if (model.isSelected()) {
-            drawCheck(g, x, y);
+            this.drawCheck(g, x, y);
         }
     }
     
     protected void drawCheck(Graphics g, int x, int y) {
-        int controlSize = getControlSize();
+        int controlSize = this.getControlSize();
         g.fillRect( x+3, y+5, 2, controlSize-8 );
-        g.drawLine( x+(controlSize-4), y+3, x+5, y+(controlSize-6) );
-        g.drawLine( x+(controlSize-4), y+4, x+5, y+(controlSize-5) );
+        g.drawLine( x+controlSize-4, y+3, x+5, y+controlSize-6 );
+        g.drawLine( x+controlSize-4, y+4, x+5, y+controlSize-5 );
     }
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
-        paintOceanIcon(c, g, x, y);
+        this.paintOceanIcon(c, g, x, y);
     }
 
     @Override
     public int getIconWidth() {
-        return getControlSize();
+        return this.getControlSize();
     }
 
     @Override
     public int getIconHeight() {
-        return getControlSize();
+        return this.getControlSize();
     }
     
 } // End class CheckBoxIcon

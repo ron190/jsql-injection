@@ -73,10 +73,10 @@ public class JTextAreaPlaceholder extends JTextArea {
             g.setFont(this.getFont().deriveFont(Font.ITALIC));
             
             g.drawString(
-                placeholderText, 
+                this.placeholderText,
                 this.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT
-                    ? w - (fm.stringWidth(placeholderText) + ins.left + 2)
-                    : ins.left + 2, 
+                    ? w - (fm.stringWidth(this.placeholderText) + ins.left + 2)
+                    : ins.left + 2,
                 fm.getAscent() + 2
             );
         }

@@ -47,7 +47,7 @@ public class ImageObserverAnimated implements ImageObserver {
     @Override
     public boolean imageUpdate(Image img, int flags, int x, int y, int w, int h) {
         if ((flags & (FRAMEBITS | ALLBITS)) != 0) {
-            Rectangle rect = this.tree.getPathBounds(path);
+            Rectangle rect = this.tree.getPathBounds(this.path);
             if (rect != null) {
                 this.tree.repaint(rect);
             }
