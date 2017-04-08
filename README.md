@@ -11,9 +11,9 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 [![Maven 3.2](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/maven.png)](https://maven.apache.org/)
 [![SonarQube 6.3](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/sonar.png)](http://www.sonarqube.org/)<br>
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)
-[![Github](github.com/ron190/jsql-injection/raw/master/web/images/image.io/github.png)](https://github.com)
+[![Github](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/github.png)](https://github.com)
 [![Github All Releases](https://img.shields.io/github/downloads/ron190/jsql-injection/total.svg)](https://github.com/ron190/jsql-injection/releases/)
-[![SourceForge](github.com/ron190/jsql-injection/raw/master/web/images/image.io/sourceforge.png)](https://sourceforge.net)
+[![SourceForge](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/sourceforge.png)](https://sourceforge.net)
 [![SourceForge All Releases](https://img.shields.io/sourceforge/dw/jsqlinjection.svg)](https://sourceforge.net/projects/jsqlinjection/files/)
 
 ## Features
