@@ -67,7 +67,7 @@ public class Table extends AbstractElementDatabase {
      * of rows is unknown, e.g my_table (7 rows).
      */
     @Override
-    public String getLabel() {
+    public String getLabelCount() {
         String nbRow;
         if ("information_schema".equals(this.parentDatabase.toString())) {
             nbRow = "?";

@@ -33,7 +33,7 @@ class DocPosition {
      *
      * @param position The position this DocObject will represent
      */
-    public DocPosition(int position){
+    public DocPosition(int position) {
         this.position = position;
     }
 
@@ -42,7 +42,7 @@ class DocPosition {
      *
      * @return the position
      */
-    int getPosition(){
+    int getPosition() {
         return this.position;
     }
 
@@ -54,7 +54,7 @@ class DocPosition {
      * @param adjustment amount (either positive or negative) to adjust this position.
      * @return the DocPosition, adjusted properly.
      */
-    public DocPosition adjustPosition(int adjustment){
+    public DocPosition adjustPosition(int adjustment) {
         this.position += adjustment;
         return this;
     }
@@ -65,14 +65,10 @@ class DocPosition {
      * @return if this DocPosition represents the same position as another.
      */
     @Override
-    public boolean equals(Object obj){
-        if (obj instanceof DocPosition){
-            DocPosition d = (DocPosition)obj;
-            if (this.position == d.position){
-                return true;
-            } else {
-                return false;
-            }
+    public boolean equals(Object obj) {
+        if (obj instanceof DocPosition) {
+            DocPosition d = (DocPosition) obj;
+            return this.position == d.position;
         } else {
             return false;
         }
@@ -84,7 +80,7 @@ class DocPosition {
      * @return A string representing the position.
      */
     @Override
-    public String toString(){
+    public String toString() {
         return Integer.toString(this.position);
     }
 }

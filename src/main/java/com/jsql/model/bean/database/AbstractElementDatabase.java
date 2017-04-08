@@ -42,7 +42,7 @@ public abstract class AbstractElementDatabase {
      * Return a readable label displayed by the view.
      * @return
      */
-    public abstract String getLabel();
+    public abstract String getLabelCount();
     
     /**
      * Return the label of current element.

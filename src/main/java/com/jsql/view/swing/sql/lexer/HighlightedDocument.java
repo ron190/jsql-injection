@@ -110,7 +110,9 @@ public class HighlightedDocument extends DefaultStyledDocument {
 		this.colorAll();
 	}
 
-	public void setHighlightStyle(Object value) {
+	public void setHighlightStyle(Object valueSource) {
+	    Object value = valueSource;
+	    
 		if (value == HighlightedDocument.GRAYED_OUT_STYLE) {
 			this.setGlobalStyle(TokenStyles.getStyle("grayedOut"));
 			return;

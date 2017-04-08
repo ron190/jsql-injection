@@ -26,6 +26,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.log4j.Logger;
 
+import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.util.StringUtil;
 import com.jsql.view.swing.bruteforce.Adler32;
 import com.jsql.view.swing.bruteforce.Crc16;
@@ -53,191 +54,214 @@ public class ActionCoder implements ActionListener {
     public void actionPerformed(ActionEvent arg0) {
         String choice = this.coderManager.getEncoding().getText().replace("Hash to ", "");
         
+        String result;
+        String textInput = this.coderManager.getTextInput().getText();
+        
         if (
-            "".equals(this.coderManager.getTextInput().getText())
+            "".equals(textInput)
             && !Arrays.asList(new String[]{"Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql"}).contains(choice)
         ) {
-            LOGGER.warn("Empty string to convert");
-            return;
-        }
-        
-        if (Arrays.asList(new String[]{"Md2", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512"}).contains(choice)) {
+            result = "<span style=\"color:red;\">Empty string to convert</span>";
+            
+        } else if (Arrays.asList(new String[]{"Md2", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512"}).contains(choice)) {
             try {
                 MessageDigest md = MessageDigest.getInstance(choice);
                 
-                String passwordString = new String(this.coderManager.getTextInput().getText().toCharArray());
+                String passwordString = new String(textInput.toCharArray());
                 byte[] passwordByte = passwordString.getBytes();
                 md.update(passwordByte, 0, passwordByte.length);
                 byte[] encodedPassword = md.digest();
-                String encodedPasswordInString = this.coderManager.digestToHexString(encodedPassword);
+                String encodedPasswordInString = StringUtil.digestToHexString(encodedPassword);
                 
-                this.coderManager.getResult().setText(encodedPasswordInString);
+                result = encodedPasswordInString;
             } catch (NoSuchAlgorithmException e) {
-                LOGGER.warn("Digest algorithm "+ choice +" not found", e);
+                result = "<span style=\"color:red;\">Digest algorithm "+ choice +" not found</span>";
+                
+                // Ignore
+                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
         } else if ("Md4".contains(choice)) {
             MessageDigest md = new DigestMD4();
 
-            String passwordString = new String(this.coderManager.getTextInput().getText().toCharArray());
+            String passwordString = new String(textInput.toCharArray());
             byte[] passwordByte = passwordString.getBytes();
             md.update(passwordByte, 0, passwordByte.length);
             byte[] encodedPassword = md.digest();
-            String encodedPasswordInString = this.coderManager.digestToHexString(encodedPassword);
+            String encodedPasswordInString = StringUtil.digestToHexString(encodedPassword);
 
-            this.coderManager.getResult().setText(encodedPasswordInString);
+            result = encodedPasswordInString;
             
         } else if ("Adler32".contains(choice)) {
-            this.coderManager.getResult().setText(Adler32.generateAdler32(this.coderManager.getTextInput().getText()));
+            result = Adler32.generateAdler32(textInput);
             
         } else if ("Crc16".contains(choice)) {
-            this.coderManager.getResult().setText(Crc16.generateCRC16(this.coderManager.getTextInput().getText()));
+            result = Crc16.generateCRC16(textInput);
             
         } else if ("Crc32".contains(choice)) {
-            byte[] bytes = this.coderManager.getTextInput().getText().getBytes();
+            byte[] bytes = textInput.getBytes();
             Checksum checksum = new CRC32();
             checksum.update(bytes,0,bytes.length);
             long lngChecksum = checksum.getValue();
-            this.coderManager.getResult().setText(Long.toString(lngChecksum));
+            
+            result = Long.toString(lngChecksum);
             
         } else if ("Crc64".contains(choice)) {
-            this.coderManager.getResult().setText(Crc64.generateCRC64(this.coderManager.getTextInput().getText().getBytes()));
+            result = Crc64.generateCRC64(textInput.getBytes());
             
         } else if ("Mysql".equals(choice)) {
             try {
                 MessageDigest md = MessageDigest.getInstance("sha-1");
                 
-                String password = new String(this.coderManager.getTextInput().getText().toCharArray());
+                String password = new String(textInput.toCharArray());
                 byte[] passwordBytes = password.getBytes();
                 md.update(passwordBytes, 0, passwordBytes.length);
                 byte[] hashSHA1 = md.digest();
-                String stringSHA1 = this.coderManager.digestToHexString(hashSHA1);
+                String stringSHA1 = StringUtil.digestToHexString(hashSHA1);
                 
                 String passwordSHA1 = new String(StringUtil.hexstr(stringSHA1).toCharArray());
                 byte[] passwordSHA1Bytes = passwordSHA1.getBytes();
                 md.update(passwordSHA1Bytes, 0, passwordSHA1Bytes.length);
                 byte[] hashSHA1SH1 = md.digest();
-                String mysqlHash = this.coderManager.digestToHexString(hashSHA1SH1);
+                String mysqlHash = StringUtil.digestToHexString(hashSHA1SH1);
                 
-                this.coderManager.getResult().setText(mysqlHash);
+                result = mysqlHash;
             } catch (NoSuchAlgorithmException e) {
-                LOGGER.warn("Digest algorithm sha-1 not found", e);
+                result = "<span style=\"color:red;\">Digest algorithm sha-1 not found</span>";
+                
+                // Ignore
+                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
         } else if ("Encode to Hex".equalsIgnoreCase(choice)) {
             try {
-                this.coderManager.getResult().setText(
-                    Hex.encodeHexString(
-                        this.coderManager.getTextInput().getText().getBytes("UTF-8")
-                    ).trim()
-                );
+                result = Hex.encodeHexString(textInput.getBytes("UTF-8")).trim();
             } catch (UnsupportedEncodingException e) {
-                this.coderManager.getResult().setText("Encoding to Hex error: "+ e);
+                result = "<span style=\"color:red;\">Encoding to Hex error: "+ e +"</span>";
+
+                // Ignore
+                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
         } else if ("Decode from Hex".equalsIgnoreCase(choice)) {
             try {
-                this.coderManager.getResult().setText(
-                    new String(
-                        Hex.decodeHex(
-                            this.coderManager.getTextInput().getText().toCharArray()
-                        ),
-                        "UTF-8"
-                    )
+                result = new String(
+                    Hex.decodeHex(textInput.toCharArray()),
+                    "UTF-8"
                 );
             } catch (Exception e) {
-                this.coderManager.getResult().setText("Decoding from Hex error: "+ e);
+                result = "<span style=\"color:red;\">Decoding from Hex error: "+ e +"</span>";
+                
+                // Ignore
+                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
         } else if ("Encode to Hex(zipped)".equalsIgnoreCase(choice)) {
             try {
-                this.coderManager.getResult().setText(
-                    Hex.encodeHexString(
-                        this.coderManager.compress(
-                            this.coderManager.getTextInput().getText()
-                        ).getBytes("UTF-8")
-                    ).trim()
-                );
+                result = Hex.encodeHexString(
+                    StringUtil.compress(textInput).getBytes("UTF-8")
+                ).trim();
             } catch (Exception e) {
-                this.coderManager.getResult().setText("Encoding to Hex(zipped) error: "+ e);
+                result = "<span style=\"color:red;\">Encoding to Hex(zipped) error: "+ e +"</span>";
+                
+                // Ignore
+                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
         } else if ("Decode from Hex(zipped)".equalsIgnoreCase(choice)) {
             try {
-                this.coderManager.getResult().setText(
-                    this.coderManager.decompress(
-                        new String(
-                            Hex.decodeHex(
-                                this.coderManager.getTextInput().getText().toCharArray()
-                            ),
-                            "UTF-8"
-                        )
+                result = StringUtil.decompress(
+                    new String(
+                        Hex.decodeHex(textInput.toCharArray()),
+                        "UTF-8"
                     )
                 );
             } catch (Exception e) {
-                this.coderManager.getResult().setText("Decoding from Hex(zipped) error: "+ e);
+                result = "<span style=\"color:red;\">Decoding from Hex(zipped) error: "+ e +"</span>";
+                
+                // Ignore
+                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
         } else if ("Encode to Base64(zipped)".equalsIgnoreCase(choice)) {
             try {
-                this.coderManager.getResult().setText(
-                    this.coderManager.base64Encode(
-                        this.coderManager.compress(
-                            this.coderManager.getTextInput().getText()
-                        )
+                result = StringUtil.base64Encode(
+                    StringUtil.compress(
+                        textInput
                     )
                 );
             } catch (IOException e) {
-                this.coderManager.getResult().setText("Encoding to Base64(zipped) error: "+ e);
+                result = "<span style=\"color:red;\">Encoding to Base64(zipped) error: "+ e +"</span>";
+                
+                // Ignore
+                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
         } else if ("Decode from Base64(zipped)".equalsIgnoreCase(choice)) {
             try {
-                this.coderManager.getResult().setText(
-                    this.coderManager.decompress(
-                        this.coderManager.base64Decode(
-                            this.coderManager.getTextInput().getText()
-                        )
+                result = StringUtil.decompress(
+                    StringUtil.base64Decode(
+                        textInput
                     )
                 );
             } catch (IOException e) {
-                this.coderManager.getResult().setText("Decoding from Base64(zipped) error: "+ e);
+                result = "<span style=\"color:red;\">Decoding from Base64(zipped) error: "+ e +"</span>";
+                
+                // Ignore
+                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
         } else if ("Encode to Base64".equalsIgnoreCase(choice)) {
-            this.coderManager.getResult().setText(this.coderManager.base64Encode(this.coderManager.getTextInput().getText()));
+            result = StringUtil.base64Encode(textInput);
             
         } else if ("Decode from Base64".equalsIgnoreCase(choice)) {
-            this.coderManager.getResult().setText(this.coderManager.base64Decode(this.coderManager.getTextInput().getText()));
+            result = StringUtil.base64Decode(textInput);
             
         } else if ("Encode to Html".equalsIgnoreCase(choice)) {
-            this.coderManager.getResult().setText(StringEscapeUtils.escapeHtml3(this.coderManager.getTextInput().getText()));
+            result = StringEscapeUtils.escapeHtml4(textInput).replace("<", "&lt;").replace(">", "&gt;").replace("&", "&amp;");
+            
+        } else if ("Encode to Html (decimal)".equalsIgnoreCase(choice)) {
+            result = StringUtil.decimalHtmlEncode(textInput).replace("<", "&lt;").replace(">", "&gt;").replace("&", "&amp;");
             
         } else if ("Decode from Html".equalsIgnoreCase(choice)) {
-            this.coderManager.getResult().setText(StringEscapeUtils.unescapeHtml3(this.coderManager.getTextInput().getText()));
+            result = StringEscapeUtils.unescapeHtml4(textInput).replace("<", "&lt;").replace(">", "&gt;");
             
         } else if ("Encode to Url".equalsIgnoreCase(choice)) {
             try {
-                this.coderManager.getResult().setText(
-                    URLEncoder.encode(this.coderManager.getTextInput().getText(), "UTF-8")
-                );
+                result = URLEncoder.encode(textInput, "UTF-8");
             } catch (UnsupportedEncodingException e) {
-                LOGGER.warn("Encoding to UTF-8 failed: "+ e.getMessage(), e);
+                result = "<span style=\"color:red;\">Encoding to UTF-8 failed: "+ e.getMessage() +"</span>";
+                
+                // Ignore
+                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
         } else if ("Decode from Url".equalsIgnoreCase(choice)) {
             // Fix #16068: IllegalArgumentException on URLDecoder.decode() when input contains %
             try {
-                this.coderManager.getResult().setText(
-                    URLDecoder.decode(this.coderManager.getTextInput().getText(), "UTF-8")
-                );
+                result = URLDecoder.decode(textInput, "UTF-8");
             } catch (IllegalArgumentException | UnsupportedEncodingException e) {
-                LOGGER.warn("Decoding failed: "+ e.getMessage(), e);
+                result = "<span style=\"color:red;\">Decoding failed: "+ e.getMessage() +"</span>";
+                
+                // Ignore
+                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
         } else {
-            this.coderManager.getResult().setText("Unsupported encoding or decoding method");
+            result = "<span style=\"color:red;\">Unsupported encoding or decoding method</span>";
         }
+        
+        this.coderManager.getResult().setText("<html><span style=\"font-family:'Ubuntu Mono'\">"+ result +"</span></html>");
     }
     
 }

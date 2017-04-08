@@ -5,22 +5,27 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 
 ![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) or [BlackArch Linux](http://www.blackarch.org/).
 
-[![License: GPLv2](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/gplv2.png)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
-[![JUnit](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/junit.png)](http://junit.org)
-[![Maven](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/maven.png)](https://maven.apache.org/)
-[![SonarQube](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/sonar.png)](http://www.sonarqube.org/)<br>
-[![Twitter](https://github.com/ron190/jsql-injection/raw/master/web/images/twitter.png)](https://twitter.com/ron190jsql)
+[![Java 8](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/java.svg)](http://www.oracle.com/technetwork/java/javase/downloads/)
+[![License GPLv2](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/license.svg)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+[![JUnit 4.11](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/junit.svg)](http://junit.org)
+[![Maven 3.2](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/maven.svg)](https://maven.apache.org/)
+[![SonarQube 6.3](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/sonar.svg)](http://www.sonarqube.org/)<br>
+[![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)
+[![Github](github.com/ron190/jsql-injection/raw/master/web/images/image.io/github.svg)](https://github.com)
+[![Github All Releases](https://img.shields.io/github/downloads/ron190/jsql-injection/total.svg)](https://github.com/ron190/jsql-injection/releases/)
+[![SourceForge](github.com/ron190/jsql-injection/raw/master/web/images/image.io/sourceforge.svg)](https://sourceforge.net)
+[![SourceForge All Releases](https://img.shields.io/sourceforge/dw/jsqlinjection.svg)](https://sourceforge.net/projects/jsqlinjection/files/)
 
 ## Features
-- Automatic injection for 18 types of database: Access, CUBRID, DB2, Derby, Firebird, H2, HSQLDB, Informix, Ingres, MariaDB, MaxDB, MySQL, Oracle, PostgreSQL, SQLite, SQL Server, Sybase and Teradata
+- Automatic injection of 18 kinds of databases: Access, CUBRID, DB2, Derby, Firebird, H2, HSQLDB, Informix, Ingres, MariaDB, MaxDB, MySQL, Oracle, PostgreSQL, SQLite, SQL Server, Sybase and Teradata
 - Multiple injection strategies: Normal, Error, Blind and Time
-- SQL Engine for studying and optimizing SQL expressions
-- Web shell and SQL shell creation and vizualisation
+- SQL Engine to study and optimize SQL expressions
+- Creation and vizualisation of Web shell and SQL shell
 - Search for administration pages
 - Read files from the host
 - Bruteforce hash of password
 - Code and decode a string
-- Community translation system
+- Community translation system: ar, cs, de, es, fr, in_ID, it, nl, pt, ru, tr, zh
 
 ## Installation
 Install [Java 8](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) of jSQL and double-click on the .jar to launch the software.<br>

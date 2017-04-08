@@ -179,7 +179,7 @@ public class ManagerDatabase extends JPanel implements Manager {
                 this.groupStrategy.add(itemRadioVendor);
                 
                 final int indexError = i[0];
-                ((AbstractButton) itemRadioVendor).addActionListener(actionEvent -> {
+                itemRadioVendor.addActionListener(actionEvent -> {
                     ManagerDatabase.this.panelStrategy.setText(methodError.getName());
                     MediatorModel.model().setStrategy(StrategyInjection.ERRORBASED);
                     ((StrategyInjectionError)StrategyInjection.ERRORBASED.instance()).setIndexMethod(indexError);

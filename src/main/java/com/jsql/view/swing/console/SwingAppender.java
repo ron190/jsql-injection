@@ -110,7 +110,7 @@ public class SwingAppender extends WriterAppender {
         
         switch (level.toInt()) {
             case Level.TRACE_INT:
-                if (throwableInformation == null || throwableInformation != null && !(throwableInformation.getThrowable() instanceof IgnoreMessageException)) {
+                if (throwableInformation == null || !(throwableInformation.getThrowable() instanceof IgnoreMessageException)) {
                     consoleTextPane.append(message, TRACE);
                     consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
                 }

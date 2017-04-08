@@ -290,7 +290,7 @@ public abstract class AbstractNodeModel {
     
     @Override
     public String toString() {
-        return this.elementDatabase != null ? this.elementDatabase.getLabel() : this.emptyObject;
+        return this.elementDatabase != null ? this.elementDatabase.getLabelCount() : this.emptyObject;
     }
     
 }

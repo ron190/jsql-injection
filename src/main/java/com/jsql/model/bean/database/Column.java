@@ -54,7 +54,7 @@ public class Column extends AbstractElementDatabase {
      * @return column text
      */
     @Override
-    public String getLabel() {
+    public String getLabelCount() {
         return this.toString();
     }
     

@@ -178,8 +178,8 @@ public class DiffMatchPatch {
     /**
      * Find the differences between two texts.  Simplifies the problem by
      * stripping any common prefix or suffix off the texts before diffing.
-     * @param text1 Old string to be diffed.
-     * @param text2 New string to be diffed.
+     * @param valueText1 Old string to be diffed.
+     * @param valueText2 New string to be diffed.
      * @param checklines Speedup flag.  If false, then don't run a
      *     line-level diff first to identify the changed areas.
      *     If true, then run a faster slightly less optimal diff.
@@ -187,7 +187,10 @@ public class DiffMatchPatch {
      *     internally for recursive calls.  Users should set DiffTimeout instead.
      * @return Linked List of Diff objects.
      */
-    private LinkedList<Diff> diffMain(String text1, String text2, boolean checklines, long deadline) {
+    private LinkedList<Diff> diffMain(String valueText1, String valueText2, boolean checklines, long deadline) {
+        String text1 = valueText1;
+        String text2 = valueText2;
+        
         // Check for null inputs.
         if (text1 == null || text2 == null) {
             throw new IllegalArgumentException("Null inputs. (diff_main)");
@@ -312,17 +315,17 @@ public class DiffMatchPatch {
      * Do a quick line-level diff on both strings, then rediff the parts for
      * greater accuracy.
      * This speedup can produce non-minimal diffs.
-     * @param text1 Old string to be diffed.
-     * @param text2 New string to be diffed.
+     * @param valueText1 Old string to be diffed.
+     * @param valueText2 New string to be diffed.
      * @param deadline Time when the diff should be complete by.
      * @return Linked List of Diff objects.
      */
-    private LinkedList<Diff> diffLineMode(String text1, String text2,
+    private LinkedList<Diff> diffLineMode(String valueText1, String valueText2,
             long deadline) {
         // Scan the text on a line-by-line basis first.
-        LinesToCharsResult b = this.diffLinesToChars(text1, text2);
-        text1 = b.chars1;
-        text2 = b.chars2;
+        LinesToCharsResult b = this.diffLinesToChars(valueText1, valueText2);
+        String text1 = b.chars1;
+        String text2 = b.chars2;
         List<String> linearray = b.lineArray;
 
         LinkedList<Diff> diffs = this.diffMain(text1, text2, false, deadline);
@@ -638,12 +641,15 @@ public class DiffMatchPatch {
 
     /**
      * Determine if the suffix of one string is the prefix of another.
-     * @param text1 First string.
-     * @param text2 Second string.
+     * @param valueText1 First string.
+     * @param valueText2 Second string.
      * @return The number of characters common to the end of the first
      *     string and the start of the second string.
      */
-    protected int diffCommonOverlap(String text1, String text2) {
+    protected int diffCommonOverlap(String valueText1, String valueText2) {
+        String text1 = valueText1;
+        String text2 = valueText2;
+        
         // Cache the text lengths to prevent multiple calls.
         int text1Length = text1.length();
         int text2Length = text2.length();
@@ -1577,16 +1583,16 @@ public class DiffMatchPatch {
      * Returns -1 if no match found.
      * @param text The text to search.
      * @param pattern The pattern to search for.
-     * @param loc The location to search around.
+     * @param valueLoc The location to search around.
      * @return Best match index or -1.
      */
-    public int matchMain(String text, String pattern, int loc) {
+    public int matchMain(String text, String pattern, int valueLoc) {
         // Check for null inputs.
         if (text == null || pattern == null) {
             throw new IllegalArgumentException("Null inputs. (match_main)");
         }
 
-        loc = Math.max(0, Math.min(loc, text.length()));
+        int loc = Math.max(0, Math.min(valueLoc, text.length()));
         if (text.equals(pattern)) {
             // Shortcut (potentially not guaranteed by the algorithm)
             return 0;
@@ -1830,21 +1836,6 @@ public class DiffMatchPatch {
 
     /**
      * Compute a list of patches to turn text1 into text2.
-     * text2 is ignored, diffs are the delta between text1 and text2.
-     * @param text1 Old text
-     * @param text2 Ignored.
-     * @param diffs Array of Diff objects for text1 to text2.
-     * @return LinkedList of Patch objects.
-     * @deprecated Prefer patch_make(String text1, LinkedList<Diff> diffs).
-     */
-    @Deprecated
-    public List<Patch> patchMake(String text1, String text2,
-            LinkedList<Diff> diffs) {
-        return this.patchMake(text1, diffs);
-    }
-
-    /**
-     * Compute a list of patches to turn text1 into text2.
      * text2 is not provided, diffs are the delta between text1 and text2.
      * @param text1 Old text.
      * @param diffs Array of Diff objects for text1 to text2.
@@ -1955,21 +1946,21 @@ public class DiffMatchPatch {
     /**
      * Merge a set of patches onto the text.  Return a patched text, as well
      * as an array of true/false values indicating which patches were applied.
-     * @param patches Array of Patch objects
-     * @param text Old text.
+     * @param valuePatches Array of Patch objects
+     * @param valueText Old text.
      * @return Two element Object array, containing the new text and an array of
      *      boolean values.
      */
-    public Object[] patchApply(LinkedList<Patch> patches, String text) {
-        if (patches.isEmpty()) {
-            return new Object[]{text, new boolean[0]};
+    public Object[] patchApply(LinkedList<Patch> valuePatches, String valueText) {
+        if (valuePatches.isEmpty()) {
+            return new Object[]{valueText, new boolean[0]};
         }
-
+        
         // Deep copy the patches so that no changes are made to originals.
-        patches = this.patchDeepCopy(patches);
+        LinkedList<Patch> patches = this.patchDeepCopy(valuePatches);
 
         String nullPadding = this.patchAddPadding(patches);
-        text = nullPadding + text + nullPadding;
+        String text = nullPadding + valueText + nullPadding;
         this.patchSplitMax(patches);
 
         int x = 0;

@@ -426,7 +426,7 @@ public class SqlEngine extends JPanel {
     
     private void changeVendor() {
         mapTextPaneToXml.stream().forEach(SqlEngine::resetLexer);
-        mapTextPaneToXml.stream().forEach(textPaneLexer -> textPaneLexer.switchSetterToVendor());
+        mapTextPaneToXml.stream().forEach(JTextPaneObjectMethod::switchSetterToVendor);
         SqlEngine.this.showSql(xmlModel);
     }
 

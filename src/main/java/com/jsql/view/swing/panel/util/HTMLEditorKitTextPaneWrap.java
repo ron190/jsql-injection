@@ -45,7 +45,8 @@ public class HTMLEditorKitTextPaneWrap extends HTMLEditorKit {
                     return new ParagraphView(e) {
 
                         @Override
-                        protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements r) {
+                        protected SizeRequirements calculateMinorAxisRequirements(int axis, SizeRequirements valueR) {
+                            SizeRequirements r = valueR;
                             if (r == null) {
                                 r = new SizeRequirements();
                             }

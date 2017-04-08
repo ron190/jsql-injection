@@ -10,8 +10,17 @@
  ******************************************************************************/
 package com.jsql.util;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.StringUtils;
 import org.mozilla.universalchardet.UniversalDetector;
 
 /**
@@ -73,7 +82,7 @@ public final class StringUtil {
      */
     private static String encode(String text, CharEncoder encoder) {
         StringBuilder buff = new StringBuilder();
-        for ( int i = 0 ; i < text.length() ; i++) {
+        for (int i = 0 ; i < text.length() ; i++) {
             if (text.charAt(i) > 128) {
                 encoder.encode(text.charAt(i), buff);
             } else {
@@ -156,6 +165,92 @@ public final class StringUtil {
         }
         
         return result;
+    }
+
+    /**
+     * Adapter method for base64 decode.
+     * @param s base64 decode
+     * @return Base64 decoded string
+     */
+    public static String base64Decode(String s) {
+        return StringUtils.newStringUtf8(Base64.decodeBase64(s));
+    }
+
+    /**
+     * Adapter method for base64 encode.
+     * @param s String to base64 encode
+     * @return Base64 encoded string
+     */
+    public static String base64Encode(String s) {
+        return Base64.encodeBase64String(StringUtils.getBytesUtf8(s));
+    }
+
+    /**
+     * Zip a string.
+     * @param str Text to zip
+     * @return Zipped string
+     * @throws IOException
+     */
+    public static String compress(String str) throws IOException {
+        if (str == null || str.length() == 0) {
+            return str;
+        }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        GZIPOutputStream gzip = new GZIPOutputStream(out);
+        gzip.write(str.getBytes());
+        gzip.close();
+        return out.toString("ISO-8859-1");
+    }
+
+    /**
+     * Unzip a String encoded from base64 or hexadecimal.
+     * @param str String to unzip
+     * @return String unzipped
+     * @throws IOException
+     */
+    public static String decompress(String str) throws IOException {
+        if (str == null || str.length() == 0) {
+            return str;
+        }
+        final String encode = "ISO-8859-1";
+        GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(str.getBytes(encode)));
+        BufferedReader bf = new BufferedReader(new InputStreamReader(gis, encode));
+
+        char[] buff = new char[1024];
+        int read;
+        StringBuilder response = new StringBuilder();
+        while ((read = bf.read(buff)) != -1) {
+            response.append(buff, 0, read);
+        }
+        return response.toString();
+    }
+
+    /**
+     * Convert byte character to hexadecimal StringBuffer character.
+     * @param b Byte character to convert
+     * @param buf Hexadecimal converted character
+     */
+    private static void byte2hex(byte b, StringBuilder buf) {
+        char[] hexChars = {'0', '1', '2', '3', '4', '5', '6', '7', '8',
+                '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+        int high = (b & 0xf0) >> 4;
+        int low = b & 0x0f;
+        buf.append(hexChars[high]);
+        buf.append(hexChars[low]);
+    }
+
+    /**
+     * Convert a digest hash to a string representation.
+     * @param block Digest array
+     * @return Hash as a string
+     */
+    public static String digestToHexString(byte[] block) {
+        StringBuilder  buf = new StringBuilder();
+        int len = block.length;
+        for (int i = 0 ; i < len ; i++) {
+            StringUtil.byte2hex(block[i], buf);
+        }
+        return buf.toString();
     }
     
 }

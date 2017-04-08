@@ -156,7 +156,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
 
                 throw new InjectionFailureException(
                     "Fetching fails: no data to parse"
-                    + (searchName != null ? " for "+searchName : ""),
+                    + (searchName != null ? " for "+ StringUtil.detectUtf8(searchName.toString()) : ""),
                     e
                 );
             }

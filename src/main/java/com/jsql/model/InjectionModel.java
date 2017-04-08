@@ -420,7 +420,8 @@ public class InjectionModel extends AbstractModelObservable {
             }
             
             // Disable caching of authentication like Kerberos
-            connection.disconnect();
+            // TODO worth the disconnection ?
+//            connection.disconnect();
             
             msgHeader.put(TypeHeader.SOURCE, pageSource);
             

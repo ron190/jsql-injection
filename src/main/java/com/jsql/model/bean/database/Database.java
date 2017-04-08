@@ -58,7 +58,7 @@ public class Database extends AbstractElementDatabase {
      * displayed by the view, e.g my_database (7 tables).
      */
     @Override
-    public String getLabel() {
+    public String getLabelCount() {
         // Report #1500: detect incorrect number of tables
         String sPlural = "";
         try {

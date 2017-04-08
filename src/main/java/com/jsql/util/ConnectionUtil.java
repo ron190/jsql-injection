@@ -142,7 +142,8 @@ public class ConnectionUtil {
             ConnectionUtil.checkResponseHeader(connection, ConnectionUtil.getUrlBase());
             
             // Disable caching of authentication like Kerberos
-            connection.disconnect();
+            // TODO worth the disconnection ?
+//            connection.disconnect();
         } catch (Exception e) {
             throw new InjectionFailureException("Connection failed: "+ e.getMessage(), e);
         }
