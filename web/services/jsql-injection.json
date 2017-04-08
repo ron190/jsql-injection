@@ -1,7 +1,7 @@
 {
     "version": "0.78",
     "news": [
-        "[New] Study and optimize SQL expressions with panel SQL Engine, Database flavor: Access, MySQL injection with BIGINT overflow.",
+        "[New] Upgrade to Java 8, Study and optimize SQL expressions with panel SQL Engine, Database flavor: Access, MySQL injection with BIGINT overflow.",
         "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer.",
         "[Programming] Contact the developer for any help with new features, CTF events and Burp integration.",
         "[Roadmap] Injection strategies: Routed query / Multibyte / User Variable / Order and Group By, WAF detection, Bruteforce of HTTP Auth, Arabic translation, Command line interface."
