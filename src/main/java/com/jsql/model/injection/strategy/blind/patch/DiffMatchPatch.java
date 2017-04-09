@@ -1227,8 +1227,7 @@ public class DiffMatchPatch {
                         if (commonlength != 0) {
                             if (pointer.hasPrevious()) {
                                 thisDiff = pointer.previous();
-                                assert thisDiff.getOperation() == Operation.EQUAL
-                                        : "Previous diff should have been an equality.";
+                                LOGGER.error("Previous diff should have been an equality: thisDiff.getOperation() == Operation.EQUAL");
                                 thisDiff.setText(thisDiff.getText() + textInsert.substring(0, commonlength));
                                 pointer.next();
                             } else {
@@ -1618,8 +1617,7 @@ public class DiffMatchPatch {
      * @return Best match index or -1.
      */
     protected int matchBitap(String text, String pattern, int loc) {
-        assert DiffMatchPatch.MATCH_MAX_BITS == 0 || pattern.length() <= MATCH_MAX_BITS
-        : "Pattern too long for this application.";
+        LOGGER.error("Pattern too long for this application: DiffMatchPatch.MATCH_MAX_BITS == 0 || pattern.length() <= MATCH_MAX_BITS");
 
         // Initialise the alphabet.
         Map<Character, Integer> s = this.matchAlphabet(pattern);

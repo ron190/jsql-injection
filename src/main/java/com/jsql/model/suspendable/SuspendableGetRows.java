@@ -17,6 +17,8 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
+import com.jsql.model.exception.LoopDetectedSlidingException;
+import com.jsql.model.exception.SlidingException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.util.StringUtil;
@@ -59,9 +61,11 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
          * keep track of characters we have reached (startPosition) and use these to skip characters,
          */
         StringBuilder slidingWindowAllRows = new StringBuilder();
+        String partOldRow = "";
         StringBuilder slidingWindowCurrentRow = new StringBuilder();
         int sqlLimit = 0;
         int charPositionInCurrentRow = 1;
+        int infiniteLoop = 0;
         
         while (true) {
 
@@ -133,6 +137,17 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
              * Add the result to the data already found.
              */
             try {
+                if (partOldRow.equals(regexAtLeastOneRow.group(1))) {
+                    infiniteLoop++;
+                    if (infiniteLoop >= 20) {
+                        SlidingException e = new LoopDetectedSlidingException();
+                        e.setSlidingWindowAllRows(slidingWindowAllRows.toString());
+                        e.setSlidingWindowCurrentRows(slidingWindowCurrentRow.toString());
+                        throw e;
+                    }
+                }
+                partOldRow = regexAtLeastOneRow.group(1);
+                
                 slidingWindowCurrentRow.append(regexAtLeastOneRow.group(1));
 
                 Request request = new Request();

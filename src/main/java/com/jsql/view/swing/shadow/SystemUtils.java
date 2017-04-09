@@ -2,7 +2,8 @@ package com.jsql.view.swing.shadow;
 
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 /*
  * Copyright (c) 2009-2013 JGoodies Software GmbH. All Rights Reserved.
  *
@@ -41,6 +42,11 @@ import java.util.logging.Logger;
  * @version $Revision: 1.5 $
  */
 public class SystemUtils {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 
     // Internal Constants *****************************************************
 
@@ -226,8 +232,7 @@ public class SystemUtils {
         try {
             return System.getProperty(key);
         } catch (SecurityException e) {
-            Logger.getLogger(SystemUtils.class.getName())
-                .warning("Can't access the System property "+ key +".");
+            LOGGER.error("Can't access the System property "+ key +": "+ e.getMessage(), e);
             return "";
         }
     }
@@ -250,6 +255,7 @@ public class SystemUtils {
             Class.forName(AWT_UTILITIES_CLASS_NAME);
             return true;
         } catch (ClassNotFoundException e) {
+            LOGGER.error("Modern rasterizer "+ AWT_UTILITIES_CLASS_NAME +" not found: "+ e.getMessage(), e);
             return false;
         }
     }
@@ -280,6 +286,7 @@ public class SystemUtils {
         try {
             return Toolkit.getDefaultToolkit().getScreenResolution() < 120;
         } catch (HeadlessException e) {
+            LOGGER.error("This environment cannot support a display, keyboard, and mouse: "+ e.getMessage(), e);
             return true;
         }
     }

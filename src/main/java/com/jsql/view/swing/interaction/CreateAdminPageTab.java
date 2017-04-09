@@ -66,6 +66,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
     @Override
     public void execute() {
         String htmlSource = "";
+        // Fix #4081: SocketTimeoutException on get()
         try {
             // TODO: test if proxy is used by jsoup
             // Previous test for 2xx Success and 3xx Redirection was Header only,

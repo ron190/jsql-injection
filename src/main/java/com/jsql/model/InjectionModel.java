@@ -73,7 +73,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Current version of application.
      */
-    public static final String VERSION_JSQL = "0.78";
+    public static final String VERSION_JSQL = "0.79";
     
     /**
      * i.e, -1 in "[..].php?id=-1 union select[..]"

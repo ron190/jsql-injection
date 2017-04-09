@@ -11,21 +11,22 @@
 package com.jsql.view.swing.manager;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
-import com.jsql.i18n.I18n;
 import com.jsql.view.swing.manager.util.ActionCoder;
 import com.jsql.view.swing.manager.util.MenuBarCoder;
 import com.jsql.view.swing.panel.util.HTMLEditorKitTextPaneWrap;
@@ -34,7 +35,6 @@ import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JPopupTextPane;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
-import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 
 /**
  * Manager to code/uncode string in various methods.
@@ -56,6 +56,28 @@ public class ManagerCoder extends JPanel implements Manager {
      * JTextArea displaying result of encoding/decoding.
      */
     private JTextPane result;
+    
+    private ActionCoder actionCoder = new ActionCoder(this);
+    
+    private class ChangeMenuListener implements ChangeListener {
+        
+        String a;
+        
+        ChangeMenuListener(String a) {
+            this.a = a;
+        }
+        
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            if (e.getSource() instanceof JMenuItem) {
+                JMenuItem item = (JMenuItem) e.getSource();
+                if (item.isSelected() || item.isArmed()) {
+                    actionCoder.actionPerformed(a);
+                }
+            }
+        }
+        
+    }
 
     /**
      * Create a panel to encode a string.
@@ -66,6 +88,29 @@ public class ManagerCoder extends JPanel implements Manager {
         this.textInput = new JPopupTextArea(new JTextAreaPlaceholder("Type a string to convert")).getProxy();
         this.textInput.setEditable(true);
         this.textInput.setLineWrap(true);
+        
+        this.textInput.getDocument().addDocumentListener(new DocumentListener() {
+            
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                this.warn();
+            }
+            
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                this.warn();
+            }
+            
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                this.warn();
+            }
+            
+            public void warn() {
+                actionCoder.actionPerformed();
+            }
+            
+        });
 
         JPanel topMixed = new JPanel(new BorderLayout());
 
@@ -82,25 +127,36 @@ public class ManagerCoder extends JPanel implements Manager {
         menus.put("Base64(zipped)", new JMenu("Base64(zipped)"));
         menus.put("Hex(zipped)", new JMenu("Hex(zipped)"));
 
-        menuHtml.add(new JMenuItem("Encode to Html (decimal)"));
+        JMenuItem menuEncodeHtmlDecimal = new JMenuItem("Encode to Html (decimal)");
+        menuHtml.add(menuEncodeHtmlDecimal);
+        menuEncodeHtmlDecimal.addActionListener(actionCoder);
+        menuEncodeHtmlDecimal.addChangeListener(new ChangeMenuListener("Encode to Html (decimal)"));
+        
         for (Entry<String, JMenu> entryMap: menus.entrySet()) {
-            entryMap.getValue().add(new JMenuItem("Encode to "+ entryMap.getKey()));
-            entryMap.getValue().add(new JMenuItem("Decode from "+ entryMap.getKey()));
+            JMenuItem menuEncode = new JMenuItem("Encode to "+ entryMap.getKey());
+            menuEncode.addActionListener(actionCoder);
+            menuEncode.addChangeListener(new ChangeMenuListener("Encode to "+ entryMap.getKey()));
+            
+            JMenuItem menuDecode = new JMenuItem("Decode from "+ entryMap.getKey());
+            menuDecode.addActionListener(actionCoder);
+            menuDecode.addChangeListener(new ChangeMenuListener("Decode from "+ entryMap.getKey()));
+            
+            entryMap.getValue().add(menuEncode);
+            entryMap.getValue().add(menuDecode);
         }
 
         menus.put("Hash", new JMenu("Hash"));
-        menus.get("Hash").add(new JMenuItem("Hash to Adler32"));
-        menus.get("Hash").add(new JMenuItem("Hash to Crc16"));
-        menus.get("Hash").add(new JMenuItem("Hash to Crc32"));
-        menus.get("Hash").add(new JMenuItem("Hash to Crc64"));
-        menus.get("Hash").add(new JMenuItem("Hash to Md2"));
-        menus.get("Hash").add(new JMenuItem("Hash to Md4"));
-        menus.get("Hash").add(new JMenuItem("Hash to Md5"));
-        menus.get("Hash").add(new JMenuItem("Hash to Sha-1"));
-        menus.get("Hash").add(new JMenuItem("Hash to Sha-256"));
-        menus.get("Hash").add(new JMenuItem("Hash to Sha-384"));
-        menus.get("Hash").add(new JMenuItem("Hash to Sha-512"));
-        menus.get("Hash").add(new JMenuItem("Hash to Mysql"));
+        
+        for (
+            String hash:
+            new String[]{"Adler32", "Crc16", "Crc32", "Crc64", "Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql"}
+        ) {
+            JMenuItem menuEncode = new JMenuItem("Hash to "+ hash);
+            menuEncode.addActionListener(actionCoder);
+            menuEncode.addChangeListener(new ChangeMenuListener("Hash to "+ hash));
+            
+            menus.get("Hash").add(menuEncode);
+        }
 
         JMenu comboMenu = MenuBarCoder.createMenu("Choose method...");
         this.encoding = comboMenu;
@@ -115,27 +171,16 @@ public class ManagerCoder extends JPanel implements Manager {
         
         this.encoding.setText("Encode to Base64");
         
-        final JButton run = new JButton(I18n.valueByKey("CODER_RUN_BUTTON_LABEL"));
-        I18n.addComponentForKey("CODER_RUN_BUTTON_LABEL", run);
-        
-        run.setContentAreaFilled(false);
-        run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        run.setBackground(new Color(200, 221, 242));
-        
-        run.addMouseListener(new FlatButtonMouseAdapter(run));
-        
-        run.addActionListener(new ActionCoder(this));
-
         middleLine.add(comboMenubar);
-        middleLine.add(run, BorderLayout.EAST);
 
         topMixed.add(new LightScrollPane(1, 0, 1, 0, this.textInput), BorderLayout.CENTER);
         topMixed.add(middleLine, BorderLayout.SOUTH);
 
-        JPanel bottom = new JPanel(new BorderLayout());
         this.result = new JPopupTextPane("Result of conversion").getProxy();
         this.result.setContentType("text/html");
         this.result.setEditorKit(new HTMLEditorKitTextPaneWrap());
+        
+        JPanel bottom = new JPanel(new BorderLayout());
         bottom.add(new LightScrollPane(1, 0, 0, 0, this.result), BorderLayout.CENTER);
 
         JSplitPaneWithZeroSizeDivider divider = new JSplitPaneWithZeroSizeDivider(JSplitPane.VERTICAL_SPLIT);
@@ -152,15 +197,15 @@ public class ManagerCoder extends JPanel implements Manager {
     // Getter and setter
 
     public JTextArea getTextInput() {
-        return textInput;
+        return this.textInput;
     }
 
     public JMenuItem getEncoding() {
-        return encoding;
+        return this.encoding;
     }
 
     public JTextPane getResult() {
-        return result;
+        return this.result;
     }
     
 }

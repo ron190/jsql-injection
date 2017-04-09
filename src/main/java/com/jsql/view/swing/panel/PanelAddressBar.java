@@ -378,12 +378,18 @@ public class PanelAddressBar extends JPanel {
             int option = 0;
             // Ask the user confirmation if injection already built
             if (MediatorModel.model().isInjectionAlreadyBuilt()) {
-                option = JOptionPane.showConfirmDialog(
-                    null,
-                    I18n.valueByKey("DIALOG_NEW_INJECTION_TEXT"),
-                    I18n.valueByKey("DIALOG_NEW_INJECTION_TITLE"),
-                    JOptionPane.OK_CANCEL_OPTION
-                );
+                // Fix #33930: ClassCastException on showConfirmDialog()
+                // Implementation by sun.awt.image
+                try {
+                    option = JOptionPane.showConfirmDialog(
+                        null,
+                        I18n.valueByKey("DIALOG_NEW_INJECTION_TEXT"),
+                        I18n.valueByKey("DIALOG_NEW_INJECTION_TITLE"),
+                        JOptionPane.OK_CANCEL_OPTION
+                    );
+                } catch (ClassCastException e) {
+                    LOGGER.error(e, e);
+                }
             }
 
             // Then start injection

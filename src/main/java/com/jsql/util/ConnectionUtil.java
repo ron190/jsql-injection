@@ -291,14 +291,15 @@ public class ConnectionUtil {
         if (regexSearch.find()) {
             String keyHeader = regexSearch.group(1).trim();
             String valueHeader = regexSearch.group(2).trim();
+            // Fix #2124: NullPointerException on addRequestProperty()
             try {
                 if ("Cookie".equalsIgnoreCase(keyHeader)) {
                     connection.addRequestProperty(keyHeader, valueHeader);
                 } else {
                     connection.addRequestProperty(keyHeader, URLDecoder.decode(valueHeader, "UTF-8"));
                 }
-            } catch (UnsupportedEncodingException e) {
-                LOGGER.warn("Unsupported header encoding: "+ e.getMessage(), e);
+            } catch (NullPointerException | UnsupportedEncodingException e) {
+                LOGGER.error(e, e);
             }
         }
     }

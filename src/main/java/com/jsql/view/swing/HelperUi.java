@@ -347,12 +347,13 @@ public final class HelperUi {
      */
     public static List<Image> getIcons() {
         List<Image> images = new ArrayList<>();
+        // Fix #2154: NoClassDefFoundError on read()
         try {
             images.add(ImageIO.read(HelperUi.URL_ICON_128));
             images.add(ImageIO.read(HelperUi.URL_ICON_96));
             images.add(ImageIO.read(HelperUi.URL_ICON_32));
             images.add(ImageIO.read(HelperUi.URL_ICON_16));
-        } catch (IOException e) {
+        } catch (NoClassDefFoundError | IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
         return images;

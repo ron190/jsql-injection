@@ -55,7 +55,8 @@ public class ManagerDatabase extends JPanel implements Manager {
     public JMenu panelStrategy;
     
     JMenu[] itemRadioStrategyError = new JMenu[1];
-    ButtonGroup groupStrategy = new ButtonGroup();
+    
+    private ButtonGroup groupStrategy = new ButtonGroup();
     
     /**
      * Create a panel to encode a string.
@@ -188,6 +189,12 @@ public class ManagerDatabase extends JPanel implements Manager {
                 i[0]++;
             }
         }
+    }
+    
+    // Getter and setter
+
+    public ButtonGroup getGroupStrategy() {
+        return groupStrategy;
     }
     
 }

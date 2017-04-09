@@ -38,10 +38,11 @@ public class ArrowIcon implements Icon, SwingConstants {
 
     @Override
     public void paintIcon(Component c, Graphics g, int x, int y) {
+        // Fix #4731: ClassCastException on paintTriangle()
+        // Implementation by sun.awt.image
         try {
             this.iconRenderer.paintTriangle(g, x, y + 3, this.size, this.direction, this.isEnabled);
         } catch(ClassCastException e) {
-            // Fix #4731
             LOGGER.error(e.getMessage(), e);
         }
     }

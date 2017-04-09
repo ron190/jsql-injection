@@ -49,10 +49,23 @@ public class ActionCoder implements ActionListener {
     public ActionCoder(ManagerCoder coderManager) {
         this.coderManager = coderManager;
     }
-
+    
+    public void actionPerformed() {
+        a(this.coderManager.getEncoding().getText().replace("Hash to ", ""));
+    }
+    
+    public void actionPerformed(String text) {
+        a(text.replace("Hash to ", ""));
+    }
+    
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        String choice = this.coderManager.getEncoding().getText().replace("Hash to ", "");
+        a(this.coderManager.getEncoding().getText().replace("Hash to ", ""));
+    }
+    
+    private void a(String text) {
+
+        String choice = text.replace("Hash to ", "");
         
         String result;
         String textInput = this.coderManager.getTextInput().getText();
@@ -139,7 +152,7 @@ public class ActionCoder implements ActionListener {
             try {
                 result = Hex.encodeHexString(textInput.getBytes("UTF-8")).trim();
             } catch (UnsupportedEncodingException e) {
-                result = "<span style=\"color:red;\">Encoding to Hex error: "+ e +"</span>";
+                result = "<span style=\"color:red;\">Encoding to Hex error: "+ e.getMessage() +"</span>";
 
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
@@ -153,7 +166,7 @@ public class ActionCoder implements ActionListener {
                     "UTF-8"
                 );
             } catch (Exception e) {
-                result = "<span style=\"color:red;\">Decoding from Hex error: "+ e +"</span>";
+                result = "<span style=\"color:red;\">Decoding from Hex error: "+ e.getMessage() +"</span>";
                 
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
@@ -166,7 +179,7 @@ public class ActionCoder implements ActionListener {
                     StringUtil.compress(textInput).getBytes("UTF-8")
                 ).trim();
             } catch (Exception e) {
-                result = "<span style=\"color:red;\">Encoding to Hex(zipped) error: "+ e +"</span>";
+                result = "<span style=\"color:red;\">Encoding to Hex(zipped) error: "+ e.getMessage() +"</span>";
                 
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
@@ -182,7 +195,7 @@ public class ActionCoder implements ActionListener {
                     )
                 );
             } catch (Exception e) {
-                result = "<span style=\"color:red;\">Decoding from Hex(zipped) error: "+ e +"</span>";
+                result = "<span style=\"color:red;\">Decoding from Hex(zipped) error: "+ e.getMessage() +"</span>";
                 
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
@@ -197,7 +210,7 @@ public class ActionCoder implements ActionListener {
                     )
                 );
             } catch (IOException e) {
-                result = "<span style=\"color:red;\">Encoding to Base64(zipped) error: "+ e +"</span>";
+                result = "<span style=\"color:red;\">Encoding to Base64(zipped) error: "+ e.getMessage() +"</span>";
                 
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
@@ -212,7 +225,7 @@ public class ActionCoder implements ActionListener {
                     )
                 );
             } catch (IOException e) {
-                result = "<span style=\"color:red;\">Decoding from Base64(zipped) error: "+ e +"</span>";
+                result = "<span style=\"color:red;\">Decoding from Base64(zipped) error: "+ e.getMessage() +"</span>";
                 
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);

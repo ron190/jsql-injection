@@ -164,10 +164,10 @@ public class JFrameView extends JFrame {
         MediatorGui.managerDatabase().panelVendor.setText(Vendor.AUTO.toString());
         MediatorGui.managerDatabase().panelStrategy.setText("<Strategy auto>");
         for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
-            MediatorGui.managerDatabase().panelStrategy.getItem(i).setSelected(false);
             MediatorGui.managerDatabase().panelStrategy.getItem(i).setEnabled(false);
         }
         ((JMenu) MediatorGui.managerDatabase().panelStrategy.getItem(2)).removeAll();
+        MediatorGui.managerDatabase().getGroupStrategy().clearSelection();
         
         this.mapNodes.clear();
         this.mapShells.clear();

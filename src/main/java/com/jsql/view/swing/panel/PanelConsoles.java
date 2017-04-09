@@ -26,6 +26,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -334,21 +335,26 @@ public class PanelConsoles extends JPanel {
                 // Reset EditorKit to disable previous document effect
                 this.networkTabPreview.getEditorKit().createDefaultDocument();
                 
-                // TODO: test if proxy is used by jsoup
+                // Proxy is used by jsoup to display <img> tags
                 // Previous test for 2xx Success and 3xx Redirection was Header only,
                 // now get the HTML content
-                this.networkTabPreview.setText(
-                    Jsoup.clean(
-                        "<html>"+ StringUtil.detectUtf8(networkData.getSource()).replaceAll("#{5,}", "#*") + "</html>"
-                            .replaceAll("<img.*>", "")
-                            .replaceAll("<input.*type=\"?hidden\"?.*>", "")
-                            .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
-                            .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
-                        Whitelist.relaxed()
-                            .addTags("center", "div", "span")
-                            .addAttributes(":all", "style")
-                    )
-                );
+                // Fix #35352: EmptyStackException on setText()
+                try {
+                    this.networkTabPreview.setText(
+                        Jsoup.clean(
+                            "<html>"+ StringUtil.detectUtf8(networkData.getSource()).replaceAll("#{5,}", "#*") + "</html>"
+                                .replaceAll("<img.*>", "")
+                                .replaceAll("<input.*type=\"?hidden\"?.*>", "")
+                                .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
+                                .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
+                            Whitelist.relaxed()
+                                .addTags("center", "div", "span")
+                                .addAttributes(":all", "style")
+                        )
+                    );
+                } catch (EmptyStackException e) {
+                    LOGGER.error(e, e);
+                }
             }
         });
 
@@ -517,14 +523,14 @@ public class PanelConsoles extends JPanel {
         this.getChunkTab().setText("");
         this.getBinaryTab().setText("");
         
-        // Fix #4657, #1860: Multiple Exceptions on setRowCount()
+        // Fix #4657, Fix #1860: Multiple Exceptions on setRowCount()
         try {
-            ((DefaultTableModel) this.getNetworkTable().getModel()).setRowCount(0);
+            ((DefaultTableModel) this.networkTable.getModel()).setRowCount(0);
         } catch(NullPointerException | ArrayIndexOutOfBoundsException e) {
             LOGGER.error(e.getMessage(), e);
         }
         
-        this.getJavaTab().getProxy().setText("");
+        this.javaTab.getProxy().setText("");
         
         this.networkTabUrl.setText("");
         this.networkTabHeader.setText("");
@@ -536,10 +542,6 @@ public class PanelConsoles extends JPanel {
     
     // Getter and setter
 
-    public JavaConsoleAdapter getJavaTab() {
-        return this.javaTab;
-    }
-
     public JTextArea getChunkTab() {
         return this.chunkTab;
     }
@@ -550,10 +552,6 @@ public class PanelConsoles extends JPanel {
 
     public JTextArea getBinaryTab() {
         return this.binaryTab;
-    }
-
-    public JTable getNetworkTable() {
-        return this.networkTable;
     }
     
 }

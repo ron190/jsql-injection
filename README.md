@@ -11,10 +11,6 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 [![Maven 3.2](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/maven.png)](https://maven.apache.org/)
 [![SonarQube 6.3](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/sonar.png)](http://www.sonarqube.org/)<br>
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)
-[![Github](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/github.png)](https://github.com)
-[![Github All Releases](https://img.shields.io/github/downloads/ron190/jsql-injection/total.svg)](https://github.com/ron190/jsql-injection/releases/)
-[![SourceForge](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/sourceforge.png)](https://sourceforge.net)
-[![SourceForge All Releases](https://img.shields.io/sourceforge/dw/jsqlinjection.svg)](https://sourceforge.net/projects/jsqlinjection/files/)
 
 ## Features
 - Automatic injection of 18 kinds of databases: Access, CUBRID, DB2, Derby, Firebird, H2, HSQLDB, Informix, Ingres, MariaDB, MaxDB, MySQL, Oracle, PostgreSQL, SQLite, SQL Server, Sybase and Teradata
@@ -29,9 +25,9 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 
 ## Installation
 Install [Java 8](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) of jSQL and double-click on the .jar to launch the software.<br>
-You can also type `java -jar jsql-injection-v0.78.jar` in your terminal to start the program.
+You can also type `java -jar jsql-injection-v0.79.jar` in your terminal to start the program.
 
-## v0.78 [[download here](https://github.com/ron190/jsql-injection/releases/download/v0.78/jsql-injection-v0.78.jar)]
+## v0.79 [[download here](https://github.com/ron190/jsql-injection/releases/download/v0.79/jsql-injection-v0.79.jar)]
 [![Default](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default-mini.png "Default")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default.png)
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
 [![SQL Engine](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.78/sqlengine-mini.png "SQL Engine")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.78/sqlengine.png)
@@ -50,7 +46,9 @@ You can also type `java -jar jsql-injection-v0.78.jar` in your terminal to start
 
 ## Change log
 
-**v0.78** `SQL Engine, MySQL Error strategy: BIGINT, Translations: es pt de it nl id, GUI improvements, Database flavor: Access`
+**v0.79** `Wider range of Character Insertion including multibyte %bf, New Error Strategies for MySQL and PostgreSQL, Various optimization and bug fixes`
+
+**v0.78** `SQL Engine, MySQL Error strategy: DOUBLE, Translations: es pt de it nl id, GUI improvements, Database flavor: Access`
 
 **v0.76** `Czech translation, 17 Database flavors including SQLite`
 

@@ -156,7 +156,15 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             mnNew.addActionListener(new MenuActionNewValue(this.dndList));
 
             mnImport.addActionListener(actionEvent -> {
-                int choice = importFileDialog.showOpenDialog(this.dndList.getTopLevelAncestor());
+                int choice = 0;
+                
+                // Fix #1896: NullPointerException on showOpenDialog()
+                try {
+                    choice = importFileDialog.showOpenDialog(this.dndList.getTopLevelAncestor());
+                } catch (NullPointerException e) {
+                    LOGGER.error(e, e);
+                }
+                
                 if (choice == JFileChooser.APPROVE_OPTION) {
                     this.dndList.dropPasteFile(
                         Arrays.asList(importFileDialog.getSelectedFiles()),

