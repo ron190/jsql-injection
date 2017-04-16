@@ -5,6 +5,6 @@
         "[New v0.78] Upgrade to Java 8, Panel SQL Engine to study and optimize SQL expressions, Database flavor: Access, MySQL injection with DOUBLE overflow.",
         "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer.",
         "[Programming] Contact the developer for any help with new features, CTF events and Burp integration.",
-        "[Roadmap] Database flavor: Hana Vertica, Injection strategies: DIOS / Routed query / Update Insert Delete, WAF detection, Bruteforce of HTTP Auth using NTLM, Arabic translation, Command line interface."
+        "[Roadmap] Database flavor: Hana and Vertica, Injection strategies: DIOS / Routed query / Out of band / Update Insert Delete, WAF detection, Bruteforce of HTTP Auth using NTLM, Arabic translation, Command line interface."
     ]
 }
