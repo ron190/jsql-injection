@@ -20,25 +20,25 @@ import com.jsql.view.swing.MediatorGui;
 /**
  * Mark the injection as invulnerable to a error based injection.
  */
-public class MarkErrorbasedStrategy implements InteractionCommand {
+public class MarkErrorStrategy implements InteractionCommand {
 	
     /**
      * @param interactionParams
      */
-    public MarkErrorbasedStrategy(Object[] interactionParams) {
+    public MarkErrorStrategy(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        MediatorGui.managerDatabase().panelStrategy.setText(StrategyInjection.ERRORBASED.toString());
-        for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
-            if (((JMenu) MediatorGui.managerDatabase().panelStrategy.getMenuComponent(2)).getItem(i).getText().equals(
-                MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(StrategyInjection.ERRORBASED.instance().getIndexMethod()).getName()
+        MediatorGui.managerDatabase().getPanelStrategy().setText(StrategyInjection.ERROR.toString());
+        for (int i = 0 ; i < MediatorGui.managerDatabase().getPanelStrategy().getItemCount() ; i++) {
+            if (((JMenu) MediatorGui.managerDatabase().getPanelStrategy().getMenuComponent(2)).getItem(i).getText().equals(
+                MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(StrategyInjection.ERROR.instance().getIndexMethod()).getName()
             )) {
-                ((JMenu) MediatorGui.managerDatabase().panelStrategy.getMenuComponent(2)).getItem(i).setSelected(true);
-                MediatorGui.managerDatabase().panelStrategy.setText(
-                    MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(StrategyInjection.ERRORBASED.instance().getIndexMethod()).getName()
+                ((JMenu) MediatorGui.managerDatabase().getPanelStrategy().getMenuComponent(2)).getItem(i).setSelected(true);
+                MediatorGui.managerDatabase().getPanelStrategy().setText(
+                    MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(StrategyInjection.ERROR.instance().getIndexMethod()).getName()
                 );
                 break;
             }

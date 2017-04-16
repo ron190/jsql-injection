@@ -42,7 +42,7 @@ You can also type `java -jar jsql-injection-v0.79.jar` in your terminal to start
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## Roadmap
-`Injection strategies: Routed query / Multibyte / User Variable / Order and Group By, WAF detection, Bruteforce of HTTP Auth, Arabic translation, Command line interface.`
+`Injection strategies: DIOS / Routed query / OOB, WAF detection, Bruteforce of HTTP Auth, Arabic translation, Command line interface.`
 
 ## Change log
 

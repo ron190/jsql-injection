@@ -50,7 +50,7 @@ public class UpdateProgress implements InteractionCommand {
             // Get the node
             AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
             // Update the progress value of the model
-            progressingTreeNodeModel.indexProgress = this.dataCount;
+            progressingTreeNodeModel.setIndexProgress(this.dataCount);
             
             // Tree model, update the tree (refresh, add node, etc)
             DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();

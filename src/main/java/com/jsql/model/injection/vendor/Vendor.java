@@ -1,5 +1,7 @@
 package com.jsql.model.injection.vendor;
 
+import com.jsql.model.injection.vendor.xml.VendorXml;
+
 public enum Vendor {
 	
     AUTO("<Database auto>", null),
@@ -9,6 +11,7 @@ public enum Vendor {
     DERBY("Derby", new VendorXml("derby.xml")),
     FIREBIRD("Firebird", new VendorXml("firebird.xml")),
     H2("H2", new VendorXml("h2.xml")),
+    HANA("Hana", new VendorXml("hana.xml")),
     HSQLDB("HSQLDB", new VendorXml("hsqldb.xml")),
     INFORMIX("Informix", new VendorXml("informix.xml")),
     INGRES("Ingres", new VendorXml("ingres.xml")),
@@ -20,7 +23,8 @@ public enum Vendor {
     SQLITE("SQLite", new VendorXml("sqlite.xml")),
     SQLSERVER("SQL Server", new VendorXml("sqlserver.xml")),
     SYBASE("Sybase", new VendorXml("sybase.xml")),
-    TERADATA("Teradata", new VendorXml("teradata.xml"));
+    TERADATA("Teradata", new VendorXml("teradata.xml")),
+    VERTICA("Vertica", new VendorXml("vertica.xml"));
 
     private final String labelVendor;
     

@@ -23,7 +23,7 @@ import com.jsql.view.swing.list.ListItem;
 /**
  * Mark the injection as vulnerable to a error-based injection.
  */
-public class MarkErrorbasedVulnerable implements InteractionCommand {
+public class MarkErrorVulnerable implements InteractionCommand {
 
     private String url;
     
@@ -31,14 +31,14 @@ public class MarkErrorbasedVulnerable implements InteractionCommand {
      * @param interactionParams
      */
     @SuppressWarnings("unchecked")
-    public MarkErrorbasedVulnerable(Object[] interactionParams) {
+    public MarkErrorVulnerable(Object[] interactionParams) {
         Map<String, Object> params = (Map<String, Object>) interactionParams[0];
         this.url = (String) params.get(TypeHeader.URL);
     }
 
     @Override
     public void execute() {
-        ListModel<ListItem> listModel = MediatorGui.managerScan().listPaths.getModel();
+        ListModel<ListItem> listModel = MediatorGui.managerScan().getListPaths().getModel();
         for (int i = 0 ; i < listModel.getSize() ; i++) {
             if (listModel.getElementAt(i).getInternalString().contains(this.url)) {
                 listModel.getElementAt(i).setIsVulnerable(true);

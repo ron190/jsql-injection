@@ -36,13 +36,13 @@ public class TabbedPaneDnD extends JTabbedPane {
     
     private static final int LINEWIDTH = 3;
     
-    public static final Rectangle RBACKWARD = new Rectangle();
+    private static final Rectangle RBACKWARD = new Rectangle();
     
-    public static final Rectangle RFORWARD  = new Rectangle();
+    private static final Rectangle RFORWARD  = new Rectangle();
     
     private final Rectangle lineRect = new Rectangle();
     
-    public int dragTabIndex = -1;
+    private int dragTabIndex = -1;
 
     private static final int RWH = 20;
     
@@ -272,7 +272,7 @@ public class TabbedPaneDnD extends JTabbedPane {
         Rectangle r = this.getBoundsAt(isZero?0:index-1);
         if (this.getTabPlacement() == TOP || this.getTabPlacement() == BOTTOM) {
             this.lineRect.setRect(
-                r.x - LINEWIDTH / 2 + r.width * (isZero ? 0 : 1),
+                r.x - LINEWIDTH / 2d + r.width * (isZero ? 0 : 1),
                 r.y,
                 LINEWIDTH,
                 r.height
@@ -280,7 +280,7 @@ public class TabbedPaneDnD extends JTabbedPane {
         } else {
             this.lineRect.setRect(
                 r.x,
-                r.y - LINEWIDTH / 2 + r.height * (isZero ? 0 : 1),
+                r.y - LINEWIDTH / 2d + r.height * (isZero ? 0 : 1),
                 r.width,
                 LINEWIDTH
             );
@@ -374,10 +374,13 @@ public class TabbedPaneDnD extends JTabbedPane {
         public void mouseDragged(MouseEvent e) {
             Point tabPt = e.getPoint();
             
-            if (this.startPt != null && Math.sqrt(Math.pow(tabPt.x - this.startPt.x, 2) + Math.pow(tabPt.y - this.startPt.y, 2)) > this.gestureMotionThreshold) {
+            if (
+                this.startPt != null 
+                && Math.sqrt(Math.pow((double) tabPt.x - this.startPt.x, 2d) + Math.pow((double) tabPt.y - this.startPt.y, 2d)) > this.gestureMotionThreshold
+            ) {
                 TabbedPaneDnD src = (TabbedPaneDnD) e.getSource();
                 TransferHandler th = src.getTransferHandler();
-                TabbedPaneDnD.this.dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
+                TabbedPaneDnD.this.setDragTabIndex(src.indexAtLocation(tabPt.x, tabPt.y));
                 
                 th.exportAsDrag(src, e, TransferHandler.MOVE);
                 TabbedPaneDnD.this.lineRect.setRect(0, 0, 0, 0);
@@ -398,6 +401,14 @@ public class TabbedPaneDnD extends JTabbedPane {
                 ActionCloseTabResult.perform(i);
             }
         }
+    }
+
+    public int getDragTabIndex() {
+        return this.dragTabIndex;
+    }
+
+    public void setDragTabIndex(int dragTabIndex) {
+        this.dragTabIndex = dragTabIndex;
     }
     
 }

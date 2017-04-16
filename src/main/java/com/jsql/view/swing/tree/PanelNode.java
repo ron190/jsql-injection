@@ -46,12 +46,12 @@ public class PanelNode extends JPanel {
     /**
      * Progress bar displayed during injection, with pause icon displayed if user paused the process.
      */
-    public ProgressBarPausable progressBar = new ProgressBarPausable();
+    private ProgressBarPausable progressBar = new ProgressBarPausable();
 
     /**
      * Text of the node.
      */
-    public JLabel label = new JLabel();
+    private JLabel label = new JLabel();
 
     /**
      * Create Panel for tree nodes.
@@ -119,6 +119,16 @@ public class PanelNode extends JPanel {
      */
     public void showLoader() {
         this.loader.setVisible(true);
+    }
+    
+    // Getter and setter
+
+    public ProgressBarPausable getProgressBar() {
+        return this.progressBar;
+    }
+
+    public JLabel getLabel() {
+        return this.label;
     }
     
 }

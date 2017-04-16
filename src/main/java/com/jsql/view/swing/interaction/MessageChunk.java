@@ -43,7 +43,7 @@ public class MessageChunk implements InteractionCommand {
     @Override
     public void execute() {
         try {
-            MediatorGui.panelConsoles().getChunkTab().append(this.text);
+            MediatorGui.panelConsoles().getChunkTab().append(this.text +"\n");
             MediatorGui.panelConsoles().getChunkTab().setCaretPosition(MediatorGui.panelConsoles().getChunkTab().getDocument().getLength());
             
             int tabIndex = MediatorGui.tabConsoles().indexOfTab("Chunk");

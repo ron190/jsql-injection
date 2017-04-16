@@ -50,13 +50,32 @@ class Colorer extends Thread {
 	 * into an object so that it can be stored in a Vector.
 	 */
 	private static class RecolorEvent {
-		public int position;
-		public int adjustment;
+	    
+		private int position;
+		
+		private int adjustment;
 
 		public RecolorEvent(int position, int adjustment) {
 			this.position = position;
 			this.adjustment = adjustment;
 		}
+
+        public int getPosition() {
+            return this.position;
+        }
+
+        public void setPosition(int position) {
+            this.position = position;
+        }
+
+        public int getAdjustment() {
+            return this.adjustment;
+        }
+
+        public void setAdjustment(int adjustment) {
+            this.adjustment = adjustment;
+        }
+        
 	}
 	
 	/**
@@ -138,20 +157,20 @@ class Colorer extends Thread {
 			if(!this.events.isEmpty()) {
 				// check whether to coalesce with current last element
 				RecolorEvent curLast = this.events.getLast();
-				if(adjustment < 0 && curLast.adjustment < 0) {
+				if(adjustment < 0 && curLast.getAdjustment() < 0) {
 					// both are removals
-					if(position == curLast.position) {
-						curLast.adjustment += adjustment;
+					if(position == curLast.getPosition()) {
+						curLast.setAdjustment(curLast.getAdjustment() + adjustment);
 						return;
 					}
-				} else if(adjustment >= 0 && curLast.adjustment >= 0) {
+				} else if(adjustment >= 0 && curLast.getAdjustment() >= 0) {
 					// both are insertions
-					if(position == curLast.position + curLast.adjustment) {
-						curLast.adjustment += adjustment;
+					if(position == curLast.getPosition() + curLast.getAdjustment()) {
+						curLast.setAdjustment(curLast.getAdjustment() + adjustment);
 						return;
-					} else if(curLast.position == position + adjustment) {
-						curLast.position = position;
-						curLast.adjustment += adjustment;
+					} else if(curLast.getPosition() == position + adjustment) {
+						curLast.setPosition(position);
+						curLast.setAdjustment(curLast.getAdjustment() + adjustment);
 						return;
 					}
 				}
@@ -182,9 +201,12 @@ class Colorer extends Thread {
 					    re = this.events.removeFirst();
 					}
 				}
-				this.processEvent(re.position, re.adjustment);
+				this.processEvent(re.getPosition(), re.getAdjustment());
 				Thread.sleep(100);
-			} catch(InterruptedException e) { }
+			} catch(InterruptedException e) { 
+			    LOGGER.error(e, e);
+			    Thread.currentThread().interrupt();
+			}
 		}
 	}
 	

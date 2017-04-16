@@ -36,7 +36,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
-        LOGGER.trace("Blind test...");
+        LOGGER.trace("Checking strategy Blind...");
         
         this.blind = new InjectionBlind();
         

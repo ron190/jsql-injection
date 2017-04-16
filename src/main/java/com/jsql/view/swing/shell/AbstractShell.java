@@ -48,7 +48,7 @@ public abstract class AbstractShell extends JTextPane {
     /**
      * True if terminal is processing command.
      */
-    public boolean[] isEdited = {false};
+    private boolean[] isEdited = {false};
 
     /**
      * Server name or IP to display on prompt.
@@ -60,9 +60,9 @@ public abstract class AbstractShell extends JTextPane {
      */
     protected String[] loginPassword = null;
 
-    UUID uuidShell;
+    private UUID uuidShell;
     
-    String urlShell;
+    private String urlShell;
 
     /**
      * Document used to append colored text.
@@ -77,7 +77,7 @@ public abstract class AbstractShell extends JTextPane {
     /**
      *  Length of prompt.
      */
-    String prompt = "";
+    private String prompt = "";
 
     /**
      * Text to display next caret.
@@ -289,5 +289,23 @@ public abstract class AbstractShell extends JTextPane {
      * @param arg Additional parameters (User and password for SQLShell)
      */
     abstract void action(String cmd, UUID terminalID, String wbhPath, String... arg);
+
+    // Getter and setter
+    
+    public boolean[] getIsEdited() {
+        return this.isEdited;
+    }
+
+    public UUID getUuidShell() {
+        return this.uuidShell;
+    }
+
+    public String getUrlShell() {
+        return this.urlShell;
+    }
+
+    public String getPrompt() {
+        return this.prompt;
+    }
     
 }

@@ -17,7 +17,7 @@ import com.jsql.view.interaction.InteractionCommand;
 /**
  * Mark the injection as vulnerable to a time based injection.
  */
-public class MarkTimebasedVulnerable implements InteractionCommand {
+public class MarkTimeVulnerable implements InteractionCommand {
 	
     /**
      * Using default log4j.properties from root /
@@ -27,13 +27,13 @@ public class MarkTimebasedVulnerable implements InteractionCommand {
     /**
      * @param nullParam
      */
-    public MarkTimebasedVulnerable(Object[] nullParam) {
+    public MarkTimeVulnerable(Object[] nullParam) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        LOGGER.info("MarkTimebasedVulnerable");
+        LOGGER.info("MarkTimeVulnerable");
         LOGGER.info("\n");
     }
     

@@ -69,17 +69,17 @@ public class RessourceAccess {
     /**
      * File name for web shell.
      */
-    public static final String FILENAME_WEBSHELL = "."+ InjectionModel.VERSION_JSQL + ".jw.php";
+    public static final String FILENAME_WEBSHELL = "."+ InjectionModel.getVersionJsql() + ".jw.php";
     
     /**
      * File name for sql shell.
      */
-    public static final String FILENAME_SQLSHELL = "."+ InjectionModel.VERSION_JSQL + ".js.php";
+    public static final String FILENAME_SQLSHELL = "."+ InjectionModel.getVersionJsql() + ".js.php";
     
     /**
      * File name for upload form.
      */
-    public static final String FILENAME_UPLOAD = "."+ InjectionModel.VERSION_JSQL + ".ju.php";
+    public static final String FILENAME_UPLOAD = "."+ InjectionModel.getVersionJsql() + ".ju.php";
     
     /**
      * True if admin page sould stop, false otherwise.

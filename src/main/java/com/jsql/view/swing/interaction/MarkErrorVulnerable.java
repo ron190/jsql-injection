@@ -22,7 +22,7 @@ import com.jsql.view.swing.MediatorGui;
 /**
  * Mark the injection as vulnerable to a error-based injection.
  */
-public class MarkErrorbasedVulnerable implements InteractionCommand {
+public class MarkErrorVulnerable implements InteractionCommand {
     
     private Map<TypeHeader, Object> mapHeader;
     private int indexMethodError;
@@ -31,17 +31,17 @@ public class MarkErrorbasedVulnerable implements InteractionCommand {
      * @param interactionParams
      */
     @SuppressWarnings("unchecked")
-    public MarkErrorbasedVulnerable(Object[] interactionParams) {
+    public MarkErrorVulnerable(Object[] interactionParams) {
         this.mapHeader = (Map<TypeHeader, Object>) interactionParams[0];
         this.indexMethodError = (int) this.mapHeader.get(TypeHeader.SOURCE);
     }
 
     @Override
     public void execute() {
-        for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
-            if (MediatorGui.managerDatabase().panelStrategy.getItem(i).getText().equals(StrategyInjection.ERRORBASED.toString())) {
-                MediatorGui.managerDatabase().panelStrategy.getItem(i).setEnabled(true);
-                ((JMenu) MediatorGui.managerDatabase().panelStrategy.getItem(i)).getItem(this.indexMethodError).setEnabled(true);
+        for (int i = 0 ; i < MediatorGui.managerDatabase().getPanelStrategy().getItemCount() ; i++) {
+            if (MediatorGui.managerDatabase().getPanelStrategy().getItem(i).getText().equals(StrategyInjection.ERROR.toString())) {
+                MediatorGui.managerDatabase().getPanelStrategy().getItem(i).setEnabled(true);
+                ((JMenu) MediatorGui.managerDatabase().getPanelStrategy().getItem(i)).getItem(this.indexMethodError).setEnabled(true);
                 break;
             }
         }

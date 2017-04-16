@@ -47,11 +47,11 @@ public class EndProgress implements InteractionCommand {
             // Get the node
             AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
             // Mark the node model as 'no progress bar'
-            progressingTreeNodeModel.isLoading = false;
+            progressingTreeNodeModel.setLoading(false);
             // Mark the node model as 'no stop/pause/resume button'
-            progressingTreeNodeModel.isRunning = false;
+            progressingTreeNodeModel.setRunning(false);
             // Reset the progress value of the model
-            progressingTreeNodeModel.indexProgress = 0;
+            progressingTreeNodeModel.setIndexProgress(0);
             
             // Update the node and progressbar
             treeModel.nodeChanged(node);

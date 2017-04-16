@@ -60,7 +60,7 @@ public class GitUtil {
         
         try {
             Float versionGit = Float.parseFloat(GitUtil.getJSONObject().getString("version"));
-            if (versionGit > Float.parseFloat(InjectionModel.VERSION_JSQL)) {
+            if (versionGit > Float.parseFloat(InjectionModel.getVersionJsql())) {
                 LOGGER.warn(I18n.valueByKey("UPDATE_NEW_VERSION"));
             } else if(displayUpdateMessage == ShowOnConsole.YES) {
                 LOGGER.debug(I18n.valueByKey("UPDATE_UPTODATE"));
@@ -83,7 +83,7 @@ public class GitUtil {
         
         String clientDescription =
               "```\n"
-            + "jSQL: v"+ InjectionModel.VERSION_JSQL +"\n"
+            + "jSQL: v"+ InjectionModel.getVersionJsql() +"\n"
             + "Java: v"+ javaVersion +"-"+ osArch +"-"+ System.getProperty("user.language") +" on "+ System.getProperty("java.runtime.name") +"\n"
             + "OS: "+ System.getProperty("os.name") +" (v"+ System.getProperty("os.version") +")\n"
             + "Desktop: "+( System.getProperty("sun.desktop") != null ? System.getProperty("sun.desktop") : "undefined" )+"\n"

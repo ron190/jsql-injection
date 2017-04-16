@@ -48,9 +48,9 @@ public class EndIndeterminateProgress implements InteractionCommand {
             // Get the node
             AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) nodeModel.getUserObject();
             // Mark the node model as 'no loading bar'
-            progressingTreeNodeModel.isProgressing = false;
+            progressingTreeNodeModel.setProgressing(false);
             // Mark the node model as 'no stop/pause/resume button'
-            progressingTreeNodeModel.isRunning = false;
+            progressingTreeNodeModel.setRunning(false);
             
             // Update the node
             treeModel.nodeChanged(nodeModel);

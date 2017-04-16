@@ -28,7 +28,7 @@ public class ActionCheckUncheck implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         JCheckBox columnCheckBox = (JCheckBox) source;
-        this.nodeModel.isSelected = columnCheckBox.isSelected();
+        this.nodeModel.setSelected(columnCheckBox.isSelected());
 
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
         DefaultMutableTreeNode tableNode = (DefaultMutableTreeNode) this.currentTableNode.getParent();
@@ -39,7 +39,7 @@ public class ActionCheckUncheck implements ActionListener {
             DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
             if (currentChild.getUserObject() instanceof AbstractNodeModel) {
                 AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
-                if (columnTreeNodeModel.isSelected) {
+                if (columnTreeNodeModel.isSelected()) {
                     isOneChildSelected = true;
                     break;
                 }
@@ -47,7 +47,7 @@ public class ActionCheckUncheck implements ActionListener {
         }
 
         AbstractNodeModel nodeUserObject = (AbstractNodeModel) tableNode.getUserObject();
-        nodeUserObject.isContainingSelection = isOneChildSelected;
+        nodeUserObject.setContainingSelection(isOneChildSelected);
     }
     
 }

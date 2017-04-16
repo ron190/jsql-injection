@@ -28,10 +28,10 @@ public class MarkBlindStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.managerDatabase().panelStrategy.setText(StrategyInjection.BLIND.toString());
-        for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
-            if (MediatorGui.managerDatabase().panelStrategy.getItem(i).getText().equals(StrategyInjection.BLIND.toString())) {
-                MediatorGui.managerDatabase().panelStrategy.getItem(i).setSelected(true);
+        MediatorGui.managerDatabase().getPanelStrategy().setText(StrategyInjection.BLIND.toString());
+        for (int i = 0 ; i < MediatorGui.managerDatabase().getPanelStrategy().getItemCount() ; i++) {
+            if (MediatorGui.managerDatabase().getPanelStrategy().getItem(i).getText().equals(StrategyInjection.BLIND.toString())) {
+                MediatorGui.managerDatabase().getPanelStrategy().getItem(i).setSelected(true);
                 break;
             }
         }

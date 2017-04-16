@@ -46,7 +46,7 @@ public class StartIndeterminateProgress implements InteractionCommand {
         // Get the node
         AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
         // Mark the node model as 'loading'
-        progressingTreeNodeModel.isProgressing = true;
+        progressingTreeNodeModel.setProgressing(true);
 
         // Update the node
         treeModel.nodeChanged(node);

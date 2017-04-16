@@ -45,7 +45,7 @@ public class NodeModelColumn extends AbstractNodeModel {
     public Component getComponent(
         final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, boolean hasFocus
     ) {
-        JCheckBox checkbox = new JCheckBox(this.toString(), this.isSelected);
+        JCheckBox checkbox = new JCheckBox(this.toString(), this.isSelected());
         checkbox.setFont(
             checkbox.getFont().deriveFont(
                 Font.PLAIN | Font.ITALIC,
@@ -61,7 +61,7 @@ public class NodeModelColumn extends AbstractNodeModel {
     }
 
     @Override
-    Icon getLeafIcon(boolean leaf) {
+    protected Icon getLeafIcon(boolean leaf) {
         // Do nothing
         return null;
     }
@@ -72,7 +72,7 @@ public class NodeModelColumn extends AbstractNodeModel {
     }
     
     @Override
-    void buildMenu(JPopupMenu tablePopupMenu, TreePath path) {
+    protected void buildMenu(JPopupMenu tablePopupMenu, TreePath path) {
         // Do nothing
     }
     

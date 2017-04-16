@@ -13,18 +13,18 @@ public class CreateTab {
     
     public static void initializeSplitOrientation() {
         if (MediatorGui.tabResults().getTabCount() == 0) {
-            int i = MediatorGui.frame().splitHorizontalTopBottom.splitVerticalLeftRight.getDividerLocation();
+            int i = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation();
             
             if (ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT) {
-                MediatorGui.frame().splitHorizontalTopBottom.splitVerticalLeftRight.setLeftComponent(
+                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setLeftComponent(
                     MediatorGui.tabResults()
                 );
             } else {
-                MediatorGui.frame().splitHorizontalTopBottom.splitVerticalLeftRight.setRightComponent(
+                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setRightComponent(
                     MediatorGui.tabResults()
                 );
             }
-            MediatorGui.frame().splitHorizontalTopBottom.splitVerticalLeftRight.setDividerLocation(i);
+            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(i);
         }
     }
 }

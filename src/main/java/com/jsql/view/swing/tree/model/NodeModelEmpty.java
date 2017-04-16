@@ -61,7 +61,7 @@ public class NodeModelEmpty extends AbstractNodeModel {
     }
 
     @Override
-    Icon getLeafIcon(boolean leaf) {
+    protected Icon getLeafIcon(boolean leaf) {
         // No icon for default node
         return null;
     }
@@ -72,7 +72,7 @@ public class NodeModelEmpty extends AbstractNodeModel {
     }
     
     @Override
-    void buildMenu(JPopupMenu tablePopupMenu, TreePath path) {
+    protected void buildMenu(JPopupMenu tablePopupMenu, TreePath path) {
         // Not used
     }
     

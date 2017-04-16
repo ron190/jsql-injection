@@ -45,7 +45,7 @@ public class StartProgress implements InteractionCommand {
         // Get the node
         AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
         // Mark the node model as 'display progress bar'
-        progressingTreeNodeModel.isLoading = true;
+        progressingTreeNodeModel.setLoading(true);
 
         // Update the node
         treeModel.nodeChanged(node);

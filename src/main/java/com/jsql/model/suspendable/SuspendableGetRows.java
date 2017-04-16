@@ -156,7 +156,8 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     Pattern
                         .compile(MODE + TRAIL_RGX +".*")
                         .matcher(regexAtLeastOneRow.group(1))
-                        .replaceAll("\n")
+                        .replaceAll("")
+                        .replaceAll("\\n", "\\\\\\n").replaceAll("\\r", "\\\\\\r").replaceAll("\\t", "\\\\\\t")
                 );
                 MediatorModel.model().sendToViews(request);
             } catch (IllegalStateException e) {

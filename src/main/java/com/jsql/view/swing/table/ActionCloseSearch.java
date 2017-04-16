@@ -21,9 +21,9 @@ public class ActionCloseSearch extends AbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        textFilter.setText(null);
-        panelSearch.setVisible(false);
-        panelTable.getTableValues().requestFocusInWindow();
+        this.textFilter.setText(null);
+        this.panelSearch.setVisible(false);
+        this.panelTable.getTableValues().requestFocusInWindow();
     }
     
 }

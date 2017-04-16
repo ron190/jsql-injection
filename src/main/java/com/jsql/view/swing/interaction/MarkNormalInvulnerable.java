@@ -28,9 +28,9 @@ public class MarkNormalInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
-            if (MediatorGui.managerDatabase().panelStrategy.getItem(i).getText().equals(StrategyInjection.NORMAL.toString())) {
-                MediatorGui.managerDatabase().panelStrategy.getItem(i).setEnabled(false);
+        for (int i = 0 ; i < MediatorGui.managerDatabase().getPanelStrategy().getItemCount() ; i++) {
+            if (MediatorGui.managerDatabase().getPanelStrategy().getItem(i).getText().equals(StrategyInjection.NORMAL.toString())) {
+                MediatorGui.managerDatabase().getPanelStrategy().getItem(i).setEnabled(false);
                 break;
             }
         }

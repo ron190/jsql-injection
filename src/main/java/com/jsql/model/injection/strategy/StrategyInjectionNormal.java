@@ -43,7 +43,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
      */
     @Override
     public void checkApplicability() throws JSqlException {
-        LOGGER.trace("Normal test...");
+        LOGGER.trace("Checking strategy Normal...");
         MediatorModel.model().setIndexesInUrl(new SuspendableGetIndexes().run());
 
         // Define visibleIndex, i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML source

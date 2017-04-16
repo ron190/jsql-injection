@@ -150,7 +150,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             
             //Create a file chooser
             final JFileChooser importFileDialog = new JFileChooser(PreferencesUtil.getPathFile());
-            importFileDialog.setDialogTitle("Import a list of file paths");
+            importFileDialog.setDialogTitle(I18n.valueByKey("LIST_IMPORT_CONFIRM_TITLE"));
             importFileDialog.setMultiSelectionEnabled(true);
 
             mnNew.addActionListener(new MenuActionNewValue(this.dndList));

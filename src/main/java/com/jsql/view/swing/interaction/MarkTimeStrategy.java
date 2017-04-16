@@ -15,22 +15,23 @@ import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 
 /**
- * Mark the injection as vulnerable to a time based injection.
+ * Mark the injection as invulnerable to a time based injection.
  */
-public class MarkTimebasedVulnerable implements InteractionCommand {
+public class MarkTimeStrategy implements InteractionCommand {
 	
     /**
-     * @param nullParam
+     * @param interactionParams
      */
-    public MarkTimebasedVulnerable(Object[] nullParam) {
+    public MarkTimeStrategy(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
-            if (MediatorGui.managerDatabase().panelStrategy.getItem(i).getText().equals(StrategyInjection.TIME.toString())) {
-                MediatorGui.managerDatabase().panelStrategy.getItem(i).setEnabled(true);
+        MediatorGui.managerDatabase().getPanelStrategy().setText(StrategyInjection.TIME.toString());
+        for (int i = 0 ; i < MediatorGui.managerDatabase().getPanelStrategy().getItemCount() ; i++) {
+            if (MediatorGui.managerDatabase().getPanelStrategy().getItem(i).getText().equals(StrategyInjection.TIME.toString())) {
+                MediatorGui.managerDatabase().getPanelStrategy().getItem(i).setSelected(true);
                 break;
             }
         }

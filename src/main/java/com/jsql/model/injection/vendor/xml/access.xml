@@ -77,8 +77,8 @@ from (
 )a
                 </query>
                 <fields>
-                <field>${FIELD}</field>
-                <concat>%26'%7f'%26</concat>
+                    <field>${FIELD}</field>
+                    <concat>%26'%7f'%26</concat>
                 </fields>
             </row>
         </schema>

@@ -1,7 +1,6 @@
 package com.test.vendor.mysql;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.jsql.model.InjectionModel;
@@ -35,16 +34,14 @@ public class MysqlTimeHeaderTestSuite extends ConcreteMysqlTestSuite {
 
     @Override
     @Test
-    @Ignore // Too Slow
     public void listDatabases() throws JSqlException {
-        // Empty on purpose
+        LOGGER.info("Ignore: too slow");
     }
 
     @Override
     @Test
-    @Ignore // Too Slow
     public void listTables() throws JSqlException {
-        // Empty on purpose
+        LOGGER.info("Ignore: too slow");
     }
     
 }

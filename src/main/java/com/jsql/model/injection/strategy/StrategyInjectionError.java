@@ -10,10 +10,10 @@ import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.vendor.Model.Strategy;
-import com.jsql.model.injection.vendor.Model.Strategy.Configuration;
-import com.jsql.model.injection.vendor.Model.Strategy.Error.Method;
-import com.jsql.model.injection.vendor.VendorXml;
+import com.jsql.model.injection.vendor.xml.Model.Strategy;
+import com.jsql.model.injection.vendor.xml.Model.Strategy.Configuration;
+import com.jsql.model.injection.vendor.xml.Model.Strategy.Error.Method;
+import com.jsql.model.injection.vendor.xml.VendorXml;
 import com.jsql.model.suspendable.AbstractSuspendable;
 
 /**
@@ -44,14 +44,14 @@ public class StrategyInjectionError extends AbstractStrategy {
             return;
         }
 
-        LOGGER.trace("Error test...");
+        LOGGER.trace("Checking strategy Error...");
         
         this.tabCapacityMethod = new String[strategyXml.getError().getMethod().size()];
         int indexErrorMethod = 0;
         int errorCapacity = 0;
         for (Method errorMethod: strategyXml.getError().getMethod()) {
             boolean methodIsApplicable = false;
-            LOGGER.trace("Testing "+ errorMethod.getName() +"...");
+            LOGGER.trace("Checking "+ errorMethod.getName() +"...");
         
             String performanceSourcePage = MediatorModel.model().injectWithoutIndex(
                 MediatorModel.model().getCharInsertion() +
@@ -80,7 +80,7 @@ public class StrategyInjectionError extends AbstractStrategy {
             }
             
             if (methodIsApplicable) {
-                String performanceErrorBasedSourcePage = MediatorModel.model().injectWithoutIndex(
+                String performanceErrorSourcePage = MediatorModel.model().injectWithoutIndex(
                     MediatorModel.model().getCharInsertion()
                     + " "
                     + VendorXml.replaceTags(
@@ -92,7 +92,7 @@ public class StrategyInjectionError extends AbstractStrategy {
                     )
                 );
                 
-                Matcher regexSearch = Pattern.compile("(?s)"+ DataAccess.LEAD +"(#+)").matcher(performanceErrorBasedSourcePage);
+                Matcher regexSearch = Pattern.compile("(?s)"+ DataAccess.LEAD +"(#+)").matcher(performanceErrorSourcePage);
                 if (regexSearch.find()) {
                     regexSearch.reset();
                     while (regexSearch.find()) {
@@ -121,29 +121,29 @@ public class StrategyInjectionError extends AbstractStrategy {
 
     @Override
     public void allow() {
-        this.markVulnerable(TypeRequest.MARK_ERRORBASED_VULNERABLE);
+        this.markVulnerable(TypeRequest.MARK_ERROR_VULNERABLE);
     }
 
     @Override
     public void unallow() {
-        this.markVulnerable(TypeRequest.MARK_ERRORBASED_INVULNERABLE);
+        this.markVulnerable(TypeRequest.MARK_ERROR_INVULNERABLE);
     }
 
     @Override
     public void allow(int i) {
-        this.markVulnerable(TypeRequest.MARK_ERRORBASED_VULNERABLE, i);
+        this.markVulnerable(TypeRequest.MARK_ERROR_VULNERABLE, i);
     }
 
     @Override
     public void unallow(int i) {
-        this.markVulnerable(TypeRequest.MARK_ERRORBASED_INVULNERABLE, i);
+        this.markVulnerable(TypeRequest.MARK_ERROR_INVULNERABLE, i);
     }
 
     @Override
-    public String inject(String sqlQuery, String startPosition, /*TODO parametre inutile? */AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
+    public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
         return MediatorModel.model().injectWithoutIndex(
             MediatorModel.model().getCharInsertion() +
-            MediatorModel.model().getVendor().instance().sqlErrorBased(sqlQuery, startPosition)
+            MediatorModel.model().getVendor().instance().sqlError(sqlQuery, startPosition)
         );
     }
 
@@ -156,10 +156,10 @@ public class StrategyInjectionError extends AbstractStrategy {
             MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethod).getName()
             +"]"
         );
-        MediatorModel.model().setStrategy(StrategyInjection.ERRORBASED);
+        MediatorModel.model().setStrategy(StrategyInjection.ERROR);
         
         Request request = new Request();
-        request.setMessage(TypeRequest.MARK_ERRORBASED_STRATEGY);
+        request.setMessage(TypeRequest.MARK_ERROR_STRATEGY);
         MediatorModel.model().sendToViews(request);
     }
     

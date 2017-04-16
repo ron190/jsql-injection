@@ -60,7 +60,7 @@ public class ManagerUpload extends AbstractManagerList {
     public ManagerUpload() {
         this.setLayout(new BorderLayout());
 
-        this.setDefaultText(I18n.valueByKey("UPLOAD_RUN_BUTTON_LABEL"));
+        this.defaultText = I18n.valueByKey("UPLOAD_RUN_BUTTON_LABEL");
 
         List<String> pathsList = new ArrayList<>();
         try {
@@ -76,8 +76,8 @@ public class ManagerUpload extends AbstractManagerList {
         }
 
         this.listPaths = new DnDList(pathsList);
-        this.listPaths.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
-        this.add(new LightScrollPane(1, 0, 0, 0, this.listPaths), BorderLayout.CENTER);
+        this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
+        this.add(new LightScrollPane(1, 0, 0, 0, this.getListPaths()), BorderLayout.CENTER);
         
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
@@ -117,7 +117,7 @@ public class ManagerUpload extends AbstractManagerList {
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
         
         this.run.addActionListener(actionEvent -> {
-            if (ManagerUpload.this.listPaths.getSelectedValuesList().isEmpty()) {
+            if (ManagerUpload.this.getListPaths().getSelectedValuesList().isEmpty()) {
                 LOGGER.warn("Select directory(ies) to upload a file into");
                 return;
             }
@@ -129,7 +129,7 @@ public class ManagerUpload extends AbstractManagerList {
             try {
                 int returnVal = filechooser.showOpenDialog(MediatorGui.frame());
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    for (final Object path: ManagerUpload.this.listPaths.getSelectedValuesList()) {
+                    for (final Object path: ManagerUpload.this.getListPaths().getSelectedValuesList()) {
                         
                         new Thread(() -> {
                             File file = filechooser.getSelectedFile();

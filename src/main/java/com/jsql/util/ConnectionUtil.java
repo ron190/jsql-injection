@@ -12,6 +12,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.EnumMap;
@@ -296,7 +297,7 @@ public class ConnectionUtil {
                 if ("Cookie".equalsIgnoreCase(keyHeader)) {
                     connection.addRequestProperty(keyHeader, valueHeader);
                 } else {
-                    connection.addRequestProperty(keyHeader, URLDecoder.decode(valueHeader, "UTF-8"));
+                    connection.addRequestProperty(keyHeader, URLDecoder.decode(valueHeader, StandardCharsets.UTF_8.name()));
                 }
             } catch (NullPointerException | UnsupportedEncodingException e) {
                 LOGGER.error(e, e);

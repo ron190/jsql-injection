@@ -68,16 +68,17 @@ public class MouseTabbedPane extends JTabbedPane {
      * Display popupmenu on right click.
      */
     private class TabSelectionMouseHandler extends MouseAdapter {
+        
         @Override
         public void mouseClicked(MouseEvent e) {
             if (SwingUtilities.isRightMouseButton(e)) {
                 JTabbedPane tabPane = (JTabbedPane) e.getSource();
                 JPopupMenu menu = new JPopupMenu();
 
-                for (int position = 0 ; position < MediatorGui.menubar().menuView.getMenuComponentCount() ; position++) {
+                for (int position = 0 ; position < MediatorGui.menubar().getMenuView().getMenuComponentCount() ; position++) {
                     // Fix #35348: SerializationException on clone()
                     try {
-                        JMenuItem itemMenu = (JMenuItem) SerializationUtils.clone(MediatorGui.menubar().menuView.getMenuComponent(position));
+                        JMenuItem itemMenu = (JMenuItem) SerializationUtils.clone(MediatorGui.menubar().getMenuView().getMenuComponent(position));
                         menu.add(itemMenu);
                         
                         final int positionFinal = position;
@@ -97,12 +98,14 @@ public class MouseTabbedPane extends JTabbedPane {
                 );
             }
         }
+        
     }
 
     /**
      * Mousewheel allows to navigate to next/previous tab.
      */
     private class TabbedPaneMouseWheelScroller implements MouseWheelListener {
+        
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
             JTabbedPane tabPane = (JTabbedPane) e.getSource();
@@ -118,6 +121,7 @@ public class MouseTabbedPane extends JTabbedPane {
                 tabPane.setSelectedIndex(selIndex);
             }
         }
+        
     }
     
 }

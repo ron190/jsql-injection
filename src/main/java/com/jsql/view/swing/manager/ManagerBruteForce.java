@@ -50,57 +50,57 @@ public class ManagerBruteForce extends JPanel implements Manager {
     /**
      * Input for hash to brute force.
      */
-    public JTextField hash;
+    private JTextField hash;
     
     /**
      * Combobox of hashing methods.
      */
-    public JComboBox<String> hashTypes;
+    private JComboBox<String> hashTypes;
     
     /**
      * Enable injection of lowercase characters.
      */
-    public JCheckBox lowerCaseCharacters;
+    private JCheckBox lowerCaseCharacters;
     
     /**
      * Enable injection of uppercase characters.
      */
-    public JCheckBox upperCaseCharacters;
+    private JCheckBox upperCaseCharacters;
     
     /**
      * Enable injection of numeric characters.
      */
-    public JCheckBox numericCharacters;
+    private JCheckBox numericCharacters;
     
     /**
      * Enable injection of special characters.
      */
-    public JCheckBox specialCharacters;
+    private JCheckBox specialCharacters;
     
     /**
      * List of characters to exclude from the attack.
      */
-    public JTextField exclude;
+    private JTextField exclude;
     
     /**
      * Minimum length of string to attack.
      */
-    public JSpinner minimumLength;
+    private JSpinner minimumLength;
     
     /**
      * Maximum length of string to attack.
      */
-    public JSpinner maximumLength;
+    private JSpinner maximumLength;
     
     /**
      * Textarea displaying result.
      */
-    public JTextArea result;
+    private JTextArea result;
     
     /**
      * Animated GIF displayed during attack.
      */
-    public JLabel loader;
+    private JLabel loader;
 
     /**
      * Create a panel to run brute force attack.
@@ -244,6 +244,94 @@ public class ManagerBruteForce extends JPanel implements Manager {
 
     public void setRun(JButtonStateful run) {
         this.run = run;
+    }
+
+    public JTextField getHash() {
+        return hash;
+    }
+
+    public void setHash(JTextField hash) {
+        this.hash = hash;
+    }
+
+    public JComboBox<String> getHashTypes() {
+        return hashTypes;
+    }
+
+    public void setHashTypes(JComboBox<String> hashTypes) {
+        this.hashTypes = hashTypes;
+    }
+
+    public JCheckBox getLowerCaseCharacters() {
+        return lowerCaseCharacters;
+    }
+
+    public void setLowerCaseCharacters(JCheckBox lowerCaseCharacters) {
+        this.lowerCaseCharacters = lowerCaseCharacters;
+    }
+
+    public JCheckBox getUpperCaseCharacters() {
+        return upperCaseCharacters;
+    }
+
+    public void setUpperCaseCharacters(JCheckBox upperCaseCharacters) {
+        this.upperCaseCharacters = upperCaseCharacters;
+    }
+
+    public JCheckBox getNumericCharacters() {
+        return numericCharacters;
+    }
+
+    public void setNumericCharacters(JCheckBox numericCharacters) {
+        this.numericCharacters = numericCharacters;
+    }
+
+    public JCheckBox getSpecialCharacters() {
+        return specialCharacters;
+    }
+
+    public void setSpecialCharacters(JCheckBox specialCharacters) {
+        this.specialCharacters = specialCharacters;
+    }
+
+    public JTextField getExclude() {
+        return exclude;
+    }
+
+    public void setExclude(JTextField exclude) {
+        this.exclude = exclude;
+    }
+
+    public JSpinner getMinimumLength() {
+        return minimumLength;
+    }
+
+    public void setMinimumLength(JSpinner minimumLength) {
+        this.minimumLength = minimumLength;
+    }
+
+    public JSpinner getMaximumLength() {
+        return maximumLength;
+    }
+
+    public void setMaximumLength(JSpinner maximumLength) {
+        this.maximumLength = maximumLength;
+    }
+
+    public JTextArea getResult() {
+        return result;
+    }
+
+    public void setResult(JTextArea result) {
+        this.result = result;
+    }
+
+    public JLabel getLoader() {
+        return loader;
+    }
+
+    public void setLoader(JLabel loader) {
+        this.loader = loader;
     }
     
 }

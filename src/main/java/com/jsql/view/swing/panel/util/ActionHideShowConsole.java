@@ -38,18 +38,18 @@ public class ActionHideShowConsole implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (
-            MediatorGui.frame().splitHorizontalTopBottom.getTopComponent().isVisible() &&
-            MediatorGui.frame().splitHorizontalTopBottom.getBottomComponent().isVisible()
+            MediatorGui.frame().getSplitHorizontalTopBottom().getTopComponent().isVisible() &&
+            MediatorGui.frame().getSplitHorizontalTopBottom().getBottomComponent().isVisible()
         ) {
-            MediatorGui.frame().splitHorizontalTopBottom.getBottomComponent().setVisible(false);
-            this.loc = MediatorGui.frame().splitHorizontalTopBottom.getDividerLocation();
+            MediatorGui.frame().getSplitHorizontalTopBottom().getBottomComponent().setVisible(false);
+            this.loc = MediatorGui.frame().getSplitHorizontalTopBottom().getDividerLocation();
             this.panel.setVisible(true);
-            MediatorGui.frame().splitHorizontalTopBottom.disableDragSize();
+            MediatorGui.frame().getSplitHorizontalTopBottom().disableDragSize();
         } else {
-            MediatorGui.frame().splitHorizontalTopBottom.getBottomComponent().setVisible(true);
-            MediatorGui.frame().splitHorizontalTopBottom.setDividerLocation(this.loc);
+            MediatorGui.frame().getSplitHorizontalTopBottom().getBottomComponent().setVisible(true);
+            MediatorGui.frame().getSplitHorizontalTopBottom().setDividerLocation(this.loc);
             this.panel.setVisible(false);
-            MediatorGui.frame().splitHorizontalTopBottom.enableDragSize();
+            MediatorGui.frame().getSplitHorizontalTopBottom().enableDragSize();
         }
     }
     

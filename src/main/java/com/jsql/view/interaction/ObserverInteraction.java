@@ -48,7 +48,7 @@ public class ObserverInteraction implements Observer {
             InstantiationException | IllegalAccessException | NoSuchMethodException |
             SecurityException | IllegalArgumentException | InvocationTargetException e
         ) {
-            this.LOGGER.error(e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
         }
     }
     

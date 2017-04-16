@@ -5,7 +5,7 @@ public enum StrategyInjection {
     UNDEFINED("Undefined", null),
     TIME("Time", new StrategyInjectionTime()),
     BLIND("Blind", new StrategyInjectionBlind()),
-    ERRORBASED("Error", new StrategyInjectionError()),
+    ERROR("Error", new StrategyInjectionError()),
     NORMAL("Normal", new StrategyInjectionNormal());
     
     private final String nameStrategy;

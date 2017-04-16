@@ -37,7 +37,7 @@ import com.jsql.view.interaction.ObserverInteraction;
 import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.menubar.Menubar;
 import com.jsql.view.swing.panel.PanelAddressBar;
-import com.jsql.view.swing.panel.util.SplitHorizontalTopBottom;
+import com.jsql.view.swing.panel.SplitHorizontalTopBottom;
 import com.jsql.view.swing.shadow.ShadowPopupFactory;
 import com.jsql.view.swing.shell.AbstractShell;
 
@@ -56,7 +56,7 @@ public class JFrameView extends JFrame {
      * Main center panel, composed by left and right tabs.
      * @return Center panel
      */
-    public SplitHorizontalTopBottom splitHorizontalTopBottom;
+    private SplitHorizontalTopBottom splitHorizontalTopBottom;
 
     /**
      * List of terminal by unique identifier.
@@ -111,13 +111,13 @@ public class JFrameView extends JFrame {
             public void windowClosing(WindowEvent e) {
                 Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
                 prefs.putInt(
-                    SplitHorizontalTopBottom.NAME_V_SPLITPANE,
-                    JFrameView.this.splitHorizontalTopBottom.splitVerticalLeftRight.getDividerLocation()
+                    SplitHorizontalTopBottom.getNameVSplitpane(),
+                    JFrameView.this.splitHorizontalTopBottom.getSplitVerticalLeftRight().getDividerLocation()
                 );
                 
                 // Divider location change when window is maximized, we can't save getDividerLocation()
                 prefs.putInt(
-                    SplitHorizontalTopBottom.NAME_H_SPLITPANE,
+                    SplitHorizontalTopBottom.getNameHSplitpane(),
                     JFrameView.this.splitHorizontalTopBottom.getHeight() - JFrameView.this.splitHorizontalTopBottom.getDividerLocation()
                 );
                 
@@ -161,12 +161,12 @@ public class JFrameView extends JFrame {
      * Empty the interface.
      */
     public void resetInterface() {
-        MediatorGui.managerDatabase().panelVendor.setText(Vendor.AUTO.toString());
-        MediatorGui.managerDatabase().panelStrategy.setText("<Strategy auto>");
-        for (int i = 0 ; i < MediatorGui.managerDatabase().panelStrategy.getItemCount() ; i++) {
-            MediatorGui.managerDatabase().panelStrategy.getItem(i).setEnabled(false);
+        MediatorGui.managerDatabase().getPanelVendor().setText(Vendor.AUTO.toString());
+        MediatorGui.managerDatabase().getPanelStrategy().setText("<Strategy auto>");
+        for (int i = 0 ; i < MediatorGui.managerDatabase().getPanelStrategy().getItemCount() ; i++) {
+            MediatorGui.managerDatabase().getPanelStrategy().getItem(i).setEnabled(false);
         }
-        ((JMenu) MediatorGui.managerDatabase().panelStrategy.getItem(2)).removeAll();
+        ((JMenu) MediatorGui.managerDatabase().getPanelStrategy().getItem(2)).removeAll();
         MediatorGui.managerDatabase().getGroupStrategy().clearSelection();
         
         this.mapNodes.clear();
@@ -224,6 +224,10 @@ public class JFrameView extends JFrame {
 
     public ObserverInteraction getObserver() {
         return this.observer;
+    }
+
+    public SplitHorizontalTopBottom getSplitHorizontalTopBottom() {
+        return this.splitHorizontalTopBottom;
     }
     
 }

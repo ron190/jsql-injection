@@ -1,13 +1,6 @@
 package com.jsql.view.swing.text;
 
-import java.awt.Color;
-import java.awt.ComponentOrientation;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.RenderingHints;
 
 import javax.swing.JTextArea;
 
@@ -17,7 +10,7 @@ import org.apache.log4j.Logger;
  * Textfield with information text displayed when empty.
  */
 @SuppressWarnings("serial")
-public class JTextAreaPlaceholder extends JTextArea {
+public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlaceholder {
 	
     /**
      * Log4j logger sent to view.
@@ -56,29 +49,8 @@ public class JTextAreaPlaceholder extends JTextArea {
             LOGGER.error(e.getMessage(), e);
         }
         
-        // Fix #26937: NullPointerException on this.getText().length()
-        if (this.getText() != null && this.getText().length() == 0) {
-            int w = this.getWidth();
-            
-            ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-            Insets ins = this.getInsets();
-            FontMetrics fm = g.getFontMetrics();
-            
-            int c0 = this.getBackground().getRGB();
-            int c1 = this.getForeground().getRGB();
-            int m = 0xfefefefe;
-            int c2 = ((c0 & m) >>> 1) + ((c1 & m) >>> 1);
-            
-            g.setColor(new Color(c2, true));
-            g.setFont(this.getFont().deriveFont(Font.ITALIC));
-            
-            g.drawString(
-                this.placeholderText,
-                this.getComponentOrientation() == ComponentOrientation.RIGHT_TO_LEFT
-                    ? w - (fm.stringWidth(this.placeholderText) + ins.left + 2)
-                    : ins.left + 2,
-                fm.getAscent() + 2
-            );
+        if ("".equals(this.getText())) {
+            this.drawPlaceholder(this, g, this.placeholderText);
         }
     }
     

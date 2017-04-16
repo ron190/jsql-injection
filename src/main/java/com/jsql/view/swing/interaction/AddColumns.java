@@ -70,7 +70,7 @@ public class AddColumns implements InteractionCommand {
             // Open the table node
             MediatorGui.treeDatabase().expandPath(new TreePath(tableNode.getPath()));
             // The table has just been search (avoid double check)
-            ((AbstractNodeModel) tableNode.getUserObject()).isLoaded = true;
+            ((AbstractNodeModel) tableNode.getUserObject()).setLoaded(true);
         }
     }
     

@@ -1,5 +1,6 @@
 package com.jsql.model.injection.vendor;
 
+import com.jsql.model.injection.vendor.xml.Model;
 
 public abstract class AbstractVendorDefault implements AbstractVendor {
     
@@ -71,22 +72,22 @@ public abstract class AbstractVendorDefault implements AbstractVendor {
     }
 
     @Override
-    public String sqlCapacityErrorBased() {
+    public String sqlCapacityError() {
         return "";
     }
 
     @Override
-    public String sqlTestErrorBased() {
+    public String sqlTestError() {
         return "";
     }
 
     @Override
-    public String sqlErrorBased(String sqlQuery, String startPosition) {
+    public String sqlError(String sqlQuery, String startPosition) {
         return "";
     }
     
     @Override
-    public String sqlErrorBasedCapacity() {
+    public String sqlErrorCapacity() {
         return "";
     }
 

@@ -2,6 +2,7 @@ package com.jsql.model.injection.strategy.blind.patch;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 
 /**
@@ -63,7 +64,7 @@ public class Patch {
                 break;
             }
             try {
-                text.append(URLEncoder.encode(aDiff.getText(), "UTF-8").replace('+', ' '))
+                text.append(URLEncoder.encode(aDiff.getText(), StandardCharsets.UTF_8.name()).replace('+', ' '))
                 .append("\n");
             } catch (UnsupportedEncodingException e) {
                 // Not likely on modern system.

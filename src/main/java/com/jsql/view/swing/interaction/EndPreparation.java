@@ -29,9 +29,9 @@ public class EndPreparation implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.panelAddressBar().buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_START_TOOLTIP"));
-        MediatorGui.panelAddressBar().buttonInUrl.setInjectionReady();
-        MediatorGui.panelAddressBar().loader.setVisible(false);
+        MediatorGui.panelAddressBar().getButtonInUrl().setToolTipText(I18n.valueByKey("BUTTON_START_TOOLTIP"));
+        MediatorGui.panelAddressBar().getButtonInUrl().setInjectionReady();
+        MediatorGui.panelAddressBar().getLoader().setVisible(false);
 
         if (MediatorModel.model().isInjectionAlreadyBuilt()) {
             MediatorGui.managerFile().setButtonEnable(true);

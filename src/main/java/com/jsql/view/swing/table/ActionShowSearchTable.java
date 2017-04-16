@@ -19,8 +19,8 @@ public class ActionShowSearchTable extends AbstractAction{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        panelSearch.setVisible(true);
-        textFilter.requestFocusInWindow();
+        this.panelSearch.setVisible(true);
+        this.textFilter.requestFocusInWindow();
     }
     
 }

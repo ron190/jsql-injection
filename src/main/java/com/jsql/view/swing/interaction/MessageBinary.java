@@ -35,7 +35,7 @@ public class MessageBinary implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.panelConsoles().getBinaryTab().append(this.text);
+        MediatorGui.panelConsoles().getBinaryTab().append("\t"+ this.text);
         MediatorGui.panelConsoles().getBinaryTab().setCaretPosition(MediatorGui.panelConsoles().getBinaryTab().getDocument().getLength());
         
         int tabIndex = MediatorGui.tabConsoles().indexOfTab("Boolean");

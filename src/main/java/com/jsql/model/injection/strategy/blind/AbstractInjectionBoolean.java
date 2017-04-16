@@ -154,7 +154,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
 
                         Request interaction = new Request();
                         interaction.setMessage(TypeRequest.MESSAGE_BINARY);
-                        interaction.setParameters("\t"+ new String(codeAsciiInBinary) +"="+ charText);
+                        interaction.setParameters(new String(codeAsciiInBinary) +"="+ charText.replaceAll("\\n", "\\\\\\n").replaceAll("\\r", "\\\\\\r").replaceAll("\\t", "\\\\\\t"));
                         MediatorModel.model().sendToViews(interaction);
                     } catch (NumberFormatException err) {
                         // Byte string not fully constructed : 0x1x010x

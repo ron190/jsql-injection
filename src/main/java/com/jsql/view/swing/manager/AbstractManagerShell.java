@@ -62,7 +62,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
     public AbstractManagerShell() {
         this.setLayout(new BorderLayout());
 
-        this.setDefaultText(I18n.valueByKey("SHELL_RUN_BUTTON_LABEL"));
+        this.defaultText = I18n.valueByKey("SHELL_RUN_BUTTON_LABEL");
         
         List<String> pathsList = new ArrayList<>();
         try {
@@ -78,8 +78,8 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         }
 
         this.listPaths = new DnDList(pathsList);
-        this.listPaths.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
-        this.add(new LightScrollPane(1, 0, 0, 0, this.listPaths), BorderLayout.CENTER);
+        this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
+        this.add(new LightScrollPane(1, 0, 0, 0, this.getListPaths()), BorderLayout.CENTER);
         
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
@@ -139,7 +139,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
     private class ActionCreationShell implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent evt) {
-            if (AbstractManagerShell.this.listPaths.getSelectedValuesList().isEmpty()) {
+            if (AbstractManagerShell.this.getListPaths().getSelectedValuesList().isEmpty()) {
                 LOGGER.warn("Select directory(ies) to create the shell into");
                 return;
             }
@@ -153,7 +153,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                 }
             }
 
-            for (final ListItem pathShell: AbstractManagerShell.this.listPaths.getSelectedValuesList()) {
+            for (final ListItem pathShell: AbstractManagerShell.this.getListPaths().getSelectedValuesList()) {
                 new Thread(() -> {
                     try {
                         AbstractManagerShell.this.createPayload(

@@ -67,7 +67,6 @@ import com.jsql.view.swing.console.JavaConsoleAdapter;
 import com.jsql.view.swing.console.SimpleConsoleAdapter;
 import com.jsql.view.swing.console.SwingAppender;
 import com.jsql.view.swing.panel.util.HTMLEditorKitTextPaneWrap;
-import com.jsql.view.swing.panel.util.SplitHorizontalTopBottom;
 import com.jsql.view.swing.popupmenu.JPopupMenuTable;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -263,9 +262,9 @@ public class PanelConsoles extends JPanel {
             }
         );
         
-        JScrollIndicator scroller = new JScrollIndicator(this.networkTable);
-        scroller.scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
-        scroller.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
+        JScrollIndicator scrollerNetwork = new JScrollIndicator(this.networkTable);
+        scrollerNetwork.scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
+        scrollerNetwork.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         
         AdjustmentListener singleItemScroll = adjustmentEvent -> {
             // The user scrolled the List (using the bar, mouse wheel or something else):
@@ -276,10 +275,10 @@ public class PanelConsoles extends JPanel {
             }
         };
 
-        scroller.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
-        scroller.scrollPane.getHorizontalScrollBar().addAdjustmentListener(singleItemScroll);
+        scrollerNetwork.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
+        scrollerNetwork.scrollPane.getHorizontalScrollBar().addAdjustmentListener(singleItemScroll);
         
-        this.network.setLeftComponent(scroller);
+        this.network.setLeftComponent(scrollerNetwork);
         
         MouseTabbedPane networkDetailTabs = new MouseTabbedPane();
         networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_URL_LABEL"), new LightScrollPane(1, 1, 0, 0, this.networkTabUrl));
@@ -319,42 +318,7 @@ public class PanelConsoles extends JPanel {
         this.networkTable.getSelectionModel().addListSelectionListener(event -> {
             // prevent double event
             if (!event.getValueIsAdjusting() && PanelConsoles.this.networkTable.getSelectedRow() > -1) {
-                HttpHeader networkData = this.listHttpHeader.get(PanelConsoles.this.networkTable.getSelectedRow());
-                this.networkTabHeader.setText(networkData.getHeader());
-                this.networkTabParam.setText(networkData.getPost());
-                this.networkTabUrl.setText(networkData.getUrl());
-                
-                this.networkTabResponse.setText("");
-                for(String key: networkData.getResponse().keySet()) {
-                    this.networkTabResponse.append(key + ": " + networkData.getResponse().get(key));
-                    this.networkTabResponse.append("\n");
-                }
-                
-                this.networkTabSource.setText(StringUtil.detectUtf8Html(networkData.getSource()).replaceAll("#{5,}", "#*"));
-                
-                // Reset EditorKit to disable previous document effect
-                this.networkTabPreview.getEditorKit().createDefaultDocument();
-                
-                // Proxy is used by jsoup to display <img> tags
-                // Previous test for 2xx Success and 3xx Redirection was Header only,
-                // now get the HTML content
-                // Fix #35352: EmptyStackException on setText()
-                try {
-                    this.networkTabPreview.setText(
-                        Jsoup.clean(
-                            "<html>"+ StringUtil.detectUtf8(networkData.getSource()).replaceAll("#{5,}", "#*") + "</html>"
-                                .replaceAll("<img.*>", "")
-                                .replaceAll("<input.*type=\"?hidden\"?.*>", "")
-                                .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
-                                .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
-                            Whitelist.relaxed()
-                                .addTags("center", "div", "span")
-                                .addAttributes(":all", "style")
-                        )
-                    );
-                } catch (EmptyStackException e) {
-                    LOGGER.error(e, e);
-                }
+                this.changeTextNetwork();
             }
         });
 
@@ -379,7 +343,7 @@ public class PanelConsoles extends JPanel {
         // Order is important
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
         if (prefs.getBoolean(HelperUi.JAVA_VISIBLE, false)) {
-            this.insertJavaDebugTab();
+            this.insertJavaTab();
         }
         if (prefs.getBoolean(HelperUi.NETWORK_VISIBLE, true)) {
             this.insertNetworkTab();
@@ -388,7 +352,7 @@ public class PanelConsoles extends JPanel {
             this.insertChunkTab();
         }
         if (prefs.getBoolean(HelperUi.BINARY_VISIBLE, true)) {
-            this.insertBinaryTab();
+            this.insertBooleanTab();
         }
 
         MediatorGui.tabConsoles().addChangeListener(changeEvent -> {
@@ -409,7 +373,7 @@ public class PanelConsoles extends JPanel {
         showBottomButton.setPreferredSize(showBottomButton.getPreferredSize());
         showBottomButton.setMaximumSize(showBottomButton.getPreferredSize());
         showBottomButton.setOpaque(false);
-        showBottomButton.addActionListener(SplitHorizontalTopBottom.ACTION_HIDE_SHOW_CONSOLE);
+        showBottomButton.addActionListener(SplitHorizontalTopBottom.getActionHideShowConsole());
 
         JPanel arrowDownPanel = new JPanel();
         arrowDownPanel.setLayout(new BorderLayout());
@@ -444,32 +408,32 @@ public class PanelConsoles extends JPanel {
             1
         );
 
-        JLabel labelTimebased = new JLabel(I18n.valueByKey("CONSOLE_CHUNK_LABEL"), HelperUi.ICON_CHUNK, SwingConstants.CENTER);
+        JLabel labelChunk = new JLabel(I18n.valueByKey("CONSOLE_CHUNK_LABEL"), HelperUi.ICON_CHUNK, SwingConstants.CENTER);
         MediatorGui.tabConsoles().setTabComponentAt(
             MediatorGui.tabConsoles().indexOfTab("Chunk"),
-            labelTimebased
+            labelChunk
         );
-        I18n.addComponentForKey("CONSOLE_CHUNK_LABEL", labelTimebased);
+        I18n.addComponentForKey("CONSOLE_CHUNK_LABEL", labelChunk);
     }
 
     /**
      * Add Binary console to bottom panel.
      */
-    public void insertBinaryTab() {
+    public void insertBooleanTab() {
         MediatorGui.tabConsoles().insertTab(
             "Boolean",
             HelperUi.ICON_BINARY,
             new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.binaryTab),
             I18n.valueByKey("CONSOLE_BINARY_TOOLTIP"),
-            1 + (MediatorGui.menubar().chunkMenu.isSelected() ? 1 : 0)
+            1 + (MediatorGui.menubar().getChunkMenu().isSelected() ? 1 : 0)
         );
 
-        JLabel labelBinary = new JLabel(I18n.valueByKey("CONSOLE_BINARY_LABEL"), HelperUi.ICON_BINARY, SwingConstants.CENTER);
+        JLabel labelBoolean = new JLabel(I18n.valueByKey("CONSOLE_BINARY_LABEL"), HelperUi.ICON_BINARY, SwingConstants.CENTER);
         MediatorGui.tabConsoles().setTabComponentAt(
             MediatorGui.tabConsoles().indexOfTab("Boolean"),
-            labelBinary
+            labelBoolean
         );
-        I18n.addComponentForKey("CONSOLE_BINARY_LABEL", labelBinary);
+        I18n.addComponentForKey("CONSOLE_BINARY_LABEL", labelBoolean);
     }
 
     /**
@@ -481,7 +445,7 @@ public class PanelConsoles extends JPanel {
             HelperUi.ICON_HEADER,
             PanelConsoles.this.network,
             I18n.valueByKey("CONSOLE_NETWORK_TOOLTIP"),
-            MediatorGui.tabConsoles().getTabCount() - (MediatorGui.menubar().javaDebugMenu.isSelected() ? 1 : 0)
+            MediatorGui.tabConsoles().getTabCount() - (MediatorGui.menubar().getJavaDebugMenu().isSelected() ? 1 : 0)
         );
 
         JLabel labelNetwork = new JLabel(I18n.valueByKey("CONSOLE_NETWORK_LABEL"), HelperUi.ICON_HEADER, SwingConstants.CENTER);
@@ -495,7 +459,7 @@ public class PanelConsoles extends JPanel {
     /**
      * Add Java console to bottom panel.
      */
-    public void insertJavaDebugTab() {
+    public void insertJavaTab() {
         MediatorGui.tabConsoles().insertTab(
             "Java",
             HelperUi.ICON_CUP,
@@ -538,6 +502,45 @@ public class PanelConsoles extends JPanel {
         this.networkTabResponse.setText("");
         this.networkTabSource.setText("");
         this.networkTabPreview.setText("");
+    }
+    
+    public void changeTextNetwork() {
+        HttpHeader networkData = this.listHttpHeader.get(PanelConsoles.this.networkTable.getSelectedRow());
+        this.networkTabHeader.setText(networkData.getHeader());
+        this.networkTabParam.setText(networkData.getPost());
+        this.networkTabUrl.setText(networkData.getUrl());
+        
+        this.networkTabResponse.setText("");
+        for(String key: networkData.getResponse().keySet()) {
+            this.networkTabResponse.append(key + ": " + networkData.getResponse().get(key));
+            this.networkTabResponse.append("\n");
+        }
+        
+        this.networkTabSource.setText(StringUtil.detectUtf8Html(networkData.getSource()).replaceAll("#{5,}", "#*"));
+        
+        // Reset EditorKit to disable previous document effect
+        this.networkTabPreview.getEditorKit().createDefaultDocument();
+        
+        // Proxy is used by jsoup to display <img> tags
+        // Previous test for 2xx Success and 3xx Redirection was Header only,
+        // now get the HTML content
+        // Fix #35352: EmptyStackException on setText()
+        try {
+            this.networkTabPreview.setText(
+                Jsoup.clean(
+                    "<html>"+ StringUtil.detectUtf8(networkData.getSource()).replaceAll("#{5,}", "#*") + "</html>"
+                        .replaceAll("<img.*>", "")
+                        .replaceAll("<input.*type=\"?hidden\"?.*>", "")
+                        .replaceAll("<input.*type=\"?(submit|button)\"?.*>", "<div style=\"background-color:#eeeeee;text-align:center;border:1px solid black;width:100px;\">button</div>")
+                        .replaceAll("<input.*>", "<div style=\"text-align:center;border:1px solid black;width:100px;\">input</div>"),
+                    Whitelist.relaxed()
+                        .addTags("center", "div", "span")
+                        .addAttributes(":all", "style")
+                )
+            );
+        } catch (EmptyStackException e) {
+            LOGGER.error(e, e);
+        }
     }
     
     // Getter and setter

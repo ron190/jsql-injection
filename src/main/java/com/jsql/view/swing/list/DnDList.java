@@ -205,7 +205,11 @@ public class DnDList extends JList<ListItem> {
             }
         }
 
-        String[] options = {I18n.valueByKey("LIST_IMPORT_CONFIRM_REPLACE"), I18n.valueByKey("LIST_IMPORT_CONFIRM_ADD"), I18n.valueByKey("LIST_ADD_VALUE_CANCEL")};
+        String[] options = {
+            I18n.valueByKey("LIST_IMPORT_CONFIRM_REPLACE"), 
+            I18n.valueByKey("LIST_IMPORT_CONFIRM_ADD"), 
+            I18n.valueByKey("LIST_ADD_VALUE_CANCEL")
+        };
         int answer = JOptionPane.showOptionDialog(
             this.getTopLevelAncestor(),
             I18n.valueByKey("LIST_IMPORT_CONFIRM_LABEL"),

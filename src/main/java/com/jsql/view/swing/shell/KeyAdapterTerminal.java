@@ -65,7 +65,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
             int lineNumber = this.terminal.getLineOfOffset(caretPosition);
     
             // Cancel every user keyboard input if another command has just been send
-            if (this.terminal.isEdited[0]) {
+            if (this.terminal.getIsEdited()[0]) {
                 keyEvent.consume();
                 return;
             }
@@ -76,11 +76,11 @@ public class KeyAdapterTerminal extends KeyAdapter {
                 this.terminal.getText(
                     root.getElement(lineNumber).getStartOffset(),
                     root.getElement(lineNumber).getEndOffset() - root.getElement(lineNumber).getStartOffset()
-                ).replace(this.terminal.prompt, "");
+                ).replace(this.terminal.getPrompt(), "");
     
             // Validate user input ; disable text editing
             if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
-                this.terminal.isEdited[0] = true;
+                this.terminal.getIsEdited()[0] = true;
                 keyEvent.consume();
                 this.terminal.setEditable(false);
     
@@ -96,7 +96,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
                     this.terminal.append("\n");
                     if (!"".equals(cmd[0].trim())) {
                         this.terminal.setCaretPosition(this.terminal.getDocument().getLength());
-                        this.terminal.action(cmd[0], this.terminal.uuidShell, this.terminal.urlShell, this.terminal.loginPassword);
+                        this.terminal.action(cmd[0], this.terminal.getUuidShell(), this.terminal.getUrlShell(), this.terminal.loginPassword);
                     } else {
                         this.terminal.reset();
                     }
@@ -120,7 +120,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
                     }
     
                     this.terminal.getDocument().remove(
-                        root.getElement(lineNumber).getStartOffset() + this.terminal.prompt.length(),
+                        root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),
                         cmd[0].length() - 1
                     );
     
@@ -138,7 +138,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
     
                 if (!this.cmds.isEmpty() && this.cmdsIndex < this.cmds.size()) {
                     this.terminal.getDocument().remove(
-                        root.getElement(lineNumber).getStartOffset() + this.terminal.prompt.length(),
+                        root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),
                         cmd[0].length() - 1
                     );
     
@@ -150,7 +150,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
             } else if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT || keyEvent.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
                 int columnnum = caretPosition - this.terminal.getLineStartOffset(lineNumber);
 
-                if (columnnum <= this.terminal.prompt.length()) {
+                if (columnnum <= this.terminal.getPrompt().length()) {
                     keyEvent.consume();
                 }
     
@@ -158,7 +158,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
             } else if (keyEvent.getKeyCode() == KeyEvent.VK_HOME) {
                 keyEvent.consume();
                 
-                this.terminal.setCaretPosition(this.terminal.getLineStartOffset(lineNumber) + this.terminal.prompt.length());
+                this.terminal.setCaretPosition(this.terminal.getLineStartOffset(lineNumber) + this.terminal.getPrompt().length());
     
             } else if (
                 // Cancel the select all shortcut Ctrl+A

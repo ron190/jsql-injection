@@ -26,17 +26,17 @@ public class ActionCloseTabResult extends AbstractAction {
     
     public static void perform() {
         if (MediatorGui.tabResults().getTabCount() == 0) {
-            int i = MediatorGui.frame().splitHorizontalTopBottom.splitVerticalLeftRight.getDividerLocation();
+            int i = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation();
             if (ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.LEFT_TO_RIGHT) {
-                MediatorGui.frame().splitHorizontalTopBottom.splitVerticalLeftRight.setRightComponent(
-                    MediatorGui.frame().splitHorizontalTopBottom.labelPlaceholderResult
+                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setRightComponent(
+                    MediatorGui.frame().getSplitHorizontalTopBottom().getLabelPlaceholderResult()
                 );
             } else {
-                MediatorGui.frame().splitHorizontalTopBottom.splitVerticalLeftRight.setLeftComponent(
-                    MediatorGui.frame().splitHorizontalTopBottom.labelPlaceholderResult
+                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setLeftComponent(
+                    MediatorGui.frame().getSplitHorizontalTopBottom().getLabelPlaceholderResult()
                 );
             }
-            MediatorGui.frame().splitHorizontalTopBottom.splitVerticalLeftRight.setDividerLocation(i);
+            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(i);
         }
     }
     

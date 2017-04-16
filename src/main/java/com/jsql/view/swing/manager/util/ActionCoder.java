@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -51,34 +52,34 @@ public class ActionCoder implements ActionListener {
     }
     
     public void actionPerformed() {
-        a(this.coderManager.getEncoding().getText().replace("Hash to ", ""));
+        this.transform(this.coderManager.getMenuMethod().getText());
     }
     
-    public void actionPerformed(String text) {
-        a(text.replace("Hash to ", ""));
+    public void actionPerformed(String nameMethod) {
+        this.transform(nameMethod);
     }
     
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        a(this.coderManager.getEncoding().getText().replace("Hash to ", ""));
+        this.transform(this.coderManager.getMenuMethod().getText());
     }
     
-    private void a(String text) {
+    private void transform(String labelMethodMenu) {
 
-        String choice = text.replace("Hash to ", "");
+        String nameMethod = labelMethodMenu.replace("Hash to ", "");
         
         String result;
         String textInput = this.coderManager.getTextInput().getText();
         
         if (
             "".equals(textInput)
-            && !Arrays.asList(new String[]{"Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql"}).contains(choice)
+            && !Arrays.asList(new String[]{"Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql"}).contains(nameMethod)
         ) {
             result = "<span style=\"color:red;\">Empty string to convert</span>";
             
-        } else if (Arrays.asList(new String[]{"Md2", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512"}).contains(choice)) {
+        } else if (Arrays.asList(new String[]{"Md2", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512"}).contains(nameMethod)) {
             try {
-                MessageDigest md = MessageDigest.getInstance(choice);
+                MessageDigest md = MessageDigest.getInstance(nameMethod);
                 
                 String passwordString = new String(textInput.toCharArray());
                 byte[] passwordByte = passwordString.getBytes();
@@ -88,14 +89,14 @@ public class ActionCoder implements ActionListener {
                 
                 result = encodedPasswordInString;
             } catch (NoSuchAlgorithmException e) {
-                result = "<span style=\"color:red;\">Digest algorithm "+ choice +" not found</span>";
+                result = String.format("<span style=\"color:red;\">Digest algorithm %s not found</span>", nameMethod);
                 
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
                 LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
-        } else if ("Md4".contains(choice)) {
+        } else if ("Md4".contains(nameMethod)) {
             MessageDigest md = new DigestMD4();
 
             String passwordString = new String(textInput.toCharArray());
@@ -106,13 +107,13 @@ public class ActionCoder implements ActionListener {
 
             result = encodedPasswordInString;
             
-        } else if ("Adler32".contains(choice)) {
+        } else if ("Adler32".contains(nameMethod)) {
             result = Adler32.generateAdler32(textInput);
             
-        } else if ("Crc16".contains(choice)) {
+        } else if ("Crc16".contains(nameMethod)) {
             result = Crc16.generateCRC16(textInput);
             
-        } else if ("Crc32".contains(choice)) {
+        } else if ("Crc32".contains(nameMethod)) {
             byte[] bytes = textInput.getBytes();
             Checksum checksum = new CRC32();
             checksum.update(bytes,0,bytes.length);
@@ -120,10 +121,10 @@ public class ActionCoder implements ActionListener {
             
             result = Long.toString(lngChecksum);
             
-        } else if ("Crc64".contains(choice)) {
+        } else if ("Crc64".contains(nameMethod)) {
             result = Crc64.generateCRC64(textInput.getBytes());
             
-        } else if ("Mysql".equals(choice)) {
+        } else if ("Mysql".equals(nameMethod)) {
             try {
                 MessageDigest md = MessageDigest.getInstance("sha-1");
                 
@@ -148,61 +149,61 @@ public class ActionCoder implements ActionListener {
                 LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
-        } else if ("Encode to Hex".equalsIgnoreCase(choice)) {
+        } else if ("Encode to Hex".equalsIgnoreCase(nameMethod)) {
             try {
-                result = Hex.encodeHexString(textInput.getBytes("UTF-8")).trim();
+                result = Hex.encodeHexString(textInput.getBytes(StandardCharsets.UTF_8.name())).trim();
             } catch (UnsupportedEncodingException e) {
-                result = "<span style=\"color:red;\">Encoding to Hex error: "+ e.getMessage() +"</span>";
+                result = String.format("<span style=\"color:red;\">Encoding to Hex error: %s</span>", e.getMessage());
 
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
                 LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
-        } else if ("Decode from Hex".equalsIgnoreCase(choice)) {
+        } else if ("Decode from Hex".equalsIgnoreCase(nameMethod)) {
             try {
                 result = new String(
                     Hex.decodeHex(textInput.toCharArray()),
-                    "UTF-8"
+                    StandardCharsets.UTF_8.name()
                 );
             } catch (Exception e) {
-                result = "<span style=\"color:red;\">Decoding from Hex error: "+ e.getMessage() +"</span>";
+                result = String.format("<span style=\"color:red;\">Decoding from Hex error: %s</span>", e.getMessage());
                 
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
                 LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
-        } else if ("Encode to Hex(zipped)".equalsIgnoreCase(choice)) {
+        } else if ("Encode to Hex(zipped)".equalsIgnoreCase(nameMethod)) {
             try {
                 result = Hex.encodeHexString(
-                    StringUtil.compress(textInput).getBytes("UTF-8")
+                    StringUtil.compress(textInput).getBytes(StandardCharsets.UTF_8.name())
                 ).trim();
             } catch (Exception e) {
-                result = "<span style=\"color:red;\">Encoding to Hex(zipped) error: "+ e.getMessage() +"</span>";
+                result = String.format("<span style=\"color:red;\">Encoding to Hex(zipped) error: %s</span>", e.getMessage());
                 
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
                 LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
-        } else if ("Decode from Hex(zipped)".equalsIgnoreCase(choice)) {
+        } else if ("Decode from Hex(zipped)".equalsIgnoreCase(nameMethod)) {
             try {
                 result = StringUtil.decompress(
                     new String(
                         Hex.decodeHex(textInput.toCharArray()),
-                        "UTF-8"
+                        StandardCharsets.UTF_8.name()
                     )
                 );
             } catch (Exception e) {
-                result = "<span style=\"color:red;\">Decoding from Hex(zipped) error: "+ e.getMessage() +"</span>";
+                result = String.format("<span style=\"color:red;\">Decoding from Hex(zipped) error: %s</span>", e.getMessage());
                 
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
                 LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
-        } else if ("Encode to Base64(zipped)".equalsIgnoreCase(choice)) {
+        } else if ("Encode to Base64(zipped)".equalsIgnoreCase(nameMethod)) {
             try {
                 result = StringUtil.base64Encode(
                     StringUtil.compress(
@@ -210,14 +211,14 @@ public class ActionCoder implements ActionListener {
                     )
                 );
             } catch (IOException e) {
-                result = "<span style=\"color:red;\">Encoding to Base64(zipped) error: "+ e.getMessage() +"</span>";
+                result = String.format("<span style=\"color:red;\">Encoding to Base64(zipped) error: %s</span>", e.getMessage());
                 
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
                 LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
-        } else if ("Decode from Base64(zipped)".equalsIgnoreCase(choice)) {
+        } else if ("Decode from Base64(zipped)".equalsIgnoreCase(nameMethod)) {
             try {
                 result = StringUtil.decompress(
                     StringUtil.base64Decode(
@@ -225,45 +226,45 @@ public class ActionCoder implements ActionListener {
                     )
                 );
             } catch (IOException e) {
-                result = "<span style=\"color:red;\">Decoding from Base64(zipped) error: "+ e.getMessage() +"</span>";
+                result = String.format("<span style=\"color:red;\">Decoding from Base64(zipped) error: %s</span>", e.getMessage());
                 
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
                 LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
-        } else if ("Encode to Base64".equalsIgnoreCase(choice)) {
+        } else if ("Encode to Base64".equalsIgnoreCase(nameMethod)) {
             result = StringUtil.base64Encode(textInput);
             
-        } else if ("Decode from Base64".equalsIgnoreCase(choice)) {
+        } else if ("Decode from Base64".equalsIgnoreCase(nameMethod)) {
             result = StringUtil.base64Decode(textInput);
             
-        } else if ("Encode to Html".equalsIgnoreCase(choice)) {
+        } else if ("Encode to Html".equalsIgnoreCase(nameMethod)) {
             result = StringEscapeUtils.escapeHtml4(textInput).replace("<", "&lt;").replace(">", "&gt;").replace("&", "&amp;");
             
-        } else if ("Encode to Html (decimal)".equalsIgnoreCase(choice)) {
+        } else if ("Encode to Html (decimal)".equalsIgnoreCase(nameMethod)) {
             result = StringUtil.decimalHtmlEncode(textInput).replace("<", "&lt;").replace(">", "&gt;").replace("&", "&amp;");
             
-        } else if ("Decode from Html".equalsIgnoreCase(choice)) {
+        } else if ("Decode from Html".equalsIgnoreCase(nameMethod)) {
             result = StringEscapeUtils.unescapeHtml4(textInput).replace("<", "&lt;").replace(">", "&gt;");
             
-        } else if ("Encode to Url".equalsIgnoreCase(choice)) {
+        } else if ("Encode to Url".equalsIgnoreCase(nameMethod)) {
             try {
-                result = URLEncoder.encode(textInput, "UTF-8");
+                result = URLEncoder.encode(textInput, StandardCharsets.UTF_8.name());
             } catch (UnsupportedEncodingException e) {
-                result = "<span style=\"color:red;\">Encoding to UTF-8 failed: "+ e.getMessage() +"</span>";
+                result = String.format("<span style=\"color:red;\">Encoding to UTF-8 failed: %s</span>", e.getMessage());
                 
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
                 LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
-        } else if ("Decode from Url".equalsIgnoreCase(choice)) {
+        } else if ("Decode from Url".equalsIgnoreCase(nameMethod)) {
             // Fix #16068: IllegalArgumentException on URLDecoder.decode() when input contains %
             try {
-                result = URLDecoder.decode(textInput, "UTF-8");
+                result = URLDecoder.decode(textInput, StandardCharsets.UTF_8.name());
             } catch (IllegalArgumentException | UnsupportedEncodingException e) {
-                result = "<span style=\"color:red;\">Decoding failed: "+ e.getMessage() +"</span>";
+                result = String.format("<span style=\"color:red;\">Decoding failed: %s</span>", e.getMessage());
                 
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
@@ -274,7 +275,7 @@ public class ActionCoder implements ActionListener {
             result = "<span style=\"color:red;\">Unsupported encoding or decoding method</span>";
         }
         
-        this.coderManager.getResult().setText("<html><span style=\"font-family:'Ubuntu Mono'\">"+ result +"</span></html>");
+        this.coderManager.getResult().setText(String.format("<html><span style=\"font-family:'Ubuntu Mono'\">%s</span></html>", result));
     }
     
 }

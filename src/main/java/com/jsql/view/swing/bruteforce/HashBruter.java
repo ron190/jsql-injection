@@ -11,10 +11,13 @@ public class HashBruter extends Bruter {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    public String hash;
-    public String generatedHash;
-    public String password;
-    public String type;
+    private String hash;
+    
+    private String generatedHash;
+    
+    private String password;
+    
+    private String type;
 
     public void tryBruteForce() {
         this.starttime = System.nanoTime();
@@ -88,10 +91,6 @@ public class HashBruter extends Bruter {
     }
     
     // Getter and setter
-
-    public String getType() {
-        return this.type;
-    }
 
     public String getPassword() {
         return this.password;

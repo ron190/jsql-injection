@@ -48,7 +48,7 @@ public class NodeModelTable extends AbstractNodeModel {
     }
 
     @Override
-    Icon getLeafIcon(boolean leaf) {
+    protected Icon getLeafIcon(boolean leaf) {
         if (leaf) {
             return HelperUi.ICON_TABLE_GO;
         } else {
@@ -61,7 +61,7 @@ public class NodeModelTable extends AbstractNodeModel {
         if ("information_schema".equals(this.getParent().toString())) {
             panel.showLoader();
             
-            AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.elementDatabase);
+            AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.getElementDatabase());
             if (suspendableTask != null && suspendableTask.isPaused()) {
                 ImageIcon animatedGifPaused = new ImageOverlap(HelperUi.PATH_PROGRESSBAR, HelperUi.PATH_PAUSE);
                 animatedGifPaused.setImageObserver(new ImageObserverAnimated(MediatorGui.treeDatabase(), currentNode));
@@ -74,12 +74,12 @@ public class NodeModelTable extends AbstractNodeModel {
 
     @Override
     public void runAction() {
-        final Table selectedTable = (Table) this.elementDatabase;
+        final Table selectedTable = (Table) this.getElementDatabase();
         
-        if (!this.isRunning) {
-            MediatorGui.frame().getTreeNodeModels().get(this.elementDatabase).removeAllChildren();
+        if (!this.isRunning()) {
+            MediatorGui.frame().getTreeNodeModels().get(this.getElementDatabase()).removeAllChildren();
             DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
-            treeModel.reload(MediatorGui.frame().getTreeNodeModels().get(this.elementDatabase));
+            treeModel.reload(MediatorGui.frame().getTreeNodeModels().get(this.getElementDatabase()));
             
             new SwingWorker<Object, Object>() {
 
@@ -91,12 +91,12 @@ public class NodeModelTable extends AbstractNodeModel {
                 
             }.execute();
             
-            this.isRunning = true;
+            this.setRunning(true);
         }
     }
 
     @Override
-    void buildMenu(JPopupMenu tablePopupMenu, final TreePath path) {
+    protected void buildMenu(JPopupMenu tablePopupMenu, final TreePath path) {
         JMenuItem menuItemCheckAll = new JMenuItem(I18n.valueByKey("COLUMNS_CHECK_ALL"), 'C');
         I18n.addComponentForKey("COLUMNS_CHECK_ALL", menuItemCheckAll);
         JMenuItem menuItemUncheckAll = new JMenuItem(I18n.valueByKey("COLUMNS_UNCHECK_ALL"), 'U');
@@ -105,7 +105,7 @@ public class NodeModelTable extends AbstractNodeModel {
         menuItemCheckAll.setIcon(HelperUi.ICON_EMPTY);
         menuItemUncheckAll.setIcon(HelperUi.ICON_EMPTY);
 
-        if (!this.isLoaded) {
+        if (!this.isLoaded()) {
             menuItemCheckAll.setEnabled(false);
             menuItemUncheckAll.setEnabled(false);
         }
@@ -129,8 +129,8 @@ public class NodeModelTable extends AbstractNodeModel {
                     DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(currentTableNode, i);
                     if (currentChild.getUserObject() instanceof AbstractNodeModel) {
                         AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
-                        columnTreeNodeModel.isSelected = this.isCheckboxesSelected;
-                        currentTableModel.isContainingSelection = this.isCheckboxesSelected;
+                        columnTreeNodeModel.setSelected(this.isCheckboxesSelected);
+                        currentTableModel.setContainingSelection(this.isCheckboxesSelected);
                     }
                 }
 
@@ -163,7 +163,7 @@ public class NodeModelTable extends AbstractNodeModel {
     
     @Override
     public boolean isPopupDisplayable() {
-        return this.isLoaded || !this.isLoaded && this.isRunning;
+        return this.isLoaded() || !this.isLoaded() && this.isRunning();
     }
     
 }

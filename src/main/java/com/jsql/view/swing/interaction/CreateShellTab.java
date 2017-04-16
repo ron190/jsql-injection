@@ -10,11 +10,8 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
-import java.awt.Color;
 import java.net.MalformedURLException;
 import java.util.UUID;
-
-import javax.swing.BorderFactory;
 
 import org.apache.log4j.Logger;
 
@@ -23,6 +20,7 @@ import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
+import com.jsql.view.swing.scrollpane.LightScrollPaneShell;
 import com.jsql.view.swing.shell.ShellWeb;
 import com.jsql.view.swing.tab.TabHeader;
 
@@ -61,12 +59,7 @@ public class CreateShellTab extends CreateTab implements InteractionCommand {
             ShellWeb terminal = new ShellWeb(terminalID, this.url);
             MediatorGui.frame().getConsoles().put(terminalID, terminal);
             
-            LightScrollPane scroller = new LightScrollPane(terminal);
-            scroller.colorThumb = HelperUi.COLOR_SELECTION_BACKGROUND;
-            scroller.scrollBarAlphaRollover = 175;
-            scroller.scrollBarAlpha = 100;
-            
-            scroller.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.BLACK));
+            LightScrollPane scroller = new LightScrollPaneShell(terminal);
     
             MediatorGui.tabResults().addTab("Web shell ", scroller);
     

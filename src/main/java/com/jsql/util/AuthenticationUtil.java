@@ -124,6 +124,7 @@ public class AuthenticationUtil {
         // TODO: java.lang.IllegalAccessError: class com.jsql.tool.AuthenticationTools (in unnamed module @0x266d09)
         // cannot access class sun.net.www.protocol.http.AuthCacheImpl (in module java.base) because module java.base
         // does not export sun.net.www.protocol.http to unnamed module @0x266d09
+        // Use Authenticator.setDefault(null); or a bad Authenticator
         AuthCacheValue.setAuthCache(new AuthCacheImpl());
         
         if (AuthenticationUtil.isAuthentication) {

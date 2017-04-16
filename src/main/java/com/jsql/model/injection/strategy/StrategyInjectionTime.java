@@ -36,7 +36,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
     
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
-        LOGGER.trace("Time test...");
+        LOGGER.trace("Checking strategy Time...");
         
         this.timeInjection = new InjectionTime();
         
@@ -52,12 +52,12 @@ public class StrategyInjectionTime extends AbstractStrategy {
     
     @Override
     public void allow() {
-        this.markVulnerable(TypeRequest.MARK_TIMEBASED_VULNERABLE);
+        this.markVulnerable(TypeRequest.MARK_TIME_VULNERABLE);
     }
 
     @Override
     public void unallow() {
-        this.markVulnerable(TypeRequest.MARK_TIMEBASED_INVULNERABLE);
+        this.markVulnerable(TypeRequest.MARK_TIME_INVULNERABLE);
     }
 
     @Override
@@ -78,9 +78,9 @@ public class StrategyInjectionTime extends AbstractStrategy {
         requestMessageBinary.setParameters(this.timeInjection.getInfoMessage());
         MediatorModel.model().sendToViews(requestMessageBinary);
         
-        Request requestMarkTimebasedStrategy = new Request();
-        requestMarkTimebasedStrategy.setMessage(TypeRequest.MARK_TIMEBASED_STRATEGY);
-        MediatorModel.model().sendToViews(requestMarkTimebasedStrategy);
+        Request requestMarkTimeStrategy = new Request();
+        requestMarkTimeStrategy.setMessage(TypeRequest.MARK_TIME_STRATEGY);
+        MediatorModel.model().sendToViews(requestMarkTimeStrategy);
     }
     
     @Override

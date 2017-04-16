@@ -27,9 +27,9 @@ import javax.swing.event.DocumentListener;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.injection.vendor.Model;
-import com.jsql.model.injection.vendor.Model.Strategy.Error.Method;
 import com.jsql.model.injection.vendor.Vendor;
+import com.jsql.model.injection.vendor.xml.Model;
+import com.jsql.model.injection.vendor.xml.Model.Strategy.Error.Method;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.sql.lexer.HighlightedDocument;

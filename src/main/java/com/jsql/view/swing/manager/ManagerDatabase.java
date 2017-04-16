@@ -34,8 +34,8 @@ import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.model.injection.strategy.StrategyInjectionError;
-import com.jsql.model.injection.vendor.Model.Strategy.Error.Method;
 import com.jsql.model.injection.vendor.Vendor;
+import com.jsql.model.injection.vendor.xml.Model.Strategy.Error.Method;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.ComboMenu;
@@ -50,11 +50,11 @@ import com.jsql.view.swing.tree.model.NodeModelEmpty;
 @SuppressWarnings("serial")
 public class ManagerDatabase extends JPanel implements Manager {
 
-    public JMenu panelVendor;
+    private JMenu panelVendor;
     
-    public JMenu panelStrategy;
+    private JMenu panelStrategy;
     
-    JMenu[] itemRadioStrategyError = new JMenu[1];
+    private JMenu[] itemRadioStrategyError = new JMenu[1];
     
     private ButtonGroup groupStrategy = new ButtonGroup();
     
@@ -128,7 +128,7 @@ public class ManagerDatabase extends JPanel implements Manager {
             if (strategy != StrategyInjection.UNDEFINED) {
                 MenuElement itemRadioStrategy;
                 
-                if (strategy == StrategyInjection.ERRORBASED) {
+                if (strategy == StrategyInjection.ERROR) {
                     itemRadioStrategy = new JMenu(strategy.toString());
                     this.itemRadioStrategyError[0] = (JMenu) itemRadioStrategy;
                 } else {
@@ -182,8 +182,8 @@ public class ManagerDatabase extends JPanel implements Manager {
                 final int indexError = i[0];
                 itemRadioVendor.addActionListener(actionEvent -> {
                     ManagerDatabase.this.panelStrategy.setText(methodError.getName());
-                    MediatorModel.model().setStrategy(StrategyInjection.ERRORBASED);
-                    ((StrategyInjectionError)StrategyInjection.ERRORBASED.instance()).setIndexMethod(indexError);
+                    MediatorModel.model().setStrategy(StrategyInjection.ERROR);
+                    ((StrategyInjectionError)StrategyInjection.ERROR.instance()).setIndexMethod(indexError);
                 });
                 
                 i[0]++;
@@ -194,7 +194,15 @@ public class ManagerDatabase extends JPanel implements Manager {
     // Getter and setter
 
     public ButtonGroup getGroupStrategy() {
-        return groupStrategy;
+        return this.groupStrategy;
+    }
+
+    public JMenu getPanelVendor() {
+        return this.panelVendor;
+    }
+
+    public JMenu getPanelStrategy() {
+        return this.panelStrategy;
     }
     
 }

@@ -100,7 +100,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
 
         if (node.getUserObject() instanceof AbstractNodeModel) {
             AbstractNodeModel dataModel = (AbstractNodeModel) node.getUserObject();
-            if (!dataModel.isLoaded) {
+            if (!dataModel.isLoaded()) {
                 dataModel.runAction();
             }
         }

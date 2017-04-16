@@ -205,7 +205,7 @@ public class JScrollIndicator extends JLayeredPane {
 
     public class MyScrollBarUI extends BasicScrollBarUI {
         private JMyScrollBar myScrollBar;
-        private float alpha = 0.0f;
+        private int alpha = 0;
 
         private MyScrollBarUI(JMyScrollBar scrollBar) {
             this.myScrollBar = scrollBar;
@@ -262,15 +262,15 @@ public class JScrollIndicator extends JLayeredPane {
         }
 
         private Color getAlphaColor(Color color) {
-            if (this.alpha == 1.0f) {
+            if (this.alpha == 100) {
                 return color;
             }
             int rgb = color.getRGB() & 0xFFFFFF; // color without alpha values
-            rgb |= (int)(this.alpha*255) << 24; // add alpha value
+            rgb |= (int)(this.alpha/100*255) << 24; // add alpha value
             return new Color(rgb, true);
         }
 
-        public void setAlpha(float alpha) {
+        public void setAlpha(int alpha) {
             this.alpha = alpha;
             this.myScrollBar.repaint(this.getThumbBounds());
         }

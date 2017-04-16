@@ -50,21 +50,21 @@ public class ManagerCoder extends JPanel implements Manager {
     /**
      * Encoding choosed by user.
      */
-    private JMenuItem encoding;
+    private JMenuItem menuMethod;
 
     /**
      * JTextArea displaying result of encoding/decoding.
      */
     private JTextPane result;
     
-    private ActionCoder actionCoder = new ActionCoder(this);
+    private transient ActionCoder actionCoder = new ActionCoder(this);
     
     private class ChangeMenuListener implements ChangeListener {
         
-        String a;
+        String nameMethod;
         
-        ChangeMenuListener(String a) {
-            this.a = a;
+        ChangeMenuListener(String nameMethod) {
+            this.nameMethod = nameMethod;
         }
         
         @Override
@@ -72,7 +72,7 @@ public class ManagerCoder extends JPanel implements Manager {
             if (e.getSource() instanceof JMenuItem) {
                 JMenuItem item = (JMenuItem) e.getSource();
                 if (item.isSelected() || item.isArmed()) {
-                    actionCoder.actionPerformed(a);
+                    ManagerCoder.this.actionCoder.actionPerformed(this.nameMethod);
                 }
             }
         }
@@ -107,7 +107,7 @@ public class ManagerCoder extends JPanel implements Manager {
             }
             
             public void warn() {
-                actionCoder.actionPerformed();
+                ManagerCoder.this.actionCoder.actionPerformed();
             }
             
         });
@@ -129,16 +129,16 @@ public class ManagerCoder extends JPanel implements Manager {
 
         JMenuItem menuEncodeHtmlDecimal = new JMenuItem("Encode to Html (decimal)");
         menuHtml.add(menuEncodeHtmlDecimal);
-        menuEncodeHtmlDecimal.addActionListener(actionCoder);
+        menuEncodeHtmlDecimal.addActionListener(this.actionCoder);
         menuEncodeHtmlDecimal.addChangeListener(new ChangeMenuListener("Encode to Html (decimal)"));
         
         for (Entry<String, JMenu> entryMap: menus.entrySet()) {
             JMenuItem menuEncode = new JMenuItem("Encode to "+ entryMap.getKey());
-            menuEncode.addActionListener(actionCoder);
+            menuEncode.addActionListener(this.actionCoder);
             menuEncode.addChangeListener(new ChangeMenuListener("Encode to "+ entryMap.getKey()));
             
             JMenuItem menuDecode = new JMenuItem("Decode from "+ entryMap.getKey());
-            menuDecode.addActionListener(actionCoder);
+            menuDecode.addActionListener(this.actionCoder);
             menuDecode.addChangeListener(new ChangeMenuListener("Decode from "+ entryMap.getKey()));
             
             entryMap.getValue().add(menuEncode);
@@ -152,14 +152,14 @@ public class ManagerCoder extends JPanel implements Manager {
             new String[]{"Adler32", "Crc16", "Crc32", "Crc64", "Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql"}
         ) {
             JMenuItem menuEncode = new JMenuItem("Hash to "+ hash);
-            menuEncode.addActionListener(actionCoder);
+            menuEncode.addActionListener(this.actionCoder);
             menuEncode.addChangeListener(new ChangeMenuListener("Hash to "+ hash));
             
             menus.get("Hash").add(menuEncode);
         }
 
         JMenu comboMenu = MenuBarCoder.createMenu("Choose method...");
-        this.encoding = comboMenu;
+        this.menuMethod = comboMenu;
         
         for (JMenu menu: menus.values()) {
             comboMenu.add(menu);
@@ -169,7 +169,7 @@ public class ManagerCoder extends JPanel implements Manager {
         comboMenubar.setOpaque(false);
         comboMenubar.setBorder(null);
         
-        this.encoding.setText("Encode to Base64");
+        this.menuMethod.setText("Encode to Base64");
         
         middleLine.add(comboMenubar);
 
@@ -200,8 +200,8 @@ public class ManagerCoder extends JPanel implements Manager {
         return this.textInput;
     }
 
-    public JMenuItem getEncoding() {
-        return this.encoding;
+    public JMenuItem getMenuMethod() {
+        return this.menuMethod;
     }
 
     public JTextPane getResult() {

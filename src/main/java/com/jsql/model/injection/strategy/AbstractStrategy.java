@@ -14,7 +14,7 @@ import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.ConnectionUtil;
 
 /**
- * Define a strategy to inject SQL with methods like errorbased or timebased.
+ * Define a strategy to inject SQL with methods like Error and Time.
  */
 public abstract class AbstractStrategy {
 	

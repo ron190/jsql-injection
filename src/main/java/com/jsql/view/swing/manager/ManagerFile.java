@@ -13,32 +13,20 @@ package com.jsql.view.swing.manager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.model.exception.JSqlException;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
-import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
-import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 
 /**
@@ -55,43 +43,15 @@ public class ManagerFile extends AbstractManagerList {
     /**
      * Create the manager panel to read a file.
      */
-    public ManagerFile() {
-        this.setLayout(new BorderLayout());
-        this.setDefaultText(I18n.valueByKey("FILE_RUN_BUTTON_LABEL"));
+    public ManagerFile(String nameFile) {
+        super(nameFile);
         
-        List<String> pathList = new ArrayList<>();
-        try {
-            InputStream in = ManagerFile.class.getResourceAsStream("/com/jsql/view/swing/resources/list/file.txt");
-            String line;
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-            while ((line = reader.readLine()) != null) {
-                pathList.add(line);
-            }
-            reader.close();
-        } catch (IOException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-
-        final DnDList listFile = new DnDList(pathList);
-
-        listFile.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
-        this.add(new LightScrollPane(1, 0, 0, 0, listFile), BorderLayout.CENTER);
-
-        JPanel lastLine = new JPanel();
-        lastLine.setOpaque(false);
-        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
-        lastLine.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
-                BorderFactory.createEmptyBorder(1, 0, 1, 1)
-            )
-        );
-        
+        this.defaultText = I18n.valueByKey("FILE_RUN_BUTTON_LABEL");
         this.run = new JButtonStateful(this.defaultText);
-
+        I18n.addComponentForKey("FILE_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("FILE_RUN_BUTTON_TOOLTIP"));
-        this.run.setEnabled(false);
         
+        this.run.setEnabled(false);
         this.run.setContentAreaFilled(false);
         this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
         this.run.setBackground(new Color(200, 221, 242));
@@ -99,7 +59,7 @@ public class ManagerFile extends AbstractManagerList {
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
         
         this.run.addActionListener(actionEvent -> {
-            if (listFile.getSelectedValuesList().isEmpty()) {
+            if (this.listFile.getSelectedValuesList().isEmpty()) {
                 LOGGER.warn("Select file(s) to read");
                 return;
             }
@@ -113,12 +73,12 @@ public class ManagerFile extends AbstractManagerList {
                     MediatorGui.managerWebshell().clearSelection();
                     MediatorGui.managerSqlshell().clearSelection();
                     try {
-                        RessourceAccess.readFile(listFile.getSelectedValuesList());
-                    } catch (JSqlException | ExecutionException ex) {
-                        LOGGER.warn(ex, ex);
+                        RessourceAccess.readFile(this.listFile.getSelectedValuesList());
                     } catch (InterruptedException ex) {
                         LOGGER.warn("Interruption while waiting for Reading File termination", ex);
                         Thread.currentThread().interrupt();
+                    } catch (Exception ex) {
+                        LOGGER.warn(ex, ex);
                     }
 
                 } else {
@@ -136,13 +96,13 @@ public class ManagerFile extends AbstractManagerList {
 
         this.loader.setVisible(false);
 
-        lastLine.add(this.privilege);
-        lastLine.add(Box.createHorizontalGlue());
-        lastLine.add(this.loader);
-        lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
-        lastLine.add(this.run);
+        this.lastLine.add(this.privilege);
+        this.lastLine.add(Box.createHorizontalGlue());
+        this.lastLine.add(this.loader);
+        this.lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
+        this.lastLine.add(this.run);
         
-        this.add(lastLine, BorderLayout.SOUTH);
+        this.add(this.lastLine, BorderLayout.SOUTH);
     }
     
 }

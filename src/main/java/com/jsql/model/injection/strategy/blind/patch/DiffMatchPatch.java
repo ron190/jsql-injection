@@ -32,8 +32,10 @@ package com.jsql.model.injection.strategy.blind.patch;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -293,10 +295,8 @@ public class DiffMatchPatch {
             String text2B = hm[3];
             String midCommon = hm[4];
             // Send both pairs off for separate processing.
-            LinkedList<Diff> diffsA = this.diffMain(text1A, text2A,
-                    checklines, deadline);
-            List<Diff> diffsB = this.diffMain(text1B, text2B,
-                    checklines, deadline);
+            LinkedList<Diff> diffsA = this.diffMain(text1A, text2A, checklines, deadline);
+            List<Diff> diffsB = this.diffMain(text1B, text2B, checklines, deadline);
             // Merge the results.
             diffs = diffsA;
             diffs.add(new Diff(Operation.EQUAL, midCommon));
@@ -320,8 +320,7 @@ public class DiffMatchPatch {
      * @param deadline Time when the diff should be complete by.
      * @return Linked List of Diff objects.
      */
-    private LinkedList<Diff> diffLineMode(String valueText1, String valueText2,
-            long deadline) {
+    private LinkedList<Diff> diffLineMode(String valueText1, String valueText2, long deadline) {
         // Scan the text on a line-by-line basis first.
         LinesToCharsResult b = this.diffLinesToChars(valueText1, valueText2);
         String text1 = b.chars1;
@@ -511,8 +510,7 @@ public class DiffMatchPatch {
      * @param deadline Time at which to bail if not yet complete.
      * @return LinkedList of Diff objects.
      */
-    private LinkedList<Diff> diffBisectSplit(String text1, String text2,
-            int x, int y, long deadline) {
+    private LinkedList<Diff> diffBisectSplit(String text1, String text2, int x, int y, long deadline) {
         String text1a = text1.substring(0, x);
         String text2a = text2.substring(0, y);
         String text1b = text1.substring(x);
@@ -520,7 +518,7 @@ public class DiffMatchPatch {
 
         // Compute both diffs serially.
         LinkedList<Diff> diffs = this.diffMain(text1a, text2a, false, deadline);
-        LinkedList<Diff> diffsb = this.diffMain(text1b, text2b, false, deadline);
+        List<Diff> diffsb = this.diffMain(text1b, text2b, false, deadline);
 
         diffs.addAll(diffsb);
         return diffs;
@@ -1339,7 +1337,7 @@ public class DiffMatchPatch {
      * loc is a location in text1, compute and return the equivalent location in
      * text2.
      * e.g. "The cat" vs "The big cat", 1->1, 5->8
-     * @param diffs LinkedList of Diff objects.
+     * @param diffs List of Diff objects.
      * @param loc Location within text1.
      * @return Location within text2.
      */
@@ -1376,7 +1374,7 @@ public class DiffMatchPatch {
 
     /**
      * Convert a Diff list into a pretty HTML report.
-     * @param diffs LinkedList of Diff objects.
+     * @param diffs List of Diff objects.
      * @return HTML representation.
      */
     public String diffPrettyHtml(List<Diff> diffs) {
@@ -1403,7 +1401,7 @@ public class DiffMatchPatch {
 
     /**
      * Compute and return the source text (all equalities and deletions).
-     * @param diffs LinkedList of Diff objects.
+     * @param diffs List of Diff objects.
      * @return Source text.
      */
     public String diffText1(List<Diff> diffs) {
@@ -1418,7 +1416,7 @@ public class DiffMatchPatch {
 
     /**
      * Compute and return the destination text (all equalities and insertions).
-     * @param diffs LinkedList of Diff objects.
+     * @param diffs List of Diff objects.
      * @return Destination text.
      */
     public String diffText2(List<Diff> diffs) {
@@ -1434,7 +1432,7 @@ public class DiffMatchPatch {
     /**
      * Compute the Levenshtein distance; the number of inserted, deleted or
      * substituted characters.
-     * @param diffs LinkedList of Diff objects.
+     * @param diffs List of Diff objects.
      * @return Number of changes.
      */
     public int diffLevenshtein(List<Diff> diffs) {
@@ -1475,7 +1473,7 @@ public class DiffMatchPatch {
         for (Diff aDiff : diffs) {
             switch (aDiff.getOperation()) {
             case INSERT:
-                text.append("+").append(URLEncoder.encode(aDiff.getText(), "UTF-8")
+                text.append("+").append(URLEncoder.encode(aDiff.getText(), StandardCharsets.UTF_8.name())
                         .replace('+', ' ')).append("\t");
                 break;
             case DELETE:
@@ -1521,7 +1519,7 @@ public class DiffMatchPatch {
                 // decode would change all "+" to " "
                 param = param.replace("+", "%2B");
                 try {
-                    param = URLDecoder.decode(param, "UTF-8");
+                    param = URLDecoder.decode(param, StandardCharsets.UTF_8.name());
                 } catch (IllegalArgumentException e) {
                     // Malformed URI sequence.
                     throw new IllegalArgumentException(
@@ -1837,9 +1835,9 @@ public class DiffMatchPatch {
      * text2 is not provided, diffs are the delta between text1 and text2.
      * @param text1 Old text.
      * @param diffs Array of Diff objects for text1 to text2.
-     * @return LinkedList of Patch objects.
+     * @return Deque of Patch objects.
      */
-    public List<Patch> patchMake(String text1, LinkedList<Diff> diffs) {
+    public List<Patch> patchMake(String text1, Deque<Diff> diffs) {
         if (text1 == null || diffs == null) {
             throw new IllegalArgumentException("Null inputs. (patch_make)");
         }
@@ -1877,27 +1875,30 @@ public class DiffMatchPatch {
                         + postpatchText.substring(charCount2 + aDiff.getText().length());
                 break;
             case EQUAL:
-                if (aDiff.getText().length() <= 2 * PATCH_MARGIN
-                && !patch.getDiffs().isEmpty() && aDiff != diffs.getLast()) {
+                if (
+                    aDiff.getText().length() <= 2 * PATCH_MARGIN
+                    && !patch.getDiffs().isEmpty() && aDiff != diffs.getLast()
+                ) {
                     // Small equality inside a patch.
                     patch.getDiffs().add(aDiff);
                     patch.setLength1(patch.getLength1() + aDiff.getText().length());
                     patch.setLength2(patch.getLength2() + aDiff.getText().length());
                 }
 
-                if (aDiff.getText().length() >= 2 * PATCH_MARGIN) {
+                if (
+                    aDiff.getText().length() >= 2 * PATCH_MARGIN
+                    && !patch.getDiffs().isEmpty()
+                ) {
                     // Time for a new patch.
-                    if (!patch.getDiffs().isEmpty()) {
-                        this.patchAddContext(patch, prepatchText);
-                        patches.add(patch);
-                        patch = new Patch();
-                        // Unlike Unidiff, our patch lists have a rolling context.
-                        // http://code.google.com/p/google-diff-match-patch/wiki/Unidiff
-                        // Update prepatch text & pos to reflect the application of the
-                        // just completed patch.
-                        prepatchText = postpatchText;
-                        charCount1 = charCount2;
-                    }
+                    this.patchAddContext(patch, prepatchText);
+                    patches.add(patch);
+                    patch = new Patch();
+                    // Unlike Unidiff, our patch lists have a rolling context.
+                    // http://code.google.com/p/google-diff-match-patch/wiki/Unidiff
+                    // Update prepatch text & pos to reflect the application of the
+                    // just completed patch.
+                    prepatchText = postpatchText;
+                    charCount1 = charCount2;
                 }
                 break;
             }
@@ -1924,7 +1925,7 @@ public class DiffMatchPatch {
      * @param patches Array of Patch objects.
      * @return Array of Patch objects.
      */
-    public LinkedList<Patch> patchDeepCopy(LinkedList<Patch> patches) {
+    public LinkedList<Patch> patchDeepCopy(List<Patch> patches) {
         LinkedList<Patch> patchesCopy = new LinkedList<>();
         for (Patch aPatch : patches) {
             Patch patchCopy = new Patch();
@@ -2058,7 +2059,7 @@ public class DiffMatchPatch {
      * @param patches Array of Patch objects.
      * @return The padding string added to each side.
      */
-    public String patchAddPadding(LinkedList<Patch> patches) {
+    public String patchAddPadding(Deque<Patch> patches) {
         short paddingLength = DiffMatchPatch.PATCH_MARGIN;
         StringBuilder nullPadding = new StringBuilder();
         for (short x = 1; x <= paddingLength; x++) {
@@ -2073,7 +2074,7 @@ public class DiffMatchPatch {
 
         // Add some padding on start of first diff.
         Patch patch = patches.getFirst();
-        LinkedList<Diff> diffs = patch.getDiffs();
+        Deque<Diff> diffs = patch.getDiffs();
         if (diffs.isEmpty() || diffs.getFirst().getOperation() != Operation.EQUAL) {
             // Add nullPadding equality.
             diffs.addFirst(new Diff(Operation.EQUAL, nullPadding.toString()));
@@ -2117,9 +2118,9 @@ public class DiffMatchPatch {
      * Look through the patches and break up any which are longer than the
      * maximum limit of the match algorithm.
      * Intended to be called only from within patch_apply.
-     * @param patches LinkedList of Patch objects.
+     * @param patches List of Patch objects.
      */
-    public void patchSplitMax(LinkedList<Patch> patches) {
+    public void patchSplitMax(List<Patch> patches) {
         short patchSize = DiffMatchPatch.MATCH_MAX_BITS;
         String precontext;
         String postcontext;
@@ -2246,10 +2247,9 @@ public class DiffMatchPatch {
             return patches;
         }
         List<String> textList = Arrays.asList(textline.split("\n"));
-        LinkedList<String> text = new LinkedList<>(textList);
+        Deque<String> text = new LinkedList<>(textList);
         Patch patch;
-        Pattern patchHeader
-        = Pattern.compile("^@@ -(\\d+),?(\\d*) \\+(\\d+),?(\\d*) @@$");
+        Pattern patchHeader = Pattern.compile("^@@ -(\\d+),?(\\d*) \\+(\\d+),?(\\d*) @@$");
         Matcher m;
         char sign;
         String line;
@@ -2299,7 +2299,7 @@ public class DiffMatchPatch {
                 line = text.getFirst().substring(1);
                 line = line.replace("+", "%2B");  // decode would change all "+" to " "
                 try {
-                    line = URLDecoder.decode(line, "UTF-8");
+                    line = URLDecoder.decode(line, StandardCharsets.UTF_8.name());
                 } catch (IllegalArgumentException e) {
                     // Malformed URI sequence.
                     throw new IllegalArgumentException(

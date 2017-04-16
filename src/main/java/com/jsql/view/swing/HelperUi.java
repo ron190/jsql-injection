@@ -122,12 +122,6 @@ public final class HelperUi {
     public static final URL URL_ICON_128 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug128.png");
 
     public static final Icon ICON_EMPTY = new ImageIcon(new BufferedImage(16, 16, BufferedImage.TRANSLUCENT));
-    public static final Icon ICON_ZERO_SIZE = new ImageIcon() {
-        @Override
-        public void paintIcon(Component c, Graphics g, int x, int y) {
-            // Do nothing
-        }
-    };
 
     public static final String PATH_PAUSE = "/com/jsql/view/swing/resources/images/icons/pause.png";
     public static final String PATH_PROGRESSBAR = "/com/jsql/view/swing/resources/images/icons/progressBar.gif";
@@ -180,7 +174,7 @@ public final class HelperUi {
         Font.PLAIN,
         UIManager.getDefaults().getFont("TextField.font").getSize() + 2
     );
-    public static final Font FONT_UBUNTU = new Font(FONT_NAME, Font.PLAIN, UIManager.getDefaults().getFont("TextArea.font").getSize() + 2);
+    public static final Font FONT_UBUNTU = new Font(HelperUi.FONT_NAME, Font.PLAIN, UIManager.getDefaults().getFont("TextArea.font").getSize() + 2);
 
     public static final String CHUNK_VISIBLE = "chunk_visible";
     public static final String BINARY_VISIBLE = "binary_visible";
@@ -199,7 +193,7 @@ public final class HelperUi {
      */
     public static void prepareGUI() {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        try (InputStream fontStream = new BufferedInputStream(SwingAppender.class.getResourceAsStream("/com/jsql/view/swing/resources/font/UbuntuMono-R.ttf"))) {
+        try (InputStream fontStream = new BufferedInputStream(SwingAppender.class.getResourceAsStream("/com/jsql/view/swing/resources/font/UbuntuMono-Regular-ctrlchar.ttf"))) {
             Font ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             ge.registerFont(ubuntuFont);
         } catch (FontFormatException | IOException e) {
@@ -218,36 +212,36 @@ public final class HelperUi {
         UIManager.put("ToolTip.backgroundInactive", new Color(255, 255, 225));
         UIManager.put("ToolTip.foreground", Color.BLACK);
         UIManager.put("ToolTip.foregroundInactive", Color.BLACK);
-        UIManager.put("ToolTip.font", FONT_SEGOE);
+        UIManager.put("ToolTip.font", HelperUi.FONT_SEGOE);
         
         // Custom button
         // Change border of button in default Save as, Confirm dialogs
-        UIManager.put("Button.border", BORDER_BLU);
+        UIManager.put("Button.border", HelperUi.BORDER_BLU);
         UIManager.put("Button.select", new Color(155, 193, 232));
         
         // Change border of button in Save as dialog
-        UIManager.put("ToggleButton.border", BORDER_BLU);
+        UIManager.put("ToggleButton.border", HelperUi.BORDER_BLU);
 
         // No bold for menu + round corner
-        UIManager.put("Menu.font", FONT_SEGOE);
-        UIManager.put("Menu.selectionBackground", COLOR_SELECTION_BACKGROUND);
+        UIManager.put("Menu.font", HelperUi.FONT_SEGOE);
+        UIManager.put("Menu.selectionBackground", HelperUi.COLOR_SELECTION_BACKGROUND);
         UIManager.put("Menu.borderPainted", false);
-        UIManager.put("PopupMenu.font", FONT_SEGOE);
-        UIManager.put("RadioButtonMenuItem.selectionBackground", COLOR_SELECTION_BACKGROUND);
-        UIManager.put("RadioButtonMenuItem.font", FONT_SEGOE);
+        UIManager.put("PopupMenu.font", HelperUi.FONT_SEGOE);
+        UIManager.put("RadioButtonMenuItem.selectionBackground", HelperUi.COLOR_SELECTION_BACKGROUND);
+        UIManager.put("RadioButtonMenuItem.font", HelperUi.FONT_SEGOE);
         UIManager.put("RadioButtonMenuItem.borderPainted", false);
-        UIManager.put("MenuItem.selectionBackground", COLOR_SELECTION_BACKGROUND);
-        UIManager.put("MenuItem.font", FONT_SEGOE);
+        UIManager.put("MenuItem.selectionBackground", HelperUi.COLOR_SELECTION_BACKGROUND);
+        UIManager.put("MenuItem.font", HelperUi.FONT_SEGOE);
         UIManager.put("MenuItem.borderPainted", false);
         
-        UIManager.put("CheckBoxMenuItem.selectionBackground", COLOR_SELECTION_BACKGROUND);
-        UIManager.put("CheckBoxMenuItem.font", FONT_SEGOE);
+        UIManager.put("CheckBoxMenuItem.selectionBackground", HelperUi.COLOR_SELECTION_BACKGROUND);
+        UIManager.put("CheckBoxMenuItem.font", HelperUi.FONT_SEGOE);
         UIManager.put("CheckBoxMenuItem.borderPainted", false);
         UIManager.put("CheckBoxMenuItem.checkIcon", new CheckBoxIcon());
 
         // Custom tab
-        UIManager.put("TabbedPane.contentAreaColor", COLOR_DEFAULT_BACKGROUND);
-        UIManager.put("TabbedPane.font", FONT_SEGOE);
+        UIManager.put("TabbedPane.contentAreaColor", HelperUi.FONT_UBUNTU);
+        UIManager.put("TabbedPane.font", HelperUi.FONT_SEGOE);
         // margin of current tab panel
         UIManager.put("TabbedPane.contentBorderInsets", new Insets(0, 0, 0, 0));
         // margin above tabs
@@ -257,9 +251,9 @@ public final class HelperUi {
         // lighter unselected tab border
         UIManager.put("TabbedPane.darkShadow", new Color(190,198,205));
         
-        UIManager.put("Button.font", FONT_SEGOE);
-        UIManager.put("CheckBox.font", FONT_SEGOE);
-        UIManager.put("TitledBorder.font", FONT_SEGOE);
+        UIManager.put("Button.font", HelperUi.FONT_SEGOE);
+        UIManager.put("CheckBox.font", HelperUi.FONT_SEGOE);
+        UIManager.put("TitledBorder.font", HelperUi.FONT_SEGOE);
 
         UIManager.put("Spinner.arrowButtonBorder", HelperUi.BORDER_BLU);
         UIManager.put("Spinner.border", BorderFactory.createCompoundBorder(
@@ -267,7 +261,7 @@ public final class HelperUi {
             BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE)
         ));
         
-        UIManager.put("FileChooser.listFont", FONT_SEGOE);
+        UIManager.put("FileChooser.listFont", HelperUi.FONT_SEGOE);
         UIManager.put("FileChooser.listViewBorder", BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(HelperUi.COLOR_BLU),
             BorderFactory.createMatteBorder(2,2,2,2, Color.WHITE)
@@ -275,26 +269,26 @@ public final class HelperUi {
 
         // Custom text component
         // Admin page
-        UIManager.put("TextPane.selectionBackground", COLOR_SELECTION_BACKGROUND);
-        UIManager.put("TextPane.font", FONT_UBUNTU);
-        UIManager.put("TextPane.selectionBackground", COLOR_SELECTION_BACKGROUND);
+        UIManager.put("TextPane.selectionBackground", HelperUi.COLOR_SELECTION_BACKGROUND);
+        UIManager.put("TextPane.font", HelperUi.FONT_UBUNTU);
+        UIManager.put("TextPane.selectionBackground", HelperUi.COLOR_SELECTION_BACKGROUND);
         
         UIManager.put("TextField.border", HelperUi.BORDER_BLU);
-        UIManager.put("TextField.selectionBackground", COLOR_SELECTION_BACKGROUND);
+        UIManager.put("TextField.selectionBackground", HelperUi.COLOR_SELECTION_BACKGROUND);
         
-        UIManager.put("EditorPane.selectionBackground", COLOR_SELECTION_BACKGROUND);
+        UIManager.put("EditorPane.selectionBackground", HelperUi.COLOR_SELECTION_BACKGROUND);
         
-        UIManager.put("TextArea.selectionBackground", COLOR_SELECTION_BACKGROUND);
-        UIManager.put("TextArea.font", FONT_UBUNTU);
+        UIManager.put("TextArea.selectionBackground", HelperUi.COLOR_SELECTION_BACKGROUND);
+        UIManager.put("TextArea.font", HelperUi.FONT_UBUNTU);
 
         // Custom Label
-        UIManager.put("Label.font", FONT_SEGOE);
-        UIManager.put("Label.selectionBackground", COLOR_SELECTION_BACKGROUND);
+        UIManager.put("Label.font", HelperUi.FONT_SEGOE);
+        UIManager.put("Label.selectionBackground", HelperUi.COLOR_SELECTION_BACKGROUND);
 
         // Custom table
-        UIManager.put("Table.font", FONT_SEGOE);
-        UIManager.put("TableHeader.font", FONT_SEGOE);
-        UIManager.put("Table.selectionBackground", COLOR_SELECTION_BACKGROUND);
+        UIManager.put("Table.font", HelperUi.FONT_SEGOE);
+        UIManager.put("TableHeader.font", HelperUi.FONT_SEGOE);
+        UIManager.put("Table.selectionBackground", HelperUi.COLOR_SELECTION_BACKGROUND);
         UIManager.put("Table.focusCellHighlightBorder",
             BorderFactory.createCompoundBorder(
                 new AbstractBorder() {
@@ -331,8 +325,8 @@ public final class HelperUi {
         UIManager.put("ProgressBar.background", UIManager.get("Tree.background"));
 
         // Custom ComboBox
-        UIManager.put("ComboBox.font", FONT_SEGOE);
-        UIManager.put("ComboBox.selectionBackground", COLOR_SELECTION_BACKGROUND);
+        UIManager.put("ComboBox.font", HelperUi.FONT_SEGOE);
+        UIManager.put("ComboBox.selectionBackground", HelperUi.COLOR_SELECTION_BACKGROUND);
         // Use ColorUIResource to preserve the background color for arrow
         UIManager.put("ComboBox.background", new ColorUIResource(Color.WHITE));
         UIManager.put("ComboBox.border", HelperUi.BORDER_BLU);

@@ -55,7 +55,6 @@ public class ManagerScan extends AbstractManagerList {
      */
     public ManagerScan() {
         this.setLayout(new BorderLayout());
-        this.setDefaultText(I18n.valueByKey("SCAN_RUN_BUTTON_LABEL"));
 
         List<String> pathsList = new ArrayList<>();
         try {
@@ -72,7 +71,7 @@ public class ManagerScan extends AbstractManagerList {
 
         final DnDList listFile = new DnDList(pathsList);
         this.listPaths = listFile;
-        this.listPaths.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
+        this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
         this.add(new LightScrollPane(1, 0, 0, 0, listFile), BorderLayout.CENTER);
 
         JPanel lastLine = new JPanel();
@@ -86,8 +85,9 @@ public class ManagerScan extends AbstractManagerList {
             )
         );
         
+        this.defaultText = I18n.valueByKey("SCAN_RUN_BUTTON_LABEL");
         this.run = new JButtonStateful(this.defaultText);
-
+        I18n.addComponentForKey("SCAN_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("SCAN_RUN_BUTTON_TOOLTIP"));
 
         this.run.setContentAreaFilled(false);

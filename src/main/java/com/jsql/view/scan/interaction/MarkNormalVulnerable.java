@@ -38,7 +38,7 @@ public class MarkNormalVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        ListModel<ListItem> listModel = MediatorGui.managerScan().listPaths.getModel();
+        ListModel<ListItem> listModel = MediatorGui.managerScan().getListPaths().getModel();
         for (int i = 0 ; i < listModel.getSize() ; i++) {
             if (listModel.getElementAt(i).getInternalString().contains(this.url)) {
                 listModel.getElementAt(i).setIsVulnerable(true);

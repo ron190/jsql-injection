@@ -51,17 +51,17 @@ public class ActionLoadStop implements ActionListener {
             DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
             if (currentChild.getUserObject() instanceof AbstractNodeModel) {
                 AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
-                if (columnTreeNodeModel.isSelected) {
-                    columnsToSearch.add((Column) columnTreeNodeModel.elementDatabase);
+                if (columnTreeNodeModel.isSelected()) {
+                    columnsToSearch.add((Column) columnTreeNodeModel.getElementDatabase());
                 }
             }
         }
 
-        if (!this.nodeModel.isRunning && columnsToSearch.isEmpty()) {
+        if (!this.nodeModel.isRunning() && columnsToSearch.isEmpty()) {
             return;
         }
 
-        if (!this.nodeModel.isRunning) {
+        if (!this.nodeModel.isRunning()) {
             new SwingWorker<Object, Object>(){
                 @Override
                 protected Object doInBackground() throws Exception {
@@ -71,20 +71,20 @@ public class ActionLoadStop implements ActionListener {
                 }
             }.execute();
         } else {
-            AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.nodeModel.elementDatabase);
+            AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.nodeModel.getElementDatabase());
             
             // Fix #21394: NullPointerException on stop()
             if (suspendableTask != null) {
                 suspendableTask.stop();
             }
             
-            this.nodeModel.indexProgress = 0;
-            this.nodeModel.isProgressing = false;
-            this.nodeModel.isLoading = false;
+            this.nodeModel.setIndexProgress(0);
+            this.nodeModel.setProgressing(false);
+            this.nodeModel.setLoading(false);
             
-            ThreadUtil.remove(this.nodeModel.elementDatabase);
+            ThreadUtil.remove(this.nodeModel.getElementDatabase());
         }
-        this.nodeModel.isRunning = !this.nodeModel.isRunning;
+        this.nodeModel.setRunning(!this.nodeModel.isRunning());
     }
     
 }

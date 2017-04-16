@@ -83,7 +83,6 @@ public class Diff implements Comparable<Diff> {
 
     @Override
     public int compareTo(Diff arg0) {
-        // TODO Auto-generated method stub
         return this.toString().equals(arg0.toString()) ? 0 : 1;
     }
     
@@ -104,4 +103,5 @@ public class Diff implements Comparable<Diff> {
     public void setText(String text) {
         this.text = text;
     }
+    
 }

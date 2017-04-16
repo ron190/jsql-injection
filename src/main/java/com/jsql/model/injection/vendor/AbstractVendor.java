@@ -2,6 +2,7 @@ package com.jsql.model.injection.vendor;
 
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
+import com.jsql.model.injection.vendor.xml.Model;
 
 interface AbstractVendor {
     
@@ -45,12 +46,12 @@ interface AbstractVendor {
 
     public String sqlBlind(String sqlQuery, String startPosition);
 
-    public String sqlCapacityErrorBased();
-    public String sqlTestErrorBased();
-    public String sqlErrorBasedCapacity();
+    public String sqlCapacityError();
+    public String sqlTestError();
+    public String sqlErrorCapacity();
     public Model getXmlModel();
 
-    public String sqlErrorBased(String sqlQuery, String startPosition);
+    public String sqlError(String sqlQuery, String startPosition);
 
     public String sqlTime(String sqlQuery, String startPosition);
     

@@ -38,7 +38,7 @@ public abstract class AbstractTestSuite {
     /**
      * Using default log4j.properties from root /
      */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    protected static final Logger LOGGER = Logger.getRootLogger();
 
     public static final String HOSTNAME = "localhost";
     
@@ -138,7 +138,7 @@ public abstract class AbstractTestSuite {
 
             LOGGER.info("ListDatabases: found "+ set1 +"\nto find "+ set2 +"\n");
 
-            Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
+            Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.containsAll(set2));
             
         } catch (AssertionError e) {
             Set<Object> tmp = new TreeSet<>();

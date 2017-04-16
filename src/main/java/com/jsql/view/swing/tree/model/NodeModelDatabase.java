@@ -35,7 +35,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
     }
 
     @Override
-    Icon getLeafIcon(boolean leaf) {
+    protected Icon getLeafIcon(boolean leaf) {
         if (leaf) {
             return HelperUi.ICON_DATABASE_GO;
         } else {
@@ -45,11 +45,11 @@ public class NodeModelDatabase extends AbstractNodeModel {
 
     @Override
     public void runAction() {
-        final Database selectedDatabase = (Database) this.elementDatabase;
-        if (/*!this.isLoaded && */!this.isRunning) {
-            MediatorGui.frame().getTreeNodeModels().get(this.elementDatabase).removeAllChildren();
+        final Database selectedDatabase = (Database) this.getElementDatabase();
+        if (/*!this.isLoaded && */!this.isRunning()) {
+            MediatorGui.frame().getTreeNodeModels().get(this.getElementDatabase()).removeAllChildren();
             DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
-            treeModel.reload(MediatorGui.frame().getTreeNodeModels().get(this.elementDatabase));
+            treeModel.reload(MediatorGui.frame().getTreeNodeModels().get(this.getElementDatabase()));
             
             new SwingWorker<Object, Object>() {
                 
@@ -61,17 +61,17 @@ public class NodeModelDatabase extends AbstractNodeModel {
                 
             }.execute();
             
-            this.isRunning = true;
+            this.setRunning(true);
         }
     }
 
     @Override
     public boolean isPopupDisplayable() {
-        return this.isLoaded || !this.isLoaded && this.isRunning;
+        return this.isLoaded() || !this.isLoaded() && this.isRunning();
     }
 
     @Override
-    void buildMenu(JPopupMenu tablePopupMenu, TreePath path) {
+    protected void buildMenu(JPopupMenu tablePopupMenu, TreePath path) {
         // Do nothing
     }
     

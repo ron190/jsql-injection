@@ -46,7 +46,7 @@ public abstract class AbstractNodeModel {
     /**
      * Element from injection model in a linked list.
      */
-    public AbstractElementDatabase elementDatabase;
+    private AbstractElementDatabase elementDatabase;
 
     /**
      * Text for empty node.
@@ -56,41 +56,41 @@ public abstract class AbstractNodeModel {
     /**
      * Current item injection progress regarding total number of elements.
      */
-    public int indexProgress = 0;
+    private int indexProgress = 0;
 
     /**
      * Used by checkbox node ; true if checkbox is checked, false otherwise.
      */
-    public boolean isSelected = false;
+    private boolean isSelected = false;
 
     /**
      * Indicates if process on current node is running.
      */
-    public boolean isRunning = false;
+    private boolean isRunning = false;
 
     /**
      * True if current table node has checkbox selected, false otherwise.
      * Used to display popup menu and block injection start if no checkbox selected.
      */
-    public boolean isContainingSelection = false;
+    private boolean isContainingSelection = false;
 
     /**
      * True if current node has already been filled, false otherwise.
      * Used to display correct popup menu and block injection start if already done.
      */
-    public boolean isLoaded = false;
+    private boolean isLoaded = false;
 
     /**
      * True if current node is loading with unknown total number, false otherwise.
      * Used to display gif loader.
      */
-    public boolean isProgressing = false;
+    private boolean isProgressing = false;
 
     /**
      * True if current node is loading with total number known, false otherwise.
      * Used to display progress bar.
      */
-    public boolean isLoading = false;
+    private boolean isLoading = false;
 
     /**
      * Create a functional model for tree node.
@@ -207,17 +207,17 @@ public abstract class AbstractNodeModel {
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         final PanelNode panel = new PanelNode(tree, currentNode);
 
-        panel.label.setText(StringUtil.detectUtf8Html(this.toString()));
-        panel.label.setVisible(true);
+        panel.getLabel().setText(StringUtil.detectUtf8Html(this.toString()));
+        panel.getLabel().setVisible(true);
         panel.showIcon();
 
         panel.setIcon(this.getLeafIcon(isLeaf));
 
         if (isSelected) {
-            panel.label.setBackground(HelperUi.COLOR_SELECTION_BACKGROUND);
+            panel.getLabel().setBackground(HelperUi.COLOR_SELECTION_BACKGROUND);
         } else {
-            panel.label.setBackground(Color.WHITE);
-            panel.label.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+            panel.getLabel().setBackground(Color.WHITE);
+            panel.getLabel().setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         }
 
         if (this.isLoading) {
@@ -250,14 +250,14 @@ public abstract class AbstractNodeModel {
      */
     protected void displayProgress(PanelNode panel, DefaultMutableTreeNode currentNode) {
         int dataCount = this.elementDatabase.getChildCount();
-        panel.progressBar.setMaximum(dataCount);
-        panel.progressBar.setValue(this.indexProgress);
-        panel.progressBar.setVisible(true);
+        panel.getProgressBar().setMaximum(dataCount);
+        panel.getProgressBar().setValue(this.indexProgress);
+        panel.getProgressBar().setVisible(true);
         
         // Report #135: ignore if thread not found
         AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.elementDatabase);
         if (suspendableTask != null && suspendableTask.isPaused()) {
-            panel.progressBar.pause();
+            panel.getProgressBar().pause();
         }
     }
     
@@ -266,7 +266,7 @@ public abstract class AbstractNodeModel {
      * @param tablePopupMenu Menu to display
      * @param path Treepath of current node
      */
-    abstract void buildMenu(JPopupMenu tablePopupMenu, TreePath path);
+    protected abstract void buildMenu(JPopupMenu tablePopupMenu, TreePath path);
     
     /**
      * Check if menu should be opened.
@@ -280,7 +280,7 @@ public abstract class AbstractNodeModel {
      * @param isLeaf True will display an arrow icon, false won't
      * @return Icon to display
      */
-    abstract Icon getLeafIcon(boolean isLeaf);
+    protected abstract Icon getLeafIcon(boolean isLeaf);
     
     /**
      * Run injection process (see GUIMediator.model().dao).
@@ -291,6 +291,68 @@ public abstract class AbstractNodeModel {
     @Override
     public String toString() {
         return this.elementDatabase != null ? this.elementDatabase.getLabelCount() : this.emptyObject;
+    }
+    
+    // Getter and setter
+
+    public AbstractElementDatabase getElementDatabase() {
+        return this.elementDatabase;
+    }
+
+    public int getIndexProgress() {
+        return this.indexProgress;
+    }
+
+    public void setIndexProgress(int indexProgress) {
+        this.indexProgress = indexProgress;
+    }
+
+    public boolean isSelected() {
+        return this.isSelected;
+    }
+
+    public void setSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+    }
+
+    public boolean isRunning() {
+        return this.isRunning;
+    }
+
+    public void setRunning(boolean isRunning) {
+        this.isRunning = isRunning;
+    }
+
+    public boolean isContainingSelection() {
+        return this.isContainingSelection;
+    }
+
+    public void setContainingSelection(boolean isContainingSelection) {
+        this.isContainingSelection = isContainingSelection;
+    }
+
+    public boolean isLoaded() {
+        return this.isLoaded;
+    }
+
+    public void setLoaded(boolean isLoaded) {
+        this.isLoaded = isLoaded;
+    }
+
+    public boolean isProgressing() {
+        return this.isProgressing;
+    }
+
+    public void setProgressing(boolean isProgressing) {
+        this.isProgressing = isProgressing;
+    }
+
+    public boolean isLoading() {
+        return this.isLoading;
+    }
+
+    public void setLoading(boolean isLoading) {
+        this.isLoading = isLoading;
     }
     
 }

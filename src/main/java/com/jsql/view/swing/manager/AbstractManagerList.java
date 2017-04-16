@@ -10,27 +10,51 @@
  ******************************************************************************/
 package com.jsql.view.swing.manager;
 
+import java.awt.BorderLayout;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ListItem;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 
 /**
  * Abstract manager containing a drag and drop list of item.
  */
 @SuppressWarnings("serial")
 public abstract class AbstractManagerList extends JPanel implements Manager {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 	
+    protected transient List<String> pathList = new ArrayList<>();
+    
+    protected DnDList listFile;
+    
+    protected JPanel lastLine = new JPanel();
+    
     /**
      * Contains the paths of webshell.
      */
-    public DnDList listPaths;
+    protected DnDList listPaths;
 
     /**
      * Starts the upload process.
@@ -52,6 +76,41 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      * A animated GIF displayed during processing.
      */
     protected JLabel loader = new JLabel(HelperUi.ICON_LOADER_GIF);
+    
+    public AbstractManagerList() {
+        
+    }
+    
+    public AbstractManagerList(String nameFile) {
+        this.setLayout(new BorderLayout());
+
+        try {
+            InputStream in = AbstractManagerList.class.getResourceAsStream("/com/jsql/view/swing/resources/list/"+ nameFile);
+            String line;
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            while ((line = reader.readLine()) != null) {
+                this.pathList.add(line);
+            }
+            reader.close();
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+
+        this.listFile = new DnDList(this.pathList);
+
+        this.listFile.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
+        this.add(new LightScrollPane(1, 0, 0, 0, this.listFile), BorderLayout.CENTER);
+
+        this.lastLine.setOpaque(false);
+        this.lastLine.setLayout(new BoxLayout(this.lastLine, BoxLayout.X_AXIS));
+
+        this.lastLine.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)
+            )
+        );
+    }
 
     /**
      * Add a new string to the list if it's not a duplicate.
@@ -108,16 +167,14 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
         this.run.setText(this.defaultText);
     }
     
-    /**
-     * Set text of the button.
-     * @param defaultText The text of the button
-     */
-    public void setDefaultText(String defaultText) {
-        this.defaultText = defaultText;
-    }
+    // Getter and setter
     
     public void setStateButton(StateButton stateButton) {
         this.run.setState(stateButton);
+    }
+
+    public DnDList getListPaths() {
+        return this.listPaths;
     }
     
 }

@@ -36,14 +36,20 @@ public class LightScrollPane extends JComponent {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-    public int scrollBarAlpha = 25;
-    public int scrollBarAlphaRollover = 100;
+    protected int scrollBarAlpha = 25;
+    
+    protected int scrollBarAlphaRollover = 100;
+    
     private static final int THUMB_BORDER_SIZE = 0;
+    
     public static final int THUMB_SIZE = 15;
-    public Color colorThumb = Color.DARK_GRAY;
+    
+    protected Color colorThumb = Color.DARK_GRAY;
 
     public final JScrollPane scrollPane;
+    
     private final JScrollBar verticalScrollBar;
+    
     private final JScrollBar horizontalScrollBar;
 
     /**

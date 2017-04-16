@@ -72,7 +72,7 @@ public class PanelAddressBar extends JPanel {
      * Textfield decorated as an address bar.
      * Used by GET method.
      */
-    public JTextField textFieldAddress;
+    private JTextField textFieldAddress;
     
     /**
      * Used by POST method.
@@ -94,14 +94,14 @@ public class PanelAddressBar extends JPanel {
     /**
      * Animated GIF displayed during injection.
      */
-    public JLabel loader = new JLabel(HelperUi.ICON_LOADER_GIF);
+    private JLabel loader = new JLabel(HelperUi.ICON_LOADER_GIF);
 
     /**
      * Connection button.
      */
-    public ButtonAddressBar buttonInUrl = new ButtonAddressBar();
+    private ButtonAddressBar buttonInUrl = new ButtonAddressBar();
 
-    public boolean advanceIsActivated = false;
+    private boolean advanceIsActivated = false;
     
     public PanelAddressBar() {
         final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("FIELD_QUERYSTRING_TOOLTIP"))};
@@ -365,11 +365,11 @@ public class PanelAddressBar extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             // No injection running
-            if (PanelAddressBar.this.buttonInUrl.getState() == StateButton.STARTABLE) {
+            if (PanelAddressBar.this.getButtonInUrl().getState() == StateButton.STARTABLE) {
                 this.startInjection();
 
             // Injection currently running, stop the process
-            } else if (PanelAddressBar.this.buttonInUrl.getState() == StateButton.STOPPABLE) {
+            } else if (PanelAddressBar.this.getButtonInUrl().getState() == StateButton.STOPPABLE) {
                 this.stopInjection();
             }
         }
@@ -394,9 +394,9 @@ public class PanelAddressBar extends JPanel {
 
             // Then start injection
             if (!MediatorModel.model().isInjectionAlreadyBuilt() || option == JOptionPane.OK_OPTION) {
-                PanelAddressBar.this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_STOP_TOOLTIP"));
-                PanelAddressBar.this.buttonInUrl.setInjectionRunning();
-                PanelAddressBar.this.loader.setVisible(true);
+                PanelAddressBar.this.getButtonInUrl().setToolTipText(I18n.valueByKey("BUTTON_STOP_TOOLTIP"));
+                PanelAddressBar.this.getButtonInUrl().setInjectionRunning();
+                PanelAddressBar.this.getLoader().setVisible(true);
 
                 // Erase everything in the view from a previous injection
                 Request requests = new Request();
@@ -404,7 +404,7 @@ public class PanelAddressBar extends JPanel {
                 MediatorModel.model().sendToViews(requests);
 
                 MediatorModel.model().controlInput(
-                    PanelAddressBar.this.textFieldAddress.getText(),
+                    PanelAddressBar.this.getTextFieldAddress().getText(),
                     PanelAddressBar.this.textFieldRequest.getText(),
                     PanelAddressBar.this.textFieldHeader.getText(),
                     PanelAddressBar.this.methodInjection,
@@ -415,9 +415,9 @@ public class PanelAddressBar extends JPanel {
         }
         
         private void stopInjection() {
-            PanelAddressBar.this.loader.setVisible(false);
-            PanelAddressBar.this.buttonInUrl.setInjectionStopping();
-            PanelAddressBar.this.buttonInUrl.setToolTipText(I18n.valueByKey("BUTTON_STOPPING_TOOLTIP"));
+            PanelAddressBar.this.getLoader().setVisible(false);
+            PanelAddressBar.this.getButtonInUrl().setInjectionStopping();
+            PanelAddressBar.this.getButtonInUrl().setToolTipText(I18n.valueByKey("BUTTON_STOPPING_TOOLTIP"));
             MediatorModel.model().setIsStoppedByUser(true);
         }
     }
@@ -426,11 +426,13 @@ public class PanelAddressBar extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             // No injection running
-            if (PanelAddressBar.this.buttonInUrl.getState() == StateButton.STARTABLE) {
+            if (PanelAddressBar.this.getButtonInUrl().getState() == StateButton.STARTABLE) {
                 this.startInjection();
             }
         }
     }
+    
+    // Getter and setter
 
     /**
      * Change the injection method based on selected radio.
@@ -439,13 +441,21 @@ public class PanelAddressBar extends JPanel {
     public void setMethodInjection(MethodInjection methodInjection) {
         this.methodInjection = methodInjection;
     }
-    
-    /**
-     * Change the injection method based on selected radio.
-     * @param methodInjection The new method
-     */
-    public void setHttpProtocol(String httpProtocol) {
-        this.typeRequest = httpProtocol;
+
+    public JTextField getTextFieldAddress() {
+        return this.textFieldAddress;
+    }
+
+    public JLabel getLoader() {
+        return this.loader;
+    }
+
+    public ButtonAddressBar getButtonInUrl() {
+        return this.buttonInUrl;
+    }
+
+    public boolean isAdvanceIsActivated() {
+        return this.advanceIsActivated;
     }
     
 }

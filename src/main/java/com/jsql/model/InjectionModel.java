@@ -73,7 +73,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Current version of application.
      */
-    public static final String VERSION_JSQL = "0.79";
+    private static final String VERSION_JSQL = "0.79";
     
     /**
      * i.e, -1 in "[..].php?id=-1 union select[..]"
@@ -134,7 +134,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Current evasion step, 0 is 'no evasion'
      */
-    public int stepSecurity = 0;
+    private int stepSecurity = 0;
     
     public void resetModel() {
         this.charInsertion = null;
@@ -207,7 +207,7 @@ public class InjectionModel extends AbstractModelObservable {
             // TODO separate method
             StrategyInjection.TIME.instance().checkApplicability();
             StrategyInjection.BLIND.instance().checkApplicability();
-            StrategyInjection.ERRORBASED.instance().checkApplicability();
+            StrategyInjection.ERROR.instance().checkApplicability();
             StrategyInjection.NORMAL.instance().checkApplicability();
 
             // Choose the most efficient method: normal > error > blind > time
@@ -215,8 +215,8 @@ public class InjectionModel extends AbstractModelObservable {
             if (StrategyInjection.NORMAL.instance().isApplicable()) {
                 StrategyInjection.NORMAL.instance().activateStrategy();
                 
-            } else if (StrategyInjection.ERRORBASED.instance().isApplicable()) {
-                StrategyInjection.ERRORBASED.instance().activateStrategy();
+            } else if (StrategyInjection.ERROR.instance().isApplicable()) {
+                StrategyInjection.ERROR.instance().activateStrategy();
                 
             } else if (StrategyInjection.BLIND.instance().isApplicable()) {
                 StrategyInjection.BLIND.instance().activateStrategy();
@@ -666,10 +666,19 @@ public class InjectionModel extends AbstractModelObservable {
     }
 
     public boolean isInjectionAlreadyBuilt() {
-        return injectionAlreadyBuilt;
+        return this.injectionAlreadyBuilt;
     }
 
     public void setIsScanning(boolean isScanning) {
         this.isScanning = isScanning;
     }
+
+    public static String getVersionJsql() {
+        return VERSION_JSQL;
+    }
+
+    public int getStepSecurity() {
+        return this.stepSecurity;
+    }
+
 }

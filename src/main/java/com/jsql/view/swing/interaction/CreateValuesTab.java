@@ -66,9 +66,9 @@ public class CreateValuesTab extends CreateTab implements InteractionCommand {
             AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
             
             // Update the progress value of the model, end the progress
-            progressingTreeNodeModel.indexProgress = this.table.getChildCount();
+            progressingTreeNodeModel.setIndexProgress(this.table.getChildCount());
             // Mark the node model as 'no stop/pause/resume button'
-            progressingTreeNodeModel.isRunning = false;
+            progressingTreeNodeModel.setRunning(false);
             
             // Create a new table to display the values
             PanelTable newTableJPanel = new PanelTable(this.data, this.columnNames);

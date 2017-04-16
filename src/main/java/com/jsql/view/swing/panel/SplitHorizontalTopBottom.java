@@ -8,7 +8,7 @@
  * Contributors:
  *      ron190 at ymail dot com - initial implementation
  ******************************************************************************/
-package com.jsql.view.swing.panel.util;
+package com.jsql.view.swing.panel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -28,7 +28,7 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import com.jsql.model.InjectionModel;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
-import com.jsql.view.swing.panel.PanelConsoles;
+import com.jsql.view.swing.panel.util.ActionHideShowConsole;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.tab.TabResults;
@@ -43,18 +43,18 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
      * Name of preference for splitter vertical.
      * Reset divider position for current application version.
      */
-    public static final String NAME_V_SPLITPANE = "verticalSplitter-" + InjectionModel.VERSION_JSQL;
+    private static final String NAME_V_SPLITPANE = "verticalSplitter-" + InjectionModel.getVersionJsql();
     
     /**
      * Name of preference for splitter horizontal.
      * Reset divider position for current application version.
      */
-    public static final String NAME_H_SPLITPANE = "horizontalSplitter-" + InjectionModel.VERSION_JSQL;
+    private static final String NAME_H_SPLITPANE = "horizontalSplitter-" + InjectionModel.getVersionJsql();
 
     /**
      * SplitPane containing Manager panels on the left and result tabs on the right.
      */
-    public JSplitPaneWithZeroSizeDivider splitVerticalLeftRight;
+    private JSplitPaneWithZeroSizeDivider splitVerticalLeftRight;
 
     private static final JPanel PANEL_HIDDEN_CONSOLES = new JPanel();
     
@@ -62,9 +62,9 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
      * MouseAdapter used on arrow on tabbedpane header and on
      * ersatz button when bottom panel is hidden.
      */
-    public static final ActionHideShowConsole ACTION_HIDE_SHOW_CONSOLE = new ActionHideShowConsole(PANEL_HIDDEN_CONSOLES);
+    private static final ActionHideShowConsole ACTION_HIDE_SHOW_CONSOLE = new ActionHideShowConsole(PANEL_HIDDEN_CONSOLES);
 
-    public final JLabel labelPlaceholderResult;
+    private final JLabel labelPlaceholderResult;
     
     /**
      * Create main panel with Manager panels on the left, result tabs on the right,
@@ -124,10 +124,32 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         MediatorGui.register(new PanelConsoles());
 
         this.setBottomComponent(MediatorGui.panelConsoles());
-        this.setDividerLocation(669 - horizontalSplitter);
+        this.setDividerLocation(671 - horizontalSplitter);
 
         // defines left and bottom pane
         this.setResizeWeight(1);
+    }
+    
+    // Getter and setter
+
+    public static String getNameVSplitpane() {
+        return NAME_V_SPLITPANE;
+    }
+
+    public static String getNameHSplitpane() {
+        return NAME_H_SPLITPANE;
+    }
+
+    public JSplitPaneWithZeroSizeDivider getSplitVerticalLeftRight() {
+        return this.splitVerticalLeftRight;
+    }
+
+    public static ActionHideShowConsole getActionHideShowConsole() {
+        return ACTION_HIDE_SHOW_CONSOLE;
+    }
+
+    public JLabel getLabelPlaceholderResult() {
+        return this.labelPlaceholderResult;
     }
     
 }

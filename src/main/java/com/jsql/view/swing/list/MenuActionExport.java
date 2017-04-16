@@ -55,29 +55,28 @@ public class MenuActionExport implements ActionListener {
             @Override
             public void approveSelection() {
                 File file = this.getSelectedFile();
-                if (this.getDialogType() == SAVE_DIALOG) {
-                    if (file.exists()) {
-                        int replace = JOptionPane.showConfirmDialog(
-                            this,
-                            file.getName() + " " +I18n.valueByKey("LIST_EXPORT_CONFIRM_LABEL"), I18n.valueByKey("LIST_EXPORT_CONFIRM_TITLE"),
-                            JOptionPane.YES_NO_OPTION
-                        );
-                        switch (replace) {
-                            case JOptionPane.YES_OPTION:
-                                super.approveSelection();
-                                return;
-                            case JOptionPane.NO_OPTION:
-                            case JOptionPane.CLOSED_OPTION:
-                                return;
-                            case JOptionPane.CANCEL_OPTION:
-                                this.cancelSelection();
-                                return;
-                            default:
-                                break;
-                        }
-                    } else {
-                        super.approveSelection();
+                if (file.exists() && this.getDialogType() == JFileChooser.SAVE_DIALOG) {
+                    int replace = JOptionPane.showConfirmDialog(
+                        this,
+                        file.getName() +" "+ I18n.valueByKey("LIST_EXPORT_CONFIRM_LABEL"),
+                        I18n.valueByKey("LIST_EXPORT_CONFIRM_TITLE"),
+                        JOptionPane.YES_NO_OPTION
+                    );
+                    switch (replace) {
+                        case JOptionPane.YES_OPTION:
+                            super.approveSelection();
+                            return;
+                        case JOptionPane.NO_OPTION:
+                        case JOptionPane.CLOSED_OPTION:
+                            return;
+                        case JOptionPane.CANCEL_OPTION:
+                            this.cancelSelection();
+                            return;
+                        default:
+                            break;
                     }
+                } else {
+                    super.approveSelection();
                 }
             }
         };

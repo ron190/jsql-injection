@@ -27,7 +27,7 @@ public class MysqlErrobasedHeaderTestSuite extends ConcreteMysqlTestSuite {
 
         MediatorModel.model().beginInjection();
 
-        MediatorModel.model().setStrategy(StrategyInjection.ERRORBASED);
+        MediatorModel.model().setStrategy(StrategyInjection.ERROR);
     }
     
 }
