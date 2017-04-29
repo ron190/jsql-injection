@@ -274,6 +274,19 @@ public class InjectionModel extends AbstractModelObservable {
         
         urlInjection = this.buildURL(urlInjection, isUsingIndex, dataInjection);
 
+        urlInjection = urlInjection
+            .trim()
+            // Remove comments
+            .replaceAll("(?s)/\\*.*?\\*/", "")
+            // Remove spaces after a word
+            .replaceAll("([^\\s\\w])(\\s+)", "$1")
+            // Remove spaces before a word
+            .replaceAll("(\\s+)([^\\s\\w])", "$2")
+            // Replace spaces
+            .replaceAll("\\s+", "+")
+            /*// Add ending line comment, except for INGRES
+            +(this.vendor != Vendor.INGRES ? "--+" : "")*/;
+
         URL urlObject = null;
         try {
             urlObject = new URL(urlInjection);
@@ -527,8 +540,14 @@ public class InjectionModel extends AbstractModelObservable {
             .replaceAll("(\\s+)([^\\s\\w])", "$2")
             // Replace spaces
             .replaceAll("\\s+", "+")
-            // Add ending line comment, except for INGRES
-            +(this.vendor != Vendor.INGRES ? "--+" : "");
+            // TODO Add ending line comment, except for INGRES
+            +(
+                this.vendor != Vendor.INGRES 
+                ? this.vendor != Vendor.NEO4J 
+                    ? "--+" 
+                    : "//"
+                : ""
+            );
         
         return query;
     }

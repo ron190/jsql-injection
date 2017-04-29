@@ -28,6 +28,24 @@ public class MenuBarCoder extends JMenuBar {
     }
 
     public static class ComboMenu extends JMenu {
+//        private transient ArrowIcon iconRenderer;
+//
+//        public ComboMenu(String label) {
+//            super(label);
+//            this.iconRenderer = new ArrowIcon(SwingConstants.SOUTH, true);
+//            this.setBorderPainted(false);
+//            this.setIcon(new BlankIcon(null, 11));
+//            this.setHorizontalTextPosition(SwingConstants.LEFT);
+//        }
+//
+//        @Override
+//        public void paintComponent(Graphics g) {
+//            super.paintComponent(g);
+//            Dimension d = this.getPreferredSize();
+//            int x = Math.max(0, d.width - this.iconRenderer.getIconWidth() - 3);
+//            int y = Math.max(0, (d.height - this.iconRenderer.getIconHeight()) / 2 - 1);
+//            this.iconRenderer.paintIcon(this, g, x, y);
+//        }
         private transient ArrowIcon iconRenderer;
 
         public ComboMenu(String label) {
@@ -35,14 +53,14 @@ public class MenuBarCoder extends JMenuBar {
             this.iconRenderer = new ArrowIcon(SwingConstants.SOUTH, true);
             this.setBorderPainted(false);
             this.setIcon(new BlankIcon(null, 11));
-            this.setHorizontalTextPosition(SwingConstants.LEFT);
+            this.setHorizontalTextPosition(SwingConstants.RIGHT);
         }
 
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             Dimension d = this.getPreferredSize();
-            int x = Math.max(0, d.width - this.iconRenderer.getIconWidth() - 3);
+            int x = Math.max(0, 10);
             int y = Math.max(0, (d.height - this.iconRenderer.getIconHeight()) / 2 - 1);
             this.iconRenderer.paintIcon(this, g, x, y);
         }

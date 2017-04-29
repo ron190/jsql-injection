@@ -123,7 +123,11 @@ public class ConnectionUtil {
                 SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(loginKerberos);
                 connection = spnego.connect(new URL(ConnectionUtil.getUrlBase()));
             } else {
-                connection = (HttpURLConnection) new URL(ConnectionUtil.getUrlBase()).openConnection();
+                connection = (HttpURLConnection) new URL(
+                    ConnectionUtil.getUrlBase()
+                    // Ignore injection point during the test
+                    .replace("*", "")
+                ).openConnection();
             }
             
             connection.setReadTimeout(ConnectionUtil.TIMEOUT);

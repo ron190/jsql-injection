@@ -18,6 +18,8 @@ public enum Vendor {
     MARIADB("MariaDB", new VendorXml("mysql.xml")),
     MAXDB("MaxDB", new VendorXml("maxdb.xml")),
     MYSQL("MySQL", new VendorXml("mysql.xml")),
+    NEO4J("Neo4j", new VendorXml("neo4j.xml")),
+    NUODB("NuoDB", new VendorXml("nuodb.xml")),
     ORACLE("Oracle", new VendorXml("oracle.xml")),
     POSTGRESQL("PostgreSQL", new VendorXml("postgresql.xml")),
     SQLITE("SQLite", new VendorXml("sqlite.xml")),

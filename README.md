@@ -13,11 +13,11 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)
 
 ## Features
-- Automatic injection of 18 kinds of databases: Access, CUBRID, DB2, Derby, Firebird, H2, HSQLDB, Informix, Ingres, MariaDB, MaxDB, MySQL, Oracle, PostgreSQL, SQLite, SQL Server, Sybase and Teradata
+- Automatic injection of 22 kinds of databases: Access, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MariaDB, MaxDB, MySQL{MariaDb MemSQL}, Neo4j, NuoDB, Oracle{Tibaro}, PostgreSQL{Greenplum}, SQLite, SQL Server, Sybase, Teradata and Vertica
 - Multiple injection strategies: Normal, Error, Blind and Time
 - SQL Engine to study and optimize SQL expressions
-- Creation and vizualisation of Web shell and SQL shell
 - Search for administration pages
+- Creation and vizualisation of Web shell and SQL shell
 - Read files from the host
 - Bruteforce hash of password
 - Code and decode a string
@@ -42,11 +42,17 @@ You can also type `java -jar jsql-injection-v0.79.jar` in your terminal to start
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## Roadmap
-`Database flavor: Hana and Vertica, Injection strategies: DIOS / Routed query / Out of band / Update Insert Delete, WAF detection, Bruteforce of HTTP Auth using NTLM, Arabic translation, Command line interface.`
+`Bruteforce Database Table Column, Full Path Disclosure, Program self-updater, User Agent configuration, Injection strategies: DIOS / Routed query / Out of band / Update Insert Delete, WAF detection, Bruteforce of HTTP Auth using NTLM, Arabic translation, Command line interface.`
+
+## In progress
+`User Agent configuration.`
+
+## Done
+`Database flavor: Neo4j, NuoDB, Hana and Vertica.`
 
 ## Change log
 
-**v0.79** `Wider range of Character Insertion including multibyte %bf, New Error Strategies for MySQL and PostgreSQL, Various optimization and bug fixes`
+**v0.79** `Error Strategies for MySQL and PostgreSQL compatible with Order/Group By, Wider range of Characters Insertion including multibyte %bf`
 
 **v0.78** `SQL Engine, MySQL Error strategy: DOUBLE, Translations: es pt de it nl id, GUI improvements, Database flavor: Access`
 

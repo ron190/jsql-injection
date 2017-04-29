@@ -18,29 +18,29 @@ concat(
 select concat(
     group_concat(
         '${ENCLOSE_VALUE_SQL}'
-        ||r
-        ||'${SEPARATOR_QTE_SQL}'
-        ||cast(q as varchar)
-        ||'${ENCLOSE_VALUE_SQL}'
+        || r
+        || '${SEPARATOR_QTE_SQL}'
+        || cast(q as varchar)
+        || '${ENCLOSE_VALUE_SQL}'
         order by 1
         separator '${SEPARATOR_CELL_SQL}'
     ),
     '${TRAIL_SQL}'
 ) from (
     select
-        cast(owner_name as varchar)r,
-        count(class_name)q
+        cast(owner_name as varchar) r,
+        count(class_name) q
     from db_class
     group by r
     {limit}
-)x
+) x
             </database>
             <table>
 select concat(
     group_concat(
         '${ENCLOSE_VALUE_SQL}'
-        ||cast(r as varchar)
-        ||'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+        || cast(r as varchar)
+        || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
         order by 1
         separator '${SEPARATOR_CELL_SQL}'
     ),
@@ -48,19 +48,19 @@ select concat(
 ) from (
     select class_name r
     from db_class
-    where owner_name='${DATABASE}'
+    where owner_name = '${DATABASE}'
     order by r
     {limit}
-)x
+) x
             </table>
             <column>
 select concat(
     group_concat(
         '${ENCLOSE_VALUE_SQL}'
-        ||cast(n as varchar)
-        ||'${SEPARATOR_QTE_SQL}'
-        ||0
-        ||'${ENCLOSE_VALUE_SQL}'
+        || cast(n as varchar)
+        || '${SEPARATOR_QTE_SQL}'
+        || 0
+        || '${ENCLOSE_VALUE_SQL}'
         order by 1
         separator '${SEPARATOR_CELL_SQL}'
     ),
@@ -68,37 +68,37 @@ select concat(
 ) from (
     select attr_name n
     from db_attribute c 
-    inner join db_class t on t.class_name=c.class_name
-    where t.owner_name='${DATABASE}'
-    and t.class_name='${TABLE}'
+    inner join db_class t on t.class_name = c.class_name
+    where t.owner_name = '${DATABASE}'
+    and t.class_name = '${TABLE}'
     order by n
     {limit}
-)x
+) x
             </column>
             <row>
                 <query>
 select concat(
     group_concat(
         '${ENCLOSE_VALUE_SQL}'
-        ||r
-        ||'${SEPARATOR_QTE_SQL}'
-        ||cast(q as varchar)
-        ||'${ENCLOSE_VALUE_SQL}'
+        || r
+        || '${SEPARATOR_QTE_SQL}'
+        || cast(q as varchar)
+        || '${ENCLOSE_VALUE_SQL}'
         order by 1
         separator '${SEPARATOR_CELL_SQL}'
     ),
     '${TRAIL_SQL}'
 ) from (
     select
-        cast(concat(${FIELDS})as varchar)r,
-        count(*)q
+        cast(concat(${FIELDS}) as varchar) r,
+        count(*) q
     from `${DATABASE}`.`${TABLE}`
     group by r
     {limit}
-)x
+) x
                 </query>
                 <fields>
-                <field>trim(ifnull(`${FIELD}`,''))</field>
+                <field>trim(ifnull(`${FIELD}`, ''))</field>
                 <concat>,'%7f',</concat>
                 </fields>
             </row>
@@ -119,15 +119,15 @@ select concat(
         )
 )
             </slidingWindow>
-            <limit> limit ${LIMIT},65536</limit>
-            <failsafe>''||1337${INDICE}7330%2b1</failsafe>
-            <calibrator>repeat('${CALIBRATOR_SQL}',65536)</calibrator>
+            <limit>limit ${LIMIT}, 65536</limit>
+            <failsafe>'' || 1337${INDICE}7330%2b1</failsafe>
+            <calibrator>repeat('${CALIBRATOR_SQL}', 65536)</calibrator>
             <limitBoundary>0</limitBoundary>
         </configuration>
         <normal>
-            <indices> union select ${INDICES}</indices>
-            <capacity>(select concat('${LEAD}',${INDICE},${CALIBRATOR}))</capacity>
-            <orderBy> order by 1337</orderBy>
+            <indices>union select ${INDICES}</indices>
+            <capacity>(select concat('${LEAD}', ${INDICE}, ${CALIBRATOR}))</capacity>
+            <orderBy>order by 1337</orderBy>
         </normal>
     </strategy>
 </model>

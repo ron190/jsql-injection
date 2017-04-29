@@ -13,17 +13,28 @@ package com.jsql.view.swing.manager;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.List;
+import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JMenu;
+import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.JButtonStateful;
+import com.jsql.view.swing.manager.util.MenuBarCoder;
 import com.jsql.view.swing.manager.util.StateButton;
+import com.jsql.view.swing.manager.util.UserAgent;
+import com.jsql.view.swing.manager.util.UserAgentType;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 
 /**
@@ -89,10 +100,62 @@ public class ManagerAdminPage extends AbstractManagerList {
 
         this.loader.setVisible(false);
 
-        this.lastLine.add(Box.createHorizontalGlue());
-        this.lastLine.add(this.loader);
-        this.lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
-        this.lastLine.add(this.run);
+        
+        JMenu m = MenuBarCoder.createMenu("<User-Agent default>");
+        MenuBarCoder comboMenubar = new MenuBarCoder(m);
+        comboMenubar.setOpaque(false);
+        comboMenubar.setBorder(null);
+        
+        ButtonGroup groupVendor = new ButtonGroup();
+        
+        JRadioButtonMenuItem r = new JRadioButtonMenuItem("<User-Agent default>", true);
+        r.addActionListener(actionEvent -> {
+            m.setText("<User-Agent default>");
+        });
+        r.setToolTipText("Java/"+ System.getProperty("java.version"));
+        groupVendor.add(r);
+        m.add(r);
+        
+        for (Entry<UserAgentType, List<UserAgent>> e: UserAgent.list.entrySet()) {
+            JMenu mm = new JMenu(e.getKey().getLabel());
+            m.add(mm);
+            for (UserAgent u: e.getValue()) {
+                JRadioButtonMenuItem rr = new JRadioButtonMenuItem(u.getLabel());
+                rr.addActionListener(actionEvent -> {
+                    m.setText(u.getLabel());
+                });
+                rr.setToolTipText(u.getUserAgent());
+                groupVendor.add(rr);
+                mm.add(rr);
+            }
+        }
+        
+        this.lastLine.setLayout(new BorderLayout());
+        this.lastLine.add(comboMenubar, BorderLayout.LINE_START);
+        this.lastLine.setPreferredSize(new Dimension(0, 26));
+        
+        this.lastLine.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)
+            )
+        );
+        
+        JPanel p = new JPanel();
+        p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+        p.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)
+            )
+        );
+        
+        p.add(Box.createHorizontalGlue());
+        p.add(this.loader);
+        p.add(Box.createRigidArea(new Dimension(5, 0)));
+        p.add(this.run);
+        
+        this.lastLine.add(p, BorderLayout.LINE_END);
         
         this.add(this.lastLine, BorderLayout.SOUTH);
     }
