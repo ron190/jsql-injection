@@ -1,6 +1,7 @@
 package com.jsql.view.swing.text;
 
 import java.awt.Graphics;
+import java.util.ConcurrentModificationException;
 
 import javax.swing.JTextPane;
 
@@ -44,14 +45,14 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
     @Override
     public void paint(Graphics g) {
         // Fix #4012: ArrayIndexOutOfBoundsException on paint()
+        // Fix #38546: ConcurrentModificationException on getText()
         try {
             super.paint(g);
-        } catch (ArrayIndexOutOfBoundsException e) {
+            if ("".equals(Jsoup.parse(this.getText()).text().trim())) {
+                this.drawPlaceholder(this, g, this.placeholderText);
+            }
+        } catch (ArrayIndexOutOfBoundsException | ConcurrentModificationException e) {
             LOGGER.error(e.getMessage(), e);
-        }
-
-        if ("".equals(Jsoup.parse(this.getText()).text().trim())) {
-            this.drawPlaceholder(this, g, this.placeholderText);
         }
     }
     

