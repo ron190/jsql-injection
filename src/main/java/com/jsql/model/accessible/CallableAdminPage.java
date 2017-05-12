@@ -11,9 +11,9 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
+import com.jsql.model.bean.util.Header;
+import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.bean.util.TypeHeader;
-import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.util.ConnectionUtil;
 
 /**
@@ -77,14 +77,14 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
         connection.setRequestMethod("HEAD");
         this.responseCodeHttp = ObjectUtils.firstNonNull(connection.getHeaderField(0), "");
 
-        Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
-        msgHeader.put(TypeHeader.URL, this.urlAdminPage);
-        msgHeader.put(TypeHeader.POST, "");
-        msgHeader.put(TypeHeader.HEADER, "");
-        msgHeader.put(TypeHeader.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
+        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+        msgHeader.put(Header.URL, this.urlAdminPage);
+        msgHeader.put(Header.POST, "");
+        msgHeader.put(Header.HEADER, "");
+        msgHeader.put(Header.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
 
         Request request = new Request();
-        request.setMessage(TypeRequest.MESSAGE_HEADER);
+        request.setMessage(Interaction.MESSAGE_HEADER);
         request.setParameters(msgHeader);
         MediatorModel.model().sendToViews(request);
         

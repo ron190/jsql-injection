@@ -203,7 +203,7 @@ class Colorer extends Thread {
 				}
 				this.processEvent(re.getPosition(), re.getAdjustment());
 				Thread.sleep(100);
-			} catch(InterruptedException e) { 
+			} catch(InterruptedException e) {
 			    LOGGER.error(e, e);
 			    Thread.currentThread().interrupt();
 			}

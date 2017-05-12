@@ -22,6 +22,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JTree;
+import javax.swing.border.LineBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
@@ -91,6 +92,8 @@ public abstract class AbstractNodeModel {
      * Used to display progress bar.
      */
     private boolean isLoading = false;
+    
+    private PanelNode panel;
 
     /**
      * Create a functional model for tree node.
@@ -188,7 +191,7 @@ public abstract class AbstractNodeModel {
             e.getYOnScreen()
         );
     }
-
+    
     /**
      * Draw the panel component based on node model.
      * @param tree
@@ -205,7 +208,7 @@ public abstract class AbstractNodeModel {
     ) {
 
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
-        final PanelNode panel = new PanelNode(tree, currentNode);
+        panel = new PanelNode(tree, currentNode);
 
         panel.getLabel().setText(StringUtil.detectUtf8Html(this.toString()));
         panel.getLabel().setVisible(true);
@@ -214,12 +217,18 @@ public abstract class AbstractNodeModel {
         panel.setIcon(this.getLeafIcon(isLeaf));
 
         if (isSelected) {
-            panel.getLabel().setBackground(HelperUi.COLOR_SELECTION_BACKGROUND);
+            if (hasFocus) {
+                panel.getLabel().setBackground(HelperUi.COLOR_SELECTION_BACKGROUND);
+                panel.getLabel().setBorder(new LineBorder(HelperUi.COLOR_BLU, 1, false));
+            } else {
+                panel.getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
+                panel.getLabel().setBorder(new LineBorder(new Color(218, 218, 218), 1, false));
+            }
         } else {
             panel.getLabel().setBackground(Color.WHITE);
             panel.getLabel().setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         }
-
+        
         if (this.isLoading) {
             this.displayProgress(panel, currentNode);
             panel.hideIcon();
@@ -353,6 +362,10 @@ public abstract class AbstractNodeModel {
 
     public void setLoading(boolean isLoading) {
         this.isLoading = isLoading;
+    }
+
+    public PanelNode getPanel() {
+        return panel;
     }
     
 }

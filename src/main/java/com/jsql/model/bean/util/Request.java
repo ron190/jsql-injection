@@ -19,7 +19,7 @@ public class Request {
     /**
      * Class identifier for the interraction.
      */
-    private TypeRequest message;
+    private Interaction message;
     
     /**
      * List of parameters.
@@ -30,7 +30,7 @@ public class Request {
      * Get identifier class name for this interraction.
      * @return Name of interraction
      */
-    public TypeRequest getMessage() {
+    public Interaction getMessage() {
         return this.message;
     }
 
@@ -46,7 +46,7 @@ public class Request {
      * Identifier message for this request.
      * @param message Text identifier
      */
-    public void setMessage(TypeRequest message) {
+    public void setMessage(Interaction message) {
         this.message = message;
     }
 

@@ -14,7 +14,7 @@ import java.util.Map;
 
 import javax.swing.JMenu;
 
-import com.jsql.model.bean.util.TypeHeader;
+import com.jsql.model.bean.util.Header;
 import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
@@ -24,7 +24,7 @@ import com.jsql.view.swing.MediatorGui;
  */
 public class MarkErrorInvulnerable implements InteractionCommand {
 	
-    private Map<TypeHeader, Object> mapHeader;
+    private Map<Header, Object> mapHeader;
     private int indexMethodError;
     
     /**
@@ -32,8 +32,8 @@ public class MarkErrorInvulnerable implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public MarkErrorInvulnerable(Object[] interactionParams) {
-        this.mapHeader = (Map<TypeHeader, Object>) interactionParams[0];
-        this.indexMethodError = (int) this.mapHeader.get(TypeHeader.SOURCE);
+        this.mapHeader = (Map<Header, Object>) interactionParams[0];
+        this.indexMethodError = (int) this.mapHeader.get(Header.SOURCE);
     }
 
     @Override

@@ -11,7 +11,12 @@
 package com.jsql.view.swing.manager;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -25,9 +30,11 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTree;
 import javax.swing.MenuElement;
+import javax.swing.border.LineBorder;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import com.jsql.i18n.I18n;
@@ -42,6 +49,7 @@ import com.jsql.view.swing.manager.util.ComboMenu;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tree.CellEditorNode;
 import com.jsql.view.swing.tree.CellRendererNode;
+import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.tree.model.NodeModelEmpty;
 
 /**
@@ -71,6 +79,53 @@ public class ManagerDatabase extends JPanel implements Manager {
 
         // Graphic manager for components
         tree.setCellRenderer(new CellRendererNode());
+        
+        tree.addFocusListener(new FocusListener() {
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+                if (treeNode != null) {
+                    AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
+                    if (nodeModel != null && nodeModel.getPanel() != null) {
+                        nodeModel.getPanel().getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
+                        nodeModel.getPanel().getLabel().setBorder(new LineBorder(new Color(218, 218, 218), 1, false));
+                    }
+                }
+            }
+            
+            @Override
+            public void focusGained(FocusEvent e) {
+                DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+                if (treeNode != null) {
+                    AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
+                    if (nodeModel != null && nodeModel.getPanel() != null) {
+                        nodeModel.getPanel().getLabel().setBackground(HelperUi.COLOR_SELECTION_BACKGROUND);
+                        nodeModel.getPanel().getLabel().setBorder(new LineBorder(HelperUi.COLOR_BLU, 1, false));
+                    }
+                }
+            }
+            
+        });
+        
+        tree.addMouseListener(new MouseAdapter() {
+            
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int selRow = tree.getRowForLocation(e.getX(), e.getY());
+                TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
+                if (selRow != -1) {
+                    if (e.getClickCount() == 2) {
+                        if (tree.isExpanded(selPath)) {
+                            tree.collapsePath(selPath);
+                        } else {
+                            tree.expandPath(selPath);
+                        }
+                    }
+                }
+            }
+            
+        });
 
         // Action manager for components
         tree.setCellEditor(new CellEditorNode());

@@ -14,6 +14,8 @@ import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -21,6 +23,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTree;
+import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import javax.swing.tree.TreeNode;
 
@@ -52,7 +55,7 @@ public class PanelNode extends JPanel {
      * Text of the node.
      */
     private JLabel label = new JLabel();
-
+    
     /**
      * Create Panel for tree nodes.
      * @param tree JTree to populate
@@ -82,6 +85,22 @@ public class PanelNode extends JPanel {
         this.loader.setVisible(false);
         this.label.setVisible(false);
         this.icon.setVisible(false);
+
+        this.addFocusListener(new FocusListener() {
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                label.setBackground(HelperUi.COLOR_FOCUS_LOST);
+                label.setBorder(new LineBorder(new Color(218, 218, 218), 1, false));
+            }
+            
+            @Override
+            public void focusGained(FocusEvent e) {
+                label.setBackground(HelperUi.COLOR_SELECTION_BACKGROUND);
+                label.setBorder(new LineBorder(HelperUi.COLOR_BLU, 1, false));
+            }
+            
+        });
     }
 
     /**

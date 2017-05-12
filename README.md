@@ -23,11 +23,11 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 - Bruteforce hash of password
 - Code and decode a string
 
-## Installation
+## Installation [[jsql-injection-v0.79.jar](https://github.com/ron190/jsql-injection/releases/download/v0.79/jsql-injection-v0.79.jar)]
 Install [Java 8](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) of jSQL and double-click on the .jar to launch the software.<br>
 You can also type `java -jar jsql-injection-v0.79.jar` in your terminal to start the program.
 
-## v0.79 [[download here](https://github.com/ron190/jsql-injection/releases/download/v0.79/jsql-injection-v0.79.jar)]
+## Screenshots [[video](https://youtu.be/ZZkQRE3OL8E)]
 [![Default](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default-mini.png "Default")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default.png)
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
 [![SQL Engine](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.78/sqlengine-mini.png "SQL Engine")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.78/sqlengine.png)
@@ -42,13 +42,13 @@ You can also type `java -jar jsql-injection-v0.79.jar` in your terminal to start
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## Roadmap
-`Full Path Disclosure, Injection strategies: DIOS / Routed query / Out of band / Update Insert Delete, Maven Central components: jsql-injection-core jsql-injection-swing, Upgrade to log4j2,Bruteforce of HTTP Auth using NTLM, Arabic translation, Command line interface, Bruteforce database, WAF detection, Program self-updater.`
+`Multi Database Testing using DbUnit and Hibernate / JPA / Jooq, Full Path Disclosure, Injection strategies: DIOS / Routed query / Out of band / Update Insert Delete, Maven Central components: jsql-injection-core jsql-injection-swing, Upgrade to log4j2, Bruteforce of HTTP Auth using NTLM, Arabic translation, Command line interface, Bruteforce database, WAF detection, Program self-updater.`
 
-## In progress
+## Development in progress
 `User Agent configuration.`
 
-## Done
-`Database flavor: Neo4j NuoDB Hana and Vertica, Russian translation complete.`
+## Done since last release
+`Injection using Coldfusion, Database flavor: Neo4j NuoDB Hana and Vertica, Russian translation complete.`
 
 ## Change log
 

@@ -40,8 +40,8 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
+import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
@@ -400,7 +400,7 @@ public class PanelAddressBar extends JPanel {
 
                 // Erase everything in the view from a previous injection
                 Request requests = new Request();
-                requests.setMessage(TypeRequest.RESET_INTERFACE);
+                requests.setMessage(Interaction.RESET_INTERFACE);
                 MediatorModel.model().sendToViews(requests);
 
                 MediatorModel.model().controlInput(

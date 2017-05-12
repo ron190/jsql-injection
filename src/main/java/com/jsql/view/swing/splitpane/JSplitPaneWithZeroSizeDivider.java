@@ -30,6 +30,8 @@ import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.view.swing.HelperUi;
 
 /**
@@ -38,6 +40,11 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 	
     /**
      * The size of the transparent drag area.
@@ -129,12 +136,17 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
         public void paint(Graphics g) {
             g.setColor(this.getBackground());
             if (this.orientation == HORIZONTAL_SPLIT) {
-                g.drawLine(
-                    JSplitPaneWithZeroSizeDivider.this.dividerDragOffset,
-                    0,
-                    JSplitPaneWithZeroSizeDivider.this.dividerDragOffset,
-                    this.getHeight() - 1
-                );
+                // Fix #38925: ClassCastException on drawLine()
+                try {
+                    g.drawLine(
+                        JSplitPaneWithZeroSizeDivider.this.dividerDragOffset,
+                        0,
+                        JSplitPaneWithZeroSizeDivider.this.dividerDragOffset,
+                        this.getHeight() - 1
+                    );
+                } catch (ClassCastException e) {
+                    LOGGER.error(e, e);
+                }
             } else {
                 g.drawLine(
                     0,

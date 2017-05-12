@@ -55,8 +55,8 @@ public class Crc64 {
      */
     public static String generateCRC64(final byte[] data) {
         long sum = 0;
-        for (int i = 0; i < data.length; i++) {
-            final int lookupidx = ((int) sum ^ data[i]) & 0xff;
+        for (byte element : data) {
+            final int lookupidx = ((int) sum ^ element) & 0xff;
             sum = (sum >>> 8) ^ LOOKUPTABLE[lookupidx];
         }
         return String.valueOf(sum);

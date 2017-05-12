@@ -163,7 +163,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
             } else if (
                 // Cancel the select all shortcut Ctrl+A
                 keyEvent.getKeyCode() == KeyEvent.VK_A && (keyEvent.getModifiers() & InputEvent.CTRL_MASK) != 0 ||
-                // Cancel the *ting* sound if deleting while at the end of line
+                // Cancel the *beep* sound if deleting while at the end of line
                 keyEvent.getKeyCode() == KeyEvent.VK_DELETE && caretPosition == this.terminal.getDocument().getLength() ||
                 (keyEvent.getModifiers() & InputEvent.CTRL_MASK) != 0 && (keyEvent.getModifiers() & InputEvent.SHIFT_MASK) != 0 ||
                 keyEvent.getKeyCode() == KeyEvent.VK_PAGE_UP ||

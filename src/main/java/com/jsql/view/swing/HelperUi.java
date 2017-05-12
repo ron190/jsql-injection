@@ -233,6 +233,7 @@ public final class HelperUi {
         UIManager.put("MenuItem.selectionBackground", HelperUi.COLOR_SELECTION_BACKGROUND);
         UIManager.put("MenuItem.font", HelperUi.FONT_SEGOE);
         UIManager.put("MenuItem.borderPainted", false);
+        UIManager.put("MenuItem.disabledAreNavigable", Boolean.TRUE);
         
         UIManager.put("CheckBoxMenuItem.selectionBackground", HelperUi.COLOR_SELECTION_BACKGROUND);
         UIManager.put("CheckBoxMenuItem.font", HelperUi.FONT_SEGOE);
@@ -333,6 +334,8 @@ public final class HelperUi {
         UIManager.put("ComboBoxUI", CustomBasicComboBoxUI.class.getName());
         
         UIManager.put("swing.boldMetal", Boolean.FALSE);
+        
+        UIManager.put("Button.defaultButtonFollowsFocus", Boolean.TRUE);
     }
 
     /**

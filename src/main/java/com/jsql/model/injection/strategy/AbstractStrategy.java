@@ -4,9 +4,9 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import com.jsql.model.MediatorModel;
+import com.jsql.model.bean.util.Header;
+import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.bean.util.TypeHeader;
-import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
@@ -49,41 +49,41 @@ public abstract class AbstractStrategy {
      */
     protected abstract void unallow();
     
-    public void markVulnerable(TypeRequest message) {
+    public void markVulnerable(Interaction message) {
         Request request = new Request();
         request.setMessage(message);
         
-        Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
-        msgHeader.put(TypeHeader.URL, ConnectionUtil.getUrlByUser());
+        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+        msgHeader.put(Header.URL, ConnectionUtil.getUrlByUser());
 
         request.setParameters(msgHeader);
         MediatorModel.model().sendToViews(request);
     }
 
-    public void markInvulnerable(TypeRequest message) {
+    public void markInvulnerable(Interaction message) {
         Request request = new Request();
         request.setMessage(message);
         MediatorModel.model().sendToViews(request);
     }
     
-    public void markVulnerable(TypeRequest message, int i) {
+    public void markVulnerable(Interaction message, int i) {
         Request request = new Request();
         request.setMessage(message);
         
-        Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
-        msgHeader.put(TypeHeader.URL, ConnectionUtil.getUrlByUser());
-        msgHeader.put(TypeHeader.SOURCE, i);
+        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+        msgHeader.put(Header.URL, ConnectionUtil.getUrlByUser());
+        msgHeader.put(Header.SOURCE, i);
 
         request.setParameters(msgHeader);
         MediatorModel.model().sendToViews(request);
     }
 
-    public void markInvulnerable(TypeRequest message, int i) {
+    public void markInvulnerable(Interaction message, int i) {
         Request request = new Request();
         request.setMessage(message);
         
-        Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
-        msgHeader.put(TypeHeader.SOURCE, i);
+        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+        msgHeader.put(Header.SOURCE, i);
 
         request.setParameters(msgHeader);
         MediatorModel.model().sendToViews(request);

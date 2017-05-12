@@ -33,7 +33,7 @@ public class JButtonStateful extends JButton {
     }
 
     public String getDefaultText() {
-        return defaultText;
+        return this.defaultText;
     }
 
     public void setDefaultText(String defaultText) {

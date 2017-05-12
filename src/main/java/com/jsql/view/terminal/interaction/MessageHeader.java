@@ -14,7 +14,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.bean.util.TypeHeader;
+import com.jsql.model.bean.util.Header;
 import com.jsql.view.interaction.InteractionCommand;
 
 /**
@@ -42,10 +42,10 @@ public class MessageHeader implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
         Map<String, Object> params = (Map<String, Object>) interactionParams[0];
-        this.url = (String) params.get(TypeHeader.URL);
-        this.post = (String) params.get(TypeHeader.POST);
-        this.header = (String) params.get(TypeHeader.HEADER);
-        this.response = (Map<String, String>) params.get(TypeHeader.RESPONSE);
+        this.url = (String) params.get(Header.URL);
+        this.post = (String) params.get(Header.POST);
+        this.header = (String) params.get(Header.HEADER);
+        this.response = (Map<String, String>) params.get(Header.RESPONSE);
     }
 
     @Override

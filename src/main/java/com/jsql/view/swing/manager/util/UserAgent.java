@@ -16,7 +16,7 @@ public enum UserAgent {
     SEAMONKEY("SeaMonkey", UserAgentType.BROWSER, "Mozilla/5.0 (Windows NT 5.2; RW; rv:7.0a1) Gecko/20091211 SeaMonkey/9.23a1pre"),
     
 //    GMAIL("Gmail", UserAgentType.FEED_READER, "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7 (via ggpht.com GoogleImageProxy)"),
-//    
+//
 //    GMAIL("Gmail", UserAgentType.LIBRARY, "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7 (via ggpht.com GoogleImageProxy)"),
     
     ANDROID("Android", UserAgentType.MOBILE_BROWSER, "Mozilla/5.0 (Linux; U; Android 4.2; en-us; Nexus 10 Build/JVP15I) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30"),
@@ -32,9 +32,9 @@ public enum UserAgent {
     WGET("Wget", UserAgentType.OFFLINE_BROWSER, "Wget/1.16 (linux-gnu)"),
     
 //    GMAIL("Gmail", UserAgentType.OTHER, "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7 (via ggpht.com GoogleImageProxy)"),
-//    
+//
 //    GMAIL("Gmail", UserAgentType.VALIDATOR, "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7 (via ggpht.com GoogleImageProxy)"),
-//    
+//
 //    GMAIL("Gmail", UserAgentType.WAP_BROWSER, "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7 (via ggpht.com GoogleImageProxy)"),
     
     GMAIL("Gmail", UserAgentType.EMAIL_CLIENT, "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7 (via ggpht.com GoogleImageProxy)"),
@@ -64,15 +64,15 @@ public enum UserAgent {
     }
 
     public String getLabel() {
-        return label;
+        return this.label;
     }
 
     public UserAgentType getType() {
-        return type;
+        return this.type;
     }
 
     public String getUserAgent() {
-        return userAgent;
+        return this.userAgent;
     }
     
 }

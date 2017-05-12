@@ -41,9 +41,9 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
+import com.jsql.model.bean.util.Header;
+import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.bean.util.TypeHeader;
-import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
@@ -154,7 +154,7 @@ public class RessourceAccess {
                 CallableAdminPage currentCallable = taskCompletionService.take().get();
                 if (currentCallable.isHttpResponseOk()) {
                     Request request = new Request();
-                    request.setMessage(TypeRequest.CREATE_ADMIN_PAGE_TAB);
+                    request.setMessage(Interaction.CREATE_ADMIN_PAGE_TAB);
                     request.setParameters(currentCallable.getUrl());
                     MediatorModel.model().sendToViews(request);
 
@@ -182,7 +182,7 @@ public class RessourceAccess {
         }
 
         Request request = new Request();
-        request.setMessage(TypeRequest.END_ADMIN_SEARCH);
+        request.setMessage(Interaction.END_ADMIN_SEARCH);
         MediatorModel.model().sendToViews(request);
     }
     
@@ -235,7 +235,7 @@ public class RessourceAccess {
             LOGGER.info("Web payload deployed at \""+ url + FILENAME_WEBSHELL +"\" in \""+ pathShellFixed + FILENAME_WEBSHELL +"\"");
             
             Request request = new Request();
-            request.setMessage(TypeRequest.CREATE_SHELL_TAB);
+            request.setMessage(Interaction.CREATE_SHELL_TAB);
             request.setParameters(pathShellFixed, url);
             MediatorModel.model().sendToViews(request);
         } else {
@@ -278,15 +278,15 @@ public class RessourceAccess {
             LOGGER.warn("Incorrect response from Web shell", e);
         }
         
-        Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
-        msgHeader.put(TypeHeader.URL, url);
-        msgHeader.put(TypeHeader.POST, "");
-        msgHeader.put(TypeHeader.HEADER, "");
-        msgHeader.put(TypeHeader.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
-        msgHeader.put(TypeHeader.SOURCE, pageSource.toString());
+        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+        msgHeader.put(Header.URL, url);
+        msgHeader.put(Header.POST, "");
+        msgHeader.put(Header.HEADER, "");
+        msgHeader.put(Header.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
+        msgHeader.put(Header.SOURCE, pageSource.toString());
         
         Request request = new Request();
-        request.setMessage(TypeRequest.MESSAGE_HEADER);
+        request.setMessage(Interaction.MESSAGE_HEADER);
         request.setParameters(msgHeader);
         MediatorModel.model().sendToViews(request);
         
@@ -318,7 +318,7 @@ public class RessourceAccess {
         } finally {
             // Unfroze interface
             Request request = new Request();
-            request.setMessage(TypeRequest.GET_WEB_SHELL_RESULT);
+            request.setMessage(Interaction.GET_WEB_SHELL_RESULT);
             request.setParameters(uuidShell, result);
             MediatorModel.model().sendToViews(request);
         }
@@ -384,7 +384,7 @@ public class RessourceAccess {
             LOGGER.info("SQL payload deployed at \""+ url + FILENAME_SQLSHELL +"\" in \""+ pathShellFixed + FILENAME_SQLSHELL +"\"");
             
             Request request = new Request();
-            request.setMessage(TypeRequest.CREATE_SQL_SHELL_TAB);
+            request.setMessage(Interaction.CREATE_SQL_SHELL_TAB);
             request.setParameters(pathShellFixed, url, username, password);
             MediatorModel.model().sendToViews(request);
         } else {
@@ -475,7 +475,7 @@ public class RessourceAccess {
         } finally {
             // Unfroze interface
             Request request = new Request();
-            request.setMessage(TypeRequest.GET_SQL_SHELL_RESULT);
+            request.setMessage(Interaction.GET_SQL_SHELL_RESULT);
             request.setParameters(uuidShell, result, command);
             MediatorModel.model().sendToViews(request);
         }
@@ -598,15 +598,15 @@ public class RessourceAccess {
                         LOGGER.warn("Upload failed");
                     }
                     
-                    Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
-                    msgHeader.put(TypeHeader.URL, urlFileFixed);
-                    msgHeader.put(TypeHeader.POST, "");
-                    msgHeader.put(TypeHeader.HEADER, "");
-                    msgHeader.put(TypeHeader.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
-                    msgHeader.put(TypeHeader.SOURCE, result.toString());
+                    Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+                    msgHeader.put(Header.URL, urlFileFixed);
+                    msgHeader.put(Header.POST, "");
+                    msgHeader.put(Header.HEADER, "");
+                    msgHeader.put(Header.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
+                    msgHeader.put(Header.SOURCE, result.toString());
     
                     Request request = new Request();
-                    request.setMessage(TypeRequest.MESSAGE_HEADER);
+                    request.setMessage(Interaction.MESSAGE_HEADER);
                     request.setParameters(msgHeader);
                     MediatorModel.model().sendToViews(request);
                 }
@@ -616,7 +616,7 @@ public class RessourceAccess {
         }
         
         Request request = new Request();
-        request.setMessage(TypeRequest.END_UPLOAD);
+        request.setMessage(Interaction.END_UPLOAD);
         MediatorModel.model().sendToViews(request);
     }
     
@@ -639,18 +639,18 @@ public class RessourceAccess {
         if ("".equals(resultInjection)) {
             MediatorModel.model().sendResponseFromSite("Can't read privilege", sourcePage[0].trim());
             Request request = new Request();
-            request.setMessage(TypeRequest.MARK_FILE_SYSTEM_INVULNERABLE);
+            request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);
             MediatorModel.model().sendToViews(request);
             RessourceAccess.readingIsAllowed = false;
         } else if ("false".equals(resultInjection)) {
             LOGGER.warn("No FILE privilege");
             Request request = new Request();
-            request.setMessage(TypeRequest.MARK_FILE_SYSTEM_INVULNERABLE);
+            request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);
             MediatorModel.model().sendToViews(request);
             RessourceAccess.readingIsAllowed = false;
         } else {
             Request request = new Request();
-            request.setMessage(TypeRequest.MARK_FILE_SYSTEM_VULNERABLE);
+            request.setMessage(Interaction.MARK_FILE_SYSTEM_VULNERABLE);
             MediatorModel.model().sendToViews(request);
             RessourceAccess.readingIsAllowed = true;
         }
@@ -698,7 +698,7 @@ public class RessourceAccess {
                 String path = currentCallable.getPathFile();
 
                 Request request = new Request();
-                request.setMessage(TypeRequest.CREATE_FILE_TAB);
+                request.setMessage(Interaction.CREATE_FILE_TAB);
                 request.setParameters(name, content, path);
                 MediatorModel.model().sendToViews(request);
 
@@ -734,7 +734,7 @@ public class RessourceAccess {
         }
         
         Request request = new Request();
-        request.setMessage(TypeRequest.END_FILE_SEARCH);
+        request.setMessage(Interaction.END_FILE_SEARCH);
         MediatorModel.model().sendToViews(request);
     }
     
@@ -749,7 +749,7 @@ public class RessourceAccess {
     public static void scanList(List<ListItem> urlList) {
         // Erase everything in the view from a previous injection
         Request requests = new Request();
-        requests.setMessage(TypeRequest.RESET_INTERFACE);
+        requests.setMessage(Interaction.RESET_INTERFACE);
         MediatorModel.model().sendToViews(requests);
         
         // wait for ending of ongoing interaction between two injections
@@ -791,7 +791,7 @@ public class RessourceAccess {
         RessourceAccess.isScanStopped = false;
 
         Request request = new Request();
-        request.setMessage(TypeRequest.END_SCAN);
+        request.setMessage(Interaction.END_SCAN);
         MediatorModel.model().sendToViews(request);
     }
 

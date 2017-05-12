@@ -28,7 +28,7 @@ public class JPopupTextPane extends JPopupTextComponent<JTextPane> implements De
      * @param placeholder
      */
     public JPopupTextPane(String placeholder) {
-        this(new JTextPanePlaceholder(placeholder) {
+        this(new JTextPanePlaceholderConsole(placeholder) {
             @Override
             public boolean isEditable() {
                 return false;

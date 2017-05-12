@@ -112,7 +112,7 @@ public class SwingAppender extends WriterAppender {
             case Level.TRACE_INT:
                 if (throwableInformation == null || !(throwableInformation.getThrowable() instanceof IgnoreMessageException)) {
                     consoleTextPane.append(message, TRACE);
-                    consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
+//                    consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
                 }
                 break;
                 
@@ -129,17 +129,17 @@ public class SwingAppender extends WriterAppender {
                 
             case Priority.WARN_INT:
                 consoleTextPane.append(message, WARN);
-                consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
+//                consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
                 break;
                 
             case Priority.INFO_INT:
                 consoleTextPane.append(message, INFO);
-                consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
+//                consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
                 break;
                 
             case Priority.DEBUG_INT:
                 consoleTextPane.append(message, DEBUG);
-                consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
+//                consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
                 break;
                 
             case Priority.FATAL_INT:
@@ -149,7 +149,7 @@ public class SwingAppender extends WriterAppender {
             case Priority.ALL_INT:
             default:
                 consoleTextPane.append(message, ALL);
-                consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
+//                consoleTextPane.getProxy().setCaretPosition(consoleTextPane.getProxy().getDocument().getLength());
                 break;
         }
     }

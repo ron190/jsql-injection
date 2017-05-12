@@ -1,6 +1,6 @@
 package com.jsql.model.bean.util;
 
-public enum TypeRequest {
+public enum Interaction {
 	
     ADD_COLUMNS("AddColumns"),
     ADD_DATABASES("AddDatabases"),
@@ -56,7 +56,7 @@ public enum TypeRequest {
     
     private String name;
     
-    private TypeRequest(String name) {
+    private Interaction(String name) {
         this.name = name;
     }
     

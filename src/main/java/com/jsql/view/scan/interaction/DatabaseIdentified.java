@@ -15,7 +15,7 @@ import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
-import com.jsql.model.bean.util.TypeHeader;
+import com.jsql.model.bean.util.Header;
 import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
@@ -36,8 +36,8 @@ public class DatabaseIdentified implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public DatabaseIdentified(Object[] interactionParams) {
         Map<String, Object> params = (Map<String, Object>) interactionParams[0];
-        this.url = (String) params.get(TypeHeader.URL);
-        this.vendor = (Vendor) params.get(TypeHeader.VENDOR);
+        this.url = (String) params.get(Header.URL);
+        this.vendor = (Vendor) params.get(Header.VENDOR);
     }
 
     @Override

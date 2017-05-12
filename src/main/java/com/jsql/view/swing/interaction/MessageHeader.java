@@ -22,8 +22,8 @@ import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.HttpHeader;
-import com.jsql.model.bean.util.TypeHeader;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.JScrollIndicator;
@@ -52,11 +52,11 @@ public class MessageHeader implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
         this.params = (Map<String, Object>) interactionParams[0];
-        this.url = (String) this.params.get(TypeHeader.URL);
-        this.post = (String) this.params.get(TypeHeader.POST);
-        this.header = (String) this.params.get(TypeHeader.HEADER);
-        this.response = (Map<String, String>) this.params.get(TypeHeader.RESPONSE);
-        this.source = (String) this.params.get(TypeHeader.SOURCE);
+        this.url = (String) this.params.get(Header.URL);
+        this.post = (String) this.params.get(Header.POST);
+        this.header = (String) this.params.get(Header.HEADER);
+        this.response = (Map<String, String>) this.params.get(Header.RESPONSE);
+        this.source = (String) this.params.get(Header.SOURCE);
     }
 
     @Override

@@ -375,7 +375,7 @@ public class TabbedPaneDnD extends JTabbedPane {
             Point tabPt = e.getPoint();
             
             if (
-                this.startPt != null 
+                this.startPt != null
                 && Math.sqrt(Math.pow((double) tabPt.x - this.startPt.x, 2d) + Math.pow((double) tabPt.y - this.startPt.y, 2d)) > this.gestureMotionThreshold
             ) {
                 TabbedPaneDnD src = (TabbedPaneDnD) e.getSource();

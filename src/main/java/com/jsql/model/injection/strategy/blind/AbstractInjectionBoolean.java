@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
+import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -153,7 +153,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                         String charText = Character.toString((char) codeAscii);
 
                         Request interaction = new Request();
-                        interaction.setMessage(TypeRequest.MESSAGE_BINARY);
+                        interaction.setMessage(Interaction.MESSAGE_BINARY);
                         interaction.setParameters(new String(codeAsciiInBinary) +"="+ charText.replaceAll("\\n", "\\\\\\n").replaceAll("\\r", "\\\\\\r").replaceAll("\\t", "\\\\\\t"));
                         MediatorModel.model().sendToViews(interaction);
                     } catch (NumberFormatException err) {

@@ -247,7 +247,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
     }
 
     public JTextField getHash() {
-        return hash;
+        return this.hash;
     }
 
     public void setHash(JTextField hash) {
@@ -255,7 +255,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
     }
 
     public JComboBox<String> getHashTypes() {
-        return hashTypes;
+        return this.hashTypes;
     }
 
     public void setHashTypes(JComboBox<String> hashTypes) {
@@ -263,7 +263,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
     }
 
     public JCheckBox getLowerCaseCharacters() {
-        return lowerCaseCharacters;
+        return this.lowerCaseCharacters;
     }
 
     public void setLowerCaseCharacters(JCheckBox lowerCaseCharacters) {
@@ -271,7 +271,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
     }
 
     public JCheckBox getUpperCaseCharacters() {
-        return upperCaseCharacters;
+        return this.upperCaseCharacters;
     }
 
     public void setUpperCaseCharacters(JCheckBox upperCaseCharacters) {
@@ -279,7 +279,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
     }
 
     public JCheckBox getNumericCharacters() {
-        return numericCharacters;
+        return this.numericCharacters;
     }
 
     public void setNumericCharacters(JCheckBox numericCharacters) {
@@ -287,7 +287,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
     }
 
     public JCheckBox getSpecialCharacters() {
-        return specialCharacters;
+        return this.specialCharacters;
     }
 
     public void setSpecialCharacters(JCheckBox specialCharacters) {
@@ -295,7 +295,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
     }
 
     public JTextField getExclude() {
-        return exclude;
+        return this.exclude;
     }
 
     public void setExclude(JTextField exclude) {
@@ -303,7 +303,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
     }
 
     public JSpinner getMinimumLength() {
-        return minimumLength;
+        return this.minimumLength;
     }
 
     public void setMinimumLength(JSpinner minimumLength) {
@@ -311,7 +311,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
     }
 
     public JSpinner getMaximumLength() {
-        return maximumLength;
+        return this.maximumLength;
     }
 
     public void setMaximumLength(JSpinner maximumLength) {
@@ -319,7 +319,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
     }
 
     public JTextArea getResult() {
-        return result;
+        return this.result;
     }
 
     public void setResult(JTextArea result) {
@@ -327,7 +327,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
     }
 
     public JLabel getLoader() {
-        return loader;
+        return this.loader;
     }
 
     public void setLoader(JLabel loader) {

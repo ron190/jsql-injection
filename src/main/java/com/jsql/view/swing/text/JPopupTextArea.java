@@ -34,8 +34,8 @@ public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements De
      * Build new instance of readonly JTextArea to decorate
      * with a default placeholder.
      */
-    public JPopupTextArea(String p) {
-        this(new JTextAreaPlaceholder(p) {
+    public JPopupTextArea(String placeholder) {
+        this(new JTextAreaPlaceholder(placeholder) {
             @Override
             public boolean isEditable() {
                 return false;

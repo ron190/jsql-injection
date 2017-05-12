@@ -15,7 +15,7 @@ import java.util.Map;
 import javax.swing.DefaultListModel;
 import javax.swing.ListModel;
 
-import com.jsql.model.bean.util.TypeHeader;
+import com.jsql.model.bean.util.Header;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.ListItem;
@@ -33,7 +33,7 @@ public class MarkErrorVulnerable implements InteractionCommand {
     @SuppressWarnings("unchecked")
     public MarkErrorVulnerable(Object[] interactionParams) {
         Map<String, Object> params = (Map<String, Object>) interactionParams[0];
-        this.url = (String) params.get(TypeHeader.URL);
+        this.url = (String) params.get(Header.URL);
     }
 
     @Override

@@ -48,10 +48,12 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
 
         renderer.setFont(new Font("Segoe UI", Font.PLAIN, renderer.getFont().getSize()));
 
-        if (isSelected && list.isFocusOwner()) {
-            renderer.setBackground(HelperUi.COLOR_SELECTION_BACKGROUND);
-        } else if (isSelected && !list.isFocusOwner()) {
-            renderer.setBackground(HelperUi.COLOR_FOCUS_LOST);
+        if (isSelected) {
+            if (list.isFocusOwner()) {
+                renderer.setBackground(HelperUi.COLOR_SELECTION_BACKGROUND);
+            } else {
+                renderer.setBackground(HelperUi.COLOR_FOCUS_LOST);
+            }
         } else {
             renderer.setBackground(Color.WHITE);
         }
@@ -62,10 +64,12 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
             renderer.setForeground(new Color(0, 0, 255));
         }
 
-        if (isSelected && list.isFocusOwner()) {
-            renderer.setBorder(new LineBorder(HelperUi.COLOR_BLU, 1, false));
-        } else if (isSelected && !list.isFocusOwner()) {
-            renderer.setBorder(new LineBorder(new Color(218, 218, 218), 1, false));
+        if (isSelected) {
+            if (list.isFocusOwner()) {
+                renderer.setBorder(new LineBorder(HelperUi.COLOR_BLU, 1, false));
+            } else {
+                renderer.setBorder(new LineBorder(new Color(218, 218, 218), 1, false));
+            }
         } else if (isFocused) {
             renderer.setBorder(BorderFactory.createCompoundBorder( new AbstractBorder() {
                 @Override

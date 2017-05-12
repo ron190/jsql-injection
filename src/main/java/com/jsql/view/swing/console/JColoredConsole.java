@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.text.SimpleAttributeSet;
 
 import org.apache.log4j.Logger;
@@ -32,11 +34,11 @@ public class JColoredConsole extends JPopupTextPane {
 
     /**
      * Create a JTextPane which displays colored strings.
-     * @param newTabName Text name of tab
+     * @param tabName Text name of tab
      */
-    public JColoredConsole(final String newTabName, String placeholder) {
+    public JColoredConsole(final String tabName, String placeholder) {
         super(placeholder);
-        this.tabName = newTabName;
+        this.tabName = tabName;
         
         this.addFocusListener(new FocusAdapter() {
             @Override
@@ -56,11 +58,22 @@ public class JColoredConsole extends JPopupTextPane {
      */
     public void append(String message, SimpleAttributeSet attribut) {
         try {
+            boolean isCaretAtEnd = this.getProxy().getCaretPosition() == this.getProxy().getDocument().getLength();
+            
+            JScrollPane v = (JScrollPane) this.getProxy().getParent().getParent();
+            JScrollBar vertical = v.getVerticalScrollBar();
+            int extent = vertical.getModel().getExtent();
+            boolean isScrollBarAtEnd = vertical.getValue() >= vertical.getMaximum() - extent;
+            
             this.getProxy().getDocument().insertString(
                 this.getProxy().getDocument().getLength(),
                 (this.getProxy().getDocument().getLength() == 0 ? "" : "\n") + message,
                 attribut
             );
+            
+            if (isCaretAtEnd || isScrollBarAtEnd) {
+                vertical.setValue(vertical.getMaximum() + 1);
+            }
 
             int tabIndex = MediatorGui.tabConsoles().indexOfTab(this.tabName);
             if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {

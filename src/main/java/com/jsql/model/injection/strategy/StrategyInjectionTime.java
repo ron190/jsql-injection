@@ -13,8 +13,8 @@ package com.jsql.model.injection.strategy;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
+import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.InjectionTime;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -52,12 +52,12 @@ public class StrategyInjectionTime extends AbstractStrategy {
     
     @Override
     public void allow() {
-        this.markVulnerable(TypeRequest.MARK_TIME_VULNERABLE);
+        this.markVulnerable(Interaction.MARK_TIME_VULNERABLE);
     }
 
     @Override
     public void unallow() {
-        this.markVulnerable(TypeRequest.MARK_TIME_INVULNERABLE);
+        this.markVulnerable(Interaction.MARK_TIME_INVULNERABLE);
     }
 
     @Override
@@ -74,12 +74,12 @@ public class StrategyInjectionTime extends AbstractStrategy {
         MediatorModel.model().setStrategy(StrategyInjection.TIME);
         
         Request requestMessageBinary = new Request();
-        requestMessageBinary.setMessage(TypeRequest.MESSAGE_BINARY);
+        requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
         requestMessageBinary.setParameters(this.timeInjection.getInfoMessage());
         MediatorModel.model().sendToViews(requestMessageBinary);
         
         Request requestMarkTimeStrategy = new Request();
-        requestMarkTimeStrategy.setMessage(TypeRequest.MARK_TIME_STRATEGY);
+        requestMarkTimeStrategy.setMessage(Interaction.MARK_TIME_STRATEGY);
         MediatorModel.model().sendToViews(requestMarkTimeStrategy);
     }
     

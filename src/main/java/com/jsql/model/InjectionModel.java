@@ -34,9 +34,9 @@ import org.ietf.jgss.GSSException;
 
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.accessible.RessourceAccess;
+import com.jsql.model.bean.util.Header;
+import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.bean.util.TypeHeader;
-import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
@@ -188,18 +188,18 @@ public class InjectionModel extends AbstractModelObservable {
             } else {
                 LOGGER.info("Using database type ["+ this.vendor +"]");
                 
-                Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
-                msgHeader.put(TypeHeader.URL, ConnectionUtil.getUrlBase() + ConnectionUtil.getQueryString() + this.charInsertion);
-                msgHeader.put(TypeHeader.VENDOR, this.vendor);
+                Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+                msgHeader.put(Header.URL, ConnectionUtil.getUrlBase() + ConnectionUtil.getQueryString() + this.charInsertion);
+                msgHeader.put(Header.VENDOR, this.vendor);
                 
                 Request requestDatabaseIdentified = new Request();
-                requestDatabaseIdentified.setMessage(TypeRequest.DATABASE_IDENTIFIED);
+                requestDatabaseIdentified.setMessage(Interaction.DATABASE_IDENTIFIED);
                 requestDatabaseIdentified.setParameters(msgHeader);
                 this.sendToViews(requestDatabaseIdentified);
             }
             
             Request requestSetVendor = new Request();
-            requestSetVendor.setMessage(TypeRequest.SET_VENDOR);
+            requestSetVendor.setMessage(Interaction.SET_VENDOR);
             requestSetVendor.setParameters(this.vendor);
             this.sendToViews(requestSetVendor);
 
@@ -231,7 +231,7 @@ public class InjectionModel extends AbstractModelObservable {
                 LOGGER.warn("Injection failed, testing evasion level "+ this.stepSecurity +"...");
                 
                 Request request = new Request();
-                request.setMessage(TypeRequest.RESET_STRATEGY_LABEL);
+                request.setMessage(Interaction.RESET_STRATEGY_LABEL);
                 this.sendToViews(request);
                 
                 // sinon perte de insertionCharacter entre 2 injections
@@ -254,7 +254,7 @@ public class InjectionModel extends AbstractModelObservable {
             LOGGER.warn(e.getMessage(), e);
         } finally {
             Request request = new Request();
-            request.setMessage(TypeRequest.END_PREPARATION);
+            request.setMessage(Interaction.END_PREPARATION);
             this.sendToViews(request);
         }
     }
@@ -372,8 +372,8 @@ public class InjectionModel extends AbstractModelObservable {
             
             ConnectionUtil.fixJcifsTimeout(connection);
 
-            Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
-            msgHeader.put(TypeHeader.URL, urlInjection);
+            Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+            msgHeader.put(Header.URL, urlInjection);
             
             /**
              * Build the HEADER and logs infos
@@ -384,7 +384,7 @@ public class InjectionModel extends AbstractModelObservable {
                     ConnectionUtil.sanitizeHeaders(connection, header);
                 }
                 
-                msgHeader.put(TypeHeader.HEADER, this.buildQuery(MethodInjection.HEADER, ConnectionUtil.getHeader(), isUsingIndex, dataInjection));
+                msgHeader.put(Header.HEADER, this.buildQuery(MethodInjection.HEADER, ConnectionUtil.getHeader(), isUsingIndex, dataInjection));
             }
     
             /**
@@ -406,13 +406,13 @@ public class InjectionModel extends AbstractModelObservable {
                         dataOut.close();
                     }
                     
-                    msgHeader.put(TypeHeader.POST, this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.getRequest(), isUsingIndex, dataInjection));
+                    msgHeader.put(Header.POST, this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.getRequest(), isUsingIndex, dataInjection));
                 } catch (IOException e) {
                     LOGGER.warn("Error during Request connection: "+ e.getMessage(), e);
                 }
             }
             
-            msgHeader.put(TypeHeader.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
+            msgHeader.put(Header.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
     
             // Request the web page to the server
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
@@ -436,11 +436,11 @@ public class InjectionModel extends AbstractModelObservable {
             // TODO worth the disconnection ?
 //            connection.disconnect();
             
-            msgHeader.put(TypeHeader.SOURCE, pageSource);
+            msgHeader.put(Header.SOURCE, pageSource);
             
             // Inform the view about the log infos
             Request request = new Request();
-            request.setMessage(TypeRequest.MESSAGE_HEADER);
+            request.setMessage(Interaction.MESSAGE_HEADER);
             request.setParameters(msgHeader);
             this.sendToViews(request);
             
@@ -542,9 +542,9 @@ public class InjectionModel extends AbstractModelObservable {
             .replaceAll("\\s+", "+")
             // TODO Add ending line comment, except for INGRES
             +(
-                this.vendor != Vendor.INGRES 
-                ? this.vendor != Vendor.NEO4J 
-                    ? "--+" 
+                this.vendor != Vendor.INGRES
+                ? this.vendor != Vendor.NEO4J
+                    ? "--+"
                     : "//"
                 : ""
             );
@@ -613,7 +613,7 @@ public class InjectionModel extends AbstractModelObservable {
             
             // Incorrect URL, reset the start button
             Request request = new Request();
-            request.setMessage(TypeRequest.END_PREPARATION);
+            request.setMessage(Interaction.END_PREPARATION);
             this.sendToViews(request);
         }
     }

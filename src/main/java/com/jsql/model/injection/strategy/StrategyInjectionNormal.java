@@ -10,8 +10,8 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
+import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -65,12 +65,12 @@ public class StrategyInjectionNormal extends AbstractStrategy {
 
     @Override
     public void allow() {
-        this.markVulnerable(TypeRequest.MARK_NORMAL_VULNERABLE);
+        this.markVulnerable(Interaction.MARK_NORMAL_VULNERABLE);
     }
 
     @Override
     public void unallow() {
-        this.markVulnerable(TypeRequest.MARK_NORMAL_INVULNERABLE);
+        this.markVulnerable(Interaction.MARK_NORMAL_INVULNERABLE);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
         
         Request request = new Request();
-        request.setMessage(TypeRequest.MARK_NORMAL_STRATEGY);
+        request.setMessage(Interaction.MARK_NORMAL_STRATEGY);
         MediatorModel.model().sendToViews(request);
     }
     

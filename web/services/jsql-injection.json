@@ -1,9 +1,9 @@
 {
     "version": "0.79",
     "news": [
-        "[Roadmap] Full Path Disclosure, Injection strategies: DIOS / Routed query / Out of band / Update Insert Delete, Maven Central components: jsql-injection-core jsql-injection-swing, Bruteforce of HTTP Auth using NTLM, Arabic translation, Command line interface, Bruteforce values, WAF detection, Program self-updater.",
-        "[Done] Database flavor: Neo4j NuoDB Hana and Vertica, Russian translation complete.",
-        "[In progress] User Agent configuration.",
+        "[Roadmap] Testing with DbUnit / Hibernate or Jooq, Full Path Disclosure, Injection strategies: DIOS / Routed query / Out of band / Update Insert Delete, Maven Central components: jsql-injection-core jsql-injection-swing, Bruteforce of HTTP Auth using NTLM, Arabic translation, Command line interface, Bruteforce values, WAF detection, Program self-updater.",
+        "[Done since last release] Injecting using Coldfusion, Database flavor: Neo4j NuoDB Hana and Vertica, Russian translation complete.",
+        "[Development in progress] User Agent configuration.",
         "[New v0.79] Error Strategies for MySQL and PostgreSQL compatible with Order/Group By, Wider range of Characters Insertion including multibyte %bf.",
         "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer."
     ]

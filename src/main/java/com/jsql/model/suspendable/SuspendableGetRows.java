@@ -13,8 +13,8 @@ import java.util.regex.PatternSyntaxException;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
+import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.LoopDetectedSlidingException;
@@ -110,7 +110,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 // Update the view only if there are value to find, and if it's not the root (empty tree)
                 if (numberToFind > 0 && searchName != null) {
                     Request request = new Request();
-                    request.setMessage(TypeRequest.UPDATE_PROGRESS);
+                    request.setMessage(Interaction.UPDATE_PROGRESS);
                     request.setParameters(searchName, numberToFind);
                     MediatorModel.model().sendToViews(request);
                 }
@@ -126,7 +126,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 // Update the view only if there are value to find, and if it's not the root (empty tree)
                 if (numberToFind > 0 && searchName != null) {
                     Request request = new Request();
-                    request.setMessage(TypeRequest.UPDATE_PROGRESS);
+                    request.setMessage(Interaction.UPDATE_PROGRESS);
                     request.setParameters(searchName, numberToFind);
                     MediatorModel.model().sendToViews(request);
                 }
@@ -151,7 +151,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 slidingWindowCurrentRow.append(regexAtLeastOneRow.group(1));
 
                 Request request = new Request();
-                request.setMessage(TypeRequest.MESSAGE_CHUNK);
+                request.setMessage(Interaction.MESSAGE_CHUNK);
                 request.setParameters(
                     Pattern
                         .compile(MODE + TRAIL_RGX +".*")
@@ -165,7 +165,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 // if it's not the root (empty tree)
                 if (searchName != null) {
                     Request request = new Request();
-                    request.setMessage(TypeRequest.END_PROGRESS);
+                    request.setMessage(Interaction.END_PROGRESS);
                     request.setParameters(searchName);
                     MediatorModel.model().sendToViews(request);
                 }
@@ -203,7 +203,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
              */
             if (isUsingLimit && numberToFind > 0 && searchName != null) {
                 Request request = new Request();
-                request.setMessage(TypeRequest.UPDATE_PROGRESS);
+                request.setMessage(Interaction.UPDATE_PROGRESS);
                 request.setParameters(searchName, sqlLimit + nbCompleteLine);
                 MediatorModel.model().sendToViews(request);
             }
@@ -336,7 +336,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     // Inform the view about the progression
                     if (numberToFind > 0 && searchName != null) {
                         Request request = new Request();
-                        request.setMessage(TypeRequest.UPDATE_PROGRESS);
+                        request.setMessage(Interaction.UPDATE_PROGRESS);
                         request.setParameters(searchName, sqlLimit);
                         MediatorModel.model().sendToViews(request);
                     }
@@ -348,7 +348,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     if (sqlLimit == numberToFind) {
                         if (numberToFind > 0 && searchName != null) {
                             Request request = new Request();
-                            request.setMessage(TypeRequest.UPDATE_PROGRESS);
+                            request.setMessage(Interaction.UPDATE_PROGRESS);
                             request.setParameters(searchName, numberToFind);
                             MediatorModel.model().sendToViews(request);
                         }
@@ -370,7 +370,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     // Inform the view about the progression
                     if (numberToFind > 0 && searchName != null) {
                         Request request = new Request();
-                        request.setMessage(TypeRequest.UPDATE_PROGRESS);
+                        request.setMessage(Interaction.UPDATE_PROGRESS);
                         request.setParameters(searchName, numberToFind);
                         MediatorModel.model().sendToViews(request);
                     }

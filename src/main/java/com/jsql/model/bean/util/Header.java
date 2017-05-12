@@ -1,6 +1,6 @@
 package com.jsql.model.bean.util;
 
-public enum TypeHeader {
+public enum Header {
     
     URL,
     POST,

@@ -181,7 +181,7 @@ public final class ActionHandler {
         
         /* Show/Hide the Menubar with Alt key (not Alt Graph) */
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyEvent -> {
-            boolean shouldTakeNoFurtherAction = false; 
+            boolean shouldTakeNoFurtherAction = false;
             
             // Alt key press/release generates 2 events
             // AltGr key press/release generates 4 events including an Alt press/release
@@ -191,18 +191,18 @@ public final class ActionHandler {
                 wasAltGraphPressed[0] = true;
             }
             
-            boolean isAltDPressed = 
-                keyEvent.isAltDown() 
+            boolean isAltDPressed =
+                keyEvent.isAltDown()
                 && keyEvent.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D)
             ;
             
-            boolean isAltReleased = 
+            boolean isAltReleased =
                 keyEvent.getKeyCode() == KeyEvent.VK_ALT
                 && keyEvent.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)
             ;
             
-            boolean isAltPressed = 
-                keyEvent.isAltDown() 
+            boolean isAltPressed =
+                keyEvent.isAltDown()
                 && keyEvent.getKeyCode() == KeyEvent.VK_ALT
                 && !wasAltGraphPressed[0]
             ;

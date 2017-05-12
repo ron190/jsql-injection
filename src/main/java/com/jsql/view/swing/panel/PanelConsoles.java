@@ -21,6 +21,8 @@ import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -74,6 +76,7 @@ import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.tab.MouseTabbedPane;
 import com.jsql.view.swing.tab.TabConsoles;
 import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.text.JTextAreaPlaceholderConsole;
 import com.jsql.view.swing.text.JTextPanePlaceholder;
 
 /**
@@ -90,17 +93,17 @@ public class PanelConsoles extends JPanel {
     /**
      * Console for default application messages.
      */
-    private SimpleConsoleAdapter consoleTab = new SimpleConsoleAdapter("Console", "You should not see that!!");
+    private SimpleConsoleAdapter consoleTextPane = new SimpleConsoleAdapter("Console", "Event logging");
 
     /**
      * Console for java exception messages.
      */
-    private JavaConsoleAdapter javaTab = new JavaConsoleAdapter("Java", "Java unhandled exception");
+    private JavaConsoleAdapter javaTextPane = new JavaConsoleAdapter("Java", "Java unhandled exception");
     
     /**
      * Console for raw SQL results.
      */
-    private JTextArea chunkTab;
+    private JTextArea chunkTextPane;
 
     /**
      * Panel displaying table of HTTP requests and responses.
@@ -110,7 +113,7 @@ public class PanelConsoles extends JPanel {
     /**
      * Console for binary representation of characters found with blind/time injection.
      */
-    private JTextArea binaryTab;
+    private JTextArea binaryTextPane;
 
     /**
      * List of HTTP injection requests and responses.
@@ -135,17 +138,109 @@ public class PanelConsoles extends JPanel {
     public PanelConsoles() {
         
         // Object creation after customization
-        this.consoleTab.getProxy().setEditable(false);
-        SwingAppender.register(this.consoleTab);
+        this.consoleTextPane.getProxy().setEditable(false);
+        this.consoleTextPane.getProxy().setCaret(new DefaultCaret() {
+            @Override
+            public void setSelectionVisible(boolean visible) {
+                super.setSelectionVisible(true);
+            }
+        });
+        this.consoleTextPane.getProxy().addFocusListener(new FocusListener() {
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                PanelConsoles.this.consoleTextPane.getProxy().setSelectionColor(HelperUi.COLOR_FOCUS_LOST);
+                PanelConsoles.this.consoleTextPane.getProxy().revalidate();
+                PanelConsoles.this.consoleTextPane.getProxy().repaint();
+            }
+            
+            @Override
+            public void focusGained(FocusEvent e) {
+                PanelConsoles.this.consoleTextPane.getProxy().setSelectionColor(HelperUi.COLOR_SELECTION_BACKGROUND);
+                PanelConsoles.this.consoleTextPane.getProxy().revalidate();
+                PanelConsoles.this.consoleTextPane.getProxy().repaint();
+            }
+            
+        });
+        SwingAppender.register(this.consoleTextPane);
         
-        this.chunkTab = new JPopupTextArea("Raw data extracted during injection").getProxy();
-        this.chunkTab.setEditable(false);
+        this.chunkTextPane = new JPopupTextArea(new JTextAreaPlaceholderConsole("Raw data extracted during injection")).getProxy();
+        this.chunkTextPane.setEditable(false);
+        this.chunkTextPane.setCaret(new DefaultCaret() {
+            @Override
+            public void setSelectionVisible(boolean visible) {
+                super.setSelectionVisible(true);
+            }
+        });
+        this.chunkTextPane.addFocusListener(new FocusListener() {
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                PanelConsoles.this.chunkTextPane.setSelectionColor(HelperUi.COLOR_FOCUS_LOST);
+                PanelConsoles.this.chunkTextPane.revalidate();
+                PanelConsoles.this.chunkTextPane.repaint();
+            }
+            
+            @Override
+            public void focusGained(FocusEvent e) {
+                PanelConsoles.this.chunkTextPane.setSelectionColor(HelperUi.COLOR_SELECTION_BACKGROUND);
+                PanelConsoles.this.chunkTextPane.revalidate();
+                PanelConsoles.this.chunkTextPane.repaint();
+            }
+            
+        });
         
-        this.binaryTab = new JPopupTextArea("Characters extracted during blind or time injection").getProxy();
-        this.binaryTab.setEditable(false);
+        this.binaryTextPane = new JPopupTextArea(new JTextAreaPlaceholderConsole("Characters extracted during blind or time injection")).getProxy();
+        this.binaryTextPane.setEditable(false);
+        this.binaryTextPane.setCaret(new DefaultCaret() {
+            @Override
+            public void setSelectionVisible(boolean visible) {
+                super.setSelectionVisible(true);
+            }
+        });
+        this.binaryTextPane.addFocusListener(new FocusListener() {
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                PanelConsoles.this.binaryTextPane.setSelectionColor(HelperUi.COLOR_FOCUS_LOST);
+                PanelConsoles.this.binaryTextPane.revalidate();
+                PanelConsoles.this.binaryTextPane.repaint();
+            }
+            
+            @Override
+            public void focusGained(FocusEvent e) {
+                PanelConsoles.this.binaryTextPane.setSelectionColor(HelperUi.COLOR_SELECTION_BACKGROUND);
+                PanelConsoles.this.binaryTextPane.revalidate();
+                PanelConsoles.this.binaryTextPane.repaint();
+            }
+            
+        });
         
-        this.javaTab.getProxy().setEditable(false);
-        SwingAppender.register(this.javaTab);
+        this.javaTextPane.getProxy().setEditable(false);
+        this.javaTextPane.getProxy().setCaret(new DefaultCaret() {
+            @Override
+            public void setSelectionVisible(boolean visible) {
+                super.setSelectionVisible(true);
+            }
+        });
+        this.javaTextPane.getProxy().addFocusListener(new FocusListener() {
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                PanelConsoles.this.javaTextPane.getProxy().setSelectionColor(HelperUi.COLOR_FOCUS_LOST);
+                PanelConsoles.this.javaTextPane.getProxy().revalidate();
+                PanelConsoles.this.javaTextPane.getProxy().repaint();
+            }
+            
+            @Override
+            public void focusGained(FocusEvent e) {
+                PanelConsoles.this.javaTextPane.getProxy().setSelectionColor(HelperUi.COLOR_SELECTION_BACKGROUND);
+                PanelConsoles.this.javaTextPane.getProxy().revalidate();
+                PanelConsoles.this.javaTextPane.getProxy().repaint();
+            }
+            
+        });
+        SwingAppender.register(this.javaTextPane);
         
         this.network = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
         this.network.setResizeWeight(1);
@@ -330,7 +425,7 @@ public class PanelConsoles extends JPanel {
         MediatorGui.tabConsoles().addTab(
             "Console",
             HelperUi.ICON_CONSOLE,
-            new LightScrollPane(1, 0, 0, 0, this.consoleTab.getProxy()),
+            new LightScrollPane(1, 0, 0, 0, this.consoleTextPane.getProxy()),
             I18n.valueByKey("CONSOLE_MAIN_TOOLTIP")
         );
         JLabel labelConsole = new JLabel(I18n.valueByKey("CONSOLE_MAIN_LABEL"), HelperUi.ICON_CONSOLE, SwingConstants.CENTER);
@@ -392,8 +487,8 @@ public class PanelConsoles extends JPanel {
         MediatorGui.tabConsoles().setAlignmentX(FlowLayout.LEADING);
         MediatorGui.tabConsoles().setAlignmentY(Component.TOP_ALIGNMENT);
 
-        this.chunkTab.setLineWrap(true);
-        this.binaryTab.setLineWrap(true);
+        this.chunkTextPane.setLineWrap(true);
+        this.binaryTextPane.setLineWrap(true);
     }
 
     /**
@@ -403,7 +498,7 @@ public class PanelConsoles extends JPanel {
         MediatorGui.tabConsoles().insertTab(
             "Chunk",
             HelperUi.ICON_CHUNK,
-            new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.chunkTab),
+            new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.chunkTextPane),
             I18n.valueByKey("CONSOLE_CHUNK_TOOLTIP"),
             1
         );
@@ -423,7 +518,7 @@ public class PanelConsoles extends JPanel {
         MediatorGui.tabConsoles().insertTab(
             "Boolean",
             HelperUi.ICON_BINARY,
-            new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.binaryTab),
+            new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.binaryTextPane),
             I18n.valueByKey("CONSOLE_BINARY_TOOLTIP"),
             1 + (MediatorGui.menubar().getChunkMenu().isSelected() ? 1 : 0)
         );
@@ -463,7 +558,7 @@ public class PanelConsoles extends JPanel {
         MediatorGui.tabConsoles().insertTab(
             "Java",
             HelperUi.ICON_CUP,
-            new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.javaTab.getProxy()),
+            new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.javaTextPane.getProxy()),
             I18n.valueByKey("CONSOLE_JAVA_TOOLTIP"),
             MediatorGui.tabConsoles().getTabCount()
         );
@@ -494,7 +589,7 @@ public class PanelConsoles extends JPanel {
             LOGGER.error(e.getMessage(), e);
         }
         
-        this.javaTab.getProxy().setText("");
+        this.javaTextPane.getProxy().setText("");
         
         this.networkTabUrl.setText("");
         this.networkTabHeader.setText("");
@@ -546,7 +641,7 @@ public class PanelConsoles extends JPanel {
     // Getter and setter
 
     public JTextArea getChunkTab() {
-        return this.chunkTab;
+        return this.chunkTextPane;
     }
 
     public JSplitPaneWithZeroSizeDivider getNetwork() {
@@ -554,7 +649,7 @@ public class PanelConsoles extends JPanel {
     }
 
     public JTextArea getBinaryTab() {
-        return this.binaryTab;
+        return this.binaryTextPane;
     }
     
 }

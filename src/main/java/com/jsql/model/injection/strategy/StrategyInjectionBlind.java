@@ -13,8 +13,8 @@ package com.jsql.model.injection.strategy;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
+import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.InjectionBlind;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -52,12 +52,12 @@ public class StrategyInjectionBlind extends AbstractStrategy {
 
     @Override
     public void allow() {
-        this.markVulnerable(TypeRequest.MARK_BLIND_VULNERABLE);
+        this.markVulnerable(Interaction.MARK_BLIND_VULNERABLE);
     }
 
     @Override
     public void unallow() {
-        this.markVulnerable(TypeRequest.MARK_BLIND_INVULNERABLE);
+        this.markVulnerable(Interaction.MARK_BLIND_INVULNERABLE);
     }
 
     @Override
@@ -74,12 +74,12 @@ public class StrategyInjectionBlind extends AbstractStrategy {
         MediatorModel.model().setStrategy(StrategyInjection.BLIND);
         
         Request requestMessageBinary = new Request();
-        requestMessageBinary.setMessage(TypeRequest.MESSAGE_BINARY);
+        requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
         requestMessageBinary.setParameters(this.blind.getInfoMessage());
         MediatorModel.model().sendToViews(requestMessageBinary);
         
         Request requestMarkBlindStrategy = new Request();
-        requestMarkBlindStrategy.setMessage(TypeRequest.MARK_BLIND_STRATEGY);
+        requestMarkBlindStrategy.setMessage(Interaction.MARK_BLIND_STRATEGY);
         MediatorModel.model().sendToViews(requestMarkBlindStrategy);
     }
     

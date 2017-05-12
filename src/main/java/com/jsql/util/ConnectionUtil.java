@@ -27,9 +27,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
+import com.jsql.model.bean.util.Header;
+import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.bean.util.TypeHeader;
-import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.injection.method.MethodInjection;
@@ -121,10 +121,10 @@ public class ConnectionUtil {
                         .trim();
                 
                 SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(loginKerberos);
-                connection = spnego.connect(new URL(ConnectionUtil.getUrlBase()));
+                connection = spnego.connect(new URL(ConnectionUtil.getUrlByUser()));
             } else {
                 connection = (HttpURLConnection) new URL(
-                    ConnectionUtil.getUrlBase()
+                    ConnectionUtil.getUrlByUser()
                     // Ignore injection point during the test
                     .replace("*", "")
                 ).openConnection();
@@ -144,7 +144,7 @@ public class ConnectionUtil {
                 ConnectionUtil.sanitizeHeaders(connection, header);
             }
 
-            ConnectionUtil.checkResponseHeader(connection, ConnectionUtil.getUrlBase());
+            ConnectionUtil.checkResponseHeader(connection, ConnectionUtil.getUrlByUser());
             
             // Disable caching of authentication like Kerberos
             // TODO worth the disconnection ?
@@ -170,9 +170,9 @@ public class ConnectionUtil {
         connection.setRequestProperty("Cache-Control", "no-cache");
         connection.setRequestProperty("Expires", "-1");
         
-        Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
-        msgHeader.put(TypeHeader.URL, url);
-        msgHeader.put(TypeHeader.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
+        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+        msgHeader.put(Header.URL, url);
+        msgHeader.put(Header.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
         
         StringBuilder pageSource = new StringBuilder();
 
@@ -183,11 +183,11 @@ public class ConnectionUtil {
         }
         reader.close();
 
-        msgHeader.put(TypeHeader.SOURCE, pageSource.toString());
+        msgHeader.put(Header.SOURCE, pageSource.toString());
         
         // Inform the view about the log infos
         Request request = new Request();
-        request.setMessage(TypeRequest.MESSAGE_HEADER);
+        request.setMessage(Interaction.MESSAGE_HEADER);
         request.setParameters(msgHeader);
         MediatorModel.model().sendToViews(request);
         
@@ -318,9 +318,9 @@ public class ConnectionUtil {
      */
     @SuppressWarnings("unchecked")
     public static void checkResponseHeader(HttpURLConnection connection, String url) throws IOException {
-        Map<TypeHeader, Object> msgHeader = new EnumMap<>(TypeHeader.class);
-        msgHeader.put(TypeHeader.URL, url);
-        msgHeader.put(TypeHeader.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
+        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+        msgHeader.put(Header.URL, url);
+        msgHeader.put(Header.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
 
         if (
             !PreferencesUtil.isFollowingRedirection()
@@ -329,7 +329,7 @@ public class ConnectionUtil {
             LOGGER.warn("HTTP 3XX Redirection detected. Please test again with option 'Follow HTTP redirection' enabled.");
         }
         
-        Map<String, String> mapResponse = (Map<String, String>) msgHeader.get(TypeHeader.RESPONSE);
+        Map<String, String> mapResponse = (Map<String, String>) msgHeader.get(Header.RESPONSE);
         if (
             Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode()))
             && mapResponse.containsKey("WWW-Authenticate")
@@ -388,11 +388,11 @@ public class ConnectionUtil {
             exception = e;
         }
 
-        msgHeader.put(TypeHeader.SOURCE, pageSource.toString());
+        msgHeader.put(Header.SOURCE, pageSource.toString());
         
         // Inform the view about the log infos
         Request request = new Request();
-        request.setMessage(TypeRequest.MESSAGE_HEADER);
+        request.setMessage(Interaction.MESSAGE_HEADER);
         request.setParameters(msgHeader);
         MediatorModel.model().sendToViews(request);
         

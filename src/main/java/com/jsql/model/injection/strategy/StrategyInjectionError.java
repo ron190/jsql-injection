@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
+import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.vendor.xml.Model.Strategy;
 import com.jsql.model.injection.vendor.xml.Model.Strategy.Configuration;
@@ -121,22 +121,22 @@ public class StrategyInjectionError extends AbstractStrategy {
 
     @Override
     public void allow() {
-        this.markVulnerable(TypeRequest.MARK_ERROR_VULNERABLE);
+        this.markVulnerable(Interaction.MARK_ERROR_VULNERABLE);
     }
 
     @Override
     public void unallow() {
-        this.markVulnerable(TypeRequest.MARK_ERROR_INVULNERABLE);
+        this.markVulnerable(Interaction.MARK_ERROR_INVULNERABLE);
     }
 
     @Override
     public void allow(int i) {
-        this.markVulnerable(TypeRequest.MARK_ERROR_VULNERABLE, i);
+        this.markVulnerable(Interaction.MARK_ERROR_VULNERABLE, i);
     }
 
     @Override
     public void unallow(int i) {
-        this.markVulnerable(TypeRequest.MARK_ERROR_INVULNERABLE, i);
+        this.markVulnerable(Interaction.MARK_ERROR_INVULNERABLE, i);
     }
 
     @Override
@@ -159,7 +159,7 @@ public class StrategyInjectionError extends AbstractStrategy {
         MediatorModel.model().setStrategy(StrategyInjection.ERROR);
         
         Request request = new Request();
-        request.setMessage(TypeRequest.MARK_ERROR_STRATEGY);
+        request.setMessage(Interaction.MARK_ERROR_STRATEGY);
         MediatorModel.model().sendToViews(request);
     }
     

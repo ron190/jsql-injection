@@ -162,11 +162,11 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         List<String> charactersInsertion = new ArrayList<>(Arrays.asList(new String[]{
-            "-1", "-1'", "-1)", "-1))", "-1\"", "-1')", "-1'))", "-1\")", "-1\"))", 
-            "0", "0'", "0)", "0))", "0\"", "0')", "0'))", "0\")", "0\"))", 
-            "1", "1'", "1)", "1))", "1\"", "1')", "1'))", "1\")", "1\"))", 
-            "0%bf'", "0%bf\"", "0%bf')", "0%bf'))", "0%bf\")", "0%bf\"))", 
-            "1%bf'", "1%bf\"", "1%bf')", "1%bf'))", "1%bf\")", "1%bf\"))", 
+            "-1", "-1'", "-1)", "-1))", "-1\"", "-1')", "-1'))", "-1\")", "-1\"))",
+            "0", "0'", "0)", "0))", "0\"", "0')", "0'))", "0\")", "0\"))",
+            "1", "1'", "1)", "1))", "1\"", "1')", "1'))", "1\")", "1\"))",
+            "0%bf'", "0%bf\"", "0%bf')", "0%bf'))", "0%bf\")", "0%bf\"))",
+            "1%bf'", "1%bf\"", "1%bf')", "1%bf'))", "1%bf\")", "1%bf\"))",
             "'", "\"",
             "%bf'", "%bf\""
         }));

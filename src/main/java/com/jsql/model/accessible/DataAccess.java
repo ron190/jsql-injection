@@ -22,8 +22,8 @@ import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
+import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.bean.util.TypeRequest;
 import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
@@ -158,8 +158,8 @@ public class DataAccess {
                 resultToParse.split(ENCLOSE_VALUE_RGX)[2]
             );
         } catch (ArrayIndexOutOfBoundsException e) {
-            LOGGER.warn("Incorrect database informations: "+ resultToParse, e);
-            throw new InjectionFailureException("Unrecognized information on database");
+            LOGGER.warn("Incorrect or incomplete data: "+ resultToParse, e);
+            LOGGER.info("Processing but expecting failure...");
         }
         
         LOGGER.debug(MediatorModel.model().getDatabaseInfos());
@@ -228,7 +228,7 @@ public class DataAccess {
         }
 
         Request request = new Request();
-        request.setMessage(TypeRequest.ADD_DATABASES);
+        request.setMessage(Interaction.ADD_DATABASES);
         request.setParameters(databases);
         MediatorModel.model().sendToViews(request);
         
@@ -254,7 +254,7 @@ public class DataAccess {
         
         // Inform the view that database has just been used
         Request requestStartProgress = new Request();
-        requestStartProgress.setMessage(TypeRequest.START_PROGRESS);
+        requestStartProgress.setMessage(Interaction.START_PROGRESS);
         requestStartProgress.setParameters(database);
         MediatorModel.model().sendToViews(requestStartProgress);
 
@@ -294,7 +294,7 @@ public class DataAccess {
                 .matcher(resultToParse);
         
         Request requestEndProgress = new Request();
-        requestEndProgress.setMessage(TypeRequest.END_PROGRESS);
+        requestEndProgress.setMessage(Interaction.END_PROGRESS);
         requestEndProgress.setParameters(database);
         MediatorModel.model().sendToViews(requestEndProgress);
         
@@ -314,7 +314,7 @@ public class DataAccess {
         }
         
         Request requestAddTables = new Request();
-        requestAddTables.setMessage(TypeRequest.ADD_TABLES);
+        requestAddTables.setMessage(Interaction.ADD_TABLES);
         requestAddTables.setParameters(tables);
         MediatorModel.model().sendToViews(requestAddTables);
         
@@ -336,7 +336,7 @@ public class DataAccess {
         
         // Inform the view that table has just been used
         Request requestStartProgress = new Request();
-        requestStartProgress.setMessage(TypeRequest.START_INDETERMINATE_PROGRESS);
+        requestStartProgress.setMessage(Interaction.START_INDETERMINATE_PROGRESS);
         requestStartProgress.setParameters(table);
         MediatorModel.model().sendToViews(requestStartProgress);
 
@@ -389,7 +389,7 @@ public class DataAccess {
                 .matcher(resultToParse);
 
         Request requestEndProgress = new Request();
-        requestEndProgress.setMessage(TypeRequest.END_INDETERMINATE_PROGRESS);
+        requestEndProgress.setMessage(Interaction.END_INDETERMINATE_PROGRESS);
         requestEndProgress.setParameters(table);
         MediatorModel.model().sendToViews(requestEndProgress);
 
@@ -408,7 +408,7 @@ public class DataAccess {
         }
 
         Request requestAddColumns = new Request();
-        requestAddColumns.setMessage(TypeRequest.ADD_COLUMNS);
+        requestAddColumns.setMessage(Interaction.ADD_COLUMNS);
         requestAddColumns.setParameters(columns);
         MediatorModel.model().sendToViews(requestAddColumns);
         
@@ -432,7 +432,7 @@ public class DataAccess {
 
         // Inform the view that table has just been used
         Request request = new Request();
-        request.setMessage(TypeRequest.START_PROGRESS);
+        request.setMessage(Interaction.START_PROGRESS);
         request.setParameters(table);
         MediatorModel.model().sendToViews(request);
 
@@ -542,12 +542,12 @@ public class DataAccess {
         Object[] objectData = {arrayColumns, tableDatas, table};
 
         Request requestCreateValuesTab = new Request();
-        requestCreateValuesTab.setMessage(TypeRequest.CREATE_VALUES_TAB);
+        requestCreateValuesTab.setMessage(Interaction.CREATE_VALUES_TAB);
         requestCreateValuesTab.setParameters(objectData);
         MediatorModel.model().sendToViews(requestCreateValuesTab);
 
         Request requestEndProgress = new Request();
-        requestEndProgress.setMessage(TypeRequest.END_PROGRESS);
+        requestEndProgress.setMessage(Interaction.END_PROGRESS);
         requestEndProgress.setParameters(table);
         MediatorModel.model().sendToViews(requestEndProgress);
         
