@@ -13,7 +13,6 @@ package com.jsql.view.swing.list;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
@@ -23,7 +22,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.AbstractBorder;
-import javax.swing.border.LineBorder;
 
 import com.jsql.view.swing.HelperUi;
 
@@ -46,11 +44,11 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
             list, value, index, isSelected, isFocused
         );
 
-        renderer.setFont(new Font("Segoe UI", Font.PLAIN, renderer.getFont().getSize()));
+        renderer.setFont(HelperUi.FONT_SEGOE);
 
         if (isSelected) {
             if (list.isFocusOwner()) {
-                renderer.setBackground(HelperUi.COLOR_SELECTION_BACKGROUND);
+                renderer.setBackground(HelperUi.COLOR_FOCUS_GAINED);
             } else {
                 renderer.setBackground(HelperUi.COLOR_FOCUS_LOST);
             }
@@ -66,9 +64,9 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
 
         if (isSelected) {
             if (list.isFocusOwner()) {
-                renderer.setBorder(new LineBorder(HelperUi.COLOR_BLU, 1, false));
+                renderer.setBorder(HelperUi.BORDER_FOCUS_GAINED);
             } else {
-                renderer.setBorder(new LineBorder(new Color(218, 218, 218), 1, false));
+                renderer.setBorder(HelperUi.BORDER_FOCUS_LOST);
             }
         } else if (isFocused) {
             renderer.setBorder(BorderFactory.createCompoundBorder( new AbstractBorder() {

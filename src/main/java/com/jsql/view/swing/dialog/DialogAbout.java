@@ -99,7 +99,7 @@ public class DialogAbout extends JDialog {
 
         this.buttonClose = new JButton("Close");
         this.buttonClose.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.COLOR_BLU),
+            HelperUi.BORDER_FOCUS_GAINED,
             BorderFactory.createEmptyBorder(2, 20, 2, 20))
         );
         this.buttonClose.addActionListener(escapeListener);
@@ -109,7 +109,7 @@ public class DialogAbout extends JDialog {
         
         final JButton buttonWebpage = new JButton("Webpage");
         buttonWebpage.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.COLOR_BLU),
+            HelperUi.BORDER_FOCUS_GAINED,
             BorderFactory.createEmptyBorder(2, 20, 2, 20))
         );
         buttonWebpage.addActionListener(ev -> {

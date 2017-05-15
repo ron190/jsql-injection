@@ -149,6 +149,19 @@ public final class StringUtil {
         return result;
     }
     
+    public static boolean isUtf8(String text) {
+        if (text == null) {
+            return false;
+        }
+        
+        UniversalDetector detector = new UniversalDetector(null);
+        detector.handleData(text.getBytes(), 0, text.length() - 1);
+        detector.dataEnd();
+        String encoding = detector.getDetectedCharset();
+        
+        return encoding != null;
+    }
+    
     public static String detectUtf8(String text) {
         if (text == null) {
             return "";

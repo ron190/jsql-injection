@@ -22,7 +22,6 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JTree;
-import javax.swing.border.LineBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
@@ -94,6 +93,8 @@ public abstract class AbstractNodeModel {
     private boolean isLoading = false;
     
     private PanelNode panel;
+
+    private boolean isEdited;
 
     /**
      * Create a functional model for tree node.
@@ -169,8 +170,23 @@ public abstract class AbstractNodeModel {
         mnRestart.setEnabled(!this.isRunning);
         mnRestart.addActionListener(actionEvent -> AbstractNodeModel.this.runAction());
         
+        JMenuItem mnRename = new JMenuItem("Rename");
+        mnRename.setIcon(HelperUi.ICON_EMPTY);
+        
+        mnRename.setEnabled(!this.isRunning);
+        mnRename.addActionListener(actionEvent -> {
+            AbstractNodeModel nodeModel = (AbstractNodeModel) currentTableNode.getUserObject();
+            nodeModel.setIsEdited(true);
+            
+            AbstractNodeModel.this.getPanel().getLabel().setVisible(false);
+            AbstractNodeModel.this.getPanel().getEditable().setVisible(true);
+            
+            MediatorGui.treeDatabase().setSelectionPath(path);
+        });
+        
         popupMenu.add(new JSeparator());
         popupMenu.add(mnRestart);
+        popupMenu.add(mnRename);
 
         this.buildMenu(popupMenu, path);
         
@@ -215,14 +231,27 @@ public abstract class AbstractNodeModel {
         panel.showIcon();
 
         panel.setIcon(this.getLeafIcon(isLeaf));
+        
+        AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
+        
+        if (StringUtil.isUtf8(this.getElementDatabase().toString())) {
+            panel.getEditable().setFont(HelperUi.FONT_MONOSPACE);            
+        } else {
+            panel.getEditable().setFont(HelperUi.FONT_SEGOE);            
+        }
+
+        
+        panel.getEditable().setText(StringUtil.detectUtf8(this.getElementDatabase().toString()));
+        panel.getEditable().setVisible(nodeModel.isEdited);
+        panel.getLabel().setVisible(!nodeModel.isEdited);
 
         if (isSelected) {
             if (hasFocus) {
-                panel.getLabel().setBackground(HelperUi.COLOR_SELECTION_BACKGROUND);
-                panel.getLabel().setBorder(new LineBorder(HelperUi.COLOR_BLU, 1, false));
+                panel.getLabel().setBackground(HelperUi.COLOR_FOCUS_GAINED);
+                panel.getLabel().setBorder(HelperUi.BORDER_FOCUS_GAINED);
             } else {
                 panel.getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
-                panel.getLabel().setBorder(new LineBorder(new Color(218, 218, 218), 1, false));
+                panel.getLabel().setBorder(HelperUi.BORDER_FOCUS_LOST);
             }
         } else {
             panel.getLabel().setBackground(Color.WHITE);
@@ -366,6 +395,10 @@ public abstract class AbstractNodeModel {
 
     public PanelNode getPanel() {
         return panel;
+    }
+
+    public void setIsEdited(boolean b) {
+        this.isEdited = b;
     }
     
 }

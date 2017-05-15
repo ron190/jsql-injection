@@ -17,12 +17,11 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -78,6 +77,7 @@ import com.jsql.view.swing.tab.TabConsoles;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholderConsole;
 import com.jsql.view.swing.text.JTextPanePlaceholder;
+import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
 /**
  * A panel with different consoles displayed on the bottom.
@@ -103,7 +103,7 @@ public class PanelConsoles extends JPanel {
     /**
      * Console for raw SQL results.
      */
-    private JTextArea chunkTextPane;
+    private JTextArea chunkTextArea;
 
     /**
      * Panel displaying table of HTTP requests and responses.
@@ -113,7 +113,7 @@ public class PanelConsoles extends JPanel {
     /**
      * Console for binary representation of characters found with blind/time injection.
      */
-    private JTextArea binaryTextPane;
+    private JTextArea binaryTextArea;
 
     /**
      * List of HTTP injection requests and responses.
@@ -139,107 +139,15 @@ public class PanelConsoles extends JPanel {
         
         // Object creation after customization
         this.consoleTextPane.getProxy().setEditable(false);
-        this.consoleTextPane.getProxy().setCaret(new DefaultCaret() {
-            @Override
-            public void setSelectionVisible(boolean visible) {
-                super.setSelectionVisible(true);
-            }
-        });
-        this.consoleTextPane.getProxy().addFocusListener(new FocusListener() {
-            
-            @Override
-            public void focusLost(FocusEvent e) {
-                PanelConsoles.this.consoleTextPane.getProxy().setSelectionColor(HelperUi.COLOR_FOCUS_LOST);
-                PanelConsoles.this.consoleTextPane.getProxy().revalidate();
-                PanelConsoles.this.consoleTextPane.getProxy().repaint();
-            }
-            
-            @Override
-            public void focusGained(FocusEvent e) {
-                PanelConsoles.this.consoleTextPane.getProxy().setSelectionColor(HelperUi.COLOR_SELECTION_BACKGROUND);
-                PanelConsoles.this.consoleTextPane.getProxy().revalidate();
-                PanelConsoles.this.consoleTextPane.getProxy().repaint();
-            }
-            
-        });
         SwingAppender.register(this.consoleTextPane);
         
-        this.chunkTextPane = new JPopupTextArea(new JTextAreaPlaceholderConsole("Raw data extracted during injection")).getProxy();
-        this.chunkTextPane.setEditable(false);
-        this.chunkTextPane.setCaret(new DefaultCaret() {
-            @Override
-            public void setSelectionVisible(boolean visible) {
-                super.setSelectionVisible(true);
-            }
-        });
-        this.chunkTextPane.addFocusListener(new FocusListener() {
-            
-            @Override
-            public void focusLost(FocusEvent e) {
-                PanelConsoles.this.chunkTextPane.setSelectionColor(HelperUi.COLOR_FOCUS_LOST);
-                PanelConsoles.this.chunkTextPane.revalidate();
-                PanelConsoles.this.chunkTextPane.repaint();
-            }
-            
-            @Override
-            public void focusGained(FocusEvent e) {
-                PanelConsoles.this.chunkTextPane.setSelectionColor(HelperUi.COLOR_SELECTION_BACKGROUND);
-                PanelConsoles.this.chunkTextPane.revalidate();
-                PanelConsoles.this.chunkTextPane.repaint();
-            }
-            
-        });
+        this.chunkTextArea = new JPopupTextArea(new JTextAreaPlaceholderConsole("Raw data extracted during injection")).getProxy();
+        this.chunkTextArea.setEditable(false);
         
-        this.binaryTextPane = new JPopupTextArea(new JTextAreaPlaceholderConsole("Characters extracted during blind or time injection")).getProxy();
-        this.binaryTextPane.setEditable(false);
-        this.binaryTextPane.setCaret(new DefaultCaret() {
-            @Override
-            public void setSelectionVisible(boolean visible) {
-                super.setSelectionVisible(true);
-            }
-        });
-        this.binaryTextPane.addFocusListener(new FocusListener() {
-            
-            @Override
-            public void focusLost(FocusEvent e) {
-                PanelConsoles.this.binaryTextPane.setSelectionColor(HelperUi.COLOR_FOCUS_LOST);
-                PanelConsoles.this.binaryTextPane.revalidate();
-                PanelConsoles.this.binaryTextPane.repaint();
-            }
-            
-            @Override
-            public void focusGained(FocusEvent e) {
-                PanelConsoles.this.binaryTextPane.setSelectionColor(HelperUi.COLOR_SELECTION_BACKGROUND);
-                PanelConsoles.this.binaryTextPane.revalidate();
-                PanelConsoles.this.binaryTextPane.repaint();
-            }
-            
-        });
+        this.binaryTextArea = new JPopupTextArea(new JTextAreaPlaceholderConsole("Characters extracted during blind or time injection")).getProxy();
+        this.binaryTextArea.setEditable(false);
         
         this.javaTextPane.getProxy().setEditable(false);
-        this.javaTextPane.getProxy().setCaret(new DefaultCaret() {
-            @Override
-            public void setSelectionVisible(boolean visible) {
-                super.setSelectionVisible(true);
-            }
-        });
-        this.javaTextPane.getProxy().addFocusListener(new FocusListener() {
-            
-            @Override
-            public void focusLost(FocusEvent e) {
-                PanelConsoles.this.javaTextPane.getProxy().setSelectionColor(HelperUi.COLOR_FOCUS_LOST);
-                PanelConsoles.this.javaTextPane.getProxy().revalidate();
-                PanelConsoles.this.javaTextPane.getProxy().repaint();
-            }
-            
-            @Override
-            public void focusGained(FocusEvent e) {
-                PanelConsoles.this.javaTextPane.getProxy().setSelectionColor(HelperUi.COLOR_SELECTION_BACKGROUND);
-                PanelConsoles.this.javaTextPane.getProxy().revalidate();
-                PanelConsoles.this.javaTextPane.getProxy().repaint();
-            }
-            
-        });
         SwingAppender.register(this.javaTextPane);
         
         this.network = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
@@ -376,6 +284,11 @@ public class PanelConsoles extends JPanel {
         this.network.setLeftComponent(scrollerNetwork);
         
         MouseTabbedPane networkDetailTabs = new MouseTabbedPane();
+        networkDetailTabs.setUI(new CustomMetalTabbedPaneUI() {
+            @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+                return Math.max(65, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
+            }
+        });
         networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_URL_LABEL"), new LightScrollPane(1, 1, 0, 0, this.networkTabUrl));
         networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_RESPONSE_LABEL"), new LightScrollPane(1, 1, 0, 0, this.networkTabResponse));
         
@@ -420,6 +333,11 @@ public class PanelConsoles extends JPanel {
         this.network.setRightComponent(networkDetailTabs);
 
         MediatorGui.register(new TabConsoles());
+        MediatorGui.tabConsoles().setUI(new CustomMetalTabbedPaneUI() {
+            @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+                return Math.max(80, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
+            }
+        });
         MediatorGui.tabConsoles().setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 
         MediatorGui.tabConsoles().addTab(
@@ -487,8 +405,8 @@ public class PanelConsoles extends JPanel {
         MediatorGui.tabConsoles().setAlignmentX(FlowLayout.LEADING);
         MediatorGui.tabConsoles().setAlignmentY(Component.TOP_ALIGNMENT);
 
-        this.chunkTextPane.setLineWrap(true);
-        this.binaryTextPane.setLineWrap(true);
+        this.chunkTextArea.setLineWrap(true);
+        this.binaryTextArea.setLineWrap(true);
     }
 
     /**
@@ -498,7 +416,7 @@ public class PanelConsoles extends JPanel {
         MediatorGui.tabConsoles().insertTab(
             "Chunk",
             HelperUi.ICON_CHUNK,
-            new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.chunkTextPane),
+            new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.chunkTextArea),
             I18n.valueByKey("CONSOLE_CHUNK_TOOLTIP"),
             1
         );
@@ -518,7 +436,7 @@ public class PanelConsoles extends JPanel {
         MediatorGui.tabConsoles().insertTab(
             "Boolean",
             HelperUi.ICON_BINARY,
-            new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.binaryTextPane),
+            new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.binaryTextArea),
             I18n.valueByKey("CONSOLE_BINARY_TOOLTIP"),
             1 + (MediatorGui.menubar().getChunkMenu().isSelected() ? 1 : 0)
         );
@@ -641,7 +559,7 @@ public class PanelConsoles extends JPanel {
     // Getter and setter
 
     public JTextArea getChunkTab() {
-        return this.chunkTextPane;
+        return this.chunkTextArea;
     }
 
     public JSplitPaneWithZeroSizeDivider getNetwork() {
@@ -649,7 +567,7 @@ public class PanelConsoles extends JPanel {
     }
 
     public JTextArea getBinaryTab() {
-        return this.binaryTextPane;
+        return this.binaryTextArea;
     }
     
 }

@@ -54,7 +54,7 @@ public class CreateFileTab extends CreateTab implements InteractionCommand {
     public void execute() {
         JTextArea fileText = new JPopupTextArea().getProxy();
         fileText.setText(this.content);
-        fileText.setFont(new Font(HelperUi.FONT_NAME, Font.PLAIN, 14));
+        fileText.setFont(new Font(HelperUi.FONT_NAME_UBUNTU, Font.PLAIN, 14));
         LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, fileText);
         
         fileText.setCaretPosition(0);

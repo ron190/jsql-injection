@@ -11,10 +11,11 @@
 package com.jsql.view.swing.manager;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -30,7 +31,6 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTree;
 import javax.swing.MenuElement;
-import javax.swing.border.LineBorder;
 import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -59,13 +59,13 @@ import com.jsql.view.swing.tree.model.NodeModelEmpty;
 public class ManagerDatabase extends JPanel implements Manager {
 
     private JMenu panelVendor;
-    
+
     private JMenu panelStrategy;
-    
+
     private JMenu[] itemRadioStrategyError = new JMenu[1];
-    
+
     private ButtonGroup groupStrategy = new ButtonGroup();
-    
+
     /**
      * Create a panel to encode a string.
      */
@@ -79,9 +79,9 @@ public class ManagerDatabase extends JPanel implements Manager {
 
         // Graphic manager for components
         tree.setCellRenderer(new CellRendererNode());
-        
+
         tree.addFocusListener(new FocusListener() {
-            
+
             @Override
             public void focusLost(FocusEvent e) {
                 DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
@@ -89,27 +89,27 @@ public class ManagerDatabase extends JPanel implements Manager {
                     AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
                     if (nodeModel != null && nodeModel.getPanel() != null) {
                         nodeModel.getPanel().getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
-                        nodeModel.getPanel().getLabel().setBorder(new LineBorder(new Color(218, 218, 218), 1, false));
+                        nodeModel.getPanel().getLabel().setBorder(HelperUi.BORDER_FOCUS_LOST);
                     }
                 }
             }
-            
+
             @Override
             public void focusGained(FocusEvent e) {
                 DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
                 if (treeNode != null) {
                     AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
                     if (nodeModel != null && nodeModel.getPanel() != null) {
-                        nodeModel.getPanel().getLabel().setBackground(HelperUi.COLOR_SELECTION_BACKGROUND);
-                        nodeModel.getPanel().getLabel().setBorder(new LineBorder(HelperUi.COLOR_BLU, 1, false));
+                        nodeModel.getPanel().getLabel().setBackground(HelperUi.COLOR_FOCUS_GAINED);
+                        nodeModel.getPanel().getLabel().setBorder(HelperUi.BORDER_FOCUS_GAINED);
                     }
                 }
             }
-            
+
         });
-        
+
         tree.addMouseListener(new MouseAdapter() {
-            
+
             @Override
             public void mousePressed(MouseEvent e) {
                 int selRow = tree.getRowForLocation(e.getX(), e.getY());
@@ -124,7 +124,26 @@ public class ManagerDatabase extends JPanel implements Manager {
                     }
                 }
             }
-            
+
+        });
+
+        tree.addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_F2) {
+                    DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+                    if (treeNode != null) {
+                        AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
+                        if (nodeModel != null && nodeModel.getPanel() != null && !nodeModel.isRunning()) {
+                            nodeModel.getPanel().getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
+                            nodeModel.getPanel().getLabel().setBorder(HelperUi.BORDER_FOCUS_LOST);
+                        }
+                        nodeModel.setIsEdited(true);
+                    }
+                }
+            }
+
         });
 
         // Action manager for components
@@ -138,6 +157,7 @@ public class ManagerDatabase extends JPanel implements Manager {
 
         // Repaint Gif progressbar
         tree.getModel().addTreeModelListener(new TreeModelListener() {
+            
             @Override
             public void treeNodesChanged(TreeModelEvent arg0) {
                 if (arg0 != null) {
@@ -149,40 +169,47 @@ public class ManagerDatabase extends JPanel implements Manager {
                     tree.treeDidChange();
                 }
             }
-            @Override public void treeStructureChanged(TreeModelEvent arg0) {
+
+            @Override
+            public void treeStructureChanged(TreeModelEvent arg0) {
                 // Do nothing
             }
-            @Override public void treeNodesRemoved(TreeModelEvent arg0) {
+
+            @Override
+            public void treeNodesRemoved(TreeModelEvent arg0) {
                 // Do nothing
             }
-            @Override public void treeNodesInserted(TreeModelEvent arg0) {
+
+            @Override
+            public void treeNodesInserted(TreeModelEvent arg0) {
                 // Do nothing
             }
+            
         });
 
         tree.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
         LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, tree);
-        
+
         JMenuBar panelLineBottom = new JMenuBar();
         panelLineBottom.setOpaque(false);
         panelLineBottom.setBorder(null);
         panelLineBottom.setPreferredSize(new Dimension(0, 26));
-        
+
         panelLineBottom.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
                 BorderFactory.createEmptyBorder(1, 0, 1, 1)
             )
         );
-        
+
         this.panelStrategy = new ComboMenu("<Strategy auto>");
-        
+
         this.itemRadioStrategyError = new JMenu[1];
-        
+
         for (final StrategyInjection strategy: StrategyInjection.values()) {
             if (strategy != StrategyInjection.UNDEFINED) {
                 MenuElement itemRadioStrategy;
-                
+
                 if (strategy == StrategyInjection.ERROR) {
                     itemRadioStrategy = new JMenu(strategy.toString());
                     this.itemRadioStrategyError[0] = (JMenu) itemRadioStrategy;
@@ -194,17 +221,18 @@ public class ManagerDatabase extends JPanel implements Manager {
                     });
                     this.groupStrategy.add((AbstractButton) itemRadioStrategy);
                 }
-                
+
                 this.panelStrategy.add((JMenuItem) itemRadioStrategy);
-                ((JComponent) itemRadioStrategy).setToolTipText(I18n.valueByKey("STRATEGY_"+ strategy.name() +"_TOOLTIP"));
+                ((JComponent) itemRadioStrategy)
+                        .setToolTipText(I18n.valueByKey("STRATEGY_" + strategy.name() + "_TOOLTIP"));
                 ((JComponent) itemRadioStrategy).setEnabled(false);
             }
         }
-        
+
         this.panelVendor = new ComboMenu(Vendor.AUTO.toString());
-        
+
         ButtonGroup groupVendor = new ButtonGroup();
-        
+
         for (final Vendor vendor: Vendor.values()) {
             JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == Vendor.AUTO);
             itemRadioVendor.addActionListener(actionEvent -> {
@@ -214,7 +242,7 @@ public class ManagerDatabase extends JPanel implements Manager {
             this.panelVendor.add(itemRadioVendor);
             groupVendor.add(itemRadioVendor);
         }
-        
+
         panelLineBottom.add(this.panelVendor);
         panelLineBottom.add(Box.createHorizontalGlue());
         panelLineBottom.add(this.panelStrategy);
@@ -222,30 +250,30 @@ public class ManagerDatabase extends JPanel implements Manager {
         this.add(scroller, BorderLayout.CENTER);
         this.add(panelLineBottom, BorderLayout.SOUTH);
     }
-    
+
     public void initErrorMethods(Vendor vendor) {
         this.itemRadioStrategyError[0].removeAll();
-        
-        Integer[] i = {0};
+
+        Integer[] i = { 0 };
         if (vendor != Vendor.AUTO && vendor.instance().getXmlModel().getStrategy().getError() != null) {
             for (Method methodError: vendor.instance().getXmlModel().getStrategy().getError().getMethod()) {
                 JMenuItem itemRadioVendor = new JRadioButtonMenuItem(methodError.getName());
                 itemRadioVendor.setEnabled(false);
                 this.itemRadioStrategyError[0].add(itemRadioVendor);
                 this.groupStrategy.add(itemRadioVendor);
-                
+
                 final int indexError = i[0];
                 itemRadioVendor.addActionListener(actionEvent -> {
                     ManagerDatabase.this.panelStrategy.setText(methodError.getName());
                     MediatorModel.model().setStrategy(StrategyInjection.ERROR);
-                    ((StrategyInjectionError)StrategyInjection.ERROR.instance()).setIndexMethod(indexError);
+                    ((StrategyInjectionError) StrategyInjection.ERROR.instance()).setIndexMethod(indexError);
                 });
-                
+
                 i[0]++;
             }
         }
     }
-    
+
     // Getter and setter
 
     public ButtonGroup getGroupStrategy() {
@@ -259,5 +287,5 @@ public class ManagerDatabase extends JPanel implements Manager {
     public JMenu getPanelStrategy() {
         return this.panelStrategy;
     }
-    
+
 }

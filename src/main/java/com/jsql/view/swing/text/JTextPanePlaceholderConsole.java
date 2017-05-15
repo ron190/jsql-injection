@@ -10,5 +10,4 @@ public class JTextPanePlaceholderConsole extends JTextPanePlaceholder {
         super(placeholder);
     }
     
-    
 }

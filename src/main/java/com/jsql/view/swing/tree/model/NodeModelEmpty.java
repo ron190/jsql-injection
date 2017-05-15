@@ -50,8 +50,8 @@ public class NodeModelEmpty extends AbstractNodeModel {
         text.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         
         if (isSelected) {
-            emptyPanel.setBackground(HelperUi.COLOR_SELECTION_BACKGROUND);
-            text.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.COLOR_BLU));
+            emptyPanel.setBackground(HelperUi.COLOR_FOCUS_GAINED);
+            text.setBorder(HelperUi.BORDER_FOCUS_GAINED);
         } else {
             emptyPanel.setBackground(Color.WHITE);
             text.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));

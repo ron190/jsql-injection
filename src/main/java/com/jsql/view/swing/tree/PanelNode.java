@@ -13,22 +13,30 @@ package com.jsql.view.swing.tree;
 import java.awt.Color;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.nio.charset.Charset;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.JTree;
-import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicProgressBarUI;
-import javax.swing.tree.TreeNode;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.jsql.i18n.I18n;
+import com.jsql.util.StringUtil;
 import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**
  * A tree Node composed of an icon, a GIF loader, a progress bar, a label.
@@ -55,49 +63,131 @@ public class PanelNode extends JPanel {
      * Text of the node.
      */
     private JLabel label = new JLabel();
+    private JTextField editable = new JTextField(15);
     
     /**
      * Create Panel for tree nodes.
      * @param tree JTree to populate
      * @param currentNode Node to draw in the tree
      */
-    public PanelNode(final JTree tree, final TreeNode currentNode) {
+    public PanelNode(final JTree tree, final DefaultMutableTreeNode currentNode) {
         ImageIcon animatedGIF = new ImageIcon(PanelNode.class.getResource(HelperUi.PATH_PROGRESSBAR));
         animatedGIF.setImageObserver(new ImageObserverAnimated(tree, currentNode));
         this.loader.setIcon(animatedGIF);
 
-        this.progressBar.setPreferredSize(new Dimension(16, 16));
+        this.progressBar.setPreferredSize(new Dimension(20, 20));
         this.progressBar.setUI(new BasicProgressBarUI());
         this.label.setOpaque(true);
 
-        this.label.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.COLOR_BLU));
+        this.label.setBorder(HelperUi.BORDER_FOCUS_GAINED);
 
+        this.icon.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+        
         this.setBackground(Color.WHITE);
 
-        this.setLayout(new FlowLayout(FlowLayout.CENTER, 2, 2));
+        this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         this.add(this.icon);
         this.add(this.loader);
         this.add(this.progressBar);
         this.add(this.label);
+        this.add(this.editable);
         this.setComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
 
         this.progressBar.setVisible(false);
+        this.progressBar.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createEmptyBorder(4, 4, 4, 4),
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY),
+                BorderFactory.createLineBorder(Color.WHITE)
+            )
+        ));
         this.loader.setVisible(false);
         this.label.setVisible(false);
         this.icon.setVisible(false);
+        this.editable.setVisible(false);
+        
+        this.editable.setFont(HelperUi.FONT_SEGOE);
+        this.editable.setBorder(BorderFactory.createLineBorder(HelperUi.COLOR_FOCUS_GAINED, 1, false));
+        this.editable.addActionListener(new ActionListener() {
+            
+            public void actionPerformed(ActionEvent e) {
+                AbstractNodeModel o = (AbstractNodeModel) currentNode.getUserObject();
+                o.setIsEdited(false);
+                
+                label.setVisible(true);
+                editable.setVisible(false);
+                tree.requestFocusInWindow();
+                
+                o.getElementDatabase().setElementValue(new String(editable.getText().getBytes( Charset.forName("UTF-8" ))));
+                label.setText(StringUtil.detectUtf8Html(o.getElementDatabase().getLabelCount()));
+                
+                tree.revalidate();
+                tree.repaint();
+            }
+          
+        });
+        
+        this.editable.addFocusListener(new FocusAdapter() {
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                AbstractNodeModel o = (AbstractNodeModel) currentNode.getUserObject();
+                o.setIsEdited(false);
+                tree.revalidate();
+                tree.repaint();
+            }
+            
+        });
+        
+        this.addKeyListener(new KeyAdapter() {
+            
+            @Override
+            public void keyPressed(KeyEvent e) {
+                AbstractNodeModel o = (AbstractNodeModel) currentNode.getUserObject();
+                if (e.getKeyCode() == KeyEvent.VK_F2 && !o.isRunning()) {
+                    o.setIsEdited(true);
+                    
+                    label.setVisible(false);
+                    editable.setVisible(true);
+                    editable.requestFocusInWindow();
+                    
+                    tree.revalidate();
+                    tree.repaint();
+                }
+            }
+            
+        });
+        
+        this.editable.addKeyListener(new KeyAdapter() {
+            
+            @Override
+            public void keyPressed(KeyEvent e) {
+                AbstractNodeModel o = (AbstractNodeModel) currentNode.getUserObject();
+                if (e.getKeyCode() == KeyEvent.VK_F2 && !o.isRunning()) {
+                    o.setIsEdited(true);
+                    
+                    label.setVisible(false);
+                    editable.setVisible(true);
+                    editable.requestFocusInWindow();
+                    tree.revalidate();
+                    tree.repaint();
+                }
+            }
+            
+        });
 
         this.addFocusListener(new FocusListener() {
             
             @Override
             public void focusLost(FocusEvent e) {
                 label.setBackground(HelperUi.COLOR_FOCUS_LOST);
-                label.setBorder(new LineBorder(new Color(218, 218, 218), 1, false));
+                label.setBorder(HelperUi.BORDER_FOCUS_LOST);
             }
             
             @Override
             public void focusGained(FocusEvent e) {
-                label.setBackground(HelperUi.COLOR_SELECTION_BACKGROUND);
-                label.setBorder(new LineBorder(HelperUi.COLOR_BLU, 1, false));
+                label.setBackground(HelperUi.COLOR_FOCUS_GAINED);
+                label.setBorder(HelperUi.BORDER_FOCUS_GAINED);
             }
             
         });
@@ -148,6 +238,10 @@ public class PanelNode extends JPanel {
 
     public JLabel getLabel() {
         return this.label;
+    }
+
+    public JTextField getEditable() {
+        return editable;
     }
     
 }

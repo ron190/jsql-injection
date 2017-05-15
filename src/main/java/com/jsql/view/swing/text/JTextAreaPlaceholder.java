@@ -1,10 +1,15 @@
 package com.jsql.view.swing.text;
 
 import java.awt.Graphics;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.JTextArea;
+import javax.swing.text.DefaultCaret;
 
 import org.apache.log4j.Logger;
+
+import com.jsql.view.swing.HelperUi;
 
 /**
  * Textfield with information text displayed when empty.
@@ -38,6 +43,31 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
      */
     public JTextAreaPlaceholder(String placeholder) {
         this.placeholderText = placeholder;
+        
+        this.setCaret(new DefaultCaret() {
+            @Override
+            public void setSelectionVisible(boolean visible) {
+                super.setSelectionVisible(true);
+            }
+        });
+        
+        this.addFocusListener(new FocusListener() {
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                JTextAreaPlaceholder.this.setSelectionColor(HelperUi.COLOR_FOCUS_LOST);
+                JTextAreaPlaceholder.this.revalidate();
+                JTextAreaPlaceholder.this.repaint();
+            }
+            
+            @Override
+            public void focusGained(FocusEvent e) {
+                JTextAreaPlaceholder.this.setSelectionColor(HelperUi.COLOR_FOCUS_GAINED);
+                JTextAreaPlaceholder.this.revalidate();
+                JTextAreaPlaceholder.this.repaint();
+            }
+            
+        });
     }
 
     @Override

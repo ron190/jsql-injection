@@ -40,12 +40,12 @@ public class SwingAppender extends WriterAppender {
     private static final SimpleAttributeSet ALL = new SimpleAttributeSet();
     
     static {
-        StyleConstants.setFontFamily(ERROR, HelperUi.FONT_NAME);
-        StyleConstants.setFontFamily(WARN, HelperUi.FONT_NAME);
-        StyleConstants.setFontFamily(INFO, HelperUi.FONT_NAME);
-        StyleConstants.setFontFamily(DEBUG, HelperUi.FONT_NAME);
-        StyleConstants.setFontFamily(TRACE, HelperUi.FONT_NAME);
-        StyleConstants.setFontFamily(ALL, HelperUi.FONT_NAME);
+        StyleConstants.setFontFamily(ERROR, HelperUi.FONT_NAME_UBUNTU);
+        StyleConstants.setFontFamily(WARN, HelperUi.FONT_NAME_UBUNTU);
+        StyleConstants.setFontFamily(INFO, HelperUi.FONT_NAME_UBUNTU);
+        StyleConstants.setFontFamily(DEBUG, HelperUi.FONT_NAME_UBUNTU);
+        StyleConstants.setFontFamily(TRACE, HelperUi.FONT_NAME_UBUNTU);
+        StyleConstants.setFontFamily(ALL, HelperUi.FONT_NAME_UBUNTU);
         
         StyleConstants.setFontSize(ERROR, 14);
         StyleConstants.setFontSize(WARN, 14);

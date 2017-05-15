@@ -13,7 +13,7 @@ public class LightScrollPaneShell extends LightScrollPane {
     public LightScrollPaneShell(JComponent component) {
         super(component);
         
-        this.colorThumb = HelperUi.COLOR_SELECTION_BACKGROUND;
+        this.colorThumb = HelperUi.COLOR_FOCUS_GAINED;
         this.scrollBarAlphaRollover = 175;
         this.scrollBarAlpha = 100;
         

@@ -42,13 +42,13 @@ You can also type `java -jar jsql-injection-v0.79.jar` in your terminal to start
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## Roadmap
-`Multi Database Testing using DbUnit and Hibernate / JPA / Jooq, Full Path Disclosure, Injection strategies: DIOS / Routed query / Out of band / Update Insert Delete, Maven Central components: jsql-injection-core jsql-injection-swing, Upgrade to log4j2, Bruteforce of HTTP Auth using NTLM, Arabic translation, Command line interface, Bruteforce database, WAF detection, Program self-updater.`
+`Testing with DbUnit and JPA Hibernate Jooq, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB UpdateInsertDelete, Maven Central components: jsql-injection-core jsql-injection-swing, Bruteforce HTTP Auth using NTLM, Arabic translation, Command line interface, Dictionnary attack, WAF detection, Program self-updater.`
 
 ## Development in progress
 `User Agent configuration.`
 
 ## Done since last release
-`Injection using Coldfusion, Database flavor: Neo4j NuoDB Hana and Vertica, Russian translation complete.`
+`Database Node renaming on F2 and Context Menu, Injection using Coldfusion, Database flavor: Neo4j NuoDB Hana and Vertica, Russian translation complete.`
 
 ## Change log
 

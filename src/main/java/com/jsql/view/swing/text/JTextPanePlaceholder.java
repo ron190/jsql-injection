@@ -1,12 +1,17 @@
 package com.jsql.view.swing.text;
 
 import java.awt.Graphics;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ConcurrentModificationException;
 
 import javax.swing.JTextPane;
+import javax.swing.text.DefaultCaret;
 
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
+
+import com.jsql.view.swing.HelperUi;
 
 /**
  * Textfield with information text displayed when empty.
@@ -40,6 +45,31 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
      */
     public JTextPanePlaceholder(String placeholder) {
         this.placeholderText = placeholder;
+        
+        this.setCaret(new DefaultCaret() {
+            @Override
+            public void setSelectionVisible(boolean visible) {
+                super.setSelectionVisible(true);
+            }
+        });
+        
+        this.addFocusListener(new FocusListener() {
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                JTextPanePlaceholder.this.setSelectionColor(HelperUi.COLOR_FOCUS_LOST);
+                JTextPanePlaceholder.this.revalidate();
+                JTextPanePlaceholder.this.repaint();
+            }
+            
+            @Override
+            public void focusGained(FocusEvent e) {
+                JTextPanePlaceholder.this.setSelectionColor(HelperUi.COLOR_FOCUS_GAINED);
+                JTextPanePlaceholder.this.revalidate();
+                JTextPanePlaceholder.this.repaint();
+            }
+            
+        });
     }
 
     @Override

@@ -16,6 +16,7 @@ import java.awt.ComponentOrientation;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JPopupMenu;
@@ -26,6 +27,7 @@ import javax.swing.tree.TreePath;
 import com.jsql.i18n.I18n;
 import com.jsql.model.bean.database.Column;
 import com.jsql.util.StringUtil;
+import com.jsql.view.swing.HelperUi;
 
 /**
  * Column model creating a checkbox.
@@ -55,7 +57,20 @@ public class NodeModelColumn extends AbstractNodeModel {
         
         checkbox.setText(StringUtil.detectUtf8HtmlNoWrap(this.toString()));
         
-        checkbox.setBackground(Color.WHITE);
+
+        if (isSelected) {
+            if (hasFocus) {
+                checkbox.setBackground(HelperUi.COLOR_FOCUS_GAINED);
+                checkbox.setBorder(HelperUi.BORDER_FOCUS_GAINED);
+            } else {
+                checkbox.setBackground(HelperUi.COLOR_FOCUS_LOST);
+                checkbox.setBorder(HelperUi.BORDER_FOCUS_LOST);
+            }
+        } else {
+            checkbox.setBackground(Color.WHITE);
+            checkbox.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        }
+        
         checkbox.setComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
         return checkbox;
     }

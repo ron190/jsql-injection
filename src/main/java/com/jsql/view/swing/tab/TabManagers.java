@@ -11,6 +11,7 @@
 package com.jsql.view.swing.tab;
 
 import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -31,6 +32,7 @@ import com.jsql.view.swing.manager.ManagerSqlShell;
 import com.jsql.view.swing.manager.ManagerUpload;
 import com.jsql.view.swing.manager.ManagerWebShell;
 import com.jsql.view.swing.text.JToolTipI18n;
+import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
 /**
  * Panel on the left with functionalities like webshell, file reading and admin page finder.
@@ -42,6 +44,11 @@ public class TabManagers extends MouseTabbedPane {
      * Create manager panel.
      */
     public TabManagers() {
+        this.setUI(new CustomMetalTabbedPaneUI() {
+            @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+                return Math.max(75, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
+            }
+        });
         
         ManagerWebShell managerWebShell = new ManagerWebShell();
         ManagerScan managerScanList = new ManagerScan();

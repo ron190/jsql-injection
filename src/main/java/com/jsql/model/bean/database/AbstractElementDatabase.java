@@ -52,4 +52,8 @@ public abstract class AbstractElementDatabase {
         return this.elementValue;
     }
     
+    public void setElementValue(String elementValue) {
+        this.elementValue = elementValue;
+    }
+    
 }

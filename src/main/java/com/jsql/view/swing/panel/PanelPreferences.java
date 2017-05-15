@@ -46,7 +46,7 @@ public class PanelPreferences extends JPanel {
         this.buttonApply = new JButton("Apply");
         this.buttonApply.setBorder(
             BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(1, 1, 1, 1, HelperUi.COLOR_BLU),
+                HelperUi.BORDER_FOCUS_GAINED,
                 BorderFactory.createEmptyBorder(2, 7, 2, 7)
             )
         );
