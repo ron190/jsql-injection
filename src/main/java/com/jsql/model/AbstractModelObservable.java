@@ -40,9 +40,8 @@ public abstract class AbstractModelObservable extends Observable {
     public abstract String inject(String dataInjection, boolean isUsingIndex);
     
     /**
-     * Used to inject without need of index (select 1,2,...).<br>
-     * -> first index test (getVisibleIndex), Error test,
-     * and Error, Blind, Time strategies.
+     * Inject without the need of index like in "select 1,2,..."<br>
+     * Used for example by: first index test (getVisibleIndex), Error test, and Error, Blind, Time strategies.
      * @return source code of current page
      */
     public String injectWithoutIndex(String dataInjection) {

@@ -76,12 +76,13 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
     public void paint(Graphics g) {
         // Fix #4012: ArrayIndexOutOfBoundsException on paint()
         // Fix #38546: ConcurrentModificationException on getText()
+        // Fix #37872: IndexOutOfBoundsException on getText()
         try {
             super.paint(g);
             if ("".equals(Jsoup.parse(this.getText()).text().trim())) {
                 this.drawPlaceholder(this, g, this.placeholderText);
             }
-        } catch (ArrayIndexOutOfBoundsException | ConcurrentModificationException e) {
+        } catch (ConcurrentModificationException | IndexOutOfBoundsException e) {
             LOGGER.error(e.getMessage(), e);
         }
     }

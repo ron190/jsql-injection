@@ -194,14 +194,14 @@ public class VendorXml extends AbstractVendorDefault {
     public String sqlTextIntoFile(String content, String filePath) {
         return
             MediatorModel.model().getIndexesInUrl()
-            .replaceAll(
-                "1337" + ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).getVisibleIndex() + "7331",
-                this.xmlModel.getResource().getFile().getCreate().getContent()
-                .replace(CONTENT_HEX, Hex.encodeHexString(content.getBytes()))
-            )
-            .replaceAll("--++", "")
-            + this.xmlModel.getResource().getFile().getCreate().getQuery()
-            .replace(FILEPATH, filePath);
+                .replaceAll(
+                    "1337" + ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).getVisibleIndex() + "7331",
+                    this.xmlModel.getResource().getFile().getCreate().getContent()
+                        .replace(CONTENT_HEX, Hex.encodeHexString(content.getBytes()))
+                )
+                .replaceAll("--++", "") +" "+ this.xmlModel.getResource().getFile().getCreate().getQuery()
+                .replace(FILEPATH, filePath)
+        ;
     }
 
     @Override

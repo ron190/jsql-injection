@@ -14,6 +14,8 @@ import java.util.Map;
 
 import javax.swing.JMenu;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
@@ -23,6 +25,11 @@ import com.jsql.view.swing.MediatorGui;
  * Mark the injection as invulnerable to a error based injection.
  */
 public class MarkErrorInvulnerable implements InteractionCommand {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 	
     private Map<Header, Object> mapHeader;
     private int indexMethodError;
@@ -38,11 +45,17 @@ public class MarkErrorInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        for (int i = 0 ; i < MediatorGui.managerDatabase().getPanelStrategy().getItemCount() ; i++) {
-            if (MediatorGui.managerDatabase().getPanelStrategy().getItem(i).getText().equals(StrategyInjection.ERROR.toString())) {
-                ((JMenu) MediatorGui.managerDatabase().getPanelStrategy().getItem(i)).getItem(this.indexMethodError).setEnabled(false);
-                break;
+        // Fix #36975: ArrayIndexOutOfBoundsException on getItem()
+        // Fix #40352: NullPointerException on ?
+        try {
+            for (int i = 0 ; i < MediatorGui.managerDatabase().getPanelStrategy().getItemCount() ; i++) {
+                if (MediatorGui.managerDatabase().getPanelStrategy().getItem(i).getText().equals(StrategyInjection.ERROR.toString())) {
+                    ((JMenu) MediatorGui.managerDatabase().getPanelStrategy().getItem(i)).getItem(this.indexMethodError).setEnabled(false);
+                    break;
+                }
             }
+        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
+            LOGGER.error(e, e);
         }
     }
     

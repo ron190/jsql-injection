@@ -126,6 +126,7 @@ public class ManagerUpload extends AbstractManagerList {
             filechooser.setDialogTitle(I18n.valueByKey("UPLOAD_DIALOG_TEXT"));
             
             // Fix #2402: NullPointerException on showOpenDialog()
+            // Fix #40547: ClassCastException on showOpenDialog()
             try {
                 int returnVal = filechooser.showOpenDialog(MediatorGui.frame());
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -145,7 +146,7 @@ public class ManagerUpload extends AbstractManagerList {
                         
                     }
                 }
-            } catch(NullPointerException ex) {
+            } catch (NullPointerException | ClassCastException ex) {
                 LOGGER.error(ex, ex);
             }
         });

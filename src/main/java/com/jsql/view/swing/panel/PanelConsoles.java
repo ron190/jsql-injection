@@ -524,7 +524,7 @@ public class PanelConsoles extends JPanel {
         this.networkTabUrl.setText(networkData.getUrl());
         
         this.networkTabResponse.setText("");
-        for(String key: networkData.getResponse().keySet()) {
+        for (String key: networkData.getResponse().keySet()) {
             this.networkTabResponse.append(key + ": " + networkData.getResponse().get(key));
             this.networkTabResponse.append("\n");
         }
@@ -538,6 +538,7 @@ public class PanelConsoles extends JPanel {
         // Previous test for 2xx Success and 3xx Redirection was Header only,
         // now get the HTML content
         // Fix #35352: EmptyStackException on setText()
+        // Fix #39841: RuntimeException on setText()
         try {
             this.networkTabPreview.setText(
                 Jsoup.clean(
@@ -551,7 +552,7 @@ public class PanelConsoles extends JPanel {
                         .addAttributes(":all", "style")
                 )
             );
-        } catch (EmptyStackException e) {
+        } catch (RuntimeException e) {
             LOGGER.error(e, e);
         }
     }
