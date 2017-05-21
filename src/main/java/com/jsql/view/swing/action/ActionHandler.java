@@ -173,7 +173,11 @@ public final class ActionHandler {
         /* Hide Menubar when focusing any component */
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner",
             propertyChangeEvent -> SwingUtilities.invokeLater(() -> {
-                if (!MediatorGui.panelAddressBar().isAdvanceIsActivated()) {
+                if (
+                    // Fix #40924: NullPointerException on MediatorGui.panelAddressBar()
+                    MediatorGui.panelAddressBar() != null 
+                    && !MediatorGui.panelAddressBar().isAdvanceIsActivated()
+                ) {
                     menubar.setVisible(false);
                 }
             })

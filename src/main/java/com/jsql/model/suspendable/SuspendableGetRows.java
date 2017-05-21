@@ -136,6 +136,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             /*
              * Add the result to the data already found.
              */
+            // Fix #40947: OutOfMemoryError on append()
             try {
                 if (partOldRow.equals(regexAtLeastOneRow.group(1))) {
                     infiniteLoop++;
@@ -160,7 +161,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                         .replaceAll("\\n", "\\\\\\n").replaceAll("\\r", "\\\\\\r").replaceAll("\\t", "\\\\\\t")
                 );
                 MediatorModel.model().sendToViews(request);
-            } catch (IllegalStateException e) {
+            } catch (IllegalStateException | OutOfMemoryError e) {
                 // Premature end of results
                 // if it's not the root (empty tree)
                 if (searchName != null) {

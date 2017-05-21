@@ -13,7 +13,7 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)
 
 ## Features
-- Automatic injection of 22 kinds of databases: Access, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MariaDB, MaxDB, MySQL{MariaDb MemSQL}, Neo4j, NuoDB, Oracle{Tibaro}, PostgreSQL{Greenplum}, SQLite, SQL Server, Sybase, Teradata and Vertica
+- Automatic injection of 21 kinds of databases: Access, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, MySQL{MariaDb MemSQL}, Neo4j, NuoDB, Oracle{Tibaro}, PostgreSQL{Greenplum}, SQLite, SQL Server, Sybase, Teradata and Vertica
 - Multiple injection strategies: Normal, Error, Blind and Time
 - SQL Engine to study and optimize SQL expressions
 - Injection of multiple targets
@@ -25,7 +25,8 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 
 ## Installation [[jsql-injection-v0.79.jar](https://github.com/ron190/jsql-injection/releases/download/v0.79/jsql-injection-v0.79.jar)]
 Install [Java 8](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) of jSQL and double-click on the .jar to launch the software.<br>
-You can also type `java -jar jsql-injection-v0.79.jar` in your terminal to start the program.
+You can also type `java -jar jsql-injection-v0.79.jar` in your terminal to start the program.<br>
+If you are using Kali Linux then get the latest release using commands `apt update` then `apt full-upgrade`.
 
 ## Screenshots [[video](https://youtu.be/ZZkQRE3OL8E)]
 [![Default](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default-mini.png "Default")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default.png)
@@ -44,10 +45,10 @@ You can also type `java -jar jsql-injection-v0.79.jar` in your terminal to start
 ## Roadmap
 `Testing with DbUnit and JPA Hibernate Jooq, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB UpdateInsertDelete, Maven Central components: jsql-injection-core jsql-injection-swing, Bruteforce HTTP Auth using NTLM, Arabic translation, Command line interface, Dictionnary attack, WAF detection, Program self-updater.`
 
-## Development in progress
+## In progress
 `User Agent configuration.`
 
-## Done since last release
+## Since last release
 `Database Node renaming on F2 and Context Menu, Injection using Coldfusion, Database flavor: Neo4j NuoDB Hana and Vertica, Russian translation complete.`
 
 ## Change log
