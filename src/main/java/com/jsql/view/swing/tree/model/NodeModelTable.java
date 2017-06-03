@@ -10,15 +10,25 @@
  ******************************************************************************/
 package com.jsql.view.swing.tree.model;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButton;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
+import javax.swing.JTextField;
+import javax.swing.MenuSelectionManager;
 import javax.swing.SwingWorker;
+import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -30,6 +40,8 @@ import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.ThreadUtil;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.panel.util.CheckBoxMenuItemIconCustom;
+import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.tree.ImageObserverAnimated;
 import com.jsql.view.swing.tree.ImageOverlap;
 import com.jsql.view.swing.tree.PanelNode;
@@ -159,6 +171,58 @@ public class NodeModelTable extends AbstractNodeModel {
         tablePopupMenu.add(new JSeparator());
         tablePopupMenu.add(menuItemCheckAll);
         tablePopupMenu.add(menuItemUncheckAll);
+        
+        JMenu menuCustomLoad = new JMenu("Custom load");
+        
+        ButtonGroup bg = new ButtonGroup();
+        
+        JMenuItem menuItemLoadAllRows = new JRadioButtonMenuItem("Load all rows (default)", true);
+        JMenuItem menuItemLoadOneRow = new JRadioButtonMenuItem("Load one row only");
+        
+        JPanel panelCustomMethod = new JPanel(new BorderLayout());
+        final JTextField inputCustomMethod = new JPopupTextField("index").getProxy();
+
+        final JRadioButton radioCustomMethod = new JRadioButton("Load all from row");
+        radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        radioCustomMethod.setIcon(new CheckBoxMenuItemIconCustom());
+        radioCustomMethod.setFocusPainted(false);
+        
+        panelCustomMethod.add(radioCustomMethod, BorderLayout.LINE_START);
+        panelCustomMethod.add(inputCustomMethod, BorderLayout.CENTER);
+        
+//        buttonGroup.add(radioCustomMethod);
+//        radioCustomMethod.addActionListener(actionEvent -> {
+//            if (!"".equals(inputCustomMethod.getText())) {
+//                PanelAddressBar.this.typeRequest = inputCustomMethod.getText();
+//                radioMethod.setText(PanelAddressBar.this.typeRequest);
+//                popup.setVisible(false);
+//            } else {
+//                LOGGER.warn("Custom method undefined");
+//            }
+//        });
+        
+        bg.add(menuItemLoadAllRows);
+        bg.add(menuItemLoadOneRow);
+        bg.add(radioCustomMethod);
+      
+        menuCustomLoad.add(menuItemLoadAllRows);
+        menuCustomLoad.add(menuItemLoadOneRow);
+        menuCustomLoad.add(new JSeparator());
+        menuCustomLoad.add(panelCustomMethod);
+        
+        for (JMenuItem menuItem: new JMenuItem[]{menuItemLoadAllRows, menuItemLoadOneRow}) {
+            menuItem.setUI(
+                new BasicRadioButtonMenuItemUI() {
+                    @Override
+                    protected void doClick(MenuSelectionManager msm) {
+                        this.menuItem.doClick(0);
+                    }
+                }
+            );
+        }
+
+        tablePopupMenu.add(new JSeparator());
+        tablePopupMenu.add(menuCustomLoad);
     }
     
     @Override

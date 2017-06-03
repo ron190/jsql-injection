@@ -113,9 +113,9 @@ public class SQLLexer implements Lexer {
         while (i < l) {
             int count = packed.charAt(i++);
             int value = packed.charAt(i++);
-            do
+            do {
                 result[j++] = value;
-            while (--count > 0);
+            } while (--count > 0);
         }
         return j;
     }
@@ -900,9 +900,9 @@ public class SQLLexer implements Lexer {
             int count = packed.charAt(i++);
             int value = packed.charAt(i++);
             value--;
-            do
+            do {
                 result[j++] = value;
-            while (--count > 0);
+            } while (--count > 0);
         }
         return j;
     }
@@ -939,9 +939,9 @@ public class SQLLexer implements Lexer {
         while (i < l) {
             int count = packed.charAt(i++);
             int value = packed.charAt(i++);
-            do
+            do {
                 result[j++] = value;
-            while (--count > 0);
+            } while (--count > 0);
         }
         return j;
     }
@@ -1064,9 +1064,9 @@ public class SQLLexer implements Lexer {
         while (i < 220) {
             int count = packed.charAt(i++);
             char value = packed.charAt(i++);
-            do
+            do {
                 map[j++] = value;
-            while (--count > 0);
+            } while (--count > 0);
         }
         return map;
     }
@@ -1140,8 +1140,9 @@ public class SQLLexer implements Lexer {
         this.zzAtEOF = true; /* indicate end of file */
         this.zzEndRead = this.zzStartRead; /* invalidate buffer */
 
-        if (this.zzReader != null)
+        if (this.zzReader != null) {
             this.zzReader.close();
+        }
     }
 
     /**
@@ -1166,8 +1167,9 @@ public class SQLLexer implements Lexer {
         this.zzFinalHighSurrogate = 0;
         this.yyline = this.yychar = 0;
         this.zzLexicalState = YYINITIAL;
-        if (this.zzBuffer.length > ZZ_BUFFERSIZE)
+        if (this.zzBuffer.length > ZZ_BUFFERSIZE) {
             this.zzBuffer = new char[ZZ_BUFFERSIZE];
+        }
     }
 
     /**
@@ -1251,8 +1253,9 @@ public class SQLLexer implements Lexer {
      *            not be greater than yylength()!
      */
     public void yypushback(int number) {
-        if (number > this.yylength())
+        if (number > this.yylength()) {
             this.zzScanError(ZZ_PUSHBACK_2BIG);
+        }
 
         this.zzMarkedPos -= number;
     }
@@ -1306,9 +1309,9 @@ public class SQLLexer implements Lexer {
                     zzR = true;
                     break;
                 case '\n':
-                    if (zzR)
+                    if (zzR) {
                         zzR = false;
-                    else {
+                    } else {
                         this.yyline++;
                     }
                     break;
@@ -1321,22 +1324,24 @@ public class SQLLexer implements Lexer {
                 // peek one character ahead if it is \n (if we have counted one
                 // line too much)
                 boolean zzPeek;
-                if (zzMarkedPosL < zzEndReadL)
+                if (zzMarkedPosL < zzEndReadL) {
                     zzPeek = zzBufferL[zzMarkedPosL] == '\n';
-                else if (this.zzAtEOF)
+                } else if (this.zzAtEOF) {
                     zzPeek = false;
-                else {
+                } else {
                     boolean eof = this.zzRefill();
                     zzEndReadL = this.zzEndRead;
                     zzMarkedPosL = this.zzMarkedPos;
                     zzBufferL = this.zzBuffer;
-                    if (eof)
+                    if (eof) {
                         zzPeek = false;
-                    else
+                    } else {
                         zzPeek = zzBufferL[zzMarkedPosL] == '\n';
+                    }
                 }
-                if (zzPeek)
+                if (zzPeek) {
                     this.yyline--;
+                }
             }
             zzAction = -1;
 
@@ -1378,16 +1383,18 @@ public class SQLLexer implements Lexer {
                         }
                     }
                     int zzNext = zzTransL[zzRowMapL[this.zzState] + zzCMapL[zzInput]];
-                    if (zzNext == -1)
+                    if (zzNext == -1) {
                         break zzForAction;
+                    }
                     this.zzState = zzNext;
 
                     zzAttributes = zzAttrL[this.zzState];
                     if ((zzAttributes & 1) == 1) {
                         zzAction = this.zzState;
                         zzMarkedPosL = zzCurrentPosL;
-                        if ((zzAttributes & 8) == 8)
+                        if ((zzAttributes & 8) == 8) {
                             break zzForAction;
+                        }
                     }
 
                 }

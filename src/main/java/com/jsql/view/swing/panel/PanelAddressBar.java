@@ -18,7 +18,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Collections;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -33,8 +35,10 @@ import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
 import javax.swing.JToolTip;
+import javax.swing.MenuSelectionManager;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
+import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 
 import org.apache.log4j.Logger;
 
@@ -168,6 +172,17 @@ public class PanelAddressBar extends JPanel {
             buttonGroup.add(newMenuItem);
         }
         
+        for (AbstractButton radioButton: Collections.list(buttonGroup.getElements())) {
+            radioButton.setUI(
+                new BasicRadioButtonMenuItemUI() {
+                    @Override
+                    protected void doClick(MenuSelectionManager msm) {
+                        this.menuItem.doClick(0);
+                    }
+                }
+            );
+        }
+        
         JPanel panelCustomMethod = new JPanel(new BorderLayout());
         final JTextField inputCustomMethod = new JPopupTextField("CUSTOM").getProxy();
 
@@ -176,11 +191,11 @@ public class PanelAddressBar extends JPanel {
         radioCustomMethod.setIcon(new CheckBoxMenuItemIconCustom());
         
         buttonGroup.add(radioCustomMethod);
+        
         radioCustomMethod.addActionListener(actionEvent -> {
             if (!"".equals(inputCustomMethod.getText())) {
                 PanelAddressBar.this.typeRequest = inputCustomMethod.getText();
                 radioMethod.setText(PanelAddressBar.this.typeRequest);
-                popup.setVisible(false);
             } else {
                 LOGGER.warn("Custom method undefined");
             }

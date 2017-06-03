@@ -3,7 +3,7 @@
 
 It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X).
 
-![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) or [BlackArch Linux](http://www.blackarch.org/).
+![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in other distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) or [BlackArch Linux](http://www.blackarch.org/).
 
 [![Java 8](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/java.png)](http://www.oracle.com/technetwork/java/javase/downloads/)
 [![License GPLv2](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/license.png)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
@@ -23,12 +23,12 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 - Bruteforce hash of password
 - Code and decode a string
 
-## Installation [[jsql-injection-v0.79.jar](https://github.com/ron190/jsql-injection/releases/download/v0.79/jsql-injection-v0.79.jar)]
-Install [Java 8](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) of jSQL and double-click on the .jar to launch the software.<br>
+## Installation [download [jsql-injection-v0.79.jar](https://github.com/ron190/jsql-injection/releases/download/v0.79/jsql-injection-v0.79.jar)]
+Install [Java 8](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) of jSQL Injection and double-click on jsql-injection-v0.79.jar to launch the software.<br>
 You can also type `java -jar jsql-injection-v0.79.jar` in your terminal to start the program.<br>
 If you are using Kali Linux then get the latest release using commands `apt update` then `apt full-upgrade`.
 
-## Screenshots [[video](https://youtu.be/ZZkQRE3OL8E)]
+## Screenshots [watch [video](https://youtu.be/ZZkQRE3OL8E)]
 [![Default](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default-mini.png "Default")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default.png)
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
 [![SQL Engine](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.78/sqlengine-mini.png "SQL Engine")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.78/sqlengine.png)
@@ -43,7 +43,7 @@ If you are using Kali Linux then get the latest release using commands `apt upda
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## Roadmap
-`Testing with DbUnit and JPA Hibernate Jooq, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB UpdateInsertDelete, Maven Central components: jsql-injection-core jsql-injection-swing, Bruteforce HTTP Auth using NTLM, Arabic translation, Command line interface, Dictionnary attack, WAF detection, Program self-updater.`
+`New database vendors Netezza Mckoi CockroachDB, Testing with Docker DbUnit and JPA Hibernate Jooq, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB UpdateInsertDelete, Maven Central components: jsql-injection-core jsql-injection-swing, Bruteforce HTTP Auth using NTLM, Arabic translation, Command line interface, Dictionnary attack, WAF detection, Program self-updater.`
 
 ## In progress
 `User Agent configuration.`

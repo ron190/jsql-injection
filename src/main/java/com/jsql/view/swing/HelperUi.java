@@ -120,6 +120,7 @@ public final class HelperUi {
     public static final Icon ICON_FLAG_IT = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/it.png"));
     public static final Icon ICON_FLAG_ES = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/es.png"));
     public static final Icon ICON_FLAG_PT = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/pt.png"));
+    public static final Icon ICON_FLAG_PL = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/pl.png"));
     
     public static final URL URL_ICON_16 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug16.png");
     public static final URL URL_ICON_32 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug32.png");
@@ -150,7 +151,14 @@ public final class HelperUi {
                 g2.setColor(parent.getBackground());
                 Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
                 corner.subtract(new Area(round));
-                g2.fill(corner);
+                
+                // Fix #42304: NoClassDefFoundError on fill()
+                // Fix #42289: UnsatisfiedLinkError on fill()
+                try {
+                    g2.fill(corner);
+                } catch (NoClassDefFoundError | UnsatisfiedLinkError e) {
+                    LOGGER.error(e, e);
+                }
             }
             g2.setColor(Color.GRAY);
             g2.draw(round);
@@ -258,6 +266,7 @@ public final class HelperUi {
 
         UIManager.put("Button.font", HelperUi.FONT_SEGOE);
         UIManager.put("CheckBox.font", HelperUi.FONT_SEGOE);
+        UIManager.put("RadioButton.font", HelperUi.FONT_SEGOE);
         UIManager.put("TitledBorder.font", HelperUi.FONT_SEGOE);
 
         UIManager.put("Spinner.arrowButtonBorder", HelperUi.BORDER_BLU);
@@ -302,7 +311,13 @@ public final class HelperUi {
                         Graphics2D gg = (Graphics2D) g;
                         gg.setColor(Color.GRAY);
                         gg.setStroke(new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{1}, 0));
-                        gg.drawRect(x, y, w - 1, h - 1);
+                        
+                        // Fix #42291: InternalError on drawRect()
+                        try {
+                            gg.drawRect(x, y, w - 1, h - 1);
+                        } catch (InternalError e) {
+                            LOGGER.error(e, e);
+                        }
                     }
                 },
                 BorderFactory.createEmptyBorder(0, 1, 0, 0)

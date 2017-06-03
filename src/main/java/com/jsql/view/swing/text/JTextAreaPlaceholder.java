@@ -6,10 +6,12 @@ import java.awt.event.FocusListener;
 
 import javax.swing.JTextArea;
 import javax.swing.text.DefaultCaret;
+import javax.swing.text.DefaultEditorKit;
 
 import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.text.action.DeletePrevCharAction;
 
 /**
  * Textfield with information text displayed when empty.
@@ -68,6 +70,9 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
             }
             
         });
+        
+        this.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new DeletePrevCharAction());
+        this.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeletePrevCharAction());
     }
 
     @Override

@@ -30,7 +30,6 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.SlidingException;
 import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.model.suspendable.SuspendableGetRows;
-import com.jsql.util.StringUtil;
 
 /**
  * Database ressource object to read name of databases, tables, columns and values
@@ -532,7 +531,7 @@ public class DataAccess {
             }
             if (isIncomplete) {
                 LOGGER.warn("String is too long, row #"+ (indexRow + 1) +" is incomplete:");
-                LOGGER.warn(StringUtil.join(listValues.get(indexRow).toArray(new String[listValues.get(indexRow).size()]), ", "));
+                LOGGER.warn(String.join(", ", listValues.get(indexRow).toArray(new String[listValues.get(indexRow).size()])));
             }
         }
 

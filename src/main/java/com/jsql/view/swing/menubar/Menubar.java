@@ -113,6 +113,7 @@ public class Menubar extends JMenuBar {
     private JMenuItem itemItalian;
     private JMenuItem itemSpanish;
     private JMenuItem itemPortuguese;
+    private JMenuItem itemPolish;
     
     private JMenuItem itemIntoHindi;
     private JMenuItem itemIntoArabic;
@@ -127,6 +128,7 @@ public class Menubar extends JMenuBar {
     private JMenuItem itemIntoItalian;
     private JMenuItem itemIntoSpanish;
     private JMenuItem itemIntoPortuguese;
+    private JMenuItem itemIntoPolish;
     private JMenuItem itemIntoOther;
 
     /**
@@ -300,6 +302,13 @@ public class Menubar extends JMenuBar {
         );
         this.itemChinese.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("zh")));
         
+        this.itemPolish = new JRadioButtonMenuItem(
+                new Locale("pl").getDisplayLanguage(new Locale("pl")),
+                HelperUi.ICON_FLAG_PL,
+                new Locale("pl").getLanguage().equals(Locale.getDefault().getLanguage())
+            );
+        this.itemPolish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("pl")));
+        
         menuTranslation.add(this.itemEnglish);
         menuTranslation.add(this.itemChinese);
         menuTranslation.add(this.itemArab);
@@ -313,6 +322,7 @@ public class Menubar extends JMenuBar {
         menuTranslation.add(this.itemItalian);
         menuTranslation.add(this.itemSpanish);
         menuTranslation.add(this.itemPortuguese);
+        menuTranslation.add(this.itemPolish);
         
         ButtonGroup groupRadioLanguage = new ButtonGroup();
         groupRadioLanguage.add(this.itemEnglish);
@@ -328,6 +338,7 @@ public class Menubar extends JMenuBar {
         groupRadioLanguage.add(this.itemItalian);
         groupRadioLanguage.add(this.itemSpanish);
         groupRadioLanguage.add(this.itemPortuguese);
+        groupRadioLanguage.add(this.itemPolish);
         
         JMenu menuI18nContribution = new JMenu(I18n.valueByKey("MENUBAR_COMMUNITY_HELPTRANSLATE"));
         I18n.addComponentForKey("MENUBAR_COMMUNITY_HELPTRANSLATE", menuI18nContribution);
@@ -370,6 +381,7 @@ public class Menubar extends JMenuBar {
         this.itemIntoItalian = new JMenuItem(new Locale("it").getDisplayLanguage(new Locale("it")) +"...", HelperUi.ICON_FLAG_IT);
         this.itemIntoSpanish = new JMenuItem(new Locale("es").getDisplayLanguage(new Locale("es")) +"...", HelperUi.ICON_FLAG_ES);
         this.itemIntoPortuguese = new JMenuItem(new Locale("pt").getDisplayLanguage(new Locale("pt")) +"...", HelperUi.ICON_FLAG_PT);
+        this.itemIntoPolish = new JMenuItem(new Locale("pl").getDisplayLanguage(new Locale("pl")) +"...", HelperUi.ICON_FLAG_PL);
         this.itemIntoOther = new JMenuItem(I18n.valueByKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE"));
         I18n.addComponentForKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE", this.itemIntoOther);
         
@@ -388,6 +400,7 @@ public class Menubar extends JMenuBar {
         menuI18nContribution.add(this.itemIntoItalian);
         menuI18nContribution.add(this.itemIntoSpanish);
         menuI18nContribution.add(this.itemIntoPortuguese);
+        menuI18nContribution.add(this.itemIntoPolish);
         menuI18nContribution.add(new JSeparator());
         menuI18nContribution.add(this.itemIntoOther);
         
@@ -404,6 +417,7 @@ public class Menubar extends JMenuBar {
         this.itemIntoItalian.addActionListener(new ActionTranslate(Language.IT));
         this.itemIntoSpanish.addActionListener(new ActionTranslate(Language.ES));
         this.itemIntoPortuguese.addActionListener(new ActionTranslate(Language.PT));
+        this.itemIntoPolish.addActionListener(new ActionTranslate(Language.PL));
         this.itemIntoOther.addActionListener(new ActionTranslate(Language.OT));
         
         menuWindows.add(menuTranslation);
@@ -761,6 +775,7 @@ public class Menubar extends JMenuBar {
         this.itemItalian.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.itemSpanish.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.itemPortuguese.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        this.itemPolish.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         
         this.itemIntoArabic.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         this.itemIntoHindi.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -775,6 +790,7 @@ public class Menubar extends JMenuBar {
         this.itemIntoItalian.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.itemIntoSpanish.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.itemIntoPortuguese.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        this.itemIntoPolish.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.itemIntoOther.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         
         if (ComponentOrientation.getOrientation(oldLocale) != ComponentOrientation.getOrientation(newLocale)) {

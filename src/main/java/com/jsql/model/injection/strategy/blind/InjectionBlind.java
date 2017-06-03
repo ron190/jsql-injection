@@ -46,7 +46,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
     public InjectionBlind() {
         // No blind
         if (this.falseTest.length == 0) {
-            LOGGER.info("Blind strategy is unknown for "+ MediatorModel.model().getVendor() +".");
+            LOGGER.info("Strategy Blind is currently not supported for "+ MediatorModel.model().getVendor());
             return;
         }
         

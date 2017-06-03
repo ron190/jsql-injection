@@ -39,7 +39,12 @@ public class ProgressBarPausable extends JProgressBar {
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
+        // Fix #42285: InternalError on paint()
+        try {
+            super.paint(g);
+        } catch (InternalError e) {
+            LOGGER.error(e, e);
+        }
 
         if (this.isIconDisplayed) {
             try {

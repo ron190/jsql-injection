@@ -1,10 +1,11 @@
 {
     "version": "0.79",
     "news": [
-        "[Roadmap] Testing with DbUnit and JPA Hibernate Jooq, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB UpdateInsertDelete, Maven Central components: jsql-injection-core jsql-injection-swing, Bruteforce HTTP Auth using NTLM, Arabic translation, Command line interface, Dictionnary attack, WAF detection, Program self-updater.",
+        "[Functional Roadmap] New database vendors Netezza Mckoi CockroachDB, Injection strategies: DIOS RoutedQuery OOB UpdateInsertDelete, Full Path Disclosure, Bruteforce HTTP Auth using NTLM, Dictionnary attack, WAF detection.",
+        "[Technical Roadmap] Unit test with Jacoco, Integration test with Docker and JPA Hibernate Jooq, Maven Central: jsql-injection-core jsql-injection-swing jsql-injection-cli.",
+        "[Gui Roadmap] Arabic translation, Program self-updater.",
         "[Since last release] Database Node renaming on F2 and Context Menu, Injection using Coldfusion, Database flavor: Neo4j NuoDB Hana and Vertica, Russian translation complete.",
-        "[In progress] User Agent configuration.",
-        "[New in v0.79] Error Strategies for MySQL and PostgreSQL compatible with Order/Group By, Wider range of Character Insertion including multibyte %bf.",
+        "[In progress] Load rows starting from an index, New language: Polish, Updates for Czech Chinese and French, User Agent configuration.",
         "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer."
     ]
 }

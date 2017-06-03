@@ -170,7 +170,7 @@ public class VendorXml extends AbstractVendorDefault {
             .replace(
                 FIELDS,
                 leadSqlField
-                + StringUtil.join(namesColumnUtf8, trailSqlField + sqlConcatFields + leadSqlField)
+                + String.join(trailSqlField + sqlConcatFields + leadSqlField, namesColumnUtf8)
                 + trailSqlField
             )
             .replace(DATABASE, nameDatabaseUtf8)
@@ -363,7 +363,7 @@ public class VendorXml extends AbstractVendorDefault {
     public String sqlCapacity(String[] indexes) {
         return
             MediatorModel.model().getIndexesInUrl().replaceAll(
-                "1337("+ StringUtil.join(indexes, "|") +")7331",
+                "1337("+ String.join("|", indexes) +")7331",
                 VendorXml.replaceTags(
                     this.xmlModel.getStrategy().getNormal().getCapacity()
                         .replace(CALIBRATOR, this.xmlModel.getStrategy().getConfiguration().getCalibrator())
@@ -387,7 +387,7 @@ public class VendorXml extends AbstractVendorDefault {
         return
             " "+
             this.xmlModel.getStrategy().getNormal().getIndices()
-            .replace(INDICES, StringUtil.join(fields.toArray(new String[fields.size()]), ","))
+            .replace(INDICES, String.join(",", fields.toArray(new String[fields.size()])))
             .replace(INDICE_UNIQUE, replaceTag)
             .replace(RESULT_RANGE, String.join(",", Collections.nCopies(indice, "r")));
     }

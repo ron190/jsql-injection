@@ -87,7 +87,7 @@ public class CreateValuesTab extends CreateTab implements InteractionCommand {
                 MediatorGui.tabResults().indexOfComponent(newTableJPanel),
                 "<html>"
                 + "<b>"+ this.table.getParent() +"."+ this.table +"</b><br>"
-                + "<i>"+ StringUtil.join(Arrays.copyOfRange(this.columnNames, 2, this.columnNames.length), "<br>") +"</i>"
+                + "<i>"+ String.join("<br>", Arrays.copyOfRange(this.columnNames, 2, this.columnNames.length)) +"</i>"
                 + "</html>"
             );
             

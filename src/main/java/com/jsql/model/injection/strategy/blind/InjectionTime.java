@@ -46,7 +46,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
     public InjectionTime() {
         // No blind
         if (this.falseTest.length == 0) {
-            LOGGER.info("Time strategy is unknown for "+ MediatorModel.model().getVendor() +".");
+            LOGGER.info("Strategy Time is currently not supported for "+ MediatorModel.model().getVendor());
             return;
         }
         

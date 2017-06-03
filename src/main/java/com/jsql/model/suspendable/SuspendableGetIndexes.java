@@ -88,6 +88,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         if (isRequestFound) {
             return initialQuery.replaceAll("\\+\\+union\\+select\\+.*?--\\+$", "+");
         }
+        
         // TODO optional
         return "";
     }

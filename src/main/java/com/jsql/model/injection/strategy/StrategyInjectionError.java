@@ -104,7 +104,7 @@ public class StrategyInjectionError extends AbstractStrategy {
                     }
                     LOGGER.debug("Vulnerable to "+ errorMethod.getName() +" using "+ Integer.toString(errorCapacity) +" characters");
                 } else {
-                    LOGGER.warn("Vulnerable to "+ errorMethod.getName() +" but unknown characters");
+                    LOGGER.warn("Vulnerable to "+ errorMethod.getName() +" but injectable size is incorrect");
                     methodIsApplicable = false;
                 }
             }

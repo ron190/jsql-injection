@@ -175,7 +175,7 @@ public final class ActionHandler {
             propertyChangeEvent -> SwingUtilities.invokeLater(() -> {
                 if (
                     // Fix #40924: NullPointerException on MediatorGui.panelAddressBar()
-                    MediatorGui.panelAddressBar() != null 
+                    MediatorGui.panelAddressBar() != null
                     && !MediatorGui.panelAddressBar().isAdvanceIsActivated()
                 ) {
                     menubar.setVisible(false);

@@ -7,11 +7,13 @@ import java.util.ConcurrentModificationException;
 
 import javax.swing.JTextPane;
 import javax.swing.text.DefaultCaret;
+import javax.swing.text.DefaultEditorKit;
 
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 
 import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.text.action.DeletePrevCharAction;
 
 /**
  * Textfield with information text displayed when empty.
@@ -70,6 +72,9 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
             }
             
         });
+        
+        this.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new DeletePrevCharAction());
+        this.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeletePrevCharAction());
     }
 
     @Override

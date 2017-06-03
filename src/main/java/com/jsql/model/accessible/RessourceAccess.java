@@ -626,6 +626,13 @@ public class RessourceAccess {
      * @throws JSqlException when an error occurs during injection
      */
     public static boolean isReadingAllowed() throws JSqlException {
+        // Unsupported Reading file when <file> is not present in current xmlModel
+        // Fix #41055: NullPointerException on getFile()
+        if (MediatorModel.model().getVendor().instance().getXmlModel().getResource().getFile() == null) {
+            LOGGER.warn("Reading file on "+ MediatorModel.model().getVendor() +" is currently not supported");
+            return false;
+        }
+        
         String[] sourcePage = {""};
 
         String resultInjection = new SuspendableGetRows().run(

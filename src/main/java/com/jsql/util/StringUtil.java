@@ -91,23 +91,6 @@ public final class StringUtil {
         }
         return ""+ buff;
     }
-    
-    /**
-     * Concatenate strings with separator.
-     * @param strings Array of strings to join
-     * @param separator String that concatenate two values of the array
-     * @return Joined string
-     */
-    public static String join(String[] strings, String separator) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0 ; i < strings.length ; i++) {
-            if (i != 0) {
-                sb.append(separator);
-            }
-            sb.append(strings[i]);
-        }
-        return sb.toString();
-    }
 
     /**
      * Convert a hexadecimal String to String.

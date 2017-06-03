@@ -27,7 +27,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.EmptyStackException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -514,7 +513,13 @@ public class PanelConsoles extends JPanel {
         this.networkTabParam.setText("");
         this.networkTabResponse.setText("");
         this.networkTabSource.setText("");
-        this.networkTabPreview.setText("");
+        
+        // Fix #41879: ArrayIndexOutOfBoundsException on setText()
+        try {
+            this.networkTabPreview.setText("");
+        } catch (ArrayIndexOutOfBoundsException e) {
+            LOGGER.error(e, e);
+        }
     }
     
     public void changeTextNetwork() {
@@ -539,6 +544,7 @@ public class PanelConsoles extends JPanel {
         // now get the HTML content
         // Fix #35352: EmptyStackException on setText()
         // Fix #39841: RuntimeException on setText()
+        // Fix #42523: ExceptionInInitializerError on clean()
         try {
             this.networkTabPreview.setText(
                 Jsoup.clean(
@@ -552,7 +558,7 @@ public class PanelConsoles extends JPanel {
                         .addAttributes(":all", "style")
                 )
             );
-        } catch (RuntimeException e) {
+        } catch (RuntimeException | ExceptionInInitializerError e) {
             LOGGER.error(e, e);
         }
     }

@@ -161,14 +161,14 @@ public abstract class AbstractNodeModel {
         popupMenu.add(mnLoad);
         popupMenu.add(mnPause);
         
-        JMenuItem mnRestart = new JMenuItem(
+        JMenuItem mnReload = new JMenuItem(
             this instanceof NodeModelDatabase ? "Reload tables" :
             this instanceof NodeModelTable ? "Reload columns" : "?"
         );
-        mnRestart.setIcon(HelperUi.ICON_EMPTY);
+        mnReload.setIcon(HelperUi.ICON_EMPTY);
 
-        mnRestart.setEnabled(!this.isRunning);
-        mnRestart.addActionListener(actionEvent -> AbstractNodeModel.this.runAction());
+        mnReload.setEnabled(!this.isRunning);
+        mnReload.addActionListener(actionEvent -> AbstractNodeModel.this.runAction());
         
         JMenuItem mnRename = new JMenuItem("Rename");
         mnRename.setIcon(HelperUi.ICON_EMPTY);
@@ -185,8 +185,8 @@ public abstract class AbstractNodeModel {
         });
         
         popupMenu.add(new JSeparator());
-        popupMenu.add(mnRestart);
         popupMenu.add(mnRename);
+        popupMenu.add(mnReload);
 
         this.buildMenu(popupMenu, path);
         
@@ -224,46 +224,46 @@ public abstract class AbstractNodeModel {
     ) {
 
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
-        panel = new PanelNode(tree, currentNode);
+        this.panel = new PanelNode(tree, currentNode);
 
-        panel.getLabel().setText(StringUtil.detectUtf8Html(this.toString()));
-        panel.getLabel().setVisible(true);
-        panel.showIcon();
+        this.panel.getLabel().setText(StringUtil.detectUtf8Html(this.toString()));
+        this.panel.getLabel().setVisible(true);
+        this.panel.showIcon();
 
-        panel.setIcon(this.getLeafIcon(isLeaf));
+        this.panel.setIcon(this.getLeafIcon(isLeaf));
         
         AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
         
         if (StringUtil.isUtf8(this.getElementDatabase().toString())) {
-            panel.getEditable().setFont(HelperUi.FONT_MONOSPACE);            
+            this.panel.getEditable().setFont(HelperUi.FONT_MONOSPACE);
         } else {
-            panel.getEditable().setFont(HelperUi.FONT_SEGOE);            
+            this.panel.getEditable().setFont(HelperUi.FONT_SEGOE);
         }
 
         
-        panel.getEditable().setText(StringUtil.detectUtf8(this.getElementDatabase().toString()));
-        panel.getEditable().setVisible(nodeModel.isEdited);
-        panel.getLabel().setVisible(!nodeModel.isEdited);
+        this.panel.getEditable().setText(StringUtil.detectUtf8(this.getElementDatabase().toString()));
+        this.panel.getEditable().setVisible(nodeModel.isEdited);
+        this.panel.getLabel().setVisible(!nodeModel.isEdited);
 
         if (isSelected) {
             if (hasFocus) {
-                panel.getLabel().setBackground(HelperUi.COLOR_FOCUS_GAINED);
-                panel.getLabel().setBorder(HelperUi.BORDER_FOCUS_GAINED);
+                this.panel.getLabel().setBackground(HelperUi.COLOR_FOCUS_GAINED);
+                this.panel.getLabel().setBorder(HelperUi.BORDER_FOCUS_GAINED);
             } else {
-                panel.getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
-                panel.getLabel().setBorder(HelperUi.BORDER_FOCUS_LOST);
+                this.panel.getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
+                this.panel.getLabel().setBorder(HelperUi.BORDER_FOCUS_LOST);
             }
         } else {
-            panel.getLabel().setBackground(Color.WHITE);
-            panel.getLabel().setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+            this.panel.getLabel().setBackground(Color.WHITE);
+            this.panel.getLabel().setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         }
         
         if (this.isLoading) {
-            this.displayProgress(panel, currentNode);
-            panel.hideIcon();
+            this.displayProgress(this.panel, currentNode);
+            this.panel.hideIcon();
         } else if (this.isProgressing) {
-            panel.showLoader();
-            panel.hideIcon();
+            this.panel.showLoader();
+            this.panel.hideIcon();
 
             AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.elementDatabase);
             if (suspendableTask != null && suspendableTask.isPaused()) {
@@ -274,11 +274,11 @@ public abstract class AbstractNodeModel {
                         currentNode
                     )
                 );
-                panel.setLoaderIcon(animatedGIFPaused);
+                this.panel.setLoaderIcon(animatedGIFPaused);
             }
         }
         
-        return panel;
+        return this.panel;
     }
     
     /**
@@ -394,7 +394,7 @@ public abstract class AbstractNodeModel {
     }
 
     public PanelNode getPanel() {
-        return panel;
+        return this.panel;
     }
 
     public void setIsEdited(boolean b) {

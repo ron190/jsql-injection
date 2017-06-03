@@ -13,16 +13,23 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.MenuSelectionManager;
 import javax.swing.OverlayLayout;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 
 import org.apache.log4j.Logger;
 
@@ -31,6 +38,7 @@ import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.model.injection.vendor.xml.Model;
 import com.jsql.model.injection.vendor.xml.Model.Strategy.Error.Method;
 import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.manager.util.ComboMenu;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.sql.lexer.HighlightedDocument;
 
@@ -312,6 +320,36 @@ public class SqlEngine extends JPanel {
         panelCombo.setMaximumSize(new Dimension(Integer.MAX_VALUE, 25));
 
         panelCombo.add(comboBoxVendors, BorderLayout.LINE_END);
+        
+        JMenuBar menuBarVendor = new JMenuBar();
+        menuBarVendor.setOpaque(false);
+        menuBarVendor.setBorder(null);
+        
+        JMenu comboMenuVendor = new ComboMenu(MediatorModel.model().getVendor().toString());
+        menuBarVendor.add(comboMenuVendor);
+
+        ButtonGroup groupVendor = new ButtonGroup();
+
+        for (final Vendor vendor: listVendors) {
+            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorModel.model().getVendor());
+            itemRadioVendor.addActionListener(actionEvent -> {
+                xmlModel = vendor.instance().getXmlModel();
+                this.changeVendor();
+                comboMenuVendor.setText(vendor.toString());
+            });
+            itemRadioVendor.setUI(
+                new BasicRadioButtonMenuItemUI() {
+                    @Override
+                    protected void doClick(MenuSelectionManager msm) {
+                        this.menuItem.doClick(0);
+                    }
+                }
+            );
+            comboMenuVendor.add(itemRadioVendor);
+            groupVendor.add(itemRadioVendor);
+        }
+        
+        panelCombo.add(menuBarVendor, BorderLayout.LINE_END);
         this.add(panelCombo);
         this.add(tabsBottom);
 
