@@ -91,6 +91,7 @@ class DocumentReader extends Reader {
      */
     @Override
     public void close() {
+        // nothing
     }
 
     /**

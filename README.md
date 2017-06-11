@@ -19,16 +19,16 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 - Injection of multiple targets
 - Search for administration pages
 - Creation and vizualisation of Web shell and SQL shell
-- Read files from the host
-- Bruteforce hash of password
+- Read and write files on host using injection
+- Bruteforce of password's hash
 - Code and decode a string
 
-## Installation [download [jsql-injection-v0.79.jar](https://github.com/ron190/jsql-injection/releases/download/v0.79/jsql-injection-v0.79.jar)]
-Install [Java 8](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) of jSQL Injection and double-click on jsql-injection-v0.79.jar to launch the software.<br>
+## Installation [[jsql-injection-v0.79.jar](https://github.com/ron190/jsql-injection/releases/download/v0.79/jsql-injection-v0.79.jar)]
+Install [Java 8](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) of jSQL Injection and double-click on the file `jsql-injection-v0.79.jar` to launch the software.<br>
 You can also type `java -jar jsql-injection-v0.79.jar` in your terminal to start the program.<br>
 If you are using Kali Linux then get the latest release using commands `apt update` then `apt full-upgrade`.
 
-## Screenshots [watch [video](https://youtu.be/ZZkQRE3OL8E)]
+## Screenshots and [video](https://youtu.be/ZZkQRE3OL8E)
 [![Default](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default-mini.png "Default")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default.png)
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
 [![SQL Engine](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.78/sqlengine-mini.png "SQL Engine")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.78/sqlengine.png)
@@ -43,39 +43,39 @@ If you are using Kali Linux then get the latest release using commands `apt upda
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## Roadmap
-`New database vendors Netezza Mckoi CockroachDB, Testing with Docker DbUnit and JPA Hibernate Jooq, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB UpdateInsertDelete, Maven Central components: jsql-injection-core jsql-injection-swing, Bruteforce HTTP Auth using NTLM, Arabic translation, Command line interface, Dictionnary attack, WAF detection, Program self-updater.`
+`Database: Netezza, Test coverage with Jacoco, Integration test with Docker and JPA Hibernate Jooq, Maven Central: core swing cli, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB UpdateInsertDelete, Bruteforce HTTP Auth using NTLM, Arabic translation, Command line interface, Dictionnary attack, WAF detection, Program self-updater.`
 
 ## In progress
-`User Agent configuration.`
+`Database: MemSQL Couchbase, Dump to a file, Load from/to no. of row/char, User Agent configuration.`
 
 ## Since last release
-`Database Node renaming on F2 and Context Menu, Injection using Coldfusion, Database flavor: Neo4j NuoDB Hana and Vertica, Russian translation complete.`
+`Database: CockroachDB Mckoi Neo4j NuoDB Hana and Vertica, Database Node renaming on F2 and Context Menu, Coldfusion injection, Translation updates: cz zh fr, New language: pl, Translation complete: ru.`
 
 ## Change log
 
 **v0.79** `Error Strategies for MySQL and PostgreSQL compatible with Order/Group By, Wider range of Characters Insertion including multibyte %bf`
 
-**v0.78** `SQL Engine, MySQL Error strategy: DOUBLE, Translations: es pt de it nl id, GUI improvements, Database flavor: Access`
+**v0.78** `SQL Engine, MySQL Error strategy: DOUBLE, Translations: es pt de it nl id, 18 Database flavors including Access`
 
-**v0.76** `Czech translation, 17 Database flavors including SQLite`
+**v0.76** `Translation: cz, 17 Database flavors including SQLite`
 
-**v0.75** `URI injection point, Mavenify, Upgrade to Java 7, Optimized UI`
+**v0.75** `URI injection point, Source code mavenification, Upgrade to Java 7`
 
 **v0.73** `Authentication: Basic Digest Negotiate NTLM and Kerberos, Database flavor selection`
 
-**v0.7** `Scan multiple URLs, Github Issue reporter, 16 Database flavors including Cubrid Derby H2 HSQLDB MariaDB and Teradata, Optimized UI`
+**v0.7** `Scan multiple URLs, Github Issue reporter, 16 Database flavors including Cubrid Derby H2 HSQLDB MariaDB and Teradata`
 
-**alpha-v0.6** `Speed x2: No hex encoding, 10 Database flavors including MySQL Oracle SQLServer PostgreSQL DB2 Firebird Informix Ingres MaxDb and Sybase, JUnit tests, Log4j, Translation`
+**alpha-v0.6** `Speed x2: No more hex encoding, 10 Database flavors including MySQL Oracle SQLServer PostgreSQL DB2 Firebird Informix Ingres MaxDb and Sybase, JUnit tests, Log4j, GUI translation`
 
-**0.5** `SQL Shell, Uploader`
+**0.5** `SQL Shell, File Uploader`
 
-**0.4** `Admin page, Hash bruteforce like MD5 and MySQL, Text encoder/decoder like Base64, Hex and MD5`
+**0.4** `Admin page finder, Bruteforce hashes like MD5 and MySQL, Encode and decode string with methods like Base64, Hex and MD5`
 
-**0.3** `File injection, Web Shell, Integrated terminal, Configuration backup, Update checker`
+**0.3** `File injection, Web Shell with integrated CLI, Persistence of application parameters, Update checker`
 
-**0.2** `Algorithm Time, Multi-thread control: Start Pause Resume and Stop, Log URL calls`
+**0.2** `Strategy Time, Multi-thread control: Start Pause Resume and Stop, Log URL calls`
 
-**0.0-0.1** `Method GET POST Header and Cookie, Algorithm Normal Error and Blind, Best algorithm selection, Progression bars, Simple evasion, Proxy settings, MySQL only`
+**0.0-0.1** `Method GET POST Header and Cookie, Strategies Normal Error and Blind, Best strategy selection, Progression bars, Simple evasion, Proxy settings, MySQL only`
 
 ## Disclaimer
 Attacking web-server is illegal without prior mutual consent. The end user is responsible and obeys all applicable laws.

@@ -72,7 +72,6 @@ public class JPopupMenuComponent extends JPopupMenu {
         ) {
             JMenuItem clearItem = new JMenuItem();
             clearItem.setIcon(HelperUi.ICON_EMPTY);
-            final Object[] o = new Object[]{component};
             clearItem.setAction(new AbstractAction() {
                 
                 @Override

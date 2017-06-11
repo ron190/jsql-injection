@@ -13,8 +13,6 @@ package com.jsql.view.swing.action;
 import java.awt.AWTKeyStroke;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,7 +25,6 @@ import javax.swing.JRootPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.MenuSelectionManager;
 import javax.swing.SwingUtilities;
 
 import com.jsql.view.swing.MediatorGui;
@@ -166,10 +163,6 @@ public final class ActionHandler {
      * @param menubar The menubar to display
      */
     public static void addShortcut(final Menubar menubar) {
-        final boolean[] wasAltDPressed = {false};
-        final boolean[] wasAltPressed = {false};
-        final boolean[] wasAltGraphPressed = {false};
-        
         /* Hide Menubar when focusing any component */
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner",
             propertyChangeEvent -> SwingUtilities.invokeLater(() -> {
@@ -184,73 +177,9 @@ public final class ActionHandler {
         );
         
         /* Show/Hide the Menubar with Alt key (not Alt Graph) */
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(keyEvent -> {
-            boolean shouldTakeNoFurtherAction = false;
-            
-            // Alt key press/release generates 2 events
-            // AltGr key press/release generates 4 events including an Alt press/release
-            // => AltGr:press Alt:press AltGr:release Alt:release
-            // AltGr keycode is the same as Ctrl
-            if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {
-                wasAltGraphPressed[0] = true;
-            }
-            
-            boolean isAltDPressed =
-                keyEvent.isAltDown()
-                && keyEvent.getKeyCode() == (KeyEvent.VK_ALT & KeyEvent.VK_D)
-            ;
-            
-            boolean isAltReleased =
-                keyEvent.getKeyCode() == KeyEvent.VK_ALT
-                && keyEvent.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)
-            ;
-            
-            boolean isAltPressed =
-                keyEvent.isAltDown()
-                && keyEvent.getKeyCode() == KeyEvent.VK_ALT
-                && !wasAltGraphPressed[0]
-            ;
-            
-            boolean wasAltPressedAlready = !wasAltDPressed[0] && !wasAltPressed[0] && !wasAltGraphPressed[0];
-            
-            if (isAltDPressed) {
-                MediatorGui.panelAddressBar().getTextFieldAddress().requestFocusInWindow();
-                MediatorGui.panelAddressBar().getTextFieldAddress().selectAll();
-                wasAltDPressed[0] = true;
-                
-                shouldTakeNoFurtherAction = true;
-                
-            } else if (isAltReleased) {
-                // Avoid flickering and AltGr pollution
-                if (wasAltPressedAlready) {
-                    if (MenuSelectionManager.defaultManager().getSelectedPath().length > 0) {
-                        MenuSelectionManager.defaultManager().clearSelectedPath();
-                    } else if (!MediatorGui.panelAddressBar().isAdvanceIsActivated()) {
-                        menubar.setVisible(!menubar.isVisible());
-                        wasAltGraphPressed[0] = false;
-                    }
-                } else {
-                    wasAltDPressed[0] = false;
-                    wasAltPressed[0] = false;
-                    wasAltGraphPressed[0] = false;
-                }
-                
-                shouldTakeNoFurtherAction = true;
-                
-            } else if (isAltPressed) {
-                // Avoid flickering and AltGr pollution
-                if (!MediatorGui.panelAddressBar().isAdvanceIsActivated() && menubar.isVisible()) {
-                    MenuSelectionManager.defaultManager().clearSelectedPath();
-                    menubar.setVisible(false);
-                    wasAltPressed[0] = true;
-                    wasAltGraphPressed[0] = false;
-                }
-                
-                shouldTakeNoFurtherAction = true;
-            }
-            
-            return shouldTakeNoFurtherAction;
-        });
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
+            new AltKeyEventDispatcher()
+        );
     }
     
 }

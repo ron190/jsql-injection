@@ -98,7 +98,7 @@ public class SQLToken extends Token {
      */
     public static final int ERROR_BAD_BIT_STRING = 0xF05;
 
-    private int ID;
+    private int id;
     private String contents;
     private int lineNumber;
     private int charBegin;
@@ -108,7 +108,7 @@ public class SQLToken extends Token {
     /**
      * Create a new token. The constructor is typically called by the lexer
      *
-     * @param ID
+     * @param id
      *            the id number of the token
      * @param contents
      *            A string representing the text of the token
@@ -121,14 +121,14 @@ public class SQLToken extends Token {
      *            the offset into the input in characters at which this token
      *            ended
      */
-    public SQLToken(int ID, String contents, int lineNumber, int charBegin, int charEnd) {
-        this(ID, contents, lineNumber, charBegin, charEnd, Token.UNDEFINED_STATE);
+    public SQLToken(int id, String contents, int lineNumber, int charBegin, int charEnd) {
+        this(id, contents, lineNumber, charBegin, charEnd, Token.UNDEFINED_STATE);
     }
 
     /**
      * Create a new token. The constructor is typically called by the lexer
      *
-     * @param ID
+     * @param id
      *            the id number of the token
      * @param contents
      *            A string representing the text of the token
@@ -143,8 +143,8 @@ public class SQLToken extends Token {
      * @param state
      *            the state the tokenizer is in after returning this token.
      */
-    public SQLToken(int ID, String contents, int lineNumber, int charBegin, int charEnd, int state) {
-        this.ID = ID;
+    public SQLToken(int id, String contents, int lineNumber, int charBegin, int charEnd, int state) {
+        this.id = id;
         this.contents = contents;
         this.lineNumber = lineNumber;
         this.charBegin = charBegin;
@@ -172,7 +172,7 @@ public class SQLToken extends Token {
      */
     @Override
     public int getID() {
-        return this.ID;
+        return this.id;
     }
 
     /**
@@ -224,7 +224,7 @@ public class SQLToken extends Token {
      * @return true if this token is a reserved word, false otherwise
      */
     public boolean isReservedWord() {
-        return (this.ID >> 8) == 0x1;
+        return (this.id >> 8) == 0x1;
     }
 
     /**
@@ -235,7 +235,7 @@ public class SQLToken extends Token {
      * @return true if this token is an identifier, false otherwise
      */
     public boolean isIdentifier() {
-        return (this.ID >> 8) == 0x2;
+        return (this.id >> 8) == 0x2;
     }
 
     /**
@@ -246,7 +246,7 @@ public class SQLToken extends Token {
      * @return true if this token is a literal, false otherwise
      */
     public boolean isLiteral() {
-        return (this.ID >> 8) == 0x3;
+        return (this.id >> 8) == 0x3;
     }
 
     /**
@@ -257,7 +257,7 @@ public class SQLToken extends Token {
      * @return true if this token is a Separator, false otherwise
      */
     public boolean isSeparator() {
-        return (this.ID >> 8) == 0x4;
+        return (this.id >> 8) == 0x4;
     }
 
     /**
@@ -268,7 +268,7 @@ public class SQLToken extends Token {
      * @return true if this token is a Operator, false otherwise
      */
     public boolean isOperator() {
-        return (this.ID >> 8) == 0x5;
+        return (this.id >> 8) == 0x5;
     }
 
     /**
@@ -278,7 +278,7 @@ public class SQLToken extends Token {
      */
     @Override
     public boolean isComment() {
-        return (this.ID >> 8) == 0xD;
+        return (this.id >> 8) == 0xD;
     }
 
     /**
@@ -289,7 +289,7 @@ public class SQLToken extends Token {
      */
     @Override
     public boolean isWhiteSpace() {
-        return (this.ID >> 8) == 0xE;
+        return (this.id >> 8) == 0xE;
     }
 
     /**
@@ -300,7 +300,7 @@ public class SQLToken extends Token {
      */
     @Override
     public boolean isError() {
-        return (this.ID >> 8) == 0xF;
+        return (this.id >> 8) == 0xF;
     }
 
     /**
@@ -343,7 +343,7 @@ public class SQLToken extends Token {
         String s;
         if (this.isError()) {
             s = "Error on line " + this.lineNumber + ": ";
-            switch (this.ID) {
+            switch (this.id) {
             case ERROR:
                 s += "Unexpected token: " + this.contents;
                 break;
@@ -376,7 +376,7 @@ public class SQLToken extends Token {
      */
     @Override
     public String toString() {
-        return "Token #" + Integer.toHexString(this.ID) + ": " + this.getDescription() + " Line " + this.lineNumber + " from "
+        return "Token #" + Integer.toHexString(this.id) + ": " + this.getDescription() + " Line " + this.lineNumber + " from "
                 + this.charBegin + " to " + this.charEnd + " : " + this.contents;
     }
 

@@ -6,6 +6,7 @@ public enum Vendor {
 	
     AUTO("<Database auto>", null),
     ACCESS("Access", new VendorXml("access.xml")),
+    COCKROACHDB("CockroachDB", new VendorXml("cockroachdb.xml")),
     CUBRID("CUBRID", new VendorXml("cubrid.xml")),
     DB2("DB2", new VendorXml("db2.xml")),
     DERBY("Derby", new VendorXml("derby.xml")),
@@ -17,6 +18,7 @@ public enum Vendor {
     INGRES("Ingres", new VendorXml("ingres.xml")),
     MARIADB("MariaDB", new VendorXml("mysql.xml")),
     MAXDB("MaxDB", new VendorXml("maxdb.xml")),
+    MCKOI("Mckoi", new VendorXml("mckoi.xml")),
     MYSQL("MySQL", new VendorXml("mysql.xml")),
     NEO4J("Neo4j", new VendorXml("neo4j.xml")),
     NUODB("NuoDB", new VendorXml("nuodb.xml")),
