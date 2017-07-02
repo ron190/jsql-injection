@@ -159,9 +159,10 @@ public class MouseAdapterMenuAction extends MouseAdapter {
                 int choice = 0;
                 
                 // Fix #1896: NullPointerException on showOpenDialog()
+                // Fix #42831: ClassCastException on showOpenDialog()
                 try {
                     choice = importFileDialog.showOpenDialog(this.dndList.getTopLevelAncestor());
-                } catch (NullPointerException e) {
+                } catch (ClassCastException | NullPointerException e) {
                     LOGGER.error(e, e);
                 }
                 

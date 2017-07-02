@@ -12,6 +12,7 @@ import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jsql.i18n.I18n;
@@ -157,27 +158,31 @@ public class GitUtil {
             dataOut.flush();
             dataOut.close();
             
-            // Read the response
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                String line;
-                StringBuilder sourcePage = new StringBuilder();
-                while ((line = reader.readLine()) != null) {
-                    sourcePage.append(line);
-                }
-
-                if (showOnConsole == ShowOnConsole.YES) {
-                    JSONObject jsonObjectResponse = new JSONObject(sourcePage.toString());
-                    String urlIssue = jsonObjectResponse.getString("html_url");
-                    LOGGER.debug("Sent to Github: "+ urlIssue);
-                }
-            } catch (IOException e) {
-                if (showOnConsole == ShowOnConsole.YES) {
-                    LOGGER.warn("Read error: "+ e.getMessage(), e);
-                }
-            }
+            GitUtil.readGithubResponse(connection, showOnConsole);
         } catch (IOException e) {
             if (showOnConsole == ShowOnConsole.YES) {
                 LOGGER.warn("Error during Git report connection: "+ e.getMessage(), e);
+            }
+        }
+    }
+    
+    private static void readGithubResponse(HttpURLConnection connection, ShowOnConsole showOnConsole) {
+        // Read the response
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String line;
+            StringBuilder sourcePage = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                sourcePage.append(line);
+            }
+
+            if (showOnConsole == ShowOnConsole.YES) {
+                JSONObject jsonObjectResponse = new JSONObject(sourcePage.toString());
+                String urlIssue = jsonObjectResponse.getString("html_url");
+                LOGGER.debug("Sent to Github: "+ urlIssue);
+            }
+        } catch (IOException e) {
+            if (showOnConsole == ShowOnConsole.YES) {
+                LOGGER.warn("Read error: "+ e.getMessage(), e);
             }
         }
     }
@@ -209,7 +214,14 @@ public class GitUtil {
         		// TODO get from properties
                 "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/jsql-injection.json"
             );
-            GitUtil.jsonObject = new JSONObject(json);
+            
+            // Fix #45349: JSONException on new JSONObject(json)
+            try {
+                GitUtil.jsonObject = new JSONObject(json);
+            } catch (JSONException e) {
+                GitUtil.jsonObject = new JSONObject("{\"version\": \"0\", \"news\": []}");
+                LOGGER.info("Fetching JSON configuration from Github failed, check your connection or update jsql");
+            }
         }
         return GitUtil.jsonObject;
     }

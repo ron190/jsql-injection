@@ -20,12 +20,12 @@ import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoManager;
 
 import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
 import com.jsql.view.swing.text.action.SilentDeleteTextAction;
-import com.jsql.view.swing.text.undo.UndoManagerCompound;
 
 /**
  * A swing JTextComponent with Undo/Redo functionality.
@@ -50,11 +50,11 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
 
         this.getProxy().setDragEnabled(true);
 
-        final UndoManagerCompound undo = new UndoManagerCompound();
+        final UndoManager undo = new UndoManager();
         Document doc = this.getProxy().getDocument();
 
         // Listen for undo and redo events
-        doc.addUndoableEditListener(undo);
+        doc.addUndoableEditListener(undoableEditEvent -> undo.addEdit(undoableEditEvent.getEdit()));
 
         // Create an undo action and add it to the text component
         final String undoIdentifier = "Undo";
@@ -99,10 +99,10 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
         // Silent delete
         ActionMap am = this.getProxy().getActionMap();
 
-        String key = DefaultEditorKit.deletePrevCharAction; //"delete-previous";
+        String key = DefaultEditorKit.deletePrevCharAction;
         am.put(key, new SilentDeleteTextAction(key, am.get(key)));
 
-        key = DefaultEditorKit.deleteNextCharAction; //"delete-next";
+        key = DefaultEditorKit.deleteNextCharAction;
         am.put(key, new SilentDeleteTextAction(key, am.get(key)));
     }
     

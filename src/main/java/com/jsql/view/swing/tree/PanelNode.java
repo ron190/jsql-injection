@@ -133,7 +133,7 @@ public class PanelNode extends JPanel {
             
         });
         
-        this.addKeyListener(new KeyAdapter() {
+        KeyAdapter keyAdapterF2 = new KeyAdapter() {
             
             @Override
             public void keyPressed(KeyEvent e) {
@@ -150,25 +150,10 @@ public class PanelNode extends JPanel {
                 }
             }
             
-        });
+        };
         
-        this.textFieldEditable.addKeyListener(new KeyAdapter() {
-            
-            @Override
-            public void keyPressed(KeyEvent e) {
-                AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
-                if (e.getKeyCode() == KeyEvent.VK_F2 && !nodeModel.isRunning()) {
-                    nodeModel.setIsEdited(true);
-                    
-                    PanelNode.this.label.setVisible(false);
-                    PanelNode.this.textFieldEditable.setVisible(true);
-                    PanelNode.this.textFieldEditable.requestFocusInWindow();
-                    tree.revalidate();
-                    tree.repaint();
-                }
-            }
-            
-        });
+        this.addKeyListener(keyAdapterF2);
+        this.textFieldEditable.addKeyListener(keyAdapterF2);
 
         this.addFocusListener(new FocusListener() {
             

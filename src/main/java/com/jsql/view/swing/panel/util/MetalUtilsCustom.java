@@ -23,6 +23,13 @@ import sun.swing.CachedPainter;
 import sun.swing.ImageIconUIResource;
 
 public class MetalUtilsCustom {
+    
+    /**
+     * Utility class
+     */
+    private MetalUtilsCustom() {
+        // nothing
+    }
 
     static void drawFlush3DBorder(Graphics g, Rectangle r) {
         drawFlush3DBorder(g, r.x, r.y, r.width, r.height);

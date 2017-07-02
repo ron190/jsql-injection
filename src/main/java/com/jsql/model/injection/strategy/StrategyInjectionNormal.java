@@ -107,7 +107,10 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         String[] indexes = foundIndexes.toArray(new String[foundIndexes.size()]);
 
         // Make url shorter, replace useless indexes from 1337[index]7331 to 1
-        String indexesInUrl = MediatorModel.model().getIndexesInUrl().replaceAll("1337(?!"+ String.join("|", indexes) +"7331)\\d*7331", "1");
+        String indexesInUrl = MediatorModel.model().getIndexesInUrl().replaceAll(
+            "1337(?!"+ String.join("|", indexes) +"7331)\\d*7331", 
+            "1"
+        );
 
         // Replace correct indexes from 1337(index)7331 to
         // ==> ${LEAD}(index)######...######

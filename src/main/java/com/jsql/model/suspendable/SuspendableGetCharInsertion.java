@@ -162,11 +162,11 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         List<String> charactersInsertion = new ArrayList<>(Arrays.asList(new String[]{
-            "-1", "-1'", "-1)", "-1))", "-1\"", "-1')", "-1'))", "-1\")", "-1\"))",
-            "0", "0'", "0)", "0))", "0\"", "0')", "0'))", "0\")", "0\"))",
-            "1", "1'", "1)", "1))", "1\"", "1')", "1'))", "1\")", "1\"))",
-            "0%bf'", "0%bf\"", "0%bf')", "0%bf'))", "0%bf\")", "0%bf\"))",
-            "1%bf'", "1%bf\"", "1%bf')", "1%bf'))", "1%bf\")", "1%bf\"))",
+            "-1", "-1'", "'-1'", "-1)", "-1))", "-1\"", "\"-1\"", "-1')", "'-1')", "-1'))", "'-1'))", "-1\")", "\"-1\")", "-1\"))", "\"-1\"))",
+            "0", "0'", "'0'", "0)", "0))", "0\"", "\"0\"", "0')", "'0')", "0'))", "'0'))", "0\")", "\"0\")", "0\"))", "\"0\"))",
+            "1", "1'", "'1'", "1)", "1))", "1\"", "\"1\"", "1')", "'1')", "1'))", "'1'))", "1\")", "\"1\")", "1\"))", "\"1\"))",
+            "0%bf'", "%bf'0%bf'", "0%bf\"", "%bf\"0%bf\"", "0%bf')", "%bf'0%bf')", "0%bf'))", "%bf'0%bf'))", "0%bf\")", "%bf\"0%bf\")", "0%bf\"))", "%bf\"0%bf\"))",
+            "1%bf'", "1%bf\"", "1%bf')", "1%bf'))", "1%bf\")", "1%bf\"))", "%bf'1%bf'", "%bf\"1%bf\"", "%bf'1%bf')", "%bf'1%bf'))", "%bf\"1%bf\")", "%bf\"1%bf\"))",
             "'", "\"",
             "%bf'", "%bf\""
         }));
@@ -221,7 +221,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             } else {
                 characterInsertion = characterInsertionByUser;
             }
-            LOGGER.warn("No character insertion activates ORDER BY, forcing to ["+ characterInsertion +"]");
+            LOGGER.info("No character insertion activates ORDER BY, forcing to ["+ characterInsertion +"]");
         } else if (!characterInsertionByUser.equals(characterInsertion)) {
             LOGGER.info("Character insertion ["+ characterInsertion +"] used in place of ["+ characterInsertionByUser +"] to activate error on ORDER BY");
             LOGGER.trace("Add manually the character * like ["+ characterInsertionByUser +"*] to force the value ["+ characterInsertionByUser +"]");

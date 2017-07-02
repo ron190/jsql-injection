@@ -13,7 +13,7 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)
 
 ## Features
-- Automatic injection of 21 kinds of databases: Access, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, MySQL{MariaDb MemSQL}, Neo4j, NuoDB, Oracle{Tibaro}, PostgreSQL{Greenplum}, SQLite, SQL Server, Sybase, Teradata and Vertica
+- Automatic injection of 23 kinds of databases: Access, CockroachDB, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, Mckoi, MySQL{MariaDb}, Neo4j, NuoDB, Oracle, PostgreSQL, SQLite, SQL Server, Sybase, Teradata and Vertica
 - Multiple injection strategies: Normal, Error, Blind and Time
 - SQL Engine to study and optimize SQL expressions
 - Injection of multiple targets

@@ -27,7 +27,7 @@ public class TabTransferHandler extends TransferHandler {
     
     private TabbedPaneDnD srcDnDTabbedPane = null;
     
-    private static PanelGhostGlass glassPane;
+    private PanelGhostGlass glassPane;
     
     public TabTransferHandler() {
         this.localObjectFlavor = new ActivationDataFlavor(TabResults.class, DataFlavor.javaJVMLocalObjectMimeType, "RightPaneAdapter");
@@ -72,13 +72,13 @@ public class TabTransferHandler extends TransferHandler {
             }
         }
         
-        glassPane.setVisible(false);
-        target.getRootPane().setGlassPane(glassPane);
+        this.glassPane.setVisible(false);
+        target.getRootPane().setGlassPane(this.glassPane);
         
         //Bug ID: 6700748 Cursor flickering during D&D when using CellRendererPane with validation
         //http://bugs.sun.com/view_bug.do?bug_id=6700748
-        glassPane.setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
-        glassPane.setVisible(true);
+        this.glassPane.setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
+        this.glassPane.setVisible(true);
         target.setCursor(isDropable ? DragSource.DefaultMoveDrop : DragSource.DefaultMoveNoDrop);
 
         if (isDropable) {
@@ -97,9 +97,9 @@ public class TabTransferHandler extends TransferHandler {
     @Override
     public int getSourceActions(JComponent c) {
         TabbedPaneDnD src = (TabbedPaneDnD) c;
-        if (glassPane == null) {
-            glassPane = new PanelGhostGlass(src);
-            c.getRootPane().setGlassPane(glassPane);
+        if (this.glassPane == null) {
+            this.glassPane = new PanelGhostGlass(src);
+            c.getRootPane().setGlassPane(this.glassPane);
         }
         
         if (src.getDragTabIndex() < 0) {
@@ -138,7 +138,7 @@ public class TabTransferHandler extends TransferHandler {
         TabbedPaneDnD src = (TabbedPaneDnD) c;
         src.setDropLocationLocal(null, false);
         src.repaint();
-        glassPane.setVisible(false);
+        this.glassPane.setVisible(false);
         src.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
     

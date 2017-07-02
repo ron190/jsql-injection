@@ -11,6 +11,7 @@
 package com.jsql.view.swing.interaction;
 
 import java.awt.ComponentOrientation;
+import java.awt.IllegalComponentStateException;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -21,6 +22,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.EmptyStackException;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -67,6 +69,8 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
     public void execute() {
         String htmlSource = "";
         // Fix #4081: SocketTimeoutException on get()
+        // Fix #44642: NoClassDefFoundError on get()
+        // Fix #44641: ExceptionInInitializerError on get()
         try {
             // TODO: test if proxy is used by jsoup
             // Previous test for 2xx Success and 3xx Redirection was Header only,
@@ -83,12 +87,20 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
             );
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
+        } catch (ExceptionInInitializerError | NoClassDefFoundError e) {
+            LOGGER.warn("Jsoup not properly configured, please update jsql", e);
         }
 
         final JTextPane browser = new JTextPane();
         browser.setContentType("text/html");
         browser.setEditable(false);
-        browser.setText(htmlSource);
+        
+        // Fix #43220: EmptyStackException on setText()
+        try {
+            browser.setText(htmlSource);
+        } catch (EmptyStackException e) {
+            LOGGER.error(e, e);
+        }
 
         final JPopupMenu menu = new JPopupMenu();
         
@@ -147,7 +159,12 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
             @Override
             public void mouseReleased(MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
-                    menu.show(evt.getComponent(), evt.getX(), evt.getY());
+                    // Fix #45348: IllegalComponentStateException on show()
+                    try {
+                        menu.show(evt.getComponent(), evt.getX(), evt.getY());
+                    } catch (IllegalComponentStateException e) {
+                        LOGGER.error(e, e);
+                    }
                     
                     menu.setLocation(
                         ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT

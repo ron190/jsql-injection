@@ -99,7 +99,6 @@ public class ManagerAdminPage extends AbstractManagerList {
         });
 
         this.loader.setVisible(false);
-
         
         JMenu m = MenuBarCoder.createMenu("<User-Agent default>");
         MenuBarCoder comboMenubar = new MenuBarCoder(m);
@@ -109,22 +108,22 @@ public class ManagerAdminPage extends AbstractManagerList {
         ButtonGroup groupVendor = new ButtonGroup();
         
         JRadioButtonMenuItem r = new JRadioButtonMenuItem("<User-Agent default>", true);
-        r.addActionListener(actionEvent -> {
-            m.setText("<User-Agent default>");
-        });
+        r.addActionListener(actionEvent ->
+            m.setText("<User-Agent default>")
+        );
         r.setToolTipText("Java/"+ System.getProperty("java.version"));
         groupVendor.add(r);
         m.add(r);
         
-        for (Entry<UserAgentType, List<UserAgent>> e: UserAgent.list.entrySet()) {
+        for (Entry<UserAgentType, List<UserAgent>> e: UserAgent.getList().entrySet()) {
             JMenu mm = new JMenu(e.getKey().getLabel());
             m.add(mm);
             for (UserAgent u: e.getValue()) {
                 JRadioButtonMenuItem rr = new JRadioButtonMenuItem(u.getLabel());
-                rr.addActionListener(actionEvent -> {
-                    m.setText(u.getLabel());
-                });
-                rr.setToolTipText(u.getUserAgent());
+                rr.addActionListener(actionEvent ->
+                    m.setText(u.getLabel())
+                );
+                rr.setToolTipText(u.getNameUserAgent());
                 groupVendor.add(rr);
                 mm.add(rr);
             }

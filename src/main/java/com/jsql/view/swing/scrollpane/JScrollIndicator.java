@@ -266,7 +266,7 @@ public class JScrollIndicator extends JLayeredPane {
                 return color;
             }
             int rgb = color.getRGB() & 0xFFFFFF; // color without alpha values
-            rgb |= (int)(this.alpha/100*255) << 24; // add alpha value
+            rgb |= (this.alpha / 100 * 255) << 24; // add alpha value
             return new Color(rgb, true);
         }
 

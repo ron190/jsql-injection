@@ -1,7 +1,7 @@
 package com.jsql.view.swing.manager.util;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,9 +44,9 @@ public enum UserAgent {
     
     private String label;
     private UserAgentType type;
-    private String userAgent;
+    private String nameUserAgent;
     
-    public static Map<UserAgentType, List<UserAgent>> list = new HashMap<>();
+    private static final Map<UserAgentType, List<UserAgent>> list = new EnumMap<>(UserAgentType.class);
     
     static {
         for (UserAgent u: UserAgent.values()) {
@@ -60,7 +60,7 @@ public enum UserAgent {
     private UserAgent(String label, UserAgentType type, String userAgent) {
         this.label = label;
         this.type = type;
-        this.userAgent = userAgent;
+        this.nameUserAgent = userAgent;
     }
 
     public String getLabel() {
@@ -71,8 +71,12 @@ public enum UserAgent {
         return this.type;
     }
 
-    public String getUserAgent() {
-        return this.userAgent;
+    public String getNameUserAgent() {
+        return this.nameUserAgent;
+    }
+
+    public static Map<UserAgentType, List<UserAgent>> getList() {
+        return list;
     }
     
 }

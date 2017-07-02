@@ -114,13 +114,11 @@ public class ManagerDatabase extends JPanel implements Manager {
             public void mousePressed(MouseEvent e) {
                 int selRow = tree.getRowForLocation(e.getX(), e.getY());
                 TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
-                if (selRow != -1) {
-                    if (e.getClickCount() == 2) {
-                        if (tree.isExpanded(selPath)) {
-                            tree.collapsePath(selPath);
-                        } else {
-                            tree.expandPath(selPath);
-                        }
+                if (selRow != -1 && e.getClickCount() == 2) {
+                    if (tree.isExpanded(selPath)) {
+                        tree.collapsePath(selPath);
+                    } else {
+                        tree.expandPath(selPath);
                     }
                 }
             }
@@ -138,8 +136,8 @@ public class ManagerDatabase extends JPanel implements Manager {
                         if (nodeModel != null && nodeModel.getPanel() != null && !nodeModel.isRunning()) {
                             nodeModel.getPanel().getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
                             nodeModel.getPanel().getLabel().setBorder(HelperUi.BORDER_FOCUS_LOST);
+                            nodeModel.setIsEdited(true);
                         }
-                        nodeModel.setIsEdited(true);
                     }
                 }
             }

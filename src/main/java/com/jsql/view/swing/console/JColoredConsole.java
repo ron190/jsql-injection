@@ -10,6 +10,7 @@ import java.awt.event.FocusEvent;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 import org.apache.log4j.Logger;
 
@@ -65,11 +66,22 @@ public class JColoredConsole extends JPopupTextPane {
             int extent = vertical.getModel().getExtent();
             boolean isScrollBarAtEnd = vertical.getValue() >= vertical.getMaximum() - extent;
             
+            String logMessage = message.substring(15);
+            String logTimestamp = message.substring(0, 15);
+            SimpleAttributeSet attributeTimestamp = new SimpleAttributeSet();
+            StyleConstants.setForeground(attributeTimestamp, new Color(75, 143, 211));
+            
             this.getProxy().getDocument().insertString(
                 this.getProxy().getDocument().getLength(),
-                (this.getProxy().getDocument().getLength() == 0 ? "" : "\n") + message,
-                attribut
+                (this.getProxy().getDocument().getLength() == 0 ? "" : "\n") + logTimestamp,
+                attributeTimestamp
             );
+            
+            this.getProxy().getDocument().insertString(
+                    this.getProxy().getDocument().getLength(),
+                    logMessage,
+                    attribut
+                    );
             
             if (isCaretAtEnd || isScrollBarAtEnd) {
                 vertical.setValue(vertical.getMaximum() + 1);

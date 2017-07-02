@@ -51,7 +51,7 @@ import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.panel.util.ButtonAddressBar;
-import com.jsql.view.swing.panel.util.CheckBoxMenuItemIconCustom;
+import com.jsql.view.swing.panel.util.RadioMenuItemIconCustom;
 import com.jsql.view.swing.radio.RadioLinkMethod;
 import com.jsql.view.swing.text.JPopupTextField;
 import com.jsql.view.swing.text.JTextFieldAddressBar;
@@ -188,7 +188,7 @@ public class PanelAddressBar extends JPanel {
 
         final JRadioButton radioCustomMethod = new JRadioButton();
         radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
-        radioCustomMethod.setIcon(new CheckBoxMenuItemIconCustom());
+        radioCustomMethod.setIcon(new RadioMenuItemIconCustom());
         
         buttonGroup.add(radioCustomMethod);
         

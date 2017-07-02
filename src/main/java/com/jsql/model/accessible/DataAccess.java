@@ -47,6 +47,8 @@ public class DataAccess {
      * Process stops when this schema is encountered: SQLix01x03x03x07
      */
     public static final String TRAIL_SQL = "%01%03%03%07";
+    public static final String TRAIL_HEX = "0x01030307";
+    public static final String TRAIL = "iLQS";
     
     /**
      * Regex characters marking the end of the result of an injection.
@@ -70,6 +72,7 @@ public class DataAccess {
      * %04[table cell]%05[number of occurences]%04%06%04[table cell]%05[number of occurences]%04
      */
     public static final String SEPARATOR_CELL_SQL = "%06";
+    public static final String SEPARATOR_CELL_HEX = "0x06";
     
     /**
      * SQL character used between the table cell and the number of occurence of the cell text.
@@ -82,6 +85,7 @@ public class DataAccess {
      * Expected schema of a table cell data is x04[table cell]x05[number of occurences]x04
      */
     public static final String SEPARATOR_QTE_RGX = "\\x05";
+    public static final String SEPARATOR_QTE_HEX = "0x05";
     
     /**
      * Regex character enclosing a table cell returned by injection.
@@ -89,6 +93,7 @@ public class DataAccess {
      * Expected schema of a table cell data is x04[table cell]x05[number of occurences]x04
      */
     public static final String ENCLOSE_VALUE_RGX = "\\x04";
+    public static final String ENCLOSE_VALUE_HEX = "0x04";
     
     /**
      * SQL character enclosing a table cell returned by injection.
@@ -99,13 +104,8 @@ public class DataAccess {
     
     public static final String CALIBRATOR_SQL = "%23";
     public static final String CALIBRATOR_HEX = "0x23";
-    public static final String ENCLOSE_VALUE_HEX = "0x04";
-    public static final String SEPARATOR_QTE_HEX = "0x05";
-    public static final String SEPARATOR_CELL_HEX = "0x06";
     public static final String LEAD_HEX = "0x53514c69";
     public static final String LEAD = "SQLi";
-    public static final String TRAIL_HEX = "0x01030307";
-    public static final String TRAIL = "iLQS";
     
     /**
      * Regex keywords corresponding to multiline and case insensitive match.

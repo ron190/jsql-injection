@@ -170,7 +170,7 @@ public abstract class AbstractNodeModel {
         mnReload.setEnabled(!this.isRunning);
         mnReload.addActionListener(actionEvent -> AbstractNodeModel.this.runAction());
         
-        JMenuItem mnRename = new JMenuItem("Rename");
+        JMenuItem mnRename = new JMenuItem("Rename node");
         mnRename.setIcon(HelperUi.ICON_EMPTY);
         
         mnRename.setEnabled(!this.isRunning);

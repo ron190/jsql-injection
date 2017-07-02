@@ -186,7 +186,7 @@ public class InjectionModel extends AbstractModelObservable {
                 this.vendor = Vendor.MYSQL;
                 LOGGER.info("Type of database undefined, forcing to ["+ this.vendor +"]");
             } else {
-                LOGGER.info("Using database type ["+ this.vendor +"]");
+                LOGGER.debug("Using database type ["+ this.vendor +"]");
                 
                 Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
                 msgHeader.put(Header.URL, ConnectionUtil.getUrlBase() + ConnectionUtil.getQueryString() + this.charInsertion);
@@ -543,6 +543,8 @@ public class InjectionModel extends AbstractModelObservable {
             // TODO Add ending line comment, except for INGRES
             +(
                 this.vendor != Vendor.INGRES
+                && this.vendor != Vendor.MCKOI
+                && this.vendor != Vendor.MEMSQL
                 ? this.vendor != Vendor.NEO4J
                     ? "--+"
                     : "//"

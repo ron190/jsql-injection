@@ -268,22 +268,27 @@ public class TabbedPaneDnD extends JTabbedPane {
             return null;
         }
         
-        boolean isZero = index==0;
-        Rectangle r = this.getBoundsAt(isZero?0:index-1);
-        if (this.getTabPlacement() == TOP || this.getTabPlacement() == BOTTOM) {
-            this.lineRect.setRect(
-                r.x - LINEWIDTH / 2d + r.width * (isZero ? 0 : 1),
-                r.y,
-                LINEWIDTH,
-                r.height
-            );
-        } else {
-            this.lineRect.setRect(
-                r.x,
-                r.y - LINEWIDTH / 2d + r.height * (isZero ? 0 : 1),
-                r.width,
-                LINEWIDTH
-            );
+        boolean isZero = index == 0;
+        int indexTab = isZero ? 0 : index - 1;
+        
+        // Fix #45611: IndexOutOfBoundsException on getBoundsAt()
+        if (0 <= indexTab && indexTab < this.getTabCount()) {
+            Rectangle r = this.getBoundsAt(indexTab);
+            if (this.getTabPlacement() == TOP || this.getTabPlacement() == BOTTOM) {
+                this.lineRect.setRect(
+                    r.x - LINEWIDTH / 2d + r.width * (isZero ? 0 : 1),
+                    r.y,
+                    LINEWIDTH,
+                    r.height
+                );
+            } else {
+                this.lineRect.setRect(
+                    r.x,
+                    r.y - LINEWIDTH / 2d + r.height * (isZero ? 0 : 1),
+                    r.width,
+                    LINEWIDTH
+                );
+            }
         }
         
         return this.lineRect;

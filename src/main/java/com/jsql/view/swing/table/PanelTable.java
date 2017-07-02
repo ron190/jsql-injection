@@ -25,6 +25,7 @@ import java.awt.event.MouseEvent;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -208,7 +209,9 @@ public class PanelTable extends JPanel {
         textFilter.getActionMap().put("close", actionCloseSearch);
         textFilter.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "close");
 
+        // Fix #43974: PatternSyntaxException on regexFilter() => Pattern.quote()
         textFilter.getDocument().addDocumentListener(new DocumentListener() {
+            
             @Override
             public void insertUpdate(DocumentEvent e) {
                 String text = textFilter.getText();
@@ -216,7 +219,7 @@ public class PanelTable extends JPanel {
                 if (text.trim().length() == 0) {
                     rowSorter.setRowFilter(null);
                 } else {
-                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(text)));
                 }
             }
 
@@ -227,7 +230,7 @@ public class PanelTable extends JPanel {
                 if (text.trim().length() == 0) {
                     rowSorter.setRowFilter(null);
                 } else {
-                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(text)));
                 }
             }
 
@@ -235,6 +238,7 @@ public class PanelTable extends JPanel {
             public void changedUpdate(DocumentEvent e) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
+            
         });
 
         this.tableValues.setComponentPopupMenu(new JPopupMenuTable(this.tableValues, actionShowSearchTable));

@@ -13,21 +13,21 @@ import javax.swing.text.TextAction;
 @SuppressWarnings("serial")
 public class SilentDeleteTextAction extends TextAction {
     
-    private final Action deleteAction;
+    private final transient Action deleteAction;
     
     public SilentDeleteTextAction(String name, Action deleteAction) {
         super(name);
         this.deleteAction = deleteAction;
     }
     
-    @Override 
+    @Override
     public void actionPerformed(ActionEvent e) {
-        JTextComponent target = getTextComponent(e);
+        JTextComponent target = this.getTextComponent(e);
         if (Objects.nonNull(target) && target.isEditable()) {
             Caret caret = target.getCaret();
             int dot  = caret.getDot();
             int mark = caret.getMark();
-            if (DefaultEditorKit.deletePrevCharAction.equals(getValue(Action.NAME))) {
+            if (DefaultEditorKit.deletePrevCharAction.equals(this.getValue(Action.NAME))) {
                 // @see javax/swing/text/DefaultEditorKit.java DeletePrevCharAction
                 if (dot == 0 && mark == 0) {
                     return;
@@ -40,7 +40,7 @@ public class SilentDeleteTextAction extends TextAction {
                 }
             }
         }
-        deleteAction.actionPerformed(e);
+        this.deleteAction.actionPerformed(e);
     }
     
 }

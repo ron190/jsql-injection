@@ -31,6 +31,8 @@ public class PreferencesUtil {
      * True if HTTP 302 redirection are followed to the new URL.
      */
     private static boolean isFollowingRedirection = false;
+    
+    private static boolean isInjectingMetadata = true;
 
     /**
      * True if bugs are sent to Github.
@@ -55,6 +57,7 @@ public class PreferencesUtil {
         PreferencesUtil.setReportingBugs(prefs.getBoolean("isReportingBugs", true));
         PreferencesUtil.setEvasionIsEnabled(prefs.getBoolean("isEvading", false));
         PreferencesUtil.setFollowingRedirection(prefs.getBoolean("isFollowingRedirection", false));
+        PreferencesUtil.setInjectingMetadata(prefs.getBoolean("isInjectingMetadata", true));
         PreferencesUtil.setPathFile(prefs.get("pathFile", System.getProperty("user.dir")));
         
         HttpURLConnection.setFollowRedirects(PreferencesUtil.isFollowingRedirection());
@@ -82,12 +85,19 @@ public class PreferencesUtil {
      * @param isEvading true if evasion is activated
      * @param isFollowingRedirection true if redirection are followed to new URL destination
      */
-    public static void set(boolean isCheckingUpdate, boolean isReportingBugs, boolean isEvading, boolean isFollowingRedirection) {
+    public static void set(
+        boolean isCheckingUpdate,
+        boolean isReportingBugs,
+        boolean isEvading,
+        boolean isFollowingRedirection,
+        boolean isInjectingMetadata
+    ) {
     	
         PreferencesUtil.setIsCheckUpdateActivated(isCheckingUpdate);
         PreferencesUtil.setReportingBugs(isReportingBugs);
         PreferencesUtil.setEvasionIsEnabled(isEvading);
         PreferencesUtil.setFollowingRedirection(isFollowingRedirection);
+        PreferencesUtil.setInjectingMetadata(isInjectingMetadata);
 
         Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
 
@@ -95,6 +105,7 @@ public class PreferencesUtil {
         preferences.putBoolean("isReportingBugs", PreferencesUtil.isReportingBugs());
         preferences.putBoolean("isEvading", PreferencesUtil.isEvasionEnabled());
         preferences.putBoolean("isFollowingRedirection", PreferencesUtil.isFollowingRedirection());
+        preferences.putBoolean("isInjectingMetadata", PreferencesUtil.isInjectingMetadata());
         
         HttpURLConnection.setFollowRedirects(PreferencesUtil.isFollowingRedirection());
         
@@ -140,6 +151,14 @@ public class PreferencesUtil {
 
     public static void setReportingBugs(boolean isReportingBugs) {
         PreferencesUtil.isReportingBugs = isReportingBugs;
+    }
+
+    public static boolean isInjectingMetadata() {
+        return PreferencesUtil.isInjectingMetadata;
+    }
+
+    public static void setInjectingMetadata(boolean isInjectingMetadata) {
+        PreferencesUtil.isInjectingMetadata = isInjectingMetadata;
     }
     
 }

@@ -194,13 +194,18 @@ public class DnDList extends JList<ListItem> {
         for (File fileToImport : filesToImport) {
             // Report NoSuchMethodError #1617
             if (!FilenameUtils.getExtension(fileToImport.getPath()).matches("txt|csv|ini")) {
-                JOptionPane.showMessageDialog(
-                    this.getTopLevelAncestor(),
-                    I18n.valueByKey("LIST_IMPORT_ERROR_LABEL"),
-                    I18n.valueByKey("LIST_IMPORT_ERROR_TITLE"),
-                    JOptionPane.ERROR_MESSAGE,
-                    HelperUi.ICON_ERROR
-                );
+                // Fix #42832: ClassCastException on showMessageDialog()
+                try {
+                    JOptionPane.showMessageDialog(
+                        this.getTopLevelAncestor(),
+                        I18n.valueByKey("LIST_IMPORT_ERROR_LABEL"),
+                        I18n.valueByKey("LIST_IMPORT_ERROR_TITLE"),
+                        JOptionPane.ERROR_MESSAGE,
+                        HelperUi.ICON_ERROR
+                    );
+                } catch (ClassCastException e) {
+                    LOGGER.error(e, e);
+                }
                 return;
             }
         }

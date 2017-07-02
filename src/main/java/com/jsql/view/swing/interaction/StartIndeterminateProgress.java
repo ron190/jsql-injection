@@ -43,13 +43,16 @@ public class StartIndeterminateProgress implements InteractionCommand {
 
         DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(this.dataElementDatabase);
         
-        // Get the node
-        AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
-        // Mark the node model as 'loading'
-        progressingTreeNodeModel.setProgressing(true);
-
-        // Update the node
-        treeModel.nodeChanged(node);
+        // Fix #45540: NullPointerException on node.getUserObject()
+        if (node != null) {
+            // Get the node
+            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
+            // Mark the node model as 'loading'
+            progressingTreeNodeModel.setProgressing(true);
+            
+            // Update the node
+            treeModel.nodeChanged(node);
+        }
     }
     
 }

@@ -112,6 +112,16 @@ public class PanelPreferences extends JPanel {
         labelIsFollowingRedirection.addActionListener(actionEvent ->
             checkboxIsFollowingRedirection.setSelected(!checkboxIsFollowingRedirection.isSelected())
         );
+        
+        String tooltipIsInjectingMetadata = "Enable database's metadata injection (e.g version, username).";
+        final JCheckBox checkboxIsInjectingMetadata = new JCheckBox("", PreferencesUtil.isInjectingMetadata());
+        checkboxIsInjectingMetadata.setToolTipText(tooltipIsInjectingMetadata);
+        checkboxIsInjectingMetadata.setFocusable(false);
+        JButton labelIsInjectingMetadata = new JButton("Retreive metadata informations");
+        labelIsInjectingMetadata.setToolTipText(tooltipIsInjectingMetadata);
+        labelIsInjectingMetadata.addActionListener(actionEvent ->
+            checkboxIsInjectingMetadata.setSelected(!checkboxIsInjectingMetadata.isSelected())
+        );
 
         LineBorder roundedLineBorder = new LineBorder(Color.LIGHT_GRAY, 1, true);
         TitledBorder roundedTitledBorder = new TitledBorder(roundedLineBorder, "General");
@@ -239,7 +249,8 @@ public class PanelPreferences extends JPanel {
                 checkboxIsCheckingUpdate.isSelected(),
                 checkboxIsReportingBugs.isSelected(),
                 checkboxIsEvading.isSelected(),
-                checkboxIsFollowingRedirection.isSelected()
+                checkboxIsFollowingRedirection.isSelected(),
+                checkboxIsInjectingMetadata.isSelected()
             );
             
             ProxyUtil.set(
@@ -288,6 +299,10 @@ public class PanelPreferences extends JPanel {
         labelUseKerberos.setBorderPainted(false);
         labelUseKerberos.setContentAreaFilled(false);
         
+        labelIsInjectingMetadata.setHorizontalAlignment(SwingConstants.LEFT);
+        labelIsInjectingMetadata.setBorderPainted(false);
+        labelIsInjectingMetadata.setContentAreaFilled(false);
+        
         JLabel proxyField = new JLabel("<html><b>Proxy</b></html>", SwingConstants.RIGHT);
         JLabel proxyInfo = new JLabel(" / Define proxy settings (e.g. TOR)");
         proxyField.setBorder(BorderFactory.createEmptyBorder(0, 0, 6, 0));
@@ -322,6 +337,7 @@ public class PanelPreferences extends JPanel {
                     .addComponent(checkboxIsReportingBugs)
                     .addComponent(checkboxIsEvading)
                     .addComponent(checkboxIsFollowingRedirection)
+                    .addComponent(checkboxIsInjectingMetadata)
             ).addGroup(
                 settingLayout
                     .createParallelGroup()
@@ -341,6 +357,7 @@ public class PanelPreferences extends JPanel {
                     .addComponent(labelIsReportingBugs)
                     .addComponent(labelIsEvading)
                     .addComponent(labelIsFollowingRedirection)
+                    .addComponent(labelIsInjectingMetadata)
         ));
 
         // Proxy settings, Vertical line rules
@@ -427,6 +444,11 @@ public class PanelPreferences extends JPanel {
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(checkboxIsFollowingRedirection)
                         .addComponent(labelIsFollowingRedirection)
+                ).addGroup(
+                        settingLayout
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(checkboxIsInjectingMetadata)
+                        .addComponent(labelIsInjectingMetadata)
                     )
                 )
         ;

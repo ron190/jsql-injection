@@ -15,10 +15,10 @@ import com.jsql.view.swing.panel.util.MetalUtilsCustom;
 @SuppressWarnings("serial")
 public class CheckBoxIcon implements Icon, UIResource, Serializable {
 
-    protected int getControlSize() { return 13; }
+    private static final int CONTROL_SIZE = 12;
 
     private void paintOceanIcon(Component c, Graphics g, int x, int y) {
-        ButtonModel model = ((JCheckBoxMenuItem)c).getModel();
+        ButtonModel model = ((JCheckBoxMenuItem) c).getModel();
 
         g.translate(x, y);
         int w = this.getIconWidth();
@@ -33,8 +33,7 @@ public class CheckBoxIcon implements Icon, UIResource, Serializable {
                 g.fillRect(w - 1, 1, 1, h - 1);
                 g.fillRect(1, h - 1, w - 2, 1);
             } else if (model.isRollover()) {
-                MetalUtilsCustom.drawGradient(c, g, "CheckBox.gradient", 0, 0,
-                                        w, h, true);
+                MetalUtilsCustom.drawGradient(c, g, "CheckBox.gradient", 0, 0, w, h, true);
                 g.setColor(MetalLookAndFeel.getControlDarkShadow());
                 g.drawRect(0, 0, w - 1, h - 1);
                 g.setColor(MetalLookAndFeel.getPrimaryControl());
@@ -42,8 +41,7 @@ public class CheckBoxIcon implements Icon, UIResource, Serializable {
                 g.drawRect(2, 2, w - 5, h - 5);
             }
             else {
-                MetalUtilsCustom.drawGradient(c, g, "CheckBox.gradient", 0, 0,
-                                        w, h, true);
+                MetalUtilsCustom.drawGradient(c, g, "CheckBox.gradient", 0, 0, w, h, true);
                 g.setColor(MetalLookAndFeel.getControlDarkShadow());
                 g.drawRect(0, 0, w - 1, h - 1);
             }
@@ -59,10 +57,9 @@ public class CheckBoxIcon implements Icon, UIResource, Serializable {
     }
     
     protected void drawCheck(Graphics g, int x, int y) {
-        int controlSize = this.getControlSize();
-        g.fillRect( x+3, y+5, 2, controlSize-8 );
-        g.drawLine( x+controlSize-4, y+3, x+5, y+controlSize-6 );
-        g.drawLine( x+controlSize-4, y+4, x+5, y+controlSize-5 );
+        g.fillRect(x + 3, y + 5, 2, this.CONTROL_SIZE - 8);
+        g.drawLine(x + this.CONTROL_SIZE - 4, y + 3, x + 5, y + this.CONTROL_SIZE - 6);
+        g.drawLine(x + this.CONTROL_SIZE - 4, y + 4, x + 5, y + this.CONTROL_SIZE - 5);
     }
 
     @Override
@@ -72,12 +69,12 @@ public class CheckBoxIcon implements Icon, UIResource, Serializable {
 
     @Override
     public int getIconWidth() {
-        return this.getControlSize();
+        return this.CONTROL_SIZE;
     }
 
     @Override
     public int getIconHeight() {
-        return this.getControlSize();
+        return this.CONTROL_SIZE;
     }
     
-} // End class CheckBoxIcon
+}

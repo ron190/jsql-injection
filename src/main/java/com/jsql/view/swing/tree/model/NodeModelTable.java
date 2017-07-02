@@ -11,6 +11,7 @@
 package com.jsql.view.swing.tree.model;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,16 +19,18 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.MenuSelectionManager;
 import javax.swing.SwingWorker;
+import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -177,18 +180,64 @@ public class NodeModelTable extends AbstractNodeModel {
         ButtonGroup bg = new ButtonGroup();
         
         JMenuItem menuItemLoadAllRows = new JRadioButtonMenuItem("Load all rows (default)", true);
-        JMenuItem menuItemLoadOneRow = new JRadioButtonMenuItem("Load one row only");
+        JMenuItem menuItemLoadOneRow = new JRadioButtonMenuItem("Load first row only");
+        JMenuItem menuItemDump = new JCheckBoxMenuItem("Dump to a file");
         
-        JPanel panelCustomMethod = new JPanel(new BorderLayout());
-        final JTextField inputCustomMethod = new JPopupTextField("index").getProxy();
+        JPanel panelCustomFromRow = new JPanel(new BorderLayout());
+        final JTextField inputCustomFromRow = new JPopupTextField("no.", "1").getProxy();
+        inputCustomFromRow.setHorizontalAlignment(JTextField.TRAILING);
+        Dimension d = new Dimension(
+            (int) inputCustomFromRow.getPreferredSize().getWidth() + 50,
+            (int) inputCustomFromRow.getPreferredSize().getHeight()
+        );
+        inputCustomFromRow.setPreferredSize(d);
 
-        final JRadioButton radioCustomMethod = new JRadioButton("Load all from row");
-        radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
-        radioCustomMethod.setIcon(new CheckBoxMenuItemIconCustom());
-        radioCustomMethod.setFocusPainted(false);
+        final JCheckBox radioCustomFromRow = new JCheckBox("<html><pre style=\"font-family:'Segoe UI';padding-left: 1px;\">Load from row no.&#9;</pre></html>");
+        radioCustomFromRow.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        radioCustomFromRow.setIcon(new CheckBoxMenuItemIconCustom());
+        radioCustomFromRow.setFocusPainted(false);
         
-        panelCustomMethod.add(radioCustomMethod, BorderLayout.LINE_START);
-        panelCustomMethod.add(inputCustomMethod, BorderLayout.CENTER);
+        panelCustomFromRow.add(radioCustomFromRow, BorderLayout.LINE_START);
+        panelCustomFromRow.add(inputCustomFromRow, BorderLayout.CENTER);
+        
+        JPanel panelCustomToRow = new JPanel(new BorderLayout());
+        final JTextField inputCustomToRow = new JPopupTextField("no.", "65565").getProxy();
+        inputCustomToRow.setHorizontalAlignment(JTextField.TRAILING);
+        inputCustomToRow.setPreferredSize(d);
+
+        final JCheckBox radioCustomToRow = new JCheckBox("<html><pre style=\"font-family:'Segoe UI';padding-left: 1px;\">Load to row no.&#9;&#9;&#9;&#9;&#9;&#9;</pre></html>");
+        radioCustomToRow.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        radioCustomToRow.setIcon(new CheckBoxMenuItemIconCustom());
+        radioCustomToRow.setFocusPainted(false);
+        
+        panelCustomToRow.add(radioCustomToRow, BorderLayout.LINE_START);
+        panelCustomToRow.add(inputCustomToRow, BorderLayout.CENTER);
+        
+        JPanel panelCustomFromChar = new JPanel(new BorderLayout());
+        final JTextField inputCustomFromChar = new JPopupTextField("no.", "1").getProxy();
+        inputCustomFromChar.setHorizontalAlignment(JTextField.TRAILING);
+        inputCustomFromChar.setPreferredSize(d);
+
+        final JCheckBox radioCustomFromChar = new JCheckBox("<html><pre style=\"font-family:'Segoe UI';padding-left: 1px;\">Load from char no.</pre></html>");
+        radioCustomFromChar.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        radioCustomFromChar.setIcon(new CheckBoxMenuItemIconCustom());
+        radioCustomFromChar.setFocusPainted(false);
+        
+        panelCustomFromChar.add(radioCustomFromChar, BorderLayout.LINE_START);
+        panelCustomFromChar.add(inputCustomFromChar, BorderLayout.CENTER);
+        
+        JPanel panelCustomToChar = new JPanel(new BorderLayout());
+        final JTextField inputCustomToChar = new JPopupTextField("no.", "65565").getProxy();
+        inputCustomToChar.setHorizontalAlignment(JTextField.TRAILING);
+        inputCustomToChar.setPreferredSize(d);
+
+        final JCheckBox radioCustomToChar = new JCheckBox("<html><pre style=\"font-family:'Segoe UI';padding-left: 1px;\">Load to char no.&#9;&#9;&#9;&#9;&#9;</pre></html>");
+        radioCustomToChar.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 0));
+        radioCustomToChar.setIcon(new CheckBoxMenuItemIconCustom());
+        radioCustomToChar.setFocusPainted(false);
+        
+        panelCustomToChar.add(radioCustomToChar, BorderLayout.LINE_START);
+        panelCustomToChar.add(inputCustomToChar, BorderLayout.CENTER);
         
 //        buttonGroup.add(radioCustomMethod);
 //        radioCustomMethod.addActionListener(actionEvent -> {
@@ -200,15 +249,19 @@ public class NodeModelTable extends AbstractNodeModel {
 //                LOGGER.warn("Custom method undefined");
 //            }
 //        });
-        
+
         bg.add(menuItemLoadAllRows);
         bg.add(menuItemLoadOneRow);
-        bg.add(radioCustomMethod);
       
         menuCustomLoad.add(menuItemLoadAllRows);
         menuCustomLoad.add(menuItemLoadOneRow);
         menuCustomLoad.add(new JSeparator());
-        menuCustomLoad.add(panelCustomMethod);
+        menuCustomLoad.add(panelCustomFromRow);
+        menuCustomLoad.add(panelCustomToRow);
+        menuCustomLoad.add(panelCustomFromChar);
+        menuCustomLoad.add(panelCustomToChar);
+        menuCustomLoad.add(new JSeparator());
+        menuCustomLoad.add(menuItemDump);
         
         for (JMenuItem menuItem: new JMenuItem[]{menuItemLoadAllRows, menuItemLoadOneRow}) {
             menuItem.setUI(
@@ -220,6 +273,14 @@ public class NodeModelTable extends AbstractNodeModel {
                 }
             );
         }
+        menuItemDump.setUI(
+            new BasicCheckBoxMenuItemUI() {
+                @Override
+                protected void doClick(MenuSelectionManager msm) {
+                    this.menuItem.doClick(0);
+                }
+            }
+        );
 
         tablePopupMenu.add(new JSeparator());
         tablePopupMenu.add(menuCustomLoad);

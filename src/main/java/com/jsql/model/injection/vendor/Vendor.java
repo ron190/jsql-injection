@@ -19,6 +19,7 @@ public enum Vendor {
     MARIADB("MariaDB", new VendorXml("mysql.xml")),
     MAXDB("MaxDB", new VendorXml("maxdb.xml")),
     MCKOI("Mckoi", new VendorXml("mckoi.xml")),
+    MEMSQL("MemSQL", new VendorXml("memsql.xml")),
     MYSQL("MySQL", new VendorXml("mysql.xml")),
     NEO4J("Neo4j", new VendorXml("neo4j.xml")),
     NUODB("NuoDB", new VendorXml("nuodb.xml")),
