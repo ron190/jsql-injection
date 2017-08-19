@@ -3,7 +3,7 @@
     "news": [
         "[Roadmap] Dump to a file, Full Path Disclosure, WAF detection.",
         "[In progress] New SQL Structure: Dump In One Shot and Zipped, Database: Couchbase, Load from/to no. of row/char, User Agent configuration.",
-        "[Done] Database: Neo4j, Translation complete: Russian, Chinese.",
+        "[Done] Database: Neo4j, Translation complete: Russian.",
         "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer."
     ]
 }
