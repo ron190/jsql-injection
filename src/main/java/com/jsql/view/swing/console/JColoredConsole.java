@@ -10,7 +10,6 @@ import java.awt.event.FocusEvent;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
 
 import org.apache.log4j.Logger;
 
@@ -21,7 +20,7 @@ import com.jsql.view.swing.text.JPopupTextPane;
  * A JTextPane which displays colored strings.
  */
 @SuppressWarnings("serial")
-public class JColoredConsole extends JPopupTextPane {
+public abstract class JColoredConsole extends JPopupTextPane {
 	
     /**
      * Log4j logger sent to view.
@@ -68,20 +67,18 @@ public class JColoredConsole extends JPopupTextPane {
             
             String logMessage = message.substring(15);
             String logTimestamp = message.substring(0, 15);
-            SimpleAttributeSet attributeTimestamp = new SimpleAttributeSet();
-            StyleConstants.setForeground(attributeTimestamp, new Color(75, 143, 211));
             
             this.getProxy().getDocument().insertString(
                 this.getProxy().getDocument().getLength(),
                 (this.getProxy().getDocument().getLength() == 0 ? "" : "\n") + logTimestamp,
-                attributeTimestamp
+                this.getColorAttribute()
             );
             
             this.getProxy().getDocument().insertString(
-                    this.getProxy().getDocument().getLength(),
-                    logMessage,
-                    attribut
-                    );
+                this.getProxy().getDocument().getLength(),
+                logMessage,
+                attribut
+            );
             
             if (isCaretAtEnd || isScrollBarAtEnd) {
                 vertical.setValue(vertical.getMaximum() + 1);
@@ -101,5 +98,7 @@ public class JColoredConsole extends JPopupTextPane {
             LOGGER.trace(message, e);
         }
     }
+    
+    abstract SimpleAttributeSet getColorAttribute();
     
 }

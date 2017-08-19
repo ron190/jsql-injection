@@ -27,8 +27,6 @@ import javax.swing.JTextPane;
 import javax.swing.MenuSelectionManager;
 import javax.swing.OverlayLayout;
 import javax.swing.SwingConstants;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 
 import org.apache.log4j.Logger;
@@ -41,6 +39,7 @@ import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.manager.util.ComboMenu;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.sql.lexer.HighlightedDocument;
+import com.jsql.view.swing.text.listener.DocumentListenerTyping;
 
 @SuppressWarnings("serial")
 public class SqlEngine extends JPanel {
@@ -54,9 +53,9 @@ public class SqlEngine extends JPanel {
 
     private static final List<JTextPaneLexer> mapTextPaneToXml = new ArrayList<>();
     
-    private JTabbedPane tabError = new JTabbedPane();
+    private JTabbedPane tabError = new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
     
-    interface JTextPaneObjectMethod {
+    private interface JTextPaneObjectMethod {
         default void switchSetterToVendor() {
             
         }
@@ -88,6 +87,7 @@ public class SqlEngine extends JPanel {
         
     }
     
+    // Standard
     private static final JTextPaneLexer textareaDatabase = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
@@ -106,13 +106,118 @@ public class SqlEngine extends JPanel {
             this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema(), "setColumn");
         }
     };
+    private static final JTextPaneLexer textareaQuery = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema().getRow(),
+            "setQuery");
+        }
+    };
+    private static final JTextPaneLexer textareaField = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema().getRow().getFields(),
+            "setField");
+        }
+    };
+    private static final JTextPaneLexer textareaConcat = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema().getRow().getFields(),
+            "setConcat");
+        }
+    };
+    
     private static final JTextPaneLexer textareaInfo = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
             this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource(), "setInfo");
         }
     };
+    
+    // Zipped
+    private static final JTextPaneLexer textareaDatabaseZipped = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getZipped(), "setDatabase");
+        }
+    };
+    private static final JTextPaneLexer textareaTableZipped = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getZipped(), "setTable");
+        }
+    };
+    private static final JTextPaneLexer textareaColumnZipped = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getZipped(), "setColumn");
+        }
+    };
+    private static final JTextPaneLexer textareaQueryZipped = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getZipped().getRow(),
+            "setQuery");
+        }
+    };
+    private static final JTextPaneLexer textareaFieldZipped = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getZipped().getRow().getFields(),
+            "setField");
+        }
+    };
+    private static final JTextPaneLexer textareaConcatZipped = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getZipped().getRow().getFields(),
+            "setConcat");
+        }
+    };
+    
+    // Dios
+    private static final JTextPaneLexer textareaDatabaseDios = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getDios(), "setDatabase");
+        }
+    };
+    private static final JTextPaneLexer textareaTableDios = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getDios(), "setTable");
+        }
+    };
+    private static final JTextPaneLexer textareaColumnDios = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getDios(), "setColumn");
+        }
+    };
+    private static final JTextPaneLexer textareaQueryDios = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getDios().getRow(),
+            "setQuery");
+        }
+    };
+    private static final JTextPaneLexer textareaFieldDios = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getDios().getRow().getFields(),
+            "setField");
+        }
+    };
+    private static final JTextPaneLexer textareaConcatDios = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getDios().getRow().getFields(),
+            "setConcat");
+        }
+    };
      
+    // Configuration
     private static final JTextPaneLexer textareaSlidingWindow = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
@@ -137,13 +242,6 @@ public class SqlEngine extends JPanel {
             this.attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getConfiguration(), "setCalibrator");
         }
     };
-     
-    private static final JTextPaneLexer textareaIndices = new JTextPaneLexer() {
-        @Override
-        public void switchSetterToVendor() {
-            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getNormal(), "setIndices");
-        }
-    };
     private static final JTextPaneLexer textareaCapacity = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
@@ -156,7 +254,16 @@ public class SqlEngine extends JPanel {
             this.attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getNormal(), "setOrderBy");
         }
     };
+    
+    // Normal
+    private static final JTextPaneLexer textareaIndices = new JTextPaneLexer() {
+        @Override
+        public void switchSetterToVendor() {
+            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getNormal(), "setIndices");
+        }
+    };
      
+    // Boolean
     private static final JTextPaneLexer textareaBlind = new JTextPaneLexer() {
         @Override
         public void switchSetterToVendor() {
@@ -187,25 +294,6 @@ public class SqlEngine extends JPanel {
             if (xmlModel.getStrategy().getBoolean() != null) {
                 this.attributeSetter = new AttributeSetterForVendor(xmlModel.getStrategy().getBoolean().getTest(), "setLength");
             }
-        }
-    };
-     
-    private static final JTextPaneLexer textareaQuery = new JTextPaneLexer() {
-        @Override
-        public void switchSetterToVendor() {
-            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema().getRow(), "setQuery");
-        }
-    };
-    private static final JTextPaneLexer textareaField = new JTextPaneLexer() {
-        @Override
-        public void switchSetterToVendor() {
-            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema().getRow().getFields(), "setField");
-        }
-    };
-    private static final JTextPaneLexer textareaConcat = new JTextPaneLexer() {
-        @Override
-        public void switchSetterToVendor() {
-            this.attributeSetter = new AttributeSetterForVendor(xmlModel.getResource().getSchema().getRow().getFields(), "setConcat");
         }
     };
     
@@ -249,6 +337,8 @@ public class SqlEngine extends JPanel {
         comboBoxVendors.setSelectedItem(MediatorModel.model().getVendor());
         this.changeVendor();
         
+        JTabbedPane tabsStandard = new JTabbedPane(JTabbedPane.RIGHT);
+        
         JTabbedPane tabsSchema = new JTabbedPane();
         tabsSchema.addTab("Databases", new LightScrollPane(1, 0, 1, 0, textareaDatabase));
         tabsSchema.addTab("Tables", new LightScrollPane(1, 0, 1, 0, textareaTable));
@@ -258,8 +348,30 @@ public class SqlEngine extends JPanel {
         tabsSchema.addTab("Fields separator", new LightScrollPane(1, 0, 1, 0, textareaConcat));
         tabsSchema.addTab("Metadata", new LightScrollPane(1, 0, 1, 0, textareaInfo));
         
+        JTabbedPane tabsZipped = new JTabbedPane();
+        tabsZipped.addTab("Databases", new LightScrollPane(1, 0, 1, 0, textareaDatabaseZipped));
+        tabsZipped.addTab("Tables", new LightScrollPane(1, 0, 1, 0, textareaTableZipped));
+        tabsZipped.addTab("Columns", new LightScrollPane(1, 0, 1, 0, textareaColumnZipped));
+        tabsZipped.addTab("Rows", new LightScrollPane(1, 0, 1, 0, textareaQueryZipped));
+        tabsZipped.addTab("Field", new LightScrollPane(1, 0, 1, 0, textareaFieldZipped));
+        tabsZipped.addTab("Fields separator", new LightScrollPane(1, 0, 1, 0, textareaConcatZipped));
+//        tabsZipped.addTab("Metadata", new LightScrollPane(1, 0, 1, 0, textareaInfo));
+        
+        JTabbedPane tabsDios = new JTabbedPane();
+        tabsDios.addTab("Databases", new LightScrollPane(1, 0, 1, 0, textareaDatabaseDios));
+        tabsDios.addTab("Tables", new LightScrollPane(1, 0, 1, 0, textareaTableDios));
+        tabsDios.addTab("Columns", new LightScrollPane(1, 0, 1, 0, textareaColumnDios));
+        tabsDios.addTab("Rows", new LightScrollPane(1, 0, 1, 0, textareaQueryDios));
+        tabsDios.addTab("Field", new LightScrollPane(1, 0, 1, 0, textareaFieldDios));
+        tabsDios.addTab("Fields separator", new LightScrollPane(1, 0, 1, 0, textareaConcatDios));
+//        tabsDios.addTab("Metadata", new LightScrollPane(1, 0, 1, 0, textareaInfo));
+        
+        tabsStandard.addTab("Standard", tabsSchema);
+        tabsStandard.addTab("Zipped", tabsZipped);
+        tabsStandard.addTab("DIOS", tabsDios);
+        
         JPanel panelSchema = new JPanel(new BorderLayout());
-        panelSchema.add(tabsSchema, BorderLayout.CENTER);
+        panelSchema.add(tabsStandard, BorderLayout.CENTER);
         panelSchema.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
         
         JTabbedPane tabsStrategy = new JTabbedPane();
@@ -281,11 +393,11 @@ public class SqlEngine extends JPanel {
         tabsStrategy.addTab("Error", panelError);
 
         /*Boolean*/
-        JTabbedPane tabsBoolean = new JTabbedPane();
+        JTabbedPane tabsBoolean = new JTabbedPane(JTabbedPane.RIGHT);
         tabsBoolean.addTab("Blind", new LightScrollPane(1, 0, 1, 0, textareaBlind));
         tabsBoolean.addTab("Time", new LightScrollPane(1, 0, 1, 0, textareaTime));
-        tabsBoolean.addTab("Bit", new LightScrollPane(1, 0, 1, 0, textareaBlindTimeBit));
-        tabsBoolean.addTab("Length", new LightScrollPane(1, 0, 1, 0, textareaBlindTimeLength));
+        tabsBoolean.addTab("Bit Check", new LightScrollPane(1, 0, 1, 0, textareaBlindTimeBit));
+        tabsBoolean.addTab("Length Check", new LightScrollPane(1, 0, 1, 0, textareaBlindTimeLength));
         
         JPanel panelBoolean = new JPanel(new BorderLayout());
         panelBoolean.add(tabsBoolean, BorderLayout.CENTER);
@@ -389,6 +501,8 @@ public class SqlEngine extends JPanel {
                 panelError.add(panelLimit, BorderLayout.SOUTH);
     
                 this.tabError.addTab(methodError.getName(), panelError);
+                
+                this.tabError.setTitleAt(this.tabError.getTabCount() - 1, "<html><div style=\"text-align:left;width:150px;\">"+ methodError.getName() +"</div></html>");
             }
         }
     }
@@ -399,8 +513,26 @@ public class SqlEngine extends JPanel {
         textareaDatabase.setText(model.getResource().getSchema().getDatabase().trim());
         textareaTable.setText(model.getResource().getSchema().getTable().trim());
         textareaColumn.setText(model.getResource().getSchema().getColumn().trim());
+        textareaQuery.setText(model.getResource().getSchema().getRow().getQuery().trim());
+        textareaField.setText(model.getResource().getSchema().getRow().getFields().getField().trim());
+        textareaConcat.setText(model.getResource().getSchema().getRow().getFields().getConcat().trim());
+        
+        textareaDatabaseZipped.setText(model.getResource().getZipped().getDatabase().trim());
+        textareaTableZipped.setText(model.getResource().getZipped().getTable().trim());
+        textareaColumnZipped.setText(model.getResource().getZipped().getColumn().trim());
+        textareaQueryZipped.setText(model.getResource().getZipped().getRow().getQuery().trim());
+        textareaFieldZipped.setText(model.getResource().getZipped().getRow().getFields().getField().trim());
+        textareaConcatZipped.setText(model.getResource().getZipped().getRow().getFields().getConcat().trim());
+        
+        textareaDatabaseDios.setText(model.getResource().getDios().getDatabase().trim());
+        textareaTableDios.setText(model.getResource().getDios().getTable().trim());
+        textareaColumnDios.setText(model.getResource().getDios().getColumn().trim());
+        textareaQueryDios.setText(model.getResource().getDios().getRow().getQuery().trim());
+        textareaFieldDios.setText(model.getResource().getDios().getRow().getFields().getField().trim());
+        textareaConcatDios.setText(model.getResource().getDios().getRow().getFields().getConcat().trim());
+        
         textareaInfo.setText(model.getResource().getInfo().trim());
-
+        
         textareaSlidingWindow.setText(model.getStrategy().getConfiguration().getSlidingWindow().trim());
         textareaLimit.setText(model.getStrategy().getConfiguration().getLimit().trim());
         textareaFailsafe.setText(model.getStrategy().getConfiguration().getFailsafe().trim());
@@ -421,10 +553,6 @@ public class SqlEngine extends JPanel {
             textareaBlindTimeLength.setText(model.getStrategy().getBoolean().getTest().getLength().trim());
         }
 
-        textareaQuery.setText(model.getResource().getSchema().getRow().getQuery().trim());
-        textareaField.setText(model.getResource().getSchema().getRow().getFields().getField().trim());
-        textareaConcat.setText(model.getResource().getSchema().getRow().getFields().getConcat().trim());
-        
         this.initErrorTabs();
     }
     
@@ -438,22 +566,7 @@ public class SqlEngine extends JPanel {
         document.setHighlightStyle(HighlightedDocument.SQL_STYLE);
         textPane.setStyledDocument(document);
         
-        document.addDocumentListener(new DocumentListener() {
-            
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                this.warn();
-            }
-            
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                this.warn();
-            }
-            
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                this.warn();
-            }
+        document.addDocumentListener(new DocumentListenerTyping() {
             
             public void warn() {
                 textPane.setAttribute();

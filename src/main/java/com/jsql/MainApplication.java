@@ -2,6 +2,8 @@ package com.jsql;
 
 import java.awt.AWTError;
 import java.awt.HeadlessException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.net.URISyntaxException;
 
 import org.apache.log4j.Appender;
@@ -45,7 +47,10 @@ public class MainApplication {
      * @throws URISyntaxException
      */
     public static void main(String[] args) throws URISyntaxException {
-    	
+
+        CookieManager cookieManager = new CookieManager();
+        CookieHandler.setDefault(cookieManager);
+        
     	// Configure global environnement settings
         CertificateUtil.ignoreCertificationChain();
         ExceptionUtil.setUncaughtExceptionHandler();

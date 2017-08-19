@@ -58,19 +58,19 @@ public class DnDList extends JList<ListItem> {
     /**
      * List of default items.
      */
-    private List<String> defaultList;
+    private transient List<ListItem> defaultList;
     
     /**
      * Create a JList decorated with drag/drop features.
      * @param newList List to decorate
      */
-    public DnDList(List<String> newList) {
+    public DnDList(List<ListItem> newList) {
         this.defaultList = newList;
 
         this.listModel = new DefaultListModel<>();
 
-        for (String path: newList) {
-            this.listModel.addElement(new ListItem(path));
+        for (ListItem path: newList) {
+            this.listModel.addElement(path);
         }
 
         this.setModel(this.listModel);
@@ -278,8 +278,8 @@ public class DnDList extends JList<ListItem> {
     
     public void restore() {
         this.listModel.clear();
-        for (String path: this.defaultList) {
-            this.listModel.addElement(new ListItem(path));
+        for (ListItem path: this.defaultList) {
+            this.listModel.addElement(path);
         }
     }
     

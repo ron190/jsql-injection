@@ -27,13 +27,19 @@ import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.RessourceAccess;
+import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.list.BeanInjection;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ListItem;
+import com.jsql.view.swing.list.ListItemScan;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -56,23 +62,40 @@ public class ManagerScan extends AbstractManagerList {
     public ManagerScan() {
         this.setLayout(new BorderLayout());
 
-        List<String> pathsList = new ArrayList<>();
+        StringBuilder jsonScan = new StringBuilder();
         try {
-            InputStream in = ManagerScan.class.getResourceAsStream("/com/jsql/view/swing/resources/list/scan-page.txt");
+            InputStream in = ManagerScan.class.getResourceAsStream("/com/jsql/view/swing/resources/list/scan-page.json");
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
-                pathsList.add(line);
+                jsonScan.append(line);
             }
             reader.close();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
-
-        final DnDList listFile = new DnDList(pathsList);
-        this.listPaths = listFile;
+        
+        List<ListItem> listItems = new ArrayList<>();
+        
+        JSONArray jsonArrayScan = new JSONArray(jsonScan.toString());
+        for (int i = 0 ; i < jsonArrayScan.length() ; i++) {
+            JSONObject jsonObjectScan = jsonArrayScan.getJSONObject(i);
+            BeanInjection beanInjection = new BeanInjection(
+                jsonObjectScan.getString("url"),
+                jsonObjectScan.optString("request"),
+                jsonObjectScan.optString("header"),
+                jsonObjectScan.optString("injectionType"),
+                jsonObjectScan.optString("vendor"),
+                jsonObjectScan.optString("requestType")
+            );
+            listItems.add(new ListItemScan(beanInjection));
+        }
+        
+        final DnDList dndListScan = new DnDList(listItems);
+        
+        this.listPaths = dndListScan;
         this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
-        this.add(new LightScrollPane(1, 0, 0, 0, listFile), BorderLayout.CENTER);
+        this.add(new LightScrollPane(1, 0, 0, 0, dndListScan), BorderLayout.CENTER);
 
         JPanel lastLine = new JPanel();
         lastLine.setOpaque(false);
@@ -97,7 +120,7 @@ public class ManagerScan extends AbstractManagerList {
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
         
         this.run.addActionListener(actionEvent -> {
-            if (listFile.getSelectedValuesList().isEmpty()) {
+            if (dndListScan.getSelectedValuesList().isEmpty()) {
                 LOGGER.warn("Select URL(s) to scan");
                 return;
             }
@@ -108,12 +131,12 @@ public class ManagerScan extends AbstractManagerList {
                     ManagerScan.this.run.setState(StateButton.STOPPABLE);
                     ManagerScan.this.loader.setVisible(true);
                     
-                    DefaultListModel<ListItem> listModel = (DefaultListModel<ListItem>) listFile.getModel();
+                    DefaultListModel<ListItem> listModel = (DefaultListModel<ListItem>) dndListScan.getModel();
                     for (int i = 0 ; i < listModel.getSize() ; i++) {
                         listModel.get(i).reset();
                     }
                     
-                    RessourceAccess.scanList(listFile.getSelectedValuesList());
+                    RessourceAccess.scanList(dndListScan.getSelectedValuesList());
                 } else {
                     RessourceAccess.setScanStopped(true);
                     MediatorModel.model().setIsStoppedByUser(true);
@@ -131,6 +154,31 @@ public class ManagerScan extends AbstractManagerList {
         lastLine.add(this.run);
         
         this.add(lastLine, BorderLayout.SOUTH);
+        
+        dndListScan.addListSelectionListener(e -> {
+            BeanInjection beanInjection = ((ListItemScan) dndListScan.getSelectedValue()).getBeanInjection();
+            
+            MediatorGui.panelAddressBar().getTextFieldAddress().setText(beanInjection.getUrl());
+            MediatorGui.panelAddressBar().getTextFieldHeader().setText(beanInjection.getHeader());
+            MediatorGui.panelAddressBar().getTextFieldRequest().setText(beanInjection.getRequest());
+            
+            String requestType = beanInjection.getRequestType();
+            if (requestType != null && !requestType.isEmpty()) {
+                MediatorGui.panelAddressBar().getRadioRequest().setText(requestType);
+//                Arrays.asList(new String[]{"OPTIONS", "HEAD", "POST", "PUT", "DELETE", "TRACE"}).contains(method)
+            } else {
+                MediatorGui.panelAddressBar().getRadioRequest().setText("POST");
+            }
+            
+            MethodInjection injectionType = beanInjection.getInjectionType();
+            if (injectionType == MethodInjection.HEADER) {
+                MediatorGui.panelAddressBar().getRadioHeader().setSelected();
+            } else if (injectionType == MethodInjection.REQUEST) {
+                MediatorGui.panelAddressBar().getRadioRequest().setSelected();
+            } else {
+                MediatorGui.panelAddressBar().getRadioQueryString().setSelected();
+            }
+        });
     }
     
 }

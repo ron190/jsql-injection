@@ -31,8 +31,8 @@ import javax.swing.text.AttributeSet;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.exception.IgnoreMessageException;
-import com.jsql.view.swing.sql.lexer.syntax.lexer.Lexer;
-import com.jsql.view.swing.sql.lexer.syntax.lexer.Token;
+import com.jsql.view.swing.sql.lexer.syntax.Lexer;
+import com.jsql.view.swing.sql.lexer.syntax.Token;
 
 /**
  * Run the Syntax Highlighting as a separate thread. Things that need to be

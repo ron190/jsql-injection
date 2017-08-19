@@ -178,8 +178,9 @@ public final class HelperUi {
     };
 
     public static final String FONT_NAME_UBUNTU = "Ubuntu Mono";
+    public static final String FONT_NAME_MONOSPACE = "Monospace";
 
-    public static final Font FONT_MONOSPACE = new Font("Monospace", Font.PLAIN, UIManager.getDefaults().getFont("TextPane.font").getSize());
+    public static final Font FONT_MONOSPACE = new Font(HelperUi.FONT_NAME_MONOSPACE, Font.PLAIN, UIManager.getDefaults().getFont("TextPane.font").getSize());
     public static final Font FONT_SEGOE = new Font("Segoe UI", Font.PLAIN, UIManager.getDefaults().getFont("TextPane.font").getSize());
     public static final Font FONT_SEGOE_BIG = new Font(
         UIManager.getDefaults().getFont("TextField.font").getName(),

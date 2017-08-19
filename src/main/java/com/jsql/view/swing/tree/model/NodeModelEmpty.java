@@ -19,7 +19,6 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -72,7 +71,7 @@ public class NodeModelEmpty extends AbstractNodeModel {
     }
     
     @Override
-    protected void buildMenu(JPopupMenu tablePopupMenu, TreePath path) {
+    protected void buildMenu(JPopupMenu2 tablePopupMenu, TreePath path) {
         // Not used
     }
     

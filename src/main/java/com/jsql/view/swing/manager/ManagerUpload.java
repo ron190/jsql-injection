@@ -38,6 +38,7 @@ import com.jsql.util.PreferencesUtil;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
+import com.jsql.view.swing.list.ListItem;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextField;
@@ -62,13 +63,13 @@ public class ManagerUpload extends AbstractManagerList {
 
         this.defaultText = I18n.valueByKey("UPLOAD_RUN_BUTTON_LABEL");
 
-        List<String> pathsList = new ArrayList<>();
+        List<ListItem> pathsList = new ArrayList<>();
         try {
             InputStream in = ManagerUpload.class.getResourceAsStream("/com/jsql/view/swing/resources/list/upload.txt");
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
-                pathsList.add(line);
+                pathsList.add(new ListItem(line));
             }
             reader.close();
         } catch (IOException e) {

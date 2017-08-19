@@ -42,6 +42,7 @@ import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.MenuSelectionManager;
 import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
+import javax.swing.text.StyleConstants;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
@@ -55,6 +56,7 @@ import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.action.ActionNewWindow;
 import com.jsql.view.swing.action.ActionSaveTab;
+import com.jsql.view.swing.console.SwingAppender;
 import com.jsql.view.swing.dialog.DialogAbout;
 import com.jsql.view.swing.dialog.DialogTranslate;
 import com.jsql.view.swing.dialog.Language;
@@ -686,7 +688,12 @@ public class Menubar extends JMenuBar {
         itemReportIssue.addActionListener(actionEvent -> {
             JPanel panel = new JPanel(new BorderLayout());
             final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
-            textarea.setText("Username: -\n\nSubject: -\n\nDescription: -");
+            textarea.setText(
+                "## What's the object of your report?\n\n\n"
+                + "## Any detailed information on the subject?\n\n\n"
+                + "## If required what changes you'll do to User interface?\n\n\n"
+                + "## Have you got request for new features?\n\n\n"
+            );
             panel.add(new JLabel("Describe your issue or the bug you encountered " + ":"), BorderLayout.NORTH);
             panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
             
@@ -730,11 +737,27 @@ public class Menubar extends JMenuBar {
     }
     
     public void switchLocale(Locale newLocale) {
-        this.switchLocale(I18n.getLocaleDefault(), newLocale);
+        this.switchLocale(I18n.getLocaleDefault(), newLocale, false);
     }
     
-    public void switchLocale(Locale oldLocale, Locale newLocale) {
+    public void switchLocale(Locale oldLocale, Locale newLocale, boolean isStartup) {
         I18n.setLocaleDefault(ResourceBundle.getBundle("com.jsql.i18n.jsql", newLocale));
+        
+        if (newLocale.getLanguage() == new Locale("zh").getLanguage()) {
+            StyleConstants.setFontFamily(SwingAppender.ERROR, HelperUi.FONT_NAME_MONOSPACE);
+            StyleConstants.setFontFamily(SwingAppender.WARN, HelperUi.FONT_NAME_MONOSPACE);
+            StyleConstants.setFontFamily(SwingAppender.INFO, HelperUi.FONT_NAME_MONOSPACE);
+            StyleConstants.setFontFamily(SwingAppender.DEBUG, HelperUi.FONT_NAME_MONOSPACE);
+            StyleConstants.setFontFamily(SwingAppender.TRACE, HelperUi.FONT_NAME_MONOSPACE);
+            StyleConstants.setFontFamily(SwingAppender.ALL, HelperUi.FONT_NAME_MONOSPACE);
+        } else {
+            StyleConstants.setFontFamily(SwingAppender.ERROR, HelperUi.FONT_NAME_UBUNTU);
+            StyleConstants.setFontFamily(SwingAppender.WARN, HelperUi.FONT_NAME_UBUNTU);
+            StyleConstants.setFontFamily(SwingAppender.INFO, HelperUi.FONT_NAME_UBUNTU);
+            StyleConstants.setFontFamily(SwingAppender.DEBUG, HelperUi.FONT_NAME_UBUNTU);
+            StyleConstants.setFontFamily(SwingAppender.TRACE, HelperUi.FONT_NAME_UBUNTU);
+            StyleConstants.setFontFamily(SwingAppender.ALL, HelperUi.FONT_NAME_UBUNTU);
+        }
         
         for (String key: I18n.keys()) {
             for (Object componentSwing: I18n.componentsByKey(key)) {
@@ -802,10 +825,16 @@ public class Menubar extends JMenuBar {
             MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setLeftComponent(c2);
             MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setRightComponent(c1);
             
-            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(
-                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getWidth() -
-                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation()
-            );
+            if (isStartup) {
+                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(
+                    MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation()
+                );
+            } else {
+                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(
+                    MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getWidth() -
+                    MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation()
+                );
+            }
         }
         
         MediatorGui.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));

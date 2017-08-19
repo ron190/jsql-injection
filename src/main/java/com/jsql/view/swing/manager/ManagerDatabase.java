@@ -65,6 +65,8 @@ public class ManagerDatabase extends JPanel implements Manager {
     private JMenu[] itemRadioStrategyError = new JMenu[1];
 
     private ButtonGroup groupStrategy = new ButtonGroup();
+    
+    private JTree tree;
 
     /**
      * Create a panel to encode a string.
@@ -74,7 +76,7 @@ public class ManagerDatabase extends JPanel implements Manager {
 
         // First node in tree
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(new NodeModelEmpty(I18n.valueByKey("DATABASE_EMPTY")));
-        final JTree tree = new JTree(root);
+        tree = new JTree(root);
         MediatorGui.register(tree);
 
         // Graphic manager for components
@@ -154,36 +156,7 @@ public class ManagerDatabase extends JPanel implements Manager {
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
         // Repaint Gif progressbar
-        tree.getModel().addTreeModelListener(new TreeModelListener() {
-            
-            @Override
-            public void treeNodesChanged(TreeModelEvent arg0) {
-                if (arg0 != null) {
-                    tree.firePropertyChange(
-                        JTree.ROOT_VISIBLE_PROPERTY,
-                        !tree.isRootVisible(),
-                        tree.isRootVisible()
-                    );
-                    tree.treeDidChange();
-                }
-            }
-
-            @Override
-            public void treeStructureChanged(TreeModelEvent arg0) {
-                // Do nothing
-            }
-
-            @Override
-            public void treeNodesRemoved(TreeModelEvent arg0) {
-                // Do nothing
-            }
-
-            @Override
-            public void treeNodesInserted(TreeModelEvent arg0) {
-                // Do nothing
-            }
-            
-        });
+        tree.getModel().addTreeModelListener(new TreeModelGifListener());
 
         tree.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
         LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, tree);
@@ -270,6 +243,37 @@ public class ManagerDatabase extends JPanel implements Manager {
                 i[0]++;
             }
         }
+    }
+    
+    private class TreeModelGifListener implements TreeModelListener {
+        
+        @Override
+        public void treeNodesChanged(TreeModelEvent arg0) {
+            if (arg0 != null) {
+                tree.firePropertyChange(
+                    JTree.ROOT_VISIBLE_PROPERTY,
+                    !tree.isRootVisible(),
+                    tree.isRootVisible()
+                );
+                tree.treeDidChange();
+            }
+        }
+
+        @Override
+        public void treeStructureChanged(TreeModelEvent arg0) {
+            // Do nothing
+        }
+
+        @Override
+        public void treeNodesRemoved(TreeModelEvent arg0) {
+            // Do nothing
+        }
+
+        @Override
+        public void treeNodesInserted(TreeModelEvent arg0) {
+            // Do nothing
+        }
+        
     }
 
     // Getter and setter

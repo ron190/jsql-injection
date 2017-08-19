@@ -12,6 +12,7 @@ package com.jsql.model.injection.strategy;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
@@ -36,14 +37,14 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
-        LOGGER.trace("Checking strategy Blind...");
+        LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Blind...");
         
         this.blind = new InjectionBlind();
         
         this.isApplicable = this.blind.isInjectable();
         
         if (this.isApplicable) {
-            LOGGER.debug("Vulnerable to Blind injection");
+            LOGGER.debug(I18n.valueByKey("LOG_VULNERABLE") +" Blind injection");
             this.allow();
         } else {
             this.unallow();
@@ -70,7 +71,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
 
     @Override
     public void activateStrategy() {
-        LOGGER.info("Using strategy ["+ this.getName() +"]");
+        LOGGER.info(I18n.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
         MediatorModel.model().setStrategy(StrategyInjection.BLIND);
         
         Request requestMessageBinary = new Request();

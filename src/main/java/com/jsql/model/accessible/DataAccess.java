@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Column;
@@ -132,7 +133,7 @@ public class DataAccess {
      * @throws JSqlException
      */
     public static void getDatabaseInfos() throws JSqlException {
-        LOGGER.trace("Fetching informations...");
+        LOGGER.trace(I18n.valueByKey("LOG_FETCHING_INFORMATIONS"));
         
         String[] sourcePage = {""};
 
@@ -174,7 +175,7 @@ public class DataAccess {
      * @throws JSqlException when injection failure or stopped by user
      */
     public static List<Database> listDatabases() throws JSqlException {
-        LOGGER.trace("Fetching databases...");
+        LOGGER.trace(I18n.valueByKey("LOG_FETCHING_DATABASES"));
         
         List<Database> databases = new ArrayList<>();
         
@@ -190,7 +191,7 @@ public class DataAccess {
             );
         } catch (SlidingException e) {
             LOGGER.warn(e.getMessage(), e);
-            // Get pieces of data already retreive instead of losing them
+            // Get pieces of data already retreived instead of losing them
             if (!"".equals(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
             } else if (!"".equals(e.getSlidingWindowCurrentRows())) {
@@ -271,7 +272,7 @@ public class DataAccess {
             );
         } catch (SlidingException e) {
             LOGGER.warn(e.getMessage(), e);
-            // Get pieces of data already retreive instead of losing them
+            // Get pieces of data already retreived instead of losing them
             if (!"".equals(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
             } else if (!"".equals(e.getSlidingWindowCurrentRows())) {
@@ -351,7 +352,7 @@ public class DataAccess {
             );
         } catch (SlidingException e) {
             LOGGER.warn(e.getMessage(), e);
-            // Get pieces of data already retreive instead of losing them
+            // Get pieces of data already retreived instead of losing them
             if (!"".equals(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
             } else if (!"".equals(e.getSlidingWindowCurrentRows())) {
@@ -460,7 +461,7 @@ public class DataAccess {
             );
         } catch (SlidingException e) {
             LOGGER.warn(e.getMessage(), e);
-            // Get pieces of data already retreive instead of losing them
+            // Get pieces of data already retreived instead of losing them
             if (!"".equals(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
             } else if (!"".equals(e.getSlidingWindowCurrentRows())) {

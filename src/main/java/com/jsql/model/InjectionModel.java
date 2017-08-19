@@ -32,6 +32,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.ietf.jgss.GSSException;
 
+import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.bean.util.Header;
@@ -89,7 +90,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * initialUrl transformed to a correct injection url.
      */
-    private String indexesInUrl;
+    private String indexesInUrl = "";
 
     /**
      * Current version of database.
@@ -139,7 +140,7 @@ public class InjectionModel extends AbstractModelObservable {
     public void resetModel() {
         this.charInsertion = null;
         ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).setVisibleIndex(null);
-        this.indexesInUrl = null;
+        this.indexesInUrl = "";
         
         this.versionDatabase = null;
         this.nameDatabase = null;
@@ -166,52 +167,27 @@ public class InjectionModel extends AbstractModelObservable {
             return;
         }
         
-        LOGGER.info("Starting new injection");
-        LOGGER.trace("Connection test...");
+        LOGGER.info(I18n.valueByKey("LOG_START_INJECTION"));
+        LOGGER.trace(I18n.valueByKey("LOG_CONNECTION_TEST"));
         
         try {
             ConnectionUtil.testConnection();
             
-            // TODO separate method
             // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
-            LOGGER.trace("Get insertion character...");
+            LOGGER.trace(I18n.valueByKey("LOG_GET_INSERTION_CHARACTER"));
             
             this.charInsertion = new SuspendableGetCharInsertion().run();
-            LOGGER.info("Using insertion character in Url ["+ this.charInsertion +"]");
+            LOGGER.info(I18n.valueByKey("LOG_USING_INSERTION_CHARACTER") +" ["+ this.charInsertion +"]");
             
-            // TODO separate method
             this.vendor = new SuspendableGetVendor().run();
-            
-            if (this.vendor == null) {
-                this.vendor = Vendor.MYSQL;
-                LOGGER.info("Type of database undefined, forcing to ["+ this.vendor +"]");
-            } else {
-                LOGGER.debug("Using database type ["+ this.vendor +"]");
-                
-                Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-                msgHeader.put(Header.URL, ConnectionUtil.getUrlBase() + ConnectionUtil.getQueryString() + this.charInsertion);
-                msgHeader.put(Header.VENDOR, this.vendor);
-                
-                Request requestDatabaseIdentified = new Request();
-                requestDatabaseIdentified.setMessage(Interaction.DATABASE_IDENTIFIED);
-                requestDatabaseIdentified.setParameters(msgHeader);
-                this.sendToViews(requestDatabaseIdentified);
-            }
-            
-            Request requestSetVendor = new Request();
-            requestSetVendor.setMessage(Interaction.SET_VENDOR);
-            requestSetVendor.setParameters(this.vendor);
-            this.sendToViews(requestSetVendor);
 
             // Test each injection methods: time, blind, error, normal
-            // TODO separate method
             StrategyInjection.TIME.instance().checkApplicability();
             StrategyInjection.BLIND.instance().checkApplicability();
             StrategyInjection.ERROR.instance().checkApplicability();
             StrategyInjection.NORMAL.instance().checkApplicability();
 
             // Choose the most efficient method: normal > error > blind > time
-            // TODO separate method
             if (StrategyInjection.NORMAL.instance().isApplicable()) {
                 StrategyInjection.NORMAL.instance().activateStrategy();
                 
@@ -244,11 +220,13 @@ public class InjectionModel extends AbstractModelObservable {
             }
 
             if (!this.isScanning) {
-                DataAccess.getDatabaseInfos();
+                if (PreferencesUtil.isInjectingMetadata()) {
+                    DataAccess.getDatabaseInfos();
+                }
                 DataAccess.listDatabases();
             }
             
-            LOGGER.trace("Done");
+            LOGGER.trace(I18n.valueByKey("LOG_DONE"));
             this.injectionAlreadyBuilt = true;
         } catch (JSqlException e) {
             LOGGER.warn(e.getMessage(), e);
@@ -530,26 +508,30 @@ public class InjectionModel extends AbstractModelObservable {
             }
         }
         
-        query = query
-            .trim()
-            // Remove comments
-            .replaceAll("(?s)/\\*.*?\\*/", "")
-            // Remove spaces after a word
-            .replaceAll("([^\\s\\w])(\\s+)", "$1")
-            // Remove spaces before a word
-            .replaceAll("(\\s+)([^\\s\\w])", "$2")
-            // Replace spaces
-            .replaceAll("\\s+", "+")
-            // TODO Add ending line comment, except for INGRES
-            +(
-                this.vendor != Vendor.INGRES
-                && this.vendor != Vendor.MCKOI
-                && this.vendor != Vendor.MEMSQL
-                ? this.vendor != Vendor.NEO4J
-                    ? "--+"
-                    : "//"
-                : ""
-            );
+        query = query.trim();
+        
+        // Remove comments
+        query = query.replaceAll("(?s)/\\*.*?\\*/", "");
+                
+        // Remove spaces after a word
+        query = query.replaceAll("([^\\s\\w])(\\s+)", "$1");
+    
+        // Remove spaces before a word
+        query = query.replaceAll("(\\s+)([^\\s\\w])", "$2");
+
+        // Replace spaces
+        query = query.replaceAll("\\s+", "+");
+        
+        // TODO Add ending line comment, except for INGRES
+        query = query+(
+            this.vendor != Vendor.INGRES
+            && this.vendor != Vendor.MCKOI
+            && this.vendor != Vendor.MEMSQL
+            ? this.vendor != Vendor.NEO4J
+                ? "--+"
+                : "//"
+            : ""
+        );
         
         return query;
     }
@@ -570,8 +552,12 @@ public class InjectionModel extends AbstractModelObservable {
      * started in a new thread via model function inputValidation().
      */
     public void controlInput(
-        String urlQuery, String dataRequest, String dataHeader, MethodInjection methodInjection,
-        String typeRequest, Boolean isScanning
+        String urlQuery,
+        String dataRequest,
+        String dataHeader,
+        MethodInjection methodInjection,
+        String typeRequest,
+        Boolean isScanning
     ) {
         try {
         	// TODO seperate method in ConnectionUtil

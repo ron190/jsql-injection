@@ -47,13 +47,13 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.view.scan.ScanListTerminal;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.ListItem;
+import com.jsql.view.swing.list.ListItemScan;
 
 /**
  * Ressource access object.
@@ -159,6 +159,7 @@ public class RessourceAccess {
                     MediatorModel.model().sendToViews(request);
 
                     nbAdminPagesFound++;
+                    LOGGER.debug("Found: "+ currentCallable.getUrl());
                 }
             } catch (InterruptedException | ExecutionException e) {
                 LOGGER.error("Interruption while checking Admin pages", e);
@@ -650,7 +651,7 @@ public class RessourceAccess {
             MediatorModel.model().sendToViews(request);
             RessourceAccess.readingIsAllowed = false;
         } else if ("false".equals(resultInjection)) {
-            LOGGER.warn("No FILE privilege");
+            LOGGER.warn("Privilege FILE is not granted to current user, files can't be read");
             Request request = new Request();
             request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);
             MediatorModel.model().sendToViews(request);
@@ -775,11 +776,19 @@ public class RessourceAccess {
         RessourceAccess.isScanStopped = false;
         
         for (ListItem url: urlList) {
+            ListItemScan urlurl = (ListItemScan) url;
             if (MediatorModel.model().isStoppedByUser() || RessourceAccess.isScanStopped) {
                 break;
             }
-            LOGGER.info("Scanning "+ url);
-            MediatorModel.model().controlInput(url.toString(), "", "", MethodInjection.QUERY, "POST", true);
+            LOGGER.info("Scanning "+ urlurl.getBeanInjection().getUrl());
+            MediatorModel.model().controlInput(
+                urlurl.getBeanInjection().getUrl(),
+                urlurl.getBeanInjection().getRequest(),
+                urlurl.getBeanInjection().getHeader(),
+                urlurl.getBeanInjection().getInjectionType(),
+                urlurl.getBeanInjection().getRequestType(),
+                true
+            );
             
             try {
                 Thread.sleep(500);

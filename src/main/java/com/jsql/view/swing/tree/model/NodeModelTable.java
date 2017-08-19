@@ -24,7 +24,6 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -111,7 +110,7 @@ public class NodeModelTable extends AbstractNodeModel {
     }
 
     @Override
-    protected void buildMenu(JPopupMenu tablePopupMenu, final TreePath path) {
+    protected void buildMenu(JPopupMenu2 tablePopupMenu, final TreePath path) {
         JMenuItem menuItemCheckAll = new JMenuItem(I18n.valueByKey("COLUMNS_CHECK_ALL"), 'C');
         I18n.addComponentForKey("COLUMNS_CHECK_ALL", menuItemCheckAll);
         JMenuItem menuItemUncheckAll = new JMenuItem(I18n.valueByKey("COLUMNS_UNCHECK_ALL"), 'U');
@@ -177,7 +176,7 @@ public class NodeModelTable extends AbstractNodeModel {
         
         JMenu menuCustomLoad = new JMenu("Custom load");
         
-        ButtonGroup bg = new ButtonGroup();
+        ButtonGroup buttonGroupLoadRows = new ButtonGroup();
         
         JMenuItem menuItemLoadAllRows = new JRadioButtonMenuItem("Load all rows (default)", true);
         JMenuItem menuItemLoadOneRow = new JRadioButtonMenuItem("Load first row only");
@@ -238,20 +237,9 @@ public class NodeModelTable extends AbstractNodeModel {
         
         panelCustomToChar.add(radioCustomToChar, BorderLayout.LINE_START);
         panelCustomToChar.add(inputCustomToChar, BorderLayout.CENTER);
-        
-//        buttonGroup.add(radioCustomMethod);
-//        radioCustomMethod.addActionListener(actionEvent -> {
-//            if (!"".equals(inputCustomMethod.getText())) {
-//                PanelAddressBar.this.typeRequest = inputCustomMethod.getText();
-//                radioMethod.setText(PanelAddressBar.this.typeRequest);
-//                popup.setVisible(false);
-//            } else {
-//                LOGGER.warn("Custom method undefined");
-//            }
-//        });
 
-        bg.add(menuItemLoadAllRows);
-        bg.add(menuItemLoadOneRow);
+        buttonGroupLoadRows.add(menuItemLoadAllRows);
+        buttonGroupLoadRows.add(menuItemLoadOneRow);
       
         menuCustomLoad.add(menuItemLoadAllRows);
         menuCustomLoad.add(menuItemLoadOneRow);
@@ -284,6 +272,12 @@ public class NodeModelTable extends AbstractNodeModel {
 
         tablePopupMenu.add(new JSeparator());
         tablePopupMenu.add(menuCustomLoad);
+        
+        tablePopupMenu.setButtonGroupLoadRows(buttonGroupLoadRows);
+        tablePopupMenu.setRadioCustomFromChar(radioCustomFromChar);
+        tablePopupMenu.setRadioCustomToChar(radioCustomToChar);
+        tablePopupMenu.setRadioCustomFromRow(radioCustomFromRow);
+        tablePopupMenu.setRadioCustomToRow(radioCustomToRow);
     }
     
     @Override

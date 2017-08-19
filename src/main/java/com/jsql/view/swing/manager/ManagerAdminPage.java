@@ -67,7 +67,7 @@ public class ManagerAdminPage extends AbstractManagerList {
 
         this.run.addActionListener(actionEvent -> {
             if (this.listFile.getSelectedValuesList().isEmpty()) {
-                LOGGER.warn("Undefined admin page, select at least one page in the list");
+                LOGGER.warn("Select at least one admin page in the list");
                 return;
             }
             

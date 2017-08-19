@@ -27,8 +27,8 @@ import javax.swing.text.DefaultStyledDocument;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.view.swing.sql.lexer.syntax.lexer.Lexer;
-import com.jsql.view.swing.sql.lexer.syntax.lexer.SQLLexer;
+import com.jsql.view.swing.sql.lexer.syntax.Lexer;
+import com.jsql.view.swing.sql.lexer.syntax.SQLLexer;
 
 /**
  * A <a href="http://ostermiller.org/syntax/editor.html">demonstration text

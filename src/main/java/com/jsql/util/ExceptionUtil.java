@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.SwingUtilities;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 /**
@@ -36,6 +37,7 @@ public class ExceptionUtil {
             //  Report #214: ignore if OutOfMemoryError: Java heap space
             if (
                 PreferencesUtil.isReportingBugs()
+                && ExceptionUtils.getStackTrace(throwable).contains("com.jsql")
                 && !(throwable instanceof OutOfMemoryError)
             ) {
             	GitUtil.sendUnhandledException(thread.getName(), throwable);

@@ -1,8 +1,0 @@
-http://testphp.vulnweb.com/artists.php?artist=1
-http://www.webscantest.com/datastore/search_get_by_id.php?id=3
-http://www.webscantest.com/datastore/search_get_by_name.php?name=Rake'
-http://testphp.acunetix.com/listproducts.php?cat=1
-http://leettime.net/sqlninja.com/tasks/basic_ch1.php?id=1
-http://leettime.net/sqlninja.com/tasks/deathrow_ch1.php?id=1
-http://leettime.net/sqlninja.com/tasks/sub_ch1.php?id=1
-http://leettime.net/sqlninja.com/tasks/mics_ch1.php?sort=1

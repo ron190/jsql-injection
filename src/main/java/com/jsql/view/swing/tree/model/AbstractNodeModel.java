@@ -16,8 +16,10 @@ import java.awt.ComponentOrientation;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
@@ -119,6 +121,54 @@ public abstract class AbstractNodeModel {
     protected AbstractElementDatabase getParent() {
         return this.elementDatabase.getParent();
     }
+    
+    public class JPopupMenu2 extends JPopupMenu {
+        
+        ButtonGroup buttonGroupLoadRows;
+        JCheckBox radioCustomFromRow;
+        JCheckBox radioCustomToRow;
+        JCheckBox radioCustomFromChar;
+        JCheckBox radioCustomToChar;
+        JMenuItem menuItemDump;
+        
+        public ButtonGroup getButtonGroupLoadRows() {
+            return this.buttonGroupLoadRows;
+        }
+        public void setButtonGroupLoadRows(ButtonGroup buttonGroupLoadRows) {
+            this.buttonGroupLoadRows = buttonGroupLoadRows;
+        }
+        public JCheckBox getRadioCustomFromRow() {
+            return this.radioCustomFromRow;
+        }
+        public void setRadioCustomFromRow(JCheckBox radioCustomFromRow) {
+            this.radioCustomFromRow = radioCustomFromRow;
+        }
+        public JCheckBox getRadioCustomToRow() {
+            return this.radioCustomToRow;
+        }
+        public void setRadioCustomToRow(JCheckBox radioCustomToRow) {
+            this.radioCustomToRow = radioCustomToRow;
+        }
+        public JCheckBox getRadioCustomFromChar() {
+            return this.radioCustomFromChar;
+        }
+        public void setRadioCustomFromChar(JCheckBox radioCustomFromChar) {
+            this.radioCustomFromChar = radioCustomFromChar;
+        }
+        public JCheckBox getRadioCustomToChar() {
+            return this.radioCustomToChar;
+        }
+        public void setRadioCustomToChar(JCheckBox radioCustomToChar) {
+            this.radioCustomToChar = radioCustomToChar;
+        }
+        public JMenuItem getMenuItemDump() {
+            return this.menuItemDump;
+        }
+        public void setMenuItemDump(JMenuItem menuItemDump) {
+            this.menuItemDump = menuItemDump;
+        }
+        
+    }
 
     /**
      * Display a popup menu for a database or table node.
@@ -128,7 +178,7 @@ public abstract class AbstractNodeModel {
      * @param y Popup menu y mouse coordinate
      */
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
-        JPopupMenu popupMenu = new JPopupMenu();
+        JPopupMenu2 popupMenu = new JPopupMenu2();
         AbstractSuspendable<?> suspendableTask = ThreadUtil.get(this.elementDatabase);
 
         JMenuItem mnLoad = new JMenuItem(
@@ -142,7 +192,7 @@ public abstract class AbstractNodeModel {
         if (!this.isContainingSelection && !this.isRunning) {
             mnLoad.setEnabled(false);
         }
-        mnLoad.addActionListener(new ActionLoadStop(this, currentTableNode));
+        mnLoad.addActionListener(new ActionLoadStop(this, currentTableNode, popupMenu));
 
         JMenuItem mnPause = new JMenuItem(
             // Report #133: ignore if thread not found
@@ -162,8 +212,11 @@ public abstract class AbstractNodeModel {
         popupMenu.add(mnPause);
         
         JMenuItem mnReload = new JMenuItem(
-            this instanceof NodeModelDatabase ? "Reload tables" :
-            this instanceof NodeModelTable ? "Reload columns" : "?"
+            this instanceof NodeModelDatabase
+            ? "Reload tables"
+            : this instanceof NodeModelTable
+                ? "Reload columns"
+                : "?"
         );
         mnReload.setIcon(HelperUi.ICON_EMPTY);
 
@@ -222,7 +275,6 @@ public abstract class AbstractNodeModel {
     public Component getComponent(
         final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, boolean hasFocus
     ) {
-
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         this.panel = new PanelNode(tree, currentNode);
 
@@ -304,7 +356,7 @@ public abstract class AbstractNodeModel {
      * @param tablePopupMenu Menu to display
      * @param path Treepath of current node
      */
-    protected abstract void buildMenu(JPopupMenu tablePopupMenu, TreePath path);
+    protected abstract void buildMenu(JPopupMenu2 tablePopupMenu, TreePath path);
     
     /**
      * Check if menu should be opened.

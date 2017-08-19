@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Interaction;
@@ -44,14 +45,14 @@ public class StrategyInjectionError extends AbstractStrategy {
             return;
         }
 
-        LOGGER.trace("Checking strategy Error...");
+        LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Error...");
         
         this.tabCapacityMethod = new String[strategyXml.getError().getMethod().size()];
         int indexErrorMethod = 0;
         int errorCapacity = 0;
         for (Method errorMethod: strategyXml.getError().getMethod()) {
             boolean methodIsApplicable = false;
-            LOGGER.trace("Checking "+ errorMethod.getName() +"...");
+            LOGGER.trace(I18n.valueByKey("LOG_CHECKING") +" "+ errorMethod.getName() +"...");
         
             String performanceSourcePage = MediatorModel.model().injectWithoutIndex(
                 MediatorModel.model().getCharInsertion() +
@@ -102,9 +103,9 @@ public class StrategyInjectionError extends AbstractStrategy {
                         errorCapacity = regexSearch.group(1).length();
                         this.tabCapacityMethod[indexErrorMethod] = Integer.toString(errorCapacity);
                     }
-                    LOGGER.debug("Vulnerable to "+ errorMethod.getName() +" using "+ Integer.toString(errorCapacity) +" characters");
+                    LOGGER.debug(I18n.valueByKey("LOG_VULNERABLE") +" "+ errorMethod.getName() +" using "+ Integer.toString(errorCapacity) +" characters");
                 } else {
-                    LOGGER.warn("Vulnerable to "+ errorMethod.getName() +" but injectable size is incorrect");
+                    LOGGER.warn(I18n.valueByKey("LOG_VULNERABLE") +" "+ errorMethod.getName() +" but injectable size is incorrect");
                     methodIsApplicable = false;
                 }
             }
@@ -150,10 +151,9 @@ public class StrategyInjectionError extends AbstractStrategy {
     @Override
     public void activateStrategy() {
         LOGGER.info(
-            "Using strategy ["
-            + this.getName()
-            +" "+
-            MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethod).getName()
+            I18n.valueByKey("LOG_USING_STRATEGY") +" ["
+                + this.getName() +" "
+                + MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethod).getName()
             +"]"
         );
         MediatorModel.model().setStrategy(StrategyInjection.ERROR);
@@ -165,7 +165,7 @@ public class StrategyInjectionError extends AbstractStrategy {
     
     @Override
     public String getPerformanceLength() {
-        return this.tabCapacityMethod[this.indexMethod] ;
+        return this.tabCapacityMethod[this.indexMethod];
     }
     
     @Override

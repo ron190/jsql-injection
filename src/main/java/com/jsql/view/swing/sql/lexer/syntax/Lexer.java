@@ -15,7 +15,7 @@
  * 
  * See COPYING.TXT for details.
  */
-package com.jsql.view.swing.sql.lexer.syntax.lexer;
+package com.jsql.view.swing.sql.lexer.syntax;
 
 import java.io.IOException;
 

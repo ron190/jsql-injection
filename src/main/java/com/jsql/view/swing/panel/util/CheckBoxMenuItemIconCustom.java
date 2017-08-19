@@ -14,6 +14,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 @SuppressWarnings("serial")
 public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializable {
 
+    @Override
     public void paintIcon( Component c, Graphics g, int x, int y ) {
         AbstractButton b = (AbstractButton) c;
         ButtonModel model = b.getModel();
@@ -23,12 +24,10 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
         boolean isPressed = model.isPressed();
         boolean isArmed = model.isArmed();
 
-        g.translate( x, y );
+        g.translate(x, y);
 
-        if ( isEnabled )
-        {
-            if ( isPressed || isArmed )
-            {
+        if (isEnabled) {
+            if (isPressed || isArmed) {
                 g.setColor( MetalLookAndFeel.getControlInfo()  );
                 g.drawLine( 0, 0, 8, 0 );
                 g.drawLine( 0, 0, 0, 8 );
@@ -40,9 +39,7 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
                 g.drawLine( 1, 1, 1, 7 );
                 g.drawLine( 9, 1, 9, 9 );
                 g.drawLine( 1, 9, 9, 9 );
-            }
-            else
-            {
+            } else {
                 g.setColor( MetalLookAndFeel.getControlDarkShadow()  );
                 g.drawLine( 0, 0, 8, 0 );
                 g.drawLine( 0, 0, 0, 8 );
@@ -55,28 +52,19 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
                 g.drawLine( 9, 1, 9, 9 );
                 g.drawLine( 1, 9, 9, 9 );
             }
-        }
-        else
-        {
+        } else {
             g.setColor( MetalLookAndFeel.getMenuDisabledForeground()  );
             g.drawRect( 0, 0, 8, 8 );
         }
 
-        if ( isSelected )
-        {
-            if ( isEnabled )
-            {
-                if ( model.isArmed() || ( c instanceof JMenu && model.isSelected() ) )
-                {
+        if (isSelected) {
+            if (isEnabled) {
+                if ( model.isArmed() || ( c instanceof JMenu && model.isSelected() ) ) {
                     g.setColor( MetalLookAndFeel.getMenuSelectedForeground() );
-                }
-                else
-                {
+                } else {
                     g.setColor( b.getForeground() );
                 }
-            }
-            else
-            {
+            } else {
                 g.setColor( MetalLookAndFeel.getMenuDisabledForeground()  );
             }
 
@@ -89,8 +77,14 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
         g.translate( -x, -y );
     }
 
-    public int getIconWidth() { return 10; }
+    @Override
+    public int getIconWidth() {
+        return 10; 
+    }
 
-    public int getIconHeight() { return 10; }
+    @Override
+    public int getIconHeight() { 
+        return 10; 
+    }
 
-}  // End class CheckBoxMenuItemIcon
+}

@@ -13,6 +13,7 @@ package com.jsql.view.swing.interaction;
 import java.util.Map;
 
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.injection.strategy.StrategyInjection;
@@ -39,9 +40,15 @@ public class MarkErrorVulnerable implements InteractionCommand {
     @Override
     public void execute() {
         for (int i = 0 ; i < MediatorGui.managerDatabase().getPanelStrategy().getItemCount() ; i++) {
-            if (MediatorGui.managerDatabase().getPanelStrategy().getItem(i).getText().equals(StrategyInjection.ERROR.toString())) {
-                MediatorGui.managerDatabase().getPanelStrategy().getItem(i).setEnabled(true);
-                ((JMenu) MediatorGui.managerDatabase().getPanelStrategy().getItem(i)).getItem(this.indexMethodError).setEnabled(true);
+            JMenuItem menuItemStrategy = MediatorGui.managerDatabase().getPanelStrategy().getItem(i);
+            if (menuItemStrategy.getText().equals(StrategyInjection.ERROR.toString())) {
+                JMenu menuError = (JMenu) menuItemStrategy;
+                menuError.setEnabled(true);
+                
+                // Fix #46578: ArrayIndexOutOfBoundsException on getItem()
+                if (0 <= this.indexMethodError && this.indexMethodError < menuError.getItemCount()) {
+                    menuError.getItem(this.indexMethodError).setEnabled(true);
+                }
                 break;
             }
         }

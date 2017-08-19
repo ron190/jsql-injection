@@ -1,5 +1,6 @@
 package com.jsql.view.swing.radio;
 
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
@@ -7,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JLabel;
+
+import com.jsql.view.swing.HelperUi;
 
 /**
  * A label to mimic a radiobox contained in a group.
@@ -74,5 +77,19 @@ public abstract class AbstractRadioLink extends JLabel {
      * @return
      */
     abstract List<JLabel> getGroup();
+    
+    public void setSelected() {
+        for (JLabel label: this.getGroup()) {
+            if (this != label) {
+                label.setFont(HelperUi.FONT_SEGOE);
+            } else {
+                this.action();
+            }
+        }
+
+        this.setUnderlined();
+
+        this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+    }
     
 }

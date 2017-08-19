@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.tab;
 
+import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -67,12 +68,12 @@ public class MouseTabbedPane extends JTabbedPane {
     /**
      * Display popupmenu on right click.
      */
-    private class TabSelectionMouseHandler extends MouseAdapter {
+    class TabSelectionMouseHandler extends MouseAdapter {
         
         @Override
         public void mouseClicked(MouseEvent e) {
             if (SwingUtilities.isRightMouseButton(e)) {
-                JTabbedPane tabPane = (JTabbedPane) e.getSource();
+                Component componentSource = (Component) e.getSource();
                 JPopupMenu menu = new JPopupMenu();
 
                 for (int position = 0 ; position < MediatorGui.menubar().getMenuView().getMenuComponentCount() ; position++) {
@@ -88,7 +89,7 @@ public class MouseTabbedPane extends JTabbedPane {
                     }
                 }
 
-                menu.show(tabPane, e.getX(), e.getY());
+                menu.show(componentSource, e.getX(), e.getY());
                 
                 menu.setLocation(
                     ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT

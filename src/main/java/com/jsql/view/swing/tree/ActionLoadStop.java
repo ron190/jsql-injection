@@ -25,6 +25,7 @@ import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.ThreadUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
+import com.jsql.view.swing.tree.model.AbstractNodeModel.JPopupMenu2;
 
 /**
  * Action to start and stop injection process.
@@ -34,10 +35,13 @@ public class ActionLoadStop implements ActionListener {
     AbstractNodeModel nodeModel;
     
     DefaultMutableTreeNode currentTableNode;
+    
+    JPopupMenu2 popupMenu;
 
-    public ActionLoadStop(AbstractNodeModel nodeModel, DefaultMutableTreeNode currentTableNode) {
+    public ActionLoadStop(AbstractNodeModel nodeModel, DefaultMutableTreeNode currentTableNode, JPopupMenu2 popupMenu) {
         this.nodeModel = nodeModel;
         this.currentTableNode = currentTableNode;
+        this.popupMenu = popupMenu;
     }
 
     @Override

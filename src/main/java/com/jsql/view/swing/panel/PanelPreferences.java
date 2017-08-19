@@ -117,7 +117,7 @@ public class PanelPreferences extends JPanel {
         final JCheckBox checkboxIsInjectingMetadata = new JCheckBox("", PreferencesUtil.isInjectingMetadata());
         checkboxIsInjectingMetadata.setToolTipText(tooltipIsInjectingMetadata);
         checkboxIsInjectingMetadata.setFocusable(false);
-        JButton labelIsInjectingMetadata = new JButton("Retreive metadata informations");
+        JButton labelIsInjectingMetadata = new JButton("Retreive database metadata (disable to speed-up time and blind process)");
         labelIsInjectingMetadata.setToolTipText(tooltipIsInjectingMetadata);
         labelIsInjectingMetadata.addActionListener(actionEvent ->
             checkboxIsInjectingMetadata.setSelected(!checkboxIsInjectingMetadata.isSelected())

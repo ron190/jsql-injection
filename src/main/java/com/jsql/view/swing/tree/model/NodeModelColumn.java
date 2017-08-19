@@ -19,7 +19,6 @@ import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
-import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -87,7 +86,7 @@ public class NodeModelColumn extends AbstractNodeModel {
     }
     
     @Override
-    protected void buildMenu(JPopupMenu tablePopupMenu, TreePath path) {
+    protected void buildMenu(JPopupMenu2 tablePopupMenu, TreePath path) {
         // Do nothing
     }
     

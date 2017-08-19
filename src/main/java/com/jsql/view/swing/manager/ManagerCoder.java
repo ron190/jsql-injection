@@ -24,8 +24,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import com.jsql.view.swing.manager.util.ActionCoder;
 import com.jsql.view.swing.manager.util.MenuBarCoder;
@@ -35,6 +33,7 @@ import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JPopupTextPane;
 import com.jsql.view.swing.text.JTextAreaPlaceholder;
+import com.jsql.view.swing.text.listener.DocumentListenerTyping;
 
 /**
  * Manager to code/uncode string in various methods.
@@ -89,22 +88,7 @@ public class ManagerCoder extends JPanel implements Manager {
         this.textInput.setEditable(true);
         this.textInput.setLineWrap(true);
         
-        this.textInput.getDocument().addDocumentListener(new DocumentListener() {
-            
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                this.warn();
-            }
-            
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                this.warn();
-            }
-            
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                this.warn();
-            }
+        this.textInput.getDocument().addDocumentListener(new DocumentListenerTyping() {
             
             public void warn() {
                 ManagerCoder.this.actionCoder.actionPerformed();

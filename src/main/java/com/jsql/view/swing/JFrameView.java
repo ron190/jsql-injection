@@ -154,7 +154,7 @@ public class JFrameView extends JFrame {
         ActionHandler.addShortcut(this.getRootPane(), MediatorGui.tabResults());
         ActionHandler.addTextFieldShortcutSelectAll();
         
-        menubar.switchLocale(Locale.ENGLISH, I18n.getLocaleDefault());
+        menubar.switchLocale(Locale.ENGLISH, I18n.getLocaleDefault(), true);
     }
 
     /**

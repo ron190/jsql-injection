@@ -91,6 +91,7 @@ public class LightScrollPane extends JComponent {
             @Override
             public void layoutContainer(Container parent) {
                 // Fix #13412: NullPointerException on setBounds()
+                // Fix #48549: IllegalStateException on setBounds()
                 // Implementation by sun.swing.SwingUtilities2.getFontMetrics()
                 try {
                     this.viewport.setBounds(0, 0, LightScrollPane.this.getWidth(), LightScrollPane.this.getHeight() - 1);

@@ -25,6 +25,8 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.i18n.I18n;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.text.JTextAreaPlaceholderConsole;
@@ -35,6 +37,11 @@ import com.jsql.view.swing.text.JTextPanePlaceholderConsole;
  */
 @SuppressWarnings("serial")
 public class JPopupMenuComponent extends JPopupMenu {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 	
     JComponent component;
     
@@ -90,9 +97,15 @@ public class JPopupMenuComponent extends JPopupMenu {
             this.add(clearItem);
         }
 
-        this.addPopupMenuListener(new PopupMenuListener() {
-            @Override
-            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+        this.addPopupMenuListener(new PopupMenuOrientedListener());
+    }
+    
+    private class PopupMenuOrientedListener implements PopupMenuListener {
+        
+        @Override
+        public void popupMenuWillBecomeVisible(PopupMenuEvent event) {
+            // Fix #47018: NullPointerException on getLocation()
+            try {
                 JPopupMenuComponent.this.setLocation(MouseInfo.getPointerInfo().getLocation());
                 
                 JPopupMenuComponent.this.setLocation(
@@ -101,16 +114,21 @@ public class JPopupMenuComponent extends JPopupMenu {
                     : MouseInfo.getPointerInfo().getLocation().x,
                     MouseInfo.getPointerInfo().getLocation().y
                 );
+            } catch (NullPointerException e) {
+                LOGGER.error(e, e);
             }
-            @Override
-            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-                // Do nothing
-            }
-            @Override
-            public void popupMenuCanceled(PopupMenuEvent e) {
-                // Do nothing
-            }
-        });
+        }
+        
+        @Override
+        public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+            // Do nothing
+        }
+        
+        @Override
+        public void popupMenuCanceled(PopupMenuEvent e) {
+            // Do nothing
+        }
+        
     }
     
 }

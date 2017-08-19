@@ -45,7 +45,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 	
-    protected transient List<String> pathList = new ArrayList<>();
+    protected transient List<ListItem> listItems = new ArrayList<>();
     
     protected DnDList listFile;
     
@@ -89,14 +89,14 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
-                this.pathList.add(line);
+                this.listItems.add(new ListItem(line));
             }
             reader.close();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
-        this.listFile = new DnDList(this.pathList);
+        this.listFile = new DnDList(this.listItems);
 
         this.listFile.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
         this.add(new LightScrollPane(1, 0, 0, 0, this.listFile), BorderLayout.CENTER);

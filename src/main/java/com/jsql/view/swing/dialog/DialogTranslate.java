@@ -220,97 +220,107 @@ public class DialogTranslate extends JDialog {
         this.textToTranslate[0].setFont(new Font("Monospaced", Font.PLAIN, ((Font) UIManager.get("TextField.font")).getSize()));
         
         LOGGER.trace("Loading text to translate into "+ language +"...");
-        new SwingWorker<Object, Object>(){
-            @Override
-            protected Object doInBackground() throws Exception {
-            	Thread.currentThread().setName("SwingWorkerDialogTranslate");
-            	
-                OrderedProperties sourceProperties = new OrderedProperties();
-                Properties languageProperties = new Properties();
-                StringBuilder propertiesToTranslate = new StringBuilder();
-                
-                if (language == Language.OT) {
-                    DialogTranslate.this.progressBarTranslation.setVisible(false);
-                } else {
-                    DialogTranslate.this.progressBarTranslation.setVisible(true);
-                }
-                
-                try {
-                    try {
-                        String pageSourceRoot = ConnectionUtil.getSource(
-                            "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql.properties"
-                        );
-                        sourceProperties.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}")));
-                        LOGGER.info("Reference language loaded from Github");
-                    } catch (IOException e) {
-                        sourceProperties.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql.properties"))))).replaceAll("{@|@}")));
-                        LOGGER.info("Reference language loaded from local");
-
-                        // Ignore
-                        IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
-                        LOGGER.trace(exceptionIgnored, exceptionIgnored);
-                    }
-                    
-                    if (language != Language.OT) {
-                        try {
-                            String pageSourceLanguage = ConnectionUtil.getSource(
-                                "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql_"+ language.getNameLocale() +".properties"
-                            );
-                            languageProperties.load(new StringReader(pageSourceLanguage));
-                            LOGGER.info("Text for "+ language +" translation loaded from Github");
-                        } catch (IOException e) {
-                            languageProperties.load(new StringReader(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql_"+ language.getNameLocale() +".properties")))));
-                            LOGGER.info("Text for "+ language +" translation loaded from local");
-
-                            // Ignore
-                            IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
-                            LOGGER.trace(exceptionIgnored, exceptionIgnored);
-                        }
-                    } else {
-                        LOGGER.info("Text to translate loaded from source");
-                    }
-                } catch (IOException eGithub) {
-                    if (languageProperties.size() == 0) {
-                        if (language == Language.OT) {
-                            LOGGER.info("Language file not found, text to translate loaded from local", eGithub);
-                        } else {
-                            LOGGER.info("Language file not found, text to translate into "+ language +" loaded from local", eGithub);
-                        }
-                    } else if (sourceProperties.size() == 0) {
-                        throw new IOException("Reference language not found");
-                    }
-                } finally {
-                    for (Entry<String, String> key: sourceProperties.entrySet()) {
-                        if (language == Language.OT || languageProperties.size() == 0) {
-                            propertiesToTranslate.append("\n\n"+ key.getKey() +"="+ key.getValue().replace("{@|@}","\\\n"));
-                        } else {
-                            if (!languageProperties.containsKey(key.getKey())) {
-                                propertiesToTranslate.append("\n\n"+ key.getKey() +"="+ key.getValue().replace("{@|@}","\\\n"));
-                            }
-                        }
-                    }
-                    
-                    DialogTranslate.this.textBeforeChange = propertiesToTranslate.toString().trim();
-                    
-                    DialogTranslate.this.buttonSend.setEnabled(true);
-                    DialogTranslate.this.textToTranslate[0].setText(DialogTranslate.this.textBeforeChange);
-                    DialogTranslate.this.textToTranslate[0].setCaretPosition(0);
-                    DialogTranslate.this.textToTranslate[0].setEditable(true);
-                    
-                    if (language != Language.OT) {
-                        int percentTranslated = 100 * languageProperties.size() / sourceProperties.size();
-                        DialogTranslate.this.progressBarTranslation.setValue(percentTranslated);
-                        DialogTranslate.this.progressBarTranslation.setString(percentTranslated +"% translated into "+ language);
-                    }
-                }
-                
-                return null;
-            }
-        }.execute();
+        new SwingWorkerGithubLocale().execute();
     }
     
     public void requestButtonFocus() {
         this.buttonSend.requestFocusInWindow();
+    }
+    
+    private class SwingWorkerGithubLocale extends SwingWorker<Object, Object> {
+        
+        private Properties languageProperties = new Properties();
+        private OrderedProperties sourceProperties = new OrderedProperties();
+        private StringBuilder propertiesToTranslate = new StringBuilder();
+        
+        private void getI18nRoot() throws IOException {
+            try {
+                String pageSourceRoot = ConnectionUtil.getSource(
+                    "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql.properties"
+                );
+                sourceProperties.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}")));
+                LOGGER.info("Reference language loaded from Github");
+            } catch (IOException e) {
+                sourceProperties.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql.properties"))))).replaceAll("{@|@}")));
+                LOGGER.info("Reference language loaded from local");
+                
+                // Ignore
+                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                LOGGER.trace(exceptionIgnored, exceptionIgnored);
+            }
+        }
+        
+        private void getI18nLanguage() throws IOException {
+            try {
+                String pageSourceLanguage = ConnectionUtil.getSource(
+                    "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql_"+ language.getNameLocale() +".properties"
+                );
+                languageProperties.load(new StringReader(pageSourceLanguage));
+                LOGGER.info("Text for "+ language +" translation loaded from Github");
+            } catch (IOException e) {
+                languageProperties.load(new StringReader(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql_"+ language.getNameLocale() +".properties")))));
+                LOGGER.info("Text for "+ language +" translation loaded from local");
+                
+                // Ignore
+                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                LOGGER.trace(exceptionIgnored, exceptionIgnored);
+            }
+        }
+        
+        @Override
+        protected Object doInBackground() throws Exception {
+            Thread.currentThread().setName("SwingWorkerDialogTranslate");
+            
+            if (language == Language.OT) {
+                DialogTranslate.this.progressBarTranslation.setVisible(false);
+            } else {
+                DialogTranslate.this.progressBarTranslation.setVisible(true);
+            }
+            
+            try {
+                this.getI18nRoot();
+                if (language != Language.OT) {
+                    this.getI18nLanguage();
+                } else {
+                    LOGGER.info("Text to translate loaded from source");
+                }
+            } catch (IOException eGithub) {
+                if (languageProperties.size() == 0) {
+                    if (language == Language.OT) {
+                        LOGGER.info("Language file not found, text to translate loaded from local", eGithub);
+                    } else {
+                        LOGGER.info("Language file not found, text to translate into "+ language +" loaded from local", eGithub);
+                    }
+                } else if (sourceProperties.size() == 0) {
+                    throw new IOException("Reference language not found");
+                }
+            } finally {
+                for (Entry<String, String> key: sourceProperties.entrySet()) {
+                    if (language == Language.OT || languageProperties.size() == 0) {
+                        propertiesToTranslate.append("\n\n"+ key.getKey() +"="+ key.getValue().replace("{@|@}","\\\n"));
+                    } else {
+                        if (!languageProperties.containsKey(key.getKey())) {
+                            propertiesToTranslate.append("\n\n"+ key.getKey() +"="+ key.getValue().replace("{@|@}","\\\n"));
+                        }
+                    }
+                }
+                
+                DialogTranslate.this.textBeforeChange = propertiesToTranslate.toString().trim();
+                
+                DialogTranslate.this.buttonSend.setEnabled(true);
+                DialogTranslate.this.textToTranslate[0].setText(DialogTranslate.this.textBeforeChange);
+                DialogTranslate.this.textToTranslate[0].setCaretPosition(0);
+                DialogTranslate.this.textToTranslate[0].setEditable(true);
+                
+                if (language != Language.OT) {
+                    int percentTranslated = 100 * languageProperties.size() / sourceProperties.size();
+                    DialogTranslate.this.progressBarTranslation.setValue(percentTranslated);
+                    DialogTranslate.this.progressBarTranslation.setString(percentTranslated +"% translated into "+ language);
+                }
+            }
+            
+            return null;
+        }
     }
     
 }

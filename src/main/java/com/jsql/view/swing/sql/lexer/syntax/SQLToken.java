@@ -15,7 +15,7 @@
  * 
  * See COPYING.TXT for details.
  */
-package com.jsql.view.swing.sql.lexer.syntax.lexer;
+package com.jsql.view.swing.sql.lexer.syntax;
 
 /**
  * A SQLToken is a token that is returned by a lexer that is lexing an SQL

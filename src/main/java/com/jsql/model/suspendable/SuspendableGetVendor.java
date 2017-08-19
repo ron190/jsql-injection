@@ -1,5 +1,7 @@
 package com.jsql.model.suspendable;
 
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
@@ -10,11 +12,16 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
+import com.jsql.model.bean.util.Header;
+import com.jsql.model.bean.util.Interaction;
+import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.model.suspendable.callable.CallablePageSource;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
+import com.jsql.util.ConnectionUtil;
 
 /**
  * Runnable class, define insertionCharacter that will be used by all futures requests,
@@ -37,6 +44,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
         Vendor vendor = null;
         
         if (MediatorModel.model().getVendorByUser() != Vendor.AUTO) {
+            LOGGER.info(I18n.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER") +" ["+ vendor +"]");
             return MediatorModel.model().getVendorByUser();
         }
         
@@ -242,6 +250,27 @@ select '"'"'
             LOGGER.error(e.getMessage(), e);
             Thread.currentThread().interrupt();
         }
+        
+        if (vendor == null) {
+            vendor = Vendor.MYSQL;
+            LOGGER.info(I18n.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendor +"]");
+        } else {
+            LOGGER.debug(I18n.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendor +"]");
+            
+            Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
+            msgHeader.put(Header.URL, ConnectionUtil.getUrlBase() + ConnectionUtil.getQueryString() + MediatorModel.model().getCharInsertion());
+            msgHeader.put(Header.VENDOR, vendor);
+            
+            Request requestDatabaseIdentified = new Request();
+            requestDatabaseIdentified.setMessage(Interaction.DATABASE_IDENTIFIED);
+            requestDatabaseIdentified.setParameters(msgHeader);
+            MediatorModel.model().sendToViews(requestDatabaseIdentified);
+        }
+        
+        Request requestSetVendor = new Request();
+        requestSetVendor.setMessage(Interaction.SET_VENDOR);
+        requestSetVendor.setParameters(vendor);
+        MediatorModel.model().sendToViews(requestSetVendor);
         
         // TODO vendor
         return vendor;

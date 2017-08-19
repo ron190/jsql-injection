@@ -32,12 +32,12 @@ public class SwingAppender extends WriterAppender {
      */
     private static JavaConsoleAdapter javaTextPane;
 
-    private static final SimpleAttributeSet ERROR = new SimpleAttributeSet();
+    public static final SimpleAttributeSet ERROR = new SimpleAttributeSet();
     public static final SimpleAttributeSet WARN = new SimpleAttributeSet();
-    private static final SimpleAttributeSet INFO = new SimpleAttributeSet();
-    private static final SimpleAttributeSet DEBUG = new SimpleAttributeSet();
-    private static final SimpleAttributeSet TRACE = new SimpleAttributeSet();
-    private static final SimpleAttributeSet ALL = new SimpleAttributeSet();
+    public static final SimpleAttributeSet INFO = new SimpleAttributeSet();
+    public static final SimpleAttributeSet DEBUG = new SimpleAttributeSet();
+    public static final SimpleAttributeSet TRACE = new SimpleAttributeSet();
+    public static final SimpleAttributeSet ALL = new SimpleAttributeSet();
     
     static {
         StyleConstants.setFontFamily(ERROR, HelperUi.FONT_NAME_UBUNTU);

@@ -60,7 +60,7 @@ public class ManagerFile extends AbstractManagerList {
         
         this.run.addActionListener(actionEvent -> {
             if (this.listFile.getSelectedValuesList().isEmpty()) {
-                LOGGER.warn("Select file(s) to read");
+                LOGGER.warn("Select at least one file to read in the list");
                 return;
             }
 

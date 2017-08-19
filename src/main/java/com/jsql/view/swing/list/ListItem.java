@@ -21,7 +21,7 @@ public class ListItem {
     private String internalString;
 
     private String originalString;
-    
+
     /**
      * 
      */
@@ -71,6 +71,14 @@ public class ListItem {
     @Override
     public String toString() {
         return this.internalString;
+    }
+    
+    public String getOriginalString() {
+        return this.originalString;
+    }
+
+    public void setOriginalString(String originalString) {
+        this.originalString = originalString;
     }
     
 }

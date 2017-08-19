@@ -1,0 +1,23 @@
+[
+
+    {"url": "http://testphp.vulnweb.com/artists.php?artist=1"},
+    {"url": "http://testphp.vulnweb.com/listproducts.php?cat=-1"},
+    {
+        "url": "http://testasp.vulnweb.com/Login.asp",
+        "request": "tfUName=myusername&tfUPass=mypassword'",
+        "header": "Cookie: ASPSESSIONIDCQCARQSS=FIRST_REGISTER_USERNAME_THEN_LOGIN_AND_GET_COOKIE_VALUE",
+        "requestType": "POST",
+        "injectionType": "REQUEST",
+        "vendor": "SQLSERVER"
+    },
+    {"url": "http://testphp.acunetix.com/listproducts.php?cat=1"},
+    {"url": "http://www.webscantest.com/datastore/search_get_by_id.php?id=3"},
+    {"url": "http://www.webscantest.com/datastore/search_get_by_name.php?name=Rake'"},
+    {"url": "http://leettime.net/sqlninja.com/tasks/basic_ch1.php?id=1"},
+    {"url": "http://leettime.net/sqlninja.com/tasks/basic_ch2.php?id=1"},
+    {"url": "http://leettime.net/sqlninja.com/tasks/basic_ch3.php?id=1"},
+    {"url": "http://leettime.net/sqlninja.com/tasks/basic_ch4.php?id=1"},
+    {"url": "http://leettime.net/sqlninja.com/tasks/deathrow_ch1.php?id=1"},
+    {"url": "http://leettime.net/sqlninja.com/tasks/sub_ch1.php?id=1"},
+    {"url": "http://leettime.net/sqlninja.com/tasks/mics_ch1.php?sort=1"},
+]

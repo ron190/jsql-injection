@@ -64,20 +64,20 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
 
         this.defaultText = I18n.valueByKey("SHELL_RUN_BUTTON_LABEL");
         
-        List<String> pathsList = new ArrayList<>();
+        List<ListItem> listItems = new ArrayList<>();
         try {
             InputStream in = AbstractManagerShell.class.getResourceAsStream("/com/jsql/view/swing/resources/list/shell.txt");
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
-                pathsList.add(line);
+                listItems.add(new ListItem(line));
             }
             reader.close();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
-        this.listPaths = new DnDList(pathsList);
+        this.listPaths = new DnDList(listItems);
         this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
         this.add(new LightScrollPane(1, 0, 0, 0, this.getListPaths()), BorderLayout.CENTER);
         
@@ -140,7 +140,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         @Override
         public void actionPerformed(ActionEvent evt) {
             if (AbstractManagerShell.this.getListPaths().getSelectedValuesList().isEmpty()) {
-                LOGGER.warn("Select directory(ies) to create the shell into");
+                LOGGER.warn("Select at least one directory in the list");
                 return;
             }
 

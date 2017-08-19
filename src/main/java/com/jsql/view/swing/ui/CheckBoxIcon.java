@@ -57,9 +57,9 @@ public class CheckBoxIcon implements Icon, UIResource, Serializable {
     }
     
     protected void drawCheck(Graphics g, int x, int y) {
-        g.fillRect(x + 3, y + 5, 2, this.CONTROL_SIZE - 8);
-        g.drawLine(x + this.CONTROL_SIZE - 4, y + 3, x + 5, y + this.CONTROL_SIZE - 6);
-        g.drawLine(x + this.CONTROL_SIZE - 4, y + 4, x + 5, y + this.CONTROL_SIZE - 5);
+        g.fillRect(x + 3, y + 5, 2, CheckBoxIcon.CONTROL_SIZE - 8);
+        g.drawLine(x + CheckBoxIcon.CONTROL_SIZE - 4, y + 3, x + 5, y + CheckBoxIcon.CONTROL_SIZE - 6);
+        g.drawLine(x + CheckBoxIcon.CONTROL_SIZE - 4, y + 4, x + 5, y + CheckBoxIcon.CONTROL_SIZE - 5);
     }
 
     @Override
@@ -69,12 +69,12 @@ public class CheckBoxIcon implements Icon, UIResource, Serializable {
 
     @Override
     public int getIconWidth() {
-        return this.CONTROL_SIZE;
+        return CheckBoxIcon.CONTROL_SIZE;
     }
 
     @Override
     public int getIconHeight() {
-        return this.CONTROL_SIZE;
+        return CheckBoxIcon.CONTROL_SIZE;
     }
     
 }

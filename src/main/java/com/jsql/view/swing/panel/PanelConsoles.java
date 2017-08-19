@@ -92,12 +92,12 @@ public class PanelConsoles extends JPanel {
     /**
      * Console for default application messages.
      */
-    private SimpleConsoleAdapter consoleTextPane = new SimpleConsoleAdapter("Console", "Event logging");
+    private static final SimpleConsoleAdapter consoleTextPane = new SimpleConsoleAdapter("Console", "Event logging");
 
     /**
      * Console for java exception messages.
      */
-    private JavaConsoleAdapter javaTextPane = new JavaConsoleAdapter("Java", "Java unhandled exception");
+    private static final JavaConsoleAdapter javaTextPane = new JavaConsoleAdapter("Java", "Java unhandled exception");
     
     /**
      * Console for raw SQL results.
@@ -137,8 +137,8 @@ public class PanelConsoles extends JPanel {
     public PanelConsoles() {
         
         // Object creation after customization
-        this.consoleTextPane.getProxy().setEditable(false);
-        SwingAppender.register(this.consoleTextPane);
+        PanelConsoles.consoleTextPane.getProxy().setEditable(false);
+        SwingAppender.register(PanelConsoles.consoleTextPane);
         
         this.chunkTextArea = new JPopupTextArea(new JTextAreaPlaceholderConsole("Raw data extracted during injection")).getProxy();
         this.chunkTextArea.setEditable(false);
@@ -146,8 +146,8 @@ public class PanelConsoles extends JPanel {
         this.binaryTextArea = new JPopupTextArea(new JTextAreaPlaceholderConsole("Characters extracted during blind or time injection")).getProxy();
         this.binaryTextArea.setEditable(false);
         
-        this.javaTextPane.getProxy().setEditable(false);
-        SwingAppender.register(this.javaTextPane);
+        PanelConsoles.javaTextPane.getProxy().setEditable(false);
+        SwingAppender.register(PanelConsoles.javaTextPane);
         
         this.network = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
         this.network.setResizeWeight(1);
@@ -342,7 +342,7 @@ public class PanelConsoles extends JPanel {
         MediatorGui.tabConsoles().addTab(
             "Console",
             HelperUi.ICON_CONSOLE,
-            new LightScrollPane(1, 0, 0, 0, this.consoleTextPane.getProxy()),
+            new LightScrollPane(1, 0, 0, 0, PanelConsoles.consoleTextPane.getProxy()),
             I18n.valueByKey("CONSOLE_MAIN_TOOLTIP")
         );
         JLabel labelConsole = new JLabel(I18n.valueByKey("CONSOLE_MAIN_LABEL"), HelperUi.ICON_CONSOLE, SwingConstants.CENTER);
@@ -475,7 +475,7 @@ public class PanelConsoles extends JPanel {
         MediatorGui.tabConsoles().insertTab(
             "Java",
             HelperUi.ICON_CUP,
-            new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.javaTextPane.getProxy()),
+            new LightScrollPane(1, 0, 0, 0, PanelConsoles.javaTextPane.getProxy()),
             I18n.valueByKey("CONSOLE_JAVA_TOOLTIP"),
             MediatorGui.tabConsoles().getTabCount()
         );
@@ -506,7 +506,7 @@ public class PanelConsoles extends JPanel {
             LOGGER.error(e.getMessage(), e);
         }
         
-        this.javaTextPane.getProxy().setText("");
+        PanelConsoles.javaTextPane.getProxy().setText("");
         
         this.networkTabUrl.setText("");
         this.networkTabHeader.setText("");

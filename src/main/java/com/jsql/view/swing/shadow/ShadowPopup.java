@@ -359,12 +359,7 @@ public final class ShadowPopup extends Popup {
                     JComponent c = (JComponent) layeredPane;
                     boolean doubleBuffered = c.isDoubleBuffered();
                     c.setDoubleBuffered(false);
-                    // Fix #3127, Fix #6772 Multiple Exceptions on paintAll()
-                    try {
-                        c.paintAll(g);
-                    } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException e) {
-                        LOGGER.error(e.getMessage(), e);
-                    }
+                    ShadowPopup.paintAll(c, g);
                     c.setDoubleBuffered(doubleBuffered);
                 } else {
                     layeredPane.paintAll(g);
@@ -405,6 +400,15 @@ public final class ShadowPopup extends Popup {
             // Ignore
             IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
             LOGGER.trace(exceptionIgnored, exceptionIgnored);
+        }
+    }
+    
+    private static void paintAll(JComponent c, Graphics g) {
+        // Fix #3127, Fix #6772, Fix #48907: Multiple Exceptions on paintAll()
+        try {
+            c.paintAll(g);
+        } catch (IllegalArgumentException | ArrayIndexOutOfBoundsException | NullPointerException e) {
+            LOGGER.error(e.getMessage(), e);
         }
     }
 

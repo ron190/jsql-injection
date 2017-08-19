@@ -221,9 +221,9 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             } else {
                 characterInsertion = characterInsertionByUser;
             }
-            LOGGER.info("No character insertion activates ORDER BY, forcing to ["+ characterInsertion +"]");
+            LOGGER.trace("No character insertion activates ORDER BY, forcing to ["+ characterInsertion +"]");
         } else if (!characterInsertionByUser.equals(characterInsertion)) {
-            LOGGER.info("Character insertion ["+ characterInsertion +"] used in place of ["+ characterInsertionByUser +"] to activate error on ORDER BY");
+            LOGGER.trace("Character insertion ["+ characterInsertion +"] used in place of ["+ characterInsertionByUser +"] to detect error on ORDER BY");
             LOGGER.trace("Add manually the character * like ["+ characterInsertionByUser +"*] to force the value ["+ characterInsertionByUser +"]");
         }
 

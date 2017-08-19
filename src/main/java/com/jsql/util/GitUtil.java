@@ -140,15 +140,7 @@ public class GitUtil {
             connection.setDoOutput(true);
 
             // Set the content of the Issue
-            DataOutputStream dataOut = null;
-            // Fix #27623: NoClassDefFoundError on getOutputStream()
-            // Implemented by jcifs.http.NtlmHttpURLConnection.getOutputStream()
-            try {
-                dataOut = new DataOutputStream(connection.getOutputStream());
-            } catch (NoClassDefFoundError e) {
-                LOGGER.warn("Read error: "+ e.getMessage(), e);
-                return;
-            }
+            DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
             dataOut.writeBytes(
                 new JSONObject()
                     .put("title", reportTitle)
@@ -159,7 +151,9 @@ public class GitUtil {
             dataOut.close();
             
             GitUtil.readGithubResponse(connection, showOnConsole);
-        } catch (IOException e) {
+        } catch (IOException | NoClassDefFoundError e) {
+            // Fix #27623: NoClassDefFoundError on getOutputStream()
+            // Implemented by jcifs.http.NtlmHttpURLConnection.getOutputStream()
             if (showOnConsole == ShowOnConsole.YES) {
                 LOGGER.warn("Error during Git report connection: "+ e.getMessage(), e);
             }

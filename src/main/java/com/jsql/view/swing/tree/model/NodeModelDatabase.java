@@ -11,7 +11,6 @@
 package com.jsql.view.swing.tree.model;
 
 import javax.swing.Icon;
-import javax.swing.JPopupMenu;
 import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -71,7 +70,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
     }
 
     @Override
-    protected void buildMenu(JPopupMenu tablePopupMenu, TreePath path) {
+    protected void buildMenu(JPopupMenu2 tablePopupMenu, TreePath path) {
         // Do nothing
     }
     

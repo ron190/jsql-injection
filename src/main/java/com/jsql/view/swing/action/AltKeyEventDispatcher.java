@@ -10,9 +10,9 @@ import com.jsql.view.swing.MediatorGui;
 
 public class AltKeyEventDispatcher implements KeyEventDispatcher {
 
-    private final boolean[] wasAltDPressed = {false};
-    private final boolean[] wasAltPressed = {false};
-    private final boolean[] wasAltGraphPressed = {false};
+    private static final boolean[] wasAltDPressed = {false};
+    private static final boolean[] wasAltPressed = {false};
+    private static final boolean[] wasAltGraphPressed = {false};
     
     @Override
     public boolean dispatchKeyEvent(KeyEvent keyEvent) {
@@ -23,7 +23,7 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
         // => AltGr:press Alt:press AltGr:release Alt:release
         // AltGr keycode is the same as Ctrl
         if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {
-            this.wasAltGraphPressed[0] = true;
+            AltKeyEventDispatcher.wasAltGraphPressed[0] = true;
         }
         
         boolean isAltDPressed =
@@ -39,15 +39,19 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
         boolean isAltPressed =
             keyEvent.isAltDown()
             && keyEvent.getKeyCode() == KeyEvent.VK_ALT
-            && !this.wasAltGraphPressed[0]
+            && !AltKeyEventDispatcher.wasAltGraphPressed[0]
         ;
         
-        boolean wasAltPressedAlready = !this.wasAltDPressed[0] && !this.wasAltPressed[0] && !this.wasAltGraphPressed[0];
+        boolean wasAltPressedAlready = 
+            !AltKeyEventDispatcher.wasAltDPressed[0] 
+            && !AltKeyEventDispatcher.wasAltPressed[0] 
+            && !AltKeyEventDispatcher.wasAltGraphPressed[0]
+        ;
         
         if (isAltDPressed) {
             MediatorGui.panelAddressBar().getTextFieldAddress().requestFocusInWindow();
             MediatorGui.panelAddressBar().getTextFieldAddress().selectAll();
-            this.wasAltDPressed[0] = true;
+            AltKeyEventDispatcher.wasAltDPressed[0] = true;
             
             shouldTakeNoFurtherAction = true;
             
@@ -58,12 +62,12 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
                     MenuSelectionManager.defaultManager().clearSelectedPath();
                 } else if (!MediatorGui.panelAddressBar().isAdvanceIsActivated()) {
                     MediatorGui.menubar().setVisible(!MediatorGui.menubar().isVisible());
-                    this.wasAltGraphPressed[0] = false;
+                    AltKeyEventDispatcher.wasAltGraphPressed[0] = false;
                 }
             } else {
-                this.wasAltDPressed[0] = false;
-                this.wasAltPressed[0] = false;
-                this.wasAltGraphPressed[0] = false;
+                AltKeyEventDispatcher.wasAltDPressed[0] = false;
+                AltKeyEventDispatcher.wasAltPressed[0] = false;
+                AltKeyEventDispatcher.wasAltGraphPressed[0] = false;
             }
             
             shouldTakeNoFurtherAction = true;
@@ -73,8 +77,8 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
             if (!MediatorGui.panelAddressBar().isAdvanceIsActivated() && MediatorGui.menubar().isVisible()) {
                 MenuSelectionManager.defaultManager().clearSelectedPath();
                 MediatorGui.menubar().setVisible(false);
-                this.wasAltPressed[0] = true;
-                this.wasAltGraphPressed[0] = false;
+                AltKeyEventDispatcher.wasAltPressed[0] = true;
+                AltKeyEventDispatcher.wasAltGraphPressed[0] = false;
             }
             
             shouldTakeNoFurtherAction = true;

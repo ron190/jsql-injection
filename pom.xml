@@ -5,7 +5,7 @@
 	<groupId>jsql-injection</groupId>
 	<artifactId>jsql-injection</artifactId>
 	<version>v0.79</version>
-
+    
 	<repositories>
 		<repository>
 			<id>CUBRID</id>
@@ -19,7 +19,13 @@
   
         <sonar.host.url>http://127.0.0.1:9000/</sonar.host.url>
         <sonar.jdbc.driver>org.postgresql.Driver</sonar.jdbc.driver>
-        <sonar.exclusions>**/*.js, **/vendor/xml/Model.java, **/SQLLexer.java, **/DigestMD4.java</sonar.exclusions>
+        <sonar.exclusions>
+            **/*.js, 
+            **/vendor/xml/Model.java, 
+            **/SQLLexer.java, 
+            **/DigestMD4.java, 
+            **/blind/patch/*
+        </sonar.exclusions>
 	</properties>
 
 	<build>
