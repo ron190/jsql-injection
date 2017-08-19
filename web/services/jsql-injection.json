@@ -1,11 +1,9 @@
 {
     "version": "0.79",
     "news": [
-        "[Functional Roadmap] Database: MemSQL Couchbase Netezza, Injection strategies: DIOS RoutedQuery OOB UpdateInsertDelete, Full Path Disclosure, Bruteforce HTTP Auth using NTLM, Dictionnary attack, WAF detection.",
-        "[Technical Roadmap] Test coverage with Jacoco, Integration test with Docker and JPA Hibernate Jooq, Maven Central: core swing cli.",
-        "[Gui Roadmap] Dump to a file, Arabic translation, Program self-updater.",
-        "[Since last release] Database: CockroachDB Mckoi Neo4j NuoDB Hana and Vertica, Coldfusion injection, Translation updates: cz zh fr, New language: pl, Translation complete: ru.",
-        "[In progress] Database: Couchbase, Load from/to no. of row/char, User Agent configuration.",
+        "[Roadmap] Dump to a file, Full Path Disclosure, WAF detection.",
+        "[In progress] New SQL Structure: Dump In One Shot and Zipped, Database: Couchbase, Load from/to no. of row/char, User Agent configuration.",
+        "[Done] Database: Neo4j, Translation complete: Russian, Chinese.",
         "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer."
     ]
 }

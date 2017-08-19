@@ -43,10 +43,10 @@ If you are using Kali Linux then get the latest release using commands `apt upda
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## Roadmap
-`Database: Netezza, Test coverage with Jacoco, Integration test with Docker and JPA Hibernate Jooq, Maven Central: core swing cli, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB UpdateInsertDelete, Bruteforce HTTP Auth using NTLM, Arabic translation, Command line interface, Dictionnary attack, WAF detection, Program self-updater.`
+`Database: Netezza, Test coverage with Jacoco, Integration test with Docker and JPA Hibernate Jooq, Reactive programming with RxJava, Maven Central: core swing cli, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB UpdateInsertDelete, Bruteforce HTTP Auth using NTLM, Arabic translation, Command line interface, Dictionnary attack, WAF detection, Program self-updater.`
 
 ## In progress
-`Database: MemSQL Couchbase, Dump to a file, Load from/to no. of row/char, User Agent configuration.`
+`New SQL Structure: Dump In One Shot and Zipped, Database: MemSQL Couchbase, Dump to a file, Load from/to no. of row/char, User Agent configuration.`
 
 ## Since last release
 `Database: CockroachDB Mckoi Neo4j NuoDB Hana and Vertica, Database Node renaming on F2 and Context Menu, Coldfusion injection, Translation updates: cz zh fr, New language: pl, Translation complete: ru.`
