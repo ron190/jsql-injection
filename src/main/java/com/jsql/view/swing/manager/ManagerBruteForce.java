@@ -28,6 +28,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
 import com.jsql.i18n.I18n;
+import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.manager.util.ActionBruteForce;
 import com.jsql.view.swing.manager.util.JButtonStateful;
@@ -184,11 +185,11 @@ public class ManagerBruteForce extends JPanel implements Manager {
 
         JLabel labelMin = new JLabel(" "+I18n.valueByKey("BRUTEFORCE_MIN_LABEL"), SwingConstants.RIGHT);
         thirdLine.add(labelMin);
-        I18n.addComponentForKey("BRUTEFORCE_MIN_LABEL", labelMin);
+        I18nView.addComponentForKey("BRUTEFORCE_MIN_LABEL", labelMin);
         thirdLine.add(this.minimumLength);
         JLabel labelMax = new JLabel(" "+I18n.valueByKey("BRUTEFORCE_MAX_LABEL"), SwingConstants.RIGHT);
         thirdLine.add(labelMax);
-        I18n.addComponentForKey("BRUTEFORCE_MAX_LABEL", labelMax);
+        I18nView.addComponentForKey("BRUTEFORCE_MAX_LABEL", labelMax);
         thirdLine.add(this.maximumLength);
         
         final JPanel secondAndThirdLine = new JPanel(new BorderLayout());
@@ -214,7 +215,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
         );
         
         this.run = new JButtonStateful(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_LABEL"));
-        I18n.addComponentForKey("BRUTEFORCE_RUN_BUTTON_LABEL", this.run);
+        I18nView.addComponentForKey("BRUTEFORCE_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
         
         this.run.setContentAreaFilled(false);

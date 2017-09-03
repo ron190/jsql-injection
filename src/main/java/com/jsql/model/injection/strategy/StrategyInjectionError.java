@@ -27,8 +27,10 @@ public class StrategyInjectionError extends AbstractStrategy {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
+    // TODO Pojo injection
     private String[] tabCapacityMethod;
     
+    // TODO Pojo injection
     private int indexMethod = 0;
 
     @Override
@@ -55,7 +57,6 @@ public class StrategyInjectionError extends AbstractStrategy {
             LOGGER.trace(I18n.valueByKey("LOG_CHECKING") +" "+ errorMethod.getName() +"...");
         
             String performanceSourcePage = MediatorModel.model().injectWithoutIndex(
-                MediatorModel.model().getCharInsertion() +
                 " "+ VendorXml.replaceTags(
                     errorMethod.getQuery()
                     .replace("${WINDOW}", configurationXml.getSlidingWindow())
@@ -82,9 +83,7 @@ public class StrategyInjectionError extends AbstractStrategy {
             
             if (methodIsApplicable) {
                 String performanceErrorSourcePage = MediatorModel.model().injectWithoutIndex(
-                    MediatorModel.model().getCharInsertion()
-                    + " "
-                    + VendorXml.replaceTags(
+                    " "+ VendorXml.replaceTags(
                         errorMethod.getQuery()
                         .replace("${WINDOW}", configurationXml.getSlidingWindow())
                         .replace("${INJECTION}", configurationXml.getCalibrator())
@@ -143,7 +142,6 @@ public class StrategyInjectionError extends AbstractStrategy {
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
         return MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().getCharInsertion() +
             MediatorModel.model().getVendor().instance().sqlError(sqlQuery, startPosition)
         );
     }

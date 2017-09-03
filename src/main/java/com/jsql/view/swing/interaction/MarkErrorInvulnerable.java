@@ -48,9 +48,9 @@ public class MarkErrorInvulnerable implements InteractionCommand {
         // Fix #36975: ArrayIndexOutOfBoundsException on getItem()
         // Fix #40352: NullPointerException on ?
         try {
-            for (int i = 0 ; i < MediatorGui.managerDatabase().getPanelStrategy().getItemCount() ; i++) {
-                if (MediatorGui.managerDatabase().getPanelStrategy().getItem(i).getText().equals(StrategyInjection.ERROR.toString())) {
-                    ((JMenu) MediatorGui.managerDatabase().getPanelStrategy().getItem(i)).getItem(this.indexMethodError).setEnabled(false);
+            for (int i = 0 ; i < MediatorGui.managerDatabase().getMenuStrategy().getItemCount() ; i++) {
+                if (MediatorGui.managerDatabase().getMenuStrategy().getItem(i).getText().equals(StrategyInjection.ERROR.toString())) {
+                    ((JMenu) MediatorGui.managerDatabase().getMenuStrategy().getItem(i)).getItem(this.indexMethodError).setEnabled(false);
                     break;
                 }
             }

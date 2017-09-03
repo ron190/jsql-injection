@@ -166,7 +166,9 @@ public class MetalUtilsCustom {
         if (value instanceof String) {
             try {
                 return Integer.parseInt((String)value);
-            } catch (NumberFormatException nfe) {}
+            } catch (NumberFormatException nfe) {
+                // ignore
+            }
         }
         return defaultValue;
     }

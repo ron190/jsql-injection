@@ -253,6 +253,14 @@ cast(
             <failsafe>1337${INDICE}7330%2b1</failsafe>
             <calibrator>repeat(${CALIBRATOR_HEX}, 65536)</calibrator>
             <limitBoundary>0</limitBoundary>
+            <endingComment>--+</endingComment>
+            <fingerprint>
+                <!-- JDBC + php : same error -->
+                <errorMessage>You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near</errorMessage>
+                <errorMessage>MySQL</errorMessage>
+                <errorMessage>You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near</errorMessage>
+                <errorMessage>MariaDB</errorMessage>
+            </fingerprint>
         </configuration>
         <normal>
             <indices>union select ${INDICES}</indices>

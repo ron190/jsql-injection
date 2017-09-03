@@ -110,7 +110,7 @@ public class GitUtil {
      */
     public static void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
     	// Check proxy
-        if (!ProxyUtil.proxyIsResponding(showOnConsole)) {
+        if (!ProxyUtil.isChecked(showOnConsole)) {
             return;
         }
 
@@ -214,7 +214,7 @@ public class GitUtil {
                 GitUtil.jsonObject = new JSONObject(json);
             } catch (JSONException e) {
                 GitUtil.jsonObject = new JSONObject("{\"version\": \"0\", \"news\": []}");
-                LOGGER.info("Fetching JSON configuration from Github failed, check your connection or update jsql");
+                LOGGER.info("Fetching JSON configuration from Github failed, check your connection or update jsql", e);
             }
         }
         return GitUtil.jsonObject;

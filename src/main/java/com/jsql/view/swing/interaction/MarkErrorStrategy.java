@@ -38,18 +38,18 @@ public class MarkErrorStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.managerDatabase().getPanelStrategy().setText(StrategyInjection.ERROR.toString());
+        MediatorGui.managerDatabase().getMenuStrategy().setText(StrategyInjection.ERROR.toString());
         
-        JMenu menuError = (JMenu) MediatorGui.managerDatabase().getPanelStrategy().getMenuComponent(2);
+        JMenu menuError = (JMenu) MediatorGui.managerDatabase().getMenuStrategy().getMenuComponent(2);
         int indexError = StrategyInjection.ERROR.instance().getIndexMethod();
         String nameError = MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(indexError).getName();
         
-        for (int i = 0 ; i < MediatorGui.managerDatabase().getPanelStrategy().getItemCount() ; i++) {
+        for (int i = 0 ; i < MediatorGui.managerDatabase().getMenuStrategy().getItemCount() ; i++) {
             // Fix #44635: ArrayIndexOutOfBoundsException on getItem()
             try {
                 if (menuError.getItem(i).getText().equals(nameError)) {
                     menuError.getItem(i).setSelected(true);
-                    MediatorGui.managerDatabase().getPanelStrategy().setText(nameError);
+                    MediatorGui.managerDatabase().getMenuStrategy().setText(nameError);
                     break;
                 }
             } catch (ArrayIndexOutOfBoundsException e) {

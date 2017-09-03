@@ -79,12 +79,12 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
 
     @Override
     public int getIconWidth() {
-        return 10; 
+        return 10;
     }
 
     @Override
-    public int getIconHeight() { 
-        return 10; 
+    public int getIconHeight() {
+        return 10;
     }
 
 }

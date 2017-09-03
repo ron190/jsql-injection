@@ -1,7 +1,11 @@
 [
 
     {"url": "http://testphp.vulnweb.com/artists.php?artist=1"},
-    {"url": "http://testphp.vulnweb.com/listproducts.php?cat=-1"},
+    {"url": "http://testphp.vulnweb.com/listproducts.php?cat=1"},
+    {
+        "url": "http://testasp.vulnweb.com/showforum.asp?id=1",
+        "vendor": "SQLSERVER"
+    },
     {
         "url": "http://testasp.vulnweb.com/Login.asp",
         "request": "tfUName=myusername&tfUPass=mypassword'",
@@ -10,7 +14,6 @@
         "injectionType": "REQUEST",
         "vendor": "SQLSERVER"
     },
-    {"url": "http://testphp.acunetix.com/listproducts.php?cat=1"},
     {"url": "http://www.webscantest.com/datastore/search_get_by_id.php?id=3"},
     {"url": "http://www.webscantest.com/datastore/search_get_by_name.php?name=Rake'"},
     {"url": "http://leettime.net/sqlninja.com/tasks/basic_ch1.php?id=1"},

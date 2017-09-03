@@ -34,12 +34,14 @@ import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.injection.method.MethodInjection;
+import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.BeanInjection;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ListItem;
 import com.jsql.view.swing.list.ListItemScan;
+import com.jsql.view.swing.list.ListTransfertHandlerScan;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -92,6 +94,8 @@ public class ManagerScan extends AbstractManagerList {
         }
         
         final DnDList dndListScan = new DnDList(listItems);
+        dndListScan.setTransferHandler(null);
+        dndListScan.setTransferHandler(new ListTransfertHandlerScan());
         
         this.listPaths = dndListScan;
         this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
@@ -110,7 +114,7 @@ public class ManagerScan extends AbstractManagerList {
         
         this.defaultText = I18n.valueByKey("SCAN_RUN_BUTTON_LABEL");
         this.run = new JButtonStateful(this.defaultText);
-        I18n.addComponentForKey("SCAN_RUN_BUTTON_LABEL", this.run);
+        I18nView.addComponentForKey("SCAN_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("SCAN_RUN_BUTTON_TOOLTIP"));
 
         this.run.setContentAreaFilled(false);
@@ -156,6 +160,9 @@ public class ManagerScan extends AbstractManagerList {
         this.add(lastLine, BorderLayout.SOUTH);
         
         dndListScan.addListSelectionListener(e -> {
+            if (dndListScan.getSelectedValue() == null) {
+                return;
+            }
             BeanInjection beanInjection = ((ListItemScan) dndListScan.getSelectedValue()).getBeanInjection();
             
             MediatorGui.panelAddressBar().getTextFieldAddress().setText(beanInjection.getUrl());
@@ -170,7 +177,7 @@ public class ManagerScan extends AbstractManagerList {
                 MediatorGui.panelAddressBar().getRadioRequest().setText("POST");
             }
             
-            MethodInjection injectionType = beanInjection.getInjectionType();
+            MethodInjection injectionType = beanInjection.getInjectionTypeAsEnum();
             if (injectionType == MethodInjection.HEADER) {
                 MediatorGui.panelAddressBar().getRadioHeader().setSelected();
             } else if (injectionType == MethodInjection.REQUEST) {

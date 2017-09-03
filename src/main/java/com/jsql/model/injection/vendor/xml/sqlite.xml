@@ -118,6 +118,10 @@ replace(
 )
             </calibrator>
             <limitBoundary>0</limitBoundary>
+            <endingComment>--+</endingComment>
+            <fingerprint>
+                <errorMessage>SQLite</errorMessage>
+            </fingerprint>
         </configuration>
         <normal>
             <indices>union select ${INDICES}</indices>

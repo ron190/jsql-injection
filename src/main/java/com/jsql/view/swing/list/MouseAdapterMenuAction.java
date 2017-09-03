@@ -33,6 +33,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.util.PreferencesUtil;
+import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 
 /**
@@ -75,63 +76,63 @@ public class MouseAdapterMenuAction extends MouseAdapter {
                 "<html><span style=\"font-family:'Monospace'\">"+ I18n.valueByKey("LIST_IMPORT_CONFIRM_TITLE") +"</span></html>"
                 : I18n.valueByKey("LIST_IMPORT_CONFIRM_TITLE")
             );
-            I18n.addComponentForKey("LIST_IMPORT_CONFIRM_TITLE", mnImport);
+            I18nView.addComponentForKey("LIST_IMPORT_CONFIRM_TITLE", mnImport);
             
             JMenuItem mnExport = new JMenuItem(
                 I18n.getLocaleDefault().getLanguage() == new Locale("zh").getLanguage() ?
                 "<html><span style=\"font-family:'Monospace'\">"+ I18n.valueByKey("LIST_EXPORT_TITLE") +"</span></html>"
                 : I18n.valueByKey("LIST_EXPORT_TITLE")
             );
-            I18n.addComponentForKey("LIST_EXPORT_TITLE", mnExport);
+            I18nView.addComponentForKey("LIST_EXPORT_TITLE", mnExport);
             
             JMenuItem mnCut = new JMenuItem(
                 I18n.getLocaleDefault().getLanguage() == new Locale("zh").getLanguage() ?
                 "<html><span style=\"font-family:'Monospace'\">"+ I18n.valueByKey("LIST_CUT") +"</span></html>"
                 : I18n.valueByKey("LIST_CUT")
             );
-            I18n.addComponentForKey("LIST_CUT", mnCut);
+            I18nView.addComponentForKey("LIST_CUT", mnCut);
             
             JMenuItem mnCopy = new JMenuItem(
                 I18n.getLocaleDefault().getLanguage() == new Locale("zh").getLanguage() ?
                 "<html><span style=\"font-family:'Monospace'\">"+ I18n.valueByKey("CONTEXT_MENU_COPY") +"</span></html>"
                 : I18n.valueByKey("CONTEXT_MENU_COPY")
             );
-            I18n.addComponentForKey("CONTEXT_MENU_COPY", mnCopy);
+            I18nView.addComponentForKey("CONTEXT_MENU_COPY", mnCopy);
             
             JMenuItem mnPaste = new JMenuItem(
                 I18n.getLocaleDefault().getLanguage() == new Locale("zh").getLanguage() ?
                 "<html><span style=\"font-family:'Monospace'\">"+ I18n.valueByKey("LIST_PASTE") +"</span></html>"
                 : I18n.valueByKey("LIST_PASTE")
             );
-            I18n.addComponentForKey("LIST_PASTE", mnPaste);
+            I18nView.addComponentForKey("LIST_PASTE", mnPaste);
             
             JMenuItem mnDelete = new JMenuItem(
                 I18n.getLocaleDefault().getLanguage() == new Locale("zh").getLanguage() ?
                 "<html><span style=\"font-family:'Monospace'\">"+ I18n.valueByKey("LIST_DELETE") +"</span></html>"
                 : I18n.valueByKey("LIST_DELETE")
             );
-            I18n.addComponentForKey("LIST_DELETE", mnDelete);
+            I18nView.addComponentForKey("LIST_DELETE", mnDelete);
             
             JMenuItem mnNew = new JMenuItem(
                 I18n.getLocaleDefault().getLanguage() == new Locale("zh").getLanguage() ?
                 "<html><span style=\"font-family:'Monospace'\">"+ I18n.valueByKey("LIST_NEW_VALUE") +"</span></html>"
                 : I18n.valueByKey("LIST_NEW_VALUE")
             );
-            I18n.addComponentForKey("LIST_NEW_VALUE", mnNew);
+            I18nView.addComponentForKey("LIST_NEW_VALUE", mnNew);
             
             JMenuItem mnRestoreDefault = new JMenuItem(
                 I18n.getLocaleDefault().getLanguage() == new Locale("zh").getLanguage() ?
                 "<html><span style=\"font-family:'Monospace'\">"+ I18n.valueByKey("LIST_RESTORE_DEFAULT") +"</span></html>"
                 : I18n.valueByKey("LIST_RESTORE_DEFAULT")
             );
-            I18n.addComponentForKey("LIST_RESTORE_DEFAULT", mnRestoreDefault);
+            I18nView.addComponentForKey("LIST_RESTORE_DEFAULT", mnRestoreDefault);
             
             JMenuItem mnSelectAll = new JMenuItem(
                 I18n.getLocaleDefault().getLanguage() == new Locale("zh").getLanguage() ?
                 "<html><span style=\"font-family:'Monospace'\">"+ I18n.valueByKey("CONTEXT_MENU_SELECT_ALL") +"</span></html>"
                 : I18n.valueByKey("CONTEXT_MENU_SELECT_ALL")
             );
-            I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", mnSelectAll);
+            I18nView.addComponentForKey("CONTEXT_MENU_SELECT_ALL", mnSelectAll);
             
             mnImport.setIcon(HelperUi.ICON_EMPTY);
             mnExport.setIcon(HelperUi.ICON_EMPTY);

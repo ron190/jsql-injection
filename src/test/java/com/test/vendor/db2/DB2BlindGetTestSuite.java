@@ -1,5 +1,8 @@
 package com.test.vendor.db2;
 
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -10,6 +13,7 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.util.ConnectionUtil;
+import com.jsql.util.ParameterUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.AbstractTestSuite;
 
@@ -24,7 +28,7 @@ public class DB2BlindGetTestSuite extends ConcreteDB2TestSuite {
         MediatorModel.model().addObserver(new SystemOutTerminal());
 
         ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/db2_simulate_get.php");
-        ConnectionUtil.setQueryString("?lib=1");
+        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("lib", "1")));
         ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
 
         MediatorModel.model().beginInjection();

@@ -1,9 +1,13 @@
 package com.jsql.model.injection.vendor;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.model.injection.vendor.xml.VendorXml;
 
 public enum Vendor {
-	
+    
     AUTO("<Database auto>", null),
     ACCESS("Access", new VendorXml("access.xml")),
     COCKROACHDB("CockroachDB", new VendorXml("cockroachdb.xml")),
@@ -16,7 +20,6 @@ public enum Vendor {
     HSQLDB("HSQLDB", new VendorXml("hsqldb.xml")),
     INFORMIX("Informix", new VendorXml("informix.xml")),
     INGRES("Ingres", new VendorXml("ingres.xml")),
-    MARIADB("MariaDB", new VendorXml("mysql.xml")),
     MAXDB("MaxDB", new VendorXml("maxdb.xml")),
     MCKOI("Mckoi", new VendorXml("mckoi.xml")),
     MEMSQL("MemSQL", new VendorXml("memsql.xml")),
@@ -30,6 +33,10 @@ public enum Vendor {
     SYBASE("Sybase", new VendorXml("sybase.xml")),
     TERADATA("Teradata", new VendorXml("teradata.xml")),
     VERTICA("Vertica", new VendorXml("vertica.xml"));
+    
+    // TODO Pojo injection
+    private List<StrategyInjection> strategies = new ArrayList<>();
+    private List<Integer> methodsError = new ArrayList<>();
 
     private final String labelVendor;
     

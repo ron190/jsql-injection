@@ -168,12 +168,7 @@ public class DiffMatchPatch {
      */
     public LinkedList<Diff> diffMain(String text1, String text2, boolean checklines) {
         // Set a deadline by which time the diff must be complete.
-        long deadline;
-        if (DIFF_TIMEOUT <= 0) {
-            deadline = Long.MAX_VALUE;
-        } else {
-            deadline = System.currentTimeMillis() + (long) (DIFF_TIMEOUT * 1000);
-        }
+        long deadline = System.currentTimeMillis() + (long) (DIFF_TIMEOUT * 1000);
         return this.diffMain(text1, text2, checklines, deadline);
     }
 
@@ -698,10 +693,6 @@ public class DiffMatchPatch {
      *     common middle.  Or null if there was no match.
      */
     protected String[] diffHalfMatch(String text1, String text2) {
-        if (DIFF_TIMEOUT <= 0) {
-            // Don't risk returning a non-optimal diff if we have unlimited time.
-            return null;
-        }
         String longtext = text1.length() > text2.length() ? text1 : text2;
         String shorttext = text1.length() > text2.length() ? text2 : text1;
         if (longtext.length() < 4 || shorttext.length() * 2 < longtext.length()) {
@@ -1718,10 +1709,6 @@ public class DiffMatchPatch {
     private double matchBitapScore(int e, int x, int loc, String pattern) {
         float accuracy = (float) e / pattern.length();
         int proximity = Math.abs(loc - x);
-        if (MATCH_DISTANCE == 0) {
-            // Dodge divide by zero error.
-            return proximity == 0 ? accuracy : 1.0;
-        }
         return accuracy + (proximity / (float) MATCH_DISTANCE);
     }
 

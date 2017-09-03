@@ -22,6 +22,7 @@ import javax.swing.JToolTip;
 import javax.swing.SwingConstants;
 
 import com.jsql.i18n.I18n;
+import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.ManagerAdminPage;
@@ -113,8 +114,8 @@ public class TabManagers extends MouseTabbedPane {
             this.indexOfTab(I18n.valueByKey(keyLabel)),
             labelWebShell
         );
-        I18n.addComponentForKey(keyLabel, labelWebShell);
-        I18n.addComponentForKey(keyTooltip, j[0]);
+        I18nView.addComponentForKey(keyLabel, labelWebShell);
+        I18nView.addComponentForKey(keyTooltip, j[0]);
         labelWebShell.setToolTipText(I18n.valueByKey(keyTooltip));
         labelWebShell.addMouseListener(new TabSelectionMouseHandler());
     }

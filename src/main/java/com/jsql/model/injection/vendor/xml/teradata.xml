@@ -114,6 +114,10 @@ cast(
 )
             </calibrator>
             <limitBoundary>1</limitBoundary>
+            <endingComment>--+</endingComment>
+            <fingerprint>
+                <errorMessage>teradata</errorMessage>
+            </fingerprint>
         </configuration>
         <normal>
             <indices>union select ${INDICES} FROM (SELECT 1 AS x)x</indices>

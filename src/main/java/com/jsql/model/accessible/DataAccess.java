@@ -47,6 +47,7 @@ public class DataAccess {
      * SQL characters marking the end of the result of an injection.
      * Process stops when this schema is encountered: SQLix01x03x03x07
      */
+    // TODO idem XML
     public static final String TRAIL_SQL = "%01%03%03%07";
     public static final String TRAIL_HEX = "0x01030307";
     public static final String TRAIL = "iLQS";
@@ -159,7 +160,7 @@ public class DataAccess {
             );
         } catch (ArrayIndexOutOfBoundsException e) {
             LOGGER.warn("Incorrect or incomplete data: "+ resultToParse, e);
-            LOGGER.info("Processing but expecting failure...");
+            LOGGER.info("Processing but failure is expected...");
         }
         
         LOGGER.debug(MediatorModel.model().getDatabaseInfos());

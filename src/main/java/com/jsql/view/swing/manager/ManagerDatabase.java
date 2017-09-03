@@ -58,9 +58,9 @@ import com.jsql.view.swing.tree.model.NodeModelEmpty;
 @SuppressWarnings("serial")
 public class ManagerDatabase extends JPanel implements Manager {
 
-    private JMenu panelVendor;
+    private JMenu menuVendor;
 
-    private JMenu panelStrategy;
+    private JMenu menuStrategy;
 
     private JMenu[] itemRadioStrategyError = new JMenu[1];
 
@@ -76,17 +76,17 @@ public class ManagerDatabase extends JPanel implements Manager {
 
         // First node in tree
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(new NodeModelEmpty(I18n.valueByKey("DATABASE_EMPTY")));
-        tree = new JTree(root);
-        MediatorGui.register(tree);
+        this.tree = new JTree(root);
+        MediatorGui.register(this.tree);
 
         // Graphic manager for components
-        tree.setCellRenderer(new CellRendererNode());
+        this.tree.setCellRenderer(new CellRendererNode());
 
-        tree.addFocusListener(new FocusListener() {
+        this.tree.addFocusListener(new FocusListener() {
 
             @Override
             public void focusLost(FocusEvent e) {
-                DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+                DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) ManagerDatabase.this.tree.getLastSelectedPathComponent();
                 if (treeNode != null) {
                     AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
                     if (nodeModel != null && nodeModel.getPanel() != null) {
@@ -98,7 +98,7 @@ public class ManagerDatabase extends JPanel implements Manager {
 
             @Override
             public void focusGained(FocusEvent e) {
-                DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+                DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) ManagerDatabase.this.tree.getLastSelectedPathComponent();
                 if (treeNode != null) {
                     AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
                     if (nodeModel != null && nodeModel.getPanel() != null) {
@@ -110,29 +110,29 @@ public class ManagerDatabase extends JPanel implements Manager {
 
         });
 
-        tree.addMouseListener(new MouseAdapter() {
+        this.tree.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                int selRow = tree.getRowForLocation(e.getX(), e.getY());
-                TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
+                int selRow = ManagerDatabase.this.tree.getRowForLocation(e.getX(), e.getY());
+                TreePath selPath = ManagerDatabase.this.tree.getPathForLocation(e.getX(), e.getY());
                 if (selRow != -1 && e.getClickCount() == 2) {
-                    if (tree.isExpanded(selPath)) {
-                        tree.collapsePath(selPath);
+                    if (ManagerDatabase.this.tree.isExpanded(selPath)) {
+                        ManagerDatabase.this.tree.collapsePath(selPath);
                     } else {
-                        tree.expandPath(selPath);
+                        ManagerDatabase.this.tree.expandPath(selPath);
                     }
                 }
             }
 
         });
 
-        tree.addKeyListener(new KeyAdapter() {
+        this.tree.addKeyListener(new KeyAdapter() {
 
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_F2) {
-                    DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+                    DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) ManagerDatabase.this.tree.getLastSelectedPathComponent();
                     if (treeNode != null) {
                         AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
                         if (nodeModel != null && nodeModel.getPanel() != null && !nodeModel.isRunning()) {
@@ -147,19 +147,19 @@ public class ManagerDatabase extends JPanel implements Manager {
         });
 
         // Action manager for components
-        tree.setCellEditor(new CellEditorNode());
+        this.tree.setCellEditor(new CellEditorNode());
 
         // Tree setting
         // allows repaint nodes
-        tree.setEditable(true);
-        tree.setShowsRootHandles(true);
-        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        this.tree.setEditable(true);
+        this.tree.setShowsRootHandles(true);
+        this.tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
         // Repaint Gif progressbar
-        tree.getModel().addTreeModelListener(new TreeModelGifListener());
+        this.tree.getModel().addTreeModelListener(new TreeModelGifListener());
 
-        tree.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
-        LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, tree);
+        this.tree.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
+        LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, this.tree);
 
         JMenuBar panelLineBottom = new JMenuBar();
         panelLineBottom.setOpaque(false);
@@ -173,7 +173,7 @@ public class ManagerDatabase extends JPanel implements Manager {
             )
         );
 
-        this.panelStrategy = new ComboMenu("<Strategy auto>");
+        this.menuStrategy = new ComboMenu("<Strategy auto>");
 
         this.itemRadioStrategyError = new JMenu[1];
 
@@ -187,36 +187,36 @@ public class ManagerDatabase extends JPanel implements Manager {
                 } else {
                     itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString());
                     ((AbstractButton) itemRadioStrategy).addActionListener(actionEvent -> {
-                        ManagerDatabase.this.panelStrategy.setText(strategy.toString());
+                        ManagerDatabase.this.menuStrategy.setText(strategy.toString());
                         MediatorModel.model().setStrategy(strategy);
                     });
                     this.groupStrategy.add((AbstractButton) itemRadioStrategy);
                 }
 
-                this.panelStrategy.add((JMenuItem) itemRadioStrategy);
+                this.menuStrategy.add((JMenuItem) itemRadioStrategy);
                 ((JComponent) itemRadioStrategy)
                         .setToolTipText(I18n.valueByKey("STRATEGY_" + strategy.name() + "_TOOLTIP"));
                 ((JComponent) itemRadioStrategy).setEnabled(false);
             }
         }
 
-        this.panelVendor = new ComboMenu(Vendor.AUTO.toString());
+        this.menuVendor = new ComboMenu(Vendor.AUTO.toString());
 
         ButtonGroup groupVendor = new ButtonGroup();
 
         for (final Vendor vendor: Vendor.values()) {
             JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == Vendor.AUTO);
             itemRadioVendor.addActionListener(actionEvent -> {
-                ManagerDatabase.this.panelVendor.setText(vendor.toString());
+                ManagerDatabase.this.menuVendor.setText(vendor.toString());
                 MediatorModel.model().setVendorByUser(vendor);
             });
-            this.panelVendor.add(itemRadioVendor);
+            this.menuVendor.add(itemRadioVendor);
             groupVendor.add(itemRadioVendor);
         }
 
-        panelLineBottom.add(this.panelVendor);
+        panelLineBottom.add(this.menuVendor);
         panelLineBottom.add(Box.createHorizontalGlue());
-        panelLineBottom.add(this.panelStrategy);
+        panelLineBottom.add(this.menuStrategy);
 
         this.add(scroller, BorderLayout.CENTER);
         this.add(panelLineBottom, BorderLayout.SOUTH);
@@ -235,7 +235,7 @@ public class ManagerDatabase extends JPanel implements Manager {
 
                 final int indexError = i[0];
                 itemRadioVendor.addActionListener(actionEvent -> {
-                    ManagerDatabase.this.panelStrategy.setText(methodError.getName());
+                    ManagerDatabase.this.menuStrategy.setText(methodError.getName());
                     MediatorModel.model().setStrategy(StrategyInjection.ERROR);
                     ((StrategyInjectionError) StrategyInjection.ERROR.instance()).setIndexMethod(indexError);
                 });
@@ -250,12 +250,12 @@ public class ManagerDatabase extends JPanel implements Manager {
         @Override
         public void treeNodesChanged(TreeModelEvent arg0) {
             if (arg0 != null) {
-                tree.firePropertyChange(
+                ManagerDatabase.this.tree.firePropertyChange(
                     JTree.ROOT_VISIBLE_PROPERTY,
-                    !tree.isRootVisible(),
-                    tree.isRootVisible()
+                    !ManagerDatabase.this.tree.isRootVisible(),
+                    ManagerDatabase.this.tree.isRootVisible()
                 );
-                tree.treeDidChange();
+                ManagerDatabase.this.tree.treeDidChange();
             }
         }
 
@@ -282,12 +282,12 @@ public class ManagerDatabase extends JPanel implements Manager {
         return this.groupStrategy;
     }
 
-    public JMenu getPanelVendor() {
-        return this.panelVendor;
+    public JMenu getMenuVendor() {
+        return this.menuVendor;
     }
 
-    public JMenu getPanelStrategy() {
-        return this.panelStrategy;
+    public JMenu getMenuStrategy() {
+        return this.menuStrategy;
     }
 
 }

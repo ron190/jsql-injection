@@ -40,6 +40,7 @@ import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.ThreadUtil;
+import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.util.CheckBoxMenuItemIconCustom;
@@ -112,9 +113,9 @@ public class NodeModelTable extends AbstractNodeModel {
     @Override
     protected void buildMenu(JPopupMenu2 tablePopupMenu, final TreePath path) {
         JMenuItem menuItemCheckAll = new JMenuItem(I18n.valueByKey("COLUMNS_CHECK_ALL"), 'C');
-        I18n.addComponentForKey("COLUMNS_CHECK_ALL", menuItemCheckAll);
+        I18nView.addComponentForKey("COLUMNS_CHECK_ALL", menuItemCheckAll);
         JMenuItem menuItemUncheckAll = new JMenuItem(I18n.valueByKey("COLUMNS_UNCHECK_ALL"), 'U');
-        I18n.addComponentForKey("COLUMNS_UNCHECK_ALL", menuItemUncheckAll);
+        I18nView.addComponentForKey("COLUMNS_UNCHECK_ALL", menuItemUncheckAll);
 
         menuItemCheckAll.setIcon(HelperUi.ICON_EMPTY);
         menuItemUncheckAll.setIcon(HelperUi.ICON_EMPTY);

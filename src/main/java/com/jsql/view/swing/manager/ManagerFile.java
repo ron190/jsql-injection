@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
+import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.JButtonStateful;
@@ -48,7 +49,7 @@ public class ManagerFile extends AbstractManagerList {
         
         this.defaultText = I18n.valueByKey("FILE_RUN_BUTTON_LABEL");
         this.run = new JButtonStateful(this.defaultText);
-        I18n.addComponentForKey("FILE_RUN_BUTTON_LABEL", this.run);
+        I18nView.addComponentForKey("FILE_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("FILE_RUN_BUTTON_TOOLTIP"));
         
         this.run.setEnabled(false);
@@ -90,7 +91,7 @@ public class ManagerFile extends AbstractManagerList {
         });
 
         this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.ICON_SQUARE_GREY, SwingConstants.LEFT);
-        I18n.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
+        I18nView.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
         this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND));
         this.privilege.setToolTipText(I18n.valueByKey("PRIVILEGE_TOOLTIP"));
 

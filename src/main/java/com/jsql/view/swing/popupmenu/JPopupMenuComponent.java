@@ -28,6 +28,7 @@ import javax.swing.text.JTextComponent;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
+import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.text.JTextAreaPlaceholderConsole;
 import com.jsql.view.swing.text.JTextPanePlaceholderConsole;
@@ -57,7 +58,7 @@ public class JPopupMenuComponent extends JPopupMenu {
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         copyItem.setMnemonic('C');
         copyItem.setText(I18n.valueByKey("CONTEXT_MENU_COPY"));
-        I18n.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
+        I18nView.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
         copyItem.setIcon(HelperUi.ICON_EMPTY);
         this.setLightWeightPopupEnabled(false);
 
@@ -65,7 +66,7 @@ public class JPopupMenuComponent extends JPopupMenu {
         selectAllItem.setIcon(HelperUi.ICON_EMPTY);
         selectAllItem.setAction(component.getActionMap().get(DefaultEditorKit.selectAllAction));
         selectAllItem.setText(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"));
-        I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", selectAllItem);
+        I18nView.addComponentForKey("CONTEXT_MENU_SELECT_ALL", selectAllItem);
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         selectAllItem.setMnemonic('A');
         
@@ -89,7 +90,7 @@ public class JPopupMenuComponent extends JPopupMenu {
             });
             
             clearItem.setText(I18n.valueByKey("CONTEXT_MENU_CLEAR"));
-            I18n.addComponentForKey("CONTEXT_MENU_CLEAR", clearItem);
+            I18nView.addComponentForKey("CONTEXT_MENU_CLEAR", clearItem);
             clearItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
             clearItem.setMnemonic('E');
             

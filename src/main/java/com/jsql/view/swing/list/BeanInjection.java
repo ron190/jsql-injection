@@ -13,6 +13,12 @@ public class BeanInjection {
     private String requestType;
 
     public BeanInjection(
+        String url
+    ) {
+        this.url = url;
+    }
+    
+    public BeanInjection(
         String url,
         String request,
         String header,
@@ -20,11 +26,23 @@ public class BeanInjection {
         String vendor,
         String requestType
     ) {
-        this.url = url;
+        this(url);
+        
         this.request = request;
         this.header = header;
-        this.injectionType = injectionType.isEmpty() ? MethodInjection.QUERY : MethodInjection.valueOf(injectionType);
-        this.vendor = vendor.isEmpty() ? Vendor.AUTO : Vendor.valueOf(vendor);
+        
+        try {
+            this.injectionType = MethodInjection.valueOf(injectionType);
+        } catch (IllegalArgumentException e) {
+            this.injectionType = MethodInjection.QUERY;
+        }
+        
+        try {
+            this.vendor = Vendor.valueOf(vendor);
+        } catch (IllegalArgumentException e) {
+            this.vendor = Vendor.AUTO;
+        }
+        
         this.requestType = requestType.isEmpty() ? "POST" : requestType;
     }
 
@@ -39,8 +57,12 @@ public class BeanInjection {
     public String getHeader() {
         return this.header;
     }
+    
+    public String getInjectionType() {
+        return this.injectionType.name();
+    }
 
-    public MethodInjection getInjectionType() {
+    public MethodInjection getInjectionTypeAsEnum() {
         return this.injectionType;
     }
 
@@ -48,7 +70,11 @@ public class BeanInjection {
         return this.requestType;
     }
 
-    public Vendor getVendor() {
+    public String getVendor() {
+        return this.vendor.name();
+    }
+
+    public Vendor getVendorAsEnum() {
         return this.vendor;
     }
     

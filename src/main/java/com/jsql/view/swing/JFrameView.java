@@ -161,12 +161,12 @@ public class JFrameView extends JFrame {
      * Empty the interface.
      */
     public void resetInterface() {
-        MediatorGui.managerDatabase().getPanelVendor().setText(Vendor.AUTO.toString());
-        MediatorGui.managerDatabase().getPanelStrategy().setText("<Strategy auto>");
-        for (int i = 0 ; i < MediatorGui.managerDatabase().getPanelStrategy().getItemCount() ; i++) {
-            MediatorGui.managerDatabase().getPanelStrategy().getItem(i).setEnabled(false);
+        MediatorGui.managerDatabase().getMenuVendor().setText(Vendor.AUTO.toString());
+        MediatorGui.managerDatabase().getMenuStrategy().setText("<Strategy auto>");
+        for (int i = 0 ; i < MediatorGui.managerDatabase().getMenuStrategy().getItemCount() ; i++) {
+            MediatorGui.managerDatabase().getMenuStrategy().getItem(i).setEnabled(false);
         }
-        ((JMenu) MediatorGui.managerDatabase().getPanelStrategy().getItem(2)).removeAll();
+        ((JMenu) MediatorGui.managerDatabase().getMenuStrategy().getItem(2)).removeAll();
         MediatorGui.managerDatabase().getGroupStrategy().clearSelection();
         
         this.mapNodes.clear();

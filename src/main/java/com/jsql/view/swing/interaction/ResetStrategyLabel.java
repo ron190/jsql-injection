@@ -27,9 +27,9 @@ public class ResetStrategyLabel implements InteractionCommand {
 
     @Override
     public void execute() {
-        for (int i = 0 ; i < MediatorGui.managerDatabase().getPanelStrategy().getItemCount() ; i++) {
-            MediatorGui.managerDatabase().getPanelStrategy().getItem(i).setEnabled(false);
-            MediatorGui.managerDatabase().getPanelStrategy().getItem(i).setSelected(false);
+        for (int i = 0 ; i < MediatorGui.managerDatabase().getMenuStrategy().getItemCount() ; i++) {
+            MediatorGui.managerDatabase().getMenuStrategy().getItem(i).setEnabled(false);
+            MediatorGui.managerDatabase().getMenuStrategy().getItem(i).setSelected(false);
         }
     }
     

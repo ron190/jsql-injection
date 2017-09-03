@@ -119,6 +119,13 @@ rpad(
 )
             </calibrator>
             <limitBoundary>0</limitBoundary>
+            <endingComment>--+</endingComment>
+            <fingerprint>
+                <errorMessage>function.db2</errorMessage>
+                <errorMessage>DB2 SQL Error</errorMessage>
+                <errorMessage>Warning: db2_execute()</errorMessage>
+                <errorMessage>Warning: db2_fetch_array()</errorMessage>
+            </fingerprint>
         </configuration>
         <normal>
             <indices>union select ${INDICES} from sysibm.sysdummy1</indices>

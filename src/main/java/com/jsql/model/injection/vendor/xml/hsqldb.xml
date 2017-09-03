@@ -138,6 +138,10 @@ FROM (VALUES(0))
             </failsafe>
             <calibrator>repeat('${CALIBRATOR_SQL}', 1024)</calibrator>
             <limitBoundary>0</limitBoundary>
+            <endingComment>--+</endingComment>
+            <fingerprint>
+                <errorMessage>HSQLDB</errorMessage>
+            </fingerprint>
         </configuration>
         <normal>
             <indices>union select ${RESULT_RANGE} from (${INDICE_UNIQUE}) b</indices>

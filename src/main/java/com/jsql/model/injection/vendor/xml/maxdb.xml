@@ -123,6 +123,12 @@ rpad(
 )
             </calibrator>
             <limitBoundary>1</limitBoundary>
+            <endingComment>--+</endingComment>
+            <fingerprint>
+                <errorMessage>Warning: maxdb::</errorMessage>
+                <errorMessage>maxdb.query</errorMessage>
+                <errorMessage>): Invalid end of SQL statement</errorMessage>
+            </fingerprint>
         </configuration>
         <normal>
             <indices>union select ${RESULT_RANGE} from (${INDICE_UNIQUE})z</indices>

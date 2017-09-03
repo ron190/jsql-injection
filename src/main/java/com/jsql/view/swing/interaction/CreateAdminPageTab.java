@@ -37,6 +37,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import com.jsql.i18n.I18n;
+import com.jsql.view.i18n.I18nView;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
@@ -72,9 +73,9 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         // Fix #44642: NoClassDefFoundError on get()
         // Fix #44641: ExceptionInInitializerError on get()
         try {
-            // TODO: test if proxy is used by jsoup
             // Previous test for 2xx Success and 3xx Redirection was Header only,
-            // now get the HTML content
+            // now get the HTML content.
+            // Proxy is used by jsoup
             htmlSource = Jsoup.clean(
                 Jsoup.connect(this.url).get().html()
                     .replaceAll("<img.*>", "")
@@ -105,7 +106,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         final JPopupMenu menu = new JPopupMenu();
         
         JMenuItem itemCopyUrl = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_COPY_PAGE_URL"));
-        I18n.addComponentForKey("CONTEXT_MENU_COPY_PAGE_URL", itemCopyUrl);
+        I18nView.addComponentForKey("CONTEXT_MENU_COPY_PAGE_URL", itemCopyUrl);
         itemCopyUrl.setIcon(HelperUi.ICON_EMPTY);
         
         JMenuItem itemCopy = new JMenuItem();
@@ -113,7 +114,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         itemCopy.setMnemonic('C');
         itemCopy.setText(I18n.valueByKey("CONTEXT_MENU_COPY"));
-        I18n.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
+        I18nView.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
         itemCopy.setIcon(HelperUi.ICON_EMPTY);
         
         JMenuItem itemSelectAll = new JMenuItem();
@@ -121,7 +122,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         itemSelectAll.setAction(browser.getActionMap().get(DefaultEditorKit.selectAllAction));
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.setText(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"));
-        I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
+        I18nView.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
         itemSelectAll.setMnemonic('A');
         
         menu.add(itemCopyUrl);

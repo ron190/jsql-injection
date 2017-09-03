@@ -13,24 +13,37 @@ package com.jsql.model;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.PrivilegedActionException;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.security.auth.login.LoginException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.ietf.jgss.GSSException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.DataAccess;
@@ -50,6 +63,8 @@ import com.jsql.model.suspendable.SuspendableGetVendor;
 import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
+import com.jsql.util.HeaderUtil;
+import com.jsql.util.ParameterUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.util.ProxyUtil;
 import com.jsql.util.ThreadUtil;
@@ -76,13 +91,11 @@ public class InjectionModel extends AbstractModelObservable {
      */
     private static final String VERSION_JSQL = "0.79";
     
-    /**
-     * i.e, -1 in "[..].php?id=-1 union select[..]"
-     */
-    private String charInsertion;
+    public static final String STAR = "*";
     
+    // TODO Pojo injection
     /**
-     * HTML source of page successfully responding to
+     * HTML body of page successfully responding to
      * multiple fields selection (select 1,2,3,..).
      */
     private String srcSuccess = "";
@@ -138,7 +151,7 @@ public class InjectionModel extends AbstractModelObservable {
     private int stepSecurity = 0;
     
     public void resetModel() {
-        this.charInsertion = null;
+        // TODO make injection pojo for all fields
         ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).setVisibleIndex(null);
         this.indexesInUrl = "";
         
@@ -155,6 +168,14 @@ public class InjectionModel extends AbstractModelObservable {
         
         ThreadUtil.reset();
     }
+    
+    private static String decode(final String encoded) {
+        try {
+            return encoded == null ? "" : URLDecoder.decode(encoded, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Impossible: UTF-8 is a required encoding", e);
+        }
+    }
 
     /**
      * Prepare the injection process, can be interrupted by the user (via shouldStopAll).
@@ -163,67 +184,29 @@ public class InjectionModel extends AbstractModelObservable {
     public void beginInjection() {
         this.resetModel();
         
-        if (!ProxyUtil.proxyIsResponding(ShowOnConsole.YES)) {
+        if (!ProxyUtil.isChecked(ShowOnConsole.YES)) {
             return;
         }
         
         LOGGER.info(I18n.valueByKey("LOG_START_INJECTION"));
-        LOGGER.trace(I18n.valueByKey("LOG_CONNECTION_TEST"));
         
+        // TODO Extract in method
         try {
+            ParameterUtil.checkParametersFormat(true, true, null);
+            
+            LOGGER.trace(I18n.valueByKey("LOG_CONNECTION_TEST"));
             ConnectionUtil.testConnection();
             
-            // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
-            LOGGER.trace(I18n.valueByKey("LOG_GET_INSERTION_CHARACTER"));
+            boolean hasFoundInjection = false;
             
-            this.charInsertion = new SuspendableGetCharInsertion().run();
-            LOGGER.info(I18n.valueByKey("LOG_USING_INSERTION_CHARACTER") +" ["+ this.charInsertion +"]");
-            
-            this.vendor = new SuspendableGetVendor().run();
-
-            // Test each injection methods: time, blind, error, normal
-            StrategyInjection.TIME.instance().checkApplicability();
-            StrategyInjection.BLIND.instance().checkApplicability();
-            StrategyInjection.ERROR.instance().checkApplicability();
-            StrategyInjection.NORMAL.instance().checkApplicability();
-
-            // Choose the most efficient method: normal > error > blind > time
-            if (StrategyInjection.NORMAL.instance().isApplicable()) {
-                StrategyInjection.NORMAL.instance().activateStrategy();
-                
-            } else if (StrategyInjection.ERROR.instance().isApplicable()) {
-                StrategyInjection.ERROR.instance().activateStrategy();
-                
-            } else if (StrategyInjection.BLIND.instance().isApplicable()) {
-                StrategyInjection.BLIND.instance().activateStrategy();
-                
-            } else if (StrategyInjection.TIME.instance().isApplicable()) {
-                StrategyInjection.TIME.instance().activateStrategy();
-                
-            } else if (PreferencesUtil.isEvasionEnabled() && this.stepSecurity < 3) {
-                // No injection possible, increase evasion level and restart whole process
-                this.stepSecurity++;
-
-                LOGGER.warn("Injection failed, testing evasion level "+ this.stepSecurity +"...");
-                
-                Request request = new Request();
-                request.setMessage(Interaction.RESET_STRATEGY_LABEL);
-                this.sendToViews(request);
-                
-                // sinon perte de insertionCharacter entre 2 injections
-                ConnectionUtil.setQueryString(ConnectionUtil.getQueryString() + this.charInsertion);
-                this.beginInjection();
-                
-                return;
-            } else {
-                throw new InjectionFailureException("No injection found");
+            if (!hasFoundInjection) {
+                hasFoundInjection = this.testParameters(MethodInjection.QUERY, ParameterUtil.getQueryStringAsString(), ParameterUtil.getQueryString());
             }
-
-            if (!this.isScanning) {
-                if (PreferencesUtil.isInjectingMetadata()) {
-                    DataAccess.getDatabaseInfos();
-                }
-                DataAccess.listDatabases();
+            if (!hasFoundInjection) {
+                hasFoundInjection = this.testParameters(MethodInjection.REQUEST, ParameterUtil.getRequestAsString(), ParameterUtil.getRequest());
+            }
+            if (!hasFoundInjection) {
+                hasFoundInjection = this.testParameters(MethodInjection.HEADER, ParameterUtil.getHeaderAsString(), ParameterUtil.getHeader());
             }
             
             LOGGER.trace(I18n.valueByKey("LOG_DONE"));
@@ -237,6 +220,206 @@ public class InjectionModel extends AbstractModelObservable {
         }
     }
     
+    public static List<SimpleEntry<String, String>> loopThroughJson(Object jsonEntity, String parentName, SimpleEntry<String, String> parentXPath) throws JSONException {
+        List<SimpleEntry<String, String>> attributesXPath = new ArrayList<>();
+        
+        if (jsonEntity instanceof JSONObject) {
+            
+            JSONObject jsonObjectEntity = (JSONObject) jsonEntity;
+            Iterator<?> keys = jsonObjectEntity.keys();
+            while (keys.hasNext()) {
+                String key = (String) keys.next();
+                Object value = jsonObjectEntity.get(key);
+                String xpath = parentName +"."+ key;
+                
+                if (value instanceof JSONArray) {
+                    attributesXPath.addAll(loopThroughJson(value, xpath, parentXPath));
+                } else {
+                    SimpleEntry<String, String> c = new SimpleEntry<String, String>(xpath, (String) value);
+                    attributesXPath.add(c);
+                    
+                    if (parentXPath == null) {
+                        jsonObjectEntity.put(key, value.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", ""));
+                    } else if (c.equals(parentXPath)) {
+                        jsonObjectEntity.put(key, value + InjectionModel.STAR);
+                    }
+                }
+            }
+            
+        } else if (jsonEntity instanceof JSONArray) {
+            
+            JSONArray jsonArrayEntity = (JSONArray) jsonEntity;
+            for (int i = 0; i < jsonArrayEntity.length(); i++) {
+                Object jsonEntityInArray = jsonArrayEntity.get(i);
+                if(!(jsonEntityInArray instanceof JSONObject) && !(jsonEntityInArray instanceof JSONArray)){
+                    continue;
+                }
+                
+                JSONObject jsonObjectEntity = jsonArrayEntity.getJSONObject(i);
+                
+                Iterator<?> keys = jsonObjectEntity.keys();
+                while (keys.hasNext()) {
+                    String key = (String) keys.next();
+                    Object value = jsonObjectEntity.opt(key.toString());
+                    
+                    if (value instanceof JSONArray) {
+                        attributesXPath.addAll(loopThroughJson(value, parentName +"."+ key, parentXPath));
+                    } else if (value instanceof String) {
+                        SimpleEntry<String, String> s = new SimpleEntry<String, String>(parentName +"."+ key, (String) value);
+                        attributesXPath.add(s);
+                        
+                        if (parentXPath == null) {
+                            jsonObjectEntity.put(key, value.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", ""));
+                        } else if (s.equals(parentXPath)) {
+                            jsonObjectEntity.put(key.toString(), value + InjectionModel.STAR);
+                        }
+                    }
+                }
+            }
+            
+        }
+        
+        return attributesXPath;
+    }
+    
+    private boolean testParameters(MethodInjection methodInjection, String paramsAsString, List<SimpleEntry<String, String>> params) throws JSqlException {
+        boolean hasFoundInjection = false;
+        
+        if (
+            PreferencesUtil.isCheckingAllParam()
+            || ConnectionUtil.getMethodInjection() == methodInjection
+        ) {
+            ConnectionUtil.setMethodInjection(methodInjection);
+            if (!methodInjection.isCheckingAllParam() && !paramsAsString.contains(InjectionModel.STAR)) {
+                params.stream().reduce((a, b) -> b).ifPresent(e -> e.setValue(e.getValue() + InjectionModel.STAR));
+                hasFoundInjection = this.testStrategies(true, false, params.stream().reduce((a, b) -> b).get());
+            } else if (paramsAsString.contains(InjectionModel.STAR)) {
+                LOGGER.info("Checking single "+ methodInjection.name() +" parameter with injection point at *");
+                hasFoundInjection = this.testStrategies(false, false, null);
+            } else {
+                for (SimpleEntry<String, String> paramBase: params) {
+
+                    for (SimpleEntry<String, String> paramStar: params) {
+                        if (paramStar == paramBase) {
+                            
+                            Object jsonEntity = null;
+                            try {
+                                jsonEntity = new JSONObject(paramStar.getValue());
+                            } catch (JSONException e) {
+                                try {
+                                    jsonEntity = new JSONArray(paramStar.getValue());
+                                } catch (JSONException ee) {
+                                    // ignore
+                                }
+                            }
+                            List<SimpleEntry<String, String>> attributesJson = loopThroughJson(jsonEntity, "root", null);
+
+                            if (PreferencesUtil.isCheckingAllJSONParam() && !attributesJson.isEmpty()) {
+                                for (SimpleEntry<String, String> parentXPath: attributesJson) {
+                                    loopThroughJson(jsonEntity, "root", null);
+                                    loopThroughJson(jsonEntity, "root", parentXPath);
+                                    System.out.println(jsonEntity);
+                                    
+                                    paramStar.setValue(jsonEntity.toString());
+                                    
+                                    try {
+                                        LOGGER.info("Checking JSON "+ methodInjection.name() +" parameter "+ parentXPath.getKey() +"="+ parentXPath.getValue().replace(InjectionModel.STAR, ""));
+                                        hasFoundInjection = this.testStrategies(true, true, paramBase);
+                                        break;
+                                    } catch (JSqlException e) {
+                                        LOGGER.warn("No "+ methodInjection.name() +" injection found for JSON "+ methodInjection.name() +" parameter "+ parentXPath.getKey() +"="+ parentXPath.getValue().replace(InjectionModel.STAR, ""), e);
+                                    } finally {
+                                        params.stream().forEach(e -> e.setValue(e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", "")));
+                                    }
+                                }
+                            } else {
+                                paramStar.setValue(paramStar.getValue() + InjectionModel.STAR);
+                                
+                                try {
+                                    LOGGER.info("Checking "+ methodInjection.name() +" parameter "+ paramBase.getKey() +"="+ paramBase.getValue().replace(InjectionModel.STAR, ""));
+                                    hasFoundInjection = this.testStrategies(true, false, paramBase);
+                                    break;
+                                } catch (JSqlException e) {
+                                    LOGGER.warn("No "+ methodInjection.name() +" injection found for parameter "+ paramBase.getKey() +"="+ paramBase.getValue().replace(InjectionModel.STAR, ""), e);
+                                } finally {
+                                    params.stream().forEach(e -> e.setValue(e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", "")));
+                                }
+                            }
+                            
+                            
+                        }
+                    }
+                    if (hasFoundInjection) {
+                        break;
+                    }
+                    
+                }
+            }
+        }
+        
+        return hasFoundInjection;
+    }
+    
+    private boolean testStrategies(boolean checkAllParameters, boolean isJson, SimpleEntry<String, String> parameter) throws JSqlException {
+        // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
+        LOGGER.trace(I18n.valueByKey("LOG_GET_INSERTION_CHARACTER"));
+        
+        String characterInsertionByUser = ParameterUtil.checkParametersFormat(false, checkAllParameters, parameter);
+        if (parameter != null) {
+            String charInsertion = new SuspendableGetCharInsertion().run(characterInsertionByUser, parameter, isJson);
+            LOGGER.info(I18n.valueByKey("LOG_USING_INSERTION_CHARACTER") +" ["+ charInsertion.replace(InjectionModel.STAR, "") +"]");
+        }
+        
+        this.vendor = new SuspendableGetVendor().run();
+
+        // Test each injection strategies: time, blind, error, normal
+        StrategyInjection.TIME.instance().checkApplicability();
+        StrategyInjection.BLIND.instance().checkApplicability();
+        StrategyInjection.ERROR.instance().checkApplicability();
+        StrategyInjection.NORMAL.instance().checkApplicability();
+
+        // Choose the most efficient strategy: normal > error > blind > time
+        if (StrategyInjection.NORMAL.instance().isApplicable()) {
+            StrategyInjection.NORMAL.instance().activateStrategy();
+            
+        } else if (StrategyInjection.ERROR.instance().isApplicable()) {
+            StrategyInjection.ERROR.instance().activateStrategy();
+            
+        } else if (StrategyInjection.BLIND.instance().isApplicable()) {
+            StrategyInjection.BLIND.instance().activateStrategy();
+            
+        } else if (StrategyInjection.TIME.instance().isApplicable()) {
+            StrategyInjection.TIME.instance().activateStrategy();
+            
+        } else if (PreferencesUtil.isEvasionEnabled() && this.stepSecurity < 3) {
+            // No injection possible, increase evasion level and restart whole process
+            this.stepSecurity++;
+
+            LOGGER.warn("Injection failed, testing evasion level "+ this.stepSecurity +"...");
+            
+            Request request = new Request();
+            request.setMessage(Interaction.RESET_STRATEGY_LABEL);
+            this.sendToViews(request);
+            
+            // sinon perte de insertionCharacter entre 2 injections
+//            ConnectionUtil.setQueryString(ConnectionUtil.getQueryString() + this.charInsertion);
+            this.beginInjection();
+            
+            return false;
+        } else {
+            throw new InjectionFailureException("No injection found");
+        }
+
+        if (!this.isScanning) {
+            if (PreferencesUtil.isInjectingMetadata()) {
+                DataAccess.getDatabaseInfos();
+            }
+            DataAccess.listDatabases();
+        }
+        
+        return true;
+    }
+    
     /**
      * Run a HTTP connection to the web server.
      * @param dataInjection SQL query
@@ -248,7 +431,7 @@ public class InjectionModel extends AbstractModelObservable {
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
         String urlInjection = ConnectionUtil.getUrlBase();
         
-        String dataInjection = newDataInjection;
+        String dataInjection = " "+ newDataInjection;
         
         urlInjection = this.buildURL(urlInjection, isUsingIndex, dataInjection);
 
@@ -261,9 +444,7 @@ public class InjectionModel extends AbstractModelObservable {
             // Remove spaces before a word
             .replaceAll("(\\s+)([^\\s\\w])", "$2")
             // Replace spaces
-            .replaceAll("\\s+", "+")
-            /*// Add ending line comment, except for INGRES
-            +(this.vendor != Vendor.INGRES ? "--+" : "")*/;
+            .replaceAll("\\s+", "+");
 
         URL urlObject = null;
         try {
@@ -278,8 +459,14 @@ public class InjectionModel extends AbstractModelObservable {
          * Add primary evasion
          * TODO separate method
          */
-        if (ConnectionUtil.getQueryString() != null && !"".equals(ConnectionUtil.getQueryString())) {
-            urlInjection += this.buildQuery(MethodInjection.QUERY, ConnectionUtil.getQueryString(), isUsingIndex, dataInjection);
+        // TODO Extract in method
+        if (!ParameterUtil.getQueryString().isEmpty()) {
+            urlInjection += this.buildQuery(MethodInjection.QUERY, ParameterUtil.getQueryStringAsString(), isUsingIndex, dataInjection);
+            
+            if (ConnectionUtil.tokenCsrf != null) {
+                urlInjection += "&"+ ConnectionUtil.tokenCsrf.getKey() +"="+ ConnectionUtil.tokenCsrf.getValue();
+            }
+            
             try {
                 // Evasion
                 if (this.stepSecurity == 1) {
@@ -316,6 +503,10 @@ public class InjectionModel extends AbstractModelObservable {
             } catch (MalformedURLException e) {
                 LOGGER.warn("Incorrect Evasion Url: "+ e.getMessage(), e);
             }
+        } else {
+            if (ConnectionUtil.tokenCsrf != null) {
+                urlInjection += "?"+ ConnectionUtil.tokenCsrf.getKey() +"="+ ConnectionUtil.tokenCsrf.getValue();
+            }
         }
         
         HttpURLConnection connection;
@@ -348,6 +539,12 @@ public class InjectionModel extends AbstractModelObservable {
             connection.setRequestProperty("Cache-Control", "no-cache");
             connection.setRequestProperty("Expires", "-1");
             
+            // Csrf
+            
+            if (ConnectionUtil.tokenCsrf != null) {
+                connection.setRequestProperty(ConnectionUtil.tokenCsrf.getKey(), ConnectionUtil.tokenCsrf.getValue());
+            }
+            
             ConnectionUtil.fixJcifsTimeout(connection);
 
             Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
@@ -357,12 +554,16 @@ public class InjectionModel extends AbstractModelObservable {
              * Build the HEADER and logs infos
              * #Need primary evasion
              */
-            if (!"".equals(ConnectionUtil.getHeader())) {
-                for (String header: this.buildQuery(MethodInjection.HEADER, ConnectionUtil.getHeader(), isUsingIndex, dataInjection).split("\\\\r\\\\n")) {
-                    ConnectionUtil.sanitizeHeaders(connection, header);
-                }
+            // TODO Extract in method
+            if (!ParameterUtil.getHeader().isEmpty()) {
+                Stream.of(this.buildQuery(MethodInjection.HEADER, ParameterUtil.getHeaderAsString(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
+                .forEach(e -> {
+                    if (e.split(":").length == 2) {
+                        HeaderUtil.sanitizeHeaders(connection, new SimpleEntry<String, String>(e.split(":")[0], e.split(":")[1]));
+                    }
+                });
                 
-                msgHeader.put(Header.HEADER, this.buildQuery(MethodInjection.HEADER, ConnectionUtil.getHeader(), isUsingIndex, dataInjection));
+                msgHeader.put(Header.HEADER, this.buildQuery(MethodInjection.HEADER, ParameterUtil.getHeaderAsString(), isUsingIndex, dataInjection));
             }
     
             /**
@@ -370,32 +571,36 @@ public class InjectionModel extends AbstractModelObservable {
              * #Need primary evasion
              * TODO separate method
              */
-            if (!"".equals(ConnectionUtil.getRequest())) {
+            // TODO Extract in method
+            if (!ParameterUtil.getRequest().isEmpty() || ConnectionUtil.tokenCsrf != null) {
                 try {
                     ConnectionUtil.fixCustomRequestMethod(connection, ConnectionUtil.getTypeRequest());
                     
                     connection.setDoOutput(true);
                     connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
     
-                    if (ConnectionUtil.getTypeRequest().matches("PUT|POST")) {
-                        DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
-                        dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.getRequest(), isUsingIndex, dataInjection));
-                        dataOut.flush();
-                        dataOut.close();
+                    DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
+                    if (ConnectionUtil.tokenCsrf != null) {
+                        dataOut.writeBytes(ConnectionUtil.tokenCsrf.getKey() +"="+ ConnectionUtil.tokenCsrf.getValue() +"&");
                     }
+                    if (ConnectionUtil.getTypeRequest().matches("PUT|POST")) {
+                        dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, ParameterUtil.getRequestAsString(), isUsingIndex, dataInjection));
+                    }
+                    dataOut.flush();
+                    dataOut.close();
                     
-                    msgHeader.put(Header.POST, this.buildQuery(MethodInjection.REQUEST, ConnectionUtil.getRequest(), isUsingIndex, dataInjection));
+                    msgHeader.put(Header.POST, this.buildQuery(MethodInjection.REQUEST, ParameterUtil.getRequestAsString(), isUsingIndex, dataInjection));
                 } catch (IOException e) {
                     LOGGER.warn("Error during Request connection: "+ e.getMessage(), e);
                 }
             }
             
-            msgHeader.put(Header.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
+            msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
     
             // Request the web page to the server
+            StringBuilder sb = new StringBuilder();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                 char[] buffer = new char[4096];
-                StringBuilder sb = new StringBuilder();
                 while (reader.read(buffer) > 0) {
                     sb.append(buffer);
                 }
@@ -405,14 +610,27 @@ public class InjectionModel extends AbstractModelObservable {
                 // Ignore connection errors like 403, 406
                 // Http status code already logged in Network tab
 
+                InputStream inputErrorStream = connection.getErrorStream();
+                
+                if (inputErrorStream != null) {
+                    String line;
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputErrorStream))) {
+                        while ((line = reader.readLine()) != null) {
+                            sb.append(line + "\r\n");
+                        }
+                    } catch (Exception e2) {
+                        // Ignore
+                        throw e2;
+                    }
+                    pageSource = sb.toString();
+                }
+
                 // Ignore
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
                 LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
             
-            // Disable caching of authentication like Kerberos
-            // TODO worth the disconnection ?
-//            connection.disconnect();
+            // Calling connection.disconnect() is not required, further calls will follow
             
             msgHeader.put(Header.SOURCE, pageSource);
             
@@ -440,18 +658,19 @@ public class InjectionModel extends AbstractModelObservable {
      *  - SQL query without index requirement<br>
      *  - SQL query with index requirement.
      * @param dataType Current method to build
-     * @param paramLead Beginning of the request data
+     * @param urlBase Beginning of the request data
      * @param isUsingIndex False if request doesn't use indexes
      * @param sqlTrail SQL statement
      * @return Final data
      */
-    private String buildURL(String paramLead, boolean isUsingIndex, String sqlTrail) {
-        if (paramLead.contains("*")) {
+    private String buildURL(String urlBase, boolean isUsingIndex, String sqlTrail) {
+        if (urlBase.contains(InjectionModel.STAR)) {
             if (!isUsingIndex) {
-                return paramLead.replace("*", sqlTrail);
+                return urlBase.replace(InjectionModel.STAR, sqlTrail);
             } else {
                 return
-                    paramLead.replace("*",
+                    urlBase.replace(
+                        InjectionModel.STAR,
                         this.indexesInUrl.replaceAll(
                             "1337" + ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).getVisibleIndex() + "7331",
                             /**
@@ -464,21 +683,22 @@ public class InjectionModel extends AbstractModelObservable {
                 ;
             }
         }
-        return paramLead;
+        return urlBase;
     }
     
     private String buildQuery(MethodInjection methodInjection, String paramLead, boolean isUsingIndex, String sqlTrail) {
         String query;
         
         // TODO simplify
-        if (ConnectionUtil.getMethodInjection() != methodInjection || ConnectionUtil.getUrlBase().contains("*")) {
+        if (ConnectionUtil.getMethodInjection() != methodInjection || ConnectionUtil.getUrlBase().contains(InjectionModel.STAR)) {
             query = paramLead;
-        } else if (paramLead.contains("*")) {
+        } else if (paramLead.contains(InjectionModel.STAR)) {
             if (!isUsingIndex) {
-                query = paramLead.replace("*", sqlTrail);
+                query = paramLead.replace(InjectionModel.STAR, sqlTrail);
             } else {
                 query =
-                    paramLead.replace("*",
+                    paramLead.replace(
+                        InjectionModel.STAR,
                         this.indexesInUrl.replaceAll(
                             "1337" + ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).getVisibleIndex() + "7331",
                             /**
@@ -522,16 +742,8 @@ public class InjectionModel extends AbstractModelObservable {
         // Replace spaces
         query = query.replaceAll("\\s+", "+");
         
-        // TODO Add ending line comment, except for INGRES
-        query = query+(
-            this.vendor != Vendor.INGRES
-            && this.vendor != Vendor.MCKOI
-            && this.vendor != Vendor.MEMSQL
-            ? this.vendor != Vendor.NEO4J
-                ? "--+"
-                : "//"
-            : ""
-        );
+        // Add ending line comment by vendor
+        query = query + this.vendor.instance().endingComment();
         
         return query;
     }
@@ -569,20 +781,31 @@ public class InjectionModel extends AbstractModelObservable {
             ConnectionUtil.setUrlByUser(urlQuery);
             
             // Parse url and GET query string
-            ConnectionUtil.setQueryString("");
-            Matcher regexSearch = Pattern.compile("(.*)(\\?.*)").matcher(urlQuery);
+            ParameterUtil.setQueryString(new ArrayList<SimpleEntry<String, String>>());
+            Matcher regexSearch = Pattern.compile("(.*\\?)(.*)").matcher(urlQuery);
             if (regexSearch.find()) {
                 ConnectionUtil.setUrlBase(regexSearch.group(1));
                 if (!"".equals(url.getQuery())) {
-                    ConnectionUtil.setQueryString(regexSearch.group(2));
+                    ParameterUtil.setQueryString(
+                        Pattern.compile("&").splitAsStream(regexSearch.group(2))
+                        .map(s -> Arrays.copyOf(s.split("="), 2))
+                        .map(o -> new SimpleEntry<String, String>(decode(o[0]), decode(o[1])))
+                        .collect(Collectors.toList())
+                    );
                 }
             } else {
                 ConnectionUtil.setUrlBase(urlQuery);
             }
             
             // Define other methods
-            ConnectionUtil.setRequest(dataRequest);
-            ConnectionUtil.setHeader(dataHeader);
+            ParameterUtil.setRequest(Pattern.compile("&").splitAsStream(dataRequest)
+                    .map(s -> Arrays.copyOf(s.split("="), 2))
+                    .map(o -> new SimpleEntry<String, String>(decode(o[0]), decode(o[1])))
+                    .collect(Collectors.toList()));
+            ParameterUtil.setHeader(Pattern.compile("\\\\r\\\\n").splitAsStream(dataHeader)
+                    .map(s -> Arrays.copyOf(s.split(":"), 2))
+                    .map(o -> new SimpleEntry<String, String>(decode(o[0]), decode(o[1])))
+                    .collect(Collectors.toList()));
             ConnectionUtil.setMethodInjection(methodInjection);
             ConnectionUtil.setTypeRequest(typeRequest);
             
@@ -606,6 +829,7 @@ public class InjectionModel extends AbstractModelObservable {
         }
     }
     
+    // TODO Util
     public void displayVersion() {
         String versionJava = System.getProperty("java.version");
         String nameSystemArchitecture = System.getProperty("os.arch");
@@ -650,10 +874,6 @@ public class InjectionModel extends AbstractModelObservable {
 
     public void setStrategy(StrategyInjection strategy) {
         this.strategy = strategy;
-    }
-
-    public String getCharInsertion() {
-        return this.charInsertion;
     }
 
     public String getSrcSuccess() {

@@ -120,6 +120,9 @@ rpad(
 )
             </calibrator>
             <limitBoundary>1</limitBoundary>
+            <fingerprint>
+                <errorMessage>Non-terminated string</errorMessage>
+            </fingerprint>
         </configuration>
         <normal>
             <indices>union select ${RESULT_RANGE} from (${INDICE_UNIQUE})b</indices>

@@ -138,6 +138,10 @@ rpad(
 )
             </calibrator>
             <limitBoundary>0</limitBoundary>
+            <endingComment>--+</endingComment>
+            <fingerprint>
+                <errorMessage>hana</errorMessage>
+            </fingerprint>
         </configuration>
         <normal>
             <indices>union select ${INDICES} from dummy</indices>

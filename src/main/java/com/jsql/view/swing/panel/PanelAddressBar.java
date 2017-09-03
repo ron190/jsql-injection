@@ -47,6 +47,7 @@ import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.method.MethodInjection;
+import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.StateButton;
@@ -122,8 +123,8 @@ public class PanelAddressBar extends JPanel {
             }
         };
         this.textFieldAddress = new JTextFieldAddressBar(fieldWithIcon).getProxy();
-        I18n.addComponentForKey("ADDRESS_BAR", fieldWithIcon);
-        I18n.addComponentForKey("FIELD_QUERYSTRING_TOOLTIP", j[0]);
+        I18nView.addComponentForKey("ADDRESS_BAR", fieldWithIcon);
+        I18nView.addComponentForKey("FIELD_QUERYSTRING_TOOLTIP", j[0]);
         
         final JToolTipI18n[] j2 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("FIELD_REQUEST_TOOLTIP"))};
         this.textFieldRequest = new JPopupTextField(new JTextFieldPlaceholder("e.g. key=value&injectMe="){
@@ -134,10 +135,10 @@ public class PanelAddressBar extends JPanel {
                 return tipI18n;
             }
         }).getProxy();
-        I18n.addComponentForKey("FIELD_REQUEST_TOOLTIP", j2[0]);
+        I18nView.addComponentForKey("FIELD_REQUEST_TOOLTIP", j2[0]);
         
         final JToolTipI18n[] j3 = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("FIELD_HEADER_TOOLTIP"))};
-        this.textFieldHeader = new JPopupTextField(new JTextFieldPlaceholder("e.g. key:value\\r\\nCookie:cKey=cValue\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\ninjectMe:"){
+        this.textFieldHeader = new JPopupTextField(new JTextFieldPlaceholder("e.g. key: value\\r\\nCookie: cKey1=cValue1; cKey2=cValue2\\r\\nAuthorization: Basic dXNlcjpwYXNz\\r\\ninjectMe:"){
             @Override
             public JToolTip createToolTip() {
                 JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey("FIELD_HEADER_TOOLTIP"));
@@ -145,7 +146,7 @@ public class PanelAddressBar extends JPanel {
                 return j3[0];
             }
         }).getProxy();
-        I18n.addComponentForKey("FIELD_HEADER_TOOLTIP", j3[0]);
+        I18nView.addComponentForKey("FIELD_HEADER_TOOLTIP", j3[0]);
                 
         final JPanel panelHttpProtocol = new JPanel();
         panelHttpProtocol.setLayout(new BoxLayout(panelHttpProtocol, BoxLayout.LINE_AXIS));

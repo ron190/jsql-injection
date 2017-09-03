@@ -42,9 +42,9 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
             && !AltKeyEventDispatcher.wasAltGraphPressed[0]
         ;
         
-        boolean wasAltPressedAlready = 
-            !AltKeyEventDispatcher.wasAltDPressed[0] 
-            && !AltKeyEventDispatcher.wasAltPressed[0] 
+        boolean wasAltPressedAlready =
+            !AltKeyEventDispatcher.wasAltDPressed[0]
+            && !AltKeyEventDispatcher.wasAltPressed[0]
             && !AltKeyEventDispatcher.wasAltGraphPressed[0]
         ;
         

@@ -107,6 +107,8 @@ public abstract class AbstractShell extends JTextPane {
         try {
             // Disable antialiasing
             // TODO: incompatible with Java 9
+//            System.setProperty("awt.useSystemAAFontSettings","off");
+//            System.setProperty("swing.aatext", "false");
             this.putClientProperty(SwingUtilities2.AA_TEXT_PROPERTY_KEY, null);
         } catch (NoSuchFieldError e) {
             LOGGER.error(e.getMessage(), e);

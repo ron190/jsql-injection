@@ -131,6 +131,15 @@ select
             </failsafe>
             <calibrator>replicate('${CALIBRATOR_SQL}', 1024)</calibrator>
             <limitBoundary>1</limitBoundary>
+            <endingComment>--+</endingComment>
+            <fingerprint>
+                <errorMessage>Warning: sybase_connect()</errorMessage>
+                <errorMessage>Warning: sybase_query()</errorMessage>
+                <errorMessage>Warning: sybase_fetch_row()</errorMessage>
+                <errorMessage>Sybase: Server message: </errorMessage>
+                <errorMessage>Invalid SQL statement or JDBC escape, terminating '</errorMessage>
+                <errorMessage>sybase</errorMessage>
+            </fingerprint>
         </configuration>
         <normal>
             <indices>union select ${RESULT_RANGE} from (${INDICE_UNIQUE}) b</indices>

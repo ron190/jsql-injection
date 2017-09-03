@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
@@ -50,6 +51,7 @@ import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 import com.jsql.util.ConnectionUtil;
+import com.jsql.util.HeaderUtil;
 import com.jsql.view.scan.ScanListTerminal;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.ListItem;
@@ -113,7 +115,7 @@ public class RessourceAccess {
     }
 
     /**
-     * Check if every page in the list responds 200 OK.
+     * Check if every page in the list responds 200 Success.
      * @param urlInjection
      * @param pageNames List of admin pages ot test
      * @throws InterruptedException
@@ -159,7 +161,7 @@ public class RessourceAccess {
                     MediatorModel.model().sendToViews(request);
 
                     nbAdminPagesFound++;
-                    LOGGER.debug("Found: "+ currentCallable.getUrl());
+                    LOGGER.debug("Found admin page: "+ currentCallable.getUrl());
                 }
             } catch (InterruptedException | ExecutionException e) {
                 LOGGER.error("Interruption while checking Admin pages", e);
@@ -172,7 +174,7 @@ public class RessourceAccess {
         RessourceAccess.isSearchAdminStopped = false;
 
         String result =
-            "Found "+ nbAdminPagesFound +" page"+( nbAdminPagesFound > 1 ? 's' : "" )+" "
+            "Found "+ nbAdminPagesFound +" admin page"+( nbAdminPagesFound > 1 ? 's' : "" )+" "
             + (tasksHandled != submittedTasks ? "of "+ tasksHandled +" processed " : "")
             + "on a total of "+ submittedTasks
         ;
@@ -251,10 +253,10 @@ public class RessourceAccess {
      * @throws IOException
      */
     private static String runCommandShell(String urlCommand) throws IOException {
-        URLConnection connection;
+        HttpURLConnection connection;
 
         String url = urlCommand;
-        connection = new URL(url).openConnection();
+        connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setReadTimeout(ConnectionUtil.TIMEOUT);
         connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
 
@@ -263,6 +265,15 @@ public class RessourceAccess {
             String line;
             while ((line = reader.readLine()) != null) {
                 pageSource.append(line + "\n");
+            }
+        } catch (IOException e) {
+            String line;
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()))) {
+                while ((line = reader.readLine()) != null) {
+                    pageSource.append(line + "\r\n");
+                }
+            } catch (Exception e2) {
+                throw e2;
             }
         }
 
@@ -283,7 +294,7 @@ public class RessourceAccess {
         msgHeader.put(Header.URL, url);
         msgHeader.put(Header.POST, "");
         msgHeader.put(Header.HEADER, "");
-        msgHeader.put(Header.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
+        msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
         msgHeader.put(Header.SOURCE, pageSource.toString());
         
         Request request = new Request();
@@ -603,7 +614,7 @@ public class RessourceAccess {
                     msgHeader.put(Header.URL, urlFileFixed);
                     msgHeader.put(Header.POST, "");
                     msgHeader.put(Header.HEADER, "");
-                    msgHeader.put(Header.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
+                    msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
                     msgHeader.put(Header.SOURCE, result.toString());
     
                     Request request = new Request();
@@ -785,7 +796,7 @@ public class RessourceAccess {
                 urlurl.getBeanInjection().getUrl(),
                 urlurl.getBeanInjection().getRequest(),
                 urlurl.getBeanInjection().getHeader(),
-                urlurl.getBeanInjection().getInjectionType(),
+                urlurl.getBeanInjection().getInjectionTypeAsEnum(),
                 urlurl.getBeanInjection().getRequestType(),
                 true
             );

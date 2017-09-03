@@ -2,6 +2,7 @@ package com.jsql.model.injection.vendor;
 
 import com.jsql.model.injection.vendor.xml.Model;
 
+// TODO delete
 public abstract class AbstractVendorDefault implements AbstractVendor {
     
     protected Model xmlModel;

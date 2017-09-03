@@ -110,6 +110,10 @@ RETURN
     )
             </calibrator>
             <limitBoundary>0</limitBoundary>
+            <endingComment>//</endingComment>
+            <fingerprint>
+                <errorMessage>neo4j</errorMessage>
+            </fingerprint>
         </configuration>
         <normal>
             <indices>RETURN 'A' AS A UNION ${INDICES}</indices>

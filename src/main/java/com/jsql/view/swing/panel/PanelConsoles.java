@@ -61,6 +61,7 @@ import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.util.StringUtil;
+import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.console.JavaConsoleAdapter;
@@ -350,7 +351,7 @@ public class PanelConsoles extends JPanel {
             MediatorGui.tabConsoles().indexOfTab("Console"),
             labelConsole
         );
-        I18n.addComponentForKey("CONSOLE_MAIN_LABEL", labelConsole);
+        I18nView.addComponentForKey("CONSOLE_MAIN_LABEL", labelConsole);
 
         // Order is important
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
@@ -425,7 +426,7 @@ public class PanelConsoles extends JPanel {
             MediatorGui.tabConsoles().indexOfTab("Chunk"),
             labelChunk
         );
-        I18n.addComponentForKey("CONSOLE_CHUNK_LABEL", labelChunk);
+        I18nView.addComponentForKey("CONSOLE_CHUNK_LABEL", labelChunk);
     }
 
     /**
@@ -445,7 +446,7 @@ public class PanelConsoles extends JPanel {
             MediatorGui.tabConsoles().indexOfTab("Boolean"),
             labelBoolean
         );
-        I18n.addComponentForKey("CONSOLE_BINARY_LABEL", labelBoolean);
+        I18nView.addComponentForKey("CONSOLE_BINARY_LABEL", labelBoolean);
     }
 
     /**
@@ -465,7 +466,7 @@ public class PanelConsoles extends JPanel {
             MediatorGui.tabConsoles().indexOfTab("Network"),
             labelNetwork
         );
-        I18n.addComponentForKey("CONSOLE_NETWORK_LABEL", labelNetwork);
+        I18nView.addComponentForKey("CONSOLE_NETWORK_LABEL", labelNetwork);
     }
 
     /**
@@ -485,7 +486,7 @@ public class PanelConsoles extends JPanel {
             MediatorGui.tabConsoles().indexOfTab("Java"),
             labelJava
         );
-        I18n.addComponentForKey("CONSOLE_JAVA_LABEL", labelJava);
+        I18nView.addComponentForKey("CONSOLE_JAVA_LABEL", labelJava);
     }
     
     public void addHeader(HttpHeader header) {

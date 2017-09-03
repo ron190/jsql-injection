@@ -31,11 +31,13 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     /**
      * 
      */
+    // TODO Pojo injection
     private String performanceLength = "0";
     
     /**
-     * i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML source.
+     * i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body.
      */
+    // TODO Pojo injection
     private String visibleIndex;
 
     /**
@@ -46,7 +48,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Normal...");
         MediatorModel.model().setIndexesInUrl(new SuspendableGetIndexes().run());
 
-        // Define visibleIndex, i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML source
+        // Define visibleIndex, i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body
         this.visibleIndex = this.getVisibleIndex(MediatorModel.model().getSrcSuccess());
         
         this.isApplicable =

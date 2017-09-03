@@ -122,6 +122,7 @@ public abstract class AbstractNodeModel {
         return this.elementDatabase.getParent();
     }
     
+    @SuppressWarnings("serial")
     public class JPopupMenu2 extends JPopupMenu {
         
         ButtonGroup buttonGroupLoadRows;

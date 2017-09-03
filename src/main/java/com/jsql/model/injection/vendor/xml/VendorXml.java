@@ -27,6 +27,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
@@ -405,6 +406,22 @@ public class VendorXml extends AbstractVendorDefault {
             .replace(LIMIT, Integer.toString(limitSQLResult + limitBoundary));
     }
     
+    @Override
+    public String endingComment() {
+        return this.xmlModel.getStrategy().getConfiguration().getEndingComment();
+    }
+    
+    @Override
+    public String fingerprintErrorsAsRegex() {
+        return StringUtils.join(
+            this.xmlModel.getStrategy().getConfiguration().getFingerprint().getErrorMessage()
+                .stream()
+                .map(Pattern::quote)
+                .toArray(),
+            "|"
+        );
+    }
+    
     public static String replaceTags(String sqlRequest) {
         return
             sqlRequest
@@ -421,4 +438,5 @@ public class VendorXml extends AbstractVendorDefault {
             .replace("${LEAD}", LEAD)
             .replace("${LEAD_HEX}", LEAD_HEX);
     }
+    
 }

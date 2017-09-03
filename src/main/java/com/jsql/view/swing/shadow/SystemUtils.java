@@ -48,7 +48,7 @@ public class SystemUtils {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-    private static final String osWindows = "Windows";
+    private static final String OS_WINDOWS = "Windows";
 
     // Internal Constants *****************************************************
 
@@ -100,7 +100,7 @@ public class SystemUtils {
      * True if this is Windows.
      */
     public static final boolean IS_OS_WINDOWS =
-        startsWith(OS_NAME, osWindows);
+        startsWith(OS_NAME, OS_WINDOWS);
 
     /**
      * True if this is Windows 98.
@@ -112,43 +112,43 @@ public class SystemUtils {
      * True if this is Windows ME.
      */
     public static final boolean IS_OS_WINDOWS_ME =
-        startsWith(OS_NAME, osWindows) && startsWith(OS_VERSION, "4.9");
+        startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "4.9");
 
     /**
      * True if this is Windows 2000.
      */
     public static final boolean IS_OS_WINDOWS_2000 =
-        startsWith(OS_NAME, osWindows) && startsWith(OS_VERSION, "5.0");
+        startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "5.0");
 
     /**
      * True if this is Windows XP.
      */
     public static final boolean IS_OS_WINDOWS_XP =
-        startsWith(OS_NAME, osWindows) && startsWith(OS_VERSION, "5.1");
+        startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "5.1");
 
     /**
      * True if this is Windows Vista or Server 2008.
      */
     public static final boolean IS_OS_WINDOWS_VISTA =
-        startsWith(OS_NAME, osWindows) && startsWith(OS_VERSION, "6.0");
+        startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "6.0");
 
     /**
      * True if this is Windows 7.
      */
     public static final boolean IS_OS_WINDOWS_7 =
-        startsWith(OS_NAME, osWindows) && startsWith(OS_VERSION, "6.1");
+        startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "6.1");
 
     /**
      * True if this is Windows 8.
      */
     public static final boolean IS_OS_WINDOWS_8 =
-        startsWith(OS_NAME, osWindows) && startsWith(OS_VERSION, "6.2");
+        startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "6.2");
 
     /**
      * True if this is Windows Vista/Server 2008/7/2008 R2/8.
      */
     public static final boolean IS_OS_WINDOWS_6_OR_LATER =
-        startsWith(OS_NAME, osWindows) && startsWith(OS_VERSION, "6.");
+        startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "6.");
 
     // Requesting the Java Version ********************************************
 

@@ -35,6 +35,7 @@ import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.util.PreferencesUtil;
+import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.DnDList;
@@ -107,7 +108,7 @@ public class ManagerUpload extends AbstractManagerList {
         );
 
         this.run = new JButtonStateful(I18n.valueByKey("UPLOAD_RUN_BUTTON_LABEL"));
-        I18n.addComponentForKey("UPLOAD_RUN_BUTTON_LABEL", this.run);
+        I18nView.addComponentForKey("UPLOAD_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("UPLOAD_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
         
@@ -153,7 +154,7 @@ public class ManagerUpload extends AbstractManagerList {
         });
 
         this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.ICON_SQUARE_GREY, SwingConstants.LEFT);
-        I18n.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
+        I18nView.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
         this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND));
         this.privilege.setToolTipText(I18n.valueByKey("PRIVILEGE_TOOLTIP"));
 

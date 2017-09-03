@@ -87,6 +87,12 @@ rpad(
 )
             </calibrator>
             <limitBoundary>1</limitBoundary>
+            <endingComment>--+</endingComment>
+            <fingerprint>
+                <errorMessage>Warning: ibase_query() </errorMessage>
+                <errorMessage>function.ibase-query</errorMessage>
+                <errorMessage>Unexpected end of command - line </errorMessage>
+            </fingerprint>
         </configuration>
         <normal>
             <indices>union select ${INDICES} from RDB$DATABASE</indices>

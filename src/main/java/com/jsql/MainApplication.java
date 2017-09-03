@@ -2,8 +2,6 @@ package com.jsql;
 
 import java.awt.AWTError;
 import java.awt.HeadlessException;
-import java.net.CookieHandler;
-import java.net.CookieManager;
 import java.net.URISyntaxException;
 
 import org.apache.log4j.Appender;
@@ -35,7 +33,8 @@ public class MainApplication {
     private static final Logger LOGGER = Logger.getRootLogger();
     
     // Keep referenced class for Maven shade minimizeJar
-    Appender build = new ConsoleAppender();
+    @SuppressWarnings("unused")
+    private Appender build = new ConsoleAppender();
     
     private MainApplication() {
         // nothing
@@ -47,9 +46,6 @@ public class MainApplication {
      * @throws URISyntaxException
      */
     public static void main(String[] args) throws URISyntaxException {
-
-        CookieManager cookieManager = new CookieManager();
-        CookieHandler.setDefault(cookieManager);
         
     	// Configure global environnement settings
         CertificateUtil.ignoreCertificationChain();
@@ -79,7 +75,7 @@ public class MainApplication {
         model.displayVersion();
         
         // Check application status
-        if (!ProxyUtil.proxyIsResponding(ShowOnConsole.YES)) {
+        if (!ProxyUtil.isChecked(ShowOnConsole.YES)) {
             return;
         }
         

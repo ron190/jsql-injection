@@ -114,6 +114,9 @@ from (
             <failsafe>select cast(x.rrr as char)rr from (select 1337${INDICE}7330%2b1 rrr)x</failsafe>
             <calibrator>'%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23'</calibrator>
             <limitBoundary>1</limitBoundary>
+            <fingerprint>
+                <errorMessage>mckoi</errorMessage>
+            </fingerprint>
         </configuration>
         <normal>
             <indices>union all select rr from (${INDICE_UNIQUE})b</indices>

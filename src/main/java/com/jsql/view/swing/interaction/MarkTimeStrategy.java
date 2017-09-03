@@ -28,10 +28,10 @@ public class MarkTimeStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
-        MediatorGui.managerDatabase().getPanelStrategy().setText(StrategyInjection.TIME.toString());
-        for (int i = 0 ; i < MediatorGui.managerDatabase().getPanelStrategy().getItemCount() ; i++) {
-            if (MediatorGui.managerDatabase().getPanelStrategy().getItem(i).getText().equals(StrategyInjection.TIME.toString())) {
-                MediatorGui.managerDatabase().getPanelStrategy().getItem(i).setSelected(true);
+        MediatorGui.managerDatabase().getMenuStrategy().setText(StrategyInjection.TIME.toString());
+        for (int i = 0 ; i < MediatorGui.managerDatabase().getMenuStrategy().getItemCount() ; i++) {
+            if (MediatorGui.managerDatabase().getMenuStrategy().getItem(i).getText().equals(StrategyInjection.TIME.toString())) {
+                MediatorGui.managerDatabase().getMenuStrategy().getItem(i).setSelected(true);
                 break;
             }
         }

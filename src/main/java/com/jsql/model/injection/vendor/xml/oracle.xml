@@ -196,6 +196,14 @@ rpad(
             </calibrator>
             <capacity>3996</capacity>
             <limitBoundary>1</limitBoundary>
+            <endingComment>--+</endingComment>
+            <fingerprint>
+                <errorMessage>function.oci</errorMessage>
+                <errorMessage>Warning: oci_parse()</errorMessage>
+                <errorMessage>Warning: oci_execute()</errorMessage>
+                <errorMessage>Warning: oci_fetch_array()</errorMessage>
+                <errorMessage>Unclosed quotation mark after the character string '</errorMessage>
+            </fingerprint>
         </configuration>
         <normal>
             <indices>union select ${INDICES} from dual</indices>

@@ -24,6 +24,7 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
 import com.jsql.i18n.I18n;
+import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 
 /**
@@ -49,7 +50,7 @@ public class JPopupMenuTable extends JPopupMenu {
         JMenuItem copyItem = new JMenuItem();
         copyItem.setAction(new ActionCopy());
         copyItem.setText(I18n.valueByKey("CONTEXT_MENU_COPY"));
-        I18n.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
+        I18nView.addComponentForKey("CONTEXT_MENU_COPY", copyItem);
         copyItem.setMnemonic('C');
         copyItem.setIcon(HelperUi.ICON_EMPTY);
         copyItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
@@ -60,7 +61,7 @@ public class JPopupMenuTable extends JPopupMenu {
         JMenuItem selectAllItem = new JMenuItem();
         selectAllItem.setAction(new ActionSelectAll());
         selectAllItem.setText(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"));
-        I18n.addComponentForKey("CONTEXT_MENU_SELECT_ALL", selectAllItem);
+        I18nView.addComponentForKey("CONTEXT_MENU_SELECT_ALL", selectAllItem);
         selectAllItem.setMnemonic('A');
         selectAllItem.setIcon(HelperUi.ICON_EMPTY);
         selectAllItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));

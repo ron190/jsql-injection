@@ -204,6 +204,11 @@ LTRIM(
             <failsafe>CONVERT(varchar, (1337${INDICE}7330%2b1))</failsafe>
             <calibrator>replicate(${CALIBRATOR_HEX}, 1024)</calibrator>
             <limitBoundary>1</limitBoundary>
+            <endingComment>--+</endingComment>
+            <fingerprint>
+                <errorMessage>[Microsoft][SQL Server</errorMessage>
+                <errorMessage>SQL Server</errorMessage>
+            </fingerprint>
         </configuration>
         <normal>
             <indices>union select ${INDICES}</indices>

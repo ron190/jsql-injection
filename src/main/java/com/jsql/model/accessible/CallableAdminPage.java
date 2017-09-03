@@ -14,7 +14,7 @@ import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.util.ConnectionUtil;
+import com.jsql.util.HeaderUtil;
 
 /**
  * Thread unit to test if an administration page exists on the server.
@@ -81,7 +81,7 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
         msgHeader.put(Header.URL, this.urlAdminPage);
         msgHeader.put(Header.POST, "");
         msgHeader.put(Header.HEADER, "");
-        msgHeader.put(Header.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
+        msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
 
         Request request = new Request();
         request.setMessage(Interaction.MESSAGE_HEADER);

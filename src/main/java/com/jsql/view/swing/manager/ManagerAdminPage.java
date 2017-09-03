@@ -28,6 +28,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.RessourceAccess;
+import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.JButtonStateful;
@@ -56,7 +57,7 @@ public class ManagerAdminPage extends AbstractManagerList {
 
         this.defaultText = I18n.valueByKey("ADMIN_PAGE_RUN_BUTTON_LABEL");
         this.run = new JButtonStateful(this.defaultText);
-        I18n.addComponentForKey("ADMIN_PAGE_RUN_BUTTON_LABEL", this.run);
+        I18nView.addComponentForKey("ADMIN_PAGE_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("ADMIN_PAGE_RUN_BUTTON_TOOLTIP"));
         
         this.run.setContentAreaFilled(false);

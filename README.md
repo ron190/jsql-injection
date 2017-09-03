@@ -24,9 +24,9 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 - Code and decode a string
 
 ## Installation [[jsql-injection-v0.79.jar](https://github.com/ron190/jsql-injection/releases/download/v0.79/jsql-injection-v0.79.jar)]
-Install [Java 8](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) of jSQL Injection and double-click on the file `jsql-injection-v0.79.jar` to launch the software.<br>
+Install [Java 8](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.79.jar` to launch the software.<br>
 You can also type `java -jar jsql-injection-v0.79.jar` in your terminal to start the program.<br>
-If you are using Kali Linux then get the latest release using commands `apt update` then `apt full-upgrade`.
+If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
 ## Screenshots and [video](https://youtu.be/ZZkQRE3OL8E)
 [![Default](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default-mini.png "Default")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default.png)

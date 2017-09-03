@@ -3,22 +3,21 @@ package com.jsql.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -26,6 +25,7 @@ import javax.net.ssl.HttpsURLConnection;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
@@ -70,24 +70,11 @@ public class ConnectionUtil {
     private static String typeRequest = "POST";
 
     /**
-     * Query string built from the URL submitted by user.
-     */
-    private static String queryString = "";
-
-    /**
-     * Request submitted by user.
-     */
-    private static String request = "";
-
-    /**
-     * Header submitted by user.
-     */
-    private static String header = "";
-
-    /**
      * Default timeout used by the jcifs fix. It's the default value used usually by the JVM.
      */
     public static final Integer TIMEOUT = 15000;
+    
+    public static SimpleEntry<String, String> tokenCsrf = null;
     
     // Utility class
     private ConnectionUtil() {
@@ -101,6 +88,14 @@ public class ConnectionUtil {
      * @throws InjectionFailureException when any error occurs during the connection
      */
     public static void testConnection() throws InjectionFailureException {
+
+        if (PreferencesUtil.isProcessingCookies()) {
+            CookieManager cookieManager = new CookieManager();
+            CookieHandler.setDefault(cookieManager);
+        } else {
+            CookieHandler.setDefault(null);
+        }
+        
         // Test the HTTP connection
         HttpURLConnection connection = null;
         try {
@@ -126,7 +121,7 @@ public class ConnectionUtil {
                 connection = (HttpURLConnection) new URL(
                     ConnectionUtil.getUrlByUser()
                     // Ignore injection point during the test
-                    .replace("*", "")
+                    .replace(InjectionModel.STAR, "")
                 ).openConnection();
             }
             
@@ -140,17 +135,16 @@ public class ConnectionUtil {
             ConnectionUtil.fixJcifsTimeout(connection);
             
             // Add headers if exists (Authorization:Basic, etc)
-            for (String header: ConnectionUtil.getHeader().split("\\\\r\\\\n")) {
-                ConnectionUtil.sanitizeHeaders(connection, header);
+            for (SimpleEntry<String, String> header: ParameterUtil.getHeader()) {
+                HeaderUtil.sanitizeHeaders(connection, header);
             }
 
-            ConnectionUtil.checkResponseHeader(connection, ConnectionUtil.getUrlByUser());
+            HeaderUtil.checkResponseHeader(connection, ConnectionUtil.getUrlByUser());
             
-            // Disable caching of authentication like Kerberos
-            // TODO worth the disconnection ?
-//            connection.disconnect();
+            // Calling connection.disconnect() is not required, further calls will follow
         } catch (Exception e) {
-            throw new InjectionFailureException("Connection failed: "+ e.getMessage(), e);
+            String message = Optional.ofNullable(e.getMessage()).orElse("");
+            throw new InjectionFailureException("Connection failed: "+ message.replace(e.getClass().getName() +": ", ""), e);
         }
     }
     
@@ -172,16 +166,26 @@ public class ConnectionUtil {
         
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, url);
-        msgHeader.put(Header.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
+        msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
         
         StringBuilder pageSource = new StringBuilder();
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String line;
-        while ((line = reader.readLine()) != null) {
-            pageSource.append(line + "\n");
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                pageSource.append(line + "\n");
+            }
+            reader.close();
+        } catch (IOException e) {
+            String line;
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()))) {
+                while ((line = reader.readLine()) != null) {
+                    pageSource.append(line + "\r\n");
+                }
+            } catch (Exception e2) {
+                throw e2;
+            }
         }
-        reader.close();
 
         msgHeader.put(Header.SOURCE, pageSource.toString());
         
@@ -285,148 +289,6 @@ public class ConnectionUtil {
         }
     }
     
-    /**
-     * Parse the header component and decode any character of the form %xy
-     * except for cookie
-     * @param connection where decoded value will be set
-     * @param header string to decode
-     */
-    public static void sanitizeHeaders(HttpURLConnection connection, String header) {
-        Matcher regexSearch = Pattern.compile("(?s)(.*):(.*)").matcher(header);
-        if (regexSearch.find()) {
-            String keyHeader = regexSearch.group(1).trim();
-            String valueHeader = regexSearch.group(2).trim();
-            // Fix #2124: NullPointerException on addRequestProperty()
-            try {
-                if ("Cookie".equalsIgnoreCase(keyHeader)) {
-                    connection.addRequestProperty(keyHeader, valueHeader);
-                } else {
-                    connection.addRequestProperty(keyHeader, URLDecoder.decode(valueHeader, StandardCharsets.UTF_8.name()));
-                }
-            } catch (NullPointerException | UnsupportedEncodingException e) {
-                LOGGER.error(e, e);
-            }
-        }
-    }
-
-    /**
-     * Verify the headers received after a request, detect authentication response and
-     * send the headers to the view.
-     * @param connection contains headers response
-     * @param url the website to request
-     * @throws IOException when an error occurs during connection
-     */
-    @SuppressWarnings("unchecked")
-    public static void checkResponseHeader(HttpURLConnection connection, String url) throws IOException {
-        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, url);
-        msgHeader.put(Header.RESPONSE, ConnectionUtil.getHttpHeaders(connection));
-
-        if (
-            !PreferencesUtil.isFollowingRedirection()
-            && Pattern.matches("3\\d\\d", Integer.toString(connection.getResponseCode()))
-        ) {
-            LOGGER.warn("HTTP 3XX Redirection detected. Please test again with option 'Follow HTTP redirection' enabled.");
-        }
-        
-        Map<String, String> mapResponse = (Map<String, String>) msgHeader.get(Header.RESPONSE);
-        if (
-            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode()))
-            && mapResponse.containsKey("WWW-Authenticate")
-            && mapResponse.get("WWW-Authenticate") != null
-            && mapResponse.get("WWW-Authenticate").startsWith("Basic ")
-        ) {
-            LOGGER.warn(
-                "Basic Authentication detected.\n"
-                + "Please define and enable authentication information in the panel Preferences.\n"
-                + "Or open Advanced panel, add 'Authorization: Basic b3N..3Jk' to the Header, replace b3N..3Jk with the string 'osUserName:osPassword' encoded in Base64. You can use the Coder in jSQL to encode the string."
-            );
-        
-        } else if (
-            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode()))
-            && mapResponse.containsKey("WWW-Authenticate")
-            && "NTLM".equals(mapResponse.get("WWW-Authenticate"))
-        ) {
-            LOGGER.warn(
-                "NTLM Authentication detected.\n"
-                + "Please define and enable authentication information in the panel Preferences.\n"
-                + "Or add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
-            );
-        
-        } else if (
-            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode()))
-            && mapResponse.containsKey("WWW-Authenticate")
-            && mapResponse.get("WWW-Authenticate") != null
-            && mapResponse.get("WWW-Authenticate").startsWith("Digest ")
-        ) {
-            LOGGER.warn(
-                "Digest Authentication detected.\n"
-                + "Please define and enable authentication information in the panel Preferences."
-            );
-        
-        } else if (
-            Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode()))
-            && mapResponse.containsKey("WWW-Authenticate")
-            && "Negotiate".equals(mapResponse.get("WWW-Authenticate"))
-        ) {
-            LOGGER.warn(
-                "Negotiate Authentication detected.\n"
-                + "Please add username, password and domain information to the URL, e.g. http://domain\\user:password@127.0.0.1/[..]"
-            );
-        }
-        
-        // Request the web page to the server
-        StringBuilder pageSource = new StringBuilder();
-        Exception exception = null;
-        
-        String line;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            while ((line = reader.readLine()) != null) {
-                pageSource.append(line + "\r\n");
-            }
-        } catch (IOException e) {
-            exception = e;
-        }
-
-        msgHeader.put(Header.SOURCE, pageSource.toString());
-        
-        // Inform the view about the log infos
-        Request request = new Request();
-        request.setMessage(Interaction.MESSAGE_HEADER);
-        request.setParameters(msgHeader);
-        MediatorModel.model().sendToViews(request);
-        
-        if (exception != null) {
-            throw new IOException(exception);
-        }
-    }
-    
-    /**
-     * Extract HTTP headers from a connection.
-     * @param connection Connection with HTTP headers
-     * @return Map of HTTP headers <name, value>
-     */
-    public static Map<String, String> getHttpHeaders(URLConnection connection) {
-        Map<String, String> mapHeaders = new HashMap<>();
-        
-        for (int i = 0 ; ; i++) {
-            // Fix #6456: IllegalArgumentException on getHeaderFieldKey()
-            // Implementation by sun.net.www.protocol.http.HttpURLConnection.getHeaderFieldKey()
-            try {
-                String headerName = connection.getHeaderFieldKey(i);
-                String headerValue = connection.getHeaderField(i);
-                if (headerName == null && headerValue == null) {
-                    break;
-                }
-                mapHeaders.put(headerName == null ? "Method" : headerName, headerValue);
-            } catch (IllegalArgumentException e) {
-                LOGGER.error(e.getMessage(), e);
-            }
-        }
-
-        return mapHeaders;
-    }
-    
     // Getters and setters
     
     public static String getUrlByUser() {
@@ -459,30 +321,6 @@ public class ConnectionUtil {
 
     public static void setTypeRequest(String typeRequest) {
         ConnectionUtil.typeRequest = typeRequest;
-    }
-    
-    public static String getQueryString() {
-        return queryString;
-    }
-
-    public static void setQueryString(String queryString) {
-        ConnectionUtil.queryString = queryString;
-    }
-    
-    public static String getRequest() {
-        return request;
-    }
-
-    public static void setRequest(String request) {
-        ConnectionUtil.request = request;
-    }
-    
-    public static String getHeader() {
-        return header;
-    }
-
-    public static void setHeader(String header) {
-        ConnectionUtil.header = header;
     }
     
 }

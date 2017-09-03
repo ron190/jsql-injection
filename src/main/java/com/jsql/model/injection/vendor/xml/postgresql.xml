@@ -137,6 +137,16 @@ select
             <failsafe>(1337${INDICE}7330%2b1)::text</failsafe>
             <calibrator>repeat(chr(35), 1024)</calibrator>
             <limitBoundary>0</limitBoundary>
+            <endingComment>--+</endingComment>
+            <fingerprint>
+                <!-- jdbc -->
+                <errorMessage>ERROR: unterminated quoted identifier at or near</errorMessage>
+                <!-- php -->
+                <errorMessage>Query failed: ERROR:  unterminated quoted string at or near</errorMessage>
+                <!-- php -->
+                <errorMessage>function\\.pg</errorMessage>
+                <errorMessage>PostgreSQL</errorMessage>
+            </fingerprint>
         </configuration>
         <normal>
             <indices>union select ${INDICES}</indices>

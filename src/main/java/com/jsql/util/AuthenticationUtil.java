@@ -146,13 +146,13 @@ public class AuthenticationUtil {
         // Manage the restart of application if required
         // TODO Remove from model
         if (
-            isRestartRequired &&
-            JOptionPane.showConfirmDialog(
+            isRestartRequired
+            && JOptionPane.showConfirmDialog(
                 MediatorGui.frame(),
-                "File krb5.conf has changed, please restart.",
-                "Restart",
-                JOptionPane.YES_NO_OPTION
-            ) == JOptionPane.YES_OPTION
+                    "File krb5.conf has changed, please restart.",
+                    "Restart",
+                    JOptionPane.YES_NO_OPTION
+                ) == JOptionPane.YES_OPTION
         ) {
             new ActionNewWindow().actionPerformed(null);
         }

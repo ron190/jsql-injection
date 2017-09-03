@@ -145,6 +145,9 @@ concat(
             <failsafe>1337${INDICE}7330%2b1</failsafe>
             <calibrator>rpad('${CALIBRATOR_SQL}',1024,'${CALIBRATOR_SQL}')</calibrator>
             <limitBoundary>0</limitBoundary>
+            <fingerprint>
+                <errorMessage>memsql</errorMessage>
+            </fingerprint>
         </configuration>
         <normal>
             <indices>union select ${INDICES}</indices>

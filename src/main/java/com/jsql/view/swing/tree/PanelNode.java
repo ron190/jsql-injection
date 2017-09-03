@@ -71,12 +71,14 @@ public class PanelNode extends JPanel {
     public PanelNode(final JTree tree, final DefaultMutableTreeNode currentNode) {
         ImageIcon animatedGIF = new ImageIcon(PanelNode.class.getResource(HelperUi.PATH_PROGRESSBAR));
         animatedGIF.setImageObserver(new ImageObserverAnimated(tree, currentNode));
+        
         this.loader.setIcon(animatedGIF);
+        this.loader.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
         this.progressBar.setPreferredSize(new Dimension(20, 20));
         this.progressBar.setUI(new BasicProgressBarUI());
+        
         this.label.setOpaque(true);
-
         this.label.setBorder(HelperUi.BORDER_FOCUS_GAINED);
 
         this.icon.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -91,14 +93,15 @@ public class PanelNode extends JPanel {
         this.add(this.textFieldEditable);
         this.setComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
 
-        this.progressBar.setVisible(false);
         this.progressBar.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createEmptyBorder(4, 4, 4, 4),
+            BorderFactory.createEmptyBorder(4,3,4,3),
             BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.GRAY),
                 BorderFactory.createLineBorder(Color.WHITE)
             )
         ));
+        
+        this.progressBar.setVisible(false);
         this.loader.setVisible(false);
         this.label.setVisible(false);
         this.icon.setVisible(false);

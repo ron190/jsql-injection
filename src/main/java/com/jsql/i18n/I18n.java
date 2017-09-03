@@ -2,13 +2,8 @@ package com.jsql.i18n;
 
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -18,7 +13,6 @@ import org.apache.log4j.Logger;
  * manually by user.
  * If the current system language is not supported then the user is proposed to use
  * the community translation protocol.
- * TODO: add graphical component methods to the view
  */
 public class I18n {
 	
@@ -40,22 +34,6 @@ public class I18n {
      * Bundle of i18n keys and translated text for the current system language
      */
     private static ResourceBundle localeDefault = ResourceBundle.getBundle("com.jsql.i18n.jsql", Locale.getDefault());
-
-    /**
-     * A list of graphical components for each i18n keys in the main properties
-     * TODO: add to the view
-     */
-    private static final Map<String, List<Object>> componentsLocalized = new HashMap<>();
-    
-    /**
-     * Initialize the list of graphical components
-     * TODO: add to the view
-     */
-    static {
-        for (String keyI18n: I18n.LOCALE_ROOT.keySet()) {
-        	I18n.componentsLocalized.put(keyI18n, new ArrayList<>());
-        }
-    }
     
     // Utility class
     private I18n() {
@@ -69,38 +47,6 @@ public class I18n {
      */
     public static String valueByKey(String key) {
     	return (String) I18n.localeDefault.getObject(key);
-    }
-    
-    /**
-     * Return the i18n keys of components whose text is replaced
-     * when the translation changes.
-     * @return a list of key names of a i18n key in the properties
-     * TODO: add to the view
-     */
-    public static Set<String> keys() {
-        return I18n.componentsLocalized.keySet();
-    }
-    
-    /**
-     * Get a list of graphical components whose text corresponds
-     * to the i18n key in the properties.
-     * @param key name of a i18n key in the properties
-     * @return a list of graphical components
-     * TODO: add to the view
-     */
-    public static List<Object> componentsByKey(String key) {
-        return I18n.componentsLocalized.get(key);
-    }
-    
-    /**
-     * Add a graphical component to those whose text must be changed when
-     * the language changes.
-     * @param key name of a i18n key in the properties
-     * @param component graphical component which will receive the translated text
-     * TODO: add to the view
-     */
-    public static void addComponentForKey(String key, Object component) {
-    	I18n.componentsLocalized.get(key).add(component);
     }
     
     /**
@@ -130,6 +76,10 @@ public class I18n {
     
     public static Locale getLocaleDefault() {
     	return I18n.localeDefault.getLocale();
+    }
+
+    public static ResourceBundle getLocaleRoot() {
+        return LOCALE_ROOT;
     }
     
 }

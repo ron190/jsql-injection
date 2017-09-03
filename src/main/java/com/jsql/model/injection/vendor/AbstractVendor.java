@@ -4,6 +4,7 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.injection.vendor.xml.Model;
 
+// TODO delete
 interface AbstractVendor {
     
     public String sqlInfos();
@@ -54,5 +55,8 @@ interface AbstractVendor {
     public String sqlError(String sqlQuery, String startPosition);
 
     public String sqlTime(String sqlQuery, String startPosition);
+    
+    public String endingComment();
+    public String fingerprintErrorsAsRegex();
     
 }

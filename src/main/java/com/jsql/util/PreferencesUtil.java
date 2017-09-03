@@ -33,6 +33,18 @@ public class PreferencesUtil {
     private static boolean isFollowingRedirection = false;
     
     private static boolean isInjectingMetadata = true;
+    
+    private static boolean isCheckingAllParam = false;
+    private static boolean isCheckingAllURLParam = false;
+    private static boolean isCheckingAllRequestParam = false;
+    private static boolean isCheckingAllHeaderParam = false;
+    private static boolean isCheckingAllJSONParam = false;
+    private static boolean isCheckingAllCookieParam = false;
+    
+    private static boolean isParsingForm = false;
+    private static boolean isNotTestingConnection = false;
+    private static boolean isProcessingCookies = false;
+    private static boolean isProcessingCsrf = false;
 
     /**
      * True if bugs are sent to Github.
@@ -53,12 +65,25 @@ public class PreferencesUtil {
         // Use Preferences API to persist proxy configuration
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
         
+        PreferencesUtil.setPathFile(prefs.get("pathFile", System.getProperty("user.dir")));
+        
         PreferencesUtil.setIsCheckUpdateActivated(prefs.getBoolean("isCheckingUpdate", true));
         PreferencesUtil.setReportingBugs(prefs.getBoolean("isReportingBugs", true));
         PreferencesUtil.setEvasionIsEnabled(prefs.getBoolean("isEvading", false));
         PreferencesUtil.setFollowingRedirection(prefs.getBoolean("isFollowingRedirection", false));
         PreferencesUtil.setInjectingMetadata(prefs.getBoolean("isInjectingMetadata", true));
-        PreferencesUtil.setPathFile(prefs.get("pathFile", System.getProperty("user.dir")));
+        
+        PreferencesUtil.setCheckingAllParam(prefs.getBoolean("isCheckingAllParam", false));
+        PreferencesUtil.setCheckingAllURLParam(prefs.getBoolean("isCheckingAllURLParam", false));
+        PreferencesUtil.setCheckingAllRequestParam(prefs.getBoolean("isCheckingAllRequestParam", false));
+        PreferencesUtil.setCheckingAllHeaderParam(prefs.getBoolean("isCheckingAllHeaderParam", false));
+        PreferencesUtil.setCheckingAllJSONParam(prefs.getBoolean("isCheckingAllJSONParam", false));
+        PreferencesUtil.setCheckingAllCookieParam(prefs.getBoolean("isCheckingAllCookieParam", false));
+        
+        PreferencesUtil.setParsingForm(prefs.getBoolean("isParsingForm", false));
+        PreferencesUtil.setNotTestingConnection(prefs.getBoolean("isNotTestingConnection", false));
+        PreferencesUtil.setProcessingCookies(prefs.getBoolean("isProcessingCookies", false));
+        PreferencesUtil.setProcessingCsrf(prefs.getBoolean("isProcessingCsrf", false));
         
         HttpURLConnection.setFollowRedirects(PreferencesUtil.isFollowingRedirection());
         
@@ -90,7 +115,19 @@ public class PreferencesUtil {
         boolean isReportingBugs,
         boolean isEvading,
         boolean isFollowingRedirection,
-        boolean isInjectingMetadata
+        boolean isInjectingMetadata,
+        
+        boolean isCheckingAllParam,
+        boolean isCheckingAllURLParam,
+        boolean isCheckingAllRequestParam,
+        boolean isCheckingAllHeaderParam,
+        boolean isCheckingAllJSONParam,
+        boolean isCheckingAllCookieParam,
+        
+        boolean isParsingForm,
+        boolean isNotTestingConnection,
+        boolean isProcessingCookies,
+        boolean isProcessingCsrf
     ) {
     	
         PreferencesUtil.setIsCheckUpdateActivated(isCheckingUpdate);
@@ -98,6 +135,19 @@ public class PreferencesUtil {
         PreferencesUtil.setEvasionIsEnabled(isEvading);
         PreferencesUtil.setFollowingRedirection(isFollowingRedirection);
         PreferencesUtil.setInjectingMetadata(isInjectingMetadata);
+        
+        PreferencesUtil.setCheckingAllParam(isCheckingAllParam);
+        PreferencesUtil.setCheckingAllURLParam(isCheckingAllURLParam);
+        PreferencesUtil.setCheckingAllRequestParam(isCheckingAllRequestParam);
+        PreferencesUtil.setCheckingAllHeaderParam(isCheckingAllHeaderParam);
+        PreferencesUtil.setCheckingAllJSONParam(isCheckingAllJSONParam);
+        PreferencesUtil.setCheckingAllCookieParam(isCheckingAllCookieParam);
+        
+        PreferencesUtil.setParsingForm(isParsingForm);
+        PreferencesUtil.setNotTestingConnection(isNotTestingConnection);
+        
+        PreferencesUtil.setProcessingCookies(isProcessingCookies);
+        PreferencesUtil.setProcessingCsrf(isProcessingCsrf);
 
         Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
 
@@ -106,6 +156,19 @@ public class PreferencesUtil {
         preferences.putBoolean("isEvading", PreferencesUtil.isEvasionEnabled());
         preferences.putBoolean("isFollowingRedirection", PreferencesUtil.isFollowingRedirection());
         preferences.putBoolean("isInjectingMetadata", PreferencesUtil.isInjectingMetadata());
+        
+        preferences.putBoolean("isCheckingAllParam", PreferencesUtil.isCheckingAllParam());
+        preferences.putBoolean("isCheckingAllURLParam", PreferencesUtil.isCheckingAllURLParam());
+        preferences.putBoolean("isCheckingAllRequestParam", PreferencesUtil.isCheckingAllRequestParam());
+        preferences.putBoolean("isCheckingAllHeaderParam", PreferencesUtil.isCheckingAllHeaderParam());
+        preferences.putBoolean("isCheckingAllJSONParam", PreferencesUtil.isCheckingAllJSONParam());
+        preferences.putBoolean("isCheckingAllCookieParam", PreferencesUtil.isCheckingAllCookieParam());
+        
+        preferences.putBoolean("isParsingForm", PreferencesUtil.isParsingForm());
+        preferences.putBoolean("isNotTestingConnection", PreferencesUtil.isNotTestingConnection());
+        
+        preferences.putBoolean("isProcessingCookies", PreferencesUtil.isProcessingCookies());
+        preferences.putBoolean("isProcessingCsrf", PreferencesUtil.isProcessingCsrf());
         
         HttpURLConnection.setFollowRedirects(PreferencesUtil.isFollowingRedirection());
         
@@ -159,6 +222,94 @@ public class PreferencesUtil {
 
     public static void setInjectingMetadata(boolean isInjectingMetadata) {
         PreferencesUtil.isInjectingMetadata = isInjectingMetadata;
+    }
+
+    public static boolean isCheckingAllURLParam() {
+        return isCheckingAllURLParam;
+    }
+
+    public static void setCheckingAllURLParam(boolean isCheckingAllURLParam) {
+        PreferencesUtil.isCheckingAllURLParam = isCheckingAllURLParam;
+    }
+
+    public static boolean isCheckingAllRequestParam() {
+        return isCheckingAllRequestParam;
+    }
+
+    public static void setCheckingAllRequestParam(boolean isCheckingAllRequestParam) {
+        PreferencesUtil.isCheckingAllRequestParam = isCheckingAllRequestParam;
+    }
+
+    public static boolean isCheckingAllHeaderParam() {
+        return isCheckingAllHeaderParam;
+    }
+
+    public static void setCheckingAllHeaderParam(boolean isCheckingAllHeaderParam) {
+        PreferencesUtil.isCheckingAllHeaderParam = isCheckingAllHeaderParam;
+    }
+
+    public static boolean isCheckingAllJSONParam() {
+        return isCheckingAllJSONParam;
+    }
+
+    public static void setCheckingAllJSONParam(boolean isCheckingAllJSONParam) {
+        PreferencesUtil.isCheckingAllJSONParam = isCheckingAllJSONParam;
+    }
+
+    public static boolean isParsingForm() {
+        return isParsingForm;
+    }
+
+    public static void setParsingForm(boolean isParsingForm) {
+        PreferencesUtil.isParsingForm = isParsingForm;
+    }
+
+    public static boolean isNotTestingConnection() {
+        return isNotTestingConnection;
+    }
+
+    public static void setNotTestingConnection(boolean isNotTestingConnection) {
+        PreferencesUtil.isNotTestingConnection = isNotTestingConnection;
+    }
+
+    public static void setCheckUpdateActivated(boolean isCheckUpdateActivated) {
+        PreferencesUtil.isCheckUpdateActivated = isCheckUpdateActivated;
+    }
+
+    public static void setEvasionEnabled(boolean isEvasionEnabled) {
+        PreferencesUtil.isEvasionEnabled = isEvasionEnabled;
+    }
+
+    public static boolean isProcessingCookies() {
+        return isProcessingCookies;
+    }
+
+    public static void setProcessingCookies(boolean isProcessingCookies) {
+        PreferencesUtil.isProcessingCookies = isProcessingCookies;
+    }
+
+    public static boolean isCheckingAllParam() {
+        return isCheckingAllParam;
+    }
+
+    public static void setCheckingAllParam(boolean isCheckingAllParam) {
+        PreferencesUtil.isCheckingAllParam = isCheckingAllParam;
+    }
+
+    public static boolean isProcessingCsrf() {
+        return isProcessingCsrf;
+    }
+
+    public static void setProcessingCsrf(boolean isProcessingCsrf) {
+        PreferencesUtil.isProcessingCsrf = isProcessingCsrf;
+    }
+
+    public static boolean isCheckingAllCookieParam() {
+        return isCheckingAllCookieParam;
+    }
+
+    public static void setCheckingAllCookieParam(boolean isCheckingAllCookieParam) {
+        PreferencesUtil.isCheckingAllCookieParam = isCheckingAllCookieParam;
     }
     
 }

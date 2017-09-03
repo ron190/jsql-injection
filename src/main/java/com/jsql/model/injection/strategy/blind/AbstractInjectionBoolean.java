@@ -68,6 +68,8 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         taskCompletionService.submit(this.getCallable(inj, 0, IS_TESTING_LENGTH));
         // Increment the number of active tasks
         int submittedTasks = 1;
+        
+        int countAsciiCode255 = 0;
 
         /*
          * Process the job until there is no more active task,
@@ -143,7 +145,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                     char[] codeAsciiInBinary = bytes.get(currentCallable.getCurrentIndex() - 1);
                     
                     // Define the bit
-                    codeAsciiInBinary[(int) (8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit())) / Math.log(2)) ] = currentCallable.isTrue() ? '1' : '0';
+                    codeAsciiInBinary[(int) (8 - (Math.log(2) + Math.log(currentCallable.getCurrentBit())) / Math.log(2))] = currentCallable.isTrue() ? '1' : '0';
 
                     /*
                      * Inform the View if a array of bits is complete, else nothing #Need fix
@@ -151,6 +153,18 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                     try {
                         int codeAscii = Integer.parseInt(new String(codeAsciiInBinary), 2);
                         String charText = Character.toString((char) codeAscii);
+                        
+                        if (codeAscii == 255) {
+                            if (
+                                submittedTasks != 0
+                                && countAsciiCode255 > 9
+                                && (countAsciiCode255 * 100 / submittedTasks) > 50
+                            ) {
+                                LOGGER.warn("Too much Boolean false positives");
+                                break;
+                            }
+                            countAsciiCode255++;
+                        }
 
                         Request interaction = new Request();
                         interaction.setMessage(Interaction.MESSAGE_BINARY);
@@ -179,9 +193,15 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         // Build the complete final string from array of bits
         StringBuilder result = new StringBuilder();
         for (char[] c: bytes) {
-            int charCode = Integer.parseInt(new String(c), 2);
-            String str = Character.toString((char) charCode);
-            result.append(str);
+            try {
+                int charCode = Integer.parseInt(new String(c), 2);
+                String str = Character.toString((char) charCode);
+                result.append(str);
+            } catch (NumberFormatException err) {
+                // In case of too much False positives
+                // Byte string not fully constructed : 0x1x010x
+                // Ignore
+            }
         }
         
         return result.toString();
@@ -193,7 +213,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
      * @return Source code
      */
     public static String callUrl(String urlString) {
-        return MediatorModel.model().injectWithoutIndex(MediatorModel.model().getCharInsertion() + urlString);
+        return MediatorModel.model().injectWithoutIndex(urlString);
     }
     
     /**
