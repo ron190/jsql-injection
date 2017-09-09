@@ -1,4 +1,6 @@
 ## Description
+
+[![Join the chat at https://gitter.im/jsql-injection/Lobby](https://badges.gitter.im/jsql-injection/Lobby.svg)](https://gitter.im/jsql-injection/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 **jSQL Injection** is a lightweight application used to find database information from a distant server.
 
 It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X).
