@@ -57,9 +57,9 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
         }
         
         if (value.getIsVulnerable()) {
-            renderer.setForeground(new Color(0, 128, 0));
+            renderer.setForeground(HelperUi.COLOR_GREEN);
         } else if (value.getIsDatabaseConfirmed()) {
-            renderer.setForeground(new Color(0, 0, 255));
+            renderer.setForeground(Color.BLUE);
         }
 
         if (isSelected) {

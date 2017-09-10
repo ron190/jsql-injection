@@ -13,6 +13,7 @@ import javax.swing.text.SimpleAttributeSet;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.text.JPopupTextPane;
 
@@ -84,12 +85,19 @@ public abstract class JColoredConsole extends JPopupTextPane {
                 vertical.setValue(vertical.getMaximum() + 1);
             }
 
+            Color color = Color.BLACK;
+            if (attribut == SwingAppender.WARN) {
+                color = Color.RED;
+            } else if (attribut == SwingAppender.DEBUG) {
+                color = HelperUi.COLOR_GREEN;
+            }
+            
             int tabIndex = MediatorGui.tabConsoles().indexOfTab(this.tabName);
             if (0 <= tabIndex && tabIndex < MediatorGui.tabConsoles().getTabCount()) {
                 Component tabHeader = MediatorGui.tabConsoles().getTabComponentAt(tabIndex);
                 if (MediatorGui.tabConsoles().getSelectedIndex() != tabIndex) {
                     tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
-                    tabHeader.setForeground(attribut == SwingAppender.WARN ? Color.RED : Color.BLACK);
+                    tabHeader.setForeground(color);
                 }
             }
         } catch (Exception e) {

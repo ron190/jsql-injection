@@ -125,7 +125,7 @@ select concat(
             <limitBoundary>0</limitBoundary>
             <endingComment>--+</endingComment>
             <fingerprint>
-                <errorMessage>cubrid</errorMessage>
+                <errorMessage>Cubrid database</errorMessage>
             </fingerprint>
         </configuration>
         <normal>

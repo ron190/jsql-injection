@@ -3,6 +3,7 @@ package com.jsql.view.i18n;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,6 +57,21 @@ public class I18nView {
      */
     public static void addComponentForKey(String key, Object component) {
         I18nView.componentsLocalized.get(key).add(component);
+    }
+    
+    /**
+     * Return the text corresponding to a i18n key in the properties.
+     * @param key a i18n key in the properties
+     * @return text corresponding to the key
+     */
+    public static String valueByKey(String key) {
+        String result;
+        if (I18n.getLocaleDefault().getLanguage() == new Locale("zh").getLanguage()) {
+            result = "<html><span style=\"font-family:'Monospace'\">"+ I18n.valueByKey(key) +"</span></html>";
+        } else {
+            result = I18n.valueByKey(key);
+        }
+        return result;
     }
 
 }

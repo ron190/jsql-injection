@@ -6,7 +6,7 @@
 //
 
 
-package com.jsql.model.injection.vendor.xml;
+package com.jsql.model.injection.vendor.model;
 
 import java.util.ArrayList;
 import java.util.List;

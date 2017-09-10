@@ -62,6 +62,7 @@ public final class HelperUi {
     private static final Logger LOGGER = Logger.getRootLogger();
 
     public static final Color COLOR_BLU = new Color(132, 172, 221);
+    public static final Color COLOR_GREEN = new Color(0, 128, 0);
 
     public static final Color COLOR_FOCUS_GAINED = (Color) UIManager.get("TabbedPane.selected");
     
@@ -177,7 +178,7 @@ public final class HelperUi {
         
     };
 
-    public static final String FONT_NAME_UBUNTU = "Ubuntu Mono";
+    public static final String FONT_NAME_UBUNTU_MONO = "Ubuntu Mono";
     public static final String FONT_NAME_MONOSPACE = "Monospace";
 
     public static final Font FONT_MONOSPACE = new Font(HelperUi.FONT_NAME_MONOSPACE, Font.PLAIN, UIManager.getDefaults().getFont("TextPane.font").getSize());
@@ -187,7 +188,7 @@ public final class HelperUi {
         Font.PLAIN,
         UIManager.getDefaults().getFont("TextField.font").getSize() + 2
     );
-    public static final Font FONT_UBUNTU = new Font(HelperUi.FONT_NAME_UBUNTU, Font.PLAIN, UIManager.getDefaults().getFont("TextArea.font").getSize() + 2);
+    public static final Font FONT_UBUNTU_MONO = new Font(HelperUi.FONT_NAME_UBUNTU_MONO, Font.PLAIN, UIManager.getDefaults().getFont("TextArea.font").getSize() + 2);
 
     public static final String CHUNK_VISIBLE = "chunk_visible";
     public static final String BINARY_VISIBLE = "binary_visible";
@@ -206,11 +207,11 @@ public final class HelperUi {
      */
     public static void prepareGUI() {
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        try (InputStream fontStream = new BufferedInputStream(SwingAppender.class.getResourceAsStream("/com/jsql/view/swing/resources/font/UbuntuMono-Regular-ctrlchar.ttf"))) {
+        try (InputStream fontStream = new BufferedInputStream(SwingAppender.class.getResourceAsStream("/com/jsql/view/swing/resources/font/UbuntuMono-R-ctrlchar.ttf"))) {
             Font ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             ge.registerFont(ubuntuFont);
         } catch (FontFormatException | IOException e) {
-            LOGGER.warn("Loading Font Ubuntu failed", e);
+            LOGGER.warn("Loading Font Ubuntu Mono with control characters failed", e);
         }
         
         // Custom tooltip
@@ -254,7 +255,7 @@ public final class HelperUi {
         UIManager.put("CheckBoxMenuItem.checkIcon", new CheckBoxIcon());
 
         // Custom tab
-        UIManager.put("TabbedPane.contentAreaColor", HelperUi.FONT_UBUNTU);
+        UIManager.put("TabbedPane.contentAreaColor", HelperUi.FONT_UBUNTU_MONO);
         UIManager.put("TabbedPane.font", HelperUi.FONT_SEGOE);
         // margin of current tab panel
         UIManager.put("TabbedPane.contentBorderInsets", new Insets(0, 0, 0, 0));
@@ -285,7 +286,7 @@ public final class HelperUi {
         // Custom text component
         // Admin page
         UIManager.put("TextPane.selectionBackground", HelperUi.COLOR_FOCUS_GAINED);
-        UIManager.put("TextPane.font", HelperUi.FONT_UBUNTU);
+        UIManager.put("TextPane.font", HelperUi.FONT_UBUNTU_MONO);
         UIManager.put("TextPane.selectionBackground", HelperUi.COLOR_FOCUS_GAINED);
         
         UIManager.put("TextField.border", HelperUi.BORDER_BLU);
@@ -294,7 +295,7 @@ public final class HelperUi {
         UIManager.put("EditorPane.selectionBackground", HelperUi.COLOR_FOCUS_GAINED);
         
         UIManager.put("TextArea.selectionBackground", HelperUi.COLOR_FOCUS_GAINED);
-        UIManager.put("TextArea.font", HelperUi.FONT_UBUNTU);
+        UIManager.put("TextArea.font", HelperUi.FONT_UBUNTU_MONO);
 
         // Custom Label
         UIManager.put("Label.font", HelperUi.FONT_SEGOE);

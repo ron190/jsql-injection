@@ -1,6 +1,7 @@
 package com.jsql.util;
 
 import java.net.Socket;
+import java.util.Optional;
 import java.util.prefs.Preferences;
 
 import org.apache.log4j.Logger;
@@ -19,6 +20,11 @@ public class ProxyUtil {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
+    private static final String HTTP_PROXY_DEFAULT_ADDRESS = PropertiesUtil.getInstance().getProperties().getProperty("http.proxy.default.ip");
+    private static final String HTTP_PROXY_DEFAULT_PORT = PropertiesUtil.getInstance().getProperties().getProperty("http.proxy.default.port");
+    private static final String HTTPS_PROXY_DEFAULT_ADDRESS = PropertiesUtil.getInstance().getProperties().getProperty("https.proxy.default.ip");
+    private static final String HTTPS_PROXY_DEFAULT_PORT = PropertiesUtil.getInstance().getProperties().getProperty("https.proxy.default.port");
+    
     /**
      * Proxy IP address or name.
      */
@@ -36,6 +42,11 @@ public class ProxyUtil {
      */
     private static boolean isUsingProxy = false;
     private static boolean isUsingProxyHttps = false;
+    
+    private static final String PROPERTIES_HTTP_PROXY_HOST = "http.proxyHost";
+    private static final String PROPERTIES_HTTP_PROXY_PORT = "http.proxyPort";
+    private static final String PROPERTIES_HTTPS_PROXY_HOST = "https.proxyHost";
+    private static final String PROPERTIES_HTTPS_PROXY_PORT = "https.proxyPort";
     
     // Utility class
     private ProxyUtil() {
@@ -78,19 +89,19 @@ public class ProxyUtil {
 
         // Change the JVM configuration
         if (ProxyUtil.isUsingProxy()) {
-            System.setProperty("http.proxyHost", ProxyUtil.getProxyAddress());
-            System.setProperty("http.proxyPort", ProxyUtil.getProxyPort());
+            System.setProperty(PROPERTIES_HTTP_PROXY_HOST, ProxyUtil.getProxyAddress());
+            System.setProperty(PROPERTIES_HTTP_PROXY_PORT, ProxyUtil.getProxyPort());
         } else {
-            System.setProperty("http.proxyHost", "");
-            System.setProperty("http.proxyPort", "");
+            System.setProperty(PROPERTIES_HTTP_PROXY_HOST, "");
+            System.setProperty(PROPERTIES_HTTP_PROXY_PORT, "");
         }
         
         if (ProxyUtil.isUsingProxyHttps()) {
-            System.setProperty("https.proxyHost", ProxyUtil.getProxyAddressHttps());
-            System.setProperty("https.proxyPort", ProxyUtil.getProxyPortHttps());
+            System.setProperty(PROPERTIES_HTTPS_PROXY_HOST, ProxyUtil.getProxyAddressHttps());
+            System.setProperty(PROPERTIES_HTTPS_PROXY_PORT, ProxyUtil.getProxyPortHttps());
         } else {
-            System.setProperty("https.proxyHost", "");
-            System.setProperty("https.proxyPort", "");
+            System.setProperty(PROPERTIES_HTTPS_PROXY_HOST, "");
+            System.setProperty(PROPERTIES_HTTPS_PROXY_PORT, "");
         }
         
     }
@@ -109,21 +120,21 @@ public class ProxyUtil {
         ProxyUtil.setUsingProxyHttps(prefs.getBoolean("isUsingProxyHttps", false));
 
         // Default TOR config
-        ProxyUtil.setProxyAddress(prefs.get("proxyAddress", "127.0.0.1"));
-        ProxyUtil.setProxyPort(prefs.get("proxyPort", "8118"));
+        ProxyUtil.setProxyAddress(prefs.get("proxyAddress", HTTP_PROXY_DEFAULT_ADDRESS));
+        ProxyUtil.setProxyPort(prefs.get("proxyPort", HTTP_PROXY_DEFAULT_PORT));
         
-        ProxyUtil.setProxyAddressHttps(prefs.get("proxyAddressHttps", "127.0.0.1"));
-        ProxyUtil.setProxyPortHttps(prefs.get("proxyPortHttps", "8118"));
+        ProxyUtil.setProxyAddressHttps(prefs.get("proxyAddressHttps", HTTPS_PROXY_DEFAULT_ADDRESS));
+        ProxyUtil.setProxyPortHttps(prefs.get("proxyPortHttps", HTTPS_PROXY_DEFAULT_PORT));
         
         // Change the JVM configuration
         if (ProxyUtil.isUsingProxy()) {
-            System.setProperty("http.proxyHost", ProxyUtil.getProxyAddress());
-            System.setProperty("http.proxyPort", ProxyUtil.getProxyPort());
+            System.setProperty(PROPERTIES_HTTP_PROXY_HOST, ProxyUtil.getProxyAddress());
+            System.setProperty(PROPERTIES_HTTP_PROXY_PORT, ProxyUtil.getProxyPort());
         }
         
         if (ProxyUtil.isUsingProxyHttps()) {
-            System.setProperty("https.proxyHost", ProxyUtil.getProxyAddressHttps());
-            System.setProperty("https.proxyPort", ProxyUtil.getProxyPortHttps());
+            System.setProperty(PROPERTIES_HTTPS_PROXY_HOST, ProxyUtil.getProxyAddressHttps());
+            System.setProperty(PROPERTIES_HTTPS_PROXY_PORT, ProxyUtil.getProxyPortHttps());
         }
         
     }
@@ -153,8 +164,9 @@ public class ProxyUtil {
                 proxyIsChecked = false;
                 
                 if (showOnConsole == ShowOnConsole.YES) {
+                    String message = Optional.ofNullable(e.getMessage()).orElse("");
                     LOGGER.warn(
-                        "Connection to HTTP proxy "+ ProxyUtil.getProxyAddress() +":"+ ProxyUtil.getProxyPort() +" failed: "+ e +", verify your proxy settings for HTTP protocol.", e
+                        "Connection to HTTP proxy "+ ProxyUtil.getProxyAddress() +":"+ ProxyUtil.getProxyPort() +" failed: "+ message.replace(e.getClass().getName() +": ", "") +", verify your proxy settings for HTTP protocol", e
                     );
                 }
             }
@@ -176,8 +188,9 @@ public class ProxyUtil {
                 proxyIsChecked = false;
                 
                 if (showOnConsole == ShowOnConsole.YES) {
+                    String message = Optional.ofNullable(e.getMessage()).orElse("");
                     LOGGER.warn(
-                        "Connection to HTTPS proxy "+ ProxyUtil.getProxyAddressHttps() +":"+ ProxyUtil.getProxyPortHttps() +" failed: "+ e +", verify your proxy settings for HTTPS protocol.", e
+                        "Connection to HTTPS proxy "+ ProxyUtil.getProxyAddressHttps() +":"+ ProxyUtil.getProxyPortHttps() +" failed: "+ message.replace(e.getClass().getName() +": ", "") +", verify your proxy settings for HTTPS protocol", e
                     );
                 }
             }

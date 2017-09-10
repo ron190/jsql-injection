@@ -29,6 +29,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.util.ActionHideShowConsole;
+import com.jsql.view.swing.panel.util.ActionHideShowResult;
 import com.jsql.view.swing.splitpane.JSplitPaneWithZeroSizeDivider;
 import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.tab.TabResults;
@@ -63,6 +64,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
      * ersatz button when bottom panel is hidden.
      */
     private static final ActionHideShowConsole ACTION_HIDE_SHOW_CONSOLE = new ActionHideShowConsole(PANEL_HIDDEN_CONSOLES);
+    private static final ActionHideShowResult ACTION_HIDE_SHOW_RESULT= new ActionHideShowResult();
 
     private final JLabel labelPlaceholderResult;
     
@@ -106,13 +108,13 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         PANEL_HIDDEN_CONSOLES.setOpaque(false);
         PANEL_HIDDEN_CONSOLES.setPreferredSize(new Dimension(17, 22));
         PANEL_HIDDEN_CONSOLES.setMaximumSize(new Dimension(17, 22));
-        JButton buttonHideConsoles = new BasicArrowButton(SwingConstants.NORTH);
-        buttonHideConsoles.setBorderPainted(false);
-        buttonHideConsoles.setOpaque(false);
+        JButton buttonShowConsoles = new BasicArrowButton(SwingConstants.NORTH);
+        buttonShowConsoles.setBorderPainted(false);
+        buttonShowConsoles.setOpaque(false);
 
-        buttonHideConsoles.addActionListener(SplitHorizontalTopBottom.ACTION_HIDE_SHOW_CONSOLE);
+        buttonShowConsoles.addActionListener(SplitHorizontalTopBottom.ACTION_HIDE_SHOW_CONSOLE);
         PANEL_HIDDEN_CONSOLES.add(Box.createHorizontalGlue());
-        PANEL_HIDDEN_CONSOLES.add(buttonHideConsoles, BorderLayout.LINE_END);
+        PANEL_HIDDEN_CONSOLES.add(buttonShowConsoles, BorderLayout.LINE_END);
         PANEL_HIDDEN_CONSOLES.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
         PANEL_HIDDEN_CONSOLES.setVisible(false);
 
@@ -146,6 +148,10 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
 
     public static ActionHideShowConsole getActionHideShowConsole() {
         return ACTION_HIDE_SHOW_CONSOLE;
+    }
+    
+    public static ActionHideShowResult getActionHideShowResult() {
+        return ACTION_HIDE_SHOW_RESULT;
     }
 
     public JLabel getLabelPlaceholderResult() {

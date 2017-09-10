@@ -35,7 +35,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -112,9 +111,9 @@ public class NodeModelTable extends AbstractNodeModel {
 
     @Override
     protected void buildMenu(JPopupMenu2 tablePopupMenu, final TreePath path) {
-        JMenuItem menuItemCheckAll = new JMenuItem(I18n.valueByKey("COLUMNS_CHECK_ALL"), 'C');
+        JMenuItem menuItemCheckAll = new JMenuItem(I18nView.valueByKey("COLUMNS_CHECK_ALL"), 'C');
         I18nView.addComponentForKey("COLUMNS_CHECK_ALL", menuItemCheckAll);
-        JMenuItem menuItemUncheckAll = new JMenuItem(I18n.valueByKey("COLUMNS_UNCHECK_ALL"), 'U');
+        JMenuItem menuItemUncheckAll = new JMenuItem(I18nView.valueByKey("COLUMNS_UNCHECK_ALL"), 'U');
         I18nView.addComponentForKey("COLUMNS_UNCHECK_ALL", menuItemUncheckAll);
 
         menuItemCheckAll.setIcon(HelperUi.ICON_EMPTY);
@@ -271,8 +270,8 @@ public class NodeModelTable extends AbstractNodeModel {
             }
         );
 
-        tablePopupMenu.add(new JSeparator());
-        tablePopupMenu.add(menuCustomLoad);
+//        tablePopupMenu.add(new JSeparator());
+//        tablePopupMenu.add(menuCustomLoad);
         
         tablePopupMenu.setButtonGroupLoadRows(buttonGroupLoadRows);
         tablePopupMenu.setRadioCustomFromChar(radioCustomFromChar);

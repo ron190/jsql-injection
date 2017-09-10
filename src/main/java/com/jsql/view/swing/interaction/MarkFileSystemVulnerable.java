@@ -28,6 +28,10 @@ public class MarkFileSystemVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.managerFile() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.managerFile() in "+ this.getClass());
+        }
+        
         MediatorGui.managerFile().changePrivilegeIcon(HelperUi.ICON_TICK);
         MediatorGui.managerWebshell().changePrivilegeIcon(HelperUi.ICON_TICK);
         MediatorGui.managerSqlshell().changePrivilegeIcon(HelperUi.ICON_TICK);

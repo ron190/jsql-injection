@@ -60,8 +60,8 @@ public class ListTransfertHandlerScan extends TransferHandler {
 
         StringBuilder stringTransferable = new StringBuilder();
         for (ListItem itemPath: this.dragPaths) {
-            ListItemScan a = (ListItemScan) itemPath;
-            jsons.add(new JSONObject(a.getBeanInjection()));
+            ListItemScan itemScanPath = (ListItemScan) itemPath;
+            jsons.add(new JSONObject(itemScanPath.getBeanInjection()));
         }
         stringTransferable.append(new JSONArray(jsons).toString(4));
 
@@ -123,9 +123,9 @@ public class ListTransfertHandlerScan extends TransferHandler {
                     try {
                         String importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
                         
-                        for (ListItemScan c: this.parse(importString)) {
+                        for (ListItemScan listItemScan: ListTransfertHandlerScan.parse(importString)) {
                             selectAfterDrop.add(childIndex);
-                            listModel.add(childIndex++, c);
+                            listModel.add(childIndex++, listItemScan);
                         }
                     } catch (UnsupportedFlavorException | IOException e) {
                         LOGGER.error(e.getMessage(), e);
@@ -168,9 +168,9 @@ public class ListTransfertHandlerScan extends TransferHandler {
                         list.clearSelection();
                         
                         List<Integer> selectedIndexes = new ArrayList<>();
-                        for (ListItemScan c: this.parse(clipboardText)) {
+                        for (ListItemScan listItemScan: ListTransfertHandlerScan.parse(clipboardText)) {
                             selectedIndexes.add(selectedIndex);
-                            listModel.add(selectedIndex++, c);
+                            listModel.add(selectedIndex++, listItemScan);
                         }
 
                         int[] selectedIndexesPasted = new int[selectedIndexes.size()];
@@ -212,7 +212,7 @@ public class ListTransfertHandlerScan extends TransferHandler {
         return true;
     }
     
-    private List<ListItemScan> parse(String clipboardText) {
+    public static List<ListItemScan> parse(String clipboardText) {
         List<ListItemScan> itemsParsed = new ArrayList<>();
         try {
             JSONArray itemsJsonArray = new JSONArray(clipboardText);
@@ -221,33 +221,33 @@ public class ListTransfertHandlerScan extends TransferHandler {
                 JSONObject itemJsonObject = itemsJsonArray.getJSONObject(i);
                 
                 BeanInjection beanInjection = new BeanInjection(
-                    itemJsonObject.optString("url"),
-                    itemJsonObject.optString("request"),
-                    itemJsonObject.optString("header"),
-                    itemJsonObject.optString("injectionType"),
-                    itemJsonObject.optString("vendor"),
-                    itemJsonObject.optString("requestType")
+                    itemJsonObject.optString("url", ""),
+                    itemJsonObject.optString("request", ""),
+                    itemJsonObject.optString("header", ""),
+                    itemJsonObject.optString("injectionType", ""),
+                    itemJsonObject.optString("vendor", ""),
+                    itemJsonObject.optString("requestType", "")
                 );
                 
                 ListItemScan newItem = new ListItemScan(beanInjection);
                 itemsParsed.add(newItem);
             }
-        } catch (JSONException e) {
+        } catch (JSONException eJsonArray) {
             try {
                 JSONObject itemsJsonObject = new JSONObject(clipboardText);
                 
                 BeanInjection beanInjection = new BeanInjection(
-                    itemsJsonObject.optString("url"),
-                    itemsJsonObject.optString("request"),
-                    itemsJsonObject.optString("header"),
-                    itemsJsonObject.optString("injectionType"),
-                    itemsJsonObject.optString("vendor"),
-                    itemsJsonObject.optString("requestType")
+                    itemsJsonObject.optString("url", ""),
+                    itemsJsonObject.optString("request", ""),
+                    itemsJsonObject.optString("header", ""),
+                    itemsJsonObject.optString("injectionType", ""),
+                    itemsJsonObject.optString("vendor", ""),
+                    itemsJsonObject.optString("requestType", "")
                 );
                 
                 ListItemScan newItem = new ListItemScan(beanInjection);
                 itemsParsed.add(newItem);
-            } catch (JSONException e2) {
+            } catch (JSONException eJsonObject) {
                 for (String url: clipboardText.split("\\n")) {
                     BeanInjection beanInjection = new BeanInjection(url);
                     

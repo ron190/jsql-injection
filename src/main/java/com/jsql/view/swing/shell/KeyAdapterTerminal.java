@@ -16,7 +16,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 
@@ -71,8 +70,8 @@ public class KeyAdapterTerminal extends KeyAdapter {
             }
     
             // Get user input
-            final String[] cmd = {""};
-            cmd[0] =
+            final String[] command = {""};
+            command[0] =
                 this.terminal.getText(
                     root.getElement(lineNumber).getStartOffset(),
                     root.getElement(lineNumber).getEndOffset() - root.getElement(lineNumber).getStartOffset()
@@ -85,22 +84,32 @@ public class KeyAdapterTerminal extends KeyAdapter {
                 this.terminal.setEditable(false);
     
                 // Populate cmd list for key up/down
-                if (!"".equals(cmd[0].trim())) {
-                    this.cmds.add(cmd[0].trim());
+                if (!"".equals(command[0].trim())) {
+                    this.cmds.add(command[0].trim());
                     this.cmdsIndex = this.cmds.size();
                 }
     
                 // SwingUtilities instead of Thread to avoid some flickering
-                SwingUtilities.invokeLater(() -> {
+                // Thread to give back control of the GUI to the user (SwingUtilities does not)
+                new Thread(() -> {
+                    
+                    AbstractShell terminalCommand = KeyAdapterTerminal.this.terminal;
+                    
                     // Inside Swing thread to avoid flickering
-                    this.terminal.append("\n");
-                    if (!"".equals(cmd[0].trim())) {
-                        this.terminal.setCaretPosition(this.terminal.getDocument().getLength());
-                        this.terminal.action(cmd[0], this.terminal.getUuidShell(), this.terminal.getUrlShell(), this.terminal.loginPassword);
+                    terminalCommand.append("\n");
+                    if (!"".equals(command[0].trim())) {
+                        terminalCommand.setCaretPosition(terminalCommand.getDocument().getLength());
+                        terminalCommand.action(
+                            command[0],
+                            terminalCommand.getUuidShell(),
+                            terminalCommand.getUrlShell(),
+                            terminalCommand.loginPassword
+                        );
                     } else {
-                        this.terminal.reset();
+                        terminalCommand.reset();
                     }
-                });
+                    
+                }).start();
     
             // Get previous command
             } else if (keyEvent.getKeyCode() == KeyEvent.VK_UP) {
@@ -114,14 +123,14 @@ public class KeyAdapterTerminal extends KeyAdapter {
                     if (
                         this.cmds.size() > 1 &&
                         this.cmdsIndex == this.cmds.size() - 1 &&
-                        !"".equals(cmd[0].trim())
+                        !"".equals(command[0].trim())
                     ) {
                         this.cmdsIndex--;
                     }
     
                     this.terminal.getDocument().remove(
                         root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),
-                        cmd[0].length() - 1
+                        command[0].length() - 1
                     );
     
                     this.terminal.append(this.cmds.get(this.cmdsIndex));
@@ -139,7 +148,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
                 if (!this.cmds.isEmpty() && this.cmdsIndex < this.cmds.size()) {
                     this.terminal.getDocument().remove(
                         root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),
-                        cmd[0].length() - 1
+                        command[0].length() - 1
                     );
     
                     this.terminal.append(this.cmds.get(this.cmdsIndex));

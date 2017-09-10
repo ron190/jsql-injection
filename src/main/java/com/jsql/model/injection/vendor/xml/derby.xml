@@ -102,7 +102,7 @@ trim(
             <limitBoundary>0</limitBoundary>
             <endingComment>--+</endingComment>
             <fingerprint>
-                <errorMessage>derby</errorMessage>
+                <errorMessage>Derby database</errorMessage>
             </fingerprint>
         </configuration>
         <normal>

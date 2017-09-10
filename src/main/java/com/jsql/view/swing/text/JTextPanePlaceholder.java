@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 
 import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.text.action.DeleteNextCharAction;
 import com.jsql.view.swing.text.action.DeletePrevCharAction;
 
 /**
@@ -74,7 +75,7 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
         });
         
         this.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new DeletePrevCharAction());
-        this.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeletePrevCharAction());
+        this.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeleteNextCharAction());
     }
 
     @Override

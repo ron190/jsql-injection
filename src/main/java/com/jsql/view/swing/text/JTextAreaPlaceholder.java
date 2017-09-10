@@ -11,6 +11,7 @@ import javax.swing.text.DefaultEditorKit;
 import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.text.action.DeleteNextCharAction;
 import com.jsql.view.swing.text.action.DeletePrevCharAction;
 
 /**
@@ -72,7 +73,7 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
         });
         
         this.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new DeletePrevCharAction());
-        this.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeletePrevCharAction());
+        this.getActionMap().put(DefaultEditorKit.deleteNextCharAction, new DeleteNextCharAction());
     }
 
     @Override

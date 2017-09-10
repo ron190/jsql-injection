@@ -42,7 +42,7 @@ public class MarkNormalVulnerable implements InteractionCommand {
         for (int i = 0 ; i < listModel.getSize() ; i++) {
             if (listModel.getElementAt(i).getInternalString().contains(this.url)) {
                 listModel.getElementAt(i).setIsVulnerable(true);
-                listModel.getElementAt(i).setInternalString(listModel.getElementAt(i).getInternalString() +" [Normal]");
+                listModel.getElementAt(i).setInternalString(listModel.getElementAt(i).getInternalString().replace(" [Normal]", "") +" [Normal]");
                 ((DefaultListModel<ListItem>) listModel).setElementAt(listModel.getElementAt(i), i);
             }
         }

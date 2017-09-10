@@ -52,9 +52,13 @@ public class CreateFileTab extends CreateTab implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.tabResults() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.tabResults() in "+ this.getClass());
+        }
+        
         JTextArea fileText = new JPopupTextArea().getProxy();
         fileText.setText(this.content);
-        fileText.setFont(new Font(HelperUi.FONT_NAME_UBUNTU, Font.PLAIN, 14));
+        fileText.setFont(new Font(HelperUi.FONT_NAME_UBUNTU_MONO, Font.PLAIN, 14));
         LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, fileText);
         
         fileText.setCaretPosition(0);
@@ -64,7 +68,7 @@ public class CreateFileTab extends CreateTab implements InteractionCommand {
         MediatorGui.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(this.name +" ", HelperUi.ICON_FILE_SERVER);
+        TabHeader header = new TabHeader(this.name, HelperUi.ICON_FILE_SERVER);
 
         MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), this.path);
 

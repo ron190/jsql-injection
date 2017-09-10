@@ -1,4 +1,4 @@
-package com.jsql.model.injection.vendor.xml;
+package com.jsql.model.injection.vendor.model;
 
 import static com.jsql.model.accessible.DataAccess.CALIBRATOR_HEX;
 import static com.jsql.model.accessible.DataAccess.CALIBRATOR_SQL;
@@ -36,10 +36,11 @@ import com.jsql.model.bean.database.Table;
 import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.model.injection.strategy.StrategyInjectionNormal;
 import com.jsql.model.injection.strategy.blind.InjectionTime;
-import com.jsql.model.injection.vendor.AbstractVendorDefault;
 import com.jsql.util.StringUtil;
 
-public class VendorXml extends AbstractVendorDefault {
+public class VendorXml implements AbstractVendor {
+    
+    private Model xmlModel;
     
     private static final String LIMIT = "${LIMIT}";
 
@@ -94,7 +95,7 @@ public class VendorXml extends AbstractVendorDefault {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(Model.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            this.xmlModel = (Model) jaxbUnmarshaller.unmarshal(Model.class.getResource(fileXml));
+            this.xmlModel = (Model) jaxbUnmarshaller.unmarshal(VendorXml.class.getClassLoader().getResource("com/jsql/model/injection/vendor/xml/"+ fileXml));
         } catch (JAXBException e) {
             LOGGER.error(e, e);
         }
@@ -131,7 +132,7 @@ public class VendorXml extends AbstractVendorDefault {
     @Override
     public String sqlRows(String[] namesColumns, Database database, Table table) {
         String sqlField = this.xmlModel.getResource().getSchema().getRow().getFields().getField();
-        Matcher matcherSqlField = Pattern.compile("(.*)"+ Pattern.quote(FIELD) +"(.*)").matcher(sqlField);
+        Matcher matcherSqlField = Pattern.compile("(?s)(.*)"+ Pattern.quote(FIELD) +"(.*)").matcher(sqlField);
         String leadSqlField = "";
         String trailSqlField = "";
         
@@ -264,7 +265,7 @@ public class VendorXml extends AbstractVendorDefault {
 
     @Override
     public String sqlTimeTest(String check) {
-        String sqlTime = super.sqlTimeTest(check);
+        String sqlTime = "";
         
         if (this.xmlModel.getStrategy().getBoolean().getTime() != null) {
             sqlTime =
@@ -437,6 +438,11 @@ public class VendorXml extends AbstractVendorDefault {
             .replace("${TRAIL_HEX}", TRAIL_HEX)
             .replace("${LEAD}", LEAD)
             .replace("${LEAD_HEX}", LEAD_HEX);
+    }
+
+    @Override
+    public Model getXmlModel() {
+        return this.xmlModel;
     }
     
 }

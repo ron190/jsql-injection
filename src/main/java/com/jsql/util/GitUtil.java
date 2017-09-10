@@ -118,7 +118,9 @@ public class GitUtil {
         HttpURLConnection connection = null;
         try {
         	// TODO define in properties
-            URL githubUrl = new URL("https://api.github.com/repos/ron190/jsql-injection/issues");
+            URL githubUrl = new URL(
+                PropertiesUtil.getInstance().getProperties().getProperty("github.issues.url")
+            );
 
             connection = (HttpURLConnection) githubUrl.openConnection();
             connection.setDefaultUseCaches(false);
@@ -132,11 +134,16 @@ public class GitUtil {
             connection.setRequestProperty(
                 "Authorization",
                 // TODO define in properties
-                "token "+ StringUtils.newStringUtf8(Base64.decodeBase64("NGQ1YzdkYWE1NDQwYzdkNTk1YTZlODQzYzFlODlkZmMzNzQ1NDhlNg=="))
+                "token "
+                + StringUtils.newStringUtf8(
+                    Base64.decodeBase64(
+                        PropertiesUtil.getInstance().getProperties().getProperty("github.token")
+                    )
+                )
             );
             
-            connection.setReadTimeout(ConnectionUtil.TIMEOUT);
-            connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
+            connection.setReadTimeout(ConnectionUtil.getTimeout());
+            connection.setConnectTimeout(ConnectionUtil.getTimeout());
             connection.setDoOutput(true);
 
             // Set the content of the Issue
@@ -205,8 +212,7 @@ public class GitUtil {
     public static JSONObject getJSONObject() throws IOException {
         if (GitUtil.jsonObject == null) {
             String json = ConnectionUtil.getSource(
-        		// TODO get from properties
-                "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/jsql-injection.json"
+                PropertiesUtil.getInstance().getProperties().getProperty("github.webservice.url")
             );
             
             // Fix #45349: JSONException on new JSONObject(json)

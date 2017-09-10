@@ -28,6 +28,10 @@ public class EndScan implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.managerScan() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.managerScan() in "+ this.getClass());
+        }
+        
         MediatorGui.managerScan().restoreButtonText();
         MediatorGui.managerScan().setButtonEnable(true);
         MediatorGui.managerScan().hideLoader();

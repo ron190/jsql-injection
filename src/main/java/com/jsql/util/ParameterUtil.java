@@ -10,10 +10,6 @@ import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.injection.method.MethodInjection;
 
 public class ParameterUtil {
-
-    private ParameterUtil() {
-        // TODO Auto-generated constructor stub
-    }
     
     /**
      * Query string built from the URL submitted by user.
@@ -29,6 +25,11 @@ public class ParameterUtil {
      * Header submitted by user.
      */
     private static List<SimpleEntry<String, String>> header = new ArrayList<>();
+
+    // Utility class
+    private ParameterUtil() {
+        // nothing
+    }
     
     public static String checkParametersFormat(boolean isTest, boolean checkAllParameters, SimpleEntry<String, String> parameter) throws InjectionFailureException {
         int nbStarInParameter = 0;

@@ -3,6 +3,7 @@ package com.jsql.view.swing;
 import javax.swing.JTree;
 
 import com.jsql.view.swing.manager.ManagerAdminPage;
+import com.jsql.view.swing.manager.ManagerBruteForce;
 import com.jsql.view.swing.manager.ManagerDatabase;
 import com.jsql.view.swing.manager.ManagerFile;
 import com.jsql.view.swing.manager.ManagerScan;
@@ -38,6 +39,7 @@ public final class MediatorGui {
     private static ManagerSqlShell managerSqlshell;
     private static ManagerFile managerFile;
     private static ManagerUpload managerUpload;
+    private static ManagerBruteForce managerBruteForce;
     
     /**
      * Utility class.
@@ -107,6 +109,10 @@ public final class MediatorGui {
         return managerDatabase;
     }
     
+    public static ManagerBruteForce managerBruteForce() {
+        return managerBruteForce;
+    }
+    
     // Registering GUI components
     public static void register(JFrameView frame) {
         MediatorGui.frame = frame;
@@ -168,4 +174,9 @@ public final class MediatorGui {
     public static void register(ManagerDatabase managerDatabase) {
         MediatorGui.managerDatabase = managerDatabase;
     }
+    
+    public static void register(ManagerBruteForce managerBruteForce) {
+        MediatorGui.managerBruteForce = managerBruteForce;
+    }
+    
 }

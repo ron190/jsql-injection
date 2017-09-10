@@ -1,9 +1,9 @@
 {
-    "version": "0.79",
+    "version": "0.80",
     "news": [
-        "[Roadmap] Dump to a file, Full Path Disclosure, WAF detection.",
+        "[Release v0.80] Test all parameters, Parse forms and Csrf tokens, Databases: CockroachDB Mckoi Neo4j NuoDB Hana and Vertica, Translation complete: Russian, Chinese.",
+        "[Roadmap] Burp integration, Crawler, Tampering, Dump to a file, Full Path Disclosure, WAF detection.",
         "[In progress] SQL Structure: Dump In One Shot and Zipped, Database: Couchbase, Inject rows by range, User Agent configuration.",
-        "[Done] Parsing forms and Csrf tokens, Checking all parameters, Database: Neo4j, Translation complete: Russian, Chinese.",
         "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer."
     ]
 }

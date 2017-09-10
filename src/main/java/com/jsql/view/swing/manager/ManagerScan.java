@@ -112,7 +112,7 @@ public class ManagerScan extends AbstractManagerList {
             )
         );
         
-        this.defaultText = I18n.valueByKey("SCAN_RUN_BUTTON_LABEL");
+        this.defaultText = "SCAN_RUN_BUTTON_LABEL";
         this.run = new JButtonStateful(this.defaultText);
         I18nView.addComponentForKey("SCAN_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("SCAN_RUN_BUTTON_TOOLTIP"));
@@ -131,7 +131,7 @@ public class ManagerScan extends AbstractManagerList {
             
             new Thread(() -> {
                 if (ManagerScan.this.run.getState() == StateButton.STARTABLE) {
-                    ManagerScan.this.run.setText("Stop");
+                    ManagerScan.this.run.setText(I18nView.valueByKey("SCAN_RUN_BUTTON_STOP"));
                     ManagerScan.this.run.setState(StateButton.STOPPABLE);
                     ManagerScan.this.loader.setVisible(true);
                     

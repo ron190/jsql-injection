@@ -42,7 +42,7 @@ public class MarkTimeVulnerable implements InteractionCommand {
         for (int i = 0 ; i < listModel.getSize() ; i++) {
             if (listModel.getElementAt(i).getInternalString().contains(this.url)) {
                 listModel.getElementAt(i).setIsVulnerable(true);
-                listModel.getElementAt(i).setInternalString(listModel.getElementAt(i).getInternalString() +" [Time]");
+                listModel.getElementAt(i).setInternalString(listModel.getElementAt(i).getInternalString().replace(" [Time]", "") +" [Time]");
                 ((DefaultListModel<ListItem>) listModel).setElementAt(listModel.getElementAt(i), i);
             }
         }

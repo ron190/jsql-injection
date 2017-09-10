@@ -55,7 +55,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    final JTextField urlShell = new JPopupTextField(I18n.valueByKey("SHELL_URL_LABEL")).getProxy();
+    private final JTextField textfieldUrlShell = new JPopupTextField(I18n.valueByKey("SHELL_URL_LABEL")).getProxy();
     
     /**
      * Build the manager panel.
@@ -63,7 +63,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
     public AbstractManagerShell() {
         this.setLayout(new BorderLayout());
 
-        this.defaultText = I18n.valueByKey("SHELL_RUN_BUTTON_LABEL");
+        this.defaultText = "SHELL_RUN_BUTTON_LABEL";
         
         List<ListItem> listItems = new ArrayList<>();
         try {
@@ -87,8 +87,8 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
 
         String urlTooltip = I18n.valueByKey("SHELL_URL_TOOLTIP");
         
-        this.urlShell.setToolTipText(urlTooltip);
-        this.urlShell.setBorder(
+        this.textfieldUrlShell.setToolTipText(urlTooltip);
+        this.textfieldUrlShell.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
                     BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
@@ -107,7 +107,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
             )
         );
         
-        this.run = new JButtonStateful(I18n.valueByKey("SHELL_RUN_BUTTON_LABEL"));
+        this.run = new JButtonStateful("SHELL_RUN_BUTTON_LABEL");
         I18nView.addComponentForKey("SHELL_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("SHELL_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);
@@ -130,12 +130,12 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         lastLine.add(Box.createHorizontalGlue());
         lastLine.add(this.run);
 
-        southPanel.add(this.urlShell);
+        southPanel.add(this.textfieldUrlShell);
         southPanel.add(lastLine);
         this.add(southPanel, BorderLayout.SOUTH);
     }
     
-    abstract void createPayload(String pathShell, String urlShell) throws JSqlException;
+    abstract void createPayload(String pathShell, String urlShell) throws JSqlException, InterruptedException;
     
     private class ActionCreationShell implements ActionListener {
         @Override
@@ -145,9 +145,21 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                 return;
             }
 
-            if (!"".equals(AbstractManagerShell.this.urlShell.getText())) {
+            String[] urlShell = new String[]{AbstractManagerShell.this.textfieldUrlShell.getText()};
+            
+            if (!urlShell[0].isEmpty() && !urlShell[0].matches("(?i)^https?://.*")) {
+                if (!urlShell[0].matches("(?i)^\\w+://.*")) {
+                    LOGGER.info("Undefined shell URL protocol, forcing to [http://]");
+                    urlShell[0] = "http://"+ urlShell[0];
+                } else {
+                    LOGGER.warn("Unknown URL protocol");
+                    return;
+                }
+            }
+            
+            if (!"".equals(urlShell[0])) {
                 try {
-                    new URL(AbstractManagerShell.this.urlShell.getText());
+                    new URL(urlShell[0]);
                 } catch (MalformedURLException e) {
                     LOGGER.warn("Incorrect URL: "+ e.getMessage(), e);
                     return;
@@ -159,9 +171,9 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                     try {
                         AbstractManagerShell.this.createPayload(
                             pathShell.toString(),
-                            AbstractManagerShell.this.urlShell.getText()
+                            urlShell[0]
                         );
-                    } catch (JSqlException e) {
+                    } catch (JSqlException | InterruptedException e) {
                         LOGGER.warn("Payload creation error: "+ e.getMessage(), e);
                     }
                 }, "ThreadGetShell").start();

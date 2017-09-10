@@ -13,6 +13,7 @@ import java.util.regex.PatternSyntaxException;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
+import com.jsql.model.bean.database.Table;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
@@ -92,7 +93,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             try {
                 regexAtLeastOneRow =
                     Pattern
-                        .compile(MODE + LEAD +"(.{1,"+ strategy.getPerformanceLength() +"})")
+                        .compile("(?s)"+ LEAD +"(?i)(.{1,"+ strategy.getPerformanceLength() +"})")
                         .matcher(sourcePage[0]);
             } catch (PatternSyntaxException e) {
                 // Fix #35382 : PatternSyntaxException null on SQLi(.{1,null})
@@ -103,7 +104,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             // It creates extra query which can be endless if not nullified
             Matcher regexEndOfLine =
                 Pattern
-                    .compile(MODE + LEAD + TRAIL_RGX)
+                    .compile("(?s)"+ LEAD +"(?i)"+ TRAIL_RGX)
                     .matcher(sourcePage[0]);
             
             if (regexEndOfLine.find() && isUsingLimit && !"".equals(slidingWindowAllRows.toString())) {
@@ -171,11 +172,17 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     MediatorModel.model().sendToViews(request);
                 }
 
-                throw new InjectionFailureException(
-                    "Fetching fails: no data to parse"
-                    + (searchName != null ? " for "+ StringUtil.detectUtf8(searchName.toString()) : ""),
-                    e
-                );
+                StringBuilder messageError = new StringBuilder("Fetching fails: no data to parse");
+                
+                if (searchName != null) {
+                    messageError.append(" for "+ StringUtil.detectUtf8(searchName.toString()));
+                }
+                
+                if (searchName instanceof Table && searchName.getChildCount() > 0) {
+                    messageError.append(", if possible retry with one column selected only");
+                }
+                
+                throw new InjectionFailureException(messageError.toString(), e);
             }
 
             /*

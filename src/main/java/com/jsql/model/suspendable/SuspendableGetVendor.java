@@ -86,7 +86,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                           )
                       ) {
                           vendor = vendorTest;
-                          LOGGER.debug("Matching database: "+ vendor.name());
+                          LOGGER.debug("Found database ["+ vendor +"]");
                           break;
                       }
                     }
@@ -107,9 +107,9 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             
             if (vendor == null) {
                 vendor = Vendor.MYSQL;
-                LOGGER.info(I18n.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendor +"]");
+                LOGGER.warn(I18n.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendor +"]");
             } else {
-                LOGGER.debug(I18n.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendor +"]");
+                LOGGER.info(I18n.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendor +"]");
                 
                 Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
                 msgHeader.put(
@@ -131,7 +131,6 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
         requestSetVendor.setParameters(vendor);
         MediatorModel.model().sendToViews(requestSetVendor);
         
-        // TODO vendor
         return vendor;
     }
     

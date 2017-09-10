@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.list;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -169,12 +170,19 @@ public class DnDList extends JList<ListItem> {
         }
         
         try {
-            this.scrollRectToVisible(
-                this.getCellBounds(
-                    this.getMinSelectionIndex(),
-                    this.getMaxSelectionIndex()
-                )
+            Rectangle rectangle = this.getCellBounds(
+                this.getMinSelectionIndex(),
+                this.getMaxSelectionIndex()
             );
+            
+            if (rectangle != null) {
+                this.scrollRectToVisible(
+                    this.getCellBounds(
+                        this.getMinSelectionIndex(),
+                        this.getMaxSelectionIndex()
+                    )
+                );
+            }
         } catch (NullPointerException e) {
             // Report NullPointerException #1571 : manual scroll elsewhere then run action
             LOGGER.error(e.getMessage(), e);

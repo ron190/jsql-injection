@@ -34,6 +34,7 @@ import java.util.prefs.Preferences;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
+import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -42,6 +43,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.JToolTip;
 import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.OverlayLayout;
@@ -77,6 +79,7 @@ import com.jsql.view.swing.tab.TabConsoles;
 import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JTextAreaPlaceholderConsole;
 import com.jsql.view.swing.text.JTextPanePlaceholder;
+import com.jsql.view.swing.text.JToolTipI18n;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
 /**
@@ -93,12 +96,12 @@ public class PanelConsoles extends JPanel {
     /**
      * Console for default application messages.
      */
-    private static final SimpleConsoleAdapter consoleTextPane = new SimpleConsoleAdapter("Console", "Event logging");
+    public static final SimpleConsoleAdapter CONSOLE_TEXT_PANE = new SimpleConsoleAdapter("Console", "Event logging");
 
     /**
      * Console for java exception messages.
      */
-    private static final JavaConsoleAdapter javaTextPane = new JavaConsoleAdapter("Java", "Java unhandled exception");
+    public static final JavaConsoleAdapter JAVA_TEXT_PANE = new JavaConsoleAdapter("Java", "Java unhandled exception");
     
     /**
      * Console for raw SQL results.
@@ -123,14 +126,20 @@ public class PanelConsoles extends JPanel {
     /**
      * Table in Network tab displaying HTTP requests.
      */
-    private JTable networkTable;
+    public JTable networkTable;
 
-    private JTextArea networkTabUrl = new JPopupTextArea("Request URL").getProxy();
-    private JTextArea networkTabResponse = new JPopupTextArea("Header server response").getProxy();
-    private JTextArea networkTabSource = new JPopupTextArea("Raw page source").getProxy();
-    private JTextPane networkTabPreview = new JTextPanePlaceholder("Web browser rendering");
-    private JTextArea networkTabHeader = new JPopupTextArea("Header client request").getProxy();
-    private JTextArea networkTabParam = new JPopupTextArea("HTTP POST parameters").getProxy();
+    private static final JTextArea NETWORK_TAB_URL = new JPopupTextArea("Request URL").getProxy();
+    private static final JTextArea NETWORK_TAB_RESPONSE = new JPopupTextArea("Header server response").getProxy();
+    private static final JTextArea NETWORK_TAB_SOURCE = new JPopupTextArea("Raw page source").getProxy();
+    private static final JTextPane NETWORK_TAB_PREVIEW = new JTextPanePlaceholder("Web browser rendering");
+    private static final JTextArea NETWORK_TAB_HEADER = new JPopupTextArea("Header client request").getProxy();
+    private static final JTextArea NETWORK_TAB_PARAM = new JPopupTextArea("HTTP POST parameters").getProxy();
+    
+    private static final BasicArrowButton BUTTON_SHOW_SOUTH = new BasicArrowButton(SwingConstants.SOUTH);
+    private static final BasicArrowButton BUTTON_SHOW_NORTH = new BasicArrowButton(SwingConstants.NORTH);
+    private static int loc = 0;
+    
+    private static final MouseTabbedPane NETWORK_TAB_DETAIL = new MouseTabbedPane();
     
     /**
      * Create panel at the bottom with differents consoles to report injection process.
@@ -138,8 +147,8 @@ public class PanelConsoles extends JPanel {
     public PanelConsoles() {
         
         // Object creation after customization
-        PanelConsoles.consoleTextPane.getProxy().setEditable(false);
-        SwingAppender.register(PanelConsoles.consoleTextPane);
+        PanelConsoles.CONSOLE_TEXT_PANE.getProxy().setEditable(false);
+        SwingAppender.register(PanelConsoles.CONSOLE_TEXT_PANE);
         
         this.chunkTextArea = new JPopupTextArea(new JTextAreaPlaceholderConsole("Raw data extracted during injection")).getProxy();
         this.chunkTextArea.setEditable(false);
@@ -147,14 +156,14 @@ public class PanelConsoles extends JPanel {
         this.binaryTextArea = new JPopupTextArea(new JTextAreaPlaceholderConsole("Characters extracted during blind or time injection")).getProxy();
         this.binaryTextArea.setEditable(false);
         
-        PanelConsoles.javaTextPane.getProxy().setEditable(false);
-        SwingAppender.register(PanelConsoles.javaTextPane);
+        PanelConsoles.JAVA_TEXT_PANE.getProxy().setEditable(false);
+        SwingAppender.register(PanelConsoles.JAVA_TEXT_PANE);
         
         this.network = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
         this.network.setResizeWeight(1);
         this.network.setDividerSize(0);
         this.network.setDividerLocation(600);
-        this.network.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
+        this.network.setBorder(BorderFactory.createEmptyBorder());
         this.networkTable = new JTable(0, 4) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -193,6 +202,7 @@ public class PanelConsoles extends JPanel {
         });
 
         this.networkTable.setModel(new DefaultTableModel() {
+            
             private String[] columns = {
                 I18n.valueByKey("NETWORK_TAB_METHOD_COLUMN"),
                 I18n.valueByKey("NETWORK_TAB_URL_COLUMN"),
@@ -209,9 +219,11 @@ public class PanelConsoles extends JPanel {
             public String getColumnName(int index) {
                 return this.columns[index];
             }
+            
         });
 
         class PathCellRenderer extends DefaultTableCellRenderer {
+            
             @Override
             public Component getTableCellRendererComponent(
                 JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
@@ -225,6 +237,7 @@ public class PanelConsoles extends JPanel {
                 
                 return c;
             }
+            
         }
         
         this.networkTable.getColumnModel().getColumn(1).setCellRenderer(new PathCellRenderer());
@@ -283,45 +296,88 @@ public class PanelConsoles extends JPanel {
         
         this.network.setLeftComponent(scrollerNetwork);
         
-        MouseTabbedPane networkDetailTabs = new MouseTabbedPane();
-        networkDetailTabs.setUI(new CustomMetalTabbedPaneUI() {
+        NETWORK_TAB_DETAIL.setUI(new CustomMetalTabbedPaneUI() {
             @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
                 return Math.max(65, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
             }
         });
-        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_URL_LABEL"), new LightScrollPane(1, 1, 0, 0, this.networkTabUrl));
-        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_RESPONSE_LABEL"), new LightScrollPane(1, 1, 0, 0, this.networkTabResponse));
         
-        this.networkTabPreview.setEditorKit(new HTMLEditorKitTextPaneWrap());
+        NETWORK_TAB_DETAIL.addTab(I18n.valueByKey("NETWORK_TAB_URL_LABEL"), new LightScrollPane(1, 1, 0, 0, PanelConsoles.NETWORK_TAB_URL));
+        JLabel labelConsoles = new JLabel(I18n.valueByKey("NETWORK_TAB_URL_LABEL"));
+        NETWORK_TAB_DETAIL.setTabComponentAt(
+            NETWORK_TAB_DETAIL.indexOfTab(I18n.valueByKey("NETWORK_TAB_URL_LABEL")),
+            labelConsoles
+        );
+        I18nView.addComponentForKey("NETWORK_TAB_URL_LABEL", labelConsoles);
         
-        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_SOURCE_LABEL"), new LightScrollPane(1, 1, 0, 0, this.networkTabSource));
-        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_PREVIEW_LABEL"), new LightScrollPane(1, 1, 0, 0, this.networkTabPreview));
-        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_HEADERS_LABEL"), new LightScrollPane(1, 1, 0, 0, this.networkTabHeader));
-        networkDetailTabs.addTab(I18n.valueByKey("NETWORK_TAB_PARAMS_LABEL"), new LightScrollPane(1, 1, 0, 0, this.networkTabParam));
+        NETWORK_TAB_DETAIL.addTab(I18n.valueByKey("NETWORK_TAB_RESPONSE_LABEL"), new LightScrollPane(1, 1, 0, 0, PanelConsoles.NETWORK_TAB_RESPONSE));
+        JLabel labelConsoleq = new JLabel(I18n.valueByKey("NETWORK_TAB_RESPONSE_LABEL"));
+        NETWORK_TAB_DETAIL.setTabComponentAt(
+            NETWORK_TAB_DETAIL.indexOfTab(I18n.valueByKey("NETWORK_TAB_RESPONSE_LABEL")),
+            labelConsoleq
+        );
+        I18nView.addComponentForKey("NETWORK_TAB_RESPONSE_LABEL", labelConsoleq);
         
-        DefaultCaret caret = (DefaultCaret) this.networkTabResponse.getCaret();
+        PanelConsoles.NETWORK_TAB_PREVIEW.setEditorKit(new HTMLEditorKitTextPaneWrap());
+        
+        NETWORK_TAB_DETAIL.addTab(I18n.valueByKey("NETWORK_TAB_SOURCE_LABEL"), new LightScrollPane(1, 1, 0, 0, PanelConsoles.NETWORK_TAB_SOURCE));
+        JLabel labelConsoleds = new JLabel(I18n.valueByKey("NETWORK_TAB_SOURCE_LABEL"));
+        NETWORK_TAB_DETAIL.setTabComponentAt(
+            NETWORK_TAB_DETAIL.indexOfTab(I18n.valueByKey("NETWORK_TAB_SOURCE_LABEL")),
+            labelConsoleds
+        );
+        I18nView.addComponentForKey("NETWORK_TAB_SOURCE_LABEL", labelConsoleds);
+        
+        NETWORK_TAB_DETAIL.addTab(I18n.valueByKey("NETWORK_TAB_PREVIEW_LABEL"), new LightScrollPane(1, 1, 0, 0, PanelConsoles.NETWORK_TAB_PREVIEW));
+        JLabel labelConsoleaz = new JLabel(I18n.valueByKey("NETWORK_TAB_PREVIEW_LABEL"));
+        NETWORK_TAB_DETAIL.setTabComponentAt(
+            NETWORK_TAB_DETAIL.indexOfTab(I18n.valueByKey("NETWORK_TAB_PREVIEW_LABEL")),
+            labelConsoleaz
+        );
+        I18nView.addComponentForKey("NETWORK_TAB_PREVIEW_LABEL", labelConsoleaz);
+        
+        NETWORK_TAB_DETAIL.addTab(I18n.valueByKey("NETWORK_TAB_HEADERS_LABEL"), new LightScrollPane(1, 1, 0, 0, PanelConsoles.NETWORK_TAB_HEADER));
+        JLabel labelConsolexw = new JLabel(I18n.valueByKey("NETWORK_TAB_HEADERS_LABEL"));
+        NETWORK_TAB_DETAIL.setTabComponentAt(
+            NETWORK_TAB_DETAIL.indexOfTab(I18n.valueByKey("NETWORK_TAB_HEADERS_LABEL")),
+            labelConsolexw
+        );
+        I18nView.addComponentForKey("NETWORK_TAB_HEADERS_LABEL", labelConsolexw);
+        
+        NETWORK_TAB_DETAIL.addTab(I18n.valueByKey("NETWORK_TAB_PARAMS_LABEL"), new LightScrollPane(1, 1, 0, 0, PanelConsoles.NETWORK_TAB_PARAM));
+        JLabel labelConsolvbne = new JLabel(I18n.valueByKey("NETWORK_TAB_PARAMS_LABEL"));
+        NETWORK_TAB_DETAIL.setTabComponentAt(
+            NETWORK_TAB_DETAIL.indexOfTab(I18n.valueByKey("NETWORK_TAB_PARAMS_LABEL")),
+            labelConsolvbne
+        );
+        I18nView.addComponentForKey("NETWORK_TAB_PARAMS_LABEL", labelConsolvbne);
+        
+        DefaultCaret caret = (DefaultCaret) PanelConsoles.NETWORK_TAB_RESPONSE.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) this.networkTabSource.getCaret();
+        caret = (DefaultCaret) PanelConsoles.NETWORK_TAB_SOURCE.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) this.networkTabPreview.getCaret();
+        caret = (DefaultCaret) PanelConsoles.NETWORK_TAB_PREVIEW.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) this.networkTabHeader.getCaret();
+        caret = (DefaultCaret) PanelConsoles.NETWORK_TAB_HEADER.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) this.networkTabParam.getCaret();
+        caret = (DefaultCaret) PanelConsoles.NETWORK_TAB_PARAM.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) this.networkTabUrl.getCaret();
+        caret = (DefaultCaret) PanelConsoles.NETWORK_TAB_URL.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
         
-        this.networkTabHeader.setLineWrap(true);
-        this.networkTabParam.setLineWrap(true);
-        this.networkTabResponse.setLineWrap(true);
-        this.networkTabUrl.setLineWrap(true);
-        this.networkTabSource.setLineWrap(true);
+        PanelConsoles.NETWORK_TAB_HEADER.setLineWrap(true);
+        PanelConsoles.NETWORK_TAB_PARAM.setLineWrap(true);
+        PanelConsoles.NETWORK_TAB_RESPONSE.setLineWrap(true);
+        PanelConsoles.NETWORK_TAB_URL.setLineWrap(true);
+        PanelConsoles.NETWORK_TAB_SOURCE.setLineWrap(true);
         
-        this.networkTabPreview.setContentType("text/html");
-        this.networkTabPreview.setEditable(false);
+        PanelConsoles.NETWORK_TAB_PREVIEW.setContentType("text/html");
+        PanelConsoles.NETWORK_TAB_PREVIEW.setEditable(false);
         
-        this.networkTable.getColumnModel().getColumn(1).setPreferredWidth(500);
+        this.networkTable.getColumnModel().getColumn(0).setPreferredWidth(75);
+        this.networkTable.getColumnModel().getColumn(1).setPreferredWidth(300);
+        this.networkTable.getColumnModel().getColumn(2).setPreferredWidth(40);
+        this.networkTable.getColumnModel().getColumn(3).setPreferredWidth(50);
         
         this.networkTable.getSelectionModel().addListSelectionListener(event -> {
             // prevent double event
@@ -330,7 +386,7 @@ public class PanelConsoles extends JPanel {
             }
         });
 
-        this.network.setRightComponent(networkDetailTabs);
+        this.network.setRightComponent(NETWORK_TAB_DETAIL);
 
         MediatorGui.register(new TabConsoles());
         MediatorGui.tabConsoles().setUI(new CustomMetalTabbedPaneUI() {
@@ -340,18 +396,13 @@ public class PanelConsoles extends JPanel {
         });
         MediatorGui.tabConsoles().setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 
-        MediatorGui.tabConsoles().addTab(
-            "Console",
+        this.buildI18nTab(
+            "CONSOLE_MAIN_LABEL",
+            "CONSOLE_MAIN_TOOLTIP",
             HelperUi.ICON_CONSOLE,
-            new LightScrollPane(1, 0, 0, 0, PanelConsoles.consoleTextPane.getProxy()),
-            I18n.valueByKey("CONSOLE_MAIN_TOOLTIP")
+            new LightScrollPane(1, 0, 0, 0, PanelConsoles.CONSOLE_TEXT_PANE.getProxy()),
+            0
         );
-        JLabel labelConsole = new JLabel(I18n.valueByKey("CONSOLE_MAIN_LABEL"), HelperUi.ICON_CONSOLE, SwingConstants.CENTER);
-        MediatorGui.tabConsoles().setTabComponentAt(
-            MediatorGui.tabConsoles().indexOfTab("Console"),
-            labelConsole
-        );
-        I18nView.addComponentForKey("CONSOLE_MAIN_LABEL", labelConsole);
 
         // Order is important
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
@@ -381,21 +432,34 @@ public class PanelConsoles extends JPanel {
 
         this.setLayout(new OverlayLayout(this));
 
-        BasicArrowButton showBottomButton = new BasicArrowButton(SwingConstants.SOUTH);
-        showBottomButton.setBorderPainted(false);
-        showBottomButton.setPreferredSize(showBottomButton.getPreferredSize());
-        showBottomButton.setMaximumSize(showBottomButton.getPreferredSize());
-        showBottomButton.setOpaque(false);
-        showBottomButton.addActionListener(SplitHorizontalTopBottom.getActionHideShowConsole());
+        PanelConsoles.BUTTON_SHOW_SOUTH.setBorderPainted(false);
+        PanelConsoles.BUTTON_SHOW_SOUTH.setPreferredSize(new Dimension(PanelConsoles.BUTTON_SHOW_SOUTH.getPreferredSize().width, PanelConsoles.BUTTON_SHOW_SOUTH.getPreferredSize().height));
+        PanelConsoles.BUTTON_SHOW_SOUTH.setMaximumSize(PanelConsoles.BUTTON_SHOW_SOUTH.getPreferredSize());
+        PanelConsoles.BUTTON_SHOW_SOUTH.setOpaque(false);
+        PanelConsoles.BUTTON_SHOW_SOUTH.setBorder(BorderFactory.createEmptyBorder());
+        PanelConsoles.BUTTON_SHOW_SOUTH.addActionListener(SplitHorizontalTopBottom.getActionHideShowConsole());
+        
+        PanelConsoles.BUTTON_SHOW_NORTH.setBorderPainted(false);
+        PanelConsoles.BUTTON_SHOW_NORTH.setPreferredSize(new Dimension(PanelConsoles.BUTTON_SHOW_NORTH.getPreferredSize().width, PanelConsoles.BUTTON_SHOW_NORTH.getPreferredSize().height));
+        PanelConsoles.BUTTON_SHOW_NORTH.setMaximumSize(PanelConsoles.BUTTON_SHOW_NORTH.getPreferredSize());
+        PanelConsoles.BUTTON_SHOW_NORTH.setOpaque(false);
+        PanelConsoles.BUTTON_SHOW_NORTH.setBorder(BorderFactory.createEmptyBorder());
+        PanelConsoles.BUTTON_SHOW_NORTH.addActionListener(SplitHorizontalTopBottom.getActionHideShowResult());
 
         JPanel arrowDownPanel = new JPanel();
         arrowDownPanel.setLayout(new BorderLayout());
         arrowDownPanel.setOpaque(false);
         // Disable overlap with zerosizesplitter
         arrowDownPanel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
-        arrowDownPanel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 27));
-        arrowDownPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 27));
-        arrowDownPanel.add(showBottomButton, BorderLayout.LINE_END);
+        arrowDownPanel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 26));
+        arrowDownPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 26));
+
+        JPanel panelExpander = new JPanel(new BorderLayout());
+        panelExpander.setBorder(BorderFactory.createEmptyBorder());
+        panelExpander.add(PanelConsoles.BUTTON_SHOW_SOUTH, BorderLayout.SOUTH);
+        panelExpander.add(PanelConsoles.BUTTON_SHOW_NORTH, BorderLayout.NORTH);
+        arrowDownPanel.add(panelExpander, BorderLayout.LINE_END);
+        
         this.add(arrowDownPanel);
         this.add(MediatorGui.tabConsoles());
 
@@ -413,80 +477,52 @@ public class PanelConsoles extends JPanel {
      * Add Chunk console to bottom panel.
      */
     public void insertChunkTab() {
-        MediatorGui.tabConsoles().insertTab(
-            "Chunk",
+        this.buildI18nTab(
+            "CONSOLE_CHUNK_LABEL",
+            "CONSOLE_CHUNK_TOOLTIP",
             HelperUi.ICON_CHUNK,
             new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.chunkTextArea),
-            I18n.valueByKey("CONSOLE_CHUNK_TOOLTIP"),
             1
         );
-
-        JLabel labelChunk = new JLabel(I18n.valueByKey("CONSOLE_CHUNK_LABEL"), HelperUi.ICON_CHUNK, SwingConstants.CENTER);
-        MediatorGui.tabConsoles().setTabComponentAt(
-            MediatorGui.tabConsoles().indexOfTab("Chunk"),
-            labelChunk
-        );
-        I18nView.addComponentForKey("CONSOLE_CHUNK_LABEL", labelChunk);
     }
 
     /**
      * Add Binary console to bottom panel.
      */
     public void insertBooleanTab() {
-        MediatorGui.tabConsoles().insertTab(
-            "Boolean",
+        this.buildI18nTab(
+            "CONSOLE_BINARY_LABEL",
+            "CONSOLE_BINARY_TOOLTIP",
             HelperUi.ICON_BINARY,
             new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.binaryTextArea),
-            I18n.valueByKey("CONSOLE_BINARY_TOOLTIP"),
             1 + (MediatorGui.menubar().getChunkMenu().isSelected() ? 1 : 0)
         );
-
-        JLabel labelBoolean = new JLabel(I18n.valueByKey("CONSOLE_BINARY_LABEL"), HelperUi.ICON_BINARY, SwingConstants.CENTER);
-        MediatorGui.tabConsoles().setTabComponentAt(
-            MediatorGui.tabConsoles().indexOfTab("Boolean"),
-            labelBoolean
-        );
-        I18nView.addComponentForKey("CONSOLE_BINARY_LABEL", labelBoolean);
     }
 
     /**
      * Add Network tab to bottom panel.
      */
     public void insertNetworkTab() {
-        MediatorGui.tabConsoles().insertTab(
-            "Network",
+        this.buildI18nTab(
+            "CONSOLE_NETWORK_LABEL",
+            "CONSOLE_NETWORK_TOOLTIP",
             HelperUi.ICON_HEADER,
-            PanelConsoles.this.network,
-            I18n.valueByKey("CONSOLE_NETWORK_TOOLTIP"),
+            new LightScrollPane(1, 0, 0, 0, PanelConsoles.this.network),
             MediatorGui.tabConsoles().getTabCount() - (MediatorGui.menubar().getJavaDebugMenu().isSelected() ? 1 : 0)
         );
-
-        JLabel labelNetwork = new JLabel(I18n.valueByKey("CONSOLE_NETWORK_LABEL"), HelperUi.ICON_HEADER, SwingConstants.CENTER);
-        MediatorGui.tabConsoles().setTabComponentAt(
-            MediatorGui.tabConsoles().indexOfTab("Network"),
-            labelNetwork
-        );
-        I18nView.addComponentForKey("CONSOLE_NETWORK_LABEL", labelNetwork);
     }
 
     /**
      * Add Java console to bottom panel.
      */
     public void insertJavaTab() {
-        MediatorGui.tabConsoles().insertTab(
-            "Java",
+        this.buildI18nTab(
+            "CONSOLE_JAVA_LABEL",
+            "CONSOLE_JAVA_TOOLTIP",
             HelperUi.ICON_CUP,
-            new LightScrollPane(1, 0, 0, 0, PanelConsoles.javaTextPane.getProxy()),
-            I18n.valueByKey("CONSOLE_JAVA_TOOLTIP"),
+            new LightScrollPane(1, 0, 0, 0, PanelConsoles.JAVA_TEXT_PANE.getProxy()),
             MediatorGui.tabConsoles().getTabCount()
         );
-
-        JLabel labelJava = new JLabel(I18n.valueByKey("CONSOLE_JAVA_LABEL"), HelperUi.ICON_CUP, SwingConstants.CENTER);
-        MediatorGui.tabConsoles().setTabComponentAt(
-            MediatorGui.tabConsoles().indexOfTab("Java"),
-            labelJava
-        );
-        I18nView.addComponentForKey("CONSOLE_JAVA_LABEL", labelJava);
     }
     
     public void addHeader(HttpHeader header) {
@@ -507,17 +543,17 @@ public class PanelConsoles extends JPanel {
             LOGGER.error(e.getMessage(), e);
         }
         
-        PanelConsoles.javaTextPane.getProxy().setText("");
+        PanelConsoles.JAVA_TEXT_PANE.getProxy().setText("");
         
-        this.networkTabUrl.setText("");
-        this.networkTabHeader.setText("");
-        this.networkTabParam.setText("");
-        this.networkTabResponse.setText("");
-        this.networkTabSource.setText("");
+        PanelConsoles.NETWORK_TAB_URL.setText("");
+        PanelConsoles.NETWORK_TAB_HEADER.setText("");
+        PanelConsoles.NETWORK_TAB_PARAM.setText("");
+        PanelConsoles.NETWORK_TAB_RESPONSE.setText("");
+        PanelConsoles.NETWORK_TAB_SOURCE.setText("");
         
         // Fix #41879: ArrayIndexOutOfBoundsException on setText()
         try {
-            this.networkTabPreview.setText("");
+            PanelConsoles.NETWORK_TAB_PREVIEW.setText("");
         } catch (ArrayIndexOutOfBoundsException e) {
             LOGGER.error(e, e);
         }
@@ -525,20 +561,20 @@ public class PanelConsoles extends JPanel {
     
     public void changeTextNetwork() {
         HttpHeader networkData = this.listHttpHeader.get(PanelConsoles.this.networkTable.getSelectedRow());
-        this.networkTabHeader.setText(networkData.getHeader());
-        this.networkTabParam.setText(networkData.getPost());
-        this.networkTabUrl.setText(networkData.getUrl());
+        PanelConsoles.NETWORK_TAB_HEADER.setText(networkData.getHeader());
+        PanelConsoles.NETWORK_TAB_PARAM.setText(networkData.getPost());
+        PanelConsoles.NETWORK_TAB_URL.setText(networkData.getUrl());
         
-        this.networkTabResponse.setText("");
+        PanelConsoles.NETWORK_TAB_RESPONSE.setText("");
         for (String key: networkData.getResponse().keySet()) {
-            this.networkTabResponse.append(key + ": " + networkData.getResponse().get(key));
-            this.networkTabResponse.append("\n");
+            PanelConsoles.NETWORK_TAB_RESPONSE.append(key + ": " + networkData.getResponse().get(key));
+            PanelConsoles.NETWORK_TAB_RESPONSE.append("\n");
         }
         
-        this.networkTabSource.setText(StringUtil.detectUtf8Html(networkData.getSource()).replaceAll("#{5,}", "#*"));
+        PanelConsoles.NETWORK_TAB_SOURCE.setText(StringUtil.detectUtf8Html(networkData.getSource()).replaceAll("#{5,}", "#*"));
         
         // Reset EditorKit to disable previous document effect
-        this.networkTabPreview.getEditorKit().createDefaultDocument();
+        PanelConsoles.NETWORK_TAB_PREVIEW.getEditorKit().createDefaultDocument();
         
         // Proxy is used by jsoup to display <img> tags
         // Previous test for 2xx Success and 3xx Redirection was Header only,
@@ -547,7 +583,7 @@ public class PanelConsoles extends JPanel {
         // Fix #39841: RuntimeException on setText()
         // Fix #42523: ExceptionInInitializerError on clean()
         try {
-            this.networkTabPreview.setText(
+            PanelConsoles.NETWORK_TAB_PREVIEW.setText(
                 Jsoup.clean(
                     "<html>"+ StringUtil.detectUtf8(networkData.getSource()).replaceAll("#{5,}", "#*") + "</html>"
                         .replaceAll("<img.*>", "")
@@ -564,6 +600,40 @@ public class PanelConsoles extends JPanel {
         }
     }
     
+    private void buildI18nTab(
+        String keyLabel,
+        String keyTooltip,
+        Icon icon,
+        Component manager,
+        int position
+    ) {
+        final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18nView.valueByKey(keyTooltip))};
+        JLabel labelTab = new JLabel(I18nView.valueByKey(keyLabel), icon, SwingConstants.CENTER){
+            @Override
+            public JToolTip createToolTip() {
+                JToolTip tipI18n = new JToolTipI18n(I18nView.valueByKey(keyTooltip));
+                j[0] = (JToolTipI18n) tipI18n;
+                return tipI18n;
+            }
+        };
+        labelTab.setName(keyLabel);
+        labelTab.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                MediatorGui.tabConsoles().setSelectedComponent(manager);
+                super.mousePressed(e);
+            }
+        });
+        MediatorGui.tabConsoles().insertTab(I18nView.valueByKey(keyLabel), icon, manager, null, position);
+        MediatorGui.tabConsoles().setTabComponentAt(
+            MediatorGui.tabConsoles().indexOfTab(I18nView.valueByKey(keyLabel)),
+            labelTab
+        );
+        I18nView.addComponentForKey(keyLabel, labelTab);
+        I18nView.addComponentForKey(keyTooltip, j[0]);
+        labelTab.setToolTipText(I18nView.valueByKey(keyTooltip));
+    }
+    
     // Getter and setter
 
     public JTextArea getChunkTab() {
@@ -576,6 +646,18 @@ public class PanelConsoles extends JPanel {
 
     public JTextArea getBinaryTab() {
         return this.binaryTextArea;
+    }
+
+    public static int getLoc() {
+        return loc;
+    }
+
+    public static void setLoc(int loc) {
+        PanelConsoles.loc = loc;
+    }
+
+    public static BasicArrowButton getButtonShowNorth() {
+        return BUTTON_SHOW_NORTH;
     }
     
 }

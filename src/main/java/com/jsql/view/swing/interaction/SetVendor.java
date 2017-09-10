@@ -30,6 +30,10 @@ public class SetVendor implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.managerDatabase() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.managerDatabase() in "+ this.getClass());
+        }
+        
         MediatorGui.managerDatabase().getMenuVendor().setText(this.vendor.toString());
         MediatorGui.managerDatabase().initErrorMethods(this.vendor);
     }

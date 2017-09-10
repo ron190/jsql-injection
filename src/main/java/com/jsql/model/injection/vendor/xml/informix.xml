@@ -131,7 +131,7 @@ rpad(
             <fingerprint>
                 <errorMessage>Found a quote for which there is no matching quote. [SQL State=</errorMessage>
                 <errorMessage>[Informix][Informix ODBC Driver]General error. (SQLPrepare[</errorMessage>
-                <errorMessage>Informix</errorMessage>
+                <errorMessage>Informix database</errorMessage>
             </fingerprint>
         </configuration>
         <normal>

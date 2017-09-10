@@ -32,7 +32,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.text.DefaultEditorKit;
 
-import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -48,11 +47,6 @@ import com.jsql.view.swing.tab.TabHeader;
  * Create a new tab for an administration webpage.
  */
 public class CreateAdminPageTab extends CreateTab implements InteractionCommand {
-	
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Url for the administration webpage.
@@ -68,6 +62,10 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
 
     @Override
     public void execute() {
+        if (MediatorGui.tabResults() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.tabResults() in "+ this.getClass());
+        }
+        
         String htmlSource = "";
         // Fix #4081: SocketTimeoutException on get()
         // Fix #44642: NoClassDefFoundError on get()
@@ -184,7 +182,7 @@ public class CreateAdminPageTab extends CreateTab implements InteractionCommand 
         MediatorGui.tabResults().setSelectedComponent(scroller);
 
         // Create a custom tab header with close button
-        TabHeader header = new TabHeader(this.url.replaceAll(".*/", "") +" ", HelperUi.ICON_ADMIN_SERVER);
+        TabHeader header = new TabHeader(this.url.replaceAll(".*/", ""), HelperUi.ICON_ADMIN_SERVER);
 
         MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), "<html>"+ this.url +"</html>");
 

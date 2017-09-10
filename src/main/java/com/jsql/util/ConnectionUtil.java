@@ -72,9 +72,9 @@ public class ConnectionUtil {
     /**
      * Default timeout used by the jcifs fix. It's the default value used usually by the JVM.
      */
-    public static final Integer TIMEOUT = 15000;
+    private static final Integer TIMEOUT = 15000;
     
-    public static SimpleEntry<String, String> tokenCsrf = null;
+    private static SimpleEntry<String, String> tokenCsrf = null;
     
     // Utility class
     private ConnectionUtil() {
@@ -125,8 +125,8 @@ public class ConnectionUtil {
                 ).openConnection();
             }
             
-            connection.setReadTimeout(ConnectionUtil.TIMEOUT);
-            connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
+            connection.setReadTimeout(ConnectionUtil.getTimeout());
+            connection.setConnectTimeout(ConnectionUtil.getTimeout());
             connection.setDefaultUseCaches(false);
             connection.setRequestProperty("Pragma", "no-cache");
             connection.setRequestProperty("Cache-Control", "no-cache");
@@ -139,7 +139,7 @@ public class ConnectionUtil {
                 HeaderUtil.sanitizeHeaders(connection, header);
             }
 
-            HeaderUtil.checkResponseHeader(connection, ConnectionUtil.getUrlByUser());
+            HeaderUtil.checkResponseHeader(connection, ConnectionUtil.getUrlByUser().replace(InjectionModel.STAR, ""));
             
             // Calling connection.disconnect() is not required, further calls will follow
         } catch (Exception e) {
@@ -156,8 +156,8 @@ public class ConnectionUtil {
      */
     public static String getSource(String url) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.setReadTimeout(ConnectionUtil.TIMEOUT);
-        connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
+        connection.setReadTimeout(ConnectionUtil.getTimeout());
+        connection.setConnectTimeout(ConnectionUtil.getTimeout());
         connection.setUseCaches(false);
         
         connection.setRequestProperty("Pragma", "no-cache");
@@ -278,11 +278,11 @@ public class ConnectionUtil {
     
                 Field privateFieldConnectTimeout = classURLConnectionPrivate.getDeclaredField("connectTimeout");
                 privateFieldConnectTimeout.setAccessible(true);
-                privateFieldConnectTimeout.setInt(privateURLConnection, ConnectionUtil.TIMEOUT);
+                privateFieldConnectTimeout.setInt(privateURLConnection, ConnectionUtil.getTimeout());
                 
                 Field privateFieldReadTimeout = classURLConnectionPrivate.getDeclaredField("readTimeout");
                 privateFieldReadTimeout.setAccessible(true);
-                privateFieldReadTimeout.setInt(privateURLConnection, ConnectionUtil.TIMEOUT);
+                privateFieldReadTimeout.setInt(privateURLConnection, ConnectionUtil.getTimeout());
             } catch (Exception e) {
                 LOGGER.warn("Fix jcifs timeout failed: "+ e.getMessage(), e);
             }
@@ -322,5 +322,19 @@ public class ConnectionUtil {
     public static void setTypeRequest(String typeRequest) {
         ConnectionUtil.typeRequest = typeRequest;
     }
+
+    public static Integer getTimeout() {
+        return TIMEOUT;
+    }
+
+    public static SimpleEntry<String, String> getTokenCsrf() {
+        return tokenCsrf;
+    }
+
+    public static void setTokenCsrf(SimpleEntry<String, String> tokenCsrf) {
+        ConnectionUtil.tokenCsrf = tokenCsrf;
+    }
+    
+    
     
 }

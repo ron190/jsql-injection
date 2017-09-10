@@ -44,6 +44,10 @@ public class UpdateProgress implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.frame() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.frame() in "+ this.getClass());
+        }
+        
         DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(this.dataElementDatabase);
         // Fix Report #1368: ignore if no element database
         if (node != null) {

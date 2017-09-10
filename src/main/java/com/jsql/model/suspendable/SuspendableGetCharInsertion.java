@@ -2,7 +2,6 @@ package com.jsql.model.suspendable;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
@@ -52,16 +51,20 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetInsertionCharacter"));
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
-        // TODO Generate
-        List<String> charactersInsertion = new ArrayList<>(Arrays.asList(new String[]{
-            "-1", "-1'", "'-1'", "-1)", "-1))", "-1\"", "\"-1\"", "-1')", "'-1')", "-1'))", "'-1'))", "-1\")", "\"-1\")", "-1\"))", "\"-1\"))",
-            "0", "0'", "'0'", "0)", "0))", "0\"", "\"0\"", "0')", "'0')", "0'))", "'0'))", "0\")", "\"0\")", "0\"))", "\"0\"))",
-            "1", "1'", "'1'", "1)", "1))", "1\"", "\"1\"", "1')", "'1')", "1'))", "'1'))", "1\")", "\"1\")", "1\"))", "\"1\"))",
-            "0%bf'", "%bf'0%bf'", "0%bf\"", "%bf\"0%bf\"", "0%bf')", "%bf'0%bf')", "0%bf'))", "%bf'0%bf'))", "0%bf\")", "%bf\"0%bf\")", "0%bf\"))", "%bf\"0%bf\"))",
-            "1%bf'", "1%bf\"", "1%bf')", "1%bf'))", "1%bf\")", "1%bf\"))", "%bf'1%bf'", "%bf\"1%bf\"", "%bf'1%bf')", "%bf'1%bf'))", "%bf\"1%bf\")", "%bf\"1%bf\"))",
-            "'", "\"",
-            "%bf'", "%bf\""
-        }));
+        List<String> charactersInsertion = new ArrayList<>();
+        for (String prefix: new String[]{"-1", "0", "1", ""}) {
+            for (String suffix: new String[]{
+                "*",
+                "*'", "'*'",
+                "*\"", "\"*\"",
+                "*%bf'", "%bf'*%bf'",
+                "*%bf\"", "%bf\"*%bf\""
+            }) {
+                for (String suffix2: new String[]{"", ")", "))"}) {
+                    charactersInsertion.add(suffix.replace("*", prefix) + suffix2);
+                }
+            }
+        }
         
         for (String insertionCharacter: charactersInsertion) {
             taskCompletionService.submit(
@@ -106,15 +109,15 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         }
         
         if (characterInsertion == null) {
-            if ("".equals(characterInsertionByUser)) {
+            if ("".equals(characterInsertionByUser) || characterInsertionByUser == null || "*".equals(characterInsertionByUser)) {
                 characterInsertion = "1";
             } else {
                 characterInsertion = characterInsertionByUser;
             }
-            LOGGER.trace("No character insertion activates ORDER BY error, forcing to ["+ characterInsertion.replace(InjectionModel.STAR, "") +"]");
-        } else if (!characterInsertionByUser.equals(characterInsertion)) {
+            LOGGER.warn("No character insertion activates ORDER BY error, forcing to ["+ characterInsertion.replace(InjectionModel.STAR, "") +"]");
+        } else if (!characterInsertionByUser.replace(InjectionModel.STAR, "").equals(characterInsertion)) {
             String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, "");
-            LOGGER.trace("Character insertion ["+ characterInsertion +"] used in place of ["+ characterInsertionByUserFormat +"] to detect error on ORDER BY");
+            LOGGER.debug("Found character insertion ["+ characterInsertion +"] in place of ["+ characterInsertionByUserFormat +"] to detect error on ORDER BY");
             LOGGER.trace("Add manually the character * like ["+ characterInsertionByUserFormat +"*] to force the value ["+ characterInsertionByUserFormat +"]");
         }
         

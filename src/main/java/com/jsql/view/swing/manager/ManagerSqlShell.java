@@ -91,7 +91,7 @@ public class ManagerSqlShell extends AbstractManagerShell {
     }
 
     @Override
-    void createPayload(String shellPath, String shellURL) throws JSqlException {
+    void createPayload(String shellPath, String shellURL) throws JSqlException, InterruptedException {
         RessourceAccess.createSqlShell(shellPath, shellURL, this.username.getText(), this.password.getText());
     }
     

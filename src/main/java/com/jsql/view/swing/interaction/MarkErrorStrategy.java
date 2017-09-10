@@ -12,8 +12,6 @@ package com.jsql.view.swing.interaction;
 
 import javax.swing.JMenu;
 
-import org.apache.log4j.Logger;
-
 import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
@@ -23,11 +21,6 @@ import com.jsql.view.swing.MediatorGui;
  * Mark the injection as invulnerable to a error based injection.
  */
 public class MarkErrorStrategy implements InteractionCommand {
-    
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
 	
     /**
      * @param interactionParams
@@ -38,6 +31,10 @@ public class MarkErrorStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.managerDatabase() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.managerDatabase() in "+ this.getClass());
+        }
+        
         MediatorGui.managerDatabase().getMenuStrategy().setText(StrategyInjection.ERROR.toString());
         
         JMenu menuError = (JMenu) MediatorGui.managerDatabase().getMenuStrategy().getMenuComponent(2);

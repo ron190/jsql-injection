@@ -36,8 +36,9 @@ public class HeaderUtil {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
+    // Utility class
     private HeaderUtil() {
-        // TODO Auto-generated constructor stub
+        // Nothing
     }
     
     /**
@@ -132,7 +133,7 @@ public class HeaderUtil {
             if (!PreferencesUtil.isFollowingRedirection()) {
                 LOGGER.warn("If injection fails please test again with option 'Follow HTTP redirection' enabled.");
             } else {
-                LOGGER.warn("Redirecting to the next page...");
+                LOGGER.info("Redirecting to the next page...");
             }
             
         } else if (Pattern.matches("4\\d\\d", Integer.toString(connection.getResponseCode()))) {
@@ -212,7 +213,7 @@ public class HeaderUtil {
             if (!PreferencesUtil.isParsingForm()) {
                 if (connection.getResponseCode() != 200) {
                     LOGGER.trace("Found "+ elementsForm.size() +" ignored <form> in HTML body:"+ result);
-                    LOGGER.info("WAF can detect missing <form> parameters, enable 'Parse <form>' in Preferences to add these parameters to the requests");
+                    LOGGER.info("WAF can detect missing form parameters, you may enable 'Add <input> parameters' in Preferences and retry");
                 } else {
                     LOGGER.trace("Found "+ elementsForm.size() +" <form> in HTML body while status 200 Success:"+ result);
                 }
@@ -246,7 +247,7 @@ public class HeaderUtil {
             
             if (PreferencesUtil.isProcessingCsrf()) {
                 LOGGER.debug("Found Csrf token "+ tokenCsrfFound.getKey() +"="+ tokenCsrfFound.getValue() +" in HTML body, adding token to querystring, request and header");
-                ConnectionUtil.tokenCsrf = tokenCsrfFound;
+                ConnectionUtil.setTokenCsrf(tokenCsrfFound);
             } else {
                 LOGGER.warn("Found Csrf token '"+ tokenCsrfFound.getKey() +"="+ tokenCsrfFound.getValue() +"' in HTML body");
                 exception = new IOException("please activate Csrf processing in Preferences");

@@ -14,8 +14,6 @@ import java.util.Map;
 
 import javax.swing.JMenu;
 
-import org.apache.log4j.Logger;
-
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
@@ -25,11 +23,6 @@ import com.jsql.view.swing.MediatorGui;
  * Mark the injection as invulnerable to a error based injection.
  */
 public class MarkErrorInvulnerable implements InteractionCommand {
-    
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
 	
     private Map<Header, Object> mapHeader;
     private int indexMethodError;
@@ -45,6 +38,10 @@ public class MarkErrorInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.managerDatabase() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.managerDatabase() in "+ this.getClass());
+        }
+        
         // Fix #36975: ArrayIndexOutOfBoundsException on getItem()
         // Fix #40352: NullPointerException on ?
         try {

@@ -116,7 +116,7 @@ cast(
             <limitBoundary>1</limitBoundary>
             <endingComment>--+</endingComment>
             <fingerprint>
-                <errorMessage>teradata</errorMessage>
+                <errorMessage>Teradata database</errorMessage>
             </fingerprint>
         </configuration>
         <normal>

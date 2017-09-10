@@ -11,10 +11,10 @@ import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.vendor.xml.Model.Strategy;
-import com.jsql.model.injection.vendor.xml.Model.Strategy.Configuration;
-import com.jsql.model.injection.vendor.xml.Model.Strategy.Error.Method;
-import com.jsql.model.injection.vendor.xml.VendorXml;
+import com.jsql.model.injection.vendor.model.Model.Strategy;
+import com.jsql.model.injection.vendor.model.Model.Strategy.Configuration;
+import com.jsql.model.injection.vendor.model.Model.Strategy.Error.Method;
+import com.jsql.model.injection.vendor.model.VendorXml;
 import com.jsql.model.suspendable.AbstractSuspendable;
 
 /**
@@ -43,7 +43,7 @@ public class StrategyInjectionError extends AbstractStrategy {
         Configuration configurationXml = strategyXml.getConfiguration();
         
         if (strategyXml.getError() == null) {
-            LOGGER.info("No Error strategy known for "+ MediatorModel.model().getVendor() +".");
+            LOGGER.info("No Error strategy known for "+ MediatorModel.model().getVendor());
             return;
         }
 

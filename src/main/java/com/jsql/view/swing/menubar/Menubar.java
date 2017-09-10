@@ -42,7 +42,11 @@ import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.MenuSelectionManager;
 import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
 import javax.swing.text.StyleConstants;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
@@ -147,6 +151,7 @@ public class Menubar extends JMenuBar {
         I18nView.addComponentForKey("NEW_WINDOW_MENU", itemNewWindows);
 
         JMenuItem itemSave = new JMenuItem(new ActionSaveTab());
+        I18nView.addComponentForKey("MENUBAR_FILE_SAVETABAS", itemSave);
 
         JMenuItem itemExit = new JMenuItem(I18n.valueByKey("MENUBAR_FILE_EXIT"), 'x');
         I18nView.addComponentForKey("MENUBAR_FILE_EXIT", itemExit);
@@ -519,8 +524,7 @@ public class Menubar extends JMenuBar {
             if (this.chunkMenu.isSelected()) {
                 MediatorGui.panelConsoles().insertChunkTab();
             } else {
-                // Works even with i18n label
-                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab("Chunk"));
+                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_CHUNK));
             }
         });
         
@@ -528,8 +532,7 @@ public class Menubar extends JMenuBar {
             if (this.binaryMenu.isSelected()) {
                 MediatorGui.panelConsoles().insertBooleanTab();
             } else {
-                // Works even with i18n label
-                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab("Boolean"));
+                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_BINARY));
             }
         });
         
@@ -537,8 +540,7 @@ public class Menubar extends JMenuBar {
             if (this.networkMenu.isSelected()) {
                 MediatorGui.panelConsoles().insertNetworkTab();
             } else {
-                // Works even with i18n label
-                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab("Network"));
+                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_HEADER));
             }
         });
         
@@ -546,8 +548,7 @@ public class Menubar extends JMenuBar {
             if (this.javaDebugMenu.isSelected()) {
                 MediatorGui.panelConsoles().insertJavaTab();
             } else {
-                // Works even with i18n label
-                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab("Java"));
+                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_CUP));
             }
         });
 
@@ -605,15 +606,15 @@ public class Menubar extends JMenuBar {
             MediatorGui.tabResults().setSelectedComponent(scroller);
 
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader("Preferences ", HelperUi.ICON_FILE_SERVER);
-
-            MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(scroller), I18n.valueByKey("MENUBAR_PREFERENCES"));
+            TabHeader header = new TabHeader(I18nView.valueByKey("MENUBAR_PREFERENCES"), HelperUi.ICON_FILE_SERVER);
+            I18nView.addComponentForKey("MENUBAR_PREFERENCES", header.getTabTitleLabel());
 
             // Apply the custom header to the tab
             MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(scroller), header);
         });
         
         JMenuItem sqlEngine = new JMenuItem(I18n.valueByKey("MENUBAR_SQL_ENGINE"));
+        I18nView.addComponentForKey("MENUBAR_SQL_ENGINE", sqlEngine);
         
         // Render the SQL Engine dialog behind scene
         String titleTabSqlEngine = "SQL Engine";
@@ -635,9 +636,8 @@ public class Menubar extends JMenuBar {
             MediatorGui.tabResults().setSelectedComponent(panelSqlEngine);
 
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader(I18n.valueByKey("MENUBAR_SQL_ENGINE") +" ", HelperUi.ICON_FILE_SERVER);
-
-            MediatorGui.tabResults().setToolTipTextAt(MediatorGui.tabResults().indexOfComponent(panelSqlEngine), I18n.valueByKey("MENUBAR_SQL_ENGINE"));
+            TabHeader header = new TabHeader(I18nView.valueByKey("MENUBAR_SQL_ENGINE"), HelperUi.ICON_FILE_SERVER);
+            I18nView.addComponentForKey("MENUBAR_SQL_ENGINE", header.getTabTitleLabel());
 
             // Apply the custom header to the tab
             MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(panelSqlEngine), header);
@@ -690,10 +690,10 @@ public class Menubar extends JMenuBar {
             JPanel panel = new JPanel(new BorderLayout());
             final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
             textarea.setText(
-                "## What's the object of your report?\n\n\n"
-                + "## Any detailed information on the subject?\n\n\n"
-                + "## If required what changes you'll do to User interface?\n\n\n"
-                + "## Have you got request for new features?\n\n\n"
+                "## What's the overall subject of your report?\n\n\n"
+                + "## Any detailed information about this question?\n\n\n"
+                + "## Do you have suggestion on the matter?\n\n\n"
+                + "## As long as you are with me, have you got in mind a request for a new feature?\n\n\n"
             );
             panel.add(new JLabel("Describe your issue or the bug you encountered " + ":"), BorderLayout.NORTH);
             panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
@@ -744,6 +744,8 @@ public class Menubar extends JMenuBar {
     public void switchLocale(Locale oldLocale, Locale newLocale, boolean isStartup) {
         I18n.setLocaleDefault(ResourceBundle.getBundle("com.jsql.i18n.jsql", newLocale));
         
+        JTableHeader header= MediatorGui.panelConsoles().networkTable.getTableHeader();
+        TableColumnModel colMod = header.getColumnModel();
         if (newLocale.getLanguage() == new Locale("zh").getLanguage()) {
             StyleConstants.setFontFamily(SwingAppender.ERROR, HelperUi.FONT_NAME_MONOSPACE);
             StyleConstants.setFontFamily(SwingAppender.WARN, HelperUi.FONT_NAME_MONOSPACE);
@@ -751,14 +753,29 @@ public class Menubar extends JMenuBar {
             StyleConstants.setFontFamily(SwingAppender.DEBUG, HelperUi.FONT_NAME_MONOSPACE);
             StyleConstants.setFontFamily(SwingAppender.TRACE, HelperUi.FONT_NAME_MONOSPACE);
             StyleConstants.setFontFamily(SwingAppender.ALL, HelperUi.FONT_NAME_MONOSPACE);
+            
+            MediatorGui.managerBruteForce().getResult().setFont(HelperUi.FONT_MONOSPACE);
+            
+            colMod.getColumn(0).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_METHOD_COLUMN"));
+            colMod.getColumn(1).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_URL_COLUMN"));
+            colMod.getColumn(2).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
+            colMod.getColumn(3).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
         } else {
-            StyleConstants.setFontFamily(SwingAppender.ERROR, HelperUi.FONT_NAME_UBUNTU);
-            StyleConstants.setFontFamily(SwingAppender.WARN, HelperUi.FONT_NAME_UBUNTU);
-            StyleConstants.setFontFamily(SwingAppender.INFO, HelperUi.FONT_NAME_UBUNTU);
-            StyleConstants.setFontFamily(SwingAppender.DEBUG, HelperUi.FONT_NAME_UBUNTU);
-            StyleConstants.setFontFamily(SwingAppender.TRACE, HelperUi.FONT_NAME_UBUNTU);
-            StyleConstants.setFontFamily(SwingAppender.ALL, HelperUi.FONT_NAME_UBUNTU);
+            StyleConstants.setFontFamily(SwingAppender.ERROR, HelperUi.FONT_NAME_UBUNTU_MONO);
+            StyleConstants.setFontFamily(SwingAppender.WARN, HelperUi.FONT_NAME_UBUNTU_MONO);
+            StyleConstants.setFontFamily(SwingAppender.INFO, HelperUi.FONT_NAME_UBUNTU_MONO);
+            StyleConstants.setFontFamily(SwingAppender.DEBUG, HelperUi.FONT_NAME_UBUNTU_MONO);
+            StyleConstants.setFontFamily(SwingAppender.TRACE, HelperUi.FONT_NAME_UBUNTU_MONO);
+            StyleConstants.setFontFamily(SwingAppender.ALL, HelperUi.FONT_NAME_UBUNTU_MONO);
+            
+            MediatorGui.managerBruteForce().getResult().setFont(HelperUi.FONT_UBUNTU_MONO);
+            
+            colMod.getColumn(0).setHeaderValue(I18n.valueByKey("NETWORK_TAB_METHOD_COLUMN"));
+            colMod.getColumn(1).setHeaderValue(I18n.valueByKey("NETWORK_TAB_URL_COLUMN"));
+            colMod.getColumn(2).setHeaderValue(I18n.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
+            colMod.getColumn(3).setHeaderValue(I18n.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
         }
+        header.repaint();
         
         for (String key: I18nView.keys()) {
             for (Object componentSwing: I18nView.componentsByKey(key)) {
@@ -769,8 +786,9 @@ public class Menubar extends JMenuBar {
                         setPlaceholderText.invoke(componentSwing, I18n.valueByKey(key));
                     } else {
                         Method methodSetText = classComponent.getMethod("setText", new Class<?>[]{String.class});
+                        methodSetText.setAccessible(true);
                         if (newLocale.getLanguage() == new Locale("zh").getLanguage()) {
-                            methodSetText.invoke(componentSwing, "<html><span style=\"font-family:'Monospace'\">"+ I18n.valueByKey(key) +"</span></html>");
+                            methodSetText.invoke(componentSwing, I18nView.valueByKey(key));
                         } else {
                             methodSetText.invoke(componentSwing, I18n.valueByKey(key));
                         }
@@ -779,7 +797,7 @@ public class Menubar extends JMenuBar {
                     NoSuchMethodException | SecurityException | IllegalAccessException |
                     IllegalArgumentException | InvocationTargetException e
                 ) {
-                    LOGGER.warn("Reflection for "+ key +" failed while switching locale", e);
+                    LOGGER.error("Reflection for "+ key +" failed while switching locale", e);
                 }
             }
         }
@@ -839,6 +857,14 @@ public class Menubar extends JMenuBar {
         }
         
         MediatorGui.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));
+        
+        // I18n of tree empty node
+        if (MediatorGui.treeDatabase().isRootVisible()) {
+            DefaultTreeModel model = (DefaultTreeModel) MediatorGui.managerDatabase().tree.getModel();
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+            model.reload(root);
+            MediatorGui.managerDatabase().tree.revalidate();
+        }
         
         // Fix glitches on Linux
         MediatorGui.frame().revalidate();

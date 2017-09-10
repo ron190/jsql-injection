@@ -11,17 +11,19 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 [![Maven 3.2](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/maven.png)](https://maven.apache.org/)
 [![SonarQube 6.3](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/sonar.png)](http://www.sonarqube.org/)<br>
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)
+[![Join the chat at https://gitter.im/jsql-injection/Lobby](https://badges.gitter.im/jsql-injection/Lobby.svg)](https://gitter.im/jsql-injection/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Features
-- Automatic injection of 23 kinds of databases: Access, CockroachDB, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, Mckoi, MySQL{MariaDb}, Neo4j, NuoDB, Oracle, PostgreSQL, SQLite, SQL Server, Sybase, Teradata and Vertica
+- Automatic injection of 23 kinds of databases: Access, CockroachDB, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, Mckoi, MySQL, Neo4j, NuoDB, Oracle, PostgreSQL, SQLite, SQL Server, Sybase, Teradata and Vertica
 - Multiple injection strategies: Normal, Error, Blind and Time
+- Multiple injection structures: Standard, Zipped, Dump In One Shot
 - SQL Engine to study and optimize SQL expressions
 - Injection of multiple targets
 - Search for administration pages
 - Creation and vizualisation of Web shell and SQL shell
 - Read and write files on host using injection
 - Bruteforce of password's hash
-- Code and decode a string
+- Encode and decode a string
 
 ## Installation [[jsql-injection-v0.79.jar](https://github.com/ron190/jsql-injection/releases/download/v0.79/jsql-injection-v0.79.jar)]
 Install [Java 8](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.79.jar` to launch the software.<br>
@@ -43,15 +45,17 @@ If you are using Kali Linux then get the latest release using command `sudo apt-
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## Roadmap
-`Database: Netezza, Test coverage with Jacoco, Integration test with Docker and JPA Hibernate Jooq, Reactive programming with RxJava, Maven Central: core swing cli, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB UpdateInsertDelete, Bruteforce HTTP Auth using NTLM, Arabic translation, Command line interface, Dictionnary attack, WAF detection, Program self-updater.`
+`Burp integration, Crawler, Tampering, Database: Netezza, Test coverage with Jacoco, Integration test with Docker and JPA Hibernate Jooq, Reactive programming with RxJava, Maven Central: core swing cli, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB, Bruteforce HTTP Auth using NTLM, Arabic translation, Command line interface, Dictionnary attack, WAF detection, Program self-updater.`
 
 ## In progress
 `New SQL Structure: Dump In One Shot and Zipped, Database: MemSQL Couchbase, Dump to a file, Load from/to no. of row/char, User Agent configuration.`
 
 ## Since last release
-`Database: CockroachDB Mckoi Neo4j NuoDB Hana and Vertica, Database Node renaming on F2 and Context Menu, Coldfusion injection, Translation updates: cz zh fr, New language: pl, Translation complete: ru.`
+`-`
 
 ## Change log
+
+**v0.80** `Test all parameters, Parse forms and Csrf tokens, Databases: CockroachDB Mckoi Neo4j NuoDB Hana and Vertica, Translation complete: Russian, Chinese`
 
 **v0.79** `Error Strategies for MySQL and PostgreSQL compatible with Order/Group By, Wider range of Characters Insertion including multibyte %bf`
 

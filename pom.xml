@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>jsql-injection</groupId>
 	<artifactId>jsql-injection</artifactId>
-	<version>v0.79</version>
+	<version>v0.80</version>
     
 	<repositories>
 		<repository>
@@ -21,7 +21,7 @@
         <sonar.jdbc.driver>org.postgresql.Driver</sonar.jdbc.driver>
         <sonar.exclusions>
             **/*.js, 
-            **/vendor/xml/Model.java, 
+            **/vendor/model/Model.java, 
             **/SQLLexer.java, 
             **/DigestMD4.java, 
             **/blind/patch/*
@@ -39,9 +39,13 @@
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
-				<targetPath>META-INF</targetPath>
 			</resource>
 		</resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
 
 		<plugins>
 

@@ -28,6 +28,10 @@ public class EndFileSearch implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.managerFile() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.managerFile() in "+ this.getClass());
+        }
+        
         MediatorGui.managerFile().restoreButtonText();
         MediatorGui.managerFile().setButtonEnable(true);
         MediatorGui.managerFile().hideLoader();

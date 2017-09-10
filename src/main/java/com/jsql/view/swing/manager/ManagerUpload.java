@@ -62,7 +62,7 @@ public class ManagerUpload extends AbstractManagerList {
     public ManagerUpload() {
         this.setLayout(new BorderLayout());
 
-        this.defaultText = I18n.valueByKey("UPLOAD_RUN_BUTTON_LABEL");
+        this.defaultText = "UPLOAD_RUN_BUTTON_LABEL";
 
         List<ListItem> pathsList = new ArrayList<>();
         try {
@@ -107,7 +107,7 @@ public class ManagerUpload extends AbstractManagerList {
             )
         );
 
-        this.run = new JButtonStateful(I18n.valueByKey("UPLOAD_RUN_BUTTON_LABEL"));
+        this.run = new JButtonStateful("UPLOAD_RUN_BUTTON_LABEL");
         I18nView.addComponentForKey("UPLOAD_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("UPLOAD_RUN_BUTTON_TOOLTIP"));
         this.run.setEnabled(false);

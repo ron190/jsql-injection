@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.list.DnDList;
 import com.jsql.view.swing.list.ListItem;
@@ -164,7 +165,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      * Restore the default text to the button after a search.
      */
     public void restoreButtonText() {
-        this.run.setText(this.defaultText);
+        this.run.setText(I18nView.valueByKey(this.defaultText));
     }
     
     // Getter and setter

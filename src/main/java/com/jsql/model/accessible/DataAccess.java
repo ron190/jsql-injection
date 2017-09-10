@@ -51,6 +51,7 @@ public class DataAccess {
     public static final String TRAIL_SQL = "%01%03%03%07";
     public static final String TRAIL_HEX = "0x01030307";
     public static final String TRAIL = "iLQS";
+    public static final String TRAIL_IN_SHELL = "${JSQL.TRAIL}";
     
     /**
      * Regex characters marking the end of the result of an injection.
@@ -106,8 +107,10 @@ public class DataAccess {
     
     public static final String CALIBRATOR_SQL = "%23";
     public static final String CALIBRATOR_HEX = "0x23";
-    public static final String LEAD_HEX = "0x53514c69";
-    public static final String LEAD = "SQLi";
+    
+    public static final String LEAD_HEX = "0x53714c69";
+    public static final String LEAD = "SqLi";
+    public static final String LEAD_IN_SHELL = "${JSQL.LEAD}";
     
     /**
      * Regex keywords corresponding to multiline and case insensitive match.
@@ -214,7 +217,7 @@ public class DataAccess {
                 .matcher(resultToParse);
 
         if (!regexSearch.find()) {
-            throw new InjectionFailureException("Name of databases not found");
+            throw new InjectionFailureException();
         }
         
         regexSearch.reset();
@@ -300,7 +303,7 @@ public class DataAccess {
         MediatorModel.model().sendToViews(requestEndProgress);
         
         if (!regexSearch.find()) {
-            throw new InjectionFailureException("Name of tables not found");
+            throw new InjectionFailureException();
         }
         
         regexSearch.reset();
@@ -363,19 +366,9 @@ public class DataAccess {
             LOGGER.warn(e.getMessage(), e);
         }
 
-        // TODO send to SQLite
         // Build SQLite columns
         if (MediatorModel.model().getVendor() == Vendor.SQLITE) {
-            StringBuilder resultSQLite = new StringBuilder();
-            String resultTmp = resultToParse.replaceFirst(".+?\\(", "").trim().replaceAll("\\)$", "");
-            resultTmp = resultTmp.replaceAll("\\(.+?\\)", "");
-            for (String columnNameAndType: resultTmp.split(",")) {
-                String columnName = columnNameAndType.trim().split(" ")[0];
-                if (!"CONSTRAINT".equals(columnName) && !"UNIQUE".equals(columnName)) {
-                    resultSQLite.append((char) 4 + columnName + (char) 5 + "0" + (char) 4 + (char) 6);
-                }
-            }
-            resultToParse = resultSQLite.toString();
+            resultToParse = Vendor.SQLITE.transform(resultToParse);
         }
         
         // Parse all the data we have retrieved
@@ -395,7 +388,7 @@ public class DataAccess {
         MediatorModel.model().sendToViews(requestEndProgress);
 
         if (!regexSearch.find()) {
-            throw new InjectionFailureException("Name of columns not found");
+            throw new InjectionFailureException();
         }
 
         regexSearch.reset();
@@ -487,7 +480,7 @@ public class DataAccess {
                 .matcher(resultToParse);
 
         if (!regexSearch.find()) {
-            throw new InjectionFailureException("Fetching values fails");
+            throw new InjectionFailureException();
         }
         
         regexSearch.reset();

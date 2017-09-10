@@ -29,6 +29,10 @@ public class EndPreparation implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.panelAddressBar() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
+        }
+        
         MediatorGui.panelAddressBar().getButtonInUrl().setToolTipText(I18n.valueByKey("BUTTON_START_TOOLTIP"));
         MediatorGui.panelAddressBar().getButtonInUrl().setInjectionReady();
         MediatorGui.panelAddressBar().getLoader().setVisible(false);

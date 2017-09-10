@@ -22,8 +22,8 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 
@@ -33,8 +33,8 @@ import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.manager.util.ActionBruteForce;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
-import com.jsql.view.swing.text.JPopupTextArea;
 import com.jsql.view.swing.text.JPopupTextField;
+import com.jsql.view.swing.text.JPopupTextPane;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 
 /**
@@ -96,7 +96,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
     /**
      * Textarea displaying result.
      */
-    private JTextArea result;
+    private JTextPane result;
     
     /**
      * Animated GIF displayed during attack.
@@ -200,8 +200,8 @@ public class ManagerBruteForce extends JPanel implements Manager {
         options.add(secondAndThirdLine, BorderLayout.SOUTH);
         this.add(options, BorderLayout.NORTH);
 
-        this.result = new JPopupTextArea("Result of brute force processing").getProxy();
-        this.result.setLineWrap(true);
+        this.result = new JPopupTextPane("Result of brute force processing").getProxy();
+//        this.result.setLineWrap(true);
         this.add(new LightScrollPane(1, 1, 0, 0, this.result), BorderLayout.CENTER);
         
         JPanel lastLine = new JPanel();
@@ -214,7 +214,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
             )
         );
         
-        this.run = new JButtonStateful(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_LABEL"));
+        this.run = new JButtonStateful("BRUTEFORCE_RUN_BUTTON_LABEL");
         I18nView.addComponentForKey("BRUTEFORCE_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
         
@@ -243,96 +243,48 @@ public class ManagerBruteForce extends JPanel implements Manager {
         return this.run;
     }
 
-    public void setRun(JButtonStateful run) {
-        this.run = run;
-    }
-
     public JTextField getHash() {
         return this.hash;
-    }
-
-    public void setHash(JTextField hash) {
-        this.hash = hash;
     }
 
     public JComboBox<String> getHashTypes() {
         return this.hashTypes;
     }
 
-    public void setHashTypes(JComboBox<String> hashTypes) {
-        this.hashTypes = hashTypes;
-    }
-
     public JCheckBox getLowerCaseCharacters() {
         return this.lowerCaseCharacters;
-    }
-
-    public void setLowerCaseCharacters(JCheckBox lowerCaseCharacters) {
-        this.lowerCaseCharacters = lowerCaseCharacters;
     }
 
     public JCheckBox getUpperCaseCharacters() {
         return this.upperCaseCharacters;
     }
 
-    public void setUpperCaseCharacters(JCheckBox upperCaseCharacters) {
-        this.upperCaseCharacters = upperCaseCharacters;
-    }
-
     public JCheckBox getNumericCharacters() {
         return this.numericCharacters;
-    }
-
-    public void setNumericCharacters(JCheckBox numericCharacters) {
-        this.numericCharacters = numericCharacters;
     }
 
     public JCheckBox getSpecialCharacters() {
         return this.specialCharacters;
     }
 
-    public void setSpecialCharacters(JCheckBox specialCharacters) {
-        this.specialCharacters = specialCharacters;
-    }
-
     public JTextField getExclude() {
         return this.exclude;
-    }
-
-    public void setExclude(JTextField exclude) {
-        this.exclude = exclude;
     }
 
     public JSpinner getMinimumLength() {
         return this.minimumLength;
     }
 
-    public void setMinimumLength(JSpinner minimumLength) {
-        this.minimumLength = minimumLength;
-    }
-
     public JSpinner getMaximumLength() {
         return this.maximumLength;
     }
 
-    public void setMaximumLength(JSpinner maximumLength) {
-        this.maximumLength = maximumLength;
-    }
-
-    public JTextArea getResult() {
+    public JTextPane getResult() {
         return this.result;
-    }
-
-    public void setResult(JTextArea result) {
-        this.result = result;
     }
 
     public JLabel getLoader() {
         return this.loader;
-    }
-
-    public void setLoader(JLabel loader) {
-        this.loader = loader;
     }
     
 }

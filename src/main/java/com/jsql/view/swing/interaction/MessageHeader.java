@@ -20,8 +20,6 @@ import javax.swing.JTable;
 import javax.swing.JViewport;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.log4j.Logger;
-
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.view.interaction.InteractionCommand;
@@ -32,11 +30,6 @@ import com.jsql.view.swing.scrollpane.JScrollIndicator;
  * Append a text to the tab Header.
  */
 public class MessageHeader implements InteractionCommand {
-	
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
     
     // The text to append to the tab
     private String url;
@@ -61,6 +54,10 @@ public class MessageHeader implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.panelConsoles() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.panelConsoles() in "+ this.getClass());
+        }
+        
         MediatorGui.panelConsoles().addHeader(new HttpHeader(this.url, this.post, this.header, this.response, this.source));
         
         JViewport viewport = ((JScrollIndicator) MediatorGui.panelConsoles().getNetwork().getLeftComponent()).scrollPane.getViewport();

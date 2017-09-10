@@ -89,7 +89,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Current version of application.
      */
-    private static final String VERSION_JSQL = "0.79";
+    private static final String VERSION_JSQL = "0.80";
     
     public static final String STAR = "*";
     
@@ -184,14 +184,14 @@ public class InjectionModel extends AbstractModelObservable {
     public void beginInjection() {
         this.resetModel();
         
-        if (!ProxyUtil.isChecked(ShowOnConsole.YES)) {
-            return;
-        }
-        
-        LOGGER.info(I18n.valueByKey("LOG_START_INJECTION"));
-        
         // TODO Extract in method
         try {
+            if (!ProxyUtil.isChecked(ShowOnConsole.YES)) {
+                return;
+            }
+            
+            LOGGER.info(I18n.valueByKey("LOG_START_INJECTION") +": "+ ConnectionUtil.getUrlByUser());
+            
             ParameterUtil.checkParametersFormat(true, true, null);
             
             LOGGER.trace(I18n.valueByKey("LOG_CONNECTION_TEST"));
@@ -199,12 +199,12 @@ public class InjectionModel extends AbstractModelObservable {
             
             boolean hasFoundInjection = false;
             
-            if (!hasFoundInjection) {
-                hasFoundInjection = this.testParameters(MethodInjection.QUERY, ParameterUtil.getQueryStringAsString(), ParameterUtil.getQueryString());
-            }
+            hasFoundInjection = this.testParameters(MethodInjection.QUERY, ParameterUtil.getQueryStringAsString(), ParameterUtil.getQueryString());
+
             if (!hasFoundInjection) {
                 hasFoundInjection = this.testParameters(MethodInjection.REQUEST, ParameterUtil.getRequestAsString(), ParameterUtil.getRequest());
             }
+            
             if (!hasFoundInjection) {
                 hasFoundInjection = this.testParameters(MethodInjection.HEADER, ParameterUtil.getHeaderAsString(), ParameterUtil.getHeader());
             }
@@ -220,7 +220,7 @@ public class InjectionModel extends AbstractModelObservable {
         }
     }
     
-    public static List<SimpleEntry<String, String>> loopThroughJson(Object jsonEntity, String parentName, SimpleEntry<String, String> parentXPath) throws JSONException {
+    public static List<SimpleEntry<String, String>> loopThroughJson(Object jsonEntity, String parentName, SimpleEntry<String, String> parentXPath) {
         List<SimpleEntry<String, String>> attributesXPath = new ArrayList<>();
         
         if (jsonEntity instanceof JSONObject) {
@@ -235,7 +235,7 @@ public class InjectionModel extends AbstractModelObservable {
                 if (value instanceof JSONArray) {
                     attributesXPath.addAll(loopThroughJson(value, xpath, parentXPath));
                 } else {
-                    SimpleEntry<String, String> c = new SimpleEntry<String, String>(xpath, (String) value);
+                    SimpleEntry<String, String> c = new SimpleEntry<>(xpath, (String) value);
                     attributesXPath.add(c);
                     
                     if (parentXPath == null) {
@@ -260,18 +260,18 @@ public class InjectionModel extends AbstractModelObservable {
                 Iterator<?> keys = jsonObjectEntity.keys();
                 while (keys.hasNext()) {
                     String key = (String) keys.next();
-                    Object value = jsonObjectEntity.opt(key.toString());
+                    Object value = jsonObjectEntity.opt(key);
                     
                     if (value instanceof JSONArray) {
                         attributesXPath.addAll(loopThroughJson(value, parentName +"."+ key, parentXPath));
                     } else if (value instanceof String) {
-                        SimpleEntry<String, String> s = new SimpleEntry<String, String>(parentName +"."+ key, (String) value);
+                        SimpleEntry<String, String> s = new SimpleEntry<>(parentName +"."+ key, (String) value);
                         attributesXPath.add(s);
                         
                         if (parentXPath == null) {
                             jsonObjectEntity.put(key, value.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", ""));
                         } else if (s.equals(parentXPath)) {
-                            jsonObjectEntity.put(key.toString(), value + InjectionModel.STAR);
+                            jsonObjectEntity.put(key, value + InjectionModel.STAR);
                         }
                     }
                 }
@@ -318,7 +318,6 @@ public class InjectionModel extends AbstractModelObservable {
                                 for (SimpleEntry<String, String> parentXPath: attributesJson) {
                                     loopThroughJson(jsonEntity, "root", null);
                                     loopThroughJson(jsonEntity, "root", parentXPath);
-                                    System.out.println(jsonEntity);
                                     
                                     paramStar.setValue(jsonEntity.toString());
                                     
@@ -411,7 +410,7 @@ public class InjectionModel extends AbstractModelObservable {
         }
 
         if (!this.isScanning) {
-            if (PreferencesUtil.isInjectingMetadata()) {
+            if (!PreferencesUtil.isNotInjectingMetadata()) {
                 DataAccess.getDatabaseInfos();
             }
             DataAccess.listDatabases();
@@ -463,8 +462,8 @@ public class InjectionModel extends AbstractModelObservable {
         if (!ParameterUtil.getQueryString().isEmpty()) {
             urlInjection += this.buildQuery(MethodInjection.QUERY, ParameterUtil.getQueryStringAsString(), isUsingIndex, dataInjection);
             
-            if (ConnectionUtil.tokenCsrf != null) {
-                urlInjection += "&"+ ConnectionUtil.tokenCsrf.getKey() +"="+ ConnectionUtil.tokenCsrf.getValue();
+            if (ConnectionUtil.getTokenCsrf() != null) {
+                urlInjection += "&"+ ConnectionUtil.getTokenCsrf().getKey() +"="+ ConnectionUtil.getTokenCsrf().getValue();
             }
             
             try {
@@ -504,8 +503,8 @@ public class InjectionModel extends AbstractModelObservable {
                 LOGGER.warn("Incorrect Evasion Url: "+ e.getMessage(), e);
             }
         } else {
-            if (ConnectionUtil.tokenCsrf != null) {
-                urlInjection += "?"+ ConnectionUtil.tokenCsrf.getKey() +"="+ ConnectionUtil.tokenCsrf.getValue();
+            if (ConnectionUtil.getTokenCsrf() != null) {
+                urlInjection += "?"+ ConnectionUtil.getTokenCsrf().getKey() +"="+ ConnectionUtil.getTokenCsrf().getValue();
             }
         }
         
@@ -531,8 +530,8 @@ public class InjectionModel extends AbstractModelObservable {
                 connection = (HttpURLConnection) urlObject.openConnection();
             }
             
-            connection.setReadTimeout(ConnectionUtil.TIMEOUT);
-            connection.setConnectTimeout(ConnectionUtil.TIMEOUT);
+            connection.setReadTimeout(ConnectionUtil.getTimeout());
+            connection.setConnectTimeout(ConnectionUtil.getTimeout());
             connection.setDefaultUseCaches(false);
             
             connection.setRequestProperty("Pragma", "no-cache");
@@ -541,8 +540,8 @@ public class InjectionModel extends AbstractModelObservable {
             
             // Csrf
             
-            if (ConnectionUtil.tokenCsrf != null) {
-                connection.setRequestProperty(ConnectionUtil.tokenCsrf.getKey(), ConnectionUtil.tokenCsrf.getValue());
+            if (ConnectionUtil.getTokenCsrf() != null) {
+                connection.setRequestProperty(ConnectionUtil.getTokenCsrf().getKey(), ConnectionUtil.getTokenCsrf().getValue());
             }
             
             ConnectionUtil.fixJcifsTimeout(connection);
@@ -572,7 +571,7 @@ public class InjectionModel extends AbstractModelObservable {
              * TODO separate method
              */
             // TODO Extract in method
-            if (!ParameterUtil.getRequest().isEmpty() || ConnectionUtil.tokenCsrf != null) {
+            if (!ParameterUtil.getRequest().isEmpty() || ConnectionUtil.getTokenCsrf() != null) {
                 try {
                     ConnectionUtil.fixCustomRequestMethod(connection, ConnectionUtil.getTypeRequest());
                     
@@ -580,8 +579,8 @@ public class InjectionModel extends AbstractModelObservable {
                     connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
     
                     DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
-                    if (ConnectionUtil.tokenCsrf != null) {
-                        dataOut.writeBytes(ConnectionUtil.tokenCsrf.getKey() +"="+ ConnectionUtil.tokenCsrf.getValue() +"&");
+                    if (ConnectionUtil.getTokenCsrf() != null) {
+                        dataOut.writeBytes(ConnectionUtil.getTokenCsrf().getKey() +"="+ ConnectionUtil.getTokenCsrf().getValue() +"&");
                     }
                     if (ConnectionUtil.getTypeRequest().matches("PUT|POST")) {
                         dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, ParameterUtil.getRequestAsString(), isUsingIndex, dataInjection));
@@ -772,6 +771,16 @@ public class InjectionModel extends AbstractModelObservable {
         Boolean isScanning
     ) {
         try {
+                
+            if (!urlQuery.isEmpty() && !urlQuery.matches("(?i)^https?://.*")) {
+                if (!urlQuery.matches("(?i)^\\w+://.*")) {
+                    LOGGER.info("Undefined URL protocol, forcing to [http://]");
+                    urlQuery = "http://"+ urlQuery;
+                } else {
+                    throw new MalformedURLException("unknown URL protocol");
+                }
+            }
+            
         	// TODO seperate method in ConnectionUtil
             URL url = new URL(urlQuery);
             if ("".equals(urlQuery) || "".equals(url.getHost())) {

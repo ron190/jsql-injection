@@ -37,6 +37,10 @@ public class EndProgress implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.treeDatabase() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.treeDatabase() in "+ this.getClass());
+        }
+        
         // Tree model, update the tree (refresh, add node, etc)
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
 

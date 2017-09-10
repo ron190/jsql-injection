@@ -127,7 +127,7 @@ select
             <limitBoundary>0</limitBoundary>
             <endingComment>--+</endingComment>
             <fingerprint>
-                <errorMessage>vertica</errorMessage>
+                <errorMessage>Vertica Analytics</errorMessage>
             </fingerprint>
         </configuration>
         <normal>

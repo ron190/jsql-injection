@@ -35,6 +35,10 @@ public class MessageBinary implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.panelConsoles() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.panelConsoles() in "+ this.getClass());
+        }
+        
         MediatorGui.panelConsoles().getBinaryTab().append("\t"+ this.text);
         MediatorGui.panelConsoles().getBinaryTab().setCaretPosition(MediatorGui.panelConsoles().getBinaryTab().getDocument().getLength());
         

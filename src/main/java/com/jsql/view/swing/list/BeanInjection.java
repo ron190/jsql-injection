@@ -5,17 +5,20 @@ import com.jsql.model.injection.vendor.Vendor;
 
 public class BeanInjection {
     
-    private String url;
-    private String request;
-    private String header;
+    private String url = "";
+    private String request = "";
+    private String header = "";
     private MethodInjection injectionType;
     private Vendor vendor;
-    private String requestType;
+    private String requestType = "";
 
     public BeanInjection(
         String url
     ) {
         this.url = url;
+        this.injectionType = MethodInjection.QUERY;
+        this.vendor = Vendor.AUTO;
+        this.requestType = "POST";
     }
     
     public BeanInjection(

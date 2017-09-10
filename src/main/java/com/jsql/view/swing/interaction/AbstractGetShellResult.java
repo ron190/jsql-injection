@@ -42,6 +42,10 @@ public class AbstractGetShellResult implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.frame() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.frame() in "+ this.getClass());
+        }
+        
         AbstractShell terminal = MediatorGui.frame().getConsoles().get(this.terminalID);
         
         terminal.append(this.result);

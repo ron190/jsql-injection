@@ -154,15 +154,16 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                         int codeAscii = Integer.parseInt(new String(codeAsciiInBinary), 2);
                         String charText = Character.toString((char) codeAscii);
                         
-                        if (codeAscii == 255) {
+                        if (codeAscii == 255 || codeAscii == 0) {
                             if (
                                 submittedTasks != 0
                                 && countAsciiCode255 > 9
                                 && (countAsciiCode255 * 100 / submittedTasks) > 50
                             ) {
-                                LOGGER.warn("Too much Boolean false positives");
+                                LOGGER.warn("Numerous Boolean false positives detected");
                                 break;
                             }
+                            
                             countAsciiCode255++;
                         }
 

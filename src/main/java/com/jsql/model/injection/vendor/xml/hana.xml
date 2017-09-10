@@ -140,7 +140,7 @@ rpad(
             <limitBoundary>0</limitBoundary>
             <endingComment>--+</endingComment>
             <fingerprint>
-                <errorMessage>hana</errorMessage>
+                <errorMessage>Hana database</errorMessage>
             </fingerprint>
         </configuration>
         <normal>

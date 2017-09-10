@@ -47,7 +47,7 @@ public class ManagerFile extends AbstractManagerList {
     public ManagerFile(String nameFile) {
         super(nameFile);
         
-        this.defaultText = I18n.valueByKey("FILE_RUN_BUTTON_LABEL");
+        this.defaultText = "FILE_RUN_BUTTON_LABEL";
         this.run = new JButtonStateful(this.defaultText);
         I18nView.addComponentForKey("FILE_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("FILE_RUN_BUTTON_TOOLTIP"));
@@ -67,7 +67,7 @@ public class ManagerFile extends AbstractManagerList {
 
             new Thread(() -> {
                 if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {
-                    ManagerFile.this.run.setText("Stop");
+                    ManagerFile.this.run.setText(I18nView.valueByKey("FILE_RUN_BUTTON_STOP"));
                     ManagerFile.this.run.setState(StateButton.STOPPABLE);
                     ManagerFile.this.loader.setVisible(true);
                     

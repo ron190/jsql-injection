@@ -30,7 +30,14 @@ import com.jsql.view.swing.action.ActionCloseTabResult;
 @SuppressWarnings("serial")
 public class TabHeader extends JPanel implements MouseListener {
     
-    private JLabel tabTitleLabel = new JLabel();
+    private JLabel tabTitleLabel = new JLabel() {
+        
+        @Override
+        public void setText(String text) {
+            super.setText(text +" ");
+        }
+        
+    };
 	
     /**
      * Tab header with default tab icon.
@@ -48,9 +55,8 @@ public class TabHeader extends JPanel implements MouseListener {
         this.setOpaque(false);
 
         // Set the text of tab
-        this.tabTitleLabel = new JLabel();
-        this.tabTitleLabel.setIcon(imageIcon);
-        this.add(this.tabTitleLabel);
+        this.getTabTitleLabel().setIcon(imageIcon);
+        this.add(this.getTabTitleLabel());
 
         JButton tabCloseButton = new ButtonClose();
         tabCloseButton.addMouseListener(this);
@@ -60,12 +66,12 @@ public class TabHeader extends JPanel implements MouseListener {
 
     public TabHeader(String label, Icon imageIcon) {
         this(imageIcon);
-        this.tabTitleLabel.setText(label);
+        this.getTabTitleLabel().setText(label);
     }
     
     public TabHeader(String label) {
         this();
-        this.tabTitleLabel.setText(label);
+        this.getTabTitleLabel().setText(label);
     }
 
     /**
@@ -81,20 +87,28 @@ public class TabHeader extends JPanel implements MouseListener {
         ActionCloseTabResult.perform(closeTabNumber);
     }
 
-    @Override public void mouseEntered(MouseEvent e) {
+    @Override
+    public void mouseEntered(MouseEvent e) {
         // Do nothing
     }
     
-    @Override public void mouseExited(MouseEvent e) {
+    @Override
+    public void mouseExited(MouseEvent e) {
         // Do nothing
     }
     
-    @Override public void mousePressed(MouseEvent e) {
+    @Override
+    public void mousePressed(MouseEvent e) {
         // Do nothing
     }
     
-    @Override public void mouseReleased(MouseEvent e) {
+    @Override
+    public void mouseReleased(MouseEvent e) {
         // Do nothing
+    }
+
+    public JLabel getTabTitleLabel() {
+        return this.tabTitleLabel;
     }
     
 }

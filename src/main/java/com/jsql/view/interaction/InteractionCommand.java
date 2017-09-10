@@ -10,11 +10,18 @@
  ******************************************************************************/
 package com.jsql.view.interaction;
 
+import org.apache.log4j.Logger;
+
 /**
  * Action ordered by the Model and applied to the View.
  */
 @FunctionalInterface
 public interface InteractionCommand {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    static final Logger LOGGER = Logger.getRootLogger();
 	
     /**
      * Do the action ordered by the model.

@@ -55,7 +55,7 @@ public class ManagerAdminPage extends AbstractManagerList {
     public ManagerAdminPage(String nameFile) {
         super(nameFile);
 
-        this.defaultText = I18n.valueByKey("ADMIN_PAGE_RUN_BUTTON_LABEL");
+        this.defaultText = "ADMIN_PAGE_RUN_BUTTON_LABEL";
         this.run = new JButtonStateful(this.defaultText);
         I18nView.addComponentForKey("ADMIN_PAGE_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("ADMIN_PAGE_RUN_BUTTON_TOOLTIP"));
@@ -72,18 +72,30 @@ public class ManagerAdminPage extends AbstractManagerList {
                 return;
             }
             
+            String[] urlQuery = new String[]{MediatorGui.panelAddressBar().getTextFieldAddress().getText()};
+            if (!urlQuery[0].isEmpty() && !urlQuery[0].matches("(?i)^https?://.*")) {
+                if (!urlQuery[0].matches("(?i)^\\w+://.*")) {
+                    LOGGER.info("Undefined URL protocol, forcing to [http://]");
+                    urlQuery[0] = "http://"+ urlQuery[0];
+                } else {
+                    LOGGER.info("Unknown URL protocol");
+                    return;
+                }
+            }
+            
             new Thread(() -> {
                 if (ManagerAdminPage.this.run.getState() == StateButton.STARTABLE) {
-                    if ("".equals(MediatorGui.panelAddressBar().getTextFieldAddress().getText())) {
+                    if ("".equals(urlQuery[0])) {
                         LOGGER.warn("Enter the main address");
                     } else {
-                        ManagerAdminPage.this.run.setText("Stop");
+                        LOGGER.trace("Checking admin page(s)...");
+                        ManagerAdminPage.this.run.setText(I18nView.valueByKey("ADMIN_PAGE_RUN_BUTTON_STOP"));
                         ManagerAdminPage.this.run.setState(StateButton.STOPPABLE);
                         ManagerAdminPage.this.loader.setVisible(true);
                         
                         try {
                             RessourceAccess.createAdminPages(
-                                MediatorGui.panelAddressBar().getTextFieldAddress().getText(),
+                                urlQuery[0],
                                 this.listFile.getSelectedValuesList()
                             );
                         } catch (InterruptedException ex) {
@@ -131,7 +143,7 @@ public class ManagerAdminPage extends AbstractManagerList {
         }
         
         this.lastLine.setLayout(new BorderLayout());
-        this.lastLine.add(comboMenubar, BorderLayout.LINE_START);
+//        this.lastLine.add(comboMenubar, BorderLayout.LINE_START);
         this.lastLine.setPreferredSize(new Dimension(0, 26));
         
         this.lastLine.setBorder(

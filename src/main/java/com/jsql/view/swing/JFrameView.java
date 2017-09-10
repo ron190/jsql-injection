@@ -31,6 +31,7 @@ import javax.swing.tree.DefaultTreeModel;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
+import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.view.interaction.ObserverInteraction;
@@ -127,13 +128,13 @@ public class JFrameView extends JFrame {
                 prefs.putBoolean(HelperUi.JAVA_VISIBLE, false);
                 
                 for (int i = 0 ; i < MediatorGui.tabConsoles().getTabCount() ; i++) {
-                    if ("Boolean".equals(MediatorGui.tabConsoles().getTitleAt(i))) {
+                    if ("CONSOLE_BINARY_LABEL".equals(MediatorGui.tabConsoles().getTabComponentAt(i).getName())) {
                         prefs.putBoolean(HelperUi.BINARY_VISIBLE, true);
-                    } else if ("Chunk".equals(MediatorGui.tabConsoles().getTitleAt(i))) {
+                    } else if ("CONSOLE_CHUNK_LABEL".equals(MediatorGui.tabConsoles().getTabComponentAt(i).getName())) {
                         prefs.putBoolean(HelperUi.CHUNK_VISIBLE, true);
-                    } else if ("Network".equals(MediatorGui.tabConsoles().getTitleAt(i))) {
+                    } else if ("CONSOLE_NETWORK_LABEL".equals(MediatorGui.tabConsoles().getTabComponentAt(i).getName())) {
                         prefs.putBoolean(HelperUi.NETWORK_VISIBLE, true);
-                    } else if ("Java".equals(MediatorGui.tabConsoles().getTitleAt(i))) {
+                    } else if ("CONSOLE_JAVA_LABEL".equals(MediatorGui.tabConsoles().getTabComponentAt(i).getName())) {
                         prefs.putBoolean(HelperUi.JAVA_VISIBLE, true);
                     }
                 }
@@ -161,8 +162,12 @@ public class JFrameView extends JFrame {
      * Empty the interface.
      */
     public void resetInterface() {
-        MediatorGui.managerDatabase().getMenuVendor().setText(Vendor.AUTO.toString());
+        if (MediatorModel.model().getVendorByUser() == Vendor.AUTO) {
+            MediatorGui.managerDatabase().getMenuVendor().setText(Vendor.AUTO.toString());
+        }
+        
         MediatorGui.managerDatabase().getMenuStrategy().setText("<Strategy auto>");
+        
         for (int i = 0 ; i < MediatorGui.managerDatabase().getMenuStrategy().getItemCount() ; i++) {
             MediatorGui.managerDatabase().getMenuStrategy().getItem(i).setEnabled(false);
         }

@@ -32,6 +32,7 @@ import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.StringUtil;
 import com.jsql.util.ThreadUtil;
+import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.ActionLoadStop;
@@ -53,7 +54,7 @@ public abstract class AbstractNodeModel {
     /**
      * Text for empty node.
      */
-    private String emptyObject;
+    private String textEmptyNode;
 
     /**
      * Current item injection progress regarding total number of elements.
@@ -111,7 +112,7 @@ public abstract class AbstractNodeModel {
      * @param emptyObject Empty tree default node
      */
     public AbstractNodeModel(String emptyObject) {
-        this.emptyObject = emptyObject;
+        this.textEmptyNode = emptyObject;
     }
 
     /**
@@ -184,8 +185,8 @@ public abstract class AbstractNodeModel {
 
         JMenuItem mnLoad = new JMenuItem(
             this.isRunning
-                ? I18n.valueByKey("THREAD_STOP")
-                : I18n.valueByKey("THREAD_LOAD"),
+                ? I18nView.valueByKey("THREAD_STOP")
+                : I18nView.valueByKey("THREAD_LOAD"),
             'o'
         );
         mnLoad.setIcon(HelperUi.ICON_EMPTY);
@@ -198,8 +199,8 @@ public abstract class AbstractNodeModel {
         JMenuItem mnPause = new JMenuItem(
             // Report #133: ignore if thread not found
             suspendableTask != null && suspendableTask.isPaused()
-                ? I18n.valueByKey("THREAD_RESUME")
-                : I18n.valueByKey("THREAD_PAUSE"),
+                ? I18nView.valueByKey("THREAD_RESUME")
+                : I18nView.valueByKey("THREAD_PAUSE"),
             's'
         );
         mnPause.setIcon(HelperUi.ICON_EMPTY);
@@ -214,9 +215,9 @@ public abstract class AbstractNodeModel {
         
         JMenuItem mnReload = new JMenuItem(
             this instanceof NodeModelDatabase
-            ? "Reload tables"
+            ? I18nView.valueByKey("RELOAD_TABLES")
             : this instanceof NodeModelTable
-                ? "Reload columns"
+                ? I18nView.valueByKey("RELOAD_COLUMNS")
                 : "?"
         );
         mnReload.setIcon(HelperUi.ICON_EMPTY);
@@ -224,7 +225,7 @@ public abstract class AbstractNodeModel {
         mnReload.setEnabled(!this.isRunning);
         mnReload.addActionListener(actionEvent -> AbstractNodeModel.this.runAction());
         
-        JMenuItem mnRename = new JMenuItem("Rename node");
+        JMenuItem mnRename = new JMenuItem(I18nView.valueByKey("RENAME_NODE"));
         mnRename.setIcon(HelperUi.ICON_EMPTY);
         
         mnRename.setEnabled(!this.isRunning);
@@ -381,7 +382,7 @@ public abstract class AbstractNodeModel {
     
     @Override
     public String toString() {
-        return this.elementDatabase != null ? this.elementDatabase.getLabelCount() : this.emptyObject;
+        return this.elementDatabase != null ? this.elementDatabase.getLabelCount() : this.textEmptyNode;
     }
     
     // Getter and setter
@@ -452,6 +453,10 @@ public abstract class AbstractNodeModel {
 
     public void setIsEdited(boolean b) {
         this.isEdited = b;
+    }
+    
+    public void setText(String textI18n) {
+        this.textEmptyNode = textI18n;
     }
     
 }

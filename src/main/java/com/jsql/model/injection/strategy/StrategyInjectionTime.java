@@ -37,18 +37,29 @@ public class StrategyInjectionTime extends AbstractStrategy {
     
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
-        LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Time...");
         
-        this.timeInjection = new InjectionTime();
-        
-        this.isApplicable = this.timeInjection.isInjectable();
-        
-        if (this.isApplicable) {
-            LOGGER.debug(I18n.valueByKey("LOG_VULNERABLE") +" Time injection");
-            this.allow();
+        if (MediatorModel.model().getVendor().instance().sqlTestBlindFirst() == null) {
+            LOGGER.info("No Time strategy known for "+ MediatorModel.model().getVendor());
         } else {
-            this.unallow();
+            LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Time...");
+            
+            this.timeInjection = new InjectionTime();
+            
+            this.isApplicable = this.timeInjection.isInjectable();
+            
+            if (this.isApplicable) {
+                LOGGER.debug(I18n.valueByKey("LOG_VULNERABLE") +" Time injection");
+                this.allow();
+                
+                Request requestMessageBinary = new Request();
+                requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
+                requestMessageBinary.setParameters(this.timeInjection.getInfoMessage());
+                MediatorModel.model().sendToViews(requestMessageBinary);
+            } else {
+                this.unallow();
+            }
         }
+        
     }
     
     @Override
@@ -73,11 +84,6 @@ public class StrategyInjectionTime extends AbstractStrategy {
     public void activateStrategy() {
         LOGGER.info(I18n.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
         MediatorModel.model().setStrategy(StrategyInjection.TIME);
-        
-        Request requestMessageBinary = new Request();
-        requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
-        requestMessageBinary.setParameters(this.timeInjection.getInfoMessage());
-        MediatorModel.model().sendToViews(requestMessageBinary);
         
         Request requestMarkTimeStrategy = new Request();
         requestMarkTimeStrategy.setMessage(Interaction.MARK_TIME_STRATEGY);

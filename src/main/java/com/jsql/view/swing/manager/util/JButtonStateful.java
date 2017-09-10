@@ -2,6 +2,8 @@ package com.jsql.view.swing.manager.util;
 
 import javax.swing.JButton;
 
+import com.jsql.view.i18n.I18nView;
+
 @SuppressWarnings("serial")
 public class JButtonStateful extends JButton {
 
@@ -13,7 +15,7 @@ public class JButtonStateful extends JButton {
     private String defaultText;
 
     public JButtonStateful(String defaultText) {
-        super(defaultText);
+        super(I18nView.valueByKey(defaultText));
         
         this.defaultText = defaultText;
     }

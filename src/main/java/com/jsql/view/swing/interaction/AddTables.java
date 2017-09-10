@@ -16,8 +16,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
-
 import com.jsql.model.bean.database.Table;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
@@ -28,11 +26,6 @@ import com.jsql.view.swing.tree.model.NodeModelTable;
  * Add the tables to the corresponding database.
  */
 public class AddTables implements InteractionCommand {
-	
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Tables retreived by the view.
@@ -49,6 +42,10 @@ public class AddTables implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.treeDatabase() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.treeDatabase() in "+ this.getClass());
+        }
+        
         // Tree model, update the tree (refresh, add node, etc)
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
 

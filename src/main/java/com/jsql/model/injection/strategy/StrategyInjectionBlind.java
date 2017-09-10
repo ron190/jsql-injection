@@ -37,18 +37,29 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
-        LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Blind...");
         
-        this.blind = new InjectionBlind();
-        
-        this.isApplicable = this.blind.isInjectable();
-        
-        if (this.isApplicable) {
-            LOGGER.debug(I18n.valueByKey("LOG_VULNERABLE") +" Blind injection");
-            this.allow();
+        if (MediatorModel.model().getVendor().instance().sqlTestBlindFirst() == null) {
+            LOGGER.info("No Blind strategy known for "+ MediatorModel.model().getVendor());
         } else {
-            this.unallow();
+            LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Blind...");
+            
+            this.blind = new InjectionBlind();
+            
+            this.isApplicable = this.blind.isInjectable();
+            
+            if (this.isApplicable) {
+                LOGGER.debug(I18n.valueByKey("LOG_VULNERABLE") +" Blind injection");
+                this.allow();
+                
+                Request requestMessageBinary = new Request();
+                requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
+                requestMessageBinary.setParameters(this.blind.getInfoMessage());
+                MediatorModel.model().sendToViews(requestMessageBinary);
+            } else {
+                this.unallow();
+            }
         }
+        
     }
 
     @Override
@@ -73,11 +84,6 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     public void activateStrategy() {
         LOGGER.info(I18n.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
         MediatorModel.model().setStrategy(StrategyInjection.BLIND);
-        
-        Request requestMessageBinary = new Request();
-        requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
-        requestMessageBinary.setParameters(this.blind.getInfoMessage());
-        MediatorModel.model().sendToViews(requestMessageBinary);
         
         Request requestMarkBlindStrategy = new Request();
         requestMarkBlindStrategy.setMessage(Interaction.MARK_BLIND_STRATEGY);

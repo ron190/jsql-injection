@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
 
+import javax.swing.BorderFactory;
 import javax.swing.JTextPane;
 import javax.swing.UIManager;
 import javax.swing.text.BadLocationException;
@@ -31,6 +32,7 @@ import javax.swing.text.StyledDocument;
 import org.apache.log4j.Logger;
 
 import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.scrollpane.LightScrollPane;
 
 import sun.swing.SwingUtilities2;
 
@@ -99,10 +101,11 @@ public abstract class AbstractShell extends JTextPane {
         URL url = new URL(urlShell);
         this.host = url.getHost();
 
-        this.setFont(new Font(HelperUi.FONT_NAME_UBUNTU, Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize()));
+        this.setFont(new Font(HelperUi.FONT_NAME_UBUNTU_MONO, Font.PLAIN, ((Font) UIManager.get("TextPane.font")).getSize()));
         this.setCaret(new BlockCaret());
         this.setBackground(Color.BLACK);
         this.setForeground(Color.LIGHT_GRAY);
+        this.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
 
         try {
             // Disable antialiasing

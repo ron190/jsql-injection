@@ -58,6 +58,10 @@ public class CreateValuesTab extends CreateTab implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.frame() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.frame() in "+ this.getClass());
+        }
+        
         // Report NullPointerException #1683
         DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(this.table);
         
@@ -81,7 +85,7 @@ public class CreateValuesTab extends CreateTab implements InteractionCommand {
             MediatorGui.tabResults().setSelectedComponent(newTableJPanel);
             
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader(StringUtil.detectUtf8Html(this.table +" "));
+            TabHeader header = new TabHeader(StringUtil.detectUtf8Html(this.table.toString()));
             
             MediatorGui.tabResults().setToolTipTextAt(
                 MediatorGui.tabResults().indexOfComponent(newTableJPanel),

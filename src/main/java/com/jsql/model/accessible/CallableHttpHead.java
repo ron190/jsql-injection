@@ -20,7 +20,7 @@ import com.jsql.util.HeaderUtil;
  * Thread unit to test if an administration page exists on the server.
  * The process can be cancelled by the user.
  */
-public class CallableAdminPage implements Callable<CallableAdminPage> {
+public class CallableHttpHead implements Callable<CallableHttpHead> {
     
     /**
      * Log4j logger sent to view.
@@ -41,7 +41,7 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
      * Create a callable to find admin page.
      * @param urlAdminPage URL of admin page
      */
-    public CallableAdminPage(String urlAdminPage) {
+    public CallableHttpHead(String urlAdminPage) {
         this.urlAdminPage = urlAdminPage;
     }
 
@@ -49,7 +49,7 @@ public class CallableAdminPage implements Callable<CallableAdminPage> {
      * Call URL to a administration page in HEAD mode and send the result back to view.
      */
     @Override
-    public CallableAdminPage call() throws Exception {
+    public CallableHttpHead call() throws Exception {
         boolean isUrlIncorrect = false;
         
         URL targetUrl = null;

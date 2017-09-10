@@ -52,6 +52,7 @@ import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.GitUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
+import com.jsql.util.PropertiesUtil;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
@@ -236,7 +237,7 @@ public class DialogTranslate extends JDialog {
         private void getI18nRoot() throws IOException {
             try {
                 String pageSourceRoot = ConnectionUtil.getSource(
-                    "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql.properties"
+                    PropertiesUtil.getInstance().getProperties().getProperty("github.webservice.i18n.url")
                 );
                 this.sourceProperties.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}")));
                 LOGGER.info("Reference language loaded from Github");

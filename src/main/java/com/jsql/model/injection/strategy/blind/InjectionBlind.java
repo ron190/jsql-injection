@@ -46,7 +46,6 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
     public InjectionBlind() {
         // No blind
         if (this.falseTest.length == 0) {
-            LOGGER.info("Strategy Blind is currently not supported for "+ MediatorModel.model().getVendor());
             return;
         }
         
@@ -150,10 +149,6 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             throw new StoppedByUserSlidingException();
         }
         
-        if (MediatorModel.model().getVendor().instance().sqlTestBlindFirst() == null) {
-            return false;
-        }
-        
         CallableBlind blindTest = new CallableBlind(MediatorModel.model().getVendor().instance().sqlTestBlindFirst());
         try {
             blindTest.call();
@@ -167,7 +162,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
     @Override
     public String getInfoMessage() {
         return
-            "A blind SQL request is true if the diff between "
+            "Blind strategy: a request is true if the diff between "
             + "a correct page (e.g existing id) and current page "
             + "is not as the following: "
             + InjectionBlind.constantFalseMark + "\n"

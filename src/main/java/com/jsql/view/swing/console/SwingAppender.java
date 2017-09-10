@@ -40,12 +40,12 @@ public class SwingAppender extends WriterAppender {
     public static final SimpleAttributeSet ALL = new SimpleAttributeSet();
     
     static {
-        StyleConstants.setFontFamily(ERROR, HelperUi.FONT_NAME_UBUNTU);
-        StyleConstants.setFontFamily(WARN, HelperUi.FONT_NAME_UBUNTU);
-        StyleConstants.setFontFamily(INFO, HelperUi.FONT_NAME_UBUNTU);
-        StyleConstants.setFontFamily(DEBUG, HelperUi.FONT_NAME_UBUNTU);
-        StyleConstants.setFontFamily(TRACE, HelperUi.FONT_NAME_UBUNTU);
-        StyleConstants.setFontFamily(ALL, HelperUi.FONT_NAME_UBUNTU);
+        StyleConstants.setFontFamily(ERROR, HelperUi.FONT_NAME_UBUNTU_MONO);
+        StyleConstants.setFontFamily(WARN, HelperUi.FONT_NAME_UBUNTU_MONO);
+        StyleConstants.setFontFamily(INFO, HelperUi.FONT_NAME_UBUNTU_MONO);
+        StyleConstants.setFontFamily(DEBUG, HelperUi.FONT_NAME_UBUNTU_MONO);
+        StyleConstants.setFontFamily(TRACE, HelperUi.FONT_NAME_UBUNTU_MONO);
+        StyleConstants.setFontFamily(ALL, HelperUi.FONT_NAME_UBUNTU_MONO);
         
         StyleConstants.setFontSize(ERROR, 14);
         StyleConstants.setFontSize(WARN, 14);
@@ -54,12 +54,12 @@ public class SwingAppender extends WriterAppender {
         StyleConstants.setFontSize(TRACE, 14);
         StyleConstants.setFontSize(ALL, 14);
         
-        StyleConstants.setForeground(ERROR, Color.red);
-        StyleConstants.setForeground(WARN, Color.red);
-        StyleConstants.setForeground(INFO, Color.blue);
-        StyleConstants.setForeground(DEBUG, new Color(0, 128, 0));
-        StyleConstants.setForeground(TRACE, Color.black);
-        StyleConstants.setForeground(ALL, Color.black);
+        StyleConstants.setForeground(ERROR, Color.RED);
+        StyleConstants.setForeground(WARN, Color.RED);
+        StyleConstants.setForeground(INFO, Color.BLUE);
+        StyleConstants.setForeground(DEBUG, HelperUi.COLOR_GREEN);
+        StyleConstants.setForeground(TRACE, Color.BLACK);
+        StyleConstants.setForeground(ALL, Color.BLACK);
     }
 
     public SwingAppender() {

@@ -13,8 +13,6 @@ package com.jsql.view.swing.interaction;
 import java.net.MalformedURLException;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
-
 import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.HelperUi;
@@ -28,11 +26,6 @@ import com.jsql.view.swing.tab.TabHeader;
  * Create a new tab for the terminal.
  */
 public class CreateShellTab extends CreateTab implements InteractionCommand {
-	
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
      * Full path of the shell file on remote host.
@@ -54,6 +47,10 @@ public class CreateShellTab extends CreateTab implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.frame() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.frame() in "+ this.getClass());
+        }
+        
         try {
             UUID terminalID = UUID.randomUUID();
             ShellWeb terminal = new ShellWeb(terminalID, this.url);
@@ -67,7 +64,7 @@ public class CreateShellTab extends CreateTab implements InteractionCommand {
             MediatorGui.tabResults().setSelectedComponent(scroller);
     
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader("Web shell ", HelperUi.ICON_SHELL_SERVER);
+            TabHeader header = new TabHeader("Web shell", HelperUi.ICON_SHELL_SERVER);
     
             MediatorGui.tabResults().setToolTipTextAt(
                 MediatorGui.tabResults().indexOfComponent(scroller),

@@ -42,7 +42,8 @@ import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.model.injection.strategy.StrategyInjectionError;
 import com.jsql.model.injection.vendor.Vendor;
-import com.jsql.model.injection.vendor.xml.Model.Strategy.Error.Method;
+import com.jsql.model.injection.vendor.model.Model.Strategy.Error.Method;
+import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.manager.util.ComboMenu;
@@ -66,7 +67,7 @@ public class ManagerDatabase extends JPanel implements Manager {
 
     private ButtonGroup groupStrategy = new ButtonGroup();
     
-    private JTree tree;
+    public JTree tree;
 
     /**
      * Create a panel to encode a string.
@@ -75,7 +76,10 @@ public class ManagerDatabase extends JPanel implements Manager {
         super(new BorderLayout());
 
         // First node in tree
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(new NodeModelEmpty(I18n.valueByKey("DATABASE_EMPTY")));
+        AbstractNodeModel nodeModelEmpty = new NodeModelEmpty(I18nView.valueByKey("DATABASE_EMPTY"));
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(nodeModelEmpty);
+        I18nView.addComponentForKey("DATABASE_EMPTY", nodeModelEmpty);
+        
         this.tree = new JTree(root);
         MediatorGui.register(this.tree);
 

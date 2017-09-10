@@ -46,7 +46,6 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
     public InjectionTime() {
         // No blind
         if (this.falseTest.length == 0) {
-            LOGGER.info("Strategy Time is currently not supported for "+ MediatorModel.model().getVendor());
             return;
         }
         
@@ -149,10 +148,6 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         if (MediatorModel.model().isStoppedByUser()) {
             throw new StoppedByUserSlidingException();
         }
-
-        if (MediatorModel.model().getVendor().instance().sqlTestBlindFirst() == null) {
-            return false;
-        }
         
         CallableTime blindTest = new CallableTime(MediatorModel.model().getVendor().instance().sqlTestBlindFirst());
         try {
@@ -166,7 +161,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
 
     @Override
     public String getInfoMessage() {
-        return "Asking server \"Is this bit true?\", if delay does not exceed 5 seconds then response is true.\n";
+        return "Time strategy: request is true if delay does not exceed 5 seconds.\n";
     }
     
 }

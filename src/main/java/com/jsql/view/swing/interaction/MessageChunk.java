@@ -13,8 +13,6 @@ package com.jsql.view.swing.interaction;
 import java.awt.Component;
 import java.awt.Font;
 
-import org.apache.log4j.Logger;
-
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 
@@ -22,11 +20,6 @@ import com.jsql.view.swing.MediatorGui;
  * Append text to the tab Chunk.
  */
 public class MessageChunk implements InteractionCommand {
-	
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * Text to append to the Chunk log area.
@@ -42,6 +35,10 @@ public class MessageChunk implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.panelConsoles() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.panelConsoles() in "+ this.getClass());
+        }
+        
         try {
             MediatorGui.panelConsoles().getChunkTab().append(this.text +"\n");
             MediatorGui.panelConsoles().getChunkTab().setCaretPosition(MediatorGui.panelConsoles().getChunkTab().getDocument().getLength());

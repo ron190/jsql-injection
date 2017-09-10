@@ -10,24 +10,11 @@
  ******************************************************************************/
 package com.jsql.view.swing.tab;
 
-import java.awt.Component;
-import java.awt.ComponentOrientation;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
 
-import org.apache.commons.lang3.SerializationException;
-import org.apache.commons.lang3.SerializationUtils;
-import org.apache.log4j.Logger;
-
-import com.jsql.i18n.I18n;
-import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
@@ -36,11 +23,6 @@ import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
  */
 @SuppressWarnings("serial")
 public class MouseTabbedPane extends JTabbedPane {
-    
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
 	
     /**
      * Create tabs with ctrl-TAB, mousewheel and new UI.
@@ -63,43 +45,6 @@ public class MouseTabbedPane extends JTabbedPane {
      */
     public void addMouseClickMenu() {
         this.addMouseListener(new TabSelectionMouseHandler());
-    }
-
-    /**
-     * Display popupmenu on right click.
-     */
-    class TabSelectionMouseHandler extends MouseAdapter {
-        
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            if (SwingUtilities.isRightMouseButton(e)) {
-                Component componentSource = (Component) e.getSource();
-                JPopupMenu menu = new JPopupMenu();
-
-                for (int position = 0 ; position < MediatorGui.menubar().getMenuView().getMenuComponentCount() ; position++) {
-                    // Fix #35348: SerializationException on clone()
-                    try {
-                        JMenuItem itemMenu = (JMenuItem) SerializationUtils.clone(MediatorGui.menubar().getMenuView().getMenuComponent(position));
-                        menu.add(itemMenu);
-                        
-                        final int positionFinal = position;
-                        itemMenu.addActionListener(actionEvent -> MediatorGui.tabManagers().setSelectedIndex(positionFinal));
-                    } catch (SerializationException ex) {
-                        LOGGER.error(ex, ex);
-                    }
-                }
-
-                menu.show(componentSource, e.getX(), e.getY());
-                
-                menu.setLocation(
-                    ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
-                    ? e.getXOnScreen() - menu.getWidth()
-                    : e.getXOnScreen(),
-                    e.getYOnScreen()
-                );
-            }
-        }
-        
     }
 
     /**

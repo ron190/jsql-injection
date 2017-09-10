@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -18,13 +19,13 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentListener;
 
 import org.apache.commons.lang3.text.WordUtils;
-import org.apache.log4j.Logger;
 
 import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.PreferencesUtil;
@@ -38,10 +39,13 @@ import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 @SuppressWarnings("serial")
 public class PanelPreferences extends JPanel {
     
-    /**
-     * Log4j logger sent to view.
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
+    final JCheckBox checkboxIsTamperingBase64 = new JCheckBox("", PreferencesUtil.isTamperingBase64());
+    final JCheckBox checkboxIsTamperingFunctionComment = new JCheckBox("", PreferencesUtil.isTamperingFunctionComment());
+    final JCheckBox checkboxIsTamperingEqualToLike = new JCheckBox("", PreferencesUtil.isTamperingEqualToLike());
+    final JCheckBox checkboxIsTamperingRandomCase = new JCheckBox("", PreferencesUtil.isTamperingRandomCase());
+    final JRadioButton checkboxIsTamperingSpaceToMultilineComment = new JRadioButton("", PreferencesUtil.isTamperingSpaceToMultlineComment());
+    final JRadioButton checkboxIsTamperingSpaceToDashComment = new JRadioButton("", PreferencesUtil.isTamperingSpaceToDashComment());
+    final JRadioButton checkboxIsTamperingSpaceToSharpComment = new JRadioButton("", PreferencesUtil.isTamperingSpaceToSharpComment());
     
     final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", PreferencesUtil.isCheckUpdateActivated());
     final JCheckBox checkboxIsReportingBugs = new JCheckBox("", PreferencesUtil.isReportingBugs());
@@ -50,7 +54,7 @@ public class PanelPreferences extends JPanel {
     
     final JCheckBox checkboxIsEvading = new JCheckBox("", PreferencesUtil.isEvasionEnabled());
     final JCheckBox checkboxIsFollowingRedirection = new JCheckBox("", PreferencesUtil.isFollowingRedirection());
-    final JCheckBox checkboxIsInjectingMetadata = new JCheckBox("", PreferencesUtil.isInjectingMetadata());
+    final JCheckBox checkboxIsNotInjectingMetadata = new JCheckBox("", PreferencesUtil.isNotInjectingMetadata());
     final JCheckBox checkboxIsNotTestingConnection = new JCheckBox("", PreferencesUtil.isNotTestingConnection());
     final JCheckBox checkboxIsParsingForm = new JCheckBox("", PreferencesUtil.isParsingForm());
     
@@ -86,7 +90,7 @@ public class PanelPreferences extends JPanel {
                 PanelPreferences.this.checkboxIsReportingBugs.isSelected(),
                 PanelPreferences.this.checkboxIsEvading.isSelected(),
                 PanelPreferences.this.checkboxIsFollowingRedirection.isSelected(),
-                PanelPreferences.this.checkboxIsInjectingMetadata.isSelected(),
+                PanelPreferences.this.checkboxIsNotInjectingMetadata.isSelected(),
                 
                 PanelPreferences.this.checkboxIsCheckingAllParam.isSelected(),
                 PanelPreferences.this.checkboxIsCheckingAllURLParam.isSelected(),
@@ -98,7 +102,15 @@ public class PanelPreferences extends JPanel {
                 PanelPreferences.this.checkboxIsParsingForm.isSelected(),
                 PanelPreferences.this.checkboxIsNotTestingConnection.isSelected(),
                 PanelPreferences.this.checkboxProcessCookies.isSelected(),
-                PanelPreferences.this.checkboxProcessCsrf.isSelected()
+                PanelPreferences.this.checkboxProcessCsrf.isSelected(),
+                
+                PanelPreferences.this.checkboxIsTamperingBase64.isSelected(),
+                PanelPreferences.this.checkboxIsTamperingEqualToLike.isSelected(),
+                PanelPreferences.this.checkboxIsTamperingFunctionComment.isSelected(),
+                PanelPreferences.this.checkboxIsTamperingRandomCase.isSelected(),
+                PanelPreferences.this.checkboxIsTamperingSpaceToDashComment.isSelected(),
+                PanelPreferences.this.checkboxIsTamperingSpaceToMultilineComment.isSelected(),
+                PanelPreferences.this.checkboxIsTamperingSpaceToSharpComment.isSelected()
             );
             
             ProxyUtil.set(
@@ -128,14 +140,16 @@ public class PanelPreferences extends JPanel {
     private static final JPanel panelAuthentication = new JPanel(new BorderLayout());
     private static final JPanel panelProxy = new JPanel(new BorderLayout());
     private static final JPanel panelGeneral = new JPanel(new BorderLayout());
+    private static final JPanel panelTamper = new JPanel(new BorderLayout());
     
     private enum CategoryPreference {
         
-        GENERAL(panelGeneral),
         INJECTION(panelInjection),
-        AUTHENTICATION(panelAuthentication),
         PROXY(panelProxy),
-        USER_AGENT(new JPanel());
+        AUTHENTICATION(panelAuthentication),
+        GENERAL(panelGeneral);
+//        TAMPER(panelTamper),
+//        USER_AGENT(new JPanel());
         
         private Component panel;
 
@@ -172,8 +186,85 @@ public class PanelPreferences extends JPanel {
         flatButtonMouseAdapter.setContentVisible(true);
         buttonCheckIp.addMouseListener(flatButtonMouseAdapter);
 
+        /**/
+        String tooltipIsTamperingBase64 = "Encode SQL expression to Base64";
+        this.checkboxIsTamperingBase64.setToolTipText(tooltipIsTamperingBase64);
+        this.checkboxIsTamperingBase64.setFocusable(false);
+        JButton labelIsTamperingBase64 = new JButton("Encode SQL expression to Base64");
+        labelIsTamperingBase64.setToolTipText(tooltipIsTamperingBase64);
+        labelIsTamperingBase64.addActionListener(actionEvent -> {
+            this.checkboxIsTamperingBase64.setSelected(!this.checkboxIsTamperingBase64.isSelected());
+            this.actionListenerSave.actionPerformed(null);
+        });
+        
+        String tooltipIsTamperingFunctionComment = "Add comment to function signature, e.g f/**/()";
+        this.checkboxIsTamperingFunctionComment.setToolTipText(tooltipIsTamperingFunctionComment);
+        this.checkboxIsTamperingFunctionComment.setFocusable(false);
+        JButton labelIsTamperingFunctionComment = new JButton("Add comment to function signature, e.g f/**/()");
+        labelIsTamperingFunctionComment.setToolTipText(tooltipIsTamperingFunctionComment);
+        labelIsTamperingFunctionComment.addActionListener(actionEvent -> {
+            this.checkboxIsTamperingFunctionComment.setSelected(!this.checkboxIsTamperingFunctionComment.isSelected());
+            this.actionListenerSave.actionPerformed(null);
+        });
+        
+        String tooltipIsTamperingEqualToLike = "Replace equal sign '=' with 'like'";
+        this.checkboxIsTamperingEqualToLike.setToolTipText(tooltipIsTamperingEqualToLike);
+        this.checkboxIsTamperingEqualToLike.setFocusable(false);
+        JButton labelIsTamperingEqualToLike = new JButton("Replace equal sign '=' with 'like'");
+        labelIsTamperingEqualToLike.setToolTipText(tooltipIsTamperingEqualToLike);
+        labelIsTamperingEqualToLike.addActionListener(actionEvent -> {
+            this.checkboxIsTamperingEqualToLike.setSelected(!this.checkboxIsTamperingEqualToLike.isSelected());
+            this.actionListenerSave.actionPerformed(null);
+        });
+        
+        String tooltipIsTamperingRandomCase = "Transform SQL keywords to random case";
+        this.checkboxIsTamperingRandomCase.setToolTipText(tooltipIsTamperingRandomCase);
+        this.checkboxIsTamperingRandomCase.setFocusable(false);
+        JButton labelIsTamperingRandomCase = new JButton("Transform SQL keywords to random case");
+        labelIsTamperingRandomCase.setToolTipText(tooltipIsTamperingRandomCase);
+        labelIsTamperingRandomCase.addActionListener(actionEvent -> {
+            this.checkboxIsTamperingRandomCase.setSelected(!this.checkboxIsTamperingRandomCase.isSelected());
+            this.actionListenerSave.actionPerformed(null);
+        });
+        
+        ButtonGroup n = new ButtonGroup();
+        n.add(this.checkboxIsTamperingSpaceToDashComment);
+        n.add(this.checkboxIsTamperingSpaceToMultilineComment);
+        n.add(this.checkboxIsTamperingSpaceToSharpComment);
+        
+        String tooltipIsTamperingSpaceToMultilineComment = "Replace blank space ' ' to multiline comment '/**/'";
+        this.checkboxIsTamperingSpaceToMultilineComment.setToolTipText(tooltipIsTamperingSpaceToMultilineComment);
+        this.checkboxIsTamperingSpaceToMultilineComment.setFocusable(false);
+        JButton labelIsTamperingSpaceToMultilineComment = new JButton("Replace blank space ' ' to multiline comment '/**/'");
+        labelIsTamperingSpaceToMultilineComment.setToolTipText(tooltipIsTamperingSpaceToMultilineComment);
+        labelIsTamperingSpaceToMultilineComment.addActionListener(actionEvent -> {
+            this.checkboxIsTamperingSpaceToMultilineComment.setSelected(!this.checkboxIsTamperingSpaceToMultilineComment.isSelected());
+            this.actionListenerSave.actionPerformed(null);
+        });
+        
+        String tooltipIsTamperingSpaceToDashComment = "Replace blank space ' ' to dash comment '--\n'";
+        this.checkboxIsTamperingSpaceToDashComment.setToolTipText(tooltipIsTamperingSpaceToDashComment);
+        this.checkboxIsTamperingSpaceToDashComment.setFocusable(false);
+        JButton labelIsTamperingSpaceToDashComment = new JButton("Replace blank space ' ' to dash comment '--\n'");
+        labelIsTamperingSpaceToDashComment.setToolTipText(tooltipIsTamperingSpaceToDashComment);
+        labelIsTamperingSpaceToDashComment.addActionListener(actionEvent -> {
+            this.checkboxIsTamperingSpaceToDashComment.setSelected(!this.checkboxIsTamperingSpaceToDashComment.isSelected());
+            this.actionListenerSave.actionPerformed(null);
+        });
+        
+        String tooltipIsTamperingSpaceToSharpComment = "Replace blank space ' ' to sharp comment '#\n'";
+        this.checkboxIsTamperingSpaceToSharpComment.setToolTipText(tooltipIsTamperingSpaceToSharpComment);
+        this.checkboxIsTamperingSpaceToSharpComment.setFocusable(false);
+        JButton labelIsTamperingSpaceToSharpComment = new JButton("Replace blank space ' ' to sharp comment '#\n'");
+        labelIsTamperingSpaceToSharpComment.setToolTipText(tooltipIsTamperingSpaceToSharpComment);
+        labelIsTamperingSpaceToSharpComment.addActionListener(actionEvent -> {
+            this.checkboxIsTamperingSpaceToSharpComment.setSelected(!this.checkboxIsTamperingSpaceToSharpComment.isSelected());
+            this.actionListenerSave.actionPerformed(null);
+        });
+        /**/
+        
         this.checkboxIsCheckingUpdate.setFocusable(false);
-        JButton labelIsCheckingUpdate = new JButton("<html>Check update at startup<br><span style=\"color: gray; font-style: italic;\">Hi!</span></html>");
+        JButton labelIsCheckingUpdate = new JButton("Check update at startup");
         labelIsCheckingUpdate.addActionListener(actionEvent -> {
             this.checkboxIsCheckingUpdate.setSelected(!this.checkboxIsCheckingUpdate.isSelected());
             this.actionListenerSave.actionPerformed(null);
@@ -264,15 +355,21 @@ public class PanelPreferences extends JPanel {
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsInjectingMetadata = "Enable database's metadata injection (e.g version, username).";
-        this.checkboxIsInjectingMetadata.setToolTipText(tooltipIsInjectingMetadata);
-        this.checkboxIsInjectingMetadata.setFocusable(false);
-        JButton labelIsInjectingMetadata = new JButton("Retreive database's metadata (disable to speed-up boolean process)");
-        labelIsInjectingMetadata.setToolTipText(tooltipIsInjectingMetadata);
-        labelIsInjectingMetadata.addActionListener(actionEvent -> {
-            this.checkboxIsInjectingMetadata.setSelected(!this.checkboxIsInjectingMetadata.isSelected());
+        String tooltipIsNotInjectingMetadata = "Disable database's metadata injection (e.g version, username).";
+        this.checkboxIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
+        this.checkboxIsNotInjectingMetadata.setFocusable(false);
+        JButton labelIsNotInjectingMetadata = new JButton("Disable database's metadata injection (disable to speed-up boolean process)");
+        labelIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
+        labelIsNotInjectingMetadata.addActionListener(actionEvent -> {
+            this.checkboxIsNotInjectingMetadata.setSelected(!this.checkboxIsNotInjectingMetadata.isSelected());
             this.actionListenerSave.actionPerformed(null);
         });
+        
+        JPanel panelTamperPreferences = new JPanel();
+        panelTamperPreferences.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        panelTamper.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 15));
+        panelTamper.add(new JLabel("<html><b>Tamper</b> / SQL expression alteration to bypass Web Application Firewall</html>"), BorderLayout.NORTH);
+        panelTamper.add(panelTamperPreferences, BorderLayout.CENTER);
         
         JPanel panelGeneralPreferences = new JPanel();
         panelGeneralPreferences.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
@@ -283,7 +380,7 @@ public class PanelPreferences extends JPanel {
         JPanel panelInjectionPreferences = new JPanel();
         panelInjectionPreferences.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         panelInjection.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 15));
-        panelInjection.add(new JLabel("<html><b>Injection</b> / Standard options</html>"), BorderLayout.NORTH);
+        panelInjection.add(new JLabel("<html><b>Injection</b> / Algorithm configuration</html>"), BorderLayout.NORTH);
         panelInjection.add(panelInjectionPreferences, BorderLayout.CENTER);
         
         JPanel panelAuthenticationPreferences = new JPanel();
@@ -299,9 +396,9 @@ public class PanelPreferences extends JPanel {
         
         JLabel labelProxy = new JLabel("<html><b>Proxy</b> / Define proxy settings (e.g. TOR)</html>");
         JLabel labelProxyHttpHidden = new JLabel();
-        JLabel labelProxyHttp = new JLabel("<html><b>Handling HTTP protocol</b></html>");
+        JLabel labelProxyHttp = new JLabel("<html><b>Handling proxy for HTTP protocol</b></html>");
         JLabel labelProxyHttpsHidden = new JLabel();
-        JLabel labelProxyHttps = new JLabel("<html><b>Handling HTTPS protocol</b></html>");
+        JLabel labelProxyHttps = new JLabel("<html><b>Handling proxy for HTTPS protocol</b></html>");
         labelProxyHttp.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
         labelProxyHttps.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
         panelProxy.removeAll();
@@ -318,6 +415,8 @@ public class PanelPreferences extends JPanel {
         panelProxyPreferences.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelCheckIp.setAlignmentX(Component.LEFT_ALIGNMENT);
         
+        GroupLayout groupLayoutTamper = new GroupLayout(panelTamperPreferences);
+        panelTamperPreferences.setLayout(groupLayoutTamper);
         GroupLayout groupLayoutGeneral = new GroupLayout(panelGeneralPreferences);
         panelGeneralPreferences.setLayout(groupLayoutGeneral);
         GroupLayout groupLayoutInjection = new GroupLayout(panelInjectionPreferences);
@@ -328,12 +427,14 @@ public class PanelPreferences extends JPanel {
         panelProxyPreferences.setLayout(groupLayoutProxy);
 
         JButton labelIsCheckingAllParam = new JButton("Inject every parameters");
-        JButton labelIsCheckingAllURLParam = new JButton("<html>Inject every URL parameters <i style=\"color: gray\">- if method GET is selected</i></html>");
-        JButton labelIsCheckingAllRequestParam = new JButton("<html>Inject every Request parameters <i style=\"color: gray\">- if method Request like POST is selected</i></html>");
-        JButton labelIsCheckingAllHeaderParam = new JButton("<html>Inject every Header parameters <i style=\"color: gray\">- if method Header is selected</i></html>");
+        JButton labelIsCheckingAllURLParam = new JButton("Inject every URL parameters (if method GET is selected)");
+        JButton labelIsCheckingAllRequestParam = new JButton("Inject every Request parameters (if method Request like POST is selected)");
+        JButton labelIsCheckingAllHeaderParam = new JButton("Inject every Header parameters (if method Header is selected)");
         JButton labelIsCheckingAllJSONParam = new JButton("Inject every JSON parameters");
         JButton labelIsCheckingAllCookieParam = new JButton("Inject every Cookie parameters");
         
+        JLabel emptyLabelGeneralInjection = new JLabel();
+        JLabel labelGeneralInjection = new JLabel("<html><b>Connection definition</b></html>");
         JLabel emptyLabelParamsInjection = new JLabel();
         JLabel labelParamsInjection = new JLabel("<html><br /><b>Parameters injection</b></html>");
         JLabel emptyLabelSessionManagement = new JLabel();
@@ -394,8 +495,8 @@ public class PanelPreferences extends JPanel {
         JLabel labelProxyPort = new JLabel("Proxy port  ");
         JLabel labelProxyAddressHttps = new JLabel("Proxy address  ");
         JLabel labelProxyPortHttps = new JLabel("Proxy port  ");
-        JButton buttonIsUsingProxy = new JButton("Use a proxy for HTTP protocol");
-        JButton buttonIsUsingProxyHttps = new JButton("Use a proxy for HTTPS protocol");
+        JButton buttonIsUsingProxy = new JButton("Use a proxy for http:// URLs");
+        JButton buttonIsUsingProxyHttps = new JButton("Use a proxy for https:// URLs");
         String tooltipIsUsingProxy = "Enable proxy communication (e.g. TOR with Privoxy or Burp) for HTTP protocol.";
         buttonIsUsingProxy.setToolTipText(tooltipIsUsingProxy);
         String tooltipIsUsingProxyHttps = "Enable proxy communication (e.g. TOR with Privoxy or Burp) for HTTPS protocol.";
@@ -514,7 +615,7 @@ public class PanelPreferences extends JPanel {
         this.checkboxIsCheckingUpdate.addActionListener(this.actionListenerSave);
         this.checkboxIsEvading.addActionListener(this.actionListenerSave);
         this.checkboxIsFollowingRedirection.addActionListener(this.actionListenerSave);
-        this.checkboxIsInjectingMetadata.addActionListener(this.actionListenerSave);
+        this.checkboxIsNotInjectingMetadata.addActionListener(this.actionListenerSave);
         this.checkboxIsReportingBugs.addActionListener(this.actionListenerSave);
         this.checkboxIsUsingProxy.addActionListener(this.actionListenerSave);
         this.checkboxIsParsingForm.addActionListener(this.actionListenerSave);
@@ -530,6 +631,14 @@ public class PanelPreferences extends JPanel {
         this.checkboxIsCheckingAllHeaderParam.addActionListener(this.actionListenerSave);
         this.checkboxIsCheckingAllJSONParam.addActionListener(this.actionListenerSave);
         this.checkboxIsCheckingAllCookieParam.addActionListener(this.actionListenerSave);
+        
+        this.checkboxIsTamperingBase64.addActionListener(this.actionListenerSave);
+        this.checkboxIsTamperingFunctionComment.addActionListener(this.actionListenerSave);
+        this.checkboxIsTamperingEqualToLike.addActionListener(this.actionListenerSave);
+        this.checkboxIsTamperingRandomCase.addActionListener(this.actionListenerSave);
+        this.checkboxIsTamperingSpaceToMultilineComment.addActionListener(this.actionListenerSave);
+        this.checkboxIsTamperingSpaceToDashComment.addActionListener(this.actionListenerSave);
+        this.checkboxIsTamperingSpaceToSharpComment.addActionListener(this.actionListenerSave);
         
         class DocumentListenerSave extends DocumentListenerTyping {
             
@@ -591,9 +700,9 @@ public class PanelPreferences extends JPanel {
         labelUseKerberos.setBorderPainted(false);
         labelUseKerberos.setContentAreaFilled(false);
         
-        labelIsInjectingMetadata.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsInjectingMetadata.setBorderPainted(false);
-        labelIsInjectingMetadata.setContentAreaFilled(false);
+        labelIsNotInjectingMetadata.setHorizontalAlignment(SwingConstants.LEFT);
+        labelIsNotInjectingMetadata.setBorderPainted(false);
+        labelIsNotInjectingMetadata.setContentAreaFilled(false);
         
         labelIsCheckingAllParam.setHorizontalAlignment(SwingConstants.LEFT);
         labelIsCheckingAllParam.setBorderPainted(false);
@@ -627,32 +736,85 @@ public class PanelPreferences extends JPanel {
         labelProcessCsrf.setBorderPainted(false);
         labelProcessCsrf.setContentAreaFilled(false);
         
+        labelIsTamperingBase64.setHorizontalAlignment(SwingConstants.LEFT);
+        labelIsTamperingBase64.setBorderPainted(false);
+        labelIsTamperingBase64.setContentAreaFilled(false);
+        
+        labelIsTamperingFunctionComment.setHorizontalAlignment(SwingConstants.LEFT);
+        labelIsTamperingFunctionComment.setBorderPainted(false);
+        labelIsTamperingFunctionComment.setContentAreaFilled(false);
+        
+        labelIsTamperingEqualToLike.setHorizontalAlignment(SwingConstants.LEFT);
+        labelIsTamperingEqualToLike.setBorderPainted(false);
+        labelIsTamperingEqualToLike.setContentAreaFilled(false);
+        
+        labelIsTamperingRandomCase.setHorizontalAlignment(SwingConstants.LEFT);
+        labelIsTamperingRandomCase.setBorderPainted(false);
+        labelIsTamperingRandomCase.setContentAreaFilled(false);
+        
+        labelIsTamperingSpaceToMultilineComment.setHorizontalAlignment(SwingConstants.LEFT);
+        labelIsTamperingSpaceToMultilineComment.setBorderPainted(false);
+        labelIsTamperingSpaceToMultilineComment.setContentAreaFilled(false);
+        
+        labelIsTamperingSpaceToDashComment.setHorizontalAlignment(SwingConstants.LEFT);
+        labelIsTamperingSpaceToDashComment.setBorderPainted(false);
+        labelIsTamperingSpaceToDashComment.setContentAreaFilled(false);
+        
+        labelIsTamperingSpaceToSharpComment.setHorizontalAlignment(SwingConstants.LEFT);
+        labelIsTamperingSpaceToSharpComment.setBorderPainted(false);
+        labelIsTamperingSpaceToSharpComment.setContentAreaFilled(false);
+        
         // Proxy settings, Horizontal column rules
 
+        groupLayoutTamper.setHorizontalGroup(
+            groupLayoutTamper.createSequentialGroup()
+            .addGroup(
+                groupLayoutTamper
+                    .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(this.checkboxIsTamperingBase64)
+                    .addComponent(this.checkboxIsTamperingFunctionComment)
+                    .addComponent(this.checkboxIsTamperingEqualToLike)
+                    .addComponent(this.checkboxIsTamperingRandomCase)
+                    .addComponent(this.checkboxIsTamperingSpaceToMultilineComment)
+                    .addComponent(this.checkboxIsTamperingSpaceToDashComment)
+                    .addComponent(this.checkboxIsTamperingSpaceToSharpComment)
+            ).addGroup(
+                groupLayoutTamper
+                    .createParallelGroup()
+                    .addComponent(labelIsTamperingBase64)
+                    .addComponent(labelIsTamperingFunctionComment)
+                    .addComponent(labelIsTamperingEqualToLike)
+                    .addComponent(labelIsTamperingRandomCase)
+                    .addComponent(labelIsTamperingSpaceToMultilineComment)
+                    .addComponent(labelIsTamperingSpaceToDashComment)
+                    .addComponent(labelIsTamperingSpaceToSharpComment)
+        ));
+        
         groupLayoutGeneral.setHorizontalGroup(
             groupLayoutGeneral.createSequentialGroup()
-            .addGroup(
-                groupLayoutGeneral
-                    .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(this.checkboxIsCheckingUpdate)
-                    .addComponent(this.checkboxIsReportingBugs)
-            ).addGroup(
-                groupLayoutGeneral
-                    .createParallelGroup()
-                    .addComponent(labelIsCheckingUpdate)
-                    .addComponent(labelIsReportingBugs)
-        ));
+                .addGroup(
+                    groupLayoutGeneral
+                        .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(this.checkboxIsCheckingUpdate)
+                        .addComponent(this.checkboxIsReportingBugs)
+                ).addGroup(
+                    groupLayoutGeneral
+                        .createParallelGroup()
+                        .addComponent(labelIsCheckingUpdate)
+                        .addComponent(labelIsReportingBugs)
+                    ));
         
         groupLayoutInjection.setHorizontalGroup(
             groupLayoutInjection.createSequentialGroup()
             .addGroup(
                 groupLayoutInjection
                     .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(this.checkboxIsEvading)
+                    .addComponent(emptyLabelGeneralInjection)
                     .addComponent(this.checkboxIsFollowingRedirection)
-                    .addComponent(this.checkboxIsInjectingMetadata)
                     .addComponent(this.checkboxIsNotTestingConnection)
                     .addComponent(this.checkboxIsParsingForm)
+                    .addComponent(this.checkboxIsNotInjectingMetadata)
+                    .addComponent(this.checkboxIsEvading)
                     
                     .addComponent(emptyLabelParamsInjection)
                     .addComponent(this.checkboxIsCheckingAllParam)
@@ -660,7 +822,7 @@ public class PanelPreferences extends JPanel {
                     .addComponent(this.checkboxIsCheckingAllRequestParam)
                     .addComponent(this.checkboxIsCheckingAllHeaderParam)
                     .addComponent(this.checkboxIsCheckingAllJSONParam)
-                    .addComponent(this.checkboxIsCheckingAllCookieParam)
+//                    .addComponent(this.checkboxIsCheckingAllCookieParam)
                     
                     .addComponent(emptyLabelSessionManagement)
                     .addComponent(this.checkboxProcessCsrf)
@@ -668,11 +830,12 @@ public class PanelPreferences extends JPanel {
             ).addGroup(
                 groupLayoutInjection
                     .createParallelGroup()
-                    .addComponent(labelIsEvading)
+                    .addComponent(labelGeneralInjection)
                     .addComponent(labelIsFollowingRedirection)
-                    .addComponent(labelIsInjectingMetadata)
                     .addComponent(labelTestConnection)
                     .addComponent(labelParseForm)
+                    .addComponent(labelIsNotInjectingMetadata)
+                    .addComponent(labelIsEvading)
                     
                     .addComponent(labelParamsInjection)
                     .addComponent(labelIsCheckingAllParam)
@@ -680,7 +843,7 @@ public class PanelPreferences extends JPanel {
                     .addComponent(labelIsCheckingAllRequestParam)
                     .addComponent(labelIsCheckingAllHeaderParam)
                     .addComponent(labelIsCheckingAllJSONParam)
-                    .addComponent(labelIsCheckingAllCookieParam)
+//                    .addComponent(labelIsCheckingAllCookieParam)
                     
                     .addComponent(labelSessionManagement)
                     .addComponent(labelProcessCsrf)
@@ -737,8 +900,49 @@ public class PanelPreferences extends JPanel {
 
         // Proxy settings, Vertical line rules
 
+        groupLayoutTamper.setVerticalGroup(
+            groupLayoutTamper
+                .createSequentialGroup()
+                .addGroup(
+                    groupLayoutTamper
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(this.checkboxIsTamperingBase64)
+                        .addComponent(labelIsTamperingBase64)
+                ).addGroup(
+                    groupLayoutTamper
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(this.checkboxIsTamperingFunctionComment)
+                        .addComponent(labelIsTamperingFunctionComment)
+                ).addGroup(
+                    groupLayoutTamper
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(this.checkboxIsTamperingEqualToLike)
+                        .addComponent(labelIsTamperingEqualToLike)
+                ).addGroup(
+                    groupLayoutTamper
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(this.checkboxIsTamperingRandomCase)
+                        .addComponent(labelIsTamperingRandomCase)
+                ).addGroup(
+                    groupLayoutTamper
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(this.checkboxIsTamperingSpaceToMultilineComment)
+                        .addComponent(labelIsTamperingSpaceToMultilineComment)
+                ).addGroup(
+                    groupLayoutTamper
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(this.checkboxIsTamperingSpaceToDashComment)
+                        .addComponent(labelIsTamperingSpaceToDashComment)
+                ).addGroup(
+                    groupLayoutTamper
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(this.checkboxIsTamperingSpaceToSharpComment)
+                        .addComponent(labelIsTamperingSpaceToSharpComment)
+                )
+        );
+    
         groupLayoutGeneral.setVerticalGroup(
-            groupLayoutInjection
+            groupLayoutGeneral
                 .createSequentialGroup()
                 .addGroup(
                     groupLayoutGeneral
@@ -759,18 +963,13 @@ public class PanelPreferences extends JPanel {
                 .addGroup(
                     groupLayoutInjection
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(this.checkboxIsEvading)
-                        .addComponent(labelIsEvading)
+                        .addComponent(emptyLabelGeneralInjection)
+                        .addComponent(labelGeneralInjection)
                 ).addGroup(
                     groupLayoutInjection
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(this.checkboxIsFollowingRedirection)
                         .addComponent(labelIsFollowingRedirection)
-                ).addGroup(
-                    groupLayoutInjection
-                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(this.checkboxIsInjectingMetadata)
-                        .addComponent(labelIsInjectingMetadata)
                 ).addGroup(
                     groupLayoutInjection
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -781,6 +980,16 @@ public class PanelPreferences extends JPanel {
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(this.checkboxIsParsingForm)
                         .addComponent(labelParseForm)
+                ).addGroup(
+                    groupLayoutInjection
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(this.checkboxIsNotInjectingMetadata)
+                        .addComponent(labelIsNotInjectingMetadata)
+                ).addGroup(
+                    groupLayoutInjection
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(this.checkboxIsEvading)
+                        .addComponent(labelIsEvading)
                         
                 ).addGroup(
                     groupLayoutInjection
@@ -812,11 +1021,11 @@ public class PanelPreferences extends JPanel {
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(this.checkboxIsCheckingAllJSONParam)
                         .addComponent(labelIsCheckingAllJSONParam)
-                ).addGroup(
-                    groupLayoutInjection
-                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(this.checkboxIsCheckingAllCookieParam)
-                        .addComponent(labelIsCheckingAllCookieParam)
+//                ).addGroup(
+//                    groupLayoutInjection
+//                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+//                        .addComponent(this.checkboxIsCheckingAllCookieParam)
+//                        .addComponent(labelIsCheckingAllCookieParam)
                         
                 ).addGroup(
                     groupLayoutInjection
@@ -921,7 +1130,7 @@ public class PanelPreferences extends JPanel {
                 )
         );
         
-        this.add(panelGeneral, BorderLayout.CENTER);
+        this.add(panelInjection, BorderLayout.CENTER);
         
         JList<CategoryPreference> categories = new JList<>(CategoryPreference.values());
         categories.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

@@ -60,6 +60,7 @@ public class TabManagers extends MouseTabbedPane {
         ManagerFile managerFile = new ManagerFile("file.txt");
         ManagerUpload managerUpload = new ManagerUpload();
         ManagerSqlShell managerSqlShell = new ManagerSqlShell();
+        ManagerBruteForce managerBruteForce = new ManagerBruteForce();
         
         MediatorGui.register(managerWebShell);
         MediatorGui.register(managerScanList);
@@ -68,6 +69,7 @@ public class TabManagers extends MouseTabbedPane {
         MediatorGui.register(managerFile);
         MediatorGui.register(managerUpload);
         MediatorGui.register(managerSqlShell);
+        MediatorGui.register(managerBruteForce);
         
         this.setMinimumSize(new Dimension(100, 0));
         this.addMouseClickMenu();
@@ -78,7 +80,7 @@ public class TabManagers extends MouseTabbedPane {
         this.buildI18nTab("WEBSHELL_TAB", "WEBSHELL_TOOLTIP", HelperUi.ICON_SHELL_SERVER, managerWebShell);
         this.buildI18nTab("SQLSHELL_TAB", "SQLSHELL_TOOLTIP", HelperUi.ICON_SHELL_SERVER, managerSqlShell);
         this.buildI18nTab("UPLOAD_TAB", "UPLOAD_TOOLTIP", HelperUi.ICON_UPLOAD, managerUpload);
-        this.buildI18nTab("BRUTEFORCE_TAB", "BRUTEFORCE_TOOLTIP", HelperUi.ICON_BRUTER, new ManagerBruteForce());
+        this.buildI18nTab("BRUTEFORCE_TAB", "BRUTEFORCE_TOOLTIP", HelperUi.ICON_BRUTER, managerBruteForce);
         this.buildI18nTab("CODER_TAB", "CODER_TOOLTIP", HelperUi.ICON_CODER, new ManagerCoder());
         this.buildI18nTab("SCANLIST_TAB", "SCANLIST_TOOLTIP", HelperUi.ICON_SCANLIST, managerScanList);
         
@@ -93,16 +95,16 @@ public class TabManagers extends MouseTabbedPane {
         Icon icon,
         Component manager
     ) {
-        final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey(keyTooltip))};
-        JLabel labelWebShell = new JLabel(I18n.valueByKey(keyLabel), icon, SwingConstants.CENTER){
+        final JToolTipI18n[] tooltip = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey(keyTooltip))};
+        JLabel labelTab = new JLabel(I18n.valueByKey(keyLabel), icon, SwingConstants.CENTER){
             @Override
             public JToolTip createToolTip() {
                 JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey(keyTooltip));
-                j[0] = (JToolTipI18n) tipI18n;
+                tooltip[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
             }
         };
-        labelWebShell.addMouseListener(new MouseAdapter() {
+        labelTab.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 TabManagers.this.setSelectedComponent(manager);
@@ -112,12 +114,12 @@ public class TabManagers extends MouseTabbedPane {
         this.addTab(I18n.valueByKey(keyLabel), icon, manager);
         this.setTabComponentAt(
             this.indexOfTab(I18n.valueByKey(keyLabel)),
-            labelWebShell
+            labelTab
         );
-        I18nView.addComponentForKey(keyLabel, labelWebShell);
-        I18nView.addComponentForKey(keyTooltip, j[0]);
-        labelWebShell.setToolTipText(I18n.valueByKey(keyTooltip));
-        labelWebShell.addMouseListener(new TabSelectionMouseHandler());
+        I18nView.addComponentForKey(keyLabel, labelTab);
+        I18nView.addComponentForKey(keyTooltip, tooltip[0]);
+        labelTab.setToolTipText(I18n.valueByKey(keyTooltip));
+        labelTab.addMouseListener(new TabSelectionMouseHandler());
     }
     
 }

@@ -28,6 +28,10 @@ public class EndAdminSearch implements InteractionCommand {
 
     @Override
     public void execute() {
+        if (MediatorGui.managerAdminPage() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.managerAdminPage() in "+ this.getClass());
+        }
+        
         MediatorGui.managerAdminPage().restoreButtonText();
         MediatorGui.managerAdminPage().setButtonEnable(true);
         MediatorGui.managerAdminPage().hideLoader();

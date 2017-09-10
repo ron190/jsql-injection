@@ -24,7 +24,7 @@ public class ManagerWebShell extends AbstractManagerShell {
     }
     
     @Override
-    void createPayload(String pathShell, String urlShell) throws JSqlException {
+    void createPayload(String pathShell, String urlShell) throws JSqlException, InterruptedException {
         RessourceAccess.createWebShell(pathShell, urlShell);
     }
     
