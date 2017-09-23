@@ -89,7 +89,7 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Current version of application.
      */
-    private static final String VERSION_JSQL = "0.80";
+    private static final String VERSION_JSQL = "0.81";
     
     public static final String STAR = "*";
     
@@ -167,14 +167,6 @@ public class InjectionModel extends AbstractModelObservable {
         RessourceAccess.setReadingIsAllowed(false);
         
         ThreadUtil.reset();
-    }
-    
-    private static String decode(final String encoded) {
-        try {
-            return encoded == null ? "" : URLDecoder.decode(encoded, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException("Impossible: UTF-8 is a required encoding", e);
-        }
     }
 
     /**
@@ -292,10 +284,10 @@ public class InjectionModel extends AbstractModelObservable {
             ConnectionUtil.setMethodInjection(methodInjection);
             if (!methodInjection.isCheckingAllParam() && !paramsAsString.contains(InjectionModel.STAR)) {
                 params.stream().reduce((a, b) -> b).ifPresent(e -> e.setValue(e.getValue() + InjectionModel.STAR));
-                hasFoundInjection = this.testStrategies(true, false, params.stream().reduce((a, b) -> b).get());
+                hasFoundInjection = this.testStrategies(IS_CHECKING_ALL_PARAMETERS, !IS_JSON, params.stream().reduce((a, b) -> b).get());
             } else if (paramsAsString.contains(InjectionModel.STAR)) {
                 LOGGER.info("Checking single "+ methodInjection.name() +" parameter with injection point at *");
-                hasFoundInjection = this.testStrategies(false, false, null);
+                hasFoundInjection = this.testStrategies(!IS_CHECKING_ALL_PARAMETERS, !IS_JSON, null);
             } else {
                 for (SimpleEntry<String, String> paramBase: params) {
 
@@ -323,7 +315,7 @@ public class InjectionModel extends AbstractModelObservable {
                                     
                                     try {
                                         LOGGER.info("Checking JSON "+ methodInjection.name() +" parameter "+ parentXPath.getKey() +"="+ parentXPath.getValue().replace(InjectionModel.STAR, ""));
-                                        hasFoundInjection = this.testStrategies(true, true, paramBase);
+                                        hasFoundInjection = this.testStrategies(IS_CHECKING_ALL_PARAMETERS, IS_JSON, paramBase);
                                         break;
                                     } catch (JSqlException e) {
                                         LOGGER.warn("No "+ methodInjection.name() +" injection found for JSON "+ methodInjection.name() +" parameter "+ parentXPath.getKey() +"="+ parentXPath.getValue().replace(InjectionModel.STAR, ""), e);
@@ -336,7 +328,7 @@ public class InjectionModel extends AbstractModelObservable {
                                 
                                 try {
                                     LOGGER.info("Checking "+ methodInjection.name() +" parameter "+ paramBase.getKey() +"="+ paramBase.getValue().replace(InjectionModel.STAR, ""));
-                                    hasFoundInjection = this.testStrategies(true, false, paramBase);
+                                    hasFoundInjection = this.testStrategies(IS_CHECKING_ALL_PARAMETERS, !IS_JSON, paramBase);
                                     break;
                                 } catch (JSqlException e) {
                                     LOGGER.warn("No "+ methodInjection.name() +" injection found for parameter "+ paramBase.getKey() +"="+ paramBase.getValue().replace(InjectionModel.STAR, ""), e);
@@ -349,6 +341,7 @@ public class InjectionModel extends AbstractModelObservable {
                         }
                     }
                     if (hasFoundInjection) {
+                        paramBase.setValue(paramBase.getValue().replace("*", "") +"*");
                         break;
                     }
                     
@@ -358,6 +351,9 @@ public class InjectionModel extends AbstractModelObservable {
         
         return hasFoundInjection;
     }
+    
+    private static final boolean IS_CHECKING_ALL_PARAMETERS = true;
+    private static final boolean IS_JSON = true;
     
     private boolean testStrategies(boolean checkAllParameters, boolean isJson, SimpleEntry<String, String> parameter) throws JSqlException {
         // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
@@ -595,38 +591,11 @@ public class InjectionModel extends AbstractModelObservable {
             }
             
             msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
-    
-            // Request the web page to the server
-            StringBuilder sb = new StringBuilder();
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                char[] buffer = new char[4096];
-                while (reader.read(buffer) > 0) {
-                    sb.append(buffer);
-                }
-                
-                pageSource = sb.toString();
-            } catch (IOException e) {
-                // Ignore connection errors like 403, 406
-                // Http status code already logged in Network tab
-
-                InputStream inputErrorStream = connection.getErrorStream();
-                
-                if (inputErrorStream != null) {
-                    String line;
-                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputErrorStream))) {
-                        while ((line = reader.readLine()) != null) {
-                            sb.append(line + "\r\n");
-                        }
-                    } catch (Exception e2) {
-                        // Ignore
-                        throw e2;
-                    }
-                    pageSource = sb.toString();
-                }
-
-                // Ignore
-                IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
-                LOGGER.trace(exceptionIgnored, exceptionIgnored);
+            
+            try {
+                pageSource = ConnectionUtil.getSource(connection);
+            } catch (Exception e) {
+                LOGGER.error(e, e);
             }
             
             // Calling connection.disconnect() is not required, further calls will follow
@@ -640,7 +609,7 @@ public class InjectionModel extends AbstractModelObservable {
             this.sendToViews(request);
             
         } catch (
-            // Exception for Block Opening Connection
+            // Exception for General and Spnego Opening Connection
             IOException | LoginException | GSSException | PrivilegedActionException e
         ) {
             LOGGER.warn("Error during connection: "+ e.getMessage(), e);
@@ -798,7 +767,7 @@ public class InjectionModel extends AbstractModelObservable {
                     ParameterUtil.setQueryString(
                         Pattern.compile("&").splitAsStream(regexSearch.group(2))
                         .map(s -> Arrays.copyOf(s.split("="), 2))
-                        .map(o -> new SimpleEntry<String, String>(decode(o[0]), decode(o[1])))
+                        .map(o -> new SimpleEntry<String, String>(o[0], o[1] == null ? "" : o[1]))
                         .collect(Collectors.toList())
                     );
                 }
@@ -807,14 +776,22 @@ public class InjectionModel extends AbstractModelObservable {
             }
             
             // Define other methods
-            ParameterUtil.setRequest(Pattern.compile("&").splitAsStream(dataRequest)
+            ParameterUtil.setRequest(
+                Pattern
+                    .compile("&")
+                    .splitAsStream(dataRequest)
                     .map(s -> Arrays.copyOf(s.split("="), 2))
-                    .map(o -> new SimpleEntry<String, String>(decode(o[0]), decode(o[1])))
-                    .collect(Collectors.toList()));
-            ParameterUtil.setHeader(Pattern.compile("\\\\r\\\\n").splitAsStream(dataHeader)
+                    .map(o -> new SimpleEntry<String, String>(o[0], o[1] == null ? "" : o[1]))
+                    .collect(Collectors.toList())
+            );
+            ParameterUtil.setHeader(
+                Pattern
+                    .compile("\\\\r\\\\n")
+                    .splitAsStream(dataHeader)
                     .map(s -> Arrays.copyOf(s.split(":"), 2))
-                    .map(o -> new SimpleEntry<String, String>(decode(o[0]), decode(o[1])))
-                    .collect(Collectors.toList()));
+                    .map(o -> new SimpleEntry<String, String>(o[0], o[1] == null ? "" : o[1]))
+                    .collect(Collectors.toList())
+            );
             ConnectionUtil.setMethodInjection(methodInjection);
             ConnectionUtil.setTypeRequest(typeRequest);
             

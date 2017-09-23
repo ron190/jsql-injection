@@ -217,8 +217,8 @@ public class DialogTranslate extends JDialog {
         this.textToTranslate[0].setEditable(false);
         this.buttonSend.setEnabled(false);
         
-        // Monospaced is compatible with all required languages, this includes Chinese and Arabic
-        this.textToTranslate[0].setFont(new Font("Monospaced", Font.PLAIN, ((Font) UIManager.get("TextField.font")).getSize()));
+        // Ubuntu Regular is compatible with all required languages, this includes Chinese and Arabic
+        this.textToTranslate[0].setFont(new Font(HelperUi.FONT_NAME_UBUNTU_REGULAR, Font.PLAIN, ((Font) UIManager.get("TextField.font")).getSize()));
         
         LOGGER.trace("Loading text to translate into "+ language +"...");
         new SwingWorkerGithubLocale().execute();

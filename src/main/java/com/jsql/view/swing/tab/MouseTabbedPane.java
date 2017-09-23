@@ -15,6 +15,8 @@ import java.awt.event.MouseWheelListener;
 
 import javax.swing.JTabbedPane;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 
@@ -23,6 +25,11 @@ import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
  */
 @SuppressWarnings("serial")
 public class MouseTabbedPane extends JTabbedPane {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
 	
     /**
      * Create tabs with ctrl-TAB, mousewheel and new UI.
@@ -64,7 +71,12 @@ public class MouseTabbedPane extends JTabbedPane {
                 selIndex += dir;
             }
             if (0 <= selIndex && selIndex < tabPane.getTabCount()) {
-                tabPane.setSelectedIndex(selIndex);
+                // Fix #54575: NullPointerException on setSelectedIndex()
+                try {
+                    tabPane.setSelectedIndex(selIndex);
+                } catch (NullPointerException err) {
+                    LOGGER.error(err, err);
+                }
             }
         }
         

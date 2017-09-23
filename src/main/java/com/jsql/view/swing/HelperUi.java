@@ -122,6 +122,7 @@ public final class HelperUi {
     public static final Icon ICON_FLAG_ES = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/es.png"));
     public static final Icon ICON_FLAG_PT = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/pt.png"));
     public static final Icon ICON_FLAG_PL = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/pl.png"));
+    public static final Icon ICON_FLAG_KO = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/ko.png"));
     
     public static final URL URL_ICON_16 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug16.png");
     public static final URL URL_ICON_32 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug32.png");
@@ -179,16 +180,31 @@ public final class HelperUi {
     };
 
     public static final String FONT_NAME_UBUNTU_MONO = "Ubuntu Mono";
-    public static final String FONT_NAME_MONOSPACE = "Monospace";
+    public static final String FONT_NAME_UBUNTU_REGULAR = "Ubuntu";
 
-    public static final Font FONT_MONOSPACE = new Font(HelperUi.FONT_NAME_MONOSPACE, Font.PLAIN, UIManager.getDefaults().getFont("TextPane.font").getSize());
-    public static final Font FONT_SEGOE = new Font("Segoe UI", Font.PLAIN, UIManager.getDefaults().getFont("TextPane.font").getSize());
+    public static final Font FONT_UBUNTU_MONO = new Font(
+        HelperUi.FONT_NAME_UBUNTU_MONO, 
+        Font.PLAIN, 
+        UIManager.getDefaults().getFont("TextArea.font").getSize() + 2
+    );
+    
+    public static final Font FONT_UBUNTU_REGULAR = new Font(
+        HelperUi.FONT_NAME_UBUNTU_REGULAR, 
+        Font.PLAIN, 
+        UIManager.getDefaults().getFont("TextPane.font").getSize()
+    );
+    
+    public static final Font FONT_SEGOE = new Font(
+        "Segoe UI", 
+        Font.PLAIN, 
+        UIManager.getDefaults().getFont("TextPane.font").getSize()
+    );
+    
     public static final Font FONT_SEGOE_BIG = new Font(
         UIManager.getDefaults().getFont("TextField.font").getName(),
         Font.PLAIN,
         UIManager.getDefaults().getFont("TextField.font").getSize() + 2
     );
-    public static final Font FONT_UBUNTU_MONO = new Font(HelperUi.FONT_NAME_UBUNTU_MONO, Font.PLAIN, UIManager.getDefaults().getFont("TextArea.font").getSize() + 2);
 
     public static final String CHUNK_VISIBLE = "chunk_visible";
     public static final String BINARY_VISIBLE = "binary_visible";
@@ -212,6 +228,12 @@ public final class HelperUi {
             ge.registerFont(ubuntuFont);
         } catch (FontFormatException | IOException e) {
             LOGGER.warn("Loading Font Ubuntu Mono with control characters failed", e);
+        }
+        try (InputStream fontStream = new BufferedInputStream(SwingAppender.class.getResourceAsStream("/com/jsql/view/swing/resources/font/Ubuntu-R.ttf"))) {
+            Font ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
+            ge.registerFont(ubuntuFont);
+        } catch (FontFormatException | IOException e) {
+            LOGGER.warn("Loading Font Ubuntu failed", e);
         }
         
         // Custom tooltip

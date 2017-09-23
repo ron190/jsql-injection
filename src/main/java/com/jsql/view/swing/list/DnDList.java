@@ -44,7 +44,7 @@ import com.jsql.view.swing.HelperUi;
  * A list supporting drag and drop.
  */
 @SuppressWarnings("serial")
-public class DnDList extends JList<ListItem> {
+public class DnDList extends JList<ItemList> {
 	
     /**
      * Log4j logger sent to view.
@@ -54,23 +54,23 @@ public class DnDList extends JList<ListItem> {
     /**
      * Model for the JList.
      */
-    private DefaultListModel<ListItem> listModel;
+    private DefaultListModel<ItemList> listModel;
     
     /**
      * List of default items.
      */
-    private transient List<ListItem> defaultList;
+    private transient List<ItemList> defaultList;
     
     /**
      * Create a JList decorated with drag/drop features.
      * @param newList List to decorate
      */
-    public DnDList(List<ListItem> newList) {
+    public DnDList(List<ItemList> newList) {
         this.defaultList = newList;
 
         this.listModel = new DefaultListModel<>();
 
-        for (ListItem path: newList) {
+        for (ItemList path: newList) {
             this.listModel.addElement(path);
         }
 
@@ -86,9 +86,9 @@ public class DnDList extends JList<ListItem> {
                     return;
                 }
                 
-                List<ListItem> selectedValues = DnDList.this.getSelectedValuesList();
-                List<ListItem> siblings = new ArrayList<>();
-                for (ListItem value: selectedValues) {
+                List<ItemList> selectedValues = DnDList.this.getSelectedValuesList();
+                List<ItemList> siblings = new ArrayList<>();
+                for (ItemList value: selectedValues) {
                     int valueIndex = DnDList.this.listModel.indexOf(value);
 
                     if (valueIndex < DnDList.this.listModel.size() - 1) {
@@ -99,7 +99,7 @@ public class DnDList extends JList<ListItem> {
                 }
 
                 TransferHandler.getCutAction().actionPerformed(e);
-                for (ListItem sibling: siblings) {
+                for (ItemList sibling: siblings) {
                     DnDList.this.setSelectedValue(sibling, true);
                 }
             }
@@ -115,7 +115,7 @@ public class DnDList extends JList<ListItem> {
             TransferHandler.getPasteAction()
         );
 
-        ListCellRenderer<ListItem> renderer = new RendererComplexCell();
+        ListCellRenderer<ItemList> renderer = new RendererComplexCell();
         this.setCellRenderer(renderer);
 
         // Allows color change when list loses/gains focus
@@ -158,8 +158,8 @@ public class DnDList extends JList<ListItem> {
             return;
         }
 
-        List<ListItem> selectedValues = this.getSelectedValuesList();
-        for (ListItem itemSelected: selectedValues) {
+        List<ItemList> selectedValues = this.getSelectedValuesList();
+        for (ItemList itemSelected: selectedValues) {
             int l = this.listModel.indexOf(itemSelected);
             this.listModel.removeElement(itemSelected);
             if (l == this.listModel.getSize()) {
@@ -257,7 +257,7 @@ public class DnDList extends JList<ListItem> {
                             // Fix Report #60
                             && 0 <= endPosition[0] && endPosition[0] <= this.listModel.size()
                         ) {
-                            this.listModel.add(endPosition[0]++, new ListItem(line.replace("\\", "/")));
+                            this.listModel.add(endPosition[0]++, new ItemList(line.replace("\\", "/")));
                         }
                     }
                 } catch (IOException e) {
@@ -286,7 +286,7 @@ public class DnDList extends JList<ListItem> {
     
     public void restore() {
         this.listModel.clear();
-        for (ListItem path: this.defaultList) {
+        for (ItemList path: this.defaultList) {
             this.listModel.addElement(path);
         }
     }

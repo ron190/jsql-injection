@@ -168,20 +168,16 @@ public class GitUtil {
     }
     
     private static void readGithubResponse(HttpURLConnection connection, ShowOnConsole showOnConsole) {
-        // Read the response
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            String line;
-            StringBuilder sourcePage = new StringBuilder();
-            while ((line = reader.readLine()) != null) {
-                sourcePage.append(line);
-            }
+        try {
+            // Read the response
+            String sourcePage = ConnectionUtil.getSource(connection);
 
             if (showOnConsole == ShowOnConsole.YES) {
-                JSONObject jsonObjectResponse = new JSONObject(sourcePage.toString());
+                JSONObject jsonObjectResponse = new JSONObject(sourcePage);
                 String urlIssue = jsonObjectResponse.getString("html_url");
                 LOGGER.debug("Sent to Github: "+ urlIssue);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             if (showOnConsole == ShowOnConsole.YES) {
                 LOGGER.warn("Read error: "+ e.getMessage(), e);
             }
@@ -220,7 +216,7 @@ public class GitUtil {
                 GitUtil.jsonObject = new JSONObject(json);
             } catch (JSONException e) {
                 GitUtil.jsonObject = new JSONObject("{\"version\": \"0\", \"news\": []}");
-                LOGGER.info("Fetching JSON configuration from Github failed, check your connection or update jsql", e);
+                LOGGER.warn("Fetching JSON configuration from Github failed, check your connection or update jsql", e);
             }
         }
         return GitUtil.jsonObject;

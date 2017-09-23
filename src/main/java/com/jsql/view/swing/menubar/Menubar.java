@@ -136,6 +136,7 @@ public class Menubar extends JMenuBar {
     private JMenuItem itemIntoSpanish;
     private JMenuItem itemIntoPortuguese;
     private JMenuItem itemIntoPolish;
+    private JMenuItem itemIntoKorean;
     private JMenuItem itemIntoOther;
 
     /**
@@ -226,7 +227,7 @@ public class Menubar extends JMenuBar {
         this.itemEnglish.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.ROOT));
         
         this.itemArab = new JRadioButtonMenuItem(
-            "<html><span style=\"font-family:'Monospace'\">"+ new Locale("ar").getDisplayLanguage(new Locale("ar")) +"</span></html>",
+            "<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ar").getDisplayLanguage(new Locale("ar")) +"</span></html>",
             HelperUi.ICON_FLAG_AR,
             new Locale("ar").getLanguage().equals(Locale.getDefault().getLanguage())
         );
@@ -304,17 +305,17 @@ public class Menubar extends JMenuBar {
         this.itemPortuguese.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("pt")));
         
         this.itemChinese = new JRadioButtonMenuItem(
-            "<html><span style=\"font-family:'Monospace'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span></html>",
+            "<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span></html>",
             HelperUi.ICON_FLAG_ZH,
             new Locale("zh").getLanguage().equals(Locale.getDefault().getLanguage())
         );
         this.itemChinese.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("zh")));
         
         this.itemPolish = new JRadioButtonMenuItem(
-                new Locale("pl").getDisplayLanguage(new Locale("pl")),
-                HelperUi.ICON_FLAG_PL,
-                new Locale("pl").getLanguage().equals(Locale.getDefault().getLanguage())
-            );
+            new Locale("pl").getDisplayLanguage(new Locale("pl")),
+            HelperUi.ICON_FLAG_PL,
+            new Locale("pl").getLanguage().equals(Locale.getDefault().getLanguage())
+        );
         this.itemPolish.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("pl")));
         
         menuTranslation.add(this.itemEnglish);
@@ -376,10 +377,10 @@ public class Menubar extends JMenuBar {
             }
         }
         
-        this.itemIntoHindi = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("hi").getDisplayLanguage(new Locale("hi")) +"</span>...</html>", HelperUi.ICON_FLAG_HI);
-        this.itemIntoArabic = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("ar").getDisplayLanguage(new Locale("ar")) +"</span>...</html>", HelperUi.ICON_FLAG_AR);
+        this.itemIntoHindi = new JMenuItem("<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("hi").getDisplayLanguage(new Locale("hi")) +"</span>...</html>", HelperUi.ICON_FLAG_HI);
+        this.itemIntoArabic = new JMenuItem("<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ar").getDisplayLanguage(new Locale("ar")) +"</span>...</html>", HelperUi.ICON_FLAG_AR);
         this.itemIntoRussia = new JMenuItem(new Locale("ru").getDisplayLanguage(new Locale("ru")) +"...", HelperUi.ICON_FLAG_RU);
-        this.itemIntoChina = new JMenuItem("<html><span style=\"font-family:'Monospace'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span>...</html>", HelperUi.ICON_FLAG_ZH);
+        this.itemIntoChina = new JMenuItem("<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("zh").getDisplayLanguage(new Locale("zh")) +"</span>...</html>", HelperUi.ICON_FLAG_ZH);
         this.itemIntoFrench = new JMenuItem(new Locale("fr").getDisplayLanguage(new Locale("fr")) +"...", HelperUi.ICON_FLAG_FR);
         this.itemIntoTurkish = new JMenuItem(new Locale("tr").getDisplayLanguage(new Locale("tr")) +"...", HelperUi.ICON_FLAG_TR);
         this.itemIntoCzech = new JMenuItem(new Locale("cs").getDisplayLanguage(new Locale("cs")) +"...", HelperUi.ICON_FLAG_CS);
@@ -390,6 +391,7 @@ public class Menubar extends JMenuBar {
         this.itemIntoSpanish = new JMenuItem(new Locale("es").getDisplayLanguage(new Locale("es")) +"...", HelperUi.ICON_FLAG_ES);
         this.itemIntoPortuguese = new JMenuItem(new Locale("pt").getDisplayLanguage(new Locale("pt")) +"...", HelperUi.ICON_FLAG_PT);
         this.itemIntoPolish = new JMenuItem(new Locale("pl").getDisplayLanguage(new Locale("pl")) +"...", HelperUi.ICON_FLAG_PL);
+        this.itemIntoKorean = new JMenuItem("<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ new Locale("ko").getDisplayLanguage(new Locale("ko")) +"</span>...</html>", HelperUi.ICON_FLAG_KO);
         this.itemIntoOther = new JMenuItem(I18n.valueByKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE"));
         I18nView.addComponentForKey("MENUBAR_COMMUNITY_ANOTHERLANGUAGE", this.itemIntoOther);
         
@@ -409,6 +411,7 @@ public class Menubar extends JMenuBar {
         menuI18nContribution.add(this.itemIntoSpanish);
         menuI18nContribution.add(this.itemIntoPortuguese);
         menuI18nContribution.add(this.itemIntoPolish);
+        menuI18nContribution.add(this.itemIntoKorean);
         menuI18nContribution.add(new JSeparator());
         menuI18nContribution.add(this.itemIntoOther);
         
@@ -426,6 +429,7 @@ public class Menubar extends JMenuBar {
         this.itemIntoSpanish.addActionListener(new ActionTranslate(Language.ES));
         this.itemIntoPortuguese.addActionListener(new ActionTranslate(Language.PT));
         this.itemIntoPolish.addActionListener(new ActionTranslate(Language.PL));
+        this.itemIntoKorean.addActionListener(new ActionTranslate(Language.KO));
         this.itemIntoOther.addActionListener(new ActionTranslate(Language.OT));
         
         menuWindows.add(menuTranslation);
@@ -690,10 +694,13 @@ public class Menubar extends JMenuBar {
             JPanel panel = new JPanel(new BorderLayout());
             final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
             textarea.setText(
-                "## What's the overall subject of your report?\n\n\n"
-                + "## Any detailed information about this question?\n\n\n"
-                + "## Do you have suggestion on the matter?\n\n\n"
-                + "## As long as you are with me, have you got in mind a request for a new feature?\n\n\n"
+                "## So what's the expected behavior?\n\n"
+                + "## And what's the actual behavior?\n\n"
+                + "## Any information about the Issue?\n\n"
+                + "## Steps to reproduce the behavior\n\n"
+                + "  1. ...\n"
+                + "  2. ...\n\n"
+                + "## [Community] Any request for a new feature?\n\n\n"
             );
             panel.add(new JLabel("Describe your issue or the bug you encountered " + ":"), BorderLayout.NORTH);
             panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
@@ -747,14 +754,14 @@ public class Menubar extends JMenuBar {
         JTableHeader header= MediatorGui.panelConsoles().networkTable.getTableHeader();
         TableColumnModel colMod = header.getColumnModel();
         if (newLocale.getLanguage() == new Locale("zh").getLanguage()) {
-            StyleConstants.setFontFamily(SwingAppender.ERROR, HelperUi.FONT_NAME_MONOSPACE);
-            StyleConstants.setFontFamily(SwingAppender.WARN, HelperUi.FONT_NAME_MONOSPACE);
-            StyleConstants.setFontFamily(SwingAppender.INFO, HelperUi.FONT_NAME_MONOSPACE);
-            StyleConstants.setFontFamily(SwingAppender.DEBUG, HelperUi.FONT_NAME_MONOSPACE);
-            StyleConstants.setFontFamily(SwingAppender.TRACE, HelperUi.FONT_NAME_MONOSPACE);
-            StyleConstants.setFontFamily(SwingAppender.ALL, HelperUi.FONT_NAME_MONOSPACE);
+            StyleConstants.setFontFamily(SwingAppender.ERROR, HelperUi.FONT_NAME_UBUNTU_REGULAR);
+            StyleConstants.setFontFamily(SwingAppender.WARN, HelperUi.FONT_NAME_UBUNTU_REGULAR);
+            StyleConstants.setFontFamily(SwingAppender.INFO, HelperUi.FONT_NAME_UBUNTU_REGULAR);
+            StyleConstants.setFontFamily(SwingAppender.DEBUG, HelperUi.FONT_NAME_UBUNTU_REGULAR);
+            StyleConstants.setFontFamily(SwingAppender.TRACE, HelperUi.FONT_NAME_UBUNTU_REGULAR);
+            StyleConstants.setFontFamily(SwingAppender.ALL, HelperUi.FONT_NAME_UBUNTU_REGULAR);
             
-            MediatorGui.managerBruteForce().getResult().setFont(HelperUi.FONT_MONOSPACE);
+            MediatorGui.managerBruteForce().getResult().setFont(HelperUi.FONT_UBUNTU_REGULAR);
             
             colMod.getColumn(0).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_METHOD_COLUMN"));
             colMod.getColumn(1).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_URL_COLUMN"));
@@ -833,6 +840,7 @@ public class Menubar extends JMenuBar {
         this.itemIntoSpanish.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.itemIntoPortuguese.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.itemIntoPolish.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        this.itemIntoKorean.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.itemIntoOther.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         
         if (ComponentOrientation.getOrientation(oldLocale) != ComponentOrientation.getOrientation(newLocale)) {

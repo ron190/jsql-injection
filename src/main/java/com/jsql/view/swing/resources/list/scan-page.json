@@ -1,5 +1,4 @@
 [
-
     {"url": "http://testphp.vulnweb.com/artists.php?artist=1"},
     {"url": "http://testphp.vulnweb.com/listproducts.php?cat=1"},
     {

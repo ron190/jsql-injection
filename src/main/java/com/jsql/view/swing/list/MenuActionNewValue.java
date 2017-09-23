@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -55,8 +56,8 @@ public class MenuActionNewValue implements ActionListener {
         I18nView.addComponentForKey("LIST_ADD_VALUE_LABEL", labelAddValue);
         panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
         
-        panel.setPreferredSize(new Dimension(300, 200));
-        panel.setMinimumSize(new Dimension(300, 200));
+        panel.setPreferredSize(new Dimension(600, 400));
+        panel.setMinimumSize(new Dimension(600, 400));
         
         textarea.addMouseListener(new MouseAdapter() {
             @Override
@@ -84,12 +85,24 @@ public class MenuActionNewValue implements ActionListener {
             }
 
             int firstIndex = lastIndex;
-            for (String newItem: textarea.getText().split("\\n")) {
-                if (!"".equals(newItem)) {
-                    ((DefaultListModel<ListItem>) this.myList.getModel()).add(
+            
+            if ("scan".equals(this.myList.getName())) {
+                List<ItemListScan> listParsedItems = ListTransfertHandlerScan.parse(textarea.getText().replace("\\", "/"));
+                for (ItemListScan item: listParsedItems) {
+                    ((DefaultListModel<ItemList>) this.myList.getModel()).add(
                         lastIndex++,
-                        new ListItem(newItem.replace("\\", "/")
-                    ));
+                        item
+                    );
+                }
+                
+            } else {
+                for (String newItem: textarea.getText().split("\\n")) {
+                    if (!"".equals(newItem)) {
+                        ((DefaultListModel<ItemList>) this.myList.getModel()).add(
+                            lastIndex++,
+                            new ItemList(newItem.replace("\\", "/"))
+                        );
+                    }
                 }
             }
 

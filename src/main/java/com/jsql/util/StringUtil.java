@@ -23,6 +23,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.StringUtils;
 import org.mozilla.universalchardet.UniversalDetector;
 
+import com.jsql.view.swing.HelperUi;
+
 /**
  * Utility class adding String operations like join() which are not
  * part of standard JVM.
@@ -126,7 +128,7 @@ public final class StringUtil {
         
         String result = text;
         if (encoding != null) {
-            result = "<html><span style=\"font-family:'Monospace';"+( nowrap ? "white-space:nowrap;" : "" )+"\">"+ new String(text.getBytes(), StandardCharsets.UTF_8) +"</span></html>";
+            result = "<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"';"+( nowrap ? "white-space:nowrap;" : "" )+"\">"+ new String(text.getBytes(), StandardCharsets.UTF_8) +"</span></html>";
         }
         
         return result;

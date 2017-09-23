@@ -67,7 +67,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
     @SuppressWarnings("unchecked")
     public void showPopup(final MouseEvent mouseEvent) {
         if (mouseEvent.isPopupTrigger()) {
-            JList<ListItem> list = (JList<ListItem>) mouseEvent.getSource();
+            JList<ItemList> list = (JList<ItemList>) mouseEvent.getSource();
 
             JPopupMenu popupMenuList = new JPopupMenu();
             

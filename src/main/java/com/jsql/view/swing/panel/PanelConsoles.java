@@ -549,7 +549,13 @@ public class PanelConsoles extends JPanel {
         PanelConsoles.NETWORK_TAB_HEADER.setText("");
         PanelConsoles.NETWORK_TAB_PARAM.setText("");
         PanelConsoles.NETWORK_TAB_RESPONSE.setText("");
-        PanelConsoles.NETWORK_TAB_SOURCE.setText("");
+        
+        // Fix #54572: NullPointerException on setText()
+        try {
+            PanelConsoles.NETWORK_TAB_SOURCE.setText("");
+        } catch (NullPointerException e) {
+            LOGGER.error(e, e);
+        }
         
         // Fix #41879: ArrayIndexOutOfBoundsException on setText()
         try {
@@ -571,7 +577,13 @@ public class PanelConsoles extends JPanel {
             PanelConsoles.NETWORK_TAB_RESPONSE.append("\n");
         }
         
-        PanelConsoles.NETWORK_TAB_SOURCE.setText(StringUtil.detectUtf8Html(networkData.getSource()).replaceAll("#{5,}", "#*"));
+        // Fix #53736: ArrayIndexOutOfBoundsException on setText()
+        // Fix #54573: NullPointerException on setText()
+        try {
+            PanelConsoles.NETWORK_TAB_SOURCE.setText(StringUtil.detectUtf8Html(networkData.getSource()).replaceAll("#{5,}", "#*"));
+        } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
+            LOGGER.error(e, e);
+        }
         
         // Reset EditorKit to disable previous document effect
         PanelConsoles.NETWORK_TAB_PREVIEW.getEditorKit().createDefaultDocument();

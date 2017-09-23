@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
 import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.list.DnDList;
-import com.jsql.view.swing.list.ListItem;
+import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -46,7 +46,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 	
-    protected transient List<ListItem> listItems = new ArrayList<>();
+    protected transient List<ItemList> itemsList = new ArrayList<>();
     
     protected DnDList listFile;
     
@@ -90,14 +90,14 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
-                this.listItems.add(new ListItem(line));
+                this.itemsList.add(new ItemList(line));
             }
             reader.close();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
-        this.listFile = new DnDList(this.listItems);
+        this.listFile = new DnDList(this.itemsList);
 
         this.listFile.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
         this.add(new LightScrollPane(1, 0, 0, 0, this.listFile), BorderLayout.CENTER);
@@ -119,15 +119,15 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      */
     public void addToList(String element) {
         boolean isFound = false;
-        DefaultListModel<ListItem> listModel = (DefaultListModel<ListItem>) this.listPaths.getModel();
+        DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) this.listPaths.getModel();
         for (int i = 0 ; i < listModel.size() ; i++) {
             if (listModel.get(i).toString().equals(element)) {
                 isFound = true;
             }
         }
         if (!isFound) {
-            ListItem v = new ListItem(element);
-            listModel.addElement(v);
+            ItemList itemList = new ItemList(element);
+            listModel.addElement(itemList);
         }
     }
 

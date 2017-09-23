@@ -13,7 +13,7 @@ package com.jsql.view.swing.list;
 /**
  * Basic object to avoid String incompatibility with drag and drop feature.
  */
-public class ListItem {
+public class ItemList {
 	
     /**
      * Text displayed on item.
@@ -33,7 +33,7 @@ public class ListItem {
      * Create a JList item.
      * @param newString
      */
-    public ListItem(String newString) {
+    public ItemList(String newString) {
         this.internalString = newString;
         this.originalString = newString;
     }

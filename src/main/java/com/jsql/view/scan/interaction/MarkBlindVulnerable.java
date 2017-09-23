@@ -18,7 +18,7 @@ import javax.swing.ListModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
-import com.jsql.view.swing.list.ListItem;
+import com.jsql.view.swing.list.ItemList;
 
 /**
  * Mark the injection as vulnerable to a blind injection.
@@ -38,12 +38,12 @@ public class MarkBlindVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        ListModel<ListItem> listModel = MediatorGui.managerScan().getListPaths().getModel();
+        ListModel<ItemList> listModel = MediatorGui.managerScan().getListPaths().getModel();
         for (int i = 0 ; i < listModel.getSize() ; i++) {
             if (listModel.getElementAt(i).getInternalString().contains(this.url)) {
                 listModel.getElementAt(i).setIsVulnerable(true);
                 listModel.getElementAt(i).setInternalString(listModel.getElementAt(i).getInternalString().replace(" [Blind]", "") +" [Blind]");
-                ((DefaultListModel<ListItem>) listModel).setElementAt(listModel.getElementAt(i), i);
+                ((DefaultListModel<ItemList>) listModel).setElementAt(listModel.getElementAt(i), i);
             }
         }
     }

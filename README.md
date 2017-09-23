@@ -51,7 +51,7 @@ If you are using Kali Linux then get the latest release using command `sudo apt-
 `New SQL Structure: Dump In One Shot and Zipped, Database: MemSQL Couchbase, Dump to a file, Load from/to no. of row/char, User Agent configuration.`
 
 ## Since last release
-`-`
+`Fix bug preventing multi-params injection, Fix adding items to Scan list`
 
 ## Change log
 

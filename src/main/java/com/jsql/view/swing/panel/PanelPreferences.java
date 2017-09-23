@@ -1149,14 +1149,14 @@ public class PanelPreferences extends JPanel {
 
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel labelListItem = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                labelListItem.setBorder(
+                JLabel labelItemList = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                labelItemList.setBorder(
                     BorderFactory.createCompoundBorder(
                         BorderFactory.createMatteBorder(3, 3, 0, 3, Color.WHITE),
-                        labelListItem.getBorder()
+                        labelItemList.getBorder()
                     )
                 );
-                return labelListItem;
+                return labelItemList;
             }
             
         });

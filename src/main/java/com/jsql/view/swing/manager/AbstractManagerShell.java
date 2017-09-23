@@ -38,7 +38,7 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.list.DnDList;
-import com.jsql.view.swing.list.ListItem;
+import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.text.JPopupTextField;
@@ -65,20 +65,20 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
 
         this.defaultText = "SHELL_RUN_BUTTON_LABEL";
         
-        List<ListItem> listItems = new ArrayList<>();
+        List<ItemList> itemsList = new ArrayList<>();
         try {
-            InputStream in = AbstractManagerShell.class.getResourceAsStream("/com/jsql/view/swing/resources/list/shell.txt");
+            InputStream in = AbstractManagerShell.class.getResourceAsStream("/com/jsql/view/swing/resources/list/payload.txt");
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
-                listItems.add(new ListItem(line));
+                itemsList.add(new ItemList(line));
             }
             reader.close();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
-        this.listPaths = new DnDList(listItems);
+        this.listPaths = new DnDList(itemsList);
         this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
         this.add(new LightScrollPane(1, 0, 0, 0, this.getListPaths()), BorderLayout.CENTER);
         
@@ -166,7 +166,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                 }
             }
 
-            for (final ListItem pathShell: AbstractManagerShell.this.getListPaths().getSelectedValuesList()) {
+            for (final ItemList pathShell: AbstractManagerShell.this.getListPaths().getSelectedValuesList()) {
                 new Thread(() -> {
                     try {
                         AbstractManagerShell.this.createPayload(

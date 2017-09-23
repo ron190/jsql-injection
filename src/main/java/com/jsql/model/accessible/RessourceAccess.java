@@ -55,8 +55,8 @@ import com.jsql.util.HeaderUtil;
 import com.jsql.util.PropertiesUtil;
 import com.jsql.view.scan.ScanListTerminal;
 import com.jsql.view.swing.MediatorGui;
-import com.jsql.view.swing.list.ListItem;
-import com.jsql.view.swing.list.ListItemScan;
+import com.jsql.view.swing.list.ItemList;
+import com.jsql.view.swing.list.ItemListScan;
 
 /**
  * Ressource access object.
@@ -121,7 +121,7 @@ public class RessourceAccess {
      * @param pageNames List of admin pages ot test
      * @throws InterruptedException
      */
-    public static void createAdminPages(String urlInjection, List<ListItem> pageNames) throws InterruptedException {
+    public static void createAdminPages(String urlInjection, List<ItemList> pageNames) throws InterruptedException {
         String urlWithoutProtocol = urlInjection.replaceAll("^https?://[^/]*", "");
         String urlProtocol = urlInjection.replace(urlWithoutProtocol, "");
         String urlWithoutFileName = urlWithoutProtocol.replaceAll("[^/]*$", "");
@@ -140,7 +140,7 @@ public class RessourceAccess {
         StringBuilder urlPart = new StringBuilder();
         for (String segment: directoryNames) {
             urlPart.append(segment);
-            for (ListItem pageName: pageNames) {
+            for (ItemList pageName: pageNames) {
                 taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + pageName.toString()));
             }
         }
@@ -335,24 +335,14 @@ public class RessourceAccess {
         connection.setReadTimeout(ConnectionUtil.getTimeout());
         connection.setConnectTimeout(ConnectionUtil.getTimeout());
 
-        StringBuilder pageSource = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                pageSource.append(line + "\n");
-            }
-        } catch (IOException e) {
-            String line;
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()))) {
-                while ((line = reader.readLine()) != null) {
-                    pageSource.append(line + "\r\n");
-                }
-            } catch (Exception e2) {
-                throw e2;
-            }
+        String pageSource = null;
+        try {
+            pageSource = ConnectionUtil.getSource(connection);
+        } catch (Exception e) {
+            pageSource = "";
         }
-
-        Matcher regexSearch = Pattern.compile("(?s)<"+ DataAccess.LEAD +">(.*)<"+ DataAccess.TRAIL +">").matcher(pageSource.toString());
+        
+        Matcher regexSearch = Pattern.compile("(?s)<"+ DataAccess.LEAD +">(.*)<"+ DataAccess.TRAIL +">").matcher(pageSource);
         regexSearch.find();
 
         String result;
@@ -370,7 +360,7 @@ public class RessourceAccess {
         msgHeader.put(Header.POST, "");
         msgHeader.put(Header.HEADER, "");
         msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
-        msgHeader.put(Header.SOURCE, pageSource.toString());
+        msgHeader.put(Header.SOURCE, pageSource);
         
         Request request = new Request();
         request.setMessage(Interaction.MESSAGE_HEADER);
@@ -829,7 +819,7 @@ public class RessourceAccess {
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ExecutionException if the computation threw an exception
      */
-    public static void readFile(List<ListItem> pathsFiles) throws JSqlException, InterruptedException, ExecutionException {
+    public static void readFile(List<ItemList> pathsFiles) throws JSqlException, InterruptedException, ExecutionException {
         if (!RessourceAccess.isReadingAllowed()) {
             return;
         }
@@ -838,7 +828,7 @@ public class RessourceAccess {
         ExecutorService taskExecutor = Executors.newFixedThreadPool(10, new ThreadFactoryCallable("CallableReadFile"));
         CompletionService<CallableFile> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
-        for (ListItem pathFile: pathsFiles) {
+        for (ItemList pathFile: pathsFiles) {
             CallableFile callableFile = new CallableFile(pathFile.toString());
             taskCompletionService.submit(callableFile);
             RessourceAccess.callablesReadFile.add(callableFile);
@@ -907,7 +897,7 @@ public class RessourceAccess {
      * At the end of the scan it plugs again the normal view.
      * @param urlList contains a list of String URL
      */
-    public static void scanList(List<ListItem> urlList) {
+    public static void scanList(List<ItemList> urlList) {
         // Erase everything in the view from a previous injection
         Request requests = new Request();
         requests.setMessage(Interaction.RESET_INTERFACE);
@@ -928,8 +918,8 @@ public class RessourceAccess {
         MediatorModel.model().setIsScanning(true);
         RessourceAccess.isScanStopped = false;
         
-        for (ListItem url: urlList) {
-            ListItemScan urlurl = (ListItemScan) url;
+        for (ItemList url: urlList) {
+            ItemListScan urlurl = (ItemListScan) url;
             if (MediatorModel.model().isStoppedByUser() || RessourceAccess.isScanStopped) {
                 break;
             }

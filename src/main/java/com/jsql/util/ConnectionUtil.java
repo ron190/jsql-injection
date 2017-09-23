@@ -2,6 +2,7 @@ package com.jsql.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -168,26 +169,15 @@ public class ConnectionUtil {
         msgHeader.put(Header.URL, url);
         msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
         
-        StringBuilder pageSource = new StringBuilder();
-
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                pageSource.append(line + "\n");
-            }
-            reader.close();
-        } catch (IOException e) {
-            String line;
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()))) {
-                while ((line = reader.readLine()) != null) {
-                    pageSource.append(line + "\r\n");
-                }
-            } catch (Exception e2) {
-                throw e2;
-            }
+        String pageSource = null;
+        try {
+            pageSource = ConnectionUtil.getSource(connection);
+        } catch (Exception e) {
+            LOGGER.error(e, e);
+            pageSource = "";
         }
-
-        msgHeader.put(Header.SOURCE, pageSource.toString());
+        
+        msgHeader.put(Header.SOURCE, pageSource);
         
         // Inform the view about the log infos
         Request request = new Request();
@@ -196,7 +186,35 @@ public class ConnectionUtil {
         MediatorModel.model().sendToViews(request);
         
         // TODO optional
-        return pageSource.toString().trim();
+        return pageSource.trim();
+    }
+    
+    public static String getSource(HttpURLConnection connection) throws IOException {
+        StringBuilder pageSource = new StringBuilder();
+        
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            char[] buffer = new char[4096];
+            while (reader.read(buffer) > 0) {
+                pageSource.append(buffer);
+            }
+            reader.close();
+        } catch (IOException errorInputStream) {
+            InputStream errorStream = connection.getErrorStream();
+            
+            if (errorStream != null) {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream))) {
+                    char[] buffer = new char[4096];
+                    while (reader.read(buffer) > 0) {
+                        pageSource.append(buffer);
+                    }
+                    reader.close();
+                } catch (Exception errorErrorStream) {
+                    throw errorErrorStream;
+                }
+            }
+        }
+        
+        return pageSource.toString();
     }
     
     /**

@@ -2,6 +2,7 @@ package com.jsql.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -148,23 +149,33 @@ public class HeaderUtil {
         }
         
         // Request the web page to the server
-        StringBuilder pageSource = new StringBuilder();
         Exception exception = null;
         
-        String line;
+        StringBuilder pageSource = new StringBuilder();
+        
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            while ((line = reader.readLine()) != null) {
-                pageSource.append(line + "\r\n");
+            char[] buffer = new char[4096];
+            while (reader.read(buffer) > 0) {
+                pageSource.append(buffer);
             }
-        } catch (IOException e) {
-            exception = e;
+            reader.close();
             
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()))) {
-                while ((line = reader.readLine()) != null) {
-                    pageSource.append(line + "\r\n");
+        } catch (IOException errorInputStream) {
+            exception = errorInputStream;
+            
+            InputStream errorStream = connection.getErrorStream();
+            
+            if (errorStream != null) {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(errorStream))) {
+                    char[] buffer = new char[4096];
+                    while (reader.read(buffer) > 0) {
+                        pageSource.append(buffer);
+                    }
+                    reader.close();
+                    
+                } catch (Exception errorErrorStream) {
+                    exception = new IOException("Exception reading Error Stream", errorErrorStream);
                 }
-            } catch (Exception e2) {
-                exception = new IOException("Exception reading Error Stream", e2);
             }
         }
         
@@ -176,7 +187,7 @@ public class HeaderUtil {
             }
             exception = null;
         } else if (exception != null) {
-            LOGGER.info("Please check option 'Disable connection test' and run again");
+            LOGGER.info("Please select option 'Disable connection test' and run again");
         }
         
         // Form parsing;

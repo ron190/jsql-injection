@@ -44,7 +44,7 @@ public class ListTransfertHandlerScan extends TransferHandler {
     /**
      * List of cut/copy/paste/drag/drop items.
      */
-    private transient List<ListItem> dragPaths = null;
+    private transient List<ItemList> dragPaths = null;
     
     @Override
     public int getSourceActions(JComponent c) {
@@ -59,8 +59,8 @@ public class ListTransfertHandlerScan extends TransferHandler {
         List<JSONObject> jsons = new ArrayList<>();
 
         StringBuilder stringTransferable = new StringBuilder();
-        for (ListItem itemPath: this.dragPaths) {
-            ListItemScan itemScanPath = (ListItemScan) itemPath;
+        for (ItemList itemPath: this.dragPaths) {
+            ItemListScan itemScanPath = (ItemListScan) itemPath;
             jsons.add(new JSONObject(itemScanPath.getBeanInjection()));
         }
         stringTransferable.append(new JSONArray(jsons).toString(4));
@@ -72,9 +72,9 @@ public class ListTransfertHandlerScan extends TransferHandler {
     @Override
     protected void exportDone(JComponent c, Transferable data, int action) {
         if (action == TransferHandler.MOVE) {
-            JList<ListItem> list = (JList<ListItem>) c;
-            DefaultListModel<ListItem> model = (DefaultListModel<ListItem>) list.getModel();
-            for (ListItem itemPath: this.dragPaths) {
+            JList<ItemList> list = (JList<ItemList>) c;
+            DefaultListModel<ItemList> model = (DefaultListModel<ItemList>) list.getModel();
+            for (ItemList itemPath: this.dragPaths) {
                 model.remove(model.indexOf(itemPath));
             }
             
@@ -98,44 +98,44 @@ public class ListTransfertHandlerScan extends TransferHandler {
         }
 
         DnDList list = (DnDList) support.getComponent();
-        DefaultListModel<ListItem> listModel = (DefaultListModel<ListItem>) list.getModel();
+        DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) list.getModel();
+        
         //This is a drop
         if (support.isDrop()) {
             if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
                 JList.DropLocation dropLocation = (JList.DropLocation) support.getDropLocation();
-                int childIndex = dropLocation.getIndex();
+                int indexDropLocation = dropLocation.getIndex();
 
-                List<Integer> selectAfterDrop = new ArrayList<>();
+                List<Integer> listSelectedIndices = new ArrayList<>();
 
                 // DnD from list
                 if (this.dragPaths != null && !this.dragPaths.isEmpty()) {
-                    for (ListItem value: this.dragPaths) {
-                        if (!"".equals(value.toString())) {
+                    for (ItemList itemPath: this.dragPaths) {
+                        if (!"".equals(itemPath.toString())) {
                             //! FUUuu
-                            ListItemScan a = (ListItemScan) value;
-                            ListItemScan newValue = new ListItemScan(a.getBeanInjection());
-                            selectAfterDrop.add(childIndex);
-                            listModel.add(childIndex++, newValue);
+                            ItemListScan itemDrag = (ItemListScan) itemPath;
+                            ItemListScan itemDrop = new ItemListScan(itemDrag.getBeanInjection());
+                            listSelectedIndices.add(indexDropLocation);
+                            listModel.add(indexDropLocation++, itemDrop);
                         }
                     }
-                // DnD from outside
                 } else {
+                    // DnD from outside
                     try {
                         String importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
                         
-                        for (ListItemScan listItemScan: ListTransfertHandlerScan.parse(importString)) {
-                            selectAfterDrop.add(childIndex);
-                            listModel.add(childIndex++, listItemScan);
+                        for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(importString)) {
+                            listSelectedIndices.add(indexDropLocation);
+                            listModel.add(indexDropLocation++, itemListScan);
                         }
                     } catch (UnsupportedFlavorException | IOException e) {
                         LOGGER.error(e.getMessage(), e);
                     }
                 }
 
-                //array is the Integer array
-                int[] selectedIndices = new int[selectAfterDrop.size()];
+                int[] selectedIndices = new int[listSelectedIndices.size()];
                 int i = 0;
-                for (Integer integer: selectAfterDrop) {
+                for (Integer integer: listSelectedIndices) {
                     selectedIndices[i] = integer.intValue();
                     i++;
                 }
@@ -153,8 +153,8 @@ public class ListTransfertHandlerScan extends TransferHandler {
                     LOGGER.error(e.getMessage(), e);
                 }
             }
-        //This is a paste
         } else {
+            //This is a paste
             Transferable transferableFromClipboard = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
             if (transferableFromClipboard != null) {
                 if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.stringFlavor)) {
@@ -168,9 +168,9 @@ public class ListTransfertHandlerScan extends TransferHandler {
                         list.clearSelection();
                         
                         List<Integer> selectedIndexes = new ArrayList<>();
-                        for (ListItemScan listItemScan: ListTransfertHandlerScan.parse(clipboardText)) {
+                        for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(clipboardText)) {
                             selectedIndexes.add(selectedIndex);
-                            listModel.add(selectedIndex++, listItemScan);
+                            listModel.add(selectedIndex++, itemListScan);
                         }
 
                         int[] selectedIndexesPasted = new int[selectedIndexes.size()];
@@ -212,8 +212,8 @@ public class ListTransfertHandlerScan extends TransferHandler {
         return true;
     }
     
-    public static List<ListItemScan> parse(String clipboardText) {
-        List<ListItemScan> itemsParsed = new ArrayList<>();
+    public static List<ItemListScan> parse(String clipboardText) {
+        List<ItemListScan> itemsParsed = new ArrayList<>();
         try {
             JSONArray itemsJsonArray = new JSONArray(clipboardText);
             
@@ -229,7 +229,7 @@ public class ListTransfertHandlerScan extends TransferHandler {
                     itemJsonObject.optString("requestType", "")
                 );
                 
-                ListItemScan newItem = new ListItemScan(beanInjection);
+                ItemListScan newItem = new ItemListScan(beanInjection);
                 itemsParsed.add(newItem);
             }
         } catch (JSONException eJsonArray) {
@@ -245,13 +245,13 @@ public class ListTransfertHandlerScan extends TransferHandler {
                     itemsJsonObject.optString("requestType", "")
                 );
                 
-                ListItemScan newItem = new ListItemScan(beanInjection);
+                ItemListScan newItem = new ItemListScan(beanInjection);
                 itemsParsed.add(newItem);
             } catch (JSONException eJsonObject) {
                 for (String url: clipboardText.split("\\n")) {
                     BeanInjection beanInjection = new BeanInjection(url);
                     
-                    ListItemScan newItem = new ListItemScan(beanInjection);
+                    ItemListScan newItem = new ItemListScan(beanInjection);
                     itemsParsed.add(newItem);
                 }
             }

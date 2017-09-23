@@ -28,7 +28,7 @@ import com.jsql.view.swing.HelperUi;
 /**
  * Item renderer for JList.
  */
-public class RendererComplexCell implements ListCellRenderer<ListItem> {
+public class RendererComplexCell implements ListCellRenderer<ItemList> {
 	
     /**
      * List component renderer.
@@ -38,7 +38,7 @@ public class RendererComplexCell implements ListCellRenderer<ListItem> {
     @SuppressWarnings("serial")
     @Override
     public Component getListCellRendererComponent(
-        JList<? extends ListItem> list, ListItem value, int index, boolean isSelected, boolean isFocused
+        JList<? extends ItemList> list, ItemList value, int index, boolean isSelected, boolean isFocused
     ) {
         JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(
             list, value, index, isSelected, isFocused

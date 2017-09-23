@@ -166,7 +166,11 @@ public class ProxyUtil {
                 if (showOnConsole == ShowOnConsole.YES) {
                     String message = Optional.ofNullable(e.getMessage()).orElse("");
                     LOGGER.warn(
-                        "Connection to HTTP proxy "+ ProxyUtil.getProxyAddress() +":"+ ProxyUtil.getProxyPort() +" failed: "+ message.replace(e.getClass().getName() +": ", "") +", verify your proxy settings for HTTP protocol", e
+                        "Connection to HTTP proxy "
+                        + ProxyUtil.getProxyAddress() +":"
+                        + ProxyUtil.getProxyPort() 
+                        +" failed with error \""+ message.replace(e.getClass().getName() +": ", "") +"\", verify your proxy settings for HTTP protocol",
+                        e
                     );
                 }
             }

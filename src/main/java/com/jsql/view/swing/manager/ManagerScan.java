@@ -39,8 +39,8 @@ import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.BeanInjection;
 import com.jsql.view.swing.list.DnDList;
-import com.jsql.view.swing.list.ListItem;
-import com.jsql.view.swing.list.ListItemScan;
+import com.jsql.view.swing.list.ItemList;
+import com.jsql.view.swing.list.ItemListScan;
 import com.jsql.view.swing.list.ListTransfertHandlerScan;
 import com.jsql.view.swing.manager.util.JButtonStateful;
 import com.jsql.view.swing.manager.util.StateButton;
@@ -77,7 +77,7 @@ public class ManagerScan extends AbstractManagerList {
             LOGGER.error(e.getMessage(), e);
         }
         
-        List<ListItem> listItems = new ArrayList<>();
+        List<ItemList> itemsList = new ArrayList<>();
         
         JSONArray jsonArrayScan = new JSONArray(jsonScan.toString());
         for (int i = 0 ; i < jsonArrayScan.length() ; i++) {
@@ -90,10 +90,11 @@ public class ManagerScan extends AbstractManagerList {
                 jsonObjectScan.optString("vendor"),
                 jsonObjectScan.optString("requestType")
             );
-            listItems.add(new ListItemScan(beanInjection));
+            itemsList.add(new ItemListScan(beanInjection));
         }
         
-        final DnDList dndListScan = new DnDList(listItems);
+        final DnDList dndListScan = new DnDList(itemsList);
+        dndListScan.setName("scan");
         dndListScan.setTransferHandler(null);
         dndListScan.setTransferHandler(new ListTransfertHandlerScan());
         
@@ -135,7 +136,7 @@ public class ManagerScan extends AbstractManagerList {
                     ManagerScan.this.run.setState(StateButton.STOPPABLE);
                     ManagerScan.this.loader.setVisible(true);
                     
-                    DefaultListModel<ListItem> listModel = (DefaultListModel<ListItem>) dndListScan.getModel();
+                    DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) dndListScan.getModel();
                     for (int i = 0 ; i < listModel.getSize() ; i++) {
                         listModel.get(i).reset();
                     }
@@ -163,7 +164,7 @@ public class ManagerScan extends AbstractManagerList {
             if (dndListScan.getSelectedValue() == null) {
                 return;
             }
-            BeanInjection beanInjection = ((ListItemScan) dndListScan.getSelectedValue()).getBeanInjection();
+            BeanInjection beanInjection = ((ItemListScan) dndListScan.getSelectedValue()).getBeanInjection();
             
             MediatorGui.panelAddressBar().getTextFieldAddress().setText(beanInjection.getUrl());
             MediatorGui.panelAddressBar().getTextFieldHeader().setText(beanInjection.getHeader());

@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.jsql.i18n.I18n;
+import com.jsql.view.swing.HelperUi;
 
 public class I18nView {
 
@@ -67,7 +68,7 @@ public class I18nView {
     public static String valueByKey(String key) {
         String result;
         if (I18n.getLocaleDefault().getLanguage() == new Locale("zh").getLanguage()) {
-            result = "<html><span style=\"font-family:'Monospace'\">"+ I18n.valueByKey(key) +"</span></html>";
+            result = "<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ I18n.valueByKey(key) +"</span></html>";
         } else {
             result = I18n.valueByKey(key);
         }

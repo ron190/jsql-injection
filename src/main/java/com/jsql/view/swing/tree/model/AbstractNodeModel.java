@@ -289,7 +289,7 @@ public abstract class AbstractNodeModel {
         AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
         
         if (StringUtil.isUtf8(this.getElementDatabase().toString())) {
-            this.panel.getEditable().setFont(HelperUi.FONT_MONOSPACE);
+            this.panel.getEditable().setFont(HelperUi.FONT_UBUNTU_REGULAR);
         } else {
             this.panel.getEditable().setFont(HelperUi.FONT_SEGOE);
         }

@@ -120,6 +120,7 @@ rpad(
 )
             </calibrator>
             <limitBoundary>1</limitBoundary>
+            <endingComment></endingComment>
             <fingerprint>
                 <errorMessage>Non-terminated string</errorMessage>
             </fingerprint>

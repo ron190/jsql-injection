@@ -13,11 +13,11 @@ package com.jsql.view.swing.list;
 /**
  * Basic object to avoid String incompatibility with drag and drop feature.
  */
-public class ListItemScan extends ListItem {
+public class ItemListScan extends ItemList {
     
     private BeanInjection beanInjection;
 
-    public ListItemScan(BeanInjection newString) {
+    public ItemListScan(BeanInjection newString) {
         super(newString.getUrl());
         this.beanInjection = newString;
     }
