@@ -155,7 +155,15 @@ public class ConnectionUtil {
      * @return the source page of the URL
      * @throws IOException when the reading of source page fails
      */
+    public static String getSourceLineFeed(String url) throws IOException {
+        return getSource(url, true);
+    }
+    
     public static String getSource(String url) throws IOException {
+        return getSource(url, false);
+    }
+    
+    public static String getSource(String url, boolean lineFeed) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setReadTimeout(ConnectionUtil.getTimeout());
         connection.setConnectTimeout(ConnectionUtil.getTimeout());
@@ -171,7 +179,11 @@ public class ConnectionUtil {
         
         String pageSource = null;
         try {
-            pageSource = ConnectionUtil.getSource(connection);
+            if (lineFeed) {
+                pageSource = ConnectionUtil.getSourceLineFeed(connection);
+            } else {
+                pageSource = ConnectionUtil.getSource(connection);
+            }
         } catch (Exception e) {
             LOGGER.error(e, e);
             pageSource = "";
@@ -187,6 +199,19 @@ public class ConnectionUtil {
         
         // TODO optional
         return pageSource.trim();
+    }
+    
+    public static String getSourceLineFeed(HttpURLConnection connection) throws IOException {
+        StringBuilder pageSource = new StringBuilder();
+    
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            pageSource.append(line +"\n");
+        }
+        reader.close();
+        
+        return pageSource.toString();
     }
     
     public static String getSource(HttpURLConnection connection) throws IOException {

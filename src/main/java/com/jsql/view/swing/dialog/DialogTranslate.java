@@ -236,7 +236,7 @@ public class DialogTranslate extends JDialog {
         
         private void getI18nRoot() throws IOException {
             try {
-                String pageSourceRoot = ConnectionUtil.getSource(
+                String pageSourceRoot = ConnectionUtil.getSourceLineFeed(
                     PropertiesUtil.getInstance().getProperties().getProperty("github.webservice.i18n.url")
                 );
                 this.sourceProperties.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}")));
@@ -253,7 +253,7 @@ public class DialogTranslate extends JDialog {
         
         private void getI18nLanguage() throws IOException {
             try {
-                String pageSourceLanguage = ConnectionUtil.getSource(
+                String pageSourceLanguage = ConnectionUtil.getSourceLineFeed(
                     "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql_"+ DialogTranslate.this.language.getNameLocale() +".properties"
                 );
                 this.languageProperties.load(new StringReader(pageSourceLanguage));
