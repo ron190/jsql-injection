@@ -170,7 +170,7 @@ public class GitUtil {
     private static void readGithubResponse(HttpURLConnection connection, ShowOnConsole showOnConsole) {
         try {
             // Read the response
-            String sourcePage = ConnectionUtil.getSource(connection);
+            String sourcePage = ConnectionUtil.getSourceLineFeed(connection);
 
             if (showOnConsole == ShowOnConsole.YES) {
                 JSONObject jsonObjectResponse = new JSONObject(sourcePage);
