@@ -147,12 +147,12 @@ public class PanelPreferences extends JPanel {
     private static final JPanel panelAuthentication = new JPanel(new BorderLayout());
     private static final JPanel panelProxy = new JPanel(new BorderLayout());
     private static final JPanel panelGeneral = new JPanel(new BorderLayout());
-    private static final JPanel panelTamper = new JPanel(new BorderLayout());
+    private static final JPanel panelTampering = new JPanel(new BorderLayout());
     
     private enum CategoryPreference {
         
         INJECTION(panelInjection),
-        TAMPER(panelTamper),
+        TAMPERING(panelTampering),
         PROXY(panelProxy),
         AUTHENTICATION(panelAuthentication),
         GENERAL(panelGeneral);
@@ -395,11 +395,11 @@ public class PanelPreferences extends JPanel {
             this.actionListenerSave.actionPerformed(null);
         });
         
-        JPanel panelTamperPreferences = new JPanel();
-        panelTamperPreferences.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
-        panelTamper.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 15));
-        panelTamper.add(new JLabel("<html><b>Tamper</b> / SQL expression alteration to bypass Web Application Firewall</html>"), BorderLayout.NORTH);
-        panelTamper.add(panelTamperPreferences, BorderLayout.CENTER);
+        JPanel panelTamperingPreferences = new JPanel();
+        panelTamperingPreferences.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        panelTampering.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 15));
+        panelTampering.add(new JLabel("<html><b>Tampering</b> / SQL expression alteration to bypass Web Application Firewall</html>"), BorderLayout.NORTH);
+        panelTampering.add(panelTamperingPreferences, BorderLayout.CENTER);
         
         JPanel panelGeneralPreferences = new JPanel();
         panelGeneralPreferences.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
@@ -445,8 +445,8 @@ public class PanelPreferences extends JPanel {
         panelProxyPreferences.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelCheckIp.setAlignmentX(Component.LEFT_ALIGNMENT);
         
-        GroupLayout groupLayoutTamper = new GroupLayout(panelTamperPreferences);
-        panelTamperPreferences.setLayout(groupLayoutTamper);
+        GroupLayout groupLayoutTampering = new GroupLayout(panelTamperingPreferences);
+        panelTamperingPreferences.setLayout(groupLayoutTampering);
         GroupLayout groupLayoutGeneral = new GroupLayout(panelGeneralPreferences);
         panelGeneralPreferences.setLayout(groupLayoutGeneral);
         GroupLayout groupLayoutInjection = new GroupLayout(panelInjectionPreferences);
@@ -801,10 +801,10 @@ public class PanelPreferences extends JPanel {
         
         // Proxy settings, Horizontal column rules
 
-        groupLayoutTamper.setHorizontalGroup(
-            groupLayoutTamper.createSequentialGroup()
+        groupLayoutTampering.setHorizontalGroup(
+            groupLayoutTampering.createSequentialGroup()
             .addGroup(
-                groupLayoutTamper
+                groupLayoutTampering
                     .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                     .addComponent(this.checkboxIsTamperingBase64)
                     .addComponent(this.checkboxIsTamperingFunctionComment)
@@ -816,7 +816,7 @@ public class PanelPreferences extends JPanel {
                     .addComponent(this.radioIsTamperingSpaceToSharpComment)
                     .addComponent(this.checkboxIsTamperingEval)
             ).addGroup(
-                groupLayoutTamper
+                groupLayoutTampering
                     .createParallelGroup()
                     .addComponent(labelIsTamperingBase64)
                     .addComponent(labelIsTamperingFunctionComment)
@@ -939,51 +939,51 @@ public class PanelPreferences extends JPanel {
 
         // Proxy settings, Vertical line rules
 
-        groupLayoutTamper.setVerticalGroup(
-            groupLayoutTamper
+        groupLayoutTampering.setVerticalGroup(
+            groupLayoutTampering
                 .createSequentialGroup()
                 .addGroup(
-                    groupLayoutTamper
+                    groupLayoutTampering
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(this.checkboxIsTamperingBase64)
                         .addComponent(labelIsTamperingBase64)
                 ).addGroup(
-                    groupLayoutTamper
+                    groupLayoutTampering
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(this.checkboxIsTamperingFunctionComment)
                         .addComponent(labelIsTamperingFunctionComment)
                 ).addGroup(
-                    groupLayoutTamper
+                    groupLayoutTampering
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(this.checkboxIsTamperingVersionComment)
                         .addComponent(labelIsTamperingVersionComment)
                 ).addGroup(
-                    groupLayoutTamper
+                    groupLayoutTampering
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(this.checkboxIsTamperingEqualToLike)
                         .addComponent(labelIsTamperingEqualToLike)
                 ).addGroup(
-                    groupLayoutTamper
+                    groupLayoutTampering
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(this.checkboxIsTamperingRandomCase)
                         .addComponent(labelIsTamperingRandomCase)
                 ).addGroup(
-                    groupLayoutTamper
+                    groupLayoutTampering
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(this.radioIsTamperingSpaceToMultilineComment)
                         .addComponent(labelIsTamperingSpaceToMultilineComment)
                 ).addGroup(
-                    groupLayoutTamper
+                    groupLayoutTampering
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(this.radioIsTamperingSpaceToDashComment)
                         .addComponent(labelIsTamperingSpaceToDashComment)
                 ).addGroup(
-                    groupLayoutTamper
+                    groupLayoutTampering
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(this.radioIsTamperingSpaceToSharpComment)
                         .addComponent(labelIsTamperingSpaceToSharpComment)
                 ).addGroup(
-                    groupLayoutTamper
+                    groupLayoutTampering
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(this.checkboxIsTamperingEval)
                         .addComponent(textAreaIsTamperingEval)

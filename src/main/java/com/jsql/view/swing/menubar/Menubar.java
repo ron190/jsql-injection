@@ -14,6 +14,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
@@ -41,6 +42,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
 import javax.swing.MenuSelectionManager;
+import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
@@ -693,14 +695,19 @@ public class Menubar extends JMenuBar {
         itemReportIssue.addActionListener(actionEvent -> {
             JPanel panel = new JPanel(new BorderLayout());
             final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
+            textarea.setFont(new Font(
+                HelperUi.FONT_NAME_MONOSPACED,
+                Font.PLAIN,
+                UIManager.getDefaults().getFont("TextField.font").getSize()
+            ));
             textarea.setText(
-                "## So what's the expected behavior?\n\n"
+                "## What's the expected behavior?\n\n"
                 + "## And what's the actual behavior?\n\n"
-                + "## Any information about the Issue?\n\n"
+                + "## Any detailed information about the Issue?\n\n"
                 + "## Steps to reproduce the behavior\n\n"
                 + "  1. ...\n"
                 + "  2. ...\n\n"
-                + "## [Community] Any request for a new feature?\n\n\n"
+                + "## [Community] Any request for a new feature?\n\n"
             );
             panel.add(new JLabel("Describe your issue or the bug you encountered " + ":"), BorderLayout.NORTH);
             panel.add(new LightScrollPane(1, 1, 1, 1, textarea));
