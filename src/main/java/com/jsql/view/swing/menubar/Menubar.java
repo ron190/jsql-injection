@@ -751,7 +751,7 @@ public class Menubar extends JMenuBar {
     public void switchLocale(Locale oldLocale, Locale newLocale, boolean isStartup) {
         I18n.setLocaleDefault(ResourceBundle.getBundle("com.jsql.i18n.jsql", newLocale));
         
-        JTableHeader header= MediatorGui.panelConsoles().networkTable.getTableHeader();
+        JTableHeader header = MediatorGui.panelConsoles().getNetworkTable().getTableHeader();
         TableColumnModel colMod = header.getColumnModel();
         if (newLocale.getLanguage() == new Locale("zh").getLanguage()) {
             StyleConstants.setFontFamily(SwingAppender.ERROR, HelperUi.FONT_NAME_UBUNTU_REGULAR);
@@ -868,10 +868,10 @@ public class Menubar extends JMenuBar {
         
         // I18n of tree empty node
         if (MediatorGui.treeDatabase().isRootVisible()) {
-            DefaultTreeModel model = (DefaultTreeModel) MediatorGui.managerDatabase().tree.getModel();
+            DefaultTreeModel model = (DefaultTreeModel) MediatorGui.managerDatabase().getTree().getModel();
             DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
             model.reload(root);
-            MediatorGui.managerDatabase().tree.revalidate();
+            MediatorGui.managerDatabase().getTree().revalidate();
         }
         
         // Fix glitches on Linux

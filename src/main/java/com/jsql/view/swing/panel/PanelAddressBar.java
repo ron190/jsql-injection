@@ -198,7 +198,7 @@ public class PanelAddressBar extends JPanel {
                 PanelAddressBar.this.typeRequest = inputCustomMethod.getText();
                 this.radioMethod.setText(PanelAddressBar.this.typeRequest);
             } else {
-                LOGGER.warn("Custom method undefined");
+                LOGGER.warn("Define label of Custom request method");
             }
         });
       

@@ -10,16 +10,11 @@
  ******************************************************************************/
 package com.jsql.model;
 
-import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -51,7 +46,6 @@ import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.MethodInjection;
@@ -144,6 +138,9 @@ public class InjectionModel extends AbstractModelObservable {
     private boolean injectionAlreadyBuilt = false;
     
     private boolean isScanning = false;
+    
+    private static final boolean IS_CHECKING_ALL_PARAMETERS = true;
+    private static final boolean IS_JSON = true;
 
     /**
      * Current evasion step, 0 is 'no evasion'
@@ -351,9 +348,6 @@ public class InjectionModel extends AbstractModelObservable {
         
         return hasFoundInjection;
     }
-    
-    private static final boolean IS_CHECKING_ALL_PARAMETERS = true;
-    private static final boolean IS_JSON = true;
     
     private boolean testStrategies(boolean checkAllParameters, boolean isJson, SimpleEntry<String, String> parameter) throws JSqlException {
         // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
@@ -658,33 +652,38 @@ public class InjectionModel extends AbstractModelObservable {
         String query;
         
         // TODO simplify
-        if (ConnectionUtil.getMethodInjection() != methodInjection || ConnectionUtil.getUrlBase().contains(InjectionModel.STAR)) {
+        if (
+            // No parameter transformation if method is not selected by user
+            ConnectionUtil.getMethodInjection() != methodInjection
+            // No parameter transformation if injection point in URL
+            || ConnectionUtil.getUrlBase().contains(InjectionModel.STAR)
+        ) {
+            // Just pass parameters without any transformation
             query = paramLead;
-        } else if (paramLead.contains(InjectionModel.STAR)) {
+            
+        } else if (
+                
+            // If method is selected by user and URL does not contains injection point
+            // but parameters contain an injection point
+            // then replace injection point by SQL expression in those parameter
+            paramLead.contains(InjectionModel.STAR)
+        ) {
+            // Several SQL expressions does not use indexes in SELECT,
+            // like Boolean, Error, Shell and search for Insertion character,
+            // in that case replace injection point by SQL expression.
+            // Injection point is always at the end?
             if (!isUsingIndex) {
                 query = paramLead.replace(InjectionModel.STAR, sqlTrail);
+                
+                // Add ending line comment by vendor
+                query = query + this.vendor.instance().endingComment();
+                
             } else {
-                query =
-                    paramLead.replace(
-                        InjectionModel.STAR,
-                        this.indexesInUrl.replaceAll(
-                            "1337" + ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).getVisibleIndex() + "7331",
-                            /**
-                             * Oracle column often contains $, which is reserved for regex.
-                             * => need to be escape with quoteReplacement()
-                             */
-                            Matcher.quoteReplacement(sqlTrail)
-                        )
-                    )
-                ;
-            }
-        } else {
-            if (!isUsingIndex) {
-                query = paramLead + sqlTrail;
-            } else {
-                query =
-                    paramLead
-                    + this.indexesInUrl.replaceAll(
+                // Replace injection point by indexes found for Normal strategy
+                // and use visible Index for injection
+                query = paramLead.replace(
+                    InjectionModel.STAR,
+                    this.indexesInUrl.replaceAll(
                         "1337" + ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).getVisibleIndex() + "7331",
                         /**
                          * Oracle column often contains $, which is reserved for regex.
@@ -692,13 +691,45 @@ public class InjectionModel extends AbstractModelObservable {
                          */
                         Matcher.quoteReplacement(sqlTrail)
                     )
-                ;
+                );
+                
+                // Add ending line comment by vendor
+                query = query + this.vendor.instance().endingComment();
+            }
+            
+        } else {
+            // Method is selected by user and there's no injection point
+            if (
+                // Several SQL expressions does not use indexes in SELECT,
+                // like Boolean, Error, Shell and search for Insertion character,
+                // in that case concat SQL expression to the end of param.
+                !isUsingIndex
+            ) {
+                query = paramLead + sqlTrail;
+                
+                // Add ending line comment by vendor
+                query = query + this.vendor.instance().endingComment();
+                
+            } else {
+                // Concat indexes found for Normal strategy to params
+                // and use visible Index for injection
+                query = paramLead + this.indexesInUrl.replaceAll(
+                    "1337" + ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).getVisibleIndex() + "7331",
+                    /**
+                     * Oracle column often contains $, which is reserved for regex.
+                     * => need to be escape with quoteReplacement()
+                     */
+                    Matcher.quoteReplacement(sqlTrail)
+                );
+                
+                // Add ending line comment by vendor
+                query = query + this.vendor.instance().endingComment();
             }
         }
         
         query = query.trim();
         
-        // Remove comments
+        // Remove SQL comments
         query = query.replaceAll("(?s)/\\*.*?\\*/", "");
                 
         // Remove spaces after a word
@@ -709,9 +740,6 @@ public class InjectionModel extends AbstractModelObservable {
 
         // Replace spaces
         query = query.replaceAll("\\s+", "+");
-        
-        // Add ending line comment by vendor
-        query = query + this.vendor.instance().endingComment();
         
         return query;
     }

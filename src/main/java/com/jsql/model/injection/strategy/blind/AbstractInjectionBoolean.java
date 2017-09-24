@@ -160,7 +160,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                                 && countAsciiCode255 > 9
                                 && (countAsciiCode255 * 100 / submittedTasks) > 50
                             ) {
-                                LOGGER.warn("Boolean false positives detected, stopping...");
+                                LOGGER.warn("Boolean false positives spotted, stopping...");
                                 break;
                             }
                             

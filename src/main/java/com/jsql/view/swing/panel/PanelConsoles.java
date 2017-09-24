@@ -126,7 +126,7 @@ public class PanelConsoles extends JPanel {
     /**
      * Table in Network tab displaying HTTP requests.
      */
-    public JTable networkTable;
+    private JTable networkTable;
 
     private static final JTextArea NETWORK_TAB_URL = new JPopupTextArea("Request URL").getProxy();
     private static final JTextArea NETWORK_TAB_RESPONSE = new JPopupTextArea("Header server response").getProxy();
@@ -670,6 +670,10 @@ public class PanelConsoles extends JPanel {
 
     public static BasicArrowButton getButtonShowNorth() {
         return BUTTON_SHOW_NORTH;
+    }
+
+    public JTable getNetworkTable() {
+        return this.networkTable;
     }
     
 }

@@ -181,22 +181,25 @@ public final class HelperUi {
 
     public static final String FONT_NAME_UBUNTU_MONO = "Ubuntu Mono";
     public static final String FONT_NAME_UBUNTU_REGULAR = "Ubuntu";
+    
+    // Used in Translation Dialog
+    public static final String FONT_NAME_MONOSPACED = "Monospaced";
 
     public static final Font FONT_UBUNTU_MONO = new Font(
-        HelperUi.FONT_NAME_UBUNTU_MONO, 
-        Font.PLAIN, 
+        HelperUi.FONT_NAME_UBUNTU_MONO,
+        Font.PLAIN,
         UIManager.getDefaults().getFont("TextArea.font").getSize() + 2
     );
     
     public static final Font FONT_UBUNTU_REGULAR = new Font(
-        HelperUi.FONT_NAME_UBUNTU_REGULAR, 
-        Font.PLAIN, 
+        HelperUi.FONT_NAME_UBUNTU_REGULAR,
+        Font.PLAIN,
         UIManager.getDefaults().getFont("TextPane.font").getSize()
     );
     
     public static final Font FONT_SEGOE = new Font(
-        "Segoe UI", 
-        Font.PLAIN, 
+        "Segoe UI",
+        Font.PLAIN,
         UIManager.getDefaults().getFont("TextPane.font").getSize()
     );
     

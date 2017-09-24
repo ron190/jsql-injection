@@ -67,7 +67,7 @@ public class ManagerDatabase extends JPanel implements Manager {
 
     private ButtonGroup groupStrategy = new ButtonGroup();
     
-    public JTree tree;
+    private JTree tree;
 
     /**
      * Create a panel to encode a string.
@@ -292,6 +292,10 @@ public class ManagerDatabase extends JPanel implements Manager {
 
     public JMenu getMenuStrategy() {
         return this.menuStrategy;
+    }
+
+    public JTree getTree() {
+        return this.tree;
     }
 
 }

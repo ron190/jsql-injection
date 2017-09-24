@@ -45,13 +45,13 @@ If you are using Kali Linux then get the latest release using command `sudo apt-
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
 ## Roadmap
-`Burp integration, Crawler, Tampering, Database: Netezza, Test coverage with Jacoco, Integration test with Docker and JPA Hibernate Jooq, Reactive programming with RxJava, Maven Central: core swing cli, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB, Bruteforce HTTP Auth using NTLM, Arabic translation, Command line interface, Dictionnary attack, WAF detection, Program self-updater.`
+`Burp integration, Crawler, Database: Netezza, Test coverage with Jacoco, Integration test with Docker and JPA Hibernate Jooq, Reactive programming with RxJava, Maven Central: core swing cli, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB, Bruteforce HTTP Auth using NTLM, Arabic translation, Command line interface, Dictionnary attack, WAF detection, Program self-updater.`
 
 ## In progress
-`New SQL Structure: Dump In One Shot and Zipped, Database: MemSQL Couchbase, Dump to a file, Load from/to no. of row/char, User Agent configuration.`
+`Tampering, New SQL Structure: Dump In One Shot and Zipped, Database: MemSQL Couchbase, Dump to a file, Load from/to no. of row/char, User Agent configuration.`
 
 ## Since last release
-`Fix bug preventing multi-params injection, Fix adding items to Scan list`
+`Fix bug preventing multi-params injection, Fix adding items to Scan list, Fix translation dialog for utf8 characters`
 
 ## Change log
 

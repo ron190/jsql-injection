@@ -48,8 +48,10 @@ public class PreferencesUtil {
     
     private static boolean isTamperingBase64 = false;
     private static boolean isTamperingFunctionComment = false;
+    private static boolean isTamperingVersionComment = false;
     private static boolean isTamperingEqualToLike = false;
     private static boolean isTamperingRandomCase = false;
+    private static boolean isTamperingEval = false;
     private static boolean isTamperingSpaceToMultlineComment = false;
     private static boolean isTamperingSpaceToDashComment = false;
     private static boolean isTamperingSpaceToSharpComment = false;
@@ -97,7 +99,9 @@ public class PreferencesUtil {
         PreferencesUtil.setTamperingBase64(prefs.getBoolean("isTamperingBase64", false));
         PreferencesUtil.setTamperingEqualToLike(prefs.getBoolean("isTamperingEqualToLike", false));
         PreferencesUtil.setTamperingFunctionComment(prefs.getBoolean("isTamperingFunctionComment", false));
+        PreferencesUtil.setTamperingVersionComment(prefs.getBoolean("isTamperingVersionComment", false));
         PreferencesUtil.setTamperingRandomCase(prefs.getBoolean("isTamperingRandomCase", false));
+        PreferencesUtil.setTamperingEval(prefs.getBoolean("isTamperingEval", false));
         PreferencesUtil.setTamperingSpaceToDashComment(prefs.getBoolean("isTamperingSpaceToDashComment", false));
         PreferencesUtil.setTamperingSpaceToMultlineComment(prefs.getBoolean("isTamperingSpaceToMultlineComment", false));
         PreferencesUtil.setTamperingSpaceToSharpComment(prefs.getBoolean("isTamperingSpaceToSharpComment", false));
@@ -149,7 +153,9 @@ public class PreferencesUtil {
         boolean isTamperingBase64,
         boolean isTamperingEqualToLike,
         boolean isTamperingFunctionComment,
+        boolean isTamperingVersionComment,
         boolean isTamperingRandomCase,
+        boolean isTamperingEval,
         boolean isTamperingSpaceToDashComment,
         boolean isTamperingSpaceToMultlineComment,
         boolean isTamperingSpaceToSharpComment
@@ -177,7 +183,9 @@ public class PreferencesUtil {
         PreferencesUtil.setTamperingBase64(isTamperingBase64);
         PreferencesUtil.setTamperingEqualToLike(isTamperingEqualToLike);
         PreferencesUtil.setTamperingFunctionComment(isTamperingFunctionComment);
+        PreferencesUtil.setTamperingVersionComment(isTamperingVersionComment);
         PreferencesUtil.setTamperingRandomCase(isTamperingRandomCase);
+        PreferencesUtil.setTamperingEval(isTamperingEval);
         PreferencesUtil.setTamperingSpaceToDashComment(isTamperingSpaceToDashComment);
         PreferencesUtil.setTamperingSpaceToMultlineComment(isTamperingSpaceToMultlineComment);
         PreferencesUtil.setTamperingSpaceToSharpComment(isTamperingSpaceToSharpComment);
@@ -205,8 +213,10 @@ public class PreferencesUtil {
         
         preferences.putBoolean("isTamperingBase64", PreferencesUtil.isTamperingBase64());
         preferences.putBoolean("isTamperingEqualToLike", PreferencesUtil.isTamperingEqualToLike());
+        preferences.putBoolean("isTamperingVersionComment", PreferencesUtil.isTamperingVersionComment());
         preferences.putBoolean("isTamperingFunctionComment", PreferencesUtil.isTamperingFunctionComment());
         preferences.putBoolean("isTamperingRandomCase", PreferencesUtil.isTamperingRandomCase());
+        preferences.putBoolean("isTamperingEval", PreferencesUtil.isTamperingEval());
         preferences.putBoolean("isTamperingSpaceToDashComment", PreferencesUtil.isTamperingSpaceToDashComment());
         preferences.putBoolean("isTamperingSpaceToMultlineComment", PreferencesUtil.isTamperingSpaceToMultlineComment());
         preferences.putBoolean("isTamperingSpaceToSharpComment", PreferencesUtil.isTamperingSpaceToSharpComment());
@@ -407,6 +417,22 @@ public class PreferencesUtil {
 
     public static void setTamperingSpaceToSharpComment(boolean isTamperingSpaceToSharpComment) {
         PreferencesUtil.isTamperingSpaceToSharpComment = isTamperingSpaceToSharpComment;
+    }
+
+    public static boolean isTamperingVersionComment() {
+        return isTamperingVersionComment;
+    }
+
+    public static void setTamperingVersionComment(boolean isTamperingVersionComment) {
+        PreferencesUtil.isTamperingVersionComment = isTamperingVersionComment;
+    }
+
+    public static boolean isTamperingEval() {
+        return isTamperingEval;
+    }
+
+    public static void setTamperingEval(boolean isTamperingEval) {
+        PreferencesUtil.isTamperingEval = isTamperingEval;
     }
     
 }

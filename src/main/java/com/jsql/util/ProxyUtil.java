@@ -168,7 +168,7 @@ public class ProxyUtil {
                     LOGGER.warn(
                         "Connection to HTTP proxy "
                         + ProxyUtil.getProxyAddress() +":"
-                        + ProxyUtil.getProxyPort() 
+                        + ProxyUtil.getProxyPort()
                         +" failed with error \""+ message.replace(e.getClass().getName() +": ", "") +"\", verify your proxy settings for HTTP protocol",
                         e
                     );
