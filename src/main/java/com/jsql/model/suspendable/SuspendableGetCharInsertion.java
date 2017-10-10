@@ -20,10 +20,12 @@ import com.jsql.model.suspendable.callable.CallablePageSource;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 /**
- * Runnable class, define insertionCharacter that will be used by all futures requests,
- * i.e -1 in "[..].php?id=-1 union select[..]", sometimes it's -1, 0', 0, etc,
- * this class/function tries to find the working one by searching a special error message
- * in the source page.
+ * Runnable class, define insertionCharacter to be used during injection,
+ * i.e -1 in "[..].php?id=-1 union select[..]", sometimes it's -1, 0', 0, etc.
+ * Find working insertion char when error message occurs in source.
+ * Force to 1 if no insertion char works and empty value from user,
+ * Force to user's value if no insertion char works,
+ * Force to insertion char otherwise.
  */
 public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
 	

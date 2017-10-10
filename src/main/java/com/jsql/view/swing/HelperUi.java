@@ -122,6 +122,7 @@ public final class HelperUi {
     public static final Icon ICON_FLAG_ES = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/es.png"));
     public static final Icon ICON_FLAG_PT = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/pt.png"));
     public static final Icon ICON_FLAG_PL = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/pl.png"));
+    public static final Icon ICON_FLAG_JA = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/ja.png"));
     public static final Icon ICON_FLAG_KO = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/ko.png"));
     
     public static final URL URL_ICON_16 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug16.png");
@@ -149,7 +150,7 @@ public final class HelperUi {
             int r = 5;
             RoundRectangle2D round = new RoundRectangle2D.Float(x, y, width-1, height-1, r, r);
             Container parent = c.getParent();
-            if(parent!=null) {
+            if (parent!=null) {
                 g2.setColor(parent.getBackground());
                 Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
                 corner.subtract(new Area(round));
@@ -163,7 +164,14 @@ public final class HelperUi {
                 }
             }
             g2.setColor(Color.GRAY);
-            g2.draw(round);
+            
+            // Fix #55411: NoClassDefFoundError on draw()
+            try {
+                g2.draw(round);
+            } catch (NoClassDefFoundError e) {
+                LOGGER.error(e, e);
+            }
+                
             g2.dispose();
         }
         

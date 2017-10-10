@@ -580,7 +580,11 @@ public class PanelConsoles extends JPanel {
         // Fix #53736: ArrayIndexOutOfBoundsException on setText()
         // Fix #54573: NullPointerException on setText()
         try {
-            PanelConsoles.NETWORK_TAB_SOURCE.setText(StringUtil.detectUtf8Html(networkData.getSource()).replaceAll("#{5,}", "#*"));
+            PanelConsoles.NETWORK_TAB_SOURCE.setText(
+                StringUtil.detectUtf8(networkData.getSource())
+                    .replaceAll("#{5,}", "#*")
+                    .trim()
+            );
         } catch (ArrayIndexOutOfBoundsException | NullPointerException e) {
             LOGGER.error(e, e);
         }

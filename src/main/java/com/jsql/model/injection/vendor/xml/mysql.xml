@@ -253,6 +253,7 @@ cast(
             <failsafe>1337${INDICE}7330%2b1</failsafe>
             <calibrator>repeat(${CALIBRATOR_HEX}, 65536)</calibrator>
             <limitBoundary>0</limitBoundary>
+            <!-- Force a space at the end -->
             <endingComment>--+</endingComment>
             <fingerprint>
                 <!-- JDBC + php : same error -->

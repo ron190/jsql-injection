@@ -40,6 +40,7 @@ public class PreferencesUtil {
     private static boolean isCheckingAllHeaderParam = false;
     private static boolean isCheckingAllJSONParam = false;
     private static boolean isCheckingAllCookieParam = false;
+    private static boolean isCheckingAllSOAPParam = false;
     
     private static boolean isParsingForm = false;
     private static boolean isNotTestingConnection = false;
@@ -90,6 +91,7 @@ public class PreferencesUtil {
         PreferencesUtil.setCheckingAllHeaderParam(prefs.getBoolean("isCheckingAllHeaderParam", false));
         PreferencesUtil.setCheckingAllJSONParam(prefs.getBoolean("isCheckingAllJSONParam", false));
         PreferencesUtil.setCheckingAllCookieParam(prefs.getBoolean("isCheckingAllCookieParam", false));
+        PreferencesUtil.setCheckingAllSOAPParam(prefs.getBoolean("isCheckingAllSOAPParam", false));
         
         PreferencesUtil.setParsingForm(prefs.getBoolean("isParsingForm", false));
         PreferencesUtil.setNotTestingConnection(prefs.getBoolean("isNotTestingConnection", false));
@@ -144,6 +146,7 @@ public class PreferencesUtil {
         boolean isCheckingAllHeaderParam,
         boolean isCheckingAllJSONParam,
         boolean isCheckingAllCookieParam,
+        boolean isCheckingAllSOAPParam,
         
         boolean isParsingForm,
         boolean isNotTestingConnection,
@@ -173,6 +176,7 @@ public class PreferencesUtil {
         PreferencesUtil.setCheckingAllHeaderParam(isCheckingAllHeaderParam);
         PreferencesUtil.setCheckingAllJSONParam(isCheckingAllJSONParam);
         PreferencesUtil.setCheckingAllCookieParam(isCheckingAllCookieParam);
+        PreferencesUtil.setCheckingAllSOAPParam(isCheckingAllSOAPParam);
         
         PreferencesUtil.setParsingForm(isParsingForm);
         PreferencesUtil.setNotTestingConnection(isNotTestingConnection);
@@ -204,6 +208,7 @@ public class PreferencesUtil {
         preferences.putBoolean("isCheckingAllHeaderParam", PreferencesUtil.isCheckingAllHeaderParam());
         preferences.putBoolean("isCheckingAllJSONParam", PreferencesUtil.isCheckingAllJSONParam());
         preferences.putBoolean("isCheckingAllCookieParam", PreferencesUtil.isCheckingAllCookieParam());
+        preferences.putBoolean("isCheckingAllSOAPParam", PreferencesUtil.isCheckingAllSOAPParam());
         
         preferences.putBoolean("isParsingForm", PreferencesUtil.isParsingForm());
         preferences.putBoolean("isNotTestingConnection", PreferencesUtil.isNotTestingConnection());
@@ -433,6 +438,14 @@ public class PreferencesUtil {
 
     public static void setTamperingEval(boolean isTamperingEval) {
         PreferencesUtil.isTamperingEval = isTamperingEval;
+    }
+
+    public static boolean isCheckingAllSOAPParam() {
+        return isCheckingAllSOAPParam;
+    }
+
+    public static void setCheckingAllSOAPParam(boolean isCheckingAllSOAPParam) {
+        PreferencesUtil.isCheckingAllSOAPParam = isCheckingAllSOAPParam;
     }
     
 }

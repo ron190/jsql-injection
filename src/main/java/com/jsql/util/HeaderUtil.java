@@ -196,9 +196,9 @@ public class HeaderUtil {
         
         StringBuilder result = new StringBuilder();
         
-        Map<Element, List<Element>> p = new HashMap<>();
+        Map<Element, List<Element>> mapForms = new HashMap<>();
         for (Element form: elementsForm) {
-            p.put(form, new ArrayList<>());
+            mapForms.put(form, new ArrayList<>());
             
             result.append("\n<form action=\"");
             result.append(form.attr("action"));
@@ -213,10 +213,10 @@ public class HeaderUtil {
                 result.append(input.attr("value"));
                 result.append("\" />");
                 
-                p.get(form).add(input);
+                mapForms.get(form).add(input);
             }
             
-            Collections.reverse(p.get(form));
+            Collections.reverse(mapForms.get(form));
             
         }
         
@@ -231,7 +231,7 @@ public class HeaderUtil {
             } else {
                 LOGGER.debug("Found "+ elementsForm.size() +" <form> in HTML body, adding input(s) to requests:"+ result);
                 
-                for(Entry<Element, List<Element>> form: p.entrySet()) {
+                for(Entry<Element, List<Element>> form: mapForms.entrySet()) {
                     for (Element input: form.getValue()) {
                         if ("get".equalsIgnoreCase(form.getKey().attr("method"))) {
                             ParameterUtil.getQueryString().add(0, new SimpleEntry<String, String>(input.attr("name"), input.attr("value")));
@@ -286,19 +286,8 @@ public class HeaderUtil {
     public static Map<String, String> getHttpHeaders(URLConnection connection) {
         Map<String, String> mapHeaders = new HashMap<>();
         
-        for (int i = 0 ; ; i++) {
-            // Fix #6456: IllegalArgumentException on getHeaderFieldKey()
-            // Implementation by sun.net.www.protocol.http.HttpURLConnection.getHeaderFieldKey()
-            try {
-                String headerName = connection.getHeaderFieldKey(i);
-                String headerValue = connection.getHeaderField(i);
-                if (headerName == null && headerValue == null) {
-                    break;
-                }
-                mapHeaders.put(headerName == null ? "Method" : headerName, headerValue);
-            } catch (IllegalArgumentException e) {
-                LOGGER.error(e.getMessage(), e);
-            }
+        for (Map.Entry<String, List<String>> entries : connection.getHeaderFields().entrySet()) {
+            mapHeaders.put(entries.getKey() == null ? "Status code" : entries.getKey(), String.join(",", entries.getValue()));
         }
 
         return mapHeaders;

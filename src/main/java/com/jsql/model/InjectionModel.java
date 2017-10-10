@@ -20,15 +20,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.PrivilegedActionException;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.EnumMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.security.auth.login.LoginException;
@@ -39,6 +35,7 @@ import org.ietf.jgss.GSSException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Document;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.DataAccess;
@@ -48,6 +45,8 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
+import com.jsql.model.injection.JsonUtil;
+import com.jsql.model.injection.SoapUtil;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.model.injection.strategy.StrategyInjectionNormal;
@@ -139,7 +138,7 @@ public class InjectionModel extends AbstractModelObservable {
     
     private boolean isScanning = false;
     
-    private static final boolean IS_CHECKING_ALL_PARAMETERS = true;
+    private static final boolean IS_PARAM_BY_USER = true;
     private static final boolean IS_JSON = true;
 
     /**
@@ -147,10 +146,15 @@ public class InjectionModel extends AbstractModelObservable {
      */
     private int stepSecurity = 0;
     
+    /**
+     * Reset each injection attributes: Database metadata, General Thread status, Strategy.
+     */
     public void resetModel() {
         // TODO make injection pojo for all fields
         ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).setVisibleIndex(null);
         this.indexesInUrl = "";
+        
+        ConnectionUtil.setTokenCsrf(null);
         
         this.versionDatabase = null;
         this.nameDatabase = null;
@@ -169,32 +173,57 @@ public class InjectionModel extends AbstractModelObservable {
     /**
      * Prepare the injection process, can be interrupted by the user (via shouldStopAll).
      * Erase all attributes eventually defined in a previous injection.
+     * Run by Scan, Standard and TU.
      */
     public void beginInjection() {
         this.resetModel();
         
         // TODO Extract in method
         try {
+            // Test proxy connection
             if (!ProxyUtil.isChecked(ShowOnConsole.YES)) {
                 return;
             }
             
             LOGGER.info(I18n.valueByKey("LOG_START_INJECTION") +": "+ ConnectionUtil.getUrlByUser());
             
+            // Check general integrity if user's parameters
             ParameterUtil.checkParametersFormat(true, true, null);
             
+            // Check connection is working: define Cookie management, check HTTP status, parse <form> parameters, process CSRF
             LOGGER.trace(I18n.valueByKey("LOG_CONNECTION_TEST"));
             ConnectionUtil.testConnection();
             
             boolean hasFoundInjection = false;
             
+            // Try to inject Query params
             hasFoundInjection = this.testParameters(MethodInjection.QUERY, ParameterUtil.getQueryStringAsString(), ParameterUtil.getQueryString());
 
             if (!hasFoundInjection) {
-                hasFoundInjection = this.testParameters(MethodInjection.REQUEST, ParameterUtil.getRequestAsString(), ParameterUtil.getRequest());
+                if (
+                    PreferencesUtil.isCheckingAllSOAPParam() 
+                    && ParameterUtil.getRequestAsText().matches("^<\\?xml.*")
+                ) {
+                    try {
+                        Document doc = SoapUtil.convertStringToDocument(ParameterUtil.getRequestAsText());
+                        LOGGER.trace("Parsing SOAP from Request...");
+                        hasFoundInjection = SoapUtil.injectTextNodes(doc, doc.getDocumentElement());
+                    } catch (Exception e) {
+                        LOGGER.trace("SOAP not detected, checking standard Request parameters...");
+                        
+                        // Try to inject Request params
+                        hasFoundInjection = this.testParameters(MethodInjection.REQUEST, ParameterUtil.getRequestAsString(), ParameterUtil.getRequest());
+                    }
+                } else {
+                    LOGGER.trace("Checking standard Request parameters");
+                    
+                    // Try to inject Request params
+                    hasFoundInjection = this.testParameters(MethodInjection.REQUEST, ParameterUtil.getRequestAsString(), ParameterUtil.getRequest());
+                }
             }
             
             if (!hasFoundInjection) {
+                // Try to inject Header params
                 hasFoundInjection = this.testParameters(MethodInjection.HEADER, ParameterUtil.getHeaderAsString(), ParameterUtil.getHeader());
             }
             
@@ -209,156 +238,194 @@ public class InjectionModel extends AbstractModelObservable {
         }
     }
     
-    public static List<SimpleEntry<String, String>> loopThroughJson(Object jsonEntity, String parentName, SimpleEntry<String, String> parentXPath) {
-        List<SimpleEntry<String, String>> attributesXPath = new ArrayList<>();
-        
-        if (jsonEntity instanceof JSONObject) {
-            
-            JSONObject jsonObjectEntity = (JSONObject) jsonEntity;
-            Iterator<?> keys = jsonObjectEntity.keys();
-            while (keys.hasNext()) {
-                String key = (String) keys.next();
-                Object value = jsonObjectEntity.get(key);
-                String xpath = parentName +"."+ key;
-                
-                if (value instanceof JSONArray) {
-                    attributesXPath.addAll(loopThroughJson(value, xpath, parentXPath));
-                } else {
-                    SimpleEntry<String, String> c = new SimpleEntry<>(xpath, (String) value);
-                    attributesXPath.add(c);
-                    
-                    if (parentXPath == null) {
-                        jsonObjectEntity.put(key, value.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", ""));
-                    } else if (c.equals(parentXPath)) {
-                        jsonObjectEntity.put(key, value + InjectionModel.STAR);
-                    }
-                }
-            }
-            
-        } else if (jsonEntity instanceof JSONArray) {
-            
-            JSONArray jsonArrayEntity = (JSONArray) jsonEntity;
-            for (int i = 0; i < jsonArrayEntity.length(); i++) {
-                Object jsonEntityInArray = jsonArrayEntity.get(i);
-                if(!(jsonEntityInArray instanceof JSONObject) && !(jsonEntityInArray instanceof JSONArray)){
-                    continue;
-                }
-                
-                JSONObject jsonObjectEntity = jsonArrayEntity.getJSONObject(i);
-                
-                Iterator<?> keys = jsonObjectEntity.keys();
-                while (keys.hasNext()) {
-                    String key = (String) keys.next();
-                    Object value = jsonObjectEntity.opt(key);
-                    
-                    if (value instanceof JSONArray) {
-                        attributesXPath.addAll(loopThroughJson(value, parentName +"."+ key, parentXPath));
-                    } else if (value instanceof String) {
-                        SimpleEntry<String, String> s = new SimpleEntry<>(parentName +"."+ key, (String) value);
-                        attributesXPath.add(s);
-                        
-                        if (parentXPath == null) {
-                            jsonObjectEntity.put(key, value.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", ""));
-                        } else if (s.equals(parentXPath)) {
-                            jsonObjectEntity.put(key, value + InjectionModel.STAR);
-                        }
-                    }
-                }
-            }
-            
-        }
-        
-        return attributesXPath;
-    }
-    
-    private boolean testParameters(MethodInjection methodInjection, String paramsAsString, List<SimpleEntry<String, String>> params) throws JSqlException {
+    /**
+     * Verify if injection works for specific Method using 3 modes: standard (last param), injection point
+     * and full params injection. Special injections like JSON and SOAP are checked.
+     * @param methodInjection currently tested (Query, Request or Header)
+     * @param paramsAsString to verify if contains injection point
+     * @param params from Query, Request or Header as a list of key/value to be tested for insertion character ;
+     * Mode standard: last param, mode injection point: no test, mode full: every params. 
+     * @return true if injection didn't failed
+     * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
+     */
+    public boolean testParameters(MethodInjection methodInjection, String paramsAsString, List<SimpleEntry<String, String>> params) throws JSqlException {
         boolean hasFoundInjection = false;
         
+        // Injects URL, Request or Header params only if user tests every params
+        // or method is selected by user.
         if (
-            PreferencesUtil.isCheckingAllParam()
-            || ConnectionUtil.getMethodInjection() == methodInjection
+            !PreferencesUtil.isCheckingAllParam()
+            && ConnectionUtil.getMethodInjection() != methodInjection
         ) {
-            ConnectionUtil.setMethodInjection(methodInjection);
-            if (!methodInjection.isCheckingAllParam() && !paramsAsString.contains(InjectionModel.STAR)) {
-                params.stream().reduce((a, b) -> b).ifPresent(e -> e.setValue(e.getValue() + InjectionModel.STAR));
-                hasFoundInjection = this.testStrategies(IS_CHECKING_ALL_PARAMETERS, !IS_JSON, params.stream().reduce((a, b) -> b).get());
-            } else if (paramsAsString.contains(InjectionModel.STAR)) {
-                LOGGER.info("Checking single "+ methodInjection.name() +" parameter with injection point at *");
-                hasFoundInjection = this.testStrategies(!IS_CHECKING_ALL_PARAMETERS, !IS_JSON, null);
-            } else {
-                for (SimpleEntry<String, String> paramBase: params) {
+            return hasFoundInjection;
+        }
+        
+        // Force injection method of model to current running method
+        ConnectionUtil.setMethodInjection(methodInjection);
+        
+        // Default injection: last param tested only and no injection point
+        if (!methodInjection.isCheckingAllParam() && !paramsAsString.contains(InjectionModel.STAR)) {
+            // Injection point defined on last parameter
+            params.stream().reduce((a, b) -> b).ifPresent(e -> e.setValue(e.getValue() + InjectionModel.STAR));
 
-                    for (SimpleEntry<String, String> paramStar: params) {
-                        if (paramStar == paramBase) {
-                            
-                            Object jsonEntity = null;
+            // Will check param value by user.
+            // Notice options 'Inject each URL params' and 'inject JSON' must be checked both 
+            // for JSON injection of last param
+            hasFoundInjection = this.testStrategies(IS_PARAM_BY_USER, !IS_JSON, params.stream().reduce((a, b) -> b).get());
+            
+        // Injection by injection point
+        } else if (paramsAsString.contains(InjectionModel.STAR)) {
+            LOGGER.info("Checking single "+ methodInjection.name() +" parameter with injection point at *");
+            
+            // Will keep param value as is,
+            // Does not test for insertion character (param is null)
+            hasFoundInjection = this.testStrategies(!IS_PARAM_BY_USER, !IS_JSON, null);
+            
+        // Injection of every params: isCheckingAllParam() == true.
+        // Params are tested one by one in two loops: 
+        //  - inner loop erases * from previous param
+        //  - outer loop adds * to current param
+        } else {
+            
+            // This param will be marked by * if injection is found,
+            // inner loop will erase mark * otherwise
+            for (SimpleEntry<String, String> paramBase: params) {
+
+                // This param is the current tested one.
+                // For JSON value attributes are traversed one by one to test every values.
+                // For standard value mark * is simply added to the end of its value.
+                for (SimpleEntry<String, String> paramStar: params) {
+                    if (paramStar == paramBase) {
+                        
+                        // Will test if current value is a JSON entity
+                        Object jsonEntity = null;
+                        try {
+                            // Test for JSON Object: {...}
+                            jsonEntity = new JSONObject(paramStar.getValue());
+                        } catch (JSONException exceptionJSONObject) {
                             try {
-                                jsonEntity = new JSONObject(paramStar.getValue());
-                            } catch (JSONException e) {
-                                try {
-                                    jsonEntity = new JSONArray(paramStar.getValue());
-                                } catch (JSONException ee) {
-                                    // ignore
-                                }
+                                // Test for JSON Array: [...]
+                                jsonEntity = new JSONArray(paramStar.getValue());
+                            } catch (JSONException exceptionJSONArray) {
+                                // Not a JSON entity
                             }
-                            List<SimpleEntry<String, String>> attributesJson = loopThroughJson(jsonEntity, "root", null);
+                        }
+                        
+                        // Define a tree of JSON attributes with path as the key: root.a => value of a
+                        List<SimpleEntry<String, String>> attributesJson = JsonUtil.loopThroughJson(jsonEntity, "root", null);
 
-                            if (PreferencesUtil.isCheckingAllJSONParam() && !attributesJson.isEmpty()) {
-                                for (SimpleEntry<String, String> parentXPath: attributesJson) {
-                                    loopThroughJson(jsonEntity, "root", null);
-                                    loopThroughJson(jsonEntity, "root", parentXPath);
-                                    
-                                    paramStar.setValue(jsonEntity.toString());
-                                    
-                                    try {
-                                        LOGGER.info("Checking JSON "+ methodInjection.name() +" parameter "+ parentXPath.getKey() +"="+ parentXPath.getValue().replace(InjectionModel.STAR, ""));
-                                        hasFoundInjection = this.testStrategies(IS_CHECKING_ALL_PARAMETERS, IS_JSON, paramBase);
-                                        break;
-                                    } catch (JSqlException e) {
-                                        LOGGER.warn("No "+ methodInjection.name() +" injection found for JSON "+ methodInjection.name() +" parameter "+ parentXPath.getKey() +"="+ parentXPath.getValue().replace(InjectionModel.STAR, ""), e);
-                                    } finally {
-                                        params.stream().forEach(e -> e.setValue(e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", "")));
-                                    }
-                                }
-                            } else {
-                                paramStar.setValue(paramStar.getValue() + InjectionModel.STAR);
+                        // When option 'Inject JSON' is selected and there's a JSON entity to inject
+                        // then loop through each paths to add * at the end of value and test each strategies.
+                        // Marks * are erased between each tests.
+                        if (PreferencesUtil.isCheckingAllJSONParam() && !attributesJson.isEmpty()) {
+                            
+                            // Loop through each JSON values
+                            for (SimpleEntry<String, String> parentXPath: attributesJson) {
+                                
+                                // Erase previously defined *
+                                JsonUtil.loopThroughJson(jsonEntity, "root", null);
+                                
+                                // Add * to current parameter's value
+                                JsonUtil.loopThroughJson(jsonEntity, "root", parentXPath);
+                                
+                                // Replace param value by marked one.
+                                // paramStar and paramBase are the same object
+                                paramStar.setValue(jsonEntity.toString());
                                 
                                 try {
-                                    LOGGER.info("Checking "+ methodInjection.name() +" parameter "+ paramBase.getKey() +"="+ paramBase.getValue().replace(InjectionModel.STAR, ""));
-                                    hasFoundInjection = this.testStrategies(IS_CHECKING_ALL_PARAMETERS, !IS_JSON, paramBase);
+                                    LOGGER.info("Checking JSON "+ methodInjection.name() +" parameter "+ parentXPath.getKey() +"="+ parentXPath.getValue().replace(InjectionModel.STAR, ""));
+                                    
+                                    // Test current JSON value marked with * for injection
+                                    // Keep original param
+                                    hasFoundInjection = this.testStrategies(IS_PARAM_BY_USER, IS_JSON, paramBase);
+                                    
+                                    // Injection successful
                                     break;
+                                    
                                 } catch (JSqlException e) {
-                                    LOGGER.warn("No "+ methodInjection.name() +" injection found for parameter "+ paramBase.getKey() +"="+ paramBase.getValue().replace(InjectionModel.STAR, ""), e);
+                                    // Injection failure
+                                    LOGGER.warn("No "+ methodInjection.name() +" injection found for JSON "+ methodInjection.name() +" parameter "+ parentXPath.getKey() +"="+ parentXPath.getValue().replace(InjectionModel.STAR, ""), e);
+                                    
                                 } finally {
+                                    // Erase * at the end of each params
                                     params.stream().forEach(e -> e.setValue(e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", "")));
+                                    
+                                    // Erase * from JSON if failure
+                                    if (!hasFoundInjection) {
+                                        paramStar.setValue(paramStar.getValue().replace("*", ""));
+                                    }
                                 }
                             }
+                        // Standard non JSON injection
+                        } else {
+                            // Add * to end of value
+                            paramStar.setValue(paramStar.getValue() + InjectionModel.STAR);
                             
-                            
+                            try {
+                                LOGGER.info("Checking "+ methodInjection.name() +" parameter "+ paramBase.getKey() +"="+ paramBase.getValue().replace(InjectionModel.STAR, ""));
+                                
+                                // Test current standard value marked with * for injection
+                                // Keep original param
+                                hasFoundInjection = this.testStrategies(IS_PARAM_BY_USER, !IS_JSON, paramBase);
+                                
+                                // Injection successful
+                                break;
+                                
+                            } catch (JSqlException e) {
+                                // Injection failure
+                                LOGGER.warn(
+                                    "No "+ methodInjection.name() +" injection found for parameter "
+                                    + paramBase.getKey() +"="+ paramBase.getValue().replace(InjectionModel.STAR, "") 
+                                    + " (" + e.getMessage() +")", e
+                                );
+                                
+                            } finally {
+                                // Erase * at the end of each params
+                                params.stream().forEach(e -> e.setValue(e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", "")));
+                            }
                         }
+                        
                     }
-                    if (hasFoundInjection) {
-                        paramBase.setValue(paramBase.getValue().replace("*", "") +"*");
-                        break;
-                    }
-                    
                 }
+                
+                // If injection successful then add * at the end of value
+                if (hasFoundInjection) {
+                    paramBase.setValue(paramBase.getValue().replace("*", "") +"*");
+                    break;
+                }
+                
             }
         }
         
         return hasFoundInjection;
     }
     
-    private boolean testStrategies(boolean checkAllParameters, boolean isJson, SimpleEntry<String, String> parameter) throws JSqlException {
+    /**
+     * Find the insertion character, test each strategy, inject metadata and list databases.
+     * @param isParamByUser true if mode standard/JSON/full, false if injection point
+     * @param isJson true if param contains JSON
+     * @param parameter to be tested, null when injection point
+     * @return true when successful injection
+     * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
+     */
+    // TODO Merge isParamByUser and parameter: isParamByUser = parameter != null
+    private boolean testStrategies(boolean isParamByUser, boolean isJson, SimpleEntry<String, String> parameter) throws JSqlException {
         // Define insertionCharacter, i.e, -1 in "[..].php?id=-1 union select[..]",
         LOGGER.trace(I18n.valueByKey("LOG_GET_INSERTION_CHARACTER"));
         
-        String characterInsertionByUser = ParameterUtil.checkParametersFormat(false, checkAllParameters, parameter);
+        // Test for params integrity
+        String characterInsertionByUser = ParameterUtil.checkParametersFormat(false, isParamByUser, parameter);
+        
+        // If not an injection point then find insertion character.
+        // Force to 1 if no insertion char works and empty value from user, 
+        // Force to user's value if no insertion char works,
+        // Force to insertion char otherwise.
         if (parameter != null) {
             String charInsertion = new SuspendableGetCharInsertion().run(characterInsertionByUser, parameter, isJson);
             LOGGER.info(I18n.valueByKey("LOG_USING_INSERTION_CHARACTER") +" ["+ charInsertion.replace(InjectionModel.STAR, "") +"]");
         }
         
+        // Fingerprint database
         this.vendor = new SuspendableGetVendor().run();
 
         // Test each injection strategies: time, blind, error, normal
@@ -424,6 +491,7 @@ public class InjectionModel extends AbstractModelObservable {
         
         urlInjection = this.buildURL(urlInjection, isUsingIndex, dataInjection);
 
+        // TODO merge into function
         urlInjection = urlInjection
             .trim()
             // Remove comments
@@ -450,6 +518,12 @@ public class InjectionModel extends AbstractModelObservable {
          */
         // TODO Extract in method
         if (!ParameterUtil.getQueryString().isEmpty()) {
+            // URL without querystring like Request and Header can receive
+            // new params from <form> parsing, in that case add the '?' to URL
+            if (!urlInjection.contains("?")) {
+                urlInjection += "?";
+            }
+            
             urlInjection += this.buildQuery(MethodInjection.QUERY, ParameterUtil.getQueryStringAsString(), isUsingIndex, dataInjection);
             
             if (ConnectionUtil.getTokenCsrf() != null) {
@@ -573,12 +647,20 @@ public class InjectionModel extends AbstractModelObservable {
                         dataOut.writeBytes(ConnectionUtil.getTokenCsrf().getKey() +"="+ ConnectionUtil.getTokenCsrf().getValue() +"&");
                     }
                     if (ConnectionUtil.getTypeRequest().matches("PUT|POST")) {
-                        dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, ParameterUtil.getRequestAsString(), isUsingIndex, dataInjection));
+                        if (ParameterUtil.getRequestAsText().trim().matches("^<\\?xml.*")) {
+                            dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, ParameterUtil.getRequestAsText(), isUsingIndex, dataInjection));
+                        } else {
+                            dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, ParameterUtil.getRequestAsString(), isUsingIndex, dataInjection));
+                        }
                     }
                     dataOut.flush();
                     dataOut.close();
                     
-                    msgHeader.put(Header.POST, this.buildQuery(MethodInjection.REQUEST, ParameterUtil.getRequestAsString(), isUsingIndex, dataInjection));
+                    if (ParameterUtil.getRequestAsText().trim().matches("^<\\?xml.*")) {
+                        msgHeader.put(Header.POST, this.buildQuery(MethodInjection.REQUEST, ParameterUtil.getRequestAsText(), isUsingIndex, dataInjection));
+                    } else {
+                        msgHeader.put(Header.POST, this.buildQuery(MethodInjection.REQUEST, ParameterUtil.getRequestAsString(), isUsingIndex, dataInjection));
+                    }
                 } catch (IOException e) {
                     LOGGER.warn("Error during Request connection: "+ e.getMessage(), e);
                 }
@@ -673,10 +755,11 @@ public class InjectionModel extends AbstractModelObservable {
             // in that case replace injection point by SQL expression.
             // Injection point is always at the end?
             if (!isUsingIndex) {
-                query = paramLead.replace(InjectionModel.STAR, sqlTrail);
+//                query = paramLead.replace(InjectionModel.STAR, sqlTrail);
+                query = paramLead.replace(InjectionModel.STAR, sqlTrail + this.vendor.instance().endingComment());
                 
                 // Add ending line comment by vendor
-                query = query + this.vendor.instance().endingComment();
+//                query = query + this.vendor.instance().endingComment();
                 
             } else {
                 // Replace injection point by indexes found for Normal strategy
@@ -690,11 +773,13 @@ public class InjectionModel extends AbstractModelObservable {
                          * => need to be escape with quoteReplacement()
                          */
                         Matcher.quoteReplacement(sqlTrail)
-                    )
+//                        Matcher.quoteReplacement(sqlTrail) + this.vendor.instance().endingComment()
+//                    )
+                    ) + this.vendor.instance().endingComment()
                 );
                 
                 // Add ending line comment by vendor
-                query = query + this.vendor.instance().endingComment();
+//                query = query + this.vendor.instance().endingComment();
             }
             
         } else {
@@ -727,19 +812,30 @@ public class InjectionModel extends AbstractModelObservable {
             }
         }
         
-        query = query.trim();
+        // TODO merge into function
         
         // Remove SQL comments
         query = query.replaceAll("(?s)/\\*.*?\\*/", "");
-                
-        // Remove spaces after a word
-        query = query.replaceAll("([^\\s\\w])(\\s+)", "$1");
-    
-        // Remove spaces before a word
-        query = query.replaceAll("(\\s+)([^\\s\\w])", "$2");
-
-        // Replace spaces
-        query = query.replaceAll("\\s+", "+");
+        
+        if (methodInjection == MethodInjection.REQUEST) {
+            if (
+                ParameterUtil.getRequestAsText().matches("^<\\?xml.*") 
+//                && SoapUtil.convertStringToDocument(query) != null
+            ) {
+                query = query.replaceAll("%2b", "+");
+            }
+        } else {
+            // Remove spaces after a word
+            query = query.replaceAll("([^\\s\\w])(\\s+)", "$1");
+            
+            // Remove spaces before a word
+            query = query.replaceAll("(\\s+)([^\\s\\w])", "$2");
+            
+            // Replace spaces
+            query = query.replaceAll("\\s+", "+");
+        }
+        
+        query = query.trim();
         
         return query;
     }
@@ -777,49 +873,11 @@ public class InjectionModel extends AbstractModelObservable {
                     throw new MalformedURLException("unknown URL protocol");
                 }
             }
+                     
+            ParameterUtil.initQueryString(urlQuery);
+            ParameterUtil.initRequest(dataRequest);
+            ParameterUtil.initHeader(dataHeader);
             
-        	// TODO seperate method in ConnectionUtil
-            URL url = new URL(urlQuery);
-            if ("".equals(urlQuery) || "".equals(url.getHost())) {
-                throw new MalformedURLException("empty URL");
-            }
-            
-            ConnectionUtil.setUrlByUser(urlQuery);
-            
-            // Parse url and GET query string
-            ParameterUtil.setQueryString(new ArrayList<SimpleEntry<String, String>>());
-            Matcher regexSearch = Pattern.compile("(.*\\?)(.*)").matcher(urlQuery);
-            if (regexSearch.find()) {
-                ConnectionUtil.setUrlBase(regexSearch.group(1));
-                if (!"".equals(url.getQuery())) {
-                    ParameterUtil.setQueryString(
-                        Pattern.compile("&").splitAsStream(regexSearch.group(2))
-                        .map(s -> Arrays.copyOf(s.split("="), 2))
-                        .map(o -> new SimpleEntry<String, String>(o[0], o[1] == null ? "" : o[1]))
-                        .collect(Collectors.toList())
-                    );
-                }
-            } else {
-                ConnectionUtil.setUrlBase(urlQuery);
-            }
-            
-            // Define other methods
-            ParameterUtil.setRequest(
-                Pattern
-                    .compile("&")
-                    .splitAsStream(dataRequest)
-                    .map(s -> Arrays.copyOf(s.split("="), 2))
-                    .map(o -> new SimpleEntry<String, String>(o[0], o[1] == null ? "" : o[1]))
-                    .collect(Collectors.toList())
-            );
-            ParameterUtil.setHeader(
-                Pattern
-                    .compile("\\\\r\\\\n")
-                    .splitAsStream(dataHeader)
-                    .map(s -> Arrays.copyOf(s.split(":"), 2))
-                    .map(o -> new SimpleEntry<String, String>(o[0], o[1] == null ? "" : o[1]))
-                    .collect(Collectors.toList())
-            );
             ConnectionUtil.setMethodInjection(methodInjection);
             ConnectionUtil.setTypeRequest(typeRequest);
             

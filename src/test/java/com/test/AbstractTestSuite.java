@@ -68,7 +68,7 @@ public abstract class AbstractTestSuite {
     public Retry retry = new Retry(3);
 
     @BeforeClass
-    public static void initialize() throws InjectionFailureException {
+    public static void initialize() throws Exception {
         LOGGER.warn(
             "AbstractTestSuite and ConcreteTestSuite are for initialization purpose. "
             + "Run test suite or unit test instead."

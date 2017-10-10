@@ -420,9 +420,9 @@ public class PanelAddressBar extends JPanel {
                 MediatorModel.model().sendToViews(requests);
 
                 MediatorModel.model().controlInput(
-                    PanelAddressBar.this.getTextFieldAddress().getText(),
-                    PanelAddressBar.this.textFieldRequest.getText(),
-                    PanelAddressBar.this.textFieldHeader.getText(),
+                    PanelAddressBar.this.getTextFieldAddress().getText().trim(),
+                    PanelAddressBar.this.textFieldRequest.getText().trim(),
+                    PanelAddressBar.this.textFieldHeader.getText().trim(),
                     PanelAddressBar.this.methodInjection,
                     PanelAddressBar.this.typeRequest,
                     false

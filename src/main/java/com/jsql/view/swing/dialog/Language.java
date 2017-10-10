@@ -22,6 +22,7 @@ public enum Language {
     PT("Portuguese", "pt", HelperUi.ICON_FLAG_PT),
     PL("Polish", "pl", HelperUi.ICON_FLAG_PL),
     KO("Korean", "ko", HelperUi.ICON_FLAG_KO),
+    JA("Japanese", "ja", HelperUi.ICON_FLAG_JA),
     OT("another language", null, null);
 
     private String stringLang;

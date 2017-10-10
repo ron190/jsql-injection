@@ -1,0 +1,51 @@
+<?xml version ='1.0' encoding ='UTF-8' ?>
+<definitions name='getParameters'
+    targetNamespace='http://example.org/getParameters'
+    xmlns:tns=' http://example.org/getParameters '
+    xmlns:soap='http://schemas.xmlsoap.org/wsdl/soap/'
+    xmlns:xsd='http://www.w3.org/2001/XMLSchema'
+    xmlns:soapenc='http://schemas.xmlsoap.org/soap/encoding/'
+    xmlns:wsdl='http://schemas.xmlsoap.org/wsdl/'
+    xmlns='http://schemas.xmlsoap.org/wsdl/'>
+    
+<message name='getParametersRequest'>
+  <part name='_param' type='xsd:string'/>
+</message>
+
+<message name='getParametersResponse'>
+  <part name='_result' type='xsd:string'/>
+</message>
+
+<portType name='getParametersPortType'>
+  <operation name='getParameters'>
+    <input message='tns:getParametersRequest'/>
+    <output message='tns:getParametersResponse'/>
+  </operation>
+</portType>
+
+<binding name='getParametersBinding' type='tns:getParametersPortType'>
+  <soap:binding style='rpc'
+    transport='http://schemas.xmlsoap.org/soap/http'/>
+    
+    <operation name='getParameters'>
+      <soap:operation soapAction='urn:definition#getParameters'/>
+
+      <input>
+        <soap:body use='encoded' namespace='urn:definition'
+          encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/>
+      </input>
+      
+      <output>
+        <soap:body use='encoded' namespace='urn:definition'
+          encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'/>
+      </output>
+    </operation>
+</binding>
+
+<service name='getParametersService'>
+  <port name='getParametersPort' binding='getParametersBinding'>
+    <soap:address location='http://127.0.0.1/mysql/preference/soap/server.php'/>
+  </port>
+</service>
+
+</definitions>
