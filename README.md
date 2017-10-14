@@ -30,7 +30,22 @@ Install [Java 8](http://java.com), then download the latest [release](https://gi
 You can also type `java -jar jsql-injection-v0.81.jar` in your terminal to start the program.<br>
 If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
-## Screenshots and [video](https://youtu.be/ZZkQRE3OL8E)
+## [[Test-bed scripts](https://github.com/ron190/jsql-injection/tree/master/web/test-bed)]
+Use the sample scripts to test injection on a local environment. First install a development environment like [EasyPHP](http://www.easyphp.org), then download the test-bed PHP scripts and place them into `www/`.
+```php
+<?php
+# http://127.0.0.1/mysql/strategy/get-normal.php?id=0
+
+$link = mysqli_connect('localhost', 'root', '', 'my_database');
+
+$result = $link->query("SELECT col1, col2 FROM my_table where id=$_GET[id]");
+
+while ($row = $result->fetch_array($result, MYSQLI_NUM))
+    echo join(',', $row);
+```
+
+
+## Screenshots and [[video](https://youtu.be/ZZkQRE3OL8E)]
 [![Default](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default-mini.png "Default")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/default.png)
 [![Database](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database-mini.png "Database")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/database.png)
 [![SQL Engine](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.78/sqlengine-mini.png "SQL Engine")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.78/sqlengine.png)
@@ -44,14 +59,14 @@ If you are using Kali Linux then get the latest release using command `sudo apt-
 [![Bruteforce](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/bruter-mini.png "Bruteforce")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/bruter.png)
 [![Coder](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder-mini.png "Coder")](https://github.com/ron190/jsql-injection/raw/master/web/images/v0.75/coder.png)
 
-## Roadmap
-`Burp integration, Crawler, Database: Netezza, Test coverage with Jacoco, Integration test with Docker and JPA Hibernate Jooq, Reactive programming with RxJava, Maven Central: core swing cli, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB, Bruteforce HTTP Auth using NTLM, Arabic translation, Command line interface, Dictionnary attack, WAF detection, Program self-updater.`
+## [[Roadmap](https://github.com/ron190/jsql-injection/projects)]
+`Burp integration, Crawler, Database: Netezza, Full Path Disclosure, Injection strategies: DIOS RoutedQuery OOB, Dictionnary attack, WAF detection.`
 
 ## In progress
 `Tampering.`
 
-## Since last release
-`Shared test-bed, SOAP injection, Fix multi-params injection, Fix adding items to Scan list, Fix translation dialog`
+## Since latest release
+`Test-bed scripts for php5 and php7 shared on Github, SOAP injection, Fix multi-params injection, Fix adding items to Scan list, Fix translation dialog`
 
 ## Change log
 

@@ -1,0 +1,8 @@
+# put this file in the root folder of web server, usually www/
+
+RewriteEngine On
+
+RewriteRule ^mysql/special/in-url/(.*)/url-rewriting.php /mysql/special/in-url/url-rewriting.php
+
+# Call a URL like http://127.0.0.1/mysql/special/in-url/inject-sql-here/url-rewriting.php
+# Currently you need to define at least one QueryString parameter: http://127.0.0.1/mysql/special/in-url/1*/url-rewriting.php?fake-param=whatever
