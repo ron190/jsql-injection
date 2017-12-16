@@ -124,6 +124,7 @@ public final class HelperUi {
     public static final Icon ICON_FLAG_PL = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/pl.png"));
     public static final Icon ICON_FLAG_JA = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/ja.png"));
     public static final Icon ICON_FLAG_KO = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/ko.png"));
+    public static final Icon ICON_FLAG_RO = new ImageIcon(HelperUi.class.getResource("/com/jsql/view/swing/resources/images/flags/ro.png"));
     
     public static final URL URL_ICON_16 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug16.png");
     public static final URL URL_ICON_32 = HelperUi.class.getResource("/com/jsql/view/swing/resources/images/software/bug32.png");

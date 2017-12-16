@@ -11,7 +11,6 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 [![Maven 3.2](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/maven.png)](https://maven.apache.org/)
 [![SonarQube 6.3](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/sonar.png)](http://www.sonarqube.org/)<br>
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)
-[![Join the chat at https://gitter.im/jsql-injection/Lobby](https://badges.gitter.im/jsql-injection/Lobby.svg)](https://gitter.im/jsql-injection/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Features
 - Automatic injection of 23 kinds of databases: Access, CockroachDB, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, Mckoi, MySQL, Neo4j, NuoDB, Oracle, PostgreSQL, SQLite, SQL Server, Sybase, Teradata and Vertica
@@ -31,7 +30,7 @@ You can also type `java -jar jsql-injection-v0.81.jar` in your terminal to start
 If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
 ## [[Test-bed scripts](https://github.com/ron190/jsql-injection/tree/master/web/test-bed)]
-Use the sample scripts to test injection on a local environment. First install a development environment like [EasyPHP](http://www.easyphp.org), then download the test-bed PHP scripts and place them into `www/`.
+Use the sample scripts to test injection on your local environment. First install a development environment like [EasyPHP](http://www.easyphp.org), then download the [test-bed PHP scripts](https://github.com/ron190/jsql-injection/tree/master/web/test-bed) and place them into `www/`.
 ```php
 <?php
 # http://127.0.0.1/mysql/strategy/get-normal.php?id=0
@@ -70,7 +69,7 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 
 ## Change log
 
-**v0.80** `Test all parameters, Parse forms and Csrf tokens, Databases: CockroachDB Mckoi Neo4j NuoDB Hana and Vertica, Translation complete: Russian, Chinese`
+**v0.81** `Test all parameters including JSON, Parse forms and Csrf tokens, Databases: CockroachDB Mckoi Neo4j NuoDB Hana and Vertica, Translation complete: Russian, Chinese`
 
 **v0.79** `Error Strategies for MySQL and PostgreSQL compatible with Order/Group By, Wider range of Characters Insertion including multibyte %bf`
 
