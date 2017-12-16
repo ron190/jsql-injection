@@ -1,10 +1,9 @@
 {
     "version": "0.81",
     "news": [
-        "[Release v0.81] Test all parameters, Parse forms and Csrf tokens, Databases: CockroachDB Mckoi Neo4j NuoDB Hana and Vertica, Translation complete: Russian Chinese French.",
+        "[In progress] Tampering against WAF.",
         "[Roadmap] Burp integration, Crawler, Dump to a file, Full Path Disclosure, WAF detection.",
-        "[In progress] Tampering.",
-        "[Done] Test-bed scripts for php5 and php7 shared on Github, SOAP injection, Fix multi-params injection, Fix adding items to Scan list, Fix translation dialog.",
+        "[Done] Translation update: German, Arabic, Portuguese, Romanian.",
         "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer."
     ]
 }
