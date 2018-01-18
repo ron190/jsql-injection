@@ -1,10 +1,10 @@
 ## What's the expected behavior?
 
-## And what's the actual behavior?
+## What's the actual behavior?
 
 ## Any detailed information about the Issue?
 
-## Steps to reproduce the behavior
+## Steps to reproduce
 
   1. ...
   2. ...
