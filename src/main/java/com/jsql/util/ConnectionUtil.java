@@ -184,18 +184,17 @@ public class ConnectionUtil {
             } else {
                 pageSource = ConnectionUtil.getSource(connection);
             }
-        } catch (Exception e) {
-            LOGGER.error(e, e);
-            pageSource = "";
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            msgHeader.put(Header.SOURCE, pageSource);
+            
+            // Inform the view about the log infos
+            Request request = new Request();
+            request.setMessage(Interaction.MESSAGE_HEADER);
+            request.setParameters(msgHeader);
+            MediatorModel.model().sendToViews(request);
         }
-        
-        msgHeader.put(Header.SOURCE, pageSource);
-        
-        // Inform the view about the log infos
-        Request request = new Request();
-        request.setMessage(Interaction.MESSAGE_HEADER);
-        request.setParameters(msgHeader);
-        MediatorModel.model().sendToViews(request);
         
         // TODO optional
         return pageSource.trim();
