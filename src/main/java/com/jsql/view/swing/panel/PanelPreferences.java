@@ -54,6 +54,7 @@ public class PanelPreferences extends JPanel {
     
     final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", PreferencesUtil.isCheckUpdateActivated());
     final JCheckBox checkboxIsReportingBugs = new JCheckBox("", PreferencesUtil.isReportingBugs());
+    final JCheckBox checkboxIs4K = new JCheckBox("", PreferencesUtil.is4K());
     final JCheckBox checkboxIsUsingProxy = new JCheckBox("", ProxyUtil.isUsingProxy());
     final JCheckBox checkboxIsUsingProxyHttps = new JCheckBox("", ProxyUtil.isUsingProxyHttps());
     
@@ -119,7 +120,9 @@ public class PanelPreferences extends JPanel {
                 PanelPreferences.this.checkboxIsTamperingEval.isSelected(),
                 PanelPreferences.this.radioIsTamperingSpaceToDashComment.isSelected(),
                 PanelPreferences.this.radioIsTamperingSpaceToMultilineComment.isSelected(),
-                PanelPreferences.this.radioIsTamperingSpaceToSharpComment.isSelected()
+                PanelPreferences.this.radioIsTamperingSpaceToSharpComment.isSelected(),
+                
+                PanelPreferences.this.checkboxIs4K.isSelected()
             );
             
             ProxyUtil.set(
@@ -312,6 +315,16 @@ public class PanelPreferences extends JPanel {
             this.actionListenerSave.actionPerformed(null);
         });
         
+        String tooltipIs4K = "Upscale GUI by factor 2.5 for compatibility with high-definition screens";
+        this.checkboxIs4K.setToolTipText(tooltipIs4K);
+        this.checkboxIs4K.setFocusable(false);
+        JButton labelIs4K = new JButton("Activate high-definition mode for 4K screens (need a restart)");
+        labelIs4K.setToolTipText(tooltipIs4K);
+        labelIs4K.addActionListener(actionEvent -> {
+            this.checkboxIs4K.setSelected(!this.checkboxIs4K.isSelected());
+            this.actionListenerSave.actionPerformed(null);
+        });
+        
         String tooltipIsEvading = "Use complex SQL syntaxes to bypass protection (slower).";
         this.checkboxIsEvading.setToolTipText(tooltipIsEvading);
         this.checkboxIsEvading.setFocusable(false);
@@ -390,7 +403,7 @@ public class PanelPreferences extends JPanel {
         String tooltipIsNotInjectingMetadata = "Disable database's metadata injection (e.g version, username).";
         this.checkboxIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
         this.checkboxIsNotInjectingMetadata.setFocusable(false);
-        JButton labelIsNotInjectingMetadata = new JButton("Disable database's metadata injection (disable to speed-up boolean process)");
+        JButton labelIsNotInjectingMetadata = new JButton("Disable database's metadata injection to speed-up boolean process");
         labelIsNotInjectingMetadata.setToolTipText(tooltipIsNotInjectingMetadata);
         labelIsNotInjectingMetadata.addActionListener(actionEvent -> {
             this.checkboxIsNotInjectingMetadata.setSelected(!this.checkboxIsNotInjectingMetadata.isSelected());
@@ -459,9 +472,9 @@ public class PanelPreferences extends JPanel {
         panelProxyPreferences.setLayout(groupLayoutProxy);
 
         JButton labelIsCheckingAllParam = new JButton("Inject each parameter and ignore user's method");
-        JButton labelIsCheckingAllURLParam = new JButton("Inject each URL parameter when method is GET");
-        JButton labelIsCheckingAllRequestParam = new JButton("Inject each Request parameter when method is Request");
-        JButton labelIsCheckingAllHeaderParam = new JButton("Inject each Header parameter when method is Header");
+        JButton labelIsCheckingAllURLParam = new JButton("Inject each URL parameter if method is GET");
+        JButton labelIsCheckingAllRequestParam = new JButton("Inject each Request parameter if method is Request");
+        JButton labelIsCheckingAllHeaderParam = new JButton("Inject each Header parameter if method is Header");
         JButton labelIsCheckingAllCookieParam = new JButton("Inject each Cookie parameter");
         JButton labelIsCheckingAllJSONParam = new JButton("Inject JSON parameters");
         JButton labelIsCheckingAllSOAPParam = new JButton("Inject SOAP parameters in Request body");
@@ -681,6 +694,8 @@ public class PanelPreferences extends JPanel {
         this.radioIsTamperingSpaceToDashComment.addActionListener(this.actionListenerSave);
         this.radioIsTamperingSpaceToSharpComment.addActionListener(this.actionListenerSave);
         
+        this.checkboxIs4K.addActionListener(this.actionListenerSave);
+        
         class DocumentListenerSave extends DocumentListenerTyping {
             
             @Override
@@ -813,6 +828,10 @@ public class PanelPreferences extends JPanel {
         labelIsTamperingSpaceToSharpComment.setBorderPainted(false);
         labelIsTamperingSpaceToSharpComment.setContentAreaFilled(false);
         
+        labelIs4K.setHorizontalAlignment(SwingConstants.LEFT);
+        labelIs4K.setBorderPainted(false);
+        labelIs4K.setContentAreaFilled(false);
+        
         // Proxy settings, Horizontal column rules
 
         groupLayoutTampering.setHorizontalGroup(
@@ -850,12 +869,14 @@ public class PanelPreferences extends JPanel {
                         .createParallelGroup(GroupLayout.Alignment.TRAILING, false)
                         .addComponent(this.checkboxIsCheckingUpdate)
                         .addComponent(this.checkboxIsReportingBugs)
+                        .addComponent(this.checkboxIs4K)
                 ).addGroup(
                     groupLayoutGeneral
                         .createParallelGroup()
                         .addComponent(labelIsCheckingUpdate)
                         .addComponent(labelIsReportingBugs)
-                    ));
+                        .addComponent(labelIs4K)
+                ));
         
         groupLayoutInjection.setHorizontalGroup(
             groupLayoutInjection.createSequentialGroup()
@@ -1023,6 +1044,11 @@ public class PanelPreferences extends JPanel {
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(this.checkboxIsReportingBugs)
                         .addComponent(labelIsReportingBugs)
+                ).addGroup(
+                    groupLayoutGeneral
+                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(this.checkboxIs4K)
+                        .addComponent(labelIs4K)
                 )
         );
         

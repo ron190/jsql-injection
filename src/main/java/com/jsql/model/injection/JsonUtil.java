@@ -1,9 +1,9 @@
 package com.jsql.model.injection;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.AbstractMap.SimpleEntry;
 import java.util.regex.Pattern;
 
 import org.json.JSONArray;

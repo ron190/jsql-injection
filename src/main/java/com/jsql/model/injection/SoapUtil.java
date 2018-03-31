@@ -51,14 +51,14 @@ public class SoapUtil {
     }
     
     public static Document convertStringToDocument(String xmlStr) {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();  
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         Document doc = null;
-        try {  
-            DocumentBuilder builder = factory.newDocumentBuilder();  
-            doc = builder.parse(new InputSource(new StringReader(xmlStr))); 
-        } catch (Exception e) {  
+        try {
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            doc = builder.parse(new InputSource(new StringReader(xmlStr)));
+        } catch (Exception e) {
             // ignore
-        } 
+        }
         return doc;
     }
 
@@ -109,7 +109,7 @@ public class SoapUtil {
                 } finally {
 //                    // Erase * at the end of each params
 //                    params.stream().forEach(e -> e.setValue(e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", "")));
-//                    
+//
 //                    // Erase * from JSON if failure
 //                    if (!hasFoundInjection) {
 //                        paramStar.setValue(paramStar.getValue().replace("*", ""));

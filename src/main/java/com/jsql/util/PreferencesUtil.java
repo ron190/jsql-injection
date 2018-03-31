@@ -11,7 +11,7 @@ import com.jsql.model.InjectionModel;
  * like those for proxy are defined from specific utility classes.
  */
 public class PreferencesUtil {
-
+    
     /**
      * File path saved in preference.
      */
@@ -61,6 +61,7 @@ public class PreferencesUtil {
      * True if bugs are sent to Github.
      */
     private static boolean isReportingBugs = true;
+    private static boolean is4K = true;
 
     // Utility class
     private PreferencesUtil() {
@@ -107,6 +108,8 @@ public class PreferencesUtil {
         PreferencesUtil.setTamperingSpaceToDashComment(prefs.getBoolean("isTamperingSpaceToDashComment", false));
         PreferencesUtil.setTamperingSpaceToMultlineComment(prefs.getBoolean("isTamperingSpaceToMultlineComment", false));
         PreferencesUtil.setTamperingSpaceToSharpComment(prefs.getBoolean("isTamperingSpaceToSharpComment", false));
+        
+        PreferencesUtil.setIs4K(prefs.getBoolean("is4K", false));
         
         HttpURLConnection.setFollowRedirects(PreferencesUtil.isFollowingRedirection());
         
@@ -161,7 +164,9 @@ public class PreferencesUtil {
         boolean isTamperingEval,
         boolean isTamperingSpaceToDashComment,
         boolean isTamperingSpaceToMultlineComment,
-        boolean isTamperingSpaceToSharpComment
+        boolean isTamperingSpaceToSharpComment,
+        
+        boolean is4K
     ) {
     	
         PreferencesUtil.setIsCheckUpdateActivated(isCheckingUpdate);
@@ -193,6 +198,8 @@ public class PreferencesUtil {
         PreferencesUtil.setTamperingSpaceToDashComment(isTamperingSpaceToDashComment);
         PreferencesUtil.setTamperingSpaceToMultlineComment(isTamperingSpaceToMultlineComment);
         PreferencesUtil.setTamperingSpaceToSharpComment(isTamperingSpaceToSharpComment);
+        
+        PreferencesUtil.setIs4K(is4K);
 
         Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
 
@@ -225,6 +232,8 @@ public class PreferencesUtil {
         preferences.putBoolean("isTamperingSpaceToDashComment", PreferencesUtil.isTamperingSpaceToDashComment());
         preferences.putBoolean("isTamperingSpaceToMultlineComment", PreferencesUtil.isTamperingSpaceToMultlineComment());
         preferences.putBoolean("isTamperingSpaceToSharpComment", PreferencesUtil.isTamperingSpaceToSharpComment());
+        
+        preferences.putBoolean("is4K", PreferencesUtil.is4K());
         
         HttpURLConnection.setFollowRedirects(PreferencesUtil.isFollowingRedirection());
         
@@ -446,6 +455,14 @@ public class PreferencesUtil {
 
     public static void setCheckingAllSOAPParam(boolean isCheckingAllSOAPParam) {
         PreferencesUtil.isCheckingAllSOAPParam = isCheckingAllSOAPParam;
+    }
+
+    public static boolean is4K() {
+        return is4K;
+    }
+
+    public static void setIs4K(boolean is4k) {
+        is4K = is4k;
     }
     
 }

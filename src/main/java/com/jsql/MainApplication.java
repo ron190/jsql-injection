@@ -1,13 +1,19 @@
 package com.jsql;
 
 import java.awt.AWTError;
+import java.awt.Dimension;
 import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.net.URISyntaxException;
 
 import org.apache.log4j.Appender;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
 
+import com.ctc.wstx.stax.WstxInputFactory;
+import com.ctc.wstx.stax.WstxOutputFactory;
+import com.fasterxml.jackson.databind.ext.Java7Support;
+import com.fasterxml.jackson.databind.ext.Java7SupportImpl;
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
@@ -26,6 +32,14 @@ import com.jsql.view.swing.MediatorGui;
  * This class set the general environment of execution and start the software.
  */
 public class MainApplication {
+    
+    static {
+        PreferencesUtil.loadSavedPreferences();
+        
+        if (PreferencesUtil.is4K()) {
+            System.setProperty("sun.java2d.uiScale", "2.5");
+        }
+    }
 	
     /**
      * Using default log4j.properties from root /
@@ -34,7 +48,13 @@ public class MainApplication {
     
     // Keep referenced class for Maven shade minimizeJar
     @SuppressWarnings("unused")
-    private Appender build = new ConsoleAppender();
+    private Appender consoleAppender = new ConsoleAppender();
+    @SuppressWarnings("unused")
+    private WstxInputFactory wstxInputFactory = new WstxInputFactory();
+    @SuppressWarnings("unused")
+    private WstxOutputFactory wstxOutputFactory = new WstxOutputFactory();
+    @SuppressWarnings("unused")
+    private Java7Support java7SupportImpl = new Java7SupportImpl();
     
     private MainApplication() {
         // nothing
@@ -51,7 +71,6 @@ public class MainApplication {
         CertificateUtil.ignoreCertificationChain();
         ExceptionUtil.setUncaughtExceptionHandler();
         ProxyUtil.setProxy();
-        PreferencesUtil.loadSavedPreferences();
         AuthenticationUtil.setKerberosCifs();
         
         // Initialize MVC
@@ -85,6 +104,13 @@ public class MainApplication {
         
         I18n.checkCurrentLanguage();
         GitUtil.showNews();
+        
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int) screenSize.getWidth();
+        
+        if (width >= 3840 && !PreferencesUtil.is4K()) {
+            LOGGER.warn("Your screen seems compatible with 4K resolution, please activate high-definition mode in Preferences");
+        }
         
     }
     

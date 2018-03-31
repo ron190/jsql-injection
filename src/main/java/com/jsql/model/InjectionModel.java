@@ -201,7 +201,7 @@ public class InjectionModel extends AbstractModelObservable {
 
             if (!hasFoundInjection) {
                 if (
-                    PreferencesUtil.isCheckingAllSOAPParam() 
+                    PreferencesUtil.isCheckingAllSOAPParam()
                     && ParameterUtil.getRequestAsText().matches("^<\\?xml.*")
                 ) {
                     try {
@@ -244,7 +244,7 @@ public class InjectionModel extends AbstractModelObservable {
      * @param methodInjection currently tested (Query, Request or Header)
      * @param paramsAsString to verify if contains injection point
      * @param params from Query, Request or Header as a list of key/value to be tested for insertion character ;
-     * Mode standard: last param, mode injection point: no test, mode full: every params. 
+     * Mode standard: last param, mode injection point: no test, mode full: every params.
      * @return true if injection didn't failed
      * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
      */
@@ -269,7 +269,7 @@ public class InjectionModel extends AbstractModelObservable {
             params.stream().reduce((a, b) -> b).ifPresent(e -> e.setValue(e.getValue() + InjectionModel.STAR));
 
             // Will check param value by user.
-            // Notice options 'Inject each URL params' and 'inject JSON' must be checked both 
+            // Notice options 'Inject each URL params' and 'inject JSON' must be checked both
             // for JSON injection of last param
             hasFoundInjection = this.testStrategies(IS_PARAM_BY_USER, !IS_JSON, params.stream().reduce((a, b) -> b).get());
             
@@ -282,7 +282,7 @@ public class InjectionModel extends AbstractModelObservable {
             hasFoundInjection = this.testStrategies(!IS_PARAM_BY_USER, !IS_JSON, null);
             
         // Injection of every params: isCheckingAllParam() == true.
-        // Params are tested one by one in two loops: 
+        // Params are tested one by one in two loops:
         //  - inner loop erases * from previous param
         //  - outer loop adds * to current param
         } else {
@@ -375,7 +375,7 @@ public class InjectionModel extends AbstractModelObservable {
                                 // Injection failure
                                 LOGGER.warn(
                                     "No "+ methodInjection.name() +" injection found for parameter "
-                                    + paramBase.getKey() +"="+ paramBase.getValue().replace(InjectionModel.STAR, "") 
+                                    + paramBase.getKey() +"="+ paramBase.getValue().replace(InjectionModel.STAR, "")
                                     + " (" + e.getMessage() +")", e
                                 );
                                 
@@ -417,7 +417,7 @@ public class InjectionModel extends AbstractModelObservable {
         String characterInsertionByUser = ParameterUtil.checkParametersFormat(false, isParamByUser, parameter);
         
         // If not an injection point then find insertion character.
-        // Force to 1 if no insertion char works and empty value from user, 
+        // Force to 1 if no insertion char works and empty value from user,
         // Force to user's value if no insertion char works,
         // Force to insertion char otherwise.
         if (parameter != null) {
@@ -819,7 +819,7 @@ public class InjectionModel extends AbstractModelObservable {
         
         if (methodInjection == MethodInjection.REQUEST) {
             if (
-                ParameterUtil.getRequestAsText().matches("^<\\?xml.*") 
+                ParameterUtil.getRequestAsText().matches("^<\\?xml.*")
 //                && SoapUtil.convertStringToDocument(query) != null
             ) {
                 query = query.replaceAll("%2b", "+");

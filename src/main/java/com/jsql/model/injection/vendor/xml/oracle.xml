@@ -194,7 +194,6 @@ rpad(
     '${CALIBRATOR_SQL}'
 ) s
             </calibrator>
-            <capacity>3996</capacity>
             <limitBoundary>1</limitBoundary>
             <endingComment>--+</endingComment>
             <fingerprint>

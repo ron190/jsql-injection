@@ -13,6 +13,7 @@ import static com.jsql.model.accessible.DataAccess.SEPARATOR_QTE_SQL;
 import static com.jsql.model.accessible.DataAccess.TRAIL_HEX;
 import static com.jsql.model.accessible.DataAccess.TRAIL_SQL;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -22,14 +23,12 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
@@ -92,11 +91,13 @@ public class VendorXml implements AbstractVendor {
     private static final Logger LOGGER = Logger.getRootLogger();
     
     public VendorXml(String fileXml) {
+        JacksonXmlModule module = new JacksonXmlModule();
+        module.setDefaultUseWrapper(false);
+        XmlMapper xmlMapper = new XmlMapper(module);
+        
         try {
-            JAXBContext jaxbContext = JAXBContext.newInstance(Model.class);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            this.xmlModel = (Model) jaxbUnmarshaller.unmarshal(VendorXml.class.getClassLoader().getResource("com/jsql/model/injection/vendor/xml/"+ fileXml));
-        } catch (JAXBException e) {
+            this.xmlModel = xmlMapper.readValue(VendorXml.class.getClassLoader().getResource("com/jsql/model/injection/vendor/xml/"+ fileXml), Model.class);
+        } catch (IOException e) {
             LOGGER.error(e, e);
         }
     }

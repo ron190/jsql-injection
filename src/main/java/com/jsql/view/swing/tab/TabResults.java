@@ -14,14 +14,14 @@ import javax.swing.JTabbedPane;
 import javax.swing.TransferHandler;
 
 import com.jsql.view.swing.action.ActionHandler;
+import com.jsql.view.swing.tab.dnd.DnDTabbedPane;
 import com.jsql.view.swing.tab.dnd.TabTransferHandler;
-import com.jsql.view.swing.tab.dnd.TabbedPaneDnD;
 
 /**
  * TabbedPane containing result injection panels.
  */
 @SuppressWarnings("serial")
-public class TabResults extends TabbedPaneDnD {
+public class TabResults extends DnDTabbedPane {
 	
     /**
      * Create the panel containing injection results.

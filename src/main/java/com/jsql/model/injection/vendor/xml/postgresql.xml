@@ -209,7 +209,7 @@ or 1 = CAST(
     AS NUMERIC
 )
                 </query>
-                <capacity>65536</capacity>
+                <capacity>255</capacity>
             </method>
         </error>
     </strategy>

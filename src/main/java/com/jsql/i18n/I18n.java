@@ -22,7 +22,7 @@ public class I18n {
     private static final Logger LOGGER = Logger.getRootLogger();
     
 //    static {
-//        Locale.setDefault(new Locale("zh"));
+//        Locale.setDefault(new Locale("ja"));
 //    }
     
     /**

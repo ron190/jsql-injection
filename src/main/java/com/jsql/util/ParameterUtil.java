@@ -41,9 +41,9 @@ public class ParameterUtil {
      * Verify integrity of parameters defined by user.
      * @param isTest true if only cheking general integrity at the start of process
      * @param isParamByUser true if no injection point is defined
-     * @param parameter currently injected from Query/Request/Header, is null if simply tests integrity 
+     * @param parameter currently injected from Query/Request/Header, is null if simply tests integrity
      * @return either the original insertion character by user, or the STAR, to then be tested against insertion chars
-     * @throws InjectionFailureException when params' integrity is failure  
+     * @throws InjectionFailureException when params' integrity is failure
      */
     // TODO merge isTest with parameter: isTest = parameter == null
     public static String checkParametersFormat(boolean isTest, boolean isParamByUser, SimpleEntry<String, String> parameter) throws InjectionFailureException {
@@ -98,7 +98,7 @@ public class ParameterUtil {
             
         } else if (
 //            ParameterUtil.getQueryString().stream().anyMatch(e -> e.getKey().matches("[^\\w]*"))
-            parameter != null 
+            parameter != null
             && (parameter.getKey() == null || parameter.getKey().isEmpty())
         ) {
 //            throw new InjectionFailureException("Incorrect Query String");
@@ -215,7 +215,7 @@ public class ParameterUtil {
     public static void initRequest(String request) {
         ParameterUtil.requestAsText = request;
         
-        ParameterUtil.request = 
+        ParameterUtil.request =
             Pattern
                 .compile("&")
                 .splitAsStream(request)

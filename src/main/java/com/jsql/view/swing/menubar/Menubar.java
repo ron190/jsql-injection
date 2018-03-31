@@ -167,8 +167,6 @@ public class Menubar extends JMenuBar {
 
         ActionHandler.addShortcut(Menubar.this);
 
-        menuFile.add(itemNewWindows);
-        menuFile.add(new JSeparator());
         menuFile.add(itemSave);
         menuFile.add(new JSeparator());
         menuFile.add(itemExit);
@@ -212,6 +210,19 @@ public class Menubar extends JMenuBar {
         JMenu menuWindows = new JMenu(I18n.valueByKey("MENUBAR_WINDOWS"));
         I18nView.addComponentForKey("MENUBAR_WINDOWS", menuWindows);
         menuWindows.setMnemonic('W');
+        
+        menuWindows.add(itemNewWindows);
+        JMenu menuAppearance = new JMenu("Appearance");
+        JMenuItem itemNewWindows4k = new JMenuItem(
+            new ActionNewWindow(
+                "New 4K Window",
+                new String[]{"-Dsun.java2d.uiScale=2.5"}
+            )
+        );
+        menuAppearance.add(itemNewWindows4k);
+        menuWindows.add(itemNewWindows);
+        menuWindows.add(menuAppearance);
+        menuWindows.add(new JSeparator());
 
         JMenu menuTranslation = new JMenu(I18n.valueByKey("MENUBAR_LANGUAGE"));
         I18nView.addComponentForKey("MENUBAR_LANGUAGE", menuTranslation);
