@@ -7,11 +7,15 @@
 	<version>v0.81</version>
     
 	<repositories>
-		<repository>
-			<id>CUBRID</id>
-			<name>CUBRID-releases</name>
-			<url>http://maven.cubrid.org</url>
-		</repository>
+        <repository>
+            <id>CUBRID</id>
+            <name>CUBRID-releases</name>
+            <url>http://maven.cubrid.org</url>
+        </repository>
+        <repository>
+            <id>jspresso-repository</id>
+            <url>http://repository.jspresso.org/maven2</url>
+        </repository>
 	</repositories>
 
 	<properties>
@@ -161,17 +165,27 @@
 			<version>2.4</version>
 		</dependency>
 
-		<dependency>
-			<groupId>spnego</groupId>
-			<artifactId>spnego</artifactId>
-			<version>7.0</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>spnego</groupId> -->
+<!-- 			<artifactId>spnego</artifactId> -->
+<!-- 			<version>7.0</version> -->
+<!-- 		</dependency> -->
+        <dependency>
+            <groupId>net.sourceforge.spnego</groupId>
+            <artifactId>spnego</artifactId>
+            <version>7.0</version>
+        </dependency>
 
-		<dependency>
-			<groupId>jcifs</groupId>
-			<artifactId>jcifs</artifactId>
-			<version>1.3.18</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>jcifs</groupId> -->
+<!-- 			<artifactId>jcifs</artifactId> -->
+<!-- 			<version>1.3.18</version> -->
+<!-- 		</dependency> -->
+        <dependency>
+            <groupId>jcifs</groupId>
+            <artifactId>jcifs</artifactId>
+            <version>1.3.17</version>
+        </dependency>
   
         <dependency>
             <groupId>com.googlecode.juniversalchardet</groupId>
