@@ -30,6 +30,8 @@
             **/DigestMD4.java, 
             **/blind/patch/*
         </sonar.exclusions>
+<!--         <sonar.login>ron190-github</sonar.login> -->
+<!--         <sonar.password></sonar.password> -->
 	</properties>
 
 	<build>

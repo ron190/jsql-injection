@@ -4,7 +4,7 @@ install: true
 
 addons:
   sonarcloud:
-    organization: "sonarsource"
+    organization: "ron190-github"
     token:
       secure: "vTqcHkQXuuL/vrCFYYknce4avh0wkBO/J29l78rkH2ok5OpLZ6qzZ/kln0aiFaMZ4eJC86UdtcTez8TEBTNnwhEIorfk89k3VMGHsjQSM/5SDzy98Rq7UCyxjzH4Nkj4au4AVDNThpf5gzkdS+3r/nKVcusrH+9ut+R66KGiLbfLB/wLUiQkJYQLOMg+iZ3871Hm9Q6JMy4lfCCUe/ujUdE/EcIdb8WaxwrUseCHCaoUUZSPD5EKMjTrGE+bOCMbng/NWvOREhBfYDVTGToc+WRV/UKAOBWNYqM6YUCqjONbLyOGlIUZD8XRjrGDUP429ETaWl1qAKJClmyQdnYZC3wCupUQUYNvPaKcDm+gcsBYiY0jR/iXFTFsZEO/9ul3Ve8kdIhXCoSrC5F4IAKFuYdp0cVACJuYhRcR7x/fHQ/I2tvubGCoyd413VZmzMHvjkv5eFhIFhauV2UNWqgCmXZIsjNCjiy+LO5jPwuO+EjiYQsC+YUFkZAsj8ySo/4VKHI17vaZGUh0p6vhYNIDfgPd8lcZrX/8ODtamA/2H6djSff6TovQT7IOXVobcidBYW/dPyjd6a87HUJB0fFoNtXgXOarPHuejnkhjuGleR/MYrsBmYY8li+IdamNe1AxPo7aF+oDhv9XOouVxdOD2uSQj86mdgpdcRM3+nmCuqs="
 
