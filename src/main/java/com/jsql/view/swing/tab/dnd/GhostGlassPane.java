@@ -9,17 +9,23 @@ import java.awt.Rectangle;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
+@SuppressWarnings("serial")
 public class GhostGlassPane extends JComponent {
+    
     private DnDTabbedPane tabbedPane;
+    
     protected GhostGlassPane(DnDTabbedPane tabbedPane) {
         super();
         this.tabbedPane = tabbedPane;
         this.setOpaque(false);
     }
+    
     public void setTargetTabbedPane(DnDTabbedPane tab) {
         this.tabbedPane = tab;
     }
-    @Override protected void paintComponent(Graphics g) {
+    
+    @Override 
+    protected void paintComponent(Graphics g) {
         this.tabbedPane.getDropLineRect().ifPresent(rect -> {
             Graphics2D g2 = (Graphics2D) g.create();
             Rectangle r = SwingUtilities.convertRectangle(this.tabbedPane, rect, this);
@@ -29,4 +35,5 @@ public class GhostGlassPane extends JComponent {
             g2.dispose();
         });
     }
+    
 }
