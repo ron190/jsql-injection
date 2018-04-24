@@ -21,8 +21,8 @@
 	<properties>
 		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
   
-        <sonar.host.url>http://127.0.0.1:9000/</sonar.host.url>
-        <sonar.jdbc.driver>org.postgresql.Driver</sonar.jdbc.driver>
+<!--         <sonar.host.url>http://127.0.0.1:9000/</sonar.host.url> -->
+<!--         <sonar.jdbc.driver>org.postgresql.Driver</sonar.jdbc.driver> -->
         <sonar.exclusions>
             **/*.js, 
             **/vendor/model/Model.java, 
