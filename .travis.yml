@@ -6,7 +6,7 @@ addons:
   sonarcloud:
     organization: "ron190-github"
     token:
-      secure: 99fc7597d01e2827a094b2795b98e406c7aeb4ae
+      secure: "vSGM5/l0woTp9n2FOYTafyHlhL5Wc8cXr+kxL2VkP06wmuZLQ/x1cUrj6yPHElVJFoytwgQUr8AftMMZ9uhEuvxwGh7TySp9Z+8/i2avmF049dolFpjGswEBHyIk+UNNDjsSjGt0T558oNEJhkV8yUskXWQ2cWD2EggeNFuG3bZ1cU1FA76QNKNPevCnewGQL6ubaDKqXGoH1P5ZYqqvu446blcExUcoXeostAYtFnVQju8CIuhjBOEua4rs/xlF6xCa5XWyYEx6+JgofQW61tQaxA/FN/qhOkya87vTpaYp3XCnv6mhTSExI41r884NgpzpSQLLUOGH+s4rCTXgtIJo9FTNv6yHGWTkZj5kzsEVlrS+jBQL71cduBeecJFjGGKMOKcIoHAa+wMZ5t9ewOme5cdurIPSUCrmKGWIPQMR4rfFtId+nSoTl4zygtPbLXLkF2mCpoMJwHjhYji0CTdGBVWHxDBpci9OLmiuBcTB2SsBJbD+SjSLcP36RHu3V2vhGJfaNfW72sRVbMe+96SsqUTPTYbP5+F7ThW+juUkmkxCoG7sTkxal3vuC1YIkp9ADbnF80jyvAtTW78FBZs2ONB7eXzupeo7YavoBYujMZrJHJ3UG+sdKYbDCtU2+I2iLtmxmGUegrmoRlyt5bXjOTIs1vhjCdKtxKOsFM4="
 
 jdk:
   - oraclejdk8
