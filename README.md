@@ -11,6 +11,8 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 [![Maven 3.2](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/maven.png)](https://maven.apache.org/)
 [![SonarQube 6.3](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/sonar.png)](http://www.sonarqube.org/)<br>
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)
+[![Travis Build Status](https://travis-ci.org/ron190/jsql-injection.svg?branch=master)](https://travis-ci.org/ron190/jsql-injection)
+[![Sonar Status](https://sonarcloud.io/api/project_badges/measure?project=jsql-injection%3Ajsql-injection&metric=alert_status)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
 
 ## Features
 - Automatic injection of 23 kinds of databases: Access, CockroachDB, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, Mckoi, MySQL, Neo4j, NuoDB, Oracle, PostgreSQL, SQLite, SQL Server, Sybase, Teradata and Vertica
