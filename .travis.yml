@@ -5,17 +5,15 @@ install: true
 addons:
   sonarcloud:
     organization: "ron190-github"
-    token:
-      secure: "B7iJnQENA4LrG5Lw9/2lJltQj6OrHClATKTbRJj5L5HwSH/Ow1gzLypjdHtb2aST1qxJqQAXiS+5Uu+AL6maSuxBmN3biniHjkVjcjDAwTKMOTRa1LP455B2RxfL1aOXebQaL/gW++KOSzaRyRlDMmhCGVrpfg7IDxHMMbjGoBMtlGJiybfu2SgpfzAQWrjdw0th+BqrzGIuuG0lavCGn8qzaGCNS9AJ29H7NBoJH4b4C+7TwUgGnkutl1rflh940i1wPlcE3JPyx4NRGLJd02pIJ+LMfXygo4Td6OyhmUjhMSE02/N7EtYt937OB9Ix2vyYeGF59ADeFsUe5GkTltOiFTcAo9NvQZXUZwLlUBq0/IQtnvzvvnvQm62WB9ECBmNZ5/DO2MStmDxGIV9hKmUs+dP/9eZK+z1bzwZufw47nRCSs8qb0ErvkZB+CxXMdVsPa51EZra0m2D4nLYZDaa7GoyNOwvV7lK5ARE89tlbG4D7Km995/qZv4j4Ds4kfLZ3BTsWdc+QjrHLnFMhwpsBkkI835nA2WjSIqonSgmwXpFiyR0+pKMCfj4LvVtRZwxHI3c4bjHf3DOWsk4lV8UWeDqXfUFFfaMo8CJ1RxWfWwensKb4hDlN5SRKCnCXbxsxGw2CXMUNmU6HrZo8HB6xhzTHl0IYvW01gP+NXrU="
 
 jdk:
   - oraclejdk8
 
 script:
   # JaCoCo is used to have code coverage, the agent has to be activated
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar -Dsonar.login=${SONAR_TOKEN}
 
 cache:
   directories:
     - '$HOME/.m2/repository'
-#    - '$HOME/.sonar/cache'
+    - '$HOME/.sonar/cache'
