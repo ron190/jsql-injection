@@ -6,7 +6,7 @@ addons:
   sonarcloud:
     organization: "ron190-github"
     token:
-      secure: "vSGM5/l0woTp9n2FOYTafyHlhL5Wc8cXr+kxL2VkP06wmuZLQ/x1cUrj6yPHElVJFoytwgQUr8AftMMZ9uhEuvxwGh7TySp9Z+8/i2avmF049dolFpjGswEBHyIk+UNNDjsSjGt0T558oNEJhkV8yUskXWQ2cWD2EggeNFuG3bZ1cU1FA76QNKNPevCnewGQL6ubaDKqXGoH1P5ZYqqvu446blcExUcoXeostAYtFnVQju8CIuhjBOEua4rs/xlF6xCa5XWyYEx6+JgofQW61tQaxA/FN/qhOkya87vTpaYp3XCnv6mhTSExI41r884NgpzpSQLLUOGH+s4rCTXgtIJo9FTNv6yHGWTkZj5kzsEVlrS+jBQL71cduBeecJFjGGKMOKcIoHAa+wMZ5t9ewOme5cdurIPSUCrmKGWIPQMR4rfFtId+nSoTl4zygtPbLXLkF2mCpoMJwHjhYji0CTdGBVWHxDBpci9OLmiuBcTB2SsBJbD+SjSLcP36RHu3V2vhGJfaNfW72sRVbMe+96SsqUTPTYbP5+F7ThW+juUkmkxCoG7sTkxal3vuC1YIkp9ADbnF80jyvAtTW78FBZs2ONB7eXzupeo7YavoBYujMZrJHJ3UG+sdKYbDCtU2+I2iLtmxmGUegrmoRlyt5bXjOTIs1vhjCdKtxKOsFM4="
+      secure: "B7iJnQENA4LrG5Lw9/2lJltQj6OrHClATKTbRJj5L5HwSH/Ow1gzLypjdHtb2aST1qxJqQAXiS+5Uu+AL6maSuxBmN3biniHjkVjcjDAwTKMOTRa1LP455B2RxfL1aOXebQaL/gW++KOSzaRyRlDMmhCGVrpfg7IDxHMMbjGoBMtlGJiybfu2SgpfzAQWrjdw0th+BqrzGIuuG0lavCGn8qzaGCNS9AJ29H7NBoJH4b4C+7TwUgGnkutl1rflh940i1wPlcE3JPyx4NRGLJd02pIJ+LMfXygo4Td6OyhmUjhMSE02/N7EtYt937OB9Ix2vyYeGF59ADeFsUe5GkTltOiFTcAo9NvQZXUZwLlUBq0/IQtnvzvvnvQm62WB9ECBmNZ5/DO2MStmDxGIV9hKmUs+dP/9eZK+z1bzwZufw47nRCSs8qb0ErvkZB+CxXMdVsPa51EZra0m2D4nLYZDaa7GoyNOwvV7lK5ARE89tlbG4D7Km995/qZv4j4Ds4kfLZ3BTsWdc+QjrHLnFMhwpsBkkI835nA2WjSIqonSgmwXpFiyR0+pKMCfj4LvVtRZwxHI3c4bjHf3DOWsk4lV8UWeDqXfUFFfaMo8CJ1RxWfWwensKb4hDlN5SRKCnCXbxsxGw2CXMUNmU6HrZo8HB6xhzTHl0IYvW01gP+NXrU="
 
 jdk:
   - oraclejdk8
@@ -18,4 +18,4 @@ script:
 cache:
   directories:
     - '$HOME/.m2/repository'
-    - '$HOME/.sonar/cache'
+#    - '$HOME/.sonar/cache'
