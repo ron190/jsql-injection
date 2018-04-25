@@ -6,7 +6,7 @@ addons:
   sonarcloud:
     organization: "ron190-github"
     token:
-      secure: "rHpkSzKk84/8+Qvw9E4hel6+zsMTRyhM8U7C30csp0ZiN0s4eG8AxM5aqSj5fjA1wuHDB8R7VyQvDOm64CpcXxTvpllh895V5whLHt+T/7Bq0SoPrAxr8LttZ1+CYwQFUzZsYiU2WivgpqNnFMUwA8kU2PN4xwAJRwJKjAK9Qp02iYoAea1bGjb3cem/cOjhRCvswbnV81+UUSXENB5IqTWu9nH6iG8el/rOmIlUrp61wlm5fyMmlvrjlxYoEpUrVcEOH4BjITp9+APbI/vQWOZ/0RQL2th1dMdcRFQYq6N8zk3RpwDCZE2AdZNVYgcYiidOCp+5qlLp1tkKka6Bd04yWNrAhnbXIkdR29ai93sh+1285xOVeA0fcg78ukzG1fGC3cYHWEsvdEkGB3OWCEFMmXO9HDo3y0I78Xtm0UXP56KeunNso1JN6bNB0jOiPDIeO/0IH2EAGiAUG5sq9X1g4rO7xjlWUkJmPSstZD12l3CiLNZA2n+FYNgl86bGWbwgr58Ob/Aas43DyTlJPici3JvNiAU84WdqxPEnYp6vOClxgopO1cQqNChYcwlOljFtIbETQ3i5/lYhnc2Spk+LKar1YD0HNtz4CZnHyO4FaMOvU52nWbeoFA9snwFgsQYK1t6CJ6/YeoAeLoJPIavzqBiURHg+byoC43GF3sk="
+      secure: 99fc7597d01e2827a094b2795b98e406c7aeb4ae
 
 jdk:
   - oraclejdk8
