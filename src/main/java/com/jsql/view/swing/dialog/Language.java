@@ -25,6 +25,7 @@ public enum Language {
     JA("Japanese", "ja", HelperUi.ICON_FLAG_JA),
     RO("Romanian", "ro", HelperUi.ICON_FLAG_RO),
     TA("Tamil", "ta", HelperUi.ICON_FLAG_LK),
+    SE("Swedish", "se", HelperUi.ICON_FLAG_SE),
     OT("another language", null, null);
 
     private String stringLang;

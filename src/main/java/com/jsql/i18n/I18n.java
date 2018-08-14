@@ -61,9 +61,8 @@ public class I18n {
             LOGGER.debug(
                 "Language "+ languageHost +" is not supported, "
                 + "please contribute and translate pieces of jSQL into "+ languageHost +": "
-                + "click on the top right button and open menu [Community], choose a language using [I help translate jSQL] and "
-                + "translate some text into "+ languageHost +" then click on [Send]. The developer will add your translation "
-                + "to the next release."
+                + "click on the top right button and open menu [Community], choose [I help translate jSQL into][another language...] and "
+                + "translate some text into "+ languageHost +" then click on [Send]. Your translation will be integrated to the next release by the developer."
             );
         }
     }
