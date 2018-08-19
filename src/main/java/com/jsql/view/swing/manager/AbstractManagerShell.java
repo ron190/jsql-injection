@@ -67,7 +67,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         
         List<ItemList> itemsList = new ArrayList<>();
         try {
-            InputStream in = AbstractManagerShell.class.getResourceAsStream("/com/jsql/view/swing/resources/list/payload.txt");
+            InputStream in = HelperUi.class.getClassLoader().getResourceAsStream(HelperUi.payload);
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {

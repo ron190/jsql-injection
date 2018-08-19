@@ -34,7 +34,7 @@ import org.apache.log4j.Logger;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 
-import sun.swing.SwingUtilities2;
+//import sun.swing.SwingUtilities2;
 
 /**
  * A Terminal completely built from swing text pane.
@@ -112,7 +112,7 @@ public abstract class AbstractShell extends JTextPane {
             // TODO: incompatible with Java 9
 //            System.setProperty("awt.useSystemAAFontSettings","off");
 //            System.setProperty("swing.aatext", "false");
-            this.putClientProperty(SwingUtilities2.AA_TEXT_PROPERTY_KEY, null);
+//            this.putClientProperty(SwingUtilities2.AA_TEXT_PROPERTY_KEY, null);
         } catch (NoSuchFieldError e) {
             LOGGER.error(e.getMessage(), e);
         }

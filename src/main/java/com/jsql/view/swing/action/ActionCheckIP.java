@@ -28,7 +28,7 @@ public class ActionCheckIP implements ActionListener, Runnable {
 
     @Override
     public void run() {
-        if (!ProxyUtil.isChecked(ShowOnConsole.YES)) {
+        if (!ProxyUtil.isLive(ShowOnConsole.YES)) {
             return;
         }
 

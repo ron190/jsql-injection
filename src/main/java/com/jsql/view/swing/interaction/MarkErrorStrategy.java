@@ -31,22 +31,22 @@ public class MarkErrorStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
-        if (MediatorGui.managerDatabase() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.managerDatabase() in "+ this.getClass());
+        if (MediatorGui.panelAddressBar() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
         }
         
-        MediatorGui.managerDatabase().getMenuStrategy().setText(StrategyInjection.ERROR.toString());
+        MediatorGui.panelAddressBar().getMenuStrategy().setText(StrategyInjection.ERROR.toString());
         
-        JMenu menuError = (JMenu) MediatorGui.managerDatabase().getMenuStrategy().getMenuComponent(2);
+        JMenu menuError = (JMenu) MediatorGui.panelAddressBar().getMenuStrategy().getMenuComponent(2);
         int indexError = StrategyInjection.ERROR.instance().getIndexMethod();
         String nameError = MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(indexError).getName();
         
-        for (int i = 0 ; i < MediatorGui.managerDatabase().getMenuStrategy().getItemCount() ; i++) {
+        for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
             // Fix #44635: ArrayIndexOutOfBoundsException on getItem()
             try {
                 if (menuError.getItem(i).getText().equals(nameError)) {
                     menuError.getItem(i).setSelected(true);
-                    MediatorGui.managerDatabase().getMenuStrategy().setText(nameError);
+                    MediatorGui.panelAddressBar().getMenuStrategy().setText(nameError);
                     break;
                 }
             } catch (ArrayIndexOutOfBoundsException e) {

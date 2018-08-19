@@ -20,9 +20,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
-  
-<!--         <sonar.host.url>http://127.0.0.1:9000/</sonar.host.url> -->
-<!--         <sonar.jdbc.driver>org.postgresql.Driver</sonar.jdbc.driver> -->
         <sonar.exclusions>
             **/*.js, 
             **/vendor/model/Model.java, 
@@ -30,8 +27,8 @@
             **/DigestMD4.java, 
             **/blind/patch/*
         </sonar.exclusions>
-        <sonar.login>99fc7597d01e2827a094b2795b98e406c7aeb4ae</sonar.login>
-<!--         <sonar.password></sonar.password> -->
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<build>
@@ -80,15 +77,15 @@
 				</executions>
 			</plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
+<!-- 				<artifactId>maven-compiler-plugin</artifactId> -->
+<!-- 				<version>3.5.1</version> -->
+<!-- 				<configuration> -->
+<!-- 					<source>1.8</source> -->
+<!-- 					<target>1.8</target> -->
+<!-- 				</configuration> -->
+<!-- 			</plugin> -->
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

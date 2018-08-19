@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <tooltip>Replace equal sign '=' to 'like'</tooltip>
+    <description>Replace equal sign '=' to 'like'</description>
+    <group></group>
+    <javascript><![CDATA[
+var tampering = function(sql) {
+    return new java.lang.String(
+        java.util.Base64.getEncoder().encode(
+            new java.lang.String(sql).getBytes()
+        )
+    )
+}
+    ]]></javascript>
+</model>

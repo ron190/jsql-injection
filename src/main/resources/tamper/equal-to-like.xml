@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <tooltip>Replace equal sign '=' to 'like'</tooltip>
+    <description>Replace equal sign '=' to 'like'</description>
+    <group></group>
+    <javascript><![CDATA[
+var tampering = function(sql) {
+    return sql
+        .replace(
+            /(>SQL>.*)=(.*<SQL<)/g,
+            '$1+like+$2'
+        )
+}
+    ]]></javascript>
+</model>

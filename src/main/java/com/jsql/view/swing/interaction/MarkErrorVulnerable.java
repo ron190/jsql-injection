@@ -39,12 +39,12 @@ public class MarkErrorVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        if (MediatorGui.managerDatabase() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.managerDatabase() in "+ this.getClass());
+        if (MediatorGui.panelAddressBar() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
         }
         
-        for (int i = 0 ; i < MediatorGui.managerDatabase().getMenuStrategy().getItemCount() ; i++) {
-            JMenuItem menuItemStrategy = MediatorGui.managerDatabase().getMenuStrategy().getItem(i);
+        for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
+            JMenuItem menuItemStrategy = MediatorGui.panelAddressBar().getMenuStrategy().getItem(i);
             if (menuItemStrategy.getText().equals(StrategyInjection.ERROR.toString())) {
                 JMenu menuError = (JMenu) menuItemStrategy;
                 menuError.setEnabled(true);

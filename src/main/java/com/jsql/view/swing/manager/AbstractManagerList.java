@@ -86,7 +86,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
         this.setLayout(new BorderLayout());
 
         try {
-            InputStream in = AbstractManagerList.class.getResourceAsStream("/com/jsql/view/swing/resources/list/"+ nameFile);
+            InputStream in = AbstractManagerList.class.getClassLoader().getResourceAsStream(nameFile);
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {

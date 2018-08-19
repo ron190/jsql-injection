@@ -5,13 +5,9 @@ import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.util.prefs.Preferences;
 
-import javax.swing.JOptionPane;
-
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.view.swing.MediatorGui;
-import com.jsql.view.swing.action.ActionNewWindow;
 
 import sun.net.www.protocol.http.AuthCacheImpl;
 import sun.net.www.protocol.http.AuthCacheValue;
@@ -75,9 +71,13 @@ public class AuthenticationUtil {
      * @param kerberosKrb5Conf path to the file krb5
      * @param kerberosLoginConf path to the file login
      */
-    public static void set(
-        boolean isAuthentication, String usernameAuthentication, String passwordAuthentication,
-        boolean isKerberos, String kerberosKrb5Conf, String kerberosLoginConf
+    public static boolean set(
+        boolean isAuthentication, 
+        String usernameAuthentication, 
+        String passwordAuthentication,
+        boolean isKerberos, 
+        String kerberosKrb5Conf, 
+        String kerberosLoginConf
     ) {
         
     	// Check if krb file has change
@@ -121,10 +121,6 @@ public class AuthenticationUtil {
         }
         
         // Activate standard authentication
-        // TODO: java.lang.IllegalAccessError: class com.jsql.tool.AuthenticationTools (in unnamed module @0x266d09)
-        // cannot access class sun.net.www.protocol.http.AuthCacheImpl (in module java.base) because module java.base
-        // does not export sun.net.www.protocol.http to unnamed module @0x266d09
-        // Use Authenticator.setDefault(null); or a bad Authenticator
         AuthCacheValue.setAuthCache(new AuthCacheImpl());
         
         if (AuthenticationUtil.isAuthentication) {
@@ -143,19 +139,7 @@ public class AuthenticationUtil {
         
         AuthenticationUtil.setAuthentication();
         
-        // Manage the restart of application if required
-        // TODO Remove from model
-        if (
-            isRestartRequired
-            && JOptionPane.showConfirmDialog(
-                MediatorGui.frame(),
-                    "File krb5.conf has changed, please restart.",
-                    "Restart",
-                    JOptionPane.YES_NO_OPTION
-                ) == JOptionPane.YES_OPTION
-        ) {
-            new ActionNewWindow().actionPerformed(null);
-        }
+        return isRestartRequired;
         
     }
     

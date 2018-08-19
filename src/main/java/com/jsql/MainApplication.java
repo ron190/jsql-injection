@@ -36,9 +36,7 @@ public class MainApplication {
     static {
         PreferencesUtil.loadSavedPreferences();
         
-        if (PreferencesUtil.is4K()) {
-            System.setProperty("sun.java2d.uiScale", "2.5");
-        }
+        MainApplication.apply4K();
     }
 	
     /**
@@ -74,14 +72,14 @@ public class MainApplication {
         AuthenticationUtil.setKerberosCifs();
         
         // Initialize MVC
-        InjectionModel model = new InjectionModel();
-        MediatorModel.register(model);
+        InjectionModel injectionModel = new InjectionModel();
+        MediatorModel.register(injectionModel);
         
         try {
             JFrameView view = new JFrameView();
             MediatorGui.register(view);
             
-            model.addObserver(view.getObserver());
+            injectionModel.addObserver(view.getObserver());
         } catch (HeadlessException e) {
             LOGGER.error("HeadlessException, command line execution in jSQL not supported yet: "+ e.getMessage(), e);
             return;
@@ -91,10 +89,10 @@ public class MainApplication {
             return;
         }
         
-        model.displayVersion();
+        injectionModel.displayVersion();
         
         // Check application status
-        if (!ProxyUtil.isChecked(ShowOnConsole.YES)) {
+        if (!ProxyUtil.isLive(ShowOnConsole.YES)) {
             return;
         }
         
@@ -105,13 +103,23 @@ public class MainApplication {
         I18n.checkCurrentLanguage();
         GitUtil.showNews();
         
+        MainApplication.check4K();
+        
+    }
+    
+    private static void apply4K() {
+        if (PreferencesUtil.is4K()) {
+            System.setProperty("sun.java2d.uiScale", "2.5");
+        }
+    }
+    
+    private static void check4K() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int) screenSize.getWidth();
         
         if (width >= 3840 && !PreferencesUtil.is4K()) {
             LOGGER.warn("Your screen seems compatible with 4K resolution, please activate high-definition mode in Preferences");
         }
-        
     }
     
 }

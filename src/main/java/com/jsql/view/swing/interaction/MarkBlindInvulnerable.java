@@ -28,13 +28,13 @@ public class MarkBlindInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        if (MediatorGui.managerDatabase() == null) {
+        if (MediatorGui.panelAddressBar() == null) {
             LOGGER.error("Unexpected unregistered MediatorGui.managerDatabase() in "+ this.getClass());
         }
         
-        for (int i = 0 ; i < MediatorGui.managerDatabase().getMenuStrategy().getItemCount() ; i++) {
-            if (MediatorGui.managerDatabase().getMenuStrategy().getItem(i).getText().equals(StrategyInjection.BLIND.toString())) {
-                MediatorGui.managerDatabase().getMenuStrategy().getItem(i).setEnabled(false);
+        for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
+            if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(StrategyInjection.BLIND.toString())) {
+                MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).setEnabled(false);
                 break;
             }
         }

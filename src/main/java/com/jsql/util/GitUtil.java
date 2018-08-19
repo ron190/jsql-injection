@@ -108,14 +108,13 @@ public class GitUtil {
      */
     public static void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
     	// Check proxy
-        if (!ProxyUtil.isChecked(showOnConsole)) {
+        if (!ProxyUtil.isLive(showOnConsole)) {
             return;
         }
 
         // Connect to Github webservice
         HttpURLConnection connection = null;
         try {
-        	// TODO define in properties
             URL githubUrl = new URL(
                 PropertiesUtil.getInstance().getProperties().getProperty("github.issues.url")
             );
@@ -131,7 +130,6 @@ public class GitUtil {
             // Authenticate as jsql-robot
             connection.setRequestProperty(
                 "Authorization",
-                // TODO define in properties
                 "token "
                 + StringUtils.newStringUtf8(
                     Base64.decodeBase64(
@@ -160,12 +158,12 @@ public class GitUtil {
             // Fix #27623: NoClassDefFoundError on getOutputStream()
             // Implemented by jcifs.http.NtlmHttpURLConnection.getOutputStream()
             if (showOnConsole == ShowOnConsole.YES) {
-                LOGGER.warn("Error during Git report connection: "+ e.getMessage(), e);
+                LOGGER.warn("Error during Github report connection: "+ e.getMessage(), e);
             }
         }
     }
     
-    private static void readGithubResponse(HttpURLConnection connection, ShowOnConsole showOnConsole) {
+    private static void readGithubResponse(HttpURLConnection connection, ShowOnConsole showOnConsole) throws IOException {
         try {
             // Read the response
             String sourcePage = ConnectionUtil.getSourceLineFeed(connection);
@@ -176,9 +174,7 @@ public class GitUtil {
                 LOGGER.debug("Sent to Github: "+ urlIssue);
             }
         } catch (Exception e) {
-            if (showOnConsole == ShowOnConsole.YES) {
-                LOGGER.warn("Read error: "+ e.getMessage(), e);
-            }
+            throw new IOException("Connection to the Github API failed, check your connection or update jsql"); 
         }
     }
     
@@ -194,7 +190,7 @@ public class GitUtil {
                 LOGGER.info(news.get(index));
             }
         } catch (IOException e) {
-            LOGGER.warn("Connection to the Github News Webservice failed", e);
+            LOGGER.warn("Connection to the Github API failed", e);
         }
     }
     

@@ -35,11 +35,12 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Insets;
 
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.border.AbstractBorder;
 
 import org.apache.log4j.Logger;
+
+import com.jsql.view.swing.HelperUi;
 
 /**
  * A border with a drop shadow intended to be used as the outer border
@@ -73,8 +74,7 @@ public final class ShadowPopupBorder extends AbstractBorder {
     /**
      * The drop shadow is created from a PNG image with 8 bit alpha channel.
      */
-    private static Image shadow
-        = new ImageIcon(ShadowPopupBorder.class.getResource("/com/jsql/view/swing/resources/images/icons/shadow.png")).getImage();
+    private static Image shadow = HelperUi.shadow;
 
 
     // Instance Creation *****************************************************

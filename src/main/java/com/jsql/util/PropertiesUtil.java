@@ -23,7 +23,7 @@ public class PropertiesUtil {
 
         try {
 
-            String filename = "jsql-injection.properties";
+            String filename = "config.properties";
             input = PropertiesUtil.class.getClassLoader().getResourceAsStream(filename);
             if (input == null) {
                 LOGGER.warn("Properties file "+ filename +" not found");

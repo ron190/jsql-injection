@@ -44,8 +44,8 @@ public class ManagerFile extends AbstractManagerList {
     /**
      * Create the manager panel to read a file.
      */
-    public ManagerFile(String nameFile) {
-        super(nameFile);
+    public ManagerFile() {
+        super("swing/list/file.txt");
         
         this.defaultText = "FILE_RUN_BUTTON_LABEL";
         this.run = new JButtonStateful(this.defaultText);

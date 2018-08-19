@@ -574,6 +574,7 @@ public class SqlEngine extends JPanel {
         tabsConfiguration.addTab(I18n.valueByKey("SQLENGINE_CAPACITY"), new LightScrollPane(1, 0, 1, 0, textareaCapacity));
         tabsConfiguration.addTab(I18n.valueByKey("SQLENGINE_CALIBRATOR"), new LightScrollPane(1, 0, 1, 0, textareaCalibrator));
         tabsConfiguration.addTab(I18n.valueByKey("SQLENGINE_TRAPCANCELLER"), new LightScrollPane(1, 0, 1, 0, textareaFailsafe));
+        tabsConfiguration.addTab("End comment", null);
         
         /* Configuration */
         JLabel labelOrderBy = new JLabel(I18n.valueByKey("SQLENGINE_ORDER_BY"));
@@ -781,7 +782,7 @@ public class SqlEngine extends JPanel {
             oldDocument.stopColorer();
         }
         
-        HighlightedDocument document = new HighlightedDocument();
+        HighlightedDocument document = new HighlightedDocument(HighlightedDocument.SQL_STYLE);
         document.setHighlightStyle(HighlightedDocument.SQL_STYLE);
         textPane.setStyledDocument(document);
         

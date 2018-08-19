@@ -66,7 +66,7 @@ public class ManagerUpload extends AbstractManagerList {
 
         List<ItemList> pathsList = new ArrayList<>();
         try {
-            InputStream in = ManagerUpload.class.getResourceAsStream("/com/jsql/view/swing/resources/list/payload.txt");
+            InputStream in = HelperUi.class.getClassLoader().getResourceAsStream(HelperUi.payload);
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {

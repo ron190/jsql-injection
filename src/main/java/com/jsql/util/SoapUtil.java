@@ -1,4 +1,4 @@
-package com.jsql.model.injection;
+package com.jsql.util;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -22,7 +22,6 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.MethodInjection;
-import com.jsql.util.ParameterUtil;
 
 public class SoapUtil {
     
@@ -33,6 +32,25 @@ public class SoapUtil {
 
     public SoapUtil() {
         // TODO Auto-generated constructor stub
+    }
+    
+    public static boolean testParameters() {
+        boolean hasFoundInjection = false;
+        
+        if (
+            PreferencesUtil.isCheckingAllSOAPParam()
+            && ParameterUtil.isRequestSoap()
+        ) {
+            try {
+                Document doc = SoapUtil.convertStringToDocument(ParameterUtil.getRawRequest());
+                LOGGER.trace("Parsing SOAP from Request...");
+                hasFoundInjection = SoapUtil.injectTextNodes(doc, doc.getDocumentElement());
+            } catch (Exception e) {
+                LOGGER.trace("SOAP not detected");
+            }
+        }
+        
+        return hasFoundInjection;
     }
     
     private static String convertDocumentToString(Document doc) {
@@ -96,7 +114,7 @@ public class SoapUtil {
                 try {
                     LOGGER.info("Checking SOAP Request injection for "+ currentNode.getParentNode().getNodeName() +"="+ currentNode.getTextContent().replace(InjectionModel.STAR, ""));
                     
-                    MediatorModel.model().testParameters(MethodInjection.REQUEST, ParameterUtil.getRequestAsText(), null);
+                    MediatorModel.model().testParameters(MethodInjection.REQUEST);
                     hasFoundInjection = true;
                     
                     // Injection successful

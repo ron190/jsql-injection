@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <tooltip>Add comment to method signature, e.g concat/**/()</tooltip>
+    <description>Add comment to method signature, e.g concat/**/()</description>
+    <group></group>
+    <javascript>
+var tampering = function(sql) {
+    return sql
+        .replace(
+            /([^_]concat|ifnull)\(/gi,
+            '$1/**/('
+        )
+}
+    </javascript>
+</model>

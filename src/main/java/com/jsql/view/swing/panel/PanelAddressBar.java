@@ -22,12 +22,15 @@ import java.util.Collections;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -36,6 +39,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextField;
 import javax.swing.JToolTip;
+import javax.swing.MenuElement;
 import javax.swing.MenuSelectionManager;
 import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
@@ -48,9 +52,14 @@ import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.method.MethodInjection;
+import com.jsql.model.injection.strategy.StrategyInjection;
+import com.jsql.model.injection.strategy.StrategyInjectionError;
+import com.jsql.model.injection.vendor.Vendor;
+import com.jsql.model.injection.vendor.model.Model.Strategy.Error.Method;
 import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
+import com.jsql.view.swing.manager.util.ComboMenu;
 import com.jsql.view.swing.manager.util.StateButton;
 import com.jsql.view.swing.panel.util.ButtonAddressBar;
 import com.jsql.view.swing.panel.util.RadioMenuItemIconCustom;
@@ -112,6 +121,14 @@ public class PanelAddressBar extends JPanel {
     private final RadioLinkMethod radioQueryString = new RadioLinkMethod("GET", true, MethodInjection.QUERY);
     private final RadioLinkMethod radioMethod = new RadioLinkMethod("POST", MethodInjection.REQUEST);
     private final RadioLinkMethod radioHeader = new RadioLinkMethod("Header", MethodInjection.HEADER);
+
+  public JMenu menuVendor;
+
+  public JMenu menuStrategy;
+
+  public JMenu[] itemRadioStrategyError = new JMenu[1];
+
+  public ButtonGroup groupStrategy = new ButtonGroup();
     
     public PanelAddressBar() {
         final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("FIELD_QUERYSTRING_TOOLTIP"))};
@@ -297,12 +314,74 @@ public class PanelAddressBar extends JPanel {
         ComponentBorder buttonInTextfield = new ComponentBorder(this.buttonInUrl, 17, 0);
         buttonInTextfield.install(this.textFieldAddress);
         
-        new ComponentBorder(new JComboBox<>(new String[]{"a", "z"}), 17, 0).install(this.textFieldAddress);
-        new ComponentBorder(new JComboBox<>(new String[]{"a", "z"}), 17, 0).install(this.textFieldAddress);
+//        new ComponentBorder(new JComboBox<>(new String[]{"a", "z"}), 17, 0).install(this.textFieldAddress);
+//        new ComponentBorder(new JComboBox<>(new String[]{"a", "z"}), 17, 0).install(this.textFieldAddress);
+        
+        JMenuBar panelLineBottom = new JMenuBar();
+        panelLineBottom.setOpaque(false);
+        panelLineBottom.setBorder(null);
+//        panelLineBottom.setMinimumSize(new Dimension(0, 20));
+
+//        panelLineBottom.setBorder(
+//            BorderFactory.createCompoundBorder(
+//                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+//                BorderFactory.createEmptyBorder(1, 0, 1, 1)
+//            )
+//        );
+
+        this.menuStrategy = new ComboMenu("Strategy auto");
+
+        this.itemRadioStrategyError = new JMenu[1];
+
+        for (final StrategyInjection strategy: StrategyInjection.values()) {
+            if (strategy != StrategyInjection.UNDEFINED) {
+                MenuElement itemRadioStrategy;
+
+                if (strategy == StrategyInjection.ERROR) {
+                    itemRadioStrategy = new JMenu(strategy.toString());
+                    this.itemRadioStrategyError[0] = (JMenu) itemRadioStrategy;
+                } else {
+                    itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString());
+                    ((AbstractButton) itemRadioStrategy).addActionListener(actionEvent -> {
+                        this.menuStrategy.setText(strategy.toString());
+                        MediatorModel.model().setStrategy(strategy);
+                    });
+                    this.groupStrategy.add((AbstractButton) itemRadioStrategy);
+                }
+
+                this.menuStrategy.add((JMenuItem) itemRadioStrategy);
+                ((JComponent) itemRadioStrategy)
+                        .setToolTipText(I18n.valueByKey("STRATEGY_" + strategy.name() + "_TOOLTIP"));
+                ((JComponent) itemRadioStrategy).setEnabled(false);
+            }
+        }
+
+        this.menuVendor = new ComboMenu(Vendor.AUTO.toString());
+
+        ButtonGroup groupVendor = new ButtonGroup();
+
+        for (final Vendor vendor: Vendor.values()) {
+            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == Vendor.AUTO);
+            itemRadioVendor.addActionListener(actionEvent -> {
+                this.menuVendor.setText(vendor.toString());
+                MediatorModel.model().setVendorByUser(vendor);
+            });
+            this.menuVendor.add(itemRadioVendor);
+            groupVendor.add(itemRadioVendor);
+        }
+
+        panelLineBottom.add(Box.createHorizontalGlue());
+        panelLineBottom.add(this.loader);
+        panelLineBottom.add(Box.createHorizontalStrut(5));
+        panelLineBottom.add(this.menuVendor);
+        panelLineBottom.add(this.menuStrategy);
+        
 
         this.loader.setVisible(false);
-        ComponentBorder loaderInTextfield = new ComponentBorder(this.loader, 17, 1);
-        loaderInTextfield.install(this.textFieldAddress);
+//        this.loader.setMinimumSize(new Dimension(0, 0));
+//        ComponentBorder loaderInTextfield = new ComponentBorder(this.loader, 17, 1);
+//        loaderInTextfield.install(this.textFieldAddress);
+        new ComponentBorder(panelLineBottom, 17, 0).install(this.textFieldAddress);
         this.loader.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 
         final BasicArrowButton advancedButton = new BasicArrowButton(SwingConstants.SOUTH);
@@ -451,8 +530,43 @@ public class PanelAddressBar extends JPanel {
             }
         }
     }
+
+    public void initErrorMethods(Vendor vendor) {
+        this.itemRadioStrategyError[0].removeAll();
+
+        Integer[] i = { 0 };
+        if (vendor != Vendor.AUTO && vendor.instance().getXmlModel().getStrategy().getError() != null) {
+            for (Method methodError: vendor.instance().getXmlModel().getStrategy().getError().getMethod()) {
+                JMenuItem itemRadioVendor = new JRadioButtonMenuItem(methodError.getName());
+                itemRadioVendor.setEnabled(false);
+                this.itemRadioStrategyError[0].add(itemRadioVendor);
+                this.groupStrategy.add(itemRadioVendor);
+
+                final int indexError = i[0];
+                itemRadioVendor.addActionListener(actionEvent -> {
+                    PanelAddressBar.this.menuStrategy.setText(methodError.getName());
+                    MediatorModel.model().setStrategy(StrategyInjection.ERROR);
+                    ((StrategyInjectionError) StrategyInjection.ERROR.instance()).setIndexMethod(indexError);
+                });
+
+                i[0]++;
+            }
+        }
+    }
     
     // Getter and setter
+
+    public ButtonGroup getGroupStrategy() {
+  return this.groupStrategy;
+}
+
+public JMenu getMenuVendor() {
+  return this.menuVendor;
+}
+
+public JMenu getMenuStrategy() {
+  return this.menuStrategy;
+}
 
     /**
      * Change the injection method based on selected radio.

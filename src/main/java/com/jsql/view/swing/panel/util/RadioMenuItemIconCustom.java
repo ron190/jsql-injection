@@ -25,7 +25,7 @@ public class RadioMenuItemIconCustom implements Icon, UIResource, Serializable {
         g.translate( x, y );
 
         if (isEnabled) {
-            MetalUtilsCustom.drawGradient(c, g, "RadioButtonMenuItem.gradient", 1, 1, 7, 7, true);
+//            MetalUtilsCustom.drawGradient(c, g, "RadioButtonMenuItem.gradient", 1, 1, 7, 7, true);
             if (isPressed || isArmed) {
                 g.setColor(MetalLookAndFeel.getPrimaryControl());
             } else {

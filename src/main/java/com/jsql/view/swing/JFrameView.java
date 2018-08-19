@@ -163,16 +163,16 @@ public class JFrameView extends JFrame {
      */
     public void resetInterface() {
         if (MediatorModel.model().getVendorByUser() == Vendor.AUTO) {
-            MediatorGui.managerDatabase().getMenuVendor().setText(Vendor.AUTO.toString());
+            MediatorGui.panelAddressBar().getMenuVendor().setText(Vendor.AUTO.toString());
         }
         
-        MediatorGui.managerDatabase().getMenuStrategy().setText("<Strategy auto>");
+        MediatorGui.panelAddressBar().getMenuStrategy().setText("Strategy auto");
         
-        for (int i = 0 ; i < MediatorGui.managerDatabase().getMenuStrategy().getItemCount() ; i++) {
-            MediatorGui.managerDatabase().getMenuStrategy().getItem(i).setEnabled(false);
+        for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
+            MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).setEnabled(false);
         }
-        ((JMenu) MediatorGui.managerDatabase().getMenuStrategy().getItem(2)).removeAll();
-        MediatorGui.managerDatabase().getGroupStrategy().clearSelection();
+        ((JMenu) MediatorGui.panelAddressBar().getMenuStrategy().getItem(2)).removeAll();
+        MediatorGui.panelAddressBar().getGroupStrategy().clearSelection();
         
         this.mapNodes.clear();
         this.mapShells.clear();

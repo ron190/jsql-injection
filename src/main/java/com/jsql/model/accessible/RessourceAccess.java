@@ -175,7 +175,7 @@ public class RessourceAccess {
         String result =
             "Found "+ nbAdminPagesFound +" admin page"+( nbAdminPagesFound > 1 ? 's' : "" )+" "
             + (tasksHandled != submittedTasks ? "of "+ tasksHandled +" processed " : "")
-            + "on "+ submittedTasks +" pages checked"
+            + "on "+ submittedTasks +" page"+ ( submittedTasks > 1 ? 's' : "" ) +" searched"
         ;
         if (nbAdminPagesFound > 0) {
             LOGGER.debug(result);

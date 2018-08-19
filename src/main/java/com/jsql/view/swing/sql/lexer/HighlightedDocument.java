@@ -27,6 +27,7 @@ import javax.swing.text.DefaultStyledDocument;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.view.swing.sql.lexer.syntax.JavaScriptLexer;
 import com.jsql.view.swing.sql.lexer.syntax.Lexer;
 import com.jsql.view.swing.sql.lexer.syntax.SQLLexer;
 
@@ -43,6 +44,7 @@ public class HighlightedDocument extends DefaultStyledDocument {
     private static final Logger LOGGER = Logger.getRootLogger();
     
 	public static final Object SQL_STYLE = SQLLexer.class;
+	public static final Object JAVASCRIPT_STYLE = JavaScriptLexer.class;
 	
 	public static final Object GRAYED_OUT_STYLE = new Object();
 
@@ -74,7 +76,7 @@ public class HighlightedDocument extends DefaultStyledDocument {
 	/**
 	 * Create a new Demo
 	 */
-	public HighlightedDocument() {
+	public HighlightedDocument(Object l) {
 
 		// Start the thread that does the coloring
 		this.colorer = new Colorer(this);
@@ -82,7 +84,12 @@ public class HighlightedDocument extends DefaultStyledDocument {
 
 		// create the new document.
 		this.documentReader = new DocumentReader(this);
-		this.syntaxLexer = new SQLLexer(this.documentReader);
+		
+		if (l == SQL_STYLE) {
+		    this.syntaxLexer = new SQLLexer(this.documentReader);
+		} else {
+		    this.syntaxLexer = new JavaScriptLexer(this.documentReader);
+		}
 	}
 
 	/**

@@ -56,8 +56,8 @@ public class TabManagers extends MouseTabbedPane {
         ManagerWebShell managerWebShell = new ManagerWebShell();
         ManagerScan managerScanList = new ManagerScan();
         ManagerDatabase managerDatabase = new ManagerDatabase();
-        ManagerAdminPage managerAdminPage = new ManagerAdminPage("admin-page.txt");
-        ManagerFile managerFile = new ManagerFile("file.txt");
+        ManagerAdminPage managerAdminPage = new ManagerAdminPage();
+        ManagerFile managerFile = new ManagerFile();
         ManagerUpload managerUpload = new ManagerUpload();
         ManagerSqlShell managerSqlShell = new ManagerSqlShell();
         ManagerBruteForce managerBruteForce = new ManagerBruteForce();

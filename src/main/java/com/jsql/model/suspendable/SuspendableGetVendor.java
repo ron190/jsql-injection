@@ -115,7 +115,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                 msgHeader.put(
                     Header.URL,
                     ConnectionUtil.getUrlBase()
-                    + ParameterUtil.getQueryStringAsString()
+                    + ParameterUtil.getQueryStringFromEntries()
                 );
                 msgHeader.put(Header.VENDOR, vendor);
                 

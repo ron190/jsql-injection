@@ -1,5 +1,9 @@
 package com.jsql.model.injection.method;
 
+import java.util.AbstractMap.SimpleEntry;
+import java.util.List;
+
+import com.jsql.util.ParameterUtil;
 import com.jsql.util.PreferencesUtil;
 
 public enum MethodInjection {
@@ -10,12 +14,32 @@ public enum MethodInjection {
         public boolean isCheckingAllParam() {
             return PreferencesUtil.isCheckingAllURLParam();
         }
+
+        @Override
+        public String getParamsAsString() {
+            return ParameterUtil.getQueryStringFromEntries();
+        }
+
+        @Override
+        public List<SimpleEntry<String, String>> getParams() {
+            return ParameterUtil.getQueryString();
+        }
         
     }, REQUEST {
         
         @Override
         public boolean isCheckingAllParam() {
             return PreferencesUtil.isCheckingAllRequestParam();
+        }
+
+        @Override
+        public String getParamsAsString() {
+            return ParameterUtil.getRequestFromEntries();
+        }
+
+        @Override
+        public List<SimpleEntry<String, String>> getParams() {
+            return ParameterUtil.getRequest();
         }
         
     }, HEADER {
@@ -24,9 +48,21 @@ public enum MethodInjection {
         public boolean isCheckingAllParam() {
             return PreferencesUtil.isCheckingAllHeaderParam();
         }
+
+        @Override
+        public String getParamsAsString() {
+            return ParameterUtil.getHeaderFromEntries();
+        }
+
+        @Override
+        public List<SimpleEntry<String, String>> getParams() {
+            return ParameterUtil.getHeader();
+        }
         
     };
     
     public abstract boolean isCheckingAllParam();
+    public abstract String getParamsAsString();
+    public abstract List<SimpleEntry<String, String>> getParams();
     
 }

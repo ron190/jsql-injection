@@ -17,7 +17,6 @@ import java.util.prefs.Preferences;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -86,8 +85,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         this.splitVerticalLeftRight = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
         this.splitVerticalLeftRight.setLeftComponent(MediatorGui.tabManagers());
         
-        final ImageIcon imagePlaceholder = new ImageIcon(SplitHorizontalTopBottom.class.getResource("/com/jsql/view/swing/resources/images/bug.png"));
-        this.labelPlaceholderResult = new JLabel(imagePlaceholder);
+        this.labelPlaceholderResult = new JLabel(HelperUi.imagePlaceholder);
         this.labelPlaceholderResult.setMinimumSize(new Dimension(100, 0));
 
         this.labelPlaceholderResult.setAlignmentX(Component.CENTER_ALIGNMENT);

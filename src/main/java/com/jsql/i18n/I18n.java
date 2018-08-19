@@ -54,7 +54,7 @@ public class I18n {
      * If not then it invites the user to use the translation process.
      * @throws URISyntaxException
      */
-    public static void checkCurrentLanguage() throws URISyntaxException {
+    public static void checkCurrentLanguage() {
         URL path = I18n.class.getResource("/com/jsql/i18n/jsql_"+ Locale.getDefault().getLanguage() +".properties");
         if (!"en".equals(Locale.getDefault().getLanguage()) && path == null) {
             String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);

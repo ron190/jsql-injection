@@ -96,7 +96,7 @@ public class VendorXml implements AbstractVendor {
         XmlMapper xmlMapper = new XmlMapper(module);
         
         try {
-            this.xmlModel = xmlMapper.readValue(VendorXml.class.getClassLoader().getResource("com/jsql/model/injection/vendor/xml/"+ fileXml), Model.class);
+            this.xmlModel = xmlMapper.readValue(VendorXml.class.getClassLoader().getResource("vendor/"+ fileXml), Model.class);
         } catch (IOException e) {
             LOGGER.error(e, e);
         }
@@ -198,7 +198,7 @@ public class VendorXml implements AbstractVendor {
         return
             MediatorModel.model().getIndexesInUrl()
                 .replaceAll(
-                    "1337" + ((StrategyInjectionNormal) StrategyInjection.NORMAL.instance()).getVisibleIndex() + "7331",
+                    "1337" + StrategyInjectionNormal.getVisibleIndex() + "7331",
                     this.xmlModel.getResource().getFile().getCreate().getContent()
                         .replace(
                             CONTENT_HEX,

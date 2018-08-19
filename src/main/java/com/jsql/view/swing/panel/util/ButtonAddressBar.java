@@ -12,7 +12,6 @@ package com.jsql.view.swing.panel.util;
 
 import java.awt.Dimension;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import com.jsql.view.swing.HelperUi;
@@ -34,7 +33,7 @@ public class ButtonAddressBar extends JButton {
      */
     public ButtonAddressBar() {
         this.setPreferredSize(new Dimension(18, 16));
-        this.setBorder(null);
+//        this.setBorder(null);
         this.setOpaque(false);
         this.setContentAreaFilled(false);
         this.setBorderPainted(false);
@@ -77,9 +76,9 @@ public class ButtonAddressBar extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(true);
-        this.setIcon(new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/swing/resources/images/icons/stopDefault.png")));
-        this.setRolloverIcon(new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/swing/resources/images/icons/stopRollover.png")));
-        this.setPressedIcon(new ImageIcon(ButtonAddressBar.class.getResource("/com/jsql/view/swing/resources/images/icons/stopPressed.png")));
+        this.setIcon(HelperUi.stopDefault);
+        this.setRolloverIcon(HelperUi.stopRollover);
+        this.setPressedIcon(HelperUi.stopPressed);
     }
 
     /**

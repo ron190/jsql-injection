@@ -28,14 +28,14 @@ public class MarkNormalStrategy implements InteractionCommand {
 
     @Override
     public void execute() {
-        if (MediatorGui.managerDatabase() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.managerDatabase() in "+ this.getClass());
+        if (MediatorGui.panelAddressBar() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
         }
         
-        MediatorGui.managerDatabase().getMenuStrategy().setText(StrategyInjection.NORMAL.toString());
-        for (int i = 0 ; i < MediatorGui.managerDatabase().getMenuStrategy().getItemCount() ; i++) {
-            if (MediatorGui.managerDatabase().getMenuStrategy().getItem(i).getText().equals(StrategyInjection.NORMAL.toString())) {
-                MediatorGui.managerDatabase().getMenuStrategy().getItem(i).setSelected(true);
+        MediatorGui.panelAddressBar().getMenuStrategy().setText(StrategyInjection.NORMAL.toString());
+        for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
+            if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(StrategyInjection.NORMAL.toString())) {
+                MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).setSelected(true);
                 break;
             }
         }

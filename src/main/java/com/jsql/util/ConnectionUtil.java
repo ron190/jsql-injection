@@ -142,7 +142,7 @@ public class ConnectionUtil {
 
             HeaderUtil.checkResponseHeader(connection, ConnectionUtil.getUrlByUser().replace(InjectionModel.STAR, ""));
             
-            // Calling connection.disconnect() is not required, further calls will follow
+            // Calling connection.disconnect() is not required, more calls will go on
         } catch (Exception e) {
             String message = Optional.ofNullable(e.getMessage()).orElse("");
             throw new InjectionFailureException("Connection failed: "+ message.replace(e.getClass().getName() +": ", ""), e);

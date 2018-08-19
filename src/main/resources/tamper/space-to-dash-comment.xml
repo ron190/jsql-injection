@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <tooltip>Replace blank space ' ' to dash comment '--\\n'</tooltip>
+    <description>Replace blank space ' ' to dash comment '--\\n'</description>
+    <group></group>
+    <javascript>
+var tampering = function(sql) {
+    return sql
+        .replace(/\+$/gm,'%0A')
+        .replace(/\+/gm,'--%0A')
+}
+    </javascript>
+</model>

@@ -144,7 +144,7 @@ public class ProxyUtil {
      * @param showOnConsole wether the message should be presented to the user
      * @return true if the proxy is up
      */
-    public static boolean isChecked(ShowOnConsole showOnConsole) {
+    public static boolean isLive(ShowOnConsole showOnConsole) {
     	
         boolean proxyIsChecked = true;
         
@@ -207,7 +207,7 @@ public class ProxyUtil {
     // Getters and setters
     
     public static String getProxyAddress() {
-        return proxyAddress;
+        return ProxyUtil.proxyAddress;
     }
 
     public static void setProxyAddress(String proxyAddress) {
@@ -215,7 +215,7 @@ public class ProxyUtil {
     }
 
     public static String getProxyPort() {
-        return proxyPort;
+        return ProxyUtil.proxyPort;
     }
 
     public static void setProxyPort(String proxyPort) {
@@ -223,7 +223,7 @@ public class ProxyUtil {
     }
 
     public static boolean isUsingProxy() {
-        return isUsingProxy;
+        return ProxyUtil.isUsingProxy;
     }
 
     public static void setUsingProxy(boolean isUsingProxy) {
@@ -231,7 +231,7 @@ public class ProxyUtil {
     }
 
     public static String getProxyAddressHttps() {
-        return proxyAddressHttps;
+        return ProxyUtil.proxyAddressHttps;
     }
 
     public static void setProxyAddressHttps(String proxyAddressHttps) {
@@ -239,7 +239,7 @@ public class ProxyUtil {
     }
 
     public static String getProxyPortHttps() {
-        return proxyPortHttps;
+        return ProxyUtil.proxyPortHttps;
     }
 
     public static void setProxyPortHttps(String proxyPortHttps) {
@@ -247,7 +247,7 @@ public class ProxyUtil {
     }
 
     public static boolean isUsingProxyHttps() {
-        return isUsingProxyHttps;
+        return ProxyUtil.isUsingProxyHttps;
     }
 
     public static void setUsingProxyHttps(boolean isUsingProxyHttps) {

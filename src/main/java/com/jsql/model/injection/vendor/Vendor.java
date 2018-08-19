@@ -7,7 +7,7 @@ import com.jsql.model.injection.vendor.model.VendorXml;
 
 public enum Vendor {
     
-    AUTO("<Database auto>", null),
+    AUTO("Database auto", null),
     ACCESS("Access", new VendorXml("access.xml")),
     COCKROACHDB("CockroachDB", new VendorXml("cockroachdb.xml")),
     CUBRID("CUBRID", new VendorXml("cubrid.xml")),

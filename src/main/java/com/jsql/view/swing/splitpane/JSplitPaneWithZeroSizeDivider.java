@@ -58,7 +58,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
      * Useful values are in the range 0 to {@link #dividerDragSize}.
      * Default is centered.
      */
-    private int dividerDragOffset = 4;
+    private int dividerDragOffset = 0;
     
     public JSplitPaneWithZeroSizeDivider(int orientation) {
         super(orientation, true);

@@ -38,7 +38,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
      * i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body.
      */
     // TODO Pojo injection
-    private String visibleIndex;
+    private static String visibleIndex;
 
     /**
      * 
@@ -49,12 +49,12 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         MediatorModel.model().setIndexesInUrl(new SuspendableGetIndexes().run());
 
         // Define visibleIndex, i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body
-        this.visibleIndex = this.getVisibleIndex(MediatorModel.model().getSrcSuccess());
+        StrategyInjectionNormal.visibleIndex = this.getVisibleIndex(MediatorModel.model().getSrcSuccess());
         
         this.isApplicable =
             !"".equals(MediatorModel.model().getIndexesInUrl())
             && new Integer(StrategyInjection.NORMAL.instance().getPerformanceLength()) > 0
-            && this.visibleIndex != null
+            && StrategyInjectionNormal.visibleIndex != null
         ;
         
         if (this.isApplicable) {
@@ -174,12 +174,12 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         this.performanceLength = performanceLength;
     }
     
-    public String getVisibleIndex() {
-        return this.visibleIndex;
+    public static String getVisibleIndex() {
+        return StrategyInjectionNormal.visibleIndex;
     }
 
-    public void setVisibleIndex(String visibleIndex) {
-        this.visibleIndex = visibleIndex;
+    public static void setVisibleIndex(String visibleIndex) {
+        StrategyInjectionNormal.visibleIndex = visibleIndex;
     }
     
     @Override

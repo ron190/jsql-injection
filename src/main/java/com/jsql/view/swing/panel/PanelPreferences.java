@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -18,9 +20,11 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentListener;
@@ -30,27 +34,32 @@ import org.apache.commons.lang3.text.WordUtils;
 import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.util.ProxyUtil;
+import com.jsql.util.Tampering;
+import com.jsql.util.TamperingUtil;
 import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionCheckIP;
+import com.jsql.view.swing.action.ActionNewWindow;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
-import com.jsql.view.swing.text.JPopupTextArea;
+import com.jsql.view.swing.sql.lexer.HighlightedDocument;
 import com.jsql.view.swing.text.JPopupTextField;
-import com.jsql.view.swing.text.JTextAreaPlaceholder;
+import com.jsql.view.swing.text.JPopupTextPane;
+import com.jsql.view.swing.text.JTextPanePlaceholder;
 import com.jsql.view.swing.text.listener.DocumentListenerTyping;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 
 @SuppressWarnings("serial")
 public class PanelPreferences extends JPanel {
     
-    final JCheckBox checkboxIsTamperingBase64 = new JCheckBox("", PreferencesUtil.isTamperingBase64());
-    final JCheckBox checkboxIsTamperingVersionComment = new JCheckBox("", PreferencesUtil.isTamperingVersionComment());
-    final JCheckBox checkboxIsTamperingFunctionComment = new JCheckBox("", PreferencesUtil.isTamperingFunctionComment());
-    final JCheckBox checkboxIsTamperingEqualToLike = new JCheckBox("", PreferencesUtil.isTamperingEqualToLike());
-    final JCheckBox checkboxIsTamperingRandomCase = new JCheckBox("", PreferencesUtil.isTamperingRandomCase());
-    final JCheckBox checkboxIsTamperingEval = new JCheckBox("", PreferencesUtil.isTamperingEval());
-    final JRadioButton radioIsTamperingSpaceToMultilineComment = new JRadioButton("", PreferencesUtil.isTamperingSpaceToMultlineComment());
-    final JRadioButton radioIsTamperingSpaceToDashComment = new JRadioButton("", PreferencesUtil.isTamperingSpaceToDashComment());
-    final JRadioButton radioIsTamperingSpaceToSharpComment = new JRadioButton("", PreferencesUtil.isTamperingSpaceToSharpComment());
+    final JCheckBox checkboxIsTamperingBase64 = new JCheckBox();
+    final JCheckBox checkboxIsTamperingVersionComment = new JCheckBox();
+    final JCheckBox checkboxIsTamperingFunctionComment = new JCheckBox();
+    final JCheckBox checkboxIsTamperingEqualToLike = new JCheckBox();
+    final JCheckBox checkboxIsTamperingRandomCase = new JCheckBox();
+    final JCheckBox checkboxIsTamperingEval = new JCheckBox();
+    final JRadioButton radioIsTamperingSpaceToMultilineComment = new JRadioButton();
+    final JRadioButton radioIsTamperingSpaceToDashComment = new JRadioButton();
+    final JRadioButton radioIsTamperingSpaceToSharpComment = new JRadioButton();
     
     final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", PreferencesUtil.isCheckUpdateActivated());
     final JCheckBox checkboxIsReportingBugs = new JCheckBox("", PreferencesUtil.isReportingBugs());
@@ -58,7 +67,6 @@ public class PanelPreferences extends JPanel {
     final JCheckBox checkboxIsUsingProxy = new JCheckBox("", ProxyUtil.isUsingProxy());
     final JCheckBox checkboxIsUsingProxyHttps = new JCheckBox("", ProxyUtil.isUsingProxyHttps());
     
-    final JCheckBox checkboxIsEvading = new JCheckBox("", PreferencesUtil.isEvasionEnabled());
     final JCheckBox checkboxIsFollowingRedirection = new JCheckBox("", PreferencesUtil.isFollowingRedirection());
     final JCheckBox checkboxIsNotInjectingMetadata = new JCheckBox("", PreferencesUtil.isNotInjectingMetadata());
     final JCheckBox checkboxIsNotTestingConnection = new JCheckBox("", PreferencesUtil.isNotTestingConnection());
@@ -95,7 +103,6 @@ public class PanelPreferences extends JPanel {
             PreferencesUtil.set(
                 PanelPreferences.this.checkboxIsCheckingUpdate.isSelected(),
                 PanelPreferences.this.checkboxIsReportingBugs.isSelected(),
-                PanelPreferences.this.checkboxIsEvading.isSelected(),
                 PanelPreferences.this.checkboxIsFollowingRedirection.isSelected(),
                 PanelPreferences.this.checkboxIsNotInjectingMetadata.isSelected(),
                 
@@ -134,7 +141,19 @@ public class PanelPreferences extends JPanel {
                 PanelPreferences.this.textProxyPortHttps.getText()
             );
             
-            AuthenticationUtil.set(
+            TamperingUtil.set(
+                checkboxIsTamperingBase64.isSelected(),
+                checkboxIsTamperingVersionComment.isSelected(),
+                checkboxIsTamperingFunctionComment.isSelected(),
+                checkboxIsTamperingEqualToLike.isSelected(),
+                checkboxIsTamperingRandomCase.isSelected(),
+                checkboxIsTamperingEval.isSelected(),
+                radioIsTamperingSpaceToMultilineComment.isSelected(),
+                radioIsTamperingSpaceToDashComment.isSelected(),
+                radioIsTamperingSpaceToSharpComment.isSelected()
+            );
+            
+            boolean isRestartRequired = AuthenticationUtil.set(
                 PanelPreferences.this.checkboxUseDigestAuthentication.isSelected(),
                 PanelPreferences.this.textDigestAuthenticationUsername.getText(),
                 PanelPreferences.this.textDigestAuthenticationPassword.getText(),
@@ -142,6 +161,18 @@ public class PanelPreferences extends JPanel {
                 PanelPreferences.this.textKerberosKrb5Conf.getText(),
                 PanelPreferences.this.textKerberosLoginConf.getText()
             );
+            
+            if (
+                isRestartRequired
+                && JOptionPane.showConfirmDialog(
+                    MediatorGui.frame(),
+                        "File krb5.conf has changed, please restart.",
+                        "Restart",
+                        JOptionPane.YES_NO_OPTION
+                    ) == JOptionPane.YES_OPTION
+            ) {
+                new ActionNewWindow().actionPerformed(null);
+            }
         }
         
     }
@@ -209,20 +240,20 @@ public class PanelPreferences extends JPanel {
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingFunctionComment = "Add comment to function signature, e.g concat/**/()";
+        String tooltipIsTamperingFunctionComment = "Add comment to method signature, e.g concat/**/()";
         this.checkboxIsTamperingFunctionComment.setToolTipText(tooltipIsTamperingFunctionComment);
         this.checkboxIsTamperingFunctionComment.setFocusable(false);
-        JButton labelIsTamperingFunctionComment = new JButton("Add comment to function signature, e.g concat/**/()");
+        JButton labelIsTamperingFunctionComment = new JButton("Add comment to method signature, e.g concat/**/()");
         labelIsTamperingFunctionComment.setToolTipText(tooltipIsTamperingFunctionComment);
         labelIsTamperingFunctionComment.addActionListener(actionEvent -> {
             this.checkboxIsTamperingFunctionComment.setSelected(!this.checkboxIsTamperingFunctionComment.isSelected());
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingEqualToLike = "Replace equal sign '=' with 'like'";
+        String tooltipIsTamperingEqualToLike = "Replace equal sign '=' to 'like'";
         this.checkboxIsTamperingEqualToLike.setToolTipText(tooltipIsTamperingEqualToLike);
         this.checkboxIsTamperingEqualToLike.setFocusable(false);
-        JButton labelIsTamperingEqualToLike = new JButton("Replace equal sign '=' with 'like'");
+        JButton labelIsTamperingEqualToLike = new JButton("Replace equal sign '=' to 'like'");
         labelIsTamperingEqualToLike.setToolTipText(tooltipIsTamperingEqualToLike);
         labelIsTamperingEqualToLike.addActionListener(actionEvent -> {
             this.checkboxIsTamperingEqualToLike.setSelected(!this.checkboxIsTamperingEqualToLike.isSelected());
@@ -239,13 +270,16 @@ public class PanelPreferences extends JPanel {
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingEval = "Eval";
+        String tooltipIsTamperingEval = "Custom tamper in JavaScript, e.g sql.replace(/\\+/gm,'/**/')";
         this.checkboxIsTamperingEval.setToolTipText(tooltipIsTamperingEval);
         this.checkboxIsTamperingEval.setFocusable(false);
-        LightScrollPane textAreaIsTamperingEval = new LightScrollPane(new JPopupTextArea(new JTextAreaPlaceholder("Eval")).getProxy());
+//        JTextArea l = new JPopupTextArea(new JTextAreaPlaceholder(tooltipIsTamperingEval)).getProxy();
+        JTextPane l = new JPopupTextPane(new JTextPanePlaceholder(tooltipIsTamperingEval)).getProxy();
+        LightScrollPane textAreaIsTamperingEval = new LightScrollPane(l);
         textAreaIsTamperingEval.setBorder(HelperUi.BORDER_FOCUS_LOST);
-        textAreaIsTamperingEval.setPreferredSize(new Dimension(400, 100));
-        textAreaIsTamperingEval.setMaximumSize(new Dimension(400, 100));
+//        textAreaIsTamperingEval.setPreferredSize(new Dimension(400, 100));
+//        textAreaIsTamperingEval.setMaximumSize(new Dimension(400, 100));
+        textAreaIsTamperingEval.setMinimumSize(new Dimension(400, 100));
         labelIsTamperingRandomCase.setToolTipText(tooltipIsTamperingEval);
 //        labelIsTamperingRandomCase.addActionListener(actionEvent -> {
 //            this.checkboxIsTamperingRandomCase.setSelected(!this.checkboxIsTamperingRandomCase.isSelected());
@@ -263,9 +297,42 @@ public class PanelPreferences extends JPanel {
         JButton labelIsTamperingSpaceToMultilineComment = new JButton("Replace blank space ' ' to multiline comment '/**/'");
         labelIsTamperingSpaceToMultilineComment.setToolTipText(tooltipIsTamperingSpaceToMultilineComment);
         labelIsTamperingSpaceToMultilineComment.addActionListener(actionEvent -> {
-            this.radioIsTamperingSpaceToMultilineComment.setSelected(!this.radioIsTamperingSpaceToMultilineComment.isSelected());
+            if (this.radioIsTamperingSpaceToMultilineComment.isSelected()) {
+                n.clearSelection();
+            } else {
+                this.radioIsTamperingSpaceToMultilineComment.setSelected(!this.radioIsTamperingSpaceToMultilineComment.isSelected());
+            }
             this.actionListenerSave.actionPerformed(null);
         });
+        
+        String tooltipIsTamperingSpaceToDashComment = "Replace blank space ' ' to dash comment '--\\n'";
+        this.radioIsTamperingSpaceToDashComment.setToolTipText(tooltipIsTamperingSpaceToDashComment);
+        this.radioIsTamperingSpaceToDashComment.setFocusable(false);
+        JButton labelIsTamperingSpaceToDashComment = new JButton("Replace blank space ' ' to dash comment '--\\n'");
+        labelIsTamperingSpaceToDashComment.setToolTipText(tooltipIsTamperingSpaceToDashComment);
+        labelIsTamperingSpaceToDashComment.addActionListener(actionEvent -> {
+            if (this.radioIsTamperingSpaceToDashComment.isSelected()) {
+                n.clearSelection();
+            } else {
+                this.radioIsTamperingSpaceToDashComment.setSelected(!this.radioIsTamperingSpaceToDashComment.isSelected());
+            }
+            this.actionListenerSave.actionPerformed(null);
+        });
+        
+        String tooltipIsTamperingSpaceToSharpComment = "Replace blank space ' ' to sharp comment '#\\n'";
+        this.radioIsTamperingSpaceToSharpComment.setToolTipText(tooltipIsTamperingSpaceToSharpComment);
+        this.radioIsTamperingSpaceToSharpComment.setFocusable(false);
+        JButton labelIsTamperingSpaceToSharpComment = new JButton("Replace blank space ' ' to sharp comment '#\\n'");
+        labelIsTamperingSpaceToSharpComment.setToolTipText(tooltipIsTamperingSpaceToSharpComment);
+        labelIsTamperingSpaceToSharpComment.addActionListener(actionEvent -> {
+            if (this.radioIsTamperingSpaceToSharpComment.isSelected()) {
+                n.clearSelection();
+            } else {
+                this.radioIsTamperingSpaceToSharpComment.setSelected(!this.radioIsTamperingSpaceToSharpComment.isSelected());
+            }
+            this.actionListenerSave.actionPerformed(null);
+        });
+        /**/
         
         String tooltipIsTamperingVersionComment = "Transform SQL keywords to versioned comment, e.g /*!concat*/()";
         this.checkboxIsTamperingVersionComment.setToolTipText(tooltipIsTamperingVersionComment);
@@ -277,26 +344,49 @@ public class PanelPreferences extends JPanel {
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingSpaceToDashComment = "Replace blank space ' ' to dash comment '--\\n'";
-        this.radioIsTamperingSpaceToDashComment.setToolTipText(tooltipIsTamperingSpaceToDashComment);
-        this.radioIsTamperingSpaceToDashComment.setFocusable(false);
-        JButton labelIsTamperingSpaceToDashComment = new JButton("Replace blank space ' ' to dash comment '--\\n'");
-        labelIsTamperingSpaceToDashComment.setToolTipText(tooltipIsTamperingSpaceToDashComment);
-        labelIsTamperingSpaceToDashComment.addActionListener(actionEvent -> {
-            this.radioIsTamperingSpaceToDashComment.setSelected(!this.radioIsTamperingSpaceToDashComment.isSelected());
-            this.actionListenerSave.actionPerformed(null);
-        });
         
-        String tooltipIsTamperingSpaceToSharpComment = "Replace blank space ' ' to sharp comment '#\\n'";
-        this.radioIsTamperingSpaceToSharpComment.setToolTipText(tooltipIsTamperingSpaceToSharpComment);
-        this.radioIsTamperingSpaceToSharpComment.setFocusable(false);
-        JButton labelIsTamperingSpaceToSharpComment = new JButton("Replace blank space ' ' to sharp comment '#\\n'");
-        labelIsTamperingSpaceToSharpComment.setToolTipText(tooltipIsTamperingSpaceToSharpComment);
-        labelIsTamperingSpaceToSharpComment.addActionListener(actionEvent -> {
-            this.radioIsTamperingSpaceToSharpComment.setSelected(!this.radioIsTamperingSpaceToSharpComment.isSelected());
-            this.actionListenerSave.actionPerformed(null);
-        });
-        /**/
+        class a extends MouseAdapter {
+            Tampering tampering;
+            String t = null;
+            public a(Tampering tampering) {
+                this.tampering = tampering;
+            }
+            @Override
+            public void mouseEntered(MouseEvent me) {
+                t=l.getText();
+                l.setText(tampering.instance().getXmlModel().getJavascript().trim());
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                l.setText(t);
+            }
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                t=tampering.instance().getXmlModel().getJavascript().trim();
+                l.setText(t);
+            }
+        }
+
+        labelIsTamperingSpaceToSharpComment.addMouseListener(new a(Tampering.SPACE_TO_SHARP_COMMENT));
+        labelIsTamperingSpaceToDashComment.addMouseListener(new a(Tampering.SPACE_TO_DASH_COMMENT));
+        labelIsTamperingBase64.addMouseListener(new a(Tampering.BASE64));
+        labelIsTamperingEqualToLike.addMouseListener(new a(Tampering.EQUAL_TO_LIKE));
+        labelIsTamperingFunctionComment.addMouseListener(new a(Tampering.COMMENT_TO_METHOD_SIGNATURE));
+        labelIsTamperingRandomCase.addMouseListener(new a(Tampering.RANDOM_CASE));
+        labelIsTamperingSpaceToMultilineComment.addMouseListener(new a(Tampering.SPACE_TO_MULTILINE_COMMENT));
+        labelIsTamperingVersionComment.addMouseListener(new a(Tampering.VERSIONED_COMMENT_TO_METHOD_SIGNATURE));
+        
+        if (l.getStyledDocument() instanceof HighlightedDocument) {
+            HighlightedDocument oldDocument = (HighlightedDocument) l.getStyledDocument();
+            oldDocument.stopColorer();
+        }
+        
+        HighlightedDocument document = new HighlightedDocument(HighlightedDocument.JAVASCRIPT_STYLE);
+        document.setHighlightStyle(HighlightedDocument.JAVASCRIPT_STYLE);
+        l.setStyledDocument(document);
+        
+        
+        
         
         this.checkboxIsCheckingUpdate.setFocusable(false);
         JButton labelIsCheckingUpdate = new JButton("Check update at startup");
@@ -322,16 +412,6 @@ public class PanelPreferences extends JPanel {
         labelIs4K.setToolTipText(tooltipIs4K);
         labelIs4K.addActionListener(actionEvent -> {
             this.checkboxIs4K.setSelected(!this.checkboxIs4K.isSelected());
-            this.actionListenerSave.actionPerformed(null);
-        });
-        
-        String tooltipIsEvading = "Use complex SQL syntaxes to bypass protection (slower).";
-        this.checkboxIsEvading.setToolTipText(tooltipIsEvading);
-        this.checkboxIsEvading.setFocusable(false);
-        JButton labelIsEvading = new JButton("Enable evasion");
-        labelIsEvading.setToolTipText(tooltipIsEvading);
-        labelIsEvading.addActionListener(actionEvent -> {
-            this.checkboxIsEvading.setSelected(!this.checkboxIsEvading.isSelected());
             this.actionListenerSave.actionPerformed(null);
         });
         
@@ -665,7 +745,6 @@ public class PanelPreferences extends JPanel {
         this.textDigestAuthenticationPassword.setFont(HelperUi.FONT_SEGOE_BIG);
         
         this.checkboxIsCheckingUpdate.addActionListener(this.actionListenerSave);
-        this.checkboxIsEvading.addActionListener(this.actionListenerSave);
         this.checkboxIsFollowingRedirection.addActionListener(this.actionListenerSave);
         this.checkboxIsNotInjectingMetadata.addActionListener(this.actionListenerSave);
         this.checkboxIsReportingBugs.addActionListener(this.actionListenerSave);
@@ -723,10 +802,6 @@ public class PanelPreferences extends JPanel {
         labelIsReportingBugs.setHorizontalAlignment(SwingConstants.LEFT);
         labelIsReportingBugs.setBorderPainted(false);
         labelIsReportingBugs.setContentAreaFilled(false);
-        
-        labelIsEvading.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsEvading.setBorderPainted(false);
-        labelIsEvading.setContentAreaFilled(false);
         
         labelIsFollowingRedirection.setHorizontalAlignment(SwingConstants.LEFT);
         labelIsFollowingRedirection.setBorderPainted(false);
@@ -888,7 +963,6 @@ public class PanelPreferences extends JPanel {
                     .addComponent(this.checkboxIsNotTestingConnection)
                     .addComponent(this.checkboxIsParsingForm)
                     .addComponent(this.checkboxIsNotInjectingMetadata)
-                    .addComponent(this.checkboxIsEvading)
                     
                     .addComponent(emptyLabelParamsInjection)
                     .addComponent(this.checkboxIsCheckingAllParam)
@@ -912,7 +986,6 @@ public class PanelPreferences extends JPanel {
                     .addComponent(labelTestConnection)
                     .addComponent(labelParseForm)
                     .addComponent(labelIsNotInjectingMetadata)
-                    .addComponent(labelIsEvading)
                     
                     .addComponent(labelParamsInjection)
                     .addComponent(labelIsCheckingAllParam)
@@ -1080,11 +1153,6 @@ public class PanelPreferences extends JPanel {
                         .createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(this.checkboxIsNotInjectingMetadata)
                         .addComponent(labelIsNotInjectingMetadata)
-                ).addGroup(
-                    groupLayoutInjection
-                        .createParallelGroup(GroupLayout.Alignment.BASELINE)
-                        .addComponent(this.checkboxIsEvading)
-                        .addComponent(labelIsEvading)
                         
                 ).addGroup(
                     groupLayoutInjection

@@ -66,7 +66,7 @@ public class ManagerScan extends AbstractManagerList {
 
         StringBuilder jsonScan = new StringBuilder();
         try {
-            InputStream in = ManagerScan.class.getResourceAsStream("/com/jsql/view/swing/resources/list/scan-page.json");
+            InputStream in = HelperUi.scanPage;
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {

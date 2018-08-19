@@ -28,13 +28,13 @@ public class MarkTimeInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        if (MediatorGui.managerDatabase() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.managerDatabase() in "+ this.getClass());
+        if (MediatorGui.panelAddressBar() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
         }
         
-        for (int i = 0 ; i < MediatorGui.managerDatabase().getMenuStrategy().getItemCount() ; i++) {
-            if (MediatorGui.managerDatabase().getMenuStrategy().getItem(i).getText().equals(StrategyInjection.TIME.toString())) {
-                MediatorGui.managerDatabase().getMenuStrategy().getItem(i).setEnabled(false);
+        for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
+            if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(StrategyInjection.TIME.toString())) {
+                MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).setEnabled(false);
                 break;
             }
         }

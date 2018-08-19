@@ -10,8 +10,6 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import com.jsql.view.swing.panel.util.MetalUtilsCustom;
-
 @SuppressWarnings("serial")
 public class CheckBoxIcon implements Icon, UIResource, Serializable {
 
@@ -33,7 +31,7 @@ public class CheckBoxIcon implements Icon, UIResource, Serializable {
                 g.fillRect(w - 1, 1, 1, h - 1);
                 g.fillRect(1, h - 1, w - 2, 1);
             } else if (model.isRollover()) {
-                MetalUtilsCustom.drawGradient(c, g, "CheckBox.gradient", 0, 0, w, h, true);
+//                MetalUtilsCustom.drawGradient(c, g, "CheckBox.gradient", 0, 0, w, h, true);
                 g.setColor(MetalLookAndFeel.getControlDarkShadow());
                 g.drawRect(0, 0, w - 1, h - 1);
                 g.setColor(MetalLookAndFeel.getPrimaryControl());
@@ -41,7 +39,7 @@ public class CheckBoxIcon implements Icon, UIResource, Serializable {
                 g.drawRect(2, 2, w - 5, h - 5);
             }
             else {
-                MetalUtilsCustom.drawGradient(c, g, "CheckBox.gradient", 0, 0, w, h, true);
+//                MetalUtilsCustom.drawGradient(c, g, "CheckBox.gradient", 0, 0, w, h, true);
                 g.setColor(MetalLookAndFeel.getControlDarkShadow());
                 g.drawRect(0, 0, w - 1, h - 1);
             }

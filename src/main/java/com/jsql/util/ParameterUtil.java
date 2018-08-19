@@ -25,6 +25,7 @@ public class ParameterUtil {
      * Request submitted by user.
      */
     private static List<SimpleEntry<String, String>> request = new ArrayList<>();
+    
     private static String requestAsText = "";
 
     /**
@@ -42,21 +43,19 @@ public class ParameterUtil {
      * @param isTest true if only cheking general integrity at the start of process
      * @param isParamByUser true if no injection point is defined
      * @param parameter currently injected from Query/Request/Header, is null if simply tests integrity
-     * @return either the original insertion character by user, or the STAR, to then be tested against insertion chars
      * @throws InjectionFailureException when params' integrity is failure
      */
     // TODO merge isTest with parameter: isTest = parameter == null
-    public static String checkParametersFormat(boolean isTest, boolean isParamByUser, SimpleEntry<String, String> parameter) throws InjectionFailureException {
+    public static void checkParametersFormat() throws InjectionFailureException {
         int nbStarInParameter = 0;
-        String characterInsertionByUser = "";
         
-        if (ParameterUtil.getQueryStringAsString().contains(InjectionModel.STAR)) {
+        if (ParameterUtil.getQueryStringFromEntries().contains(InjectionModel.STAR)) {
             nbStarInParameter++;
         }
-        if (ParameterUtil.getRequestAsString().contains(InjectionModel.STAR)) {
+        if (ParameterUtil.getRequestFromEntries().contains(InjectionModel.STAR)) {
             nbStarInParameter++;
         }
-        if (ParameterUtil.getHeaderAsString().contains(InjectionModel.STAR)) {
+        if (ParameterUtil.getHeaderFromEntries().contains(InjectionModel.STAR)) {
             nbStarInParameter++;
         }
         
@@ -65,26 +64,25 @@ public class ParameterUtil {
             throw new InjectionFailureException("Character * must be used once in Query String, Request or Header parameters");
             
         } else if (
-            ParameterUtil.getQueryStringAsString().contains(InjectionModel.STAR)
+            ParameterUtil.getQueryStringFromEntries().contains(InjectionModel.STAR)
             && ConnectionUtil.getMethodInjection() != MethodInjection.QUERY
             && !PreferencesUtil.isCheckingAllParam()
         ) {
             throw new InjectionFailureException("Select method GET to use character [*] or remove [*] from GET parameters");
             
         } else if (
-            ParameterUtil.getRequestAsString().contains(InjectionModel.STAR)
+            ParameterUtil.getRequestFromEntries().contains(InjectionModel.STAR)
             && ConnectionUtil.getMethodInjection() != MethodInjection.REQUEST
             && !PreferencesUtil.isCheckingAllParam()
         ) {
             throw new InjectionFailureException("Select a Request method (like POST) to use [*], or remove [*] from Request parameters");
             
         } else if (
-            ParameterUtil.getHeaderAsString().contains(InjectionModel.STAR)
+            ParameterUtil.getHeaderFromEntries().contains(InjectionModel.STAR)
             && ConnectionUtil.getMethodInjection() != MethodInjection.HEADER
             && !PreferencesUtil.isCheckingAllParam()
         ) {
             throw new InjectionFailureException("Select method Header to use character [*] or remove [*] from Header parameters");
-            
         }
         
         // Query String
@@ -95,15 +93,6 @@ public class ParameterUtil {
             && !ConnectionUtil.getUrlBase().contains(InjectionModel.STAR)
         ) {
             throw new InjectionFailureException("No query string");
-            
-        } else if (
-//            ParameterUtil.getQueryString().stream().anyMatch(e -> e.getKey().matches("[^\\w]*"))
-            parameter != null
-            && (parameter.getKey() == null || parameter.getKey().isEmpty())
-        ) {
-//            throw new InjectionFailureException("Incorrect Query String");
-            throw new InjectionFailureException("Ignoring empty parameter "+ parameter.toString().replace(InjectionModel.STAR, ""));
-            
         }
         
         // Request/Header data
@@ -119,17 +108,23 @@ public class ParameterUtil {
         ) {
             throw new InjectionFailureException("Incorrect Header format");
             
+        }
+    }
+    
+    public static String getCharacterInsertion(boolean isParamByUser, SimpleEntry<String, String> parameter) throws InjectionFailureException {
+        String characterInsertionByUser = "";
+        
         // Parse query information: url=>everything before the sign '=',
         // start of query string=>everything after '='
-        } else if (ConnectionUtil.getMethodInjection() == MethodInjection.QUERY) {
+        if (ConnectionUtil.getMethodInjection() == MethodInjection.QUERY) {
             if (
                 !isParamByUser
                 && (
-                    ParameterUtil.getQueryStringAsString().contains(InjectionModel.STAR)
+                    ParameterUtil.getQueryStringFromEntries().contains(InjectionModel.STAR)
                     || ConnectionUtil.getUrlBase().contains(InjectionModel.STAR)
                 )
             ) {
-                if (!isTest && parameter != null) {
+                if (parameter != null) {
                     parameter.setValue(InjectionModel.STAR);
                 }
                 return InjectionModel.STAR;
@@ -142,9 +137,9 @@ public class ParameterUtil {
         } else if (ConnectionUtil.getMethodInjection() == MethodInjection.REQUEST) {
             if (
                 !isParamByUser
-                && ParameterUtil.getRequestAsString().contains(InjectionModel.STAR)
+                && ParameterUtil.getRequestFromEntries().contains(InjectionModel.STAR)
             ) {
-                if (!isTest && parameter != null) {
+                if (parameter != null) {
                     parameter.setValue(InjectionModel.STAR);
                 }
                 return InjectionModel.STAR;
@@ -157,9 +152,9 @@ public class ParameterUtil {
         } else if (ConnectionUtil.getMethodInjection() == MethodInjection.HEADER) {
             if (
                 !isParamByUser
-                && ParameterUtil.getHeaderAsString().contains(InjectionModel.STAR)
+                && ParameterUtil.getHeaderFromEntries().contains(InjectionModel.STAR)
             ) {
-                if (!isTest && parameter != null) {
+                if (parameter != null) {
                     parameter.setValue(InjectionModel.STAR);
                 }
                 return InjectionModel.STAR;
@@ -172,18 +167,16 @@ public class ParameterUtil {
         return characterInsertionByUser;
     }
     
-    // Getters / setters
-    
-    public static List<SimpleEntry<String, String>> getQueryString() {
-        return queryString;
-    }
-    
-    public static String getQueryStringAsString() {
+    public static String getQueryStringFromEntries() {
         return queryString.stream().map(e -> e.getKey()+"="+e.getValue()).collect(Collectors.joining("&"));
     }
 
-    public static void setQueryString(List<SimpleEntry<String, String>> queryString) {
-        ParameterUtil.queryString = queryString;
+    public static String getRequestFromEntries() {
+        return request.stream().map(e -> e.getKey()+"="+e.getValue()).collect(Collectors.joining("&"));
+    }
+    
+    public static String getHeaderFromEntries() {
+        return header.stream().map(e -> e.getKey()+":"+e.getValue()).collect(Collectors.joining("\\r\\n"));
     }
 
     public static void initQueryString(String urlQuery) throws MalformedURLException {
@@ -215,32 +208,39 @@ public class ParameterUtil {
     public static void initRequest(String request) {
         ParameterUtil.requestAsText = request;
         
-        ParameterUtil.request =
-            Pattern
+        if (!"".equals(request)) {
+            ParameterUtil.request = 
+                Pattern
                 .compile("&")
                 .splitAsStream(request)
                 .map(s -> Arrays.copyOf(s.split("="), 2))
                 .map(o -> new SimpleEntry<String, String>(o[0], o[1] == null ? "" : o[1]))
                 .collect(Collectors.toList())
-        ;
+            ;
+        }
     }
 
     public static void initHeader(String header) {
-        ParameterUtil.setHeader(
-            Pattern
+        if (!"".equals(header)) {
+            ParameterUtil.setHeader(
+                Pattern
                 .compile("\\\\r\\\\n")
                 .splitAsStream(header)
                 .map(s -> Arrays.copyOf(s.split(":"), 2))
                 .map(o -> new SimpleEntry<String, String>(o[0], o[1] == null ? "" : o[1]))
                 .collect(Collectors.toList())
-        );
+            );
+        }
     }
+
+    public static boolean isRequestSoap() {
+        return requestAsText.trim().matches("^<\\?xml.*");
+    }
+
+    // Getters / setters
     
     public static List<SimpleEntry<String, String>> getRequest() {
         return request;
-    }
-    public static String getRequestAsString() {
-        return request.stream().map(e -> e.getKey()+"="+e.getValue()).collect(Collectors.joining("&"));
     }
 
     public static void setRequest(List<SimpleEntry<String, String>> request) {
@@ -250,15 +250,20 @@ public class ParameterUtil {
     public static List<SimpleEntry<String, String>> getHeader() {
         return header;
     }
-    public static String getHeaderAsString() {
-        return header.stream().map(e -> e.getKey()+":"+e.getValue()).collect(Collectors.joining("\\r\\n"));
-    }
 
     public static void setHeader(List<SimpleEntry<String, String>> header) {
         ParameterUtil.header = header;
     }
+    
+    public static List<SimpleEntry<String, String>> getQueryString() {
+        return queryString;
+    }
+    
+    public static void setQueryString(List<SimpleEntry<String, String>> queryString) {
+        ParameterUtil.queryString = queryString;
+    }
 
-    public static String getRequestAsText() {
+    public static String getRawRequest() {
         return requestAsText;
     }
 

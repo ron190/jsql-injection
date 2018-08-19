@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <tooltip>Replace blank space ' ' to multiline comment '/**/'</tooltip>
+    <description>Replace blank space ' ' to multiline comment '/**/'</description>
+    <group></group>
+    <javascript>
+var tampering = function(sql) {
+    return sql
+        .replace(/\+$/gm,'%0A/**/')
+        .replace(/\+/gm,'/**/')
+}
+    </javascript>
+</model>

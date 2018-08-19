@@ -38,16 +38,16 @@ public class MarkErrorInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        if (MediatorGui.managerDatabase() == null) {
-            LOGGER.error("Unexpected unregistered MediatorGui.managerDatabase() in "+ this.getClass());
+        if (MediatorGui.panelAddressBar() == null) {
+            LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
         }
         
         // Fix #36975: ArrayIndexOutOfBoundsException on getItem()
         // Fix #40352: NullPointerException on ?
         try {
-            for (int i = 0 ; i < MediatorGui.managerDatabase().getMenuStrategy().getItemCount() ; i++) {
-                if (MediatorGui.managerDatabase().getMenuStrategy().getItem(i).getText().equals(StrategyInjection.ERROR.toString())) {
-                    ((JMenu) MediatorGui.managerDatabase().getMenuStrategy().getItem(i)).getItem(this.indexMethodError).setEnabled(false);
+            for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
+                if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(StrategyInjection.ERROR.toString())) {
+                    ((JMenu) MediatorGui.panelAddressBar().getMenuStrategy().getItem(i)).getItem(this.indexMethodError).setEnabled(false);
                     break;
                 }
             }

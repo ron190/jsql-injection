@@ -52,8 +52,8 @@ public class ManagerAdminPage extends AbstractManagerList {
     /**
      * Create admin page finder.
      */
-    public ManagerAdminPage(String nameFile) {
-        super(nameFile);
+    public ManagerAdminPage() {
+        super("swing/list/admin-page.txt");
 
         this.defaultText = "ADMIN_PAGE_RUN_BUTTON_LABEL";
         this.run = new JButtonStateful(this.defaultText);
