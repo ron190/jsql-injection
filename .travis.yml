@@ -16,7 +16,7 @@ before_install:
   - ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
   
 jdk:
-  - oraclejdk9
+  - openjdk8
 
 install: true
 
