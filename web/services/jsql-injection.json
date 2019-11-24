@@ -1,7 +1,8 @@
 {
     "version": "0.81",
     "news": [
-        "[In progress] Tampering against WAF.",
+        "[In progress] Devops: ITs with single Spring API to multi Dockerized Hibernate tenants.",
+        "[On hold] Tampering against WAF.",
         "[Roadmap] Burp integration, Crawler, Dump to a file, Full Path Disclosure, WAF detection.",
         "[Done] Translation update: German, Arabic, Portuguese, Romanian.",
         "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer."

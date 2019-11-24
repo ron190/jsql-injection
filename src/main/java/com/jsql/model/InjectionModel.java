@@ -375,13 +375,8 @@ public class InjectionModel extends AbstractModelObservable {
         
         String dataInjection = " "+ newDataInjection;
         
-//        System.out.println("urlInjection "+ urlInjection);
         urlInjection = this.buildURL(urlInjection, isUsingIndex, dataInjection);
         
-//        System.out.println("dataInjection "+ dataInjection);
-//        System.out.println("newDataInjection "+newDataInjection);
-//        System.out.println("buildURL "+ urlInjection);
-
         // TODO merge into function
         urlInjection = urlInjection
             .trim()
@@ -413,8 +408,7 @@ public class InjectionModel extends AbstractModelObservable {
             if (!urlInjection.contains("?")) {
                 urlInjection += "?";
             }
-            System.out.println("getQueryStringFromEntries"+ ParameterUtil.getQueryStringFromEntries());
-            System.out.println("dataInjection"+ dataInjection);
+
             urlInjection += this.buildQuery(MethodInjection.QUERY, ParameterUtil.getQueryStringFromEntries(), isUsingIndex, dataInjection);
             
             if (ConnectionUtil.getTokenCsrf() != null) {
@@ -591,7 +585,6 @@ public class InjectionModel extends AbstractModelObservable {
     private String buildQuery(MethodInjection methodInjection, String paramLead, boolean isUsingIndex, String sqlTrail) {
         String query;
         
-        System.out.println("paramLead"+paramLead);
         paramLead = paramLead.replace("*", "SlQqLs*lSqQsL");
         
         // TODO simplify
@@ -633,7 +626,6 @@ public class InjectionModel extends AbstractModelObservable {
                         Matcher.quoteReplacement(sqlTrail)
                     ) + this.vendor.instance().endingComment()
                 );
-                System.out.println("query"+query);
             }
             
         } else {
@@ -665,8 +657,6 @@ public class InjectionModel extends AbstractModelObservable {
                 query = query + this.vendor.instance().endingComment();
             }
         }
-        
-//        System.out.println(query);
         
         // TODO merge into function
         

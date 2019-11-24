@@ -7,8 +7,8 @@
 var tampering = function(sql) {
     return sql
         .replace(
-            /(>SQL>.*)=(.*<SQL<)/g,
-            '$1+like+$2'
+            /=/g,
+            '+like+'
         )
 }
     ]]></javascript>

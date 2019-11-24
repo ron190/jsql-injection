@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model>
-    <tooltip>Replace equal sign '=' to 'like'</tooltip>
-    <description>Replace equal sign '=' to 'like'</description>
+    <tooltip>Encode SQL expression to Base64</tooltip>
+    <description>Encode SQL expression to Base64</description>
     <group></group>
     <javascript><![CDATA[
 var tampering = function(sql) {

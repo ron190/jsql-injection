@@ -7,15 +7,8 @@
 load('src/main/resources/random-case.js');
 
 var tampering = function(sql) {
-    var matches = sql.match(
-        /(.*SlQqLs)([^]*)(lSqQsL.*)/
-    );
-    
-    if (matches && matches.length >= 2) {
-        return matches[1] + randomCase(matches[2]).replace(/0X/g,'0x') + matches[3]
-    } else { 
-        return sql;
-    }
+    return randomCase(sql)
+        .replace(/0X/g,'0x');
 }
     ]]></javascript>
 </model>

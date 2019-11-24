@@ -41,6 +41,16 @@ public class PreferencesUtil {
     private static boolean isNotTestingConnection = false;
     private static boolean isProcessingCookies = false;
     private static boolean isProcessingCsrf = false;
+    
+    private static boolean isTamperingBase64 = false;
+    private static boolean isTamperingFunctionComment = false;
+    private static boolean isTamperingVersionComment = false;
+    private static boolean isTamperingEqualToLike = false;
+    private static boolean isTamperingRandomCase = false;
+    private static boolean isTamperingEval = false;
+    private static boolean isTamperingSpaceToMultlineComment = false;
+    private static boolean isTamperingSpaceToDashComment = false;
+    private static boolean isTamperingSpaceToSharpComment = false;
 
     /**
      * True if bugs are sent to Github.
@@ -82,6 +92,16 @@ public class PreferencesUtil {
         PreferencesUtil.setNotTestingConnection(prefs.getBoolean("isNotTestingConnection", false));
         PreferencesUtil.setProcessingCookies(prefs.getBoolean("isProcessingCookies", false));
         PreferencesUtil.setProcessingCsrf(prefs.getBoolean("isProcessingCsrf", false));
+        
+        PreferencesUtil.setTamperingBase64(prefs.getBoolean("isTamperingBase64", false));
+        PreferencesUtil.setTamperingEqualToLike(prefs.getBoolean("isTamperingEqualToLike", false));
+        PreferencesUtil.setTamperingFunctionComment(prefs.getBoolean("isTamperingFunctionComment", false));
+        PreferencesUtil.setTamperingVersionComment(prefs.getBoolean("isTamperingVersionComment", false));
+        PreferencesUtil.setTamperingRandomCase(prefs.getBoolean("isTamperingRandomCase", false));
+        PreferencesUtil.setTamperingEval(prefs.getBoolean("isTamperingEval", false));
+        PreferencesUtil.setTamperingSpaceToDashComment(prefs.getBoolean("isTamperingSpaceToDashComment", false));
+        PreferencesUtil.setTamperingSpaceToMultlineComment(prefs.getBoolean("isTamperingSpaceToMultlineComment", false));
+        PreferencesUtil.setTamperingSpaceToSharpComment(prefs.getBoolean("isTamperingSpaceToSharpComment", false));
         
         PreferencesUtil.setIs4K(prefs.getBoolean("is4K", false));
         
@@ -160,6 +180,16 @@ public class PreferencesUtil {
         PreferencesUtil.setProcessingCookies(isProcessingCookies);
         PreferencesUtil.setProcessingCsrf(isProcessingCsrf);
         
+        PreferencesUtil.setTamperingBase64(isTamperingBase64);
+        PreferencesUtil.setTamperingEqualToLike(isTamperingEqualToLike);
+        PreferencesUtil.setTamperingFunctionComment(isTamperingFunctionComment);
+        PreferencesUtil.setTamperingVersionComment(isTamperingVersionComment);
+        PreferencesUtil.setTamperingRandomCase(isTamperingRandomCase);
+        PreferencesUtil.setTamperingEval(isTamperingEval);
+        PreferencesUtil.setTamperingSpaceToDashComment(isTamperingSpaceToDashComment);
+        PreferencesUtil.setTamperingSpaceToMultlineComment(isTamperingSpaceToMultlineComment);
+        PreferencesUtil.setTamperingSpaceToSharpComment(isTamperingSpaceToSharpComment);
+        
         PreferencesUtil.setIs4K(is4K);
 
         Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
@@ -182,6 +212,16 @@ public class PreferencesUtil {
         
         preferences.putBoolean("isProcessingCookies", PreferencesUtil.isProcessingCookies());
         preferences.putBoolean("isProcessingCsrf", PreferencesUtil.isProcessingCsrf());
+        
+        preferences.putBoolean("isTamperingBase64", PreferencesUtil.isTamperingBase64());
+        preferences.putBoolean("isTamperingEqualToLike", PreferencesUtil.isTamperingEqualToLike());
+        preferences.putBoolean("isTamperingVersionComment", PreferencesUtil.isTamperingVersionComment());
+        preferences.putBoolean("isTamperingFunctionComment", PreferencesUtil.isTamperingFunctionComment());
+        preferences.putBoolean("isTamperingRandomCase", PreferencesUtil.isTamperingRandomCase());
+        preferences.putBoolean("isTamperingEval", PreferencesUtil.isTamperingEval());
+        preferences.putBoolean("isTamperingSpaceToDashComment", PreferencesUtil.isTamperingSpaceToDashComment());
+        preferences.putBoolean("isTamperingSpaceToMultlineComment", PreferencesUtil.isTamperingSpaceToMultlineComment());
+        preferences.putBoolean("isTamperingSpaceToSharpComment", PreferencesUtil.isTamperingSpaceToSharpComment());
         
         preferences.putBoolean("is4K", PreferencesUtil.is4K());
         
@@ -313,6 +353,78 @@ public class PreferencesUtil {
 
     public static void setCheckingAllCookieParam(boolean isCheckingAllCookieParam) {
         PreferencesUtil.isCheckingAllCookieParam = isCheckingAllCookieParam;
+    }
+
+    public static boolean isTamperingBase64() {
+        return isTamperingBase64;
+    }
+
+    public static void setTamperingBase64(boolean isTamperingBase64) {
+        PreferencesUtil.isTamperingBase64 = isTamperingBase64;
+    }
+
+    public static boolean isTamperingFunctionComment() {
+        return isTamperingFunctionComment;
+    }
+
+    public static void setTamperingFunctionComment(boolean isTamperingFunctionComment) {
+        PreferencesUtil.isTamperingFunctionComment = isTamperingFunctionComment;
+    }
+
+    public static boolean isTamperingEqualToLike() {
+        return isTamperingEqualToLike;
+    }
+
+    public static void setTamperingEqualToLike(boolean isTamperingEqualToLike) {
+        PreferencesUtil.isTamperingEqualToLike = isTamperingEqualToLike;
+    }
+
+    public static boolean isTamperingRandomCase() {
+        return isTamperingRandomCase;
+    }
+
+    public static void setTamperingRandomCase(boolean isTamperingRandomCase) {
+        PreferencesUtil.isTamperingRandomCase = isTamperingRandomCase;
+    }
+
+    public static boolean isTamperingSpaceToMultlineComment() {
+        return isTamperingSpaceToMultlineComment;
+    }
+
+    public static void setTamperingSpaceToMultlineComment(boolean isTamperingSpaceToMultlineComment) {
+        PreferencesUtil.isTamperingSpaceToMultlineComment = isTamperingSpaceToMultlineComment;
+    }
+
+    public static boolean isTamperingSpaceToDashComment() {
+        return isTamperingSpaceToDashComment;
+    }
+
+    public static void setTamperingSpaceToDashComment(boolean isTamperingSpaceToDashComment) {
+        PreferencesUtil.isTamperingSpaceToDashComment = isTamperingSpaceToDashComment;
+    }
+
+    public static boolean isTamperingSpaceToSharpComment() {
+        return isTamperingSpaceToSharpComment;
+    }
+
+    public static void setTamperingSpaceToSharpComment(boolean isTamperingSpaceToSharpComment) {
+        PreferencesUtil.isTamperingSpaceToSharpComment = isTamperingSpaceToSharpComment;
+    }
+
+    public static boolean isTamperingVersionComment() {
+        return isTamperingVersionComment;
+    }
+
+    public static void setTamperingVersionComment(boolean isTamperingVersionComment) {
+        PreferencesUtil.isTamperingVersionComment = isTamperingVersionComment;
+    }
+
+    public static boolean isTamperingEval() {
+        return isTamperingEval;
+    }
+
+    public static void setTamperingEval(boolean isTamperingEval) {
+        PreferencesUtil.isTamperingEval = isTamperingEval;
     }
 
     public static boolean isCheckingAllSOAPParam() {

@@ -9,8 +9,8 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 
-import sun.net.www.protocol.http.AuthCacheImpl;
-import sun.net.www.protocol.http.AuthCacheValue;
+//import sun.net.www.protocol.http.AuthCacheImpl;
+//import sun.net.www.protocol.http.AuthCacheValue;
 
 /**
  * Manage authentication protocols Basic, Digest, NTLM and Kerberos.
@@ -121,7 +121,11 @@ public class AuthenticationUtil {
         }
         
         // Activate standard authentication
-        AuthCacheValue.setAuthCache(new AuthCacheImpl());
+        // TODO: java.lang.IllegalAccessError: class com.jsql.tool.AuthenticationTools (in unnamed module @0x266d09)
+        // cannot access class sun.net.www.protocol.http.AuthCacheImpl (in module java.base) because module java.base
+        // does not export sun.net.www.protocol.http to unnamed module @0x266d09
+        // Use Authenticator.setDefault(null); or a bad Authenticator
+//        AuthCacheValue.setAuthCache(new AuthCacheImpl());
         
         if (AuthenticationUtil.isAuthentication) {
             Authenticator.setDefault(new Authenticator() {
@@ -163,7 +167,7 @@ public class AuthenticationUtil {
         AuthenticationUtil.pathKerberosKrb5 = prefs.get("kerberosKrb5Conf", "");
         AuthenticationUtil.pathKerberosLogin = prefs.get("kerberosLoginConf", "");
 
-        AuthCacheValue.setAuthCache(new AuthCacheImpl());
+//        AuthCacheValue.setAuthCache(new AuthCacheImpl());
         
         if (AuthenticationUtil.isAuthentication) {
             Authenticator.setDefault(new Authenticator() {

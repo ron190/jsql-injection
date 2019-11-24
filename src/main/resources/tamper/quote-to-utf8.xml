@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <tooltip>Replace single quote ' to full utf8 character %ef%bc%87</tooltip>
+    <description>/!\ Replace single quote ' to full utf8 character %ef%bc%87</description>
+    <group></group>
+    <javascript><![CDATA[
+var tampering = function(sql) {
+    return sql
+        .replace("'",'%ef%bc%87');
+}
+    ]]></javascript>
+</model>

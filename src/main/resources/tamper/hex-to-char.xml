@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <tooltip>Replace string 'ab' from hex 0x4142 to ascii concat(char(65),char(66))</tooltip>
+    <description>Replace string 'ab' from hex 0x4142 to ascii concat(char(65),char(66))</description>
+    <group></group>
+    <javascript><![CDATA[
+var tampering = function(sql) {
+    return sql
+        .replace('separator+0x','separatorx')
+        .replace(/0x([a-z0-9]+)/ig, function(corr, p1){
+            return 'concat('
+                + Array.prototype.map.call(
+                    p1.match(/.{1,2}/g).map(function(v){
+                        return String.fromCharCode(parseInt(v, 16));
+                    }).join(''), function(chr){
+                        return 'char('+(chr.charCodeAt(0))+')';
+                    })
+                +')';
+        })
+        .replace('separatorx','separator+0x');
+}
+    ]]></javascript>
+</model>
