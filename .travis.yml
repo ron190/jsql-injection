@@ -12,6 +12,8 @@ before_install:
   - docker ps -a
   - cd ../../../..
   - ls
+  - rm "${JAVA_HOME}/lib/security/cacerts"
+  - ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
   
 jdk:
   - oraclejdk9
