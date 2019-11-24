@@ -7,10 +7,10 @@ services:
   
 before_install:
   - cd src/main/resources/docker
-  - pwd
   - docker build -t mysql -f Dockerfile.mysql .
   - docker run --name jsql-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql
   - docker ps -a
+  - cd ../../../..
 
 addons:
   sonarcloud:
