@@ -10,6 +10,5 @@ test-output/
 .sonar/
 .checkstyle
 .pmd
-sonar-project.properties
 dependency-reduced-pom.xml
 build.xml
