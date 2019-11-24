@@ -6,8 +6,9 @@ services:
   - docker
   
 before_install:
+  - cd src/main/resources/docker
   - pwd
-  - docker build -t mysql -f Dockerfile.mysql ./src/main/resources/docker
+  - docker build -t mysql -f Dockerfile.mysql .
   - docker run --name jsql-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql
   - docker ps -a
 
