@@ -17,7 +17,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.AbstractTestSuite;
 import com.test.vendor.mysql.ConcreteMysqlTestSuite;
 
-//@Ignore
+@Ignore
 public class GetTest extends ConcreteMysqlTestSuite {
 
     @BeforeClass

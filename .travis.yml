@@ -1,23 +1,17 @@
 language: java
 
-
 services: docker
   
 before_install:
-#  - cd src/main/resources/docker
-#  - docker build -t mysql -f Dockerfile.mysql .
   - docker build -t mysql -f src/main/resources/docker/Dockerfile.mysql .
   - docker run --name jsql-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql
-  - docker ps -a
-#  - cd ../../../..
-  - ls
 #  - rm "${JAVA_HOME}/lib/security/cacerts"
 #  - ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
   
 jdk: openjdk8
 
 #script:
-#- mvn -Dtest=GetTest test
+#- mvn -Dtest=MysqlNormalHeaderTestSuite test
 
 #addons:
 #  sonarcloud:

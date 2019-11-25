@@ -1,6 +1,7 @@
 package com.test.vendor.mysql;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
@@ -12,6 +13,7 @@ import com.jsql.util.PreferencesUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.AbstractTestSuite;
 
+@Ignore
 public class MysqlErrobasedHeaderTestSuite extends ConcreteMysqlTestSuite {
 
     @BeforeClass

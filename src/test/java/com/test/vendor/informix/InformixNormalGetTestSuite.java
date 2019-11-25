@@ -4,6 +4,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
@@ -15,6 +16,7 @@ import com.jsql.util.ParameterUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.AbstractTestSuite;
 
+@Ignore
 public class InformixNormalGetTestSuite extends ConcreteInformixTestSuite {
 
     public InformixNormalGetTestSuite() throws ClassNotFoundException {
