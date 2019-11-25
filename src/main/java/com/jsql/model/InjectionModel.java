@@ -32,6 +32,7 @@ import javax.security.auth.login.LoginException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.ietf.jgss.GSSException;
+import org.json.JSONException;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.accessible.DataAccess;
@@ -276,25 +277,30 @@ public class InjectionModel extends AbstractModelObservable {
                 for (SimpleEntry<String, String> paramStar: methodInjection.getParams()) {
                     
                     if (paramStar == paramBase) {
-                        // Will test if current value is a JSON entity
-                        Object jsonEntity = JsonUtil.getJson(paramStar.getValue());
-                        
-                        // Define a tree of JSON attributes with path as the key: root.a => value of a
-                        List<SimpleEntry<String, String>> attributesJson = JsonUtil.createEntries(jsonEntity, "root", null);
-                        
-                        // When option 'Inject JSON' is selected and there's a JSON entity to inject
-                        // then loop through each paths to add * at the end of value and test each strategies.
-                        // Marks * are erased between each tests.
-                        if (PreferencesUtil.isCheckingAllJSONParam() && !attributesJson.isEmpty()) {
-                            hasFoundInjection = JsonUtil.testJsonParameter(methodInjection, paramStar);
+                        try {
+                            // Will test if current value is a JSON entity
+                            Object jsonEntity = JsonUtil.getJson(paramStar.getValue());
                             
-                        // Standard non JSON injection
-                        } else {
-                            hasFoundInjection = JsonUtil.testStandardParameter(methodInjection, paramStar);
-                        }
-                        
-                        if (hasFoundInjection) {
-                            break injectionSuccessful;
+                            // Define a tree of JSON attributes with path as the key: root.a => value of a
+                            List<SimpleEntry<String, String>> attributesJson = JsonUtil.createEntries(jsonEntity, "root", null);
+                            
+                            // When option 'Inject JSON' is selected and there's a JSON entity to inject
+                            // then loop through each paths to add * at the end of value and test each strategies.
+                            // Marks * are erased between each tests.
+                            if (PreferencesUtil.isCheckingAllJSONParam() && !attributesJson.isEmpty()) {
+                                    hasFoundInjection = JsonUtil.testJsonParameter(methodInjection, paramStar);
+                                
+                            // Standard non JSON injection
+                            } else {
+                                hasFoundInjection = JsonUtil.testStandardParameter(methodInjection, paramStar);
+                            }
+                            
+                            if (hasFoundInjection) {
+                                break injectionSuccessful;
+                            }
+                        } catch (JSONException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
                         }
                         
                     }

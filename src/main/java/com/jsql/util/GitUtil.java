@@ -64,7 +64,7 @@ public class GitUtil {
             } else if(displayUpdateMessage == ShowOnConsole.YES) {
                 LOGGER.debug(I18n.valueByKey("UPDATE_UPTODATE"));
             }
-        } catch (NumberFormatException | IOException e) {
+        } catch (NumberFormatException | IOException | JSONException e) {
             LOGGER.warn(I18n.valueByKey("UPDATE_EXCEPTION"), e);
         }
     }
@@ -154,7 +154,7 @@ public class GitUtil {
             dataOut.close();
             
             GitUtil.readGithubResponse(connection, showOnConsole);
-        } catch (IOException | NoClassDefFoundError e) {
+        } catch (IOException | NoClassDefFoundError | JSONException e) {
             // Fix #27623: NoClassDefFoundError on getOutputStream()
             // Implemented by jcifs.http.NtlmHttpURLConnection.getOutputStream()
             if (showOnConsole == ShowOnConsole.YES) {
@@ -191,6 +191,9 @@ public class GitUtil {
             }
         } catch (IOException e) {
             LOGGER.warn("Connection to the Github API failed", e);
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
     
@@ -209,7 +212,12 @@ public class GitUtil {
             try {
                 GitUtil.jsonObject = new JSONObject(json);
             } catch (JSONException e) {
-                GitUtil.jsonObject = new JSONObject("{\"version\": \"0\", \"news\": []}");
+                try {
+                    GitUtil.jsonObject = new JSONObject("{\"version\": \"0\", \"news\": []}");
+                } catch (JSONException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
                 LOGGER.warn("Fetching JSON configuration from Github failed, check your connection or update jsql", e);
             }
         }

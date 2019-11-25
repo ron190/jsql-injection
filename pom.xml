@@ -146,8 +146,90 @@
 		</plugins>
 
 	</build>
+ 
+ <dependencyManagement>
+    <dependencies>
+        <dependency>
+            <!-- Import dependency management from Spring Boot -->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-dependencies</artifactId>
+            <version>2.2.1.RELEASE</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
 
 	<dependencies>
+ 
+<!--  test --><dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-test</artifactId>
+    <scope>test</scope>
+</dependency><dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-beans</artifactId>
+  <version>5.2.1.RELEASE</version>
+</dependency><dependency>
+  <groupId>org.springframework</groupId>
+  <artifactId>spring-core</artifactId>
+  <version>5.2.1.RELEASE</version>
+</dependency>
+  <dependency>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-starter-web</artifactId>
+   <scope>test</scope>
+  </dependency>
+  <dependency>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-starter-test</artifactId>
+   <scope>test</scope>
+  </dependency>
+  <dependency>
+   <groupId>com.jayway.jsonpath</groupId>
+   <artifactId>json-path</artifactId>
+   <scope>test</scope>
+  </dependency>
+  <dependency>
+   <groupId>org.hibernate</groupId>
+   <artifactId>hibernate-core</artifactId>
+   <scope>test</scope>
+  </dependency>
+  <dependency>
+   <groupId>org.springframework</groupId>
+   <artifactId>spring-orm</artifactId>
+   <scope>test</scope>
+  </dependency>
+  <dependency>
+   <groupId>com.h2database</groupId>
+   <artifactId>h2</artifactId>
+   <scope>test</scope>
+  </dependency>
+  <dependency>
+   <groupId>mysql</groupId>
+   <artifactId>mysql-connector-java</artifactId>
+   <version>8.0.16</version>
+   <scope>test</scope>
+  </dependency>
+  <dependency>
+   <groupId>org.apache.tomcat</groupId>
+   <artifactId>tomcat-dbcp</artifactId>
+   <version>9.0.1</version>
+   <scope>test</scope>
+  </dependency>
+  <dependency>
+   <groupId>org.hibernate</groupId>
+   <artifactId>hibernate-c3p0</artifactId>
+   <scope>test</scope>
+  </dependency>
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-text</artifactId>
+    <version>1.8</version>
+   <scope>test</scope>
+</dependency>
+
+<!-- jsql -->
 
 		<dependency>
 			<groupId>commons-codec</groupId>

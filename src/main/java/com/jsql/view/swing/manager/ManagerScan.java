@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jsql.i18n.I18n;
@@ -79,18 +80,24 @@ public class ManagerScan extends AbstractManagerList {
         
         List<ItemList> itemsList = new ArrayList<>();
         
-        JSONArray jsonArrayScan = new JSONArray(jsonScan.toString());
-        for (int i = 0 ; i < jsonArrayScan.length() ; i++) {
-            JSONObject jsonObjectScan = jsonArrayScan.getJSONObject(i);
-            BeanInjection beanInjection = new BeanInjection(
-                jsonObjectScan.getString("url"),
-                jsonObjectScan.optString("request"),
-                jsonObjectScan.optString("header"),
-                jsonObjectScan.optString("injectionType"),
-                jsonObjectScan.optString("vendor"),
-                jsonObjectScan.optString("requestType")
-            );
-            itemsList.add(new ItemListScan(beanInjection));
+        JSONArray jsonArrayScan;
+        try {
+            jsonArrayScan = new JSONArray(jsonScan.toString());
+            for (int i = 0 ; i < jsonArrayScan.length() ; i++) {
+                JSONObject jsonObjectScan = jsonArrayScan.getJSONObject(i);
+                BeanInjection beanInjection = new BeanInjection(
+                    jsonObjectScan.getString("url"),
+                    jsonObjectScan.optString("request"),
+                    jsonObjectScan.optString("header"),
+                    jsonObjectScan.optString("injectionType"),
+                    jsonObjectScan.optString("vendor"),
+                    jsonObjectScan.optString("requestType")
+                );
+                itemsList.add(new ItemListScan(beanInjection));
+            }
+        } catch (JSONException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
         }
         
         final DnDList dndListScan = new DnDList(itemsList);

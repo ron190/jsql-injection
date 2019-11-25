@@ -46,7 +46,7 @@ public class JsonUtil {
         return jsonEntity;
     }
 
-    public static List<SimpleEntry<String, String>> createEntries(Object jsonEntity, String parentName, SimpleEntry<String, String> parentXPath) {
+    public static List<SimpleEntry<String, String>> createEntries(Object jsonEntity, String parentName, SimpleEntry<String, String> parentXPath) throws JSONException {
         List<SimpleEntry<String, String>> attributesXPath = new ArrayList<>();
         
         if (jsonEntity instanceof JSONObject) {
@@ -144,7 +144,7 @@ public class JsonUtil {
     
     }
     
-    public static boolean testJsonParameter(MethodInjection methodInjection, SimpleEntry<String, String> paramStar) {
+    public static boolean testJsonParameter(MethodInjection methodInjection, SimpleEntry<String, String> paramStar) throws JSONException {
         boolean hasFoundInjection = false;
         
         // Will test if current value is a JSON entity

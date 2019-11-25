@@ -10,6 +10,9 @@
  ******************************************************************************/
 package com.jsql.view.swing.list;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * Basic object to avoid String incompatibility with drag and drop feature.
  */
@@ -24,6 +27,12 @@ public class ItemListScan extends ItemList {
 
     public BeanInjection getBeanInjection() {
         return this.beanInjection;
+    }
+    
+    ObjectMapper mapper = new ObjectMapper();
+
+    public String getBeanInjectionToJSON() throws JsonProcessingException {
+        return mapper.writeValueAsString(this.beanInjection);
     }
 	
 }
