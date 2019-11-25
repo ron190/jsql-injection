@@ -25,8 +25,10 @@ public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
     
     @BeforeClass
     public static void initialize() throws Exception {
-        SpringApplication.run(Application.class, new String[] {});
+//        SpringApplication.run(Application.class, new String[] {});
 //        Application.main2(new String[] {});
+//        Application.init();
+        SpringApplication.run(Application.class, new String[] {});
         
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);

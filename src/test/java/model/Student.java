@@ -10,7 +10,7 @@ import javax.persistence.Id;
 //@Entity
 public class Student {
     //data members
-    //@Id
+//    @Id
     private int studentId;
     private String firstName;
     private String lastName;

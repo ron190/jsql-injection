@@ -10,7 +10,7 @@
 
         
        <mapping resource="student.hbm.xml" /> 
-<!--       <mapping class="model.Student" /> -->
+<!--       <mapping class="modsel.Student" /> -->
    </session-factory>
 </hibernate-configuration>
 

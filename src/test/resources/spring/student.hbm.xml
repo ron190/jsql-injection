@@ -4,7 +4,8 @@
  
 <hibernate-mapping>
  
- <class name="model.Student" table="Student" entity-name="model.Student">
+<!--  <class name="model.dStudent" table="Student" entity-name="model.Student"> -->
+ <class name="model.Student" table="Student">
   <id name="studentId" type="int" column="Student_Id">
     <generator class="native"></generator>
   </id>

@@ -24,8 +24,8 @@ jdk: openjdk8
 
 cache:
   directories:
-    - '$HOME/.m2/repository'
-    - '$HOME/.sonar/cache'
+    - $HOME/.m2
+    - $HOME/.sonar/cache
 
 #after_success:
 #  - bash <(curl -s https://codecov.io/bash)
