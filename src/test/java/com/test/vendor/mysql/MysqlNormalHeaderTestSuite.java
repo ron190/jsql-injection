@@ -1,5 +1,8 @@
 package com.test.vendor.mysql;
 
+import java.util.Arrays;
+import java.util.AbstractMap.SimpleEntry;
+
 import org.junit.BeforeClass;
 
 import com.jsql.model.InjectionModel;
@@ -24,11 +27,18 @@ public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
 
         PreferencesUtil.setNotTestingConnection(true);
         
-        ParameterUtil.initQueryString("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_header.php");
+//        ParameterUtil.initQueryString("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_header.php");
+//        ParameterUtil.initRequest("");
+//        ParameterUtil.initHeader("lib: 0");
+//        ConnectionUtil.setMethodInjection(MethodInjection.HEADER);
+//        ConnectionUtil.setTypeRequest("POST");
+        
+        ParameterUtil.initQueryString("http://localhost:8080/greeting");
         ParameterUtil.initRequest("");
-        ParameterUtil.initHeader("lib: 0");
-        ConnectionUtil.setMethodInjection(MethodInjection.HEADER);
-        ConnectionUtil.setTypeRequest("POST");
+//        ParameterUtil.initHeader("lib: 0");
+        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("tenantId", "tenantId3"), new SimpleEntry<String, String>("name", "1'")));
+        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
+        ConnectionUtil.setTypeRequest("GET");
         
         MediatorModel.model().beginInjection();
 

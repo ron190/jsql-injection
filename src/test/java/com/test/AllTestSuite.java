@@ -1,5 +1,6 @@
 package com.test;
 
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -10,6 +11,7 @@ import com.test.vendor.oracle.OracleTestSuite;
 import com.test.vendor.postgre.PostgreTestSuite;
 import com.test.vendor.sqlserver.SQLServerTestSuite;
 
+@Ignore
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
     MethodTestSuite.class,

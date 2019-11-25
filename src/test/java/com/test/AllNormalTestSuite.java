@@ -1,5 +1,6 @@
 package com.test;
 
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -12,6 +13,7 @@ import com.test.vendor.oracle.OracleNormalGetTestSuite;
 import com.test.vendor.postgre.PostgreNormalGetTestSuite;
 import com.test.vendor.sqlserver.SQLServerNormalGetTestSuite;
 
+@Ignore
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
     CubridNormalGetTestSuite.class,

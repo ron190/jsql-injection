@@ -663,6 +663,11 @@ public class InjectionModel extends AbstractModelObservable {
         // Remove SQL comments
         query = query.replaceAll("(?s)/\\*.*?\\*/", "");
         
+        // TODO
+        // Urlencode backtick and pipe (for Java only)
+        query = query.replaceAll("(?s)`", "%60");
+        query = query.replaceAll("(?s)\\|", "%7C");
+        
         if (methodInjection == MethodInjection.REQUEST) {
             if (ParameterUtil.isRequestSoap()) {
                 query = query.replaceAll("%2b", "+");

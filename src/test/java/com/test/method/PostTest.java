@@ -4,6 +4,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
@@ -16,6 +17,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.AbstractTestSuite;
 import com.test.vendor.mysql.ConcreteMysqlTestSuite;
 
+@Ignore
 public class PostTest extends ConcreteMysqlTestSuite {
 
     @BeforeClass
