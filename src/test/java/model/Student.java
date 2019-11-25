@@ -7,10 +7,10 @@ import javax.persistence.Id;
  * This class represents a persistent class for Student.
  * @author codesjava
  */
-//@Entity
+@Entity
 public class Student {
     //data members
-//    @Id
+    @Id
     private int studentId;
     private String firstName;
     private String lastName;
