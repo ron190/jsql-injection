@@ -19,7 +19,7 @@ public class HibernateConf {
         //sessionFactory.setDataSource(dataSource());
         //sessionFactory.setPackagesToScan({"com.baeldung.hibernate.bootstrap.model" });
         sessionFactory.setHibernateProperties(hibernateProperties());
-        //sessionFactory.setMappingResources("student.hbm.xml");
+//        sessionFactory.setMappingResources("spring/student.hbm.xml");
         
         //sessionFactory.setCurrentTenantIdentifierResolver(new CurrentTenantIdentifierResolverImpl());
         //sessionFactory.setMultiTenantConnectionProvider(new MultiTenantConnectionProviderImpl());

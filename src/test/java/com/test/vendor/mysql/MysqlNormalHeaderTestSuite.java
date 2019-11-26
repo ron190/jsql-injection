@@ -4,9 +4,9 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
@@ -27,8 +27,10 @@ public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
     public static void initialize() throws Exception {
 //        SpringApplication.run(Application.class, new String[] {});
 //        Application.main2(new String[] {});
-//        Application.init();
+        Application.init();
+//        Application.main(new String[] {});
         SpringApplication.run(Application.class, new String[] {});
+        
         
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);

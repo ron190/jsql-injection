@@ -1,5 +1,6 @@
 package model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -11,10 +12,15 @@ import javax.persistence.Id;
 public class Student {
     //data members
     @Id
+    @Column(name = "Student_Id")
     private int studentId;
+    @Column(name = "First_Name")
     private String firstName;
+    @Column(name = "Last_Name")
     private String lastName;
+    @Column(name = "Class_Name")
     private String className;
+    @Column(name = "Roll_No")
     private String rollNo;
     private int age;
  
