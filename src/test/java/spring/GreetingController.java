@@ -2,6 +2,8 @@ package spring;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.sql.SQLSyntaxErrorException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -33,7 +35,15 @@ public class GreetingController {
         EntityManager em = sessionFactorya.createEntityManager();
         //Query q = em.createNativeQuery("select * from MYDB1.TBL1");
         Query q = em.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
-        List<Object[]> l = q.getResultList();
+        
+        List<Object[]> l;
+        try {
+            l = q.getResultList();
+        } catch (Exception e) {
+            l = new ArrayList<>();
+            System.out.println(e.getMessage());
+        }
+        
 //        l.stream().forEach(e -> Arrays.asList((Object[]) e).stream().forEach(System.out::println));
         
         ObjectMapper objectMapper = new ObjectMapper();

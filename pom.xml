@@ -123,16 +123,16 @@
 				</executions>
 			</plugin>
    
-<!--             <plugin> -->
-<!--                 <groupId>org.jacoco</groupId> -->
-<!--                 <artifactId>jacoco-maven-plugin</artifactId> -->
-<!--                 <version>0.8.1</version> -->
-<!--                 <executions> -->
-<!--                     <execution> -->
-<!--                         <goals> -->
-<!--                             <goal>prepare-agent</goal> -->
-<!--                         </goals> -->
-<!--                     </execution> -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
 <!--                     <execution> -->
 <!--                         <id>report</id> -->
 <!--                         <phase>test</phase> -->
@@ -140,8 +140,8 @@
 <!--                             <goal>report</goal> -->
 <!--                         </goals> -->
 <!--                     </execution> -->
-<!--                 </executions> -->
-<!--             </plugin> -->
+                </executions>
+            </plugin>
 
 		</plugins>
 

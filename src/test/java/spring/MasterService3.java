@@ -88,13 +88,13 @@ public class MasterService3 {
 ////        bb.configure(propertiesab);
 ////        b.configure(props2);
 //        bb.configure(Application.prop3);
-        
-        try {
-            org.h2.tools.Server server = org.h2.tools.Server.createTcpServer().start();
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+//        
+//        try {
+//            org.h2.tools.Server server = org.h2.tools.Server.createTcpServer().start();
+//        } catch (SQLException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
         
         
 

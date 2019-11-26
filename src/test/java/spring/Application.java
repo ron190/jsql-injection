@@ -2,6 +2,7 @@ package spring;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.Properties;
 
 import org.hibernate.Session;
@@ -52,6 +53,13 @@ public class Application {
     }
     
     public static void init() {
+        try {
+            org.h2.tools.Server server = org.h2.tools.Server.createTcpServer().start();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
         Configuration configuration = new Configuration();
 //      configuration.addProperties(prop).configure("hibernate.cfg.xml");
       configuration.addProperties(prop).configure("spring/hibernate.cfg4.xml");
