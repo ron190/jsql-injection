@@ -10,9 +10,6 @@ before_install:
   
 jdk: openjdk8
 
-#script:
-#- mvn -Dtest=MysqlNormalHeaderTestSuite test
-
 addons:
   sonarcloud:
     organization: "ron190-github"
@@ -29,3 +26,4 @@ cache:
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -Ls https://coverage.codacy.com/get.sh)

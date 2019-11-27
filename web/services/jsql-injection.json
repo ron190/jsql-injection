@@ -1,7 +1,7 @@
 {
     "version": "0.81",
     "news": [
-        "[In progress] Devops: ITs with single Spring API to multi Dockerized Hibernate tenants.",
+        "[In progress] Devops: ITs with single Spring API to multiple dockerized hibernate tenants.",
         "[On hold] Tampering against WAF.",
         "[Roadmap] Burp integration, Crawler, Dump to a file, Full Path Disclosure, WAF detection.",
         "[Done] Translation update: German, Arabic, Portuguese, Romanian.",

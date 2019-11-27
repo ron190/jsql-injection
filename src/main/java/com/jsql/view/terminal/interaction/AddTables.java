@@ -37,6 +37,7 @@ public class AddTables implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public AddTables(Object[] interactionParams) {
+        // Get list of tables from the model
         this.tables = (List<Table>) interactionParams[0];
     }
 
