@@ -19,24 +19,24 @@ import model.Student;
 public class Application {
     
     
-    static Properties prop = new Properties();
-    static Properties prop2 = new Properties();
+//    static Properties prop = new Properties();
+//    static Properties prop2 = new Properties();
     static Properties prop3 = new Properties();
     
     static {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
         
         try (
-            InputStream is = classloader.getResourceAsStream("spring/hibernate.cfg3.xml.properties");
-            InputStream is2 = classloader.getResourceAsStream("spring/hibernate.cfg3.xml2.properties");
+//            InputStream is = classloader.getResourceAsStream("spring/hibernate.cfg3.xml.properties");
+//            InputStream is2 = classloader.getResourceAsStream("spring/hibernate.cfg3.xml2.properties");
                 InputStream is3 = classloader.getResourceAsStream("spring/hibernate.cfg3.xml3.properties");
                 InputStream is4 = classloader.getResourceAsStream("spring/hibernate.cfg3.xml4.properties");
                 ) {
-            prop.load(is);
-            prop2.load(is2);
+//            prop.load(is);
+//            prop2.load(is2);
             prop3.load(is3);
-            prop.load(is4);
-            prop2.load(is4);
+//            prop.load(is4);
+//            prop2.load(is4);
             prop3.load(is4);
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -60,41 +60,41 @@ public class Application {
             e.printStackTrace();
         }
         
-        Configuration configuration = new Configuration();
-//      configuration.addProperties(prop).configure("hibernate.cfg.xml");
-      configuration.addProperties(prop).configure("spring/hibernate.cfg4.xml");
-      configuration.addAnnotatedClass(Student.class);
-//      configuration.addResource("student.hbm.xml");
-      StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+//        Configuration configuration = new Configuration();
+////      configuration.addProperties(prop).configure("hibernate.cfg.xml");
+//      configuration.addProperties(prop).configure("spring/hibernate.cfg4.xml");
+//      configuration.addAnnotatedClass(Student.class);
+////      configuration.addResource("student.hbm.xml");
+//      StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
+////      SessionFactory factory = configuration.buildSessionFactory(builder.build());
 //      SessionFactory factory = configuration.buildSessionFactory(builder.build());
-      SessionFactory factory = configuration.buildSessionFactory(builder.build());
-      Session session = factory.openSession();
-      Transaction transaction = session.beginTransaction();
-      Student student = new Student();
-      student.setAge(1);
-      session.save(student);
-      transaction.commit();
-      //session.flush();
-      session.close();
-      factory.close();
-      
-      Configuration configuration2 = new Configuration();
-      //.configure("hibernate.cfg2.xml");
-      configuration2.addProperties(prop2).configure("spring/hibernate.cfg4.xml");
-      configuration2.addAnnotatedClass(Student.class);
-//      configuration2.addResource("student.hbm.xml");
-      StandardServiceRegistryBuilder builder2 = new StandardServiceRegistryBuilder().applySettings(configuration2.getProperties());
+//      Session session = factory.openSession();
+//      Transaction transaction = session.beginTransaction();
+//      Student student = new Student();
+//      student.setAge(1);
+//      session.save(student);
+//      transaction.commit();
+//      //session.flush();
+//      session.close();
+//      factory.close();
+//      
+//      Configuration configuration2 = new Configuration();
+//      //.configure("hibernate.cfg2.xml");
+//      configuration2.addProperties(prop2).configure("spring/hibernate.cfg4.xml");
+//      configuration2.addAnnotatedClass(Student.class);
+////      configuration2.addResource("student.hbm.xml");
+//      StandardServiceRegistryBuilder builder2 = new StandardServiceRegistryBuilder().applySettings(configuration2.getProperties());
+////      SessionFactory factory2 = configuration2.buildSessionFactory(builder2.build());
 //      SessionFactory factory2 = configuration2.buildSessionFactory(builder2.build());
-      SessionFactory factory2 = configuration2.buildSessionFactory(builder2.build());
-      Session session2 = factory2.openSession();
-      Transaction transaction2 = session2.beginTransaction();
-      Student student2 = new Student();
-      student2.setAge(2);
-      session2.save(student2);
-      transaction2.commit();
-      //session.flush();
-      session2.close();
-      factory2.close();
+//      Session session2 = factory2.openSession();
+//      Transaction transaction2 = session2.beginTransaction();
+//      Student student2 = new Student();
+//      student2.setAge(2);
+//      session2.save(student2);
+//      transaction2.commit();
+//      //session.flush();
+//      session2.close();
+//      factory2.close();
       
       Configuration configuration3 = new Configuration();
       //.configure("hibernate.cfg2.xml");

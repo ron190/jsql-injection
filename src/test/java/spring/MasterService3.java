@@ -105,19 +105,19 @@ public class MasterService3 {
 //        hashMap.put("tenantId2", b);
 //        hashMap.put("tenantId3", bb);
         
-        DatasourceConnectionProviderImpl connectionProvider = new DatasourceConnectionProviderImpl();
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setConnectionProperties(Application.prop);
-        dataSource.setUrl(Application.prop.getProperty("hibernate.connection.url"));
-        connectionProvider.setDataSource(dataSource);
-        connectionProvider.configure(Application.prop);
-        
-        DatasourceConnectionProviderImpl connectionProvider2 = new DatasourceConnectionProviderImpl();
-        DriverManagerDataSource dataSource2 = new DriverManagerDataSource();
-        dataSource2.setConnectionProperties(Application.prop2);
-        dataSource2.setUrl(Application.prop2.getProperty("hibernate.connection.url"));
-        connectionProvider2.setDataSource(dataSource2);
-        connectionProvider2.configure(Application.prop2);
+//        DatasourceConnectionProviderImpl connectionProvider = new DatasourceConnectionProviderImpl();
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//        dataSource.setConnectionProperties(Application.prop);
+//        dataSource.setUrl(Application.prop.getProperty("hibernate.connection.url"));
+//        connectionProvider.setDataSource(dataSource);
+//        connectionProvider.configure(Application.prop);
+//        
+//        DatasourceConnectionProviderImpl connectionProvider2 = new DatasourceConnectionProviderImpl();
+//        DriverManagerDataSource dataSource2 = new DriverManagerDataSource();
+//        dataSource2.setConnectionProperties(Application.prop2);
+//        dataSource2.setUrl(Application.prop2.getProperty("hibernate.connection.url"));
+//        connectionProvider2.setDataSource(dataSource2);
+//        connectionProvider2.configure(Application.prop2);
         
         DatasourceConnectionProviderImpl connectionProvider3 = new DatasourceConnectionProviderImpl();
         DriverManagerDataSource dataSource3 = new DriverManagerDataSource();
@@ -128,8 +128,8 @@ public class MasterService3 {
         connectionProvider3.setDataSource(dataSource3);
         connectionProvider3.configure(Application.prop3);
          
-        hashMap.put("tenantId", connectionProvider);
-        hashMap.put("tenantId2", connectionProvider2);
+//        hashMap.put("tenantId", connectionProvider);
+//        hashMap.put("tenantId2", connectionProvider2);
         hashMap.put("tenantId3", connectionProvider3);
         
         return hashMap;

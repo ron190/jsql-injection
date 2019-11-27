@@ -69,7 +69,7 @@ public class HibernateConf {
     private final Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
         //hibernateProperties.setProperty(          "hibernate.hbm2ddl.auto", "create-drop");
-        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
+        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 //        hibernateProperties.setProperty("hibernate.multi_tenant_connection_provider", "hello.MultiTenantConnectionProviderImpl2");
         hibernateProperties.setProperty("hibernate.multi_tenant_connection_provider", "spring.MultiTenantConnectionProviderImpl3");
         hibernateProperties.setProperty("hibernate.tenant_identifier_resolver", "spring.CurrentTenantIdentifierResolverImpl");

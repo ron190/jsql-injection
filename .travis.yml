@@ -1,5 +1,9 @@
 language: java
 
+git:
+  # Fix Sonar WARNING 'Shallow clone detected'
+  depth: false
+
 services: docker
   
 before_install:
