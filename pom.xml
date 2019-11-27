@@ -51,6 +51,25 @@
         </testResources>
 
 		<plugins>
+  
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+        <version>1.0.0</version>
+        <executions>
+          <execution>
+            <phase>initialize</phase>
+            <goals>
+              <goal>read-project-properties</goal>
+            </goals>
+            <configuration>
+              <files>
+                <file>sonar-project.properties</file>
+              </files>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
 
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -383,4 +402,6 @@
     		</dependency>
 
 	</dependencies>
+ 
+ 
 </project>
