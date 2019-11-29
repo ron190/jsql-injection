@@ -1,12 +1,8 @@
 package spring;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Properties;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.persistence.EntityManager;
@@ -32,26 +28,27 @@ public class GreetingController {
 
     @RequestMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+        
         EntityManager em = sessionFactorya.createEntityManager();
-        //Query q = em.createNativeQuery("select * from MYDB1.TBL1");
         Query q = em.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
-        
-        List<Object[]> l;
-        try {
-            l = q.getResultList();
-        } catch (Exception e) {
-            l = new ArrayList<>();
-            System.out.println(e.getMessage());
-        }
-        
-//        l.stream().forEach(e -> Arrays.asList((Object[]) e).stream().forEach(System.out::println));
         
         ObjectMapper objectMapper = new ObjectMapper();
         
-        Properties p = new Properties();
-        p.load(new StringReader("key="+objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(l)));
+        List<Object[]> l;
+        Greeting greeting = null;
+        try {
+            l = q.getResultList();
+            em.close();
+            sessionFactorya.getCurrentSession().close();
+            
+            greeting = new Greeting(counter.incrementAndGet(),
+                    String.format(template, name) + StringEscapeUtils.unescapeJava(objectMapper.writeValueAsString(l)));
+        } catch (Exception e) {
+            l = new ArrayList<>();
+//            System.out.println(e.getMessage());
+        }
         
-        return new Greeting(counter.incrementAndGet(),
-                            String.format(template, name) + StringEscapeUtils.unescapeJava(objectMapper.writeValueAsString(l)));
+        
+        return greeting;
     }
 }

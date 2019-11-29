@@ -1,17 +1,20 @@
-package com.test.vendor.mysql;
+package com.test.vendor.h2;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.injection.strategy.StrategyInjection;
+import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.ParameterUtil;
 import com.jsql.util.PreferencesUtil;
@@ -19,7 +22,6 @@ import com.jsql.view.terminal.SystemOutTerminal;
 
 import spring.Application;
 
-//@Ignore
 //@RunWith(SpringRunner.class)
 //@SpringBootTest
 public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
@@ -52,13 +54,13 @@ public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
         ParameterUtil.initQueryString("http://localhost:8080/greeting");
         ParameterUtil.initRequest("");
 //        ParameterUtil.initHeader("lib: 0");
-        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("tenantId", "mysql"), new SimpleEntry<String, String>("name", "1'")));
+        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("tenantId", "h2"), new SimpleEntry<String, String>("name", "1'")));
         ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
         ConnectionUtil.setTypeRequest("GET");
         
-        MediatorModel.model().beginInjection();
-
         MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
+        MediatorModel.model().setVendorByUser(Vendor.H2);
+        MediatorModel.model().beginInjection();
     }
     
     @AfterClass

@@ -669,11 +669,6 @@ public class InjectionModel extends AbstractModelObservable {
         // Remove SQL comments
         query = query.replaceAll("(?s)/\\*.*?\\*/", "");
         
-        // TODO
-        // Urlencode backtick and pipe (for Java only)
-        query = query.replaceAll("(?s)`", "%60");
-        query = query.replaceAll("(?s)\\|", "%7C");
-        
         if (methodInjection == MethodInjection.REQUEST) {
             if (ParameterUtil.isRequestSoap()) {
                 query = query.replaceAll("%2b", "+");
@@ -688,6 +683,16 @@ public class InjectionModel extends AbstractModelObservable {
             // Replace spaces
             query = query.replaceAll("\\s+", "+");
         }
+        
+        // TODO
+        // Urlencode backtick and pipe (for Java only)
+        query = query.replaceAll("(?s)`", "%60");
+        query = query.replaceAll("(?s)\\|", "%7C");
+        query = query.replaceAll("(?s)'", "%27");
+        query = query.replaceAll("(?s)\\)", "%29");
+        query = query.replaceAll("(?s)\\?", "%3F");
+        query = query.replaceAll("(?s) ", "+");
+        query = query.replaceAll("(?s)\"", "%22");
         
         if (ConnectionUtil.getMethodInjection() == methodInjection) {
             query = TamperingUtil.tamper(query);

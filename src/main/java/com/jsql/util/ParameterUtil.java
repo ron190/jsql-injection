@@ -6,6 +6,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -168,15 +169,15 @@ public class ParameterUtil {
     }
     
     public static String getQueryStringFromEntries() {
-        return queryString.stream().map(e -> e.getKey()+"="+e.getValue()).collect(Collectors.joining("&"));
+        return queryString.stream().filter(Objects::nonNull).map(e -> e.getKey()+"="+e.getValue()).collect(Collectors.joining("&"));
     }
 
     public static String getRequestFromEntries() {
-        return request.stream().map(e -> e.getKey()+"="+e.getValue()).collect(Collectors.joining("&"));
+        return request.stream().filter(Objects::nonNull).map(e -> e.getKey()+"="+e.getValue()).collect(Collectors.joining("&"));
     }
     
     public static String getHeaderFromEntries() {
-        return header.stream().map(e -> e.getKey()+":"+e.getValue()).collect(Collectors.joining("\\r\\n"));
+        return header.stream().filter(Objects::nonNull).map(e -> e.getKey()+":"+e.getValue()).collect(Collectors.joining("\\r\\n"));
     }
 
     public static void initQueryString(String urlQuery) throws MalformedURLException {

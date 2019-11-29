@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +34,12 @@ public abstract class AbstractTestSuite {
 		// Use Timeout fix in Model
 		PropertyConfigurator.configure("src/test/resources/log4j2.properties");
 		jcifs.Config.registerSmbURLHandler();
+
+        try {
+            org.h2.tools.Server server = org.h2.tools.Server.createTcpServer().start();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 	}
 	
     /**

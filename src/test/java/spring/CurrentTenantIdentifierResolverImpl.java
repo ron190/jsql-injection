@@ -13,10 +13,10 @@ public class CurrentTenantIdentifierResolverImpl implements CurrentTenantIdentif
         if (attr != null) {
         tenantId = attr.getRequest().getParameter("tenantId");
         if(tenantId == null) {
-            tenantId = "tenantId";
+            tenantId = "h2";
         }
         } else {
-            tenantId = "tenantId";
+            tenantId = "h2";
         }
         return tenantId;
     }
