@@ -149,6 +149,11 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>com/jsql/view/swing/**/*.class</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
 
 		</plugins>

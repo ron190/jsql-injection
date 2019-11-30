@@ -5,6 +5,11 @@ import com.test.AbstractTestSuite;
 public class ConcreteMysqlTestSuite extends AbstractTestSuite {
 
     public ConcreteMysqlTestSuite () {
+        this.config();
+        this.requestJdbc();
+    }
+    
+    public void config() {
         this.jdbcURL = "jdbc:mysql://127.0.0.1/musicstore";
         this.jdbcUser = "root";
         this.jdbcPass = "my-secret-pw";
@@ -20,8 +25,6 @@ public class ConcreteMysqlTestSuite extends AbstractTestSuite {
         this.jdbcQueryForTableNames =    "select TABLE_NAME from INFORMATION_SCHEMA.tables where TABLE_SCHEMA='"+ this.jsqlDatabaseName +"'";
         this.jdbcQueryForColumnNames =   "select COLUMN_NAME from information_schema.columns where TABLE_SCHEMA='"+ this.jsqlDatabaseName +"' and TABLE_NAME='"+ this.jsqlTableName +"'";
         this.jdbcQueryForValues =    "select "+ this.jsqlColumnName +" from `"+ this.jsqlDatabaseName +"`.`"+ this.jsqlTableName +"`";
-        
-        this.requestJdbc();
     }
     
 }

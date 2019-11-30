@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,10 +65,7 @@ public class GreetingController {
         try {
             q.getResultList();
         } catch (Exception e) {
-            final StringWriter sw = new StringWriter();
-            final PrintWriter pw = new PrintWriter(sw, false);
-            e.printStackTrace(pw);
-            String stacktrace = sw.getBuffer().toString();
+            String stacktrace = ExceptionUtils.getStackTrace(e);
             
             greeting = new Greeting(
                 counter.incrementAndGet(),

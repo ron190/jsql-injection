@@ -14,7 +14,7 @@ import com.jsql.util.ParameterUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 
-public class MysqlErrobasedHeaderTestSuite extends ConcreteMysqlTestSuite {
+public class MysqlErrobasedHeaderTestSuite extends ConcreteMysqlErrorTestSuite {
 
     @BeforeClass
     public static void initialize() throws Exception {
