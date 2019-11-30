@@ -692,7 +692,9 @@ public class InjectionModel extends AbstractModelObservable {
         query = query.replaceAll("(?s)\\(", "%28");
         query = query.replaceAll("(?s)\\)", "%29");
         query = query.replaceAll("(?s)\\?", "%3F");
-        query = query.replaceAll("(?s):", "%3A");
+//        query = query.replaceAll("(?s):", "%3A");
+        // HTTP and Hibernate JPQL  purpose : => \:
+        query = query.replaceAll("(?s):", "%5C%3A");
         query = query.replaceAll("(?s) ", "+");
         query = query.replaceAll("(?s)\"", "%22");
         

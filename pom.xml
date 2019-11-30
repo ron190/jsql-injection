@@ -20,13 +20,6 @@
 
 	<properties>
 		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
-<!--         <sonar.exclusions> -->
-<!--             **/*.js,  -->
-<!--             **/vendor/model/Model.java,  -->
-<!--             **/SQLLexer.java,  -->
-<!--             **/DigestMD4.java,  -->
-<!--             **/blind/patch/* -->
-<!--         </sonar.exclusions> -->
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
@@ -52,97 +45,92 @@
 
 		<plugins>
   
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>properties-maven-plugin</artifactId>
-        <version>1.0.0</version>
-        <executions>
-          <execution>
-            <phase>initialize</phase>
-            <goals>
-              <goal>read-project-properties</goal>
-            </goals>
-            <configuration>
-              <files>
-                <file>sonar-project.properties</file>
-              </files>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-    <version>3.2.0</version>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<archive>
-						<manifest>
-							<mainClass>com.jsql.MainApplication</mainClass>
-						</manifest>
-						<manifestEntries>
-							<Built-By>ron190</Built-By>
-						</manifestEntries>
-					</archive>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.apache.maven.plugins</groupId> -->
-<!-- 				<artifactId>maven-compiler-plugin</artifactId> -->
-<!-- 				<version>3.5.1</version> -->
-<!-- 				<configuration> -->
-<!-- 					<source>1.8</source> -->
-<!-- 					<target>1.8</target> -->
-<!-- 				</configuration> -->
-<!-- 			</plugin> -->
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.22.2</version>
-				<configuration>
-<!-- 					<skipTests>true</skipTests> -->
-<test>MysqlNormalHeaderTestSuite, H2NormalGetTestSuite, PostgreNormalGetTestSuite</test>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.1.0</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>shade</goal>
-						</goals>
-						<configuration>
-							<transformers>
-								<transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.jsql.MainApplication</mainClass>
-									<manifestEntries>
-										<Built-By>ron190</Built-By>
-									</manifestEntries>
-								</transformer>
-							</transformers>
-							<minimizeJar>true</minimizeJar>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-   
+            <!-- Read sonar-project.properties usually ignored by mvn -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <files>
+                                <file>sonar-project.properties</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+    
+    		<plugin>
+    			<artifactId>maven-assembly-plugin</artifactId>
+                   <version>3.2.0</version>
+    			<configuration>
+    				<descriptorRefs>
+    					<descriptorRef>jar-with-dependencies</descriptorRef>
+    				</descriptorRefs>
+    				<archive>
+    					<manifest>
+    						<mainClass>com.jsql.MainApplication</mainClass>
+    					</manifest>
+    					<manifestEntries>
+    						<Built-By>ron190</Built-By>
+    					</manifestEntries>
+    				</archive>
+    			</configuration>
+    			<executions>
+    				<execution>
+    					<phase>package</phase>
+    					<goals>
+    						<goal>single</goal>
+    					</goals>
+    				</execution>
+    			</executions>
+    		</plugin>
+    
+    		<plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-surefire-plugin</artifactId>
+    			<version>2.22.2</version>
+    			<configuration>
+                    <test>
+                        MysqlNormalHeaderTestSuite, 
+                        H2NormalGetTestSuite, 
+                        PostgreNormalGetTestSuite
+                    </test>
+    			</configuration>
+    		</plugin>
+    
+    		<plugin>
+    			<groupId>org.apache.maven.plugins</groupId>
+    			<artifactId>maven-shade-plugin</artifactId>
+    			<version>3.1.0</version>
+    			<executions>
+    				<execution>
+    					<phase>package</phase>
+    					<goals>
+    						<goal>shade</goal>
+    					</goals>
+    					<configuration>
+    						<transformers>
+    							<transformer
+    								implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+    								<mainClass>com.jsql.MainApplication</mainClass>
+    								<manifestEntries>
+    									<Built-By>ron190</Built-By>
+    								</manifestEntries>
+    							</transformer>
+    						</transformers>
+    						<minimizeJar>true</minimizeJar>
+    					</configuration>
+    				</execution>
+    			</executions>
+    		</plugin>
+       
+            <!-- Generate reports for Sonar and Codecov -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -164,262 +152,188 @@
             </plugin>
 
 		</plugins>
-
 	</build>
  
- <dependencyManagement>
-    <dependencies>
-        <dependency>
-            <!-- Import dependency management from Spring Boot -->
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-dependencies</artifactId>
-            <version>2.2.1.RELEASE</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
-    </dependencies>
-</dependencyManagement>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>2.2.1.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 	<dependencies>
  
-<!--  test --><dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-test</artifactId>
-    <scope>test</scope>
-    <exclusions>
-<!--         <exclusion> -->
-<!--             <groupId>org.springframework.boot</groupId> -->
-<!--             <artifactId>spring-boot-starter-logging</artifactId> -->
-<!--         </exclusion> -->
-    </exclusions>
-<!--     <exclusions> -->
-<!--         <exclusion> -->
-<!--             <groupId>ch.qos.logback</groupId> -->
-<!--             <artifactId>logback-core</artifactId> -->
-<!--         </exclusion> -->
-<!--         <exclusion> -->
-<!--             <groupId>ch.qos.logback</groupId> -->
-<!--             <artifactId>logback-classic</artifactId> -->
-<!--         </exclusion> -->
-<!--         <exclusion> -->
-<!--             <groupId>org.apache.logging.log4j</groupId> -->
-<!--             <artifactId>log4j-to-slf4j</artifactId> -->
-<!--         </exclusion> -->
-<!--         <exclusion> -->
-<!--             <groupId>org.apache.logging.log4j</groupId> -->
-<!--             <artifactId>log4j-slf4j-impl</artifactId> -->
-<!--         </exclusion> -->
-<!--     </exclusions> -->
-</dependency>
-<!-- <dependency> -->
-<!--     <groupId>org.springframework.boot</groupId> -->
-<!--     <artifactId>spring-boot-starter-log4j2</artifactId> -->
-<!-- </dependency> -->
-<dependency>
-  <groupId>org.springframework</groupId>
-  <artifactId>spring-beans</artifactId>
-  </dependency><dependency>
-  <groupId>org.springframework</groupId>
-  <artifactId>spring-core</artifactId>
-  </dependency>
-  <dependency>
-   <groupId>org.springframework.boot</groupId>
-   <artifactId>spring-boot-starter-web</artifactId>
-   <scope>test</scope>
-  </dependency>
-  <dependency>
-   <groupId>com.jayway.jsonpath</groupId>
-   <artifactId>json-path</artifactId>
-   <scope>test</scope>
-  </dependency>
-  <dependency>
-   <groupId>org.hibernate</groupId>
-   <artifactId>hibernate-core</artifactId>
-   <scope>test</scope>
-  </dependency>
-  <dependency>
-   <groupId>org.springframework</groupId>
-   <artifactId>spring-orm</artifactId>
-   <scope>test</scope>
-  </dependency>
-  <dependency>
-   <groupId>com.h2database</groupId>
-   <artifactId>h2</artifactId>
-   <scope>test</scope>
-  </dependency>
-  <dependency>
-   <groupId>mysql</groupId>
-   <artifactId>mysql-connector-java</artifactId>
-   <version>8.0.16</version>
-   <scope>test</scope>
-  </dependency>
-  <dependency>
-   <groupId>org.apache.tomcat</groupId>
-   <artifactId>tomcat-dbcp</artifactId>
-   <version>9.0.1</version>
-   <scope>test</scope>
-  </dependency>
-  <dependency>
-   <groupId>org.hibernate</groupId>
-   <artifactId>hibernate-c3p0</artifactId>
-   <scope>test</scope>
-  </dependency>
-<dependency>
-    <groupId>org.apache.commons</groupId>
-    <artifactId>commons-text</artifactId>
-    <version>1.8</version>
-   <scope>test</scope>
-</dependency>
+        <!--  test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <!-- Downgrade version, 8.0.18 improperly throws -->
+            <!-- org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] -->
+            <version>8.0.17</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-dbcp</artifactId>
+            <version>9.0.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.8</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>cubrid</groupId>
+            <artifactId>cubrid-jdbc</artifactId>
+            <version>10.0.0.1376</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.informix</groupId>
+            <artifactId>jdbc</artifactId>
+            <version>4.10.7.20160517</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.ingres.jdbc</groupId>
+            <artifactId>iijdbc</artifactId>
+            <version>10.0-4.0.6</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Used by Informix JDBC Driver -->
+<!--        <dependency> -->
+<!--            <groupId>org.apache.logging.log4j</groupId> -->
+<!--            <artifactId>log4j-slf4j-impl</artifactId> -->
+<!--            <version>2.6.2</version> -->
+<!--            <scope>test</scope> -->
+<!--        </dependency> -->
+        <!-- Used by Informix JDBC Driver -->
+<!--        <dependency> -->
+<!--            <groupId>org.apache.logging.log4j</groupId> -->
+<!--            <artifactId>log4j-core</artifactId> -->
+<!--            <version>2.6.2</version> -->
+<!--            <scope>test</scope> -->
+<!--        </dependency> -->
 
-<!-- jsql -->
-
+        <!-- jsql -->
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.10</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
 			<version>1.8.1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.3.2</version>
 		</dependency>
-
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20140107</version>
 		</dependency>
-
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
-
-<!-- 		<dependency> -->
-<!-- 			<groupId>spnego</groupId> -->
-<!-- 			<artifactId>spnego</artifactId> -->
-<!-- 			<version>7.0</version> -->
-<!-- 		</dependency> -->
         <dependency>
             <groupId>net.sourceforge.spnego</groupId>
             <artifactId>spnego</artifactId>
             <version>7.0</version>
         </dependency>
-
-<!-- 		<dependency> -->
-<!-- 			<groupId>jcifs</groupId> -->
-<!-- 			<artifactId>jcifs</artifactId> -->
-<!-- 			<version>1.3.18</version> -->
-<!-- 		</dependency> -->
         <dependency>
             <groupId>jcifs</groupId>
             <artifactId>jcifs</artifactId>
             <version>1.3.17</version>
         </dependency>
-  
         <dependency>
             <groupId>com.googlecode.juniversalchardet</groupId>
             <artifactId>juniversalchardet</artifactId>
             <version>1.0.3</version>
         </dependency>
-        
-        <!-- Tests -->
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-            <scope>test</scope>
-		</dependency>
-
-<!-- 		<dependency> -->
-<!-- 			<groupId>mysql</groupId> -->
-<!-- 			<artifactId>mysql-connector-java</artifactId> -->
-   
-<!--    <version>8.0.16</version> -->
-<!-- 			<version>5.1.34</version> -->
-<!-- 			<scope>test</scope> -->
-<!-- 		</dependency> -->
-
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.postgresql</groupId> -->
-<!-- 			<artifactId>postgresql</artifactId> -->
-<!-- 			<version>9.3-1102-jdbc41</version> -->
-<!-- 			<scope>test</scope> -->
-<!-- 		</dependency> -->
-
-<dependency>
-    <groupId>org.postgresql</groupId>
-    <artifactId>postgresql</artifactId>
-<!--   <version>42.2.6</version> -->
-  			<scope>test</scope>
-</dependency>
-
-		<dependency>
-			<groupId>cubrid</groupId>
-			<artifactId>cubrid-jdbc</artifactId>
-			<version>10.0.0.1376</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.ibm.informix</groupId>
-			<artifactId>jdbc</artifactId>
-			<version>4.10.7.20160517</version>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- Used by Informix JDBC Driver -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.apache.logging.log4j</groupId> -->
-<!-- 			<artifactId>log4j-slf4j-impl</artifactId> -->
-<!-- 			<version>2.6.2</version> -->
-<!-- 			<scope>test</scope> -->
-<!-- 		</dependency> -->
-
-		<!-- Used by Informix JDBC Driver -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.apache.logging.log4j</groupId> -->
-<!-- 			<artifactId>log4j-core</artifactId> -->
-<!-- 			<version>2.6.2</version> -->
-<!-- 			<scope>test</scope> -->
-<!-- 		</dependency> -->
-
-		<dependency>
-			<groupId>com.ingres.jdbc</groupId>
-			<artifactId>iijdbc</artifactId>
-			<version>10.0-4.0.6</version>
-			<scope>test</scope>
-		</dependency>
-  
       	<dependency>
         	<groupId>com.fasterxml.jackson.core</groupId>
         	<artifactId>jackson-databind</artifactId>
-        	</dependency>
+       	</dependency>
       	<dependency>
         	<groupId>com.fasterxml.jackson.core</groupId>
         	<artifactId>jackson-core</artifactId>
-        	</dependency>
+       	</dependency>
 		<dependency>
     		<groupId>com.fasterxml.jackson.dataformat</groupId>
     		<artifactId>jackson-dataformat-xml</artifactId>
-    		</dependency>
-
+   		</dependency>
+     
 	</dependencies>
- 
- 
 </project>

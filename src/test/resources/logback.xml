@@ -13,7 +13,7 @@
         <appender-ref ref="STDOUT"/>
     </root>
     
-<!--     Remove annoying logs -->
+    <!-- Remove annoying logs -->
     <logger name="org.hibernate.engine.jdbc.spi.SqlExceptionHelper" level="OFF" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
