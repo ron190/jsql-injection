@@ -1,10 +1,7 @@
 package com.test.vendor.mysql;
 
-import org.junit.Ignore;
-
 import com.test.AbstractTestSuite;
 
-//@Ignore
 public class ConcreteMysqlTestSuite extends AbstractTestSuite {
 
     public ConcreteMysqlTestSuite () {

@@ -16,9 +16,12 @@ import java.util.TreeSet;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.Column;
@@ -27,6 +30,8 @@ import com.jsql.model.bean.database.Table;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.test.util.Retry;
+
+import spring.Application;
 
 public abstract class AbstractTestSuite {
 	
@@ -73,8 +78,26 @@ public abstract class AbstractTestSuite {
     
     @Rule
     public Retry retry = new Retry(3);
+    
+    private static boolean setUpIsDone = false;
+    
+    protected static ConfigurableApplicationContext ctx;
+    
+    public static void runSpringApplication() throws Exception {
+        if (!setUpIsDone) {
+            Application.init();
+            ctx = SpringApplication.run(Application.class, new String[] {});
+        }
+        // do the setup
+        setUpIsDone = true;
+    }
+    
+    @AfterAll
+    public static void stop() {
+        ctx.close();
+    }
 
-    @BeforeClass
+    @BeforeAll
     public static void initialize() throws Exception {
         LOGGER.warn(
             "AbstractTestSuite and ConcreteTestSuite are for initialization purpose. "

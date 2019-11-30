@@ -12,13 +12,6 @@ public class ConcretePostgreTestSuite extends AbstractTestSuite {
         this.jsqlTableName = "student";
         this.jsqlColumnName = "Student_Id";
         
-//        this.jdbcURL = "jdbc:postgresql://"+ AbstractTestSuite.HOSTNAME +":5432/postgres";
-//        this.jdbcUser = "postgres";
-//        this.jdbcPass = "pg";
-//        this.jsqlDatabaseName = "information_schema";
-//        this.jsqlTableName = "sql_parts";
-//        this.jsqlColumnName = "feature_id";
-        
         this.jdbcColumnForDatabaseName = "table_schema";
         this.jdbcColumnForTableName = "table_name";
         this.jdbcColumnForColumnName = "column_name";

@@ -3,10 +3,7 @@ package com.test.vendor.mysql;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
@@ -17,17 +14,11 @@ import com.jsql.util.ParameterUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 
-import spring.Application;
-
-//@Ignore
 public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
-    
-    static ConfigurableApplicationContext ctx;
     
     @BeforeClass
     public static void initialize() throws Exception {
-        Application.init();
-        ctx = SpringApplication.run(Application.class, new String[] {});
+        runSpringApplication();
         
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);
@@ -46,11 +37,6 @@ public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
         MediatorModel.model().beginInjection();
 
         MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
-    }
-    
-    @AfterClass
-    public static void stop() {
-                ctx.close();
     }
     
 }

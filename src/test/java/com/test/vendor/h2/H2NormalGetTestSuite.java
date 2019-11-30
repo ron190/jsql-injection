@@ -3,12 +3,7 @@ package com.test.vendor.h2;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
@@ -20,16 +15,11 @@ import com.jsql.util.ParameterUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 
-import spring.Application;
-
 public class H2NormalGetTestSuite extends ConcreteH2TestSuite {
-    
-    static ConfigurableApplicationContext ctx;
     
     @BeforeClass
     public static void initialize() throws Exception {
-        Application.init();
-        ctx = SpringApplication.run(Application.class, new String[] {});
+        runSpringApplication();
         
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);
@@ -48,11 +38,6 @@ public class H2NormalGetTestSuite extends ConcreteH2TestSuite {
         MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
         MediatorModel.model().setVendorByUser(Vendor.H2);
         MediatorModel.model().beginInjection();
-    }
-    
-    @AfterClass
-    public static void stop() {
-                ctx.close();
     }
     
 }
