@@ -151,7 +151,7 @@
                 </executions>
                 <configuration>
                     <excludes>
-                        <exclude>com/jsql/view/swing/**/*.class</exclude>
+                        <exclude>**/com/jsql/view/swing/**/*.class</exclude>
                     </excludes>
                 </configuration>
             </plugin>
