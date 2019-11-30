@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <hibernate-configuration>
    <session-factory>
-       <mapping resource="student.hbm.xml" /> 
    </session-factory>
 </hibernate-configuration>
 

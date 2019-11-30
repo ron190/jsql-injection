@@ -1,7 +1,8 @@
 package spring;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -26,30 +27,59 @@ public class GreetingController {
     @Autowired
     private SessionFactory sessionFactorya;
 
+    ObjectMapper objectMapper = new ObjectMapper();
+    
     @RequestMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         EntityManager em = sessionFactorya.createEntityManager();
         Query q = em.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
         
-        ObjectMapper objectMapper = new ObjectMapper();
-        
-        List<Object[]> l;
         Greeting greeting = null;
         try {
-            l = q.getResultList();
+            List<Object[]> l = q.getResultList();
+            
+            greeting = new Greeting(
+                counter.incrementAndGet(),
+                String.format(template, name)
+                + StringEscapeUtils.unescapeJava(objectMapper.writeValueAsString(l))
+            );
+        } catch (Exception e) {
+            // Hide useless SQL error messages
+        } finally {
             em.close();
             sessionFactorya.getCurrentSession().close();
-            
-            greeting = new Greeting(counter.incrementAndGet(),
-                    String.format(template, name) + StringEscapeUtils.unescapeJava(objectMapper.writeValueAsString(l)));
-        } catch (Exception e) {
-            l = new ArrayList<>();
-//            System.out.println("select First_Name from Student where '1' = '"+name+"'");
-//            e.printStackTrace();
         }
-        
         
         return greeting;
     }
+
+    @RequestMapping("/greeting-error")
+    public Greeting greetingError(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+        
+        EntityManager em = sessionFactorya.createEntityManager();
+        Query q = em.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+        
+        Greeting greeting = null;
+        try {
+            q.getResultList();
+        } catch (Exception e) {
+            final StringWriter sw = new StringWriter();
+            final PrintWriter pw = new PrintWriter(sw, false);
+            e.printStackTrace(pw);
+            String stacktrace = sw.getBuffer().toString();
+            
+            greeting = new Greeting(
+                counter.incrementAndGet(),
+                String.format(template+"#", name) 
+                + StringEscapeUtils.unescapeJava(stacktrace)
+            );
+        } finally {
+            em.close();
+            sessionFactorya.getCurrentSession().close();
+        }
+        
+        return greeting;
+    }
+
 }

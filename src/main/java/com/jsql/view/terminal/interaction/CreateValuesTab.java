@@ -42,7 +42,6 @@ public class CreateValuesTab implements InteractionCommand {
     @Override
     public void execute() {
         LOGGER.info("CreateValuesTab: " + Arrays.deepToString(this.data) +"\n");
-        LOGGER.info("\n");
     }
     
 }

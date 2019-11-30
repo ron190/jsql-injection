@@ -1,7 +1,9 @@
 package com.test.vendor.mysql;
 
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
+
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
@@ -11,13 +13,13 @@ import com.jsql.util.ConnectionUtil;
 import com.jsql.util.ParameterUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
-import com.test.AbstractTestSuite;
 
-@Ignore
 public class MysqlErrobasedHeaderTestSuite extends ConcreteMysqlTestSuite {
 
     @BeforeClass
     public static void initialize() throws Exception {
+        runSpringApplication();
+        
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);
         model.displayVersion();
@@ -26,11 +28,16 @@ public class MysqlErrobasedHeaderTestSuite extends ConcreteMysqlTestSuite {
 
         PreferencesUtil.setNotTestingConnection(true);
         
-        ParameterUtil.initQueryString("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_header.php");
+        ParameterUtil.initQueryString("http://localhost:8080/greeting-error");
         ParameterUtil.initRequest("");
-        ParameterUtil.initHeader("lib: 0");
-        ConnectionUtil.setMethodInjection(MethodInjection.HEADER);
-        ConnectionUtil.setTypeRequest("POST");
+        ParameterUtil.setQueryString(
+            Arrays.asList(
+                new SimpleEntry<String, String>("tenantId", "mysql-error"), 
+                new SimpleEntry<String, String>("name", "1'")
+            )
+        );
+        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
+        ConnectionUtil.setTypeRequest("GET");
         
         MediatorModel.model().beginInjection();
 

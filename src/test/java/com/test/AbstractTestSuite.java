@@ -15,6 +15,7 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.h2.tools.Server;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,7 +42,7 @@ public abstract class AbstractTestSuite {
 		jcifs.Config.registerSmbURLHandler();
 
         try {
-            org.h2.tools.Server server = org.h2.tools.Server.createTcpServer().start();
+            Server.createTcpServer().start();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -280,7 +281,7 @@ public abstract class AbstractTestSuite {
             set2.addAll(this.valueToFind);
 
             LOGGER.info(
-                "<<listValues: found "+
+                "listValues: found "+
                 set1.toString()
                     .replaceAll("\n", "[n]")
                     .replaceAll("\r", "[r]") +
@@ -288,7 +289,7 @@ public abstract class AbstractTestSuite {
                 set2.toString()
                     .replaceAll("\n", "[n]")
                     .replaceAll("\r", "[r]") +
-                ">>\n"
+                "\n"
             );
             Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
             

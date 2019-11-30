@@ -3,9 +3,11 @@ language: java
 services: docker
   
 before_install:
-  - docker build -t mysql -f src/main/resources/docker/Dockerfile.mysql .
-  - docker build -t postgres -f src/main/resources/docker/Dockerfile.postgres .
+  - docker build -t mysql -f src/test/resources/docker/Dockerfile.mysql .
+  - docker build -t mysql -f src/test/resources/docker/Dockerfile.mysql-5.5.40 .
+  - docker build -t postgres -f src/test/resources/docker/Dockerfile.postgres .
   - docker run --name jsql-mysql --publish 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql
+  - docker run --name jsql-mysql-5.5.40 --publish 3307:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:5.5.40
   - docker run --name jsql-postgres --publish 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -d postgres
 #  - rm "${JAVA_HOME}/lib/security/cacerts"
 #  - ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"

@@ -55,8 +55,7 @@ public class MessageHeader implements InteractionCommand {
         LOGGER.debug("Post: " + this.post);
         LOGGER.debug("Header: " + this.header);
         LOGGER.debug("Content-Length: " + this.response.get("Content-Length"));
-        LOGGER.debug("Content-Type: " + this.response.get("Content-Type"));
-        LOGGER.debug("\n");
+        LOGGER.debug("Content-Type: " + this.response.get("Content-Type") + "\n");
     }
     
 }

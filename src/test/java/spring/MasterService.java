@@ -1,6 +1,8 @@
 package spring;
+
 import java.sql.DriverManager;
 import java.util.HashMap;
+import java.util.stream.Stream;
 
 import org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
@@ -9,41 +11,29 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 public class MasterService {
     
     public static HashMap<String, ConnectionProvider> getDataSourceHashMap() {
-
-        HashMap<String, ConnectionProvider> hashMap = new HashMap<>();
-        
-        DatasourceConnectionProviderImpl connectionProviderH2 = new DatasourceConnectionProviderImpl();
-        DriverManagerDataSource dataSourceH2 = new DriverManagerDataSource();
-        dataSourceH2.setConnectionProperties(Application.propsH2);
-        dataSourceH2.setUrl(Application.propsH2.getProperty("hibernate.connection.url"));
-        connectionProviderH2.setDataSource(dataSourceH2);
-        connectionProviderH2.configure(Application.propsH2);
         
         // Remove annoying logs from jdbc driver
         DriverManager.setLogWriter(null);
+
+        HashMap<String, ConnectionProvider> hashMap = new HashMap<>();
         
-        DatasourceConnectionProviderImpl connectionProviderMySQL = new DatasourceConnectionProviderImpl();
-        DriverManagerDataSource dataSourceMySQL = new DriverManagerDataSource();
-        dataSourceMySQL.setConnectionProperties(Application.propsMySQL);
-        dataSourceMySQL.setUrl(Application.propsMySQL.getProperty("hibernate.connection.url"));
-        dataSourceMySQL.setUsername(Application.propsMySQL.getProperty("hibernate.connection.username"));
-        dataSourceMySQL.setPassword(Application.propsMySQL.getProperty("hibernate.connection.password"));
-        connectionProviderMySQL.setDataSource(dataSourceMySQL);
-        connectionProviderMySQL.configure(Application.propsMySQL);
-        
-        DatasourceConnectionProviderImpl connectionProviderPostgres = new DatasourceConnectionProviderImpl();
-        DriverManagerDataSource dataSourcePostgres = new DriverManagerDataSource();
-        dataSourcePostgres.setConnectionProperties(Application.propsPostgres);
-        dataSourcePostgres.setUrl(Application.propsPostgres.getProperty("hibernate.connection.url"));
-        dataSourcePostgres.setUsername(Application.propsPostgres.getProperty("hibernate.connection.username"));
-        dataSourcePostgres.setPassword(Application.propsPostgres.getProperty("hibernate.connection.password"));
-        connectionProviderPostgres.setDataSource(dataSourcePostgres);
-        connectionProviderPostgres.configure(Application.propsPostgres);
+        Stream.of(
+            Application.propsH2, 
+            Application.propsMySQL, 
+            Application.propsMySQLError, 
+            Application.propsPostgres
+        ).forEach(props -> {
+            DatasourceConnectionProviderImpl connectionProviderPostgres = new DatasourceConnectionProviderImpl();
+            DriverManagerDataSource dataSourcePostgres = new DriverManagerDataSource();
+            dataSourcePostgres.setConnectionProperties(props);
+            dataSourcePostgres.setUrl(props.getProperty("hibernate.connection.url"));
+            dataSourcePostgres.setUsername(props.getProperty("hibernate.connection.username"));
+            dataSourcePostgres.setPassword(props.getProperty("hibernate.connection.password"));
+            connectionProviderPostgres.setDataSource(dataSourcePostgres);
+            connectionProviderPostgres.configure(props);
+            hashMap.put(props.getProperty("jsql.tenant"), connectionProviderPostgres);
+        });
          
-        hashMap.put("h2", connectionProviderH2);
-        hashMap.put("mysql", connectionProviderMySQL);
-        hashMap.put("postgres", connectionProviderPostgres);
-        
         return hashMap;
     }
 }

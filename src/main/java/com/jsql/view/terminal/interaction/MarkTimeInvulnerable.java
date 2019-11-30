@@ -33,8 +33,7 @@ public class MarkTimeInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        LOGGER.info("MarkTimeInvulnerable");
-        LOGGER.info("\n");
+        LOGGER.info("MarkTimeInvulnerable\n");
     }
     
 }

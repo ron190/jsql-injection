@@ -10,30 +10,25 @@
  ******************************************************************************/
 package com.jsql.view.terminal.interaction;
 
-import org.apache.log4j.Logger;
-
+import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
+import com.jsql.view.swing.MediatorGui;
 
 /**
- * Mark the injection as vulnerable to a blind injection.
+ * Mark the injection as invulnerable to a normal injection.
  */
-public class MarkBlindVulnerable implements InteractionCommand {
+public class MarkNormalInvulnerable implements InteractionCommand {
 	
-    /**
-     * Using default log4j.properties from root /
-     */
-    private static final Logger LOGGER = Logger.getRootLogger();
-
     /**
      * @param interactionParams
      */
-    public MarkBlindVulnerable(Object[] interactionParams) {
+    public MarkNormalInvulnerable(Object[] interactionParams) {
         // Do nothing
     }
 
     @Override
     public void execute() {
-        LOGGER.info("MarkBlindVulnerable\n");
+        LOGGER.info("MarkNormalInvulnerable\n");
     }
     
 }
