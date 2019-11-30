@@ -32,7 +32,7 @@ public abstract class AbstractTestSuite {
 	
 	static {
 		// Use Timeout fix in Model
-		PropertyConfigurator.configure("src/test/resources/log4j2.properties");
+		PropertyConfigurator.configure("src/test/resources/log4j.stdout.properties");
 		jcifs.Config.registerSmbURLHandler();
 
         try {
@@ -143,7 +143,7 @@ public abstract class AbstractTestSuite {
             set1.addAll(databasesFound);
             set2.addAll(this.databaseToFind);
 
-            LOGGER.info("ListDatabases: found "+ set1 +"\nto find "+ set2 +"\n");
+            LOGGER.info("ListDatabases: found "+ set1 +" to find "+ set2 +"\n");
 
             Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.containsAll(set2));
             
@@ -178,7 +178,7 @@ public abstract class AbstractTestSuite {
             set1.addAll(tablesFound);
             set2.addAll(this.tableToFind);
 
-            LOGGER.info("listTables: found "+ set1 +"\nto find "+ set2 +"\n");
+            LOGGER.info("listTables: found "+ set1 +" to find "+ set2 +"\n");
             Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
             
         } catch (AssertionError e) {
@@ -216,7 +216,7 @@ public abstract class AbstractTestSuite {
             set1.addAll(columnsFound);
             set2.addAll(this.columnToFind);
 
-            LOGGER.info("listColumns: found "+ set1 +"\nto find "+ set2 +"\n");
+            LOGGER.info("listColumns: found "+ set1 +" to find "+ set2 +"\n");
             Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
             
         } catch (AssertionError e) {
@@ -261,7 +261,7 @@ public abstract class AbstractTestSuite {
                 set1.toString()
                     .replaceAll("\n", "[n]")
                     .replaceAll("\r", "[r]") +
-                "\nto find "+
+                " to find "+
                 set2.toString()
                     .replaceAll("\n", "[n]")
                     .replaceAll("\r", "[r]") +

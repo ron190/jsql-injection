@@ -20,6 +20,7 @@ public class Application {
 
     static Properties propsH2 = new Properties();
     static Properties propsMySQL = new Properties();
+    static Properties propsPostgres = new Properties();
 
     static {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
@@ -27,12 +28,16 @@ public class Application {
         try (
             InputStream inputStreamH2 = classloader.getResourceAsStream("spring/hibernate.h2.properties");
             InputStream inputStreamMySQL = classloader.getResourceAsStream("spring/hibernate.mysql.properties");
+            InputStream inputStreamPostgres = classloader.getResourceAsStream("spring/hibernate.postgres.properties");
             InputStream inputStreamHibernate = classloader.getResourceAsStream("spring/hibernate.cfg.properties")
         ) {
             propsH2.load(inputStreamH2);
             propsMySQL.load(inputStreamMySQL);
+            propsPostgres.load(inputStreamPostgres);
+            
             propsH2.load(inputStreamHibernate);
             propsMySQL.load(inputStreamHibernate);
+            propsPostgres.load(inputStreamHibernate);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -79,5 +84,20 @@ public class Application {
         transaction3.commit();
         session3.close();
         factory3.close();
+
+        Configuration configuration4 = new Configuration();
+        configuration4.addProperties(propsPostgres).configure("spring/hibernate.cfg.xml");
+        configuration4.addAnnotatedClass(Student.class);
+        StandardServiceRegistryBuilder builder4 = new StandardServiceRegistryBuilder()
+                .applySettings(configuration4.getProperties());
+        SessionFactory factory4 = configuration4.buildSessionFactory(builder4.build());
+        Session session4 = factory4.openSession();
+        Transaction transaction4 = session4.beginTransaction();
+        Student student4 = new Student();
+        student4.setAge(4);
+        session4.save(student4);
+        transaction4.commit();
+        session4.close();
+        factory4.close();
     }
 }

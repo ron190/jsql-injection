@@ -689,8 +689,10 @@ public class InjectionModel extends AbstractModelObservable {
         query = query.replaceAll("(?s)`", "%60");
         query = query.replaceAll("(?s)\\|", "%7C");
         query = query.replaceAll("(?s)'", "%27");
+        query = query.replaceAll("(?s)\\(", "%28");
         query = query.replaceAll("(?s)\\)", "%29");
         query = query.replaceAll("(?s)\\?", "%3F");
+        query = query.replaceAll("(?s):", "%3A");
         query = query.replaceAll("(?s) ", "+");
         query = query.replaceAll("(?s)\"", "%22");
         

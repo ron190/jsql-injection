@@ -73,7 +73,8 @@ public class StrategyInjectionError extends AbstractStrategy {
                     .replace("${INDICE}","0")
                     .replace("0%2b1", "1")
                     // TODO postgres
-                    .replace("(133707331)::text", "133707331")
+//                    .replace("(133707331)::text", "133707331")
+                    .replace("(cast(133707331 as text))", "133707331")
                     +".*"
                 )
             )) {

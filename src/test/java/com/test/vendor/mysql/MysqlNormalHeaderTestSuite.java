@@ -20,20 +20,14 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import spring.Application;
 
 //@Ignore
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
 public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
     
     static ConfigurableApplicationContext ctx;
     
     @BeforeClass
     public static void initialize() throws Exception {
-//        SpringApplication.run(Application.class, new String[] {});
-//        Application.main2(new String[] {});
         Application.init();
-//        Application.main(new String[] {});
         ctx = SpringApplication.run(Application.class, new String[] {});
-        
         
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);
@@ -43,15 +37,8 @@ public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
 
         PreferencesUtil.setNotTestingConnection(true);
         
-//        ParameterUtil.initQueryString("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_header.php");
-//        ParameterUtil.initRequest("");
-//        ParameterUtil.initHeader("lib: 0");
-//        ConnectionUtil.setMethodInjection(MethodInjection.HEADER);
-//        ConnectionUtil.setTypeRequest("POST");
-        
         ParameterUtil.initQueryString("http://localhost:8080/greeting");
         ParameterUtil.initRequest("");
-//        ParameterUtil.initHeader("lib: 0");
         ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("tenantId", "mysql"), new SimpleEntry<String, String>("name", "1'")));
         ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
         ConnectionUtil.setTypeRequest("GET");

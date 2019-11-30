@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <hibernate-configuration>
    <session-factory>
-<!--       <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property> -->
-<!--       <property name="hibernate.connection.url">jdbc:mysql://127.0.0.1/musicstore?createDatabaseIfNotExist=true</property> -->
-<!--       <property name="hibernate.connection.username">root</property> -->
-<!--       <property name="hibernate.connection.password">my-secret-pw</property> -->
-<!--       <property name="hibernate.hbm2ddl.auto">create</property> -->
-<!--       <property name="hibernate.dialect">org.hibernate.dialect.MySQL57Dialect</property> -->
-
-        
        <mapping resource="student.hbm.xml" /> 
-<!--       <mapping class="model.Student" /> -->
    </session-factory>
 </hibernate-configuration>
 

@@ -5,12 +5,19 @@ import com.test.AbstractTestSuite;
 public class ConcretePostgreTestSuite extends AbstractTestSuite {
 
     public ConcretePostgreTestSuite () {
-        this.jdbcURL = "jdbc:postgresql://"+ AbstractTestSuite.HOSTNAME +":5432/postgres";
+        this.jdbcURL = "jdbc:postgresql://127.0.0.1:5432/";
         this.jdbcUser = "postgres";
-        this.jdbcPass = "pg";
-        this.jsqlDatabaseName = "information_schema";
-        this.jsqlTableName = "sql_parts";
-        this.jsqlColumnName = "feature_id";
+        this.jdbcPass = "mysecretpassword";
+        this.jsqlDatabaseName = "public";
+        this.jsqlTableName = "student";
+        this.jsqlColumnName = "Student_Id";
+        
+//        this.jdbcURL = "jdbc:postgresql://"+ AbstractTestSuite.HOSTNAME +":5432/postgres";
+//        this.jdbcUser = "postgres";
+//        this.jdbcPass = "pg";
+//        this.jsqlDatabaseName = "information_schema";
+//        this.jsqlTableName = "sql_parts";
+//        this.jsqlColumnName = "feature_id";
         
         this.jdbcColumnForDatabaseName = "table_schema";
         this.jdbcColumnForTableName = "table_name";

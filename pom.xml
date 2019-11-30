@@ -113,7 +113,7 @@
 				<version>2.22.2</version>
 				<configuration>
 <!-- 					<skipTests>true</skipTests> -->
-<test>MysqlNormalHeaderTestSuite</test>
+<test>MysqlNormalHeaderTestSuite, H2NormalGetTestSuite, PostgreNormalGetTestSuite</test>
 				</configuration>
 			</plugin>
 
@@ -355,12 +355,19 @@
 <!-- 			<scope>test</scope> -->
 <!-- 		</dependency> -->
 
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.3-1102-jdbc41</version>
-			<scope>test</scope>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.postgresql</groupId> -->
+<!-- 			<artifactId>postgresql</artifactId> -->
+<!-- 			<version>9.3-1102-jdbc41</version> -->
+<!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
+
+<dependency>
+    <groupId>org.postgresql</groupId>
+    <artifactId>postgresql</artifactId>
+<!--   <version>42.2.6</version> -->
+  			<scope>test</scope>
+</dependency>
 
 		<dependency>
 			<groupId>cubrid</groupId>

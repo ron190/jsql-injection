@@ -45,7 +45,8 @@ public class GreetingController {
                     String.format(template, name) + StringEscapeUtils.unescapeJava(objectMapper.writeValueAsString(l)));
         } catch (Exception e) {
             l = new ArrayList<>();
-//            System.out.println(e.getMessage());
+//            System.out.println("select First_Name from Student where '1' = '"+name+"'");
+//            e.printStackTrace();
         }
         
         

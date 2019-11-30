@@ -30,9 +30,19 @@ public class MasterService {
         dataSourceMySQL.setPassword(Application.propsMySQL.getProperty("hibernate.connection.password"));
         connectionProviderMySQL.setDataSource(dataSourceMySQL);
         connectionProviderMySQL.configure(Application.propsMySQL);
+        
+        DatasourceConnectionProviderImpl connectionProviderPostgres = new DatasourceConnectionProviderImpl();
+        DriverManagerDataSource dataSourcePostgres = new DriverManagerDataSource();
+        dataSourcePostgres.setConnectionProperties(Application.propsPostgres);
+        dataSourcePostgres.setUrl(Application.propsPostgres.getProperty("hibernate.connection.url"));
+        dataSourcePostgres.setUsername(Application.propsPostgres.getProperty("hibernate.connection.username"));
+        dataSourcePostgres.setPassword(Application.propsPostgres.getProperty("hibernate.connection.password"));
+        connectionProviderPostgres.setDataSource(dataSourcePostgres);
+        connectionProviderPostgres.configure(Application.propsPostgres);
          
         hashMap.put("h2", connectionProviderH2);
         hashMap.put("mysql", connectionProviderMySQL);
+        hashMap.put("postgres", connectionProviderPostgres);
         
         return hashMap;
     }
