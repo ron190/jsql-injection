@@ -104,7 +104,7 @@ public class GreetingController {
                 );
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            // Hide useless SQL error messages
         } finally {
             em.close();
             sessionFactory.getCurrentSession().close();
