@@ -15,10 +15,10 @@ import com.jsql.util.ConnectionUtil;
 import com.jsql.util.ParameterUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.AbstractTestSuite;
-import com.test.vendor.mysql.ConcreteMysqlTestSuite;
+import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 
 @Ignore
-public class CookieTest extends ConcreteMysqlTestSuite {
+public class CookieTest extends ConcreteMySQLTestSuite {
 	
     // pour chaque vendor/méthode/strategy
     /**
