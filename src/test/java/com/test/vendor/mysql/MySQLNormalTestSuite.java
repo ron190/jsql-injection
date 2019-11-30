@@ -14,10 +14,11 @@ import com.jsql.util.ParameterUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 
-public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
+public class MySQLNormalTestSuite extends ConcreteMySQLTestSuite {
     
     @BeforeClass
     public static void initialize() throws Exception {
+        
         runSpringApplication();
         
         InjectionModel model = new InjectionModel();
@@ -30,13 +31,16 @@ public class MysqlNormalHeaderTestSuite extends ConcreteMysqlTestSuite {
         
         ParameterUtil.initQueryString("http://localhost:8080/greeting");
         ParameterUtil.initRequest("");
-        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("tenantId", "mysql"), new SimpleEntry<String, String>("name", "1'")));
+        ParameterUtil.setQueryString(Arrays.asList(
+            new SimpleEntry<String, String>("tenant", "mysql"), 
+            new SimpleEntry<String, String>("name", "1'")
+        ));
+        
         ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
         ConnectionUtil.setTypeRequest("GET");
         
-        MediatorModel.model().beginInjection();
-
         MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
+        MediatorModel.model().beginInjection();
     }
     
 }

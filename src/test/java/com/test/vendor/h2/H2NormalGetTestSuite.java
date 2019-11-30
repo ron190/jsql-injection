@@ -19,6 +19,7 @@ public class H2NormalGetTestSuite extends ConcreteH2TestSuite {
     
     @BeforeClass
     public static void initialize() throws Exception {
+        
         runSpringApplication();
         
         InjectionModel model = new InjectionModel();
@@ -31,7 +32,10 @@ public class H2NormalGetTestSuite extends ConcreteH2TestSuite {
         
         ParameterUtil.initQueryString("http://localhost:8080/greeting");
         ParameterUtil.initRequest("");
-        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("tenantId", "h2"), new SimpleEntry<String, String>("name", "1'")));
+        ParameterUtil.setQueryString(Arrays.asList(
+            new SimpleEntry<String, String>("tenant", "h2"), 
+            new SimpleEntry<String, String>("name", "1'")
+        ));
         ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
         ConnectionUtil.setTypeRequest("GET");
         

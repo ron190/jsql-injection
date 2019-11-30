@@ -16,7 +16,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.AbstractTestSuite;
 
 @Ignore
-public class MysqlTimeHeaderTestSuite extends ConcreteMysqlTestSuite {
+public class MysqlTimeHeaderTestSuite extends ConcreteMySQLTestSuite {
 
     @BeforeClass
     public static void initialize() throws Exception {

@@ -11,8 +11,8 @@ public class MultiTenantConnectionProviderImpl extends AbstractMultiTenantConnec
     }
 
     @Override
-    protected ConnectionProvider selectConnectionProvider(String tenantIdentifier) {
-        return MasterService.getDataSourceHashMap().get(tenantIdentifier);
+    protected ConnectionProvider selectConnectionProvider(String tenant) {
+        return MasterService.getDataSourceHashMap().get(tenant);
     }
 
 }

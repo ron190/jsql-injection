@@ -2,9 +2,9 @@ package com.test.vendor.mysql;
 
 import com.test.AbstractTestSuite;
 
-public class ConcreteMysqlTestSuite extends AbstractTestSuite {
+public class ConcreteMySQLTestSuite extends AbstractTestSuite {
 
-    public ConcreteMysqlTestSuite () {
+    public ConcreteMySQLTestSuite () {
         this.config();
         this.requestJdbc();
     }

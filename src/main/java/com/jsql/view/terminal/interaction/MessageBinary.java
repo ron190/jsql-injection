@@ -38,8 +38,7 @@ public class MessageBinary implements InteractionCommand {
 
     @Override
     public void execute() {
-        LOGGER.info(this.text);
-        LOGGER.info("\n");
+        LOGGER.info(this.text +"\n");
     }
     
 }

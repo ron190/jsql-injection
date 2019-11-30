@@ -9,16 +9,16 @@ public class CurrentTenantIdentifierResolverImpl implements CurrentTenantIdentif
     @Override
     public String resolveCurrentTenantIdentifier() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        String tenantId ;
+        String tenant = "h2";
         if (attr != null) {
-        tenantId = attr.getRequest().getParameter("tenantId");
-        if(tenantId == null) {
-            tenantId = "h2";
-        }
+            tenant = attr.getRequest().getParameter("tenant");
+            if(tenant == null) {
+                tenant = "h2";
+            }
         } else {
-            tenantId = "h2";
+            tenant = "h2";
         }
-        return tenantId;
+        return tenant;
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.test.vendor.mysql;
 
-public class ConcreteMysqlErrorTestSuite extends ConcreteMysqlTestSuite {
+public class ConcreteMySQLErrorTestSuite extends ConcreteMySQLTestSuite {
 
-    public ConcreteMysqlErrorTestSuite () {
+    public ConcreteMySQLErrorTestSuite () {
         super();
     }
     

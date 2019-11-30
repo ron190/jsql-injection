@@ -28,7 +28,10 @@ public class PostgreNormalGetTestSuite extends ConcretePostgreTestSuite {
 
         ParameterUtil.initQueryString("http://localhost:8080/greeting");
         ParameterUtil.initRequest("");
-        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("tenantId", "postgres"), new SimpleEntry<String, String>("name", "1'")));
+        ParameterUtil.setQueryString(Arrays.asList(
+            new SimpleEntry<String, String>("tenant", "postgres"), 
+            new SimpleEntry<String, String>("name", "1'")
+        ));
         ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
         ConnectionUtil.setTypeRequest("GET");
 

@@ -98,7 +98,7 @@
     			<configuration>
                     <includes>
                         <include>
-                            AllNormalTestSuite
+                            AllTestSuite
                         </include>
                     </includes>
     			</configuration>

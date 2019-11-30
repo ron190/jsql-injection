@@ -7,11 +7,11 @@ import org.junit.runners.Suite;
 @Ignore
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-    MysqlBlindHeaderTestSuite.class,
-    MysqlNormalHeaderTestSuite.class,
-    MysqlErrobasedHeaderTestSuite.class,
+    MySQLBlindTestSuite.class,
+    MySQLNormalTestSuite.class,
+    MySQLErrorTestSuite.class,
     MysqlTimeHeaderTestSuite.class,
 })
-public class MysqlTestSuite {
+public class MySQLTestSuite {
     // Empty on purpose
 }

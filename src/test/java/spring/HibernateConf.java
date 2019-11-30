@@ -12,9 +12,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class HibernateConf {
  
-    @Primary
     @Bean
-    public LocalSessionFactoryBean sessionFactorya() {
+    public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setHibernateProperties(hibernateProperties());
  

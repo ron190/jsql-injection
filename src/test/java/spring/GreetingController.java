@@ -26,14 +26,14 @@ public class GreetingController {
     private final AtomicLong counter = new AtomicLong();
     
     @Autowired
-    private SessionFactory sessionFactorya;
+    private SessionFactory sessionFactory;
 
     ObjectMapper objectMapper = new ObjectMapper();
     
     @RequestMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        EntityManager em = sessionFactorya.createEntityManager();
+        EntityManager em = sessionFactory.createEntityManager();
         Query q = em.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
         
         Greeting greeting = null;
@@ -49,7 +49,7 @@ public class GreetingController {
             // Hide useless SQL error messages
         } finally {
             em.close();
-            sessionFactorya.getCurrentSession().close();
+            sessionFactory.getCurrentSession().close();
         }
         
         return greeting;
@@ -58,7 +58,7 @@ public class GreetingController {
     @RequestMapping("/greeting-error")
     public Greeting greetingError(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        EntityManager em = sessionFactorya.createEntityManager();
+        EntityManager em = sessionFactory.createEntityManager();
         Query q = em.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
         
         Greeting greeting = null;
@@ -74,7 +74,40 @@ public class GreetingController {
             );
         } finally {
             em.close();
-            sessionFactorya.getCurrentSession().close();
+            sessionFactory.getCurrentSession().close();
+        }
+        
+        return greeting;
+    }
+
+    @RequestMapping("/greeting-blind")
+    public Greeting greetingBlind(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+        
+        EntityManager em = sessionFactory.createEntityManager();
+        Query q = em.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+        
+        Greeting greeting = null;
+        try {
+            List l = q.getResultList();
+            
+            if (l.isEmpty()) {
+                greeting = new Greeting(
+                    counter.incrementAndGet(),
+                    String.format(template+"#", name) 
+                    + StringEscapeUtils.unescapeJava("PREFIX It's true SUFFIX")
+                );
+            } else {
+                greeting = new Greeting(
+                    counter.incrementAndGet(),
+                    String.format(template+"#", name) 
+                    + StringEscapeUtils.unescapeJava("PREFIX It's false SUFFIX")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            em.close();
+            sessionFactory.getCurrentSession().close();
         }
         
         return greeting;

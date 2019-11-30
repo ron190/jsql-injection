@@ -1,9 +1,9 @@
 package com.test.vendor.mysql;
 
-import java.net.MalformedURLException;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
@@ -13,30 +13,34 @@ import com.jsql.util.ConnectionUtil;
 import com.jsql.util.ParameterUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
-import com.test.AbstractTestSuite;
 
-@Ignore
-public class MysqlBlindHeaderTestSuite extends ConcreteMysqlTestSuite {
+public class MySQLErrorTestSuite extends ConcreteMySQLErrorTestSuite {
 
     @BeforeClass
-    public static void initialize() throws MalformedURLException {
+    public static void initialize() throws Exception {
+        
+        runSpringApplication();
+        
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);
         model.displayVersion();
 
         MediatorModel.model().addObserver(new SystemOutTerminal());
-        
+
         PreferencesUtil.setNotTestingConnection(true);
         
-        ParameterUtil.initQueryString("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_header.php");
+        ParameterUtil.initQueryString("http://localhost:8080/greeting-error");
         ParameterUtil.initRequest("");
-        ParameterUtil.initHeader("lib: 1*");
-        ConnectionUtil.setMethodInjection(MethodInjection.HEADER);
-        ConnectionUtil.setTypeRequest("POST");
-        
-        MediatorModel.model().beginInjection();
+        ParameterUtil.setQueryString(Arrays.asList(
+            new SimpleEntry<String, String>("tenant", "mysql-error"), 
+            new SimpleEntry<String, String>("name", "1'")
+        ));
 
-        MediatorModel.model().setStrategy(StrategyInjection.BLIND);
+        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
+        ConnectionUtil.setTypeRequest("GET");
+        
+        MediatorModel.model().setStrategy(StrategyInjection.ERROR);
+        MediatorModel.model().beginInjection();
     }
     
 }
