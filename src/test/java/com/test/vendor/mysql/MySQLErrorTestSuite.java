@@ -33,7 +33,7 @@ public class MySQLErrorTestSuite extends ConcreteMySQLErrorTestSuite {
         ParameterUtil.initRequest("");
         ParameterUtil.setQueryString(Arrays.asList(
             new SimpleEntry<String, String>("tenant", "mysql-error"), 
-            new SimpleEntry<String, String>("name", "1'")
+            new SimpleEntry<String, String>("name", "0'")
         ));
 
         ConnectionUtil.setMethodInjection(MethodInjection.QUERY);

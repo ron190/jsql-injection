@@ -33,7 +33,7 @@ public class MarkBlindVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        LOGGER.info("MarkBlindVulnerable\n");
+        LOGGER.info("JSQL: "+ this.getClass().getSimpleName());
     }
     
 }

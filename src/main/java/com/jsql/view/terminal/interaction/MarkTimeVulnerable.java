@@ -33,7 +33,7 @@ public class MarkTimeVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        LOGGER.info("MarkTimeVulnerable\n");
+        LOGGER.info("JSQL: "+ this.getClass().getSimpleName());
     }
     
 }

@@ -14,6 +14,7 @@ import java.util.Map;
 
 import javax.swing.JMenu;
 
+import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
@@ -38,7 +39,8 @@ public class MarkErrorInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        LOGGER.info("MarkErrorInvulnerable\n");
+        LOGGER.info("JSQL: "+ this.getClass().getSimpleName());
+        LOGGER.info(MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethodError).getName());
     }
     
 }

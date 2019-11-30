@@ -161,7 +161,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
 
     @Override
     public String getInfoMessage() {
-        return "Time strategy: request is true if delay does not exceed 5 seconds.\n";
+        return "Time strategy: request is true if delay does not exceed 5 seconds.";
     }
     
 }

@@ -41,8 +41,8 @@ public class MarkErrorVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
+        LOGGER.info("JSQL: "+ this.getClass().getSimpleName());
         LOGGER.info(MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethodError).getName());
-        LOGGER.info("MarkErrorVulnerable\n");
     }
     
 }

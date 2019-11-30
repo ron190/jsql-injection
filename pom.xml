@@ -41,6 +41,9 @@
             <testResource>
                 <directory>src/test/resources</directory>
             </testResource>
+            <testResource>
+                <directory>src/test/resources/logger</directory>
+            </testResource>
         </testResources>
 
 		<plugins>

@@ -28,7 +28,7 @@ public class MarkNormalInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        LOGGER.info("MarkNormalInvulnerable\n");
+        LOGGER.info("JSQL: "+ this.getClass().getSimpleName());
     }
     
 }

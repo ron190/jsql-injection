@@ -165,7 +165,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             "Blind strategy: a request is true if the diff between "
             + "a correct page (e.g existing id) and current page "
             + "is not as the following: "
-            + InjectionBlind.constantFalseMark + "\n"
+            + InjectionBlind.constantFalseMark
         ;
     }
 

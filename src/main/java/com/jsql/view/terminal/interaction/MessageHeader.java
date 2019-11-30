@@ -50,12 +50,13 @@ public class MessageHeader implements InteractionCommand {
 
     @Override
     public void execute() {
+        LOGGER.debug("JSQL: "+ this.getClass().getSimpleName());
         LOGGER.debug("Method: " + this.response.get("Method"));
         LOGGER.debug("Url: " + this.url);
         LOGGER.debug("Post: " + this.post);
         LOGGER.debug("Header: " + this.header);
         LOGGER.debug("Content-Length: " + this.response.get("Content-Length"));
-        LOGGER.debug("Content-Type: " + this.response.get("Content-Type") + "\n");
+        LOGGER.debug("Content-Type: " + this.response.get("Content-Type"));
     }
     
 }

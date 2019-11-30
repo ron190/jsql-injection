@@ -43,11 +43,12 @@ public class AddTables implements InteractionCommand {
 
     @Override
     public void execute() {
+        LOGGER.info("JSQL: "+ this.getClass().getSimpleName());
+        
         // Loop into the list of tables
         for (Table table: this.tables) {
             LOGGER.info(table);
         }
-        LOGGER.info("\n");
     }
     
 }
