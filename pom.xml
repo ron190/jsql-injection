@@ -8,11 +8,6 @@
     
 	<repositories>
         <repository>
-            <id>CUBRID</id>
-            <name>CUBRID-releases</name>
-            <url>http://maven.cubrid.org</url>
-        </repository>
-        <repository>
             <id>jspresso-repository</id>
             <url>http://repository.jspresso.org/maven2</url>
         </repository>
@@ -177,32 +172,14 @@
 
 	<dependencies>
  
-        <!--  test -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <scope>test</scope>
-        </dependency>
+        <!-- Test purpose -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.jayway.jsonpath</groupId>
-            <artifactId>json-path</artifactId>
-            <scope>test</scope>
-        </dependency>
+
+        <!-- ORM purpose -->
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
@@ -213,6 +190,33 @@
             <artifactId>spring-orm</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-c3p0</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- Get raw text from Spring API -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>1.8</version>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- JUnit -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- JDBC drivers -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -227,66 +231,18 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-dbcp</artifactId>
-            <version>9.0.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-c3p0</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-text</artifactId>
-            <version>1.8</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-launcher</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>cubrid</groupId>
-            <artifactId>cubrid-jdbc</artifactId>
-            <version>10.0.0.1376</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.ibm.informix</groupId>
-            <artifactId>jdbc</artifactId>
-            <version>4.10.7.20160517</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.ingres.jdbc</groupId>
-            <artifactId>iijdbc</artifactId>
-            <version>10.0-4.0.6</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- Used by Informix JDBC Driver -->
-<!--        <dependency> -->
-<!--            <groupId>org.apache.logging.log4j</groupId> -->
-<!--            <artifactId>log4j-slf4j-impl</artifactId> -->
-<!--            <version>2.6.2</version> -->
-<!--            <scope>test</scope> -->
-<!--        </dependency> -->
-        <!-- Used by Informix JDBC Driver -->
-<!--        <dependency> -->
-<!--            <groupId>org.apache.logging.log4j</groupId> -->
-<!--            <artifactId>log4j-core</artifactId> -->
-<!--            <version>2.6.2</version> -->
-<!--            <scope>test</scope> -->
-<!--        </dependency> -->
 
-        <!-- jsql -->
+        <!-- jSQL purpose -->
+        <!-- Required by properties-maven-plugin to read sonar-project.properties -->
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>jaxb2-maven-plugin</artifactId>
+            <version>2.5.0</version>
+        </dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
@@ -294,7 +250,7 @@
 		<dependency>
 			<groupId>org.jsoup</groupId>
 			<artifactId>jsoup</artifactId>
-			<version>1.8.1</version>
+			<version>1.11.3</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -330,14 +286,6 @@
             <artifactId>juniversalchardet</artifactId>
             <version>1.0.3</version>
         </dependency>
-      	<dependency>
-        	<groupId>com.fasterxml.jackson.core</groupId>
-        	<artifactId>jackson-databind</artifactId>
-       	</dependency>
-      	<dependency>
-        	<groupId>com.fasterxml.jackson.core</groupId>
-        	<artifactId>jackson-core</artifactId>
-       	</dependency>
 		<dependency>
     		<groupId>com.fasterxml.jackson.dataformat</groupId>
     		<artifactId>jackson-dataformat-xml</artifactId>

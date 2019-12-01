@@ -2,6 +2,7 @@ package spring;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.stream.Stream;
@@ -27,25 +28,23 @@ public class Application {
     static {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 
-        try (
-            InputStream inputStreamH2 = classloader.getResourceAsStream("spring/hibernate.h2.properties");
-            InputStream inputStreamMySQL = classloader.getResourceAsStream("spring/hibernate.mysql.properties");
-            InputStream inputStreamMySQLError = classloader.getResourceAsStream("spring/hibernate.mysql-5.5.40.properties");
-            InputStream inputStreamPostgres = classloader.getResourceAsStream("spring/hibernate.postgres.properties");
-            InputStream inputStreamHibernate = classloader.getResourceAsStream("spring/hibernate.cfg.properties")
-        ) {
-            propsH2.load(inputStreamH2);
-            propsMySQL.load(inputStreamMySQL);
-            propsMySQLError.load(inputStreamMySQLError);
-            propsPostgres.load(inputStreamPostgres);
-            
-            propsH2.load(inputStreamHibernate);
-            propsMySQL.load(inputStreamHibernate);
-            propsMySQLError.load(inputStreamHibernate);
-            propsPostgres.load(inputStreamHibernate);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        Arrays.asList(
+            new SimpleEntry<Properties, String>(propsH2, "spring/hibernate.h2.properties"), 
+            new SimpleEntry<Properties, String>(propsMySQL, "spring/hibernate.mysql.properties"), 
+            new SimpleEntry<Properties, String>(propsMySQLError, "spring/hibernate.mysql-5.5.40.properties"), 
+            new SimpleEntry<Properties, String>(propsPostgres, "spring/hibernate.postgres.properties")
+        ).stream()
+            .forEach(simpleEntry -> {
+                try (
+                    InputStream inputStreamH2 = classloader.getResourceAsStream(simpleEntry.getValue());
+                    InputStream inputStreamHibernate = classloader.getResourceAsStream("spring/hibernate.cfg.properties")
+                ) {
+                    simpleEntry.getKey().load(inputStreamH2);
+                    simpleEntry.getKey().load(inputStreamHibernate);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
     }
 
     public static void main(String[] args) {

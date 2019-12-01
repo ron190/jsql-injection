@@ -1,6 +1,5 @@
 package com.test;
 
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -19,8 +18,6 @@ import org.h2.tools.Server;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -93,12 +90,10 @@ public abstract class AbstractTestSuite {
         setUpIsDone = true;
     }
     
-    @AfterAll
     public static void stop() {
         ctx.close();
     }
 
-    @BeforeAll
     public static void initialize() throws Exception {
         LOGGER.warn(
             "AbstractTestSuite and ConcreteTestSuite are for initialization purpose. "

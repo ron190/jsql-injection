@@ -257,7 +257,6 @@ public class SystemUtils {
             Class.forName(AWT_UTILITIES_CLASS_NAME);
             return true;
         } catch (ClassNotFoundException e) {
-            LOGGER.error("Modern rasterizer "+ AWT_UTILITIES_CLASS_NAME +" not found: "+ e.getMessage(), e);
             return false;
         }
     }
