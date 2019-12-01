@@ -43,7 +43,7 @@ public class AddDatabases implements InteractionCommand {
 
     @Override
     public void execute() {
-        LOGGER.info("JSQL: "+ this.getClass().getSimpleName());
+        LOGGER.info(InteractionCommand.addColor2("JSQL: "+ this.getClass().getSimpleName()));
         
         // Loop into the list of databases
         for (Database database: this.databases) {

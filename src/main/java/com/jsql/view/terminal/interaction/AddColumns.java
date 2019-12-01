@@ -43,7 +43,7 @@ public class AddColumns implements InteractionCommand {
 
     @Override
     public void execute() {
-        LOGGER.info("JSQL: "+ this.getClass().getSimpleName());
+        LOGGER.info(InteractionCommand.addColor("JSQL: "+ this.getClass().getSimpleName()));
         
         // Loop into the list of columns
         for (Column column: this.columns) {
