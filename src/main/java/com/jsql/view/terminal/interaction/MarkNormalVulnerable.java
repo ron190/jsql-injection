@@ -28,7 +28,7 @@ public class MarkNormalVulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        LOGGER.info("JSQL: "+ this.getClass().getSimpleName());
+        LOGGER.info(InteractionCommand.addGreenColor(this.getClass().getSimpleName()));
     }
     
 }

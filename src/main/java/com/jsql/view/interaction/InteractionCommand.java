@@ -47,15 +47,15 @@ public interface InteractionCommand {
     static final String INFO_COLOUR = PREFIX + NORMAL+ SEPARATOR + FOREGROUND_GREEN + SUFFIX;
     static final String DEBUG_COLOUR = PREFIX + NORMAL + SEPARATOR + FOREGROUND_CYAN + SUFFIX;
     static final String TRACE_COLOUR = PREFIX + NORMAL + SEPARATOR + FOREGROUND_BLUE + SUFFIX;   
-    
-    static String addColor(String text) {
+
+    static String addGreenColor(String text) {
         return INFO_COLOUR + text + END_COLOUR;
     }
     
-    static String addColor2(String text) {
-        return PREFIX + FOREGROUND +"132;172;221"+ SEPARATOR + FOREGROUND_BLACK + SUFFIX + text + END_COLOUR;
+    static String addRedColor(String text) {
+        return ERROR_COLOUR + text + END_COLOUR;
     }
- 
+    
     /**
      * Do the action ordered by the model.
      */

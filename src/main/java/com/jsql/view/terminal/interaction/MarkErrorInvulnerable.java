@@ -39,8 +39,7 @@ public class MarkErrorInvulnerable implements InteractionCommand {
 
     @Override
     public void execute() {
-        LOGGER.info("JSQL: "+ this.getClass().getSimpleName());
-        LOGGER.info(MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethodError).getName());
+        LOGGER.info(InteractionCommand.addRedColor(MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethodError).getName()));
     }
     
 }
