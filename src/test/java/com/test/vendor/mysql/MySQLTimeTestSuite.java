@@ -46,18 +46,25 @@ public class MySQLTimeTestSuite extends ConcreteMySQLTestSuite {
         MediatorModel.model().setStrategy(StrategyInjection.TIME);
         MediatorModel.model().beginInjection();
     }
-
+    
+    @Ignore
     @Override
     @Test
-    @Ignore
     public void listDatabases() throws JSqlException {
         LOGGER.info("Ignore: too slow");
     }
-
+    
+    @Ignore
     @Override
     @Test
-    @Ignore
     public void listTables() throws JSqlException {
+        LOGGER.info("Ignore: too slow");
+    }
+    
+    @Ignore
+    @Override
+    @Test
+    public void listColumns() throws JSqlException {
         LOGGER.info("Ignore: too slow");
     }
     

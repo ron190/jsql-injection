@@ -4,9 +4,12 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.model.injection.vendor.Vendor;
@@ -40,6 +43,27 @@ public class PostgresTimeGetTestSuite extends ConcretePostgresTestSuite {
         MediatorModel.model().setStrategy(StrategyInjection.TIME);
         MediatorModel.model().setVendorByUser(Vendor.POSTGRESQL);
         MediatorModel.model().beginInjection();
+    }
+    
+    @Ignore
+    @Override
+    @Test
+    public void listDatabases() throws JSqlException {
+        LOGGER.info("Ignore: too slow");
+    }
+    
+    @Ignore
+    @Override
+    @Test
+    public void listTables() throws JSqlException {
+        LOGGER.info("Ignore: too slow");
+    }
+    
+    @Ignore
+    @Override
+    @Test
+    public void listColumns() throws JSqlException {
+        LOGGER.info("Ignore: too slow");
     }
 
 }
