@@ -5,6 +5,11 @@ import com.test.AbstractTestSuite;
 public class ConcretePostgreTestSuite extends AbstractTestSuite {
 
     public ConcretePostgreTestSuite () {
+        this.config();
+        this.requestJdbc();
+    }
+    
+    public void config() {
         this.jdbcURL = "jdbc:postgresql://127.0.0.1:5432/";
         this.jdbcUser = "postgres";
         this.jdbcPass = "mysecretpassword";

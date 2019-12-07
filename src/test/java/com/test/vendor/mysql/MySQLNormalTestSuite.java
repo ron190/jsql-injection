@@ -39,6 +39,7 @@ public class MySQLNormalTestSuite extends ConcreteMySQLTestSuite {
         ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
         ConnectionUtil.setTypeRequest("GET");
         
+        MediatorModel.model().setIsScanning(true);
         MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
         MediatorModel.model().beginInjection();
     }

@@ -8,7 +8,9 @@ import com.test.vendor.mysql.MySQLBlindTestSuite;
 import com.test.vendor.mysql.MySQLErrorTestSuite;
 import com.test.vendor.mysql.MySQLNormalTestSuite;
 import com.test.vendor.mysql.MySQLTimeTestSuite;
+import com.test.vendor.postgre.PostgreBlindGetTestSuite;
 import com.test.vendor.postgre.PostgreNormalGetTestSuite;
+import com.test.vendor.postgre.PostgreTimeGetTestSuite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -17,6 +19,8 @@ import com.test.vendor.postgre.PostgreNormalGetTestSuite;
     MySQLBlindTestSuite.class,
     MySQLTimeTestSuite.class,
     PostgreNormalGetTestSuite.class,
+    PostgreBlindGetTestSuite.class,
+    PostgreTimeGetTestSuite.class,
     H2NormalGetTestSuite.class
 })
 public class AllTestSuite {

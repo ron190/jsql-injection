@@ -39,6 +39,7 @@ public class MySQLErrorTestSuite extends ConcreteMySQLErrorTestSuite {
         ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
         ConnectionUtil.setTypeRequest("GET");
         
+        MediatorModel.model().setIsScanning(true);
         MediatorModel.model().setStrategy(StrategyInjection.ERROR);
         MediatorModel.model().beginInjection();
     }

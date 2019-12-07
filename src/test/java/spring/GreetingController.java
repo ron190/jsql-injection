@@ -12,6 +12,7 @@ import javax.persistence.Query;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,32 +25,27 @@ public class GreetingController {
 
     private static final String template = "Hello, s!";
     private final AtomicLong counter = new AtomicLong();
+    private ObjectMapper objectMapper = new ObjectMapper();
     
     @Autowired
     private SessionFactory sessionFactory;
-
-    ObjectMapper objectMapper = new ObjectMapper();
     
     @RequestMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        EntityManager em = sessionFactory.createEntityManager();
-        Query q = em.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+        Query q = sessionFactory.getCurrentSession().createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
         
         Greeting greeting = null;
         try {
-            List<Object[]> l = q.getResultList();
+            List<Object[]> results = q.getResultList();
             
             greeting = new Greeting(
                 counter.incrementAndGet(),
                 String.format(template, name)
-                + StringEscapeUtils.unescapeJava(objectMapper.writeValueAsString(l))
+                + StringEscapeUtils.unescapeJava(objectMapper.writeValueAsString(results))
             );
         } catch (Exception e) {
             // Hide useless SQL error messages
-        } finally {
-            em.close();
-            sessionFactory.getCurrentSession().close();
         }
         
         return greeting;
@@ -58,8 +54,7 @@ public class GreetingController {
     @RequestMapping("/greeting-error")
     public Greeting greetingError(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        EntityManager em = sessionFactory.createEntityManager();
-        Query q = em.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+        Query q = sessionFactory.getCurrentSession().createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
         
         Greeting greeting = null;
         try {
@@ -72,9 +67,6 @@ public class GreetingController {
                 String.format(template+"#", name) 
                 + StringEscapeUtils.unescapeJava(stacktrace)
             );
-        } finally {
-            em.close();
-            sessionFactory.getCurrentSession().close();
         }
         
         return greeting;
@@ -83,8 +75,7 @@ public class GreetingController {
     @RequestMapping("/greeting-blind")
     public Greeting greetingBlind(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        EntityManager em = sessionFactory.createEntityManager();
-        Query q = em.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+        Query q = sessionFactory.getCurrentSession().createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
         
         Greeting greeting = null;
         try {
@@ -105,9 +96,6 @@ public class GreetingController {
             }
         } catch (Exception e) {
             // Hide useless SQL error messages
-        } finally {
-            em.close();
-            sessionFactory.getCurrentSession().close();
         }
         
         return greeting;
@@ -116,17 +104,13 @@ public class GreetingController {
     @RequestMapping("/greeting-time")
     public Greeting greetingTime(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        EntityManager em = sessionFactory.createEntityManager();
-        Query q = em.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+        Query q = sessionFactory.getCurrentSession().createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
         
         Greeting greeting = null;
         try {
             q.getResultList();
         } catch (Exception e) {
             // Hide useless SQL error messages
-        } finally {
-            em.close();
-            sessionFactory.getCurrentSession().close();
         }
         
         return greeting;
