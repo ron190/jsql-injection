@@ -1,5 +1,8 @@
 package com.test.vendor.mysql;
 
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -13,13 +16,14 @@ import com.jsql.util.ConnectionUtil;
 import com.jsql.util.ParameterUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
-import com.test.AbstractTestSuite;
 
-@Ignore
-public class MysqlTimeHeaderTestSuite extends ConcreteMySQLTestSuite {
+public class MySQLTimeTestSuite extends ConcreteMySQLTestSuite {
 
     @BeforeClass
     public static void initialize() throws Exception {
+
+        runSpringApplication();
+        
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);
         model.displayVersion();
@@ -28,15 +32,18 @@ public class MysqlTimeHeaderTestSuite extends ConcreteMySQLTestSuite {
 
         PreferencesUtil.setNotTestingConnection(true);
         
-        ParameterUtil.initQueryString("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_header.php");
+        ParameterUtil.initQueryString("http://localhost:8080/greeting-time");
         ParameterUtil.initRequest("");
-        ParameterUtil.initHeader("lib: 1*");
-        ConnectionUtil.setMethodInjection(MethodInjection.HEADER);
-        ConnectionUtil.setTypeRequest("POST");
-        
-        MediatorModel.model().beginInjection();
+        ParameterUtil.setQueryString(Arrays.asList(
+            new SimpleEntry<String, String>("tenant", "mysql"), 
+            new SimpleEntry<String, String>("name", "1'")
+        ));
 
+        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
+        ConnectionUtil.setTypeRequest("GET");
+        
         MediatorModel.model().setStrategy(StrategyInjection.TIME);
+        MediatorModel.model().beginInjection();
     }
 
     @Override

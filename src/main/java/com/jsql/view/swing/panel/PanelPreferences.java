@@ -29,7 +29,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.event.DocumentListener;
 
-import org.apache.commons.lang3.text.WordUtils;
+import org.apache.commons.text.WordUtils;
 
 import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.PreferencesUtil;

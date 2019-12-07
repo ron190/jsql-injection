@@ -10,7 +10,7 @@ import org.junit.runners.Suite;
     MySQLBlindTestSuite.class,
     MySQLNormalTestSuite.class,
     MySQLErrorTestSuite.class,
-    MysqlTimeHeaderTestSuite.class,
+    MySQLTimeTestSuite.class,
 })
 public class MySQLTestSuite {
     // Empty on purpose

@@ -113,4 +113,23 @@ public class GreetingController {
         return greeting;
     }
 
+    @RequestMapping("/greeting-time")
+    public Greeting greetingTime(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+        
+        EntityManager em = sessionFactory.createEntityManager();
+        Query q = em.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+        
+        Greeting greeting = null;
+        try {
+            q.getResultList();
+        } catch (Exception e) {
+            // Hide useless SQL error messages
+        } finally {
+            em.close();
+            sessionFactory.getCurrentSession().close();
+        }
+        
+        return greeting;
+    }
+
 }

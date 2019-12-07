@@ -2,21 +2,23 @@ package spring;
 
 import java.sql.DriverManager;
 import java.util.HashMap;
+import java.util.Properties;
 import java.util.stream.Stream;
 
+import org.hibernate.cfg.Environment;
 import org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 public class MasterService {
     
-    public static HashMap<String, ConnectionProvider> getDataSourceHashMap() {
+    private HashMap<String, ConnectionProvider> hashMap = new HashMap<>();
+    
+    public MasterService() {
         
         // Remove annoying logs from jdbc driver
         DriverManager.setLogWriter(null);
 
-        HashMap<String, ConnectionProvider> hashMap = new HashMap<>();
-        
         Stream.of(
             Application.propsH2, 
             Application.propsMySQL, 
@@ -24,16 +26,19 @@ public class MasterService {
             Application.propsPostgres
         ).forEach(props -> {
             DatasourceConnectionProviderImpl connectionProviderPostgres = new DatasourceConnectionProviderImpl();
-            DriverManagerDataSource dataSourcePostgres = new DriverManagerDataSource();
-            dataSourcePostgres.setConnectionProperties(props);
-            dataSourcePostgres.setUrl(props.getProperty("hibernate.connection.url"));
-            dataSourcePostgres.setUsername(props.getProperty("hibernate.connection.username"));
-            dataSourcePostgres.setPassword(props.getProperty("hibernate.connection.password"));
-            connectionProviderPostgres.setDataSource(dataSourcePostgres);
-            connectionProviderPostgres.configure(props);
+            DriverManagerDataSource dataSource = new DriverManagerDataSource();
+            dataSource.setUrl(props.getProperty("hibernate.connection.url"));
+            dataSource.setUsername(props.getProperty("hibernate.connection.username"));
+            dataSource.setPassword(props.getProperty("hibernate.connection.password"));
+            
+            Properties properties = new Properties();
+            properties.put(Environment.DATASOURCE, dataSource);
+            connectionProviderPostgres.configure(properties);
             hashMap.put(props.getProperty("jsql.tenant"), connectionProviderPostgres);
         });
-         
-        return hashMap;
+    }
+    
+    public HashMap<String, ConnectionProvider> getDataSourceHashMap() {
+        return hashMap;   
     }
 }

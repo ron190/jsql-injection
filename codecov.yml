@@ -1,0 +1,2 @@
+ignore:
+  - "src/main/java/com/jsql/model/injection/strategy/blind/patch"

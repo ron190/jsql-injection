@@ -5,14 +5,16 @@ import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 
 public class MultiTenantConnectionProviderImpl extends AbstractMultiTenantConnectionProvider {
 
+    private static final MasterService MASTER_SERVICE = new MasterService();
+    
     @Override
     protected ConnectionProvider getAnyConnectionProvider() {
-        return MasterService.getDataSourceHashMap().get("h2");
+        return MASTER_SERVICE.getDataSourceHashMap().get("h2");
     }
 
     @Override
     protected ConnectionProvider selectConnectionProvider(String tenant) {
-        return MasterService.getDataSourceHashMap().get(tenant);
+        return MASTER_SERVICE.getDataSourceHashMap().get(tenant);
     }
 
 }
