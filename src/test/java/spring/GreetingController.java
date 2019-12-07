@@ -11,6 +11,7 @@ import javax.persistence.Query;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.commons.text.StringEscapeUtils;
+import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class GreetingController {
     private static final String template = "Hello, s!";
     private final AtomicLong counter = new AtomicLong();
     private ObjectMapper objectMapper = new ObjectMapper();
+    protected static final Logger LOGGER = Logger.getRootLogger();
     
     @Autowired
     private SessionFactory sessionFactory;
@@ -61,6 +63,8 @@ public class GreetingController {
             q.getResultList();
         } catch (Exception e) {
             String stacktrace = ExceptionUtils.getStackTrace(e);
+            
+            LOGGER.debug(stacktrace);
             
             greeting = new Greeting(
                 counter.incrementAndGet(),

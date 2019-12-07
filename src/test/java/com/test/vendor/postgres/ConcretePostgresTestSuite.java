@@ -1,10 +1,10 @@
-package com.test.vendor.postgre;
+package com.test.vendor.postgres;
 
 import com.test.AbstractTestSuite;
 
-public class ConcretePostgreTestSuite extends AbstractTestSuite {
+public class ConcretePostgresTestSuite extends AbstractTestSuite {
 
-    public ConcretePostgreTestSuite () {
+    public ConcretePostgresTestSuite () {
         this.config();
         this.requestJdbc();
     }

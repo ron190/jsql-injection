@@ -1,4 +1,4 @@
-package com.test.vendor.postgre;
+package com.test.vendor.postgres;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -14,11 +14,10 @@ import com.jsql.util.ConnectionUtil;
 import com.jsql.util.ParameterUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 
-public class PostgreTimeGetTestSuite extends ConcretePostgreTestSuite {
+public class PostgresBlindGetTestSuite extends ConcretePostgresTestSuite {
 
     @BeforeClass
     public static void initialize() throws Exception {
-        
         runSpringApplication();
         
         InjectionModel model = new InjectionModel();
@@ -27,7 +26,7 @@ public class PostgreTimeGetTestSuite extends ConcretePostgreTestSuite {
 
         MediatorModel.model().addObserver(new SystemOutTerminal());
 
-        ParameterUtil.initQueryString("http://localhost:8080/greeting-time");
+        ParameterUtil.initQueryString("http://localhost:8080/greeting-blind");
         ParameterUtil.initRequest("");
         ParameterUtil.setQueryString(Arrays.asList(
             new SimpleEntry<String, String>("tenant", "postgres"), 
@@ -37,9 +36,9 @@ public class PostgreTimeGetTestSuite extends ConcretePostgreTestSuite {
         ConnectionUtil.setTypeRequest("GET");
         
         MediatorModel.model().setIsScanning(true);
-        MediatorModel.model().setStrategy(StrategyInjection.TIME);
+        MediatorModel.model().setStrategy(StrategyInjection.BLIND);
         MediatorModel.model().setVendorByUser(Vendor.POSTGRESQL);
         MediatorModel.model().beginInjection();
     }
-
+    
 }

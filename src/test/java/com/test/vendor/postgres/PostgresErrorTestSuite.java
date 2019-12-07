@@ -1,4 +1,4 @@
-package com.test.vendor.postgre;
+package com.test.vendor.postgres;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -12,12 +12,14 @@ import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.ParameterUtil;
+import com.jsql.util.PreferencesUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 
-public class PostgreBlindGetTestSuite extends ConcretePostgreTestSuite {
+public class PostgresErrorTestSuite extends ConcretePostgresTestSuite {
 
     @BeforeClass
     public static void initialize() throws Exception {
+        
         runSpringApplication();
         
         InjectionModel model = new InjectionModel();
@@ -26,17 +28,19 @@ public class PostgreBlindGetTestSuite extends ConcretePostgreTestSuite {
 
         MediatorModel.model().addObserver(new SystemOutTerminal());
 
-        ParameterUtil.initQueryString("http://localhost:8080/greeting-blind");
+        PreferencesUtil.setNotTestingConnection(true);
+        
+        ParameterUtil.initQueryString("http://localhost:8080/greeting-error");
         ParameterUtil.initRequest("");
         ParameterUtil.setQueryString(Arrays.asList(
             new SimpleEntry<String, String>("tenant", "postgres"), 
-            new SimpleEntry<String, String>("name", "1'")
+            new SimpleEntry<String, String>("name", "0'")
         ));
+
         ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
         ConnectionUtil.setTypeRequest("GET");
         
-        MediatorModel.model().setIsScanning(true);
-        MediatorModel.model().setStrategy(StrategyInjection.BLIND);
+        MediatorModel.model().setStrategy(StrategyInjection.ERROR);
         MediatorModel.model().setVendorByUser(Vendor.POSTGRESQL);
         MediatorModel.model().beginInjection();
     }
