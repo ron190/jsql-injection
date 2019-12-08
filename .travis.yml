@@ -27,6 +27,7 @@ before_install:
     --name jsql-mysql-5.5.40 
     --publish 3307:3306 
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
+    -v ./src/test/resources/docker/conf.d/:/etc/mysql/conf.d/ 
     -d mysql:5.5.40
     
   - docker run 
@@ -37,7 +38,7 @@ before_install:
     -c 'shared_buffers=256MB'
     -c 'max_connections=200'
     
-  - docker ps
+  - docker ps && pwd
   
 #  - rm "${JAVA_HOME}/lib/security/cacerts"
 #  - ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
