@@ -3,6 +3,9 @@ language: java
 services: docker
   
 before_install:
+    
+  - docker ps && pwd
+  
   - docker build 
     -t mysql 
     -f src/test/resources/docker/Dockerfile.mysql .
@@ -27,7 +30,7 @@ before_install:
     --name jsql-mysql-5.5.40 
     --publish 3307:3306 
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
-    -v ./src/test/resources/docker/conf.d/:/etc/mysql/conf.d/ 
+    --volume=/ron190/jsql-injection/src/test/resources/docker/conf.d/:/etc/mysql/conf.d/ 
     -d mysql:5.5.40
     
   - docker run 
