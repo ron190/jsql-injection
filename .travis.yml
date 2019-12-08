@@ -20,8 +20,8 @@ before_install:
     --publish 3306:3306 
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
     -d mysql
-    --max-connections=200
-    --thread-cache-size=200
+    -c 'max_connections=1000'
+    -c 'thread_cache_size=1000'
     
   - docker run 
     --name jsql-mysql-5.5.40 
