@@ -4,12 +4,9 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
-import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.util.ConnectionUtil;
@@ -22,8 +19,6 @@ public class MySQLBlindTestSuite extends ConcreteMySQLTestSuite {
     @BeforeClass
     public static void initialize() throws Exception {
 
-        runSpringApplication();
-        
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);
         model.displayVersion();
@@ -47,25 +42,32 @@ public class MySQLBlindTestSuite extends ConcreteMySQLTestSuite {
         MediatorModel.model().beginInjection();
     }
     
-    @Ignore
-    @Override
-    @Test
-    public void listDatabases() throws JSqlException {
-        LOGGER.info("Ignore: too slow");
-    }
+//    @Ignore
+//    @Override
+//    @Test
+//    public void listDatabases() throws JSqlException {
+//        LOGGER.info("Ignore: too slow");
+//    }
+//    
+//    @Ignore
+//    @Override
+//    @Test
+//    public void listTables() throws JSqlException {
+//        LOGGER.info("Ignore: too slow");
+//    }
+//    
+//    @Ignore
+//    @Override
+//    @Test
+//    public void listColumns() throws JSqlException {
+//        LOGGER.info("Ignore: too slow");
+//    }
     
-    @Ignore
-    @Override
-    @Test
-    public void listTables() throws JSqlException {
-        LOGGER.info("Ignore: too slow");
-    }
-    
-    @Ignore
-    @Override
-    @Test
-    public void listColumns() throws JSqlException {
-        LOGGER.info("Ignore: too slow");
-    }
+//    @Ignore
+//    @Override
+//    @Test
+//    public void listValues() throws JSqlException {
+//        LOGGER.info("Ignore: too slow");
+//    }
     
 }

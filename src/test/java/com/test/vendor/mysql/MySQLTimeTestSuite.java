@@ -22,8 +22,6 @@ public class MySQLTimeTestSuite extends ConcreteMySQLTestSuite {
     @BeforeClass
     public static void initialize() throws Exception {
 
-        runSpringApplication();
-        
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);
         model.displayVersion();
@@ -47,25 +45,25 @@ public class MySQLTimeTestSuite extends ConcreteMySQLTestSuite {
         MediatorModel.model().beginInjection();
     }
     
-    @Ignore
-    @Override
-    @Test
-    public void listDatabases() throws JSqlException {
-        LOGGER.info("Ignore: too slow");
-    }
-    
-    @Ignore
-    @Override
-    @Test
-    public void listTables() throws JSqlException {
-        LOGGER.info("Ignore: too slow");
-    }
-    
-    @Ignore
-    @Override
-    @Test
-    public void listColumns() throws JSqlException {
-        LOGGER.info("Ignore: too slow");
-    }
+//    @Ignore
+//    @Override
+//    @Test
+//    public void listDatabases() throws JSqlException {
+//        LOGGER.info("Ignore: too slow");
+//    }
+//    
+//    @Ignore
+//    @Override
+//    @Test
+//    public void listTables() throws JSqlException {
+//        LOGGER.info("Ignore: too slow");
+//    }
+//    
+//    @Ignore
+//    @Override
+//    @Test
+//    public void listColumns() throws JSqlException {
+//        LOGGER.info("Ignore: too slow");
+//    }
     
 }

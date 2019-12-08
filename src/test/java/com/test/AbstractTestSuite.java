@@ -11,15 +11,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.h2.tools.Server;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.Column;
@@ -29,7 +30,7 @@ import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.test.util.Retry;
 
-import spring.Application;
+import spring.Application; 
 
 public abstract class AbstractTestSuite {
 	
@@ -77,21 +78,18 @@ public abstract class AbstractTestSuite {
     @Rule
     public Retry retry = new Retry(3);
     
-    private static boolean setUpIsDone = false;
+    private static AtomicBoolean setUpIsDone = new AtomicBoolean(false);
     
-    protected static ConfigurableApplicationContext ctx;
-    
-    public static void runSpringApplication() throws Exception {
-        if (!setUpIsDone) {
-            Application.init();
-            ctx = SpringApplication.run(Application.class, new String[] {});
+    @BeforeClass
+    public synchronized static void runSpringApplication() throws Exception {
+        
+        if (setUpIsDone.compareAndSet(false, true)) {
+            LOGGER.info("@BeforeClass: setting up Hibernate and Spring, please wait...");
+            Application.init(); 
+            SpringApplication.run(Application.class, new String[] {});
+        } else {
+            LOGGER.info("@BeforeClass: Hibernate and Spring setup already done");
         }
-        // do the setup
-        setUpIsDone = true;
-    }
-    
-    public static void stop() {
-        ctx.close();
     }
 
     public static void initialize() throws Exception {

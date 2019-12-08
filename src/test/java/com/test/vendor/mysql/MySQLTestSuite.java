@@ -5,9 +5,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-    MySQLBlindTestSuite.class,
     MySQLNormalTestSuite.class,
     MySQLErrorTestSuite.class,
+    MySQLBlindTestSuite.class,
     MySQLTimeTestSuite.class,
 })
 public class MySQLTestSuite {
