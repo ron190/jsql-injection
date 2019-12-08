@@ -16,7 +16,7 @@ before_install:
     -f src/test/resources/docker/Dockerfile.postgres .
     
   - docker run 
-    --name jsql-mysql 
+    --name jsql-mysql  
     --publish 3306:3306 
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
     -d mysql
