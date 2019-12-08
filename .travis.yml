@@ -31,8 +31,6 @@ before_install:
     -d postgres 
     -c 'shared_buffers=256MB'
     -c 'max_connections=200'
-  - docker exec -it jsql-mysql /bin/bash 
-    -c "mysql -uroot -pmy-secret-pw -e 'show global variables where Variable_name rlike \"thread_cache_size|^max_connections\";';"
 #  - rm "${JAVA_HOME}/lib/security/cacerts"
 #  - ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
   
@@ -45,6 +43,8 @@ addons:
       secure: "Fi8pYQTRDsIzBBKPTLHcAxkm0l0JcrZZvADbhwWG95lqKgtEtGI0OzWB5nFUBiOu5N20yrMPz/x4BUTyqr61xZiOocB9SH5ya4jqlraIlQW3WPH0enZ7e/g/JmqiAttuhzic7s12XQR5VwvAbG7ZkHa41liJ0nTd8HiLG7TOPep0hVTX/VZ/+K1B0FMJJVsMNMfhDsrtegxLryoeCSuKpwiAXXN2GkTtV2g1o1fxSmFMb0cepC/03Hskfp4ZxnHaY9yQfJISulTuxv9EUy5ecQZj+btf+QB3iNAwNFIE/xC6VeuCSrTJ01kG9w9DvY3W6z9NywxVHL5fJNDHcWsIz6/FpdNZgwxw6hIBQOimSa2/oXrPNyNR/bUyu6kQMFitDXWNxZj56yicqduNc46ni9NjsavCMlTJrdh/MYKB+C8e2IVa11QT988iTZo5C7MjUqUJU4gKBgdcn0jGZb20pxd7/Gtf4uMz7tp9mQRCTXpV6OSE85phwezledPud1f7/TG/QBrzZCL3YTMLhrDLhiratHweitPpr3da2+HrjSkdmunGdyufB+bseJP68ghjG5QpYBakjkJgkGYXd+S/r1NHmsGhbuk3/S0WtoYRhlAaBl3U8c7z8/lBcPhNbkQmfjIMolTjVdK61rQSads1b3kgVcImsux0IxEhUjowqag="
 
 script:
+  - docker exec -it jsql-mysql /bin/bash 
+    -c "mysql -uroot -pmy-secret-pw -e 'show global variables where Variable_name rlike \"thread_cache_size|^max_connections\";';"
   - mvn clean verify sonar:sonar
 
 cache:
