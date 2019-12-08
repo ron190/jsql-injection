@@ -20,6 +20,8 @@ before_install:
     --publish 3306:3306 
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
     -d mysql
+    --max_connections=1000
+    --thread_cache_size=1000
     
   - docker run 
     --name jsql-mysql-5.5.40 
@@ -50,7 +52,14 @@ addons:
 
 script:
   - docker exec --privileged -u root -it jsql-mysql /bin/bash 
-    -c "mysql -uroot -pmy-secret-pw -e 'show global variables where Variable_name rlike \"thread_cache_size|^max_connections\";';"
+    -c "
+       mysql 
+       -uroot 
+       -pmy-secret-pw 
+       -e '
+       show global variables where Variable_name rlike \"thread_cache_size|^max_connections\";
+       ';
+       "
   - mvn clean verify sonar:sonar
 
 cache:
