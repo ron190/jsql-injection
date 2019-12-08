@@ -3,12 +3,43 @@ language: java
 services: docker
   
 before_install:
-  - docker build -t mysql -f src/test/resources/docker/Dockerfile.mysql .
-  - docker build -t mysql -f src/test/resources/docker/Dockerfile.mysql-5.5.40 .
-  - docker build -t postgres -f src/test/resources/docker/Dockerfile.postgres .
-  - docker run --name jsql-mysql --publish 3306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql
-  - docker run --name jsql-mysql-5.5.40 --publish 3307:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:5.5.40
-  - docker run --name jsql-postgres --publish 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -d postgres -c 'shared_buffers=256MB' -c 'max_connections=200'
+  - > 
+      docker build 
+        -t mysql 
+        -f src/test/resources/docker/Dockerfile.mysql .
+  - > 
+      docker build 
+        -t mysql 
+        -f src/test/resources/docker/Dockerfile.mysql-5.5.40 .
+  - > 
+      docker build 
+        -t postgres 
+        -f src/test/resources/docker/Dockerfile.postgres .
+  - > 
+      docker run 
+        --name jsql-mysql 
+        --publish 3306:3306 
+        -e MYSQL_ROOT_PASSWORD=my-secret-pw 
+        -d mysql
+        --max-connections=1000
+        --thread-cache-size=1000
+  - > 
+      docker run 
+        --name jsql-mysql-5.5.40 
+        --publish 3307:3306 
+        -e MYSQL_ROOT_PASSWORD=my-secret-pw 
+        -d mysql:5.5.40
+  - > 
+      docker run 
+        --name jsql-postgres 
+        --publish 5432:5432 
+        -e POSTGRES_PASSWORD=mysecretpassword 
+        -d postgres 
+        -c 'shared_buffers=256MB'
+        -c 'max_connections=200'
+  - 
+      docker exec -it jsql-mysql /bin/bash 
+        -c "mysql -uroot -pmy-secret-pw -e 'show global variables where Variable_name rlike \"thread_cache_size|^max_connections\";';"
 #  - rm "${JAVA_HOME}/lib/security/cacerts"
 #  - ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
   
