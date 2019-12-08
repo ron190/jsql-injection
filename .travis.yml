@@ -23,7 +23,7 @@ before_install:
     --publish 3306:3306 
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
     -d mysql
-    --volume=/home/travis/build/ron190/jsql-injection/src/test/resources/docker/conf.d/:/etc/mysql/conf.d/ 
+    --volume=/home/travis/build/ron190/jsql-injection/src/test/resources/docker/conf.d/:/etc/mysql/conf.d/
     
   - docker run 
     --name jsql-mysql-5.5.40 
