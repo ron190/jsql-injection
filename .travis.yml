@@ -18,7 +18,9 @@ before_install:
     -t postgres 
     -f src/test/resources/docker/Dockerfile.postgres .
     
-  - sudo docker run 
+  # sudo required for mounting volumes
+  - sudo 
+    docker run 
     --privileged
     --name jsql-mysql  
     --publish 3306:3306 
