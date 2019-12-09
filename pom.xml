@@ -17,7 +17,6 @@
 		<project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-<!--         <maven.surefire.debug>test</maven.surefire.debug> -->
 	</properties>
 
 	<build>
@@ -109,7 +108,7 @@
                     <useUnlimitedThreads>true</useUnlimitedThreads>   
                     <forkCount>1</forkCount>   
                       
-                    <argLine>-Xmx512m -Xmx4096m -XX:MaxPermSize=1024m</argLine>
+<!--                     <argLine>-Xmx512m -Xmx4096m -XX:MaxPermSize=1024m</argLine> -->
                     <dependencies>
                       <dependency>
                         <!-- Required by junit 4 -->
@@ -169,7 +168,18 @@
                 <configuration>
                     <excludes>
                         <exclude>**/com/jsql/view/swing/**/*.class</exclude>
+                        <exclude>**/com/jsql/model/injection/strategy/blind/patch/**/*.class</exclude>
+                        <exclude>**/com/jsql/view/scan/interaction/**/*.class</exclude>
                     </excludes>
+<!--                     <destFile>${project.build.directory}/jacoco.exec</destFile> -->
+<!--                     <fileSets> -->
+<!--                       <fileSet> -->
+<!--                         <directory>${project.build.directory}</directory> -->
+<!--                         <includes> -->
+<!--                           <include>*.exec</include> -->
+<!--                         </includes> -->
+<!--                       </fileSet> -->
+<!--                     </fileSets> -->
                 </configuration>
             </plugin>
 
