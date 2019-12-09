@@ -4,7 +4,7 @@ services: docker
   
 before_install:
     
-  - docker ps && pwd
+  - docker images && docker ps && pwd
   
   - docker build 
     -t mysql 
@@ -22,9 +22,9 @@ before_install:
     --privileged
     --name jsql-mysql  
     --publish 3306:3306 
+    --volume /home/travis/build/ron190/jsql-injection/src/test/resources/docker/conf.d/:/etc/mysql/conf.d/
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
     -d mysql
-    --volume=/home/travis/build/ron190/jsql-injection/src/test/resources/docker/conf.d/:/etc/mysql/conf.d/
     
   - docker run 
     --name jsql-mysql-5.5.40 
@@ -40,7 +40,7 @@ before_install:
     -c 'shared_buffers=256MB'
     -c 'max_connections=200'
     
-  - docker ps && pwd
+  - docker images && docker ps && pwd
   
 #  - rm "${JAVA_HOME}/lib/security/cacerts"
 #  - ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"
