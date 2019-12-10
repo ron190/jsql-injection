@@ -20,8 +20,6 @@ public class H2NormalGetTestSuite extends ConcreteH2TestSuite {
     @BeforeClass
     public static void initialize() throws Exception {
         
-        runSpringApplication();
-        
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);
         model.displayVersion();

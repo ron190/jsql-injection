@@ -21,7 +21,6 @@ public class PostgresBlindGetTestSuite extends ConcretePostgresTestSuite {
 
     @BeforeClass
     public static void initialize() throws Exception {
-        runSpringApplication();
         
         InjectionModel model = new InjectionModel();
         MediatorModel.register(model);
