@@ -12,10 +12,24 @@ cache:
   directories:
     - $HOME/.m2
     - $HOME/.sonar/cache
-  
+    
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "HKFOdtYGPUQxW0JGI0VN4OJwzs/0xvfeqx+IWeW6reheOBobUyvJ1PnAFvuPxO8i3IqlQjukywb3UL4uP/JvoIGC88BWy1Ohbmt1bZP6mfri9SrTEqMQcmbnSriQ2mrkXxLPrWJUTtNCWZFz34WUqqf2aul8rQho5F51nebrXuQ1B48tsYfEBZaXvHHDvuFJzfyJdcStlmZMmPtStlXdokRxMnvTc3wwiexMp/c9pXhDZ71HAozwHGuHZibc2Ya7bNpHJF7UxSmPtZ8CTkcFg/8zMF9tja52bo4rvyAsAqH86VcsczZR7cJCn8eCsM9uqnhSmWY6xMRiZNbYYJ/5uqN3RLWCzFhwvzcHIhl9pjPfWTkgUY55B8QKsFtcFuHbMaPxys/xHvMmJRus1fF5s10I35PJmX547vPnSU/8u/o717/rtgvGr87l5fTMoyP2avO+K7n2rYZE0M1B8Ayx+4eT09E1ZPj3GntV9/X5F5KcY1+I7Y9yNr/R0vkP0O+w/ynq858QDS9nnHUB9pG6NQ7xz0xygctqeGKnzuxHuetefsyTA1S8KGU2qBFivaZzacSXHWiQ1rua1GWquxZQi65tvVNJnmAtWJYlyOErc2brWl4OvVtQI5kvE4Gjf1IkWy2JK5qbivwUJG+PDzmg/lkrbL9jeMzAXboUnPu4FNU="
+    
+addons:
+  coverity_scan:
+    project:
+      name: "ron190/jsql-injection"
+    branch_pattern: master
+      
 before_install:
   # Codacy
   - sudo apt-get install jq
+  # Coverity
+  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
     
   - docker images && docker ps && pwd
   

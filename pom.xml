@@ -171,15 +171,6 @@
                         <exclude>**/com/jsql/model/injection/strategy/blind/patch/**/*.class</exclude>
                         <exclude>**/com/jsql/view/scan/interaction/**/*.class</exclude>
                     </excludes>
-<!--                     <destFile>${project.build.directory}/jacoco.exec</destFile> -->
-<!--                     <fileSets> -->
-<!--                       <fileSet> -->
-<!--                         <directory>${project.build.directory}</directory> -->
-<!--                         <includes> -->
-<!--                           <include>*.exec</include> -->
-<!--                         </includes> -->
-<!--                       </fileSet> -->
-<!--                     </fileSets> -->
                 </configuration>
             </plugin>
 
