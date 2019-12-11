@@ -95,7 +95,7 @@
     			<version>2.22.2</version>
     			<configuration>
                     <includes>
-                        <include>MySQLTestSuite</include>
+                        <include>AllTestSuite</include>
                     </includes>        
 
                     <!-- Multithreading waiting for static management in mediator -->
