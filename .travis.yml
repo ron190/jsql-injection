@@ -16,7 +16,6 @@ cache:
 before_install:
   # Codacy
   - sudo apt-get install jq
-  - curl -LSs $(curl -LSs https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r '.assets | map({name, browser_download_url} | select(.name | endswith(".jar"))) | .[0].browser_download_url')" -o codacy-coverage-reporter-assembly.jar
     
   - docker images && docker ps && pwd
   
@@ -82,4 +81,4 @@ after_success:
   
   # Codacy
   - export CODACY_PROJECT_TOKEN=43e8b6719fbc4f3cbef25d863d7440c8
-  - java -jar codacy-coverage-reporter-assembly.jar report -l Java -r build/reports/jacoco/test/jacocoTestReport.xml
+  - bash <(curl -Ls https://coverage.codacy.com/get.sh)

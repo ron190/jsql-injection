@@ -5,9 +5,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+    PostgresTimeGetTestSuite.class,
     PostgresBlindGetTestSuite.class,
     PostgresNormalGetTestSuite.class,
-    PostgresTimeGetTestSuite.class,
     PostgresErrorTestSuite.class,
 })
 public class PostgresTestSuite {
