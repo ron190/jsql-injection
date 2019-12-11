@@ -43,14 +43,21 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.MethodInjection;
+import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.model.injection.strategy.StrategyInjection;
+import com.jsql.model.injection.strategy.StrategyInjectionBlind;
+import com.jsql.model.injection.strategy.StrategyInjectionError;
 import com.jsql.model.injection.strategy.StrategyInjectionNormal;
+import com.jsql.model.injection.strategy.StrategyInjectionTime;
 import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
 import com.jsql.model.suspendable.SuspendableGetVendor;
 import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.ConnectionUtil;
+import com.jsql.util.ExceptionUtil;
+import com.jsql.util.GitUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
+import com.jsql.util.tampering.TamperingUtil;
 import com.jsql.util.HeaderUtil;
 import com.jsql.util.JsonUtil;
 import com.jsql.util.ParameterUtil;
@@ -58,7 +65,6 @@ import com.jsql.util.PreferencesUtil;
 import com.jsql.util.PropertiesUtil;
 import com.jsql.util.ProxyUtil;
 import com.jsql.util.SoapUtil;
-import com.jsql.util.TamperingUtil;
 import com.jsql.util.ThreadUtil;
 
 import net.sourceforge.spnego.SpnegoHttpURLConnection;
@@ -72,6 +78,25 @@ import net.sourceforge.spnego.SpnegoHttpURLConnection;
  * Tasks are run in multi-threads in general to speed the process.
  */
 public class InjectionModel extends AbstractModelObservable {
+    
+//    Mediator
+    public DataAccess dataAccess = new DataAccess(this);
+    public ConnectionUtil connectionUtil = new ConnectionUtil(this);
+    public AuthenticationUtil authenticationUtil = new AuthenticationUtil(this);
+    public GitUtil gitUtil = new GitUtil(this);
+    public HeaderUtil headerUtil = new HeaderUtil(this);
+    public ParameterUtil parameterUtil = new ParameterUtil(this);
+    public ExceptionUtil exceptionUtil = new ExceptionUtil(this);
+    public SoapUtil soapUtil = new SoapUtil(this);
+    public JsonUtil jsonUtil = new JsonUtil(this);
+    public PreferencesUtil preferencesUtil = new PreferencesUtil(this);
+    public ProxyUtil proxyUtil = new ProxyUtil(this);
+    public PropertiesUtil propertiesUtil = new PropertiesUtil(this);
+    
+    public AbstractStrategy TIME = new StrategyInjectionTime(this);
+    public AbstractStrategy BLIND = new StrategyInjectionBlind(this);
+    public AbstractStrategy ERROR = new StrategyInjectionError(this);
+    public AbstractStrategy NORMAL = new StrategyInjectionNormal(this);
 	
     /**
      * Log4j logger sent to view.
@@ -143,7 +168,7 @@ public class InjectionModel extends AbstractModelObservable {
         StrategyInjectionNormal.setVisibleIndex(null);
         this.indexesInUrl = "";
         
-        ConnectionUtil.setTokenCsrf(null);
+        this.connectionUtil.setTokenCsrf(null);
         
         this.versionDatabase = null;
         this.nameDatabase = null;
@@ -168,25 +193,25 @@ public class InjectionModel extends AbstractModelObservable {
         this.resetModel();
         
         try {
-            if (!ProxyUtil.isLive(ShowOnConsole.YES)) {
+            if (!proxyUtil.isLive(ShowOnConsole.YES)) {
                 return;
             }
             
-            LOGGER.info(I18n.valueByKey("LOG_START_INJECTION") +": "+ ConnectionUtil.getUrlByUser());
+            LOGGER.info(I18n.valueByKey("LOG_START_INJECTION") +": "+ this.connectionUtil.getUrlByUser());
             
             // Check general integrity if user's parameters
-            ParameterUtil.checkParametersFormat();
+            parameterUtil.checkParametersFormat();
             
             // Check connection is working: define Cookie management, check HTTP status, parse <form> parameters, process CSRF
             LOGGER.trace(I18n.valueByKey("LOG_CONNECTION_TEST"));
-            ConnectionUtil.testConnection();
+            this.connectionUtil.testConnection();
             
             boolean hasFoundInjection = false;
             
             hasFoundInjection = this.testParameters(MethodInjection.QUERY);
 
             if (!hasFoundInjection) {
-                hasFoundInjection = SoapUtil.testParameters();
+                hasFoundInjection = soapUtil.testParameters();
             }
             
             if (!hasFoundInjection) {
@@ -199,10 +224,10 @@ public class InjectionModel extends AbstractModelObservable {
             }
             
             if (!this.isScanning) {
-                if (!PreferencesUtil.isNotInjectingMetadata()) {
-                    DataAccess.getDatabaseInfos();
+                if (!this.preferencesUtil.isNotInjectingMetadata()) {
+                    dataAccess.getDatabaseInfos();
                 }
-                DataAccess.listDatabases();
+                dataAccess.listDatabases();
             }
             
             LOGGER.trace(I18n.valueByKey("LOG_DONE"));
@@ -233,14 +258,14 @@ public class InjectionModel extends AbstractModelObservable {
         // Injects URL, Request or Header params only if user tests every params
         // or method is selected by user.
         if (
-            !PreferencesUtil.isCheckingAllParam()
-            && ConnectionUtil.getMethodInjection() != methodInjection
+            !this.preferencesUtil.isCheckingAllParam()
+            && this.connectionUtil.getMethodInjection() != methodInjection
         ) {
             return hasFoundInjection;
         }
         
         // Force injection method of model to current running method
-        ConnectionUtil.setMethodInjection(methodInjection);
+        this.connectionUtil.setMethodInjection(methodInjection);
         
         // Injection by injection point
         if (methodInjection.getParamsAsString().contains(InjectionModel.STAR)) {
@@ -287,12 +312,12 @@ public class InjectionModel extends AbstractModelObservable {
                             // When option 'Inject JSON' is selected and there's a JSON entity to inject
                             // then loop through each paths to add * at the end of value and test each strategies.
                             // Marks * are erased between each tests.
-                            if (PreferencesUtil.isCheckingAllJSONParam() && !attributesJson.isEmpty()) {
-                                    hasFoundInjection = JsonUtil.testJsonParameter(methodInjection, paramStar);
+                            if (this.preferencesUtil.isCheckingAllJSONParam() && !attributesJson.isEmpty()) {
+                                    hasFoundInjection = jsonUtil.testJsonParameter(methodInjection, paramStar);
                                 
                             // Standard non JSON injection
                             } else {
-                                hasFoundInjection = JsonUtil.testStandardParameter(methodInjection, paramStar);
+                                hasFoundInjection = jsonUtil.testStandardParameter(methodInjection, paramStar);
                             }
                             
                             if (hasFoundInjection) {
@@ -327,19 +352,19 @@ public class InjectionModel extends AbstractModelObservable {
         LOGGER.trace(I18n.valueByKey("LOG_GET_INSERTION_CHARACTER"));
         
         // Test for params integrity
-        String characterInsertionByUser = ParameterUtil.getCharacterInsertion(isParamByUser, parameter);
+        String characterInsertionByUser = parameterUtil.getCharacterInsertion(isParamByUser, parameter);
         
         // If not an injection point then find insertion character.
         // Force to 1 if no insertion char works and empty value from user,
         // Force to user's value if no insertion char works,
         // Force to insertion char otherwise.
         if (parameter != null) {
-            String charInsertion = new SuspendableGetCharInsertion().run(characterInsertionByUser, parameter, isJson);
+            String charInsertion = new SuspendableGetCharInsertion(this).run(characterInsertionByUser, parameter, isJson);
             LOGGER.info(I18n.valueByKey("LOG_USING_INSERTION_CHARACTER") +" ["+ charInsertion.replace(InjectionModel.STAR, "") +"]");
         }
         
         // Fingerprint database
-        this.vendor = new SuspendableGetVendor().run();
+        this.vendor = new SuspendableGetVendor(this).run();
 
         // Test each injection strategies: time < blind < error < normal
         // Choose the most efficient strategy: normal > error > blind > time
@@ -377,7 +402,7 @@ public class InjectionModel extends AbstractModelObservable {
     @Override
     public String inject(String newDataInjection, boolean isUsingIndex) {
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
-        String urlInjection = ConnectionUtil.getUrlBase();
+        String urlInjection = this.connectionUtil.getUrlBase();
         
         String dataInjection = " "+ newDataInjection;
         
@@ -408,17 +433,17 @@ public class InjectionModel extends AbstractModelObservable {
          * TODO separate method
          */
         // TODO Extract in method
-        if (!ParameterUtil.getQueryString().isEmpty()) {
+        if (!this.parameterUtil.getQueryString().isEmpty()) {
             // URL without querystring like Request and Header can receive
             // new params from <form> parsing, in that case add the '?' to URL
             if (!urlInjection.contains("?")) {
                 urlInjection += "?";
             }
 
-            urlInjection += this.buildQuery(MethodInjection.QUERY, ParameterUtil.getQueryStringFromEntries(), isUsingIndex, dataInjection);
+            urlInjection += this.buildQuery(MethodInjection.QUERY, this.parameterUtil.getQueryStringFromEntries(), isUsingIndex, dataInjection);
             
-            if (ConnectionUtil.getTokenCsrf() != null) {
-                urlInjection += "&"+ ConnectionUtil.getTokenCsrf().getKey() +"="+ ConnectionUtil.getTokenCsrf().getValue();
+            if (this.connectionUtil.getTokenCsrf() != null) {
+                urlInjection += "&"+ this.connectionUtil.getTokenCsrf().getKey() +"="+ this.connectionUtil.getTokenCsrf().getValue();
             }
             
             try {
@@ -427,8 +452,8 @@ public class InjectionModel extends AbstractModelObservable {
                 LOGGER.warn("Incorrect Url: "+ e.getMessage(), e);
             }
         } else {
-            if (ConnectionUtil.getTokenCsrf() != null) {
-                urlInjection += "?"+ ConnectionUtil.getTokenCsrf().getKey() +"="+ ConnectionUtil.getTokenCsrf().getValue();
+            if (this.connectionUtil.getTokenCsrf() != null) {
+                urlInjection += "?"+ this.connectionUtil.getTokenCsrf().getKey() +"="+ this.connectionUtil.getTokenCsrf().getValue();
             }
         }
         
@@ -440,11 +465,11 @@ public class InjectionModel extends AbstractModelObservable {
             
             // TODO separate method
             // Block Opening Connection
-            if (AuthenticationUtil.isKerberos()) {
+            if (this.authenticationUtil.isKerberos()) {
                 String kerberosConfiguration =
                     Pattern
                         .compile("(?s)\\{.*")
-                        .matcher(StringUtils.join(Files.readAllLines(Paths.get(AuthenticationUtil.getPathKerberosLogin()), Charset.defaultCharset()), ""))
+                        .matcher(StringUtils.join(Files.readAllLines(Paths.get(this.authenticationUtil.getPathKerberosLogin()), Charset.defaultCharset()), ""))
                         .replaceAll("")
                         .trim();
                 
@@ -454,8 +479,8 @@ public class InjectionModel extends AbstractModelObservable {
                 connection = (HttpURLConnection) urlObject.openConnection();
             }
             
-            connection.setReadTimeout(ConnectionUtil.getTimeout());
-            connection.setConnectTimeout(ConnectionUtil.getTimeout());
+            connection.setReadTimeout(this.connectionUtil.getTimeout());
+            connection.setConnectTimeout(this.connectionUtil.getTimeout());
             connection.setDefaultUseCaches(false);
             
             connection.setRequestProperty("Pragma", "no-cache");
@@ -464,11 +489,11 @@ public class InjectionModel extends AbstractModelObservable {
             
             // Csrf
             
-            if (ConnectionUtil.getTokenCsrf() != null) {
-                connection.setRequestProperty(ConnectionUtil.getTokenCsrf().getKey(), ConnectionUtil.getTokenCsrf().getValue());
+            if (this.connectionUtil.getTokenCsrf() != null) {
+                connection.setRequestProperty(this.connectionUtil.getTokenCsrf().getKey(), this.connectionUtil.getTokenCsrf().getValue());
             }
             
-            ConnectionUtil.fixJcifsTimeout(connection);
+            this.connectionUtil.fixJcifsTimeout(connection);
 
             Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
             msgHeader.put(Header.URL, urlInjection);
@@ -477,15 +502,15 @@ public class InjectionModel extends AbstractModelObservable {
              * Build the HEADER and logs infos
              */
             // TODO Extract in method
-            if (!ParameterUtil.getHeader().isEmpty()) {
-                Stream.of(this.buildQuery(MethodInjection.HEADER, ParameterUtil.getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
+            if (!this.parameterUtil.getHeader().isEmpty()) {
+                Stream.of(this.buildQuery(MethodInjection.HEADER, this.parameterUtil.getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
                 .forEach(e -> {
                     if (e.split(":").length == 2) {
                         HeaderUtil.sanitizeHeaders(connection, new SimpleEntry<String, String>(e.split(":")[0], e.split(":")[1]));
                     }
                 });
                 
-                msgHeader.put(Header.HEADER, this.buildQuery(MethodInjection.HEADER, ParameterUtil.getHeaderFromEntries(), isUsingIndex, dataInjection));
+                msgHeader.put(Header.HEADER, this.buildQuery(MethodInjection.HEADER, this.parameterUtil.getHeaderFromEntries(), isUsingIndex, dataInjection));
             }
     
             /**
@@ -493,31 +518,31 @@ public class InjectionModel extends AbstractModelObservable {
              * TODO separate method
              */
             // TODO Extract in method
-            if (!ParameterUtil.getRequest().isEmpty() || ConnectionUtil.getTokenCsrf() != null) {
+            if (!this.parameterUtil.getRequest().isEmpty() || this.connectionUtil.getTokenCsrf() != null) {
                 try {
-                    ConnectionUtil.fixCustomRequestMethod(connection, ConnectionUtil.getTypeRequest());
+                    this.connectionUtil.fixCustomRequestMethod(connection, this.connectionUtil.getTypeRequest());
                     
                     connection.setDoOutput(true);
                     connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
     
                     DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
-                    if (ConnectionUtil.getTokenCsrf() != null) {
-                        dataOut.writeBytes(ConnectionUtil.getTokenCsrf().getKey() +"="+ ConnectionUtil.getTokenCsrf().getValue() +"&");
+                    if (this.connectionUtil.getTokenCsrf() != null) {
+                        dataOut.writeBytes(this.connectionUtil.getTokenCsrf().getKey() +"="+ this.connectionUtil.getTokenCsrf().getValue() +"&");
                     }
-                    if (ConnectionUtil.getTypeRequest().matches("PUT|POST")) {
-                        if (ParameterUtil.isRequestSoap()) {
-                            dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, ParameterUtil.getRawRequest(), isUsingIndex, dataInjection));
+                    if (this.connectionUtil.getTypeRequest().matches("PUT|POST")) {
+                        if (this.parameterUtil.isRequestSoap()) {
+                            dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, this.parameterUtil.getRawRequest(), isUsingIndex, dataInjection));
                         } else {
-                            dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, ParameterUtil.getRequestFromEntries(), isUsingIndex, dataInjection));
+                            dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, this.parameterUtil.getRequestFromEntries(), isUsingIndex, dataInjection));
                         }
                     }
                     dataOut.flush();
                     dataOut.close();
                     
-                    if (ParameterUtil.isRequestSoap()) {
-                        msgHeader.put(Header.POST, this.buildQuery(MethodInjection.REQUEST, ParameterUtil.getRawRequest(), isUsingIndex, dataInjection));
+                    if (this.parameterUtil.isRequestSoap()) {
+                        msgHeader.put(Header.POST, this.buildQuery(MethodInjection.REQUEST, this.parameterUtil.getRawRequest(), isUsingIndex, dataInjection));
                     } else {
-                        msgHeader.put(Header.POST, this.buildQuery(MethodInjection.REQUEST, ParameterUtil.getRequestFromEntries(), isUsingIndex, dataInjection));
+                        msgHeader.put(Header.POST, this.buildQuery(MethodInjection.REQUEST, this.parameterUtil.getRequestFromEntries(), isUsingIndex, dataInjection));
                     }
                 } catch (IOException e) {
                     LOGGER.warn("Error during Request connection: "+ e.getMessage(), e);
@@ -527,7 +552,7 @@ public class InjectionModel extends AbstractModelObservable {
             msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
             
             try {
-                pageSource = ConnectionUtil.getSource(connection);
+                pageSource = this.connectionUtil.getSource(connection);
             } catch (Exception e) {
                 LOGGER.error(e, e);
             }
@@ -596,9 +621,9 @@ public class InjectionModel extends AbstractModelObservable {
         // TODO simplify
         if (
             // No parameter transformation if method is not selected by user
-            ConnectionUtil.getMethodInjection() != methodInjection
+            this.connectionUtil.getMethodInjection() != methodInjection
             // No parameter transformation if injection point in URL
-            || ConnectionUtil.getUrlBase().contains(InjectionModel.STAR)
+            || this.connectionUtil.getUrlBase().contains(InjectionModel.STAR)
         ) {
             // Just pass parameters without any transformation
             query = paramLead;
@@ -670,7 +695,7 @@ public class InjectionModel extends AbstractModelObservable {
         query = query.replaceAll("(?s)/\\*.*?\\*/", "");
         
         if (methodInjection == MethodInjection.REQUEST) {
-            if (ParameterUtil.isRequestSoap()) {
+            if (this.parameterUtil.isRequestSoap()) {
                 query = query.replaceAll("%2b", "+");
             }
         } else {
@@ -699,7 +724,7 @@ public class InjectionModel extends AbstractModelObservable {
         query = query.replaceAll("(?s) ", "+");
         query = query.replaceAll("(?s)\"", "%22");
         
-        if (ConnectionUtil.getMethodInjection() == methodInjection) {
+        if (this.connectionUtil.getMethodInjection() == methodInjection) {
             query = TamperingUtil.tamper(query);
         }
         
@@ -742,12 +767,12 @@ public class InjectionModel extends AbstractModelObservable {
                 }
             }
                      
-            ParameterUtil.initQueryString(urlQuery);
-            ParameterUtil.initRequest(dataRequest);
-            ParameterUtil.initHeader(dataHeader);
+            parameterUtil.initQueryString(urlQuery);
+            this.parameterUtil.initRequest(dataRequest);
+            this.parameterUtil.initHeader(dataHeader);
             
-            ConnectionUtil.setMethodInjection(methodInjection);
-            ConnectionUtil.setTypeRequest(typeRequest);
+            this.connectionUtil.setMethodInjection(methodInjection);
+            this.connectionUtil.setTypeRequest(typeRequest);
             
             // TODO separate method
             if (isScanning) {
@@ -771,7 +796,7 @@ public class InjectionModel extends AbstractModelObservable {
         String versionJava = System.getProperty("java.version");
         String nameSystemArchitecture = System.getProperty("os.arch");
         LOGGER.trace(
-            "jSQL Injection v" + PropertiesUtil.getInstance().getProperties().getProperty("jsql.version")
+            "jSQL Injection v" + propertiesUtil.getProperties().getProperty("jsql.version")
             + " on Java "+ versionJava
             +"-"+ nameSystemArchitecture
             +"-"+ System.getProperty("user.language")
@@ -837,8 +862,8 @@ public class InjectionModel extends AbstractModelObservable {
         this.isScanning = isScanning;
     }
 
-    public static String getVersionJsql() {
-        return PropertiesUtil.getInstance().getProperties().getProperty("jsql.version");
+    public String getVersionJsql() {
+        return propertiesUtil.getProperties().getProperty("jsql.version");
     }
 
 }

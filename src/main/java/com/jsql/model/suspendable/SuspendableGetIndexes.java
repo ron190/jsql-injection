@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
@@ -27,6 +28,10 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
+    public SuspendableGetIndexes(InjectionModel injectionModel) {
+        super(injectionModel);
+    }
+
     /**
      * 
      */
@@ -46,7 +51,8 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         for (nbIndex = 1 ; nbIndex <= 10 ; nbIndex++) {
             taskCompletionService.submit(
                 new CallablePageSource(
-                    MediatorModel.model().getVendor().instance().sqlIndices(nbIndex)
+                    this.injectionModel.getVendor().instance().sqlIndices(nbIndex),
+                    injectionModel
                 )
             );
         }
@@ -63,14 +69,15 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
 
                 // Found a correct mark 1337[index]7331 in the source
                 if (Pattern.compile("(?s).*1337\\d+7331.*").matcher(currentCallable.getContent()).matches()) {
-                    MediatorModel.model().setSrcSuccess(currentCallable.getContent());
+                    this.injectionModel.setSrcSuccess(currentCallable.getContent());
                     initialQuery = currentCallable.getUrl().replaceAll("0%2b1", "1");
                     isRequestFound = true;
                 } else {
                     // Else add a new index
                     taskCompletionService.submit(
                         new CallablePageSource(
-                            MediatorModel.model().getVendor().instance().sqlIndices(nbIndex)
+                            this.injectionModel.getVendor().instance().sqlIndices(nbIndex),
+                            injectionModel
                         )
                     );
                     nbIndex++;

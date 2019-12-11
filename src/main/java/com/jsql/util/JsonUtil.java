@@ -27,6 +27,11 @@ public class JsonUtil {
         // TODO Auto-generated constructor stub
     }
     
+    public JsonUtil(InjectionModel injectionModel) {
+        this.injectionModel = injectionModel;
+    }
+    InjectionModel injectionModel;
+
     public static Object getJson(String param) {
         // Will test if current value is a JSON entity
         Object jsonEntity = null;
@@ -109,7 +114,7 @@ public class JsonUtil {
         return attributesXPath;
     }
     
-    public static boolean testStandardParameter(MethodInjection methodInjection, SimpleEntry<String, String> paramStar) {
+    public boolean testStandardParameter(MethodInjection methodInjection, SimpleEntry<String, String> paramStar) {
         boolean hasFoundInjection = false;
         
         // Add * to end of value
@@ -120,7 +125,7 @@ public class JsonUtil {
             
             // Test current standard value marked with * for injection
             // Keep original param
-            hasFoundInjection = MediatorModel.model().testStrategies(InjectionModel.IS_PARAM_BY_USER, !InjectionModel.IS_JSON, paramStar);
+            hasFoundInjection = injectionModel.testStrategies(InjectionModel.IS_PARAM_BY_USER, !InjectionModel.IS_JSON, paramStar);
             
         } catch (JSqlException e) {
             // Injection failure
@@ -144,7 +149,7 @@ public class JsonUtil {
     
     }
     
-    public static boolean testJsonParameter(MethodInjection methodInjection, SimpleEntry<String, String> paramStar) throws JSONException {
+    public boolean testJsonParameter(MethodInjection methodInjection, SimpleEntry<String, String> paramStar) throws JSONException {
         boolean hasFoundInjection = false;
         
         // Will test if current value is a JSON entity
@@ -171,7 +176,7 @@ public class JsonUtil {
                 
                 // Test current JSON value marked with * for injection
                 // Keep original param
-                hasFoundInjection = MediatorModel.model().testStrategies(InjectionModel.IS_PARAM_BY_USER, InjectionModel.IS_JSON, paramStar);
+                hasFoundInjection = injectionModel.testStrategies(InjectionModel.IS_PARAM_BY_USER, InjectionModel.IS_JSON, paramStar);
                 
                 // Injection successful
                 break;

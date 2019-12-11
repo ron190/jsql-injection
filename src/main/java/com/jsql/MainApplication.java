@@ -65,15 +65,15 @@ public class MainApplication {
      */
     public static void main(String[] args) throws URISyntaxException {
         
-    	// Configure global environnement settings
-        CertificateUtil.ignoreCertificationChain();
-        ExceptionUtil.setUncaughtExceptionHandler();
-        ProxyUtil.setProxy();
-        AuthenticationUtil.setKerberosCifs();
-        
         // Initialize MVC
         InjectionModel injectionModel = new InjectionModel();
         MediatorModel.register(injectionModel);
+        
+    	// Configure global environnement settings
+        injectionModel.certificateUtil.ignoreCertificationChain();
+        injectionModel.exceptionUtil.setUncaughtExceptionHandler();
+        injectionModel.proxyUtil.setProxy();
+        injectionModel.authenticationUtil.setKerberosCifs();
         
         try {
             JFrameView view = new JFrameView();

@@ -7,6 +7,8 @@ import javax.swing.SwingUtilities;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
+import com.jsql.model.InjectionModel;
+
 /**
  * Utility class managing an exception reporting mecanism.
  * It uses Github as the issue webtracker.
@@ -23,11 +25,16 @@ public class ExceptionUtil {
         // not called
     }
 
+    public ExceptionUtil(InjectionModel injectionModel) {
+        this.injectionModel = injectionModel;
+    }
+    InjectionModel injectionModel;
+
     /**
      * Handler class processing errors on top of the JVM in order to send
      * a report to Github automatically.
      */
-    public static class ExceptionHandler implements Thread.UncaughtExceptionHandler {
+    public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 
         @Override
         public void uncaughtException(Thread thread, Throwable throwable) {
@@ -36,11 +43,11 @@ public class ExceptionUtil {
             
             //  Report #214: ignore if OutOfMemoryError: Java heap space
             if (
-                PreferencesUtil.isReportingBugs()
+                injectionModel.preferencesUtil.isReportingBugs()
                 && ExceptionUtils.getStackTrace(throwable).contains("com.jsql")
                 && !(throwable instanceof OutOfMemoryError)
             ) {
-            	GitUtil.sendUnhandledException(thread.getName(), throwable);
+                injectionModel.gitUtil.sendUnhandledException(thread.getName(), throwable);
             }
         }
         
@@ -50,7 +57,7 @@ public class ExceptionUtil {
      * Add the error reporting mecanism on top of the JVM in order to
      * intercept and process the error to Github.
      */
-    public static void setUncaughtExceptionHandler() {
+    public void setUncaughtExceptionHandler() {
     	
     	// Regular Exception
     	Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());

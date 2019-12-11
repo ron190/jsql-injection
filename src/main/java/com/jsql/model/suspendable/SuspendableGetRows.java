@@ -11,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Table;
@@ -36,6 +37,10 @@ import com.jsql.util.ThreadUtil;
  */
 public class SuspendableGetRows extends AbstractSuspendable<String> {
     
+    public SuspendableGetRows(InjectionModel injectionModel) {
+        super(injectionModel);
+    }
+
     @Override
     public String run(Object... args) throws JSqlException {
         String initialSQLQuery = (String) args[0];
@@ -45,13 +50,13 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         AbstractElementDatabase searchName = (AbstractElementDatabase) args[4];
         ThreadUtil.put(searchName, this);
 
-        String sqlQuery = initialSQLQuery.replaceAll("\\{limit\\}", MediatorModel.model().getVendor().instance().sqlLimit(0));
+        String sqlQuery = initialSQLQuery.replaceAll("\\{limit\\}", this.injectionModel.getVendor().instance().sqlLimit(0));
 
         AbstractStrategy strategy;
         // Fix #14417
         // TODO Optionnal
-        if (MediatorModel.model().getStrategy() != null) {
-            strategy = MediatorModel.model().getStrategy().instance();
+        if (this.injectionModel.getStrategy() != null) {
+            strategy = this.injectionModel.getStrategy().instance();
         } else {
             return "";
         }
@@ -113,7 +118,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     Request request = new Request();
                     request.setMessage(Interaction.UPDATE_PROGRESS);
                     request.setParameters(searchName, numberToFind);
-                    MediatorModel.model().sendToViews(request);
+                    this.injectionModel.sendToViews(request);
                 }
                 break;
             }
@@ -129,7 +134,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     Request request = new Request();
                     request.setMessage(Interaction.UPDATE_PROGRESS);
                     request.setParameters(searchName, numberToFind);
-                    MediatorModel.model().sendToViews(request);
+                    this.injectionModel.sendToViews(request);
                 }
                 break;
             }
@@ -161,7 +166,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                         .replaceAll("")
                         .replaceAll("\\n", "\\\\\\n").replaceAll("\\r", "\\\\\\r").replaceAll("\\t", "\\\\\\t")
                 );
-                MediatorModel.model().sendToViews(request);
+                this.injectionModel.sendToViews(request);
             } catch (IllegalStateException | OutOfMemoryError e) {
                 // Premature end of results
                 // if it's not the root (empty tree)
@@ -169,7 +174,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     Request request = new Request();
                     request.setMessage(Interaction.END_PROGRESS);
                     request.setParameters(searchName);
-                    MediatorModel.model().sendToViews(request);
+                    this.injectionModel.sendToViews(request);
                 }
 
                 StringBuilder messageError = new StringBuilder("Fetching fails: no data to parse");
@@ -213,7 +218,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 Request request = new Request();
                 request.setMessage(Interaction.UPDATE_PROGRESS);
                 request.setParameters(searchName, sqlLimit + nbCompleteLine);
-                MediatorModel.model().sendToViews(request);
+                this.injectionModel.sendToViews(request);
             }
 
             /*
@@ -346,7 +351,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                         Request request = new Request();
                         request.setMessage(Interaction.UPDATE_PROGRESS);
                         request.setParameters(searchName, sqlLimit);
-                        MediatorModel.model().sendToViews(request);
+                        this.injectionModel.sendToViews(request);
                     }
 
                     /*
@@ -358,7 +363,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                             Request request = new Request();
                             request.setMessage(Interaction.UPDATE_PROGRESS);
                             request.setParameters(searchName, numberToFind);
-                            MediatorModel.model().sendToViews(request);
+                            this.injectionModel.sendToViews(request);
                         }
                         break;
                     }
@@ -371,7 +376,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                         Pattern
                             .compile(MODE +"\\{limit\\}")
                             .matcher(initialSQLQuery)
-                            .replaceAll(MediatorModel.model().getVendor().instance().sqlLimit(sqlLimit));
+                            .replaceAll(this.injectionModel.getVendor().instance().sqlLimit(sqlLimit));
 
                     slidingWindowCurrentRow.setLength(0);
                 } else {
@@ -380,7 +385,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                         Request request = new Request();
                         request.setMessage(Interaction.UPDATE_PROGRESS);
                         request.setParameters(searchName, numberToFind);
-                        MediatorModel.model().sendToViews(request);
+                        this.injectionModel.sendToViews(request);
                     }
                     break;
                 }

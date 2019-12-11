@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Interaction;
@@ -33,17 +34,21 @@ public class StrategyInjectionError extends AbstractStrategy {
     // TODO Pojo injection
     private int indexMethod = 0;
 
+    public StrategyInjectionError(InjectionModel injectionModel) {
+        super(injectionModel);
+    }
+
     @Override
     public void checkApplicability() {
         // Reset applicability of new Vendor
         this.isApplicable = false;
         this.tabCapacityMethod = null;
         
-        Strategy strategyXml = MediatorModel.model().getVendor().instance().getXmlModel().getStrategy();
+        Strategy strategyXml = this.injectionModel.getVendor().instance().getXmlModel().getStrategy();
         Configuration configurationXml = strategyXml.getConfiguration();
         
         if (strategyXml.getError() == null) {
-            LOGGER.info("No Error strategy known for "+ MediatorModel.model().getVendor());
+            LOGGER.info("No Error strategy known for "+ this.injectionModel.getVendor());
             return;
         }
 
@@ -56,7 +61,7 @@ public class StrategyInjectionError extends AbstractStrategy {
             boolean methodIsApplicable = false;
             LOGGER.trace(I18n.valueByKey("LOG_CHECKING") +" "+ errorMethod.getName() +"...");
         
-            String performanceSourcePage = MediatorModel.model().injectWithoutIndex(
+            String performanceSourcePage = this.injectionModel.injectWithoutIndex(
                 " "+ VendorXml.replaceTags(
                     errorMethod.getQuery()
                     .replace("${WINDOW}", configurationXml.getSlidingWindow())
@@ -83,7 +88,7 @@ public class StrategyInjectionError extends AbstractStrategy {
             }
             
             if (methodIsApplicable) {
-                String performanceErrorSourcePage = MediatorModel.model().injectWithoutIndex(
+                String performanceErrorSourcePage = this.injectionModel.injectWithoutIndex(
                     " "+ VendorXml.replaceTags(
                         errorMethod.getQuery()
                         .replace("${WINDOW}", configurationXml.getSlidingWindow())
@@ -142,8 +147,8 @@ public class StrategyInjectionError extends AbstractStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
-        return MediatorModel.model().injectWithoutIndex(
-            MediatorModel.model().getVendor().instance().sqlError(sqlQuery, startPosition)
+        return this.injectionModel.injectWithoutIndex(
+            this.injectionModel.getVendor().instance().sqlError(sqlQuery, startPosition)
         );
     }
 
@@ -152,14 +157,14 @@ public class StrategyInjectionError extends AbstractStrategy {
         LOGGER.info(
             I18n.valueByKey("LOG_USING_STRATEGY") +" ["
                 + this.getName() +" "
-                + MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethod).getName()
+                + this.injectionModel.getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethod).getName()
             +"]"
         );
-        MediatorModel.model().setStrategy(StrategyInjection.ERROR);
+        this.injectionModel.setStrategy(StrategyInjection.ERROR);
         
         Request request = new Request();
         request.setMessage(Interaction.MARK_ERROR_STRATEGY);
-        MediatorModel.model().sendToViews(request);
+        this.injectionModel.sendToViews(request);
     }
     
     @Override

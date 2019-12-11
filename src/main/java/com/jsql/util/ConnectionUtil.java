@@ -53,44 +53,49 @@ public class ConnectionUtil {
     /**
      * URL entered by user
      */
-    private static String urlByUser;
+    private String urlByUser;
 
     /**
      * URL entered by user without the query string
      */
-    private static String urlBase;
+    private String urlBase;
 
     /**
      * Method of injection: by query string, request or header.
      */
-    private static MethodInjection methodInjection;
+    private MethodInjection methodInjection;
 
     /**
      * Default HTTP method. It can be changed to a custom method.
      */
-    private static String typeRequest = "POST";
+    private String typeRequest = "POST";
 
     /**
      * Default timeout used by the jcifs fix. It's the default value used usually by the JVM.
      */
-    private static final Integer TIMEOUT = 15000;
+    private final Integer TIMEOUT = 15000;
     
-    private static SimpleEntry<String, String> tokenCsrf = null;
+    private SimpleEntry<String, String> tokenCsrf = null;
     
     // Utility class
     private ConnectionUtil() {
         // not used
     }
     
+    public ConnectionUtil(InjectionModel injectionModel) {
+        this.injectionModel = injectionModel;
+    }
+    InjectionModel injectionModel;
+
     /**
      * Check that the connection to the website is working correctly.
      * It uses authentication defined by user, with fixed timeout, and warn
      * user in case of authentication detected.
      * @throws InjectionFailureException when any error occurs during the connection
      */
-    public static void testConnection() throws InjectionFailureException {
+    public void testConnection() throws InjectionFailureException {
 
-        if (PreferencesUtil.isProcessingCookies()) {
+        if (injectionModel.preferencesUtil.isProcessingCookies()) {
             CookieManager cookieManager = new CookieManager();
             CookieHandler.setDefault(cookieManager);
         } else {
@@ -100,14 +105,14 @@ public class ConnectionUtil {
         // Test the HTTP connection
         HttpURLConnection connection = null;
         try {
-            if (AuthenticationUtil.isKerberos()) {
+            if (injectionModel.authenticationUtil.isKerberos()) {
                 String loginKerberos =
                     Pattern
                         .compile("(?s)\\{.*")
                         .matcher(
                             StringUtils.join(
                                 Files.readAllLines(
-                                    Paths.get(AuthenticationUtil.getPathKerberosLogin()),
+                                    Paths.get(injectionModel.authenticationUtil.getPathKerberosLogin()),
                                     Charset.defaultCharset()
                                 ),
                                 ""
@@ -117,30 +122,30 @@ public class ConnectionUtil {
                         .trim();
                 
                 SpnegoHttpURLConnection spnego = new SpnegoHttpURLConnection(loginKerberos);
-                connection = spnego.connect(new URL(ConnectionUtil.getUrlByUser()));
+                connection = spnego.connect(new URL(this.getUrlByUser()));
             } else {
                 connection = (HttpURLConnection) new URL(
-                    ConnectionUtil.getUrlByUser()
+                    this.getUrlByUser()
                     // Ignore injection point during the test
                     .replace(InjectionModel.STAR, "")
                 ).openConnection();
             }
             
-            connection.setReadTimeout(ConnectionUtil.getTimeout());
-            connection.setConnectTimeout(ConnectionUtil.getTimeout());
+            connection.setReadTimeout(this.getTimeout());
+            connection.setConnectTimeout(this.getTimeout());
             connection.setDefaultUseCaches(false);
             connection.setRequestProperty("Pragma", "no-cache");
             connection.setRequestProperty("Cache-Control", "no-cache");
             connection.setRequestProperty("Expires", "-1");
             
-            ConnectionUtil.fixJcifsTimeout(connection);
+            this.fixJcifsTimeout(connection);
             
             // Add headers if exists (Authorization:Basic, etc)
-            for (SimpleEntry<String, String> header: ParameterUtil.getHeader()) {
+            for (SimpleEntry<String, String> header: injectionModel.parameterUtil.getHeader()) {
                 HeaderUtil.sanitizeHeaders(connection, header);
             }
 
-            HeaderUtil.checkResponseHeader(connection, ConnectionUtil.getUrlByUser().replace(InjectionModel.STAR, ""));
+            injectionModel.headerUtil.checkResponseHeader(connection, this.getUrlByUser().replace(InjectionModel.STAR, ""));
             
             // Calling connection.disconnect() is not required, more calls will happen
         } catch (Exception e) {
@@ -155,18 +160,18 @@ public class ConnectionUtil {
      * @return the source page of the URL
      * @throws IOException when the reading of source page fails
      */
-    public static String getSourceLineFeed(String url) throws IOException {
+    public String getSourceLineFeed(String url) throws IOException {
         return getSource(url, true);
     }
     
-    public static String getSource(String url) throws IOException {
+    public String getSource(String url) throws IOException {
         return getSource(url, false);
     }
     
-    public static String getSource(String url, boolean lineFeed) throws IOException {
+    public String getSource(String url, boolean lineFeed) throws IOException {
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.setReadTimeout(ConnectionUtil.getTimeout());
-        connection.setConnectTimeout(ConnectionUtil.getTimeout());
+        connection.setReadTimeout(this.getTimeout());
+        connection.setConnectTimeout(this.getTimeout());
         connection.setUseCaches(false);
         
         connection.setRequestProperty("Pragma", "no-cache");
@@ -180,9 +185,9 @@ public class ConnectionUtil {
         String pageSource = null;
         try {
             if (lineFeed) {
-                pageSource = ConnectionUtil.getSourceLineFeed(connection);
+                pageSource = this.getSourceLineFeed(connection);
             } else {
-                pageSource = ConnectionUtil.getSource(connection);
+                pageSource = this.getSource(connection);
             }
         } catch (IOException e) {
             throw e;
@@ -193,7 +198,7 @@ public class ConnectionUtil {
             Request request = new Request();
             request.setMessage(Interaction.MESSAGE_HEADER);
             request.setParameters(msgHeader);
-            MediatorModel.model().sendToViews(request);
+            injectionModel.sendToViews(request);
         }
         
         // TODO optional
@@ -290,7 +295,7 @@ public class ConnectionUtil {
      * Use reflectivity to set connectTimeout and readTimeout attributs.
      * @param connection whose default timeout attributs will be set
      */
-    public static void fixJcifsTimeout(HttpURLConnection connection) {
+    public void fixJcifsTimeout(HttpURLConnection connection) {
         Class<?> classConnection = connection.getClass();
         boolean connectionIsWrapped = true;
         
@@ -320,11 +325,11 @@ public class ConnectionUtil {
     
                 Field privateFieldConnectTimeout = classURLConnectionPrivate.getDeclaredField("connectTimeout");
                 privateFieldConnectTimeout.setAccessible(true);
-                privateFieldConnectTimeout.setInt(privateURLConnection, ConnectionUtil.getTimeout());
+                privateFieldConnectTimeout.setInt(privateURLConnection, this.getTimeout());
                 
                 Field privateFieldReadTimeout = classURLConnectionPrivate.getDeclaredField("readTimeout");
                 privateFieldReadTimeout.setAccessible(true);
-                privateFieldReadTimeout.setInt(privateURLConnection, ConnectionUtil.getTimeout());
+                privateFieldReadTimeout.setInt(privateURLConnection, this.getTimeout());
             } catch (Exception e) {
                 LOGGER.warn("Fix jcifs timeout failed: "+ e.getMessage(), e);
             }
@@ -333,48 +338,48 @@ public class ConnectionUtil {
     
     // Getters and setters
     
-    public static String getUrlByUser() {
+    public String getUrlByUser() {
         return urlByUser;
     }
 
-    public static void setUrlByUser(String urlByUser) {
-        ConnectionUtil.urlByUser = urlByUser;
+    public void setUrlByUser(String urlByUser) {
+        this.urlByUser = urlByUser;
     }
     
-    public static String getUrlBase() {
+    public String getUrlBase() {
         return urlBase;
     }
 
-    public static void setUrlBase(String urlBase) {
-        ConnectionUtil.urlBase = urlBase;
+    public void setUrlBase(String urlBase) {
+        this.urlBase = urlBase;
     }
     
-    public static MethodInjection getMethodInjection() {
+    public MethodInjection getMethodInjection() {
         return methodInjection;
     }
 
-    public static void setMethodInjection(MethodInjection methodInjection) {
-        ConnectionUtil.methodInjection = methodInjection;
+    public void setMethodInjection(MethodInjection methodInjection) {
+        this.methodInjection = methodInjection;
     }
     
-    public static String getTypeRequest() {
+    public String getTypeRequest() {
         return typeRequest;
     }
 
-    public static void setTypeRequest(String typeRequest) {
-        ConnectionUtil.typeRequest = typeRequest;
+    public void setTypeRequest(String typeRequest) {
+        this.typeRequest = typeRequest;
     }
 
-    public static Integer getTimeout() {
+    public Integer getTimeout() {
         return TIMEOUT;
     }
 
-    public static SimpleEntry<String, String> getTokenCsrf() {
+    public SimpleEntry<String, String> getTokenCsrf() {
         return tokenCsrf;
     }
 
-    public static void setTokenCsrf(SimpleEntry<String, String> tokenCsrf) {
-        ConnectionUtil.tokenCsrf = tokenCsrf;
+    public void setTokenCsrf(SimpleEntry<String, String> tokenCsrf) {
+        this.tokenCsrf = tokenCsrf;
     }
     
     

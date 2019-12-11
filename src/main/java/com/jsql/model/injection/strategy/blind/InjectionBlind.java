@@ -10,6 +10,7 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
@@ -43,17 +44,19 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
      * If every false test are not in true mark and every true test are in
      * true test, then blind attack is confirmed.
      */
-    public InjectionBlind() {
+    public InjectionBlind(InjectionModel injectionModel) {
+        super(injectionModel);
+        
         // No blind
         if (this.falseTest.length == 0) {
             return;
         }
         
         // Call the SQL request which must be TRUE (usually ?id=1)
-        InjectionBlind.blankTrueMark = AbstractInjectionBoolean.callUrl("");
+        InjectionBlind.blankTrueMark = this.callUrl("");
 
         // Check if the user wants to stop the preparation
-        if (MediatorModel.model().isStoppedByUser()) {
+        if (this.injectionModel.isStoppedByUser()) {
             return;
         }
 
@@ -64,7 +67,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagFalse"));
         Collection<CallableBlind> listCallableTagFalse = new ArrayList<>();
         for (String urlTest: this.falseTest) {
-            listCallableTagFalse.add(new CallableBlind(urlTest));
+            listCallableTagFalse.add(new CallableBlind(urlTest, injectionModel, this));
         }
         
         /*
@@ -80,7 +83,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             
             constantFalseMark = listTagFalse.get(0).get().getOpcodes();
             for (Future<CallableBlind> falseMark: listTagFalse) {
-                if (MediatorModel.model().isStoppedByUser()) {
+                if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
                 constantFalseMark.retainAll(falseMark.get().getOpcodes());
@@ -92,7 +95,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             Thread.currentThread().interrupt();
         }
 
-        if (MediatorModel.model().isStoppedByUser()) {
+        if (this.injectionModel.isStoppedByUser()) {
             return;
         }
 
@@ -103,7 +106,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagTrue"));
         Collection<CallableBlind> listCallableTagTrue = new ArrayList<>();
         for (String urlTest: this.trueTest) {
-            listCallableTagTrue.add(new CallableBlind(urlTest));
+            listCallableTagTrue.add(new CallableBlind(urlTest, injectionModel, this));
         }
         
         // Begin the url requests
@@ -123,7 +126,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
          */
         try {
             for (Future<CallableBlind> trueTag: listTagTrue) {
-                if (MediatorModel.model().isStoppedByUser()) {
+                if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
                 InjectionBlind.constantFalseMark.removeAll(trueTag.get().getOpcodes());
@@ -135,21 +138,21 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
 
     @Override
     public CallableBlind getCallable(String string, int indexCharacter, boolean isTestingLength) {
-        return new CallableBlind(string, indexCharacter, isTestingLength);
+        return new CallableBlind(string, indexCharacter, isTestingLength, injectionModel, this);
     }
 
     @Override
     public CallableBlind getCallable(String string, int indexCharacter, int bit) {
-        return new CallableBlind(string, indexCharacter, bit);
+        return new CallableBlind(string, indexCharacter, bit, injectionModel, this);
     }
 
     @Override
     public boolean isInjectable() throws StoppedByUserSlidingException {
-        if (MediatorModel.model().isStoppedByUser()) {
+        if (this.injectionModel.isStoppedByUser()) {
             throw new StoppedByUserSlidingException();
         }
         
-        CallableBlind blindTest = new CallableBlind(MediatorModel.model().getVendor().instance().sqlTestBlindFirst());
+        CallableBlind blindTest = new CallableBlind(this.injectionModel.getVendor().instance().sqlTestBlindFirst(), injectionModel, this);
         try {
             blindTest.call();
         } catch (Exception e) {

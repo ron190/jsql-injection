@@ -2,6 +2,7 @@ package com.jsql.model.suspendable;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.JSqlException;
 
@@ -25,6 +26,11 @@ public abstract class AbstractSuspendable<T> {
      */
     private boolean isPaused = false;
 
+    public AbstractSuspendable(InjectionModel injectionModel) {
+        this.injectionModel = injectionModel;
+    }
+    InjectionModel injectionModel;
+
     /**
      * Thread's states Pause and Stop are processed by this method.<br>
      * - Pause action in infinite loop if invoked while shouldPauseThread is set to true,<br>
@@ -43,7 +49,7 @@ public abstract class AbstractSuspendable<T> {
         }
         
         // Return true if stop requested, return false otherwise
-        return this.isStopped || MediatorModel.model().isStoppedByUser();
+        return this.isStopped || this.injectionModel.isStoppedByUser();
     }
     
     /**

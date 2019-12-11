@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Interaction;
@@ -40,19 +41,23 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     // TODO Pojo injection
     private static String visibleIndex;
 
+    public StrategyInjectionNormal(InjectionModel injectionModel) {
+        super(injectionModel);
+    }
+
     /**
      * 
      */
     @Override
     public void checkApplicability() throws JSqlException {
         LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Normal...");
-        MediatorModel.model().setIndexesInUrl(new SuspendableGetIndexes().run());
+        this.injectionModel.setIndexesInUrl(new SuspendableGetIndexes(injectionModel).run());
 
         // Define visibleIndex, i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body
-        StrategyInjectionNormal.visibleIndex = this.getVisibleIndex(MediatorModel.model().getSrcSuccess());
+        StrategyInjectionNormal.visibleIndex = this.getVisibleIndex(this.injectionModel.getSrcSuccess());
         
         this.isApplicable =
-            !"".equals(MediatorModel.model().getIndexesInUrl())
+            !"".equals(this.injectionModel.getIndexesInUrl())
             && new Integer(StrategyInjection.NORMAL.instance().getPerformanceLength()) > 0
             && StrategyInjectionNormal.visibleIndex != null
         ;
@@ -77,17 +82,17 @@ public class StrategyInjectionNormal extends AbstractStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
-        return MediatorModel.model().injectWithIndexes(MediatorModel.model().getVendor().instance().sqlNormal(sqlQuery, startPosition));
+        return this.injectionModel.injectWithIndexes(this.injectionModel.getVendor().instance().sqlNormal(sqlQuery, startPosition));
     }
 
     @Override
     public void activateStrategy() {
         LOGGER.info(I18n.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
-        MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
+        this.injectionModel.setStrategy(StrategyInjection.NORMAL);
         
         Request request = new Request();
         request.setMessage(Interaction.MARK_NORMAL_STRATEGY);
-        MediatorModel.model().sendToViews(request);
+        this.injectionModel.sendToViews(request);
     }
     
     /**
@@ -110,7 +115,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         String[] indexes = foundIndexes.toArray(new String[foundIndexes.size()]);
 
         // Make url shorter, replace useless indexes from 1337[index]7331 to 1
-        String indexesInUrl = MediatorModel.model().getIndexesInUrl().replaceAll(
+        String indexesInUrl = this.injectionModel.getIndexesInUrl().replaceAll(
             "1337(?!"+ String.join("|", indexes) +"7331)\\d*7331",
             "1"
         );
@@ -118,8 +123,8 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         // Replace correct indexes from 1337(index)7331 to
         // ==> ${LEAD}(index)######...######
         // Search for index that displays the most #
-        String performanceQuery = MediatorModel.model().getVendor().instance().sqlCapacity(indexes);
-        String performanceSourcePage = MediatorModel.model().injectWithoutIndex(performanceQuery);
+        String performanceQuery = this.injectionModel.getVendor().instance().sqlCapacity(indexes);
+        String performanceSourcePage = this.injectionModel.injectWithoutIndex(performanceQuery);
 
         // Build a 2D array of string with:
         //     column 1: index
@@ -158,7 +163,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
             "1337(?!"+ lengthFields[lengthFields.length - 1][1] +"7331)\\d*7331",
             "1"
         );
-        MediatorModel.model().setIndexesInUrl(indexesInUrl);
+        this.injectionModel.setIndexesInUrl(indexesInUrl);
         
         return Integer.toString(lengthFields[lengthFields.length - 1][1]);
     }
