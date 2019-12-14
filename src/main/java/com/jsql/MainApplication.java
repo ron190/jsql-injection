@@ -77,7 +77,7 @@ public class MainApplication {
         injectionModel.authenticationUtil.setKerberosCifs();
         
         try {
-            JFrameView view = new JFrameView(injectionModel);
+            JFrameView view = new JFrameView();
             MediatorGui.register(view);
             
             injectionModel.addObserver(view.getObserver());

@@ -3,18 +3,10 @@ package com.test.vendor.h2;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.junit.BeforeClass;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
-import com.jsql.model.injection.method.MethodInjection;
-import com.jsql.model.injection.strategy.StrategyInjection;
-import com.jsql.model.injection.vendor.Vendor;
-import com.jsql.util.ConnectionUtil;
-import com.jsql.util.ParameterUtil;
-import com.jsql.util.PreferencesUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 
 @TestInstance(Lifecycle.PER_CLASS)

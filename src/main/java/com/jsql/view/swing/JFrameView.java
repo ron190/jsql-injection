@@ -77,11 +77,8 @@ public class JFrameView extends JFrame {
      * Build the GUI: add app icon, tree icons, the 3 main panels.
      * @param injectionModel 
      */
-    InjectionModel injectionModel;
-    public JFrameView(InjectionModel injectionModel) {
+    public JFrameView() {
         super("jSQL Injection");
-        
-        this.injectionModel = injectionModel;
         
         MediatorGui.register(this);
         
@@ -166,8 +163,8 @@ public class JFrameView extends JFrame {
      * Empty the interface.
      */
     public void resetInterface() {
-        if (this.injectionModel.getVendorByUser() == injectionModel.AUTO) {
-            MediatorGui.panelAddressBar().getMenuVendor().setText(injectionModel.AUTO.toString());
+        if (MediatorModel.model().getVendorByUser() == MediatorModel.model().AUTO) {
+            MediatorGui.panelAddressBar().getMenuVendor().setText(MediatorModel.model().AUTO.toString());
         }
         
         MediatorGui.panelAddressBar().getMenuStrategy().setText("Strategy auto");
