@@ -48,6 +48,7 @@ import javax.swing.plaf.basic.BasicProgressBarUI;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.GitUtil;
@@ -138,7 +139,7 @@ public class DialogTranslate extends JDialog {
                     .replaceAll("<", "\\\\<")
             ;
               
-            GitUtil.sendReport(clientDescription, ShowOnConsole.YES, DialogTranslate.this.language +" translation");
+            MediatorModel.model().gitUtil.sendReport(clientDescription, ShowOnConsole.YES, DialogTranslate.this.language +" translation");
             DialogTranslate.this.setVisible(false);
         });
 
@@ -243,8 +244,8 @@ public class DialogTranslate extends JDialog {
         
         private void getI18nRoot() throws IOException {
             try {
-                String pageSourceRoot = ConnectionUtil.getSourceLineFeed(
-                    PropertiesUtil.getInstance().getProperties().getProperty("github.webservice.i18n.url")
+                String pageSourceRoot = MediatorModel.model().connectionUtil.getSourceLineFeed(
+                    MediatorModel.model().propertiesUtil.getProperties().getProperty("github.webservice.i18n.url")
                 );
                 this.sourceProperties.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}")));
                 LOGGER.info("Reference language loaded from Github");
@@ -260,7 +261,7 @@ public class DialogTranslate extends JDialog {
         
         private void getI18nLanguage() throws IOException {
             try {
-                String pageSourceLanguage = ConnectionUtil.getSourceLineFeed(
+                String pageSourceLanguage = MediatorModel.model().connectionUtil.getSourceLineFeed(
                     "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql_"+ DialogTranslate.this.language.getNameLocale() +".properties"
                 );
                 this.languageProperties.load(new StringReader(pageSourceLanguage));

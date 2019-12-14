@@ -119,7 +119,7 @@ public class SoapUtil {
                 try {
                     LOGGER.info("Checking SOAP Request injection for "+ currentNode.getParentNode().getNodeName() +"="+ currentNode.getTextContent().replace(InjectionModel.STAR, ""));
                     
-                    injectionModel.testParameters(MethodInjection.REQUEST);
+                    injectionModel.testParameters(injectionModel.REQUEST);
                     hasFoundInjection = true;
                     
                     // Injection successful

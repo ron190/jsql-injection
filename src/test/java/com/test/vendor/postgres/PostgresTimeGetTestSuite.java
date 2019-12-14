@@ -6,6 +6,8 @@ import java.util.Arrays;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
@@ -17,30 +19,29 @@ import com.jsql.util.ConnectionUtil;
 import com.jsql.util.ParameterUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class PostgresTimeGetTestSuite extends ConcretePostgresTestSuite {
 
-    @BeforeClass
-    public static void initialize() throws Exception {
+    public void initialize3() throws Exception {
         
         InjectionModel model = new InjectionModel();
-        MediatorModel.register(model);
-        model.displayVersion();
+        this.injectionModel = model;
 
-        MediatorModel.model().addObserver(new SystemOutTerminal());
+        model.addObserver(new SystemOutTerminal());
 
-        ParameterUtil.initQueryString("http://localhost:8080/greeting-time");
-        ParameterUtil.initRequest("");
-        ParameterUtil.setQueryString(Arrays.asList(
+        model.parameterUtil.initQueryString("http://localhost:8080/greeting-time");
+        model.parameterUtil.initRequest("");
+        model.parameterUtil.setQueryString(Arrays.asList(
             new SimpleEntry<String, String>("tenant", "postgres"), 
             new SimpleEntry<String, String>("name", "1'")
         ));
-        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
-        ConnectionUtil.setTypeRequest("GET");
+        model.connectionUtil.setMethodInjection(model.QUERY);
+        model.connectionUtil.setTypeRequest("GET");
         
-        MediatorModel.model().setIsScanning(true);
-        MediatorModel.model().setStrategy(StrategyInjection.TIME);
-        MediatorModel.model().setVendorByUser(Vendor.POSTGRESQL);
-        MediatorModel.model().beginInjection();
+        model.setIsScanning(true);
+        model.setStrategy(model.TIME);
+        model.setVendorByUser(model.POSTGRESQL);
+        model.beginInjection();
     }
     
     @Ignore

@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
+import com.jsql.model.InjectionModel.Vendor;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
@@ -30,7 +30,6 @@ import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.SlidingException;
-import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.model.suspendable.SuspendableGetRows;
 
 /**
@@ -374,8 +373,8 @@ public class DataAccess {
         }
 
         // Build SQLite columns
-        if (this.injectionModel.getVendor() == Vendor.SQLITE) {
-            resultToParse = Vendor.SQLITE.transform(resultToParse);
+        if (this.injectionModel.getVendor() == injectionModel.SQLITE) {
+            resultToParse = injectionModel.SQLITE.transform(resultToParse);
         }
         
         // Parse all the data we have retrieved

@@ -2,7 +2,7 @@ package com.test.vendor.oracle;
 
 import com.test.AbstractTestSuite;
 
-public class ConcreteOracleTestSuite extends AbstractTestSuite {
+public abstract class ConcreteOracleTestSuite extends AbstractTestSuite {
 
     public ConcreteOracleTestSuite () {
         this.jdbcURL = "jdbc:oracle:thin:@"+ AbstractTestSuite.HOSTNAME +":1521:xe";

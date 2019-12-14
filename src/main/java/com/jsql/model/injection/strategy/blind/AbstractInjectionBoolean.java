@@ -22,21 +22,24 @@ import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean<T>> {
     InjectionModel injectionModel;
-    public AbstractInjectionBoolean(InjectionModel injectionModel) {
+    public AbstractInjectionBoolean(InjectionModel injectionModel) { 
         this.injectionModel = injectionModel;
+
+        falseTest = this.injectionModel.getVendor().instance().getListFalseTest();
+        trueTest = this.injectionModel.getVendor().instance().getListTrueTest();
     }
 
     /**
      * Every FALSE SQL statements will be checked,
      * more statements means a more robust application
      */
-    protected String[] falseTest = this.injectionModel.getVendor().instance().getListFalseTest();
+    protected String[] falseTest;
 
     /**
      * Every TRUE SQL statements will be checked,
      * more statements means a more robust application
      */
-    protected String[] trueTest = this.injectionModel.getVendor().instance().getListTrueTest();
+    protected String[] trueTest;
 
     /**
      * Constant linked to a URL, true if that url

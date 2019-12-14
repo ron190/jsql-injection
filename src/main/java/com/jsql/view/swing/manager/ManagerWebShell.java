@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.manager;
 
+import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.exception.JSqlException;
 
@@ -25,7 +26,7 @@ public class ManagerWebShell extends AbstractManagerShell {
     
     @Override
     void createPayload(String pathShell, String urlShell) throws JSqlException, InterruptedException {
-        RessourceAccess.createWebShell(pathShell, urlShell);
+        MediatorModel.model().resourceAccess.createWebShell(pathShell, urlShell);
     }
     
 }

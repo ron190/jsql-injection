@@ -48,13 +48,13 @@ import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
+import com.jsql.model.InjectionModel.MethodInjection;
+import com.jsql.model.InjectionModel.Vendor;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
-import com.jsql.model.injection.method.MethodInjection;
-import com.jsql.model.injection.strategy.StrategyInjection;
+import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.model.injection.strategy.StrategyInjectionError;
-import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.model.injection.vendor.model.Model.Strategy.Error.Method;
 import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
@@ -102,7 +102,7 @@ public class PanelAddressBar extends JPanel {
     /**
      * Current injection method.
      */
-    private MethodInjection methodInjection = MethodInjection.QUERY;
+    private MethodInjection methodInjection = MediatorModel.model().QUERY;
 
     private String typeRequest = "POST";
 
@@ -118,9 +118,9 @@ public class PanelAddressBar extends JPanel {
 
     private boolean advanceIsActivated = false;
     
-    private final RadioLinkMethod radioQueryString = new RadioLinkMethod("GET", true, MethodInjection.QUERY);
-    private final RadioLinkMethod radioMethod = new RadioLinkMethod("POST", MethodInjection.REQUEST);
-    private final RadioLinkMethod radioHeader = new RadioLinkMethod("Header", MethodInjection.HEADER);
+    private final RadioLinkMethod radioQueryString = new RadioLinkMethod("GET", true, MediatorModel.model().QUERY);
+    private final RadioLinkMethod radioMethod = new RadioLinkMethod("POST", MediatorModel.model().REQUEST);
+    private final RadioLinkMethod radioHeader = new RadioLinkMethod("Header", MediatorModel.model().HEADER);
 
   public JMenu menuVendor;
 
@@ -333,11 +333,11 @@ public class PanelAddressBar extends JPanel {
 
         this.itemRadioStrategyError = new JMenu[1];
 
-        for (final StrategyInjection strategy: StrategyInjection.values()) {
-            if (strategy != StrategyInjection.UNDEFINED) {
+        for (final AbstractStrategy strategy: MediatorModel.model().strategies) {
+            if (strategy != MediatorModel.model().UNDEFINED) {
                 MenuElement itemRadioStrategy;
 
-                if (strategy == StrategyInjection.ERROR) {
+                if (strategy == MediatorModel.model().ERROR) {
                     itemRadioStrategy = new JMenu(strategy.toString());
                     this.itemRadioStrategyError[0] = (JMenu) itemRadioStrategy;
                 } else {
@@ -351,17 +351,17 @@ public class PanelAddressBar extends JPanel {
 
                 this.menuStrategy.add((JMenuItem) itemRadioStrategy);
                 ((JComponent) itemRadioStrategy)
-                        .setToolTipText(I18n.valueByKey("STRATEGY_" + strategy.name() + "_TOOLTIP"));
+                        .setToolTipText(I18n.valueByKey("STRATEGY_" + strategy.getName().toUpperCase() + "_TOOLTIP"));
                 ((JComponent) itemRadioStrategy).setEnabled(false);
             }
         }
 
-        this.menuVendor = new ComboMenu(Vendor.AUTO.toString());
+        this.menuVendor = new ComboMenu(MediatorModel.model().AUTO.toString());
 
         ButtonGroup groupVendor = new ButtonGroup();
 
-        for (final Vendor vendor: Vendor.values()) {
-            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == Vendor.AUTO);
+        for (final Vendor vendor: MediatorModel.model().vendors) {
+            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorModel.model().AUTO);
             itemRadioVendor.addActionListener(actionEvent -> {
                 this.menuVendor.setText(vendor.toString());
                 MediatorModel.model().setVendorByUser(vendor);
@@ -535,7 +535,7 @@ public class PanelAddressBar extends JPanel {
         this.itemRadioStrategyError[0].removeAll();
 
         Integer[] i = { 0 };
-        if (vendor != Vendor.AUTO && vendor.instance().getXmlModel().getStrategy().getError() != null) {
+        if (vendor != MediatorModel.model().AUTO && vendor.instance().getXmlModel().getStrategy().getError() != null) {
             for (Method methodError: vendor.instance().getXmlModel().getStrategy().getError().getMethod()) {
                 JMenuItem itemRadioVendor = new JRadioButtonMenuItem(methodError.getName());
                 itemRadioVendor.setEnabled(false);
@@ -545,8 +545,8 @@ public class PanelAddressBar extends JPanel {
                 final int indexError = i[0];
                 itemRadioVendor.addActionListener(actionEvent -> {
                     PanelAddressBar.this.menuStrategy.setText(methodError.getName());
-                    MediatorModel.model().setStrategy(StrategyInjection.ERROR);
-                    ((StrategyInjectionError) StrategyInjection.ERROR.instance()).setIndexMethod(indexError);
+                    MediatorModel.model().setStrategy(MediatorModel.model().ERROR);
+                    ((StrategyInjectionError) MediatorModel.model().ERROR).setIndexMethod(indexError);
                 });
 
                 i[0]++;

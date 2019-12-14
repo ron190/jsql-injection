@@ -20,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.PrivilegedActionException;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -42,14 +43,15 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.injection.method.MethodInjection;
+import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.AbstractStrategy;
-import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.model.injection.strategy.StrategyInjectionBlind;
 import com.jsql.model.injection.strategy.StrategyInjectionError;
 import com.jsql.model.injection.strategy.StrategyInjectionNormal;
 import com.jsql.model.injection.strategy.StrategyInjectionTime;
-import com.jsql.model.injection.vendor.Vendor;
+import com.jsql.model.injection.vendor.model.AbstractVendor;
+import com.jsql.model.injection.vendor.model.VendorXml;
+import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
 import com.jsql.model.suspendable.SuspendableGetVendor;
 import com.jsql.util.AuthenticationUtil;
@@ -57,7 +59,6 @@ import com.jsql.util.ConnectionUtil;
 import com.jsql.util.ExceptionUtil;
 import com.jsql.util.GitUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
-import com.jsql.util.tampering.TamperingUtil;
 import com.jsql.util.HeaderUtil;
 import com.jsql.util.JsonUtil;
 import com.jsql.util.ParameterUtil;
@@ -66,6 +67,7 @@ import com.jsql.util.PropertiesUtil;
 import com.jsql.util.ProxyUtil;
 import com.jsql.util.SoapUtil;
 import com.jsql.util.ThreadUtil;
+import com.jsql.util.tampering.TamperingUtil;
 
 import net.sourceforge.spnego.SpnegoHttpURLConnection;
 
@@ -79,8 +81,172 @@ import net.sourceforge.spnego.SpnegoHttpURLConnection;
  */
 public class InjectionModel extends AbstractModelObservable {
     
+    public Vendor AUTO = new Vendor("Database auto", null);
+    public Vendor ACCESS = new Vendor("Access", new VendorXml("access.xml", InjectionModel.this));
+    public Vendor COCKROACHDB = new Vendor("CockroachDB", new VendorXml("cockroachdb.xml", InjectionModel.this));
+    public Vendor CUBRID = new Vendor("CUBRID", new VendorXml("cubrid.xml", InjectionModel.this));
+    public Vendor DB2 = new Vendor("DB2", new VendorXml("db2.xml", InjectionModel.this));
+    public Vendor DERBY = new Vendor("Derby", new VendorXml("derby.xml", InjectionModel.this));
+    public Vendor FIREBIRD = new Vendor("Firebird", new VendorXml("firebird.xml", InjectionModel.this));
+    public Vendor H2 = new Vendor("H2", new VendorXml("h2.xml", InjectionModel.this));
+    public Vendor HANA = new Vendor("Hana", new VendorXml("hana.xml", InjectionModel.this));
+    public Vendor HSQLDB = new Vendor("HSQLDB", new VendorXml("hsqldb.xml", InjectionModel.this));
+    public Vendor INFORMIX = new Vendor("Informix", new VendorXml("informix.xml", InjectionModel.this));
+    public Vendor INGRES = new Vendor("Ingres", new VendorXml("ingres.xml", InjectionModel.this));
+    public Vendor MAXDB = new Vendor("MaxDB", new VendorXml("maxdb.xml", InjectionModel.this));
+    public Vendor MCKOI = new Vendor("Mckoi", new VendorXml("mckoi.xml", InjectionModel.this));
+    public Vendor MEMSQL = new Vendor("MemSQL", new VendorXml("memsql.xml", InjectionModel.this));
+    public Vendor MYSQL = new Vendor("MySQL", new VendorXml("mysql.xml", InjectionModel.this));
+    public Vendor NEO4J = new Vendor("Neo4j", new VendorXml("neo4j.xml", InjectionModel.this));
+    public Vendor NUODB = new Vendor("NuoDB", new VendorXml("nuodb.xml", InjectionModel.this));
+    public Vendor ORACLE = new Vendor("Oracle", new VendorXml("oracle.xml", InjectionModel.this));
+    public Vendor POSTGRESQL = new Vendor("PostgreSQL", new VendorXml("postgresql.xml", InjectionModel.this));
+    public Vendor SQLITE = new Vendor("SQLite", new VendorXml("sqlite.xml", InjectionModel.this)) {
+         
+         @Override
+         public String transform(String resultToParse) {
+             
+             StringBuilder resultSQLite = new StringBuilder();
+             String resultTmp = resultToParse.replaceFirst(".+?\\(", "").trim().replaceAll("\\)$", "");
+             resultTmp = resultTmp.replaceAll("\\(.+?\\)", "");
+             
+             for (String columnNameAndType: resultTmp.split(",")) {
+                 // Some recent SQLite use tabulation character as a separator => split() by any  white space \s
+                 String columnName = columnNameAndType.trim().split("\\s")[0];
+                 
+                 // Some recent SQLite enclose names with ` => strip those `
+                 columnName = StringUtils.strip(columnName, "`");
+                 
+                 if (!"CONSTRAINT".equals(columnName) && !"UNIQUE".equals(columnName)) {
+                     resultSQLite.append((char) 4 + columnName + (char) 5 + "0" + (char) 4 + (char) 6);
+                 }
+             }
+     
+             return resultSQLite.toString();
+             
+         }
+         
+     };
+    public Vendor SQLSERVER = new Vendor("SQL Server", new VendorXml("sqlserver.xml", InjectionModel.this));
+    public Vendor SYBASE = new Vendor("Sybase", new VendorXml("sybase.xml", InjectionModel.this));
+    public Vendor TERADATA = new Vendor("Teradata", new VendorXml("teradata.xml", InjectionModel.this));
+    public Vendor VERTICA = new Vendor("Vertica", new VendorXml("vertica.xml", InjectionModel.this));
+    
+    public List<Vendor> vendors = Arrays.asList(ACCESS,COCKROACHDB,CUBRID,DB2,DERBY,FIREBIRD,H2,HANA,HSQLDB,INFORMIX,INGRES,MAXDB,MCKOI,MEMSQL,MYSQL,NEO4J,NUODB,ORACLE,POSTGRESQL,SQLITE,SQLSERVER,SYBASE,TERADATA,VERTICA);
+    
+    public class Vendor {
+        
+        private final String labelVendor;
+        
+        private final AbstractVendor instanceVendor;
+        
+        private Vendor(String labelVendor, AbstractVendor instanceVendor) {
+            this.labelVendor = labelVendor;
+            this.instanceVendor = instanceVendor;
+        }
+        
+        public AbstractVendor instance() {
+            return this.instanceVendor;
+        }
+        
+        @Override
+        public String toString() {
+            return this.labelVendor;
+        }
+        
+        public String transform(String resultToParse) {
+            return "";
+        }
+        
+    }
+    
+    public abstract class MethodInjection {
+        
+        public abstract boolean isCheckingAllParam();
+        public abstract String getParamsAsString();
+        public abstract List<SimpleEntry<String, String>> getParams();
+        public abstract String name();
+        
+    }
+    
+
+    
+    public MethodInjection QUERY = new MethodInjection() {
+        
+        @Override
+        public boolean isCheckingAllParam() {
+            return InjectionModel.this.preferencesUtil.isCheckingAllURLParam();
+        }
+
+        @Override
+        public String getParamsAsString() {
+            return InjectionModel.this.parameterUtil.getQueryStringFromEntries();
+        }
+
+        @Override
+        public List<SimpleEntry<String, String>> getParams() {
+            return InjectionModel.this.parameterUtil.getQueryString();
+        }
+
+        @Override
+        public String name() {
+            return "QUERY";
+        }
+        
+    };
+    
+    public MethodInjection REQUEST = new MethodInjection() {
+        
+        @Override
+        public boolean isCheckingAllParam() {
+            return InjectionModel.this.preferencesUtil.isCheckingAllRequestParam();
+        }
+
+        @Override
+        public String getParamsAsString() {
+            return InjectionModel.this.parameterUtil.getRequestFromEntries();
+        }
+
+        @Override
+        public List<SimpleEntry<String, String>> getParams() {
+            return InjectionModel.this.parameterUtil.getRequest();
+        }
+
+        @Override
+        public String name() {
+            return "REQUEST";
+        }
+        
+    };
+    
+    public MethodInjection HEADER = new MethodInjection() {
+        
+        @Override
+        public boolean isCheckingAllParam() {
+            return InjectionModel.this.preferencesUtil.isCheckingAllHeaderParam();
+        }
+
+        @Override
+        public String getParamsAsString() {
+            return InjectionModel.this.parameterUtil.getHeaderFromEntries();
+        }
+
+        @Override
+        public List<SimpleEntry<String, String>> getParams() {
+            return InjectionModel.this.parameterUtil.getHeader();
+        }
+
+        @Override
+        public String name() {
+            return "HEADER";
+        }
+        
+    };
+    
 //    Mediator
+    public PropertiesUtil propertiesUtil = new PropertiesUtil(this);
     public DataAccess dataAccess = new DataAccess(this);
+    public RessourceAccess resourceAccess = new RessourceAccess(this);
     public ConnectionUtil connectionUtil = new ConnectionUtil(this);
     public AuthenticationUtil authenticationUtil = new AuthenticationUtil(this);
     public GitUtil gitUtil = new GitUtil(this);
@@ -91,12 +257,60 @@ public class InjectionModel extends AbstractModelObservable {
     public JsonUtil jsonUtil = new JsonUtil(this);
     public PreferencesUtil preferencesUtil = new PreferencesUtil(this);
     public ProxyUtil proxyUtil = new ProxyUtil(this);
-    public PropertiesUtil propertiesUtil = new PropertiesUtil(this);
     
+    public AbstractStrategy UNDEFINED = new AbstractStrategy(this) {
+
+        @Override
+        public void checkApplicability() throws JSqlException {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        protected void allow() {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        protected void unallow() {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable)
+                throws StoppedByUserSlidingException {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public void activateStrategy() {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public String getPerformanceLength() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public String getName() {
+            // TODO Auto-generated method stub
+            return null;
+        }
+        
+    };
     public AbstractStrategy TIME = new StrategyInjectionTime(this);
     public AbstractStrategy BLIND = new StrategyInjectionBlind(this);
     public AbstractStrategy ERROR = new StrategyInjectionError(this);
     public AbstractStrategy NORMAL = new StrategyInjectionNormal(this);
+    
+    public List<MethodInjection> methods = Arrays.asList(QUERY,REQUEST,HEADER);
+    public List<AbstractStrategy> strategies = Arrays.asList(UNDEFINED,TIME,BLIND,ERROR,NORMAL);
 	
     /**
      * Log4j logger sent to view.
@@ -136,18 +350,19 @@ public class InjectionModel extends AbstractModelObservable {
      * Database vendor currently used.
      * It can be switched to another vendor by automatic detection or manual selection.
      */
-    private Vendor vendor = Vendor.MYSQL;
+    private Vendor vendor = this.MYSQL;
 
     /**
      * Database vendor selected by user (default UNDEFINED).
      * If not UNDEFINED then the next injection will be forced to use the selected vendor.
      */
-    private Vendor vendorByUser = Vendor.AUTO;
+    private Vendor vendorByUser = this.AUTO;
     
     /**
      * Current injection strategy.
      */
-    private StrategyInjection strategy;
+//    private StrategyInjection strategy;
+    private AbstractStrategy strategy;
     
     /**
      * Allow to directly start an injection after a failed one
@@ -157,8 +372,8 @@ public class InjectionModel extends AbstractModelObservable {
     
     private boolean isScanning = false;
     
-    public static final boolean IS_PARAM_BY_USER = true;
-    public static final boolean IS_JSON = true;
+    public final boolean IS_PARAM_BY_USER = true;
+    public final boolean IS_JSON = true;
 
     /**
      * Reset each injection attributes: Database metadata, General Thread status, Strategy.
@@ -208,7 +423,7 @@ public class InjectionModel extends AbstractModelObservable {
             
             boolean hasFoundInjection = false;
             
-            hasFoundInjection = this.testParameters(MethodInjection.QUERY);
+            hasFoundInjection = this.testParameters(this.QUERY);
 
             if (!hasFoundInjection) {
                 hasFoundInjection = soapUtil.testParameters();
@@ -216,11 +431,11 @@ public class InjectionModel extends AbstractModelObservable {
             
             if (!hasFoundInjection) {
                 LOGGER.trace("Checking standard Request parameters");
-                hasFoundInjection = this.testParameters(MethodInjection.REQUEST);
+                hasFoundInjection = this.testParameters(this.REQUEST);
             }
             
             if (!hasFoundInjection) {
-                hasFoundInjection = this.testParameters(MethodInjection.HEADER);
+                hasFoundInjection = this.testParameters(this.HEADER);
             }
             
             if (!this.isScanning) {
@@ -268,7 +483,7 @@ public class InjectionModel extends AbstractModelObservable {
         this.connectionUtil.setMethodInjection(methodInjection);
         
         // Injection by injection point
-        if (methodInjection.getParamsAsString().contains(InjectionModel.STAR)) {
+        if (methodInjection.getParamsAsString().contains(this.STAR)) {
             LOGGER.info("Checking single "+ methodInjection.name() +" parameter with injection point at *");
             
             // Will keep param value as is,
@@ -278,7 +493,7 @@ public class InjectionModel extends AbstractModelObservable {
         // Default injection: last param tested only
         } else if (!methodInjection.isCheckingAllParam()) {
             // Injection point defined on last parameter
-            methodInjection.getParams().stream().reduce((a, b) -> b).ifPresent(e -> e.setValue(e.getValue() + InjectionModel.STAR));
+            methodInjection.getParams().stream().reduce((a, b) -> b).ifPresent(e -> e.setValue(e.getValue() + this.STAR));
 
             // Will check param value by user.
             // Notice options 'Inject each URL params' and 'inject JSON' must be checked both
@@ -360,7 +575,7 @@ public class InjectionModel extends AbstractModelObservable {
         // Force to insertion char otherwise.
         if (parameter != null) {
             String charInsertion = new SuspendableGetCharInsertion(this).run(characterInsertionByUser, parameter, isJson);
-            LOGGER.info(I18n.valueByKey("LOG_USING_INSERTION_CHARACTER") +" ["+ charInsertion.replace(InjectionModel.STAR, "") +"]");
+            LOGGER.info(I18n.valueByKey("LOG_USING_INSERTION_CHARACTER") +" ["+ charInsertion.replace(this.STAR, "") +"]");
         }
         
         // Fingerprint database
@@ -368,23 +583,23 @@ public class InjectionModel extends AbstractModelObservable {
 
         // Test each injection strategies: time < blind < error < normal
         // Choose the most efficient strategy: normal > error > blind > time
-        StrategyInjection.TIME.instance().checkApplicability();
-        StrategyInjection.BLIND.instance().checkApplicability();
-        StrategyInjection.ERROR.instance().checkApplicability();
-        StrategyInjection.NORMAL.instance().checkApplicability();
+        this.TIME.checkApplicability();
+        this.BLIND.checkApplicability();
+        this.ERROR.checkApplicability();
+        this.NORMAL.checkApplicability();
 
         // Choose the most efficient strategy: normal > error > blind > time
-        if (StrategyInjection.NORMAL.instance().isApplicable()) {
-            StrategyInjection.NORMAL.instance().activateStrategy();
+        if (this.NORMAL.isApplicable()) {
+            this.NORMAL.activateStrategy();
             
-        } else if (StrategyInjection.ERROR.instance().isApplicable()) {
-            StrategyInjection.ERROR.instance().activateStrategy();
+        } else if (this.ERROR.isApplicable()) {
+            this.ERROR.activateStrategy();
             
-        } else if (StrategyInjection.BLIND.instance().isApplicable()) {
-            StrategyInjection.BLIND.instance().activateStrategy();
+        } else if (this.BLIND.isApplicable()) {
+            this.BLIND.activateStrategy();
             
-        } else if (StrategyInjection.TIME.instance().isApplicable()) {
-            StrategyInjection.TIME.instance().activateStrategy();
+        } else if (this.TIME.isApplicable()) {
+            this.TIME.activateStrategy();
             
         } else {
             throw new InjectionFailureException("No injection found");
@@ -440,7 +655,7 @@ public class InjectionModel extends AbstractModelObservable {
                 urlInjection += "?";
             }
 
-            urlInjection += this.buildQuery(MethodInjection.QUERY, this.parameterUtil.getQueryStringFromEntries(), isUsingIndex, dataInjection);
+            urlInjection += this.buildQuery(this.QUERY, this.parameterUtil.getQueryStringFromEntries(), isUsingIndex, dataInjection);
             
             if (this.connectionUtil.getTokenCsrf() != null) {
                 urlInjection += "&"+ this.connectionUtil.getTokenCsrf().getKey() +"="+ this.connectionUtil.getTokenCsrf().getValue();
@@ -503,14 +718,14 @@ public class InjectionModel extends AbstractModelObservable {
              */
             // TODO Extract in method
             if (!this.parameterUtil.getHeader().isEmpty()) {
-                Stream.of(this.buildQuery(MethodInjection.HEADER, this.parameterUtil.getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
+                Stream.of(this.buildQuery(this.HEADER, this.parameterUtil.getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
                 .forEach(e -> {
                     if (e.split(":").length == 2) {
                         HeaderUtil.sanitizeHeaders(connection, new SimpleEntry<String, String>(e.split(":")[0], e.split(":")[1]));
                     }
                 });
                 
-                msgHeader.put(Header.HEADER, this.buildQuery(MethodInjection.HEADER, this.parameterUtil.getHeaderFromEntries(), isUsingIndex, dataInjection));
+                msgHeader.put(Header.HEADER, this.buildQuery(this.HEADER, this.parameterUtil.getHeaderFromEntries(), isUsingIndex, dataInjection));
             }
     
             /**
@@ -531,18 +746,18 @@ public class InjectionModel extends AbstractModelObservable {
                     }
                     if (this.connectionUtil.getTypeRequest().matches("PUT|POST")) {
                         if (this.parameterUtil.isRequestSoap()) {
-                            dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, this.parameterUtil.getRawRequest(), isUsingIndex, dataInjection));
+                            dataOut.writeBytes(this.buildQuery(this.REQUEST, this.parameterUtil.getRawRequest(), isUsingIndex, dataInjection));
                         } else {
-                            dataOut.writeBytes(this.buildQuery(MethodInjection.REQUEST, this.parameterUtil.getRequestFromEntries(), isUsingIndex, dataInjection));
+                            dataOut.writeBytes(this.buildQuery(this.REQUEST, this.parameterUtil.getRequestFromEntries(), isUsingIndex, dataInjection));
                         }
                     }
                     dataOut.flush();
                     dataOut.close();
                     
                     if (this.parameterUtil.isRequestSoap()) {
-                        msgHeader.put(Header.POST, this.buildQuery(MethodInjection.REQUEST, this.parameterUtil.getRawRequest(), isUsingIndex, dataInjection));
+                        msgHeader.put(Header.POST, this.buildQuery(this.REQUEST, this.parameterUtil.getRawRequest(), isUsingIndex, dataInjection));
                     } else {
-                        msgHeader.put(Header.POST, this.buildQuery(MethodInjection.REQUEST, this.parameterUtil.getRequestFromEntries(), isUsingIndex, dataInjection));
+                        msgHeader.put(Header.POST, this.buildQuery(this.REQUEST, this.parameterUtil.getRequestFromEntries(), isUsingIndex, dataInjection));
                     }
                 } catch (IOException e) {
                     LOGGER.warn("Error during Request connection: "+ e.getMessage(), e);
@@ -591,13 +806,13 @@ public class InjectionModel extends AbstractModelObservable {
      * @return Final data
      */
     private String buildURL(String urlBase, boolean isUsingIndex, String sqlTrail) {
-        if (urlBase.contains(InjectionModel.STAR)) {
+        if (urlBase.contains(this.STAR)) {
             if (!isUsingIndex) {
-                return urlBase.replace(InjectionModel.STAR, sqlTrail);
+                return urlBase.replace(this.STAR, sqlTrail);
             } else {
                 return
                     urlBase.replace(
-                        InjectionModel.STAR,
+                        this.STAR,
                         this.indexesInUrl.replaceAll(
                             "1337" + StrategyInjectionNormal.getVisibleIndex() + "7331",
                             /**
@@ -623,7 +838,7 @@ public class InjectionModel extends AbstractModelObservable {
             // No parameter transformation if method is not selected by user
             this.connectionUtil.getMethodInjection() != methodInjection
             // No parameter transformation if injection point in URL
-            || this.connectionUtil.getUrlBase().contains(InjectionModel.STAR)
+            || this.connectionUtil.getUrlBase().contains(this.STAR)
         ) {
             // Just pass parameters without any transformation
             query = paramLead;
@@ -633,21 +848,21 @@ public class InjectionModel extends AbstractModelObservable {
             // If method is selected by user and URL does not contains injection point
             // but parameters contain an injection point
             // then replace injection point by SQL expression in those parameter
-            paramLead.contains(InjectionModel.STAR)
+            paramLead.contains(this.STAR)
         ) {
             // Several SQL expressions does not use indexes in SELECT,
             // like Boolean, Error, Shell and search for Insertion character,
             // in that case replace injection point by SQL expression.
             // Injection point is always at the end?
             if (!isUsingIndex) {
-                query = paramLead.replace(InjectionModel.STAR, sqlTrail + this.vendor.instance().endingComment());
+                query = paramLead.replace(this.STAR, sqlTrail + this.vendor.instance().endingComment());
                 
             } else {
                 
                 // Replace injection point by indexes found for Normal strategy
                 // and use visible Index for injection
                 query = paramLead.replace(
-                    InjectionModel.STAR,
+                    this.STAR,
                     this.indexesInUrl.replaceAll(
                         "1337" + StrategyInjectionNormal.getVisibleIndex() + "7331",
                         /**
@@ -694,7 +909,7 @@ public class InjectionModel extends AbstractModelObservable {
         // Remove SQL comments
         query = query.replaceAll("(?s)/\\*.*?\\*/", "");
         
-        if (methodInjection == MethodInjection.REQUEST) {
+        if (methodInjection == this.REQUEST) {
             if (this.parameterUtil.isRequestSoap()) {
                 query = query.replaceAll("%2b", "+");
             }
@@ -830,16 +1045,24 @@ public class InjectionModel extends AbstractModelObservable {
         this.vendorByUser = vendorByUser;
     }
     
-    public StrategyInjection getStrategy() {
-    	return this.strategy;
-    }
-
-    public void setStrategy(StrategyInjection strategy) {
-        this.strategy = strategy;
-    }
+//    public StrategyInjection getStrategy() {
+//    	return this.strategy;
+//    }
+//
+//    public void setStrategy(StrategyInjection strategy) {
+//        this.strategy = strategy;
+//    }
 
     public String getSrcSuccess() {
         return this.srcSuccess;
+    }
+
+    public AbstractStrategy getStrategy() {
+        return strategy;
+    }
+
+    public void setStrategy(AbstractStrategy strategy) {
+        this.strategy = strategy;
     }
 
     public void setSrcSuccess(String srcSuccess) {

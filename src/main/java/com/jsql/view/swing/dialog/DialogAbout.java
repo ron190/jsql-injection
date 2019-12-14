@@ -46,6 +46,7 @@ import javax.swing.event.HyperlinkEvent;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.MediatorModel;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
@@ -162,7 +163,7 @@ public class DialogAbout extends JDialog {
                 }
             }
 
-            text[0].setText(result.toString().replace("%JSQLVERSION%", InjectionModel.getVersionJsql()));
+            text[0].setText(result.toString().replace("%JSQLVERSION%", ""));
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }

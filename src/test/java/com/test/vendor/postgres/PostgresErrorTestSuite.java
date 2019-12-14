@@ -4,6 +4,8 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
 import org.junit.BeforeClass;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
@@ -15,32 +17,29 @@ import com.jsql.util.ParameterUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class PostgresErrorTestSuite extends ConcretePostgresTestSuite {
 
-    @BeforeClass
-    public static void initialize() throws Exception {
+    public void initialize3() throws Exception {
         
         InjectionModel model = new InjectionModel();
-        MediatorModel.register(model);
-        model.displayVersion();
+        this.injectionModel = model;
 
-        MediatorModel.model().addObserver(new SystemOutTerminal());
+        model.addObserver(new SystemOutTerminal());
 
-        PreferencesUtil.setNotTestingConnection(true);
-        
-        ParameterUtil.initQueryString("http://localhost:8080/greeting-error");
-        ParameterUtil.initRequest("");
-        ParameterUtil.setQueryString(Arrays.asList(
+        model.parameterUtil.initQueryString("http://localhost:8080/greeting-error");
+        model.parameterUtil.initRequest("");
+        model.parameterUtil.setQueryString(Arrays.asList(
             new SimpleEntry<String, String>("tenant", "postgres"), 
             new SimpleEntry<String, String>("name", "0'")
         ));
 
-        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
-        ConnectionUtil.setTypeRequest("GET");
+        model.connectionUtil.setMethodInjection(model.QUERY);
+        model.connectionUtil.setTypeRequest("GET");
         
-        MediatorModel.model().setStrategy(StrategyInjection.ERROR);
-        MediatorModel.model().setVendorByUser(Vendor.POSTGRESQL);
-        MediatorModel.model().beginInjection();
+        model.setStrategy(model.ERROR);
+        model.setVendorByUser(model.POSTGRESQL);
+        model.beginInjection();
     }
     
 }

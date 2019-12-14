@@ -19,7 +19,6 @@ import com.jsql.util.ConnectionUtil;
  * Define a strategy to inject SQL with methods like Error and Time.
  */
 public abstract class AbstractStrategy {
-    protected InjectionTime timeInjection;
     
     public AbstractStrategy(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
@@ -81,6 +80,7 @@ public abstract class AbstractStrategy {
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, injectionModel.connectionUtil.getUrlByUser());
         msgHeader.put(Header.SOURCE, i);
+        msgHeader.put(Header.INJECTION_MODEL, injectionModel);
 
         request.setParameters(msgHeader);
         this.injectionModel.sendToViews(request);
@@ -92,6 +92,7 @@ public abstract class AbstractStrategy {
         
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.SOURCE, i);
+        msgHeader.put(Header.INJECTION_MODEL, injectionModel);
 
         request.setParameters(msgHeader);
         this.injectionModel.sendToViews(request);

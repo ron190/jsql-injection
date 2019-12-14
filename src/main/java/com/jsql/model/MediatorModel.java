@@ -19,8 +19,8 @@ public class MediatorModel {
         MediatorModel.model = model;
     }
 
-//    public static InjectionModel model() {
-//        return model;
-//    }
+    public static InjectionModel model() {
+        return model;
+    }
     
 }

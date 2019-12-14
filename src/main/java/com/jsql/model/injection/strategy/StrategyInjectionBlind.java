@@ -88,7 +88,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     @Override
     public void activateStrategy() {
         LOGGER.info(I18n.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
-        this.injectionModel.setStrategy(StrategyInjection.BLIND);
+        this.injectionModel.setStrategy(this.injectionModel.BLIND);
         
         Request requestMarkBlindStrategy = new Request();
         requestMarkBlindStrategy.setMessage(Interaction.MARK_BLIND_STRATEGY);

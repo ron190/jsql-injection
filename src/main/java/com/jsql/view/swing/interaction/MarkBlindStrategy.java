@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
@@ -32,9 +33,9 @@ public class MarkBlindStrategy implements InteractionCommand {
             LOGGER.error("Unexpected unregistered MediatorGui.managerDatabase() in "+ this.getClass());
         }
         
-        MediatorGui.panelAddressBar().getMenuStrategy().setText(StrategyInjection.BLIND.toString());
+        MediatorGui.panelAddressBar().getMenuStrategy().setText(MediatorModel.model().BLIND.toString());
         for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
-            if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(StrategyInjection.BLIND.toString())) {
+            if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(MediatorModel.model().BLIND.toString())) {
                 MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).setSelected(true);
                 break;
             }

@@ -2,7 +2,7 @@ package com.test.vendor.cubrid;
 
 import com.test.AbstractTestSuite;
 
-public class ConcreteCubridTestSuite extends AbstractTestSuite {
+public abstract class ConcreteCubridTestSuite extends AbstractTestSuite {
 
     public ConcreteCubridTestSuite () throws ClassNotFoundException {
         // Explicit class name declaration

@@ -71,21 +71,21 @@ public class ParameterUtil {
             
         } else if (
             getQueryStringFromEntries().contains(InjectionModel.STAR)
-            && injectionModel.connectionUtil.getMethodInjection() != MethodInjection.QUERY
+            && injectionModel.connectionUtil.getMethodInjection() != injectionModel.QUERY
             && !injectionModel.preferencesUtil.isCheckingAllParam()
         ) {
             throw new InjectionFailureException("Select method GET to use character [*] or remove [*] from GET parameters");
             
         } else if (
             getRequestFromEntries().contains(InjectionModel.STAR)
-            && injectionModel.connectionUtil.getMethodInjection() != MethodInjection.REQUEST
+            && injectionModel.connectionUtil.getMethodInjection() != injectionModel.REQUEST
             && !injectionModel.preferencesUtil.isCheckingAllParam()
         ) {
             throw new InjectionFailureException("Select a Request method (like POST) to use [*], or remove [*] from Request parameters");
             
         } else if (
             getHeaderFromEntries().contains(InjectionModel.STAR)
-            && injectionModel.connectionUtil.getMethodInjection() != MethodInjection.HEADER
+            && injectionModel.connectionUtil.getMethodInjection() != injectionModel.HEADER
             && !injectionModel.preferencesUtil.isCheckingAllParam()
         ) {
             throw new InjectionFailureException("Select method Header to use character [*] or remove [*] from Header parameters");
@@ -93,7 +93,7 @@ public class ParameterUtil {
         
         // Query String
         else if (
-            injectionModel.connectionUtil.getMethodInjection() == MethodInjection.QUERY
+            injectionModel.connectionUtil.getMethodInjection() == injectionModel.QUERY
             && !injectionModel.preferencesUtil.isCheckingAllParam()
             && getQueryString().isEmpty()
             && !injectionModel.connectionUtil.getUrlBase().contains(InjectionModel.STAR)
@@ -103,13 +103,13 @@ public class ParameterUtil {
         
         // Request/Header data
         else if (
-            injectionModel.connectionUtil.getMethodInjection() == MethodInjection.REQUEST
+            injectionModel.connectionUtil.getMethodInjection() == injectionModel.REQUEST
             && getRequest().isEmpty()
         ) {
             throw new InjectionFailureException("Incorrect Request format");
             
         } else if (
-            injectionModel.connectionUtil.getMethodInjection() == MethodInjection.HEADER
+            injectionModel.connectionUtil.getMethodInjection() == injectionModel.HEADER
             && getHeader().isEmpty()
         ) {
             throw new InjectionFailureException("Incorrect Header format");
@@ -122,7 +122,7 @@ public class ParameterUtil {
         
         // Parse query information: url=>everything before the sign '=',
         // start of query string=>everything after '='
-        if (injectionModel.connectionUtil.getMethodInjection() == MethodInjection.QUERY) {
+        if (injectionModel.connectionUtil.getMethodInjection() == injectionModel.QUERY) {
             if (
                 !isParamByUser
                 && (
@@ -140,7 +140,7 @@ public class ParameterUtil {
             }
             
         // Parse post information
-        } else if (injectionModel.connectionUtil.getMethodInjection() == MethodInjection.REQUEST) {
+        } else if (injectionModel.connectionUtil.getMethodInjection() == injectionModel.REQUEST) {
             if (
                 !isParamByUser
                 && getRequestFromEntries().contains(InjectionModel.STAR)
@@ -155,7 +155,7 @@ public class ParameterUtil {
             }
             
         // Parse header information
-        } else if (injectionModel.connectionUtil.getMethodInjection() == MethodInjection.HEADER) {
+        } else if (injectionModel.connectionUtil.getMethodInjection() == injectionModel.HEADER) {
             if (
                 !isParamByUser
                 && getHeaderFromEntries().contains(InjectionModel.STAR)

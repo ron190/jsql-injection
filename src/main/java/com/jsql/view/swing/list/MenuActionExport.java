@@ -23,6 +23,7 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
+import com.jsql.model.MediatorModel;
 import com.jsql.util.PreferencesUtil;
 
 /**
@@ -51,7 +52,7 @@ public class MenuActionExport implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent arg0) {
         @SuppressWarnings("serial")
-        final JFileChooser importFileDialog = new JFileChooser(PreferencesUtil.getPathFile()) {
+        final JFileChooser importFileDialog = new JFileChooser(MediatorModel.model().preferencesUtil.getPathFile()) {
             @Override
             public void approveSelection() {
                 File file = this.getSelectedFile();

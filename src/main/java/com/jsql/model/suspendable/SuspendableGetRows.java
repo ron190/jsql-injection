@@ -56,7 +56,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         // Fix #14417
         // TODO Optionnal
         if (this.injectionModel.getStrategy() != null) {
-            strategy = this.injectionModel.getStrategy().instance();
+            strategy = this.injectionModel.getStrategy();
         } else {
             return "";
         }

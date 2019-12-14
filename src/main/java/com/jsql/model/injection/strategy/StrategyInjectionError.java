@@ -160,7 +160,7 @@ public class StrategyInjectionError extends AbstractStrategy {
                 + this.injectionModel.getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethod).getName()
             +"]"
         );
-        this.injectionModel.setStrategy(StrategyInjection.ERROR);
+        this.injectionModel.setStrategy(this.injectionModel.ERROR);
         
         Request request = new Request();
         request.setMessage(Interaction.MARK_ERROR_STRATEGY);

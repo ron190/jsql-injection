@@ -13,6 +13,7 @@ package com.jsql.view.swing.interaction;
 import java.net.MalformedURLException;
 import java.util.UUID;
 
+import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.HelperUi;
@@ -74,8 +75,8 @@ public class CreateSQLShellTab extends CreateTab implements InteractionCommand {
     
             MediatorGui.tabResults().setToolTipTextAt(
                 MediatorGui.tabResults().indexOfComponent(scroller),
-                "<html><b>URL</b><br>" + this.url + RessourceAccess.FILENAME_SQLSHELL
-                + "<br><b>Path</b><br>" + this.path + RessourceAccess.FILENAME_SQLSHELL + "</html>"
+                "<html><b>URL</b><br>" + this.url + MediatorModel.model().resourceAccess.FILENAME_SQLSHELL
+                + "<br><b>Path</b><br>" + this.path + MediatorModel.model().resourceAccess.FILENAME_SQLSHELL + "</html>"
             );
     
             // Apply the custom header to the tab

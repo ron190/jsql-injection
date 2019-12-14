@@ -35,6 +35,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -100,7 +101,7 @@ public class NodeModelTable extends AbstractNodeModel {
                 @Override
                 protected Object doInBackground() throws Exception {
                 	Thread.currentThread().setName("SwingWorkerNodeModelTable");
-                    return DataAccess.listColumns(selectedTable);
+                    return MediatorModel.model().dataAccess.listColumns(selectedTable);
                 }
                 
             }.execute();

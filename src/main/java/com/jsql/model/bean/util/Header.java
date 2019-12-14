@@ -7,6 +7,7 @@ public enum Header {
     HEADER,
     RESPONSE,
     SOURCE,
-    VENDOR
+    VENDOR,
+    INJECTION_MODEL
     
 }

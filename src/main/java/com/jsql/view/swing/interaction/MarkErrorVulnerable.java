@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
@@ -45,7 +46,7 @@ public class MarkErrorVulnerable implements InteractionCommand {
         
         for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
             JMenuItem menuItemStrategy = MediatorGui.panelAddressBar().getMenuStrategy().getItem(i);
-            if (menuItemStrategy.getText().equals(StrategyInjection.ERROR.toString())) {
+            if (menuItemStrategy.getText().equals(MediatorModel.model().ERROR.toString())) {
                 JMenu menuError = (JMenu) menuItemStrategy;
                 menuError.setEnabled(true);
                 

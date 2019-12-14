@@ -18,7 +18,7 @@ import com.test.AbstractTestSuite;
 import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 
 @Ignore
-public class CookieTest extends ConcreteMySQLTestSuite {
+public abstract class CookieTest extends ConcreteMySQLTestSuite {
 	
     // pour chaque vendor/méthode/strategy
     /**
@@ -29,20 +29,20 @@ public class CookieTest extends ConcreteMySQLTestSuite {
      */
 
     @BeforeClass
-    public static void initialize() throws InjectionFailureException {
+    public void initialize2() throws InjectionFailureException {
         InjectionModel model = new InjectionModel();
-        MediatorModel.register(model);
+//        MediatorModel.register(model);
         model.displayVersion();
 
-        MediatorModel.model().addObserver(new SystemOutTerminal());
+        model.addObserver(new SystemOutTerminal());
 
-        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_cookie.php");
-        ParameterUtil.setHeader(Arrays.asList(new AbstractMap.SimpleEntry<>("Cookie", "lib=0")));
-        ConnectionUtil.setMethodInjection(MethodInjection.HEADER);
+        model.connectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_cookie.php");
+        model.parameterUtil.setHeader(Arrays.asList(new AbstractMap.SimpleEntry<>("Cookie", "lib=0")));
+        model.connectionUtil.setMethodInjection(model.HEADER);
 
-        MediatorModel.model().beginInjection();
+        model.beginInjection();
 
-        MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
+        model.setStrategy(model.NORMAL);
     }
     
 }

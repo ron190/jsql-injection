@@ -4,6 +4,10 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
 import org.junit.BeforeClass;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
@@ -14,32 +18,31 @@ import com.jsql.util.ParameterUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 
+@TestInstance(Lifecycle.PER_CLASS)
+@Execution(ExecutionMode.SAME_THREAD)
 public class MySQLErrorTestSuite extends ConcreteMySQLErrorTestSuite {
 
-    @BeforeClass
-    public static void initialize() throws Exception {
+    @Override
+    public void initialize3() throws Exception {
         
         InjectionModel model = new InjectionModel();
-        MediatorModel.register(model);
-        model.displayVersion();
+        this.injectionModel = model;
 
-        MediatorModel.model().addObserver(new SystemOutTerminal());
+        model.addObserver(new SystemOutTerminal());
 
-        PreferencesUtil.setNotTestingConnection(true);
-        
-        ParameterUtil.initQueryString("http://localhost:8080/greeting-error");
-        ParameterUtil.initRequest("");
-        ParameterUtil.setQueryString(Arrays.asList(
+        model.parameterUtil.initQueryString("http://localhost:8080/greeting-error");
+        model.parameterUtil.initRequest("");
+        model.parameterUtil.setQueryString(Arrays.asList(
             new SimpleEntry<String, String>("tenant", "mysql-error"), 
             new SimpleEntry<String, String>("name", "0'")
         ));
 
-        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
-        ConnectionUtil.setTypeRequest("GET");
+        model.connectionUtil.setMethodInjection(model.QUERY);
+        model.connectionUtil.setTypeRequest("GET");
         
-        MediatorModel.model().setIsScanning(true);
-        MediatorModel.model().setStrategy(StrategyInjection.ERROR);
-        MediatorModel.model().beginInjection();
+        model.setIsScanning(true);
+        model.setStrategy(model.ERROR);
+        model.beginInjection();
     }
     
 }

@@ -14,6 +14,7 @@ import java.util.Map;
 
 import javax.swing.JMenu;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.injection.strategy.StrategyInjection;
@@ -27,6 +28,7 @@ public class MarkErrorInvulnerable implements InteractionCommand {
 	
     private Map<Header, Object> mapHeader;
     private int indexMethodError;
+    private InjectionModel injectionModel;
     
     /**
      * @param interactionParams
@@ -35,11 +37,12 @@ public class MarkErrorInvulnerable implements InteractionCommand {
     public MarkErrorInvulnerable(Object[] interactionParams) {
         this.mapHeader = (Map<Header, Object>) interactionParams[0];
         this.indexMethodError = (int) this.mapHeader.get(Header.SOURCE);
+        this.injectionModel = (InjectionModel) this.mapHeader.get(Header.INJECTION_MODEL);
     }
 
     @Override
     public void execute() {
-        LOGGER.info(InteractionCommand.addRedColor(MediatorModel.model().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethodError).getName()));
+        LOGGER.info(InteractionCommand.addRedColor(injectionModel.getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethodError).getName()));
     }
     
 }

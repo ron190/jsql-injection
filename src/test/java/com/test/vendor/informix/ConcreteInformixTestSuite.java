@@ -2,7 +2,7 @@ package com.test.vendor.informix;
 
 import com.test.AbstractTestSuite;
 
-public class ConcreteInformixTestSuite extends AbstractTestSuite {
+public abstract class ConcreteInformixTestSuite extends AbstractTestSuite {
 
     public ConcreteInformixTestSuite () throws ClassNotFoundException {
         

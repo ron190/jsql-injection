@@ -15,6 +15,7 @@ import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
+import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.Database;
 import com.jsql.view.swing.HelperUi;
@@ -55,7 +56,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
                 @Override
                 protected Object doInBackground() throws Exception {
                 	Thread.currentThread().setName("SwingWorkerNodeModelDatabase");
-                    return DataAccess.listTables(selectedDatabase);
+                    return MediatorModel.model().dataAccess.listTables(selectedDatabase);
                 }
                 
             }.execute();

@@ -58,7 +58,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         
         this.isApplicable =
             !"".equals(this.injectionModel.getIndexesInUrl())
-            && new Integer(StrategyInjection.NORMAL.instance().getPerformanceLength()) > 0
+            && new Integer(this.injectionModel.NORMAL.getPerformanceLength()) > 0
             && StrategyInjectionNormal.visibleIndex != null
         ;
         
@@ -88,7 +88,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     @Override
     public void activateStrategy() {
         LOGGER.info(I18n.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
-        this.injectionModel.setStrategy(StrategyInjection.NORMAL);
+        this.injectionModel.setStrategy(this.injectionModel.NORMAL);
         
         Request request = new Request();
         request.setMessage(Interaction.MARK_NORMAL_STRATEGY);

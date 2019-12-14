@@ -12,9 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
+import com.jsql.model.InjectionModel.MethodInjection;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.injection.method.MethodInjection;
 
 public class JsonUtil {
     
@@ -125,7 +124,7 @@ public class JsonUtil {
             
             // Test current standard value marked with * for injection
             // Keep original param
-            hasFoundInjection = injectionModel.testStrategies(InjectionModel.IS_PARAM_BY_USER, !InjectionModel.IS_JSON, paramStar);
+            hasFoundInjection = injectionModel.testStrategies(injectionModel.IS_PARAM_BY_USER, !injectionModel.IS_JSON, paramStar);
             
         } catch (JSqlException e) {
             // Injection failure
@@ -176,7 +175,7 @@ public class JsonUtil {
                 
                 // Test current JSON value marked with * for injection
                 // Keep original param
-                hasFoundInjection = injectionModel.testStrategies(InjectionModel.IS_PARAM_BY_USER, InjectionModel.IS_JSON, paramStar);
+                hasFoundInjection = injectionModel.testStrategies(injectionModel.IS_PARAM_BY_USER, injectionModel.IS_JSON, paramStar);
                 
                 // Injection successful
                 break;

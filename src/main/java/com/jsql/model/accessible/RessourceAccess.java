@@ -39,7 +39,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
@@ -48,9 +47,7 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
-import com.jsql.util.ConnectionUtil;
 import com.jsql.util.HeaderUtil;
-import com.jsql.util.PropertiesUtil;
 import com.jsql.view.scan.ScanListTerminal;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.list.ItemList;
@@ -70,17 +67,17 @@ public class RessourceAccess {
     /**
      * File name for web shell.
      */
-    public static final String FILENAME_WEBSHELL = "."+ InjectionModel.getVersionJsql() + ".jw.php";
+    public final String FILENAME_WEBSHELL;
     
     /**
      * File name for sql shell.
      */
-    public static final String FILENAME_SQLSHELL = "."+ InjectionModel.getVersionJsql() + ".js.php";
+    public  final String FILENAME_SQLSHELL;
     
     /**
      * File name for upload form.
      */
-    public static final String FILENAME_UPLOAD = "."+ InjectionModel.getVersionJsql() + ".ju.php";
+    public  final String FILENAME_UPLOAD;
     
     /**
      * True if admin page sould stop, false otherwise.
@@ -115,6 +112,11 @@ public class RessourceAccess {
     
     public RessourceAccess(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
+        
+        FILENAME_WEBSHELL = "..jw.php";
+        FILENAME_SQLSHELL = ".js.php";
+        FILENAME_UPLOAD = ".ju.php";
+        
     }
     
     InjectionModel injectionModel;
@@ -207,7 +209,7 @@ public class RessourceAccess {
             return;
         }
         
-        String sourceShellToInject = PropertiesUtil.getInstance().getProperties()
+        String sourceShellToInject = injectionModel.propertiesUtil.getProperties()
             .getProperty("shell.web")
             .replace(DataAccess.LEAD_IN_SHELL, DataAccess.LEAD)
             .replace(DataAccess.TRAIL_IN_SHELL, DataAccess.TRAIL);
@@ -420,7 +422,7 @@ public class RessourceAccess {
             return;
         }
         
-        String sourceShellToInject = PropertiesUtil.getInstance().getProperties()
+        String sourceShellToInject = injectionModel.propertiesUtil.getProperties()
             .getProperty("shell.sql")
             .replace(DataAccess.LEAD_IN_SHELL, DataAccess.LEAD)
             .replace(DataAccess.TRAIL_IN_SHELL, DataAccess.TRAIL);
@@ -640,7 +642,7 @@ public class RessourceAccess {
             return;
         }
         
-        String sourceShellToInject = PropertiesUtil.getInstance().getProperties()
+        String sourceShellToInject = injectionModel.propertiesUtil.getProperties()
             .getProperty("shell.upload")
             .replace(DataAccess.LEAD_IN_SHELL, DataAccess.LEAD);
         

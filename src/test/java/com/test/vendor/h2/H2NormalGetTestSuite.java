@@ -4,6 +4,8 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
 import org.junit.BeforeClass;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
@@ -15,31 +17,28 @@ import com.jsql.util.ParameterUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class H2NormalGetTestSuite extends ConcreteH2TestSuite {
     
-    @BeforeClass
-    public static void initialize() throws Exception {
+    public void initialize3() throws Exception {
         
         InjectionModel model = new InjectionModel();
-        MediatorModel.register(model);
-        model.displayVersion();
+        this.injectionModel = model;
 
-        MediatorModel.model().addObserver(new SystemOutTerminal());
+        model.addObserver(new SystemOutTerminal());
 
-        PreferencesUtil.setNotTestingConnection(true);
-        
-        ParameterUtil.initQueryString("http://localhost:8080/greeting");
-        ParameterUtil.initRequest("");
-        ParameterUtil.setQueryString(Arrays.asList(
+        model.parameterUtil.initQueryString("http://localhost:8080/greeting");
+        model.parameterUtil.initRequest("");
+        model.parameterUtil.setQueryString(Arrays.asList(
             new SimpleEntry<String, String>("tenant", "h2"), 
             new SimpleEntry<String, String>("name", "1'")
         ));
-        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
-        ConnectionUtil.setTypeRequest("GET");
+        model.connectionUtil.setMethodInjection(model.QUERY);
+        model.connectionUtil.setTypeRequest("GET");
         
-        MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
-        MediatorModel.model().setVendorByUser(Vendor.H2);
-        MediatorModel.model().beginInjection();
+        model.setStrategy(model.NORMAL);
+        model.setVendorByUser(model.H2);
+        model.beginInjection();
     }
     
 }
