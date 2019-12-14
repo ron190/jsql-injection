@@ -76,6 +76,7 @@ script:
   
   - ls -l /home/travis/build/ron190/jsql-injection/src/test/resources/docker/conf.d/
   
+  # Show max_connections for MySQL
   - docker exec --privileged -u root -it jsql-mysql /bin/bash 
     -c "
        mysql 
@@ -85,6 +86,17 @@ script:
        show global variables where Variable_name rlike \"thread_cache_size|^max_connections\";
        ';
        "
+
+  # Show max_connections for Postgres
+  - docker exec --privileged -u root -it jsql-postgres /bin/bash                                       
+    -c "
+       export PGPASSWORD=mysecretpassword;
+       psql -U postgres -h 127.0.0.1 -d \"\" -e -a
+       -c '
+       show max_connections;
+       ';
+       "
+
   - mvn clean verify sonar:sonar
 
 after_success:
