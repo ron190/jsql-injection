@@ -2,7 +2,7 @@ package com.test.vendor.sqlserver;
 
 import com.test.AbstractTestSuite;
 
-public class ConcreteSQLServerTestSuite extends AbstractTestSuite {
+public abstract class ConcreteSQLServerTestSuite extends AbstractTestSuite {
 
     public ConcreteSQLServerTestSuite () {
         this.jdbcURL = "jdbc:sqlserver://"+ AbstractTestSuite.HOSTNAME +":52382";

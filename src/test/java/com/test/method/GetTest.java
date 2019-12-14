@@ -18,25 +18,25 @@ import com.test.AbstractTestSuite;
 import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 
 @Ignore
-public class GetTest extends ConcreteMySQLTestSuite {
+public abstract class GetTest extends ConcreteMySQLTestSuite {
 
     @BeforeClass
-    public static void initialize() throws InjectionFailureException {
+    public void initialize3() throws InjectionFailureException {
         InjectionModel model = new InjectionModel();
-        MediatorModel.register(model);
+//        MediatorModel.register(model);
         model.displayVersion();
 
-        MediatorModel.model().addObserver(new SystemOutTerminal());
+        model.addObserver(new SystemOutTerminal());
 
 //        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_get.php");
 //        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("lib", "0")));
-        ConnectionUtil.setUrlBase("http://localhost:8080/greeting");
-        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("tenantId", "tenantId3"), new SimpleEntry<String, String>("name", "1'")));
-        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
+        model.connectionUtil.setUrlBase("http://localhost:8080/greeting");
+        model.parameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("tenantId", "tenantId3"), new SimpleEntry<String, String>("name", "1'")));
+        model.connectionUtil.setMethodInjection(model.QUERY);
 
-        MediatorModel.model().beginInjection();
+        model.beginInjection();
 
-        MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
+        model.setStrategy(model.NORMAL);
     }
     
 }

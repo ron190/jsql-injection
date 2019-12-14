@@ -24,20 +24,20 @@ public class InformixNormalGetTestSuite extends ConcreteInformixTestSuite {
     }
 
     @BeforeClass
-    public static void initialize() throws InjectionFailureException {
-        InjectionModel model = new InjectionModel();
-        MediatorModel.register(model);
-        model.displayVersion();
-        
-        MediatorModel.model().addObserver(new SystemOutTerminal());
-
-        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/informix_simulate_get.php");
-        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("lib", "0")));
-        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
-
-        MediatorModel.model().beginInjection();
-
-        MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
+    public void initialize3() throws InjectionFailureException {
+//        InjectionModel model = new InjectionModel();
+//        MediatorModel.register(model);
+//        model.displayVersion();
+//        
+//        MediatorModel.model().addObserver(new SystemOutTerminal());
+//
+//        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/informix_simulate_get.php");
+//        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("lib", "0")));
+//        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
+//
+//        MediatorModel.model().beginInjection();
+//
+//        MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
     }
     
 }

@@ -16,13 +16,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.h2.tools.Server;
-import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.springframework.boot.SpringApplication;
 
-import com.jsql.model.accessible.DataAccess;
+import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
@@ -30,20 +33,17 @@ import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.test.util.Retry;
 
+import junit.framework.Assert;
 import spring.Application; 
 
+@TestInstance(Lifecycle.PER_CLASS)
+@Execution(ExecutionMode.SAME_THREAD)
 public abstract class AbstractTestSuite {
 	
 	static {
 		// Use Timeout fix in Model
 		PropertyConfigurator.configure("src/test/resources/logger/log4j.stdout.properties");
 		jcifs.Config.registerSmbURLHandler();
-
-        try {
-            Server.createTcpServer().start();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 	}
 	
     /**
@@ -79,20 +79,54 @@ public abstract class AbstractTestSuite {
     public Retry retry = new Retry(3);
     
     private static AtomicBoolean setUpIsDone = new AtomicBoolean(false);
+    private static AtomicBoolean allIsDone = new AtomicBoolean(false);
     
-    @BeforeClass
-    public synchronized static void runSpringApplication() throws Exception {
+//    @BeforeClass
+//    public static synchronized void runSpringApplication() throws Exception {
+//        
+//        if (setUpIsDone.compareAndSet(false, true)) {
+//            LOGGER.info("@BeforeClass: setting up Hibernate and Spring, please wait...");
+//            Application.init(); 
+//            SpringApplication.run(Application.class, new String[] {});
+//        } else {
+//            LOGGER.info("@BeforeClass: Hibernate and Spring setup already done");
+//        }
+//    }
+    
+
+    public abstract void initialize3() throws Exception ;
+    
+    @BeforeAll
+    public synchronized void initialize2() throws Exception {
+
+        try {
+            Server.createTcpServer().start();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         
         if (setUpIsDone.compareAndSet(false, true)) {
             LOGGER.info("@BeforeClass: setting up Hibernate and Spring, please wait...");
             Application.init(); 
             SpringApplication.run(Application.class, new String[] {});
+            allIsDone.set(true);
         } else {
+            while (!allIsDone.get()) {
+                Thread.sleep(1000);
+                LOGGER.info("@BeforeClass: waiting for Hibernate and Spring setup...");
+            }
             LOGGER.info("@BeforeClass: Hibernate and Spring setup already done");
         }
+        
+        if (injectionModel == null) {
+            this.requestJdbc();
+            initialize3();
+        }
     }
+    
+    protected InjectionModel injectionModel;
 
-    public static void initialize() throws Exception {
+    public void initialize() throws Exception {
         LOGGER.warn(
             "AbstractTestSuite and ConcreteTestSuite are for initialization purpose. "
             + "Run test suite or unit test instead."
@@ -142,20 +176,25 @@ public abstract class AbstractTestSuite {
         }
     }
 
+//    @Nested
+//    @DisplayName("Test Login Feature")
+//    public
+//    class LoginFeature {
+        
     @Test
     public void listDatabases() throws JSqlException {
         Set<Object> set1 = new HashSet<>();
         Set<Object> set2 = new HashSet<>();
         
         try {
-            List<Database> dbs = DataAccess.listDatabases();
+            List<Database> dbs = injectionModel.dataAccess.listDatabases();
             List<String> databasesFound = new ArrayList<>();
             for (Database d: dbs) {
                 databasesFound.add(d.toString());
             }
 
             set1.addAll(databasesFound);
-            set2.addAll(this.databaseToFind);
+            set2.addAll(AbstractTestSuite.this.databaseToFind);
 
             LOGGER.info("ListDatabases: found "+ set1 +" to find "+ set2);
 
@@ -183,14 +222,14 @@ public abstract class AbstractTestSuite {
         Set<Object> set2 = new HashSet<>();
 
         try {
-            List<Table> ts = DataAccess.listTables(new Database(this.jsqlDatabaseName, "0"));
+            List<Table> ts = injectionModel.dataAccess.listTables(new Database(AbstractTestSuite.this.jsqlDatabaseName, "0"));
             List<String> tablesFound = new ArrayList<>();
             for (Table t: ts) {
                 tablesFound.add(t.toString());
             }
 
             set1.addAll(tablesFound);
-            set2.addAll(this.tableToFind);
+            set2.addAll(AbstractTestSuite.this.tableToFind);
 
             LOGGER.info("listTables: found "+ set1 +" to find "+ set2);
             Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
@@ -217,9 +256,9 @@ public abstract class AbstractTestSuite {
         Set<Object> set2 = new HashSet<>();
 
         try {
-            List<Column> cs = DataAccess.listColumns(
-                new Table(this.jsqlTableName, "0",
-                    new Database(this.jsqlDatabaseName, "0")
+            List<Column> cs = injectionModel.dataAccess.listColumns(
+                new Table(AbstractTestSuite.this.jsqlTableName, "0",
+                    new Database(AbstractTestSuite.this.jsqlDatabaseName, "0")
                 )
             );
             List<String> columnsFound = new ArrayList<>();
@@ -228,7 +267,7 @@ public abstract class AbstractTestSuite {
             }
 
             set1.addAll(columnsFound);
-            set2.addAll(this.columnToFind);
+            set2.addAll(AbstractTestSuite.this.columnToFind);
 
             LOGGER.info("listColumns: found "+ set1 +" to find "+ set2);
             Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
@@ -255,10 +294,10 @@ public abstract class AbstractTestSuite {
         Set<Object> set2 = new TreeSet<>();
 
         try {
-            String[][] vs = DataAccess.listValues(Arrays.asList(
-                new Column(this.jsqlColumnName,
-                    new Table(this.jsqlTableName, "0",
-                        new Database(this.jsqlDatabaseName, "0")
+            String[][] vs = injectionModel.dataAccess.listValues(Arrays.asList(
+                new Column(AbstractTestSuite.this.jsqlColumnName,
+                    new Table(AbstractTestSuite.this.jsqlTableName, "0",
+                        new Database(AbstractTestSuite.this.jsqlDatabaseName, "0")
                     )
                 )
             ));
@@ -268,7 +307,7 @@ public abstract class AbstractTestSuite {
             }
 
             set1.addAll(valuesFound);
-            set2.addAll(this.valueToFind);
+            set2.addAll(AbstractTestSuite.this.valueToFind);
 
             LOGGER.info(
                 "listValues: found "+
@@ -297,5 +336,7 @@ public abstract class AbstractTestSuite {
             throw new AssertionError("Error listValues: "+ tmp +"\n"+ e);
         }
     }
+    
+//    }
     
 }

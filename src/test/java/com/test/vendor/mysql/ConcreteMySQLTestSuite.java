@@ -1,15 +1,22 @@
 package com.test.vendor.mysql;
 
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+
 import com.test.AbstractTestSuite;
 
-public class ConcreteMySQLTestSuite extends AbstractTestSuite {
+@TestInstance(Lifecycle.PER_CLASS)
+@Execution(ExecutionMode.CONCURRENT)
+public abstract class ConcreteMySQLTestSuite extends AbstractTestSuite {
 
     public ConcreteMySQLTestSuite () {
         this.config();
-        this.requestJdbc();
     }
     
     public void config() {
+        
         this.jdbcURL = "jdbc:mysql://127.0.0.1/musicstore";
         this.jdbcUser = "root";
         this.jdbcPass = "my-secret-pw";

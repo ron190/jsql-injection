@@ -10,6 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.interaction;
 
+import com.jsql.model.MediatorModel;
 import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
@@ -33,7 +34,7 @@ public class MarkTimeVulnerable implements InteractionCommand {
         }
         
         for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
-            if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(StrategyInjection.TIME.toString())) {
+            if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(MediatorModel.model().TIME.toString())) {
                 MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).setEnabled(true);
                 break;
             }

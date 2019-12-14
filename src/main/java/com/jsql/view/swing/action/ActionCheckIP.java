@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.MediatorModel;
 import com.jsql.util.ConnectionUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.util.ProxyUtil;
@@ -28,13 +29,13 @@ public class ActionCheckIP implements ActionListener, Runnable {
 
     @Override
     public void run() {
-        if (!ProxyUtil.isLive(ShowOnConsole.YES)) {
+        if (!MediatorModel.model().proxyUtil.isLive(ShowOnConsole.YES)) {
             return;
         }
 
         try {
             LOGGER.trace("Checking ip address...");
-            String addressIp = ConnectionUtil.getSource("http://checkip.amazonaws.com");
+            String addressIp = MediatorModel.model().connectionUtil.getSource("http://checkip.amazonaws.com");
             LOGGER.info("Your public IP address is " + addressIp);
         } catch (MalformedURLException e) {
             LOGGER.warn("Malformed URL: "+ e.getMessage(), e);

@@ -2,7 +2,7 @@ package com.test.vendor.db2;
 
 import com.test.AbstractTestSuite;
 
-public class ConcreteDB2TestSuite extends AbstractTestSuite {
+public abstract class ConcreteDB2TestSuite extends AbstractTestSuite {
 
     public ConcreteDB2TestSuite () {
         this.jdbcURL = "jdbc:db2://"+ AbstractTestSuite.HOSTNAME +":50000/DB2";

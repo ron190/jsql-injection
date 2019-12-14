@@ -34,6 +34,10 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
+    public SuspendableGetCharInsertion(InjectionModel injectionModel) {
+        super(injectionModel);
+    }
+
     /**
      * 
      */
@@ -73,8 +77,9 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 new CallablePageSource(
                     insertionCharacter
                     + " "
-                    + MediatorModel.model().getVendor().instance().sqlOrderBy(),
-                    insertionCharacter
+                    + this.injectionModel.getVendor().instance().sqlOrderBy(),
+                    insertionCharacter,
+                    injectionModel
                 )
             );
         }

@@ -32,7 +32,7 @@ public class GitUtil {
      * Application useful informations as json object from Github repository.
      * Used to get current development version and community news.
      */
-    private static JSONObject jsonObject;
+    private JSONObject jsonObject;
     
     /**
      * Define explicit labels to declare method parameters.
@@ -48,18 +48,23 @@ public class GitUtil {
         // not called
     }
 
+    public GitUtil(InjectionModel injectionModel) {
+        this.injectionModel = injectionModel;
+    }
+    InjectionModel injectionModel;
+
     /**
      * Verify if application is up to date against the version on Github.
      * @param displayUpdateMessage YES for manual update verification, hidden otherwise
      */
-    public static void checkUpdate(ShowOnConsole displayUpdateMessage) {
+    public void checkUpdate(ShowOnConsole displayUpdateMessage) {
         if (displayUpdateMessage == ShowOnConsole.YES) {
             LOGGER.trace(I18n.valueByKey("UPDATE_LOADING"));
         }
         
         try {
-            Float versionGit = Float.parseFloat(GitUtil.getJSONObject().getString("version"));
-            if (versionGit > Float.parseFloat(InjectionModel.getVersionJsql())) {
+            Float versionGit = Float.parseFloat(this.getJSONObject().getString("version"));
+            if (versionGit > Float.parseFloat(injectionModel.getVersionJsql())) {
                 LOGGER.warn(I18n.valueByKey("UPDATE_NEW_VERSION"));
             } else if(displayUpdateMessage == ShowOnConsole.YES) {
                 LOGGER.debug(I18n.valueByKey("UPDATE_UPTODATE"));
@@ -76,18 +81,18 @@ public class GitUtil {
      * @param threadName name of thread where the exception occured
      * @param throwable unhandled exception to report to Gihub
      */
-    public static void sendUnhandledException(String threadName, Throwable throwable) {
+    public void sendUnhandledException(String threadName, Throwable throwable) {
         String javaVersion = System.getProperty("java.version");
         String osArch = System.getProperty("os.arch");
         
         String clientDescription =
               "```\n"
-            + "jSQL: v"+ InjectionModel.getVersionJsql() +"\n"
+            + "jSQL: v"+ injectionModel.getVersionJsql() +"\n"
             + "Java: v"+ javaVersion +"-"+ osArch +"-"+ System.getProperty("user.language") +" on "+ System.getProperty("java.runtime.name") +"\n"
             + "OS: "+ System.getProperty("os.name") +" (v"+ System.getProperty("os.version") +")\n"
             + "Desktop: "+( System.getProperty("sun.desktop") != null ? System.getProperty("sun.desktop") : "undefined" )+"\n"
-            + "Strategy: "+( MediatorModel.model().getStrategy() != null ? MediatorModel.model().getStrategy().instance().getName() : "undefined" )+"\n"
-            + "Db engine: "+ MediatorModel.model().getVendor().toString() +"\n"
+            + "Strategy: "+( this.injectionModel.getStrategy() != null ? this.injectionModel.getStrategy().getName() : "undefined" )+"\n"
+            + "Db engine: "+ this.injectionModel.getVendor().toString() +"\n"
             + "```\n"
             + "```\n"
             + "Exception on "+ threadName +"\n"
@@ -96,7 +101,7 @@ public class GitUtil {
         
         clientDescription = clientDescription.replaceAll("(https?://[.a-zA-Z_0-9]*)+", "");
           
-        GitUtil.sendReport(clientDescription, ShowOnConsole.NO, "Unhandled "+ throwable.getClass().getSimpleName());
+        this.sendReport(clientDescription, ShowOnConsole.NO, "Unhandled "+ throwable.getClass().getSimpleName());
     }
     
     /**
@@ -106,9 +111,9 @@ public class GitUtil {
      * @param showOnConsole in case of manual Issue reporting. Hidden in case of automatic reporting of unhandled exception.
      * @param reportTitle title of the Issue
      */
-    public static void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
+    public void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
     	// Check proxy
-        if (!ProxyUtil.isLive(showOnConsole)) {
+        if (!injectionModel.proxyUtil.isLive(showOnConsole)) {
             return;
         }
 
@@ -116,7 +121,7 @@ public class GitUtil {
         HttpURLConnection connection = null;
         try {
             URL githubUrl = new URL(
-                PropertiesUtil.getInstance().getProperties().getProperty("github.issues.url")
+                injectionModel.propertiesUtil.getProperties().getProperty("github.issues.url")
             );
 
             connection = (HttpURLConnection) githubUrl.openConnection();
@@ -133,13 +138,13 @@ public class GitUtil {
                 "token "
                 + StringUtils.newStringUtf8(
                     Base64.decodeBase64(
-                        PropertiesUtil.getInstance().getProperties().getProperty("github.token")
+                        injectionModel.propertiesUtil.getProperties().getProperty("github.token")
                     )
                 )
             );
             
-            connection.setReadTimeout(ConnectionUtil.getTimeout());
-            connection.setConnectTimeout(ConnectionUtil.getTimeout());
+            connection.setReadTimeout(injectionModel.connectionUtil.getTimeout());
+            connection.setConnectTimeout(injectionModel.connectionUtil.getTimeout());
             connection.setDoOutput(true);
 
             // Set the content of the Issue
@@ -153,7 +158,7 @@ public class GitUtil {
             dataOut.flush();
             dataOut.close();
             
-            GitUtil.readGithubResponse(connection, showOnConsole);
+            this.readGithubResponse(connection, showOnConsole);
         } catch (IOException | NoClassDefFoundError | JSONException e) {
             // Fix #27623: NoClassDefFoundError on getOutputStream()
             // Implemented by jcifs.http.NtlmHttpURLConnection.getOutputStream()
@@ -163,10 +168,10 @@ public class GitUtil {
         }
     }
     
-    private static void readGithubResponse(HttpURLConnection connection, ShowOnConsole showOnConsole) throws IOException {
+    private void readGithubResponse(HttpURLConnection connection, ShowOnConsole showOnConsole) throws IOException {
         try {
             // Read the response
-            String sourcePage = ConnectionUtil.getSourceLineFeed(connection);
+            String sourcePage = injectionModel.connectionUtil.getSourceLineFeed(connection);
 
             if (showOnConsole == ShowOnConsole.YES) {
                 JSONObject jsonObjectResponse = new JSONObject(sourcePage);
@@ -183,9 +188,9 @@ public class GitUtil {
      * Infos concern the general roadmap for the application, current development status
      * and other useful statements for the community.
      */
-    public static void showNews() {
+    public void showNews() {
         try {
-            JSONArray news = GitUtil.getJSONObject().getJSONArray("news");
+            JSONArray news = this.getJSONObject().getJSONArray("news");
             for (int index = 0 ; index < news.length() ; index++) {
                 LOGGER.info(news.get(index));
             }
@@ -202,18 +207,18 @@ public class GitUtil {
      * @return jsonObject describing json data
      * @throws IOException if connection to json data fails
      */
-    public static JSONObject getJSONObject() throws IOException {
-        if (GitUtil.jsonObject == null) {
-            String json = ConnectionUtil.getSource(
-                PropertiesUtil.getInstance().getProperties().getProperty("github.webservice.url")
+    public JSONObject getJSONObject() throws IOException {
+        if (this.jsonObject == null) {
+            String json = injectionModel.connectionUtil.getSource(
+                injectionModel.propertiesUtil.getProperties().getProperty("github.webservice.url")
             );
             
             // Fix #45349: JSONException on new JSONObject(json)
             try {
-                GitUtil.jsonObject = new JSONObject(json);
+                this.jsonObject = new JSONObject(json);
             } catch (JSONException e) {
                 try {
-                    GitUtil.jsonObject = new JSONObject("{\"version\": \"0\", \"news\": []}");
+                    this.jsonObject = new JSONObject("{\"version\": \"0\", \"news\": []}");
                 } catch (JSONException e1) {
                     // TODO Auto-generated catch block
                     e1.printStackTrace();
@@ -221,7 +226,7 @@ public class GitUtil {
                 LOGGER.warn("Fetching JSON configuration from Github failed, check your connection or update jsql", e);
             }
         }
-        return GitUtil.jsonObject;
+        return this.jsonObject;
     }
     
 }

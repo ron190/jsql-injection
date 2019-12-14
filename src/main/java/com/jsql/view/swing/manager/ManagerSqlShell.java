@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.jsql.i18n.I18n;
+import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.swing.HelperUi;
@@ -92,7 +93,7 @@ public class ManagerSqlShell extends AbstractManagerShell {
 
     @Override
     void createPayload(String shellPath, String shellURL) throws JSqlException, InterruptedException {
-        RessourceAccess.createSqlShell(shellPath, shellURL, this.username.getText(), this.password.getText());
+        MediatorModel.model().resourceAccess.createSqlShell(shellPath, shellURL, this.username.getText(), this.password.getText());
     }
     
 }

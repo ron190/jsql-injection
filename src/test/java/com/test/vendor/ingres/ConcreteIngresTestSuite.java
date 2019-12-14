@@ -2,7 +2,7 @@ package com.test.vendor.ingres;
 
 import com.test.AbstractTestSuite;
 
-public class ConcreteIngresTestSuite extends AbstractTestSuite {
+public abstract class ConcreteIngresTestSuite extends AbstractTestSuite {
 
     public ConcreteIngresTestSuite () throws ClassNotFoundException {
         

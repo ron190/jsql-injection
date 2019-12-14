@@ -34,17 +34,22 @@ public class SoapUtil {
         // TODO Auto-generated constructor stub
     }
     
-    public static boolean testParameters() {
+    public SoapUtil(InjectionModel injectionModel) {
+        this.injectionModel = injectionModel;
+    }
+    InjectionModel injectionModel;
+
+    public boolean testParameters() {
         boolean hasFoundInjection = false;
         
         if (
-            PreferencesUtil.isCheckingAllSOAPParam()
-            && ParameterUtil.isRequestSoap()
+            injectionModel.preferencesUtil.isCheckingAllSOAPParam()
+            && injectionModel.parameterUtil.isRequestSoap()
         ) {
             try {
-                Document doc = SoapUtil.convertStringToDocument(ParameterUtil.getRawRequest());
+                Document doc = SoapUtil.convertStringToDocument(injectionModel.parameterUtil.getRawRequest());
                 LOGGER.trace("Parsing SOAP from Request...");
-                hasFoundInjection = SoapUtil.injectTextNodes(doc, doc.getDocumentElement());
+                hasFoundInjection = this.injectTextNodes(doc, doc.getDocumentElement());
             } catch (Exception e) {
                 LOGGER.trace("SOAP not detected");
             }
@@ -93,14 +98,14 @@ public class SoapUtil {
         }
     }
 
-    public static boolean injectTextNodes(Document doc, Node node) {
+    public boolean injectTextNodes(Document doc, Node node) {
         NodeList nodeList = node.getChildNodes();
         boolean hasFoundInjection = false;
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node currentNode = nodeList.item(i);
             if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
                 //calls this method for all the children which is Element
-                hasFoundInjection = SoapUtil.injectTextNodes(doc, currentNode);
+                hasFoundInjection = this.injectTextNodes(doc, currentNode);
                 if (hasFoundInjection) {
                     break;
                 }
@@ -109,12 +114,12 @@ public class SoapUtil {
                 
                 currentNode.setTextContent(currentNode.getTextContent() + InjectionModel.STAR);
                 
-                ParameterUtil.initRequest(SoapUtil.convertDocumentToString(doc));
+                injectionModel.parameterUtil.initRequest(SoapUtil.convertDocumentToString(doc));
                 
                 try {
                     LOGGER.info("Checking SOAP Request injection for "+ currentNode.getParentNode().getNodeName() +"="+ currentNode.getTextContent().replace(InjectionModel.STAR, ""));
                     
-                    MediatorModel.model().testParameters(MethodInjection.REQUEST);
+                    injectionModel.testParameters(injectionModel.REQUEST);
                     hasFoundInjection = true;
                     
                     // Injection successful

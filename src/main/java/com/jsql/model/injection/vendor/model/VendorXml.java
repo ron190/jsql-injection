@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
@@ -90,7 +91,10 @@ public class VendorXml implements AbstractVendor {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-    public VendorXml(String fileXml) {
+    InjectionModel injectionModel;
+    public VendorXml(String fileXml, InjectionModel injectionModel) {
+        this.injectionModel = injectionModel;
+        
         JacksonXmlModule module = new JacksonXmlModule();
         module.setDefaultUseWrapper(false);
         XmlMapper xmlMapper = new XmlMapper(module);
@@ -196,7 +200,7 @@ public class VendorXml implements AbstractVendor {
     @Override
     public String sqlTextIntoFile(String content, String filePath) {
         return
-            MediatorModel.model().getIndexesInUrl()
+            injectionModel.getIndexesInUrl()
                 .replaceAll(
                     "1337" + StrategyInjectionNormal.getVisibleIndex() + "7331",
                     this.xmlModel.getResource().getFile().getCreate().getContent()
@@ -343,7 +347,7 @@ public class VendorXml implements AbstractVendor {
     public String sqlTestError() {
         return
             " "+
-            this.xmlModel.getStrategy().getError().getMethod().get(StrategyInjection.ERROR.instance().getIndexMethod()).getQuery()
+            this.xmlModel.getStrategy().getError().getMethod().get(injectionModel.ERROR.getIndexMethod()).getQuery()
                 .replace(WINDOW, this.xmlModel.getStrategy().getConfiguration().getSlidingWindow())
                 .replace(INJECTION, this.xmlModel.getStrategy().getConfiguration().getFailsafe().replace(INDICE, "0"))
                 .replace(INDEX, "1");
@@ -354,11 +358,11 @@ public class VendorXml implements AbstractVendor {
         return
             " "+
             VendorXml.replaceTags(
-                this.xmlModel.getStrategy().getError().getMethod().get(StrategyInjection.ERROR.instance().getIndexMethod()).getQuery()
+                this.xmlModel.getStrategy().getError().getMethod().get(injectionModel.ERROR.getIndexMethod()).getQuery()
                     .replace(WINDOW, this.xmlModel.getStrategy().getConfiguration().getSlidingWindow())
                     .replace(INJECTION, sqlQuery)
                     .replace(INDEX, ""+startPosition)
-                    .replace(CAPACITY, Integer.toString(this.xmlModel.getStrategy().getError().getMethod().get(StrategyInjection.ERROR.instance().getIndexMethod()).getCapacity()))
+                    .replace(CAPACITY, Integer.toString(this.xmlModel.getStrategy().getError().getMethod().get(injectionModel.ERROR.getIndexMethod()).getCapacity()))
             );
     }
 
@@ -369,14 +373,14 @@ public class VendorXml implements AbstractVendor {
                 this.xmlModel.getStrategy().getConfiguration().getSlidingWindow()
                     .replace(INJECTION, sqlQuery)
                     .replace(INDEX, ""+startPosition)
-                    .replace(CAPACITY, ""+StrategyInjection.NORMAL.instance().getPerformanceLength())
+                    .replace(CAPACITY, ""+injectionModel.NORMAL.getPerformanceLength())
             );
     }
 
     @Override
     public String sqlCapacity(String[] indexes) {
         return
-            MediatorModel.model().getIndexesInUrl().replaceAll(
+                injectionModel.getIndexesInUrl().replaceAll(
                 "1337("+ String.join("|", indexes) +")7331",
                 VendorXml.replaceTags(
                     this.xmlModel.getStrategy().getNormal().getCapacity()

@@ -55,6 +55,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
+import com.jsql.model.MediatorModel;
 import com.jsql.util.GitUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
 import com.jsql.view.i18n.I18nView;
@@ -804,7 +805,7 @@ public class Menubar extends JMenuBar {
             );
 
             if (!"".equals(textarea.getText()) && result == JOptionPane.YES_OPTION) {
-                GitUtil.sendReport(textarea.getText(), ShowOnConsole.YES, "Report");
+                MediatorModel.model().gitUtil.sendReport(textarea.getText(), ShowOnConsole.YES, "Report");
             }
         });
         

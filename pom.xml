@@ -93,29 +93,45 @@
     			<groupId>org.apache.maven.plugins</groupId>
     			<artifactId>maven-surefire-plugin</artifactId>
     			<version>2.22.2</version>
+<!--     			<version>3.0.0-M4</version> -->
     			<configuration>
                     <includes>
-                        <include>AllTestSuite</include>
+                        <include>MySQLBlindTestSuite</include>
+                        <include>MySQLTimeTestSuite</include> 
+                        <include>MySQLNormalTestSuite</include>
+                        <include>MySQLErrorTestSuite</include>
+
+                        <include>PostgresBlindGetTestSuite</include>
+                        <include>PostgresTimeGetTestSuite</include>
+                        <include>PostgresNormalGetTestSuite</include>
+                        <include>PostgresErrorTestSuite</include>
+                        
+                        <include>H2NormalGetTestSuite</include>
+
+<!--                         <include>MySQLBlindTestSuite</include> -->
+<!--                         <include>PostgresBlindGetTestSuite</include> -->
+<!--                         <include>MySQLTimeTestSuite</include> -->
+<!--                         <include>PostgresTimeGetTestSuite</include> -->
                     </includes>        
 
-                    <!-- Multithreading waiting for static management in mediator -->
-                    <parallel>methods</parallel>
-                    <threadCount>1</threadCount>
-                    <threadCountSuites>1</threadCountSuites>
-                    <threadCountClasses>1</threadCountClasses>
-                    <threadCountMethods>2</threadCountMethods>
-                    <reuseForks>true</reuseForks>     
-                    <useUnlimitedThreads>true</useUnlimitedThreads>   
-                    <forkCount>1</forkCount>   
+                    <!-- Multithreading waiting for static management in mediator --> 
+                    <parallel>classes</parallel>
+                    <threadCount>3</threadCount>
+<!--                     <threadCountSuites>1</threadCountSuites> -->
+                    <threadCountClasses>2</threadCountClasses>
+                    <threadCountMethods>1</threadCountMethods>
+<!--                      <reuseForks>false</reuseForks>      --> 
+<!--                     <useUnlimitedThreads>true</useUnlimitedThreads>    -->
+<!--                     <forkCount>1</forkCount>    -->
                       
 <!--                     <argLine>-Xmx512m -Xmx4096m -XX:MaxPermSize=1024m</argLine> -->
                     <dependencies>
-                      <dependency>
-                        <!-- Required by junit 4 -->
-                        <groupId>org.apache.maven.surefire</groupId>
-                        <artifactId>surefire-junit47</artifactId>
-                        <version>2.22.2</version>
-                      </dependency>
+<!--                       <dependency> -->
+<!--                         Required by junit 4 -->
+<!--                         <groupId>org.apache.maven.surefire</groupId> -->
+<!--                         <artifactId>surefire-junit47</artifactId> -->
+<!--                         <version>2.22.2</version> -->
+<!--                       </dependency> -->
                     </dependencies>
     			</configuration>
     		</plugin>
@@ -217,26 +233,26 @@
         </dependency>
         
         <!-- JUnit -->
-<!--         <dependency> -->
-<!--             <groupId>org.junit.platform</groupId> -->
-<!--             <artifactId>junit-platform-launcher</artifactId> -->
-<!--             <scope>test</scope> -->
-<!--         </dependency> -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
+        </dependency>
 <!--         <dependency> -->
 <!--             <groupId>org.junit.vintage</groupId> -->
 <!--             <artifactId>junit-vintage-engine</artifactId> -->
 <!--             <scope>test</scope> -->
 <!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>org.junit.jupiter</groupId> -->
-<!--             <artifactId>junit-jupiter-engine</artifactId> -->
-<!--             <scope>test</scope> -->
-<!--         </dependency> -->
-<!--         <dependency> -->
-<!--             <groupId>org.junit.platform</groupId> -->
-<!--             <artifactId>junit-platform-runner</artifactId> -->
-<!--             <scope>test</scope> -->
-<!--         </dependency> -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-runner</artifactId>
+            <scope>test</scope>
+        </dependency>
         
         <!-- JDBC drivers -->
         <dependency>
@@ -336,12 +352,12 @@
 <!--     <version>1.5.2</version>$NO-MVN-MAN-VER$ -->
 <!--     <scope>test</scope> -->
 <!-- </dependency> --><!-- https://mvnrepository.com/artifact/junit/junit -->
-<dependency>
-    <groupId>junit</groupId>
-    <artifactId>junit</artifactId>
-    <version>4.13-rc-2</version>
-    <scope>test</scope>
-</dependency>
+<!-- <dependency> -->
+<!--     <groupId>junit</groupId> -->
+<!--     <artifactId>junit</artifactId> -->
+<!--     <version>4.13-rc-2</version> -->
+<!--     <scope>test</scope> -->
+<!-- </dependency> -->
 
      
 	</dependencies>

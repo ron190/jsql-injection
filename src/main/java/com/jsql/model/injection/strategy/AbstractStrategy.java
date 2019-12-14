@@ -3,6 +3,7 @@ package com.jsql.model.injection.strategy;
 import java.util.EnumMap;
 import java.util.Map;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
@@ -10,6 +11,7 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.strategy.blind.InjectionTime;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.ConnectionUtil;
 
@@ -17,6 +19,11 @@ import com.jsql.util.ConnectionUtil;
  * Define a strategy to inject SQL with methods like Error and Time.
  */
 public abstract class AbstractStrategy {
+    
+    public AbstractStrategy(InjectionModel injectionModel) {
+        this.injectionModel = injectionModel;
+    }
+    InjectionModel injectionModel;
 	
     /**
      * True if injection can be used, false otherwise.
@@ -54,16 +61,16 @@ public abstract class AbstractStrategy {
         request.setMessage(message);
         
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, ConnectionUtil.getUrlByUser());
+        msgHeader.put(Header.URL, injectionModel.connectionUtil.getUrlByUser());
 
         request.setParameters(msgHeader);
-        MediatorModel.model().sendToViews(request);
+        this.injectionModel.sendToViews(request);
     }
 
     public void markInvulnerable(Interaction message) {
         Request request = new Request();
         request.setMessage(message);
-        MediatorModel.model().sendToViews(request);
+        this.injectionModel.sendToViews(request);
     }
     
     public void markVulnerable(Interaction message, int i) {
@@ -71,11 +78,12 @@ public abstract class AbstractStrategy {
         request.setMessage(message);
         
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, ConnectionUtil.getUrlByUser());
+        msgHeader.put(Header.URL, injectionModel.connectionUtil.getUrlByUser());
         msgHeader.put(Header.SOURCE, i);
+        msgHeader.put(Header.INJECTION_MODEL, injectionModel);
 
         request.setParameters(msgHeader);
-        MediatorModel.model().sendToViews(request);
+        this.injectionModel.sendToViews(request);
     }
 
     public void markInvulnerable(Interaction message, int i) {
@@ -84,9 +92,10 @@ public abstract class AbstractStrategy {
         
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.SOURCE, i);
+        msgHeader.put(Header.INJECTION_MODEL, injectionModel);
 
         request.setParameters(msgHeader);
-        MediatorModel.model().sendToViews(request);
+        this.injectionModel.sendToViews(request);
     }
     
     /**

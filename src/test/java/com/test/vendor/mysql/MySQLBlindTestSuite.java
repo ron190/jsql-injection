@@ -3,46 +3,42 @@ package com.test.vendor.mysql;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.injection.method.MethodInjection;
-import com.jsql.model.injection.strategy.StrategyInjection;
-import com.jsql.util.ConnectionUtil;
-import com.jsql.util.ParameterUtil;
-import com.jsql.util.PreferencesUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 
+@TestInstance(Lifecycle.PER_CLASS)
+@Execution(ExecutionMode.CONCURRENT)
 public class MySQLBlindTestSuite extends ConcreteMySQLTestSuite {
 
-    @BeforeClass
-    public static void initialize() throws Exception {
+    @Override
+    public void initialize3() throws Exception {
 
         InjectionModel model = new InjectionModel();
-        MediatorModel.register(model);
-        model.displayVersion();
+        this.injectionModel = model;
 
-        MediatorModel.model().addObserver(new SystemOutTerminal());
-
-        PreferencesUtil.setNotTestingConnection(true);
+        model.addObserver(new SystemOutTerminal());
         
-        ParameterUtil.initQueryString("http://localhost:8080/greeting-blind");
-        ParameterUtil.initRequest("");
-        ParameterUtil.setQueryString(Arrays.asList(
+        model.parameterUtil.initQueryString("http://localhost:8080/greeting-blind");
+        model.parameterUtil.initRequest("");
+        model.parameterUtil.setQueryString(Arrays.asList(
             new SimpleEntry<String, String>("tenant", "mysql"), 
             new SimpleEntry<String, String>("name", "1'")
         ));
 
-        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
-        ConnectionUtil.setTypeRequest("GET");
+        model.connectionUtil.setMethodInjection(model.QUERY);
+        model.connectionUtil.setTypeRequest("GET");
         
-        MediatorModel.model().setIsScanning(true);
-        MediatorModel.model().setStrategy(StrategyInjection.BLIND);
-        MediatorModel.model().beginInjection();
+        model.setIsScanning(true);
+        model.setStrategy(model.BLIND);
+        model.beginInjection();
     }
     
     @Ignore

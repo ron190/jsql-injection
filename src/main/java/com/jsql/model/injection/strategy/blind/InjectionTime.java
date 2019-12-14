@@ -10,6 +10,7 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
@@ -43,14 +44,16 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
      * If every false requests are under 5 seconds and every true are below 5 seconds,
      * then time attack is confirmed.
      */
-    public InjectionTime() {
+    public InjectionTime(InjectionModel injectionModel) {
+        super(injectionModel);
+        
         // No blind
         if (this.falseTest.length == 0) {
             return;
         }
         
         // Check if the user wants to stop the preparation
-        if (MediatorModel.model().isStoppedByUser()) {
+        if (this.injectionModel.isStoppedByUser()) {
             return;
         }
 
@@ -61,7 +64,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagFalse"));
         Collection<CallableTime> listCallableTagFalse = new ArrayList<>();
         for (String urlTest: this.falseTest) {
-            listCallableTagFalse.add(new CallableTime(urlTest));
+            listCallableTagFalse.add(new CallableTime(urlTest, injectionModel, this));
         }
         
         // Begin the url requests
@@ -81,7 +84,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
          */
         try {
             for (Future<CallableTime> tagFalse: listTagFalse) {
-                if (MediatorModel.model().isStoppedByUser()) {
+                if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
                 if (tagFalse.get().isTrue()) {
@@ -100,7 +103,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagTrue"));
         Collection<CallableTime> listCallableTagTrue = new ArrayList<>();
         for (String urlTest: this.trueTest) {
-            listCallableTagTrue.add(new CallableTime(urlTest));
+            listCallableTagTrue.add(new CallableTime(urlTest, injectionModel, this));
         }
         
         // Begin the url requests
@@ -120,7 +123,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
          */
         try {
             for (Future<CallableTime> falseMark: listTagTrue) {
-                if (MediatorModel.model().isStoppedByUser()) {
+                if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
                 if (!falseMark.get().isTrue()) {
@@ -132,24 +135,24 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             LOGGER.error("Interruption while checking Time injection", e);
         }
     }
-    
+
     @Override
     public CallableTime getCallable(String string, int indexCharacter, boolean isTestingLength) {
-        return new CallableTime(string, indexCharacter, isTestingLength);
+        return new CallableTime(string, indexCharacter, isTestingLength, injectionModel, this);
     }
 
     @Override
     public CallableTime getCallable(String string, int indexCharacter, int bit) {
-        return new CallableTime(string, indexCharacter, bit);
+        return new CallableTime(string, indexCharacter, bit, injectionModel, this);
     }
 
     @Override
     public boolean isInjectable() throws StoppedByUserSlidingException {
-        if (MediatorModel.model().isStoppedByUser()) {
+        if (this.injectionModel.isStoppedByUser()) {
             throw new StoppedByUserSlidingException();
         }
         
-        CallableTime blindTest = new CallableTime(MediatorModel.model().getVendor().instance().sqlTestBlindFirst());
+        CallableTime blindTest = new CallableTime(this.injectionModel.getVendor().instance().sqlTestBlindFirst(), injectionModel, this);
         try {
             blindTest.call();
         } catch (Exception e) {

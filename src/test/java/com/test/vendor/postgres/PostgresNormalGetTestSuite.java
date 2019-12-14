@@ -4,6 +4,8 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
 import org.junit.BeforeClass;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
@@ -14,29 +16,28 @@ import com.jsql.util.ConnectionUtil;
 import com.jsql.util.ParameterUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 
+@TestInstance(Lifecycle.PER_CLASS)
 public class PostgresNormalGetTestSuite extends ConcretePostgresTestSuite {
     
-    @BeforeClass
-    public static void initialize() throws Exception {
+    public void initialize3() throws Exception {
         
         InjectionModel model = new InjectionModel();
-        MediatorModel.register(model);
-        model.displayVersion();
+        this.injectionModel = model;
 
-        MediatorModel.model().addObserver(new SystemOutTerminal());
+        model.addObserver(new SystemOutTerminal());
 
-        ParameterUtil.initQueryString("http://localhost:8080/greeting");
-        ParameterUtil.initRequest("");
-        ParameterUtil.setQueryString(Arrays.asList(
+        model.parameterUtil.initQueryString("http://localhost:8080/greeting");
+        model.parameterUtil.initRequest("");
+        model.parameterUtil.setQueryString(Arrays.asList(
             new SimpleEntry<String, String>("tenant", "postgres"), 
             new SimpleEntry<String, String>("name", "0'")
         ));
-        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
-        ConnectionUtil.setTypeRequest("GET");
+        model.connectionUtil.setMethodInjection(model.QUERY);
+        model.connectionUtil.setTypeRequest("GET");
 
-        MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
-        MediatorModel.model().setVendorByUser(Vendor.POSTGRESQL);
-        MediatorModel.model().beginInjection();
+        model.setStrategy(model.NORMAL);
+        model.setVendorByUser(model.POSTGRESQL);
+        model.beginInjection();
     }
     
 }

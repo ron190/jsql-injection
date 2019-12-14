@@ -19,6 +19,7 @@ import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
+import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.suspendable.AbstractSuspendable;
@@ -70,7 +71,7 @@ public class ActionLoadStop implements ActionListener {
                 @Override
                 protected Object doInBackground() throws Exception {
                 	Thread.currentThread().setName("SwingWorkerActionLoadStop");
-                    DataAccess.listValues(columnsToSearch);
+                    MediatorModel.model().dataAccess.listValues(columnsToSearch);
                     return null;
                 }
             }.execute();

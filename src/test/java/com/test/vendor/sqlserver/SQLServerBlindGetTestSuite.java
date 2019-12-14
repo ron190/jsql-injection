@@ -20,20 +20,20 @@ import com.test.AbstractTestSuite;
 public class SQLServerBlindGetTestSuite extends ConcreteSQLServerTestSuite {
 
     @BeforeClass
-    public static void initialize() throws InjectionFailureException {
-        InjectionModel model = new InjectionModel();
-        MediatorModel.register(model);
-        model.displayVersion();
-
-        MediatorModel.model().addObserver(new SystemOutTerminal());
-
-        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/sqlserver_simulate_get.php");
-        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("lib", "1")));
-        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
-
-        MediatorModel.model().beginInjection();
-
-        MediatorModel.model().setStrategy(StrategyInjection.BLIND);
+    public void initialize3() throws InjectionFailureException {
+//        InjectionModel model = new InjectionModel();
+//        MediatorModel.register(model);
+//        model.displayVersion();
+//
+//        MediatorModel.model().addObserver(new SystemOutTerminal());
+//
+//        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/sqlserver_simulate_get.php");
+//        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("lib", "1")));
+//        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
+//
+//        MediatorModel.model().beginInjection();
+//
+//        MediatorModel.model().setStrategy(StrategyInjection.BLIND);
     }
     
 }

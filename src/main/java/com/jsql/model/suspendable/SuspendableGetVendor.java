@@ -13,16 +13,14 @@ import java.util.stream.Stream;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.MediatorModel;
+import com.jsql.model.InjectionModel;
+import com.jsql.model.InjectionModel.Vendor;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.model.suspendable.callable.CallablePageSource;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
-import com.jsql.util.ConnectionUtil;
-import com.jsql.util.ParameterUtil;
 
 /**
  * Runnable class, define insertionCharacter that will be used by all futures requests,
@@ -37,6 +35,10 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
+    public SuspendableGetVendor(InjectionModel injectionModel) {
+        super(injectionModel);
+    }
+
     /**
      * 
      */
@@ -44,8 +46,8 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
     public Vendor run(Object... args) throws StoppedByUserSlidingException {
         Vendor vendor = null;
         
-        if (MediatorModel.model().getVendorByUser() != Vendor.AUTO) {
-            vendor = MediatorModel.model().getVendorByUser();
+        if (this.injectionModel.getVendorByUser() != injectionModel.AUTO) {
+            vendor = this.injectionModel.getVendorByUser();
             LOGGER.info(I18n.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER") +" ["+ vendor +"]");
         } else {
         
@@ -60,7 +62,8 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                 taskCompletionService.submit(
                     new CallablePageSource(
                         insertionCharacter,
-                        insertionCharacter
+                        insertionCharacter,
+                        injectionModel
                     )
                 );
             }
@@ -77,7 +80,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                     total--;
                     String pageSource = currentCallable.getContent();
                     
-                    for (Vendor vendorTest: Stream.of(Vendor.values()).skip(1).toArray(Vendor[]::new)) {
+                    for (Vendor vendorTest: injectionModel.vendors.stream().toArray(Vendor[]::new)) {
                       if (
                           pageSource.matches(
                               "(?si).*("
@@ -106,7 +109,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             }
             
             if (vendor == null) {
-                vendor = Vendor.MYSQL;
+                vendor = injectionModel.MYSQL;
                 LOGGER.warn(I18n.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendor +"]");
             } else {
                 LOGGER.info(I18n.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendor +"]");
@@ -114,22 +117,22 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                 Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
                 msgHeader.put(
                     Header.URL,
-                    ConnectionUtil.getUrlBase()
-                    + ParameterUtil.getQueryStringFromEntries()
+                    injectionModel.connectionUtil.getUrlBase()
+                    + injectionModel.parameterUtil.getQueryStringFromEntries()
                 );
                 msgHeader.put(Header.VENDOR, vendor);
                 
                 Request requestDatabaseIdentified = new Request();
                 requestDatabaseIdentified.setMessage(Interaction.DATABASE_IDENTIFIED);
                 requestDatabaseIdentified.setParameters(msgHeader);
-                MediatorModel.model().sendToViews(requestDatabaseIdentified);
+                this.injectionModel.sendToViews(requestDatabaseIdentified);
             }
         }
         
         Request requestSetVendor = new Request();
         requestSetVendor.setMessage(Interaction.SET_VENDOR);
         requestSetVendor.setParameters(vendor);
-        MediatorModel.model().sendToViews(requestSetVendor);
+        this.injectionModel.sendToViews(requestSetVendor);
         
         return vendor;
     }

@@ -32,9 +32,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jsql.i18n.I18n;
+import com.jsql.model.InjectionModel.MethodInjection;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.RessourceAccess;
-import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
@@ -148,7 +148,7 @@ public class ManagerScan extends AbstractManagerList {
                         listModel.get(i).reset();
                     }
                     
-                    RessourceAccess.scanList(dndListScan.getSelectedValuesList());
+                    MediatorModel.model().resourceAccess.scanList(dndListScan.getSelectedValuesList());
                 } else {
                     RessourceAccess.setScanStopped(true);
                     MediatorModel.model().setIsStoppedByUser(true);
@@ -186,9 +186,9 @@ public class ManagerScan extends AbstractManagerList {
             }
             
             MethodInjection injectionType = beanInjection.getInjectionTypeAsEnum();
-            if (injectionType == MethodInjection.HEADER) {
+            if (injectionType == MediatorModel.model().HEADER) {
                 MediatorGui.panelAddressBar().getRadioHeader().setSelected();
-            } else if (injectionType == MethodInjection.REQUEST) {
+            } else if (injectionType == MediatorModel.model().REQUEST) {
                 MediatorGui.panelAddressBar().getRadioRequest().setSelected();
             } else {
                 MediatorGui.panelAddressBar().getRadioQueryString().setSelected();

@@ -1,6 +1,13 @@
 package com.test.vendor.mysql;
 
-public class ConcreteMySQLErrorTestSuite extends ConcreteMySQLTestSuite {
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+
+@TestInstance(Lifecycle.PER_CLASS)
+@Execution(ExecutionMode.CONCURRENT)
+public abstract class ConcreteMySQLErrorTestSuite extends ConcreteMySQLTestSuite {
 
     public ConcreteMySQLErrorTestSuite () {
         super();

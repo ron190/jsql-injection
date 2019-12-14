@@ -32,6 +32,7 @@ import javax.swing.TransferHandler;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
+import com.jsql.model.MediatorModel;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
@@ -152,7 +153,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             mnSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
             
             //Create a file chooser
-            final JFileChooser importFileDialog = new JFileChooser(PreferencesUtil.getPathFile());
+            final JFileChooser importFileDialog = new JFileChooser(MediatorModel.model().preferencesUtil.getPathFile());
             importFileDialog.setDialogTitle(I18n.valueByKey("LIST_IMPORT_CONFIRM_TITLE"));
             importFileDialog.setMultiSelectionEnabled(true);
 

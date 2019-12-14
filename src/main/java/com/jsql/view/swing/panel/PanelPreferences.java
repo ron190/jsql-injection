@@ -31,11 +31,12 @@ import javax.swing.event.DocumentListener;
 
 import org.apache.commons.text.WordUtils;
 
+import com.jsql.model.MediatorModel;
 import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.PreferencesUtil;
 import com.jsql.util.ProxyUtil;
-import com.jsql.util.Tampering;
-import com.jsql.util.TamperingUtil;
+import com.jsql.util.tampering.Tampering;
+import com.jsql.util.tampering.TamperingUtil;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionCheckIP;
@@ -63,46 +64,46 @@ public class PanelPreferences extends JPanel {
     final JRadioButton radioIsTamperingSpaceToDashComment = new JRadioButton();
     final JRadioButton radioIsTamperingSpaceToSharpComment = new JRadioButton();
     
-    final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", PreferencesUtil.isCheckUpdateActivated());
-    final JCheckBox checkboxIsReportingBugs = new JCheckBox("", PreferencesUtil.isReportingBugs());
-    final JCheckBox checkboxIs4K = new JCheckBox("", PreferencesUtil.is4K());
-    final JCheckBox checkboxIsUsingProxy = new JCheckBox("", ProxyUtil.isUsingProxy());
-    final JCheckBox checkboxIsUsingProxyHttps = new JCheckBox("", ProxyUtil.isUsingProxyHttps());
+    final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", MediatorModel.model().preferencesUtil.isCheckUpdateActivated());
+    final JCheckBox checkboxIsReportingBugs = new JCheckBox("", MediatorModel.model().preferencesUtil.isReportingBugs());
+    final JCheckBox checkboxIs4K = new JCheckBox("", MediatorModel.model().preferencesUtil.is4K());
+    final JCheckBox checkboxIsUsingProxy = new JCheckBox("", MediatorModel.model().proxyUtil.isUsingProxy());
+    final JCheckBox checkboxIsUsingProxyHttps = new JCheckBox("", MediatorModel.model().proxyUtil.isUsingProxyHttps());
     
-    final JCheckBox checkboxIsFollowingRedirection = new JCheckBox("", PreferencesUtil.isFollowingRedirection());
-    final JCheckBox checkboxIsNotInjectingMetadata = new JCheckBox("", PreferencesUtil.isNotInjectingMetadata());
-    final JCheckBox checkboxIsNotTestingConnection = new JCheckBox("", PreferencesUtil.isNotTestingConnection());
-    final JCheckBox checkboxIsParsingForm = new JCheckBox("", PreferencesUtil.isParsingForm());
+    final JCheckBox checkboxIsFollowingRedirection = new JCheckBox("", MediatorModel.model().preferencesUtil.isFollowingRedirection());
+    final JCheckBox checkboxIsNotInjectingMetadata = new JCheckBox("", MediatorModel.model().preferencesUtil.isNotInjectingMetadata());
+    final JCheckBox checkboxIsNotTestingConnection = new JCheckBox("", MediatorModel.model().preferencesUtil.isNotTestingConnection());
+    final JCheckBox checkboxIsParsingForm = new JCheckBox("", MediatorModel.model().preferencesUtil.isParsingForm());
     
-    final JCheckBox checkboxIsCheckingAllParam = new JCheckBox("", PreferencesUtil.isCheckingAllParam());
-    final JCheckBox checkboxIsCheckingAllURLParam = new JCheckBox("", PreferencesUtil.isCheckingAllURLParam());
-    final JCheckBox checkboxIsCheckingAllRequestParam = new JCheckBox("", PreferencesUtil.isCheckingAllRequestParam());
-    final JCheckBox checkboxIsCheckingAllHeaderParam = new JCheckBox("", PreferencesUtil.isCheckingAllHeaderParam());
-    final JCheckBox checkboxIsCheckingAllJSONParam = new JCheckBox("", PreferencesUtil.isCheckingAllJSONParam());
-    final JCheckBox checkboxIsCheckingAllCookieParam = new JCheckBox("", PreferencesUtil.isCheckingAllCookieParam());
-    final JCheckBox checkboxIsCheckingAllSOAPParam = new JCheckBox("", PreferencesUtil.isCheckingAllSOAPParam());
+    final JCheckBox checkboxIsCheckingAllParam = new JCheckBox("", MediatorModel.model().preferencesUtil.isCheckingAllParam());
+    final JCheckBox checkboxIsCheckingAllURLParam = new JCheckBox("", MediatorModel.model().preferencesUtil.isCheckingAllURLParam());
+    final JCheckBox checkboxIsCheckingAllRequestParam = new JCheckBox("", MediatorModel.model().preferencesUtil.isCheckingAllRequestParam());
+    final JCheckBox checkboxIsCheckingAllHeaderParam = new JCheckBox("", MediatorModel.model().preferencesUtil.isCheckingAllHeaderParam());
+    final JCheckBox checkboxIsCheckingAllJSONParam = new JCheckBox("", MediatorModel.model().preferencesUtil.isCheckingAllJSONParam());
+    final JCheckBox checkboxIsCheckingAllCookieParam = new JCheckBox("", MediatorModel.model().preferencesUtil.isCheckingAllCookieParam());
+    final JCheckBox checkboxIsCheckingAllSOAPParam = new JCheckBox("", MediatorModel.model().preferencesUtil.isCheckingAllSOAPParam());
 
-    final JCheckBox checkboxProcessCookies = new JCheckBox("", PreferencesUtil.isProcessingCookies());
-    final JCheckBox checkboxProcessCsrf = new JCheckBox("", PreferencesUtil.isProcessingCsrf());
+    final JCheckBox checkboxProcessCookies = new JCheckBox("", MediatorModel.model().preferencesUtil.isProcessingCookies());
+    final JCheckBox checkboxProcessCsrf = new JCheckBox("", MediatorModel.model().preferencesUtil.isProcessingCsrf());
 
-    final JTextField textProxyAddress = new JPopupTextField("e.g Tor address: 127.0.0.1", ProxyUtil.getProxyAddress()).getProxy();
-    final JTextField textProxyPort = new JPopupTextField("e.g Tor port: 8118", ProxyUtil.getProxyPort()).getProxy();
-    final JTextField textProxyAddressHttps = new JPopupTextField("e.g Tor address: 127.0.0.1", ProxyUtil.getProxyAddressHttps()).getProxy();
-    final JTextField textProxyPortHttps = new JPopupTextField("e.g Tor port: 8118", ProxyUtil.getProxyPortHttps()).getProxy();
+    final JTextField textProxyAddress = new JPopupTextField("e.g Tor address: 127.0.0.1", MediatorModel.model().proxyUtil.getProxyAddress()).getProxy();
+    final JTextField textProxyPort = new JPopupTextField("e.g Tor port: 8118", MediatorModel.model().proxyUtil.getProxyPort()).getProxy();
+    final JTextField textProxyAddressHttps = new JPopupTextField("e.g Tor address: 127.0.0.1", MediatorModel.model().proxyUtil.getProxyAddressHttps()).getProxy();
+    final JTextField textProxyPortHttps = new JPopupTextField("e.g Tor port: 8118", MediatorModel.model().proxyUtil.getProxyPortHttps()).getProxy();
 
-    final JCheckBox checkboxUseDigestAuthentication = new JCheckBox("", AuthenticationUtil.isDigestAuthentication());
-    final JCheckBox checkboxUseKerberos = new JCheckBox("", AuthenticationUtil.isKerberos());
+    final JCheckBox checkboxUseDigestAuthentication = new JCheckBox("", MediatorModel.model().authenticationUtil.isDigestAuthentication());
+    final JCheckBox checkboxUseKerberos = new JCheckBox("", MediatorModel.model().authenticationUtil.isKerberos());
 
-    final JTextField textDigestAuthenticationUsername = new JPopupTextField("Host system user", AuthenticationUtil.getUsernameDigest()).getProxy();
-    final JTextField textDigestAuthenticationPassword = new JPopupTextField("Host system password", AuthenticationUtil.getPasswordDigest()).getProxy();
-    final JTextField textKerberosLoginConf = new JPopupTextField("Path to login.conf", AuthenticationUtil.getPathKerberosLogin()).getProxy();
-    final JTextField textKerberosKrb5Conf = new JPopupTextField("Path to krb5.conf", AuthenticationUtil.getPathKerberosKrb5()).getProxy();
+    final JTextField textDigestAuthenticationUsername = new JPopupTextField("Host system user", MediatorModel.model().authenticationUtil.getUsernameDigest()).getProxy();
+    final JTextField textDigestAuthenticationPassword = new JPopupTextField("Host system password", MediatorModel.model().authenticationUtil.getPasswordDigest()).getProxy();
+    final JTextField textKerberosLoginConf = new JPopupTextField("Path to login.conf", MediatorModel.model().authenticationUtil.getPathKerberosLogin()).getProxy();
+    final JTextField textKerberosKrb5Conf = new JPopupTextField("Path to krb5.conf", MediatorModel.model().authenticationUtil.getPathKerberosKrb5()).getProxy();
 
     private class ActionListenerSave implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            PreferencesUtil.set(
+            MediatorModel.model().preferencesUtil.set(
                 PanelPreferences.this.checkboxIsCheckingUpdate.isSelected(),
                 PanelPreferences.this.checkboxIsReportingBugs.isSelected(),
                 PanelPreferences.this.checkboxIsFollowingRedirection.isSelected(),
@@ -134,7 +135,7 @@ public class PanelPreferences extends JPanel {
                 PanelPreferences.this.checkboxIs4K.isSelected()
             );
             
-            ProxyUtil.set(
+            MediatorModel.model().proxyUtil.set(
                 PanelPreferences.this.checkboxIsUsingProxy.isSelected(),
                 PanelPreferences.this.textProxyAddress.getText(),
                 PanelPreferences.this.textProxyPort.getText(),
@@ -157,13 +158,13 @@ public class PanelPreferences extends JPanel {
                 radioIsTamperingSpaceToSharpComment.isSelected()
             );
             
-            boolean isRestartRequired = AuthenticationUtil.set(
-                PanelPreferences.this.checkboxUseDigestAuthentication.isSelected(),
-                PanelPreferences.this.textDigestAuthenticationUsername.getText(),
-                PanelPreferences.this.textDigestAuthenticationPassword.getText(),
-                PanelPreferences.this.checkboxUseKerberos.isSelected(),
-                PanelPreferences.this.textKerberosKrb5Conf.getText(),
-                PanelPreferences.this.textKerberosLoginConf.getText()
+            boolean isRestartRequired = MediatorModel.model().authenticationUtil.set(
+                checkboxUseDigestAuthentication.isSelected(),
+                textDigestAuthenticationUsername.getText(),
+                textDigestAuthenticationPassword.getText(),
+                checkboxUseKerberos.isSelected(),
+                textKerberosKrb5Conf.getText(),
+                textKerberosLoginConf.getText()
             );
             
             if (

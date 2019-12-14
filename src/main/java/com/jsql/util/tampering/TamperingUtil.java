@@ -1,4 +1,4 @@
-package com.jsql.util;
+package com.jsql.util.tampering;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

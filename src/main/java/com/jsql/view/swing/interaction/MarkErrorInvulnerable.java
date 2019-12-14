@@ -14,6 +14,7 @@ import java.util.Map;
 
 import javax.swing.JMenu;
 
+import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
@@ -46,7 +47,7 @@ public class MarkErrorInvulnerable implements InteractionCommand {
         // Fix #40352: NullPointerException on ?
         try {
             for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
-                if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(StrategyInjection.ERROR.toString())) {
+                if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(MediatorModel.model().ERROR.toString())) {
                     ((JMenu) MediatorGui.panelAddressBar().getMenuStrategy().getItem(i)).getItem(this.indexMethodError).setEnabled(false);
                     break;
                 }

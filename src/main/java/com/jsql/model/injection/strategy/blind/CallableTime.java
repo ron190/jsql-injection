@@ -3,6 +3,7 @@ package com.jsql.model.injection.strategy.blind;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 
 /**
@@ -29,9 +30,14 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     /**
      * Constructor for preparation and blind confirmation.
      * @param inj
+     * @param injectionModel 
      */
-    public CallableTime(String inj) {
-        this.blindUrl = MediatorModel.model().getVendor().instance().sqlTimeTest(inj);
+    InjectionModel injectionModel;
+    InjectionTime injectionTime;
+    public CallableTime(String inj, InjectionModel injectionModel, InjectionTime injectionTime) {
+        this.injectionModel = injectionModel;
+        this.injectionTime = injectionTime;
+        this.blindUrl = this.injectionModel.getVendor().instance().sqlTimeTest(inj);
     }
     
     /**
@@ -40,14 +46,18 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
      * @param indexCharacter
      * @param bit
      */
-    public CallableTime(String inj, int indexCharacter, int bit) {
-        this.blindUrl = MediatorModel.model().getVendor().instance().sqlBitTestTime(inj, indexCharacter, bit);
+    public CallableTime(String inj, int indexCharacter, int bit, InjectionModel injectionModel, InjectionTime injectionTime) {
+        this.injectionModel = injectionModel;
+        this.injectionTime = injectionTime;
+        this.blindUrl = this.injectionModel.getVendor().instance().sqlBitTestTime(inj, indexCharacter, bit);
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
     }
 
-    public CallableTime(String inj, int indexCharacter, boolean isTestingLength) {
-        this.blindUrl = MediatorModel.model().getVendor().instance().sqlLengthTestTime(inj, indexCharacter);
+    public CallableTime(String inj, int indexCharacter, boolean isTestingLength, InjectionModel injectionModel, InjectionTime injectionTime) {
+        this.injectionModel = injectionModel;
+        this.injectionTime = injectionTime;
+        this.blindUrl = this.injectionModel.getVendor().instance().sqlLengthTestTime(inj, indexCharacter);
         this.isTestingLength = isTestingLength;
     }
     
@@ -64,7 +74,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     @Override
     public CallableTime call() throws Exception {
         this.calendar1.setTime(new Date());
-        AbstractInjectionBoolean.callUrl(this.blindUrl);
+        injectionTime.callUrl(this.blindUrl);
         this.calendar2.setTime(new Date());
         long milliseconds1 = this.calendar1.getTimeInMillis();
         long milliseconds2 = this.calendar2.getTimeInMillis();

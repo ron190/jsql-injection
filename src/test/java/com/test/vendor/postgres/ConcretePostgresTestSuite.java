@@ -2,7 +2,7 @@ package com.test.vendor.postgres;
 
 import com.test.AbstractTestSuite;
 
-public class ConcretePostgresTestSuite extends AbstractTestSuite {
+public abstract class ConcretePostgresTestSuite extends AbstractTestSuite {
 
     public ConcretePostgresTestSuite () {
 
@@ -21,8 +21,6 @@ public class ConcretePostgresTestSuite extends AbstractTestSuite {
         this.jdbcQueryForTableNames =    "select TABLE_NAME from INFORMATION_SCHEMA.tables where TABLE_SCHEMA='"+ this.jsqlDatabaseName +"'";
         this.jdbcQueryForColumnNames =   "select COLUMN_NAME from information_schema.columns where TABLE_SCHEMA='"+ this.jsqlDatabaseName +"' and TABLE_NAME='"+ this.jsqlTableName +"'";
         this.jdbcQueryForValues =    "select "+ this.jsqlColumnName +" from "+ this.jsqlDatabaseName +"."+ this.jsqlTableName;
-        
-        this.requestJdbc();
     }
     
 }

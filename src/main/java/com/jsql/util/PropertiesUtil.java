@@ -6,6 +6,8 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.InjectionModel;
+
 public class PropertiesUtil {
     
     /**
@@ -15,9 +17,9 @@ public class PropertiesUtil {
 
     private final Properties properties = new Properties();
     
-    private static final PropertiesUtil instance = new PropertiesUtil();
-
-    private PropertiesUtil() {
+    InjectionModel injectionModel;
+    public PropertiesUtil(InjectionModel injectionModel) {
+        this.injectionModel = injectionModel;
 
         InputStream input = null;
 
@@ -49,10 +51,6 @@ public class PropertiesUtil {
 
     public Properties getProperties() {
         return this.properties;
-    }
-
-    public static PropertiesUtil getInstance() {
-        return instance;
     }
 
 }

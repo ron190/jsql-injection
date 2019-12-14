@@ -25,6 +25,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
@@ -42,6 +43,11 @@ public class HeaderUtil {
         // Nothing
     }
     
+    public HeaderUtil(InjectionModel injectionModel) {
+        this.injectionModel = injectionModel;
+    }
+    InjectionModel injectionModel;
+
     /**
      * Parse the header component and decode any character of the form %xy
      * except for cookie
@@ -71,7 +77,7 @@ public class HeaderUtil {
      * @throws IOException when an error occurs during connection
      */
     @SuppressWarnings("unchecked")
-    public static void checkResponseHeader(HttpURLConnection connection, String urlByUser) throws IOException {
+    public void checkResponseHeader(HttpURLConnection connection, String urlByUser) throws IOException {
         // TODO Extract
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, urlByUser);
@@ -131,7 +137,7 @@ public class HeaderUtil {
         } else if (Pattern.matches("3\\d\\d", Integer.toString(connection.getResponseCode()))) {
             LOGGER.warn("Found status HTTP "+ connection.getResponseCode() +" Redirection");
             
-            if (!PreferencesUtil.isFollowingRedirection()) {
+            if (!injectionModel.preferencesUtil.isFollowingRedirection()) {
                 LOGGER.warn("If injection fails please test again with option 'Follow HTTP redirection' enabled.");
             } else {
                 LOGGER.info("Redirecting to the next page...");
@@ -181,7 +187,7 @@ public class HeaderUtil {
         
         // Connection test
         
-        if (PreferencesUtil.isNotTestingConnection()) {
+        if (injectionModel.preferencesUtil.isNotTestingConnection()) {
             if (exception != null) {
                 LOGGER.debug("Connection test disabled, ignoring response HTTP "+ connection.getResponseCode() +"...");
             }
@@ -221,7 +227,7 @@ public class HeaderUtil {
         }
         
         if (!elementsForm.isEmpty()) {
-            if (!PreferencesUtil.isParsingForm()) {
+            if (!injectionModel.preferencesUtil.isParsingForm()) {
                 if (connection.getResponseCode() != 200) {
                     LOGGER.trace("Found "+ elementsForm.size() +" ignored <form> in HTML body:"+ result);
                     LOGGER.info("WAF can detect missing form parameters, you may enable 'Add <input> parameters' in Preferences and retry");
@@ -234,9 +240,9 @@ public class HeaderUtil {
                 for(Entry<Element, List<Element>> form: mapForms.entrySet()) {
                     for (Element input: form.getValue()) {
                         if ("get".equalsIgnoreCase(form.getKey().attr("method"))) {
-                            ParameterUtil.getQueryString().add(0, new SimpleEntry<String, String>(input.attr("name"), input.attr("value")));
+                            injectionModel.parameterUtil.getQueryString().add(0, new SimpleEntry<String, String>(input.attr("name"), input.attr("value")));
                         } else if ("post".equalsIgnoreCase(form.getKey().attr("method"))) {
-                            ParameterUtil.getRequest().add(0, new SimpleEntry<String, String>(input.attr("name"), input.attr("value")));
+                            injectionModel.parameterUtil.getRequest().add(0, new SimpleEntry<String, String>(input.attr("name"), input.attr("value")));
                         }
                     }
                 }
@@ -256,9 +262,9 @@ public class HeaderUtil {
         if (optionalTokenCsrf.isPresent()) {
             SimpleEntry<String, String> tokenCsrfFound = optionalTokenCsrf.get();
             
-            if (PreferencesUtil.isProcessingCsrf()) {
+            if (injectionModel.preferencesUtil.isProcessingCsrf()) {
                 LOGGER.debug("Found Csrf token "+ tokenCsrfFound.getKey() +"="+ tokenCsrfFound.getValue() +" in HTML body, adding token to querystring, request and header");
-                ConnectionUtil.setTokenCsrf(tokenCsrfFound);
+                injectionModel.connectionUtil.setTokenCsrf(tokenCsrfFound);
             } else {
                 LOGGER.warn("Found Csrf token '"+ tokenCsrfFound.getKey() +"="+ tokenCsrfFound.getValue() +"' in HTML body");
                 exception = new IOException("please activate Csrf processing in Preferences");
@@ -271,7 +277,7 @@ public class HeaderUtil {
         Request request = new Request();
         request.setMessage(Interaction.MESSAGE_HEADER);
         request.setParameters(msgHeader);
-        MediatorModel.model().sendToViews(request);
+        injectionModel.sendToViews(request);
         
         if (exception != null) {
             throw new IOException(exception);

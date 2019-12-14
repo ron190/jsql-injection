@@ -18,7 +18,8 @@ import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.MediatorModel;
+import com.jsql.model.InjectionModel;
+import com.jsql.model.InjectionModel.Vendor;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;
@@ -29,7 +30,6 @@ import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.SlidingException;
-import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.model.suspendable.SuspendableGetRows;
 
 /**
@@ -126,24 +126,30 @@ public class DataAccess {
      */
     public static final String CELL_TABLE = "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)"+ SEPARATOR_QTE_RGX +"([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?";
     
+//    // Utility class
+//    private DataAccess() {
+//        // not used
+//    }
     // Utility class
-    private DataAccess() {
-        // not used
+    public DataAccess(InjectionModel injectionModel) {
+        this.injectionModel = injectionModel;
     }
+    
+    InjectionModel injectionModel;
     
     /**
      * Get general database informations.<br>
      * => version{%}database{%}user{%}CURRENT_USER
      * @throws JSqlException
      */
-    public static void getDatabaseInfos() throws JSqlException {
+    public void getDatabaseInfos() throws JSqlException {
         LOGGER.trace(I18n.valueByKey("LOG_FETCHING_INFORMATIONS"));
         
         String[] sourcePage = {""};
 
         String resultToParse;
-        resultToParse = new SuspendableGetRows().run(
-            MediatorModel.model().getVendor().instance().sqlInfos(),
+        resultToParse = new SuspendableGetRows(injectionModel).run(
+            this.injectionModel.getVendor().instance().sqlInfos(),
             sourcePage,
             false,
             0,
@@ -151,12 +157,12 @@ public class DataAccess {
         );
 
         if ("".equals(resultToParse)) {
-            MediatorModel.model().sendResponseFromSite("Incorrect database informations", sourcePage[0].trim());
+            this.injectionModel.sendResponseFromSite("Incorrect database informations", sourcePage[0].trim());
         }
 
         // Check if parsing is failing
         try {
-            MediatorModel.model().setDatabaseInfos(
+            this.injectionModel.setDatabaseInfos(
                 resultToParse.split(ENCLOSE_VALUE_RGX)[0].replaceAll("\\s+"," "),
                 resultToParse.split(ENCLOSE_VALUE_RGX)[1],
                 resultToParse.split(ENCLOSE_VALUE_RGX)[2]
@@ -166,7 +172,7 @@ public class DataAccess {
             LOGGER.info("Processing but failure is expected...");
         }
         
-        LOGGER.debug(MediatorModel.model().getDatabaseInfos());
+        LOGGER.debug(this.injectionModel.getDatabaseInfos());
     }
     
     /**
@@ -178,7 +184,7 @@ public class DataAccess {
      * @return list of databases found
      * @throws JSqlException when injection failure or stopped by user
      */
-    public static List<Database> listDatabases() throws JSqlException {
+    public List<Database> listDatabases() throws JSqlException {
         LOGGER.trace(I18n.valueByKey("LOG_FETCHING_DATABASES"));
         
         List<Database> databases = new ArrayList<>();
@@ -186,8 +192,8 @@ public class DataAccess {
         String resultToParse = "";
         try {
             String[] sourcePage = {""};
-            resultToParse = new SuspendableGetRows().run(
-                MediatorModel.model().getVendor().instance().sqlDatabases(),
+            resultToParse = new SuspendableGetRows(injectionModel).run(
+                this.injectionModel.getVendor().instance().sqlDatabases(),
                 sourcePage,
                 true,
                 0,
@@ -234,7 +240,7 @@ public class DataAccess {
         Request request = new Request();
         request.setMessage(Interaction.ADD_DATABASES);
         request.setParameters(databases);
-        MediatorModel.model().sendToViews(request);
+        this.injectionModel.sendToViews(request);
         
         return databases;
     }
@@ -249,10 +255,10 @@ public class DataAccess {
      * @return list of tables found
      * @throws JSqlException when injection failure or stopped by user
      */
-    public static List<Table> listTables(Database database) throws JSqlException {
+    public List<Table> listTables(Database database) throws JSqlException {
         // Reset stoppedByUser if list of Databases is partial
         // and some Tables are still reachable
-        MediatorModel.model().setIsStoppedByUser(false);
+        this.injectionModel.setIsStoppedByUser(false);
         
         List<Table> tables = new ArrayList<>();
         
@@ -260,15 +266,15 @@ public class DataAccess {
         Request requestStartProgress = new Request();
         requestStartProgress.setMessage(Interaction.START_PROGRESS);
         requestStartProgress.setParameters(database);
-        MediatorModel.model().sendToViews(requestStartProgress);
+        this.injectionModel.sendToViews(requestStartProgress);
 
         String tableCount = Integer.toString(database.getChildCount());
         
         String resultToParse = "";
         try {
             String[] pageSource = {""};
-            resultToParse = new SuspendableGetRows().run(
-                MediatorModel.model().getVendor().instance().sqlTables(database),
+            resultToParse = new SuspendableGetRows(injectionModel).run(
+                this.injectionModel.getVendor().instance().sqlTables(database),
                 pageSource,
                 true,
                 Integer.parseInt(tableCount),
@@ -300,7 +306,7 @@ public class DataAccess {
         Request requestEndProgress = new Request();
         requestEndProgress.setMessage(Interaction.END_PROGRESS);
         requestEndProgress.setParameters(database);
-        MediatorModel.model().sendToViews(requestEndProgress);
+        this.injectionModel.sendToViews(requestEndProgress);
         
         if (!regexSearch.find()) {
             throw new InjectionFailureException();
@@ -320,7 +326,7 @@ public class DataAccess {
         Request requestAddTables = new Request();
         requestAddTables.setMessage(Interaction.ADD_TABLES);
         requestAddTables.setParameters(tables);
-        MediatorModel.model().sendToViews(requestAddTables);
+        this.injectionModel.sendToViews(requestAddTables);
         
         return tables;
     }
@@ -335,20 +341,20 @@ public class DataAccess {
      * @return list of columns found
      * @throws JSqlException when injection failure or stopped by user
      */
-    public static List<Column> listColumns(Table table) throws JSqlException {
+    public List<Column> listColumns(Table table) throws JSqlException {
         List<Column> columns = new ArrayList<>();
         
         // Inform the view that table has just been used
         Request requestStartProgress = new Request();
         requestStartProgress.setMessage(Interaction.START_INDETERMINATE_PROGRESS);
         requestStartProgress.setParameters(table);
-        MediatorModel.model().sendToViews(requestStartProgress);
+        this.injectionModel.sendToViews(requestStartProgress);
 
         String resultToParse = "";
         try {
             String[] pageSource = {""};
-            resultToParse = new SuspendableGetRows().run(
-                MediatorModel.model().getVendor().instance().sqlColumns(table),
+            resultToParse = new SuspendableGetRows(injectionModel).run(
+                this.injectionModel.getVendor().instance().sqlColumns(table),
                 pageSource,
                 true,
                 0,
@@ -367,8 +373,8 @@ public class DataAccess {
         }
 
         // Build SQLite columns
-        if (MediatorModel.model().getVendor() == Vendor.SQLITE) {
-            resultToParse = Vendor.SQLITE.transform(resultToParse);
+        if (this.injectionModel.getVendor() == injectionModel.SQLITE) {
+            resultToParse = injectionModel.SQLITE.transform(resultToParse);
         }
         
         // Parse all the data we have retrieved
@@ -385,7 +391,7 @@ public class DataAccess {
         Request requestEndProgress = new Request();
         requestEndProgress.setMessage(Interaction.END_INDETERMINATE_PROGRESS);
         requestEndProgress.setParameters(table);
-        MediatorModel.model().sendToViews(requestEndProgress);
+        this.injectionModel.sendToViews(requestEndProgress);
 
         if (!regexSearch.find()) {
             throw new InjectionFailureException();
@@ -404,7 +410,7 @@ public class DataAccess {
         Request requestAddColumns = new Request();
         requestAddColumns.setMessage(Interaction.ADD_COLUMNS);
         requestAddColumns.setParameters(columns);
-        MediatorModel.model().sendToViews(requestAddColumns);
+        this.injectionModel.sendToViews(requestAddColumns);
         
         return columns;
     }
@@ -419,7 +425,7 @@ public class DataAccess {
      * @return a 2x2 table containing values by columns
      * @throws JSqlException when injection failure or stopped by user
      */
-    public static String[][] listValues(List<Column> columns) throws JSqlException {
+    public String[][] listValues(List<Column> columns) throws JSqlException {
         Database database = (Database) columns.get(0).getParent().getParent();
         Table table = (Table) columns.get(0).getParent();
         int rowCount = columns.get(0).getParent().getChildCount();
@@ -428,7 +434,7 @@ public class DataAccess {
         Request request = new Request();
         request.setMessage(Interaction.START_PROGRESS);
         request.setParameters(table);
-        MediatorModel.model().sendToViews(request);
+        this.injectionModel.sendToViews(request);
 
         // Build an array of column names
         List<String> columnsName = new ArrayList<>();
@@ -446,8 +452,8 @@ public class DataAccess {
         String resultToParse = "";
         try {
             String[] pageSource = {""};
-            resultToParse = new SuspendableGetRows().run(
-                MediatorModel.model().getVendor().instance().sqlRows(arrayColumns, database, table),
+            resultToParse = new SuspendableGetRows(injectionModel).run(
+                this.injectionModel.getVendor().instance().sqlRows(arrayColumns, database, table),
                 pageSource,
                 true,
                 rowCount,
@@ -538,12 +544,12 @@ public class DataAccess {
         Request requestCreateValuesTab = new Request();
         requestCreateValuesTab.setMessage(Interaction.CREATE_VALUES_TAB);
         requestCreateValuesTab.setParameters(objectData);
-        MediatorModel.model().sendToViews(requestCreateValuesTab);
+        this.injectionModel.sendToViews(requestCreateValuesTab);
 
         Request requestEndProgress = new Request();
         requestEndProgress.setMessage(Interaction.END_PROGRESS);
         requestEndProgress.setParameters(table);
-        MediatorModel.model().sendToViews(requestEndProgress);
+        this.injectionModel.sendToViews(requestEndProgress);
         
         return tableDatas;
     }

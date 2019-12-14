@@ -13,6 +13,7 @@ package com.jsql.view.swing.shell;
 import java.net.MalformedURLException;
 import java.util.UUID;
 
+import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.RessourceAccess;
 
 /**
@@ -33,7 +34,7 @@ public class ShellWeb extends AbstractShell {
 
     @Override
     void action(String command, UUID terminalID, String urlShell, String... arg) {
-        RessourceAccess.runWebShell(command, terminalID, urlShell);
+        MediatorModel.model().resourceAccess.runWebShell(command, terminalID, urlShell);
     }
     
 }

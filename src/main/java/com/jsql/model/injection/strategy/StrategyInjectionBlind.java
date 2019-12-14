@@ -13,6 +13,7 @@ package com.jsql.model.injection.strategy;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
@@ -35,15 +36,19 @@ public class StrategyInjectionBlind extends AbstractStrategy {
      */
     private InjectionBlind blind;
     
+    public StrategyInjectionBlind(InjectionModel injectionModel) {
+        super(injectionModel);
+    }
+
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
         
-        if (MediatorModel.model().getVendor().instance().sqlTestBlindFirst() == null) {
-            LOGGER.info("No Blind strategy known for "+ MediatorModel.model().getVendor());
+        if (this.injectionModel.getVendor().instance().sqlTestBlindFirst() == null) {
+            LOGGER.info("No Blind strategy known for "+ this.injectionModel.getVendor());
         } else {
             LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Blind...");
             
-            this.blind = new InjectionBlind();
+            this.blind = new InjectionBlind(injectionModel);
             
             this.isApplicable = this.blind.isInjectable();
             
@@ -54,7 +59,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
                 Request requestMessageBinary = new Request();
                 requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
                 requestMessageBinary.setParameters(this.blind.getInfoMessage());
-                MediatorModel.model().sendToViews(requestMessageBinary);
+                this.injectionModel.sendToViews(requestMessageBinary);
             } else {
                 this.unallow();
             }
@@ -75,7 +80,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
         return this.blind.inject(
-            MediatorModel.model().getVendor().instance().sqlBlind(sqlQuery, startPosition),
+            this.injectionModel.getVendor().instance().sqlBlind(sqlQuery, startPosition),
             stoppable
         );
     }
@@ -83,11 +88,11 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     @Override
     public void activateStrategy() {
         LOGGER.info(I18n.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
-        MediatorModel.model().setStrategy(StrategyInjection.BLIND);
+        this.injectionModel.setStrategy(this.injectionModel.BLIND);
         
         Request requestMarkBlindStrategy = new Request();
         requestMarkBlindStrategy.setMessage(Interaction.MARK_BLIND_STRATEGY);
-        MediatorModel.model().sendToViews(requestMarkBlindStrategy);
+        this.injectionModel.sendToViews(requestMarkBlindStrategy);
     }
     
     @Override

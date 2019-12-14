@@ -33,8 +33,8 @@ import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
+import com.jsql.model.InjectionModel.Vendor;
 import com.jsql.model.MediatorModel;
-import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.model.injection.vendor.model.Model;
 import com.jsql.model.injection.vendor.model.Model.Strategy.Error.Method;
 import com.jsql.view.i18n.I18nView;
@@ -344,8 +344,8 @@ public class SqlEngine extends JPanel {
     
     public SqlEngine() {
         
-        List<Vendor> listVendors = new LinkedList<>(Arrays.asList(Vendor.values()));
-        listVendors.removeIf(i -> i == Vendor.AUTO);
+        List<Vendor> listVendors = new LinkedList<>(MediatorModel.model().vendors);
+        listVendors.removeIf(i -> i == MediatorModel.model().AUTO);
         
         JComboBox<Vendor> comboBoxVendors = new JComboBox<>(listVendors.toArray(new Vendor[0]));
         comboBoxVendors.addItemListener(itemEvent -> {

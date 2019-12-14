@@ -1,4 +1,4 @@
-package com.jsql.util;
+package com.jsql.util.tampering;
 
 public enum Tampering {
     

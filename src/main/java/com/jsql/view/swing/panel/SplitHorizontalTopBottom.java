@@ -25,6 +25,7 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.MediatorModel;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.util.ActionHideShowConsole;
@@ -43,13 +44,13 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
      * Name of preference for splitter vertical.
      * Reset divider position for current application version.
      */
-    private static final String NAME_V_SPLITPANE = "verticalSplitter-" + InjectionModel.getVersionJsql();
+    private static final String NAME_V_SPLITPANE = "verticalSplitter-";
     
     /**
      * Name of preference for splitter horizontal.
      * Reset divider position for current application version.
      */
-    private static final String NAME_H_SPLITPANE = "horizontalSplitter-" + InjectionModel.getVersionJsql();
+    private static final String NAME_H_SPLITPANE = "horizontalSplitter-";
 
     /**
      * SplitPane containing Manager panels on the left and result tabs on the right.

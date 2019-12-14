@@ -18,23 +18,23 @@ import com.test.AbstractTestSuite;
 import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 
 @Ignore
-public class PostTest extends ConcreteMySQLTestSuite {
+public abstract class PostTest extends ConcreteMySQLTestSuite {
 
     @BeforeClass
-    public static void initialize() throws InjectionFailureException {
-        InjectionModel model = new InjectionModel();
-        MediatorModel.register(model);
-        model.displayVersion();
-
-        MediatorModel.model().addObserver(new SystemOutTerminal());
-
-        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_post.php");
-        ParameterUtil.setRequest(Arrays.asList(new SimpleEntry<String, String>("lib", "0")));
-        ConnectionUtil.setMethodInjection(MethodInjection.REQUEST);
-
-        MediatorModel.model().beginInjection();
-
-        MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
+    public void initialize3() throws InjectionFailureException {
+//        InjectionModel model = new InjectionModel();
+//        MediatorModel.register(model);
+//        model.displayVersion();
+//
+//        MediatorModel.model().addObserver(new SystemOutTerminal());
+//
+//        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_post.php");
+//        ParameterUtil.setRequest(Arrays.asList(new SimpleEntry<String, String>("lib", "0")));
+//        ConnectionUtil.setMethodInjection(MethodInjection.REQUEST);
+//
+//        MediatorModel.model().beginInjection();
+//
+//        MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
     }
     
 }

@@ -2,6 +2,7 @@ package com.jsql.model.suspendable.callable;
 
 import java.util.concurrent.Callable;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 
 /**
@@ -30,8 +31,11 @@ public class CallablePageSource implements Callable<CallablePageSource> {
     /**
      * Create a callable to get initial query or insertion character.
      * @param url
+     * @param injectionModel 
      */
-    public CallablePageSource(String url) {
+    InjectionModel injectionModel;
+    public CallablePageSource(String url, InjectionModel injectionModel) {
+        this.injectionModel = injectionModel;
         this.url = url;
     }
 
@@ -39,15 +43,16 @@ public class CallablePageSource implements Callable<CallablePageSource> {
      * Create callable for current insertion character test.
      * @param url
      * @param insertionCharacter
+     * @param injectionModel2 
      */
-    public CallablePageSource(String url, String insertionCharacter) {
-        this(url);
+    public CallablePageSource(String url, String insertionCharacter, InjectionModel injectionModel) {
+        this(url, injectionModel);
         this.insertionCharacter = insertionCharacter;
     }
     
     @Override
     public CallablePageSource call() throws Exception {
-        this.content = MediatorModel.model().injectWithoutIndex(this.url);
+        this.content = this.injectionModel.injectWithoutIndex(this.url);
         return this;
     }
 

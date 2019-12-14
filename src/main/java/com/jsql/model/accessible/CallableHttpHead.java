@@ -10,6 +10,7 @@ import java.util.concurrent.Callable;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
@@ -41,9 +42,11 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
      * Create a callable to find admin page.
      * @param urlAdminPage URL of admin page
      */
-    public CallableHttpHead(String urlAdminPage) {
+    public CallableHttpHead(String urlAdminPage, InjectionModel injectionModel) {
         this.urlAdminPage = urlAdminPage;
+        this.injectionModel= injectionModel;
     }
+    InjectionModel injectionModel;
 
     /**
      * Call URL to a administration page in HEAD mode and send the result back to view.
@@ -86,7 +89,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
         Request request = new Request();
         request.setMessage(Interaction.MESSAGE_HEADER);
         request.setParameters(msgHeader);
-        MediatorModel.model().sendToViews(request);
+        injectionModel.sendToViews(request);
         
         return this;
     }

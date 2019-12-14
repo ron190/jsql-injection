@@ -1,7 +1,10 @@
 package com.jsql.view.swing.list;
 
-import com.jsql.model.injection.method.MethodInjection;
-import com.jsql.model.injection.vendor.Vendor;
+import java.util.NoSuchElementException;
+
+import com.jsql.model.InjectionModel.MethodInjection;
+import com.jsql.model.InjectionModel.Vendor;
+import com.jsql.model.MediatorModel;
 
 public class BeanInjection {
     
@@ -16,8 +19,8 @@ public class BeanInjection {
         String url
     ) {
         this.url = url;
-        this.injectionType = MethodInjection.QUERY;
-        this.vendor = Vendor.AUTO;
+        this.injectionType = MediatorModel.model().QUERY;
+        this.vendor = MediatorModel.model().AUTO;
         this.requestType = "POST";
     }
     
@@ -35,15 +38,15 @@ public class BeanInjection {
         this.header = header;
         
         try {
-            this.injectionType = MethodInjection.valueOf(injectionType);
-        } catch (IllegalArgumentException e) {
-            this.injectionType = MethodInjection.QUERY;
+            this.injectionType = MediatorModel.model().methods.stream().filter(m -> m.name().equalsIgnoreCase(injectionType)).findAny().get();
+        } catch (IllegalArgumentException | NoSuchElementException e) {
+            this.injectionType = MediatorModel.model().QUERY;
         }
         
         try {
-            this.vendor = Vendor.valueOf(vendor);
-        } catch (IllegalArgumentException e) {
-            this.vendor = Vendor.AUTO;
+            this.vendor = MediatorModel.model().vendors.stream().filter(m -> m.toString().equals(vendor)).findAny().get();
+        } catch (IllegalArgumentException | NoSuchElementException e) {
+            this.vendor = MediatorModel.model().AUTO;
         }
         
         this.requestType = requestType.isEmpty() ? "POST" : requestType;
@@ -74,7 +77,7 @@ public class BeanInjection {
     }
 
     public String getVendor() {
-        return this.vendor.name();
+        return this.vendor.toString();
     }
 
     public Vendor getVendorAsEnum() {

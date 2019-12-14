@@ -4,6 +4,7 @@ import java.util.concurrent.Callable;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
@@ -34,15 +35,18 @@ public class CallableFile implements Callable<CallableFile> {
     /**
      * Suspendable task that reads lines of the file by injection.
      */
-    private SuspendableGetRows suspendableReadFile = new SuspendableGetRows();
+    private SuspendableGetRows suspendableReadFile;
 
 	/**
      * Create Callable to read a file.
      * @param pathFile
      */
-    public CallableFile(String pathFile) {
+    public CallableFile(String pathFile, InjectionModel injectionModel) {
         this.pathFile = pathFile;
+        this.injectionModel= injectionModel;
+        this.suspendableReadFile = new SuspendableGetRows(injectionModel);
     }
+    InjectionModel injectionModel;
     
     /**
      * Read a file on the server using SQL injection.
@@ -55,7 +59,7 @@ public class CallableFile implements Callable<CallableFile> {
         String resultToParse = "";
         try {
             resultToParse = this.suspendableReadFile.run(
-                MediatorModel.model().getVendor().instance().sqlFileRead(this.pathFile),
+                injectionModel.getVendor().instance().sqlFileRead(this.pathFile),
                 sourcePage,
                 false,
                 1,
