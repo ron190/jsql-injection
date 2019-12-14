@@ -70,7 +70,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         int indexCharacter = 0;
 
         // Parallelize the URL requests
-        ExecutorService taskExecutor = Executors.newFixedThreadPool(150, new ThreadFactoryCallable("CallableAbstractBlind"));
+        ExecutorService taskExecutor = Executors.newFixedThreadPool(50, new ThreadFactoryCallable("CallableAbstractBlind"));
         CompletionService<T> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         // Send the first binary question: is the SQL result empty?

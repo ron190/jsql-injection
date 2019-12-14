@@ -18,6 +18,15 @@ before_install:
   - sudo apt-get install jq
   # Coverity
   - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+  
+  # prevent OutOfMemoryError: unable to create new native thread
+  - ulimit -t 166384
+  # get the actually set values
+  - ulimit -a
+  - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
+  - echo $HOME
+  - echo JAVA_OPTS $JAVA_OPTS
+  - echo MAVEN_OPTS $MAVEN_OPTS
     
   - docker images && docker ps && pwd
   
@@ -105,7 +114,7 @@ script:
        ';
        "
 
-  - mvn clean verify sonar:sonar
+  - MAVEN_OPTS='-Xmx3000m' mvn clean verify sonar:sonar
 
 cache:
   directories:
