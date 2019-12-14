@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
@@ -61,7 +62,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
          *  Parallelize the call to the FALSE statements,
          *  it will use inject() from the model
          */
-        ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagFalse"));
+        ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagFalse" + RandomStringUtils.randomAlphabetic(10)));
         Collection<CallableTime> listCallableTagFalse = new ArrayList<>();
         for (String urlTest: this.falseTest) {
             listCallableTagFalse.add(new CallableTime(urlTest, injectionModel, this));
@@ -100,7 +101,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
          *  Parallelize the call to the TRUE statements,
          *  it will use inject() from the model
          */
-        ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagTrue"));
+        ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagTrue" + RandomStringUtils.randomAlphabetic(10)));
         Collection<CallableTime> listCallableTagTrue = new ArrayList<>();
         for (String urlTest: this.trueTest) {
             listCallableTagTrue.add(new CallableTime(urlTest, injectionModel, this));

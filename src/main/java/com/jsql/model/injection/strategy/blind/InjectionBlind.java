@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
@@ -64,7 +65,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
          *  Parallelize the call to the FALSE statements,
          *  it will use inject() from the model
          */
-        ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagFalse"));
+        ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagFalse" + RandomStringUtils.randomAlphabetic(10)));
         Collection<CallableBlind> listCallableTagFalse = new ArrayList<>();
         for (String urlTest: this.falseTest) {
             listCallableTagFalse.add(new CallableBlind(urlTest, injectionModel, this));
@@ -103,7 +104,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
          *  Parallelize the call to the TRUE statements,
          *  it will use inject() from the model.
          */
-        ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagTrue"));
+        ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagTrue" + RandomStringUtils.randomAlphabetic(10)));
         Collection<CallableBlind> listCallableTagTrue = new ArrayList<>();
         for (String urlTest: this.trueTest) {
             listCallableTagTrue.add(new CallableBlind(urlTest, injectionModel, this));

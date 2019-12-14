@@ -48,7 +48,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         boolean isUsingLimit = (Boolean) args[2];
         int numberToFind = (Integer) args[3];
         AbstractElementDatabase searchName = (AbstractElementDatabase) args[4];
-        ThreadUtil.put(searchName, this);
+        injectionModel.threadUtil.put(searchName, this);
 
         String sqlQuery = initialSQLQuery.replaceAll("\\{limit\\}", this.injectionModel.getVendor().instance().sqlLimit(0));
 
@@ -395,7 +395,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
             charPositionInCurrentRow = slidingWindowCurrentRow.length() + 1;
         }
         
-        ThreadUtil.remove(searchName);
+        injectionModel.threadUtil.remove(searchName);
 
         return slidingWindowAllRows.toString();
     }

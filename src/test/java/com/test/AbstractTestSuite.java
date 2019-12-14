@@ -37,7 +37,7 @@ import junit.framework.Assert;
 import spring.Application; 
 
 @TestInstance(Lifecycle.PER_CLASS)
-@Execution(ExecutionMode.SAME_THREAD)
+@Execution(ExecutionMode.CONCURRENT)
 public abstract class AbstractTestSuite {
 	
 	static {

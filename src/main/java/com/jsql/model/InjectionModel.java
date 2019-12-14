@@ -257,6 +257,7 @@ public class InjectionModel extends AbstractModelObservable {
     public JsonUtil jsonUtil = new JsonUtil(this);
     public PreferencesUtil preferencesUtil = new PreferencesUtil(this);
     public ProxyUtil proxyUtil = new ProxyUtil(this);
+    public ThreadUtil threadUtil = new ThreadUtil(this);
     
     public AbstractStrategy UNDEFINED = new AbstractStrategy(this) {
 
@@ -396,7 +397,7 @@ public class InjectionModel extends AbstractModelObservable {
         
         RessourceAccess.setReadingIsAllowed(false);
         
-        ThreadUtil.reset();
+        this.threadUtil.reset();
     }
 
     /**

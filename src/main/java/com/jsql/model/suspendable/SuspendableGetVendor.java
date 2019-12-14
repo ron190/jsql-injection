@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
@@ -56,7 +57,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             // and check if a correct error message is sent back by the server:
             //         Unknown column '1337' in 'order clause'
             // or   supplied argument is not a valid MySQL result resource
-            ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetVendor"));
+            ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetVendor" + RandomStringUtils.randomAlphabetic(10)));
             CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
             for (String insertionCharacter : new String[] {"'\"#-)'\""}) {
                 taskCompletionService.submit(

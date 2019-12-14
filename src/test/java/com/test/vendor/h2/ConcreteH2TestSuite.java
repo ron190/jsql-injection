@@ -1,7 +1,11 @@
 package com.test.vendor.h2;
 
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+
 import com.test.AbstractTestSuite;
 
+@Execution(ExecutionMode.CONCURRENT)
 public abstract class ConcreteH2TestSuite extends AbstractTestSuite {
 
     public ConcreteH2TestSuite () {

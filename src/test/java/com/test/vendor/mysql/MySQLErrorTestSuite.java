@@ -19,7 +19,7 @@ import com.jsql.util.PreferencesUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 
 @TestInstance(Lifecycle.PER_CLASS)
-@Execution(ExecutionMode.SAME_THREAD)
+@Execution(ExecutionMode.CONCURRENT)
 public class MySQLErrorTestSuite extends ConcreteMySQLErrorTestSuite {
 
     @Override

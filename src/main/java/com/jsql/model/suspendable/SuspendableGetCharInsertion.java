@@ -10,10 +10,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.callable.CallablePageSource;
@@ -54,7 +54,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
         // and check if a correct error message is sent back by the server:
         //         Unknown column '1337' in 'order clause'
         // or   supplied argument is not a valid MySQL result resource
-        ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetInsertionCharacter"));
+        ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetInsertionCharacter" + RandomStringUtils.randomAlphabetic(10)));
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         List<String> charactersInsertion = new ArrayList<>();

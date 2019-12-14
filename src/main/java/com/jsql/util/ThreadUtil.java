@@ -16,6 +16,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.suspendable.AbstractSuspendable;
 
@@ -36,11 +37,12 @@ public final class ThreadUtil {
      * List of running jobs associated to a database injection task.
      * We can interract with those tasks in order to pause/resume and stop the process.
      */
-    private static final Map<AbstractElementDatabase, AbstractSuspendable<?>> suspendables = new HashMap<>();
+    private final Map<AbstractElementDatabase, AbstractSuspendable<?>> suspendables = new HashMap<>();
     
+    InjectionModel injectionModel;
     // Utility class
-    private ThreadUtil() {
-        // not called
+    public ThreadUtil(InjectionModel injectionModel) {
+        this.injectionModel = injectionModel;
     }
 
     /**
@@ -49,8 +51,8 @@ public final class ThreadUtil {
      * @param elementDatabase component associated to the active job
      * @param suspendable active job to act on
      */
-    public static void put(AbstractElementDatabase elementDatabase, AbstractSuspendable<?> suspendable) {
-    	ThreadUtil.suspendables.put(elementDatabase, suspendable);
+    public void put(AbstractElementDatabase elementDatabase, AbstractSuspendable<?> suspendable) {
+        injectionModel.threadUtil.suspendables.put(elementDatabase, suspendable);
     }
     
     /**
@@ -60,8 +62,8 @@ public final class ThreadUtil {
      * @param elementDatabase component associated to the active job
      * @return job currently running
      */
-    public static AbstractSuspendable<?> get(AbstractElementDatabase elementDatabase) {
-        return ThreadUtil.suspendables.get(elementDatabase);
+    public AbstractSuspendable<?> get(AbstractElementDatabase elementDatabase) {
+        return injectionModel.threadUtil.suspendables.get(elementDatabase);
     }
     
     /**
@@ -69,21 +71,21 @@ public final class ThreadUtil {
      * garbage collected. The thread should be stopped prior the deletion.
      * @param elementDatabase component associated to thread
      */
-    public static void remove(AbstractElementDatabase elementDatabase) {
-    	ThreadUtil.suspendables.remove(elementDatabase);
+    public void remove(AbstractElementDatabase elementDatabase) {
+        injectionModel.threadUtil.suspendables.remove(elementDatabase);
     }
     
     /**
      * Force to stop every threads still running and empty the list where
      * they were instanciated in order to be garbage collected.
      */
-    public static void reset() {
+    public void reset() {
         // Fix #8258: ConcurrentModificationException on java.util.HashMap$ValueIterator.next()
         try {
-            for (AbstractSuspendable<?> suspendable : ThreadUtil.suspendables.values()) {
+            for (AbstractSuspendable<?> suspendable : injectionModel.threadUtil.suspendables.values()) {
                 suspendable.stop();
             }
-            ThreadUtil.suspendables.clear();
+            injectionModel.threadUtil.suspendables.clear();
         } catch (ConcurrentModificationException e) {
             LOGGER.error(e, e);
         }

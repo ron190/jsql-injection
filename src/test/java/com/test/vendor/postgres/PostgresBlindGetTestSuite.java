@@ -8,6 +8,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
@@ -20,6 +22,7 @@ import com.jsql.util.ParameterUtil;
 import com.jsql.view.terminal.SystemOutTerminal;
 
 @TestInstance(Lifecycle.PER_CLASS)
+@Execution(ExecutionMode.CONCURRENT)
 public class PostgresBlindGetTestSuite extends ConcretePostgresTestSuite {
 
     public void initialize3() throws Exception {
