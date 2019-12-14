@@ -76,6 +76,17 @@ script:
   
   - ls -l /home/travis/build/ron190/jsql-injection/src/test/resources/docker/conf.d/
   
+  # Change max_connections for MySQL
+  - docker exec --privileged -u root -it jsql-mysql /bin/bash 
+    -c "
+       mysql 
+       -uroot 
+       -pmy-secret-pw 
+       -e '
+       SET GLOBAL max_connections = 250;
+       ';
+       "
+  
   # Show max_connections for MySQL
   - docker exec --privileged -u root -it jsql-mysql /bin/bash 
     -c "
