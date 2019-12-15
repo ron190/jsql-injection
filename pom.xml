@@ -108,32 +108,12 @@
                         <include>PostgresErrorTestSuite</include>
                         
                         <include>H2NormalGetTestSuite</include>
-
-<!--                         <include>MySQLBlindTestSuite</include> -->
-<!--                         <include>PostgresBlindGetTestSuite</include> -->
-<!--                         <include>MySQLTimeTestSuite</include> -->
-<!--                         <include>PostgresTimeGetTestSuite</include> -->
                     </includes>        
 
-                    <!-- Multithreading waiting for static management in mediator --> 
                     <parallel>classes</parallel>
                     <threadCount>3</threadCount>
-<!--                     <threadCountSuites>1</threadCountSuites> -->
                     <threadCountClasses>2</threadCountClasses>
                     <threadCountMethods>1</threadCountMethods>
-<!--                      <reuseForks>false</reuseForks>      --> 
-<!--                     <useUnlimitedThreads>true</useUnlimitedThreads>    -->
-<!--                     <forkCount>1</forkCount>    -->
-                      
-<!--                     <argLine>-Xmx512m -Xmx4096m -XX:MaxPermSize=1024m</argLine> -->
-                    <dependencies>
-<!--                       <dependency> -->
-<!--                         Required by junit 4 -->
-<!--                         <groupId>org.apache.maven.surefire</groupId> -->
-<!--                         <artifactId>surefire-junit47</artifactId> -->
-<!--                         <version>2.22.2</version> -->
-<!--                       </dependency> -->
-                    </dependencies>
     			</configuration>
     		</plugin>
     
@@ -218,13 +198,13 @@
 
         <!-- ORM purpose -->
         <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -239,11 +219,6 @@
             <artifactId>junit-platform-launcher</artifactId>
             <scope>test</scope>
         </dependency>
-<!--         <dependency> -->
-<!--             <groupId>org.junit.vintage</groupId> -->
-<!--             <artifactId>junit-vintage-engine</artifactId> -->
-<!--             <scope>test</scope> -->
-<!--         </dependency> -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -346,20 +321,6 @@
     		<groupId>com.fasterxml.jackson.dataformat</groupId>
     		<artifactId>jackson-dataformat-xml</artifactId>
    		</dependency>
-     
-<!--      <dependency> -->
-<!--     <groupId>org.junit.platform</groupId> -->
-<!--     <artifactId>junit-platform-commons</artifactId> -->
-<!--     <version>1.5.2</version>$NO-MVN-MAN-VER$ -->
-<!--     <scope>test</scope> -->
-<!-- </dependency> --><!-- https://mvnrepository.com/artifact/junit/junit -->
-<!-- <dependency> -->
-<!--     <groupId>junit</groupId> -->
-<!--     <artifactId>junit</artifactId> -->
-<!--     <version>4.13-rc-2</version> -->
-<!--     <scope>test</scope> -->
-<!-- </dependency> -->
-
      
 	</dependencies>
 </project>

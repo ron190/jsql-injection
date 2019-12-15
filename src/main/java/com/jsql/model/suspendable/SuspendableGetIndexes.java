@@ -38,7 +38,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
     @Override
     public String run(Object... args) throws JSqlException {
         // Parallelize the search
-        ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetIndexes" + RandomStringUtils.randomAlphabetic(10)));
+        ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetIndexes"));
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         boolean isRequestFound = false;

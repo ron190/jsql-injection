@@ -31,7 +31,6 @@ public class Application {
 
         Arrays.asList(
             new SimpleEntry<>(propsH2, "spring/hibernate.h2.properties"),
-//            new SimpleEntry<Properties, String>(propsH2Api, "spring/hibernate.h2-api.properties"),
             new SimpleEntry<>(propsMySQL, "spring/hibernate.mysql.properties"),
             new SimpleEntry<>(propsMySQLError, "spring/hibernate.mysql-5.5.40.properties"),
             new SimpleEntry<>(propsPostgres, "spring/hibernate.postgres.properties")

@@ -59,7 +59,7 @@ before_install:
     -e POSTGRES_PASSWORD=mysecretpassword 
     -d postgres 
     -c 'shared_buffers=256MB'
-    -c 'max_connections=200'
+    -c 'max_connections=1000'
     
   - docker images && docker ps && pwd
 
@@ -100,7 +100,8 @@ script:
        "
 
   # Buff and run mvn tests
-  - MAVEN_OPTS='-Xmx3000m' mvn clean verify sonar:sonar
+  - echo JAVA_OPTS $JAVA_OPTS && echo MAVEN_OPTS $MAVEN_OPTS
+  - mvn clean verify sonar:sonar
   
   # Check MySQL status
   - docker exec --privileged -u root -it jsql-mysql /bin/bash 

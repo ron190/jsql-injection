@@ -56,7 +56,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             // and check if a correct error message is sent back by the server:
             //         Unknown column '1337' in 'order clause'
             // or   supplied argument is not a valid MySQL result resource
-            ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetVendor" + RandomStringUtils.randomAlphabetic(10)));
+            ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetVendor"));
             CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
             for (String insertionCharacter : new String[] {"'\"#-)'\""}) {
                 taskCompletionService.submit(
