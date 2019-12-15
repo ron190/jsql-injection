@@ -23,6 +23,8 @@ before_install:
   - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
   - echo JAVA_OPTS $JAVA_OPTS && echo MAVEN_OPTS $MAVEN_OPTS
   - docker images && docker ps && pwd
+  - java -XshowSettings:all -version
+  - java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
     
   # Docker configuration
   - docker build 
