@@ -79,7 +79,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                     + " "
                     + this.injectionModel.getVendor().instance().sqlOrderBy(),
                     insertionCharacter,
-                    injectionModel
+                    this.injectionModel
                 )
             );
         }

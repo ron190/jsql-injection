@@ -52,7 +52,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
             taskCompletionService.submit(
                 new CallablePageSource(
                     this.injectionModel.getVendor().instance().sqlIndices(nbIndex),
-                    injectionModel
+                    this.injectionModel
                 )
             );
         }
@@ -77,7 +77,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
                     taskCompletionService.submit(
                         new CallablePageSource(
                             this.injectionModel.getVendor().instance().sqlIndices(nbIndex),
-                            injectionModel
+                            this.injectionModel
                         )
                     );
                     nbIndex++;

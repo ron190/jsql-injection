@@ -34,7 +34,7 @@ public class Student {
  
     //getter and setter methods
     public int getStudentId() {
-        return studentId;
+        return this.studentId;
     }
  
     public void setStudentId(int studentId) {
@@ -42,7 +42,7 @@ public class Student {
     }
  
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
  
     public void setFirstName(String firstName) {
@@ -50,7 +50,7 @@ public class Student {
     }
  
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
  
     public void setLastName(String lastName) {
@@ -58,7 +58,7 @@ public class Student {
     }
  
     public String getClassName() {
-        return className;
+        return this.className;
     }
  
     public void setClassName(String className) {
@@ -66,7 +66,7 @@ public class Student {
     }
  
     public String getRollNo() {
-        return rollNo;
+        return this.rollNo;
     }
  
     public void setRollNo(String rollNo) {
@@ -74,7 +74,7 @@ public class Student {
     }
  
     public int getAge() {
-        return age;
+        return this.age;
     }
  
     public void setAge(int age) {

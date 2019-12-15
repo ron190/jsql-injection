@@ -13,11 +13,11 @@ public class Greeting {
     }
 
     public long getId() {
-        return id;
+        return this.id;
     }
 
     @JsonRawValue
     public String getContent() {
-        return content;
+        return this.content;
     }
 }

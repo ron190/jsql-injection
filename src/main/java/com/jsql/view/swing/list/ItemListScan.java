@@ -32,7 +32,7 @@ public class ItemListScan extends ItemList {
     ObjectMapper mapper = new ObjectMapper();
 
     public String getBeanInjectionToJSON() throws JsonProcessingException {
-        return mapper.writeValueAsString(this.beanInjection);
+        return this.mapper.writeValueAsString(this.beanInjection);
     }
 	
 }

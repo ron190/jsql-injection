@@ -52,10 +52,10 @@ public class ProxyUtil {
     public ProxyUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
         
-        HTTP_PROXY_DEFAULT_ADDRESS = injectionModel.propertiesUtil.getProperties().getProperty("http.proxy.default.ip");
-        HTTP_PROXY_DEFAULT_PORT = injectionModel.propertiesUtil.getProperties().getProperty("http.proxy.default.port");
-        HTTPS_PROXY_DEFAULT_ADDRESS = injectionModel.propertiesUtil.getProperties().getProperty("https.proxy.default.ip");
-        HTTPS_PROXY_DEFAULT_PORT = injectionModel.propertiesUtil.getProperties().getProperty("https.proxy.default.port");
+        this.HTTP_PROXY_DEFAULT_ADDRESS = injectionModel.propertiesUtil.getProperties().getProperty("http.proxy.default.ip");
+        this.HTTP_PROXY_DEFAULT_PORT = injectionModel.propertiesUtil.getProperties().getProperty("http.proxy.default.port");
+        this.HTTPS_PROXY_DEFAULT_ADDRESS = injectionModel.propertiesUtil.getProperties().getProperty("https.proxy.default.ip");
+        this.HTTPS_PROXY_DEFAULT_PORT = injectionModel.propertiesUtil.getProperties().getProperty("https.proxy.default.port");
     }
     InjectionModel injectionModel;
     
@@ -95,19 +95,19 @@ public class ProxyUtil {
 
         // Change the JVM configuration
         if (this.isUsingProxy()) {
-            System.setProperty(PROPERTIES_HTTP_PROXY_HOST, this.getProxyAddress());
-            System.setProperty(PROPERTIES_HTTP_PROXY_PORT, this.getProxyPort());
+            System.setProperty(this.PROPERTIES_HTTP_PROXY_HOST, this.getProxyAddress());
+            System.setProperty(this.PROPERTIES_HTTP_PROXY_PORT, this.getProxyPort());
         } else {
-            System.setProperty(PROPERTIES_HTTP_PROXY_HOST, "");
-            System.setProperty(PROPERTIES_HTTP_PROXY_PORT, "");
+            System.setProperty(this.PROPERTIES_HTTP_PROXY_HOST, "");
+            System.setProperty(this.PROPERTIES_HTTP_PROXY_PORT, "");
         }
         
         if (this.isUsingProxyHttps()) {
-            System.setProperty(PROPERTIES_HTTPS_PROXY_HOST, this.getProxyAddressHttps());
-            System.setProperty(PROPERTIES_HTTPS_PROXY_PORT, this.getProxyPortHttps());
+            System.setProperty(this.PROPERTIES_HTTPS_PROXY_HOST, this.getProxyAddressHttps());
+            System.setProperty(this.PROPERTIES_HTTPS_PROXY_PORT, this.getProxyPortHttps());
         } else {
-            System.setProperty(PROPERTIES_HTTPS_PROXY_HOST, "");
-            System.setProperty(PROPERTIES_HTTPS_PROXY_PORT, "");
+            System.setProperty(this.PROPERTIES_HTTPS_PROXY_HOST, "");
+            System.setProperty(this.PROPERTIES_HTTPS_PROXY_PORT, "");
         }
         
     }
@@ -126,21 +126,21 @@ public class ProxyUtil {
         this.setUsingProxyHttps(prefs.getBoolean("isUsingProxyHttps", false));
 
         // Default TOR config
-        this.setProxyAddress(prefs.get("proxyAddress", HTTP_PROXY_DEFAULT_ADDRESS));
-        this.setProxyPort(prefs.get("proxyPort", HTTP_PROXY_DEFAULT_PORT));
+        this.setProxyAddress(prefs.get("proxyAddress", this.HTTP_PROXY_DEFAULT_ADDRESS));
+        this.setProxyPort(prefs.get("proxyPort", this.HTTP_PROXY_DEFAULT_PORT));
         
-        this.setProxyAddressHttps(prefs.get("proxyAddressHttps", HTTPS_PROXY_DEFAULT_ADDRESS));
-        this.setProxyPortHttps(prefs.get("proxyPortHttps", HTTPS_PROXY_DEFAULT_PORT));
+        this.setProxyAddressHttps(prefs.get("proxyAddressHttps", this.HTTPS_PROXY_DEFAULT_ADDRESS));
+        this.setProxyPortHttps(prefs.get("proxyPortHttps", this.HTTPS_PROXY_DEFAULT_PORT));
         
         // Change the JVM configuration
         if (this.isUsingProxy()) {
-            System.setProperty(PROPERTIES_HTTP_PROXY_HOST, this.getProxyAddress());
-            System.setProperty(PROPERTIES_HTTP_PROXY_PORT, this.getProxyPort());
+            System.setProperty(this.PROPERTIES_HTTP_PROXY_HOST, this.getProxyAddress());
+            System.setProperty(this.PROPERTIES_HTTP_PROXY_PORT, this.getProxyPort());
         }
         
         if (this.isUsingProxyHttps()) {
-            System.setProperty(PROPERTIES_HTTPS_PROXY_HOST, this.getProxyAddressHttps());
-            System.setProperty(PROPERTIES_HTTPS_PROXY_PORT, this.getProxyPortHttps());
+            System.setProperty(this.PROPERTIES_HTTPS_PROXY_HOST, this.getProxyAddressHttps());
+            System.setProperty(this.PROPERTIES_HTTPS_PROXY_PORT, this.getProxyPortHttps());
         }
         
     }
@@ -164,14 +164,14 @@ public class ProxyUtil {
             	socket.close();
             	
             	if (showOnConsole == ShowOnConsole.YES) {
-            	    LOGGER.debug("Connection to HTTP proxy "+ this.getProxyAddress() +":"+ this.getProxyPort() +" successful");
+            	    this.LOGGER.debug("Connection to HTTP proxy "+ this.getProxyAddress() +":"+ this.getProxyPort() +" successful");
             	}
             } catch (Exception e) {
                 proxyIsChecked = false;
                 
                 if (showOnConsole == ShowOnConsole.YES) {
                     String message = Optional.ofNullable(e.getMessage()).orElse("");
-                    LOGGER.warn(
+                    this.LOGGER.warn(
                         "Connection to HTTP proxy "
                         + this.getProxyAddress() +":"
                         + this.getProxyPort()
@@ -192,14 +192,14 @@ public class ProxyUtil {
                 socket.close();
                 
                 if (showOnConsole == ShowOnConsole.YES) {
-                    LOGGER.debug("Connection to HTTPS proxy "+ this.getProxyAddressHttps() +":"+ this.getProxyPortHttps() +" successful");
+                    this.LOGGER.debug("Connection to HTTPS proxy "+ this.getProxyAddressHttps() +":"+ this.getProxyPortHttps() +" successful");
                 }
             } catch (Exception e) {
                 proxyIsChecked = false;
                 
                 if (showOnConsole == ShowOnConsole.YES) {
                     String message = Optional.ofNullable(e.getMessage()).orElse("");
-                    LOGGER.warn(
+                    this.LOGGER.warn(
                         "Connection to HTTPS proxy "+ this.getProxyAddressHttps() +":"+ this.getProxyPortHttps() +" failed: "+ message.replace(e.getClass().getName() +": ", "") +", verify your proxy settings for HTTPS protocol", e
                     );
                 }

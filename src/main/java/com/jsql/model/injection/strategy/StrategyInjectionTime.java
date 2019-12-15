@@ -47,7 +47,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
         } else {
             LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Time...");
             
-            this.timeInjection = new InjectionTime(injectionModel);
+            this.timeInjection = new InjectionTime(this.injectionModel);
             
             this.isApplicable = this.timeInjection.isInjectable();
             

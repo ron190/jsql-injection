@@ -136,7 +136,7 @@ public class HeaderUtil {
         } else if (Pattern.matches("3\\d\\d", Integer.toString(connection.getResponseCode()))) {
             LOGGER.warn("Found status HTTP "+ connection.getResponseCode() +" Redirection");
             
-            if (!injectionModel.preferencesUtil.isFollowingRedirection()) {
+            if (!this.injectionModel.preferencesUtil.isFollowingRedirection()) {
                 LOGGER.warn("If injection fails please test again with option 'Follow HTTP redirection' enabled.");
             } else {
                 LOGGER.info("Redirecting to the next page...");
@@ -186,7 +186,7 @@ public class HeaderUtil {
         
         // Connection test
         
-        if (injectionModel.preferencesUtil.isNotTestingConnection()) {
+        if (this.injectionModel.preferencesUtil.isNotTestingConnection()) {
             if (exception != null) {
                 LOGGER.debug("Connection test disabled, ignoring response HTTP "+ connection.getResponseCode() +"...");
             }
@@ -226,7 +226,7 @@ public class HeaderUtil {
         }
         
         if (!elementsForm.isEmpty()) {
-            if (!injectionModel.preferencesUtil.isParsingForm()) {
+            if (!this.injectionModel.preferencesUtil.isParsingForm()) {
                 if (connection.getResponseCode() != 200) {
                     LOGGER.trace("Found "+ elementsForm.size() +" ignored <form> in HTML body:"+ result);
                     LOGGER.info("WAF can detect missing form parameters, you may enable 'Add <input> parameters' in Preferences and retry");
@@ -239,9 +239,9 @@ public class HeaderUtil {
                 for(Entry<Element, List<Element>> form: mapForms.entrySet()) {
                     for (Element input: form.getValue()) {
                         if ("get".equalsIgnoreCase(form.getKey().attr("method"))) {
-                            injectionModel.parameterUtil.getQueryString().add(0, new SimpleEntry<String, String>(input.attr("name"), input.attr("value")));
+                            this.injectionModel.parameterUtil.getQueryString().add(0, new SimpleEntry<String, String>(input.attr("name"), input.attr("value")));
                         } else if ("post".equalsIgnoreCase(form.getKey().attr("method"))) {
-                            injectionModel.parameterUtil.getRequest().add(0, new SimpleEntry<String, String>(input.attr("name"), input.attr("value")));
+                            this.injectionModel.parameterUtil.getRequest().add(0, new SimpleEntry<String, String>(input.attr("name"), input.attr("value")));
                         }
                     }
                 }
@@ -261,9 +261,9 @@ public class HeaderUtil {
         if (optionalTokenCsrf.isPresent()) {
             SimpleEntry<String, String> tokenCsrfFound = optionalTokenCsrf.get();
             
-            if (injectionModel.preferencesUtil.isProcessingCsrf()) {
+            if (this.injectionModel.preferencesUtil.isProcessingCsrf()) {
                 LOGGER.debug("Found Csrf token "+ tokenCsrfFound.getKey() +"="+ tokenCsrfFound.getValue() +" in HTML body, adding token to querystring, request and header");
-                injectionModel.connectionUtil.setTokenCsrf(tokenCsrfFound);
+                this.injectionModel.connectionUtil.setTokenCsrf(tokenCsrfFound);
             } else {
                 LOGGER.warn("Found Csrf token '"+ tokenCsrfFound.getKey() +"="+ tokenCsrfFound.getValue() +"' in HTML body");
                 exception = new IOException("please activate Csrf processing in Preferences");
@@ -276,7 +276,7 @@ public class HeaderUtil {
         Request request = new Request();
         request.setMessage(Interaction.MESSAGE_HEADER);
         request.setParameters(msgHeader);
-        injectionModel.sendToViews(request);
+        this.injectionModel.sendToViews(request);
         
         if (exception != null) {
             throw new IOException(exception);

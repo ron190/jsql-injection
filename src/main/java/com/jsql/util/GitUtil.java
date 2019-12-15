@@ -63,7 +63,7 @@ public class GitUtil {
         
         try {
             Float versionGit = Float.parseFloat(this.getJSONObject().getString("version"));
-            if (versionGit > Float.parseFloat(injectionModel.getVersionJsql())) {
+            if (versionGit > Float.parseFloat(this.injectionModel.getVersionJsql())) {
                 LOGGER.warn(I18n.valueByKey("UPDATE_NEW_VERSION"));
             } else if(displayUpdateMessage == ShowOnConsole.YES) {
                 LOGGER.debug(I18n.valueByKey("UPDATE_UPTODATE"));
@@ -86,7 +86,7 @@ public class GitUtil {
         
         String clientDescription =
               "```\n"
-            + "jSQL: v"+ injectionModel.getVersionJsql() +"\n"
+            + "jSQL: v"+ this.injectionModel.getVersionJsql() +"\n"
             + "Java: v"+ javaVersion +"-"+ osArch +"-"+ System.getProperty("user.language") +" on "+ System.getProperty("java.runtime.name") +"\n"
             + "OS: "+ System.getProperty("os.name") +" (v"+ System.getProperty("os.version") +")\n"
             + "Desktop: "+( System.getProperty("sun.desktop") != null ? System.getProperty("sun.desktop") : "undefined" )+"\n"
@@ -112,7 +112,7 @@ public class GitUtil {
      */
     public void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
     	// Check proxy
-        if (!injectionModel.proxyUtil.isLive(showOnConsole)) {
+        if (!this.injectionModel.proxyUtil.isLive(showOnConsole)) {
             return;
         }
 
@@ -120,7 +120,7 @@ public class GitUtil {
         HttpURLConnection connection = null;
         try {
             URL githubUrl = new URL(
-                injectionModel.propertiesUtil.getProperties().getProperty("github.issues.url")
+                this.injectionModel.propertiesUtil.getProperties().getProperty("github.issues.url")
             );
 
             connection = (HttpURLConnection) githubUrl.openConnection();
@@ -137,13 +137,13 @@ public class GitUtil {
                 "token "
                 + StringUtils.newStringUtf8(
                     Base64.decodeBase64(
-                        injectionModel.propertiesUtil.getProperties().getProperty("github.token")
+                        this.injectionModel.propertiesUtil.getProperties().getProperty("github.token")
                     )
                 )
             );
             
-            connection.setReadTimeout(injectionModel.connectionUtil.getTimeout());
-            connection.setConnectTimeout(injectionModel.connectionUtil.getTimeout());
+            connection.setReadTimeout(this.injectionModel.connectionUtil.getTimeout());
+            connection.setConnectTimeout(this.injectionModel.connectionUtil.getTimeout());
             connection.setDoOutput(true);
 
             // Set the content of the Issue
@@ -170,7 +170,7 @@ public class GitUtil {
     private void readGithubResponse(HttpURLConnection connection, ShowOnConsole showOnConsole) throws IOException {
         try {
             // Read the response
-            String sourcePage = injectionModel.connectionUtil.getSourceLineFeed(connection);
+            String sourcePage = this.injectionModel.connectionUtil.getSourceLineFeed(connection);
 
             if (showOnConsole == ShowOnConsole.YES) {
                 JSONObject jsonObjectResponse = new JSONObject(sourcePage);
@@ -208,8 +208,8 @@ public class GitUtil {
      */
     public JSONObject getJSONObject() throws IOException {
         if (this.jsonObject == null) {
-            String json = injectionModel.connectionUtil.getSource(
-                injectionModel.propertiesUtil.getProperties().getProperty("github.webservice.url")
+            String json = this.injectionModel.connectionUtil.getSource(
+                this.injectionModel.propertiesUtil.getProperties().getProperty("github.webservice.url")
             );
             
             // Fix #45349: JSONException on new JSONObject(json)

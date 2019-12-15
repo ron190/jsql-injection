@@ -220,7 +220,7 @@ public class JavaScriptToken extends Token {
      * tokenizer may be restarted from there.
      */
   public int getState(){
-    return state;
+    return this.state;
   }
   /**
    * get the ID number of this token
@@ -228,7 +228,7 @@ public class JavaScriptToken extends Token {
    * @return the id number of the token
    */
   public int getID(){
-  	return ID;
+  	return this.ID;
   }
 
   /**
@@ -237,7 +237,7 @@ public class JavaScriptToken extends Token {
    * @return A string representing the text of the token
    */
   public String getContents(){
-  	return (new String(contents));
+  	return (new String(this.contents));
   }
 
   /**
@@ -246,7 +246,7 @@ public class JavaScriptToken extends Token {
    * @return the line number of the input on which this token started
    */
   public int getLineNumber(){
-  	return lineNumber;
+  	return this.lineNumber;
   }
 
   /**
@@ -255,7 +255,7 @@ public class JavaScriptToken extends Token {
    * @return the offset into the input in characters at which this token started
    */
   public int getCharBegin(){
-  	return charBegin;
+  	return this.charBegin;
   }
 
   /**
@@ -264,7 +264,7 @@ public class JavaScriptToken extends Token {
    * @return the offset into the input in characters at which this token ended
    */
   public int getCharEnd(){
- 	return charEnd;
+ 	return this.charEnd;
   }
 
   /**
@@ -275,7 +275,7 @@ public class JavaScriptToken extends Token {
    * @return true if this token is a reserved word, false otherwise
    */
   public boolean isReservedWord(){
-  	return((ID >> 8) == 0x1);
+  	return((this.ID >> 8) == 0x1);
   }
 
   /**
@@ -286,7 +286,7 @@ public class JavaScriptToken extends Token {
    * @return true if this token is an identifier, false otherwise
    */
   public boolean isIdentifier(){
-  	return((ID >> 8) == 0x2);
+  	return((this.ID >> 8) == 0x2);
   }
 
   /**
@@ -297,7 +297,7 @@ public class JavaScriptToken extends Token {
    * @return true if this token is a literal, false otherwise
    */
   public boolean isLiteral(){
-  	return((ID >> 8) == 0x3);
+  	return((this.ID >> 8) == 0x3);
   }
   
   /**
@@ -308,7 +308,7 @@ public class JavaScriptToken extends Token {
    * @return true if this token is a Separator, false otherwise
    */
   public boolean isSeparator(){
-  	return((ID >> 8) == 0x4);
+  	return((this.ID >> 8) == 0x4);
   }
 
   /**
@@ -319,7 +319,7 @@ public class JavaScriptToken extends Token {
    * @return true if this token is a Operator, false otherwise
    */
   public boolean isOperator(){
-  	return((ID >> 8) == 0x5);
+  	return((this.ID >> 8) == 0x5);
   }
 
   /**
@@ -328,7 +328,7 @@ public class JavaScriptToken extends Token {
    * @return true if this token is a comment, false otherwise
    */
   public boolean isComment(){
-  	return((ID >> 8) == 0xD);
+  	return((this.ID >> 8) == 0xD);
   }
 
   /**
@@ -338,7 +338,7 @@ public class JavaScriptToken extends Token {
    * @return true if this token is White Space, false otherwise
    */
   public boolean isWhiteSpace(){
-  	return((ID >> 8) == 0xE);
+  	return((this.ID >> 8) == 0xE);
   }
 
   /**
@@ -348,7 +348,7 @@ public class JavaScriptToken extends Token {
    * @return true if this token is an Error, false otherwise
    */
   public boolean isError(){
-  	return((ID >> 8) == 0xF);
+  	return((this.ID >> 8) == 0xF);
   }
 
 	/**
@@ -359,21 +359,21 @@ public class JavaScriptToken extends Token {
 	 * @return a description of this token.
 	 */
 	public String getDescription(){
-		if (isReservedWord()){
+		if (this.isReservedWord()){
 			return("reservedWord");
-		} else if (isIdentifier()){
+		} else if (this.isIdentifier()){
 			return("identifier");
-		} else if (isLiteral()){
+		} else if (this.isLiteral()){
 			return("literal");
-		} else if (isSeparator()){
+		} else if (this.isSeparator()){
 			return("separator");
-		} else if (isOperator()){
+		} else if (this.isOperator()){
 			return("operator");
-		} else if (isComment()){
+		} else if (this.isComment()){
 			return("comment");
-		} else if (isWhiteSpace()){
+		} else if (this.isWhiteSpace()){
 			return("whitespace");
-		} else if (isError()){
+		} else if (this.isError()){
 		 	return("error");
 		} else {
 			return("unknown");
@@ -387,30 +387,30 @@ public class JavaScriptToken extends Token {
    */
   public String errorString(){
   	String s;
-  	if (isError()){
-  		s = "Error on line " + lineNumber + ": ";
-  		switch (ID){
+  	if (this.isError()){
+  		s = "Error on line " + this.lineNumber + ": ";
+  		switch (this.ID){
   		case ERROR_IDENTIFIER:
-  			s += "Unrecognized Identifier: " + contents;
+  			s += "Unrecognized Identifier: " + this.contents;
   		break;
 		case ERROR_UNCLOSED_STRING:
-  			s += "'\"' expected after " + contents;
+  			s += "'\"' expected after " + this.contents;
   		break;
 		case ERROR_MALFORMED_STRING:
 		case ERROR_MALFORMED_UNCLOSED_STRING:
-  			s += "Illegal character in " + contents;
+  			s += "Illegal character in " + this.contents;
   		break;
 		case ERROR_UNCLOSED_CHARACTER:
-  			s += "\"'\" expected after " + contents;
+  			s += "\"'\" expected after " + this.contents;
   		break;
 		case ERROR_MALFORMED_CHARACTER:
 		case ERROR_MALFORMED_UNCLOSED_CHARACTER:
-  			s += "Illegal character in " + contents;
+  			s += "Illegal character in " + this.contents;
   		break;
 		case ERROR_INTEGER_DECIMIAL_SIZE:
 		case ERROR_INTEGER_OCTAL_SIZE:
 		case ERROR_FLOAT:
-  			s += "Illegal character in " + contents;
+  			s += "Illegal character in " + this.contents;
   		break;
 		case ERROR_INTEGER_HEXIDECIMAL_SIZE:
 		case ERROR_LONG_DECIMIAL_SIZE:
@@ -418,10 +418,10 @@ public class JavaScriptToken extends Token {
 		case ERROR_LONG_HEXIDECIMAL_SIZE:
 		case ERROR_FLOAT_SIZE:
 		case ERROR_DOUBLE_SIZE:
-  			s += "Literal out of bounds: " + contents;
+  			s += "Literal out of bounds: " + this.contents;
   		break;
 		case ERROR_UNCLOSED_COMMENT:
-  			s += "*/ expected after " + contents;
+  			s += "*/ expected after " + this.contents;
   		break;
 		}
   			
@@ -439,8 +439,8 @@ public class JavaScriptToken extends Token {
    * @return a string representation of this token
    */
   public String toString() {
-      return ("Token #" + Integer.toHexString(ID) + ": " + getDescription() + " Line " +
-      	lineNumber + " from " +charBegin + " to " + charEnd + " : " + contents);
+      return ("Token #" + Integer.toHexString(this.ID) + ": " + this.getDescription() + " Line " +
+      	this.lineNumber + " from " +this.charBegin + " to " + this.charEnd + " : " + this.contents);
   }
   
 }

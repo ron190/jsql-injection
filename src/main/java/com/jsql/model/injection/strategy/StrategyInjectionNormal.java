@@ -50,7 +50,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     @Override
     public void checkApplicability() throws JSqlException {
         LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Normal...");
-        this.injectionModel.setIndexesInUrl(new SuspendableGetIndexes(injectionModel).run());
+        this.injectionModel.setIndexesInUrl(new SuspendableGetIndexes(this.injectionModel).run());
 
         // Define visibleIndex, i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body
         StrategyInjectionNormal.visibleIndex = this.getVisibleIndex(this.injectionModel.getSrcSuccess());

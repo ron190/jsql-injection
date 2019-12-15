@@ -32,7 +32,7 @@ public class GreetingController {
     @RequestMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        Session session = sessionFactory.getCurrentSession();
+        Session session = this.sessionFactory.getCurrentSession();
         Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
         
         Greeting greeting = null;
@@ -40,9 +40,9 @@ public class GreetingController {
             List<Object[]> results = q.getResultList();
             
             greeting = new Greeting(
-                counter.incrementAndGet(),
+                this.counter.incrementAndGet(),
                 String.format(template, name)
-                + StringEscapeUtils.unescapeJava(objectMapper.writeValueAsString(results))
+                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
             );
         } catch (Exception e) {
             // Hide useless SQL error messages
@@ -56,7 +56,7 @@ public class GreetingController {
     @RequestMapping("/greeting-error")
     public Greeting greetingError(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        Session session = sessionFactory.getCurrentSession();
+        Session session = this.sessionFactory.getCurrentSession();
         Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
         
         Greeting greeting = null;
@@ -68,7 +68,7 @@ public class GreetingController {
             LOGGER.debug(stacktrace);
             
             greeting = new Greeting(
-                counter.incrementAndGet(),
+                this.counter.incrementAndGet(),
                 String.format(template+"#", name)
                 + StringEscapeUtils.unescapeJava(stacktrace)
             );
@@ -82,7 +82,7 @@ public class GreetingController {
     @RequestMapping("/greeting-blind")
     public Greeting greetingBlind(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        Session session = sessionFactory.getCurrentSession();
+        Session session = this.sessionFactory.getCurrentSession();
         Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
         
         Greeting greeting = null;
@@ -91,13 +91,13 @@ public class GreetingController {
             
             if (l.isEmpty()) {
                 greeting = new Greeting(
-                    counter.incrementAndGet(),
+                    this.counter.incrementAndGet(),
                     String.format(template+"#", name)
                     + StringEscapeUtils.unescapeJava("PREFIX It's true SUFFIX")
                 );
             } else {
                 greeting = new Greeting(
-                    counter.incrementAndGet(),
+                    this.counter.incrementAndGet(),
                     String.format(template+"#", name)
                     + StringEscapeUtils.unescapeJava("PREFIX It's false SUFFIX")
                 );
@@ -114,7 +114,7 @@ public class GreetingController {
     @RequestMapping("/greeting-time")
     public Greeting greetingTime(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        Session session = sessionFactory.getCurrentSession();
+        Session session = this.sessionFactory.getCurrentSession();
         Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
         
         Greeting greeting = null;

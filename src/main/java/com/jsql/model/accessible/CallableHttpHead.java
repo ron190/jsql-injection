@@ -88,7 +88,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
         Request request = new Request();
         request.setMessage(Interaction.MESSAGE_HEADER);
         request.setParameters(msgHeader);
-        injectionModel.sendToViews(request);
+        this.injectionModel.sendToViews(request);
         
         return this;
     }

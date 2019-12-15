@@ -715,9 +715,9 @@ public class JavaScriptLexer implements Lexer {
      * returned as tokens.
      */
     public Token getNextToken(boolean returnComments, boolean returnWhiteSpace)throws IOException{
-        Token t = getNextToken();
+        Token t = this.getNextToken();
         while (t != null && ((!returnWhiteSpace && t.isWhiteSpace()) || (!returnComments && t.isComment()))){
-            t = getNextToken();
+            t = this.getNextToken();
         }
         return (t);
     }
@@ -737,7 +737,7 @@ public class JavaScriptLexer implements Lexer {
      * @throws IOException if an IOExecption occurs while switching readers.
      */
     public void reset(java.io.Reader reader, int yyline, int yychar, int yycolumn) throws IOException{
-        yyreset(reader);
+        this.yyreset(reader);
         this.yyline = yyline;
 		this.yychar = yychar;
 		this.yycolumn = yycolumn;
@@ -783,47 +783,47 @@ public class JavaScriptLexer implements Lexer {
   private boolean zzRefill() throws java.io.IOException {
 
     /* first: make room (if you can) */
-    if (zzStartRead > 0) {
-      zzEndRead += zzFinalHighSurrogate;
-      zzFinalHighSurrogate = 0;
-      System.arraycopy(zzBuffer, zzStartRead,
-                       zzBuffer, 0,
-                       zzEndRead-zzStartRead);
+    if (this.zzStartRead > 0) {
+      this.zzEndRead += this.zzFinalHighSurrogate;
+      this.zzFinalHighSurrogate = 0;
+      System.arraycopy(this.zzBuffer, this.zzStartRead,
+                       this.zzBuffer, 0,
+                       this.zzEndRead-this.zzStartRead);
 
       /* translate stored positions */
-      zzEndRead-= zzStartRead;
-      zzCurrentPos-= zzStartRead;
-      zzMarkedPos-= zzStartRead;
-      zzStartRead = 0;
+      this.zzEndRead-= this.zzStartRead;
+      this.zzCurrentPos-= this.zzStartRead;
+      this.zzMarkedPos-= this.zzStartRead;
+      this.zzStartRead = 0;
     }
 
     /* is the buffer big enough? */
-    if (zzCurrentPos >= zzBuffer.length - zzFinalHighSurrogate) {
+    if (this.zzCurrentPos >= this.zzBuffer.length - this.zzFinalHighSurrogate) {
       /* if not: blow it up */
-      char newBuffer[] = new char[zzBuffer.length*2];
-      System.arraycopy(zzBuffer, 0, newBuffer, 0, zzBuffer.length);
-      zzBuffer = newBuffer;
-      zzEndRead += zzFinalHighSurrogate;
-      zzFinalHighSurrogate = 0;
+      char newBuffer[] = new char[this.zzBuffer.length*2];
+      System.arraycopy(this.zzBuffer, 0, newBuffer, 0, this.zzBuffer.length);
+      this.zzBuffer = newBuffer;
+      this.zzEndRead += this.zzFinalHighSurrogate;
+      this.zzFinalHighSurrogate = 0;
     }
 
     /* fill the buffer with new input */
-    int requested = zzBuffer.length - zzEndRead;
-    int numRead = zzReader.read(zzBuffer, zzEndRead, requested);
+    int requested = this.zzBuffer.length - this.zzEndRead;
+    int numRead = this.zzReader.read(this.zzBuffer, this.zzEndRead, requested);
 
     /* not supposed to occur according to specification of java.io.Reader */
     if (numRead == 0) {
       throw new java.io.IOException("Reader returned 0 characters. See JFlex examples for workaround.");
     }
     if (numRead > 0) {
-      zzEndRead += numRead;
+      this.zzEndRead += numRead;
       /* If numRead == requested, we might have requested to few chars to
          encode a full Unicode character. We assume that a Reader would
          otherwise never return half characters. */
       if (numRead == requested) {
-        if (Character.isHighSurrogate(zzBuffer[zzEndRead - 1])) {
-          --zzEndRead;
-          zzFinalHighSurrogate = 1;
+        if (Character.isHighSurrogate(this.zzBuffer[this.zzEndRead - 1])) {
+          --this.zzEndRead;
+          this.zzFinalHighSurrogate = 1;
         }
       }
       /* potentially more input available */
@@ -839,11 +839,11 @@ public class JavaScriptLexer implements Lexer {
    * Closes the input stream.
    */
   public final void yyclose() throws java.io.IOException {
-    zzAtEOF = true;            /* indicate end of file */
-    zzEndRead = zzStartRead;  /* invalidate buffer    */
+    this.zzAtEOF = true;            /* indicate end of file */
+    this.zzEndRead = this.zzStartRead;  /* invalidate buffer    */
 
-    if (zzReader != null)
-      zzReader.close();
+    if (this.zzReader != null)
+      this.zzReader.close();
   }
 
 
@@ -860,17 +860,17 @@ public class JavaScriptLexer implements Lexer {
    * @param reader   the new input stream
    */
   public final void yyreset(java.io.Reader reader) {
-    zzReader = reader;
-    zzAtBOL  = true;
-    zzAtEOF  = false;
-    zzEOFDone = false;
-    zzEndRead = zzStartRead = 0;
-    zzCurrentPos = zzMarkedPos = 0;
-    zzFinalHighSurrogate = 0;
-    yyline = yychar = yycolumn = 0;
-    zzLexicalState = YYINITIAL;
-    if (zzBuffer.length > ZZ_BUFFERSIZE)
-      zzBuffer = new char[ZZ_BUFFERSIZE];
+    this.zzReader = reader;
+    this.zzAtBOL  = true;
+    this.zzAtEOF  = false;
+    this.zzEOFDone = false;
+    this.zzEndRead = this.zzStartRead = 0;
+    this.zzCurrentPos = this.zzMarkedPos = 0;
+    this.zzFinalHighSurrogate = 0;
+    this.yyline = this.yychar = this.yycolumn = 0;
+    this.zzLexicalState = YYINITIAL;
+    if (this.zzBuffer.length > ZZ_BUFFERSIZE)
+      this.zzBuffer = new char[ZZ_BUFFERSIZE];
   }
 
 
@@ -878,7 +878,7 @@ public class JavaScriptLexer implements Lexer {
    * Returns the current lexical state.
    */
   public final int yystate() {
-    return zzLexicalState;
+    return this.zzLexicalState;
   }
 
 
@@ -888,7 +888,7 @@ public class JavaScriptLexer implements Lexer {
    * @param newState the new lexical state
    */
   public final void yybegin(int newState) {
-    zzLexicalState = newState;
+    this.zzLexicalState = newState;
   }
 
 
@@ -896,7 +896,7 @@ public class JavaScriptLexer implements Lexer {
    * Returns the text matched by the current regular expression.
    */
   public final String yytext() {
-    return new String( zzBuffer, zzStartRead, zzMarkedPos-zzStartRead );
+    return new String( this.zzBuffer, this.zzStartRead, this.zzMarkedPos-this.zzStartRead );
   }
 
 
@@ -912,7 +912,7 @@ public class JavaScriptLexer implements Lexer {
    * @return the character at position pos
    */
   public final char yycharat(int pos) {
-    return zzBuffer[zzStartRead+pos];
+    return this.zzBuffer[this.zzStartRead+pos];
   }
 
 
@@ -920,7 +920,7 @@ public class JavaScriptLexer implements Lexer {
    * Returns the length of the matched text region.
    */
   public final int yylength() {
-    return zzMarkedPos-zzStartRead;
+    return this.zzMarkedPos-this.zzStartRead;
   }
 
 
@@ -960,10 +960,10 @@ public class JavaScriptLexer implements Lexer {
    *                This number must not be greater than yylength()!
    */
   public void yypushback(int number)  {
-    if ( number > yylength() )
-      zzScanError(ZZ_PUSHBACK_2BIG);
+    if ( number > this.yylength() )
+      this.zzScanError(ZZ_PUSHBACK_2BIG);
 
-    zzMarkedPos -= number;
+    this.zzMarkedPos -= number;
   }
 
 
@@ -981,8 +981,8 @@ public class JavaScriptLexer implements Lexer {
     // cached fields:
     int zzCurrentPosL;
     int zzMarkedPosL;
-    int zzEndReadL = zzEndRead;
-    char [] zzBufferL = zzBuffer;
+    int zzEndReadL = this.zzEndRead;
+    char [] zzBufferL = this.zzBuffer;
     char [] zzCMapL = ZZ_CMAP;
 
     int [] zzTransL = ZZ_TRANS;
@@ -990,14 +990,14 @@ public class JavaScriptLexer implements Lexer {
     int [] zzAttrL = ZZ_ATTRIBUTE;
 
     while (true) {
-      zzMarkedPosL = zzMarkedPos;
+      zzMarkedPosL = this.zzMarkedPos;
 
-      yychar+= zzMarkedPosL-zzStartRead;
+      this.yychar+= zzMarkedPosL-this.zzStartRead;
 
       boolean zzR = false;
       int zzCh;
       int zzCharCount;
-      for (zzCurrentPosL = zzStartRead  ;
+      for (zzCurrentPosL = this.zzStartRead  ;
            zzCurrentPosL < zzMarkedPosL ;
            zzCurrentPosL += zzCharCount ) {
         zzCh = Character.codePointAt(zzBufferL, zzCurrentPosL, zzMarkedPosL);
@@ -1008,18 +1008,18 @@ public class JavaScriptLexer implements Lexer {
         case '\u0085':
         case '\u2028':
         case '\u2029':
-          yyline++;
+          this.yyline++;
           zzR = false;
           break;
         case '\r':
-          yyline++;
+          this.yyline++;
           zzR = true;
           break;
         case '\n':
           if (zzR)
             zzR = false;
           else {
-            yyline++;
+            this.yyline++;
           }
           break;
         default:
@@ -1032,30 +1032,30 @@ public class JavaScriptLexer implements Lexer {
         boolean zzPeek;
         if (zzMarkedPosL < zzEndReadL)
           zzPeek = zzBufferL[zzMarkedPosL] == '\n';
-        else if (zzAtEOF)
+        else if (this.zzAtEOF)
           zzPeek = false;
         else {
-          boolean eof = zzRefill();
-          zzEndReadL = zzEndRead;
-          zzMarkedPosL = zzMarkedPos;
-          zzBufferL = zzBuffer;
+          boolean eof = this.zzRefill();
+          zzEndReadL = this.zzEndRead;
+          zzMarkedPosL = this.zzMarkedPos;
+          zzBufferL = this.zzBuffer;
           if (eof)
             zzPeek = false;
           else
             zzPeek = zzBufferL[zzMarkedPosL] == '\n';
         }
-        if (zzPeek) yyline--;
+        if (zzPeek) this.yyline--;
       }
       zzAction = -1;
 
-      zzCurrentPosL = zzCurrentPos = zzStartRead = zzMarkedPosL;
+      zzCurrentPosL = this.zzCurrentPos = this.zzStartRead = zzMarkedPosL;
   
-      zzState = ZZ_LEXSTATE[zzLexicalState];
+      this.zzState = ZZ_LEXSTATE[this.zzLexicalState];
 
       // set up zzAction for empty match case:
-      int zzAttributes = zzAttrL[zzState];
+      int zzAttributes = zzAttrL[this.zzState];
       if ( (zzAttributes & 1) == 1 ) {
-        zzAction = zzState;
+        zzAction = this.zzState;
       }
 
 
@@ -1066,20 +1066,20 @@ public class JavaScriptLexer implements Lexer {
             zzInput = Character.codePointAt(zzBufferL, zzCurrentPosL, zzEndReadL);
             zzCurrentPosL += Character.charCount(zzInput);
           }
-          else if (zzAtEOF) {
+          else if (this.zzAtEOF) {
             zzInput = YYEOF;
             break zzForAction;
           }
           else {
             // store back cached positions
-            zzCurrentPos  = zzCurrentPosL;
-            zzMarkedPos   = zzMarkedPosL;
-            boolean eof = zzRefill();
+            this.zzCurrentPos  = zzCurrentPosL;
+            this.zzMarkedPos   = zzMarkedPosL;
+            boolean eof = this.zzRefill();
             // get translated positions and possibly new buffer
-            zzCurrentPosL  = zzCurrentPos;
-            zzMarkedPosL   = zzMarkedPos;
-            zzBufferL      = zzBuffer;
-            zzEndReadL     = zzEndRead;
+            zzCurrentPosL  = this.zzCurrentPos;
+            zzMarkedPosL   = this.zzMarkedPos;
+            zzBufferL      = this.zzBuffer;
+            zzEndReadL     = this.zzEndRead;
             if (eof) {
               zzInput = YYEOF;
               break zzForAction;
@@ -1089,13 +1089,13 @@ public class JavaScriptLexer implements Lexer {
               zzCurrentPosL += Character.charCount(zzInput);
             }
           }
-          int zzNext = zzTransL[ zzRowMapL[zzState] + zzCMapL[zzInput] ];
+          int zzNext = zzTransL[ zzRowMapL[this.zzState] + zzCMapL[zzInput] ];
           if (zzNext == -1) break zzForAction;
-          zzState = zzNext;
+          this.zzState = zzNext;
 
-          zzAttributes = zzAttrL[zzState];
+          zzAttributes = zzAttrL[this.zzState];
           if ( (zzAttributes & 1) == 1 ) {
-            zzAction = zzState;
+            zzAction = this.zzState;
             zzMarkedPosL = zzCurrentPosL;
             if ( (zzAttributes & 8) == 8 ) break zzForAction;
           }
@@ -1104,23 +1104,23 @@ public class JavaScriptLexer implements Lexer {
       }
 
       // store back cached position
-      zzMarkedPos = zzMarkedPosL;
+      this.zzMarkedPos = zzMarkedPosL;
 
-      if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
-        zzAtEOF = true;
+      if (zzInput == YYEOF && this.zzStartRead == this.zzCurrentPos) {
+        this.zzAtEOF = true;
         return null;
       }
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { lastToken = JavaScriptToken.ERROR_IDENTIFIER;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+            { this.lastToken = JavaScriptToken.ERROR_IDENTIFIER;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 124: break;
           case 2:
-            { lastToken = JavaScriptToken.IDENTIFIER;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+            { this.lastToken = JavaScriptToken.IDENTIFIER;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 125: break;
@@ -1134,34 +1134,34 @@ public class JavaScriptLexer implements Lexer {
         /* bigger negatives are allowed than positives.  Thus
          * we have to be careful to make sure a neg sign is preserved
          */
-        if (lastToken == JavaScriptToken.OPERATOR_SUBTRACT){
-            Integer.decode('-' + yytext());
+        if (this.lastToken == JavaScriptToken.OPERATOR_SUBTRACT){
+            Integer.decode('-' + this.yytext());
         } else {
-            Integer.decode(yytext());
+            Integer.decode(this.yytext());
         }
-        lastToken = JavaScriptToken.LITERAL_INTEGER_DECIMAL;
+        this.lastToken = JavaScriptToken.LITERAL_INTEGER_DECIMAL;
     } catch (NumberFormatException e){
-        lastToken = JavaScriptToken.ERROR_INTEGER_DECIMIAL_SIZE;
+        this.lastToken = JavaScriptToken.ERROR_INTEGER_DECIMIAL_SIZE;
     }
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 126: break;
           case 4:
-            { lastToken = JavaScriptToken.WHITE_SPACE;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+            { this.lastToken = JavaScriptToken.WHITE_SPACE;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 127: break;
           case 5:
-            { lastToken = JavaScriptToken.OPERATOR_MOD;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_MOD;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 128: break;
           case 6:
-            { lastToken = JavaScriptToken.ERROR_MALFORMED_UNCLOSED_CHARACTER;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+            { this.lastToken = JavaScriptToken.ERROR_MALFORMED_UNCLOSED_CHARACTER;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 129: break;
@@ -1171,152 +1171,152 @@ public class JavaScriptLexer implements Lexer {
      * This is really useful for catching anything bad by just allowing it
      * to slip through the cracks.
      */
-    lastToken = JavaScriptToken.ERROR_UNCLOSED_STRING;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+    this.lastToken = JavaScriptToken.ERROR_UNCLOSED_STRING;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 130: break;
           case 8:
-            { lastToken = JavaScriptToken.OPERATOR_LESS_THAN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_LESS_THAN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 131: break;
           case 9:
-            { lastToken = JavaScriptToken.OPERATOR_LOGICAL_NOT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_LOGICAL_NOT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 132: break;
           case 10:
-            { lastToken = JavaScriptToken.OPERATOR_SUBTRACT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_SUBTRACT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 133: break;
           case 11:
-            { lastToken = JavaScriptToken.OPERATOR_DIVIDE;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_DIVIDE;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 134: break;
           case 12:
-            { lastToken = JavaScriptToken.OPERATOR_MULTIPLY;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_MULTIPLY;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 135: break;
           case 13:
-            { lastToken = JavaScriptToken.OPERATOR_ADD;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_ADD;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 136: break;
           case 14:
-            { lastToken = JavaScriptToken.SEPARATOR_PERIOD;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.SEPARATOR_PERIOD;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 137: break;
           case 15:
-            { lastToken = JavaScriptToken.SEPARATOR_LPAREN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.SEPARATOR_LPAREN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 138: break;
           case 16:
-            { lastToken = JavaScriptToken.SEPARATOR_RPAREN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.SEPARATOR_RPAREN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 139: break;
           case 17:
-            { lastToken = JavaScriptToken.SEPARATOR_LBRACE;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.SEPARATOR_LBRACE;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 140: break;
           case 18:
-            { lastToken = JavaScriptToken.SEPARATOR_RBRACE;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.SEPARATOR_RBRACE;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 141: break;
           case 19:
-            { lastToken = JavaScriptToken.SEPARATOR_LBRACKET;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.SEPARATOR_LBRACKET;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 142: break;
           case 20:
-            { lastToken = JavaScriptToken.SEPARATOR_RBRACKET;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.SEPARATOR_RBRACKET;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 143: break;
           case 21:
-            { lastToken = JavaScriptToken.SEPARATOR_SEMICOLON;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.SEPARATOR_SEMICOLON;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 144: break;
           case 22:
-            { lastToken = JavaScriptToken.SEPARATOR_COMMA;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.SEPARATOR_COMMA;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 145: break;
           case 23:
-            { lastToken = JavaScriptToken.OPERATOR_ASSIGN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_ASSIGN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 146: break;
           case 24:
-            { lastToken = JavaScriptToken.OPERATOR_GREATER_THAN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_GREATER_THAN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 147: break;
           case 25:
-            { lastToken = JavaScriptToken.OPERATOR_BITWISE_COMPLIMENT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_COMPLIMENT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 148: break;
           case 26:
-            { lastToken = JavaScriptToken.OPERATOR_QUESTION;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_QUESTION;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 149: break;
           case 27:
-            { lastToken = JavaScriptToken.OPERATOR_COLON;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_COLON;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 150: break;
           case 28:
-            { lastToken = JavaScriptToken.OPERATOR_BITWISE_AND;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_AND;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 151: break;
           case 29:
-            { lastToken = JavaScriptToken.OPERATOR_BITWISE_OR;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_OR;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 152: break;
           case 30:
-            { lastToken = JavaScriptToken.OPERATOR_BITWISE_XOR;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+1, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_XOR;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+1, this.nextState));
     return (t);
             }
           case 153: break;
           case 31:
-            { lastToken = JavaScriptToken.ERROR_FLOAT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+            { this.lastToken = JavaScriptToken.ERROR_FLOAT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 154: break;
@@ -1327,47 +1327,47 @@ public class JavaScriptLexer implements Lexer {
      */
     Float f;
     try {
-        f = Float.valueOf(yytext());
+        f = Float.valueOf(this.yytext());
         if (f.isInfinite() || f.compareTo(new Float(0f)) == 0){
-            lastToken = JavaScriptToken.ERROR_FLOAT_SIZE;
+            this.lastToken = JavaScriptToken.ERROR_FLOAT_SIZE;
         } else {
-            lastToken = JavaScriptToken.LITERAL_FLOATING_POINT;
+            this.lastToken = JavaScriptToken.LITERAL_FLOATING_POINT;
         }
     } catch (NumberFormatException e){
-        lastToken = JavaScriptToken.ERROR_FLOAT_SIZE;
+        this.lastToken = JavaScriptToken.ERROR_FLOAT_SIZE;
     }
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 155: break;
           case 33:
             { try {
-        if (lastToken == JavaScriptToken.OPERATOR_SUBTRACT){
-            Long.decode('-' + yytext().substring(0,yytext().length()-1));
+        if (this.lastToken == JavaScriptToken.OPERATOR_SUBTRACT){
+            Long.decode('-' + this.yytext().substring(0,this.yytext().length()-1));
         } else {
-            Long.decode(yytext().substring(0,yytext().length()-1));
+            Long.decode(this.yytext().substring(0,this.yytext().length()-1));
         }
-        lastToken = JavaScriptToken.LITERAL_LONG_DECIMAL;
+        this.lastToken = JavaScriptToken.LITERAL_LONG_DECIMAL;
     } catch (NumberFormatException e){
-        lastToken = JavaScriptToken.ERROR_LONG_DECIMIAL_SIZE;
+        this.lastToken = JavaScriptToken.ERROR_LONG_DECIMIAL_SIZE;
     }
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 156: break;
           case 34:
             { Double d;
     try {
-        d = Double.valueOf(yytext());
+        d = Double.valueOf(this.yytext());
         if (d.isInfinite() || d.compareTo(new Double(0d)) == 0){
-            lastToken = JavaScriptToken.ERROR_DOUBLE_SIZE;
+            this.lastToken = JavaScriptToken.ERROR_DOUBLE_SIZE;
         } else {
-            lastToken = JavaScriptToken.LITERAL_DOUBLE;
+            this.lastToken = JavaScriptToken.LITERAL_DOUBLE;
         }
     } catch (NumberFormatException e){
-        lastToken = JavaScriptToken.ERROR_DOUBLE_SIZE;
+        this.lastToken = JavaScriptToken.ERROR_DOUBLE_SIZE;
     }
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 157: break;
@@ -1376,27 +1376,27 @@ public class JavaScriptLexer implements Lexer {
      * initial zeros, It can have 11 digits, the first
      * of which must be 3 or less.
      */
-    lastToken = JavaScriptToken.LITERAL_INTEGER_OCTAL;
+    this.lastToken = JavaScriptToken.LITERAL_INTEGER_OCTAL;
     int i;
-    int length =yytext().length();
+    int length =this.yytext().length();
     for (i=1 ; i<length-11; i++){
         //check for initial zeros
-        if (yytext().charAt(i) != '0'){
-            lastToken = JavaScriptToken.ERROR_INTEGER_OCTAL_SIZE;
+        if (this.yytext().charAt(i) != '0'){
+            this.lastToken = JavaScriptToken.ERROR_INTEGER_OCTAL_SIZE;
         }
     }
     if (length - i > 11){
-        lastToken = JavaScriptToken.ERROR_INTEGER_OCTAL_SIZE;
+        this.lastToken = JavaScriptToken.ERROR_INTEGER_OCTAL_SIZE;
     } else if (length - i == 11){
         // if the rest of the number is as big as possible
         // the first digit can only be 3 or less
-        if (yytext().charAt(i) != '0' && yytext().charAt(i) != '1' &&
-        yytext().charAt(i) != '2' && yytext().charAt(i) != '3'){
-            lastToken = JavaScriptToken.ERROR_INTEGER_OCTAL_SIZE;
+        if (this.yytext().charAt(i) != '0' && this.yytext().charAt(i) != '1' &&
+        this.yytext().charAt(i) != '2' && this.yytext().charAt(i) != '3'){
+            this.lastToken = JavaScriptToken.ERROR_INTEGER_OCTAL_SIZE;
         }
     }
     // Otherwise, it should be OK
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 158: break;
@@ -1404,176 +1404,176 @@ public class JavaScriptLexer implements Lexer {
             { /* catch the case of a zero in parsing, so that we do not incorrectly
      * give an error that a number was rounded to zero
      */
-    lastToken = JavaScriptToken.LITERAL_FLOATING_POINT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+    this.lastToken = JavaScriptToken.LITERAL_FLOATING_POINT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 159: break;
           case 37:
-            { lastToken = JavaScriptToken.LITERAL_DOUBLE;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+            { this.lastToken = JavaScriptToken.LITERAL_DOUBLE;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 160: break;
           case 38:
-            { lastToken = JavaScriptToken.OPERATOR_MOD_ASSIGN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_MOD_ASSIGN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 161: break;
           case 39:
-            { lastToken = JavaScriptToken.ERROR_UNCLOSED_CHARACTER;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+            { this.lastToken = JavaScriptToken.ERROR_UNCLOSED_CHARACTER;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 162: break;
           case 40:
-            { lastToken = JavaScriptToken.ERROR_MALFORMED_CHARACTER;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+            { this.lastToken = JavaScriptToken.ERROR_MALFORMED_CHARACTER;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 163: break;
           case 41:
-            { lastToken = JavaScriptToken.ERROR_MALFORMED_UNCLOSED_STRING;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+            { this.lastToken = JavaScriptToken.ERROR_MALFORMED_UNCLOSED_STRING;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 164: break;
           case 42:
-            { lastToken = JavaScriptToken.LITERAL_STRING;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+            { this.lastToken = JavaScriptToken.LITERAL_STRING;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 165: break;
           case 43:
-            { lastToken = JavaScriptToken.OPERATOR_SHIFT_LEFT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_LEFT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 166: break;
           case 44:
-            { lastToken = JavaScriptToken.OPERATOR_LESS_THAN_OR_EQUAL;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_LESS_THAN_OR_EQUAL;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 167: break;
           case 45:
-            { lastToken = JavaScriptToken.OPERATOR_NOT_EQUAL;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_NOT_EQUAL;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 168: break;
           case 46:
-            { lastToken = JavaScriptToken.OPERATOR_DECREMENT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_DECREMENT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 169: break;
           case 47:
-            { lastToken = JavaScriptToken.OPERATOR_SUBTRACT_ASSIGN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_SUBTRACT_ASSIGN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 170: break;
           case 48:
-            { lastToken = JavaScriptToken.COMMENT_END_OF_LINE;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+            { this.lastToken = JavaScriptToken.COMMENT_END_OF_LINE;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 171: break;
           case 49:
-            { lastToken = JavaScriptToken.ERROR_UNCLOSED_COMMENT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+            { this.lastToken = JavaScriptToken.ERROR_UNCLOSED_COMMENT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 172: break;
           case 50:
-            { lastToken = JavaScriptToken.OPERATOR_DIVIDE_ASSIGN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_DIVIDE_ASSIGN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 173: break;
           case 51:
-            { lastToken = JavaScriptToken.OPERATOR_MULTIPLY_ASSIGN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_MULTIPLY_ASSIGN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 174: break;
           case 52:
-            { lastToken = JavaScriptToken.OPERATOR_INCREMENT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_INCREMENT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 175: break;
           case 53:
-            { lastToken = JavaScriptToken.OPERATOR_ADD_ASSIGN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_ADD_ASSIGN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 176: break;
           case 54:
-            { lastToken = JavaScriptToken.RESERVED_WORD_DO;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_DO;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+2, this.nextState));
     return (t);
             }
           case 177: break;
           case 55:
-            { lastToken = JavaScriptToken.OPERATOR_EQUAL;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_EQUAL;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 178: break;
           case 56:
-            { lastToken = JavaScriptToken.OPERATOR_GREATER_THAN_OR_EQUAL;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_GREATER_THAN_OR_EQUAL;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 179: break;
           case 57:
-            { lastToken = JavaScriptToken.OPERATOR_SHIFT_RIGHT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_RIGHT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 180: break;
           case 58:
-            { lastToken = JavaScriptToken.OPERATOR_BITWISE_AND_ASSIGN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_AND_ASSIGN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 181: break;
           case 59:
-            { lastToken = JavaScriptToken.OPERATOR_LOGICAL_AND;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_LOGICAL_AND;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 182: break;
           case 60:
-            { lastToken = JavaScriptToken.OPERATOR_BITWISE_OR_ASSIGN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_OR_ASSIGN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 183: break;
           case 61:
-            { lastToken = JavaScriptToken.OPERATOR_LOGICAL_OR;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_LOGICAL_OR;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 184: break;
           case 62:
-            { lastToken = JavaScriptToken.OPERATOR_BITWISE_XOR_ASSIGN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_BITWISE_XOR_ASSIGN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+2, this.nextState));
     return (t);
             }
           case 185: break;
           case 63:
-            { lastToken = JavaScriptToken.RESERVED_WORD_IN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_IN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+2, this.nextState));
     return (t);
             }
           case 186: break;
           case 64:
-            { lastToken = JavaScriptToken.RESERVED_WORD_IF;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+2, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_IF;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+2, this.nextState));
     return (t);
             }
           case 187: break;
@@ -1583,26 +1583,26 @@ public class JavaScriptLexer implements Lexer {
      * of which must be 1 or less.  The last will be the L or l
      * at the end.
      */
-    lastToken = JavaScriptToken.LITERAL_LONG_OCTAL;
+    this.lastToken = JavaScriptToken.LITERAL_LONG_OCTAL;
     int i;
-    int length =yytext().length();
+    int length =this.yytext().length();
     for (i=1 ; i<length-23; i++){
         //check for initial zeros
-        if (yytext().charAt(i) != '0'){
-            lastToken = JavaScriptToken.ERROR_LONG_OCTAL_SIZE;
+        if (this.yytext().charAt(i) != '0'){
+            this.lastToken = JavaScriptToken.ERROR_LONG_OCTAL_SIZE;
         }
     }
     if (length - i > 23){
-        lastToken = JavaScriptToken.ERROR_LONG_OCTAL_SIZE;
+        this.lastToken = JavaScriptToken.ERROR_LONG_OCTAL_SIZE;
     } else if (length - i == 23){
         // if the rest of the number is as big as possible
         // the first digit can only be 3 or less
-        if (yytext().charAt(i) != '0' && yytext().charAt(i) != '1'){
-            lastToken = JavaScriptToken.ERROR_LONG_OCTAL_SIZE;
+        if (this.yytext().charAt(i) != '0' && this.yytext().charAt(i) != '1'){
+            this.lastToken = JavaScriptToken.ERROR_LONG_OCTAL_SIZE;
         }
     }
     // Otherwise, it should be OK
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 188: break;
@@ -1610,73 +1610,73 @@ public class JavaScriptLexer implements Lexer {
             { /* A Hex number cannot be too big.  After removing
      * initial zeros, It can have 8 digits
      */
-    lastToken = JavaScriptToken.LITERAL_INTEGER_HEXIDECIMAL;
+    this.lastToken = JavaScriptToken.LITERAL_INTEGER_HEXIDECIMAL;
     int i;
-    int length =yytext().length();
+    int length =this.yytext().length();
     for (i=2 ; i<length-8; i++){
         //check for initial zeros
-        if (yytext().charAt(i) != '0'){
-            lastToken = JavaScriptToken.ERROR_INTEGER_HEXIDECIMAL_SIZE;
+        if (this.yytext().charAt(i) != '0'){
+            this.lastToken = JavaScriptToken.ERROR_INTEGER_HEXIDECIMAL_SIZE;
         }
     }
     if (length - i > 8){
-        lastToken = JavaScriptToken.ERROR_INTEGER_HEXIDECIMAL_SIZE;
+        this.lastToken = JavaScriptToken.ERROR_INTEGER_HEXIDECIMAL_SIZE;
     }
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 189: break;
           case 67:
-            { lastToken = JavaScriptToken.RESERVED_WORD_NEW;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+3, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_NEW;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+3, this.nextState));
     return (t);
             }
           case 190: break;
           case 68:
-            { lastToken = JavaScriptToken.RESERVED_WORD_FOR;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+3, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_FOR;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+3, this.nextState));
     return (t);
             }
           case 191: break;
           case 69:
-            { lastToken = JavaScriptToken.RESERVED_WORD_TRY;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+3, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_TRY;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+3, this.nextState));
     return (t);
             }
           case 192: break;
           case 70:
-            { lastToken = JavaScriptToken.LITERAL_CHARACTER;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+            { this.lastToken = JavaScriptToken.LITERAL_CHARACTER;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 193: break;
           case 71:
-            { lastToken = JavaScriptToken.OPERATOR_SHIFT_LEFT_ASSIGN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+3, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_LEFT_ASSIGN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+3, this.nextState));
     return (t);
             }
           case 194: break;
           case 72:
-            { lastToken = JavaScriptToken.OPERATOR_SHIFT_RIGHT_ASSIGN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+3, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_RIGHT_ASSIGN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+3, this.nextState));
     return (t);
             }
           case 195: break;
           case 73:
-            { lastToken = JavaScriptToken.OPERATOR_SHIFT_RIGHT_UNSIGNED;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+3, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_RIGHT_UNSIGNED;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+3, this.nextState));
     return (t);
             }
           case 196: break;
           case 74:
-            { lastToken = JavaScriptToken.RESERVED_WORD_INT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+3, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_INT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+3, this.nextState));
     return (t);
             }
           case 197: break;
           case 75:
-            { lastToken = JavaScriptToken.RESERVED_WORD_VAR;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+3, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_VAR;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+3, this.nextState));
     return (t);
             }
           case 198: break;
@@ -1685,306 +1685,306 @@ public class JavaScriptLexer implements Lexer {
      * initial zeros, It can have 17 digits, the last of which is
      * the L or l
      */
-    lastToken = JavaScriptToken.LITERAL_LONG_HEXIDECIMAL;
+    this.lastToken = JavaScriptToken.LITERAL_LONG_HEXIDECIMAL;
     int i;
-    int length =yytext().length();
+    int length =this.yytext().length();
     for (i=2 ; i<length-17; i++){
         //check for initial zeros
-        if (yytext().charAt(i) != '0'){
-            lastToken = JavaScriptToken.ERROR_LONG_HEXIDECIMAL_SIZE;
+        if (this.yytext().charAt(i) != '0'){
+            this.lastToken = JavaScriptToken.ERROR_LONG_HEXIDECIMAL_SIZE;
         }
     }
     if (length - i > 17){
-        lastToken = JavaScriptToken.ERROR_LONG_HEXIDECIMAL_SIZE;
+        this.lastToken = JavaScriptToken.ERROR_LONG_HEXIDECIMAL_SIZE;
     }
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 199: break;
           case 77:
-            { lastToken = JavaScriptToken.LITERAL_NULL;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+4, nextState));
+            { this.lastToken = JavaScriptToken.LITERAL_NULL;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));
     return (t);
             }
           case 200: break;
           case 78:
-            { lastToken = JavaScriptToken.RESERVED_WORD_BYTE;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+4, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_BYTE;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));
     return (t);
             }
           case 201: break;
           case 79:
-            { lastToken = JavaScriptToken.LITERAL_BOOLEAN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+4, nextState));
+            { this.lastToken = JavaScriptToken.LITERAL_BOOLEAN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));
     return (t);
             }
           case 202: break;
           case 80:
-            { lastToken = JavaScriptToken.RESERVED_WORD_THIS;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+4, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_THIS;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));
     return (t);
             }
           case 203: break;
           case 81:
-            { lastToken = JavaScriptToken.ERROR_MALFORMED_STRING;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+            { this.lastToken = JavaScriptToken.ERROR_MALFORMED_STRING;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 204: break;
           case 82:
-            { lastToken = JavaScriptToken.COMMENT_TRADITIONAL;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar + yytext().length(), nextState));
+            { this.lastToken = JavaScriptToken.COMMENT_TRADITIONAL;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar + this.yytext().length(), this.nextState));
     return (t);
             }
           case 205: break;
           case 83:
-            { lastToken = JavaScriptToken.RESERVED_WORD_LONG;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+4, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_LONG;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));
     return (t);
             }
           case 206: break;
           case 84:
-            { lastToken = JavaScriptToken.RESERVED_WORD_ELSE;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+4, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_ELSE;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));
     return (t);
             }
           case 207: break;
           case 85:
-            { lastToken = JavaScriptToken.OPERATOR_SHIFT_RIGHT_UNSIGNED_ASSIGN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken,yytext(),yyline,yychar,yychar+4, nextState));
+            { this.lastToken = JavaScriptToken.OPERATOR_SHIFT_RIGHT_UNSIGNED_ASSIGN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken,this.yytext(),this.yyline,this.yychar,this.yychar+4, this.nextState));
     return (t);
             }
           case 208: break;
           case 86:
-            { lastToken = JavaScriptToken.RESERVED_WORD_CASE;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+4, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_CASE;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));
     return (t);
             }
           case 209: break;
           case 87:
-            { lastToken = JavaScriptToken.RESERVED_WORD_CHAR;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+4, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_CHAR;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));
     return (t);
             }
           case 210: break;
           case 88:
-            { lastToken = JavaScriptToken.RESERVED_WORD_GOTO;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+4, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_GOTO;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));
     return (t);
             }
           case 211: break;
           case 89:
-            { lastToken = JavaScriptToken.RESERVED_WORD_VOID;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+4, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_VOID;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));
     return (t);
             }
           case 212: break;
           case 90:
-            { lastToken = JavaScriptToken.RESERVED_WORD_WITH;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+4, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_WITH;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+4, this.nextState));
     return (t);
             }
           case 213: break;
           case 91:
-            { lastToken = JavaScriptToken.RESERVED_WORD_BREAK;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+5, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_BREAK;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));
     return (t);
             }
           case 214: break;
           case 92:
-            { lastToken = JavaScriptToken.RESERVED_WORD_FLOAT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+5, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_FLOAT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));
     return (t);
             }
           case 215: break;
           case 93:
-            { lastToken = JavaScriptToken.LITERAL_BOOLEAN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+5, nextState));
+            { this.lastToken = JavaScriptToken.LITERAL_BOOLEAN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));
     return (t);
             }
           case 216: break;
           case 94:
-            { lastToken = JavaScriptToken.RESERVED_WORD_FINAL;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+5, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_FINAL;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));
     return (t);
             }
           case 217: break;
           case 95:
-            { lastToken = JavaScriptToken.RESERVED_WORD_THROW;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+5, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_THROW;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));
     return (t);
             }
           case 218: break;
           case 96:
-            { lastToken = JavaScriptToken.RESERVED_WORD_SUPER;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+5, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_SUPER;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));
     return (t);
             }
           case 219: break;
           case 97:
-            { lastToken = JavaScriptToken.RESERVED_WORD_SHORT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+5, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_SHORT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));
     return (t);
             }
           case 220: break;
           case 98:
-            { lastToken = JavaScriptToken.RESERVED_WORD_CLASS;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+5, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_CLASS;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));
     return (t);
             }
           case 221: break;
           case 99:
-            { lastToken = JavaScriptToken.RESERVED_WORD_CATCH;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+5, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_CATCH;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));
     return (t);
             }
           case 222: break;
           case 100:
-            { lastToken = JavaScriptToken.RESERVED_WORD_CONST;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+5, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_CONST;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+5, this.nextState));
     return (t);
             }
           case 223: break;
           case 101:
-            { lastToken = JavaScriptToken.RESERVED_WORD_TRANSIENT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+9, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_TRANSIENT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+9, this.nextState));
     return (t);
             }
           case 224: break;
           case 102:
-            { lastToken = JavaScriptToken.RESERVED_WORD_RETURN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+6, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_RETURN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));
     return (t);
             }
           case 225: break;
           case 103:
-            { lastToken = JavaScriptToken.RESERVED_WORD_NATIVE;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+6, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_NATIVE;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));
     return (t);
             }
           case 226: break;
           case 104:
-            { lastToken = JavaScriptToken.RESERVED_WORD_THROWS;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+6, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_THROWS;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));
     return (t);
             }
           case 227: break;
           case 105:
-            { lastToken = JavaScriptToken.RESERVED_WORD_DOUBLE;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+6, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_DOUBLE;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));
     return (t);
             }
           case 228: break;
           case 106:
-            { lastToken = JavaScriptToken.RESERVED_WORD_STATIC;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+6, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_STATIC;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));
     return (t);
             }
           case 229: break;
           case 107:
-            { lastToken = JavaScriptToken.RESERVED_WORD_SWITCH;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+6, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_SWITCH;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));
     return (t);
             }
           case 230: break;
           case 108:
-            { lastToken = JavaScriptToken.RESERVED_WORD_IMPORT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+6, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_IMPORT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));
     return (t);
             }
           case 231: break;
           case 109:
-            { lastToken = JavaScriptToken.RESERVED_WORD_PUBLIC;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+6, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_PUBLIC;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+6, this.nextState));
     return (t);
             }
           case 232: break;
           case 110:
-            { lastToken = JavaScriptToken.RESERVED_WORD_BOOLEAN;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+7, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_BOOLEAN;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));
     return (t);
             }
           case 233: break;
           case 111:
-            { lastToken = JavaScriptToken.RESERVED_WORD_FINALLY;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+7, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_FINALLY;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));
     return (t);
             }
           case 234: break;
           case 112:
-            { lastToken = JavaScriptToken.RESERVED_WORD_EXTENDS;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+7, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_EXTENDS;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));
     return (t);
             }
           case 235: break;
           case 113:
-            { lastToken = JavaScriptToken.RESERVED_WORD_DEFAULT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+7, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_DEFAULT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));
     return (t);
             }
           case 236: break;
           case 114:
-            { lastToken = JavaScriptToken.RESERVED_WORD_PRIVATE;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+7, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_PRIVATE;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));
     return (t);
             }
           case 237: break;
           case 115:
-            { lastToken = JavaScriptToken.RESERVED_WORD_PACKAGE;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+7, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_PACKAGE;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));
     return (t);
             }
           case 238: break;
           case 116:
-            { lastToken = JavaScriptToken.RESERVED_WORD_FUNCTION;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+8, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_FUNCTION;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+8, this.nextState));
     return (t);
             }
           case 239: break;
           case 117:
-            { lastToken = JavaScriptToken.RESERVED_WORD_ABSTRACT;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+7, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_ABSTRACT;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+7, this.nextState));
     return (t);
             }
           case 240: break;
           case 118:
-            { lastToken = JavaScriptToken.RESERVED_WORD_CONTINUE;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+8, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_CONTINUE;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+8, this.nextState));
     return (t);
             }
           case 241: break;
           case 119:
-            { lastToken = JavaScriptToken.RESERVED_WORD_INTERFACE;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+9, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_INTERFACE;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+9, this.nextState));
     return (t);
             }
           case 242: break;
           case 120:
-            { lastToken = JavaScriptToken.RESERVED_WORD_PROTECTED;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+9, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_PROTECTED;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+9, this.nextState));
     return (t);
             }
           case 243: break;
           case 121:
-            { lastToken = JavaScriptToken.RESERVED_WORD_INSTANCEOF;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+10, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_INSTANCEOF;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+10, this.nextState));
     return (t);
             }
           case 244: break;
           case 122:
-            { lastToken = JavaScriptToken.RESERVED_WORD_IMPLEMENTS;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+10, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_IMPLEMENTS;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+10, this.nextState));
     return (t);
             }
           case 245: break;
           case 123:
-            { lastToken = JavaScriptToken.RESERVED_WORD_SYNCHRONIZED;
-    JavaScriptToken t = (new JavaScriptToken(lastToken, yytext(), yyline, yychar, yychar+12, nextState));
+            { this.lastToken = JavaScriptToken.RESERVED_WORD_SYNCHRONIZED;
+    JavaScriptToken t = (new JavaScriptToken(this.lastToken, this.yytext(), this.yyline, this.yychar, this.yychar+12, this.nextState));
     return (t);
             }
           case 246: break;
           default:
-            zzScanError(ZZ_NO_MATCH);
+            this.zzScanError(ZZ_NO_MATCH);
         }
       }
     }

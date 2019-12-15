@@ -138,12 +138,12 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
 
     @Override
     public CallableTime getCallable(String string, int indexCharacter, boolean isTestingLength) {
-        return new CallableTime(string, indexCharacter, isTestingLength, injectionModel, this);
+        return new CallableTime(string, indexCharacter, isTestingLength, this.injectionModel, this);
     }
 
     @Override
     public CallableTime getCallable(String string, int indexCharacter, int bit) {
-        return new CallableTime(string, indexCharacter, bit, injectionModel, this);
+        return new CallableTime(string, indexCharacter, bit, this.injectionModel, this);
     }
 
     @Override
@@ -152,7 +152,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             throw new StoppedByUserSlidingException();
         }
         
-        CallableTime blindTest = new CallableTime(this.injectionModel.getVendor().instance().sqlTestBlindFirst(), injectionModel, this);
+        CallableTime blindTest = new CallableTime(this.injectionModel.getVendor().instance().sqlTestBlindFirst(), this.injectionModel, this);
         try {
             blindTest.call();
         } catch (Exception e) {

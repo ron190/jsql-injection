@@ -14,7 +14,7 @@ public class HibernateConf {
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setHibernateProperties(hibernateProperties());
+        sessionFactory.setHibernateProperties(this.hibernateProperties());
  
         return sessionFactory;
     }

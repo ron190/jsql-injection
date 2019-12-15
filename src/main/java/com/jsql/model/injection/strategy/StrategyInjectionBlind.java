@@ -47,7 +47,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
         } else {
             LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Blind...");
             
-            this.blind = new InjectionBlind(injectionModel);
+            this.blind = new InjectionBlind(this.injectionModel);
             
             this.isApplicable = this.blind.isInjectable();
             

@@ -147,7 +147,7 @@ public class DataAccess {
         String[] sourcePage = {""};
 
         String resultToParse;
-        resultToParse = new SuspendableGetRows(injectionModel).run(
+        resultToParse = new SuspendableGetRows(this.injectionModel).run(
             this.injectionModel.getVendor().instance().sqlInfos(),
             sourcePage,
             false,
@@ -191,7 +191,7 @@ public class DataAccess {
         String resultToParse = "";
         try {
             String[] sourcePage = {""};
-            resultToParse = new SuspendableGetRows(injectionModel).run(
+            resultToParse = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getVendor().instance().sqlDatabases(),
                 sourcePage,
                 true,
@@ -272,7 +272,7 @@ public class DataAccess {
         String resultToParse = "";
         try {
             String[] pageSource = {""};
-            resultToParse = new SuspendableGetRows(injectionModel).run(
+            resultToParse = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getVendor().instance().sqlTables(database),
                 pageSource,
                 true,
@@ -352,7 +352,7 @@ public class DataAccess {
         String resultToParse = "";
         try {
             String[] pageSource = {""};
-            resultToParse = new SuspendableGetRows(injectionModel).run(
+            resultToParse = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getVendor().instance().sqlColumns(table),
                 pageSource,
                 true,
@@ -372,8 +372,8 @@ public class DataAccess {
         }
 
         // Build SQLite columns
-        if (this.injectionModel.getVendor() == injectionModel.SQLITE) {
-            resultToParse = injectionModel.SQLITE.transform(resultToParse);
+        if (this.injectionModel.getVendor() == this.injectionModel.SQLITE) {
+            resultToParse = this.injectionModel.SQLITE.transform(resultToParse);
         }
         
         // Parse all the data we have retrieved
@@ -451,7 +451,7 @@ public class DataAccess {
         String resultToParse = "";
         try {
             String[] pageSource = {""};
-            resultToParse = new SuspendableGetRows(injectionModel).run(
+            resultToParse = new SuspendableGetRows(this.injectionModel).run(
                 this.injectionModel.getVendor().instance().sqlRows(arrayColumns, database, table),
                 pageSource,
                 true,

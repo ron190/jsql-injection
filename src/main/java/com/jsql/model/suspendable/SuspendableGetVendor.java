@@ -46,7 +46,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
     public Vendor run(Object... args) throws StoppedByUserSlidingException {
         Vendor vendor = null;
         
-        if (this.injectionModel.getVendorByUser() != injectionModel.AUTO) {
+        if (this.injectionModel.getVendorByUser() != this.injectionModel.AUTO) {
             vendor = this.injectionModel.getVendorByUser();
             LOGGER.info(I18n.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER") +" ["+ vendor +"]");
         } else {
@@ -63,7 +63,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                     new CallablePageSource(
                         insertionCharacter,
                         insertionCharacter,
-                        injectionModel
+                        this.injectionModel
                     )
                 );
             }
@@ -80,7 +80,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                     total--;
                     String pageSource = currentCallable.getContent();
                     
-                    for (Vendor vendorTest: injectionModel.vendors.stream().toArray(Vendor[]::new)) {
+                    for (Vendor vendorTest: this.injectionModel.vendors.stream().toArray(Vendor[]::new)) {
                       if (
                           pageSource.matches(
                               "(?si).*("
@@ -109,7 +109,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             }
             
             if (vendor == null) {
-                vendor = injectionModel.MYSQL;
+                vendor = this.injectionModel.MYSQL;
                 LOGGER.warn(I18n.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendor +"]");
             } else {
                 LOGGER.info(I18n.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendor +"]");
@@ -117,8 +117,8 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                 Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
                 msgHeader.put(
                     Header.URL,
-                    injectionModel.connectionUtil.getUrlBase()
-                    + injectionModel.parameterUtil.getQueryStringFromEntries()
+                    this.injectionModel.connectionUtil.getUrlBase()
+                    + this.injectionModel.parameterUtil.getQueryStringFromEntries()
                 );
                 msgHeader.put(Header.VENDOR, vendor);
                 

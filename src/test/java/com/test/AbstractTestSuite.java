@@ -118,9 +118,9 @@ public abstract class AbstractTestSuite {
             LOGGER.info("@BeforeClass: Hibernate and Spring setup already done");
         }
         
-        if (injectionModel == null) {
+        if (this.injectionModel == null) {
             this.requestJdbc();
-            initialize3();
+            this.initialize3();
         }
     }
     
@@ -187,7 +187,7 @@ public abstract class AbstractTestSuite {
         Set<Object> set2 = new HashSet<>();
         
         try {
-            List<Database> dbs = injectionModel.dataAccess.listDatabases();
+            List<Database> dbs = this.injectionModel.dataAccess.listDatabases();
             List<String> databasesFound = new ArrayList<>();
             for (Database d: dbs) {
                 databasesFound.add(d.toString());
@@ -222,7 +222,7 @@ public abstract class AbstractTestSuite {
         Set<Object> set2 = new HashSet<>();
 
         try {
-            List<Table> ts = injectionModel.dataAccess.listTables(new Database(AbstractTestSuite.this.jsqlDatabaseName, "0"));
+            List<Table> ts = this.injectionModel.dataAccess.listTables(new Database(AbstractTestSuite.this.jsqlDatabaseName, "0"));
             List<String> tablesFound = new ArrayList<>();
             for (Table t: ts) {
                 tablesFound.add(t.toString());
@@ -256,7 +256,7 @@ public abstract class AbstractTestSuite {
         Set<Object> set2 = new HashSet<>();
 
         try {
-            List<Column> cs = injectionModel.dataAccess.listColumns(
+            List<Column> cs = this.injectionModel.dataAccess.listColumns(
                 new Table(AbstractTestSuite.this.jsqlTableName, "0",
                     new Database(AbstractTestSuite.this.jsqlDatabaseName, "0")
                 )
@@ -294,7 +294,7 @@ public abstract class AbstractTestSuite {
         Set<Object> set2 = new TreeSet<>();
 
         try {
-            String[][] vs = injectionModel.dataAccess.listValues(Arrays.asList(
+            String[][] vs = this.injectionModel.dataAccess.listValues(Arrays.asList(
                 new Column(AbstractTestSuite.this.jsqlColumnName,
                     new Table(AbstractTestSuite.this.jsqlTableName, "0",
                         new Database(AbstractTestSuite.this.jsqlDatabaseName, "0")

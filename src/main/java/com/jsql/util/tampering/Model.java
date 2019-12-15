@@ -19,7 +19,7 @@ public class Model {
 
     @JsonProperty("tooltip")
     public String getTooltip() {
-        return tooltip;
+        return this.tooltip;
     }
 
     @JsonProperty("tooltip")
@@ -29,7 +29,7 @@ public class Model {
 
     @JsonProperty("description")
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     @JsonProperty("description")
@@ -39,7 +39,7 @@ public class Model {
 
     @JsonProperty("group")
     public String getGroup() {
-        return group;
+        return this.group;
     }
 
     @JsonProperty("group")
@@ -49,7 +49,7 @@ public class Model {
 
     @JsonProperty("javascript")
     public String getJavascript() {
-        return javascript;
+        return this.javascript;
     }
 
     @JsonProperty("javascript")

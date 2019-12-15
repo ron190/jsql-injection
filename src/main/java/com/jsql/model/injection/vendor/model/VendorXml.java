@@ -198,7 +198,7 @@ public class VendorXml implements AbstractVendor {
     @Override
     public String sqlTextIntoFile(String content, String filePath) {
         return
-            injectionModel.getIndexesInUrl()
+            this.injectionModel.getIndexesInUrl()
                 .replaceAll(
                     "1337" + StrategyInjectionNormal.getVisibleIndex() + "7331",
                     this.xmlModel.getResource().getFile().getCreate().getContent()
@@ -345,7 +345,7 @@ public class VendorXml implements AbstractVendor {
     public String sqlTestError() {
         return
             " "+
-            this.xmlModel.getStrategy().getError().getMethod().get(injectionModel.ERROR.getIndexMethod()).getQuery()
+            this.xmlModel.getStrategy().getError().getMethod().get(this.injectionModel.ERROR.getIndexMethod()).getQuery()
                 .replace(WINDOW, this.xmlModel.getStrategy().getConfiguration().getSlidingWindow())
                 .replace(INJECTION, this.xmlModel.getStrategy().getConfiguration().getFailsafe().replace(INDICE, "0"))
                 .replace(INDEX, "1");
@@ -356,11 +356,11 @@ public class VendorXml implements AbstractVendor {
         return
             " "+
             VendorXml.replaceTags(
-                this.xmlModel.getStrategy().getError().getMethod().get(injectionModel.ERROR.getIndexMethod()).getQuery()
+                this.xmlModel.getStrategy().getError().getMethod().get(this.injectionModel.ERROR.getIndexMethod()).getQuery()
                     .replace(WINDOW, this.xmlModel.getStrategy().getConfiguration().getSlidingWindow())
                     .replace(INJECTION, sqlQuery)
                     .replace(INDEX, ""+startPosition)
-                    .replace(CAPACITY, Integer.toString(this.xmlModel.getStrategy().getError().getMethod().get(injectionModel.ERROR.getIndexMethod()).getCapacity()))
+                    .replace(CAPACITY, Integer.toString(this.xmlModel.getStrategy().getError().getMethod().get(this.injectionModel.ERROR.getIndexMethod()).getCapacity()))
             );
     }
 
@@ -371,14 +371,14 @@ public class VendorXml implements AbstractVendor {
                 this.xmlModel.getStrategy().getConfiguration().getSlidingWindow()
                     .replace(INJECTION, sqlQuery)
                     .replace(INDEX, ""+startPosition)
-                    .replace(CAPACITY, ""+injectionModel.NORMAL.getPerformanceLength())
+                    .replace(CAPACITY, ""+this.injectionModel.NORMAL.getPerformanceLength())
             );
     }
 
     @Override
     public String sqlCapacity(String[] indexes) {
         return
-                injectionModel.getIndexesInUrl().replaceAll(
+                this.injectionModel.getIndexesInUrl().replaceAll(
                 "1337("+ String.join("|", indexes) +")7331",
                 VendorXml.replaceTags(
                     this.xmlModel.getStrategy().getNormal().getCapacity()

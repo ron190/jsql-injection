@@ -41,11 +41,11 @@ public class SoapUtil {
         boolean hasFoundInjection = false;
         
         if (
-            injectionModel.preferencesUtil.isCheckingAllSOAPParam()
-            && injectionModel.parameterUtil.isRequestSoap()
+            this.injectionModel.preferencesUtil.isCheckingAllSOAPParam()
+            && this.injectionModel.parameterUtil.isRequestSoap()
         ) {
             try {
-                Document doc = SoapUtil.convertStringToDocument(injectionModel.parameterUtil.getRawRequest());
+                Document doc = SoapUtil.convertStringToDocument(this.injectionModel.parameterUtil.getRawRequest());
                 LOGGER.trace("Parsing SOAP from Request...");
                 hasFoundInjection = this.injectTextNodes(doc, doc.getDocumentElement());
             } catch (Exception e) {
@@ -112,12 +112,12 @@ public class SoapUtil {
                 
                 currentNode.setTextContent(currentNode.getTextContent() + InjectionModel.STAR);
                 
-                injectionModel.parameterUtil.initRequest(SoapUtil.convertDocumentToString(doc));
+                this.injectionModel.parameterUtil.initRequest(SoapUtil.convertDocumentToString(doc));
                 
                 try {
                     LOGGER.info("Checking SOAP Request injection for "+ currentNode.getParentNode().getNodeName() +"="+ currentNode.getTextContent().replace(InjectionModel.STAR, ""));
                     
-                    injectionModel.testParameters(injectionModel.REQUEST);
+                    this.injectionModel.testParameters(this.injectionModel.REQUEST);
                     hasFoundInjection = true;
                     
                     // Injection successful

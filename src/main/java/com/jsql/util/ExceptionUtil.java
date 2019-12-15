@@ -43,11 +43,11 @@ public class ExceptionUtil {
             
             //  Report #214: ignore if OutOfMemoryError: Java heap space
             if (
-                injectionModel.preferencesUtil.isReportingBugs()
+                ExceptionUtil.this.injectionModel.preferencesUtil.isReportingBugs()
                 && ExceptionUtils.getStackTrace(throwable).contains("com.jsql")
                 && !(throwable instanceof OutOfMemoryError)
             ) {
-                injectionModel.gitUtil.sendUnhandledException(thread.getName(), throwable);
+                ExceptionUtil.this.injectionModel.gitUtil.sendUnhandledException(thread.getName(), throwable);
             }
         }
         

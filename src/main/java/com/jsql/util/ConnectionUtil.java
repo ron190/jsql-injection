@@ -94,7 +94,7 @@ public class ConnectionUtil {
      */
     public void testConnection() throws InjectionFailureException {
 
-        if (injectionModel.preferencesUtil.isProcessingCookies()) {
+        if (this.injectionModel.preferencesUtil.isProcessingCookies()) {
             CookieManager cookieManager = new CookieManager();
             CookieHandler.setDefault(cookieManager);
         } else {
@@ -104,14 +104,14 @@ public class ConnectionUtil {
         // Test the HTTP connection
         HttpURLConnection connection = null;
         try {
-            if (injectionModel.authenticationUtil.isKerberos()) {
+            if (this.injectionModel.authenticationUtil.isKerberos()) {
                 String loginKerberos =
                     Pattern
                         .compile("(?s)\\{.*")
                         .matcher(
                             StringUtils.join(
                                 Files.readAllLines(
-                                    Paths.get(injectionModel.authenticationUtil.getPathKerberosLogin()),
+                                    Paths.get(this.injectionModel.authenticationUtil.getPathKerberosLogin()),
                                     Charset.defaultCharset()
                                 ),
                                 ""
@@ -140,11 +140,11 @@ public class ConnectionUtil {
             this.fixJcifsTimeout(connection);
             
             // Add headers if exists (Authorization:Basic, etc)
-            for (SimpleEntry<String, String> header: injectionModel.parameterUtil.getHeader()) {
+            for (SimpleEntry<String, String> header: this.injectionModel.parameterUtil.getHeader()) {
                 HeaderUtil.sanitizeHeaders(connection, header);
             }
 
-            injectionModel.headerUtil.checkResponseHeader(connection, this.getUrlByUser().replace(InjectionModel.STAR, ""));
+            this.injectionModel.headerUtil.checkResponseHeader(connection, this.getUrlByUser().replace(InjectionModel.STAR, ""));
             
             // Calling connection.disconnect() is not required, more calls will happen
         } catch (Exception e) {
@@ -160,11 +160,11 @@ public class ConnectionUtil {
      * @throws IOException when the reading of source page fails
      */
     public String getSourceLineFeed(String url) throws IOException {
-        return getSource(url, true);
+        return this.getSource(url, true);
     }
     
     public String getSource(String url) throws IOException {
-        return getSource(url, false);
+        return this.getSource(url, false);
     }
     
     public String getSource(String url, boolean lineFeed) throws IOException {
@@ -197,7 +197,7 @@ public class ConnectionUtil {
             Request request = new Request();
             request.setMessage(Interaction.MESSAGE_HEADER);
             request.setParameters(msgHeader);
-            injectionModel.sendToViews(request);
+            this.injectionModel.sendToViews(request);
         }
         
         // TODO optional
@@ -338,7 +338,7 @@ public class ConnectionUtil {
     // Getters and setters
     
     public String getUrlByUser() {
-        return urlByUser;
+        return this.urlByUser;
     }
 
     public void setUrlByUser(String urlByUser) {
@@ -346,7 +346,7 @@ public class ConnectionUtil {
     }
     
     public String getUrlBase() {
-        return urlBase;
+        return this.urlBase;
     }
 
     public void setUrlBase(String urlBase) {
@@ -354,7 +354,7 @@ public class ConnectionUtil {
     }
     
     public MethodInjection getMethodInjection() {
-        return methodInjection;
+        return this.methodInjection;
     }
 
     public void setMethodInjection(MethodInjection methodInjection) {
@@ -362,7 +362,7 @@ public class ConnectionUtil {
     }
     
     public String getTypeRequest() {
-        return typeRequest;
+        return this.typeRequest;
     }
 
     public void setTypeRequest(String typeRequest) {
@@ -370,11 +370,11 @@ public class ConnectionUtil {
     }
 
     public Integer getTimeout() {
-        return TIMEOUT;
+        return this.TIMEOUT;
     }
 
     public SimpleEntry<String, String> getTokenCsrf() {
-        return tokenCsrf;
+        return this.tokenCsrf;
     }
 
     public void setTokenCsrf(SimpleEntry<String, String> tokenCsrf) {

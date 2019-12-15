@@ -34,11 +34,11 @@ public class MasterService {
             Properties properties = new Properties();
             properties.put(Environment.DATASOURCE, dataSource);
             connectionProviderPostgres.configure(properties);
-            hashMap.put(props.getProperty("jsql.tenant"), connectionProviderPostgres);
+            this.hashMap.put(props.getProperty("jsql.tenant"), connectionProviderPostgres);
         });
     }
     
     public HashMap<String, ConnectionProvider> getDataSourceHashMap() {
-        return hashMap;
+        return this.hashMap;
     }
 }

@@ -132,7 +132,7 @@ public class InjectionModel extends AbstractModelObservable {
     public Vendor TERADATA = new Vendor("Teradata", new VendorXml("teradata.xml", InjectionModel.this));
     public Vendor VERTICA = new Vendor("Vertica", new VendorXml("vertica.xml", InjectionModel.this));
     
-    public List<Vendor> vendors = Arrays.asList(ACCESS,COCKROACHDB,CUBRID,DB2,DERBY,FIREBIRD,H2,HANA,HSQLDB,INFORMIX,INGRES,MAXDB,MCKOI,MEMSQL,MYSQL,NEO4J,NUODB,ORACLE,POSTGRESQL,SQLITE,SQLSERVER,SYBASE,TERADATA,VERTICA);
+    public List<Vendor> vendors = Arrays.asList(this.ACCESS,this.COCKROACHDB,this.CUBRID,this.DB2,this.DERBY,this.FIREBIRD,this.H2,this.HANA,this.HSQLDB,this.INFORMIX,this.INGRES,this.MAXDB,this.MCKOI,this.MEMSQL,this.MYSQL,this.NEO4J,this.NUODB,this.ORACLE,this.POSTGRESQL,this.SQLITE,this.SQLSERVER,this.SYBASE,this.TERADATA,this.VERTICA);
     
     public class Vendor {
         
@@ -310,8 +310,8 @@ public class InjectionModel extends AbstractModelObservable {
     public AbstractStrategy ERROR = new StrategyInjectionError(this);
     public AbstractStrategy NORMAL = new StrategyInjectionNormal(this);
     
-    public List<MethodInjection> methods = Arrays.asList(QUERY,REQUEST,HEADER);
-    public List<AbstractStrategy> strategies = Arrays.asList(UNDEFINED,TIME,BLIND,ERROR,NORMAL);
+    public List<MethodInjection> methods = Arrays.asList(this.QUERY,this.REQUEST,this.HEADER);
+    public List<AbstractStrategy> strategies = Arrays.asList(this.UNDEFINED,this.TIME,this.BLIND,this.ERROR,this.NORMAL);
 	
     /**
      * Log4j logger sent to view.
@@ -409,14 +409,14 @@ public class InjectionModel extends AbstractModelObservable {
         this.resetModel();
         
         try {
-            if (!proxyUtil.isLive(ShowOnConsole.YES)) {
+            if (!this.proxyUtil.isLive(ShowOnConsole.YES)) {
                 return;
             }
             
             LOGGER.info(I18n.valueByKey("LOG_START_INJECTION") +": "+ this.connectionUtil.getUrlByUser());
             
             // Check general integrity if user's parameters
-            parameterUtil.checkParametersFormat();
+            this.parameterUtil.checkParametersFormat();
             
             // Check connection is working: define Cookie management, check HTTP status, parse <form> parameters, process CSRF
             LOGGER.trace(I18n.valueByKey("LOG_CONNECTION_TEST"));
@@ -427,7 +427,7 @@ public class InjectionModel extends AbstractModelObservable {
             hasFoundInjection = this.testParameters(this.QUERY);
 
             if (!hasFoundInjection) {
-                hasFoundInjection = soapUtil.testParameters();
+                hasFoundInjection = this.soapUtil.testParameters();
             }
             
             if (!hasFoundInjection) {
@@ -441,9 +441,9 @@ public class InjectionModel extends AbstractModelObservable {
             
             if (!this.isScanning) {
                 if (!this.preferencesUtil.isNotInjectingMetadata()) {
-                    dataAccess.getDatabaseInfos();
+                    this.dataAccess.getDatabaseInfos();
                 }
-                dataAccess.listDatabases();
+                this.dataAccess.listDatabases();
             }
             
             LOGGER.trace(I18n.valueByKey("LOG_DONE"));
@@ -489,7 +489,7 @@ public class InjectionModel extends AbstractModelObservable {
             
             // Will keep param value as is,
             // Does not test for insertion character (param is null)
-            hasFoundInjection = this.testStrategies(!IS_PARAM_BY_USER, !IS_JSON, null);
+            hasFoundInjection = this.testStrategies(!this.IS_PARAM_BY_USER, !this.IS_JSON, null);
         
         // Default injection: last param tested only
         } else if (!methodInjection.isCheckingAllParam()) {
@@ -499,7 +499,7 @@ public class InjectionModel extends AbstractModelObservable {
             // Will check param value by user.
             // Notice options 'Inject each URL params' and 'inject JSON' must be checked both
             // for JSON injection of last param
-            hasFoundInjection = this.testStrategies(IS_PARAM_BY_USER, !IS_JSON, methodInjection.getParams().stream().reduce((a, b) -> b).get());
+            hasFoundInjection = this.testStrategies(this.IS_PARAM_BY_USER, !this.IS_JSON, methodInjection.getParams().stream().reduce((a, b) -> b).get());
             
         // Injection of every params: isCheckingAllParam() == true.
         // Params are tested one by one in two loops:
@@ -529,11 +529,11 @@ public class InjectionModel extends AbstractModelObservable {
                             // then loop through each paths to add * at the end of value and test each strategies.
                             // Marks * are erased between each tests.
                             if (this.preferencesUtil.isCheckingAllJSONParam() && !attributesJson.isEmpty()) {
-                                    hasFoundInjection = jsonUtil.testJsonParameter(methodInjection, paramStar);
+                                    hasFoundInjection = this.jsonUtil.testJsonParameter(methodInjection, paramStar);
                                 
                             // Standard non JSON injection
                             } else {
-                                hasFoundInjection = jsonUtil.testStandardParameter(methodInjection, paramStar);
+                                hasFoundInjection = this.jsonUtil.testStandardParameter(methodInjection, paramStar);
                             }
                             
                             if (hasFoundInjection) {
@@ -568,7 +568,7 @@ public class InjectionModel extends AbstractModelObservable {
         LOGGER.trace(I18n.valueByKey("LOG_GET_INSERTION_CHARACTER"));
         
         // Test for params integrity
-        String characterInsertionByUser = parameterUtil.getCharacterInsertion(isParamByUser, parameter);
+        String characterInsertionByUser = this.parameterUtil.getCharacterInsertion(isParamByUser, parameter);
         
         // If not an injection point then find insertion character.
         // Force to 1 if no insertion char works and empty value from user,
@@ -983,7 +983,7 @@ public class InjectionModel extends AbstractModelObservable {
                 }
             }
                      
-            parameterUtil.initQueryString(urlQuery);
+            this.parameterUtil.initQueryString(urlQuery);
             this.parameterUtil.initRequest(dataRequest);
             this.parameterUtil.initHeader(dataHeader);
             
@@ -1012,7 +1012,7 @@ public class InjectionModel extends AbstractModelObservable {
         String versionJava = System.getProperty("java.version");
         String nameSystemArchitecture = System.getProperty("os.arch");
         LOGGER.trace(
-            "jSQL Injection v" + propertiesUtil.getProperties().getProperty("jsql.version")
+            "jSQL Injection v" + this.propertiesUtil.getProperties().getProperty("jsql.version")
             + " on Java "+ versionJava
             +"-"+ nameSystemArchitecture
             +"-"+ System.getProperty("user.language")
@@ -1059,7 +1059,7 @@ public class InjectionModel extends AbstractModelObservable {
     }
 
     public AbstractStrategy getStrategy() {
-        return strategy;
+        return this.strategy;
     }
 
     public void setStrategy(AbstractStrategy strategy) {
@@ -1087,7 +1087,7 @@ public class InjectionModel extends AbstractModelObservable {
     }
 
     public String getVersionJsql() {
-        return propertiesUtil.getProperties().getProperty("jsql.version");
+        return this.propertiesUtil.getProperties().getProperty("jsql.version");
     }
 
 }

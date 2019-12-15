@@ -24,8 +24,8 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     public AbstractInjectionBoolean(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
 
-        falseTest = this.injectionModel.getVendor().instance().getListFalseTest();
-        trueTest = this.injectionModel.getVendor().instance().getListTrueTest();
+        this.falseTest = this.injectionModel.getVendor().instance().getListFalseTest();
+        this.trueTest = this.injectionModel.getVendor().instance().getListTrueTest();
     }
 
     /**

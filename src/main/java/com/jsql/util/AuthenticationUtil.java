@@ -217,10 +217,10 @@ public class AuthenticationUtil {
             System.setProperty("spnego.krb5.conf", "");
             System.setProperty("spnego.login.conf", "");
             
-            System.setProperty("jcifs.smb.client.responseTimeout", injectionModel.connectionUtil.getTimeout().toString());
-            System.setProperty("jcifs.smb.client.soTimeout", injectionModel.connectionUtil.getTimeout().toString());
-            jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", injectionModel.connectionUtil.getTimeout().toString());
-            jcifs.Config.setProperty("jcifs.smb.client.soTimeout", injectionModel.connectionUtil.getTimeout().toString());
+            System.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.connectionUtil.getTimeout().toString());
+            System.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.connectionUtil.getTimeout().toString());
+            jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.connectionUtil.getTimeout().toString());
+            jcifs.Config.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.connectionUtil.getTimeout().toString());
             
             jcifs.Config.registerSmbURLHandler();
         }
@@ -230,27 +230,27 @@ public class AuthenticationUtil {
     // Getters and setters
 
     public String getUsernameDigest() {
-        return usernameAuthentication;
+        return this.usernameAuthentication;
     }
 
     public String getPasswordDigest() {
-        return passwordAuthentication;
+        return this.passwordAuthentication;
     }
 
     public boolean isDigestAuthentication() {
-        return isAuthentication;
+        return this.isAuthentication;
     }
 
     public String getPathKerberosLogin() {
-        return pathKerberosLogin;
+        return this.pathKerberosLogin;
     }
 
     public String getPathKerberosKrb5() {
-        return pathKerberosKrb5;
+        return this.pathKerberosKrb5;
     }
 
     public boolean isKerberos() {
-        return isKerberos;
+        return this.isKerberos;
     }
     
 }

@@ -73,7 +73,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     @Override
     public CallableTime call() throws Exception {
         this.calendar1.setTime(new Date());
-        injectionTime.callUrl(this.blindUrl);
+        this.injectionTime.callUrl(this.blindUrl);
         this.calendar2.setTime(new Date());
         long milliseconds1 = this.calendar1.getTimeInMillis();
         long milliseconds2 = this.calendar2.getTimeInMillis();

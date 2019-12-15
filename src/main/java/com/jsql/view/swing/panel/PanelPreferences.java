@@ -142,26 +142,26 @@ public class PanelPreferences extends JPanel {
             );
             
             TamperingUtil.set(
-                checkboxIsTamperingBase64.isSelected(),
-                checkboxIsTamperingVersionComment.isSelected(),
-                checkboxIsTamperingFunctionComment.isSelected(),
-                checkboxIsTamperingEqualToLike.isSelected(),
-                checkboxIsTamperingRandomCase.isSelected(),
-                checkboxIsTamperingHexToChar.isSelected(),
-                checkboxIsTamperingQuoteToUtf8.isSelected(),
-                checkboxIsTamperingEval.isSelected(),
-                radioIsTamperingSpaceToMultilineComment.isSelected(),
-                radioIsTamperingSpaceToDashComment.isSelected(),
-                radioIsTamperingSpaceToSharpComment.isSelected()
+                PanelPreferences.this.checkboxIsTamperingBase64.isSelected(),
+                PanelPreferences.this.checkboxIsTamperingVersionComment.isSelected(),
+                PanelPreferences.this.checkboxIsTamperingFunctionComment.isSelected(),
+                PanelPreferences.this.checkboxIsTamperingEqualToLike.isSelected(),
+                PanelPreferences.this.checkboxIsTamperingRandomCase.isSelected(),
+                PanelPreferences.this.checkboxIsTamperingHexToChar.isSelected(),
+                PanelPreferences.this.checkboxIsTamperingQuoteToUtf8.isSelected(),
+                PanelPreferences.this.checkboxIsTamperingEval.isSelected(),
+                PanelPreferences.this.radioIsTamperingSpaceToMultilineComment.isSelected(),
+                PanelPreferences.this.radioIsTamperingSpaceToDashComment.isSelected(),
+                PanelPreferences.this.radioIsTamperingSpaceToSharpComment.isSelected()
             );
             
             boolean isRestartRequired = MediatorModel.model().authenticationUtil.set(
-                checkboxUseDigestAuthentication.isSelected(),
-                textDigestAuthenticationUsername.getText(),
-                textDigestAuthenticationPassword.getText(),
-                checkboxUseKerberos.isSelected(),
-                textKerberosKrb5Conf.getText(),
-                textKerberosLoginConf.getText()
+                PanelPreferences.this.checkboxUseDigestAuthentication.isSelected(),
+                PanelPreferences.this.textDigestAuthenticationUsername.getText(),
+                PanelPreferences.this.textDigestAuthenticationPassword.getText(),
+                PanelPreferences.this.checkboxUseKerberos.isSelected(),
+                PanelPreferences.this.textKerberosKrb5Conf.getText(),
+                PanelPreferences.this.textKerberosLoginConf.getText()
             );
             
             if (
@@ -373,17 +373,17 @@ public class PanelPreferences extends JPanel {
             }
             @Override
             public void mouseEntered(MouseEvent me) {
-                t=l.getText();
-                l.setText(tampering.instance().getXmlModel().getJavascript().trim());
+                this.t=l.getText();
+                l.setText(this.tampering.instance().getXmlModel().getJavascript().trim());
             }
             @Override
             public void mouseExited(MouseEvent e) {
-                l.setText(t);
+                l.setText(this.t);
             }
             @Override
             public void mouseClicked(MouseEvent e) {
-                t=tampering.instance().getXmlModel().getJavascript().trim();
-                l.setText(t);
+                this.t=this.tampering.instance().getXmlModel().getJavascript().trim();
+                l.setText(this.t);
             }
         }
 

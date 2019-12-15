@@ -58,7 +58,7 @@ public class CallableFile implements Callable<CallableFile> {
         String resultToParse = "";
         try {
             resultToParse = this.suspendableReadFile.run(
-                injectionModel.getVendor().instance().sqlFileRead(this.pathFile),
+                this.injectionModel.getVendor().instance().sqlFileRead(this.pathFile),
                 sourcePage,
                 false,
                 1,
