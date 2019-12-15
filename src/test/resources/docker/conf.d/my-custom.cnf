@@ -1,3 +1,0 @@
-[mysqld]
-max_connections = 1000
-thread_cache_size = 1000

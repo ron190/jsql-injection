@@ -1,5 +1,3 @@
 FROM mysql
 
-CMD [ "--max_connections=1000" ]
-
 EXPOSE 3306
