@@ -65,6 +65,7 @@ public class ExceptionUtil {
 		    );
 		} catch (InvocationTargetException | InterruptedException e) {
 			LOGGER.error("Unhandled Exception on ExceptionUtil", e);
+		    Thread.currentThread().interrupt();
 		}
     	
     }

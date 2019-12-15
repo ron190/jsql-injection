@@ -110,6 +110,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 }
             } catch (InterruptedException | ExecutionException e) {
                 LOGGER.error("Interruption while defining character injection", e);
+                Thread.currentThread().interrupt();
             }
             
         }

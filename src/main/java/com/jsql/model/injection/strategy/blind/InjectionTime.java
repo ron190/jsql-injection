@@ -93,6 +93,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             }
         } catch (InterruptedException | ExecutionException e) {
             LOGGER.error("Interruption while checking Time injection", e);
+            Thread.currentThread().interrupt();
         }
 
         /*
@@ -132,6 +133,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             }
         } catch (InterruptedException | ExecutionException e) {
             LOGGER.error("Interruption while checking Time injection", e);
+            Thread.currentThread().interrupt();
         }
     }
 

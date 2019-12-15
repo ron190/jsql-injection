@@ -38,13 +38,13 @@ public class BeanInjection {
         this.header = header;
         
         try {
-            this.injectionType = MediatorModel.model().methods.stream().filter(m -> m.name().equalsIgnoreCase(injectionType)).findAny().get();
+            this.injectionType = MediatorModel.model().methods.stream().filter(m -> m.name().equalsIgnoreCase(injectionType)).findAny().orElse(MediatorModel.model().QUERY);
         } catch (IllegalArgumentException | NoSuchElementException e) {
             this.injectionType = MediatorModel.model().QUERY;
         }
         
         try {
-            this.vendor = MediatorModel.model().vendors.stream().filter(m -> m.toString().equals(vendor)).findAny().get();
+            this.vendor = MediatorModel.model().vendors.stream().filter(m -> m.toString().equals(vendor)).findAny().orElse(MediatorModel.model().AUTO);
         } catch (IllegalArgumentException | NoSuchElementException e) {
             this.vendor = MediatorModel.model().AUTO;
         }

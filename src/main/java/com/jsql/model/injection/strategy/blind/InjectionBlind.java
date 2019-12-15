@@ -132,6 +132,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             }
         } catch (InterruptedException | ExecutionException e) {
             LOGGER.error(e.getMessage(), e);
+            Thread.currentThread().interrupt();
         }
     }
 

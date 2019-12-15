@@ -17,7 +17,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.h2.tools.Server;
-import org.junit.Rule;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -33,7 +32,6 @@ import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
-import com.test.util.Retry;
 
 import spring.Application;
 
@@ -75,9 +73,6 @@ public abstract class AbstractTestSuite {
     protected String jsqlDatabaseName;
     protected String jsqlTableName;
     protected String jsqlColumnName;
-    
-    @Rule
-    public Retry retry = new Retry(3);
     
     private static AtomicBoolean isSetupStarted = new AtomicBoolean(false);
     

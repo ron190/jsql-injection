@@ -830,8 +830,8 @@ public class Menubar extends JMenuBar {
         JTableHeader header = MediatorGui.panelConsoles().getNetworkTable().getTableHeader();
         TableColumnModel colMod = header.getColumnModel();
         if (
-            newLocale.getLanguage() == new Locale("zh").getLanguage()
-            || newLocale.getLanguage() == new Locale("ko").getLanguage()
+            new Locale("zh").getLanguage().equals(newLocale.getLanguage())
+            || new Locale("ko").getLanguage().equals(newLocale.getLanguage())
         ) {
             StyleConstants.setFontFamily(SwingAppender.ERROR, HelperUi.FONT_NAME_UBUNTU_REGULAR);
             StyleConstants.setFontFamily(SwingAppender.WARN, HelperUi.FONT_NAME_UBUNTU_REGULAR);
@@ -875,8 +875,8 @@ public class Menubar extends JMenuBar {
                         methodSetText.setAccessible(true);
                         if (
                             // TODO
-                            newLocale.getLanguage() == new Locale("zh").getLanguage()
-                            || newLocale.getLanguage() == new Locale("ko").getLanguage()
+                            new Locale("zh").getLanguage().equals(newLocale.getLanguage())
+                            || new Locale("ko").getLanguage().equals(newLocale.getLanguage())
                         ) {
                             methodSetText.invoke(componentSwing, I18nView.valueByKey(key));
                         } else {

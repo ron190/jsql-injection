@@ -499,7 +499,7 @@ public class InjectionModel extends AbstractModelObservable {
             // Will check param value by user.
             // Notice options 'Inject each URL params' and 'inject JSON' must be checked both
             // for JSON injection of last param
-            hasFoundInjection = this.testStrategies(this.IS_PARAM_BY_USER, !this.IS_JSON, methodInjection.getParams().stream().reduce((a, b) -> b).get());
+            hasFoundInjection = this.testStrategies(this.IS_PARAM_BY_USER, !this.IS_JSON, methodInjection.getParams().stream().reduce((a, b) -> b).orElseThrow());
             
         // Injection of every params: isCheckingAllParam() == true.
         // Params are tested one by one in two loops:

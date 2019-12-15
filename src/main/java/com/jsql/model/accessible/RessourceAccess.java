@@ -172,6 +172,7 @@ public class RessourceAccess {
                 }
             } catch (InterruptedException | ExecutionException e) {
                 LOGGER.error("Interruption while checking Admin pages", e);
+                Thread.currentThread().interrupt();
             }
         }
 
@@ -307,6 +308,7 @@ public class RessourceAccess {
                     }
                 } catch (InterruptedException | ExecutionException e) {
                     LOGGER.error("Interruption while checking Web shell", e);
+                    Thread.currentThread().interrupt();
                 }
             }
 
@@ -520,6 +522,7 @@ public class RessourceAccess {
                     }
                 } catch (InterruptedException | ExecutionException e) {
                     LOGGER.error("Interruption while checking SQL shell", e);
+                    Thread.currentThread().interrupt();
                 }
             }
 

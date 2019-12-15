@@ -185,6 +185,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                 }
             } catch (InterruptedException | ExecutionException e) {
                 LOGGER.error(e.getMessage(), e);
+                Thread.currentThread().interrupt();
             }
             
         }

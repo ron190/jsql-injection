@@ -88,7 +88,7 @@ public abstract class AbstractSuspendable<T> {
      * Un-wait the thread.
      */
     public synchronized void resume() {
-        this.notify();
+        this.notifyAll();
     }
     
     /**

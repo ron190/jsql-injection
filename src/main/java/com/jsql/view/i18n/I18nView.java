@@ -69,8 +69,8 @@ public class I18nView {
         String result;
         if (
             // TODO
-            I18n.getLocaleDefault().getLanguage() == new Locale("zh").getLanguage()
-            || I18n.getLocaleDefault().getLanguage() == new Locale("ko").getLanguage()
+            new Locale("zh").getLanguage().equals(I18n.getLocaleDefault().getLanguage())
+            || new Locale("ko").getLanguage().equals(I18n.getLocaleDefault().getLanguage())
         ) {
             result = "<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ I18n.valueByKey(key) +"</span></html>";
         } else {

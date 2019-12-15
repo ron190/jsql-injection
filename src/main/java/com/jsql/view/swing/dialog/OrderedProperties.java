@@ -366,7 +366,7 @@ public final class OrderedProperties {
         }
 
         @Override
-        public Object put(Object key, Object value) {
+        public synchronized Object put(Object key, Object value) {
             return this.targetProperties.put((String) key, (String) value);
         }
 

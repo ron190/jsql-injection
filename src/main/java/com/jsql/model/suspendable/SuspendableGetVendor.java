@@ -94,6 +94,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                     }
                 } catch (InterruptedException | ExecutionException e) {
                     LOGGER.error("Interruption while determining the type of database", e);
+                    Thread.currentThread().interrupt();
                 }
                 
             }

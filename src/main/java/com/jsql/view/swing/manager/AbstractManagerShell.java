@@ -175,6 +175,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
                         );
                     } catch (JSqlException | InterruptedException e) {
                         LOGGER.warn("Payload creation error: "+ e.getMessage(), e);
+                        Thread.currentThread().interrupt();
                     }
                 }, "ThreadGetShell").start();
             }

@@ -71,7 +71,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 
             JPopupMenu popupMenuList = new JPopupMenu();
             
-            boolean isChinese = I18n.getLocaleDefault().getLanguage() == new Locale("zh").getLanguage();
+            boolean isChinese = new Locale("zh").getLanguage().equals(I18n.getLocaleDefault().getLanguage());
 
             JMenuItem mnImport = new JMenuItem(
                 isChinese
