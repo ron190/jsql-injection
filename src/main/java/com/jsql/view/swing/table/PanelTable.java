@@ -109,7 +109,7 @@ public class PanelTable extends JPanel {
             (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
             // Prepare cell value to be utf8 inspected
             String cellValue = value != null ? value.toString() : "";
-            return (JLabel) cellRendererDefault.getTableCellRendererComponent(
+            return cellRendererDefault.getTableCellRendererComponent(
                 table, StringUtil.detectUtf8HtmlNoWrap(cellValue), isSelected, hasFocus, row, column
             );
         });

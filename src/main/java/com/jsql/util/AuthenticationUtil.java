@@ -56,11 +56,6 @@ public class AuthenticationUtil {
      */
     private String pathKerberosKrb5;
     
-    // Utility class
-    private AuthenticationUtil() {
-        // not called
-    }
-    
     public AuthenticationUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }

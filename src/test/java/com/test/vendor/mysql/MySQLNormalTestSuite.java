@@ -26,8 +26,8 @@ public class MySQLNormalTestSuite extends ConcreteMySQLTestSuite {
         model.parameterUtil.initQueryString("http://localhost:8080/greeting");
         model.parameterUtil.initRequest("");
         model.parameterUtil.setQueryString(Arrays.asList(
-            new SimpleEntry<String, String>("tenant", "mysql"),
-            new SimpleEntry<String, String>("name", "0'")
+            new SimpleEntry<>("tenant", "mysql"),
+            new SimpleEntry<>("name", "0'")
         ));
         
         model.connectionUtil.setMethodInjection(model.QUERY);

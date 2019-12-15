@@ -26,8 +26,8 @@ public class MySQLErrorTestSuite extends ConcreteMySQLErrorTestSuite {
         model.parameterUtil.initQueryString("http://localhost:8080/greeting-error");
         model.parameterUtil.initRequest("");
         model.parameterUtil.setQueryString(Arrays.asList(
-            new SimpleEntry<String, String>("tenant", "mysql-error"),
-            new SimpleEntry<String, String>("name", "0'")
+            new SimpleEntry<>("tenant", "mysql-error"),
+            new SimpleEntry<>("name", "0'")
         ));
 
         model.connectionUtil.setMethodInjection(model.QUERY);

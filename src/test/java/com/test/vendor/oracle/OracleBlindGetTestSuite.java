@@ -10,6 +10,7 @@ import com.jsql.model.exception.JSqlException;
 public class OracleBlindGetTestSuite extends ConcreteOracleTestSuite {
 
 //    @BeforeClass
+    @Override
     public void initialize3() throws InjectionFailureException {
 //        InjectionModel model = new InjectionModel();
 //        MediatorModel.register(model);

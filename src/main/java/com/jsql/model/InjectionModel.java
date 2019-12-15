@@ -722,7 +722,7 @@ public class InjectionModel extends AbstractModelObservable {
                 Stream.of(this.buildQuery(this.HEADER, this.parameterUtil.getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
                 .forEach(e -> {
                     if (e.split(":").length == 2) {
-                        HeaderUtil.sanitizeHeaders(connection, new SimpleEntry<String, String>(e.split(":")[0], e.split(":")[1]));
+                        HeaderUtil.sanitizeHeaders(connection, new SimpleEntry<>(e.split(":")[0], e.split(":")[1]));
                     }
                 });
                 

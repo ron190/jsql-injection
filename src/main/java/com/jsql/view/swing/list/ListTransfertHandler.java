@@ -128,7 +128,7 @@ public class ListTransfertHandler extends TransferHandler {
                 int[] selectedIndices = new int[selectAfterDrop.size()];
                 int i = 0;
                 for (Integer integer: selectAfterDrop) {
-                    selectedIndices[i] = integer.intValue();
+                    selectedIndices[i] = integer;
                     i++;
                 }
                 list.setSelectedIndices(selectedIndices);
@@ -171,7 +171,7 @@ public class ListTransfertHandler extends TransferHandler {
                         int[] selectedIndexesPasted = new int[selectedIndexes.size()];
                         int i = 0;
                         for (Integer integer : selectedIndexes) {
-                            selectedIndexesPasted[i] = integer.intValue();
+                            selectedIndexesPasted[i] = integer;
                             i++;
                         }
                         list.setSelectedIndices(selectedIndexesPasted);

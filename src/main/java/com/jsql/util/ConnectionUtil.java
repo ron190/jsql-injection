@@ -76,11 +76,6 @@ public class ConnectionUtil {
     
     private SimpleEntry<String, String> tokenCsrf = null;
     
-    // Utility class
-    private ConnectionUtil() {
-        // not used
-    }
-    
     public ConnectionUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }

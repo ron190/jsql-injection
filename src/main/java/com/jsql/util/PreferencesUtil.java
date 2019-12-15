@@ -58,11 +58,6 @@ public class PreferencesUtil {
     private boolean isReportingBugs = true;
     private boolean is4K = true;
 
-    // Utility class
-    private PreferencesUtil() {
-        // not called
-    }
-    
     public PreferencesUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }

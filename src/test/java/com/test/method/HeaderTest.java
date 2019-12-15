@@ -15,6 +15,7 @@ import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 @Ignore
 public abstract class HeaderTest extends ConcreteMySQLTestSuite {
 
+    @Override
     @BeforeClass
     public void initialize3() throws InjectionFailureException {
         InjectionModel model = new InjectionModel();

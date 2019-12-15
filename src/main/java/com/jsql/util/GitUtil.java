@@ -42,11 +42,6 @@ public class GitUtil {
         NO;
     }
 
-    // Utility class
-    private GitUtil() {
-        // not called
-    }
-
     public GitUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }

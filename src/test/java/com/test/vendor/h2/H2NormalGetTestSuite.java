@@ -15,6 +15,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 @Execution(ExecutionMode.CONCURRENT)
 public class H2NormalGetTestSuite extends ConcreteH2TestSuite {
     
+    @Override
     public void initialize3() throws Exception {
         
         InjectionModel model = new InjectionModel();
@@ -25,8 +26,8 @@ public class H2NormalGetTestSuite extends ConcreteH2TestSuite {
         model.parameterUtil.initQueryString("http://localhost:8080/greeting");
         model.parameterUtil.initRequest("");
         model.parameterUtil.setQueryString(Arrays.asList(
-            new SimpleEntry<String, String>("tenant", "h2"),
-            new SimpleEntry<String, String>("name", "1'")
+            new SimpleEntry<>("tenant", "h2"),
+            new SimpleEntry<>("name", "1'")
         ));
         model.connectionUtil.setMethodInjection(model.QUERY);
         model.connectionUtil.setTypeRequest("GET");

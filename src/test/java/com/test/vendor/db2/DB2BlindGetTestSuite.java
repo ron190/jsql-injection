@@ -10,6 +10,7 @@ import com.jsql.model.exception.JSqlException;
 @Ignore
 public class DB2BlindGetTestSuite extends ConcreteDB2TestSuite {
 
+    @Override
     @BeforeClass
     public void initialize3() throws InjectionFailureException {
 //        InjectionModel model = new InjectionModel();

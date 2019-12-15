@@ -37,11 +37,6 @@ public class HeaderUtil {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    // Utility class
-    private HeaderUtil() {
-        // Nothing
-    }
-    
     public HeaderUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }
@@ -239,9 +234,9 @@ public class HeaderUtil {
                 for(Entry<Element, List<Element>> form: mapForms.entrySet()) {
                     for (Element input: form.getValue()) {
                         if ("get".equalsIgnoreCase(form.getKey().attr("method"))) {
-                            this.injectionModel.parameterUtil.getQueryString().add(0, new SimpleEntry<String, String>(input.attr("name"), input.attr("value")));
+                            this.injectionModel.parameterUtil.getQueryString().add(0, new SimpleEntry<>(input.attr("name"), input.attr("value")));
                         } else if ("post".equalsIgnoreCase(form.getKey().attr("method"))) {
-                            this.injectionModel.parameterUtil.getRequest().add(0, new SimpleEntry<String, String>(input.attr("name"), input.attr("value")));
+                            this.injectionModel.parameterUtil.getRequest().add(0, new SimpleEntry<>(input.attr("name"), input.attr("value")));
                         }
                     }
                 }
@@ -256,7 +251,7 @@ public class HeaderUtil {
         .select("[name=csrf_token], [name=csrfToken]")
         .stream()
         .findFirst()
-        .map(input -> new SimpleEntry<String, String>(input.attr("name"), input.attr("value")));
+        .map(input -> new SimpleEntry<>(input.attr("name"), input.attr("value")));
         
         if (optionalTokenCsrf.isPresent()) {
             SimpleEntry<String, String> tokenCsrfFound = optionalTokenCsrf.get();

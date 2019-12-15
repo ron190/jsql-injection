@@ -12,6 +12,7 @@ public class IngresNormalGetTestSuite extends ConcreteIngresTestSuite {
         super();
     }
 
+    @Override
     @BeforeClass
     public void initialize3() throws InjectionFailureException {
 //        InjectionModel model = new InjectionModel();

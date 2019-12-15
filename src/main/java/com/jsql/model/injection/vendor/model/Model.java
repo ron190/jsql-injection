@@ -2387,7 +2387,7 @@ public class Model {
                  */
                 public List<String> getFalse() {
                     if (this._false == null) {
-                        this._false = new ArrayList<String>();
+                        this._false = new ArrayList<>();
                     }
                     return this._false;
                 }
@@ -2416,7 +2416,7 @@ public class Model {
                  */
                 public List<String> getTrue() {
                     if (this._true == null) {
-                        this._true = new ArrayList<String>();
+                        this._true = new ArrayList<>();
                     }
                     return this._true;
                 }
@@ -2771,7 +2771,7 @@ public class Model {
                  */
                 public List<String> getErrorMessage() {
                     if (this.errorMessage == null) {
-                        this.errorMessage = new ArrayList<String>();
+                        this.errorMessage = new ArrayList<>();
                     }
                     return this.errorMessage;
                 }
@@ -2844,7 +2844,7 @@ public class Model {
              */
             public List<Model.Strategy.Error.Method> getMethod() {
                 if (this.method == null) {
-                    this.method = new ArrayList<Model.Strategy.Error.Method>();
+                    this.method = new ArrayList<>();
                 }
                 return this.method;
             }

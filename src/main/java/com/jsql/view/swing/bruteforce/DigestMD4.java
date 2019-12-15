@@ -78,8 +78,8 @@ public class DigestMD4 extends MessageDigest implements Cloneable {
      */
     private DigestMD4(DigestMD4 md) {
         this();
-        this.context = (int[]) md.context.clone();
-        this.buffer = (byte[]) md.buffer.clone();
+        this.context = md.context.clone();
+        this.buffer = md.buffer.clone();
         this.count = md.count;
     }
 

@@ -31,7 +31,7 @@ public class TabDropTargetAdapter extends DropTargetAdapter {
     
     @Override
     public void dragEnter(DropTargetDragEvent dtde) {
-        Component c = dtde.getDropTargetContext().getComponent();
+        dtde.getDropTargetContext().getComponent();
     }
     
 }

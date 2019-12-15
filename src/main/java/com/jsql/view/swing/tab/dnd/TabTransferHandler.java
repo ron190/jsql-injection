@@ -61,7 +61,7 @@ public class TabTransferHandler extends TransferHandler {
         Point pt = tdl.getDropPoint();
         DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
         target.autoScrollTest(pt);
-        DnDTabbedPane.DropLocation dl = (DnDTabbedPane.DropLocation) target.dropLocationForPoint(pt);
+        DnDTabbedPane.DropLocation dl = target.dropLocationForPoint(pt);
         int idx = dl.getIndex();
 
         boolean isDroppable = false;

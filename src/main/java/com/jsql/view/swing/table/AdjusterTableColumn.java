@@ -177,7 +177,7 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
             calculatedWidth = Math.max(calculatedWidth, tableColumn.getPreferredWidth());
         }
 
-        this.columnSizes.put(tableColumn, Integer.valueOf(tableColumn.getWidth()));
+        this.columnSizes.put(tableColumn, tableColumn.getWidth());
         this.tableAdjust.getTableHeader().setResizingColumn(tableColumn);
         tableColumn.setWidth(calculatedWidth);
     }
@@ -202,7 +202,7 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
 
         if (width != null) {
             this.tableAdjust.getTableHeader().setResizingColumn(tableColumn);
-            tableColumn.setWidth( width.intValue() );
+            tableColumn.setWidth( width );
         }
     }
 

@@ -219,7 +219,8 @@ public class JavaScriptToken extends Token {
      * any time that it reports that it has returned to this state, the
      * tokenizer may be restarted from there.
      */
-  public int getState(){
+  @Override
+public int getState(){
     return this.state;
   }
   /**
@@ -227,7 +228,8 @@ public class JavaScriptToken extends Token {
    * 
    * @return the id number of the token
    */
-  public int getID(){
+  @Override
+public int getID(){
   	return this.ID;
   }
 
@@ -236,7 +238,8 @@ public class JavaScriptToken extends Token {
    * 
    * @return A string representing the text of the token
    */
-  public String getContents(){
+  @Override
+public String getContents(){
   	return (new String(this.contents));
   }
 
@@ -245,7 +248,8 @@ public class JavaScriptToken extends Token {
    * 
    * @return the line number of the input on which this token started
    */
-  public int getLineNumber(){
+  @Override
+public int getLineNumber(){
   	return this.lineNumber;
   }
 
@@ -254,7 +258,8 @@ public class JavaScriptToken extends Token {
    *
    * @return the offset into the input in characters at which this token started
    */
-  public int getCharBegin(){
+  @Override
+public int getCharBegin(){
   	return this.charBegin;
   }
 
@@ -263,7 +268,8 @@ public class JavaScriptToken extends Token {
    *
    * @return the offset into the input in characters at which this token ended
    */
-  public int getCharEnd(){
+  @Override
+public int getCharEnd(){
  	return this.charEnd;
   }
 
@@ -327,7 +333,8 @@ public class JavaScriptToken extends Token {
    * 
    * @return true if this token is a comment, false otherwise
    */
-  public boolean isComment(){
+  @Override
+public boolean isComment(){
   	return((this.ID >> 8) == 0xD);
   }
 
@@ -337,7 +344,8 @@ public class JavaScriptToken extends Token {
    * 
    * @return true if this token is White Space, false otherwise
    */
-  public boolean isWhiteSpace(){
+  @Override
+public boolean isWhiteSpace(){
   	return((this.ID >> 8) == 0xE);
   }
 
@@ -347,7 +355,8 @@ public class JavaScriptToken extends Token {
    * 
    * @return true if this token is an Error, false otherwise
    */
-  public boolean isError(){
+  @Override
+public boolean isError(){
   	return((this.ID >> 8) == 0xF);
   }
 
@@ -358,7 +367,8 @@ public class JavaScriptToken extends Token {
      *
 	 * @return a description of this token.
 	 */
-	public String getDescription(){
+	@Override
+    public String getDescription(){
 		if (this.isReservedWord()){
 			return("reservedWord");
 		} else if (this.isIdentifier()){
@@ -385,7 +395,8 @@ public class JavaScriptToken extends Token {
    * 
    * @return a  String that explains the error, if this token is an error, null otherwise.
    */
-  public String errorString(){
+  @Override
+public String errorString(){
   	String s;
   	if (this.isError()){
   		s = "Error on line " + this.lineNumber + ": ";
@@ -438,7 +449,8 @@ public class JavaScriptToken extends Token {
    *
    * @return a string representation of this token
    */
-  public String toString() {
+  @Override
+public String toString() {
       return ("Token #" + Integer.toHexString(this.ID) + ": " + this.getDescription() + " Line " +
       	this.lineNumber + " from " +this.charBegin + " to " + this.charEnd + " : " + this.contents);
   }

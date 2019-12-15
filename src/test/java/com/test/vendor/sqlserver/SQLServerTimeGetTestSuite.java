@@ -10,6 +10,7 @@ import com.jsql.model.exception.JSqlException;
 @Ignore
 public class SQLServerTimeGetTestSuite extends ConcreteSQLServerTestSuite {
 
+    @Override
     @BeforeClass
     public void initialize3() throws InjectionFailureException {
 //        InjectionModel model = new InjectionModel();

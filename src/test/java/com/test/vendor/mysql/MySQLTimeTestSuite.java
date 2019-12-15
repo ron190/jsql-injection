@@ -29,8 +29,8 @@ public class MySQLTimeTestSuite extends ConcreteMySQLTestSuite {
         model.parameterUtil.initQueryString("http://localhost:8080/greeting-time");
         model.parameterUtil.initRequest("");
         model.parameterUtil.setQueryString(Arrays.asList(
-            new SimpleEntry<String, String>("tenant", "mysql"),
-            new SimpleEntry<String, String>("name", "1'")
+            new SimpleEntry<>("tenant", "mysql"),
+            new SimpleEntry<>("name", "1'")
         ));
 
         model.connectionUtil.setMethodInjection(model.QUERY);

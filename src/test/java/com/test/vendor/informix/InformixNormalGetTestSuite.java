@@ -12,6 +12,7 @@ public class InformixNormalGetTestSuite extends ConcreteInformixTestSuite {
         super();
     }
 
+    @Override
     @BeforeClass
     public void initialize3() throws InjectionFailureException {
 //        InjectionModel model = new InjectionModel();

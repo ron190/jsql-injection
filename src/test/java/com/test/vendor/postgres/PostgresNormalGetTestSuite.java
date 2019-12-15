@@ -15,6 +15,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 @Execution(ExecutionMode.CONCURRENT)
 public class PostgresNormalGetTestSuite extends ConcretePostgresTestSuite {
     
+    @Override
     public void initialize3() throws Exception {
         
         InjectionModel model = new InjectionModel();
@@ -25,8 +26,8 @@ public class PostgresNormalGetTestSuite extends ConcretePostgresTestSuite {
         model.parameterUtil.initQueryString("http://localhost:8080/greeting");
         model.parameterUtil.initRequest("");
         model.parameterUtil.setQueryString(Arrays.asList(
-            new SimpleEntry<String, String>("tenant", "postgres"),
-            new SimpleEntry<String, String>("name", "0'")
+            new SimpleEntry<>("tenant", "postgres"),
+            new SimpleEntry<>("name", "0'")
         ));
         model.connectionUtil.setMethodInjection(model.QUERY);
         model.connectionUtil.setTypeRequest("GET");

@@ -33,11 +33,6 @@ public class ParameterUtil {
      */
     private List<SimpleEntry<String, String>> header = new ArrayList<>();
 
-    // Utility class
-    private ParameterUtil() {
-        // nothing
-    }
-    
     public ParameterUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }
@@ -201,7 +196,7 @@ public class ParameterUtil {
                 this.setQueryString(
                     Pattern.compile("&").splitAsStream(regexSearch.group(2))
                     .map(s -> Arrays.copyOf(s.split("="), 2))
-                    .map(o -> new SimpleEntry<String, String>(o[0], o[1] == null ? "" : o[1]))
+                    .map(o -> new SimpleEntry<>(o[0], o[1] == null ? "" : o[1]))
                     .collect(Collectors.toList())
                 );
             }
@@ -219,7 +214,7 @@ public class ParameterUtil {
                 .compile("&")
                 .splitAsStream(request)
                 .map(s -> Arrays.copyOf(s.split("="), 2))
-                .map(o -> new SimpleEntry<String, String>(o[0], o[1] == null ? "" : o[1]))
+                .map(o -> new SimpleEntry<>(o[0], o[1] == null ? "" : o[1]))
                 .collect(Collectors.toList())
             ;
         }
@@ -232,7 +227,7 @@ public class ParameterUtil {
                 .compile("\\\\r\\\\n")
                 .splitAsStream(header)
                 .map(s -> Arrays.copyOf(s.split(":"), 2))
-                .map(o -> new SimpleEntry<String, String>(o[0], o[1] == null ? "" : o[1]))
+                .map(o -> new SimpleEntry<>(o[0], o[1] == null ? "" : o[1]))
                 .collect(Collectors.toList())
             );
         }

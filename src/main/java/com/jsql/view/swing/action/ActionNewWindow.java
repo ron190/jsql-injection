@@ -51,7 +51,7 @@ public class ActionNewWindow extends AbstractAction {
     private List<String> commands;
 
     public ActionNewWindow(String name, String... commands) {
-        this.commands = new ArrayList<String>(Arrays.asList(PATH));
+        this.commands = new ArrayList<>(Arrays.asList(PATH));
         this.commands.addAll(Arrays.asList(commands));
         this.commands.addAll(COMMANDS_DEFAULT);
         

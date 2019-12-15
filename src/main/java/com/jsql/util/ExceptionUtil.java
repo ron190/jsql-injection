@@ -20,11 +20,6 @@ public class ExceptionUtil {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-    // Utility class
-    private ExceptionUtil() {
-        // not called
-    }
-
     public ExceptionUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }

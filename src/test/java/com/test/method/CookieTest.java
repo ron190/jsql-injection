@@ -23,6 +23,7 @@ public abstract class CookieTest extends ConcreteMySQLTestSuite {
      * @throws InjectionFailureException
      */
 
+    @Override
     @BeforeClass
     public void initialize2() throws InjectionFailureException {
         InjectionModel model = new InjectionModel();

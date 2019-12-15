@@ -29,7 +29,7 @@ public interface Lexer {
 	 *
 	 * @return the next token
 	 */
-	public Token getNextToken() throws java.io.IOException ;
+	Token getNextToken() throws java.io.IOException ;
 
     /**
      * Closes the current input stream, and resets the scanner to read from a new input stream.
@@ -45,5 +45,5 @@ public interface Lexer {
      * @param yycolumn The position (relative to the line) of the first token.
      * @throws IOException if an IOExecption occurs while switching readers.
      */
-    public void reset(java.io.Reader reader, int yyline, int yychar, int yycolumn) throws java.io.IOException;
+    void reset(java.io.Reader reader, int yyline, int yychar, int yycolumn) throws java.io.IOException;
 }

@@ -83,8 +83,8 @@ public class HashBruter extends Bruter {
                 }
                 this.count++;
             } else if (baseString.length() < length) {
-                for (int n = 0; n < this.characters.size(); n++) {
-                    this.generateAllPossibleCombinations(baseString + this.characters.get(n), length);
+                for (String element : this.characters) {
+                    this.generateAllPossibleCombinations(baseString + element, length);
                 }
             }
         }

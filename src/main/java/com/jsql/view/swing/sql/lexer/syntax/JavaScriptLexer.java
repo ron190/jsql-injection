@@ -680,23 +680,9 @@ public class JavaScriptLexer implements Lexer {
   /** the number of characters up to the start of the matched text */
   private int yychar;
 
-  /**
-   * the number of characters from the last newline up to the start of the
-   * matched text
-   */
-  private int yycolumn;
-
-  /**
-   * zzAtBOL == true <=> the scanner is currently at the beginning of a line
-   */
-  private boolean zzAtBOL = true;
-
   /** zzAtEOF == true <=> the scanner is at the EOF */
   private boolean zzAtEOF;
 
-  /** denotes if the user-EOF-code has already been executed */
-  private boolean zzEOFDone;
-  
   /**
    * The number of occupied positions in zzBuffer beyond zzEndRead.
    * When a lead/high surrogate has been read from the input stream
@@ -736,11 +722,11 @@ public class JavaScriptLexer implements Lexer {
      * @param yycolumn The position (relative to the line) of the first token.
      * @throws IOException if an IOExecption occurs while switching readers.
      */
+    @Override
     public void reset(java.io.Reader reader, int yyline, int yychar, int yycolumn) throws IOException{
         this.yyreset(reader);
         this.yyline = yyline;
 		this.yychar = yychar;
-		this.yycolumn = yycolumn;
 	}
 
 
@@ -861,13 +847,11 @@ public class JavaScriptLexer implements Lexer {
    */
   public final void yyreset(java.io.Reader reader) {
     this.zzReader = reader;
-    this.zzAtBOL  = true;
     this.zzAtEOF  = false;
-    this.zzEOFDone = false;
     this.zzEndRead = this.zzStartRead = 0;
     this.zzCurrentPos = this.zzMarkedPos = 0;
     this.zzFinalHighSurrogate = 0;
-    this.yyline = this.yychar = this.yycolumn = 0;
+    this.yyline = this.yychar = 0;
     this.zzLexicalState = YYINITIAL;
     if (this.zzBuffer.length > ZZ_BUFFERSIZE)
       this.zzBuffer = new char[ZZ_BUFFERSIZE];
@@ -974,7 +958,8 @@ public class JavaScriptLexer implements Lexer {
    * @return      the next token
    * @exception   java.io.IOException  if any I/O-Error occurs
    */
-  public Token getNextToken() throws java.io.IOException {
+  @Override
+public Token getNextToken() throws java.io.IOException {
     int zzInput;
     int zzAction;
 

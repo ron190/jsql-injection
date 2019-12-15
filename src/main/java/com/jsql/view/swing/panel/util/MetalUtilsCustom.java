@@ -3,7 +3,6 @@ package com.jsql.view.swing.panel.util;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.image.RGBImageFilter;
 
 import javax.swing.UIManager;
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -150,7 +149,7 @@ public class MetalUtilsCustom {
         Object value = UIManager.get(key);
 
         if (value instanceof Integer) {
-            return ((Integer)value).intValue();
+            return ((Integer)value);
         }
         if (value instanceof String) {
             try {
@@ -388,51 +387,6 @@ public class MetalUtilsCustom {
 //        return new ImageIconUIResource(Toolkit.getDefaultToolkit().createImage(prod));
 //    }
 
-
-
-
-    /**
-     * Used to create a disabled Icon with the ocean look.
-     */
-    private static class OceanDisabledButtonImageFilter extends RGBImageFilter{
-        private float min;
-        private float factor;
-
-        OceanDisabledButtonImageFilter(int min, int max) {
-            this.canFilterIndexColorModel = true;
-            this.min = (float)min;
-            this.factor = (max - min) / 255f;
-        }
-
-        @Override
-        public int filterRGB(int x, int y, int rgb) {
-            // Coefficients are from the sRGB color space:
-            int gray = Math.min(255, (int)(((0.2125f * ((rgb >> 16) & 0xFF)) +
-                    (0.7154f * ((rgb >> 8) & 0xFF)) +
-                    (0.0721f * (rgb & 0xFF)) + .5f) * this.factor + this.min));
-
-            return (rgb & 0xff000000) | (gray << 16) | (gray << 8) | gray;
-        }
-    }
-
-
-    /**
-     * Used to create the rollover icons with the ocean look.
-     */
-    private static class OceanToolBarImageFilter extends RGBImageFilter {
-        OceanToolBarImageFilter() {
-            this.canFilterIndexColorModel = true;
-        }
-
-        @Override
-        public int filterRGB(int x, int y, int rgb) {
-            int r = (rgb >> 16) & 0xff;
-            int g = (rgb >> 8) & 0xff;
-            int b = rgb & 0xff;
-            int gray = Math.max(Math.max(r, g), b);
-            return (rgb & 0xff000000) | (gray << 16) | (gray << 8) | gray;
-        }
-    }
     
 }
 
