@@ -1,35 +1,32 @@
 language: java
 services: docker
+jdk: openjdk8
 
-env:
-  global:
-   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-   #   via the "travis encrypt" command using the project repo's public key
-   - secure: "HKFOdtYGPUQxW0JGI0VN4OJwzs/0xvfeqx+IWeW6reheOBobUyvJ1PnAFvuPxO8i3IqlQjukywb3UL4uP/JvoIGC88BWy1Ohbmt1bZP6mfri9SrTEqMQcmbnSriQ2mrkXxLPrWJUTtNCWZFz34WUqqf2aul8rQho5F51nebrXuQ1B48tsYfEBZaXvHHDvuFJzfyJdcStlmZMmPtStlXdokRxMnvTc3wwiexMp/c9pXhDZ71HAozwHGuHZibc2Ya7bNpHJF7UxSmPtZ8CTkcFg/8zMF9tja52bo4rvyAsAqH86VcsczZR7cJCn8eCsM9uqnhSmWY6xMRiZNbYYJ/5uqN3RLWCzFhwvzcHIhl9pjPfWTkgUY55B8QKsFtcFuHbMaPxys/xHvMmJRus1fF5s10I35PJmX547vPnSU/8u/o717/rtgvGr87l5fTMoyP2avO+K7n2rYZE0M1B8Ayx+4eT09E1ZPj3GntV9/X5F5KcY1+I7Y9yNr/R0vkP0O+w/ynq858QDS9nnHUB9pG6NQ7xz0xygctqeGKnzuxHuetefsyTA1S8KGU2qBFivaZzacSXHWiQ1rua1GWquxZQi65tvVNJnmAtWJYlyOErc2brWl4OvVtQI5kvE4Gjf1IkWy2JK5qbivwUJG+PDzmg/lkrbL9jeMzAXboUnPu4FNU="
-    
 addons:
-  coverity_scan:
-    project:
-      name: "ron190/jsql-injection"
-    branch_pattern: master
-      
+  sonarcloud:
+    organization: "ron190-github"
+    token:
+      secure: "Fi8pYQTRDsIzBBKPTLHcAxkm0l0JcrZZvADbhwWG95lqKgtEtGI0OzWB5nFUBiOu5N20yrMPz/x4BUTyqr61xZiOocB9SH5ya4jqlraIlQW3WPH0enZ7e/g/JmqiAttuhzic7s12XQR5VwvAbG7ZkHa41liJ0nTd8HiLG7TOPep0hVTX/VZ/+K1B0FMJJVsMNMfhDsrtegxLryoeCSuKpwiAXXN2GkTtV2g1o1fxSmFMb0cepC/03Hskfp4ZxnHaY9yQfJISulTuxv9EUy5ecQZj+btf+QB3iNAwNFIE/xC6VeuCSrTJ01kG9w9DvY3W6z9NywxVHL5fJNDHcWsIz6/FpdNZgwxw6hIBQOimSa2/oXrPNyNR/bUyu6kQMFitDXWNxZj56yicqduNc46ni9NjsavCMlTJrdh/MYKB+C8e2IVa11QT988iTZo5C7MjUqUJU4gKBgdcn0jGZb20pxd7/Gtf4uMz7tp9mQRCTXpV6OSE85phwezledPud1f7/TG/QBrzZCL3YTMLhrDLhiratHweitPpr3da2+HrjSkdmunGdyufB+bseJP68ghjG5QpYBakjkJgkGYXd+S/r1NHmsGhbuk3/S0WtoYRhlAaBl3U8c7z8/lBcPhNbkQmfjIMolTjVdK61rQSads1b3kgVcImsux0IxEhUjowqag="
+
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.sonar/cache
+    
 before_install:
-  # Codacy
-  - sudo apt-get install jq
-  # Coverity
-  - echo -n | openssl s_client -connect https://scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
   
-  # prevent OutOfMemoryError: unable to create new native thread
+  # Buff ulimit config: blind injection is thread intensive
   - ulimit -t 166384
-  # get the actually set values
+  
+  # Show image and jvm metrics
   - ulimit -a
   - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
   - echo $HOME
   - echo JAVA_OPTS $JAVA_OPTS
   - echo MAVEN_OPTS $MAVEN_OPTS
-    
   - docker images && docker ps && pwd
-  
+    
+  # Docker configuration
   - docker build 
     -t mysql 
     -f src/test/resources/docker/Dockerfile.mysql .
@@ -42,14 +39,9 @@ before_install:
     -t postgres 
     -f src/test/resources/docker/Dockerfile.postgres .
     
-  # sudo required for mounting volumes
-  - sudo 
-    docker run 
-    --privileged
+  - docker run 
     --name jsql-mysql  
     --publish 3306:3306 
-    --volume /home/travis/build/ron190/jsql-injection/src/test/resources/docker/conf.d/:/etc/mysql/conf.d/
-    --ulimit nofile=65536:65536
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
     -d mysql
     
@@ -69,19 +61,9 @@ before_install:
     
   - docker images && docker ps && pwd
 
-jdk: openjdk8
-
-addons:
-  sonarcloud:
-    organization: "ron190-github"
-    token:
-      secure: "Fi8pYQTRDsIzBBKPTLHcAxkm0l0JcrZZvADbhwWG95lqKgtEtGI0OzWB5nFUBiOu5N20yrMPz/x4BUTyqr61xZiOocB9SH5ya4jqlraIlQW3WPH0enZ7e/g/JmqiAttuhzic7s12XQR5VwvAbG7ZkHa41liJ0nTd8HiLG7TOPep0hVTX/VZ/+K1B0FMJJVsMNMfhDsrtegxLryoeCSuKpwiAXXN2GkTtV2g1o1fxSmFMb0cepC/03Hskfp4ZxnHaY9yQfJISulTuxv9EUy5ecQZj+btf+QB3iNAwNFIE/xC6VeuCSrTJ01kG9w9DvY3W6z9NywxVHL5fJNDHcWsIz6/FpdNZgwxw6hIBQOimSa2/oXrPNyNR/bUyu6kQMFitDXWNxZj56yicqduNc46ni9NjsavCMlTJrdh/MYKB+C8e2IVa11QT988iTZo5C7MjUqUJU4gKBgdcn0jGZb20pxd7/Gtf4uMz7tp9mQRCTXpV6OSE85phwezledPud1f7/TG/QBrzZCL3YTMLhrDLhiratHweitPpr3da2+HrjSkdmunGdyufB+bseJP68ghjG5QpYBakjkJgkGYXd+S/r1NHmsGhbuk3/S0WtoYRhlAaBl3U8c7z8/lBcPhNbkQmfjIMolTjVdK61rQSads1b3kgVcImsux0IxEhUjowqag="
-  
 script:
   
-  - ls -l /home/travis/build/ron190/jsql-injection/src/test/resources/docker/conf.d/
-  
-  # Change max_connections for MySQL
+  # Buff MySQL
   - docker exec --privileged -u root -it jsql-mysql /bin/bash 
     -c "
        mysql 
@@ -93,7 +75,7 @@ script:
        ';
        "
   
-  # Show max_connections for MySQL
+  # Check MySQL status
   - docker exec --privileged -u root -it jsql-mysql /bin/bash 
     -c "
        mysql 
@@ -104,7 +86,7 @@ script:
        ';
        "
 
-  # Show max_connections for Postgres
+  # Check Postgres status
   - docker exec --privileged -u root -it jsql-postgres /bin/bash                                       
     -c "
        export PGPASSWORD=mysecretpassword;
@@ -114,16 +96,10 @@ script:
        ';
        "
 
+  # Buff and run mvn tests
   - MAVEN_OPTS='-Xmx3000m' mvn clean verify sonar:sonar
-
-cache:
-  directories:
-    - $HOME/.m2
-    - $HOME/.sonar/cache
     
 after_success:
-
-  - pwd && ls -l /home/travis/build/ron190/jsql-injection/target/ && ls -l /home/travis/build/ron190/jsql-injection/target/surefire-reports/
 
   - bash <(curl -s https://codecov.io/bash)
   
