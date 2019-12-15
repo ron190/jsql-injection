@@ -17,7 +17,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.suspendable.AbstractSuspendable;
-import com.jsql.util.ThreadUtil;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 
 /**

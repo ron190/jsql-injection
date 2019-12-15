@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.util.GitUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
 
 public class ActionCheckUpdate implements ActionListener, Runnable {

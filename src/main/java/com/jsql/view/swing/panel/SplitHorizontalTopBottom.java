@@ -25,7 +25,6 @@ import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.panel.util.ActionHideShowConsole;

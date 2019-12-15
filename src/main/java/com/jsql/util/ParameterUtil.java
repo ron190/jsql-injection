@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.InjectionFailureException;
-import com.jsql.model.injection.method.MethodInjection;
 
 public class ParameterUtil {
     

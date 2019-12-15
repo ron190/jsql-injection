@@ -9,11 +9,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;

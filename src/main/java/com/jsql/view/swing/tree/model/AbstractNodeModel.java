@@ -32,7 +32,6 @@ import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.util.StringUtil;
-import com.jsql.util.ThreadUtil;
 import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;

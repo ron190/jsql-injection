@@ -19,9 +19,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.injection.method.MethodInjection;
 
 public class SoapUtil {
     

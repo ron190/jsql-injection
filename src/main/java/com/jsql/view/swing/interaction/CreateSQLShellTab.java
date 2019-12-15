@@ -14,7 +14,6 @@ import java.net.MalformedURLException;
 import java.util.UUID;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;

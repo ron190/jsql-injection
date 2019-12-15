@@ -11,7 +11,6 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;

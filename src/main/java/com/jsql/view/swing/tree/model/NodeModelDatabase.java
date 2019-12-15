@@ -16,7 +16,6 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.Database;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;

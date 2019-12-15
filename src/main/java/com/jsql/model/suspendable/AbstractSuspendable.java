@@ -3,7 +3,6 @@ package com.jsql.model.suspendable;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.JSqlException;
 
 /**

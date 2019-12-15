@@ -15,7 +15,6 @@ import org.json.JSONObject;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 
 /**
  * Utility class used to connect to Github Rest webservices.

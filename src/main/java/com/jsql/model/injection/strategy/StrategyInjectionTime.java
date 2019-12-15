@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.StoppedByUserSlidingException;

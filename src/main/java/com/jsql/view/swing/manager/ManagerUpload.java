@@ -33,9 +33,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
-import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.util.PreferencesUtil;
 import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;

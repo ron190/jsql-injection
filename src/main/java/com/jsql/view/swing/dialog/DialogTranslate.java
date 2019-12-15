@@ -50,10 +50,7 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.IgnoreMessageException;
-import com.jsql.util.ConnectionUtil;
-import com.jsql.util.GitUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
-import com.jsql.util.PropertiesUtil;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;

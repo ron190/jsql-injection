@@ -8,7 +8,6 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;

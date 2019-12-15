@@ -12,14 +12,9 @@ package com.jsql.view.terminal.interaction;
 
 import java.util.Map;
 
-import javax.swing.JMenu;
-
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Header;
-import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
 
 /**
  * Mark the injection as invulnerable to a error based injection.

@@ -1,11 +1,5 @@
 package com.jsql.model.injection.method;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.List;
-
-import com.jsql.util.ParameterUtil;
-import com.jsql.util.PreferencesUtil;
-
 public enum MethodInjection {
 	
 //    QUERY {

@@ -11,7 +11,6 @@
 package com.jsql.view.swing.manager;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.exception.JSqlException;
 
 /**

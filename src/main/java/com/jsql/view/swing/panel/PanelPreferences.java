@@ -32,9 +32,6 @@ import javax.swing.event.DocumentListener;
 import org.apache.commons.text.WordUtils;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.util.AuthenticationUtil;
-import com.jsql.util.PreferencesUtil;
-import com.jsql.util.ProxyUtil;
 import com.jsql.util.tampering.Tampering;
 import com.jsql.util.tampering.TamperingUtil;
 import com.jsql.view.swing.HelperUi;

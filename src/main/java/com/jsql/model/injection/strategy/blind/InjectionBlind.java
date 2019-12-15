@@ -12,7 +12,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.blind.patch.Diff;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;

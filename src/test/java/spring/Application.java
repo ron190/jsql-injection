@@ -2,13 +2,11 @@ package spring;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.stream.Stream;
 
-import org.h2.tools.Server;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;

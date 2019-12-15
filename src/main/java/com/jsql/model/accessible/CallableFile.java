@@ -5,7 +5,6 @@ import java.util.concurrent.Callable;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.exception.IgnoreMessageException;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.StoppedByUserSlidingException;

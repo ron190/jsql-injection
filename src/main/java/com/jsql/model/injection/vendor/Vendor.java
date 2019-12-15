@@ -1,10 +1,5 @@
 package com.jsql.model.injection.vendor;
 
-import org.apache.commons.lang3.StringUtils;
-
-import com.jsql.model.injection.vendor.model.AbstractVendor;
-import com.jsql.model.injection.vendor.model.VendorXml;
-
 public enum Vendor {
     
 //    AUTO("Database auto", null),

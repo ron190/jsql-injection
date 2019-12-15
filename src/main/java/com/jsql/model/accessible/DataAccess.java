@@ -19,7 +19,6 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
-import com.jsql.model.InjectionModel.Vendor;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.bean.database.Database;

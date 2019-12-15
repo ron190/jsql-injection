@@ -26,7 +26,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;

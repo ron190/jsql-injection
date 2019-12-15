@@ -14,7 +14,6 @@ import java.net.MalformedURLException;
 import java.util.UUID;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.accessible.RessourceAccess;
 
 /**
  * A terminal for SQL shell injection.

@@ -17,13 +17,8 @@ import com.fasterxml.jackson.databind.ext.Java7SupportImpl;
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
-import com.jsql.util.AuthenticationUtil;
 import com.jsql.util.CertificateUtil;
-import com.jsql.util.ExceptionUtil;
-import com.jsql.util.GitUtil;
 import com.jsql.util.GitUtil.ShowOnConsole;
-import com.jsql.util.PreferencesUtil;
-import com.jsql.util.ProxyUtil;
 import com.jsql.view.swing.JFrameView;
 import com.jsql.view.swing.MediatorGui;
 

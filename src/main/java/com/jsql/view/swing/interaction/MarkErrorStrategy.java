@@ -13,7 +13,6 @@ package com.jsql.view.swing.interaction;
 import javax.swing.JMenu;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 

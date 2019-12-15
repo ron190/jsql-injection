@@ -1,13 +1,8 @@
 package com.test.vendor.mysql;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;

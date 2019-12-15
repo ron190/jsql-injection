@@ -10,9 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.terminal.interaction;
 
-import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
-import com.jsql.view.swing.MediatorGui;
 
 /**
  * Mark the injection as invulnerable to a normal injection.

@@ -3,7 +3,6 @@ package com.jsql.model.suspendable.callable;
 import java.util.concurrent.Callable;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 
 /**
  * Callable for parallelized HTTP tasks

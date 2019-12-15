@@ -20,10 +20,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.database.Column;
 import com.jsql.model.suspendable.AbstractSuspendable;
-import com.jsql.util.ThreadUtil;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.tree.model.AbstractNodeModel.JPopupMenu2;

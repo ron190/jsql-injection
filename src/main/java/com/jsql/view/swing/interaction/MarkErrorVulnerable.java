@@ -17,7 +17,6 @@ import javax.swing.JMenuItem;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Header;
-import com.jsql.model.injection.strategy.StrategyInjection;
 import com.jsql.view.interaction.InteractionCommand;
 import com.jsql.view.swing.MediatorGui;
 

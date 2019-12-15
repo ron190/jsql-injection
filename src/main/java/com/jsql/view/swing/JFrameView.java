@@ -33,7 +33,6 @@ import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
-import com.jsql.model.injection.vendor.Vendor;
 import com.jsql.view.interaction.ObserverInteraction;
 import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.menubar.Menubar;

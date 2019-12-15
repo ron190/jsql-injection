@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.model.bean.database.Table;
 import com.jsql.model.bean.util.Interaction;
@@ -24,7 +23,6 @@ import com.jsql.model.exception.SlidingException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.util.StringUtil;
-import com.jsql.util.ThreadUtil;
 
 /**
  * Get all data from a SQL request (remember that data will often been cut, we need to reach ALL the data)
