@@ -54,10 +54,13 @@ public abstract class AbstractModelObservable extends Observable {
 
     /**
      * Send an interaction message to registered views.
-     * @param interaction The evenement bean corresponding to the interaction
+     * @param interaction The event bean corresponding to the interaction
      */
     public void sendToViews(final Request interaction) {
+        // Display model thread name in logs instead of the observer name
+        String nameThread = Thread.currentThread().getName();
         SwingUtilities.invokeLater(() -> {
+            Thread.currentThread().setName("from " + nameThread);
             AbstractModelObservable.this.setChanged();
             AbstractModelObservable.this.notifyObservers(interaction);
         });
