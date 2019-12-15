@@ -17,7 +17,7 @@ public class IngresNormalGetTestSuite extends ConcreteIngresTestSuite {
 //        InjectionModel model = new InjectionModel();
 //        MediatorModel.register(model);
 //        model.displayVersion();
-//        
+//
 //        MediatorModel.model().addObserver(new SystemOutTerminal());
 //
 //        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +":81/ingres_simulate_get.php");

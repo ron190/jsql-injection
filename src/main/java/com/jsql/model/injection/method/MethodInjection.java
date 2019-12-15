@@ -3,7 +3,7 @@ package com.jsql.model.injection.method;
 public enum MethodInjection {
 	
 //    QUERY {
-//        
+//
 //        @Override
 //        public boolean isCheckingAllParam() {
 //            return PreferencesUtil.isCheckingAllURLParam();
@@ -18,9 +18,9 @@ public enum MethodInjection {
 //        public List<SimpleEntry<String, String>> getParams() {
 //            return ParameterUtil.getQueryString();
 //        }
-//        
+//
 //    }, REQUEST {
-//        
+//
 //        @Override
 //        public boolean isCheckingAllParam() {
 //            return PreferencesUtil.isCheckingAllRequestParam();
@@ -35,9 +35,9 @@ public enum MethodInjection {
 //        public List<SimpleEntry<String, String>> getParams() {
 //            return ParameterUtil.getRequest();
 //        }
-//        
+//
 //    }, HEADER {
-//        
+//
 //        @Override
 //        public boolean isCheckingAllParam() {
 //            return PreferencesUtil.isCheckingAllHeaderParam();
@@ -52,9 +52,9 @@ public enum MethodInjection {
 //        public List<SimpleEntry<String, String>> getParams() {
 //            return ParameterUtil.getHeader();
 //        }
-//        
+//
 //    };
-//    
+//
 //    public abstract boolean isCheckingAllParam();
 //    public abstract String getParamsAsString();
 //    public abstract List<SimpleEntry<String, String>> getParams();

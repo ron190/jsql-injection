@@ -21,7 +21,7 @@ import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean<T>> {
     InjectionModel injectionModel;
-    public AbstractInjectionBoolean(InjectionModel injectionModel) { 
+    public AbstractInjectionBoolean(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
 
         falseTest = this.injectionModel.getVendor().instance().getListFalseTest();

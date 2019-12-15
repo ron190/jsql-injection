@@ -247,7 +247,7 @@ public class DnDTabbedPane extends JTabbedPane {
         }
         
         // PropertyChangeListener
-        @Override 
+        @Override
         public void propertyChange(PropertyChangeEvent e) {
             String propertyName = e.getPropertyName();
             if ("dropLocation".equals(propertyName)) {
@@ -256,7 +256,7 @@ public class DnDTabbedPane extends JTabbedPane {
         }
         
         // MouseListener
-        @Override 
+        @Override
         public void mousePressed(MouseEvent e) {
             DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
             boolean isOnlyOneTab = src.getTabCount() <= 1;
@@ -272,7 +272,7 @@ public class DnDTabbedPane extends JTabbedPane {
             this.startPt = flag ? null : tabPt;
         }
         
-        @Override 
+        @Override
         public void mouseDragged(MouseEvent e) {
             Point tabPt = e.getPoint(); // e.getDragOrigin();
             if (Objects.nonNull(this.startPt) && this.startPt.distance(tabPt) > this.gestureMotionThreshold) {

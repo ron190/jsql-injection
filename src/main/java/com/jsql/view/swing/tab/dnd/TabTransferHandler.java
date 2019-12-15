@@ -28,7 +28,7 @@ public class TabTransferHandler extends TransferHandler {
         this.localObjectFlavor = new DataFlavor(DnDTabData.class, "DnDTabData");
     }
     
-    @Override 
+    @Override
     protected Transferable createTransferable(JComponent c) {
         if (c instanceof DnDTabbedPane) {
             this.source = (DnDTabbedPane) c;
@@ -51,7 +51,7 @@ public class TabTransferHandler extends TransferHandler {
         };
     }
     
-    @Override 
+    @Override
     public boolean canImport(TransferHandler.TransferSupport support) {
         if (!support.isDrop() || !support.isDataFlavorSupported(this.localObjectFlavor)) {
             return false;
@@ -106,7 +106,7 @@ public class TabTransferHandler extends TransferHandler {
         return image.getSubimage(rect.x, rect.y, rect.width, rect.height);
     }
     
-    @Override 
+    @Override
     public int getSourceActions(JComponent c) {
         if (c instanceof DnDTabbedPane) {
             DnDTabbedPane src = (DnDTabbedPane) c;
@@ -121,7 +121,7 @@ public class TabTransferHandler extends TransferHandler {
         return TransferHandler.NONE;
     }
     
-    @Override 
+    @Override
     public boolean importData(TransferHandler.TransferSupport support) {
         if (!this.canImport(support)) {
             return false;
@@ -145,7 +145,7 @@ public class TabTransferHandler extends TransferHandler {
         return false;
     }
     
-    @Override 
+    @Override
     protected void exportDone(JComponent c, Transferable data, int action) {
         DnDTabbedPane src = (DnDTabbedPane) c;
         src.getRootPane().getGlassPane().setVisible(false);

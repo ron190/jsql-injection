@@ -29,7 +29,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     /**
      * Constructor for preparation and blind confirmation.
      * @param inj
-     * @param injectionModel 
+     * @param injectionModel
      */
     InjectionModel injectionModel;
     InjectionTime injectionTime;

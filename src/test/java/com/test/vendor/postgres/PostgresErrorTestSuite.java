@@ -25,7 +25,7 @@ public class PostgresErrorTestSuite extends ConcretePostgresTestSuite {
         model.parameterUtil.initQueryString("http://localhost:8080/greeting-error");
         model.parameterUtil.initRequest("");
         model.parameterUtil.setQueryString(Arrays.asList(
-            new SimpleEntry<String, String>("tenant", "postgres"), 
+            new SimpleEntry<String, String>("tenant", "postgres"),
             new SimpleEntry<String, String>("name", "0'")
         ));
 

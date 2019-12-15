@@ -17,19 +17,19 @@ public class TabDropTargetAdapter extends DropTargetAdapter {
         }
     }
     
-    @Override 
+    @Override
     public void drop(DropTargetDropEvent dtde) {
         Component c = dtde.getDropTargetContext().getComponent();
         this.clearDropLocationPaint(c);
     }
     
-    @Override 
+    @Override
     public void dragExit(DropTargetEvent dte) {
         Component c = dte.getDropTargetContext().getComponent();
         this.clearDropLocationPaint(c);
     }
     
-    @Override 
+    @Override
     public void dragEnter(DropTargetDragEvent dtde) {
         Component c = dtde.getDropTargetContext().getComponent();
     }

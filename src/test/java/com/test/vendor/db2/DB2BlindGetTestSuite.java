@@ -15,7 +15,7 @@ public class DB2BlindGetTestSuite extends ConcreteDB2TestSuite {
 //        InjectionModel model = new InjectionModel();
 //        MediatorModel.register(model);
 //        model.displayVersion();
-//        
+//
 //        MediatorModel.model().addObserver(new SystemOutTerminal());
 //
 //        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/db2_simulate_get.php");

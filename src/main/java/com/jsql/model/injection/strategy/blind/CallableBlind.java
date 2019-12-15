@@ -24,7 +24,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     /**
      * Constructor for preparation and blind confirmation.
      * @param inj
-     * @param injectionBlind 
+     * @param injectionBlind
      */
     InjectionBlind injectionBlind;
     public CallableBlind(String inj, InjectionModel injectionModel, InjectionBlind injectionBlind) {
@@ -38,7 +38,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
      * @param inj
      * @param indexCharacter
      * @param bit
-     * @param injectionModel 
+     * @param injectionModel
      */
     InjectionModel injectionModel;
     public CallableBlind(String inj, int indexCharacter, int bit, InjectionModel injectionModel, InjectionBlind injectionBlind) {
@@ -54,8 +54,8 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
      * @param inj
      * @param indexCharacter
      * @param isTestingLength
-     * @param injectionModel 
-     * @param injectionBlind2 
+     * @param injectionModel
+     * @param injectionBlind2
      */
     public CallableBlind(String inj, int indexCharacter, boolean isTestingLength, InjectionModel injectionModel, InjectionBlind injectionBlind) {
         this.injectionBlind = injectionBlind;

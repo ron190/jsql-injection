@@ -24,7 +24,7 @@ public class GhostGlassPane extends JComponent {
         this.tabbedPane = tab;
     }
     
-    @Override 
+    @Override
     protected void paintComponent(Graphics g) {
         this.tabbedPane.getDropLineRect().ifPresent(rect -> {
             Graphics2D g2 = (Graphics2D) g.create();

@@ -36,29 +36,29 @@ public class TamperingUtil {
     }
 
     public static void set(
-        boolean isBase64, 
-        boolean isVersionComment, 
-        boolean isFunctionComment, 
-        boolean isEqualToLike, 
+        boolean isBase64,
+        boolean isVersionComment,
+        boolean isFunctionComment,
+        boolean isEqualToLike,
         boolean isRandomCase,
         boolean isHexToChar,
         boolean isQuoteToUtf8,
-        boolean isEval, 
-        boolean isSpaceToMultilineComment, 
-        boolean isSpaceToDashComment, 
+        boolean isEval,
+        boolean isSpaceToMultilineComment,
+        boolean isSpaceToDashComment,
         boolean isSpaceToSharpComment
     ) {
-        TamperingUtil.isBase64 = isBase64;                 
-        TamperingUtil.isVersionComment = isVersionComment;         
-        TamperingUtil.isFunctionComment = isFunctionComment;        
-        TamperingUtil.isEqualToLike = isEqualToLike;            
-        TamperingUtil.isRandomCase = isRandomCase;             
-        TamperingUtil.isHexToChar = isHexToChar;             
-        TamperingUtil.isQuoteToUtf8 = isQuoteToUtf8;             
-        TamperingUtil.isEval = isEval;                   
+        TamperingUtil.isBase64 = isBase64;
+        TamperingUtil.isVersionComment = isVersionComment;
+        TamperingUtil.isFunctionComment = isFunctionComment;
+        TamperingUtil.isEqualToLike = isEqualToLike;
+        TamperingUtil.isRandomCase = isRandomCase;
+        TamperingUtil.isHexToChar = isHexToChar;
+        TamperingUtil.isQuoteToUtf8 = isQuoteToUtf8;
+        TamperingUtil.isEval = isEval;
         TamperingUtil.isSpaceToMultilineComment = isSpaceToMultilineComment;
-        TamperingUtil.isSpaceToDashComment = isSpaceToDashComment;     
-        TamperingUtil.isSpaceToSharpComment = isSpaceToSharpComment;    
+        TamperingUtil.isSpaceToDashComment = isSpaceToDashComment;
+        TamperingUtil.isSpaceToSharpComment = isSpaceToSharpComment;
     }
     
     static ScriptEngine nashornEngine = new ScriptEngineManager().getEngineByName("nashorn");

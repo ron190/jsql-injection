@@ -34,7 +34,7 @@ import com.jsql.model.exception.JSqlException;
 import com.test.util.Retry;
 
 import junit.framework.Assert;
-import spring.Application; 
+import spring.Application;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
@@ -83,10 +83,10 @@ public abstract class AbstractTestSuite {
     
 //    @BeforeClass
 //    public static synchronized void runSpringApplication() throws Exception {
-//        
+//
 //        if (setUpIsDone.compareAndSet(false, true)) {
 //            LOGGER.info("@BeforeClass: setting up Hibernate and Spring, please wait...");
-//            Application.init(); 
+//            Application.init();
 //            SpringApplication.run(Application.class, new String[] {});
 //        } else {
 //            LOGGER.info("@BeforeClass: Hibernate and Spring setup already done");
@@ -107,7 +107,7 @@ public abstract class AbstractTestSuite {
         
         if (setUpIsDone.compareAndSet(false, true)) {
             LOGGER.info("@BeforeClass: setting up Hibernate and Spring, please wait...");
-            Application.init(); 
+            Application.init();
             SpringApplication.run(Application.class, new String[] {});
             allIsDone.set(true);
         } else {
@@ -317,7 +317,7 @@ public abstract class AbstractTestSuite {
                 " to find "+
                 set2.toString()
                     .replaceAll("\n", "[n]")
-                    .replaceAll("\r", "[r]") 
+                    .replaceAll("\r", "[r]")
             );
             Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
             

@@ -178,7 +178,7 @@ public class GitUtil {
                 LOGGER.debug("Sent to Github: "+ urlIssue);
             }
         } catch (Exception e) {
-            throw new IOException("Connection to the Github API failed, check your connection or update jsql"); 
+            throw new IOException("Connection to the Github API failed, check your connection or update jsql");
         }
     }
     

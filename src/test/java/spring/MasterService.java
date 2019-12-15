@@ -20,9 +20,9 @@ public class MasterService {
         DriverManager.setLogWriter(null);
 
         Stream.of(
-            Application.propsH2, 
-            Application.propsMySQL, 
-            Application.propsMySQLError, 
+            Application.propsH2,
+            Application.propsMySQL,
+            Application.propsMySQLError,
             Application.propsPostgres
         ).forEach(props -> {
             DatasourceConnectionProviderImpl connectionProviderPostgres = new DatasourceConnectionProviderImpl();
@@ -39,6 +39,6 @@ public class MasterService {
     }
     
     public HashMap<String, ConnectionProvider> getDataSourceHashMap() {
-        return hashMap;   
+        return hashMap;
     }
 }

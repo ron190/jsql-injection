@@ -30,7 +30,7 @@ public class CallablePageSource implements Callable<CallablePageSource> {
     /**
      * Create a callable to get initial query or insertion character.
      * @param url
-     * @param injectionModel 
+     * @param injectionModel
      */
     InjectionModel injectionModel;
     public CallablePageSource(String url, InjectionModel injectionModel) {
@@ -42,7 +42,7 @@ public class CallablePageSource implements Callable<CallablePageSource> {
      * Create callable for current insertion character test.
      * @param url
      * @param insertionCharacter
-     * @param injectionModel2 
+     * @param injectionModel2
      */
     public CallablePageSource(String url, String insertionCharacter, InjectionModel injectionModel) {
         this(url, injectionModel);

@@ -69,7 +69,7 @@ public class GreetingController {
             
             greeting = new Greeting(
                 counter.incrementAndGet(),
-                String.format(template+"#", name) 
+                String.format(template+"#", name)
                 + StringEscapeUtils.unescapeJava(stacktrace)
             );
         } finally {
@@ -92,13 +92,13 @@ public class GreetingController {
             if (l.isEmpty()) {
                 greeting = new Greeting(
                     counter.incrementAndGet(),
-                    String.format(template+"#", name) 
+                    String.format(template+"#", name)
                     + StringEscapeUtils.unescapeJava("PREFIX It's true SUFFIX")
                 );
             } else {
                 greeting = new Greeting(
                     counter.incrementAndGet(),
-                    String.format(template+"#", name) 
+                    String.format(template+"#", name)
                     + StringEscapeUtils.unescapeJava("PREFIX It's false SUFFIX")
                 );
             }

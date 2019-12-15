@@ -30,10 +30,10 @@ public class Application {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 
         Arrays.asList(
-            new SimpleEntry<Properties, String>(propsH2, "spring/hibernate.h2.properties"), 
-//            new SimpleEntry<Properties, String>(propsH2Api, "spring/hibernate.h2-api.properties"), 
-            new SimpleEntry<Properties, String>(propsMySQL, "spring/hibernate.mysql.properties"), 
-            new SimpleEntry<Properties, String>(propsMySQLError, "spring/hibernate.mysql-5.5.40.properties"), 
+            new SimpleEntry<Properties, String>(propsH2, "spring/hibernate.h2.properties"),
+//            new SimpleEntry<Properties, String>(propsH2Api, "spring/hibernate.h2-api.properties"),
+            new SimpleEntry<Properties, String>(propsMySQL, "spring/hibernate.mysql.properties"),
+            new SimpleEntry<Properties, String>(propsMySQLError, "spring/hibernate.mysql-5.5.40.properties"),
             new SimpleEntry<Properties, String>(propsPostgres, "spring/hibernate.postgres.properties")
         ).stream()
             .forEach(simpleEntry -> {
@@ -51,9 +51,9 @@ public class Application {
 
     public static void init() {
         Stream.of(
-            propsH2, 
-            propsMySQL, 
-            propsMySQLError, 
+            propsH2,
+            propsMySQL,
+            propsMySQLError,
             propsPostgres
         ).forEach(props -> {
             Configuration configuration = new Configuration();

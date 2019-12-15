@@ -214,7 +214,7 @@ public class ParameterUtil {
         this.requestAsText = request;
         
         if (!"".equals(request)) {
-            this.request = 
+            this.request =
                 Pattern
                 .compile("&")
                 .splitAsStream(request)

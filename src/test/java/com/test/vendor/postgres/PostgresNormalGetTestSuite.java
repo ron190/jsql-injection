@@ -25,7 +25,7 @@ public class PostgresNormalGetTestSuite extends ConcretePostgresTestSuite {
         model.parameterUtil.initQueryString("http://localhost:8080/greeting");
         model.parameterUtil.initRequest("");
         model.parameterUtil.setQueryString(Arrays.asList(
-            new SimpleEntry<String, String>("tenant", "postgres"), 
+            new SimpleEntry<String, String>("tenant", "postgres"),
             new SimpleEntry<String, String>("name", "0'")
         ));
         model.connectionUtil.setMethodInjection(model.QUERY);

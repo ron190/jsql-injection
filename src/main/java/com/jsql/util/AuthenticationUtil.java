@@ -77,11 +77,11 @@ public class AuthenticationUtil {
      * @param kerberosLoginConf path to the file login
      */
     public boolean set(
-        boolean isAuthentication, 
-        String usernameAuthentication, 
+        boolean isAuthentication,
+        String usernameAuthentication,
         String passwordAuthentication,
-        boolean isKerberos, 
-        String kerberosKrb5Conf, 
+        boolean isKerberos,
+        String kerberosKrb5Conf,
         String kerberosLoginConf
     ) {
         

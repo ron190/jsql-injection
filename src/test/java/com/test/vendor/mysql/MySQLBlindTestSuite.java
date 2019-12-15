@@ -29,7 +29,7 @@ public class MySQLBlindTestSuite extends ConcreteMySQLTestSuite {
         model.parameterUtil.initQueryString("http://localhost:8080/greeting-blind");
         model.parameterUtil.initRequest("");
         model.parameterUtil.setQueryString(Arrays.asList(
-            new SimpleEntry<String, String>("tenant", "mysql"), 
+            new SimpleEntry<String, String>("tenant", "mysql"),
             new SimpleEntry<String, String>("name", "1'")
         ));
 

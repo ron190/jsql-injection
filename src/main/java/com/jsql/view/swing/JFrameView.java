@@ -74,7 +74,7 @@ public class JFrameView extends JFrame {
     
     /**
      * Build the GUI: add app icon, tree icons, the 3 main panels.
-     * @param injectionModel 
+     * @param injectionModel
      */
     public JFrameView() {
         super("jSQL Injection");

@@ -17,16 +17,16 @@
  */
 package com.jsql.view.swing.sql.lexer.syntax;
 
-/** 
+/**
  * A JavaScriptToken is a token that is returned by a lexer that is lexing a javascript
  * source file.  It has several attributes describing the token:
  * The type of token, the text of the token, the line number on which it
  * occurred, the number of characters into the input at which it started, and
  * similarly, the number of characters into the input at which it ended. <br>
- * The tokens should comply with the 
+ * The tokens should comply with the
  * <A Href="http://developer.netscape.com/docs/manuals/communicator/jsref/index.htm">
  * Java Script Reference</A>.
- */ 
+ */
 public class JavaScriptToken extends Token {
   public final static int RESERVED_WORD_ABSTRACT = 0x101;
   public final static int RESERVED_WORD_BOOLEAN = 0x102;
@@ -112,7 +112,7 @@ public class JavaScriptToken extends Token {
   public final static int OPERATOR_LESS_THAN_OR_EQUAL = 0x502;
   public final static int OPERATOR_GREATER_THAN_OR_EQUAL = 0x503;
   public final static int OPERATOR_EQUAL = 0x504;
-  public final static int OPERATOR_NOT_EQUAL = 0x505;  
+  public final static int OPERATOR_NOT_EQUAL = 0x505;
   public final static int OPERATOR_LOGICAL_NOT = 0x510;
   public final static int OPERATOR_LOGICAL_AND = 0x511;
   public final static int OPERATOR_LOGICAL_OR = 0x512;
@@ -124,7 +124,7 @@ public class JavaScriptToken extends Token {
   public final static int OPERATOR_BITWISE_COMPLIMENT = 0x530;
   public final static int OPERATOR_BITWISE_AND = 0x531;
   public final static int OPERATOR_BITWISE_OR = 0x532;
-  public final static int OPERATOR_BITWISE_XOR = 0x533;  
+  public final static int OPERATOR_BITWISE_XOR = 0x533;
   public final static int OPERATOR_SHIFT_LEFT = 0x540;
   public final static int OPERATOR_SHIFT_RIGHT = 0x541;
   public final static int OPERATOR_SHIFT_RIGHT_UNSIGNED = 0x542;
@@ -222,7 +222,7 @@ public class JavaScriptToken extends Token {
   public int getState(){
     return state;
   }
-  /** 
+  /**
    * get the ID number of this token
    * 
    * @return the id number of the token
@@ -231,7 +231,7 @@ public class JavaScriptToken extends Token {
   	return ID;
   }
 
-  /** 
+  /**
    * get the contents of this token
    * 
    * @return A string representing the text of the token
@@ -240,7 +240,7 @@ public class JavaScriptToken extends Token {
   	return (new String(contents));
   }
 
-  /** 
+  /**
    * get the line number of the input on which this token started
    * 
    * @return the line number of the input on which this token started
@@ -249,7 +249,7 @@ public class JavaScriptToken extends Token {
   	return lineNumber;
   }
 
-  /** 
+  /**
    * get the offset into the input in characters at which this token started
    *
    * @return the offset into the input in characters at which this token started
@@ -258,7 +258,7 @@ public class JavaScriptToken extends Token {
   	return charBegin;
   }
 
-  /** 
+  /**
    * get the offset into the input in characters at which this token ended
    *
    * @return the offset into the input in characters at which this token ended
@@ -267,9 +267,9 @@ public class JavaScriptToken extends Token {
  	return charEnd;
   }
 
-  /** 
+  /**
    * Checks this token to see if it is a reserved word.
-   * Reserved words are explained in <A Href=http://java.sun.com/docs/books/jls/html/>Java 
+   * Reserved words are explained in <A Href=http://java.sun.com/docs/books/jls/html/>Java
    * Language Specification</A>.
    *
    * @return true if this token is a reserved word, false otherwise
@@ -278,9 +278,9 @@ public class JavaScriptToken extends Token {
   	return((ID >> 8) == 0x1);
   }
 
-  /** 
+  /**
    * Checks this token to see if it is an identifier.
-   * Identifiers are explained in <A Href=http://java.sun.com/docs/books/jls/html/>Java 
+   * Identifiers are explained in <A Href=http://java.sun.com/docs/books/jls/html/>Java
    * Language Specification</A>.
    *
    * @return true if this token is an identifier, false otherwise
@@ -289,9 +289,9 @@ public class JavaScriptToken extends Token {
   	return((ID >> 8) == 0x2);
   }
 
-  /** 
+  /**
    * Checks this token to see if it is a literal.
-   * Literals are explained in <A Href=http://java.sun.com/docs/books/jls/html/>Java 
+   * Literals are explained in <A Href=http://java.sun.com/docs/books/jls/html/>Java
    * Language Specification</A>.
    *
    * @return true if this token is a literal, false otherwise
@@ -300,9 +300,9 @@ public class JavaScriptToken extends Token {
   	return((ID >> 8) == 0x3);
   }
   
-  /** 
+  /**
    * Checks this token to see if it is a Separator.
-   * Separators are explained in <A Href=http://java.sun.com/docs/books/jls/html/>Java 
+   * Separators are explained in <A Href=http://java.sun.com/docs/books/jls/html/>Java
    * Language Specification</A>.
    *
    * @return true if this token is a Separator, false otherwise
@@ -311,9 +311,9 @@ public class JavaScriptToken extends Token {
   	return((ID >> 8) == 0x4);
   }
 
-  /** 
+  /**
    * Checks this token to see if it is a Operator.
-   * Operators are explained in <A Href=http://java.sun.com/docs/books/jls/html/>Java 
+   * Operators are explained in <A Href=http://java.sun.com/docs/books/jls/html/>Java
    * Language Specification</A>.
    *
    * @return true if this token is a Operator, false otherwise
@@ -322,7 +322,7 @@ public class JavaScriptToken extends Token {
   	return((ID >> 8) == 0x5);
   }
 
-  /** 
+  /**
    * Checks this token to see if it is a comment.
    * 
    * @return true if this token is a comment, false otherwise
@@ -331,7 +331,7 @@ public class JavaScriptToken extends Token {
   	return((ID >> 8) == 0xD);
   }
 
-  /** 
+  /**
    * Checks this token to see if it is White Space.
    * Usually tabs, line breaks, form feed, spaces, etc.
    * 
@@ -341,7 +341,7 @@ public class JavaScriptToken extends Token {
   	return((ID >> 8) == 0xE);
   }
 
-  /** 
+  /**
    * Checks this token to see if it is an Error.
    * Unfinished comments, numbers that are too big, unclosed strings, etc.
    * 
@@ -392,24 +392,24 @@ public class JavaScriptToken extends Token {
   		switch (ID){
   		case ERROR_IDENTIFIER:
   			s += "Unrecognized Identifier: " + contents;
-  		break; 
+  		break;
 		case ERROR_UNCLOSED_STRING:
   			s += "'\"' expected after " + contents;
-  		break; 		
+  		break;
 		case ERROR_MALFORMED_STRING:
 		case ERROR_MALFORMED_UNCLOSED_STRING:
   			s += "Illegal character in " + contents;
   		break;
 		case ERROR_UNCLOSED_CHARACTER:
   			s += "\"'\" expected after " + contents;
-  		break; 		
+  		break;
 		case ERROR_MALFORMED_CHARACTER:
 		case ERROR_MALFORMED_UNCLOSED_CHARACTER:
   			s += "Illegal character in " + contents;
   		break;
 		case ERROR_INTEGER_DECIMIAL_SIZE:
 		case ERROR_INTEGER_OCTAL_SIZE:
-		case ERROR_FLOAT:  			
+		case ERROR_FLOAT:
   			s += "Illegal character in " + contents;
   		break;
 		case ERROR_INTEGER_HEXIDECIMAL_SIZE:
@@ -431,15 +431,15 @@ public class JavaScriptToken extends Token {
   	return (s);
   }
 
-  /** 
+  /**
    * get a representation of this token as a human readable string.
    * The format of this string is subject to change and should only be used
    * for debugging purposes.
    *
    * @return a string representation of this token
-   */  
+   */
   public String toString() {
-      return ("Token #" + Integer.toHexString(ID) + ": " + getDescription() + " Line " + 
+      return ("Token #" + Integer.toHexString(ID) + ": " + getDescription() + " Line " +
       	lineNumber + " from " +charBegin + " to " + charEnd + " : " + contents);
   }
   

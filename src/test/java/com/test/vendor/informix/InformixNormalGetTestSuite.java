@@ -17,7 +17,7 @@ public class InformixNormalGetTestSuite extends ConcreteInformixTestSuite {
 //        InjectionModel model = new InjectionModel();
 //        MediatorModel.register(model);
 //        model.displayVersion();
-//        
+//
 //        MediatorModel.model().addObserver(new SystemOutTerminal());
 //
 //        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/informix_simulate_get.php");
