@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +24,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junitpioneer.jupiter.RepeatFailedTest;
 import org.springframework.boot.SpringApplication;
 
 import com.jsql.model.InjectionModel;
@@ -161,8 +161,9 @@ public abstract class AbstractTestSuite {
         }
     }
 
-    @Test
+    @RepeatFailedTest(3)
     public void listDatabases() throws JSqlException {
+        
         Set<Object> set1 = new HashSet<>();
         Set<Object> set2 = new HashSet<>();
         

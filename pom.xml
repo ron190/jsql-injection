@@ -229,6 +229,12 @@
             <artifactId>junit-platform-runner</artifactId>
             <scope>test</scope>
         </dependency>
+		<dependency>
+		   <groupId>org.junit-pioneer</groupId>
+		   <artifactId>junit-pioneer</artifactId>
+		   <version>0.4.2</version>
+		   <scope>test</scope>
+		</dependency>
         
         <!-- JDBC drivers -->
         <dependency>

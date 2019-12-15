@@ -12,8 +12,14 @@ cache:
   directories:
     - $HOME/.m2
     - $HOME/.sonar/cache
+    - docker_images
+    
+before_cache:
+  - docker save -o docker_images/images.tar $(docker images -a -q)
     
 before_install:
+
+  - docker load -i docker_images/images.tar || true
   
   # Buff ulimit config: blind injection is thread intensive
   # - ulimit -t 166384
