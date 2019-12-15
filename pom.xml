@@ -95,6 +95,7 @@
     			<version>2.22.2</version>
 <!--     			<version>3.0.0-M4</version> -->
     			<configuration>
+    				<rerunFailingTestsCount>3</rerunFailingTestsCount>
                     <includes>
                         <include>MySQLBlindTestSuite</include>
                         <include>MySQLTimeTestSuite</include> 

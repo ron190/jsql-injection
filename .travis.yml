@@ -21,9 +21,7 @@ before_install:
   # Show image and jvm metrics
   - ulimit -a
   - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
-  - echo $HOME
-  - echo JAVA_OPTS $JAVA_OPTS
-  - echo MAVEN_OPTS $MAVEN_OPTS
+  - echo JAVA_OPTS $JAVA_OPTS && echo MAVEN_OPTS $MAVEN_OPTS
   - docker images && docker ps && pwd
     
   # Docker configuration
@@ -84,7 +82,8 @@ script:
        -uroot 
        -pmy-secret-pw 
        -e '
-       show global variables where Variable_name rlike \"thread_cache_size|^max_connections\";
+       SHOW GLOBAL variables WHERE Variable_name RLIKE \"thread_cache_size|^max_connections\";
+       SHOW GLOBAL status WHERE Variable_name RLIKE \"Threads_cached|Max_used_connections|Threads_created|Connections|Opened_tables|Threads_connected|Threads_running|Queries\"
        ';
        "
 
@@ -100,6 +99,18 @@ script:
 
   # Buff and run mvn tests
   - MAVEN_OPTS='-Xmx3000m' mvn clean verify sonar:sonar
+  
+  # Check MySQL status
+  - docker exec --privileged -u root -it jsql-mysql /bin/bash 
+    -c "
+       mysql 
+       -uroot 
+       -pmy-secret-pw 
+       -e '
+       SHOW GLOBAL variables WHERE Variable_name RLIKE \"thread_cache_size|^max_connections\";
+       SHOW GLOBAL status WHERE Variable_name RLIKE \"Threads_cached|Max_used_connections|Threads_created|Connections|Opened_tables|Threads_connected|Threads_running|Queries\"
+       ';
+       "
     
 after_success:
 
