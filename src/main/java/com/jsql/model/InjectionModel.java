@@ -484,7 +484,7 @@ public class InjectionModel extends AbstractModelObservable {
         this.connectionUtil.setMethodInjection(methodInjection);
         
         // Injection by injection point
-        if (methodInjection.getParamsAsString().contains(this.STAR)) {
+        if (methodInjection.getParamsAsString().contains(InjectionModel.STAR)) {
             LOGGER.info("Checking single "+ methodInjection.name() +" parameter with injection point at *");
             
             // Will keep param value as is,
@@ -494,7 +494,7 @@ public class InjectionModel extends AbstractModelObservable {
         // Default injection: last param tested only
         } else if (!methodInjection.isCheckingAllParam()) {
             // Injection point defined on last parameter
-            methodInjection.getParams().stream().reduce((a, b) -> b).ifPresent(e -> e.setValue(e.getValue() + this.STAR));
+            methodInjection.getParams().stream().reduce((a, b) -> b).ifPresent(e -> e.setValue(e.getValue() + InjectionModel.STAR));
 
             // Will check param value by user.
             // Notice options 'Inject each URL params' and 'inject JSON' must be checked both
@@ -576,7 +576,7 @@ public class InjectionModel extends AbstractModelObservable {
         // Force to insertion char otherwise.
         if (parameter != null) {
             String charInsertion = new SuspendableGetCharInsertion(this).run(characterInsertionByUser, parameter, isJson);
-            LOGGER.info(I18n.valueByKey("LOG_USING_INSERTION_CHARACTER") +" ["+ charInsertion.replace(this.STAR, "") +"]");
+            LOGGER.info(I18n.valueByKey("LOG_USING_INSERTION_CHARACTER") +" ["+ charInsertion.replace(InjectionModel.STAR, "") +"]");
         }
         
         // Fingerprint database
@@ -736,7 +736,7 @@ public class InjectionModel extends AbstractModelObservable {
             // TODO Extract in method
             if (!this.parameterUtil.getRequest().isEmpty() || this.connectionUtil.getTokenCsrf() != null) {
                 try {
-                    this.connectionUtil.fixCustomRequestMethod(connection, this.connectionUtil.getTypeRequest());
+                    ConnectionUtil.fixCustomRequestMethod(connection, this.connectionUtil.getTypeRequest());
                     
                     connection.setDoOutput(true);
                     connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
@@ -768,7 +768,7 @@ public class InjectionModel extends AbstractModelObservable {
             msgHeader.put(Header.RESPONSE, HeaderUtil.getHttpHeaders(connection));
             
             try {
-                pageSource = this.connectionUtil.getSource(connection);
+                pageSource = ConnectionUtil.getSource(connection);
             } catch (Exception e) {
                 LOGGER.error(e, e);
             }
@@ -807,13 +807,13 @@ public class InjectionModel extends AbstractModelObservable {
      * @return Final data
      */
     private String buildURL(String urlBase, boolean isUsingIndex, String sqlTrail) {
-        if (urlBase.contains(this.STAR)) {
+        if (urlBase.contains(InjectionModel.STAR)) {
             if (!isUsingIndex) {
-                return urlBase.replace(this.STAR, sqlTrail);
+                return urlBase.replace(InjectionModel.STAR, sqlTrail);
             } else {
                 return
                     urlBase.replace(
-                        this.STAR,
+                        InjectionModel.STAR,
                         this.indexesInUrl.replaceAll(
                             "1337" + StrategyInjectionNormal.getVisibleIndex() + "7331",
                             /**
@@ -839,7 +839,7 @@ public class InjectionModel extends AbstractModelObservable {
             // No parameter transformation if method is not selected by user
             this.connectionUtil.getMethodInjection() != methodInjection
             // No parameter transformation if injection point in URL
-            || this.connectionUtil.getUrlBase().contains(this.STAR)
+            || this.connectionUtil.getUrlBase().contains(InjectionModel.STAR)
         ) {
             // Just pass parameters without any transformation
             query = paramLead;
@@ -849,21 +849,21 @@ public class InjectionModel extends AbstractModelObservable {
             // If method is selected by user and URL does not contains injection point
             // but parameters contain an injection point
             // then replace injection point by SQL expression in those parameter
-            paramLead.contains(this.STAR)
+            paramLead.contains(InjectionModel.STAR)
         ) {
             // Several SQL expressions does not use indexes in SELECT,
             // like Boolean, Error, Shell and search for Insertion character,
             // in that case replace injection point by SQL expression.
             // Injection point is always at the end?
             if (!isUsingIndex) {
-                query = paramLead.replace(this.STAR, sqlTrail + this.vendor.instance().endingComment());
+                query = paramLead.replace(InjectionModel.STAR, sqlTrail + this.vendor.instance().endingComment());
                 
             } else {
                 
                 // Replace injection point by indexes found for Normal strategy
                 // and use visible Index for injection
                 query = paramLead.replace(
-                    this.STAR,
+                    InjectionModel.STAR,
                     this.indexesInUrl.replaceAll(
                         "1337" + StrategyInjectionNormal.getVisibleIndex() + "7331",
                         /**

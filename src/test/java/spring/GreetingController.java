@@ -87,7 +87,7 @@ public class GreetingController {
         
         Greeting greeting = null;
         try {
-            List l = q.getResultList();
+            List<Object[]> l = q.getResultList();
             
             if (l.isEmpty()) {
                 greeting = new Greeting(

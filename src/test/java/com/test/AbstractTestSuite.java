@@ -1,5 +1,7 @@
 package com.test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -33,7 +35,6 @@ import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.test.util.Retry;
 
-import junit.framework.Assert;
 import spring.Application;
 
 @TestInstance(Lifecycle.PER_CLASS)
@@ -198,7 +199,7 @@ public abstract class AbstractTestSuite {
 
             LOGGER.info("ListDatabases: found "+ set1 +" to find "+ set2);
 
-            Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.containsAll(set2));
+            assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.containsAll(set2));
             
         } catch (AssertionError e) {
             Set<Object> tmp = new TreeSet<>();
@@ -232,7 +233,7 @@ public abstract class AbstractTestSuite {
             set2.addAll(AbstractTestSuite.this.tableToFind);
 
             LOGGER.info("listTables: found "+ set1 +" to find "+ set2);
-            Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
+            assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
             
         } catch (AssertionError e) {
             Set<Object> tmp = new TreeSet<>();
@@ -270,7 +271,7 @@ public abstract class AbstractTestSuite {
             set2.addAll(AbstractTestSuite.this.columnToFind);
 
             LOGGER.info("listColumns: found "+ set1 +" to find "+ set2);
-            Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
+            assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
             
         } catch (AssertionError e) {
             Set<Object> tmp = new TreeSet<>();
@@ -319,7 +320,7 @@ public abstract class AbstractTestSuite {
                     .replaceAll("\n", "[n]")
                     .replaceAll("\r", "[r]")
             );
-            Assert.assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
+            assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
             
         } catch (AssertionError e) {
             Set<Object> tmp = new TreeSet<>();

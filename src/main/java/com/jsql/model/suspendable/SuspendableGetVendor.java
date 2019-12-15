@@ -9,7 +9,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;

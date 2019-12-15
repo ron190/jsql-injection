@@ -179,9 +179,9 @@ public class ConnectionUtil {
         String pageSource = null;
         try {
             if (lineFeed) {
-                pageSource = this.getSourceLineFeed(connection);
+                pageSource = ConnectionUtil.getSourceLineFeed(connection);
             } else {
-                pageSource = this.getSource(connection);
+                pageSource = ConnectionUtil.getSource(connection);
             }
         } catch (IOException e) {
             throw e;

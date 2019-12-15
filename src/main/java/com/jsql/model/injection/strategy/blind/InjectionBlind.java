@@ -8,7 +8,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
@@ -17,7 +16,7 @@ import com.jsql.model.injection.strategy.blind.patch.Diff;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 /**
- * A blind attack class using thread asynchronisation.
+ * A blind attack class using thread asynchronization.
  */
 public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
     
@@ -29,7 +28,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
     /**
      * Source code of the TRUE web page (usually ?id=1).
      */
-    private static String blankTrueMark;
+    private String blankTrueMark;
 
     /**
      *  List of string differences found in all the FALSE queries, compared
@@ -37,10 +36,10 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
      *  at least one same string, which shouldn't be present in all
      *  the TRUE queries.
      */
-    private static List<Diff> constantFalseMark = new ArrayList<>();
+    private List<Diff> constantFalseMark = new ArrayList<>();
 
     /**
-     * Create blind attack initialisation.
+     * Create blind attack initialization.
      * If every false test are not in true mark and every true test are in
      * true test, then blind attack is confirmed.
      */
@@ -53,7 +52,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         }
         
         // Call the SQL request which must be TRUE (usually ?id=1)
-        InjectionBlind.blankTrueMark = this.callUrl("");
+        this.blankTrueMark = this.callUrl("");
 
         // Check if the user wants to stop the preparation
         if (this.injectionModel.isStoppedByUser()) {
@@ -129,7 +128,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
-                InjectionBlind.constantFalseMark.removeAll(trueTag.get().getOpcodes());
+                this.constantFalseMark.removeAll(trueTag.get().getOpcodes());
             }
         } catch (InterruptedException | ExecutionException e) {
             LOGGER.error(e.getMessage(), e);
@@ -159,7 +158,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             LOGGER.error(e.getMessage(), e);
         }
 
-        return blindTest.isTrue() && !InjectionBlind.constantFalseMark.isEmpty();
+        return blindTest.isTrue() && !this.constantFalseMark.isEmpty();
     }
 
     @Override
@@ -168,7 +167,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             "Blind strategy: a request is true if the diff between "
             + "a correct page (e.g existing id) and current page "
             + "is not as the following: "
-            + InjectionBlind.constantFalseMark
+            + this.constantFalseMark
         ;
     }
 
@@ -176,7 +175,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
      * Get source code of the TRUE web page.
      * @return Source code in HTML
      */
-    public static String getBlankTrueMark() {
+    public String getBlankTrueMark() {
         return blankTrueMark;
     }
     
@@ -184,7 +183,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
      *  Get False Marks.
      *  @return False marks
      */
-    public static List<Diff> getConstantFalseMark() {
+    public List<Diff> getConstantFalseMark() {
         return constantFalseMark;
     }
     

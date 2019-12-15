@@ -5,6 +5,8 @@ import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 
 public class MultiTenantConnectionProviderImpl extends AbstractMultiTenantConnectionProvider {
 
+    private static final long serialVersionUID = 7880791041378207899L;
+    
     private static final MasterService MASTER_SERVICE = new MasterService();
     
     @Override

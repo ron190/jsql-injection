@@ -8,7 +8,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
@@ -16,7 +15,7 @@ import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 /**
- * A time attack class using thread asynchronisation.
+ * A time attack class using parallel threads.
  */
 public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
 	

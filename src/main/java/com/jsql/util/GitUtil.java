@@ -165,7 +165,7 @@ public class GitUtil {
     private void readGithubResponse(HttpURLConnection connection, ShowOnConsole showOnConsole) throws IOException {
         try {
             // Read the response
-            String sourcePage = this.injectionModel.connectionUtil.getSourceLineFeed(connection);
+            String sourcePage = ConnectionUtil.getSourceLineFeed(connection);
 
             if (showOnConsole == ShowOnConsole.YES) {
                 JSONObject jsonObjectResponse = new JSONObject(sourcePage);
