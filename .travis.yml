@@ -1,6 +1,6 @@
 language: java
 services: docker
-jdk: openjdk8
+jdk: openjdk11
 
 addons:
   sonarcloud:
@@ -16,7 +16,7 @@ cache:
 before_install:
   
   # Buff ulimit config: blind injection is thread intensive
-  - ulimit -t 166384
+  # - ulimit -t 166384
   
   # Show image and jvm metrics
   - ulimit -a
@@ -39,11 +39,11 @@ before_install:
     -t postgres 
     -f src/test/resources/docker/Dockerfile.postgres .
     
-  - docker run 
-    --privileged
+    # --privileged
+    # --ulimit nofile=65536:65536
+  - docker run
     --name jsql-mysql  
     --publish 3306:3306 
-    --ulimit nofile=65536:65536
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
     -d mysql
     

@@ -17,7 +17,7 @@ public class MasterService {
     public MasterService() {
         
         // Remove annoying logs from jdbc driver
-//        DriverManager.setLogWriter(null);
+        DriverManager.setLogWriter(null);
 
         Stream.of(
             Application.propsH2,
