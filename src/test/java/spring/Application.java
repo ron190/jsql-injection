@@ -48,7 +48,7 @@ public class Application {
             });
     }
 
-    public static void init() {
+    public static void initializeDatabases() {
         Stream.of(
             propsH2,
             propsMySQL,
@@ -78,7 +78,7 @@ public class Application {
      */
     public static void main(String[] args) {
         
-        init();
+        initializeDatabases();
         
         SpringApplication.run(Application.class, args);
     }

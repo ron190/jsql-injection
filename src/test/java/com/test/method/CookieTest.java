@@ -25,7 +25,7 @@ public abstract class CookieTest extends ConcreteMySQLTestSuite {
 
     @Override
     @BeforeClass
-    public void initialize2() throws InjectionFailureException {
+    public void initializeBackend() throws InjectionFailureException {
         InjectionModel model = new InjectionModel();
 //        MediatorModel.register(model);
         model.displayVersion();

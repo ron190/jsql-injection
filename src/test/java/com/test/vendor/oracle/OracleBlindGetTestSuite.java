@@ -11,7 +11,7 @@ public class OracleBlindGetTestSuite extends ConcreteOracleTestSuite {
 
 //    @BeforeClass
     @Override
-    public void initialize3() throws InjectionFailureException {
+    public void setupInjection() throws InjectionFailureException {
 //        InjectionModel model = new InjectionModel();
 //        MediatorModel.register(model);
 //        model.displayVersion();

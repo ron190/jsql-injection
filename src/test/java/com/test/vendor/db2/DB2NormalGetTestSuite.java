@@ -10,7 +10,7 @@ public class DB2NormalGetTestSuite extends ConcreteDB2TestSuite {
 
     @Override
     @BeforeClass
-    public void initialize3() throws InjectionFailureException {
+    public void setupInjection() throws InjectionFailureException {
 //        InjectionModel model = new InjectionModel();
 //        MediatorModel.register(model);
 //        model.displayVersion();

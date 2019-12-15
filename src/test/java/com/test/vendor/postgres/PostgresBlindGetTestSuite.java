@@ -19,7 +19,7 @@ import com.jsql.view.terminal.SystemOutTerminal;
 public class PostgresBlindGetTestSuite extends ConcretePostgresTestSuite {
 
     @Override
-    public void initialize3() throws Exception {
+    public void setupInjection() throws Exception {
         
         InjectionModel model = new InjectionModel();
         this.injectionModel = model;

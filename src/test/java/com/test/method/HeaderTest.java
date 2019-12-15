@@ -17,7 +17,7 @@ public abstract class HeaderTest extends ConcreteMySQLTestSuite {
 
     @Override
     @BeforeClass
-    public void initialize3() throws InjectionFailureException {
+    public void setupInjection() throws InjectionFailureException {
         InjectionModel model = new InjectionModel();
 //        MediatorModel.register(model);
         model.displayVersion();

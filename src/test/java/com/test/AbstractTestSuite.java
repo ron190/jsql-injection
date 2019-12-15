@@ -79,53 +79,37 @@ public abstract class AbstractTestSuite {
     @Rule
     public Retry retry = new Retry(3);
     
-    private static AtomicBoolean setUpIsDone = new AtomicBoolean(false);
-    private static AtomicBoolean allIsDone = new AtomicBoolean(false);
+    private static AtomicBoolean isSetupStarted = new AtomicBoolean(false);
     
-//    @BeforeClass
-//    public static synchronized void runSpringApplication() throws Exception {
-//
-//        if (setUpIsDone.compareAndSet(false, true)) {
-//            LOGGER.info("@BeforeClass: setting up Hibernate and Spring, please wait...");
-//            Application.init();
-//            SpringApplication.run(Application.class, new String[] {});
-//        } else {
-//            LOGGER.info("@BeforeClass: Hibernate and Spring setup already done");
-//        }
-//    }
-    
-
-    public abstract void initialize3() throws Exception ;
-    
-    @BeforeAll
-    public synchronized void initialize2() throws Exception {
-
-        try {
-            Server.createTcpServer().start();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        if (setUpIsDone.compareAndSet(false, true)) {
-            LOGGER.info("@BeforeClass: setting up Hibernate and Spring, please wait...");
-            Application.init();
-            SpringApplication.run(Application.class, new String[] {});
-            allIsDone.set(true);
-        } else {
-            while (!allIsDone.get()) {
-                Thread.sleep(1000);
-                LOGGER.info("@BeforeClass: waiting for Hibernate and Spring setup...");
-            }
-            LOGGER.info("@BeforeClass: Hibernate and Spring setup already done");
-        }
-        
-        if (this.injectionModel == null) {
-            this.requestJdbc();
-            this.initialize3();
-        }
-    }
+    private static AtomicBoolean isSetupDone = new AtomicBoolean(false);
     
     protected InjectionModel injectionModel;
+    
+    public abstract void setupInjection() throws Exception;
+    
+    @BeforeAll
+    public synchronized void initializeBackend() throws Exception {
+        
+        if (isSetupStarted.compareAndSet(false, true)) {
+            LOGGER.info("@BeforeClass: loading H2, Hibernate and Spring...");
+            
+            Server.createTcpServer().start();
+            Application.initializeDatabases();
+            SpringApplication.run(Application.class, new String[] {});
+            
+            isSetupDone.set(true);
+        }
+            
+        while (!isSetupDone.get()) {
+            Thread.sleep(1000);
+            LOGGER.info("@BeforeClass: backend is setting up, please wait...");
+        }
+            
+        if (this.injectionModel == null) {
+            this.requestJdbc();
+            this.setupInjection();
+        }
+    }
 
     public void initialize() throws Exception {
         LOGGER.warn(
@@ -177,11 +161,6 @@ public abstract class AbstractTestSuite {
         }
     }
 
-//    @Nested
-//    @DisplayName("Test Login Feature")
-//    public
-//    class LoginFeature {
-        
     @Test
     public void listDatabases() throws JSqlException {
         Set<Object> set1 = new HashSet<>();
@@ -337,7 +316,5 @@ public abstract class AbstractTestSuite {
             throw new AssertionError("Error listValues: "+ tmp +"\n"+ e);
         }
     }
-    
-//    }
     
 }
