@@ -69,8 +69,7 @@ public class ListTransfertHandlerScan extends TransferHandler {
             }
             stringTransferable.append(new JSONArray(jsons).toString(4));
         } catch (JSONException | JsonProcessingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
 
         return new StringSelection(stringTransferable.toString().trim());

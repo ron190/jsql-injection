@@ -95,9 +95,8 @@ public class ManagerScan extends AbstractManagerList {
                 );
                 itemsList.add(new ItemListScan(beanInjection));
             }
-        } catch (JSONException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        } catch (JSONException e) {
+            LOGGER.error(e.getMessage(), e);
         }
         
         final DnDList dndListScan = new DnDList(itemsList);

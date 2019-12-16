@@ -141,7 +141,7 @@ public class PanelPreferences extends JPanel {
                 PanelPreferences.this.textProxyPortHttps.getText()
             );
             
-            TamperingUtil.set(
+            MediatorModel.model().tamperingUtil.set(
                 PanelPreferences.this.checkboxIsTamperingBase64.isSelected(),
                 PanelPreferences.this.checkboxIsTamperingVersionComment.isSelected(),
                 PanelPreferences.this.checkboxIsTamperingFunctionComment.isSelected(),
@@ -411,12 +411,12 @@ public class PanelPreferences extends JPanel {
             
             @Override
             public void warn() {
-                TamperingUtil.eval = l.getText();
+                MediatorModel.model().tamperingUtil.eval = l.getText();
             }
             
         });
         
-        l.setText(TamperingUtil.eval);
+        l.setText(MediatorModel.model().tamperingUtil.eval);
         
         
         this.checkboxIsCheckingUpdate.setFocusable(false);

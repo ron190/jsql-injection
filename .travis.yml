@@ -2,7 +2,6 @@ language: java
 services: docker
 jdk: openjdk11
 
-# Env SONAR_TOKEN
 addons:
   sonarcloud:
     organization: "ron190-github"
@@ -16,7 +15,6 @@ cache:
     
 before_install:
   
-  # Show image and jvm metrics
   - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
     
   # Docker configuration
@@ -51,7 +49,7 @@ before_install:
 script:
   
   # Buff MySQL
-  - docker exec --privileged -u root -it jsql-mysql /bin/bash
+  - docker exec -it jsql-mysql /bin/bash
     -c "
        mysql -uroot -pmy-secret-pw -e '
        SET GLOBAL max_connections = 1000;
@@ -60,7 +58,7 @@ script:
        "
 
   # Check MySQL status
-  - docker exec --privileged -u root -it jsql-mysql /bin/bash
+  - docker exec -it jsql-mysql /bin/bash
     -c "
        mysql -uroot -pmy-secret-pw -e '
        SHOW GLOBAL variables WHERE Variable_name RLIKE \"thread_cache_size|^max_connections\";
@@ -69,7 +67,7 @@ script:
        "
 
   # Check Postgres status
-  - docker exec --privileged -u root -it jsql-postgres /bin/bash
+  - docker exec -it jsql-postgres /bin/bash
     -c "
        export PGPASSWORD=mysecretpassword;
        psql -U postgres -h 127.0.0.1 -d \"\" -e -a -c '
@@ -80,15 +78,13 @@ script:
   - mvn clean verify sonar:sonar
   
   # Check MySQL status
-  - docker exec --privileged -u root -it jsql-mysql /bin/bash
+  - docker exec -it jsql-mysql /bin/bash
     -c "
        mysql -uroot -pmy-secret-pw -e '
        SHOW GLOBAL status WHERE Variable_name RLIKE \"Threads_cached|Max_used_connections|Threads_created|Connections|Opened_tables|Threads_connected|Threads_running|^Queries\"
        ';
        "
     
-# Env CODACY_PROJECT_TOKEN
 after_success:
-  - echo $CODACY_PROJECT_TOKEN
   - bash <(curl -s https://codecov.io/bash)
   - bash <(curl -Ls https://coverage.codacy.com/get.sh)

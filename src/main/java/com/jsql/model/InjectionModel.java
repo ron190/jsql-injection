@@ -259,6 +259,7 @@ public class InjectionModel extends AbstractModelObservable {
     public PreferencesUtil preferencesUtil = new PreferencesUtil(this);
     public ProxyUtil proxyUtil = new ProxyUtil(this);
     public ThreadUtil threadUtil = new ThreadUtil(this);
+    public TamperingUtil tamperingUtil = new TamperingUtil(this);
     
     public AbstractStrategy UNDEFINED = new AbstractStrategy(this) {
 
@@ -541,8 +542,7 @@ public class InjectionModel extends AbstractModelObservable {
                                 break injectionSuccessful;
                             }
                         } catch (JSONException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
+                            LOGGER.error("Error parsing JSON parameters", e);
                         }
                         
                     }
@@ -942,7 +942,7 @@ public class InjectionModel extends AbstractModelObservable {
         query = query.replaceAll("(?s)\"", "%22");
         
         if (this.connectionUtil.getMethodInjection() == methodInjection) {
-            query = TamperingUtil.tamper(query);
+            query = this.tamperingUtil.tamper(query);
         }
         
         query = query.trim();

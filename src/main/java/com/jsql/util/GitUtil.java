@@ -188,11 +188,8 @@ public class GitUtil {
             for (int index = 0 ; index < news.length() ; index++) {
                 LOGGER.info(news.get(index));
             }
-        } catch (IOException e) {
+        } catch (IOException | JSONException e) {
             LOGGER.warn("Connection to the Github API failed", e);
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
     
@@ -214,8 +211,8 @@ public class GitUtil {
                 try {
                     this.jsonObject = new JSONObject("{\"version\": \"0\", \"news\": []}");
                 } catch (JSONException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                    // TODO Simplify
+                    LOGGER.warn("Fetching default JSON failed", e);
                 }
                 LOGGER.warn("Fetching JSON configuration from Github failed, check your connection or update jsql", e);
             }
