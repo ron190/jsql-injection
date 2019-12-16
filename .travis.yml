@@ -6,6 +6,8 @@ jdk: openjdk11
 addons:
   sonarcloud:
     organization: "ron190-github"
+    token:
+      secure: $SONAR_TOKEN
 
 cache:
   directories:
@@ -49,41 +51,41 @@ before_install:
 script:
   
   # Buff MySQL
-  - docker exec --privileged -u root -it jsql-mysql /bin/bash -c 
-    "
-    mysql -uroot -pmy-secret-pw -e '
-    SET GLOBAL max_connections = 1000;
-    SET GLOBAL thread_cache_size = 1000;
-    ';
-    "
+  - docker exec --privileged -u root -it jsql-mysql /bin/bash
+    -c "
+       mysql -uroot -pmy-secret-pw -e '
+       SET GLOBAL max_connections = 1000;
+       SET GLOBAL thread_cache_size = 1000;
+       ';
+       "
 
   # Check MySQL status
-  - docker exec --privileged -u root -it jsql-mysql /bin/bash -c 
-    "
-    mysql -uroot -pmy-secret-pw -e '
-    SHOW GLOBAL variables WHERE Variable_name RLIKE \"thread_cache_size|^max_connections\";
-    SHOW GLOBAL status WHERE Variable_name RLIKE \"Threads_cached|Max_used_connections|Threads_created|Connections|Opened_tables|Threads_connected|Threads_running|^Queries\"
-    ';
-    ""
+  - docker exec --privileged -u root -it jsql-mysql /bin/bash
+    -c "
+       mysql -uroot -pmy-secret-pw -e '
+       SHOW GLOBAL variables WHERE Variable_name RLIKE \"thread_cache_size|^max_connections\";
+       SHOW GLOBAL status WHERE Variable_name RLIKE \"Threads_cached|Max_used_connections|Threads_created|Connections|Opened_tables|Threads_connected|Threads_running|^Queries\"
+       ';
+       ""
 
   # Check Postgres status
-  - docker exec --privileged -u root -it jsql-postgres /bin/bash -c 
-    "
-    export PGPASSWORD=mysecretpassword;
-    psql -U postgres -h 127.0.0.1 -d \"\" -e -a -c '
-    show max_connections;
-    ';
-    ""
+  - docker exec --privileged -u root -it jsql-postgres /bin/bash
+    -c "
+       export PGPASSWORD=mysecretpassword;
+       psql -U postgres -h 127.0.0.1 -d \"\" -e -a -c '
+       show max_connections;
+       ';
+       ""
 
   - mvn clean verify sonar:sonar
   
   # Check MySQL status
-  - docker exec --privileged -u root -it jsql-mysql /bin/bash -c 
-    "
-    mysql -uroot -pmy-secret-pw -e '
-    SHOW GLOBAL status WHERE Variable_name RLIKE \"Threads_cached|Max_used_connections|Threads_created|Connections|Opened_tables|Threads_connected|Threads_running|^Queries\"
-    ';
-    "
+  - docker exec --privileged -u root -it jsql-mysql /bin/bash
+    -c "
+       mysql -uroot -pmy-secret-pw -e '
+       SHOW GLOBAL status WHERE Variable_name RLIKE \"Threads_cached|Max_used_connections|Threads_created|Connections|Opened_tables|Threads_connected|Threads_running|^Queries\"
+       ';
+       "
     
 # Env CODACY_PROJECT_TOKEN
 after_success:
