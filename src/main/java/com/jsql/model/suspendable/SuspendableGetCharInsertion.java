@@ -76,7 +76,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 new CallablePageSource(
                     insertionCharacter
                     + " "
-                    + this.injectionModel.getVendor().instance().sqlOrderBy(),
+                    + this.injectionModel.mediatorVendor.getVendor().instance().sqlOrderBy(),
                     insertionCharacter,
                     this.injectionModel
                 )

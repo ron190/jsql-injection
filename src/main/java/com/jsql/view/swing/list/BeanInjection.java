@@ -3,8 +3,8 @@ package com.jsql.view.swing.list;
 import java.util.NoSuchElementException;
 
 import com.jsql.model.InjectionModel.MethodInjection;
-import com.jsql.model.InjectionModel.Vendor;
 import com.jsql.model.MediatorModel;
+import com.jsql.model.injection.vendor.MediatorVendor.Vendor;
 
 public class BeanInjection {
     
@@ -20,7 +20,7 @@ public class BeanInjection {
     ) {
         this.url = url;
         this.injectionType = MediatorModel.model().QUERY;
-        this.vendor = MediatorModel.model().AUTO;
+        this.vendor = MediatorModel.model().mediatorVendor.AUTO;
         this.requestType = "POST";
     }
     
@@ -44,9 +44,9 @@ public class BeanInjection {
         }
         
         try {
-            this.vendor = MediatorModel.model().vendors.stream().filter(m -> m.toString().equals(vendor)).findAny().orElse(MediatorModel.model().AUTO);
+            this.vendor = MediatorModel.model().mediatorVendor.vendors.stream().filter(m -> m.toString().equals(vendor)).findAny().orElse(MediatorModel.model().mediatorVendor.AUTO);
         } catch (IllegalArgumentException | NoSuchElementException e) {
-            this.vendor = MediatorModel.model().AUTO;
+            this.vendor = MediatorModel.model().mediatorVendor.AUTO;
         }
         
         this.requestType = requestType.isEmpty() ? "POST" : requestType;

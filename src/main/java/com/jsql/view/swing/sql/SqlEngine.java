@@ -32,8 +32,8 @@ import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.InjectionModel.Vendor;
 import com.jsql.model.MediatorModel;
+import com.jsql.model.injection.vendor.MediatorVendor.Vendor;
 import com.jsql.model.injection.vendor.model.Model;
 import com.jsql.model.injection.vendor.model.Model.Strategy.Error.Method;
 import com.jsql.view.i18n.I18nView;
@@ -52,7 +52,7 @@ public class SqlEngine extends JPanel {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    private static Model xmlModel = MediatorModel.model().getVendor().instance().getXmlModel();
+    private static Model xmlModel = MediatorModel.model().mediatorVendor.getVendor().instance().getXmlModel();
 
     private static final List<JTextPaneLexer> MAP_TEXTPANE_TO_XML = new ArrayList<>();
     
@@ -343,8 +343,8 @@ public class SqlEngine extends JPanel {
     
     public SqlEngine() {
         
-        List<Vendor> listVendors = new LinkedList<>(MediatorModel.model().vendors);
-        listVendors.removeIf(i -> i == MediatorModel.model().AUTO);
+        List<Vendor> listVendors = new LinkedList<>(MediatorModel.model().mediatorVendor.vendors);
+        listVendors.removeIf(i -> i == MediatorModel.model().mediatorVendor.AUTO);
         
         JComboBox<Vendor> comboBoxVendors = new JComboBox<>(listVendors.toArray(new Vendor[0]));
         comboBoxVendors.addItemListener(itemEvent -> {
@@ -354,7 +354,7 @@ public class SqlEngine extends JPanel {
             }
         });
         
-        comboBoxVendors.setSelectedItem(MediatorModel.model().getVendor());
+        comboBoxVendors.setSelectedItem(MediatorModel.model().mediatorVendor.getVendor());
         this.changeVendor();
         
         JTabbedPane tabsStandard = new JTabbedPane(JTabbedPane.RIGHT);
@@ -649,13 +649,13 @@ public class SqlEngine extends JPanel {
         menuBarVendor.setOpaque(false);
         menuBarVendor.setBorder(null);
         
-        JMenu comboMenuVendor = new ComboMenu(MediatorModel.model().getVendor().toString());
+        JMenu comboMenuVendor = new ComboMenu(MediatorModel.model().mediatorVendor.getVendor().toString());
         menuBarVendor.add(comboMenuVendor);
 
         ButtonGroup groupVendor = new ButtonGroup();
 
         for (final Vendor vendor: listVendors) {
-            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorModel.model().getVendor());
+            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorModel.model().mediatorVendor.getVendor());
             itemRadioVendor.addActionListener(actionEvent -> {
                 xmlModel = vendor.instance().getXmlModel();
                 this.changeVendor();

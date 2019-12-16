@@ -162,8 +162,8 @@ public class JFrameView extends JFrame {
      * Empty the interface.
      */
     public void resetInterface() {
-        if (MediatorModel.model().getVendorByUser() == MediatorModel.model().AUTO) {
-            MediatorGui.panelAddressBar().getMenuVendor().setText(MediatorModel.model().AUTO.toString());
+        if (MediatorModel.model().mediatorVendor.getVendorByUser() == MediatorModel.model().mediatorVendor.AUTO) {
+            MediatorGui.panelAddressBar().getMenuVendor().setText(MediatorModel.model().mediatorVendor.AUTO.toString());
         }
         
         MediatorGui.panelAddressBar().getMenuStrategy().setText("Strategy auto");

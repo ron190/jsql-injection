@@ -11,10 +11,11 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 [![Maven 3.2](https://github.com/ron190/jsql-injection/raw/master/web/images/image.io/maven.png)](https://maven.apache.org/)
 [![GitHub](https://img.shields.io/github/license/ron190/jsql-injection)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
 [![Travis Build Status](https://travis-ci.org/ron190/jsql-injection.svg?branch=master)](https://travis-ci.org/ron190/jsql-injection)
-[![Sonar Status](https://sonarcloud.io/api/project_badges/measure?project=jsql-injection%3Ajsql-injection&metric=alert_status)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)<br>
-[![Sonar Test Count](https://img.shields.io/sonar/total_tests/jsql-injection%3Ajsql-injection?server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
-[![codecov](https://codecov.io/gh/ron190/jsql-injection/branch/master/graph/badge.svg)](https://codecov.io/gh/ron190/jsql-injection)
+[![Sonar Status](https://sonarcloud.io/api/project_badges/measure?project=jsql-injection%3Ajsql-injection&metric=alert_status)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)
+[![Sonar Test Count](https://img.shields.io/sonar/total_tests/jsql-injection%3Ajsql-injection?server=https%3A%2F%2Fsonarcloud.io)](https://sonarcloud.io/dashboard?id=jsql-injection%3Ajsql-injection)<br>
+[![Codecov](https://codecov.io/gh/ron190/jsql-injection/branch/master/graph/badge.svg)](https://codecov.io/gh/ron190/jsql-injection)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/e7ccb247f9b74d489a1fa9f9483c978f)](https://www.codacy.com/manual/ron190/jsql-injection?utm_source=github.com&utm_medium=referral&utm_content=ron190/jsql-injection&utm_campaign=Badge_Coverage)
+[![Codebeat badge](https://codebeat.co/badges/457d8c76-c470-4457-ad06-310a6d8b4b3e)](https://codebeat.co/projects/github-com-ron190-jsql-injection-master)
 
 ## Features
 - Automatic injection of 23 kinds of databases: Access, CockroachDB, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, Mckoi, MySQL, Neo4j, NuoDB, Oracle, PostgreSQL, SQLite, SQL Server, Sybase, Teradata and Vertica

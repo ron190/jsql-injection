@@ -13,11 +13,11 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
-import com.jsql.model.InjectionModel.Vendor;
 import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.vendor.MediatorVendor.Vendor;
 import com.jsql.model.suspendable.callable.CallablePageSource;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
@@ -45,8 +45,8 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
     public Vendor run(Object... args) throws StoppedByUserSlidingException {
         Vendor vendor = null;
         
-        if (this.injectionModel.getVendorByUser() != this.injectionModel.AUTO) {
-            vendor = this.injectionModel.getVendorByUser();
+        if (this.injectionModel.mediatorVendor.getVendorByUser() != this.injectionModel.mediatorVendor.AUTO) {
+            vendor = this.injectionModel.mediatorVendor.getVendorByUser();
             LOGGER.info(I18n.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER") +" ["+ vendor +"]");
         } else {
         
@@ -79,7 +79,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                     total--;
                     String pageSource = currentCallable.getContent();
                     
-                    for (Vendor vendorTest: this.injectionModel.vendors.stream().toArray(Vendor[]::new)) {
+                    for (Vendor vendorTest: this.injectionModel.mediatorVendor.vendors.stream().toArray(Vendor[]::new)) {
                       if (
                           pageSource.matches(
                               "(?si).*("
@@ -109,7 +109,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             }
             
             if (vendor == null) {
-                vendor = this.injectionModel.MYSQL;
+                vendor = this.injectionModel.mediatorVendor.MYSQL;
                 LOGGER.warn(I18n.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendor +"]");
             } else {
                 LOGGER.info(I18n.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendor +"]");

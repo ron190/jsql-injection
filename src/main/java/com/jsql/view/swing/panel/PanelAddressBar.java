@@ -49,12 +49,12 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel.MethodInjection;
-import com.jsql.model.InjectionModel.Vendor;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.model.injection.strategy.StrategyInjectionError;
+import com.jsql.model.injection.vendor.MediatorVendor.Vendor;
 import com.jsql.model.injection.vendor.model.Model.Strategy.Error.Method;
 import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
@@ -356,15 +356,15 @@ public class PanelAddressBar extends JPanel {
             }
         }
 
-        this.menuVendor = new ComboMenu(MediatorModel.model().AUTO.toString());
+        this.menuVendor = new ComboMenu(MediatorModel.model().mediatorVendor.AUTO.toString());
 
         ButtonGroup groupVendor = new ButtonGroup();
 
-        for (final Vendor vendor: MediatorModel.model().vendors) {
-            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorModel.model().AUTO);
+        for (final Vendor vendor: MediatorModel.model().mediatorVendor.vendors) {
+            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorModel.model().mediatorVendor.AUTO);
             itemRadioVendor.addActionListener(actionEvent -> {
                 this.menuVendor.setText(vendor.toString());
-                MediatorModel.model().setVendorByUser(vendor);
+                MediatorModel.model().mediatorVendor.setVendorByUser(vendor);
             });
             this.menuVendor.add(itemRadioVendor);
             groupVendor.add(itemRadioVendor);
@@ -535,7 +535,7 @@ public class PanelAddressBar extends JPanel {
         this.itemRadioStrategyError[0].removeAll();
 
         Integer[] i = { 0 };
-        if (vendor != MediatorModel.model().AUTO && vendor.instance().getXmlModel().getStrategy().getError() != null) {
+        if (vendor != MediatorModel.model().mediatorVendor.AUTO && vendor.instance().getXmlModel().getStrategy().getError() != null) {
             for (Method methodError: vendor.instance().getXmlModel().getStrategy().getError().getMethod()) {
                 JMenuItem itemRadioVendor = new JRadioButtonMenuItem(methodError.getName());
                 itemRadioVendor.setEnabled(false);

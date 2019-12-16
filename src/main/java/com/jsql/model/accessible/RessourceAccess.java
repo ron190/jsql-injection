@@ -220,14 +220,14 @@ public class RessourceAccess {
             pathShellFixed += "/";
         }
         this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.FILENAME_WEBSHELL)
+            this.injectionModel.mediatorVendor.getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.FILENAME_WEBSHELL)
         );
 
         String resultInjection;
         String[] sourcePage = {""};
         try {
             resultInjection = new SuspendableGetRows(this.injectionModel).run(
-                this.injectionModel.getVendor().instance().sqlFileRead(pathShellFixed + this.FILENAME_WEBSHELL),
+                this.injectionModel.mediatorVendor.getVendor().instance().sqlFileRead(pathShellFixed + this.FILENAME_WEBSHELL),
                 sourcePage,
                 false,
                 1,
@@ -434,14 +434,14 @@ public class RessourceAccess {
             pathShellFixed += "/";
         }
         this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.FILENAME_SQLSHELL)
+            this.injectionModel.mediatorVendor.getVendor().instance().sqlTextIntoFile(sourceShellToInject, pathShellFixed + this.FILENAME_SQLSHELL)
         );
 
         String resultInjection;
         String[] sourcePage = {""};
         try {
             resultInjection = new SuspendableGetRows(this.injectionModel).run(
-                this.injectionModel.getVendor().instance().sqlFileRead(pathShellFixed + this.FILENAME_SQLSHELL),
+                this.injectionModel.mediatorVendor.getVendor().instance().sqlFileRead(pathShellFixed + this.FILENAME_SQLSHELL),
                 sourcePage,
                 false,
                 1,
@@ -655,14 +655,14 @@ public class RessourceAccess {
         }
         
         this.injectionModel.injectWithoutIndex(
-            this.injectionModel.getVendor().instance().sqlTextIntoFile("<"+ DataAccess.LEAD +">"+ sourceShellToInject +"<"+ DataAccess.TRAIL +">", pathShellFixed + this.FILENAME_UPLOAD)
+            this.injectionModel.mediatorVendor.getVendor().instance().sqlTextIntoFile("<"+ DataAccess.LEAD +">"+ sourceShellToInject +"<"+ DataAccess.TRAIL +">", pathShellFixed + this.FILENAME_UPLOAD)
         );
 
         String[] sourcePage = {""};
         String sourceShellInjected;
         try {
             sourceShellInjected = new SuspendableGetRows(this.injectionModel).run(
-                this.injectionModel.getVendor().instance().sqlFileRead(pathShellFixed + this.FILENAME_UPLOAD),
+                this.injectionModel.mediatorVendor.getVendor().instance().sqlFileRead(pathShellFixed + this.FILENAME_UPLOAD),
                 sourcePage,
                 false,
                 1,
@@ -781,15 +781,15 @@ public class RessourceAccess {
     public boolean isReadingAllowed() throws JSqlException {
         // Unsupported Reading file when <file> is not present in current xmlModel
         // Fix #41055: NullPointerException on getFile()
-        if (this.injectionModel.getVendor().instance().getXmlModel().getResource().getFile() == null) {
-            LOGGER.warn("Reading file on "+ this.injectionModel.getVendor() +" is currently not supported");
+        if (this.injectionModel.mediatorVendor.getVendor().instance().getXmlModel().getResource().getFile() == null) {
+            LOGGER.warn("Reading file on "+ this.injectionModel.mediatorVendor.getVendor() +" is currently not supported");
             return false;
         }
         
         String[] sourcePage = {""};
 
         String resultInjection = new SuspendableGetRows(this.injectionModel).run(
-            this.injectionModel.getVendor().instance().sqlPrivilegeTest(),
+            this.injectionModel.mediatorVendor.getVendor().instance().sqlPrivilegeTest(),
             sourcePage,
             false,
             1,

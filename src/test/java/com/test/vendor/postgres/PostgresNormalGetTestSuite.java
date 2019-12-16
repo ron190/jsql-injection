@@ -33,7 +33,7 @@ public class PostgresNormalGetTestSuite extends ConcretePostgresTestSuite {
         model.connectionUtil.setTypeRequest("GET");
 
         model.setStrategy(model.NORMAL);
-        model.setVendorByUser(model.POSTGRESQL);
+        model.mediatorVendor.setVendorByUser(model.mediatorVendor.POSTGRESQL);
         model.beginInjection();
     }
     

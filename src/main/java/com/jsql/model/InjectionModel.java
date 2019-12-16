@@ -49,8 +49,7 @@ import com.jsql.model.injection.strategy.StrategyInjectionBlind;
 import com.jsql.model.injection.strategy.StrategyInjectionError;
 import com.jsql.model.injection.strategy.StrategyInjectionNormal;
 import com.jsql.model.injection.strategy.StrategyInjectionTime;
-import com.jsql.model.injection.vendor.model.AbstractVendor;
-import com.jsql.model.injection.vendor.model.VendorXml;
+import com.jsql.model.injection.vendor.MediatorVendor;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
 import com.jsql.model.suspendable.SuspendableGetVendor;
@@ -81,84 +80,86 @@ import net.sourceforge.spnego.SpnegoHttpURLConnection;
  */
 public class InjectionModel extends AbstractModelObservable {
     
-    public Vendor AUTO = new Vendor("Database auto", null);
-    public Vendor ACCESS = new Vendor("Access", new VendorXml("access.xml", InjectionModel.this));
-    public Vendor COCKROACHDB = new Vendor("CockroachDB", new VendorXml("cockroachdb.xml", InjectionModel.this));
-    public Vendor CUBRID = new Vendor("CUBRID", new VendorXml("cubrid.xml", InjectionModel.this));
-    public Vendor DB2 = new Vendor("DB2", new VendorXml("db2.xml", InjectionModel.this));
-    public Vendor DERBY = new Vendor("Derby", new VendorXml("derby.xml", InjectionModel.this));
-    public Vendor FIREBIRD = new Vendor("Firebird", new VendorXml("firebird.xml", InjectionModel.this));
-    public Vendor H2 = new Vendor("H2", new VendorXml("h2.xml", InjectionModel.this));
-    public Vendor HANA = new Vendor("Hana", new VendorXml("hana.xml", InjectionModel.this));
-    public Vendor HSQLDB = new Vendor("HSQLDB", new VendorXml("hsqldb.xml", InjectionModel.this));
-    public Vendor INFORMIX = new Vendor("Informix", new VendorXml("informix.xml", InjectionModel.this));
-    public Vendor INGRES = new Vendor("Ingres", new VendorXml("ingres.xml", InjectionModel.this));
-    public Vendor MAXDB = new Vendor("MaxDB", new VendorXml("maxdb.xml", InjectionModel.this));
-    public Vendor MCKOI = new Vendor("Mckoi", new VendorXml("mckoi.xml", InjectionModel.this));
-    public Vendor MEMSQL = new Vendor("MemSQL", new VendorXml("memsql.xml", InjectionModel.this));
-    public Vendor MYSQL = new Vendor("MySQL", new VendorXml("mysql.xml", InjectionModel.this));
-    public Vendor NEO4J = new Vendor("Neo4j", new VendorXml("neo4j.xml", InjectionModel.this));
-    public Vendor NUODB = new Vendor("NuoDB", new VendorXml("nuodb.xml", InjectionModel.this));
-    public Vendor ORACLE = new Vendor("Oracle", new VendorXml("oracle.xml", InjectionModel.this));
-    public Vendor POSTGRESQL = new Vendor("PostgreSQL", new VendorXml("postgresql.xml", InjectionModel.this));
-    public Vendor SQLITE = new Vendor("SQLite", new VendorXml("sqlite.xml", InjectionModel.this)) {
-         
-         @Override
-         public String transform(String resultToParse) {
-             
-             StringBuilder resultSQLite = new StringBuilder();
-             String resultTmp = resultToParse.replaceFirst(".+?\\(", "").trim().replaceAll("\\)$", "");
-             resultTmp = resultTmp.replaceAll("\\(.+?\\)", "");
-             
-             for (String columnNameAndType: resultTmp.split(",")) {
-                 // Some recent SQLite use tabulation character as a separator => split() by any  white space \s
-                 String columnName = columnNameAndType.trim().split("\\s")[0];
-                 
-                 // Some recent SQLite enclose names with ` => strip those `
-                 columnName = StringUtils.strip(columnName, "`");
-                 
-                 if (!"CONSTRAINT".equals(columnName) && !"UNIQUE".equals(columnName)) {
-                     resultSQLite.append((char) 4 + columnName + (char) 5 + "0" + (char) 4 + (char) 6);
-                 }
-             }
-     
-             return resultSQLite.toString();
-             
-         }
-         
-     };
-    public Vendor SQLSERVER = new Vendor("SQL Server", new VendorXml("sqlserver.xml", InjectionModel.this));
-    public Vendor SYBASE = new Vendor("Sybase", new VendorXml("sybase.xml", InjectionModel.this));
-    public Vendor TERADATA = new Vendor("Teradata", new VendorXml("teradata.xml", InjectionModel.this));
-    public Vendor VERTICA = new Vendor("Vertica", new VendorXml("vertica.xml", InjectionModel.this));
+    public MediatorVendor mediatorVendor = new MediatorVendor(InjectionModel.this);
     
-    public List<Vendor> vendors = Arrays.asList(this.ACCESS,this.COCKROACHDB,this.CUBRID,this.DB2,this.DERBY,this.FIREBIRD,this.H2,this.HANA,this.HSQLDB,this.INFORMIX,this.INGRES,this.MAXDB,this.MCKOI,this.MEMSQL,this.MYSQL,this.NEO4J,this.NUODB,this.ORACLE,this.POSTGRESQL,this.SQLITE,this.SQLSERVER,this.SYBASE,this.TERADATA,this.VERTICA);
-    
-    public class Vendor {
-        
-        private final String labelVendor;
-        
-        private final AbstractVendor instanceVendor;
-        
-        private Vendor(String labelVendor, AbstractVendor instanceVendor) {
-            this.labelVendor = labelVendor;
-            this.instanceVendor = instanceVendor;
-        }
-        
-        public AbstractVendor instance() {
-            return this.instanceVendor;
-        }
-        
-        @Override
-        public String toString() {
-            return this.labelVendor;
-        }
-        
-        public String transform(String resultToParse) {
-            return "";
-        }
-        
-    }
+//    public Vendor AUTO = new Vendor("Database auto", null);
+//    public Vendor ACCESS = new Vendor("Access", new VendorXml("access.xml", InjectionModel.this));
+//    public Vendor COCKROACHDB = new Vendor("CockroachDB", new VendorXml("cockroachdb.xml", InjectionModel.this));
+//    public Vendor CUBRID = new Vendor("CUBRID", new VendorXml("cubrid.xml", InjectionModel.this));
+//    public Vendor DB2 = new Vendor("DB2", new VendorXml("db2.xml", InjectionModel.this));
+//    public Vendor DERBY = new Vendor("Derby", new VendorXml("derby.xml", InjectionModel.this));
+//    public Vendor FIREBIRD = new Vendor("Firebird", new VendorXml("firebird.xml", InjectionModel.this));
+//    public Vendor H2 = new Vendor("H2", new VendorXml("h2.xml", InjectionModel.this));
+//    public Vendor HANA = new Vendor("Hana", new VendorXml("hana.xml", InjectionModel.this));
+//    public Vendor HSQLDB = new Vendor("HSQLDB", new VendorXml("hsqldb.xml", InjectionModel.this));
+//    public Vendor INFORMIX = new Vendor("Informix", new VendorXml("informix.xml", InjectionModel.this));
+//    public Vendor INGRES = new Vendor("Ingres", new VendorXml("ingres.xml", InjectionModel.this));
+//    public Vendor MAXDB = new Vendor("MaxDB", new VendorXml("maxdb.xml", InjectionModel.this));
+//    public Vendor MCKOI = new Vendor("Mckoi", new VendorXml("mckoi.xml", InjectionModel.this));
+//    public Vendor MEMSQL = new Vendor("MemSQL", new VendorXml("memsql.xml", InjectionModel.this));
+//    public Vendor MYSQL = new Vendor("MySQL", new VendorXml("mysql.xml", InjectionModel.this));
+//    public Vendor NEO4J = new Vendor("Neo4j", new VendorXml("neo4j.xml", InjectionModel.this));
+//    public Vendor NUODB = new Vendor("NuoDB", new VendorXml("nuodb.xml", InjectionModel.this));
+//    public Vendor ORACLE = new Vendor("Oracle", new VendorXml("oracle.xml", InjectionModel.this));
+//    public Vendor POSTGRESQL = new Vendor("PostgreSQL", new VendorXml("postgresql.xml", InjectionModel.this));
+//    public Vendor SQLITE = new Vendor("SQLite", new VendorXml("sqlite.xml", InjectionModel.this)) {
+//         
+//         @Override
+//         public String transform(String resultToParse) {
+//             
+//             StringBuilder resultSQLite = new StringBuilder();
+//             String resultTmp = resultToParse.replaceFirst(".+?\\(", "").trim().replaceAll("\\)$", "");
+//             resultTmp = resultTmp.replaceAll("\\(.+?\\)", "");
+//             
+//             for (String columnNameAndType: resultTmp.split(",")) {
+//                 // Some recent SQLite use tabulation character as a separator => split() by any  white space \s
+//                 String columnName = columnNameAndType.trim().split("\\s")[0];
+//                 
+//                 // Some recent SQLite enclose names with ` => strip those `
+//                 columnName = StringUtils.strip(columnName, "`");
+//                 
+//                 if (!"CONSTRAINT".equals(columnName) && !"UNIQUE".equals(columnName)) {
+//                     resultSQLite.append((char) 4 + columnName + (char) 5 + "0" + (char) 4 + (char) 6);
+//                 }
+//             }
+//     
+//             return resultSQLite.toString();
+//             
+//         }
+//         
+//     };
+//    public Vendor SQLSERVER = new Vendor("SQL Server", new VendorXml("sqlserver.xml", InjectionModel.this));
+//    public Vendor SYBASE = new Vendor("Sybase", new VendorXml("sybase.xml", InjectionModel.this));
+//    public Vendor TERADATA = new Vendor("Teradata", new VendorXml("teradata.xml", InjectionModel.this));
+//    public Vendor VERTICA = new Vendor("Vertica", new VendorXml("vertica.xml", InjectionModel.this));
+//    
+//    public List<Vendor> vendors = Arrays.asList(this.ACCESS,this.COCKROACHDB,this.CUBRID,this.DB2,this.DERBY,this.FIREBIRD,this.H2,this.HANA,this.HSQLDB,this.INFORMIX,this.INGRES,this.MAXDB,this.MCKOI,this.MEMSQL,this.MYSQL,this.NEO4J,this.NUODB,this.ORACLE,this.POSTGRESQL,this.SQLITE,this.SQLSERVER,this.SYBASE,this.TERADATA,this.VERTICA);
+//    
+//    public class Vendor {
+//        
+//        private final String labelVendor;
+//        
+//        private final AbstractVendor instanceVendor;
+//        
+//        private Vendor(String labelVendor, AbstractVendor instanceVendor) {
+//            this.labelVendor = labelVendor;
+//            this.instanceVendor = instanceVendor;
+//        }
+//        
+//        public AbstractVendor instance() {
+//            return this.instanceVendor;
+//        }
+//        
+//        @Override
+//        public String toString() {
+//            return this.labelVendor;
+//        }
+//        
+//        public String transform(String resultToParse) {
+//            return "";
+//        }
+//        
+//    }
     
     public abstract class MethodInjection {
         
@@ -347,17 +348,17 @@ public class InjectionModel extends AbstractModelObservable {
      */
     private String username;
     
-    /**
-     * Database vendor currently used.
-     * It can be switched to another vendor by automatic detection or manual selection.
-     */
-    private Vendor vendor = this.MYSQL;
-
-    /**
-     * Database vendor selected by user (default UNDEFINED).
-     * If not UNDEFINED then the next injection will be forced to use the selected vendor.
-     */
-    private Vendor vendorByUser = this.AUTO;
+//    /**
+//     * Database vendor currently used.
+//     * It can be switched to another vendor by automatic detection or manual selection.
+//     */
+//    private Vendor vendor = this.MYSQL;
+//
+//    /**
+//     * Database vendor selected by user (default UNDEFINED).
+//     * If not UNDEFINED then the next injection will be forced to use the selected vendor.
+//     */
+//    private Vendor vendorByUser = this.AUTO;
     
     /**
      * Current injection strategy.
@@ -580,7 +581,7 @@ public class InjectionModel extends AbstractModelObservable {
         }
         
         // Fingerprint database
-        this.vendor = new SuspendableGetVendor(this).run();
+        this.mediatorVendor.vendor = new SuspendableGetVendor(this).run();
 
         // Test each injection strategies: time < blind < error < normal
         // Choose the most efficient strategy: normal > error > blind > time
@@ -856,7 +857,7 @@ public class InjectionModel extends AbstractModelObservable {
             // in that case replace injection point by SQL expression.
             // Injection point is always at the end?
             if (!isUsingIndex) {
-                query = paramLead.replace(InjectionModel.STAR, sqlTrail + this.vendor.instance().endingComment());
+                query = paramLead.replace(InjectionModel.STAR, sqlTrail + this.mediatorVendor.vendor.instance().endingComment());
                 
             } else {
                 
@@ -871,7 +872,7 @@ public class InjectionModel extends AbstractModelObservable {
                          * => need to be escape with quoteReplacement()
                          */
                         Matcher.quoteReplacement(sqlTrail)
-                    ) + this.vendor.instance().endingComment()
+                    ) + this.mediatorVendor.vendor.instance().endingComment()
                 );
             }
             
@@ -886,7 +887,7 @@ public class InjectionModel extends AbstractModelObservable {
                 query = paramLead + sqlTrail;
                 
                 // Add ending line comment by vendor
-                query = query + this.vendor.instance().endingComment();
+                query = query + this.mediatorVendor.vendor.instance().endingComment();
                 
             } else {
                 // Concat indexes found for Normal strategy to params
@@ -901,7 +902,7 @@ public class InjectionModel extends AbstractModelObservable {
                 );
                 
                 // Add ending line comment by vendor
-                query = query + this.vendor.instance().endingComment();
+                query = query + this.mediatorVendor.vendor.instance().endingComment();
             }
         }
         
@@ -1022,7 +1023,7 @@ public class InjectionModel extends AbstractModelObservable {
     public String getDatabaseInfos() {
         return
     		"Database ["+ this.nameDatabase +"] "
-            + "on "+ this.vendor +" ["+ this.versionDatabase +"] "
+            + "on "+ this.mediatorVendor.vendor +" ["+ this.versionDatabase +"] "
             + "for user ["+ this.username +"]";
     }
 
@@ -1034,17 +1035,17 @@ public class InjectionModel extends AbstractModelObservable {
     
     // Getters and setters
     
-    public Vendor getVendor() {
-        return this.vendor;
-    }
-
-    public Vendor getVendorByUser() {
-        return this.vendorByUser;
-    }
-
-    public void setVendorByUser(Vendor vendorByUser) {
-        this.vendorByUser = vendorByUser;
-    }
+//    public Vendor getVendor() {
+//        return this.vendor;
+//    }
+//
+//    public Vendor getVendorByUser() {
+//        return this.vendorByUser;
+//    }
+//
+//    public void setVendorByUser(Vendor vendorByUser) {
+//        this.vendorByUser = vendorByUser;
+//    }
     
 //    public StrategyInjection getStrategy() {
 //    	return this.strategy;

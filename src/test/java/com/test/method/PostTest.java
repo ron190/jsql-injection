@@ -1,17 +1,26 @@
 package com.test.method;
 
+import java.util.Arrays;
+import java.util.AbstractMap.SimpleEntry;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
+import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 
-@Ignore
-public abstract class PostTest extends ConcreteMySQLTestSuite {
-
+@TestInstance(Lifecycle.PER_CLASS)
+@Execution(ExecutionMode.CONCURRENT)
+public class PostTest extends ConcreteMySQLTestSuite {
+    
     @Override
-    @BeforeClass
-    public void setupInjection() throws InjectionFailureException {
+    public void setupInjection() throws Exception {
 //        InjectionModel model = new InjectionModel();
 //        MediatorModel.register(model);
 //        model.displayVersion();
@@ -25,6 +34,26 @@ public abstract class PostTest extends ConcreteMySQLTestSuite {
 //        MediatorModel.model().beginInjection();
 //
 //        MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
+        
+        InjectionModel model = new InjectionModel();
+        this.injectionModel = model;
+
+        model.addObserver(new SystemOutTerminal());
+
+        model.parameterUtil.initQueryString("http://localhost:8080/greeting-request");
+        model.parameterUtil.initRequest("name=0'&tenantId=mysql");
+        model.parameterUtil.setRequest(Arrays.asList(
+            new SimpleEntry<>("tenant", "mysql"),
+            new SimpleEntry<>("name", "0'")
+        ));
+        
+        model.connectionUtil.setMethodInjection(model.REQUEST);
+        model.connectionUtil.setTypeRequest("POST");
+        
+        model.setIsScanning(true);
+        model.setStrategy(model.NORMAL);
+        model.beginInjection();
+    
     }
     
 }

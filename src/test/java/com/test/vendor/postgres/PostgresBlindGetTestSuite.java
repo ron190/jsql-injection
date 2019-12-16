@@ -37,7 +37,7 @@ public class PostgresBlindGetTestSuite extends ConcretePostgresTestSuite {
         
         model.setIsScanning(true);
         model.setStrategy(model.BLIND);
-        model.setVendorByUser(model.POSTGRESQL);
+        model.mediatorVendor.setVendorByUser(model.mediatorVendor.POSTGRESQL);
         model.beginInjection();
     }
     

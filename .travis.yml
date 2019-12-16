@@ -2,11 +2,10 @@ language: java
 services: docker
 jdk: openjdk11
 
+# Env SONAR_TOKEN
 addons:
   sonarcloud:
     organization: "ron190-github"
-    token:
-      secure: "Fi8pYQTRDsIzBBKPTLHcAxkm0l0JcrZZvADbhwWG95lqKgtEtGI0OzWB5nFUBiOu5N20yrMPz/x4BUTyqr61xZiOocB9SH5ya4jqlraIlQW3WPH0enZ7e/g/JmqiAttuhzic7s12XQR5VwvAbG7ZkHa41liJ0nTd8HiLG7TOPep0hVTX/VZ/+K1B0FMJJVsMNMfhDsrtegxLryoeCSuKpwiAXXN2GkTtV2g1o1fxSmFMb0cepC/03Hskfp4ZxnHaY9yQfJISulTuxv9EUy5ecQZj+btf+QB3iNAwNFIE/xC6VeuCSrTJ01kG9w9DvY3W6z9NywxVHL5fJNDHcWsIz6/FpdNZgwxw6hIBQOimSa2/oXrPNyNR/bUyu6kQMFitDXWNxZj56yicqduNc46ni9NjsavCMlTJrdh/MYKB+C8e2IVa11QT988iTZo5C7MjUqUJU4gKBgdcn0jGZb20pxd7/Gtf4uMz7tp9mQRCTXpV6OSE85phwezledPud1f7/TG/QBrzZCL3YTMLhrDLhiratHweitPpr3da2+HrjSkdmunGdyufB+bseJP68ghjG5QpYBakjkJgkGYXd+S/r1NHmsGhbuk3/S0WtoYRhlAaBl3U8c7z8/lBcPhNbkQmfjIMolTjVdK61rQSads1b3kgVcImsux0IxEhUjowqag="
 
 cache:
   directories:
@@ -15,46 +14,30 @@ cache:
     
 before_install:
   
-  # Buff ulimit config: blind injection is thread intensive
-  # - ulimit -t 166384
-  
   # Show image and jvm metrics
-  - ulimit -a
   - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
-  - echo JAVA_OPTS $JAVA_OPTS && echo MAVEN_OPTS $MAVEN_OPTS
-  - docker images && docker ps && pwd
-  - java -XshowSettings:all -version
-  - java -XX:+PrintFlagsFinal -version | grep -iE 'HeapSize|PermSize|ThreadStackSize'
     
   # Docker configuration
-  - docker build 
-    -t mysql 
+  - docker build -t mysql 
     -f src/test/resources/docker/Dockerfile.mysql .
     
-  - docker build 
-    -t mysql 
+  - docker build -t mysql 
     -f src/test/resources/docker/Dockerfile.mysql-5.5.40 .
     
-  - docker build 
-    -t postgres 
+  - docker build -t postgres 
     -f src/test/resources/docker/Dockerfile.postgres .
     
-    # --privileged
-    # --ulimit nofile=65536:65536
-  - docker run
-    --name jsql-mysql  
+  - docker run --name jsql-mysql  
     --publish 3306:3306 
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
     -d mysql
     
-  - docker run 
-    --name jsql-mysql-5.5.40 
+  - docker run --name jsql-mysql-5.5.40 
     --publish 3307:3306 
     -e MYSQL_ROOT_PASSWORD=my-secret-pw 
     -d mysql:5.5.40
     
-  - docker run 
-    --name jsql-postgres 
+  - docker run --name jsql-postgres 
     --publish 5432:5432 
     -e POSTGRES_PASSWORD=mysecretpassword 
     -d postgres 
@@ -66,58 +49,43 @@ before_install:
 script:
   
   # Buff MySQL
-  - docker exec --privileged -u root -it jsql-mysql /bin/bash 
-    -c "
-       mysql 
-       -uroot 
-       -pmy-secret-pw 
-       -e '
-       SET GLOBAL max_connections = 1000;
-       SET GLOBAL thread_cache_size = 1000;
-       ';
-       "
-  
+  - docker exec --privileged -u root -it jsql-mysql /bin/bash -c 
+    "
+    mysql -uroot -pmy-secret-pw -e '
+    SET GLOBAL max_connections = 1000;
+    SET GLOBAL thread_cache_size = 1000;
+    ';
+    "
+
   # Check MySQL status
-  - docker exec --privileged -u root -it jsql-mysql /bin/bash 
-    -c "
-       mysql 
-       -uroot 
-       -pmy-secret-pw 
-       -e '
-       SHOW GLOBAL variables WHERE Variable_name RLIKE \"thread_cache_size|^max_connections\";
-       SHOW GLOBAL status WHERE Variable_name RLIKE \"Threads_cached|Max_used_connections|Threads_created|Connections|Opened_tables|Threads_connected|Threads_running|^Queries\"
-       ';
-       "
+  - docker exec --privileged -u root -it jsql-mysql /bin/bash -c 
+    "
+    mysql -uroot -pmy-secret-pw -e '
+    SHOW GLOBAL variables WHERE Variable_name RLIKE \"thread_cache_size|^max_connections\";
+    SHOW GLOBAL status WHERE Variable_name RLIKE \"Threads_cached|Max_used_connections|Threads_created|Connections|Opened_tables|Threads_connected|Threads_running|^Queries\"
+    ';
+    ""
 
   # Check Postgres status
-  - docker exec --privileged -u root -it jsql-postgres /bin/bash                                       
-    -c "
-       export PGPASSWORD=mysecretpassword;
-       psql -U postgres -h 127.0.0.1 -d \"\" -e -a
-       -c '
-       show max_connections;
-       ';
-       "
+  - docker exec --privileged -u root -it jsql-postgres /bin/bash -c 
+    "
+    export PGPASSWORD=mysecretpassword;
+    psql -U postgres -h 127.0.0.1 -d \"\" -e -a -c '
+    show max_connections;
+    ';
+    ""
 
-  # Buff and run mvn tests
-  - echo JAVA_OPTS $JAVA_OPTS && echo MAVEN_OPTS $MAVEN_OPTS
   - mvn clean verify sonar:sonar
   
   # Check MySQL status
-  - docker exec --privileged -u root -it jsql-mysql /bin/bash 
-    -c "
-       mysql 
-       -uroot 
-       -pmy-secret-pw 
-       -e '
-       SHOW GLOBAL status WHERE Variable_name RLIKE \"Threads_cached|Max_used_connections|Threads_created|Connections|Opened_tables|Threads_connected|Threads_running|^Queries\"
-       ';
-       "
+  - docker exec --privileged -u root -it jsql-mysql /bin/bash -c 
+    "
+    mysql -uroot -pmy-secret-pw -e '
+    SHOW GLOBAL status WHERE Variable_name RLIKE \"Threads_cached|Max_used_connections|Threads_created|Connections|Opened_tables|Threads_connected|Threads_running|^Queries\"
+    ';
+    "
     
+# Env CODACY_PROJECT_TOKEN
 after_success:
-
   - bash <(curl -s https://codecov.io/bash)
-  
-  # Codacy
-  - export CODACY_PROJECT_TOKEN=43e8b6719fbc4f3cbef25d863d7440c8
   - bash <(curl -Ls https://coverage.codacy.com/get.sh)

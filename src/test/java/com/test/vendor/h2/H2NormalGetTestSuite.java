@@ -33,7 +33,7 @@ public class H2NormalGetTestSuite extends ConcreteH2TestSuite {
         model.connectionUtil.setTypeRequest("GET");
         
         model.setStrategy(model.NORMAL);
-        model.setVendorByUser(model.H2);
+        model.mediatorVendor.setVendorByUser(model.mediatorVendor.H2);
         model.beginInjection();
     }
     

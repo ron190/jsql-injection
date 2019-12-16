@@ -37,7 +37,7 @@ public class PostgresTimeGetTestSuite extends ConcretePostgresTestSuite {
         
         model.setIsScanning(true);
         model.setStrategy(model.TIME);
-        model.setVendorByUser(model.POSTGRESQL);
+        model.mediatorVendor.setVendorByUser(model.mediatorVendor.POSTGRESQL);
         model.beginInjection();
     }
     
