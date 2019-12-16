@@ -7,7 +7,7 @@ addons:
   sonarcloud:
     organization: "ron190-github"
     token:
-      secure: "$SONAR_TOKEN"
+      secure: $SONAR_TOKEN
 
 cache:
   directories:
