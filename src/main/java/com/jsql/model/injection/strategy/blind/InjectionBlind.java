@@ -80,12 +80,12 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             listTagFalse = executorTagFalse.invokeAll(listCallableTagFalse);
             executorTagFalse.shutdown();
             
-            constantFalseMark = listTagFalse.get(0).get().getOpcodes();
+            this.constantFalseMark = listTagFalse.get(0).get().getOpcodes();
             for (Future<CallableBlind> falseMark: listTagFalse) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
-                constantFalseMark.retainAll(falseMark.get().getOpcodes());
+                this.constantFalseMark.retainAll(falseMark.get().getOpcodes());
             }
         } catch (ExecutionException e) {
             LOGGER.error("Searching fails for Blind False tags", e);
@@ -177,7 +177,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
      * @return Source code in HTML
      */
     public String getBlankTrueMark() {
-        return blankTrueMark;
+        return this.blankTrueMark;
     }
     
     /**
@@ -185,7 +185,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
      *  @return False marks
      */
     public List<Diff> getConstantFalseMark() {
-        return constantFalseMark;
+        return this.constantFalseMark;
     }
     
 }

@@ -86,7 +86,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
             taskExecutor.shutdown();
             taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
         } catch (InterruptedException | ExecutionException e) {
-            LOGGER.error("Interruption while determining injection indexes", e);    
+            LOGGER.error("Interruption while determining injection indexes", e);
             Thread.currentThread().interrupt();
         }
 

@@ -12,8 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.InjectionModel.MethodInjection;
 import com.jsql.model.exception.JSqlException;
+import com.jsql.model.injection.method.MethodInjection;
 
 public class JsonUtil {
     

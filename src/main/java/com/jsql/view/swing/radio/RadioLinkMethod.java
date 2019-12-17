@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.JLabel;
 
-import com.jsql.model.InjectionModel.MethodInjection;
+import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.view.swing.MediatorGui;
 
 /**
@@ -26,7 +26,7 @@ public class RadioLinkMethod extends AbstractRadioLink {
      * @param string Text for radio label
      * @param hEADER
      */
-    public RadioLinkMethod(String string, com.jsql.model.InjectionModel.MethodInjection hEADER) {
+    public RadioLinkMethod(String string, MethodInjection hEADER) {
         super(string);
         this.init();
         this.methodInjection = hEADER;

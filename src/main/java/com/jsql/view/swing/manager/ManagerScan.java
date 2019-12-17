@@ -32,9 +32,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.InjectionModel.MethodInjection;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.accessible.RessourceAccess;
+import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
@@ -185,9 +185,9 @@ public class ManagerScan extends AbstractManagerList {
             }
             
             MethodInjection injectionType = beanInjection.getInjectionTypeAsEnum();
-            if (injectionType == MediatorModel.model().HEADER) {
+            if (injectionType == MediatorModel.model().mediatorMethodInjection.getHeader()) {
                 MediatorGui.panelAddressBar().getRadioHeader().setSelected();
-            } else if (injectionType == MediatorModel.model().REQUEST) {
+            } else if (injectionType == MediatorModel.model().mediatorMethodInjection.getRequest()) {
                 MediatorGui.panelAddressBar().getRadioRequest().setSelected();
             } else {
                 MediatorGui.panelAddressBar().getRadioQueryString().setSelected();

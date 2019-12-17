@@ -2,9 +2,9 @@ package com.jsql.view.swing.list;
 
 import java.util.NoSuchElementException;
 
-import com.jsql.model.InjectionModel.MethodInjection;
 import com.jsql.model.MediatorModel;
-import com.jsql.model.injection.vendor.MediatorVendor.Vendor;
+import com.jsql.model.injection.method.MethodInjection;
+import com.jsql.model.injection.vendor.model.Vendor;
 
 public class BeanInjection {
     
@@ -19,7 +19,7 @@ public class BeanInjection {
         String url
     ) {
         this.url = url;
-        this.injectionType = MediatorModel.model().QUERY;
+        this.injectionType = MediatorModel.model().mediatorMethodInjection.getQuery();
         this.vendor = MediatorModel.model().mediatorVendor.AUTO;
         this.requestType = "POST";
     }
@@ -38,9 +38,9 @@ public class BeanInjection {
         this.header = header;
         
         try {
-            this.injectionType = MediatorModel.model().methods.stream().filter(m -> m.name().equalsIgnoreCase(injectionType)).findAny().orElse(MediatorModel.model().QUERY);
+            this.injectionType = MediatorModel.model().mediatorMethodInjection.methods.stream().filter(m -> m.name().equalsIgnoreCase(injectionType)).findAny().orElse(MediatorModel.model().mediatorMethodInjection.getQuery());
         } catch (IllegalArgumentException | NoSuchElementException e) {
-            this.injectionType = MediatorModel.model().QUERY;
+            this.injectionType = MediatorModel.model().mediatorMethodInjection.getQuery();
         }
         
         try {

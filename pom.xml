@@ -108,7 +108,7 @@
                         
                         <include>H2NormalGetTestSuite</include>
                         
-                        <include>PostTest</include>
+                        <include>PostTestSuite</include>
                     </includes>        
 
                     <parallel>classes</parallel>

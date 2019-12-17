@@ -199,7 +199,7 @@ public class VendorXml implements AbstractVendor {
         return
             this.injectionModel.getIndexesInUrl()
                 .replaceAll(
-                    "1337" + injectionModel.NORMAL.getVisibleIndex() + "7331",
+                    "1337" + this.injectionModel.NORMAL.getVisibleIndex() + "7331",
                     this.xmlModel.getResource().getFile().getCreate().getContent()
                         .replace(
                             CONTENT_HEX,

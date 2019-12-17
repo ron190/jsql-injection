@@ -178,10 +178,12 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         this.performanceLength = performanceLength;
     }
     
+    @Override
     public String getVisibleIndex() {
         return this.visibleIndex;
     }
 
+    @Override
     public void setVisibleIndex(String visibleIndex) {
         this.visibleIndex = visibleIndex;
     }

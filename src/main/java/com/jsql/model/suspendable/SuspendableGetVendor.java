@@ -17,7 +17,7 @@ import com.jsql.model.bean.util.Header;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.vendor.MediatorVendor.Vendor;
+import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.model.suspendable.callable.CallablePageSource;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 

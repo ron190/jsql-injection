@@ -44,6 +44,8 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.method.MediatorMethodInjection;
+import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.model.injection.strategy.StrategyInjectionBlind;
 import com.jsql.model.injection.strategy.StrategyInjectionError;
@@ -81,190 +83,27 @@ import net.sourceforge.spnego.SpnegoHttpURLConnection;
 public class InjectionModel extends AbstractModelObservable {
     
     public MediatorVendor mediatorVendor = new MediatorVendor(InjectionModel.this);
-    
-//    public Vendor AUTO = new Vendor("Database auto", null);
-//    public Vendor ACCESS = new Vendor("Access", new VendorXml("access.xml", InjectionModel.this));
-//    public Vendor COCKROACHDB = new Vendor("CockroachDB", new VendorXml("cockroachdb.xml", InjectionModel.this));
-//    public Vendor CUBRID = new Vendor("CUBRID", new VendorXml("cubrid.xml", InjectionModel.this));
-//    public Vendor DB2 = new Vendor("DB2", new VendorXml("db2.xml", InjectionModel.this));
-//    public Vendor DERBY = new Vendor("Derby", new VendorXml("derby.xml", InjectionModel.this));
-//    public Vendor FIREBIRD = new Vendor("Firebird", new VendorXml("firebird.xml", InjectionModel.this));
-//    public Vendor H2 = new Vendor("H2", new VendorXml("h2.xml", InjectionModel.this));
-//    public Vendor HANA = new Vendor("Hana", new VendorXml("hana.xml", InjectionModel.this));
-//    public Vendor HSQLDB = new Vendor("HSQLDB", new VendorXml("hsqldb.xml", InjectionModel.this));
-//    public Vendor INFORMIX = new Vendor("Informix", new VendorXml("informix.xml", InjectionModel.this));
-//    public Vendor INGRES = new Vendor("Ingres", new VendorXml("ingres.xml", InjectionModel.this));
-//    public Vendor MAXDB = new Vendor("MaxDB", new VendorXml("maxdb.xml", InjectionModel.this));
-//    public Vendor MCKOI = new Vendor("Mckoi", new VendorXml("mckoi.xml", InjectionModel.this));
-//    public Vendor MEMSQL = new Vendor("MemSQL", new VendorXml("memsql.xml", InjectionModel.this));
-//    public Vendor MYSQL = new Vendor("MySQL", new VendorXml("mysql.xml", InjectionModel.this));
-//    public Vendor NEO4J = new Vendor("Neo4j", new VendorXml("neo4j.xml", InjectionModel.this));
-//    public Vendor NUODB = new Vendor("NuoDB", new VendorXml("nuodb.xml", InjectionModel.this));
-//    public Vendor ORACLE = new Vendor("Oracle", new VendorXml("oracle.xml", InjectionModel.this));
-//    public Vendor POSTGRESQL = new Vendor("PostgreSQL", new VendorXml("postgresql.xml", InjectionModel.this));
-//    public Vendor SQLITE = new Vendor("SQLite", new VendorXml("sqlite.xml", InjectionModel.this)) {
-//         
-//         @Override
-//         public String transform(String resultToParse) {
-//             
-//             StringBuilder resultSQLite = new StringBuilder();
-//             String resultTmp = resultToParse.replaceFirst(".+?\\(", "").trim().replaceAll("\\)$", "");
-//             resultTmp = resultTmp.replaceAll("\\(.+?\\)", "");
-//             
-//             for (String columnNameAndType: resultTmp.split(",")) {
-//                 // Some recent SQLite use tabulation character as a separator => split() by any  white space \s
-//                 String columnName = columnNameAndType.trim().split("\\s")[0];
-//                 
-//                 // Some recent SQLite enclose names with ` => strip those `
-//                 columnName = StringUtils.strip(columnName, "`");
-//                 
-//                 if (!"CONSTRAINT".equals(columnName) && !"UNIQUE".equals(columnName)) {
-//                     resultSQLite.append((char) 4 + columnName + (char) 5 + "0" + (char) 4 + (char) 6);
-//                 }
-//             }
-//     
-//             return resultSQLite.toString();
-//             
-//         }
-//         
-//     };
-//    public Vendor SQLSERVER = new Vendor("SQL Server", new VendorXml("sqlserver.xml", InjectionModel.this));
-//    public Vendor SYBASE = new Vendor("Sybase", new VendorXml("sybase.xml", InjectionModel.this));
-//    public Vendor TERADATA = new Vendor("Teradata", new VendorXml("teradata.xml", InjectionModel.this));
-//    public Vendor VERTICA = new Vendor("Vertica", new VendorXml("vertica.xml", InjectionModel.this));
-//    
-//    public List<Vendor> vendors = Arrays.asList(this.ACCESS,this.COCKROACHDB,this.CUBRID,this.DB2,this.DERBY,this.FIREBIRD,this.H2,this.HANA,this.HSQLDB,this.INFORMIX,this.INGRES,this.MAXDB,this.MCKOI,this.MEMSQL,this.MYSQL,this.NEO4J,this.NUODB,this.ORACLE,this.POSTGRESQL,this.SQLITE,this.SQLSERVER,this.SYBASE,this.TERADATA,this.VERTICA);
-//    
-//    public class Vendor {
-//        
-//        private final String labelVendor;
-//        
-//        private final AbstractVendor instanceVendor;
-//        
-//        private Vendor(String labelVendor, AbstractVendor instanceVendor) {
-//            this.labelVendor = labelVendor;
-//            this.instanceVendor = instanceVendor;
-//        }
-//        
-//        public AbstractVendor instance() {
-//            return this.instanceVendor;
-//        }
-//        
-//        @Override
-//        public String toString() {
-//            return this.labelVendor;
-//        }
-//        
-//        public String transform(String resultToParse) {
-//            return "";
-//        }
-//        
-//    }
-    
-    public abstract class MethodInjection {
-        
-        public abstract boolean isCheckingAllParam();
-        public abstract String getParamsAsString();
-        public abstract List<SimpleEntry<String, String>> getParams();
-        public abstract String name();
-        
-    }
-    
-
-    
-    public MethodInjection QUERY = new MethodInjection() {
-        
-        @Override
-        public boolean isCheckingAllParam() {
-            return InjectionModel.this.getMediatorUtils().getPreferencesUtil().isCheckingAllURLParam();
-        }
-
-        @Override
-        public String getParamsAsString() {
-            return InjectionModel.this.getMediatorUtils().getParameterUtil().getQueryStringFromEntries();
-        }
-
-        @Override
-        public List<SimpleEntry<String, String>> getParams() {
-            return InjectionModel.this.getMediatorUtils().getParameterUtil().getQueryString();
-        }
-
-        @Override
-        public String name() {
-            return "QUERY";
-        }
-        
-    };
-    
-    public MethodInjection REQUEST = new MethodInjection() {
-        
-        @Override
-        public boolean isCheckingAllParam() {
-            return InjectionModel.this.getMediatorUtils().getPreferencesUtil().isCheckingAllRequestParam();
-        }
-
-        @Override
-        public String getParamsAsString() {
-            return InjectionModel.this.getMediatorUtils().getParameterUtil().getRequestFromEntries();
-        }
-
-        @Override
-        public List<SimpleEntry<String, String>> getParams() {
-            return InjectionModel.this.getMediatorUtils().getParameterUtil().getRequest();
-        }
-
-        @Override
-        public String name() {
-            return "REQUEST";
-        }
-        
-    };
-    
-    public MethodInjection HEADER = new MethodInjection() {
-        
-        @Override
-        public boolean isCheckingAllParam() {
-            return InjectionModel.this.getMediatorUtils().getPreferencesUtil().isCheckingAllHeaderParam();
-        }
-
-        @Override
-        public String getParamsAsString() {
-            return InjectionModel.this.getMediatorUtils().getParameterUtil().getHeaderFromEntries();
-        }
-
-        @Override
-        public List<SimpleEntry<String, String>> getParams() {
-            return InjectionModel.this.getMediatorUtils().getParameterUtil().getHeader();
-        }
-
-        @Override
-        public String name() {
-            return "HEADER";
-        }
-        
-    };
-    
+    public MediatorMethodInjection mediatorMethodInjection = new MediatorMethodInjection(this);
+    public MediatorUtils mediatorUtils;
     public DataAccess dataAccess = new DataAccess(this);
     public RessourceAccess resourceAccess = new RessourceAccess(this);
-    
-    public MediatorUtils mediatorUtils;
 
     public InjectionModel() {
-        mediatorUtils = new MediatorUtils(this);
+        this.mediatorUtils = new MediatorUtils();
 
-        mediatorUtils.setPropertiesUtil(new PropertiesUtil(this));
-        mediatorUtils.setConnectionUtil(new ConnectionUtil(this));
-        mediatorUtils.setAuthenticationUtil(new AuthenticationUtil(this));
-        mediatorUtils.setGitUtil(new GitUtil(this));
-        mediatorUtils.setHeaderUtil(new HeaderUtil(this));
-        mediatorUtils.setParameterUtil(new ParameterUtil(this));
-        mediatorUtils.setExceptionUtil(new ExceptionUtil(this));
-        mediatorUtils.setSoapUtil(new SoapUtil(this));
-        mediatorUtils.setJsonUtil(new JsonUtil(this));
-        mediatorUtils.setPreferencesUtil(new PreferencesUtil(this));
-        mediatorUtils.setProxyUtil(new ProxyUtil(this));
-        mediatorUtils.setThreadUtil(new ThreadUtil(this));
-        mediatorUtils.setTamperingUtil(new TamperingUtil(this));
+        this.mediatorUtils.setPropertiesUtil(new PropertiesUtil(this));
+        this.mediatorUtils.setConnectionUtil(new ConnectionUtil(this));
+        this.mediatorUtils.setAuthenticationUtil(new AuthenticationUtil(this));
+        this.mediatorUtils.setGitUtil(new GitUtil(this));
+        this.mediatorUtils.setHeaderUtil(new HeaderUtil(this));
+        this.mediatorUtils.setParameterUtil(new ParameterUtil(this));
+        this.mediatorUtils.setExceptionUtil(new ExceptionUtil(this));
+        this.mediatorUtils.setSoapUtil(new SoapUtil(this));
+        this.mediatorUtils.setJsonUtil(new JsonUtil(this));
+        this.mediatorUtils.setPreferencesUtil(new PreferencesUtil(this));
+        this.mediatorUtils.setProxyUtil(new ProxyUtil(this));
+        this.mediatorUtils.setThreadUtil(new ThreadUtil(this));
+        this.mediatorUtils.setTamperingUtil(new TamperingUtil(this));
     }
 
     public AbstractStrategy UNDEFINED = new AbstractStrategy(this) {
@@ -318,7 +157,6 @@ public class InjectionModel extends AbstractModelObservable {
     public AbstractStrategy ERROR = new StrategyInjectionError(this);
     public AbstractStrategy NORMAL = new StrategyInjectionNormal(this);
     
-    public List<MethodInjection> methods = Arrays.asList(this.QUERY,this.REQUEST,this.HEADER);
     public List<AbstractStrategy> strategies = Arrays.asList(this.UNDEFINED,this.TIME,this.BLIND,this.ERROR,this.NORMAL);
 	
     /**
@@ -432,7 +270,7 @@ public class InjectionModel extends AbstractModelObservable {
             
             boolean hasFoundInjection = false;
             
-            hasFoundInjection = this.testParameters(this.QUERY);
+            hasFoundInjection = this.testParameters(this.mediatorMethodInjection.getQuery());
 
             if (!hasFoundInjection) {
                 hasFoundInjection = this.getMediatorUtils().getSoapUtil().testParameters();
@@ -440,11 +278,11 @@ public class InjectionModel extends AbstractModelObservable {
             
             if (!hasFoundInjection) {
                 LOGGER.trace("Checking standard Request parameters");
-                hasFoundInjection = this.testParameters(this.REQUEST);
+                hasFoundInjection = this.testParameters(this.mediatorMethodInjection.getRequest());
             }
             
             if (!hasFoundInjection) {
-                hasFoundInjection = this.testParameters(this.HEADER);
+                hasFoundInjection = this.testParameters(this.mediatorMethodInjection.getHeader());
             }
             
             if (!this.isScanning) {
@@ -663,7 +501,7 @@ public class InjectionModel extends AbstractModelObservable {
                 urlInjection += "?";
             }
 
-            urlInjection += this.buildQuery(this.QUERY, this.getMediatorUtils().getParameterUtil().getQueryStringFromEntries(), isUsingIndex, dataInjection);
+            urlInjection += this.buildQuery(this.mediatorMethodInjection.getQuery(), this.getMediatorUtils().getParameterUtil().getQueryStringFromEntries(), isUsingIndex, dataInjection);
             
             if (this.getMediatorUtils().getConnectionUtil().getTokenCsrf() != null) {
                 urlInjection += "&"+ this.getMediatorUtils().getConnectionUtil().getTokenCsrf().getKey() +"="+ this.getMediatorUtils().getConnectionUtil().getTokenCsrf().getValue();
@@ -726,14 +564,14 @@ public class InjectionModel extends AbstractModelObservable {
              */
             // TODO Extract in method
             if (!this.getMediatorUtils().getParameterUtil().getHeader().isEmpty()) {
-                Stream.of(this.buildQuery(this.HEADER, this.getMediatorUtils().getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
+                Stream.of(this.buildQuery(this.mediatorMethodInjection.getHeader(), this.getMediatorUtils().getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
                 .forEach(e -> {
                     if (e.split(":").length == 2) {
                         HeaderUtil.sanitizeHeaders(connection, new SimpleEntry<>(e.split(":")[0], e.split(":")[1]));
                     }
                 });
                 
-                msgHeader.put(Header.HEADER, this.buildQuery(this.HEADER, this.getMediatorUtils().getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection));
+                msgHeader.put(Header.HEADER, this.buildQuery(this.mediatorMethodInjection.getHeader(), this.getMediatorUtils().getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection));
             }
     
             /**
@@ -754,18 +592,18 @@ public class InjectionModel extends AbstractModelObservable {
                     }
                     if (this.getMediatorUtils().getConnectionUtil().getTypeRequest().matches("PUT|POST")) {
                         if (this.getMediatorUtils().getParameterUtil().isRequestSoap()) {
-                            dataOut.writeBytes(this.buildQuery(this.REQUEST, this.getMediatorUtils().getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
+                            dataOut.writeBytes(this.buildQuery(this.mediatorMethodInjection.getRequest(), this.getMediatorUtils().getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
                         } else {
-                            dataOut.writeBytes(this.buildQuery(this.REQUEST, this.getMediatorUtils().getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
+                            dataOut.writeBytes(this.buildQuery(this.mediatorMethodInjection.getRequest(), this.getMediatorUtils().getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
                         }
                     }
                     dataOut.flush();
                     dataOut.close();
                     
                     if (this.getMediatorUtils().getParameterUtil().isRequestSoap()) {
-                        msgHeader.put(Header.POST, this.buildQuery(this.REQUEST, this.getMediatorUtils().getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
+                        msgHeader.put(Header.POST, this.buildQuery(this.mediatorMethodInjection.getRequest(), this.getMediatorUtils().getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
                     } else {
-                        msgHeader.put(Header.POST, this.buildQuery(this.REQUEST, this.getMediatorUtils().getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
+                        msgHeader.put(Header.POST, this.buildQuery(this.mediatorMethodInjection.getRequest(), this.getMediatorUtils().getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
                     }
                 } catch (IOException e) {
                     LOGGER.warn("Error during Request connection: "+ e.getMessage(), e);
@@ -917,7 +755,7 @@ public class InjectionModel extends AbstractModelObservable {
         // Remove SQL comments
         query = query.replaceAll("(?s)/\\*.*?\\*/", "");
         
-        if (methodInjection == this.REQUEST) {
+        if (methodInjection == this.mediatorMethodInjection.getRequest()) {
             if (this.getMediatorUtils().getParameterUtil().isRequestSoap()) {
                 query = query.replaceAll("%2b", "+");
             }
@@ -1098,7 +936,7 @@ public class InjectionModel extends AbstractModelObservable {
     }
 
     public MediatorUtils getMediatorUtils() {
-        return mediatorUtils;
+        return this.mediatorUtils;
     }
 
 }

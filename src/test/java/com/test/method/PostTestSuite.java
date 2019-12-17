@@ -14,7 +14,7 @@ import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class PostTest extends ConcreteMySQLTestSuite {
+public class PostTestSuite extends ConcreteMySQLTestSuite {
     
     @Override
     public void setupInjection() throws Exception {
@@ -32,7 +32,7 @@ public class PostTest extends ConcreteMySQLTestSuite {
         ));
         
         model.getMediatorUtils().getPreferencesUtil().setNotTestingConnection(true);
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.REQUEST);
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.mediatorMethodInjection.getRequest());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("POST");
         
         model.setIsScanning(true);

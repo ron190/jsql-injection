@@ -30,74 +30,56 @@ public class MediatorUtils {
     private ThreadUtil threadUtil;
     private TamperingUtil tamperingUtil;
 
-    InjectionModel injectionModel;
-    public MediatorUtils(InjectionModel injectionModel) {
-//        this.injectionModel = injectionModel;
-//        this.propertiesUtil = new PropertiesUtil(this.injectionModel);
-//        this.connectionUtil = new ConnectionUtil(this.injectionModel);
-//        this.authenticationUtil = new AuthenticationUtil(this.injectionModel);
-//        this.gitUtil = new GitUtil(this.injectionModel);
-//        this.headerUtil = new HeaderUtil(this.injectionModel);
-//        this.parameterUtil = new ParameterUtil(this.injectionModel);
-//        this.exceptionUtil = new ExceptionUtil(this.injectionModel);
-//        this.soapUtil = new SoapUtil(this.injectionModel);
-//        this.jsonUtil = new JsonUtil(this.injectionModel);
-//        this.preferencesUtil = new PreferencesUtil(this.injectionModel);
-//        this.proxyUtil = new ProxyUtil(this.injectionModel);
-//        this.threadUtil = new ThreadUtil(this.injectionModel);
-//        this.tamperingUtil = new TamperingUtil(this.injectionModel);
-    }
-
     public PropertiesUtil getPropertiesUtil() {
-        return propertiesUtil;
+        return this.propertiesUtil;
     }
 
     public ConnectionUtil getConnectionUtil() {
-        return connectionUtil;
+        return this.connectionUtil;
     }
 
     public AuthenticationUtil getAuthenticationUtil() {
-        return authenticationUtil;
+        return this.authenticationUtil;
     }
 
     public GitUtil getGitUtil() {
-        return gitUtil;
+        return this.gitUtil;
     }
 
     public HeaderUtil getHeaderUtil() {
-        return headerUtil;
+        return this.headerUtil;
     }
 
     public ParameterUtil getParameterUtil() {
-        return parameterUtil;
+        return this.parameterUtil;
     }
 
     public ExceptionUtil getExceptionUtil() {
-        return exceptionUtil;
+        return this.exceptionUtil;
     }
 
     public SoapUtil getSoapUtil() {
-        return soapUtil;
+        return this.soapUtil;
     }
 
     public JsonUtil getJsonUtil() {
-        return jsonUtil;
+        return this.jsonUtil;
     }
 
     public PreferencesUtil getPreferencesUtil() {
-        return preferencesUtil;
+        return this.preferencesUtil;
     }
 
     public ProxyUtil getProxyUtil() {
-        return proxyUtil;
+        return this.proxyUtil;
     }
 
     public ThreadUtil getThreadUtil() {
-        return threadUtil;
+        return this.threadUtil;
     }
 
     public TamperingUtil getTamperingUtil() {
-        return tamperingUtil;
+        return this.tamperingUtil;
     }
 
     public void setPropertiesUtil(PropertiesUtil propertiesUtil) {

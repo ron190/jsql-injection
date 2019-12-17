@@ -48,14 +48,14 @@ import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
-import com.jsql.model.InjectionModel.MethodInjection;
 import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
+import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.model.injection.strategy.StrategyInjectionError;
-import com.jsql.model.injection.vendor.MediatorVendor.Vendor;
 import com.jsql.model.injection.vendor.model.Model.Strategy.Error.Method;
+import com.jsql.model.injection.vendor.model.Vendor;
 import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
@@ -102,7 +102,7 @@ public class PanelAddressBar extends JPanel {
     /**
      * Current injection method.
      */
-    private MethodInjection methodInjection = MediatorModel.model().QUERY;
+    private MethodInjection methodInjection = MediatorModel.model().mediatorMethodInjection.getQuery();
 
     private String typeRequest = "POST";
 
@@ -118,9 +118,9 @@ public class PanelAddressBar extends JPanel {
 
     private boolean advanceIsActivated = false;
     
-    private final RadioLinkMethod radioQueryString = new RadioLinkMethod("GET", true, MediatorModel.model().QUERY);
-    private final RadioLinkMethod radioMethod = new RadioLinkMethod("POST", MediatorModel.model().REQUEST);
-    private final RadioLinkMethod radioHeader = new RadioLinkMethod("Header", MediatorModel.model().HEADER);
+    private final RadioLinkMethod radioQueryString = new RadioLinkMethod("GET", true, MediatorModel.model().mediatorMethodInjection.getQuery());
+    private final RadioLinkMethod radioMethod = new RadioLinkMethod("POST", MediatorModel.model().mediatorMethodInjection.getRequest());
+    private final RadioLinkMethod radioHeader = new RadioLinkMethod("Header", MediatorModel.model().mediatorMethodInjection.getHeader());
 
   public JMenu menuVendor;
 
