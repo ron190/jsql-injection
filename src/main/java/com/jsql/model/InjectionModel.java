@@ -389,7 +389,7 @@ public class InjectionModel extends AbstractModelObservable {
      */
     public void resetModel() {
         // TODO make injection pojo for all fields
-        StrategyInjectionNormal.setVisibleIndex(null);
+        this.NORMAL.setVisibleIndex(null);
         this.indexesInUrl = "";
         
         this.getMediatorUtils().getConnectionUtil().setTokenCsrf(null);
@@ -822,7 +822,7 @@ public class InjectionModel extends AbstractModelObservable {
                     urlBase.replace(
                         InjectionModel.STAR,
                         this.indexesInUrl.replaceAll(
-                            "1337" + StrategyInjectionNormal.getVisibleIndex() + "7331",
+                            "1337" + this.NORMAL.getVisibleIndex() + "7331",
                             /**
                              * Oracle column often contains $, which is reserved for regex.
                              * => need to be escape with quoteReplacement()
@@ -872,7 +872,7 @@ public class InjectionModel extends AbstractModelObservable {
                 query = paramLead.replace(
                     InjectionModel.STAR,
                     this.indexesInUrl.replaceAll(
-                        "1337" + StrategyInjectionNormal.getVisibleIndex() + "7331",
+                        "1337" + this.NORMAL.getVisibleIndex() + "7331",
                         /**
                          * Oracle column often contains $, which is reserved for regex.
                          * => need to be escape with quoteReplacement()
@@ -899,7 +899,7 @@ public class InjectionModel extends AbstractModelObservable {
                 // Concat indexes found for Normal strategy to params
                 // and use visible Index for injection
                 query = paramLead + this.indexesInUrl.replaceAll(
-                    "1337" + StrategyInjectionNormal.getVisibleIndex() + "7331",
+                    "1337" + this.NORMAL.getVisibleIndex() + "7331",
                     /**
                      * Oracle column often contains $, which is reserved for regex.
                      * => need to be escape with quoteReplacement()

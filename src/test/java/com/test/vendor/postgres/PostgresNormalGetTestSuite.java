@@ -29,6 +29,7 @@ public class PostgresNormalGetTestSuite extends ConcretePostgresTestSuite {
             new SimpleEntry<>("tenant", "postgres"),
             new SimpleEntry<>("name", "0'")
         ));
+        
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.QUERY);
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
 

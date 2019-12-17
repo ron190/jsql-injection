@@ -91,7 +91,8 @@ public class TamperingUtil {
         String sqlQuery = null;
         String trail = null;
         
-        Matcher m = Pattern.compile("(.*SlQqLs)(.*)(lSqQsL.*)").matcher(sqlQueryDefault);
+        
+        Matcher m = Pattern.compile("(?s)(.*SlQqLs)(.*)(lSqQsL.*)").matcher(sqlQueryDefault);
         if (m.find()) {
            lead = m.group(1);
            sqlQuery = m.group(2);

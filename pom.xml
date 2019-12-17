@@ -107,6 +107,8 @@
                         <include>PostgresErrorTestSuite</include>
                         
                         <include>H2NormalGetTestSuite</include>
+                        
+                        <include>PostTest</include>
                     </includes>        
 
                     <parallel>classes</parallel>

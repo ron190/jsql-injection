@@ -32,6 +32,7 @@ public class PostgresBlindGetTestSuite extends ConcretePostgresTestSuite {
             new SimpleEntry<>("tenant", "postgres"),
             new SimpleEntry<>("name", "1'")
         ));
+        
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.QUERY);
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         

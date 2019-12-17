@@ -33,7 +33,6 @@ import org.apache.commons.text.WordUtils;
 
 import com.jsql.model.MediatorModel;
 import com.jsql.util.tampering.Tampering;
-import com.jsql.util.tampering.TamperingUtil;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionCheckIP;

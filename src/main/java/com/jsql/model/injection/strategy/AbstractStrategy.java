@@ -130,4 +130,15 @@ public abstract class AbstractStrategy {
         
     }
     
+
+    protected String visibleIndex;
+    
+    public String getVisibleIndex() {
+        return this.visibleIndex;
+    }
+
+    public void setVisibleIndex(String visibleIndex) {
+        this.visibleIndex = visibleIndex;
+    }
+    
 }

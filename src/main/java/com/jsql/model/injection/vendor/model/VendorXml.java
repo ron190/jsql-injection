@@ -32,7 +32,6 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
-import com.jsql.model.injection.strategy.StrategyInjectionNormal;
 import com.jsql.model.injection.strategy.blind.InjectionTime;
 import com.jsql.util.StringUtil;
 
@@ -200,7 +199,7 @@ public class VendorXml implements AbstractVendor {
         return
             this.injectionModel.getIndexesInUrl()
                 .replaceAll(
-                    "1337" + StrategyInjectionNormal.getVisibleIndex() + "7331",
+                    "1337" + injectionModel.NORMAL.getVisibleIndex() + "7331",
                     this.xmlModel.getResource().getFile().getCreate().getContent()
                         .replace(
                             CONTENT_HEX,
