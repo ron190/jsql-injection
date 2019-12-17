@@ -33,12 +33,12 @@ public class PostgresBlindGetTestSuite extends ConcretePostgresTestSuite {
             new SimpleEntry<>("name", "1'")
         ));
         
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.mediatorMethodInjection.getQuery());
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         
         model.setIsScanning(true);
         model.setStrategy(model.BLIND);
-        model.mediatorVendor.setVendorByUser(model.mediatorVendor.POSTGRESQL);
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getPOSTGRESQL());
         model.beginInjection();
     }
     

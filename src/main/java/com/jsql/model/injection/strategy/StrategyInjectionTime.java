@@ -42,8 +42,8 @@ public class StrategyInjectionTime extends AbstractStrategy {
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
         
-        if (this.injectionModel.mediatorVendor.getVendor().instance().sqlTestBlindFirst() == null) {
-            LOGGER.info("No Time strategy known for "+ this.injectionModel.mediatorVendor.getVendor());
+        if (this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindFirst() == null) {
+            LOGGER.info("No Time strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
         } else {
             LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Time...");
             
@@ -79,7 +79,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
         return this.timeInjection.inject(
-            this.injectionModel.mediatorVendor.getVendor().instance().sqlTime(sqlQuery, startPosition),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(sqlQuery, startPosition),
             stoppable
         );
     }

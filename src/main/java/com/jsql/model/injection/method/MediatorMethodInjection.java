@@ -100,4 +100,8 @@ public class MediatorMethodInjection {
         return header;
     }
 
+    public List<MethodInjection> getMethods() {
+        return methods;
+    }
+
 }

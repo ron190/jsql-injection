@@ -69,7 +69,7 @@ public class ActionLoadStop implements ActionListener {
                 @Override
                 protected Object doInBackground() throws Exception {
                 	Thread.currentThread().setName("SwingWorkerActionLoadStop");
-                    MediatorModel.model().dataAccess.listValues(columnsToSearch);
+                    MediatorModel.model().getDataAccess().listValues(columnsToSearch);
                     return null;
                 }
             }.execute();

@@ -32,7 +32,7 @@ public class PostTestSuite extends ConcreteMySQLTestSuite {
         ));
         
         model.getMediatorUtils().getPreferencesUtil().setNotTestingConnection(true);
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.mediatorMethodInjection.getRequest());
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getRequest());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("POST");
         
         model.setIsScanning(true);

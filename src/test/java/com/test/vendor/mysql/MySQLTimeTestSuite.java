@@ -33,7 +33,7 @@ public class MySQLTimeTestSuite extends ConcreteMySQLTestSuite {
             new SimpleEntry<>("name", "1'")
         ));
 
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.mediatorMethodInjection.getQuery());
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         
         model.setIsScanning(true);

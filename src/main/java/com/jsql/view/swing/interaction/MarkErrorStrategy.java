@@ -38,7 +38,7 @@ public class MarkErrorStrategy implements InteractionCommand {
         
         JMenu menuError = (JMenu) MediatorGui.panelAddressBar().getMenuStrategy().getMenuComponent(2);
         int indexError = MediatorModel.model().ERROR.getIndexMethod();
-        String nameError = MediatorModel.model().mediatorVendor.getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(indexError).getName();
+        String nameError = MediatorModel.model().getMediatorVendor().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(indexError).getName();
         
         for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
             // Fix #44635: ArrayIndexOutOfBoundsException on getItem()

@@ -26,7 +26,7 @@ public abstract class HeaderTest extends ConcreteMySQLTestSuite {
 
         model.getMediatorUtils().getConnectionUtil().setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_header.php");
         model.getMediatorUtils().getParameterUtil().setHeader(Arrays.asList(new AbstractMap.SimpleEntry<>("lib", "0")));
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.mediatorMethodInjection.getHeader());
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getHeader());
 
         model.beginInjection();
 

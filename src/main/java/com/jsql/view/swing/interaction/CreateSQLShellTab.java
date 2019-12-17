@@ -74,8 +74,8 @@ public class CreateSQLShellTab extends CreateTab implements InteractionCommand {
     
             MediatorGui.tabResults().setToolTipTextAt(
                 MediatorGui.tabResults().indexOfComponent(scroller),
-                "<html><b>URL</b><br>" + this.url + MediatorModel.model().resourceAccess.FILENAME_SQLSHELL
-                + "<br><b>Path</b><br>" + this.path + MediatorModel.model().resourceAccess.FILENAME_SQLSHELL + "</html>"
+                "<html><b>URL</b><br>" + this.url + MediatorModel.model().getResourceAccess().FILENAME_SQLSHELL
+                + "<br><b>Path</b><br>" + this.path + MediatorModel.model().getResourceAccess().FILENAME_SQLSHELL + "</html>"
             );
     
             // Apply the custom header to the tab

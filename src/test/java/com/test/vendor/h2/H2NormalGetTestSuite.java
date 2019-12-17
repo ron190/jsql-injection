@@ -29,11 +29,11 @@ public class H2NormalGetTestSuite extends ConcreteH2TestSuite {
             new SimpleEntry<>("tenant", "h2"),
             new SimpleEntry<>("name", "1'")
         ));
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.mediatorMethodInjection.getQuery());
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         
         model.setStrategy(model.NORMAL);
-        model.mediatorVendor.setVendorByUser(model.mediatorVendor.H2);
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getH2());
         model.beginInjection();
     }
     

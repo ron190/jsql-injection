@@ -153,7 +153,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             throw new StoppedByUserSlidingException();
         }
         
-        CallableTime blindTest = new CallableTime(this.injectionModel.mediatorVendor.getVendor().instance().sqlTestBlindFirst(), this.injectionModel, this);
+        CallableTime blindTest = new CallableTime(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindFirst(), this.injectionModel, this);
         try {
             blindTest.call();
         } catch (Exception e) {

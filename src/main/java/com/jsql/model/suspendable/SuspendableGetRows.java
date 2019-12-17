@@ -48,7 +48,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         AbstractElementDatabase searchName = (AbstractElementDatabase) args[4];
         this.injectionModel.getMediatorUtils().getThreadUtil().put(searchName, this);
 
-        String sqlQuery = initialSQLQuery.replaceAll("\\{limit\\}", this.injectionModel.mediatorVendor.getVendor().instance().sqlLimit(0));
+        String sqlQuery = initialSQLQuery.replaceAll("\\{limit\\}", this.injectionModel.getMediatorVendor().getVendor().instance().sqlLimit(0));
 
         AbstractStrategy strategy;
         // Fix #14417
@@ -374,7 +374,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                         Pattern
                             .compile(MODE +"\\{limit\\}")
                             .matcher(initialSQLQuery)
-                            .replaceAll(this.injectionModel.mediatorVendor.getVendor().instance().sqlLimit(sqlLimit));
+                            .replaceAll(this.injectionModel.getMediatorVendor().getVendor().instance().sqlLimit(sqlLimit));
 
                     slidingWindowCurrentRow.setLength(0);
                 } else {

@@ -137,7 +137,7 @@ public class ManagerUpload extends AbstractManagerList {
                             File file = filechooser.getSelectedFile();
                             try {
                                 ManagerUpload.this.loader.setVisible(true);
-                                MediatorModel.model().resourceAccess.uploadFile(path.toString(), shellURL.getText(), file);
+                                MediatorModel.model().getResourceAccess().uploadFile(path.toString(), shellURL.getText(), file);
                             } catch (JSqlException ex) {
                                 LOGGER.warn("Payload creation error: "+ ex, ex);
                             } catch (IOException ex) {

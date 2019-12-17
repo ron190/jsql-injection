@@ -163,7 +163,7 @@ public abstract class AbstractTestSuite {
         Set<Object> set2 = new HashSet<>();
         
         try {
-            List<Database> dbs = this.injectionModel.dataAccess.listDatabases();
+            List<Database> dbs = this.injectionModel.getDataAccess().listDatabases();
             List<String> databasesFound = new ArrayList<>();
             for (Database d: dbs) {
                 databasesFound.add(d.toString());
@@ -198,7 +198,7 @@ public abstract class AbstractTestSuite {
         Set<Object> set2 = new HashSet<>();
 
         try {
-            List<Table> ts = this.injectionModel.dataAccess.listTables(new Database(AbstractTestSuite.this.jsqlDatabaseName, "0"));
+            List<Table> ts = this.injectionModel.getDataAccess().listTables(new Database(AbstractTestSuite.this.jsqlDatabaseName, "0"));
             List<String> tablesFound = new ArrayList<>();
             for (Table t: ts) {
                 tablesFound.add(t.toString());
@@ -232,7 +232,7 @@ public abstract class AbstractTestSuite {
         Set<Object> set2 = new HashSet<>();
 
         try {
-            List<Column> cs = this.injectionModel.dataAccess.listColumns(
+            List<Column> cs = this.injectionModel.getDataAccess().listColumns(
                 new Table(AbstractTestSuite.this.jsqlTableName, "0",
                     new Database(AbstractTestSuite.this.jsqlDatabaseName, "0")
                 )
@@ -270,7 +270,7 @@ public abstract class AbstractTestSuite {
         Set<Object> set2 = new TreeSet<>();
 
         try {
-            String[][] vs = this.injectionModel.dataAccess.listValues(Arrays.asList(
+            String[][] vs = this.injectionModel.getDataAccess().listValues(Arrays.asList(
                 new Column(AbstractTestSuite.this.jsqlColumnName,
                     new Table(AbstractTestSuite.this.jsqlTableName, "0",
                         new Database(AbstractTestSuite.this.jsqlDatabaseName, "0")

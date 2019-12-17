@@ -34,7 +34,7 @@ public abstract class CookieTest extends ConcreteMySQLTestSuite {
 
         model.getMediatorUtils().getConnectionUtil().setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_cookie.php");
         model.getMediatorUtils().getParameterUtil().setHeader(Arrays.asList(new AbstractMap.SimpleEntry<>("Cookie", "lib=0")));
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.mediatorMethodInjection.getHeader());
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getHeader());
 
         model.beginInjection();
 

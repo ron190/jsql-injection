@@ -50,7 +50,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
         for (nbIndex = 1 ; nbIndex <= 10 ; nbIndex++) {
             taskCompletionService.submit(
                 new CallablePageSource(
-                    this.injectionModel.mediatorVendor.getVendor().instance().sqlIndices(nbIndex),
+                    this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),
                     this.injectionModel
                 )
             );
@@ -75,7 +75,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
                     // Else add a new index
                     taskCompletionService.submit(
                         new CallablePageSource(
-                            this.injectionModel.mediatorVendor.getVendor().instance().sqlIndices(nbIndex),
+                            this.injectionModel.getMediatorVendor().getVendor().instance().sqlIndices(nbIndex),
                             this.injectionModel
                         )
                     );

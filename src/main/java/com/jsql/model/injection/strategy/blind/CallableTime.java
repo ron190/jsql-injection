@@ -36,7 +36,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     public CallableTime(String inj, InjectionModel injectionModel, InjectionTime injectionTime) {
         this.injectionModel = injectionModel;
         this.injectionTime = injectionTime;
-        this.blindUrl = this.injectionModel.mediatorVendor.getVendor().instance().sqlTimeTest(inj);
+        this.blindUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(inj);
     }
     
     /**
@@ -48,7 +48,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     public CallableTime(String inj, int indexCharacter, int bit, InjectionModel injectionModel, InjectionTime injectionTime) {
         this.injectionModel = injectionModel;
         this.injectionTime = injectionTime;
-        this.blindUrl = this.injectionModel.mediatorVendor.getVendor().instance().sqlBitTestTime(inj, indexCharacter, bit);
+        this.blindUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestTime(inj, indexCharacter, bit);
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
     }
@@ -56,7 +56,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     public CallableTime(String inj, int indexCharacter, boolean isTestingLength, InjectionModel injectionModel, InjectionTime injectionTime) {
         this.injectionModel = injectionModel;
         this.injectionTime = injectionTime;
-        this.blindUrl = this.injectionModel.mediatorVendor.getVendor().instance().sqlLengthTestTime(inj, indexCharacter);
+        this.blindUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlLengthTestTime(inj, indexCharacter);
         this.isTestingLength = isTestingLength;
     }
     

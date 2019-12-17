@@ -55,7 +55,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
                 @Override
                 protected Object doInBackground() throws Exception {
                 	Thread.currentThread().setName("SwingWorkerNodeModelDatabase");
-                    return MediatorModel.model().dataAccess.listTables(selectedDatabase);
+                    return MediatorModel.model().getDataAccess().listTables(selectedDatabase);
                 }
                 
             }.execute();

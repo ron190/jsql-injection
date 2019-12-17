@@ -30,11 +30,11 @@ public class PostgresErrorTestSuite extends ConcretePostgresTestSuite {
             new SimpleEntry<>("name", "0'")
         ));
 
-        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.mediatorMethodInjection.getQuery());
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         
         model.setStrategy(model.ERROR);
-        model.mediatorVendor.setVendorByUser(model.mediatorVendor.POSTGRESQL);
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getPOSTGRESQL());
         model.beginInjection();
     }
     

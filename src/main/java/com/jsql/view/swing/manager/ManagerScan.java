@@ -147,7 +147,7 @@ public class ManagerScan extends AbstractManagerList {
                         listModel.get(i).reset();
                     }
                     
-                    MediatorModel.model().resourceAccess.scanList(dndListScan.getSelectedValuesList());
+                    MediatorModel.model().getResourceAccess().scanList(dndListScan.getSelectedValuesList());
                 } else {
                     RessourceAccess.setScanStopped(true);
                     MediatorModel.model().setIsStoppedByUser(true);
@@ -185,9 +185,9 @@ public class ManagerScan extends AbstractManagerList {
             }
             
             MethodInjection injectionType = beanInjection.getInjectionTypeAsEnum();
-            if (injectionType == MediatorModel.model().mediatorMethodInjection.getHeader()) {
+            if (injectionType == MediatorModel.model().getMediatorMethodInjection().getHeader()) {
                 MediatorGui.panelAddressBar().getRadioHeader().setSelected();
-            } else if (injectionType == MediatorModel.model().mediatorMethodInjection.getRequest()) {
+            } else if (injectionType == MediatorModel.model().getMediatorMethodInjection().getRequest()) {
                 MediatorGui.panelAddressBar().getRadioRequest().setSelected();
             } else {
                 MediatorGui.panelAddressBar().getRadioQueryString().setSelected();

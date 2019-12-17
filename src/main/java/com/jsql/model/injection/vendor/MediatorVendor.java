@@ -25,40 +25,40 @@ public class MediatorVendor {
      */
     private Vendor vendorByUser;
 
-    public Vendor AUTO;
-    public Vendor ACCESS;
-    public Vendor COCKROACHDB;
-    public Vendor CUBRID;
-    public Vendor DB2;
-    public Vendor DERBY;
-    public Vendor FIREBIRD;
-    public Vendor H2;
-    public Vendor HANA;
-    public Vendor HSQLDB;
-    public Vendor INFORMIX;
-    public Vendor INGRES;
-    public Vendor MAXDB;
-    public Vendor MCKOI;
-    public Vendor MEMSQL;
-    public Vendor MYSQL;
-    public Vendor NEO4J;
-    public Vendor NUODB;
-    public Vendor ORACLE;
-    public Vendor POSTGRESQL;
-    public Vendor SQLITE;
-    public Vendor SQLSERVER;
-    public Vendor SYBASE;
-    public Vendor TERADATA;
-    public Vendor VERTICA;
+    private Vendor AUTO;
+    private Vendor ACCESS;
+    private Vendor COCKROACHDB;
+    private Vendor CUBRID;
+    private Vendor DB2;
+    private Vendor DERBY;
+    private Vendor FIREBIRD;
+    private Vendor H2;
+    private Vendor HANA;
+    private Vendor HSQLDB;
+    private Vendor INFORMIX;
+    private Vendor INGRES;
+    private Vendor MAXDB;
+    private Vendor MCKOI;
+    private Vendor MEMSQL;
+    private Vendor MYSQL;
+    private Vendor NEO4J;
+    private Vendor NUODB;
+    private Vendor ORACLE;
+    private Vendor POSTGRESQL;
+    private Vendor SQLITE;
+    private Vendor SQLSERVER;
+    private Vendor SYBASE;
+    private Vendor TERADATA;
+    private Vendor VERTICA;
     
-    public List<Vendor> vendors = Arrays.asList(
+    private List<Vendor> vendors = Arrays.asList(
         this.ACCESS,
         this.COCKROACHDB,
 		this.CUBRID,
 		this.DB2,
 		this.DERBY,
 		this.FIREBIRD,
-		this.H2,
+		this.getH2(),
 		this.HANA,
 		this.HSQLDB,
 		this.INFORMIX,
@@ -66,12 +66,12 @@ public class MediatorVendor {
 		this.MAXDB,
 		this.MCKOI,
 		this.MEMSQL,
-		this.MYSQL,
+		this.getMYSQL(),
 		this.NEO4J,
 		this.NUODB,
 		this.ORACLE,
-		this.POSTGRESQL,
-		this.SQLITE,
+		this.getPOSTGRESQL(),
+		this.getSQLITE(),
 		this.SQLSERVER,
 		this.SYBASE,
 		this.TERADATA,
@@ -139,7 +139,7 @@ public class MediatorVendor {
             this.DB2,
             this.DERBY,
             this.FIREBIRD,
-            this.H2,
+            this.getH2(),
             this.HANA,
             this.HSQLDB,
             this.INFORMIX,
@@ -147,20 +147,20 @@ public class MediatorVendor {
             this.MAXDB,
             this.MCKOI,
             this.MEMSQL,
-            this.MYSQL,
+            this.getMYSQL(),
             this.NEO4J,
             this.NUODB,
             this.ORACLE,
-            this.POSTGRESQL,
-            this.SQLITE,
+            this.getPOSTGRESQL(),
+            this.getSQLITE(),
             this.SQLSERVER,
             this.SYBASE,
             this.TERADATA,
             this.VERTICA
         );
         
-        this.vendor = this.MYSQL;
-        this.vendorByUser = this.AUTO;
+        this.vendor = this.getMYSQL();
+        this.vendorByUser = this.getAUTO();
     }
     
     public Vendor getVendor() {
@@ -173,5 +173,29 @@ public class MediatorVendor {
 
     public void setVendorByUser(Vendor vendorByUser) {
         this.vendorByUser = vendorByUser;
+    }
+
+    public List<Vendor> getVendors() {
+        return vendors;
+    }
+
+    public Vendor getH2() {
+        return H2;
+    }
+
+    public Vendor getPOSTGRESQL() {
+        return POSTGRESQL;
+    }
+
+    public Vendor getAUTO() {
+        return AUTO;
+    }
+
+    public Vendor getMYSQL() {
+        return MYSQL;
+    }
+
+    public Vendor getSQLITE() {
+        return SQLITE;
     }
 }

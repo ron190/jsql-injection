@@ -95,7 +95,7 @@ public class ManagerAdminPage extends AbstractManagerList {
                         ManagerAdminPage.this.loader.setVisible(true);
                         
                         try {
-                            MediatorModel.model().resourceAccess.createAdminPages(
+                            MediatorModel.model().getResourceAccess().createAdminPages(
                                 urlQuery[0],
                                 this.listFile.getSelectedValuesList()
                             );

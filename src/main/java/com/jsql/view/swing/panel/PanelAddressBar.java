@@ -102,7 +102,7 @@ public class PanelAddressBar extends JPanel {
     /**
      * Current injection method.
      */
-    private MethodInjection methodInjection = MediatorModel.model().mediatorMethodInjection.getQuery();
+    private MethodInjection methodInjection = MediatorModel.model().getMediatorMethodInjection().getQuery();
 
     private String typeRequest = "POST";
 
@@ -118,9 +118,9 @@ public class PanelAddressBar extends JPanel {
 
     private boolean advanceIsActivated = false;
     
-    private final RadioLinkMethod radioQueryString = new RadioLinkMethod("GET", true, MediatorModel.model().mediatorMethodInjection.getQuery());
-    private final RadioLinkMethod radioMethod = new RadioLinkMethod("POST", MediatorModel.model().mediatorMethodInjection.getRequest());
-    private final RadioLinkMethod radioHeader = new RadioLinkMethod("Header", MediatorModel.model().mediatorMethodInjection.getHeader());
+    private final RadioLinkMethod radioQueryString = new RadioLinkMethod("GET", true, MediatorModel.model().getMediatorMethodInjection().getQuery());
+    private final RadioLinkMethod radioMethod = new RadioLinkMethod("POST", MediatorModel.model().getMediatorMethodInjection().getRequest());
+    private final RadioLinkMethod radioHeader = new RadioLinkMethod("Header", MediatorModel.model().getMediatorMethodInjection().getHeader());
 
   public JMenu menuVendor;
 
@@ -356,15 +356,15 @@ public class PanelAddressBar extends JPanel {
             }
         }
 
-        this.menuVendor = new ComboMenu(MediatorModel.model().mediatorVendor.AUTO.toString());
+        this.menuVendor = new ComboMenu(MediatorModel.model().getMediatorVendor().getAUTO().toString());
 
         ButtonGroup groupVendor = new ButtonGroup();
 
-        for (final Vendor vendor: MediatorModel.model().mediatorVendor.vendors) {
-            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorModel.model().mediatorVendor.AUTO);
+        for (final Vendor vendor: MediatorModel.model().getMediatorVendor().getVendors()) {
+            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorModel.model().getMediatorVendor().getAUTO());
             itemRadioVendor.addActionListener(actionEvent -> {
                 this.menuVendor.setText(vendor.toString());
-                MediatorModel.model().mediatorVendor.setVendorByUser(vendor);
+                MediatorModel.model().getMediatorVendor().setVendorByUser(vendor);
             });
             this.menuVendor.add(itemRadioVendor);
             groupVendor.add(itemRadioVendor);
@@ -535,7 +535,7 @@ public class PanelAddressBar extends JPanel {
         this.itemRadioStrategyError[0].removeAll();
 
         Integer[] i = { 0 };
-        if (vendor != MediatorModel.model().mediatorVendor.AUTO && vendor.instance().getXmlModel().getStrategy().getError() != null) {
+        if (vendor != MediatorModel.model().getMediatorVendor().getAUTO() && vendor.instance().getXmlModel().getStrategy().getError() != null) {
             for (Method methodError: vendor.instance().getXmlModel().getStrategy().getError().getMethod()) {
                 JMenuItem itemRadioVendor = new JRadioButtonMenuItem(methodError.getName());
                 itemRadioVendor.setEnabled(false);

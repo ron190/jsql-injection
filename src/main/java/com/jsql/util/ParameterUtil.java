@@ -65,21 +65,21 @@ public class ParameterUtil {
             
         } else if (
             this.getQueryStringFromEntries().contains(InjectionModel.STAR)
-            && this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != this.injectionModel.mediatorMethodInjection.getQuery()
+            && this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != this.injectionModel.getMediatorMethodInjection().getQuery()
             && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()
         ) {
             throw new InjectionFailureException("Select method GET to use character [*] or remove [*] from GET parameters");
             
         } else if (
             this.getRequestFromEntries().contains(InjectionModel.STAR)
-            && this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != this.injectionModel.mediatorMethodInjection.getRequest()
+            && this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != this.injectionModel.getMediatorMethodInjection().getRequest()
             && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()
         ) {
             throw new InjectionFailureException("Select a Request method (like POST) to use [*], or remove [*] from Request parameters");
             
         } else if (
             this.getHeaderFromEntries().contains(InjectionModel.STAR)
-            && this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != this.injectionModel.mediatorMethodInjection.getHeader()
+            && this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != this.injectionModel.getMediatorMethodInjection().getHeader()
             && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()
         ) {
             throw new InjectionFailureException("Select method Header to use character [*] or remove [*] from Header parameters");
@@ -87,7 +87,7 @@ public class ParameterUtil {
         
         // Query String
         else if (
-            this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.mediatorMethodInjection.getQuery()
+            this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.getMediatorMethodInjection().getQuery()
             && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()
             && this.getQueryString().isEmpty()
             && !this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
@@ -97,13 +97,13 @@ public class ParameterUtil {
         
         // Request/Header data
         else if (
-            this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.mediatorMethodInjection.getRequest()
+            this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.getMediatorMethodInjection().getRequest()
             && this.getRequest().isEmpty()
         ) {
             throw new InjectionFailureException("Incorrect Request format");
             
         } else if (
-            this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.mediatorMethodInjection.getHeader()
+            this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.getMediatorMethodInjection().getHeader()
             && this.getHeader().isEmpty()
         ) {
             throw new InjectionFailureException("Incorrect Header format");
@@ -116,7 +116,7 @@ public class ParameterUtil {
         
         // Parse query information: url=>everything before the sign '=',
         // start of query string=>everything after '='
-        if (this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.mediatorMethodInjection.getQuery()) {
+        if (this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.getMediatorMethodInjection().getQuery()) {
             if (
                 !isParamByUser
                 && (
@@ -134,7 +134,7 @@ public class ParameterUtil {
             }
             
         // Parse post information
-        } else if (this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.mediatorMethodInjection.getRequest()) {
+        } else if (this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.getMediatorMethodInjection().getRequest()) {
             if (
                 !isParamByUser
                 && this.getRequestFromEntries().contains(InjectionModel.STAR)
@@ -149,7 +149,7 @@ public class ParameterUtil {
             }
             
         // Parse header information
-        } else if (this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.mediatorMethodInjection.getHeader()) {
+        } else if (this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.getMediatorMethodInjection().getHeader()) {
             if (
                 !isParamByUser
                 && this.getHeaderFromEntries().contains(InjectionModel.STAR)

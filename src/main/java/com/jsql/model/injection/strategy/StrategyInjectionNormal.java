@@ -81,7 +81,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
-        return this.injectionModel.injectWithIndexes(this.injectionModel.mediatorVendor.getVendor().instance().sqlNormal(sqlQuery, startPosition));
+        return this.injectionModel.injectWithIndexes(this.injectionModel.getMediatorVendor().getVendor().instance().sqlNormal(sqlQuery, startPosition));
     }
 
     @Override
@@ -122,7 +122,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         // Replace correct indexes from 1337(index)7331 to
         // ==> ${LEAD}(index)######...######
         // Search for index that displays the most #
-        String performanceQuery = this.injectionModel.mediatorVendor.getVendor().instance().sqlCapacity(indexes);
+        String performanceQuery = this.injectionModel.getMediatorVendor().getVendor().instance().sqlCapacity(indexes);
         String performanceSourcePage = this.injectionModel.injectWithoutIndex(performanceQuery);
 
         // Build a 2D array of string with:

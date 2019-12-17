@@ -42,8 +42,8 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
         
-        if (this.injectionModel.mediatorVendor.getVendor().instance().sqlTestBlindFirst() == null) {
-            LOGGER.info("No Blind strategy known for "+ this.injectionModel.mediatorVendor.getVendor());
+        if (this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindFirst() == null) {
+            LOGGER.info("No Blind strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
         } else {
             LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Blind...");
             
@@ -79,7 +79,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
         return this.blind.inject(
-            this.injectionModel.mediatorVendor.getVendor().instance().sqlBlind(sqlQuery, startPosition),
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition),
             stoppable
         );
     }

@@ -19,8 +19,8 @@ public class BeanInjection {
         String url
     ) {
         this.url = url;
-        this.injectionType = MediatorModel.model().mediatorMethodInjection.getQuery();
-        this.vendor = MediatorModel.model().mediatorVendor.AUTO;
+        this.injectionType = MediatorModel.model().getMediatorMethodInjection().getQuery();
+        this.vendor = MediatorModel.model().getMediatorVendor().getAUTO();
         this.requestType = "POST";
     }
     
@@ -38,15 +38,15 @@ public class BeanInjection {
         this.header = header;
         
         try {
-            this.injectionType = MediatorModel.model().mediatorMethodInjection.methods.stream().filter(m -> m.name().equalsIgnoreCase(injectionType)).findAny().orElse(MediatorModel.model().mediatorMethodInjection.getQuery());
+            this.injectionType = MediatorModel.model().getMediatorMethodInjection().getMethods().stream().filter(m -> m.name().equalsIgnoreCase(injectionType)).findAny().orElse(MediatorModel.model().getMediatorMethodInjection().getQuery());
         } catch (IllegalArgumentException | NoSuchElementException e) {
-            this.injectionType = MediatorModel.model().mediatorMethodInjection.getQuery();
+            this.injectionType = MediatorModel.model().getMediatorMethodInjection().getQuery();
         }
         
         try {
-            this.vendor = MediatorModel.model().mediatorVendor.vendors.stream().filter(m -> m.toString().equals(vendor)).findAny().orElse(MediatorModel.model().mediatorVendor.AUTO);
+            this.vendor = MediatorModel.model().getMediatorVendor().getVendors().stream().filter(m -> m.toString().equals(vendor)).findAny().orElse(MediatorModel.model().getMediatorVendor().getAUTO());
         } catch (IllegalArgumentException | NoSuchElementException e) {
-            this.vendor = MediatorModel.model().mediatorVendor.AUTO;
+            this.vendor = MediatorModel.model().getMediatorVendor().getAUTO();
         }
         
         this.requestType = requestType.isEmpty() ? "POST" : requestType;

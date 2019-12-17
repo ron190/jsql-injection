@@ -82,11 +82,12 @@ import net.sourceforge.spnego.SpnegoHttpURLConnection;
  */
 public class InjectionModel extends AbstractModelObservable {
     
-    public MediatorVendor mediatorVendor = new MediatorVendor(InjectionModel.this);
-    public MediatorMethodInjection mediatorMethodInjection = new MediatorMethodInjection(this);
-    public MediatorUtils mediatorUtils;
-    public DataAccess dataAccess = new DataAccess(this);
-    public RessourceAccess resourceAccess = new RessourceAccess(this);
+    private MediatorVendor mediatorVendor = new MediatorVendor(InjectionModel.this);
+    private MediatorMethodInjection mediatorMethodInjection = new MediatorMethodInjection(this);
+    private MediatorUtils mediatorUtils;
+    
+    private DataAccess dataAccess = new DataAccess(this);
+    private RessourceAccess resourceAccess = new RessourceAccess(this);
 
     public InjectionModel() {
         this.mediatorUtils = new MediatorUtils();
@@ -270,7 +271,7 @@ public class InjectionModel extends AbstractModelObservable {
             
             boolean hasFoundInjection = false;
             
-            hasFoundInjection = this.testParameters(this.mediatorMethodInjection.getQuery());
+            hasFoundInjection = this.testParameters(this.getMediatorMethodInjection().getQuery());
 
             if (!hasFoundInjection) {
                 hasFoundInjection = this.getMediatorUtils().getSoapUtil().testParameters();
@@ -278,18 +279,18 @@ public class InjectionModel extends AbstractModelObservable {
             
             if (!hasFoundInjection) {
                 LOGGER.trace("Checking standard Request parameters");
-                hasFoundInjection = this.testParameters(this.mediatorMethodInjection.getRequest());
+                hasFoundInjection = this.testParameters(this.getMediatorMethodInjection().getRequest());
             }
             
             if (!hasFoundInjection) {
-                hasFoundInjection = this.testParameters(this.mediatorMethodInjection.getHeader());
+                hasFoundInjection = this.testParameters(this.getMediatorMethodInjection().getHeader());
             }
             
             if (!this.isScanning) {
                 if (!this.getMediatorUtils().getPreferencesUtil().isNotInjectingMetadata()) {
-                    this.dataAccess.getDatabaseInfos();
+                    this.getDataAccess().getDatabaseInfos();
                 }
-                this.dataAccess.listDatabases();
+                this.getDataAccess().listDatabases();
             }
             
             LOGGER.trace(I18n.valueByKey("LOG_DONE"));
@@ -425,7 +426,7 @@ public class InjectionModel extends AbstractModelObservable {
         }
         
         // Fingerprint database
-        this.mediatorVendor.vendor = new SuspendableGetVendor(this).run();
+        this.getMediatorVendor().vendor = new SuspendableGetVendor(this).run();
 
         // Test each injection strategies: time < blind < error < normal
         // Choose the most efficient strategy: normal > error > blind > time
@@ -501,7 +502,7 @@ public class InjectionModel extends AbstractModelObservable {
                 urlInjection += "?";
             }
 
-            urlInjection += this.buildQuery(this.mediatorMethodInjection.getQuery(), this.getMediatorUtils().getParameterUtil().getQueryStringFromEntries(), isUsingIndex, dataInjection);
+            urlInjection += this.buildQuery(this.getMediatorMethodInjection().getQuery(), this.getMediatorUtils().getParameterUtil().getQueryStringFromEntries(), isUsingIndex, dataInjection);
             
             if (this.getMediatorUtils().getConnectionUtil().getTokenCsrf() != null) {
                 urlInjection += "&"+ this.getMediatorUtils().getConnectionUtil().getTokenCsrf().getKey() +"="+ this.getMediatorUtils().getConnectionUtil().getTokenCsrf().getValue();
@@ -564,14 +565,14 @@ public class InjectionModel extends AbstractModelObservable {
              */
             // TODO Extract in method
             if (!this.getMediatorUtils().getParameterUtil().getHeader().isEmpty()) {
-                Stream.of(this.buildQuery(this.mediatorMethodInjection.getHeader(), this.getMediatorUtils().getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
+                Stream.of(this.buildQuery(this.getMediatorMethodInjection().getHeader(), this.getMediatorUtils().getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection).split("\\\\r\\\\n"))
                 .forEach(e -> {
                     if (e.split(":").length == 2) {
                         HeaderUtil.sanitizeHeaders(connection, new SimpleEntry<>(e.split(":")[0], e.split(":")[1]));
                     }
                 });
                 
-                msgHeader.put(Header.HEADER, this.buildQuery(this.mediatorMethodInjection.getHeader(), this.getMediatorUtils().getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection));
+                msgHeader.put(Header.HEADER, this.buildQuery(this.getMediatorMethodInjection().getHeader(), this.getMediatorUtils().getParameterUtil().getHeaderFromEntries(), isUsingIndex, dataInjection));
             }
     
             /**
@@ -592,18 +593,18 @@ public class InjectionModel extends AbstractModelObservable {
                     }
                     if (this.getMediatorUtils().getConnectionUtil().getTypeRequest().matches("PUT|POST")) {
                         if (this.getMediatorUtils().getParameterUtil().isRequestSoap()) {
-                            dataOut.writeBytes(this.buildQuery(this.mediatorMethodInjection.getRequest(), this.getMediatorUtils().getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
+                            dataOut.writeBytes(this.buildQuery(this.getMediatorMethodInjection().getRequest(), this.getMediatorUtils().getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
                         } else {
-                            dataOut.writeBytes(this.buildQuery(this.mediatorMethodInjection.getRequest(), this.getMediatorUtils().getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
+                            dataOut.writeBytes(this.buildQuery(this.getMediatorMethodInjection().getRequest(), this.getMediatorUtils().getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
                         }
                     }
                     dataOut.flush();
                     dataOut.close();
                     
                     if (this.getMediatorUtils().getParameterUtil().isRequestSoap()) {
-                        msgHeader.put(Header.POST, this.buildQuery(this.mediatorMethodInjection.getRequest(), this.getMediatorUtils().getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
+                        msgHeader.put(Header.POST, this.buildQuery(this.getMediatorMethodInjection().getRequest(), this.getMediatorUtils().getParameterUtil().getRawRequest(), isUsingIndex, dataInjection));
                     } else {
-                        msgHeader.put(Header.POST, this.buildQuery(this.mediatorMethodInjection.getRequest(), this.getMediatorUtils().getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
+                        msgHeader.put(Header.POST, this.buildQuery(this.getMediatorMethodInjection().getRequest(), this.getMediatorUtils().getParameterUtil().getRequestFromEntries(), isUsingIndex, dataInjection));
                     }
                 } catch (IOException e) {
                     LOGGER.warn("Error during Request connection: "+ e.getMessage(), e);
@@ -701,7 +702,7 @@ public class InjectionModel extends AbstractModelObservable {
             // in that case replace injection point by SQL expression.
             // Injection point is always at the end?
             if (!isUsingIndex) {
-                query = paramLead.replace(InjectionModel.STAR, sqlTrail + this.mediatorVendor.vendor.instance().endingComment());
+                query = paramLead.replace(InjectionModel.STAR, sqlTrail + this.getMediatorVendor().vendor.instance().endingComment());
                 
             } else {
                 
@@ -716,7 +717,7 @@ public class InjectionModel extends AbstractModelObservable {
                          * => need to be escape with quoteReplacement()
                          */
                         Matcher.quoteReplacement(sqlTrail)
-                    ) + this.mediatorVendor.vendor.instance().endingComment()
+                    ) + this.getMediatorVendor().vendor.instance().endingComment()
                 );
             }
             
@@ -731,7 +732,7 @@ public class InjectionModel extends AbstractModelObservable {
                 query = paramLead + sqlTrail;
                 
                 // Add ending line comment by vendor
-                query = query + this.mediatorVendor.vendor.instance().endingComment();
+                query = query + this.getMediatorVendor().vendor.instance().endingComment();
                 
             } else {
                 // Concat indexes found for Normal strategy to params
@@ -746,7 +747,7 @@ public class InjectionModel extends AbstractModelObservable {
                 );
                 
                 // Add ending line comment by vendor
-                query = query + this.mediatorVendor.vendor.instance().endingComment();
+                query = query + this.getMediatorVendor().vendor.instance().endingComment();
             }
         }
         
@@ -755,7 +756,7 @@ public class InjectionModel extends AbstractModelObservable {
         // Remove SQL comments
         query = query.replaceAll("(?s)/\\*.*?\\*/", "");
         
-        if (methodInjection == this.mediatorMethodInjection.getRequest()) {
+        if (methodInjection == this.getMediatorMethodInjection().getRequest()) {
             if (this.getMediatorUtils().getParameterUtil().isRequestSoap()) {
                 query = query.replaceAll("%2b", "+");
             }
@@ -867,7 +868,7 @@ public class InjectionModel extends AbstractModelObservable {
     public String getDatabaseInfos() {
         return
     		"Database ["+ this.nameDatabase +"] "
-            + "on "+ this.mediatorVendor.vendor +" ["+ this.versionDatabase +"] "
+            + "on "+ this.getMediatorVendor().vendor +" ["+ this.versionDatabase +"] "
             + "for user ["+ this.username +"]";
     }
 
@@ -937,6 +938,22 @@ public class InjectionModel extends AbstractModelObservable {
 
     public MediatorUtils getMediatorUtils() {
         return this.mediatorUtils;
+    }
+
+    public MediatorVendor getMediatorVendor() {
+        return mediatorVendor;
+    }
+
+    public MediatorMethodInjection getMediatorMethodInjection() {
+        return mediatorMethodInjection;
+    }
+
+    public DataAccess getDataAccess() {
+        return dataAccess;
+    }
+
+    public RessourceAccess getResourceAccess() {
+        return resourceAccess;
     }
 
 }

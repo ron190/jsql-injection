@@ -43,11 +43,11 @@ public class StrategyInjectionError extends AbstractStrategy {
         this.isApplicable = false;
         this.tabCapacityMethod = null;
         
-        Strategy strategyXml = this.injectionModel.mediatorVendor.getVendor().instance().getXmlModel().getStrategy();
+        Strategy strategyXml = this.injectionModel.getMediatorVendor().getVendor().instance().getXmlModel().getStrategy();
         Configuration configurationXml = strategyXml.getConfiguration();
         
         if (strategyXml.getError() == null) {
-            LOGGER.info("No Error strategy known for "+ this.injectionModel.mediatorVendor.getVendor());
+            LOGGER.info("No Error strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
             return;
         }
 
@@ -147,7 +147,7 @@ public class StrategyInjectionError extends AbstractStrategy {
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
         return this.injectionModel.injectWithoutIndex(
-            this.injectionModel.mediatorVendor.getVendor().instance().sqlError(sqlQuery, startPosition)
+            this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(sqlQuery, startPosition)
         );
     }
 
@@ -156,7 +156,7 @@ public class StrategyInjectionError extends AbstractStrategy {
         LOGGER.info(
             I18n.valueByKey("LOG_USING_STRATEGY") +" ["
                 + this.getName() +" "
-                + this.injectionModel.mediatorVendor.getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethod).getName()
+                + this.injectionModel.getMediatorVendor().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethod).getName()
             +"]"
         );
         this.injectionModel.setStrategy(this.injectionModel.ERROR);

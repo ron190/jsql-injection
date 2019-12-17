@@ -99,7 +99,7 @@ public class NodeModelTable extends AbstractNodeModel {
                 @Override
                 protected Object doInBackground() throws Exception {
                 	Thread.currentThread().setName("SwingWorkerNodeModelTable");
-                    return MediatorModel.model().dataAccess.listColumns(selectedTable);
+                    return MediatorModel.model().getDataAccess().listColumns(selectedTable);
                 }
                 
             }.execute();

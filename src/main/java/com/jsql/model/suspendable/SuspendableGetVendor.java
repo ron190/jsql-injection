@@ -45,8 +45,8 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
     public Vendor run(Object... args) throws StoppedByUserSlidingException {
         Vendor vendor = null;
         
-        if (this.injectionModel.mediatorVendor.getVendorByUser() != this.injectionModel.mediatorVendor.AUTO) {
-            vendor = this.injectionModel.mediatorVendor.getVendorByUser();
+        if (this.injectionModel.getMediatorVendor().getVendorByUser() != this.injectionModel.getMediatorVendor().getAUTO()) {
+            vendor = this.injectionModel.getMediatorVendor().getVendorByUser();
             LOGGER.info(I18n.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER") +" ["+ vendor +"]");
         } else {
         
@@ -79,7 +79,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                     total--;
                     String pageSource = currentCallable.getContent();
                     
-                    for (Vendor vendorTest: this.injectionModel.mediatorVendor.vendors.stream().toArray(Vendor[]::new)) {
+                    for (Vendor vendorTest: this.injectionModel.getMediatorVendor().getVendors().stream().toArray(Vendor[]::new)) {
                       if (
                           pageSource.matches(
                               "(?si).*("
@@ -109,7 +109,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             }
             
             if (vendor == null) {
-                vendor = this.injectionModel.mediatorVendor.MYSQL;
+                vendor = this.injectionModel.getMediatorVendor().getMYSQL();
                 LOGGER.warn(I18n.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendor +"]");
             } else {
                 LOGGER.info(I18n.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendor +"]");

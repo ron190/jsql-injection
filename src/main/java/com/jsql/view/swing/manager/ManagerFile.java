@@ -75,7 +75,7 @@ public class ManagerFile extends AbstractManagerList {
                     MediatorGui.managerWebshell().clearSelection();
                     MediatorGui.managerSqlshell().clearSelection();
                     try {
-                        MediatorModel.model().resourceAccess.readFile(this.listFile.getSelectedValuesList());
+                        MediatorModel.model().getResourceAccess().readFile(this.listFile.getSelectedValuesList());
                     } catch (InterruptedException ex) {
                         LOGGER.warn("Interruption while waiting for Reading File termination", ex);
                         Thread.currentThread().interrupt();
