@@ -31,7 +31,7 @@ public class MainApplication {
     static InjectionModel injectionModel;
     static {
         injectionModel = new InjectionModel();
-        injectionModel.preferencesUtil.loadSavedPreferences();
+        injectionModel.getMediatorUtils().getPreferencesUtil().loadSavedPreferences();
         
         MainApplication.apply4K();
     }
@@ -67,9 +67,9 @@ public class MainApplication {
         
     	// Configure global environnement settings
         CertificateUtil.ignoreCertificationChain();
-        injectionModel.exceptionUtil.setUncaughtExceptionHandler();
-        injectionModel.proxyUtil.setProxy();
-        injectionModel.authenticationUtil.setKerberosCifs();
+        injectionModel.getMediatorUtils().getExceptionUtil().setUncaughtExceptionHandler();
+        injectionModel.getMediatorUtils().getProxyUtil().setProxy();
+        injectionModel.getMediatorUtils().getAuthenticationUtil().setKerberosCifs();
         
         try {
             JFrameView view = new JFrameView();
@@ -88,23 +88,23 @@ public class MainApplication {
         injectionModel.displayVersion();
         
         // Check application status
-        if (!injectionModel.proxyUtil.isLive(ShowOnConsole.YES)) {
+        if (!injectionModel.getMediatorUtils().getProxyUtil().isLive(ShowOnConsole.YES)) {
             return;
         }
         
-        if (injectionModel.preferencesUtil.isCheckUpdateActivated()) {
-            injectionModel.gitUtil.checkUpdate(ShowOnConsole.NO);
+        if (injectionModel.getMediatorUtils().getPreferencesUtil().isCheckUpdateActivated()) {
+            injectionModel.getMediatorUtils().getGitUtil().checkUpdate(ShowOnConsole.NO);
         }
         
         I18n.checkCurrentLanguage();
-        injectionModel.gitUtil.showNews();
+        injectionModel.getMediatorUtils().getGitUtil().showNews();
         
         MainApplication.check4K();
         
     }
     
     private static void apply4K() {
-        if (injectionModel.preferencesUtil.is4K()) {
+        if (injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {
             System.setProperty("sun.java2d.uiScale", "2.5");
         }
     }
@@ -113,7 +113,7 @@ public class MainApplication {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int width = (int) screenSize.getWidth();
         
-        if (width >= 3840 && !injectionModel.preferencesUtil.is4K()) {
+        if (width >= 3840 && !injectionModel.getMediatorUtils().getPreferencesUtil().is4K()) {
             LOGGER.warn("Your screen seems compatible with 4K resolution, please activate high-definition mode in Preferences");
         }
     }

@@ -804,7 +804,7 @@ public class Menubar extends JMenuBar {
             );
 
             if (!"".equals(textarea.getText()) && result == JOptionPane.YES_OPTION) {
-                MediatorModel.model().gitUtil.sendReport(textarea.getText(), ShowOnConsole.YES, "Report");
+                MediatorModel.model().getMediatorUtils().getGitUtil().sendReport(textarea.getText(), ShowOnConsole.YES, "Report");
             }
         });
         

@@ -46,7 +46,7 @@ public class ActionSaveTab extends AbstractAction {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-    final ReplaceFileChooser filechooser = new ReplaceFileChooser(MediatorModel.model().preferencesUtil.getPathFile());
+    final ReplaceFileChooser filechooser = new ReplaceFileChooser(MediatorModel.model().getMediatorUtils().getPreferencesUtil().getPathFile());
 
     public ActionSaveTab() {
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
@@ -81,7 +81,7 @@ public class ActionSaveTab extends AbstractAction {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = this.filechooser.getSelectedFile();
             
-            MediatorModel.model().preferencesUtil.set(this.filechooser.getCurrentDirectory().toString());
+            MediatorModel.model().getMediatorUtils().getPreferencesUtil().set(this.filechooser.getCurrentDirectory().toString());
 
             try (FileWriter excel = new FileWriter(file)) {
                 TableModel model = table.getModel();
@@ -126,7 +126,7 @@ public class ActionSaveTab extends AbstractAction {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = this.filechooser.getSelectedFile();
             
-            MediatorModel.model().preferencesUtil.set(this.filechooser.getCurrentDirectory().toString());
+            MediatorModel.model().getMediatorUtils().getPreferencesUtil().set(this.filechooser.getCurrentDirectory().toString());
             
             try (BufferedWriter fileOut = new BufferedWriter(new FileWriter(file))) {
                 textArea.write(fileOut);

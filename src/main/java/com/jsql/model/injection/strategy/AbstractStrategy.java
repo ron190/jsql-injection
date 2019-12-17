@@ -58,7 +58,7 @@ public abstract class AbstractStrategy {
         request.setMessage(message);
         
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, this.injectionModel.connectionUtil.getUrlByUser());
+        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
 
         request.setParameters(msgHeader);
         this.injectionModel.sendToViews(request);
@@ -75,7 +75,7 @@ public abstract class AbstractStrategy {
         request.setMessage(message);
         
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, this.injectionModel.connectionUtil.getUrlByUser());
+        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
         msgHeader.put(Header.SOURCE, i);
         msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);
 

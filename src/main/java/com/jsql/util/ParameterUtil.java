@@ -65,45 +65,45 @@ public class ParameterUtil {
             
         } else if (
             this.getQueryStringFromEntries().contains(InjectionModel.STAR)
-            && this.injectionModel.connectionUtil.getMethodInjection() != this.injectionModel.QUERY
-            && !this.injectionModel.preferencesUtil.isCheckingAllParam()
+            && this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != this.injectionModel.QUERY
+            && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()
         ) {
             throw new InjectionFailureException("Select method GET to use character [*] or remove [*] from GET parameters");
             
         } else if (
             this.getRequestFromEntries().contains(InjectionModel.STAR)
-            && this.injectionModel.connectionUtil.getMethodInjection() != this.injectionModel.REQUEST
-            && !this.injectionModel.preferencesUtil.isCheckingAllParam()
+            && this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != this.injectionModel.REQUEST
+            && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()
         ) {
             throw new InjectionFailureException("Select a Request method (like POST) to use [*], or remove [*] from Request parameters");
             
         } else if (
             this.getHeaderFromEntries().contains(InjectionModel.STAR)
-            && this.injectionModel.connectionUtil.getMethodInjection() != this.injectionModel.HEADER
-            && !this.injectionModel.preferencesUtil.isCheckingAllParam()
+            && this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() != this.injectionModel.HEADER
+            && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()
         ) {
             throw new InjectionFailureException("Select method Header to use character [*] or remove [*] from Header parameters");
         }
         
         // Query String
         else if (
-            this.injectionModel.connectionUtil.getMethodInjection() == this.injectionModel.QUERY
-            && !this.injectionModel.preferencesUtil.isCheckingAllParam()
+            this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.QUERY
+            && !this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllParam()
             && this.getQueryString().isEmpty()
-            && !this.injectionModel.connectionUtil.getUrlBase().contains(InjectionModel.STAR)
+            && !this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
         ) {
             throw new InjectionFailureException("No query string");
         }
         
         // Request/Header data
         else if (
-            this.injectionModel.connectionUtil.getMethodInjection() == this.injectionModel.REQUEST
+            this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.REQUEST
             && this.getRequest().isEmpty()
         ) {
             throw new InjectionFailureException("Incorrect Request format");
             
         } else if (
-            this.injectionModel.connectionUtil.getMethodInjection() == this.injectionModel.HEADER
+            this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.HEADER
             && this.getHeader().isEmpty()
         ) {
             throw new InjectionFailureException("Incorrect Header format");
@@ -116,12 +116,12 @@ public class ParameterUtil {
         
         // Parse query information: url=>everything before the sign '=',
         // start of query string=>everything after '='
-        if (this.injectionModel.connectionUtil.getMethodInjection() == this.injectionModel.QUERY) {
+        if (this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.QUERY) {
             if (
                 !isParamByUser
                 && (
                     this.getQueryStringFromEntries().contains(InjectionModel.STAR)
-                    || this.injectionModel.connectionUtil.getUrlBase().contains(InjectionModel.STAR)
+                    || this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
                 )
             ) {
                 if (parameter != null) {
@@ -134,7 +134,7 @@ public class ParameterUtil {
             }
             
         // Parse post information
-        } else if (this.injectionModel.connectionUtil.getMethodInjection() == this.injectionModel.REQUEST) {
+        } else if (this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.REQUEST) {
             if (
                 !isParamByUser
                 && this.getRequestFromEntries().contains(InjectionModel.STAR)
@@ -149,7 +149,7 @@ public class ParameterUtil {
             }
             
         // Parse header information
-        } else if (this.injectionModel.connectionUtil.getMethodInjection() == this.injectionModel.HEADER) {
+        } else if (this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.HEADER) {
             if (
                 !isParamByUser
                 && this.getHeaderFromEntries().contains(InjectionModel.STAR)
@@ -185,13 +185,13 @@ public class ParameterUtil {
             throw new MalformedURLException("empty URL");
         }
         
-        this.injectionModel.connectionUtil.setUrlByUser(urlQuery);
+        this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlByUser(urlQuery);
         
         // Parse url and GET query string
         this.setQueryString(new ArrayList<SimpleEntry<String, String>>());
         Matcher regexSearch = Pattern.compile("(.*\\?)(.*)").matcher(urlQuery);
         if (regexSearch.find()) {
-            this.injectionModel.connectionUtil.setUrlBase(regexSearch.group(1));
+            this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(regexSearch.group(1));
             if (!"".equals(url.getQuery())) {
                 this.setQueryString(
                     Pattern.compile("&").splitAsStream(regexSearch.group(2))
@@ -201,7 +201,7 @@ public class ParameterUtil {
                 );
             }
         } else {
-            this.injectionModel.connectionUtil.setUrlBase(urlQuery);
+            this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(urlQuery);
         }
     }
 

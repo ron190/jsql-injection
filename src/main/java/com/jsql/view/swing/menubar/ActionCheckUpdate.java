@@ -10,7 +10,7 @@ public class ActionCheckUpdate implements ActionListener, Runnable {
 
     @Override
     public void run() {
-        MediatorModel.model().gitUtil.checkUpdate(ShowOnConsole.YES);
+        MediatorModel.model().getMediatorUtils().getGitUtil().checkUpdate(ShowOnConsole.YES);
     }
 
     @Override

@@ -123,7 +123,7 @@ public class ManagerUpload extends AbstractManagerList {
                 return;
             }
 
-            final JFileChooser filechooser = new JFileChooser(MediatorModel.model().preferencesUtil.getPathFile());
+            final JFileChooser filechooser = new JFileChooser(MediatorModel.model().getMediatorUtils().getPreferencesUtil().getPathFile());
             filechooser.setDialogTitle(I18n.valueByKey("UPLOAD_DIALOG_TEXT"));
             
             // Fix #2402: NullPointerException on showOpenDialog()

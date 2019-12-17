@@ -210,7 +210,7 @@ public class RessourceAccess {
             return;
         }
         
-        String sourceShellToInject = this.injectionModel.propertiesUtil.getProperties()
+        String sourceShellToInject = this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties()
             .getProperty("shell.web")
             .replace(DataAccess.LEAD_IN_SHELL, DataAccess.LEAD)
             .replace(DataAccess.TRAIL_IN_SHELL, DataAccess.TRAIL);
@@ -247,7 +247,7 @@ public class RessourceAccess {
         
         String url = urlShell;
         if ("".equals(url)) {
-            url = this.injectionModel.connectionUtil.getUrlBase();
+            url = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
         }
 
         if (resultInjection.indexOf(sourceShellToInject) > -1) {
@@ -340,12 +340,12 @@ public class RessourceAccess {
 
         String url = urlCommand;
         connection = (HttpURLConnection) new URL(url).openConnection();
-        connection.setReadTimeout(this.injectionModel.connectionUtil.getTimeout());
-        connection.setConnectTimeout(this.injectionModel.connectionUtil.getTimeout());
+        connection.setReadTimeout(this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout());
+        connection.setConnectTimeout(this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout());
 
         String pageSource = null;
         try {
-            pageSource = this.injectionModel.connectionUtil.getSource(connection);
+            pageSource = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(connection);
         } catch (Exception e) {
             pageSource = "";
         }
@@ -424,7 +424,7 @@ public class RessourceAccess {
             return;
         }
         
-        String sourceShellToInject = this.injectionModel.propertiesUtil.getProperties()
+        String sourceShellToInject = this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties()
             .getProperty("shell.sql")
             .replace(DataAccess.LEAD_IN_SHELL, DataAccess.LEAD)
             .replace(DataAccess.TRAIL_IN_SHELL, DataAccess.TRAIL);
@@ -461,7 +461,7 @@ public class RessourceAccess {
         
         String url = urlShell;
         if ("".equals(url)) {
-            url = this.injectionModel.connectionUtil.getUrlBase();
+            url = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase();
         }
 
         if (resultInjection.indexOf(sourceShellToInject) > -1) {
@@ -645,7 +645,7 @@ public class RessourceAccess {
             return;
         }
         
-        String sourceShellToInject = this.injectionModel.propertiesUtil.getProperties()
+        String sourceShellToInject = this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties()
             .getProperty("shell.upload")
             .replace(DataAccess.LEAD_IN_SHELL, DataAccess.LEAD);
         
@@ -678,7 +678,7 @@ public class RessourceAccess {
 
         String urlFileFixed = urlFile;
         if ("".equals(urlFileFixed)) {
-            urlFileFixed = this.injectionModel.connectionUtil.getUrlBase().substring(0, this.injectionModel.connectionUtil.getUrlBase().lastIndexOf('/') + 1);
+            urlFileFixed = this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().substring(0, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase().lastIndexOf('/') + 1);
         }
         
         if (sourceShellInjected.indexOf(sourceShellToInject) > -1) {

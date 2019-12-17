@@ -52,7 +52,7 @@ public final class ThreadUtil {
      * @param suspendable active job to act on
      */
     public void put(AbstractElementDatabase elementDatabase, AbstractSuspendable<?> suspendable) {
-        this.injectionModel.threadUtil.suspendables.put(elementDatabase, suspendable);
+        this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.put(elementDatabase, suspendable);
     }
     
     /**
@@ -63,7 +63,7 @@ public final class ThreadUtil {
      * @return job currently running
      */
     public AbstractSuspendable<?> get(AbstractElementDatabase elementDatabase) {
-        return this.injectionModel.threadUtil.suspendables.get(elementDatabase);
+        return this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.get(elementDatabase);
     }
     
     /**
@@ -72,7 +72,7 @@ public final class ThreadUtil {
      * @param elementDatabase component associated to thread
      */
     public void remove(AbstractElementDatabase elementDatabase) {
-        this.injectionModel.threadUtil.suspendables.remove(elementDatabase);
+        this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.remove(elementDatabase);
     }
     
     /**
@@ -82,10 +82,10 @@ public final class ThreadUtil {
     public void reset() {
         // Fix #8258: ConcurrentModificationException on java.util.HashMap$ValueIterator.next()
         try {
-            for (AbstractSuspendable<?> suspendable : this.injectionModel.threadUtil.suspendables.values()) {
+            for (AbstractSuspendable<?> suspendable : this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.values()) {
                 suspendable.stop();
             }
-            this.injectionModel.threadUtil.suspendables.clear();
+            this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.clear();
         } catch (ConcurrentModificationException e) {
             LOGGER.error(e, e);
         }

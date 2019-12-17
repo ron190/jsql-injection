@@ -136,7 +136,7 @@ public class DialogTranslate extends JDialog {
                     .replaceAll("<", "\\\\<")
             ;
               
-            MediatorModel.model().gitUtil.sendReport(clientDescription, ShowOnConsole.YES, DialogTranslate.this.language +" translation");
+            MediatorModel.model().getMediatorUtils().getGitUtil().sendReport(clientDescription, ShowOnConsole.YES, DialogTranslate.this.language +" translation");
             DialogTranslate.this.setVisible(false);
         });
 
@@ -241,8 +241,8 @@ public class DialogTranslate extends JDialog {
         
         private void getI18nRoot() throws IOException {
             try {
-                String pageSourceRoot = MediatorModel.model().connectionUtil.getSourceLineFeed(
-                    MediatorModel.model().propertiesUtil.getProperties().getProperty("github.webservice.i18n.url")
+                String pageSourceRoot = MediatorModel.model().getMediatorUtils().getConnectionUtil().getSourceLineFeed(
+                    MediatorModel.model().getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.webservice.i18n.url")
                 );
                 this.sourceProperties.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}")));
                 LOGGER.info("Reference language loaded from Github");
@@ -258,7 +258,7 @@ public class DialogTranslate extends JDialog {
         
         private void getI18nLanguage() throws IOException {
             try {
-                String pageSourceLanguage = MediatorModel.model().connectionUtil.getSourceLineFeed(
+                String pageSourceLanguage = MediatorModel.model().getMediatorUtils().getConnectionUtil().getSourceLineFeed(
                     "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql_"+ DialogTranslate.this.language.getNameLocale() +".properties"
                 );
                 this.languageProperties.load(new StringReader(pageSourceLanguage));

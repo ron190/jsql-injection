@@ -27,13 +27,13 @@ public class ActionCheckIP implements ActionListener, Runnable {
 
     @Override
     public void run() {
-        if (!MediatorModel.model().proxyUtil.isLive(ShowOnConsole.YES)) {
+        if (!MediatorModel.model().getMediatorUtils().getProxyUtil().isLive(ShowOnConsole.YES)) {
             return;
         }
 
         try {
             LOGGER.trace("Checking ip address...");
-            String addressIp = MediatorModel.model().connectionUtil.getSource("http://checkip.amazonaws.com");
+            String addressIp = MediatorModel.model().getMediatorUtils().getConnectionUtil().getSource("http://checkip.amazonaws.com");
             LOGGER.info("Your public IP address is " + addressIp);
         } catch (MalformedURLException e) {
             LOGGER.warn("Malformed URL: "+ e.getMessage(), e);

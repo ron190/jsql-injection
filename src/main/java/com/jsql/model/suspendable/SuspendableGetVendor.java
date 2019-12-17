@@ -117,8 +117,8 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                 Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
                 msgHeader.put(
                     Header.URL,
-                    this.injectionModel.connectionUtil.getUrlBase()
-                    + this.injectionModel.parameterUtil.getQueryStringFromEntries()
+                    this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase()
+                    + this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries()
                 );
                 msgHeader.put(Header.VENDOR, vendor);
                 

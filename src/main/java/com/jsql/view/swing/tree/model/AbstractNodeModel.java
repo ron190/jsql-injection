@@ -181,7 +181,7 @@ public abstract class AbstractNodeModel {
      */
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
         JPopupMenu2 popupMenu = new JPopupMenu2();
-        AbstractSuspendable<?> suspendableTask = MediatorModel.model().threadUtil.get(this.elementDatabase);
+        AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
 
         JMenuItem mnLoad = new JMenuItem(
             this.isRunning
@@ -319,7 +319,7 @@ public abstract class AbstractNodeModel {
             this.panel.showLoader();
             this.panel.hideIcon();
 
-            AbstractSuspendable<?> suspendableTask = MediatorModel.model().threadUtil.get(this.elementDatabase);
+            AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
             if (suspendableTask != null && suspendableTask.isPaused()) {
                 ImageIcon animatedGIFPaused = new ImageOverlap(HelperUi.PATH_PROGRESSBAR, HelperUi.PATH_PAUSE);
                 animatedGIFPaused.setImageObserver(
@@ -347,7 +347,7 @@ public abstract class AbstractNodeModel {
         panel.getProgressBar().setVisible(true);
         
         // Report #135: ignore if thread not found
-        AbstractSuspendable<?> suspendableTask = MediatorModel.model().threadUtil.get(this.elementDatabase);
+        AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
         if (suspendableTask != null && suspendableTask.isPaused()) {
             panel.getProgressBar().pause();
         }

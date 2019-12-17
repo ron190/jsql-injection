@@ -107,7 +107,7 @@ public class GitUtil {
      */
     public void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
     	// Check proxy
-        if (!this.injectionModel.proxyUtil.isLive(showOnConsole)) {
+        if (!this.injectionModel.getMediatorUtils().getProxyUtil().isLive(showOnConsole)) {
             return;
         }
 
@@ -115,7 +115,7 @@ public class GitUtil {
         HttpURLConnection connection = null;
         try {
             URL githubUrl = new URL(
-                this.injectionModel.propertiesUtil.getProperties().getProperty("github.issues.url")
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.issues.url")
             );
 
             connection = (HttpURLConnection) githubUrl.openConnection();
@@ -132,13 +132,13 @@ public class GitUtil {
                 "token "
                 + StringUtils.newStringUtf8(
                     Base64.decodeBase64(
-                        this.injectionModel.propertiesUtil.getProperties().getProperty("github.token")
+                        this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.token")
                     )
                 )
             );
             
-            connection.setReadTimeout(this.injectionModel.connectionUtil.getTimeout());
-            connection.setConnectTimeout(this.injectionModel.connectionUtil.getTimeout());
+            connection.setReadTimeout(this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout());
+            connection.setConnectTimeout(this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout());
             connection.setDoOutput(true);
 
             // Set the content of the Issue
@@ -200,8 +200,8 @@ public class GitUtil {
      */
     public JSONObject getJSONObject() throws IOException {
         if (this.jsonObject == null) {
-            String json = this.injectionModel.connectionUtil.getSource(
-                this.injectionModel.propertiesUtil.getProperties().getProperty("github.webservice.url")
+            String json = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(
+                this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.webservice.url")
             );
             
             // Fix #45349: JSONException on new JSONObject(json)

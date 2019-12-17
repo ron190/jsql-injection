@@ -51,7 +51,7 @@ public class MenuActionExport implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent arg0) {
         @SuppressWarnings("serial")
-        final JFileChooser importFileDialog = new JFileChooser(MediatorModel.model().preferencesUtil.getPathFile()) {
+        final JFileChooser importFileDialog = new JFileChooser(MediatorModel.model().getMediatorUtils().getPreferencesUtil().getPathFile()) {
             @Override
             public void approveSelection() {
                 File file = this.getSelectedFile();

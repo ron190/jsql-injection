@@ -89,7 +89,7 @@ public class ConnectionUtil {
      */
     public void testConnection() throws InjectionFailureException {
 
-        if (this.injectionModel.preferencesUtil.isProcessingCookies()) {
+        if (this.injectionModel.getMediatorUtils().getPreferencesUtil().isProcessingCookies()) {
             CookieManager cookieManager = new CookieManager();
             CookieHandler.setDefault(cookieManager);
         } else {
@@ -99,14 +99,14 @@ public class ConnectionUtil {
         // Test the HTTP connection
         HttpURLConnection connection = null;
         try {
-            if (this.injectionModel.authenticationUtil.isKerberos()) {
+            if (this.injectionModel.getMediatorUtils().getAuthenticationUtil().isKerberos()) {
                 String loginKerberos =
                     Pattern
                         .compile("(?s)\\{.*")
                         .matcher(
                             StringUtils.join(
                                 Files.readAllLines(
-                                    Paths.get(this.injectionModel.authenticationUtil.getPathKerberosLogin()),
+                                    Paths.get(this.injectionModel.getMediatorUtils().getAuthenticationUtil().getPathKerberosLogin()),
                                     Charset.defaultCharset()
                                 ),
                                 ""
@@ -135,11 +135,11 @@ public class ConnectionUtil {
             this.fixJcifsTimeout(connection);
             
             // Add headers if exists (Authorization:Basic, etc)
-            for (SimpleEntry<String, String> header: this.injectionModel.parameterUtil.getHeader()) {
+            for (SimpleEntry<String, String> header: this.injectionModel.getMediatorUtils().getParameterUtil().getHeader()) {
                 HeaderUtil.sanitizeHeaders(connection, header);
             }
 
-            this.injectionModel.headerUtil.checkResponseHeader(connection, this.getUrlByUser().replace(InjectionModel.STAR, ""));
+            this.injectionModel.getMediatorUtils().getHeaderUtil().checkResponseHeader(connection, this.getUrlByUser().replace(InjectionModel.STAR, ""));
             
             // Calling connection.disconnect() is not required, more calls will happen
         } catch (Exception e) {

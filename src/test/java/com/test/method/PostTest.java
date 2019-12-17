@@ -40,15 +40,15 @@ public class PostTest extends ConcreteMySQLTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.parameterUtil.initQueryString("http://localhost:8080/greeting-request");
-        model.parameterUtil.initRequest("name=0'&tenantId=mysql");
-        model.parameterUtil.setRequest(Arrays.asList(
+        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting-request");
+        model.getMediatorUtils().getParameterUtil().initRequest("name=0'&tenantId=mysql");
+        model.getMediatorUtils().getParameterUtil().setRequest(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql"),
             new SimpleEntry<>("name", "0'")
         ));
         
-        model.connectionUtil.setMethodInjection(model.REQUEST);
-        model.connectionUtil.setTypeRequest("POST");
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.REQUEST);
+        model.getMediatorUtils().getConnectionUtil().setTypeRequest("POST");
         
         model.setIsScanning(true);
         model.setStrategy(model.NORMAL);

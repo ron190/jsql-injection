@@ -25,9 +25,9 @@ public abstract class GetTest extends ConcreteMySQLTestSuite {
 
 //        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_get.php");
 //        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("lib", "0")));
-        model.connectionUtil.setUrlBase("http://localhost:8080/greeting");
-        model.parameterUtil.setQueryString(Arrays.asList(new SimpleEntry<>("tenantId", "tenantId3"), new SimpleEntry<>("name", "1'")));
-        model.connectionUtil.setMethodInjection(model.QUERY);
+        model.getMediatorUtils().getConnectionUtil().setUrlBase("http://localhost:8080/greeting");
+        model.getMediatorUtils().getParameterUtil().setQueryString(Arrays.asList(new SimpleEntry<>("tenantId", "tenantId3"), new SimpleEntry<>("name", "1'")));
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.QUERY);
 
         model.beginInjection();
 

@@ -256,12 +256,6 @@ public final class OrderedProperties {
         return Arrays.hashCode(this.properties.entrySet().toArray());
     }
 
-    private void writeObject(ObjectOutputStream stream) throws IOException {
-        stream.defaultWriteObject();
-        stream.writeObject(this.properties);
-        stream.writeBoolean(this.suppressDate);
-    }
-
     @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
         stream.defaultReadObject();

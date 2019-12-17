@@ -52,10 +52,10 @@ public class ProxyUtil {
     public ProxyUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
         
-        this.HTTP_PROXY_DEFAULT_ADDRESS = injectionModel.propertiesUtil.getProperties().getProperty("http.proxy.default.ip");
-        this.HTTP_PROXY_DEFAULT_PORT = injectionModel.propertiesUtil.getProperties().getProperty("http.proxy.default.port");
-        this.HTTPS_PROXY_DEFAULT_ADDRESS = injectionModel.propertiesUtil.getProperties().getProperty("https.proxy.default.ip");
-        this.HTTPS_PROXY_DEFAULT_PORT = injectionModel.propertiesUtil.getProperties().getProperty("https.proxy.default.port");
+        this.HTTP_PROXY_DEFAULT_ADDRESS = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("http.proxy.default.ip");
+        this.HTTP_PROXY_DEFAULT_PORT = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("http.proxy.default.port");
+        this.HTTPS_PROXY_DEFAULT_ADDRESS = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("https.proxy.default.ip");
+        this.HTTPS_PROXY_DEFAULT_PORT = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("https.proxy.default.port");
     }
     InjectionModel injectionModel;
     

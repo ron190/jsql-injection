@@ -32,9 +32,9 @@ public abstract class CookieTest extends ConcreteMySQLTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.connectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_cookie.php");
-        model.parameterUtil.setHeader(Arrays.asList(new AbstractMap.SimpleEntry<>("Cookie", "lib=0")));
-        model.connectionUtil.setMethodInjection(model.HEADER);
+        model.getMediatorUtils().getConnectionUtil().setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/simulate_cookie.php");
+        model.getMediatorUtils().getParameterUtil().setHeader(Arrays.asList(new AbstractMap.SimpleEntry<>("Cookie", "lib=0")));
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.HEADER);
 
         model.beginInjection();
 

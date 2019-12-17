@@ -74,7 +74,7 @@ public class ActionLoadStop implements ActionListener {
                 }
             }.execute();
         } else {
-            AbstractSuspendable<?> suspendableTask = MediatorModel.model().threadUtil.get(this.nodeModel.getElementDatabase());
+            AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());
             
             // Fix #21394: NullPointerException on stop()
             if (suspendableTask != null) {
@@ -85,7 +85,7 @@ public class ActionLoadStop implements ActionListener {
             this.nodeModel.setProgressing(false);
             this.nodeModel.setLoading(false);
             
-            MediatorModel.model().threadUtil.remove(this.nodeModel.getElementDatabase());
+            MediatorModel.model().getMediatorUtils().getThreadUtil().remove(this.nodeModel.getElementDatabase());
         }
         this.nodeModel.setRunning(!this.nodeModel.isRunning());
     }

@@ -212,10 +212,10 @@ public class AuthenticationUtil {
             System.setProperty("spnego.krb5.conf", "");
             System.setProperty("spnego.login.conf", "");
             
-            System.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.connectionUtil.getTimeout().toString());
-            System.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.connectionUtil.getTimeout().toString());
-            jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.connectionUtil.getTimeout().toString());
-            jcifs.Config.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.connectionUtil.getTimeout().toString());
+            System.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
+            System.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
+            jcifs.Config.setProperty("jcifs.smb.client.responseTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
+            jcifs.Config.setProperty("jcifs.smb.client.soTimeout", this.injectionModel.getMediatorUtils().getConnectionUtil().getTimeout().toString());
             
             jcifs.Config.registerSmbURLHandler();
         }

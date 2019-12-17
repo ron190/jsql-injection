@@ -1,11 +1,13 @@
 package com.jsql.util;
 
+import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -17,6 +19,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
@@ -41,11 +44,11 @@ public class SoapUtil {
         boolean hasFoundInjection = false;
         
         if (
-            this.injectionModel.preferencesUtil.isCheckingAllSOAPParam()
-            && this.injectionModel.parameterUtil.isRequestSoap()
+            this.injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingAllSOAPParam()
+            && this.injectionModel.getMediatorUtils().getParameterUtil().isRequestSoap()
         ) {
             try {
-                Document doc = SoapUtil.convertStringToDocument(this.injectionModel.parameterUtil.getRawRequest());
+                Document doc = SoapUtil.convertStringToDocument(this.injectionModel.getMediatorUtils().getParameterUtil().getRawRequest());
                 LOGGER.trace("Parsing SOAP from Request...");
                 hasFoundInjection = this.injectTextNodes(doc, doc.getDocumentElement());
             } catch (Exception e) {
@@ -71,16 +74,12 @@ public class SoapUtil {
         return output;
     }
     
-    public static Document convertStringToDocument(String xmlStr) {
+    public static Document convertStringToDocument(String xmlStr) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        Document doc = null;
-        try {
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            doc = builder.parse(new InputSource(new StringReader(xmlStr)));
-        } catch (Exception e) {
-            // ignore
-        }
-        return doc;
+
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        
+        return builder.parse(new InputSource(new StringReader(xmlStr)));
     }
 
     public static void deleteInjectionPoint(Document doc, Node node) {
@@ -112,7 +111,7 @@ public class SoapUtil {
                 
                 currentNode.setTextContent(currentNode.getTextContent() + InjectionModel.STAR);
                 
-                this.injectionModel.parameterUtil.initRequest(SoapUtil.convertDocumentToString(doc));
+                this.injectionModel.getMediatorUtils().getParameterUtil().initRequest(SoapUtil.convertDocumentToString(doc));
                 
                 try {
                     LOGGER.info("Checking SOAP Request injection for "+ currentNode.getParentNode().getNodeName() +"="+ currentNode.getTextContent().replace(InjectionModel.STAR, ""));

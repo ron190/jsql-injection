@@ -44,6 +44,7 @@ public class JsonUtil {
                 jsonEntity = new JSONArray(param);
             } catch (JSONException exceptionJSONArray) {
                 // Not a JSON entity
+                jsonEntity = new Object();
             }
         }
         
