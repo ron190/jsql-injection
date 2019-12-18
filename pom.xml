@@ -65,6 +65,8 @@
     
     		<plugin>
     			<artifactId>maven-assembly-plugin</artifactId>
+				<!-- Fix message 'already added, skipping' from 2.2-beta-5  -->
+                <version>3.2.0</version>
     			<configuration>
     				<descriptorRefs>
     					<descriptorRef>jar-with-dependencies</descriptorRef>
@@ -106,8 +108,8 @@
                         <include>PostgresErrorTestSuite</include>
                         
                         <include>H2NormalGetTestSuite</include>
-                        
                         <include>PostTestSuite</include>
+                        <include>JsonTestSuite</include>
                     </includes>        
 
                     <parallel>classes</parallel>

@@ -709,6 +709,10 @@ public class InjectionModel extends AbstractModelObservable {
         query = query.replaceAll("(?s):", "%5C%3A");
         query = query.replaceAll("(?s) ", "+");
         query = query.replaceAll("(?s)\"", "%22");
+        query = query.replaceAll("(?s)\\{", "%7B");
+        query = query.replaceAll("(?s)\\}", "%7D");
+        query = query.replaceAll("(?s)\\[", "%5B");
+        query = query.replaceAll("(?s)\\]", "%5D");
         
         if (this.getMediatorUtils().getConnectionUtil().getMethodInjection() == methodInjection) {
             query = this.getMediatorUtils().getTamperingUtil().tamper(query);

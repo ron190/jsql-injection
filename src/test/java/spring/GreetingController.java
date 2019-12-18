@@ -1,6 +1,8 @@
 package spring;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -12,6 +14,7 @@ import org.apache.commons.text.StringEscapeUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jsql.util.JsonUtil;
 
 @RestController
 public class GreetingController {
@@ -42,6 +46,38 @@ public class GreetingController {
             String name = a.getParameterMap().get("name")[0];
             
             Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+            
+            List<Object[]> results = q.getResultList();
+            
+            greeting = new Greeting(
+                this.counter.incrementAndGet(),
+                String.format(template, name)
+                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+            );
+        } catch (Exception e) {
+            // Hide useless SQL error messages
+        } finally {
+            session.close();
+        }
+        
+        return greeting;
+    }
+    
+    @SuppressWarnings("unchecked")
+    @RequestMapping("/greeting-json")
+    public Greeting greetingJson(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
+        
+        Session session = this.sessionFactory.getCurrentSession();
+        Greeting greeting = null;
+        try {
+            name = name.replaceAll("\\\\:", ":");
+            String j = (String) new JSONObject(name).getJSONArray("b").getJSONObject(2).getString("a");
+            j = j.replaceAll(":", "\\\\:");
+            
+//        String a = URLDecoder.decode(j, StandardCharsets.UTF_8.toString()).replaceAll(" ", "+");
+            String a = j;
+            
+            Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+ a +"'");
             
             List<Object[]> results = q.getResultList();
             
