@@ -28,7 +28,8 @@ public class JsonTestSuite extends ConcreteMySQLTestSuite {
         model.getMediatorUtils().getParameterUtil().initRequest("");
         model.getMediatorUtils().getParameterUtil().setQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql"),
-            new SimpleEntry<>("name", "{\"b\":[null,null,{\"a\":\"0'\"}]}")
+//            new SimpleEntry<>("name", "{\"b\":[null,null,{\"a\":\"0'\"}]}")
+            new SimpleEntry<>("name", "{\"b\":{\"b\":[null,null,{\"a\":{\"a\":\"0'\"}}]}}")
         ));
         
         model.getMediatorUtils().getPreferencesUtil().setCheckingAllURLParam(true);

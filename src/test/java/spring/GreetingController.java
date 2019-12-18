@@ -71,7 +71,8 @@ public class GreetingController {
         Greeting greeting = null;
         try {
             name = name.replaceAll("\\\\:", ":");
-            String j = (String) new JSONObject(name).getJSONArray("b").getJSONObject(2).getString("a");
+//            String j = (String) new JSONObject(name).getJSONArray("b").getJSONObject(2).getString("a");
+            String j = (String) new JSONObject(name).getJSONObject("b").getJSONArray("b").getJSONObject(2).getJSONObject("a").getString("a");
             j = j.replaceAll(":", "\\\\:");
             
 //        String a = URLDecoder.decode(j, StandardCharsets.UTF_8.toString()).replaceAll(" ", "+");

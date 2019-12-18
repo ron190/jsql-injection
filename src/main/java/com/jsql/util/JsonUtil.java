@@ -64,7 +64,7 @@ public class JsonUtil {
                 Object value = jsonObjectEntity.get(key);
                 String xpath = parentName +"."+ key;
                 
-                if (value instanceof JSONArray) {
+                if (value instanceof JSONArray || value instanceof JSONObject) {
                     attributesXPath.addAll(JsonUtil.createEntries(value, xpath, parentXPath));
                 } else if (value instanceof String) {
                     SimpleEntry<String, String> c = new SimpleEntry<>(xpath, (String) value);
@@ -94,7 +94,7 @@ public class JsonUtil {
                     String key = (String) keys.next();
                     Object value = jsonObjectEntity.opt(key);
                     
-                    if (value instanceof JSONArray) {
+                    if (value instanceof JSONArray || value instanceof JSONObject) {
                         attributesXPath.addAll(JsonUtil.createEntries(value, parentName +"."+ key, parentXPath));
                     } else if (value instanceof String) {
                         SimpleEntry<String, String> s = new SimpleEntry<>(parentName +"."+ key, (String) value);
