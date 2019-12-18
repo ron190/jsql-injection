@@ -32,6 +32,7 @@ public class GreetingController {
     @Autowired
     private SessionFactory sessionFactory;
 
+    @SuppressWarnings("unchecked")
     @PostMapping(path = "/greeting-post", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
         public Greeting greetingPost(HttpServletRequest a) throws IOException {
         
@@ -58,6 +59,7 @@ public class GreetingController {
         return greeting;
     }
     
+    @SuppressWarnings("unchecked")
     @RequestMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
@@ -108,6 +110,7 @@ public class GreetingController {
         return greeting;
     }
 
+    @SuppressWarnings("unchecked")
     @RequestMapping("/greeting-blind")
     public Greeting greetingBlind(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         

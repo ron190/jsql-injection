@@ -28,6 +28,7 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.MenuSelectionManager;
+import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
 import javax.swing.plaf.basic.BasicCheckBoxMenuItemUI;
 import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
@@ -183,7 +184,7 @@ public class NodeModelTable extends AbstractNodeModel {
         
         JPanel panelCustomFromRow = new JPanel(new BorderLayout());
         final JTextField inputCustomFromRow = new JPopupTextField("no.", "1").getProxy();
-        inputCustomFromRow.setHorizontalAlignment(JTextField.TRAILING);
+        inputCustomFromRow.setHorizontalAlignment(SwingConstants.TRAILING);
         Dimension d = new Dimension(
             (int) inputCustomFromRow.getPreferredSize().getWidth() + 50,
             (int) inputCustomFromRow.getPreferredSize().getHeight()
@@ -200,7 +201,7 @@ public class NodeModelTable extends AbstractNodeModel {
         
         JPanel panelCustomToRow = new JPanel(new BorderLayout());
         final JTextField inputCustomToRow = new JPopupTextField("no.", "65565").getProxy();
-        inputCustomToRow.setHorizontalAlignment(JTextField.TRAILING);
+        inputCustomToRow.setHorizontalAlignment(SwingConstants.TRAILING);
         inputCustomToRow.setPreferredSize(d);
 
         final JCheckBox radioCustomToRow = new JCheckBox("<html><pre style=\"font-family:'Segoe UI';padding-left: 1px;\">Load to row no.&#9;&#9;&#9;&#9;&#9;&#9;</pre></html>");
@@ -213,7 +214,7 @@ public class NodeModelTable extends AbstractNodeModel {
         
         JPanel panelCustomFromChar = new JPanel(new BorderLayout());
         final JTextField inputCustomFromChar = new JPopupTextField("no.", "1").getProxy();
-        inputCustomFromChar.setHorizontalAlignment(JTextField.TRAILING);
+        inputCustomFromChar.setHorizontalAlignment(SwingConstants.TRAILING);
         inputCustomFromChar.setPreferredSize(d);
 
         final JCheckBox radioCustomFromChar = new JCheckBox("<html><pre style=\"font-family:'Segoe UI';padding-left: 1px;\">Load from char no.</pre></html>");
@@ -226,7 +227,7 @@ public class NodeModelTable extends AbstractNodeModel {
         
         JPanel panelCustomToChar = new JPanel(new BorderLayout());
         final JTextField inputCustomToChar = new JPopupTextField("no.", "65565").getProxy();
-        inputCustomToChar.setHorizontalAlignment(JTextField.TRAILING);
+        inputCustomToChar.setHorizontalAlignment(SwingConstants.TRAILING);
         inputCustomToChar.setPreferredSize(d);
 
         final JCheckBox radioCustomToChar = new JCheckBox("<html><pre style=\"font-family:'Segoe UI';padding-left: 1px;\">Load to char no.&#9;&#9;&#9;&#9;&#9;</pre></html>");

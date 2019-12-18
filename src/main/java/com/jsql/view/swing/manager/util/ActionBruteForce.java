@@ -35,7 +35,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
     private ManagerBruteForce bruteForceManager;
     
-    private Boolean isStopped = false;
+    private boolean isStopped = false;
     
     public ActionBruteForce(ManagerBruteForce bruteForceManager) {
         this.bruteForceManager = bruteForceManager;

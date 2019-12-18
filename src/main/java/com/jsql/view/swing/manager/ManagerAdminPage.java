@@ -28,7 +28,6 @@ import org.apache.log4j.Logger;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
-import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
@@ -105,7 +104,7 @@ public class ManagerAdminPage extends AbstractManagerList {
                         }
                     }
                 } else if (this.run.getState() == StateButton.STOPPABLE) {
-                    RessourceAccess.setSearchAdminStopped(true);
+                    MediatorModel.model().getResourceAccess().setSearchAdminStopped(true);
                     ManagerAdminPage.this.run.setEnabled(false);
                     ManagerAdminPage.this.run.setState(StateButton.STOPPING);
                 }

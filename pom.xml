@@ -65,7 +65,6 @@
     
     		<plugin>
     			<artifactId>maven-assembly-plugin</artifactId>
-                   <version>3.2.0</version>
     			<configuration>
     				<descriptorRefs>
     					<descriptorRef>jar-with-dependencies</descriptorRef>
@@ -247,9 +246,6 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <!-- Downgrade version, 8.0.18 improperly throws -->
-            <!-- org.hibernate.service.spi.ServiceException: Unable to create requested service [org.hibernate.engine.jdbc.env.spi.JdbcEnvironment] -->
-            <version>8.0.17</version>
             <scope>test</scope>
         </dependency>
         <dependency>

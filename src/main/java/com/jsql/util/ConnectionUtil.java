@@ -72,7 +72,7 @@ public class ConnectionUtil {
     /**
      * Default timeout used by the jcifs fix. It's the default value used usually by the JVM.
      */
-    private final Integer TIMEOUT = 15000;
+    private static final Integer TIMEOUT = 15000;
     
     private SimpleEntry<String, String> tokenCsrf = null;
     
@@ -365,7 +365,7 @@ public class ConnectionUtil {
     }
 
     public Integer getTimeout() {
-        return this.TIMEOUT;
+        return ConnectionUtil.TIMEOUT;
     }
 
     public SimpleEntry<String, String> getTokenCsrf() {

@@ -62,7 +62,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
         }
         
         if (
-            RessourceAccess.isSearchAdminStopped()
+                injectionModel.getResourceAccess().isSearchAdminStopped()
             || isUrlIncorrect
             || "".equals(targetUrl.getHost())
         ) {

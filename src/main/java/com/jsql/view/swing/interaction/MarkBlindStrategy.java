@@ -32,9 +32,9 @@ public class MarkBlindStrategy implements InteractionCommand {
             LOGGER.error("Unexpected unregistered MediatorGui.managerDatabase() in "+ this.getClass());
         }
         
-        MediatorGui.panelAddressBar().getMenuStrategy().setText(MediatorModel.model().getMediatorStrategy().getBLIND().toString());
+        MediatorGui.panelAddressBar().getMenuStrategy().setText(MediatorModel.model().getMediatorStrategy().getBlind().toString());
         for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
-            if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(MediatorModel.model().getMediatorStrategy().getBLIND().toString())) {
+            if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(MediatorModel.model().getMediatorStrategy().getBlind().toString())) {
                 MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).setSelected(true);
                 break;
             }

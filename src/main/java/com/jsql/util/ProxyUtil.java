@@ -18,12 +18,12 @@ public class ProxyUtil {
     /**
      * Log4j logger sent to view.
      */
-    private final Logger LOGGER = Logger.getRootLogger();
+    private static final Logger LOGGER = Logger.getRootLogger();
     
-    private final String HTTP_PROXY_DEFAULT_ADDRESS;
-    private final String HTTP_PROXY_DEFAULT_PORT;
-    private final String HTTPS_PROXY_DEFAULT_ADDRESS;
-    private final String HTTPS_PROXY_DEFAULT_PORT;
+    private final String httpProxyDefaultAddress;
+    private final String httpProxyDefaultPort;
+    private final String httpsProxyDefaultAddress;
+    private final String httpsProxyDefaultPort;
     
     /**
      * Proxy IP address or name.
@@ -43,19 +43,19 @@ public class ProxyUtil {
     private boolean isUsingProxy = false;
     private boolean isUsingProxyHttps = false;
     
-    private final String PROPERTIES_HTTP_PROXY_HOST = "http.proxyHost";
-    private final String PROPERTIES_HTTP_PROXY_PORT = "http.proxyPort";
-    private final String PROPERTIES_HTTPS_PROXY_HOST = "https.proxyHost";
-    private final String PROPERTIES_HTTPS_PROXY_PORT = "https.proxyPort";
+    private static final String PROPERTIES_HTTP_PROXY_HOST = "http.proxyHost";
+    private static final String PROPERTIES_HTTP_PROXY_PORT = "http.proxyPort";
+    private static final String PROPERTIES_HTTPS_PROXY_HOST = "https.proxyHost";
+    private static final String PROPERTIES_HTTPS_PROXY_PORT = "https.proxyPort";
     
     // Utility class
     public ProxyUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
         
-        this.HTTP_PROXY_DEFAULT_ADDRESS = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("http.proxy.default.ip");
-        this.HTTP_PROXY_DEFAULT_PORT = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("http.proxy.default.port");
-        this.HTTPS_PROXY_DEFAULT_ADDRESS = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("https.proxy.default.ip");
-        this.HTTPS_PROXY_DEFAULT_PORT = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("https.proxy.default.port");
+        this.httpProxyDefaultAddress = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("http.proxy.default.ip");
+        this.httpProxyDefaultPort = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("http.proxy.default.port");
+        this.httpsProxyDefaultAddress = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("https.proxy.default.ip");
+        this.httpsProxyDefaultPort = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("https.proxy.default.port");
     }
     InjectionModel injectionModel;
     
@@ -95,19 +95,19 @@ public class ProxyUtil {
 
         // Change the JVM configuration
         if (this.isUsingProxy()) {
-            System.setProperty(this.PROPERTIES_HTTP_PROXY_HOST, this.getProxyAddress());
-            System.setProperty(this.PROPERTIES_HTTP_PROXY_PORT, this.getProxyPort());
+            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_HOST, this.getProxyAddress());
+            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_PORT, this.getProxyPort());
         } else {
-            System.setProperty(this.PROPERTIES_HTTP_PROXY_HOST, "");
-            System.setProperty(this.PROPERTIES_HTTP_PROXY_PORT, "");
+            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_HOST, "");
+            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_PORT, "");
         }
         
         if (this.isUsingProxyHttps()) {
-            System.setProperty(this.PROPERTIES_HTTPS_PROXY_HOST, this.getProxyAddressHttps());
-            System.setProperty(this.PROPERTIES_HTTPS_PROXY_PORT, this.getProxyPortHttps());
+            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_HOST, this.getProxyAddressHttps());
+            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_PORT, this.getProxyPortHttps());
         } else {
-            System.setProperty(this.PROPERTIES_HTTPS_PROXY_HOST, "");
-            System.setProperty(this.PROPERTIES_HTTPS_PROXY_PORT, "");
+            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_HOST, "");
+            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_PORT, "");
         }
         
     }
@@ -126,21 +126,21 @@ public class ProxyUtil {
         this.setUsingProxyHttps(prefs.getBoolean("isUsingProxyHttps", false));
 
         // Default TOR config
-        this.setProxyAddress(prefs.get("proxyAddress", this.HTTP_PROXY_DEFAULT_ADDRESS));
-        this.setProxyPort(prefs.get("proxyPort", this.HTTP_PROXY_DEFAULT_PORT));
+        this.setProxyAddress(prefs.get("proxyAddress", this.httpProxyDefaultAddress));
+        this.setProxyPort(prefs.get("proxyPort", this.httpProxyDefaultPort));
         
-        this.setProxyAddressHttps(prefs.get("proxyAddressHttps", this.HTTPS_PROXY_DEFAULT_ADDRESS));
-        this.setProxyPortHttps(prefs.get("proxyPortHttps", this.HTTPS_PROXY_DEFAULT_PORT));
+        this.setProxyAddressHttps(prefs.get("proxyAddressHttps", this.httpsProxyDefaultAddress));
+        this.setProxyPortHttps(prefs.get("proxyPortHttps", this.httpsProxyDefaultPort));
         
         // Change the JVM configuration
         if (this.isUsingProxy()) {
-            System.setProperty(this.PROPERTIES_HTTP_PROXY_HOST, this.getProxyAddress());
-            System.setProperty(this.PROPERTIES_HTTP_PROXY_PORT, this.getProxyPort());
+            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_HOST, this.getProxyAddress());
+            System.setProperty(ProxyUtil.PROPERTIES_HTTP_PROXY_PORT, this.getProxyPort());
         }
         
         if (this.isUsingProxyHttps()) {
-            System.setProperty(this.PROPERTIES_HTTPS_PROXY_HOST, this.getProxyAddressHttps());
-            System.setProperty(this.PROPERTIES_HTTPS_PROXY_PORT, this.getProxyPortHttps());
+            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_HOST, this.getProxyAddressHttps());
+            System.setProperty(ProxyUtil.PROPERTIES_HTTPS_PROXY_PORT, this.getProxyPortHttps());
         }
         
     }
@@ -164,14 +164,14 @@ public class ProxyUtil {
             	socket.close();
             	
             	if (showOnConsole == ShowOnConsole.YES) {
-            	    this.LOGGER.debug("Connection to HTTP proxy "+ this.getProxyAddress() +":"+ this.getProxyPort() +" successful");
+            	    ProxyUtil.LOGGER.debug("Connection to HTTP proxy "+ this.getProxyAddress() +":"+ this.getProxyPort() +" successful");
             	}
             } catch (Exception e) {
                 proxyIsChecked = false;
                 
                 if (showOnConsole == ShowOnConsole.YES) {
                     String message = Optional.ofNullable(e.getMessage()).orElse("");
-                    this.LOGGER.warn(
+                    ProxyUtil.LOGGER.warn(
                         "Connection to HTTP proxy "
                         + this.getProxyAddress() +":"
                         + this.getProxyPort()
@@ -192,14 +192,14 @@ public class ProxyUtil {
                 socket.close();
                 
                 if (showOnConsole == ShowOnConsole.YES) {
-                    this.LOGGER.debug("Connection to HTTPS proxy "+ this.getProxyAddressHttps() +":"+ this.getProxyPortHttps() +" successful");
+                    ProxyUtil.LOGGER.debug("Connection to HTTPS proxy "+ this.getProxyAddressHttps() +":"+ this.getProxyPortHttps() +" successful");
                 }
             } catch (Exception e) {
                 proxyIsChecked = false;
                 
                 if (showOnConsole == ShowOnConsole.YES) {
                     String message = Optional.ofNullable(e.getMessage()).orElse("");
-                    this.LOGGER.warn(
+                    ProxyUtil.LOGGER.warn(
                         "Connection to HTTPS proxy "+ this.getProxyAddressHttps() +":"+ this.getProxyPortHttps() +" failed: "+ message.replace(e.getClass().getName() +": ", "") +", verify your proxy settings for HTTPS protocol", e
                     );
                 }

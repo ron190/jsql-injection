@@ -57,7 +57,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         
         this.isApplicable =
             !"".equals(this.injectionModel.getIndexesInUrl())
-            && new Integer(this.injectionModel.getMediatorStrategy().getNORMAL().getPerformanceLength()) > 0
+            && new Integer(this.injectionModel.getMediatorStrategy().getNormal().getPerformanceLength()) > 0
             && this.visibleIndex != null
         ;
         
@@ -87,7 +87,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     @Override
     public void activateStrategy() {
         LOGGER.info(I18n.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
-        this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getNORMAL());
+        this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getNormal());
         
         Request request = new Request();
         request.setMessage(Interaction.MARK_NORMAL_STRATEGY);

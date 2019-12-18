@@ -25,7 +25,7 @@ public class ItemList {
     /**
      * 
      */
-    private Boolean isVulnerable = false;
+    private boolean isVulnerable = false;
     
     private Boolean isDatabaseConfirmed = false;
     
@@ -46,19 +46,19 @@ public class ItemList {
         this.internalString = internalString;
     }
 
-    public Boolean getIsVulnerable() {
+    public boolean getIsVulnerable() {
         return this.isVulnerable;
     }
 
-    public void setIsVulnerable(Boolean isVulnerable) {
+    public void setIsVulnerable(boolean isVulnerable) {
         this.isVulnerable = isVulnerable;
     }
 
-    public Boolean getIsDatabaseConfirmed() {
+    public boolean getIsDatabaseConfirmed() {
         return this.isDatabaseConfirmed;
     }
 
-    public void setIsDatabaseConfirmed(Boolean isDatabaseConfirmed) {
+    public void setIsDatabaseConfirmed(boolean isDatabaseConfirmed) {
         this.isDatabaseConfirmed = isDatabaseConfirmed;
     }
     

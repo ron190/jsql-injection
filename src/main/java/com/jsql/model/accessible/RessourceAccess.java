@@ -47,6 +47,7 @@ import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
+import com.jsql.util.ConnectionUtil;
 import com.jsql.util.HeaderUtil;
 import com.jsql.view.scan.ScanListTerminal;
 import com.jsql.view.swing.MediatorGui;
@@ -72,38 +73,38 @@ public class RessourceAccess {
     /**
      * File name for sql shell.
      */
-    public  final String FILENAME_SQLSHELL;
+    public final String FILENAME_SQLSHELL;
     
     /**
      * File name for upload form.
      */
-    public  final String FILENAME_UPLOAD;
+    public final String FILENAME_UPLOAD;
     
     /**
      * True if admin page sould stop, false otherwise.
      */
-    private static boolean isSearchAdminStopped = false;
+    private boolean isSearchAdminStopped = false;
     
     /**
      * True if scan list sould stop, false otherwise.
      */
-    private static boolean isScanStopped = false;
+    private boolean isScanStopped = false;
 
     /**
      * True if ongoing file reading must stop, false otherwise.
      * If true any new file read is cancelled at start.
      */
-    private static boolean isSearchFileStopped = false;
+    private boolean isSearchFileStopped = false;
 
     /**
      * True if current user has right to read file.
      */
-    private static boolean readingIsAllowed = false;
+    private boolean readingIsAllowed = false;
 
     /**
      * List of ongoing jobs.
      */
-    private static List<CallableFile> callablesReadFile = new ArrayList<>();
+    private List<CallableFile> callablesReadFile = new ArrayList<>();
 
 //    // Utility class
 //    private RessourceAccess() {
@@ -156,7 +157,7 @@ public class RessourceAccess {
         int tasksHandled;
         for (
             tasksHandled = 0;
-            tasksHandled < submittedTasks && !RessourceAccess.isSearchAdminStopped;
+            tasksHandled < submittedTasks && !this.isSearchAdminStopped;
             tasksHandled++
         ) {
             try {
@@ -179,7 +180,7 @@ public class RessourceAccess {
         taskExecutor.shutdown();
         taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
 
-        RessourceAccess.isSearchAdminStopped = false;
+        this.isSearchAdminStopped = false;
 
         String result =
             "Found "+ nbAdminPagesFound +" admin page"+( nbAdminPagesFound > 1 ? 's' : "" )+" "
@@ -345,7 +346,7 @@ public class RessourceAccess {
 
         String pageSource = null;
         try {
-            pageSource = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(connection);
+            pageSource = ConnectionUtil.getSource(connection);
         } catch (Exception e) {
             pageSource = "";
         }
@@ -801,22 +802,22 @@ public class RessourceAccess {
             Request request = new Request();
             request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);
             this.injectionModel.sendToViews(request);
-            RessourceAccess.readingIsAllowed = false;
+            this.readingIsAllowed = false;
         } else if ("false".equals(resultInjection)) {
             LOGGER.warn("Privilege FILE is not granted to current user, files can't be read");
             Request request = new Request();
             request.setMessage(Interaction.MARK_FILE_SYSTEM_INVULNERABLE);
             this.injectionModel.sendToViews(request);
-            RessourceAccess.readingIsAllowed = false;
+            this.readingIsAllowed = false;
         } else {
             Request request = new Request();
             request.setMessage(Interaction.MARK_FILE_SYSTEM_VULNERABLE);
             this.injectionModel.sendToViews(request);
-            RessourceAccess.readingIsAllowed = true;
+            this.readingIsAllowed = true;
         }
         
         // TODO optional
-        return RessourceAccess.readingIsAllowed;
+        return this.readingIsAllowed;
     }
     
     /**
@@ -840,7 +841,7 @@ public class RessourceAccess {
         for (ItemList pathFile: pathsFiles) {
             CallableFile callableFile = new CallableFile(pathFile.toString(), this.injectionModel);
             taskCompletionService.submit(callableFile);
-            RessourceAccess.callablesReadFile.add(callableFile);
+            this.callablesReadFile.add(callableFile);
         }
 
         List<String> duplicate = new ArrayList<>();
@@ -848,7 +849,7 @@ public class RessourceAccess {
         int tasksHandled;
         for (
             tasksHandled = 0 ;
-            tasksHandled < submittedTasks && !RessourceAccess.isSearchFileStopped ;
+            tasksHandled < submittedTasks && !this.isSearchFileStopped ;
             tasksHandled++
         ) {
             CallableFile currentCallable = taskCompletionService.take().get();
@@ -872,15 +873,15 @@ public class RessourceAccess {
         }
         
         // Force ongoing suspendables to stop immediately
-        for (CallableFile callableReadFile: RessourceAccess.callablesReadFile) {
+        for (CallableFile callableReadFile: this.callablesReadFile) {
             callableReadFile.getSuspendableReadFile().stop();
         }
-        RessourceAccess.callablesReadFile.clear();
+        this.callablesReadFile.clear();
 
         taskExecutor.shutdown();
         taskExecutor.awaitTermination(5, TimeUnit.SECONDS);
         
-        RessourceAccess.isSearchFileStopped = false;
+        this.isSearchFileStopped = false;
         
         String result =
             "Found "+ countFileFound +" file"+( countFileFound > 1 ? 's' : "" )+" "
@@ -925,11 +926,11 @@ public class RessourceAccess {
         this.injectionModel.addObserver(new ScanListTerminal());
         
         this.injectionModel.setIsScanning(true);
-        RessourceAccess.isScanStopped = false;
+        this.isScanStopped = false;
         
         for (ItemList url: urlList) {
             ItemListScan urlurl = (ItemListScan) url;
-            if (this.injectionModel.isStoppedByUser() || RessourceAccess.isScanStopped) {
+            if (this.injectionModel.isStoppedByUser() || this.isScanStopped) {
                 break;
             }
             LOGGER.info("Scanning "+ urlurl.getBeanInjection().getUrl());
@@ -956,7 +957,7 @@ public class RessourceAccess {
         
         this.injectionModel.setIsScanning(false);
         this.injectionModel.setIsStoppedByUser(false);
-        RessourceAccess.isScanStopped = false;
+        this.isScanStopped = false;
 
         Request request = new Request();
         request.setMessage(Interaction.END_SCAN);
@@ -968,35 +969,35 @@ public class RessourceAccess {
      * Any ongoing file reading is interrupted and any new file read
      * is cancelled.
      */
-    public static void stopSearchingFile() {
-        RessourceAccess.isSearchFileStopped = true;
+    public void stopSearchingFile() {
+        this.isSearchFileStopped = true;
         
         // Force ongoing suspendable to stop immediately
-        for (CallableFile callable: RessourceAccess.callablesReadFile) {
+        for (CallableFile callable: this.callablesReadFile) {
             callable.getSuspendableReadFile().stop();
         }
     }
     
     // Getters and setters
     
-    public static boolean isSearchAdminStopped() {
-        return RessourceAccess.isSearchAdminStopped;
+    public boolean isSearchAdminStopped() {
+        return this.isSearchAdminStopped;
     }
 
-    public static void setSearchAdminStopped(boolean isSearchAdminStopped) {
-        RessourceAccess.isSearchAdminStopped = isSearchAdminStopped;
+    public void setSearchAdminStopped(boolean isSearchAdminStopped) {
+        this.isSearchAdminStopped = isSearchAdminStopped;
     }
     
-    public static void setScanStopped(boolean isScanStopped) {
-        RessourceAccess.isScanStopped = isScanStopped;
+    public void setScanStopped(boolean isScanStopped) {
+        this.isScanStopped = isScanStopped;
     }
 
-    public static boolean isReadingIsAllowed() {
-        return RessourceAccess.readingIsAllowed;
+    public boolean isReadingIsAllowed() {
+        return this.readingIsAllowed;
     }
 
-    public static void setReadingIsAllowed(boolean readingIsAllowed) {
-        RessourceAccess.readingIsAllowed = readingIsAllowed;
+    public void setReadingIsAllowed(boolean readingIsAllowed) {
+        this.readingIsAllowed = readingIsAllowed;
     }
     
 }

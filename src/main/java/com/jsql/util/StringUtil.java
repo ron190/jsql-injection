@@ -115,7 +115,7 @@ public final class StringUtil {
         return StringUtil.detectUtf8Html(text, true);
     }
     
-    public static String detectUtf8Html(String text, Boolean nowrap) {
+    public static String detectUtf8Html(String text, boolean nowrap) {
         // Fix #35217: NullPointerException on getBytes()
         if (text == null) {
             return "";

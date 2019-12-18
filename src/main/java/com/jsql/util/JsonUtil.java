@@ -125,7 +125,7 @@ public class JsonUtil {
             
             // Test current standard value marked with * for injection
             // Keep original param
-            hasFoundInjection = this.injectionModel.testStrategies(this.injectionModel.IS_PARAM_BY_USER, !this.injectionModel.IS_JSON, paramStar);
+            hasFoundInjection = this.injectionModel.testStrategies(InjectionModel.IS_PARAM_BY_USER, !InjectionModel.IS_JSON, paramStar);
             
         } catch (JSqlException e) {
             // Injection failure
@@ -176,7 +176,7 @@ public class JsonUtil {
                 
                 // Test current JSON value marked with * for injection
                 // Keep original param
-                hasFoundInjection = this.injectionModel.testStrategies(this.injectionModel.IS_PARAM_BY_USER, this.injectionModel.IS_JSON, paramStar);
+                hasFoundInjection = this.injectionModel.testStrategies(InjectionModel.IS_PARAM_BY_USER, InjectionModel.IS_JSON, paramStar);
                 
                 // Injection successful
                 break;

@@ -10,13 +10,13 @@ import com.jsql.model.suspendable.AbstractSuspendable;
 
 public class MediatorStrategy {
     
-    private AbstractStrategy UNDEFINED;
-    private AbstractStrategy TIME;
-    private AbstractStrategy BLIND;
-    private AbstractStrategy ERROR;
-    private AbstractStrategy NORMAL;
+    private AbstractStrategy undefined;
+    private AbstractStrategy time;
+    private AbstractStrategy blind;
+    private AbstractStrategy error;
+    private AbstractStrategy normal;
     
-    private List<AbstractStrategy> strategies = Arrays.asList(this.getUNDEFINED(),this.getTIME(),this.getBLIND(),this.getERROR(),this.NORMAL);
+    private List<AbstractStrategy> strategies;
     
     /**
      * Current injection strategy.
@@ -28,12 +28,12 @@ public class MediatorStrategy {
     public MediatorStrategy(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
         
-        this.TIME = new StrategyInjectionTime(this.injectionModel);
-        this.BLIND = new StrategyInjectionBlind(this.injectionModel);
-        this.ERROR = new StrategyInjectionError(this.injectionModel);
-        this.NORMAL = new StrategyInjectionNormal(this.injectionModel);
+        this.time = new StrategyInjectionTime(this.injectionModel);
+        this.blind = new StrategyInjectionBlind(this.injectionModel);
+        this.error = new StrategyInjectionError(this.injectionModel);
+        this.normal = new StrategyInjectionNormal(this.injectionModel);
         
-        this.UNDEFINED = new AbstractStrategy(this.injectionModel) {
+        this.undefined = new AbstractStrategy(this.injectionModel) {
 
             @Override
             public void checkApplicability() throws JSqlException {
@@ -78,26 +78,34 @@ public class MediatorStrategy {
             }
             
         };
+        
+        strategies = Arrays.asList(
+            this.undefined,
+            this.time,
+            this.blind,
+            this.error,
+            this.normal
+        );
     }
 
-    public AbstractStrategy getNORMAL() {
-        return NORMAL;
+    public AbstractStrategy getNormal() {
+        return normal;
     }
 
-    public AbstractStrategy getERROR() {
-        return ERROR;
+    public AbstractStrategy getError() {
+        return error;
     }
 
-    public AbstractStrategy getBLIND() {
-        return BLIND;
+    public AbstractStrategy getBlind() {
+        return blind;
     }
 
-    public AbstractStrategy getTIME() {
-        return TIME;
+    public AbstractStrategy getTime() {
+        return time;
     }
 
-    public AbstractStrategy getUNDEFINED() {
-        return UNDEFINED;
+    public AbstractStrategy getUndefined() {
+        return undefined;
     }
 
     public List<AbstractStrategy> getStrategies() {

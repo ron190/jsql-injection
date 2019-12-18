@@ -46,7 +46,7 @@ public class MarkErrorInvulnerable implements InteractionCommand {
         // Fix #40352: NullPointerException on ?
         try {
             for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
-                if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(MediatorModel.model().getMediatorStrategy().getERROR().toString())) {
+                if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(MediatorModel.model().getMediatorStrategy().getError().toString())) {
                     ((JMenu) MediatorGui.panelAddressBar().getMenuStrategy().getItem(i)).getItem(this.indexMethodError).setEnabled(false);
                     break;
                 }

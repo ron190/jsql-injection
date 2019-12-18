@@ -44,14 +44,6 @@ import com.jsql.view.swing.tree.model.NodeModelEmpty;
 @SuppressWarnings("serial")
 public class ManagerDatabase extends JPanel implements Manager {
 
-//    public JMenu menuVendor;
-//
-//    public JMenu menuStrategy;
-//
-//    public JMenu[] itemRadioStrategyError = new JMenu[1];
-//
-//    public ButtonGroup groupStrategy = new ButtonGroup();
-    
     private JTree tree;
 
     /**
@@ -162,77 +154,8 @@ public class ManagerDatabase extends JPanel implements Manager {
             )
         );
 
-//        this.menuStrategy = new ComboMenu("<Strategy auto>");
-//
-//        this.itemRadioStrategyError = new JMenu[1];
-//
-//        for (final StrategyInjection strategy: StrategyInjection.values()) {
-//            if (strategy != StrategyInjection.UNDEFINED) {
-//                MenuElement itemRadioStrategy;
-//
-//                if (strategy == StrategyInjection.ERROR) {
-//                    itemRadioStrategy = new JMenu(strategy.toString());
-//                    this.itemRadioStrategyError[0] = (JMenu) itemRadioStrategy;
-//                } else {
-//                    itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString());
-//                    ((AbstractButton) itemRadioStrategy).addActionListener(actionEvent -> {
-//                        ManagerDatabase.this.menuStrategy.setText(strategy.toString());
-//                        MediatorModel.model().setStrategy(strategy);
-//                    });
-//                    this.groupStrategy.add((AbstractButton) itemRadioStrategy);
-//                }
-//
-//                this.menuStrategy.add((JMenuItem) itemRadioStrategy);
-//                ((JComponent) itemRadioStrategy)
-//                        .setToolTipText(I18n.valueByKey("STRATEGY_" + strategy.name() + "_TOOLTIP"));
-//                ((JComponent) itemRadioStrategy).setEnabled(false);
-//            }
-//        }
-//
-//        this.menuVendor = new ComboMenu(Vendor.AUTO.toString());
-//
-//        ButtonGroup groupVendor = new ButtonGroup();
-//
-//        for (final Vendor vendor: Vendor.values()) {
-//            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == Vendor.AUTO);
-//            itemRadioVendor.addActionListener(actionEvent -> {
-//                ManagerDatabase.this.menuVendor.setText(vendor.toString());
-//                MediatorModel.model().setVendorByUser(vendor);
-//            });
-//            this.menuVendor.add(itemRadioVendor);
-//            groupVendor.add(itemRadioVendor);
-//        }
-//
-//        panelLineBottom.add(this.menuVendor);
-//        panelLineBottom.add(Box.createHorizontalGlue());
-//        panelLineBottom.add(this.menuStrategy);
-
         this.add(scroller, BorderLayout.CENTER);
-//        this.add(panelLineBottom, BorderLayout.SOUTH);
     }
-
-//    public void initErrorMethods(Vendor vendor) {
-//        this.itemRadioStrategyError[0].removeAll();
-//
-//        Integer[] i = { 0 };
-//        if (vendor != Vendor.AUTO && vendor.instance().getXmlModel().getStrategy().getError() != null) {
-//            for (Method methodError: vendor.instance().getXmlModel().getStrategy().getError().getMethod()) {
-//                JMenuItem itemRadioVendor = new JRadioButtonMenuItem(methodError.getName());
-//                itemRadioVendor.setEnabled(false);
-//                this.itemRadioStrategyError[0].add(itemRadioVendor);
-//                this.groupStrategy.add(itemRadioVendor);
-//
-//                final int indexError = i[0];
-//                itemRadioVendor.addActionListener(actionEvent -> {
-//                    ManagerDatabase.this.menuStrategy.setText(methodError.getName());
-//                    MediatorModel.model().setStrategy(StrategyInjection.ERROR);
-//                    ((StrategyInjectionError) StrategyInjection.ERROR.instance()).setIndexMethod(indexError);
-//                });
-//
-//                i[0]++;
-//            }
-//        }
-//    }
     
     private class TreeModelGifListener implements TreeModelListener {
         
@@ -266,18 +189,6 @@ public class ManagerDatabase extends JPanel implements Manager {
     }
 
     // Getter and setter
-
-//    public ButtonGroup getGroupStrategy() {
-//        return this.groupStrategy;
-//    }
-//
-//    public JMenu getMenuVendor() {
-//        return this.menuVendor;
-//    }
-//
-//    public JMenu getMenuStrategy() {
-//        return this.menuStrategy;
-//    }
 
     public JTree getTree() {
         return this.tree;

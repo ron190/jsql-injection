@@ -334,10 +334,10 @@ public class PanelAddressBar extends JPanel {
         this.itemRadioStrategyError = new JMenu[1];
 
         for (final AbstractStrategy strategy: MediatorModel.model().getMediatorStrategy().getStrategies()) {
-            if (strategy != MediatorModel.model().getMediatorStrategy().getUNDEFINED()) {
+            if (strategy != MediatorModel.model().getMediatorStrategy().getUndefined()) {
                 MenuElement itemRadioStrategy;
 
-                if (strategy == MediatorModel.model().getMediatorStrategy().getERROR()) {
+                if (strategy == MediatorModel.model().getMediatorStrategy().getError()) {
                     itemRadioStrategy = new JMenu(strategy.toString());
                     this.itemRadioStrategyError[0] = (JMenu) itemRadioStrategy;
                 } else {
@@ -356,12 +356,12 @@ public class PanelAddressBar extends JPanel {
             }
         }
 
-        this.menuVendor = new ComboMenu(MediatorModel.model().getMediatorVendor().getAUTO().toString());
+        this.menuVendor = new ComboMenu(MediatorModel.model().getMediatorVendor().getAuto().toString());
 
         ButtonGroup groupVendor = new ButtonGroup();
 
         for (final Vendor vendor: MediatorModel.model().getMediatorVendor().getVendors()) {
-            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorModel.model().getMediatorVendor().getAUTO());
+            JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorModel.model().getMediatorVendor().getAuto());
             itemRadioVendor.addActionListener(actionEvent -> {
                 this.menuVendor.setText(vendor.toString());
                 MediatorModel.model().getMediatorVendor().setVendorByUser(vendor);
@@ -440,7 +440,7 @@ public class PanelAddressBar extends JPanel {
 
         advancedButton.setToolTipText(I18n.valueByKey("BUTTON_ADVANCED"));
         advancedButton.addActionListener(actionEvent -> {
-            Boolean isVisible = advancedButton.getDirection() == SwingConstants.SOUTH;
+            boolean isVisible = advancedButton.getDirection() == SwingConstants.SOUTH;
 
             this.radioQueryString.setVisible(isVisible);
 
@@ -535,7 +535,7 @@ public class PanelAddressBar extends JPanel {
         this.itemRadioStrategyError[0].removeAll();
 
         Integer[] i = { 0 };
-        if (vendor != MediatorModel.model().getMediatorVendor().getAUTO() && vendor.instance().getXmlModel().getStrategy().getError() != null) {
+        if (vendor != MediatorModel.model().getMediatorVendor().getAuto() && vendor.instance().getXmlModel().getStrategy().getError() != null) {
             for (Method methodError: vendor.instance().getXmlModel().getStrategy().getError().getMethod()) {
                 JMenuItem itemRadioVendor = new JRadioButtonMenuItem(methodError.getName());
                 itemRadioVendor.setEnabled(false);
@@ -545,8 +545,8 @@ public class PanelAddressBar extends JPanel {
                 final int indexError = i[0];
                 itemRadioVendor.addActionListener(actionEvent -> {
                     PanelAddressBar.this.menuStrategy.setText(methodError.getName());
-                    MediatorModel.model().getMediatorStrategy().setStrategy(MediatorModel.model().getMediatorStrategy().getERROR());
-                    ((StrategyInjectionError) MediatorModel.model().getMediatorStrategy().getERROR()).setIndexMethod(indexError);
+                    MediatorModel.model().getMediatorStrategy().setStrategy(MediatorModel.model().getMediatorStrategy().getError());
+                    ((StrategyInjectionError) MediatorModel.model().getMediatorStrategy().getError()).setIndexMethod(indexError);
                 });
 
                 i[0]++;

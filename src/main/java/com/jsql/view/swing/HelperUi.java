@@ -22,6 +22,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
@@ -144,7 +145,7 @@ public final class HelperUi {
     public static final String payload = "swing/list/payload.txt";
     public static final InputStream scanPage = HelperUi.class.getClassLoader().getResourceAsStream("swing/list/scan-page.json");
 
-    public static final Icon ICON_EMPTY = new ImageIcon(new BufferedImage(16, 16, BufferedImage.TRANSLUCENT));
+    public static final Icon ICON_EMPTY = new ImageIcon(new BufferedImage(16, 16, Transparency.TRANSLUCENT));
 
     public static final String PATH_PAUSE = "swing/images/icons/pause.png";
     public static final String PATH_PROGRESSBAR = "swing/images/icons/progressBar.gif";

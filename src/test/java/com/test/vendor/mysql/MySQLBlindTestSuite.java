@@ -37,7 +37,7 @@ public class MySQLBlindTestSuite extends ConcreteMySQLTestSuite {
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         
         model.setIsScanning(true);
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getBLIND());
+        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getBlind());
         model.beginInjection();
     }
     

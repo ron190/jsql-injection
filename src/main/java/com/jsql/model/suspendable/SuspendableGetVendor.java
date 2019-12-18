@@ -45,7 +45,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
     public Vendor run(Object... args) throws StoppedByUserSlidingException {
         Vendor vendor = null;
         
-        if (this.injectionModel.getMediatorVendor().getVendorByUser() != this.injectionModel.getMediatorVendor().getAUTO()) {
+        if (this.injectionModel.getMediatorVendor().getVendorByUser() != this.injectionModel.getMediatorVendor().getAuto()) {
             vendor = this.injectionModel.getMediatorVendor().getVendorByUser();
             LOGGER.info(I18n.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER") +" ["+ vendor +"]");
         } else {
@@ -109,7 +109,7 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             }
             
             if (vendor == null) {
-                vendor = this.injectionModel.getMediatorVendor().getMYSQL();
+                vendor = this.injectionModel.getMediatorVendor().getMySQL();
                 LOGGER.warn(I18n.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendor +"]");
             } else {
                 LOGGER.info(I18n.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendor +"]");

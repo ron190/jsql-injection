@@ -26,6 +26,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
@@ -146,7 +147,7 @@ public class JFrameView extends JFrame {
         // Size of window
         this.setSize(1024, 768);
         this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         // Center the window
         this.setLocationRelativeTo(null);
@@ -162,8 +163,8 @@ public class JFrameView extends JFrame {
      * Empty the interface.
      */
     public void resetInterface() {
-        if (MediatorModel.model().getMediatorVendor().getVendorByUser() == MediatorModel.model().getMediatorVendor().getAUTO()) {
-            MediatorGui.panelAddressBar().getMenuVendor().setText(MediatorModel.model().getMediatorVendor().getAUTO().toString());
+        if (MediatorModel.model().getMediatorVendor().getVendorByUser() == MediatorModel.model().getMediatorVendor().getAuto()) {
+            MediatorGui.panelAddressBar().getMenuVendor().setText(MediatorModel.model().getMediatorVendor().getAuto().toString());
         }
         
         MediatorGui.panelAddressBar().getMenuStrategy().setText("Strategy auto");

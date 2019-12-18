@@ -20,7 +20,7 @@ public class BeanInjection {
     ) {
         this.url = url;
         this.injectionType = MediatorModel.model().getMediatorMethodInjection().getQuery();
-        this.vendor = MediatorModel.model().getMediatorVendor().getAUTO();
+        this.vendor = MediatorModel.model().getMediatorVendor().getAuto();
         this.requestType = "POST";
     }
     
@@ -44,9 +44,9 @@ public class BeanInjection {
         }
         
         try {
-            this.vendor = MediatorModel.model().getMediatorVendor().getVendors().stream().filter(m -> m.toString().equals(vendor)).findAny().orElse(MediatorModel.model().getMediatorVendor().getAUTO());
+            this.vendor = MediatorModel.model().getMediatorVendor().getVendors().stream().filter(m -> m.toString().equals(vendor)).findAny().orElse(MediatorModel.model().getMediatorVendor().getAuto());
         } catch (IllegalArgumentException | NoSuchElementException e) {
-            this.vendor = MediatorModel.model().getMediatorVendor().getAUTO();
+            this.vendor = MediatorModel.model().getMediatorVendor().getAuto();
         }
         
         this.requestType = requestType.isEmpty() ? "POST" : requestType;

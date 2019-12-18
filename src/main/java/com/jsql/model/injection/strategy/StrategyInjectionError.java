@@ -159,7 +159,7 @@ public class StrategyInjectionError extends AbstractStrategy {
                 + this.injectionModel.getMediatorVendor().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethod).getName()
             +"]"
         );
-        this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getERROR());
+        this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getError());
         
         Request request = new Request();
         request.setMessage(Interaction.MARK_ERROR_STRATEGY);

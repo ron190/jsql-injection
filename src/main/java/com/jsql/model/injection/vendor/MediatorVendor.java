@@ -25,83 +25,58 @@ public class MediatorVendor {
      */
     private Vendor vendorByUser;
 
-    private Vendor AUTO;
-    private Vendor ACCESS;
-    private Vendor COCKROACHDB;
-    private Vendor CUBRID;
-    private Vendor DB2;
-    private Vendor DERBY;
-    private Vendor FIREBIRD;
-    private Vendor H2;
-    private Vendor HANA;
-    private Vendor HSQLDB;
-    private Vendor INFORMIX;
-    private Vendor INGRES;
-    private Vendor MAXDB;
-    private Vendor MCKOI;
-    private Vendor MEMSQL;
-    private Vendor MYSQL;
-    private Vendor NEO4J;
-    private Vendor NUODB;
-    private Vendor ORACLE;
-    private Vendor POSTGRESQL;
-    private Vendor SQLITE;
-    private Vendor SQLSERVER;
-    private Vendor SYBASE;
-    private Vendor TERADATA;
-    private Vendor VERTICA;
+    private Vendor auto;
+    private Vendor access;
+    private Vendor cockroachDB;
+    private Vendor cubrid;
+    private Vendor db2;
+    private Vendor derby;
+    private Vendor firebird;
+    private Vendor h2;
+    private Vendor hana;
+    private Vendor hsqldb;
+    private Vendor informix;
+    private Vendor ingres;
+    private Vendor maxDB;
+    private Vendor mckoi;
+    private Vendor memSQL;
+    private Vendor mySQL;
+    private Vendor neo4j;
+    private Vendor nuoDB;
+    private Vendor oracle;
+    private Vendor postgreSQL;
+    private Vendor sqlite;
+    private Vendor sqlServer;
+    private Vendor sybase;
+    private Vendor teradata;
+    private Vendor vertica;
     
-    private List<Vendor> vendors = Arrays.asList(
-        this.ACCESS,
-        this.COCKROACHDB,
-		this.CUBRID,
-		this.DB2,
-		this.DERBY,
-		this.FIREBIRD,
-		this.getH2(),
-		this.HANA,
-		this.HSQLDB,
-		this.INFORMIX,
-		this.INGRES,
-		this.MAXDB,
-		this.MCKOI,
-		this.MEMSQL,
-		this.getMYSQL(),
-		this.NEO4J,
-		this.NUODB,
-		this.ORACLE,
-		this.getPOSTGRESQL(),
-		this.getSQLITE(),
-		this.SQLSERVER,
-		this.SYBASE,
-		this.TERADATA,
-		this.VERTICA
-	);
+    private List<Vendor> vendors;
     
     public MediatorVendor(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
         
-        this.AUTO = new Vendor("Database auto", null);
-        this.ACCESS = new Vendor("Access", new VendorXml("access.xml", this.injectionModel));
-        this.COCKROACHDB = new Vendor("CockroachDB", new VendorXml("cockroachdb.xml", this.injectionModel));
-        this.CUBRID = new Vendor("CUBRID", new VendorXml("cubrid.xml", this.injectionModel));
-        this.DB2 = new Vendor("DB2", new VendorXml("db2.xml", this.injectionModel));
-        this.DERBY = new Vendor("Derby", new VendorXml("derby.xml", this.injectionModel));
-        this.FIREBIRD = new Vendor("Firebird", new VendorXml("firebird.xml", this.injectionModel));
-        this.H2 = new Vendor("H2", new VendorXml("h2.xml", this.injectionModel));
-        this.HANA = new Vendor("Hana", new VendorXml("hana.xml", this.injectionModel));
-        this.HSQLDB = new Vendor("HSQLDB", new VendorXml("hsqldb.xml", this.injectionModel));
-        this.INFORMIX = new Vendor("Informix", new VendorXml("informix.xml", this.injectionModel));
-        this.INGRES = new Vendor("Ingres", new VendorXml("ingres.xml", this.injectionModel));
-        this.MAXDB = new Vendor("MaxDB", new VendorXml("maxdb.xml", this.injectionModel));
-        this.MCKOI = new Vendor("Mckoi", new VendorXml("mckoi.xml", this.injectionModel));
-        this.MEMSQL = new Vendor("MemSQL", new VendorXml("memsql.xml", this.injectionModel));
-        this.MYSQL = new Vendor("MySQL", new VendorXml("mysql.xml", this.injectionModel));
-        this.NEO4J = new Vendor("Neo4j", new VendorXml("neo4j.xml", this.injectionModel));
-        this.NUODB = new Vendor("NuoDB", new VendorXml("nuodb.xml", this.injectionModel));
-        this.ORACLE = new Vendor("Oracle", new VendorXml("oracle.xml", this.injectionModel));
-        this.POSTGRESQL = new Vendor("PostgreSQL", new VendorXml("postgresql.xml", this.injectionModel));
-        this.SQLITE = new Vendor("SQLite", new VendorXml("sqlite.xml", this.injectionModel)) {
+        this.auto = new Vendor("Database auto", null);
+        this.access = new Vendor("Access", new VendorXml("access.xml", this.injectionModel));
+        this.cockroachDB = new Vendor("CockroachDB", new VendorXml("cockroachdb.xml", this.injectionModel));
+        this.cubrid = new Vendor("CUBRID", new VendorXml("cubrid.xml", this.injectionModel));
+        this.db2 = new Vendor("DB2", new VendorXml("db2.xml", this.injectionModel));
+        this.derby = new Vendor("Derby", new VendorXml("derby.xml", this.injectionModel));
+        this.firebird = new Vendor("Firebird", new VendorXml("firebird.xml", this.injectionModel));
+        this.h2 = new Vendor("H2", new VendorXml("h2.xml", this.injectionModel));
+        this.hana = new Vendor("Hana", new VendorXml("hana.xml", this.injectionModel));
+        this.hsqldb = new Vendor("HSQLDB", new VendorXml("hsqldb.xml", this.injectionModel));
+        this.informix = new Vendor("Informix", new VendorXml("informix.xml", this.injectionModel));
+        this.ingres = new Vendor("Ingres", new VendorXml("ingres.xml", this.injectionModel));
+        this.maxDB = new Vendor("MaxDB", new VendorXml("maxdb.xml", this.injectionModel));
+        this.mckoi = new Vendor("Mckoi", new VendorXml("mckoi.xml", this.injectionModel));
+        this.memSQL = new Vendor("MemSQL", new VendorXml("memsql.xml", this.injectionModel));
+        this.mySQL = new Vendor("MySQL", new VendorXml("mysql.xml", this.injectionModel));
+        this.neo4j = new Vendor("Neo4j", new VendorXml("neo4j.xml", this.injectionModel));
+        this.nuoDB = new Vendor("NuoDB", new VendorXml("nuodb.xml", this.injectionModel));
+        this.oracle = new Vendor("Oracle", new VendorXml("oracle.xml", this.injectionModel));
+        this.postgreSQL = new Vendor("PostgreSQL", new VendorXml("postgresql.xml", this.injectionModel));
+        this.sqlite = new Vendor("SQLite", new VendorXml("sqlite.xml", this.injectionModel)) {
              
              @Override
              public String transform(String resultToParse) {
@@ -127,40 +102,40 @@ public class MediatorVendor {
              }
              
          };
-        this.SQLSERVER = new Vendor("SQL Server", new VendorXml("sqlserver.xml", this.injectionModel));
-        this.SYBASE = new Vendor("Sybase", new VendorXml("sybase.xml", this.injectionModel));
-        this.TERADATA = new Vendor("Teradata", new VendorXml("teradata.xml", this.injectionModel));
-        this.VERTICA = new Vendor("Vertica", new VendorXml("vertica.xml", this.injectionModel));
+        this.sqlServer = new Vendor("SQL Server", new VendorXml("sqlserver.xml", this.injectionModel));
+        this.sybase = new Vendor("Sybase", new VendorXml("sybase.xml", this.injectionModel));
+        this.teradata = new Vendor("Teradata", new VendorXml("teradata.xml", this.injectionModel));
+        this.vertica = new Vendor("Vertica", new VendorXml("vertica.xml", this.injectionModel));
         
         this.vendors = Arrays.asList(
-            this.ACCESS,
-            this.COCKROACHDB,
-            this.CUBRID,
-            this.DB2,
-            this.DERBY,
-            this.FIREBIRD,
-            this.getH2(),
-            this.HANA,
-            this.HSQLDB,
-            this.INFORMIX,
-            this.INGRES,
-            this.MAXDB,
-            this.MCKOI,
-            this.MEMSQL,
-            this.getMYSQL(),
-            this.NEO4J,
-            this.NUODB,
-            this.ORACLE,
-            this.getPOSTGRESQL(),
-            this.getSQLITE(),
-            this.SQLSERVER,
-            this.SYBASE,
-            this.TERADATA,
-            this.VERTICA
+            this.access,
+            this.cockroachDB,
+            this.cubrid,
+            this.db2,
+            this.derby,
+            this.firebird,
+            this.h2,
+            this.hana,
+            this.hsqldb,
+            this.informix,
+            this.ingres,
+            this.maxDB,
+            this.mckoi,
+            this.memSQL,
+            this.mySQL,
+            this.neo4j,
+            this.nuoDB,
+            this.oracle,
+            this.postgreSQL,
+            this.sqlite,
+            this.sqlServer,
+            this.sybase,
+            this.teradata,
+            this.vertica
         );
         
-        this.setVendor(this.getMYSQL());
-        this.vendorByUser = this.getAUTO();
+        this.setVendor(this.getMySQL());
+        this.vendorByUser = this.getAuto();
     }
     
     public Vendor getVendor() {
@@ -180,23 +155,23 @@ public class MediatorVendor {
     }
 
     public Vendor getH2() {
-        return this.H2;
+        return this.h2;
     }
 
-    public Vendor getPOSTGRESQL() {
-        return this.POSTGRESQL;
+    public Vendor getPostgreSQL() {
+        return this.postgreSQL;
     }
 
-    public Vendor getAUTO() {
-        return this.AUTO;
+    public Vendor getAuto() {
+        return this.auto;
     }
 
-    public Vendor getMYSQL() {
-        return this.MYSQL;
+    public Vendor getMySQL() {
+        return this.mySQL;
     }
 
-    public Vendor getSQLITE() {
-        return this.SQLITE;
+    public Vendor getSqlite() {
+        return this.sqlite;
     }
 
     public void setVendor(Vendor vendor) {

@@ -33,7 +33,6 @@ import org.json.JSONObject;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.MediatorModel;
-import com.jsql.model.accessible.RessourceAccess;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
@@ -149,7 +148,7 @@ public class ManagerScan extends AbstractManagerList {
                     
                     MediatorModel.model().getResourceAccess().scanList(dndListScan.getSelectedValuesList());
                 } else {
-                    RessourceAccess.setScanStopped(true);
+                    MediatorModel.model().getResourceAccess().setScanStopped(true);
                     MediatorModel.model().setIsStoppedByUser(true);
                     ManagerScan.this.run.setEnabled(false);
                     ManagerScan.this.run.setState(StateButton.STOPPING);

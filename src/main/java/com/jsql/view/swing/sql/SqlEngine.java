@@ -56,7 +56,7 @@ public class SqlEngine extends JPanel {
 
     private static final List<JTextPaneLexer> MAP_TEXTPANE_TO_XML = new ArrayList<>();
     
-    private static final JTabbedPane TAB_ERROR = new JTabbedPane(JTabbedPane.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
+    private static final JTabbedPane TAB_ERROR = new JTabbedPane(SwingConstants.RIGHT, JTabbedPane.SCROLL_TAB_LAYOUT);
 
     private static final Border BORDER_RIGHT = BorderFactory.createMatteBorder(0, 0, 0, 1, HelperUi.COLOR_COMPONENT_BORDER);
     
@@ -344,7 +344,7 @@ public class SqlEngine extends JPanel {
     public SqlEngine() {
         
         List<Vendor> listVendors = new LinkedList<>(MediatorModel.model().getMediatorVendor().getVendors());
-        listVendors.removeIf(i -> i == MediatorModel.model().getMediatorVendor().getAUTO());
+        listVendors.removeIf(i -> i == MediatorModel.model().getMediatorVendor().getAuto());
         
         JComboBox<Vendor> comboBoxVendors = new JComboBox<>(listVendors.toArray(new Vendor[0]));
         comboBoxVendors.addItemListener(itemEvent -> {
@@ -357,7 +357,7 @@ public class SqlEngine extends JPanel {
         comboBoxVendors.setSelectedItem(MediatorModel.model().getMediatorVendor().getVendor());
         this.changeVendor();
         
-        JTabbedPane tabsStandard = new JTabbedPane(JTabbedPane.RIGHT);
+        JTabbedPane tabsStandard = new JTabbedPane(SwingConstants.RIGHT);
         
         textareaDatabase.setBorder(SqlEngine.BORDER_RIGHT);
         textareaTable.setBorder(SqlEngine.BORDER_RIGHT);
@@ -529,7 +529,7 @@ public class SqlEngine extends JPanel {
         tabsStrategy.addTab(I18n.valueByKey("SQLENGINE_ERROR"), panelError);
 
         /*Boolean*/
-        JTabbedPane tabsBoolean = new JTabbedPane(JTabbedPane.RIGHT);
+        JTabbedPane tabsBoolean = new JTabbedPane(SwingConstants.RIGHT);
         tabsBoolean.addTab("Blind", new LightScrollPane(1, 0, 1, 0, textareaBlind));
         tabsBoolean.addTab("Time", new LightScrollPane(1, 0, 1, 0, textareaTime));
         tabsBoolean.addTab("Bit Test", new LightScrollPane(1, 0, 1, 0, textareaBitTest));

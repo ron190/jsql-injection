@@ -17,6 +17,7 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
 import javax.swing.TransferHandler;
 
 import com.jsql.view.swing.HelperUi;
@@ -228,7 +229,7 @@ public class DnDTabbedPane extends JTabbedPane {
     }
 
     public static boolean isTopBottomTabPlacement(int tabPlacement) {
-        return tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM;
+        return tabPlacement == SwingConstants.TOP || tabPlacement == SwingConstants.BOTTOM;
     }
 
     private class Handler extends MouseAdapter implements PropertyChangeListener { // , BeforeDrag

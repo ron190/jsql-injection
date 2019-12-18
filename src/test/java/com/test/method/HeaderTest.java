@@ -30,7 +30,7 @@ public abstract class HeaderTest extends ConcreteMySQLTestSuite {
 
         model.beginInjection();
 
-        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNORMAL());
+        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
     }
     
 }

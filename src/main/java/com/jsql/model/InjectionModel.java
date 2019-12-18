@@ -44,7 +44,6 @@ import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.injection.method.MediatorMethodInjection;
 import com.jsql.model.injection.method.MethodInjection;
-import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.model.injection.strategy.MediatorStrategy;
 import com.jsql.model.injection.vendor.MediatorVendor;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
@@ -79,13 +78,15 @@ public class InjectionModel extends AbstractModelObservable {
     private MediatorVendor mediatorVendor = new MediatorVendor(InjectionModel.this);
     private MediatorMethodInjection mediatorMethodInjection = new MediatorMethodInjection(this);
     private MediatorUtils mediatorUtils;
-    private MediatorStrategy mediatorStrategy = new MediatorStrategy(this);
+    private MediatorStrategy mediatorStrategy;
     
     private DataAccess dataAccess = new DataAccess(this);
     private RessourceAccess resourceAccess = new RessourceAccess(this);
 
     public InjectionModel() {
         this.mediatorUtils = new MediatorUtils();
+        
+        this.mediatorStrategy = new MediatorStrategy(this);
 
         this.mediatorUtils.setPropertiesUtil(new PropertiesUtil(this));
         this.mediatorUtils.setConnectionUtil(new ConnectionUtil(this));
@@ -143,15 +144,15 @@ public class InjectionModel extends AbstractModelObservable {
     
     private boolean isScanning = false;
     
-    public final boolean IS_PARAM_BY_USER = true;
-    public final boolean IS_JSON = true;
+    public static final boolean IS_PARAM_BY_USER = true;
+    public static final boolean IS_JSON = true;
 
     /**
      * Reset each injection attributes: Database metadata, General Thread status, Strategy.
      */
     public void resetModel() {
         // TODO make injection pojo for all fields
-        this.getMediatorStrategy().getNORMAL().setVisibleIndex(null);
+        this.getMediatorStrategy().getNormal().setVisibleIndex(null);
         this.indexesInUrl = "";
         
         this.getMediatorUtils().getConnectionUtil().setTokenCsrf(null);
@@ -165,7 +166,7 @@ public class InjectionModel extends AbstractModelObservable {
         
         this.getMediatorStrategy().setStrategy(null);
         
-        RessourceAccess.setReadingIsAllowed(false);
+        this.resourceAccess.setReadingIsAllowed(false);
         
         this.getMediatorUtils().getThreadUtil().reset();
     }
@@ -259,7 +260,7 @@ public class InjectionModel extends AbstractModelObservable {
             
             // Will keep param value as is,
             // Does not test for insertion character (param is null)
-            hasFoundInjection = this.testStrategies(!this.IS_PARAM_BY_USER, !this.IS_JSON, null);
+            hasFoundInjection = this.testStrategies(!InjectionModel.IS_PARAM_BY_USER, !InjectionModel.IS_JSON, null);
         
         // Default injection: last param tested only
         } else if (!methodInjection.isCheckingAllParam()) {
@@ -269,7 +270,7 @@ public class InjectionModel extends AbstractModelObservable {
             // Will check param value by user.
             // Notice options 'Inject each URL params' and 'inject JSON' must be checked both
             // for JSON injection of last param
-            hasFoundInjection = this.testStrategies(this.IS_PARAM_BY_USER, !this.IS_JSON, methodInjection.getParams().stream().reduce((a, b) -> b).orElseThrow());
+            hasFoundInjection = this.testStrategies(InjectionModel.IS_PARAM_BY_USER, !InjectionModel.IS_JSON, methodInjection.getParams().stream().reduce((a, b) -> b).orElseThrow(NullPointerException::new));
             
         // Injection of every params: isCheckingAllParam() == true.
         // Params are tested one by one in two loops:
@@ -353,23 +354,23 @@ public class InjectionModel extends AbstractModelObservable {
 
         // Test each injection strategies: time < blind < error < normal
         // Choose the most efficient strategy: normal > error > blind > time
-        this.getMediatorStrategy().getTIME().checkApplicability();
-        this.getMediatorStrategy().getBLIND().checkApplicability();
-        this.getMediatorStrategy().getERROR().checkApplicability();
-        this.getMediatorStrategy().getNORMAL().checkApplicability();
+        this.getMediatorStrategy().getTime().checkApplicability();
+        this.getMediatorStrategy().getBlind().checkApplicability();
+        this.getMediatorStrategy().getError().checkApplicability();
+        this.getMediatorStrategy().getNormal().checkApplicability();
 
         // Choose the most efficient strategy: normal > error > blind > time
-        if (this.getMediatorStrategy().getNORMAL().isApplicable()) {
-            this.getMediatorStrategy().getNORMAL().activateStrategy();
+        if (this.getMediatorStrategy().getNormal().isApplicable()) {
+            this.getMediatorStrategy().getNormal().activateStrategy();
             
-        } else if (this.getMediatorStrategy().getERROR().isApplicable()) {
-            this.getMediatorStrategy().getERROR().activateStrategy();
+        } else if (this.getMediatorStrategy().getError().isApplicable()) {
+            this.getMediatorStrategy().getError().activateStrategy();
             
-        } else if (this.getMediatorStrategy().getBLIND().isApplicable()) {
-            this.getMediatorStrategy().getBLIND().activateStrategy();
+        } else if (this.getMediatorStrategy().getBlind().isApplicable()) {
+            this.getMediatorStrategy().getBlind().activateStrategy();
             
-        } else if (this.getMediatorStrategy().getTIME().isApplicable()) {
-            this.getMediatorStrategy().getTIME().activateStrategy();
+        } else if (this.getMediatorStrategy().getTime().isApplicable()) {
+            this.getMediatorStrategy().getTime().activateStrategy();
             
         } else {
             throw new InjectionFailureException("No injection found");
@@ -584,7 +585,7 @@ public class InjectionModel extends AbstractModelObservable {
                     urlBase.replace(
                         InjectionModel.STAR,
                         this.indexesInUrl.replaceAll(
-                            "1337" + this.getMediatorStrategy().getNORMAL().getVisibleIndex() + "7331",
+                            "1337" + this.getMediatorStrategy().getNormal().getVisibleIndex() + "7331",
                             /**
                              * Oracle column often contains $, which is reserved for regex.
                              * => need to be escape with quoteReplacement()
@@ -634,7 +635,7 @@ public class InjectionModel extends AbstractModelObservable {
                 query = paramLead.replace(
                     InjectionModel.STAR,
                     this.indexesInUrl.replaceAll(
-                        "1337" + this.getMediatorStrategy().getNORMAL().getVisibleIndex() + "7331",
+                        "1337" + this.getMediatorStrategy().getNormal().getVisibleIndex() + "7331",
                         /**
                          * Oracle column often contains $, which is reserved for regex.
                          * => need to be escape with quoteReplacement()
@@ -661,7 +662,7 @@ public class InjectionModel extends AbstractModelObservable {
                 // Concat indexes found for Normal strategy to params
                 // and use visible Index for injection
                 query = paramLead + this.indexesInUrl.replaceAll(
-                    "1337" + this.getMediatorStrategy().getNORMAL().getVisibleIndex() + "7331",
+                    "1337" + this.getMediatorStrategy().getNormal().getVisibleIndex() + "7331",
                     /**
                      * Oracle column often contains $, which is reserved for regex.
                      * => need to be escape with quoteReplacement()
@@ -739,7 +740,7 @@ public class InjectionModel extends AbstractModelObservable {
         String dataHeader,
         MethodInjection methodInjection,
         String typeRequest,
-        Boolean isScanning
+        boolean isScanning
     ) {
         try {
                 
