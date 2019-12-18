@@ -80,7 +80,7 @@ public class MediatorMethodInjection {
         
     };
     
-    public List<MethodInjection> methods = Arrays.asList(this.getQuery(), this.getRequest(), this.getHeader());
+    private List<MethodInjection> methods = Arrays.asList(this.getQuery(), this.getRequest(), this.getHeader());
     
     private InjectionModel injectionModel;
     
@@ -89,19 +89,19 @@ public class MediatorMethodInjection {
     }
 
     public MethodInjection getQuery() {
-        return query;
+        return this.query;
     }
 
     public MethodInjection getRequest() {
-        return request;
+        return this.request;
     }
 
     public MethodInjection getHeader() {
-        return header;
+        return this.header;
     }
 
     public List<MethodInjection> getMethods() {
-        return methods;
+        return this.methods;
     }
 
 }

@@ -17,7 +17,7 @@ public class MediatorVendor {
      * Database vendor currently used.
      * It can be switched to another vendor by automatic detection or manual selection.
      */
-    public Vendor vendor;
+    private Vendor vendor;
 
     /**
      * Database vendor selected by user (default UNDEFINED).
@@ -159,7 +159,7 @@ public class MediatorVendor {
             this.VERTICA
         );
         
-        this.vendor = this.getMYSQL();
+        this.setVendor(this.getMYSQL());
         this.vendorByUser = this.getAUTO();
     }
     
@@ -176,26 +176,30 @@ public class MediatorVendor {
     }
 
     public List<Vendor> getVendors() {
-        return vendors;
+        return this.vendors;
     }
 
     public Vendor getH2() {
-        return H2;
+        return this.H2;
     }
 
     public Vendor getPOSTGRESQL() {
-        return POSTGRESQL;
+        return this.POSTGRESQL;
     }
 
     public Vendor getAUTO() {
-        return AUTO;
+        return this.AUTO;
     }
 
     public Vendor getMYSQL() {
-        return MYSQL;
+        return this.MYSQL;
     }
 
     public Vendor getSQLITE() {
-        return SQLITE;
+        return this.SQLITE;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
     }
 }

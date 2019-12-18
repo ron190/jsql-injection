@@ -33,7 +33,7 @@ public class PostgresErrorTestSuite extends ConcretePostgresTestSuite {
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         
-        model.setStrategy(model.ERROR);
+        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getERROR());
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getPOSTGRESQL());
         model.beginInjection();
     }

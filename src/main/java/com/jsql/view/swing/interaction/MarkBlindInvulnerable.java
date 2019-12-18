@@ -33,7 +33,7 @@ public class MarkBlindInvulnerable implements InteractionCommand {
         }
         
         for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
-            if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(MediatorModel.model().BLIND.toString())) {
+            if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(MediatorModel.model().getMediatorStrategy().getBLIND().toString())) {
                 MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).setEnabled(false);
                 break;
             }

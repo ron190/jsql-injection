@@ -32,7 +32,7 @@ public class H2NormalGetTestSuite extends ConcreteH2TestSuite {
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         
-        model.setStrategy(model.NORMAL);
+        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNORMAL());
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getH2());
         model.beginInjection();
     }

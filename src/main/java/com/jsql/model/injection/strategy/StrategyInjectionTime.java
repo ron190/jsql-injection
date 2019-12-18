@@ -87,7 +87,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
     @Override
     public void activateStrategy() {
         LOGGER.info(I18n.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
-        this.injectionModel.setStrategy(this.injectionModel.TIME);
+        this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getTIME());
         
         Request requestMarkTimeStrategy = new Request();
         requestMarkTimeStrategy.setMessage(Interaction.MARK_TIME_STRATEGY);

@@ -20,7 +20,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.PrivilegedActionException;
 import java.util.AbstractMap.SimpleEntry;
-import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -43,16 +42,11 @@ import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
-import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.method.MediatorMethodInjection;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.injection.strategy.AbstractStrategy;
-import com.jsql.model.injection.strategy.StrategyInjectionBlind;
-import com.jsql.model.injection.strategy.StrategyInjectionError;
-import com.jsql.model.injection.strategy.StrategyInjectionNormal;
-import com.jsql.model.injection.strategy.StrategyInjectionTime;
+import com.jsql.model.injection.strategy.MediatorStrategy;
 import com.jsql.model.injection.vendor.MediatorVendor;
-import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.model.suspendable.SuspendableGetCharInsertion;
 import com.jsql.model.suspendable.SuspendableGetVendor;
 import com.jsql.util.AuthenticationUtil;
@@ -85,6 +79,7 @@ public class InjectionModel extends AbstractModelObservable {
     private MediatorVendor mediatorVendor = new MediatorVendor(InjectionModel.this);
     private MediatorMethodInjection mediatorMethodInjection = new MediatorMethodInjection(this);
     private MediatorUtils mediatorUtils;
+    private MediatorStrategy mediatorStrategy = new MediatorStrategy(this);
     
     private DataAccess dataAccess = new DataAccess(this);
     private RessourceAccess resourceAccess = new RessourceAccess(this);
@@ -106,59 +101,6 @@ public class InjectionModel extends AbstractModelObservable {
         this.mediatorUtils.setThreadUtil(new ThreadUtil(this));
         this.mediatorUtils.setTamperingUtil(new TamperingUtil(this));
     }
-
-    public AbstractStrategy UNDEFINED = new AbstractStrategy(this) {
-
-        @Override
-        public void checkApplicability() throws JSqlException {
-            // TODO Auto-generated method stub
-            
-        }
-
-        @Override
-        protected void allow() {
-            // TODO Auto-generated method stub
-            
-        }
-
-        @Override
-        protected void unallow() {
-            // TODO Auto-generated method stub
-            
-        }
-
-        @Override
-        public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable)
-                throws StoppedByUserSlidingException {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public void activateStrategy() {
-            // TODO Auto-generated method stub
-            
-        }
-
-        @Override
-        public String getPerformanceLength() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-
-        @Override
-        public String getName() {
-            // TODO Auto-generated method stub
-            return null;
-        }
-        
-    };
-    public AbstractStrategy TIME = new StrategyInjectionTime(this);
-    public AbstractStrategy BLIND = new StrategyInjectionBlind(this);
-    public AbstractStrategy ERROR = new StrategyInjectionError(this);
-    public AbstractStrategy NORMAL = new StrategyInjectionNormal(this);
-    
-    public List<AbstractStrategy> strategies = Arrays.asList(this.UNDEFINED,this.TIME,this.BLIND,this.ERROR,this.NORMAL);
 	
     /**
      * Log4j logger sent to view.
@@ -167,7 +109,6 @@ public class InjectionModel extends AbstractModelObservable {
     
     public static final String STAR = "*";
     
-    // TODO Pojo injection
     /**
      * HTML body of page successfully responding to
      * multiple fields selection (select 1,2,3,..).
@@ -194,24 +135,6 @@ public class InjectionModel extends AbstractModelObservable {
      */
     private String username;
     
-//    /**
-//     * Database vendor currently used.
-//     * It can be switched to another vendor by automatic detection or manual selection.
-//     */
-//    private Vendor vendor = this.MYSQL;
-//
-//    /**
-//     * Database vendor selected by user (default UNDEFINED).
-//     * If not UNDEFINED then the next injection will be forced to use the selected vendor.
-//     */
-//    private Vendor vendorByUser = this.AUTO;
-    
-    /**
-     * Current injection strategy.
-     */
-//    private StrategyInjection strategy;
-    private AbstractStrategy strategy;
-    
     /**
      * Allow to directly start an injection after a failed one
      * without asking the user 'Start a new injection?'.
@@ -228,7 +151,7 @@ public class InjectionModel extends AbstractModelObservable {
      */
     public void resetModel() {
         // TODO make injection pojo for all fields
-        this.NORMAL.setVisibleIndex(null);
+        this.getMediatorStrategy().getNORMAL().setVisibleIndex(null);
         this.indexesInUrl = "";
         
         this.getMediatorUtils().getConnectionUtil().setTokenCsrf(null);
@@ -240,7 +163,7 @@ public class InjectionModel extends AbstractModelObservable {
         this.setIsStoppedByUser(false);
         this.injectionAlreadyBuilt = false;
         
-        this.strategy = null;
+        this.getMediatorStrategy().setStrategy(null);
         
         RessourceAccess.setReadingIsAllowed(false);
         
@@ -426,27 +349,27 @@ public class InjectionModel extends AbstractModelObservable {
         }
         
         // Fingerprint database
-        this.getMediatorVendor().vendor = new SuspendableGetVendor(this).run();
+        this.getMediatorVendor().setVendor(new SuspendableGetVendor(this).run());
 
         // Test each injection strategies: time < blind < error < normal
         // Choose the most efficient strategy: normal > error > blind > time
-        this.TIME.checkApplicability();
-        this.BLIND.checkApplicability();
-        this.ERROR.checkApplicability();
-        this.NORMAL.checkApplicability();
+        this.getMediatorStrategy().getTIME().checkApplicability();
+        this.getMediatorStrategy().getBLIND().checkApplicability();
+        this.getMediatorStrategy().getERROR().checkApplicability();
+        this.getMediatorStrategy().getNORMAL().checkApplicability();
 
         // Choose the most efficient strategy: normal > error > blind > time
-        if (this.NORMAL.isApplicable()) {
-            this.NORMAL.activateStrategy();
+        if (this.getMediatorStrategy().getNORMAL().isApplicable()) {
+            this.getMediatorStrategy().getNORMAL().activateStrategy();
             
-        } else if (this.ERROR.isApplicable()) {
-            this.ERROR.activateStrategy();
+        } else if (this.getMediatorStrategy().getERROR().isApplicable()) {
+            this.getMediatorStrategy().getERROR().activateStrategy();
             
-        } else if (this.BLIND.isApplicable()) {
-            this.BLIND.activateStrategy();
+        } else if (this.getMediatorStrategy().getBLIND().isApplicable()) {
+            this.getMediatorStrategy().getBLIND().activateStrategy();
             
-        } else if (this.TIME.isApplicable()) {
-            this.TIME.activateStrategy();
+        } else if (this.getMediatorStrategy().getTIME().isApplicable()) {
+            this.getMediatorStrategy().getTIME().activateStrategy();
             
         } else {
             throw new InjectionFailureException("No injection found");
@@ -661,7 +584,7 @@ public class InjectionModel extends AbstractModelObservable {
                     urlBase.replace(
                         InjectionModel.STAR,
                         this.indexesInUrl.replaceAll(
-                            "1337" + this.NORMAL.getVisibleIndex() + "7331",
+                            "1337" + this.getMediatorStrategy().getNORMAL().getVisibleIndex() + "7331",
                             /**
                              * Oracle column often contains $, which is reserved for regex.
                              * => need to be escape with quoteReplacement()
@@ -702,7 +625,7 @@ public class InjectionModel extends AbstractModelObservable {
             // in that case replace injection point by SQL expression.
             // Injection point is always at the end?
             if (!isUsingIndex) {
-                query = paramLead.replace(InjectionModel.STAR, sqlTrail + this.getMediatorVendor().vendor.instance().endingComment());
+                query = paramLead.replace(InjectionModel.STAR, sqlTrail + this.getMediatorVendor().getVendor().instance().endingComment());
                 
             } else {
                 
@@ -711,13 +634,13 @@ public class InjectionModel extends AbstractModelObservable {
                 query = paramLead.replace(
                     InjectionModel.STAR,
                     this.indexesInUrl.replaceAll(
-                        "1337" + this.NORMAL.getVisibleIndex() + "7331",
+                        "1337" + this.getMediatorStrategy().getNORMAL().getVisibleIndex() + "7331",
                         /**
                          * Oracle column often contains $, which is reserved for regex.
                          * => need to be escape with quoteReplacement()
                          */
                         Matcher.quoteReplacement(sqlTrail)
-                    ) + this.getMediatorVendor().vendor.instance().endingComment()
+                    ) + this.getMediatorVendor().getVendor().instance().endingComment()
                 );
             }
             
@@ -732,13 +655,13 @@ public class InjectionModel extends AbstractModelObservable {
                 query = paramLead + sqlTrail;
                 
                 // Add ending line comment by vendor
-                query = query + this.getMediatorVendor().vendor.instance().endingComment();
+                query = query + this.getMediatorVendor().getVendor().instance().endingComment();
                 
             } else {
                 // Concat indexes found for Normal strategy to params
                 // and use visible Index for injection
                 query = paramLead + this.indexesInUrl.replaceAll(
-                    "1337" + this.NORMAL.getVisibleIndex() + "7331",
+                    "1337" + this.getMediatorStrategy().getNORMAL().getVisibleIndex() + "7331",
                     /**
                      * Oracle column often contains $, which is reserved for regex.
                      * => need to be escape with quoteReplacement()
@@ -747,7 +670,7 @@ public class InjectionModel extends AbstractModelObservable {
                 );
                 
                 // Add ending line comment by vendor
-                query = query + this.getMediatorVendor().vendor.instance().endingComment();
+                query = query + this.getMediatorVendor().getVendor().instance().endingComment();
             }
         }
         
@@ -868,7 +791,7 @@ public class InjectionModel extends AbstractModelObservable {
     public String getDatabaseInfos() {
         return
     		"Database ["+ this.nameDatabase +"] "
-            + "on "+ this.getMediatorVendor().vendor +" ["+ this.versionDatabase +"] "
+            + "on "+ this.getMediatorVendor().getVendor() +" ["+ this.versionDatabase +"] "
             + "for user ["+ this.username +"]";
     }
 
@@ -879,38 +802,18 @@ public class InjectionModel extends AbstractModelObservable {
     }
     
     // Getters and setters
-    
-//    public Vendor getVendor() {
-//        return this.vendor;
-//    }
-//
-//    public Vendor getVendorByUser() {
-//        return this.vendorByUser;
-//    }
-//
-//    public void setVendorByUser(Vendor vendorByUser) {
-//        this.vendorByUser = vendorByUser;
-//    }
-    
-//    public StrategyInjection getStrategy() {
-//    	return this.strategy;
-//    }
-//
-//    public void setStrategy(StrategyInjection strategy) {
-//        this.strategy = strategy;
-//    }
 
     public String getSrcSuccess() {
         return this.srcSuccess;
     }
 
-    public AbstractStrategy getStrategy() {
-        return this.strategy;
-    }
-
-    public void setStrategy(AbstractStrategy strategy) {
-        this.strategy = strategy;
-    }
+//    public AbstractStrategy getStrategy() {
+//        return this.getMediatorStrategy().strategy;
+//    }
+//
+//    public void setStrategy(AbstractStrategy strategy) {
+//        this.getMediatorStrategy().strategy = strategy;
+//    }
 
     public void setSrcSuccess(String srcSuccess) {
         this.srcSuccess = srcSuccess;
@@ -941,19 +844,23 @@ public class InjectionModel extends AbstractModelObservable {
     }
 
     public MediatorVendor getMediatorVendor() {
-        return mediatorVendor;
+        return this.mediatorVendor;
     }
 
     public MediatorMethodInjection getMediatorMethodInjection() {
-        return mediatorMethodInjection;
+        return this.mediatorMethodInjection;
     }
 
     public DataAccess getDataAccess() {
-        return dataAccess;
+        return this.dataAccess;
     }
 
     public RessourceAccess getResourceAccess() {
-        return resourceAccess;
+        return this.resourceAccess;
+    }
+
+    public MediatorStrategy getMediatorStrategy() {
+        return mediatorStrategy;
     }
 
 }

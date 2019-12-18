@@ -37,7 +37,7 @@ public class MySQLTimeTestSuite extends ConcreteMySQLTestSuite {
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         
         model.setIsScanning(true);
-        model.setStrategy(model.TIME);
+        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getTIME());
         model.beginInjection();
     }
     

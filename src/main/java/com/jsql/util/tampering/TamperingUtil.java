@@ -19,19 +19,19 @@ public class TamperingUtil {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-    public boolean isBase64 = false;
-    public boolean isVersionComment = false;
-    public boolean isFunctionComment = false;
-    public boolean isEqualToLike = false;
-    public boolean isRandomCase = false;
-    public boolean isHexToChar = false;
-    public boolean isQuoteToUtf8 = false;
-    public boolean isEval = false;
-    public boolean isSpaceToMultilineComment = false;
-    public boolean isSpaceToDashComment = false;
-    public boolean isSpaceToSharpComment = false;
+    private boolean isBase64 = false;
+    private boolean isVersionComment = false;
+    private boolean isFunctionComment = false;
+    private boolean isEqualToLike = false;
+    private boolean isRandomCase = false;
+    private boolean isHexToChar = false;
+    private boolean isQuoteToUtf8 = false;
+    private boolean isEval = false;
+    private boolean isSpaceToMultilineComment = false;
+    private boolean isSpaceToDashComment = false;
+    private boolean isSpaceToSharpComment = false;
     
-    public String eval = null;
+    private String eval = null;
 
     InjectionModel injectionModel;
     public TamperingUtil(InjectionModel injectionModel) {
@@ -150,6 +150,14 @@ public class TamperingUtil {
         sqlQuery = sqlQuery.replaceAll("(?i)lSqQsL", "");
         
         return sqlQuery;
+    }
+
+    public String getEval() {
+        return this.eval;
+    }
+
+    public void setEval(String eval) {
+        this.eval = eval;
     }
 
 }

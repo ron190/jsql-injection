@@ -34,10 +34,10 @@ public class MarkErrorStrategy implements InteractionCommand {
             LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
         }
         
-        MediatorGui.panelAddressBar().getMenuStrategy().setText(MediatorModel.model().ERROR.toString());
+        MediatorGui.panelAddressBar().getMenuStrategy().setText(MediatorModel.model().getMediatorStrategy().getERROR().toString());
         
         JMenu menuError = (JMenu) MediatorGui.panelAddressBar().getMenuStrategy().getMenuComponent(2);
-        int indexError = MediatorModel.model().ERROR.getIndexMethod();
+        int indexError = MediatorModel.model().getMediatorStrategy().getERROR().getIndexMethod();
         String nameError = MediatorModel.model().getMediatorVendor().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(indexError).getName();
         
         for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {

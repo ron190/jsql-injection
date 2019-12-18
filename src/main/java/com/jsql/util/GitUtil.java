@@ -85,7 +85,7 @@ public class GitUtil {
             + "Java: v"+ javaVersion +"-"+ osArch +"-"+ System.getProperty("user.language") +" on "+ System.getProperty("java.runtime.name") +"\n"
             + "OS: "+ System.getProperty("os.name") +" (v"+ System.getProperty("os.version") +")\n"
             + "Desktop: "+( System.getProperty("sun.desktop") != null ? System.getProperty("sun.desktop") : "undefined" )+"\n"
-            + "Strategy: "+( this.injectionModel.getStrategy() != null ? this.injectionModel.getStrategy().getName() : "undefined" )+"\n"
+            + "Strategy: "+( this.injectionModel.getMediatorStrategy().getStrategy() != null ? this.injectionModel.getMediatorStrategy().getStrategy().getName() : "undefined" )+"\n"
             + "Db engine: "+ this.injectionModel.getMediatorVendor().getVendor().toString() +"\n"
             + "```\n"
             + "```\n"

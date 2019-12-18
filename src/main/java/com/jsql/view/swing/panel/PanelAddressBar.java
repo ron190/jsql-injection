@@ -122,13 +122,13 @@ public class PanelAddressBar extends JPanel {
     private final RadioLinkMethod radioMethod = new RadioLinkMethod("POST", MediatorModel.model().getMediatorMethodInjection().getRequest());
     private final RadioLinkMethod radioHeader = new RadioLinkMethod("Header", MediatorModel.model().getMediatorMethodInjection().getHeader());
 
-  public JMenu menuVendor;
+    private JMenu menuVendor;
 
-  public JMenu menuStrategy;
+    private JMenu menuStrategy;
 
-  public JMenu[] itemRadioStrategyError = new JMenu[1];
+    private JMenu[] itemRadioStrategyError = new JMenu[1];
 
-  public ButtonGroup groupStrategy = new ButtonGroup();
+    private ButtonGroup groupStrategy = new ButtonGroup();
     
     public PanelAddressBar() {
         final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey("FIELD_QUERYSTRING_TOOLTIP"))};
@@ -333,18 +333,18 @@ public class PanelAddressBar extends JPanel {
 
         this.itemRadioStrategyError = new JMenu[1];
 
-        for (final AbstractStrategy strategy: MediatorModel.model().strategies) {
-            if (strategy != MediatorModel.model().UNDEFINED) {
+        for (final AbstractStrategy strategy: MediatorModel.model().getMediatorStrategy().getStrategies()) {
+            if (strategy != MediatorModel.model().getMediatorStrategy().getUNDEFINED()) {
                 MenuElement itemRadioStrategy;
 
-                if (strategy == MediatorModel.model().ERROR) {
+                if (strategy == MediatorModel.model().getMediatorStrategy().getERROR()) {
                     itemRadioStrategy = new JMenu(strategy.toString());
                     this.itemRadioStrategyError[0] = (JMenu) itemRadioStrategy;
                 } else {
                     itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString());
                     ((AbstractButton) itemRadioStrategy).addActionListener(actionEvent -> {
                         this.menuStrategy.setText(strategy.toString());
-                        MediatorModel.model().setStrategy(strategy);
+                        MediatorModel.model().getMediatorStrategy().setStrategy(strategy);
                     });
                     this.groupStrategy.add((AbstractButton) itemRadioStrategy);
                 }
@@ -545,8 +545,8 @@ public class PanelAddressBar extends JPanel {
                 final int indexError = i[0];
                 itemRadioVendor.addActionListener(actionEvent -> {
                     PanelAddressBar.this.menuStrategy.setText(methodError.getName());
-                    MediatorModel.model().setStrategy(MediatorModel.model().ERROR);
-                    ((StrategyInjectionError) MediatorModel.model().ERROR).setIndexMethod(indexError);
+                    MediatorModel.model().getMediatorStrategy().setStrategy(MediatorModel.model().getMediatorStrategy().getERROR());
+                    ((StrategyInjectionError) MediatorModel.model().getMediatorStrategy().getERROR()).setIndexMethod(indexError);
                 });
 
                 i[0]++;

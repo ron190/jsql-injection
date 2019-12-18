@@ -45,7 +45,7 @@ public class MarkErrorVulnerable implements InteractionCommand {
         
         for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
             JMenuItem menuItemStrategy = MediatorGui.panelAddressBar().getMenuStrategy().getItem(i);
-            if (menuItemStrategy.getText().equals(MediatorModel.model().ERROR.toString())) {
+            if (menuItemStrategy.getText().equals(MediatorModel.model().getMediatorStrategy().getERROR().toString())) {
                 JMenu menuError = (JMenu) menuItemStrategy;
                 menuError.setEnabled(true);
                 

@@ -38,7 +38,7 @@ public abstract class CookieTest extends ConcreteMySQLTestSuite {
 
         model.beginInjection();
 
-        model.setStrategy(model.NORMAL);
+        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNORMAL());
     }
     
 }

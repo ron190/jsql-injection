@@ -33,7 +33,7 @@ public class MarkTimeInvulnerable implements InteractionCommand {
         }
         
         for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
-            if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(MediatorModel.model().TIME.toString())) {
+            if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(MediatorModel.model().getMediatorStrategy().getTIME().toString())) {
                 MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).setEnabled(false);
                 break;
             }

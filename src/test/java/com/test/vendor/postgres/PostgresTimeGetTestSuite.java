@@ -37,7 +37,7 @@ public class PostgresTimeGetTestSuite extends ConcretePostgresTestSuite {
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         
         model.setIsScanning(true);
-        model.setStrategy(model.TIME);
+        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getTIME());
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getPOSTGRESQL());
         model.beginInjection();
     }
