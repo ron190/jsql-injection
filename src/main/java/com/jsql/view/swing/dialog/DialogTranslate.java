@@ -133,7 +133,7 @@ public class DialogTranslate extends JDialog {
                 this.textToTranslate[0].getText()
                     .replaceAll("\\\\", "\\\\\\\\")
                     .replaceAll("(?m)^#", "\\\\#")
-                    .replaceAll("<", "\\\\<")
+                    .replace("<", "\\\\<")
             ;
               
             MediatorModel.model().getMediatorUtils().getGitUtil().sendReport(clientDescription, ShowOnConsole.YES, DialogTranslate.this.language +" translation");
@@ -277,11 +277,7 @@ public class DialogTranslate extends JDialog {
         protected Object doInBackground() throws Exception {
             Thread.currentThread().setName("SwingWorkerDialogTranslate");
             
-            if (DialogTranslate.this.language == Language.OT) {
-                DialogTranslate.this.progressBarTranslation.setVisible(false);
-            } else {
-                DialogTranslate.this.progressBarTranslation.setVisible(true);
-            }
+            DialogTranslate.this.progressBarTranslation.setVisible(DialogTranslate.this.language != Language.OT);
             
             try {
                 this.getI18nRoot();

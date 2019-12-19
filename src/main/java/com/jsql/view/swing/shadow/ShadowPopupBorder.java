@@ -74,7 +74,7 @@ public final class ShadowPopupBorder extends AbstractBorder {
     /**
      * The drop shadow is created from a PNG image with 8 bit alpha channel.
      */
-    private static Image shadow = HelperUi.shadow;
+    private static Image shadow = HelperUi.IMG_SHADOW;
 
 
     // Instance Creation *****************************************************

@@ -12,7 +12,7 @@ public class TabDropTargetAdapter extends DropTargetAdapter {
     private void clearDropLocationPaint(Component c) {
         if (c instanceof DnDTabbedPane) {
             DnDTabbedPane t = (DnDTabbedPane) c;
-            t.setDropLocation(null, null, false);
+            t.setDropLocation(null, false);
             t.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
     }

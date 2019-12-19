@@ -38,7 +38,7 @@ public class ObserverInteraction implements Observer {
             Class<?>[] types = new Class[]{Object[].class};
             Constructor<?> ct = cl.getConstructor(types);
 
-            InteractionCommand o2 = (InteractionCommand) ct.newInstance(new Object[]{interaction.getParameters()});
+            InteractionCommand o2 = (InteractionCommand) ct.newInstance(interaction.getParameters());
             o2.execute();
         } catch (ClassNotFoundException e) {
             // Ignore unused interaction message

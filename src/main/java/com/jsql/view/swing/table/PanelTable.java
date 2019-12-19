@@ -212,8 +212,7 @@ public class PanelTable extends JPanel {
         // Fix #43974: PatternSyntaxException on regexFilter() => Pattern.quote()
         textFilter.getDocument().addDocumentListener(new DocumentListener() {
             
-            @Override
-            public void insertUpdate(DocumentEvent e) {
+            private void insertUpdateFixed(DocumentEvent e) {
                 String text = textFilter.getText();
 
                 if (text.trim().length() == 0) {
@@ -222,16 +221,15 @@ public class PanelTable extends JPanel {
                     rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(text)));
                 }
             }
+            
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                insertUpdateFixed(e);
+            }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                String text = textFilter.getText();
-
-                if (text.trim().length() == 0) {
-                    rowSorter.setRowFilter(null);
-                } else {
-                    rowSorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(text)));
-                }
+                insertUpdateFixed(e);
             }
 
             @Override

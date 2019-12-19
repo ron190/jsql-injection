@@ -99,7 +99,7 @@ public final class ShadowPopup extends Popup {
     /**
      * Indicates whether we can make snapshots from screen or not.
      */
-    private static boolean canSnapshot = true;
+    private boolean canSnapshot = true;
 
     /**
      * The component mouse coordinates are relative to, may be null.
@@ -179,7 +179,7 @@ public final class ShadowPopup extends Popup {
         }
     }
 
-    public static boolean canSnapshot() {
+    public boolean canSnapshot() {
         return canSnapshot;
     }
 

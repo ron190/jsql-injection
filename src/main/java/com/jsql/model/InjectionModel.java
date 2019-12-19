@@ -682,7 +682,7 @@ public class InjectionModel extends AbstractModelObservable {
         
         if (methodInjection == this.getMediatorMethodInjection().getRequest()) {
             if (this.getMediatorUtils().getParameterUtil().isRequestSoap()) {
-                query = query.replaceAll("%2b", "+");
+                query = query.replace("%2b", "+");
             }
         } else {
             // Remove spaces after a word

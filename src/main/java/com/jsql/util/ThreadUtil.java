@@ -51,7 +51,7 @@ public final class ThreadUtil {
      * @param elementDatabase component associated to the active job
      * @param suspendable active job to act on
      */
-    public void put(AbstractElementDatabase elementDatabase, AbstractSuspendable<?> suspendable) {
+    public void put(AbstractElementDatabase elementDatabase, AbstractSuspendable<String> suspendable) {
         this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.put(elementDatabase, suspendable);
     }
     

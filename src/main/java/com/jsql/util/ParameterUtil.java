@@ -111,7 +111,7 @@ public class ParameterUtil {
         }
     }
     
-    public String getCharacterInsertion(boolean isParamByUser, SimpleEntry<String, String> parameter) throws InjectionFailureException {
+    public String getCharacterInsertion(boolean isParamByUser, SimpleEntry<String, String> parameter) {
         String characterInsertionByUser = "";
         
         // Parse query information: url=>everything before the sign '=',

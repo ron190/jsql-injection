@@ -115,9 +115,9 @@ public class StrategyInjectionError extends AbstractStrategy {
             }
             
             if (methodIsApplicable) {
-                this.allow(indexErrorMethod);
+                this.allowError(indexErrorMethod);
             } else {
-                this.unallow(indexErrorMethod);
+                this.unallowError(indexErrorMethod);
             }
             
             indexErrorMethod++;
@@ -135,12 +135,12 @@ public class StrategyInjectionError extends AbstractStrategy {
     }
 
     @Override
-    public void allow(int i) {
+    public void allowError(int i) {
         this.markVulnerable(Interaction.MARK_ERROR_VULNERABLE, i);
     }
 
     @Override
-    public void unallow(int i) {
+    public void unallowError(int i) {
         this.markVulnerable(Interaction.MARK_ERROR_INVULNERABLE, i);
     }
 
@@ -177,7 +177,7 @@ public class StrategyInjectionError extends AbstractStrategy {
     }
     
     @Override
-    public Integer getIndexMethod() {
+    public Integer getIndexMethodError() {
         return this.indexMethod;
     }
     

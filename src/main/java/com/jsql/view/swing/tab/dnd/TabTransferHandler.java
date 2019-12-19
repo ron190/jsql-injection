@@ -69,7 +69,7 @@ public class TabTransferHandler extends TransferHandler {
         Point pt = tdl.getDropPoint();
         DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
         target.autoScrollTest(pt);
-        DnDTabbedPane.DropLocation dl = target.dropLocationForPoint(pt);
+        DnDTabbedPane.DropLocation dl = target.dropLocationForPointDnD(pt);
         int idx = dl.getIndex();
 
         boolean isDroppable = false;
@@ -89,7 +89,7 @@ public class TabTransferHandler extends TransferHandler {
 
         support.setShowDropLocation(isDroppable);
         dl.setDroppable(isDroppable);
-        target.setDropLocation(dl, null, isDroppable);
+        target.setDropLocation(dl, isDroppable);
         return isDroppable;
     }
     
@@ -157,7 +157,7 @@ public class TabTransferHandler extends TransferHandler {
     protected void exportDone(JComponent c, Transferable data, int action) {
         DnDTabbedPane src = (DnDTabbedPane) c;
         src.getRootPane().getGlassPane().setVisible(false);
-        src.setDropLocation(null, null, false);
+        src.setDropLocation(null, false);
         src.repaint();
         src.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }

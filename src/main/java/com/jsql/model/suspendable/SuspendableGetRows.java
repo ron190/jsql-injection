@@ -74,10 +74,10 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         while (true) {
 
             if (this.isSuspended()) {
-                StoppedByUserSlidingException e = new StoppedByUserSlidingException();
-                e.setSlidingWindowAllRows(slidingWindowAllRows.toString());
-                e.setSlidingWindowCurrentRows(slidingWindowCurrentRow.toString());
-                throw e;
+                throw new StoppedByUserSlidingException(
+                    slidingWindowAllRows.toString(), 
+                    slidingWindowCurrentRow.toString()
+                );
             } else if (strategy == null) {
                 // Fix #1905 : NullPointerException on injectionStrategy.inject()
                 throw new InjectionFailureException("Undefined startegy");
@@ -145,10 +145,10 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 if (partOldRow.equals(regexAtLeastOneRow.group(1))) {
                     infiniteLoop++;
                     if (infiniteLoop >= 20) {
-                        SlidingException e = new LoopDetectedSlidingException();
-                        e.setSlidingWindowAllRows(slidingWindowAllRows.toString());
-                        e.setSlidingWindowCurrentRows(slidingWindowCurrentRow.toString());
-                        throw e;
+                        throw new LoopDetectedSlidingException(
+                            slidingWindowAllRows.toString(), 
+                            slidingWindowCurrentRow.toString()
+                        );
                     }
                 }
                 partOldRow = regexAtLeastOneRow.group(1);

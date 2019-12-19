@@ -79,7 +79,7 @@ public class MediatorVendor {
         this.sqlite = new Vendor("SQLite", new VendorXml("sqlite.xml", this.injectionModel)) {
              
              @Override
-             public String transform(String resultToParse) {
+             public String transformSQLite(String resultToParse) {
                  
                  StringBuilder resultSQLite = new StringBuilder();
                  String resultTmp = resultToParse.replaceFirst(".+?\\(", "").trim().replaceAll("\\)$", "");

@@ -20,8 +20,9 @@ public class Vendor {
         return this.labelVendor;
     }
     
-    public String transform(String resultToParse) {
-        return "";
+    // TODO SQLITE
+    public String transformSQLite(String resultToParse) {
+        return resultToParse;
     }
     
 }

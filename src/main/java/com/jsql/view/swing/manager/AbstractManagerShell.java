@@ -67,7 +67,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         
         List<ItemList> itemsList = new ArrayList<>();
         try {
-            InputStream in = HelperUi.class.getClassLoader().getResourceAsStream(HelperUi.payload);
+            InputStream in = HelperUi.class.getClassLoader().getResourceAsStream(HelperUi.PATH_WEB_FOLDERS);
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {

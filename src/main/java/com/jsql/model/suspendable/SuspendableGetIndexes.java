@@ -69,7 +69,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
                 // Found a correct mark 1337[index]7331 in the source
                 if (Pattern.compile("(?s).*1337\\d+7331.*").matcher(currentCallable.getContent()).matches()) {
                     this.injectionModel.setSrcSuccess(currentCallable.getContent());
-                    initialQuery = currentCallable.getUrl().replaceAll("0%2b1", "1");
+                    initialQuery = currentCallable.getUrl().replace("0%2b1", "1");
                     isRequestFound = true;
                 } else {
                     // Else add a new index

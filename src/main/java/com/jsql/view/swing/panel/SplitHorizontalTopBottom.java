@@ -85,7 +85,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         this.splitVerticalLeftRight = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
         this.splitVerticalLeftRight.setLeftComponent(MediatorGui.tabManagers());
         
-        this.labelPlaceholderResult = new JLabel(HelperUi.imagePlaceholder);
+        this.labelPlaceholderResult = new JLabel(HelperUi.IMG_BUG);
         this.labelPlaceholderResult.setMinimumSize(new Dimension(100, 0));
 
         this.labelPlaceholderResult.setAlignmentX(Component.CENTER_ALIGNMENT);

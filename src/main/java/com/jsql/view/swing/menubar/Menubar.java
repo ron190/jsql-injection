@@ -217,10 +217,7 @@ public class Menubar extends JMenuBar {
         menuWindows.add(itemNewWindows);
         JMenu menuAppearance = new JMenu("Appearance");
         JMenuItem itemNewWindows4k = new JMenuItem(
-            new ActionNewWindow(
-                "New 4K Window",
-                new String[]{"-Dsun.java2d.uiScale=2.5"}
-            )
+            new ActionNewWindow("New 4K Window", "-Dsun.java2d.uiScale=2.5")
         );
         menuAppearance.add(itemNewWindows4k);
         menuWindows.add(itemNewWindows);
@@ -868,10 +865,10 @@ public class Menubar extends JMenuBar {
                 Class<?> classComponent = componentSwing.getClass();
                 try {
                     if (componentSwing instanceof JTextFieldPlaceholder) {
-                        Method setPlaceholderText = classComponent.getMethod("setPlaceholderText", new Class<?>[]{String.class});
+                        Method setPlaceholderText = classComponent.getMethod("setPlaceholderText", String.class);
                         setPlaceholderText.invoke(componentSwing, I18n.valueByKey(key));
                     } else {
-                        Method methodSetText = classComponent.getMethod("setText", new Class<?>[]{String.class});
+                        Method methodSetText = classComponent.getMethod("setText", String.class);
                         methodSetText.setAccessible(true);
                         if (
                             // TODO

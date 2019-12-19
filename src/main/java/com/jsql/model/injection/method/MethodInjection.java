@@ -1,13 +1,14 @@
 package com.jsql.model.injection.method;
 
+import java.io.Serializable;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 
-public abstract class MethodInjection {
+public interface MethodInjection extends Serializable {
     
-    public abstract boolean isCheckingAllParam();
-    public abstract String getParamsAsString();
-    public abstract List<SimpleEntry<String, String>> getParams();
-    public abstract String name();
+    boolean isCheckingAllParam();
+    String getParamsAsString();
+    List<SimpleEntry<String, String>> getParams();
+    String name();
     
 }

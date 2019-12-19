@@ -18,8 +18,8 @@ package com.jsql.model.exception;
 @SuppressWarnings("serial")
 public class LoopDetectedSlidingException extends SlidingException {
 
-    public LoopDetectedSlidingException() {
-        super("Loop detected during injection, job stopped");
+    public LoopDetectedSlidingException(String slidingWindowAllRows, String slidingWindowCurrentRows) {
+        super("Loop detected during injection, job stopped", slidingWindowAllRows, slidingWindowCurrentRows);
     }
 
 }

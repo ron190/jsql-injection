@@ -137,13 +137,13 @@ public final class HelperUi {
     /**
      * The drop shadow is created from a PNG image with 8 bit alpha channel.
      */
-    public static final Image shadow = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/shadow.png")).getImage();
-    public static final ImageIcon imagePlaceholder = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/bug.png"));
-    public static final ImageIcon stopDefault = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/stopDefault.png"));
-    public static final ImageIcon stopRollover = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/stopRollover.png"));
-    public static final ImageIcon stopPressed = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/stopPressed.png"));
-    public static final String payload = "swing/list/payload.txt";
-    public static final InputStream scanPage = HelperUi.class.getClassLoader().getResourceAsStream("swing/list/scan-page.json");
+    public static final Image IMG_SHADOW = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/shadow.png")).getImage();
+    public static final ImageIcon IMG_BUG = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/bug.png"));
+    public static final ImageIcon IMG_STOP_DEFAULT = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/stopDefault.png"));
+    public static final ImageIcon IMG_STOP_ROLLOVER = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/stopRollover.png"));
+    public static final ImageIcon IMG_STOP_PPRESSED = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/stopPressed.png"));
+    public static final String PATH_WEB_FOLDERS = "swing/list/payload.txt";
+    public static final InputStream INPUT_STREAM_PAGES_SCAN = HelperUi.class.getClassLoader().getResourceAsStream("swing/list/scan-page.json");
 
     public static final Icon ICON_EMPTY = new ImageIcon(new BufferedImage(16, 16, Transparency.TRANSLUCENT));
 

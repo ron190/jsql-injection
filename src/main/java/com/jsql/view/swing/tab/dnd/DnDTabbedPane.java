@@ -12,7 +12,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.swing.BorderFactory;
-import javax.swing.DropMode;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -33,7 +32,6 @@ public class DnDTabbedPane extends JTabbedPane {
     private static final Rectangle RECT_BACKWARD = new Rectangle();
     private static final Rectangle RECT_FORWARD = new Rectangle();
     protected static final Rectangle RECT_LINE = new Rectangle();
-    private final DropMode dropMode = DropMode.INSERT;
     protected int dragTabIndex = -1;
     private transient DropLocation dropLocation;
 
@@ -119,10 +117,7 @@ public class DnDTabbedPane extends JTabbedPane {
         this.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
     }
     
-    public DropLocation dropLocationForPoint(Point p) {
-        if (this.dropMode != DropMode.INSERT) {
-            assert false : "Unexpected drop mode";
-        }
+    public DropLocation dropLocationForPointDnD(Point p) {
         for (int i = 0; i < this.getTabCount(); i++) {
             if (this.getBoundsAt(i).contains(p)) {
                 return new DropLocation(p, i);
@@ -138,7 +133,7 @@ public class DnDTabbedPane extends JTabbedPane {
         return this.dropLocation;
     }
     
-    public Object setDropLocation(TransferHandler.DropLocation location, Object state, boolean forDrop) {
+    public Object setDropLocation(TransferHandler.DropLocation location, boolean forDrop) {
         DropLocation old = this.dropLocation;
         if (Objects.isNull(location) || !forDrop) {
             this.dropLocation = new DropLocation(new Point(), -1);
@@ -283,7 +278,7 @@ public class DnDTabbedPane extends JTabbedPane {
                 th.exportAsDrag(src, e, TransferHandler.MOVE);
                 RECT_LINE.setBounds(0, 0, 0, 0);
                 src.getRootPane().getGlassPane().setVisible(true);
-                src.setDropLocation(new DropLocation(tabPt, -1), null, true);
+                src.setDropLocation(new DropLocation(tabPt, -1), true);
                 this.startPt = null;
             }
         }

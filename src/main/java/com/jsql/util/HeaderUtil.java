@@ -158,7 +158,6 @@ public class HeaderUtil {
             while (reader.read(buffer) > 0) {
                 pageSource.append(buffer);
             }
-            reader.close();
             
         } catch (IOException errorInputStream) {
             exception = errorInputStream;
@@ -171,7 +170,6 @@ public class HeaderUtil {
                     while (reader.read(buffer) > 0) {
                         pageSource.append(buffer);
                     }
-                    reader.close();
                     
                 } catch (Exception errorErrorStream) {
                     exception = new IOException("Exception reading Error Stream", errorErrorStream);

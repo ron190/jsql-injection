@@ -68,8 +68,8 @@ public class CreateShellTab extends CreateTab implements InteractionCommand {
     
             MediatorGui.tabResults().setToolTipTextAt(
                 MediatorGui.tabResults().indexOfComponent(scroller),
-                "<html><b>URL</b><br>" + this.url + MediatorModel.model().getResourceAccess().FILENAME_WEBSHELL
-                + "<br><b>Path</b><br>" + this.path + MediatorModel.model().getResourceAccess().FILENAME_WEBSHELL + "</html>"
+                "<html><b>URL</b><br>" + this.url + MediatorModel.model().getResourceAccess().filenameWebshell
+                + "<br><b>Path</b><br>" + this.path + MediatorModel.model().getResourceAccess().filenameWebshell + "</html>"
             );
     
             // Apply the custom header to the tab

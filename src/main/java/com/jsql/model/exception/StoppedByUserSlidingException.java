@@ -21,5 +21,13 @@ public class StoppedByUserSlidingException extends SlidingException {
     public StoppedByUserSlidingException() {
         super("Stopped by user");
     }
+    
+    public StoppedByUserSlidingException(String slidingWindowAllRows) {
+        super("Stopped by user", slidingWindowAllRows);
+    }
+
+    public StoppedByUserSlidingException(String slidingWindowAllRows, String slidingWindowCurrentRows) {
+        super("Stopped by user", slidingWindowAllRows, slidingWindowCurrentRows);
+    }
 
 }

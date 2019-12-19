@@ -73,11 +73,11 @@ public class ActionCoder implements ActionListener {
         
         if (
             "".equals(textInput)
-            && !Arrays.asList(new String[]{"Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql"}).contains(nameMethod)
+            && !Arrays.asList("Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql").contains(nameMethod)
         ) {
             result = "<span style=\"color:red;\">Empty string to convert</span>";
             
-        } else if (Arrays.asList(new String[]{"Md2", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512"}).contains(nameMethod)) {
+        } else if (Arrays.asList("Md2", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512").contains(nameMethod)) {
             try {
                 MessageDigest md = MessageDigest.getInstance(nameMethod);
                 

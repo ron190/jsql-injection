@@ -8,6 +8,7 @@ import com.jsql.model.InjectionModel;
 
 public class MediatorMethodInjection {
 
+    @SuppressWarnings("serial")
     private MethodInjection query = new MethodInjection() {
         
         @Override
@@ -32,6 +33,7 @@ public class MediatorMethodInjection {
         
     };
     
+    @SuppressWarnings("serial")
     private MethodInjection request = new MethodInjection() {
         
         @Override
@@ -56,6 +58,7 @@ public class MediatorMethodInjection {
         
     };
     
+    @SuppressWarnings("serial")
     private MethodInjection header = new MethodInjection() {
         
         @Override

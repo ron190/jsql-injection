@@ -74,7 +74,7 @@ public class PreferencesUtil {
         
         this.setPathFile(prefs.get("pathFile", System.getProperty("user.dir")));
         
-        this.setIsCheckUpdateActivated(prefs.getBoolean("isCheckingUpdate", true));
+        this.setIsCheckingUpdate(prefs.getBoolean("isCheckingUpdate", true));
         this.setReportingBugs(prefs.getBoolean("isReportingBugs", true));
         
         this.setFollowingRedirection(prefs.getBoolean("isFollowingRedirection", false));
@@ -161,7 +161,7 @@ public class PreferencesUtil {
         boolean is4K
     ) {
     	
-        this.setIsCheckUpdateActivated(isCheckingUpdate);
+        this.setIsCheckingUpdate(isCheckingUpdate);
         this.setReportingBugs(isReportingBugs);
         this.setFollowingRedirection(isFollowingRedirection);
         this.setNotInjectingMetadata(isNotInjectingMetadata);
@@ -243,7 +243,7 @@ public class PreferencesUtil {
         return this.isCheckUpdateActivated;
     }
 
-    public void setIsCheckUpdateActivated(boolean isCheckUpdateActivated) {
+    public void setIsCheckingUpdate(boolean isCheckUpdateActivated) {
         this.isCheckUpdateActivated = isCheckUpdateActivated;
     }
     
@@ -317,10 +317,6 @@ public class PreferencesUtil {
 
     public void setNotTestingConnection(boolean isNotTestingConnection) {
         this.isNotTestingConnection = isNotTestingConnection;
-    }
-
-    public void setCheckUpdateActivated(boolean isCheckUpdateActivated) {
-        this.isCheckUpdateActivated = isCheckUpdateActivated;
     }
 
     public boolean isProcessingCookies() {

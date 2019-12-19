@@ -45,6 +45,7 @@ import javax.swing.event.HyperlinkEvent;
 
 import org.apache.log4j.Logger;
 
+import com.jsql.model.MediatorModel;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.popupmenu.JPopupMenuText;
@@ -113,7 +114,7 @@ public class DialogAbout extends JDialog {
         );
         buttonWebpage.addActionListener(ev -> {
             try {
-                Desktop.getDesktop().browse(new URI("https://github.com/ron190/jsql-injection"));
+                Desktop.getDesktop().browse(new URI((String) MediatorModel.model().getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")));
             } catch (IOException e) {
                 LOGGER.warn("Browsing to Url failed", e);
             } catch (URISyntaxException e) {

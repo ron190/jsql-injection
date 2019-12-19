@@ -7,8 +7,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -37,6 +35,7 @@ import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionCheckIP;
 import com.jsql.view.swing.action.ActionNewWindow;
+import com.jsql.view.swing.panel.util.TamperingMouseAdapter;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.sql.lexer.HighlightedDocument;
 import com.jsql.view.swing.text.JPopupTextField;
@@ -363,39 +362,17 @@ public class PanelPreferences extends JPanel {
             this.checkboxIsTamperingQuoteToUtf8.setSelected(!this.checkboxIsTamperingQuoteToUtf8.isSelected());
             this.actionListenerSave.actionPerformed(null);
         });
-        
-        class a extends MouseAdapter {
-            Tampering tampering;
-            String t = null;
-            public a(Tampering tampering) {
-                this.tampering = tampering;
-            }
-            @Override
-            public void mouseEntered(MouseEvent me) {
-                this.t=l.getText();
-                l.setText(this.tampering.instance().getXmlModel().getJavascript().trim());
-            }
-            @Override
-            public void mouseExited(MouseEvent e) {
-                l.setText(this.t);
-            }
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                this.t=this.tampering.instance().getXmlModel().getJavascript().trim();
-                l.setText(this.t);
-            }
-        }
 
-        labelIsTamperingSpaceToSharpComment.addMouseListener(new a(Tampering.SPACE_TO_SHARP_COMMENT));
-        labelIsTamperingSpaceToDashComment.addMouseListener(new a(Tampering.SPACE_TO_DASH_COMMENT));
-        labelIsTamperingBase64.addMouseListener(new a(Tampering.BASE64));
-        labelIsTamperingEqualToLike.addMouseListener(new a(Tampering.EQUAL_TO_LIKE));
-        labelIsTamperingFunctionComment.addMouseListener(new a(Tampering.COMMENT_TO_METHOD_SIGNATURE));
-        labelIsTamperingRandomCase.addMouseListener(new a(Tampering.RANDOM_CASE));
-        labelIsTamperingHexToChar.addMouseListener(new a(Tampering.HEX_TO_CHAR));
-        labelIsTamperingQuoteToUtf8.addMouseListener(new a(Tampering.QUOTE_TO_UTF8));
-        labelIsTamperingSpaceToMultilineComment.addMouseListener(new a(Tampering.SPACE_TO_MULTILINE_COMMENT));
-        labelIsTamperingVersionComment.addMouseListener(new a(Tampering.VERSIONED_COMMENT_TO_METHOD_SIGNATURE));
+        labelIsTamperingSpaceToSharpComment.addMouseListener(new TamperingMouseAdapter(Tampering.SPACE_TO_SHARP_COMMENT, l));
+        labelIsTamperingSpaceToDashComment.addMouseListener(new TamperingMouseAdapter(Tampering.SPACE_TO_DASH_COMMENT, l));
+        labelIsTamperingBase64.addMouseListener(new TamperingMouseAdapter(Tampering.BASE64, l));
+        labelIsTamperingEqualToLike.addMouseListener(new TamperingMouseAdapter(Tampering.EQUAL_TO_LIKE, l));
+        labelIsTamperingFunctionComment.addMouseListener(new TamperingMouseAdapter(Tampering.COMMENT_TO_METHOD_SIGNATURE, l));
+        labelIsTamperingRandomCase.addMouseListener(new TamperingMouseAdapter(Tampering.RANDOM_CASE, l));
+        labelIsTamperingHexToChar.addMouseListener(new TamperingMouseAdapter(Tampering.HEX_TO_CHAR, l));
+        labelIsTamperingQuoteToUtf8.addMouseListener(new TamperingMouseAdapter(Tampering.QUOTE_TO_UTF8, l));
+        labelIsTamperingSpaceToMultilineComment.addMouseListener(new TamperingMouseAdapter(Tampering.SPACE_TO_MULTILINE_COMMENT, l));
+        labelIsTamperingVersionComment.addMouseListener(new TamperingMouseAdapter(Tampering.VERSIONED_COMMENT_TO_METHOD_SIGNATURE, l));
         
         if (l.getStyledDocument() instanceof HighlightedDocument) {
             HighlightedDocument oldDocument = (HighlightedDocument) l.getStyledDocument();

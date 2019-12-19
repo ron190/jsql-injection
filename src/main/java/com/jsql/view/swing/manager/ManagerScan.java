@@ -66,7 +66,7 @@ public class ManagerScan extends AbstractManagerList {
 
         StringBuilder jsonScan = new StringBuilder();
         try {
-            InputStream in = HelperUi.scanPage;
+            InputStream in = HelperUi.INPUT_STREAM_PAGES_SCAN;
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {

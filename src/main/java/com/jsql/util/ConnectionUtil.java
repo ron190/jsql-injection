@@ -220,7 +220,6 @@ public class ConnectionUtil {
             while (reader.read(buffer) > 0) {
                 pageSource.append(buffer);
             }
-            reader.close();
         } catch (IOException errorInputStream) {
             InputStream errorStream = connection.getErrorStream();
             
@@ -230,7 +229,6 @@ public class ConnectionUtil {
                     while (reader.read(buffer) > 0) {
                         pageSource.append(buffer);
                     }
-                    reader.close();
                 } catch (Exception errorErrorStream) {
                     throw errorErrorStream;
                 }

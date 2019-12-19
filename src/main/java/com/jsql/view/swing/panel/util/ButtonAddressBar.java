@@ -76,9 +76,9 @@ public class ButtonAddressBar extends JButton {
         
         // turn on before rollovers work
         this.setRolloverEnabled(true);
-        this.setIcon(HelperUi.stopDefault);
-        this.setRolloverIcon(HelperUi.stopRollover);
-        this.setPressedIcon(HelperUi.stopPressed);
+        this.setIcon(HelperUi.IMG_STOP_DEFAULT);
+        this.setRolloverIcon(HelperUi.IMG_STOP_ROLLOVER);
+        this.setPressedIcon(HelperUi.IMG_STOP_PPRESSED);
     }
 
     /**

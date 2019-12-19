@@ -19,6 +19,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -117,7 +118,7 @@ public class PanelNode extends JPanel {
             PanelNode.this.textFieldEditable.setVisible(false);
             tree.requestFocusInWindow();
             
-            nodeModel.getElementDatabase().setElementValue(new String(PanelNode.this.textFieldEditable.getText().getBytes( Charset.forName("UTF-8" ))));
+            nodeModel.getElementDatabase().setElementValue(new String(PanelNode.this.textFieldEditable.getText().getBytes(StandardCharsets.UTF_8)));
             PanelNode.this.label.setText(StringUtil.detectUtf8Html(nodeModel.getElementDatabase().getLabelCount()));
             
             tree.revalidate();

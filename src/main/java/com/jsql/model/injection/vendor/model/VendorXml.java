@@ -344,7 +344,7 @@ public class VendorXml implements AbstractVendor {
     public String sqlTestError() {
         return
             " "+
-            this.xmlModel.getStrategy().getError().getMethod().get(this.injectionModel.getMediatorStrategy().getError().getIndexMethod()).getQuery()
+            this.xmlModel.getStrategy().getError().getMethod().get(this.injectionModel.getMediatorStrategy().getError().getIndexMethodError()).getQuery()
                 .replace(WINDOW, this.xmlModel.getStrategy().getConfiguration().getSlidingWindow())
                 .replace(INJECTION, this.xmlModel.getStrategy().getConfiguration().getFailsafe().replace(INDICE, "0"))
                 .replace(INDEX, "1");
@@ -355,11 +355,11 @@ public class VendorXml implements AbstractVendor {
         return
             " "+
             VendorXml.replaceTags(
-                this.xmlModel.getStrategy().getError().getMethod().get(this.injectionModel.getMediatorStrategy().getError().getIndexMethod()).getQuery()
+                this.xmlModel.getStrategy().getError().getMethod().get(this.injectionModel.getMediatorStrategy().getError().getIndexMethodError()).getQuery()
                     .replace(WINDOW, this.xmlModel.getStrategy().getConfiguration().getSlidingWindow())
                     .replace(INJECTION, sqlQuery)
                     .replace(INDEX, ""+startPosition)
-                    .replace(CAPACITY, Integer.toString(this.xmlModel.getStrategy().getError().getMethod().get(this.injectionModel.getMediatorStrategy().getError().getIndexMethod()).getCapacity()))
+                    .replace(CAPACITY, Integer.toString(this.xmlModel.getStrategy().getError().getMethod().get(this.injectionModel.getMediatorStrategy().getError().getIndexMethodError()).getCapacity()))
             );
     }
 

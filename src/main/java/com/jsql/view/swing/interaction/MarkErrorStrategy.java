@@ -37,7 +37,7 @@ public class MarkErrorStrategy implements InteractionCommand {
         MediatorGui.panelAddressBar().getMenuStrategy().setText(MediatorModel.model().getMediatorStrategy().getError().toString());
         
         JMenu menuError = (JMenu) MediatorGui.panelAddressBar().getMenuStrategy().getMenuComponent(2);
-        int indexError = MediatorModel.model().getMediatorStrategy().getError().getIndexMethod();
+        int indexError = MediatorModel.model().getMediatorStrategy().getError().getIndexMethodError();
         String nameError = MediatorModel.model().getMediatorVendor().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(indexError).getName();
         
         for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {

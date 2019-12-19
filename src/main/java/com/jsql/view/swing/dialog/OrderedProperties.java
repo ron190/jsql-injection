@@ -10,6 +10,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -173,7 +174,7 @@ public final class OrderedProperties {
     public void store(OutputStream stream, String comments) throws IOException {
         CustomProperties customProperties = new CustomProperties(this.properties);
         if (this.suppressDate) {
-            customProperties.store(new DateSuppressingPropertiesBufferedWriter(new OutputStreamWriter(stream, "8859_1")), comments);
+            customProperties.store(new DateSuppressingPropertiesBufferedWriter(new OutputStreamWriter(stream, StandardCharsets.ISO_8859_1)), comments);
         } else {
             customProperties.store(stream, comments);
         }

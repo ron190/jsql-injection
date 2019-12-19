@@ -65,7 +65,7 @@ public class ManagerUpload extends AbstractManagerList {
 
         List<ItemList> pathsList = new ArrayList<>();
         try {
-            InputStream in = HelperUi.class.getClassLoader().getResourceAsStream(HelperUi.payload);
+            InputStream in = HelperUi.class.getClassLoader().getResourceAsStream(HelperUi.PATH_WEB_FOLDERS);
             String line;
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {

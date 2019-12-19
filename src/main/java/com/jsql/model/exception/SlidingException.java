@@ -14,17 +14,20 @@ public abstract class SlidingException extends JSqlException {
     public SlidingException(String message, Throwable e) {
         super(message, e);
     }
+    
+    public SlidingException(String string, String slidingWindowAllRows) {
+        this(string);
+        this.slidingWindowAllRows = slidingWindowAllRows;
+    }
 
-    public void setSlidingWindowCurrentRows(String slidingWindowCurrentRows) {
+    public SlidingException(String string, String slidingWindowAllRows, String slidingWindowCurrentRows) {
+        this(string);
+        this.slidingWindowAllRows = slidingWindowAllRows;
         this.slidingWindowCurrentRows = slidingWindowCurrentRows;
     }
-    
+
     public String getSlidingWindowCurrentRows() {
         return this.slidingWindowCurrentRows;
-    }
-    
-    public void setSlidingWindowAllRows(String slidingWindowAllRows) {
-        this.slidingWindowAllRows = slidingWindowAllRows;
     }
     
     public String getSlidingWindowAllRows() {

@@ -77,7 +77,6 @@ public class HashBruter extends Bruter {
                 this.password = baseString;
                 
                 if (this.hash.equals(this.generatedHash)) {
-                    this.password = baseString;
                     this.found = true;
                     this.done = true;
                 }

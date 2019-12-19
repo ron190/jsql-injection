@@ -89,19 +89,20 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
 
                 // Await for termination
                 boolean isTerminated = false;
+                
                 try {
                     isTerminated = taskExecutor.awaitTermination(0, TimeUnit.SECONDS);
                 } catch (InterruptedException e) {
                     LOGGER.error(e.getMessage(), e);
                     Thread.currentThread().interrupt();
                 }
+                
                 if (!isTerminated) {
                     // awaitTermination timed out, interrupt everything
                     taskExecutor.shutdownNow();
                 }
 
                 // TODO Get current progress and display
-                StoppedByUserSlidingException e = new StoppedByUserSlidingException();
                 StringBuilder result = new StringBuilder();
                 for (char[] c: bytes) {
                     try {
@@ -113,8 +114,8 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                         // Ignore
                     }
                 }
-                e.setSlidingWindowAllRows(result.toString());
-                throw e;
+                
+                throw new StoppedByUserSlidingException(result.toString());
             }
             
             try {

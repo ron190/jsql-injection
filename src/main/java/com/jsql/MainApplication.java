@@ -60,12 +60,12 @@ public class MainApplication {
      * @param args CLI parameters (not used)
      * @throws URISyntaxException
      */
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) {
         
         // Initialize MVC
         MediatorModel.register(injectionModel);
         
-    	// Configure global environnement settings
+    	// Configure global environment settings
         CertificateUtil.ignoreCertificationChain();
         injectionModel.getMediatorUtils().getExceptionUtil().setUncaughtExceptionHandler();
         injectionModel.getMediatorUtils().getProxyUtil().setProxy();

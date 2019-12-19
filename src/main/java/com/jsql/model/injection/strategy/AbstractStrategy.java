@@ -52,6 +52,14 @@ public abstract class AbstractStrategy {
      * Inform the view that this strategy can't be used.
      */
     protected abstract void unallow();
+
+    // TODO Auto-generated method stub
+    public void allowError(int i) {
+    }
+
+    // TODO Auto-generated method stub
+    public void unallowError(int i) {
+    }
     
     public void markVulnerable(Interaction message) {
         Request request = new Request();
@@ -116,20 +124,10 @@ public abstract class AbstractStrategy {
      */
     public abstract String getName();
     
-    public Integer getIndexMethod() {
-        return 0;
+    // TODO strategy Error
+    public Integer getIndexMethodError() {
+        return null;
     }
-
-    public void allow(int i) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public void unallow(int i) {
-        // TODO Auto-generated method stub
-        
-    }
-    
 
     protected String visibleIndex;
     
