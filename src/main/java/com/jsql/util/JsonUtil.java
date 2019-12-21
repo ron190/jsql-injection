@@ -86,27 +86,9 @@ public class JsonUtil {
                 if(!(jsonEntityInArray instanceof JSONObject) && !(jsonEntityInArray instanceof JSONArray)){
                     continue;
                 }
-                
-                JSONObject jsonObjectEntity = jsonArrayEntity.getJSONObject(i);
-                
-                Iterator<?> keys = jsonObjectEntity.keys();
-                while (keys.hasNext()) {
-                    String key = (String) keys.next();
-                    Object value = jsonObjectEntity.opt(key);
-                    
-                    if (value instanceof JSONArray || value instanceof JSONObject) {
-                        attributesXPath.addAll(JsonUtil.createEntries(value, parentName +"."+ key, parentXPath));
-                    } else if (value instanceof String) {
-                        SimpleEntry<String, String> s = new SimpleEntry<>(parentName +"."+ key, (String) value);
-                        attributesXPath.add(s);
-                        
-                        if (parentXPath == null) {
-                            jsonObjectEntity.put(key, value.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", ""));
-                        } else if (s.equals(parentXPath)) {
-                            jsonObjectEntity.put(key, value + InjectionModel.STAR);
-                        }
-                    }
-                }
+
+                String xpath = parentName +"["+ i +"]";
+                attributesXPath.addAll(JsonUtil.createEntries(jsonEntityInArray, xpath, parentXPath));
             }
             
         }

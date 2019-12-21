@@ -89,6 +89,23 @@
     				</execution>
     			</executions>
     		</plugin>
+    		
+			<!-- Spock -->
+			<plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <version>1.8.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+			                <goal>addSources</goal>
+			                <goal>addTestSources</goal>
+			                <goal>compile</goal>
+			                <goal>compileTests</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
     
     		<plugin>
     			<groupId>org.apache.maven.plugins</groupId>
@@ -97,12 +114,14 @@
     			<configuration>
     				<rerunFailingTestsCount>3</rerunFailingTestsCount>
                     <includes>
+           				<include>**/*Spock</include>
+           				
                         <include>MySQLBlindTestSuite</include>
                         <include>MySQLTimeTestSuite</include> 
                         <include>MySQLNormalTestSuite</include>
                         <include>MySQLErrorTestSuite</include>
-
                         <include>PostgresBlindGetTestSuite</include>
+
                         <include>PostgresTimeGetTestSuite</include>
                         <include>PostgresNormalGetTestSuite</include>
                         <include>PostgresErrorTestSuite</include>
@@ -123,7 +142,7 @@
     		<plugin>
     			<groupId>org.apache.maven.plugins</groupId>
     			<artifactId>maven-shade-plugin</artifactId>
-    			<version>3.1.0</version>
+    			<version>3.2.1</version>
     			<executions>
     				<execution>
     					<phase>package</phase>
@@ -166,7 +185,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <excludes>
+                    <excludes> 
                         <exclude>**/com/jsql/view/swing/**/*.class</exclude>
                         <exclude>**/com/jsql/model/injection/strategy/blind/patch/**/*.class</exclude>
                         <exclude>**/com/jsql/view/scan/interaction/**/*.class</exclude>
@@ -175,6 +194,48 @@
             </plugin>
 
 		</plugins>
+		
+		<pluginManagement> 
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.codehaus.gmavenplus
+										</groupId>
+										<artifactId>
+											gmavenplus-plugin
+										</artifactId>
+										<versionRange>
+											[1.8.1,)
+										</versionRange>
+										<goals>
+											<goal>compileTests</goal>
+											<goal>addTestSources</goal>
+											<goal>removeStubs</goal>
+											<goal>generateTestStubs</goal>
+											<goal>removeTestStubs</goal>
+											<goal>addSources</goal>
+											<goal>generateStubs</goal>
+											<goal>compile</goal></goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
  
     <dependencyManagement>
@@ -191,6 +252,31 @@
     </dependencyManagement>
 
 	<dependencies>
+	    
+		<!-- Spock -->
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-test-junit5</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy</artifactId>
+            <version>2.5.8</version>
+            <type>pom</type> <!-- required JUST since Groovy 2.5.0 -->
+        </dependency>
+	    <dependency>
+	      	<groupId>org.spockframework</groupId>
+	      	<artifactId>spock-core</artifactId>
+	      	<version>1.3-groovy-2.5</version>
+	      	<scope>test</scope>
+	    </dependency>
+      	<dependency>  
+      		<!--Only necessary for surefire to run spock tests during the maven build -->
+	        <groupId>org.junit.vintage</groupId>
+	        <artifactId>junit-vintage-engine</artifactId>
+	        <scope>test</scope>
+	    </dependency>
  
         <!-- Test purpose -->
         <dependency>

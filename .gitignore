@@ -3,6 +3,7 @@
 target/
 .classpath
 .project
+.groovy
 
 # code quality plugin properties
 test-output/
