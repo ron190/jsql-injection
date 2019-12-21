@@ -95,6 +95,16 @@
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
                 <version>1.8.1</version>
+                <configuration>
+				    <testSources>
+				        <testSource>
+				            <directory>${project.basedir}/src/test/java</directory>
+				            <includes>
+				                <include>**/*.groovy</include>
+				            </includes>
+				        </testSource>
+				    </testSources>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -118,19 +128,19 @@
                     <includes>
            				<include>**/*Spock</include>
            				
-                        <include>MySQLBlindTestSuite</include>
-                        <include>MySQLTimeTestSuite</include> 
-                        <include>MySQLNormalTestSuite</include>
-                        <include>MySQLErrorTestSuite</include>
-                        <include>PostgresBlindGetTestSuite</include>
+<!--                         <include>MySQLBlindTestSuite</include> -->
+<!--                         <include>MySQLTimeTestSuite</include>  -->
+<!--                         <include>MySQLNormalTestSuite</include> -->
+<!--                         <include>MySQLErrorTestSuite</include> -->
+<!--                         <include>PostgresBlindGetTestSuite</include> -->
 
-                        <include>PostgresTimeGetTestSuite</include>
-                        <include>PostgresNormalGetTestSuite</include>
-                        <include>PostgresErrorTestSuite</include>
+<!--                         <include>PostgresTimeGetTestSuite</include> -->
+<!--                         <include>PostgresNormalGetTestSuite</include> -->
+<!--                         <include>PostgresErrorTestSuite</include> -->
                         
-                        <include>H2NormalGetTestSuite</include>
+<!--                         <include>H2NormalGetTestSuite</include> -->
+<!--                         <include>JsonTestSuite</include> -->
                         <include>PostTestSuite</include>
-                        <include>JsonTestSuite</include>
                     </includes>        
 
                     <parallel>classes</parallel>
