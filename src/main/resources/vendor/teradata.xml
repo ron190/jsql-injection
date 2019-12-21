@@ -114,7 +114,7 @@ cast(
 )
             </calibrator>
             <limitBoundary>1</limitBoundary>
-            <endingComment>--+</endingComment>
+            <endingComment>--+-</endingComment>
             <fingerprint>
                 <errorMessage>Teradata database</errorMessage>
             </fingerprint>

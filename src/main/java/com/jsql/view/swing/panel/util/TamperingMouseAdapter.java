@@ -17,16 +17,16 @@ public class TamperingMouseAdapter extends MouseAdapter {
     }
     @Override
     public void mouseEntered(MouseEvent me) {
-        this.t=l.getText();
-        l.setText(this.tampering.instance().getXmlModel().getJavascript().trim());
+        this.t=this.l.getText();
+        this.l.setText(this.tampering.instance().getXmlModel().getJavascript().trim());
     }
     @Override
     public void mouseExited(MouseEvent e) {
-        l.setText(this.t);
+        this.l.setText(this.t);
     }
     @Override
     public void mouseClicked(MouseEvent e) {
         this.t=this.tampering.instance().getXmlModel().getJavascript().trim();
-        l.setText(this.t);
+        this.l.setText(this.t);
     }
 }

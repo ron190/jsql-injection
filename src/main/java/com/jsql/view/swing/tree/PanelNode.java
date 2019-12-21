@@ -18,7 +18,6 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import javax.swing.BorderFactory;

@@ -64,12 +64,12 @@ public class JsonUtil {
                 if (value instanceof JSONArray || value instanceof JSONObject) {
                     attributesXPath.addAll(JsonUtil.createEntries(value, xpath, parentXPath));
                 } else if (value instanceof String) {
-                    SimpleEntry<String, String> c = new SimpleEntry<>(xpath, (String) value);
-                    attributesXPath.add(c);
+                    SimpleEntry<String, String> stringValue = new SimpleEntry<>(xpath, (String) value);
+                    attributesXPath.add(stringValue);
                     
                     if (parentXPath == null) {
                         jsonObjectEntity.put(key, value.toString().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", ""));
-                    } else if (c.equals(parentXPath)) {
+                    } else if (stringValue.equals(parentXPath)) {
                         jsonObjectEntity.put(key, value + InjectionModel.STAR);
                     }
                 }

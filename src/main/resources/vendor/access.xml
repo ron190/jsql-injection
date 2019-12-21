@@ -109,7 +109,7 @@ from (${INJECTION})x
             <failsafe>select '' %26 (1337${INDICE}7330%2b1) r from dual</failsafe>
             <calibrator>string(65536, '${CALIBRATOR_SQL}')</calibrator>
             <limitBoundary>1</limitBoundary>
-            <endingComment>--+</endingComment>
+            <endingComment>--+-</endingComment>
             <fingerprint>
                 <errorMessage>MS Access</errorMessage>
             </fingerprint>

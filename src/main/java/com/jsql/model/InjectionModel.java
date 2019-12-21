@@ -300,7 +300,7 @@ public class InjectionModel extends AbstractModelObservable {
                             // then loop through each paths to add * at the end of value and test each strategies.
                             // Marks * are erased between each tests.
                             if (this.getMediatorUtils().getPreferencesUtil().isCheckingAllJSONParam() && !attributesJson.isEmpty()) {
-                                    hasFoundInjection = this.getMediatorUtils().getJsonUtil().testJsonParameter(methodInjection, paramStar);
+                                hasFoundInjection = this.getMediatorUtils().getJsonUtil().testJsonParameter(methodInjection, paramStar);
                                 
                             // Standard non JSON injection
                             } else {
@@ -695,24 +695,26 @@ public class InjectionModel extends AbstractModelObservable {
             query = query.replaceAll("\\s+", "+");
         }
         
-        // TODO
-        // Urlencode backtick and pipe (for Java only)
-        query = query.replaceAll("(?s)`", "%60");
-        query = query.replaceAll("(?s)\\|", "%7C");
-        query = query.replaceAll("(?s)'", "%27");
-        query = query.replaceAll("(?s)\\(", "%28");
-        query = query.replaceAll("(?s)\\)", "%29");
-        query = query.replaceAll("(?s)\\?", "%3F");
-        query = query.replaceAll("(?s)>", "%3E");
-//        query = query.replaceAll("(?s):", "%3A");
-        // HTTP and Hibernate JPQL  purpose : => \:
-        query = query.replaceAll("(?s):", "%5C%3A");
-        query = query.replaceAll("(?s) ", "+");
-        query = query.replaceAll("(?s)\"", "%22");
-        query = query.replaceAll("(?s)\\{", "%7B");
-        query = query.replaceAll("(?s)\\}", "%7D");
-        query = query.replaceAll("(?s)\\[", "%5B");
-        query = query.replaceAll("(?s)\\]", "%5D");
+        if (methodInjection != this.getMediatorMethodInjection().getHeader()) {
+            // TODO
+            // Urlencode backtick and pipe (for Java only)
+            query = query.replaceAll("(?s)`", "%60");
+            query = query.replaceAll("(?s)\\|", "%7C");
+            query = query.replaceAll("(?s)'", "%27");
+            query = query.replaceAll("(?s)\\(", "%28");
+            query = query.replaceAll("(?s)\\)", "%29");
+            query = query.replaceAll("(?s)\\?", "%3F");
+            query = query.replaceAll("(?s)>", "%3E");
+    //        query = query.replaceAll("(?s):", "%3A");
+            // HTTP and Hibernate JPQL  purpose : => \:
+            query = query.replaceAll("(?s):", "%5C%3A");
+            query = query.replaceAll("(?s) ", "+");
+            query = query.replaceAll("(?s)\"", "%22");
+            query = query.replaceAll("(?s)\\{", "%7B");
+            query = query.replaceAll("(?s)\\}", "%7D");
+            query = query.replaceAll("(?s)\\[", "%5B");
+            query = query.replaceAll("(?s)\\]", "%5D");
+        }
         
         if (this.getMediatorUtils().getConnectionUtil().getMethodInjection() == methodInjection) {
             query = this.getMediatorUtils().getTamperingUtil().tamper(query);
@@ -865,7 +867,7 @@ public class InjectionModel extends AbstractModelObservable {
     }
 
     public MediatorStrategy getMediatorStrategy() {
-        return mediatorStrategy;
+        return this.mediatorStrategy;
     }
 
 }

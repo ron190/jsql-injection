@@ -180,7 +180,7 @@ public final class ShadowPopup extends Popup {
     }
 
     public boolean canSnapshot() {
-        return canSnapshot;
+        return this.canSnapshot;
     }
 
     /**
@@ -395,7 +395,7 @@ public final class ShadowPopup extends Popup {
                 g.dispose();
             }
         } catch (AWTException | SecurityException e) {
-            canSnapshot = false;
+            this.canSnapshot = false;
             
             // Ignore
             IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);

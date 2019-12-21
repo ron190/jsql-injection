@@ -3,12 +3,15 @@ package com.test.method;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
+import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 
@@ -24,10 +27,8 @@ public class PostTestSuite extends ConcreteMySQLTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting-post");
-        model.getMediatorUtils().getParameterUtil().initRequest("name=0'&tenantId=mysql");
+        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting-post?tenant=mysql");
         model.getMediatorUtils().getParameterUtil().setRequest(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql"),
             new SimpleEntry<>("name", "0'")
         ));
         
@@ -39,6 +40,27 @@ public class PostTestSuite extends ConcreteMySQLTestSuite {
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
     
+    }
+    
+    @Ignore
+    @Override
+    @Test
+    public void listDatabases() throws JSqlException {
+        LOGGER.info("Ignore: too slow");
+    }
+    
+    @Ignore
+    @Override
+    @Test
+    public void listTables() throws JSqlException {
+        LOGGER.info("Ignore: too slow");
+    }
+    
+    @Ignore
+    @Override
+    @Test
+    public void listColumns() throws JSqlException {
+        LOGGER.info("Ignore: too slow");
     }
     
 }

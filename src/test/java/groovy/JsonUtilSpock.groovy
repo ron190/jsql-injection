@@ -1,4 +1,5 @@
 package groovy
+
 import java.util.AbstractMap.SimpleEntry
 import java.util.stream.Collectors
 
@@ -9,31 +10,76 @@ import com.jsql.util.JsonUtil
 
 import spock.lang.Specification
 
-class JsonUtilSpock extends Specification { 
+class JsonUtilSpock extends Specification {
 
-    def 'Map json string to xpath'() {
+    def 'Add STAR when searching for key'() {
+        when: List<SimpleEntry<String, String>> entries = JsonUtil.createEntries(oJsonObject, "root", parentXPath)
         
-        when: List<SimpleEntry<String, String>> entries = JsonUtil.createEntries(oJsonObject, "root", null)
-        and: List<SimpleEntry<String, String>> entriesa = JsonUtil.createEntries(oJsonArray, "root", null)
-        then: 
-            entries.stream().map({e -> e.toString()}).collect(Collectors.toList()) == 
+        then:
+            ((JSONObject) oJsonObject).getJSONArray('d').getJSONArray(2).getJSONObject(0).get('d') == 'd*'
+        
+        where:
+            parentXPath = new SimpleEntry<String, String>("root.d[2][0].d", "d")
+            oJsonObject = JsonUtil.getJson('''
+                {
+                    a: 'a',
+                    b: {b: 'b'},
+                    c: [{c: 'c'}],
+                    d: [null, null, [{d: 'd'}]],
+                    e: {e: [null, null, [{e: 'e'}]]},
+                }
+            ''')
+    }
+
+    def 'Replace STAR when not searching for key'() {
+        when: JsonUtil.createEntries(oJsonObject, "root", null)
+        and: List<SimpleEntry<String, String>> entries = JsonUtil.createEntries(oJsonObject, "root", null)
+        
+        then:
+            entries.stream().map({e -> e.toString()}).collect(Collectors.toList()) ==
             [
-                'root.a=a', 
-                'root.b.b=b', 
-                'root.c[0].c=c', 
+                'root.a=a',
+                'root.b.b=b',
+                'root.c[0].c=c',
                 'root.d[2][0].d=d',
                 'root.e.e[2][0].e=e',
             ]
-            entriesa.stream().map({e -> e.toString()}).collect(Collectors.toList()) == 
+        
+        where:
+            oJsonObject = JsonUtil.getJson('''
+                {
+                    a: 'a*',
+                    b: {b: 'b*'},
+                    c: [{c: 'c*'}],
+                    d: [null, null, [{d: 'd*'}]],
+                    e: {e: [null, null, [{e: 'e*'}]]},
+                }
+            ''')
+    }
+        
+    def 'Map json string to xpath'() {
+        
+        when: List<SimpleEntry<String, String>> entriesJsonObject = JsonUtil.createEntries(oJsonObject, "root", null)
+        and: List<SimpleEntry<String, String>> entriesJsonArray = JsonUtil.createEntries(oJsonArray, "root", null)
+        then:
+            entriesJsonObject.stream().map({e -> e.toString()}).collect(Collectors.toList()) ==
             [
-                'root[1].a=a', 
-                'root[1].b.b=b', 
-                'root[1].c[0].c=c', 
+                'root.a=a',
+                'root.b.b=b',
+                'root.c[0].c=c',
+                'root.d[2][0].d=d',
+                'root.e.e[2][0].e=e',
+            ]
+            entriesJsonArray.stream().map({e -> e.toString()}).collect(Collectors.toList()) ==
+            [
+                'root[1].a=a',
+                'root[1].b.b=b',
+                'root[1].c[0].c=c',
                 'root[1].d[2][0].d=d',
                 'root[1].e.e[2][0].e=e',
             ]
         
-        where: 
+        where:
             oJsonObject = JsonUtil.getJson('''
                 {
                     a: 'a',
@@ -57,6 +103,7 @@ class JsonUtilSpock extends Specification {
     def 'Convert json string to Java JSON'() {
         expect: JsonUtil.getJson("{}") instanceof JSONObject
         and: JsonUtil.getJson("[]") instanceof JSONArray
+        and: JsonUtil.getJson("0") instanceof Object
     }
     
 }

@@ -2,6 +2,7 @@ package spring;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.persistence.Query;
@@ -16,6 +17,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,6 +63,33 @@ public class GreetingController {
     }
     
     @SuppressWarnings("unchecked")
+    @RequestMapping("/greeting-header")
+    public Greeting greetingHeader(@RequestHeader Map<String, String> a) throws IOException {
+        
+        Session session = this.sessionFactory.getCurrentSession();
+        Greeting greeting = null;
+        try {
+            String name = a.get("name");
+            
+            Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+            
+            List<Object[]> results = q.getResultList();
+            
+            greeting = new Greeting(
+                this.counter.incrementAndGet(),
+                String.format(template, name)
+                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+            );
+        } catch (Exception e) {
+            // Hide useless SQL error messages
+        } finally {
+            session.close();
+        }
+        
+        return greeting;
+    }
+    
+    @SuppressWarnings("unchecked")
     @RequestMapping("/greeting-json")
     public Greeting greetingJson(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
@@ -68,11 +97,9 @@ public class GreetingController {
         Greeting greeting = null;
         try {
             name = name.replaceAll("\\\\:", ":");
-//            String j = (String) new JSONObject(name).getJSONArray("b").getJSONObject(2).getString("a");
-            String j = (String) new JSONObject(name).getJSONObject("b").getJSONArray("b").getJSONObject(2).getJSONObject("a").getString("a");
+            String j = new JSONObject(name).getJSONObject("b").getJSONArray("b").getJSONObject(2).getJSONObject("a").getString("a");
             j = j.replaceAll(":", "\\\\:");
             
-//        String a = URLDecoder.decode(j, StandardCharsets.UTF_8.toString()).replaceAll(" ", "+");
             String a = j;
             
             Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+ a +"'");

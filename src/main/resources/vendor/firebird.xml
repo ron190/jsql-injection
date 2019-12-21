@@ -87,7 +87,7 @@ rpad(
 )
             </calibrator>
             <limitBoundary>1</limitBoundary>
-            <endingComment>--+</endingComment>
+            <endingComment>--+-</endingComment>
             <fingerprint>
                 <errorMessage>Warning: ibase_query() </errorMessage>
                 <errorMessage>function.ibase-query</errorMessage>

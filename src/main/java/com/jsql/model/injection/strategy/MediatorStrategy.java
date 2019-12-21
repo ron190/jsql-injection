@@ -79,7 +79,7 @@ public class MediatorStrategy {
             
         };
         
-        strategies = Arrays.asList(
+        this.strategies = Arrays.asList(
             this.undefined,
             this.time,
             this.blind,
@@ -89,31 +89,31 @@ public class MediatorStrategy {
     }
 
     public AbstractStrategy getNormal() {
-        return normal;
+        return this.normal;
     }
 
     public AbstractStrategy getError() {
-        return error;
+        return this.error;
     }
 
     public AbstractStrategy getBlind() {
-        return blind;
+        return this.blind;
     }
 
     public AbstractStrategy getTime() {
-        return time;
+        return this.time;
     }
 
     public AbstractStrategy getUndefined() {
-        return undefined;
+        return this.undefined;
     }
 
     public List<AbstractStrategy> getStrategies() {
-        return strategies;
+        return this.strategies;
     }
 
     public AbstractStrategy getStrategy() {
-        return strategy;
+        return this.strategy;
     }
 
     public void setStrategy(AbstractStrategy strategy) {

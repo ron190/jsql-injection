@@ -24,7 +24,6 @@ public class MySQLNormalTestSuite extends ConcreteMySQLTestSuite {
         model.addObserver(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting");
-        model.getMediatorUtils().getParameterUtil().initRequest("");
         model.getMediatorUtils().getParameterUtil().setQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql"),
             new SimpleEntry<>("name", "0'")

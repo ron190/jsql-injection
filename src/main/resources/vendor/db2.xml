@@ -119,7 +119,7 @@ rpad(
 )
             </calibrator>
             <limitBoundary>0</limitBoundary>
-            <endingComment>--+</endingComment>
+            <endingComment>--+-</endingComment>
             <fingerprint>
                 <errorMessage>function.db2</errorMessage>
                 <errorMessage>DB2 SQL Error</errorMessage>

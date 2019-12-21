@@ -125,7 +125,7 @@ select
             <failsafe>(1337${INDICE}7330%2b1)::text</failsafe>
             <calibrator>repeat('%23', 1024)</calibrator>
             <limitBoundary>0</limitBoundary>
-            <endingComment>--+</endingComment>
+            <endingComment>--+-</endingComment>
             <fingerprint>
                 <errorMessage>cockroachdb</errorMessage>
             </fingerprint>

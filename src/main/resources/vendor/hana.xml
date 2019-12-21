@@ -138,7 +138,7 @@ rpad(
 )
             </calibrator>
             <limitBoundary>0</limitBoundary>
-            <endingComment>--+</endingComment>
+            <endingComment>--+-</endingComment>
             <fingerprint>
                 <errorMessage>Hana database</errorMessage>
             </fingerprint>

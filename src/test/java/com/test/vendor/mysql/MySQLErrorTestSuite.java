@@ -24,7 +24,6 @@ public class MySQLErrorTestSuite extends ConcreteMySQLErrorTestSuite {
         model.addObserver(new SystemOutTerminal());
 
         model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting-error");
-        model.getMediatorUtils().getParameterUtil().initRequest("");
         model.getMediatorUtils().getParameterUtil().setQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "mysql-error"),
             new SimpleEntry<>("name", "0'")

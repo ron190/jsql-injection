@@ -113,7 +113,7 @@ from (${INJECTION})x
             <failsafe>select '' || (1337${INDICE}7330%2b1) r from dual</failsafe>
             <calibrator>replicate('${CALIBRATOR_SQL}', 65536)</calibrator>
             <limitBoundary>0</limitBoundary>
-            <endingComment>--+</endingComment>
+            <endingComment>--+-</endingComment>
             <fingerprint>
                 <errorMessage>nuodb</errorMessage>
             </fingerprint>

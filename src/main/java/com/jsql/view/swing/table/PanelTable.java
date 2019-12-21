@@ -224,12 +224,12 @@ public class PanelTable extends JPanel {
             
             @Override
             public void insertUpdate(DocumentEvent e) {
-                insertUpdateFixed(e);
+                this.insertUpdateFixed(e);
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                insertUpdateFixed(e);
+                this.insertUpdateFixed(e);
             }
 
             @Override

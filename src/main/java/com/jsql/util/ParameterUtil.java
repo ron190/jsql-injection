@@ -168,15 +168,27 @@ public class ParameterUtil {
     }
     
     public String getQueryStringFromEntries() {
-        return this.queryString.stream().filter(Objects::nonNull).map(e -> e.getKey()+"="+e.getValue()).collect(Collectors.joining("&"));
+        return this.queryString
+            .stream()
+            .filter(Objects::nonNull)
+            .map(e -> e.getKey() +"="+ e.getValue())
+            .collect(Collectors.joining("&"));
     }
 
     public String getRequestFromEntries() {
-        return this.request.stream().filter(Objects::nonNull).map(e -> e.getKey()+"="+e.getValue()).collect(Collectors.joining("&"));
+        return this.request
+            .stream()
+            .filter(Objects::nonNull)
+            .map(e -> e.getKey() +"="+ e.getValue())
+            .collect(Collectors.joining("&"));
     }
     
     public String getHeaderFromEntries() {
-        return this.header.stream().filter(Objects::nonNull).map(e -> e.getKey()+":"+e.getValue()).collect(Collectors.joining("\\r\\n"));
+        return this.header
+            .stream()
+            .filter(Objects::nonNull)
+            .map(e -> e.getKey() +":"+ e.getValue())
+            .collect(Collectors.joining("\\r\\n"));
     }
 
     public void initQueryString(String urlQuery) throws MalformedURLException {

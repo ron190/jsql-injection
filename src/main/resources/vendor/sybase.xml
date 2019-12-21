@@ -131,7 +131,7 @@ select
             </failsafe>
             <calibrator>replicate('${CALIBRATOR_SQL}', 1024)</calibrator>
             <limitBoundary>1</limitBoundary>
-            <endingComment>--+</endingComment>
+            <endingComment>--+-</endingComment>
             <fingerprint>
                 <errorMessage>Warning: sybase_connect()</errorMessage>
                 <errorMessage>Warning: sybase_query()</errorMessage>

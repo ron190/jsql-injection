@@ -127,7 +127,7 @@ rpad(
 )
             </calibrator>
             <limitBoundary>1</limitBoundary>
-            <endingComment>--+</endingComment>
+            <endingComment>--+-</endingComment>
             <fingerprint>
                 <errorMessage>Found a quote for which there is no matching quote. [SQL State=</errorMessage>
                 <errorMessage>[Informix][Informix ODBC Driver]General error. (SQLPrepare[</errorMessage>

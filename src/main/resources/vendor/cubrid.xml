@@ -123,7 +123,7 @@ select concat(
             <failsafe>'' || 1337${INDICE}7330%2b1</failsafe>
             <calibrator>repeat('${CALIBRATOR_SQL}', 65536)</calibrator>
             <limitBoundary>0</limitBoundary>
-            <endingComment>--+</endingComment>
+            <endingComment>--+-</endingComment>
             <fingerprint>
                 <errorMessage>Cubrid database</errorMessage>
             </fingerprint>

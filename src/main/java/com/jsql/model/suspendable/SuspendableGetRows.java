@@ -19,7 +19,6 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.model.exception.LoopDetectedSlidingException;
-import com.jsql.model.exception.SlidingException;
 import com.jsql.model.exception.StoppedByUserSlidingException;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.util.StringUtil;
@@ -75,7 +74,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
 
             if (this.isSuspended()) {
                 throw new StoppedByUserSlidingException(
-                    slidingWindowAllRows.toString(), 
+                    slidingWindowAllRows.toString(),
                     slidingWindowCurrentRow.toString()
                 );
             } else if (strategy == null) {
@@ -146,7 +145,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                     infiniteLoop++;
                     if (infiniteLoop >= 20) {
                         throw new LoopDetectedSlidingException(
-                            slidingWindowAllRows.toString(), 
+                            slidingWindowAllRows.toString(),
                             slidingWindowCurrentRow.toString()
                         );
                     }

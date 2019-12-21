@@ -195,7 +195,7 @@ rpad(
 ) s
             </calibrator>
             <limitBoundary>1</limitBoundary>
-            <endingComment>--+</endingComment>
+            <endingComment>--+-</endingComment>
             <fingerprint>
                 <errorMessage>function.oci</errorMessage>
                 <errorMessage>Warning: oci_parse()</errorMessage>

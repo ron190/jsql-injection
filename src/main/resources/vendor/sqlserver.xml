@@ -204,7 +204,7 @@ LTRIM(
             <failsafe>CONVERT(varchar, (1337${INDICE}7330%2b1))</failsafe>
             <calibrator>replicate(${CALIBRATOR_HEX}, 1024)</calibrator>
             <limitBoundary>1</limitBoundary>
-            <endingComment>--+</endingComment>
+            <endingComment>--+-</endingComment>
             <fingerprint>
                 <errorMessage>[Microsoft][SQL Server</errorMessage>
                 <errorMessage>SQL Server</errorMessage>

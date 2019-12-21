@@ -254,7 +254,7 @@ cast(
             <calibrator>repeat(${CALIBRATOR_HEX}, 65536)</calibrator>
             <limitBoundary>0</limitBoundary>
             <!-- Force a space at the end -->
-            <endingComment>--+</endingComment>
+            <endingComment>--+-</endingComment>
             <fingerprint>
                 <!-- JDBC + php : same error -->
                 <errorMessage>You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near</errorMessage>

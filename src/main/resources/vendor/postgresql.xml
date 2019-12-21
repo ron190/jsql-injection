@@ -137,7 +137,7 @@ select
             <failsafe>(1337${INDICE}7330%2b1)::text</failsafe>
             <calibrator>repeat(chr(35), 1024)</calibrator>
             <limitBoundary>0</limitBoundary>
-            <endingComment>--+</endingComment>
+            <endingComment>--+-</endingComment>
             <fingerprint>
                 <!-- jdbc -->
                 <errorMessage>ERROR: unterminated quoted identifier at or near</errorMessage>
