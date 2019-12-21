@@ -1,3 +1,4 @@
+package groovy
 import java.util.AbstractMap.SimpleEntry
 import java.util.stream.Collectors
 
