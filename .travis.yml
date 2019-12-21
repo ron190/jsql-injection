@@ -52,8 +52,9 @@ script:
   - docker exec -it jsql-mysql /bin/bash
     -c "
        mysql -uroot -pmy-secret-pw -e '
-       SET GLOBAL max_connections = 1000;
-       SET GLOBAL thread_cache_size = 1000;
+       SET GLOBAL max_connections = 100000;
+       SET GLOBAL thread_pool_size = 64;
+       SET GLOBAL thread_cache_size = 16384;
        ';
        "
 

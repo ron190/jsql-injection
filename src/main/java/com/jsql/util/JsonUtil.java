@@ -22,14 +22,11 @@ public class JsonUtil {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    public JsonUtil() {
-        // TODO Auto-generated constructor stub
-    }
+    private InjectionModel injectionModel;
     
     public JsonUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }
-    InjectionModel injectionModel;
 
     public static Object getJson(String param) {
         // Will test if current value is a JSON entity
