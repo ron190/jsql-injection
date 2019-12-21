@@ -67,13 +67,13 @@ public class StrategyInjectionTime extends AbstractStrategy {
     }
     
     @Override
-    public void allow() {
-        this.markVulnerable(Interaction.MARK_TIME_VULNERABLE);
+    public void allow(int... i) {
+        this.markVulnerability(Interaction.MARK_TIME_VULNERABLE);
     }
 
     @Override
-    public void unallow() {
-        this.markVulnerable(Interaction.MARK_TIME_INVULNERABLE);
+    public void unallow(int... i) {
+        this.markVulnerability(Interaction.MARK_TIME_INVULNERABLE);
     }
 
     @Override

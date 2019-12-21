@@ -42,13 +42,13 @@ public class MediatorStrategy {
             }
 
             @Override
-            protected void allow() {
+            protected void allow(int... i) {
                 // TODO Auto-generated method stub
                 
             }
 
             @Override
-            protected void unallow() {
+            protected void unallow(int... i) {
                 // TODO Auto-generated method stub
                 
             }

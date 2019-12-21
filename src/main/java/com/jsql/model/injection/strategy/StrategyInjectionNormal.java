@@ -70,13 +70,13 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     }
 
     @Override
-    public void allow() {
-        this.markVulnerable(Interaction.MARK_NORMAL_VULNERABLE);
+    public void allow(int... i) {
+        this.markVulnerability(Interaction.MARK_NORMAL_VULNERABLE);
     }
 
     @Override
-    public void unallow() {
-        this.markVulnerable(Interaction.MARK_NORMAL_INVULNERABLE);
+    public void unallow(int... i) {
+        this.markVulnerability(Interaction.MARK_NORMAL_INVULNERABLE);
     }
 
     @Override

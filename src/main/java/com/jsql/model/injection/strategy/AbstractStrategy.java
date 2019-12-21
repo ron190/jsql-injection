@@ -46,58 +46,24 @@ public abstract class AbstractStrategy {
     /**
      * Inform the view that this strategy can be used.
      */
-    protected abstract void allow();
+    protected abstract void allow(int... i);
     
     /**
      * Inform the view that this strategy can't be used.
      */
-    protected abstract void unallow();
-
-    // TODO Auto-generated method stub
-    public void allowError(int i) {
-    }
-
-    // TODO Auto-generated method stub
-    public void unallowError(int i) {
-    }
+    protected abstract void unallow(int... i);
     
-    public void markVulnerable(Interaction message) {
+    public void markVulnerability(Interaction message, int... i) {
         Request request = new Request();
         request.setMessage(message);
         
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
-
-        request.setParameters(msgHeader);
-        this.injectionModel.sendToViews(request);
-    }
-
-    public void markInvulnerable(Interaction message) {
-        Request request = new Request();
-        request.setMessage(message);
-        this.injectionModel.sendToViews(request);
-    }
-    
-    public void markVulnerable(Interaction message, int i) {
-        Request request = new Request();
-        request.setMessage(message);
         
-        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.URL, this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser());
-        msgHeader.put(Header.SOURCE, i);
-        msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);
-
-        request.setParameters(msgHeader);
-        this.injectionModel.sendToViews(request);
-    }
-
-    public void markInvulnerable(Interaction message, int i) {
-        Request request = new Request();
-        request.setMessage(message);
-        
-        Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
-        msgHeader.put(Header.SOURCE, i);
-        msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);
+        if (i != null && i.length > 0) {
+            msgHeader.put(Header.SOURCE, i[0]);
+            msgHeader.put(Header.INJECTION_MODEL, this.injectionModel);
+        }
 
         request.setParameters(msgHeader);
         this.injectionModel.sendToViews(request);
