@@ -100,6 +100,8 @@
                         <goals>
 			                <goal>addSources</goal>
 			                <goal>addTestSources</goal>
+			                <goal>addStubSources</goal>
+			                <goal>addTestStubSources</goal>
 			                <goal>compile</goal>
 			                <goal>compileTests</goal>
                         </goals>
