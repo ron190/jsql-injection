@@ -101,7 +101,7 @@ public final class ShadowPopupFactory extends PopupFactory {
      * In some Mac Java environments the popup factory throws
      * a NullPointerException when we call {@code #getPopup}.<p>
      *
-     * TODO: The Mac case shows that we may have problems replacing
+     * The Mac case shows that we may have problems replacing
      * non PopupFactory instances. Therefore we should consider
      * replacing only instances of PopupFactory.
      *

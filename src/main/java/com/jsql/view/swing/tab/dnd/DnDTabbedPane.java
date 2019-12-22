@@ -27,7 +27,7 @@ import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
 public class DnDTabbedPane extends JTabbedPane {
     
     private static final int SCROLL_SIZE = 20; // Test
-    private static final int BUTTON_SIZE = 30; // XXX 30 is magic number of scroll button size
+    private static final int BUTTON_SIZE = 30; // 30 is magic number of scroll button size
     private static final int LINE_WIDTH = 3;
     private static final Rectangle RECT_BACKWARD = new Rectangle();
     private static final Rectangle RECT_FORWARD = new Rectangle();
@@ -76,7 +76,7 @@ public class DnDTabbedPane extends JTabbedPane {
         if (isTopBottomTabPlacement(this.getTabPlacement())) {
             RECT_BACKWARD.setBounds(r.x, r.y, SCROLL_SIZE, r.height);
             RECT_FORWARD.setBounds(r.x + r.width - SCROLL_SIZE - BUTTON_SIZE, r.y, SCROLL_SIZE + BUTTON_SIZE, r.height);
-        } else { // if (tabPlacement == LEFT || tabPlacement == RIGHT) {
+        } else { 
             RECT_BACKWARD.setBounds(r.x, r.y, r.width, SCROLL_SIZE);
             RECT_FORWARD.setBounds(r.x, r.y + r.height - SCROLL_SIZE - BUTTON_SIZE, r.width, SCROLL_SIZE + BUTTON_SIZE);
         }
@@ -231,7 +231,6 @@ public class DnDTabbedPane extends JTabbedPane {
         
         private Point startPt;
         private final int gestureMotionThreshold = DragSource.getDragThreshold();
-        // private final Integer gestureMotionThreshold = (Integer) Toolkit.getDefaultToolkit().getDesktopProperty("DnD.gestureMotionThreshold");
 
         private void repaintDropLocation() {
             Component c = DnDTabbedPane.this.getRootPane().getGlassPane();

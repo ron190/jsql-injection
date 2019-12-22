@@ -67,6 +67,7 @@ public class PreferencesUtil {
      * Initialize the utility class with previously saved JVM preferences and apply
      * loaded settings to the system.
      */
+    // TODO Spock test
     public void loadSavedPreferences() {
     	
         // Use Preferences API to persist proxy configuration

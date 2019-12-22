@@ -51,7 +51,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
 
         AbstractStrategy strategy;
         // Fix #14417
-        // TODO Optionnal
+        // TODO Optional
         if (this.injectionModel.getMediatorStrategy().getStrategy() != null) {
             strategy = this.injectionModel.getMediatorStrategy().getStrategy();
         } else {

@@ -140,10 +140,13 @@
                         
                         <include>H2NormalGetTestSuite</include>
                         
-                        <include>JsonTestSuite</include>
                         <include>PostTestSuite</include>
                         <include>HeaderTestSuite</include>
                         <include>CookieTestSuite</include>
+
+                        <include>CheckAllTestSuite</include>
+                        <include>JsonTestSuite</include>
+                        <include>StarTestSuite</include>
                     </includes>        
 
                     <parallel>classes</parallel>

@@ -29,6 +29,7 @@ import com.jsql.view.swing.HelperUi;
  * Utility class adding String operations like join() which are not
  * part of standard JVM.
  */
+// TODO Spock test
 public final class StringUtil {
     
     /**

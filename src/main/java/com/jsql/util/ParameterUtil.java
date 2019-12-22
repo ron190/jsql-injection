@@ -46,6 +46,7 @@ public class ParameterUtil {
      * @throws InjectionFailureException when params' integrity is failure
      */
     // TODO merge isTest with parameter: isTest = parameter == null
+    // TODO Spock coverage
     public void checkParametersFormat() throws InjectionFailureException {
         int nbStarInParameter = 0;
         
@@ -111,6 +112,7 @@ public class ParameterUtil {
         }
     }
     
+    // TODO Spock coverage
     public String getCharacterInsertion(boolean isParamByUser, SimpleEntry<String, String> parameter) {
         String characterInsertionByUser = "";
         

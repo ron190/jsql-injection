@@ -32,14 +32,11 @@ public class SoapUtil {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
-    public SoapUtil() {
-        // TODO Auto-generated constructor stub
-    }
+    private InjectionModel injectionModel;
     
     public SoapUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }
-    InjectionModel injectionModel;
 
     public boolean testParameters() {
         boolean hasFoundInjection = false;

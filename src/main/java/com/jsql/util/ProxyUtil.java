@@ -65,6 +65,7 @@ public class ProxyUtil {
      * @param proxyAddress IP address or name of the proxy
      * @param proxyPort port number of proxy
      */
+    // TODO Spock test
     public void set(
         boolean isUsingProxy,
         String proxyAddress,

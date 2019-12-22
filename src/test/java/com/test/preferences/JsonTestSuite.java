@@ -1,4 +1,4 @@
-package com.test.method;
+package com.test.preferences;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;

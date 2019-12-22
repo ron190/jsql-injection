@@ -1,4 +1,4 @@
-package com.test.vendor.mysql;
+package com.test.preferences;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
@@ -10,10 +10,11 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.view.terminal.SystemOutTerminal;
+import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class MySQLStarNormalTestSuite extends ConcreteMySQLTestSuite {
+public class StarTestSuite extends ConcreteMySQLTestSuite {
     
     @Override
     public void setupInjection() throws Exception {
@@ -25,8 +26,9 @@ public class MySQLStarNormalTestSuite extends ConcreteMySQLTestSuite {
 
         model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting");
         model.getMediatorUtils().getParameterUtil().setQueryString(Arrays.asList(
-            new SimpleEntry<>("tenant", "mysql"),
-            new SimpleEntry<>("name", "0'*")
+            new SimpleEntry<>("fake", "empty"),
+            new SimpleEntry<>("name", "0'*"),
+            new SimpleEntry<>("tenant", "mysql")
         ));
         
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());

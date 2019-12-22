@@ -107,16 +107,6 @@ public abstract class AbstractShell extends JTextPane {
         this.setForeground(Color.LIGHT_GRAY);
         this.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
 
-        try {
-            // Disable antialiasing
-            // TODO: incompatible with Java 9
-//            System.setProperty("awt.useSystemAAFontSettings","off");
-//            System.setProperty("swing.aatext", "false");
-//            this.putClientProperty(SwingUtilities2.AA_TEXT_PROPERTY_KEY, null);
-        } catch (NoSuchFieldError e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-
         this.displayPrompt(true);
 
         this.setCursor(null);
