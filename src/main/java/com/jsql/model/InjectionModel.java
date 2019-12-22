@@ -714,6 +714,11 @@ public class InjectionModel extends AbstractModelObservable {
             query = query.replaceAll("(?s)\\}", "%7D");
             query = query.replaceAll("(?s)\\[", "%5B");
             query = query.replaceAll("(?s)\\]", "%5D");
+        } else {
+            // For cookies in Spring
+            // Replace spaces
+            query = query.replaceAll("\\+", "%20");
+            query = query.replaceAll(",", "%2C");
         }
         
         if (this.getMediatorUtils().getConnectionUtil().getMethodInjection() == methodInjection) {

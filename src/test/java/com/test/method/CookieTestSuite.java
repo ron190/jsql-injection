@@ -11,13 +11,22 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
-public class HeaderTest extends ConcreteMySQLTestSuite {
+public class CookieTestSuite extends ConcreteMySQLTestSuite {
+	
+    // pour chaque vendor/méthode/strategy
+    /**
+     * liste db, table, colonne, value
+     * valeur à rallonge
+     * caractère spécial \
+     * @throws InjectionFailureException
+     */
 
     @Override
     public void setupInjection() throws Exception {
@@ -27,9 +36,9 @@ public class HeaderTest extends ConcreteMySQLTestSuite {
 
         model.addObserver(new SystemOutTerminal());
 
-        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting-header?tenant=mysql");
+        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting-cookie?tenant=mysql");
         model.getMediatorUtils().getParameterUtil().setHeader(Arrays.asList(
-            new SimpleEntry<>("name", "0'")
+            new SimpleEntry<>("Cookie", "name=\"0'*\"")
         ));
         
         model.getMediatorUtils().getPreferencesUtil().setNotTestingConnection(true);
@@ -38,6 +47,7 @@ public class HeaderTest extends ConcreteMySQLTestSuite {
         model.setIsScanning(true);
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
+    
     }
     
     @Ignore

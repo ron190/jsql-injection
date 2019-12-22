@@ -139,9 +139,11 @@
                         <include>PostgresErrorTestSuite</include>
                         
                         <include>H2NormalGetTestSuite</include>
+                        
                         <include>JsonTestSuite</include>
                         <include>PostTestSuite</include>
-                        <include>HeaderTest</include>
+                        <include>HeaderTestSuite</include>
+                        <include>CookieTestSuite</include>
                     </includes>        
 
                     <parallel>classes</parallel>

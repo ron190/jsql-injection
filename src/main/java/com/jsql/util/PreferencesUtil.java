@@ -343,6 +343,7 @@ public class PreferencesUtil {
         this.isProcessingCsrf = isProcessingCsrf;
     }
 
+    // TODO
     public boolean isCheckingAllCookieParam() {
         return this.isCheckingAllCookieParam;
     }

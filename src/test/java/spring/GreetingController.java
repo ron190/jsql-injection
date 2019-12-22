@@ -16,6 +16,7 @@ import org.hibernate.SessionFactory;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,6 +64,32 @@ public class GreetingController {
     }
     
     @SuppressWarnings("unchecked")
+    @RequestMapping("/greeting-cookie")
+    public Greeting greetingCookie(HttpServletRequest request, @CookieValue("name") String name) throws IOException {
+
+        Session session = this.sessionFactory.getCurrentSession();
+        Greeting greeting = null;
+        try {
+            
+            Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+            
+            List<Object[]> results = q.getResultList();
+            
+            greeting = new Greeting(
+                    this.counter.incrementAndGet(),
+                    String.format(template, name)
+                    + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+                    );
+        } catch (Exception e) {
+            // Hide useless SQL error messages
+        } finally {
+            session.close();
+        }
+        
+        return greeting;
+    }
+    
+    @SuppressWarnings("unchecked")
     @RequestMapping("/greeting-header")
     public Greeting greetingHeader(@RequestHeader Map<String, String> a) throws IOException {
         
@@ -76,10 +103,10 @@ public class GreetingController {
             List<Object[]> results = q.getResultList();
             
             greeting = new Greeting(
-                this.counter.incrementAndGet(),
-                String.format(template, name)
-                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
-            );
+                    this.counter.incrementAndGet(),
+                    String.format(template, name)
+                    + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+                    );
         } catch (Exception e) {
             // Hide useless SQL error messages
         } finally {
