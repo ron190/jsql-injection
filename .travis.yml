@@ -54,6 +54,7 @@ script:
        mysql -uroot -pmy-secret-pw -e '
        SET GLOBAL max_connections = 100000;
        SET GLOBAL thread_cache_size = 16384;
+       SET GLOBAL table_open_cache = 524288;
        ';
        "
 
@@ -61,7 +62,7 @@ script:
   - docker exec -it jsql-mysql /bin/bash
     -c "
        mysql -uroot -pmy-secret-pw -e '
-       SHOW GLOBAL variables WHERE Variable_name RLIKE \"thread_cache_size|^max_connections\";
+       SHOW GLOBAL variables WHERE Variable_name RLIKE \"thread_cache_size|^max_connections|table_open_cache\";
        SHOW GLOBAL status WHERE Variable_name RLIKE \"Threads_cached|Max_used_connections|Threads_created|Connections|Opened_tables|Threads_connected|Threads_running|^Queries\"
        ';
        "

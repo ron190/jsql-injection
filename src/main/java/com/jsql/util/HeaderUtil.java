@@ -54,6 +54,7 @@ public class HeaderUtil {
         // Fix #2124: NullPointerException on addRequestProperty()
         try {
             if ("Cookie".equalsIgnoreCase(keyHeader)) {
+                // TODO enclose value in "" => Cookie: a="a"; b="b"
                 connection.addRequestProperty(keyHeader, valueHeader);
             } else {
                 connection.addRequestProperty(keyHeader, URLDecoder.decode(valueHeader, StandardCharsets.UTF_8.name()));

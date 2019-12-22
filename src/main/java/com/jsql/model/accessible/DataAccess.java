@@ -200,7 +200,7 @@ public class DataAccess {
             );
         } catch (SlidingException e) {
             LOGGER.warn(e.getMessage(), e);
-            // Get pieces of data already retreived instead of losing them
+            // Get pieces of data already retrieved instead of losing them
             if (!"".equals(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
             } else if (!"".equals(e.getSlidingWindowCurrentRows())) {
@@ -281,7 +281,7 @@ public class DataAccess {
             );
         } catch (SlidingException e) {
             LOGGER.warn(e.getMessage(), e);
-            // Get pieces of data already retreived instead of losing them
+            // Get pieces of data already retrieved instead of losing them
             if (!"".equals(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
             } else if (!"".equals(e.getSlidingWindowCurrentRows())) {
@@ -361,7 +361,7 @@ public class DataAccess {
             );
         } catch (SlidingException e) {
             LOGGER.warn(e.getMessage(), e);
-            // Get pieces of data already retreived instead of losing them
+            // Get pieces of data already retrieved instead of losing them
             if (!"".equals(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
             } else if (!"".equals(e.getSlidingWindowCurrentRows())) {
@@ -460,7 +460,7 @@ public class DataAccess {
             );
         } catch (SlidingException e) {
             LOGGER.warn(e.getMessage(), e);
-            // Get pieces of data already retreived instead of losing them
+            // Get pieces of data already retrieved instead of losing them
             if (!"".equals(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
             } else if (!"".equals(e.getSlidingWindowCurrentRows())) {

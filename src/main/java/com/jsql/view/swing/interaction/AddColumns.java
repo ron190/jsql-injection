@@ -28,12 +28,12 @@ import com.jsql.view.swing.tree.model.NodeModelColumn;
 public class AddColumns implements InteractionCommand {
 	
     /**
-     * Columns retreived by the view.
+     * Columns retrieved by the view.
      */
     private List<Column> columns;
 
     /**
-     * @param interactionParams List of columns retreived by the Model
+     * @param interactionParams List of columns retrieved by the Model
      */
     @SuppressWarnings("unchecked")
     public AddColumns(Object[] interactionParams) {

@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
@@ -45,23 +46,17 @@ public class JsonTestSuite extends ConcreteMySQLTestSuite {
     
     }
     
-    @Ignore
     @Override
-    @Test
     public void listDatabases() throws JSqlException {
         LOGGER.info("Ignore: too slow");
     }
     
-    @Ignore
     @Override
-    @Test
     public void listTables() throws JSqlException {
         LOGGER.info("Ignore: too slow");
     }
     
-    @Ignore
     @Override
-    @Test
     public void listColumns() throws JSqlException {
         LOGGER.info("Ignore: too slow");
     }

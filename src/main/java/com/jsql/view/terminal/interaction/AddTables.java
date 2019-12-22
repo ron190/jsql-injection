@@ -28,12 +28,12 @@ public class AddTables implements InteractionCommand {
     private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
-     * Tables retreived by the view.
+     * Tables retrieved by the view.
      */
     private List<Table> tables;
 
     /**
-     * @param interactionParams List of tables retreived by the Model
+     * @param interactionParams List of tables retrieved by the Model
      */
     @SuppressWarnings("unchecked")
     public AddTables(Object[] interactionParams) {

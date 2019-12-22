@@ -28,12 +28,12 @@ import com.jsql.view.swing.tree.model.NodeModelDatabase;
 public class AddDatabases implements InteractionCommand {
 	
     /**
-     * Databases retreived by the view.
+     * Databases retrieved by the view.
      */
     private List<Database> databases;
 
     /**
-     * @param interactionParams List of databases retreived by the Model
+     * @param interactionParams List of databases retrieved by the Model
      */
     @SuppressWarnings("unchecked")
     public AddDatabases(Object[] interactionParams) {

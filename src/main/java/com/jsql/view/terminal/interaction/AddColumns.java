@@ -28,12 +28,12 @@ public class AddColumns implements InteractionCommand {
     private static final Logger LOGGER = Logger.getRootLogger();
 
     /**
-     * Columns retreived by the view.
+     * Columns retrieved by the view.
      */
     private List<Column> columns;
 
     /**
-     * @param interactionParams List of columns retreived by the Model
+     * @param interactionParams List of columns retrieved by the Model
      */
     @SuppressWarnings("unchecked")
     public AddColumns(Object[] interactionParams) {
