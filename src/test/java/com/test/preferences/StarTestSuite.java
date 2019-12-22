@@ -9,6 +9,7 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 
@@ -37,6 +38,21 @@ public class StarTestSuite extends ConcreteMySQLTestSuite {
         model.setIsScanning(true);
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
+    }
+    
+    @Override
+    public void listDatabases() throws JSqlException {
+        LOGGER.info("Ignore: too slow");
+    }
+    
+    @Override
+    public void listTables() throws JSqlException {
+        LOGGER.info("Ignore: too slow");
+    }
+    
+    @Override
+    public void listColumns() throws JSqlException {
+        LOGGER.info("Ignore: too slow");
     }
     
 }

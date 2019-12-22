@@ -3,9 +3,6 @@ package com.test.method;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
@@ -42,7 +39,7 @@ public class CookieTestSuite extends ConcreteMySQLTestSuite {
             new SimpleEntry<>("Cookie", "name=\"0'*\"")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().setNotTestingConnection(true);
+        model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getHeader());
         
         model.setIsScanning(true);

@@ -59,7 +59,7 @@ public class PanelPreferences extends JPanel {
     final JRadioButton radioIsTamperingSpaceToDashComment = new JRadioButton();
     final JRadioButton radioIsTamperingSpaceToSharpComment = new JRadioButton();
     
-    final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().isCheckUpdateActivated());
+    final JCheckBox checkboxIsCheckingUpdate = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().isCheckingUpdate());
     final JCheckBox checkboxIsReportingBugs = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().isReportingBugs());
     final JCheckBox checkboxIs4K = new JCheckBox("", MediatorModel.model().getMediatorUtils().getPreferencesUtil().is4K());
     final JCheckBox checkboxIsUsingProxy = new JCheckBox("", MediatorModel.model().getMediatorUtils().getProxyUtil().isUsingProxy());

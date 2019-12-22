@@ -76,10 +76,11 @@ public class ConnectionUtil {
     
     private SimpleEntry<String, String> tokenCsrf = null;
     
+    private InjectionModel injectionModel;
+    
     public ConnectionUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }
-    InjectionModel injectionModel;
 
     /**
      * Check that the connection to the website is working correctly.

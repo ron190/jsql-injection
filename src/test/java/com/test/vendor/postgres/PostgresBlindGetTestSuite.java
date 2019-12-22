@@ -3,9 +3,6 @@ package com.test.vendor.postgres;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;

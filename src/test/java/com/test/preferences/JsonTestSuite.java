@@ -3,9 +3,6 @@ package com.test.preferences;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
@@ -34,9 +31,9 @@ public class JsonTestSuite extends ConcreteMySQLTestSuite {
             new SimpleEntry<>("tenant", "mysql")
         ));
         
-        model.getMediatorUtils().getPreferencesUtil().setCheckingAllURLParam(true);
-        model.getMediatorUtils().getPreferencesUtil().setCheckingAllJSONParam(true);
-        model.getMediatorUtils().getPreferencesUtil().setNotTestingConnection(true);
+        model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllURLParam(true);
+        model.getMediatorUtils().getPreferencesUtil().setIsCheckingAllJSONParam(true);
+        model.getMediatorUtils().getPreferencesUtil().setIsNotTestingConnection(true);
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
         model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
         

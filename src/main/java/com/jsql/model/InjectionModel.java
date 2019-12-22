@@ -97,7 +97,7 @@ public class InjectionModel extends AbstractModelObservable {
         this.mediatorUtils.setExceptionUtil(new ExceptionUtil(this));
         this.mediatorUtils.setSoapUtil(new SoapUtil(this));
         this.mediatorUtils.setJsonUtil(new JsonUtil(this));
-        this.mediatorUtils.setPreferencesUtil(new PreferencesUtil(this));
+        this.mediatorUtils.setPreferencesUtil(new PreferencesUtil());
         this.mediatorUtils.setProxyUtil(new ProxyUtil(this));
         this.mediatorUtils.setThreadUtil(new ThreadUtil(this));
         this.mediatorUtils.setTamperingUtil(new TamperingUtil(this));

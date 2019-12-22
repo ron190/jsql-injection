@@ -76,7 +76,7 @@ public class DnDTabbedPane extends JTabbedPane {
         if (isTopBottomTabPlacement(this.getTabPlacement())) {
             RECT_BACKWARD.setBounds(r.x, r.y, SCROLL_SIZE, r.height);
             RECT_FORWARD.setBounds(r.x + r.width - SCROLL_SIZE - BUTTON_SIZE, r.y, SCROLL_SIZE + BUTTON_SIZE, r.height);
-        } else { 
+        } else {
             RECT_BACKWARD.setBounds(r.x, r.y, r.width, SCROLL_SIZE);
             RECT_FORWARD.setBounds(r.x, r.y + r.height - SCROLL_SIZE - BUTTON_SIZE, r.width, SCROLL_SIZE + BUTTON_SIZE);
         }

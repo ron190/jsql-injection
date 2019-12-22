@@ -92,7 +92,7 @@ public class MainApplication {
             return;
         }
         
-        if (injectionModel.getMediatorUtils().getPreferencesUtil().isCheckUpdateActivated()) {
+        if (injectionModel.getMediatorUtils().getPreferencesUtil().isCheckingUpdate()) {
             injectionModel.getMediatorUtils().getGitUtil().checkUpdate(ShowOnConsole.NO);
         }
         

@@ -33,10 +33,11 @@ public class ParameterUtil {
      */
     private List<SimpleEntry<String, String>> header = new ArrayList<>();
 
+    private InjectionModel injectionModel;
+    
     public ParameterUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }
-    InjectionModel injectionModel;
 
     /**
      * Verify integrity of parameters defined by user.
@@ -206,13 +207,18 @@ public class ParameterUtil {
         Matcher regexSearch = Pattern.compile("(.*\\?)(.*)").matcher(urlQuery);
         if (regexSearch.find()) {
             this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(regexSearch.group(1));
+            
             if (!"".equals(url.getQuery())) {
                 this.setQueryString(
-                    Pattern.compile("&").splitAsStream(regexSearch.group(2))
+                    Pattern
+                    .compile("&")
+                    .splitAsStream(regexSearch.group(2))
                     .map(s -> Arrays.copyOf(s.split("="), 2))
                     .map(o -> new SimpleEntry<>(o[0], o[1] == null ? "" : o[1]))
                     .collect(Collectors.toList())
                 );
+            } else {
+                this.queryString.clear();
             }
         } else {
             this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(urlQuery);
@@ -223,14 +229,16 @@ public class ParameterUtil {
         this.requestAsText = request;
         
         if (!"".equals(request)) {
-            this.request =
+            this.setRequest(
                 Pattern
                 .compile("&")
                 .splitAsStream(request)
                 .map(s -> Arrays.copyOf(s.split("="), 2))
                 .map(o -> new SimpleEntry<>(o[0], o[1] == null ? "" : o[1]))
                 .collect(Collectors.toList())
-            ;
+            );
+        } else {
+            this.request.clear();
         }
     }
 
@@ -244,6 +252,8 @@ public class ParameterUtil {
                 .map(o -> new SimpleEntry<>(o[0], o[1] == null ? "" : o[1]))
                 .collect(Collectors.toList())
             );
+        } else {
+            this.header.clear();
         }
     }
 
