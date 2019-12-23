@@ -5,7 +5,7 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 
 ![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in other distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) or [BlackArch Linux](http://www.blackarch.org/).
 
-This software is developed using great open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), it uses platform [Travis CI](https://travis-ci.org) for continuous integration.  
+This software is developed using great open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration.  
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)<br>
 [![Java 8](https://img.shields.io/badge/Java-8-orange)](http://www.oracle.com/technetwork/java/javase/downloads/)

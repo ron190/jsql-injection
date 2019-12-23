@@ -2,9 +2,16 @@ language: java
 services: docker
 jdk: 
  - openjdk8
+ - openjdk9
+ - openjdk10
  - openjdk11
- - oraclejdk8
+ - openjdk12
+ - openjdk13
+ - oraclejdk9
+ - oraclejdk10
  - oraclejdk11
+ - oraclejdk12
+ - oraclejdk13
 
 addons:
   sonarcloud:
