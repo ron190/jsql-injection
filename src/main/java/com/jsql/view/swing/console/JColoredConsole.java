@@ -22,7 +22,7 @@ import com.jsql.view.swing.text.JPopupTextPane;
  */
 @SuppressWarnings("serial")
 public abstract class JColoredConsole extends JPopupTextPane {
-	
+    
     /**
      * Log4j logger sent to view.
      */

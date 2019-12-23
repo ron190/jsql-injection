@@ -22,7 +22,7 @@ import com.jsql.model.suspendable.SuspendableGetIndexes;
  * Injection strategy using normal attack.
  */
 public class StrategyInjectionNormal extends AbstractStrategy {
-	
+    
     /**
      * Log4j logger sent to view.
      */
@@ -103,7 +103,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
      */
     public String getVisibleIndex(String firstSuccessPageSource) {
         // Parse all indexes found
-    	// Fix #4007 (initialize firstSuccessPageSource to "" instead of null)
+        // Fix #4007 (initialize firstSuccessPageSource to "" instead of null)
         Matcher regexSearch = Pattern.compile("(?s)1337(\\d+?)7331").matcher(firstSuccessPageSource);
         
         List<String> foundIndexes = new ArrayList<>();

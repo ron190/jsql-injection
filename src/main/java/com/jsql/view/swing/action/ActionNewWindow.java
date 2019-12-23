@@ -32,7 +32,7 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public class ActionNewWindow extends AbstractAction {
-	
+    
     /**
      * Log4j logger sent to view.
      */

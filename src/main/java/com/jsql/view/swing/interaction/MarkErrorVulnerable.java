@@ -27,7 +27,7 @@ public class MarkErrorVulnerable implements InteractionCommand {
     
     private Map<Header, Object> mapHeader;
     private int indexMethodError;
-	
+    
     /**
      * @param interactionParams
      */

@@ -40,7 +40,7 @@ import com.jsql.view.swing.table.PanelTable;
  */
 @SuppressWarnings("serial")
 public class ActionSaveTab extends AbstractAction {
-	
+    
     /**
      * Log4j logger sent to view.
      */

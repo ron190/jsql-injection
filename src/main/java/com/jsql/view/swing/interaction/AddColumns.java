@@ -26,7 +26,7 @@ import com.jsql.view.swing.tree.model.NodeModelColumn;
  * Add the columns to corresponding table.
  */
 public class AddColumns implements InteractionCommand {
-	
+    
     /**
      * Columns retrieved by the view.
      */

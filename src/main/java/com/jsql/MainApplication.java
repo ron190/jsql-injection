@@ -31,7 +31,7 @@ public class MainApplication {
         
         MainApplication.apply4K();
     }
-	
+    
     /**
      * Using default log4j.properties from root /
      */
@@ -55,7 +55,7 @@ public class MainApplication {
         // Initialize MVC
         MediatorModel.register(injectionModel);
         
-    	// Configure global environment settings
+        // Configure global environment settings
         CertificateUtil.ignoreCertificationChain();
         injectionModel.getMediatorUtils().getExceptionUtil().setUncaughtExceptionHandler();
         injectionModel.getMediatorUtils().getProxyUtil().setProxy();

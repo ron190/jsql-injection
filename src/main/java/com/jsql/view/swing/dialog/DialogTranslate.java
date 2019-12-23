@@ -64,7 +64,7 @@ import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
  */
 @SuppressWarnings("serial")
 public class DialogTranslate extends JDialog {
-	
+    
     /**
      * Log4j logger sent to view.
      */

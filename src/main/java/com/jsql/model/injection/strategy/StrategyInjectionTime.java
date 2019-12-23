@@ -24,7 +24,7 @@ import com.jsql.model.suspendable.AbstractSuspendable;
  * Injection strategy using time attack.
  */
 public class StrategyInjectionTime extends AbstractStrategy {
-	
+    
     /**
      * Log4j logger sent to view.
      */

@@ -52,7 +52,7 @@ import com.jsql.view.swing.tree.PanelNode;
  * Table model displaying the table icon on the label.
  */
 public class NodeModelTable extends AbstractNodeModel {
-	
+    
     /**
      * Node as a table model.
      * @param table Element table coming from model
@@ -99,7 +99,7 @@ public class NodeModelTable extends AbstractNodeModel {
 
                 @Override
                 protected Object doInBackground() throws Exception {
-                	Thread.currentThread().setName("SwingWorkerNodeModelTable");
+                    Thread.currentThread().setName("SwingWorkerNodeModelTable");
                     return MediatorModel.model().getDataAccess().listColumns(selectedTable);
                 }
                 

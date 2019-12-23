@@ -39,7 +39,7 @@ import com.jsql.view.swing.manager.ManagerCoder;
  * Action runned when this.coderManager.encoding.
  */
 public class ActionCoder implements ActionListener {
-	
+    
     /**
      * Log4j logger sent to view.
      */

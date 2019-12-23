@@ -18,7 +18,7 @@ import com.jsql.view.interaction.InteractionCommand;
  * Append text to the tab Binary.
  */
 public class MessageBinary implements InteractionCommand {
-	
+    
     /**
      * Using default log4j.properties from root /
      */

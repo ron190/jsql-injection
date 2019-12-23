@@ -33,7 +33,7 @@ import com.jsql.view.swing.text.action.SilentDeleteTextAction;
  */
 @SuppressWarnings("serial")
 public class JPopupTextComponent<T extends JTextComponent> extends JPopupComponent<T> implements DecoratorJComponent<T> {
-	
+    
     /**
      * Log4j logger sent to view.
      */

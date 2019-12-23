@@ -43,7 +43,7 @@ public class JPopupMenuComponent extends JPopupMenu {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
-	
+    
     JComponent component;
     
     /**

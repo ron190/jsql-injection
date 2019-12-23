@@ -41,7 +41,7 @@ import com.jsql.view.swing.scrollpane.LightScrollPane;
  */
 @SuppressWarnings("serial")
 public abstract class AbstractShell extends JTextPane {
-	
+    
     /**
      * Log4j logger sent to view.
      */

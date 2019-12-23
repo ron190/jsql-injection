@@ -18,7 +18,7 @@ import com.jsql.view.swing.MediatorGui;
  * Mark the injection as vulnerable to a blind injection.
  */
 public class SetVendor implements InteractionCommand {
-	
+    
     private Vendor vendor;
     
     /**

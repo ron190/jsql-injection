@@ -21,7 +21,7 @@ import com.jsql.view.interaction.InteractionCommand;
  * Append a text to the tab Header.
  */
 public class MessageHeader implements InteractionCommand {
-	
+    
     /**
      * Using default log4j.properties from root /
      */

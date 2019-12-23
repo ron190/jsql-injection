@@ -27,7 +27,7 @@ import com.jsql.view.swing.manager.ManagerBruteForce;
  * Run a brute force attack.
  */
 public class ActionBruteForce implements ActionListener, Runnable {
-	
+    
     /**
      * Log4j logger sent to view.
      */

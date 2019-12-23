@@ -14,7 +14,7 @@ import com.jsql.util.GitUtil.ShowOnConsole;
  * Action performing a IP localisation test.
  */
 public class ActionCheckIP implements ActionListener, Runnable {
-	
+    
     /**
      * Log4j logger sent to view.
      */

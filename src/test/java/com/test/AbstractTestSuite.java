@@ -38,13 +38,13 @@ import spring.Application;
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
 public abstract class AbstractTestSuite {
-	
-	static {
-		// Use Timeout fix in Model
-		PropertyConfigurator.configure("src/test/resources/logger/log4j.stdout.properties");
-		jcifs.Config.registerSmbURLHandler();
-	}
-	
+    
+    static {
+        // Use Timeout fix in Model
+        PropertyConfigurator.configure("src/test/resources/logger/log4j.stdout.properties");
+        jcifs.Config.registerSmbURLHandler();
+    }
+    
     /**
      * Using default log4j.properties from root /
      */

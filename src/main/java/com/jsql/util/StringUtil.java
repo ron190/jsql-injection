@@ -42,7 +42,7 @@ public final class StringUtil {
      * representation
      */
     private static class CharEncoder {
-    	
+        
         String prefix;
         String suffix;
         int radix;
@@ -55,13 +55,13 @@ public final class StringUtil {
         
         void encode(char c, StringBuilder buff) {
             buff
-            	.append(this.prefix)
-            	.append(Integer.toString(c, this.radix))
-            	.append(this.suffix);
+                .append(this.prefix)
+                .append(Integer.toString(c, this.radix))
+                .append(this.suffix);
         }
         
     }
-	
+    
     // Utility class.
     private StringUtil() {
         // not called

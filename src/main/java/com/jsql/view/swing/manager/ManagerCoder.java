@@ -40,7 +40,7 @@ import com.jsql.view.swing.text.listener.DocumentListenerTyping;
  */
 @SuppressWarnings("serial")
 public class ManagerCoder extends JPanel implements Manager {
-	
+    
     /**
      * User input to encode.
      */

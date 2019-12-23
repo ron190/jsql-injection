@@ -9,7 +9,7 @@ import javax.swing.JMenuItem;
 
 @SuppressWarnings("serial")
 public class MenuBarCoder extends JMenuBar {
-	
+    
     private JMenu menu;
 
     private class MenuItemListener implements ActionListener {

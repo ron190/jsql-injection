@@ -23,30 +23,30 @@ public interface InteractionCommand {
      */
     Logger LOGGER = Logger.getRootLogger();
  
-    int NORMAL = 0;
-    int BRIGHT = 1;
-    String FOREGROUND = "38;2";
-    String BACKGROUND = "48;2";
-    int FOREGROUND_BLACK = 30;
-    int FOREGROUND_RED = 31;
-    int FOREGROUND_GREEN = 32;
-    int FOREGROUND_YELLOW = 33;
-    int FOREGROUND_BLUE = 34;
-    int FOREGROUND_MAGENTA = 35;
-    int FOREGROUND_CYAN = 36;
-    int FOREGROUND_WHITE = 37;
-    
-    String PREFIX = "\u001b[";
-    String SUFFIX = "m";
-    char SEPARATOR = ';';
-    String END_COLOUR = PREFIX + SUFFIX;
- 
-    String FATAL_COLOUR = PREFIX + BRIGHT + SEPARATOR + FOREGROUND_RED + SUFFIX;
-    String ERROR_COLOUR = PREFIX + NORMAL + SEPARATOR + FOREGROUND_RED + SUFFIX;
-    String WARN_COLOUR = PREFIX + NORMAL + SEPARATOR + FOREGROUND_YELLOW + SUFFIX;
-    String INFO_COLOUR = PREFIX + NORMAL+ SEPARATOR + FOREGROUND_GREEN + SUFFIX;
-    String DEBUG_COLOUR = PREFIX + NORMAL + SEPARATOR + FOREGROUND_CYAN + SUFFIX;
-    String TRACE_COLOUR = PREFIX + NORMAL + SEPARATOR + FOREGROUND_BLUE + SUFFIX;
+    static final int NORMAL = 0;
+    static final int BRIGHT = 1;
+    static final String FOREGROUND = "38;2";
+    static final String BACKGROUND = "48;2";
+    static final int FOREGROUND_BLACK = 30;
+    static final int FOREGROUND_RED = 31;
+    static final int FOREGROUND_GREEN = 32;
+    static final int FOREGROUND_YELLOW = 33;
+    static final int FOREGROUND_BLUE = 34;
+    static final int FOREGROUND_MAGENTA = 35;
+    static final int FOREGROUND_CYAN = 36;
+    static final int FOREGROUND_WHITE = 37;
+     
+    static final String PREFIX = "\u001b[";
+    static final String SUFFIX = "m";
+    static final char SEPARATOR = ';';
+    static final String END_COLOUR = PREFIX + SUFFIX;
+     
+    static final String FATAL_COLOUR = PREFIX + BRIGHT + SEPARATOR + FOREGROUND_RED + SUFFIX;
+    static final String ERROR_COLOUR = PREFIX + NORMAL + SEPARATOR + FOREGROUND_RED + SUFFIX;
+    static final String WARN_COLOUR = PREFIX + NORMAL + SEPARATOR + FOREGROUND_YELLOW + SUFFIX;
+    static final String INFO_COLOUR = PREFIX + NORMAL+ SEPARATOR + FOREGROUND_GREEN + SUFFIX;
+    static final String DEBUG_COLOUR = PREFIX + NORMAL + SEPARATOR + FOREGROUND_CYAN + SUFFIX;
+    static final String TRACE_COLOUR = PREFIX + NORMAL + SEPARATOR + FOREGROUND_BLUE + SUFFIX;
 
     static String addGreenColor(String text) {
         return INFO_COLOUR + text + END_COLOUR;

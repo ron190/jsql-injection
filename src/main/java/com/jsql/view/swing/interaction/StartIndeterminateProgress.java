@@ -23,7 +23,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  * Progression is not tracked (like colum search).
  */
 public class StartIndeterminateProgress implements InteractionCommand {
-	
+    
     /**
      * The element in the database tree for which the progress starts.
      */

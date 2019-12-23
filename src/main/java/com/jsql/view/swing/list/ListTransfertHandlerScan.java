@@ -35,7 +35,7 @@ import org.json.JSONObject;
  */
 @SuppressWarnings("serial")
 public class ListTransfertHandlerScan extends TransferHandler {
-	
+    
     /**
      * Log4j logger sent to view.
      */

@@ -12,7 +12,7 @@ import com.jsql.view.swing.panel.PanelConsoles;
  * MouseAdapter to show/hide bottom panel.
  */
 public class ActionHideShowConsole implements ActionListener {
-	
+    
     /**
      * Ersatz panel to display in place of tabbedpane.
      */

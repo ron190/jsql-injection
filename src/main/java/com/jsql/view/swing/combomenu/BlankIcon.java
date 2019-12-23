@@ -7,7 +7,7 @@ import java.awt.Graphics;
 import javax.swing.Icon;
 
 public class BlankIcon implements Icon {
-	
+    
     private Color fillColor;
     
     private int size;

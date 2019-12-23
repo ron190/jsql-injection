@@ -202,11 +202,11 @@ public class JavaScriptToken extends Token {
    * @param state the state the tokenizer is in after returning this token.
    */
   public JavaScriptToken(int ID, String contents, int lineNumber, int charBegin, int charEnd, int state){
-	this.ID = ID;
-	this.contents = new String(contents);
-	this.lineNumber = lineNumber;
-	this.charBegin = charBegin;
-	this.charEnd = charEnd;
+    this.ID = ID;
+    this.contents = new String(contents);
+    this.lineNumber = lineNumber;
+    this.charBegin = charBegin;
+    this.charEnd = charEnd;
     this.state = state;
   }
 
@@ -230,7 +230,7 @@ public int getState(){
    */
   @Override
 public int getID(){
-  	return this.ID;
+      return this.ID;
   }
 
   /**
@@ -240,7 +240,7 @@ public int getID(){
    */
   @Override
 public String getContents(){
-  	return (new String(this.contents));
+      return (new String(this.contents));
   }
 
   /**
@@ -250,7 +250,7 @@ public String getContents(){
    */
   @Override
 public int getLineNumber(){
-  	return this.lineNumber;
+      return this.lineNumber;
   }
 
   /**
@@ -260,7 +260,7 @@ public int getLineNumber(){
    */
   @Override
 public int getCharBegin(){
-  	return this.charBegin;
+      return this.charBegin;
   }
 
   /**
@@ -270,7 +270,7 @@ public int getCharBegin(){
    */
   @Override
 public int getCharEnd(){
- 	return this.charEnd;
+     return this.charEnd;
   }
 
   /**
@@ -281,7 +281,7 @@ public int getCharEnd(){
    * @return true if this token is a reserved word, false otherwise
    */
   public boolean isReservedWord(){
-  	return((this.ID >> 8) == 0x1);
+      return((this.ID >> 8) == 0x1);
   }
 
   /**
@@ -292,7 +292,7 @@ public int getCharEnd(){
    * @return true if this token is an identifier, false otherwise
    */
   public boolean isIdentifier(){
-  	return((this.ID >> 8) == 0x2);
+      return((this.ID >> 8) == 0x2);
   }
 
   /**
@@ -303,7 +303,7 @@ public int getCharEnd(){
    * @return true if this token is a literal, false otherwise
    */
   public boolean isLiteral(){
-  	return((this.ID >> 8) == 0x3);
+      return((this.ID >> 8) == 0x3);
   }
   
   /**
@@ -314,7 +314,7 @@ public int getCharEnd(){
    * @return true if this token is a Separator, false otherwise
    */
   public boolean isSeparator(){
-  	return((this.ID >> 8) == 0x4);
+      return((this.ID >> 8) == 0x4);
   }
 
   /**
@@ -325,7 +325,7 @@ public int getCharEnd(){
    * @return true if this token is a Operator, false otherwise
    */
   public boolean isOperator(){
-  	return((this.ID >> 8) == 0x5);
+      return((this.ID >> 8) == 0x5);
   }
 
   /**
@@ -335,7 +335,7 @@ public int getCharEnd(){
    */
   @Override
 public boolean isComment(){
-  	return((this.ID >> 8) == 0xD);
+      return((this.ID >> 8) == 0xD);
   }
 
   /**
@@ -346,7 +346,7 @@ public boolean isComment(){
    */
   @Override
 public boolean isWhiteSpace(){
-  	return((this.ID >> 8) == 0xE);
+      return((this.ID >> 8) == 0xE);
   }
 
   /**
@@ -357,38 +357,38 @@ public boolean isWhiteSpace(){
    */
   @Override
 public boolean isError(){
-  	return((this.ID >> 8) == 0xF);
+      return((this.ID >> 8) == 0xF);
   }
 
-	/**
-	 * A description of this token.  The description should
-	 * be appropriate for syntax highlighting.  For example
-	 * "comment" is returned for a comment.
+    /**
+     * A description of this token.  The description should
+     * be appropriate for syntax highlighting.  For example
+     * "comment" is returned for a comment.
      *
-	 * @return a description of this token.
-	 */
-	@Override
+     * @return a description of this token.
+     */
+    @Override
     public String getDescription(){
-		if (this.isReservedWord()){
-			return("reservedWord");
-		} else if (this.isIdentifier()){
-			return("identifier");
-		} else if (this.isLiteral()){
-			return("literal");
-		} else if (this.isSeparator()){
-			return("separator");
-		} else if (this.isOperator()){
-			return("operator");
-		} else if (this.isComment()){
-			return("comment");
-		} else if (this.isWhiteSpace()){
-			return("whitespace");
-		} else if (this.isError()){
-		 	return("error");
-		} else {
-			return("unknown");
-		}
-	}
+        if (this.isReservedWord()){
+            return("reservedWord");
+        } else if (this.isIdentifier()){
+            return("identifier");
+        } else if (this.isLiteral()){
+            return("literal");
+        } else if (this.isSeparator()){
+            return("separator");
+        } else if (this.isOperator()){
+            return("operator");
+        } else if (this.isComment()){
+            return("comment");
+        } else if (this.isWhiteSpace()){
+            return("whitespace");
+        } else if (this.isError()){
+             return("error");
+        } else {
+            return("unknown");
+        }
+    }
 
   /**
    * get a String that explains the error, if this token is an error.
@@ -397,49 +397,49 @@ public boolean isError(){
    */
   @Override
 public String errorString(){
-  	String s;
-  	if (this.isError()){
-  		s = "Error on line " + this.lineNumber + ": ";
-  		switch (this.ID){
-  		case ERROR_IDENTIFIER:
-  			s += "Unrecognized Identifier: " + this.contents;
-  		break;
-		case ERROR_UNCLOSED_STRING:
-  			s += "'\"' expected after " + this.contents;
-  		break;
-		case ERROR_MALFORMED_STRING:
-		case ERROR_MALFORMED_UNCLOSED_STRING:
-  			s += "Illegal character in " + this.contents;
-  		break;
-		case ERROR_UNCLOSED_CHARACTER:
-  			s += "\"'\" expected after " + this.contents;
-  		break;
-		case ERROR_MALFORMED_CHARACTER:
-		case ERROR_MALFORMED_UNCLOSED_CHARACTER:
-  			s += "Illegal character in " + this.contents;
-  		break;
-		case ERROR_INTEGER_DECIMIAL_SIZE:
-		case ERROR_INTEGER_OCTAL_SIZE:
-		case ERROR_FLOAT:
-  			s += "Illegal character in " + this.contents;
-  		break;
-		case ERROR_INTEGER_HEXIDECIMAL_SIZE:
-		case ERROR_LONG_DECIMIAL_SIZE:
-		case ERROR_LONG_OCTAL_SIZE:
-		case ERROR_LONG_HEXIDECIMAL_SIZE:
-		case ERROR_FLOAT_SIZE:
-		case ERROR_DOUBLE_SIZE:
-  			s += "Literal out of bounds: " + this.contents;
-  		break;
-		case ERROR_UNCLOSED_COMMENT:
-  			s += "*/ expected after " + this.contents;
-  		break;
-		}
-  			
-  	} else {
-  		s = null;
-  	}
-  	return (s);
+      String s;
+      if (this.isError()){
+          s = "Error on line " + this.lineNumber + ": ";
+          switch (this.ID){
+          case ERROR_IDENTIFIER:
+              s += "Unrecognized Identifier: " + this.contents;
+          break;
+        case ERROR_UNCLOSED_STRING:
+              s += "'\"' expected after " + this.contents;
+          break;
+        case ERROR_MALFORMED_STRING:
+        case ERROR_MALFORMED_UNCLOSED_STRING:
+              s += "Illegal character in " + this.contents;
+          break;
+        case ERROR_UNCLOSED_CHARACTER:
+              s += "\"'\" expected after " + this.contents;
+          break;
+        case ERROR_MALFORMED_CHARACTER:
+        case ERROR_MALFORMED_UNCLOSED_CHARACTER:
+              s += "Illegal character in " + this.contents;
+          break;
+        case ERROR_INTEGER_DECIMIAL_SIZE:
+        case ERROR_INTEGER_OCTAL_SIZE:
+        case ERROR_FLOAT:
+              s += "Illegal character in " + this.contents;
+          break;
+        case ERROR_INTEGER_HEXIDECIMAL_SIZE:
+        case ERROR_LONG_DECIMIAL_SIZE:
+        case ERROR_LONG_OCTAL_SIZE:
+        case ERROR_LONG_HEXIDECIMAL_SIZE:
+        case ERROR_FLOAT_SIZE:
+        case ERROR_DOUBLE_SIZE:
+              s += "Literal out of bounds: " + this.contents;
+          break;
+        case ERROR_UNCLOSED_COMMENT:
+              s += "*/ expected after " + this.contents;
+          break;
+        }
+              
+      } else {
+          s = null;
+      }
+      return (s);
   }
 
   /**
@@ -452,7 +452,7 @@ public String errorString(){
   @Override
 public String toString() {
       return ("Token #" + Integer.toHexString(this.ID) + ": " + this.getDescription() + " Line " +
-      	this.lineNumber + " from " +this.charBegin + " to " + this.charEnd + " : " + this.contents);
+          this.lineNumber + " from " +this.charBegin + " to " + this.charEnd + " : " + this.contents);
   }
   
 }

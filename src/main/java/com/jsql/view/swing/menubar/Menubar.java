@@ -81,7 +81,7 @@ import com.jsql.view.swing.text.JTextFieldPlaceholder;
  */
 @SuppressWarnings("serial")
 public class Menubar extends JMenuBar {
-	
+    
     /**
      * Log4j logger sent to view.
      */

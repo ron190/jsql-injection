@@ -18,7 +18,7 @@ import com.jsql.view.swing.manager.util.StateButton;
  * End the refreshing of administration page search button.
  */
 public class EndScan implements InteractionCommand {
-	
+    
     /**
      * @param interactionParams
      */

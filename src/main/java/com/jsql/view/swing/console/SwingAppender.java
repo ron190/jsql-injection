@@ -21,7 +21,7 @@ import com.jsql.view.swing.HelperUi;
  * Log4j swing appender to display console message to respective textareas.
  */
 public class SwingAppender extends WriterAppender {
-	
+    
     /**
      * Main console textfield.
      */

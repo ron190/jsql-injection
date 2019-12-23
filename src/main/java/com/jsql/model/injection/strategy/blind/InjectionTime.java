@@ -18,7 +18,7 @@ import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
  * A time attack class using parallel threads.
  */
 public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
-	
+    
     /**
      * Log4j logger sent to view.
      */

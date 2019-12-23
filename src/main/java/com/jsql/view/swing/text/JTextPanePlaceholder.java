@@ -21,7 +21,7 @@ import com.jsql.view.swing.text.action.DeletePrevCharAction;
  */
 @SuppressWarnings("serial")
 public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlaceholder {
-	
+    
     /**
      * Log4j logger sent to view.
      */

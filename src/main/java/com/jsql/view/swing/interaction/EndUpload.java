@@ -17,7 +17,7 @@ import com.jsql.view.swing.MediatorGui;
  * End the refreshing of File search button.
  */
 public class EndUpload implements InteractionCommand {
-	
+    
     /**
      * @param interactionParams
      */

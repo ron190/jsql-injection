@@ -19,7 +19,7 @@ import com.jsql.view.swing.text.action.DeletePrevCharAction;
  */
 @SuppressWarnings("serial")
 public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlaceholder {
-	
+    
     /**
      * Log4j logger sent to view.
      */

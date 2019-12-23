@@ -22,7 +22,7 @@ import javax.swing.JTextPane;
  */
 @SuppressWarnings("serial")
 public class JPopupTextPane extends JPopupTextComponent<JTextPane> implements DecoratorJComponent<JTextPane> {
-	
+    
     /**
      * Build new instance of JTextField to decorate.
      * @param placeholder

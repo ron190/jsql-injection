@@ -23,7 +23,7 @@ import javax.swing.tree.TreePath;
  * Observer to update tree node composed by the animated GIF.
  */
 public class ImageObserverAnimated implements ImageObserver {
-	
+    
     private JTree tree;
     
     private DefaultTreeModel treeModel;

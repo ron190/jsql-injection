@@ -77,7 +77,7 @@ import com.jsql.view.swing.ui.ComponentBorder;
  */
 @SuppressWarnings("serial")
 public class PanelAddressBar extends JPanel {
-	
+    
     /**
      * Log4j logger sent to view.
      */

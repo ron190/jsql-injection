@@ -8,7 +8,7 @@ import com.jsql.view.swing.HelperUi;
 
 @SuppressWarnings("serial")
 public class ButtonClose extends JButton {
-	
+    
     public ButtonClose() {
         super(HelperUi.ICON_CLOSE);
         

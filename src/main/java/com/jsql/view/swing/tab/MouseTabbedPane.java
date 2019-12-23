@@ -30,7 +30,7 @@ public class MouseTabbedPane extends JTabbedPane {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
-	
+    
     /**
      * Create tabs with ctrl-TAB, mousewheel and new UI.
      */

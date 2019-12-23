@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
  * the community translation protocol.
  */
 public class I18n {
-	
+    
     /**
      * Using default log4j.properties from root /
      */
@@ -46,7 +46,7 @@ public class I18n {
      * @return text corresponding to the key
      */
     public static String valueByKey(String key) {
-    	return (String) I18n.localeDefault.getObject(key);
+        return (String) I18n.localeDefault.getObject(key);
     }
     
     /**
@@ -70,11 +70,11 @@ public class I18n {
     // Getters and setters
     
     public static void setLocaleDefault(ResourceBundle localeDefault) {
-    	I18n.localeDefault = localeDefault;
+        I18n.localeDefault = localeDefault;
     }
     
     public static Locale getLocaleDefault() {
-    	return I18n.localeDefault.getLocale();
+        return I18n.localeDefault.getLocale();
     }
 
     public static ResourceBundle getLocaleRoot() {

@@ -20,7 +20,7 @@ import com.jsql.view.interaction.InteractionCommand;
  * Mark the injection as invulnerable to a error based injection.
  */
 public class MarkErrorInvulnerable implements InteractionCommand {
-	
+    
     private Map<Header, Object> mapHeader;
     private int indexMethodError;
     private InjectionModel injectionModel;

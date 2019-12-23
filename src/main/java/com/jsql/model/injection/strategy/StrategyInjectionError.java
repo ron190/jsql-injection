@@ -21,7 +21,7 @@ import com.jsql.model.suspendable.AbstractSuspendable;
  * Injection strategy using error attack.
  */
 public class StrategyInjectionError extends AbstractStrategy {
-	
+    
     /**
      * Log4j logger sent to view.
      */

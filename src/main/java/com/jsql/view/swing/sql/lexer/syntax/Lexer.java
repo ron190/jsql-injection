@@ -23,19 +23,19 @@ import java.io.IOException;
  * A lexer should implement this interface.
  */
 public interface Lexer {
-	
-	/**
-	 * Returns the next token.
-	 *
-	 * @return the next token
-	 */
-	Token getNextToken() throws java.io.IOException ;
+    
+    /**
+     * Returns the next token.
+     *
+     * @return the next token
+     */
+    Token getNextToken() throws java.io.IOException ;
 
     /**
      * Closes the current input stream, and resets the scanner to read from a new input stream.
-	 * All internal variables are reset, the old input stream  cannot be reused
-	 * (content of the internal buffer is discarded and lost).
-	 * The lexical state is set to the initial state.
+     * All internal variables are reset, the old input stream  cannot be reused
+     * (content of the internal buffer is discarded and lost).
+     * The lexical state is set to the initial state.
      * Subsequent tokens read from the lexer will start with the line, char, and column
      * values given here.
      *

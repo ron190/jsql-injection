@@ -42,7 +42,7 @@ import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
  */
 @SuppressWarnings("serial")
 public class ManagerBruteForce extends JPanel implements Manager {
-	
+    
     /**
      * Button running the attack.
      */

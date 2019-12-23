@@ -11,7 +11,7 @@ import com.jsql.view.swing.combomenu.BlankIcon;
 
 @SuppressWarnings("serial")
 public class ComboMenu extends JMenu {
-	
+    
     private transient ArrowIcon iconRenderer;
 
     public ComboMenu(String label) {

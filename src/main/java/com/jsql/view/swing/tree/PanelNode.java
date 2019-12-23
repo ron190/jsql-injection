@@ -41,7 +41,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  */
 @SuppressWarnings("serial")
 public class PanelNode extends JPanel {
-	
+    
     /**
      * Default icon of the node (database or table).
      */

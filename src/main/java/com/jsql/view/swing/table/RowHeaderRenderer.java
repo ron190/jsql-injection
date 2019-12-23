@@ -9,7 +9,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 @SuppressWarnings("serial")
 public class RowHeaderRenderer extends DefaultTableCellRenderer {
-	
+    
     public RowHeaderRenderer() {
         this.setHorizontalAlignment(SwingConstants.CENTER);
     }

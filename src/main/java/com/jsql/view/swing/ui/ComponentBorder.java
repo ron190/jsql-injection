@@ -25,7 +25,7 @@ import com.jsql.i18n.I18n;
  *  affecting the parent component.
  */
 public class ComponentBorder implements Border {
-	
+    
     public enum Edge {
         TOP,
         LEFT,

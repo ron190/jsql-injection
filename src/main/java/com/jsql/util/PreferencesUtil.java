@@ -64,7 +64,7 @@ public class PreferencesUtil {
      * loaded settings to the system.
      */
     public void loadSavedPreferences() {
-    	
+        
         // Use Preferences API to persist proxy configuration
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
         
@@ -110,7 +110,7 @@ public class PreferencesUtil {
      * @param path folder path to persist
      */
     public void set(String path) {
-    	
+        
         this.setPathFile(path);
         
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
@@ -156,7 +156,7 @@ public class PreferencesUtil {
         
         boolean is4K
     ) {
-    	
+        
         this.setIsCheckingUpdate(isCheckingUpdate);
         this.setIsReportingBugs(isReportingBugs);
         this.setIsFollowingRedirection(isFollowingRedirection);

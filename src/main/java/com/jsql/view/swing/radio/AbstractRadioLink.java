@@ -17,7 +17,7 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public abstract class AbstractRadioLink extends JLabel {
-	
+    
     /**
      * Build a radio label.
      * @param string Text for label

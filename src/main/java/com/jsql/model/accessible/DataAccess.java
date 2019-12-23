@@ -36,7 +36,7 @@ import com.jsql.model.suspendable.SuspendableGetRows;
  * using most suited injection strategy.
  */
 public class DataAccess {
-	
+    
     /**
      * Log4j logger sent to view.
      */
@@ -214,11 +214,11 @@ public class DataAccess {
         Matcher regexSearch =
             Pattern
                 .compile(
-            		MODE
-            		+ ENCLOSE_VALUE_RGX
-            		+ CELL_TABLE
-            		+ ENCLOSE_VALUE_RGX
-        		)
+                    MODE
+                    + ENCLOSE_VALUE_RGX
+                    + CELL_TABLE
+                    + ENCLOSE_VALUE_RGX
+                )
                 .matcher(resultToParse);
 
         if (!regexSearch.find()) {
@@ -295,11 +295,11 @@ public class DataAccess {
         Matcher regexSearch =
             Pattern
                 .compile(
-            		MODE
-            		+ ENCLOSE_VALUE_RGX
-            		+ CELL_TABLE
-            		+ ENCLOSE_VALUE_RGX
-        		)
+                    MODE
+                    + ENCLOSE_VALUE_RGX
+                    + CELL_TABLE
+                    + ENCLOSE_VALUE_RGX
+                )
                 .matcher(resultToParse);
         
         Request requestEndProgress = new Request();
@@ -380,11 +380,11 @@ public class DataAccess {
         Matcher regexSearch =
             Pattern
                 .compile(
-            		MODE
-            		+ ENCLOSE_VALUE_RGX
-            		+ CELL_TABLE
-            		+ ENCLOSE_VALUE_RGX
-        		)
+                    MODE
+                    + ENCLOSE_VALUE_RGX
+                    + CELL_TABLE
+                    + ENCLOSE_VALUE_RGX
+                )
                 .matcher(resultToParse);
 
         Request requestEndProgress = new Request();
@@ -473,15 +473,15 @@ public class DataAccess {
         // Parse all the data we have retrieved
         Matcher regexSearch =
             Pattern
-            	// TODO requete differente
+                // TODO requete differente
                 .compile(
-            		MODE
-            		+ ENCLOSE_VALUE_RGX
-            		+ "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)"
-            		+ SEPARATOR_QTE_RGX
-            		+ "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?"
-            		+ ENCLOSE_VALUE_RGX
-        		)
+                    MODE
+                    + ENCLOSE_VALUE_RGX
+                    + "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)"
+                    + SEPARATOR_QTE_RGX
+                    + "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*?)(\\x08)?"
+                    + ENCLOSE_VALUE_RGX
+                )
                 .matcher(resultToParse);
 
         if (!regexSearch.find()) {

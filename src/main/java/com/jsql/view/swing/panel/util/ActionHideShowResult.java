@@ -10,7 +10,7 @@ import com.jsql.view.swing.panel.PanelConsoles;
  * MouseAdapter to show/hide bottom panel.
  */
 public class ActionHideShowResult implements ActionListener {
-	
+    
     /**
      * Hide bottom panel if both main and bottom are visible, also
      * displays an ersatz bar replacing tabbedpane.

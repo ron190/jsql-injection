@@ -28,7 +28,7 @@ import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
  * in the source page.
  */
 public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
-	
+    
     /**
      * Log4j logger sent to view.
      */

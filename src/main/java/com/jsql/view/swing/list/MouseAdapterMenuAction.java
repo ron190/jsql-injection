@@ -45,7 +45,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
-	
+    
     /**
      * JList to add popupmenu.
      */

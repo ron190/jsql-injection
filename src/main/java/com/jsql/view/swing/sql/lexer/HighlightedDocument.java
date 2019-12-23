@@ -43,139 +43,139 @@ public class HighlightedDocument extends DefaultStyledDocument {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-	public static final Object SQL_STYLE = SQLLexer.class;
-	public static final Object JAVASCRIPT_STYLE = JavaScriptLexer.class;
-	
-	public static final Object GRAYED_OUT_STYLE = new Object();
+    public static final Object SQL_STYLE = SQLLexer.class;
+    public static final Object JAVASCRIPT_STYLE = JavaScriptLexer.class;
+    
+    public static final Object GRAYED_OUT_STYLE = new Object();
 
-	/**
-	 * A reader wrapped around the document so that the document can be fed into
-	 * the lexer.
-	 */
-	private transient DocumentReader documentReader;
-	
-	/** If non-null, all is drawn with this style (no lexing). */
-	private transient AttributeSet globalStyle = null;
+    /**
+     * A reader wrapped around the document so that the document can be fed into
+     * the lexer.
+     */
+    private transient DocumentReader documentReader;
+    
+    /** If non-null, all is drawn with this style (no lexing). */
+    private transient AttributeSet globalStyle = null;
 
-	/**
-	 * The lexer that tells us what colors different words should be.
-	 */
-	private transient Lexer syntaxLexer;
+    /**
+     * The lexer that tells us what colors different words should be.
+     */
+    private transient Lexer syntaxLexer;
 
-	/**
-	 * A thread that handles the actual coloring.
-	 */
-	private transient Colorer colorer;
+    /**
+     * A thread that handles the actual coloring.
+     */
+    private transient Colorer colorer;
 
-	/**
-	 * A lock for modifying the document, or for actions that depend on the
-	 * document not being modified.
-	 */
-	private transient Object docLock = new Object();
+    /**
+     * A lock for modifying the document, or for actions that depend on the
+     * document not being modified.
+     */
+    private transient Object docLock = new Object();
 
-	/**
-	 * Create a new Demo
-	 */
-	public HighlightedDocument(Object l) {
+    /**
+     * Create a new Demo
+     */
+    public HighlightedDocument(Object l) {
 
-		// Start the thread that does the coloring
-		this.colorer = new Colorer(this);
-		this.colorer.start();
+        // Start the thread that does the coloring
+        this.colorer = new Colorer(this);
+        this.colorer.start();
 
-		// create the new document.
-		this.documentReader = new DocumentReader(this);
-		
-		if (l == SQL_STYLE) {
-		    this.syntaxLexer = new SQLLexer(this.documentReader);
-		} else {
-		    this.syntaxLexer = new JavaScriptLexer(this.documentReader);
-		}
-	}
+        // create the new document.
+        this.documentReader = new DocumentReader(this);
+        
+        if (l == SQL_STYLE) {
+            this.syntaxLexer = new SQLLexer(this.documentReader);
+        } else {
+            this.syntaxLexer = new JavaScriptLexer(this.documentReader);
+        }
+    }
 
-	/**
-	 * Color or recolor the entire document
-	 */
-	public void colorAll() {
-		this.color(0, this.getLength());
-	}
+    /**
+     * Color or recolor the entire document
+     */
+    public void colorAll() {
+        this.color(0, this.getLength());
+    }
 
-	/**
-	 * Color a section of the document. The actual coloring will start somewhere
-	 * before the requested position and continue as long as needed.
-	 * 
-	 * @param position
-	 *            the starting point for the coloring.
-	 * @param adjustment
-	 *            amount of text inserted or removed at the starting point.
-	 */
-	public void color(int position, int adjustment) {
-		this.colorer.color(position, adjustment);
-	}
-	
-	public void setGlobalStyle(AttributeSet value) {
-		this.globalStyle = value;
-		this.colorAll();
-	}
+    /**
+     * Color a section of the document. The actual coloring will start somewhere
+     * before the requested position and continue as long as needed.
+     * 
+     * @param position
+     *            the starting point for the coloring.
+     * @param adjustment
+     *            amount of text inserted or removed at the starting point.
+     */
+    public void color(int position, int adjustment) {
+        this.colorer.color(position, adjustment);
+    }
+    
+    public void setGlobalStyle(AttributeSet value) {
+        this.globalStyle = value;
+        this.colorAll();
+    }
 
-	public void setHighlightStyle(Object valueSource) {
-	    Object value = valueSource;
-	    
-		if (value == HighlightedDocument.GRAYED_OUT_STYLE) {
-			this.setGlobalStyle(TokenStyles.getStyle("grayedOut"));
-			return;
-		}
+    public void setHighlightStyle(Object valueSource) {
+        Object value = valueSource;
+        
+        if (value == HighlightedDocument.GRAYED_OUT_STYLE) {
+            this.setGlobalStyle(TokenStyles.getStyle("grayedOut"));
+            return;
+        }
 
-		if (!(value instanceof Class)) {
+        if (!(value instanceof Class)) {
             value = HighlightedDocument.SQL_STYLE;
         }
-		Class<?> source = (Class<?>) value;
-		Class<?>[] parms = { Reader.class };
-		Object[] args = { this.documentReader };
-		try {
-			Constructor<?> cons = source.getConstructor(parms);
-			this.syntaxLexer = (Lexer) cons.newInstance(args);
-			this.globalStyle = null;
-			this.colorAll();
-		} catch (SecurityException e) {
-			LOGGER.error("HighlightEditor.SecurityException", e);
-		} catch (NoSuchMethodException e) {
-			LOGGER.error("HighlightEditor.NoSuchMethod", e);
-		} catch (InstantiationException e) {
-			LOGGER.error("HighlightEditor.InstantiationException", e);
-		} catch (InvocationTargetException e) {
-			LOGGER.error("HighlightEditor.InvocationTargetException", e);
-		} catch (IllegalAccessException e) {
-			LOGGER.error("HighlightEditor.IllegalAccessException", e);
-		}
-	}
-	
-	//
-	// Intercept inserts and removes to color them.
-	//
-	@Override
-	public void insertString(int offs, String str, AttributeSet a)
-			throws BadLocationException {
-		synchronized (this.docLock) {
-			super.insertString(offs, str, a);
-			this.color(offs, str.length());
-			this.documentReader.update(offs, str.length());
-		}
-	}
+        Class<?> source = (Class<?>) value;
+        Class<?>[] parms = { Reader.class };
+        Object[] args = { this.documentReader };
+        try {
+            Constructor<?> cons = source.getConstructor(parms);
+            this.syntaxLexer = (Lexer) cons.newInstance(args);
+            this.globalStyle = null;
+            this.colorAll();
+        } catch (SecurityException e) {
+            LOGGER.error("HighlightEditor.SecurityException", e);
+        } catch (NoSuchMethodException e) {
+            LOGGER.error("HighlightEditor.NoSuchMethod", e);
+        } catch (InstantiationException e) {
+            LOGGER.error("HighlightEditor.InstantiationException", e);
+        } catch (InvocationTargetException e) {
+            LOGGER.error("HighlightEditor.InvocationTargetException", e);
+        } catch (IllegalAccessException e) {
+            LOGGER.error("HighlightEditor.IllegalAccessException", e);
+        }
+    }
+    
+    //
+    // Intercept inserts and removes to color them.
+    //
+    @Override
+    public void insertString(int offs, String str, AttributeSet a)
+            throws BadLocationException {
+        synchronized (this.docLock) {
+            super.insertString(offs, str, a);
+            this.color(offs, str.length());
+            this.documentReader.update(offs, str.length());
+        }
+    }
 
-	@Override
-	public void remove(int offs, int len) throws BadLocationException {
-		synchronized (this.docLock) {
-			super.remove(offs, len);
-			this.color(offs, -len);
-			this.documentReader.update(offs, -len);
-		}
-	}
+    @Override
+    public void remove(int offs, int len) throws BadLocationException {
+        synchronized (this.docLock) {
+            super.remove(offs, len);
+            this.color(offs, -len);
+            this.documentReader.update(offs, -len);
+        }
+    }
 
-	// methods for Colorer to retrieve information
-	DocumentReader getDocumentReader() { return this.documentReader; }
-	Object getDocumentLock() { return this.docLock; }
-	Lexer getSyntaxLexer() { return this.syntaxLexer; }
-	AttributeSet getGlobalStyle() { return this.globalStyle; }
+    // methods for Colorer to retrieve information
+    DocumentReader getDocumentReader() { return this.documentReader; }
+    Object getDocumentLock() { return this.docLock; }
+    Lexer getSyntaxLexer() { return this.syntaxLexer; }
+    AttributeSet getGlobalStyle() { return this.globalStyle; }
 
     public void stopColorer() {
         this.colorer.stopColorer();

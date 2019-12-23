@@ -42,7 +42,7 @@ import com.jsql.view.swing.ui.CustomMetalTabbedPaneUI;
  */
 @SuppressWarnings("serial")
 public class TabManagers extends MouseTabbedPane {
-	
+    
     /**
      * Create manager panel.
      */

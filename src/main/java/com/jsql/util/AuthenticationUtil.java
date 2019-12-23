@@ -20,7 +20,7 @@ import com.jsql.model.InjectionModel;
  * with protocol Negotiate.
  */
 public class AuthenticationUtil {
-	
+    
     /**
      * Log4j logger sent to view.
      */
@@ -80,7 +80,7 @@ public class AuthenticationUtil {
         String kerberosLoginConf
     ) {
         
-    	// Check if krb file has change
+        // Check if krb file has change
         boolean isRestartRequired = false;
         if (
             this.isKerberos
@@ -112,12 +112,12 @@ public class AuthenticationUtil {
         // Check krb integrity
         if (this.isKerberos) {
             // Fix #23877: NoClassDefFoundError on java/nio/file/Paths
-        	if (!new File(this.pathKerberosKrb5).exists()) {
-        		LOGGER.warn("Krb5 file not found: " + this.pathKerberosKrb5);
-        	}
-        	if (!new File(this.pathKerberosLogin).exists()) {
-        		LOGGER.warn("Login file not found: " + this.pathKerberosLogin);
-        	}
+            if (!new File(this.pathKerberosKrb5).exists()) {
+                LOGGER.warn("Krb5 file not found: " + this.pathKerberosKrb5);
+            }
+            if (!new File(this.pathKerberosLogin).exists()) {
+                LOGGER.warn("Login file not found: " + this.pathKerberosLogin);
+            }
         }
         
         // Activate standard authentication
@@ -152,7 +152,7 @@ public class AuthenticationUtil {
      * and apply environment settings.
      */
     public void setKerberosCifs() {
-    	
+        
         // Use Preferences API to persist proxy configuration
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
 
@@ -191,7 +191,7 @@ public class AuthenticationUtil {
      * standard timeout configuration.
      */
     private void setAuthentication() {
-    	
+        
         if (this.isKerberos) {
             if (System.getProperty("java.protocol.handler.pkgs") != null) {
                 System.setProperty(

@@ -18,7 +18,7 @@ import com.jsql.view.swing.manager.util.StateButton;
  * End the refreshing of File search button.
  */
 public class EndFileSearch implements InteractionCommand {
-	
+    
     /**
      * @param interactionParams
      */

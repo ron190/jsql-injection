@@ -29,7 +29,7 @@ import com.jsql.view.swing.HelperUi;
  * Item renderer for JList.
  */
 public class RendererComplexCell implements ListCellRenderer<ItemList> {
-	
+    
     /**
      * List component renderer.
      */

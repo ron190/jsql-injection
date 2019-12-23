@@ -18,7 +18,7 @@ import com.jsql.view.swing.MediatorGui;
  * Mark the injection as using a user profile vulnerable to file I/O.
  */
 public class MarkFileSystemVulnerable implements InteractionCommand {
-	
+    
     /**
      * @param nullParam
      */

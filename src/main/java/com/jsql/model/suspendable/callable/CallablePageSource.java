@@ -11,7 +11,7 @@ import com.jsql.model.InjectionModel;
  * tag: store user information (ex. current index)
  */
 public class CallablePageSource implements Callable<CallablePageSource> {
-	
+    
     /**
      * URL to load.
      */

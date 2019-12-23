@@ -33,7 +33,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  */
 @SuppressWarnings("serial")
 public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor, TreeSelectionListener, MouseListener {
-	
+    
     /**
      * Log4j logger sent to view.
      */

@@ -17,7 +17,7 @@ import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
 public class CookieTestSuite extends ConcreteMySQLTestSuite {
-	
+    
     // pour chaque vendor/méthode/strategy
     /**
      * liste db, table, colonne, value

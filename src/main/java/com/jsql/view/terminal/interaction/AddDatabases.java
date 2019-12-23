@@ -21,7 +21,7 @@ import com.jsql.view.interaction.InteractionCommand;
  * Add the databases to current injection panel.
  */
 public class AddDatabases implements InteractionCommand {
-	
+    
     /**
      * Using default log4j.properties from root /
      */

@@ -16,7 +16,7 @@ import com.jsql.view.interaction.InteractionCommand;
  * Mark the injection as vulnerable to a basic injection.
  */
 public class MarkNormalVulnerable implements InteractionCommand {
-	
+    
     /**
      * @param nullParam
      */

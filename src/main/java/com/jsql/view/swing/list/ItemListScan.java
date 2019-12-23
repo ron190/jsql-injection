@@ -31,5 +31,5 @@ public class ItemListScan extends ItemList {
     public String getBeanInjectionToJSON() {
         return new JSONObject(this.beanInjection).toString();
     }
-	
+    
 }

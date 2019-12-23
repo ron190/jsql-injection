@@ -49,7 +49,7 @@ import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
  */
 @SuppressWarnings("serial")
 public abstract class AbstractManagerShell extends AbstractManagerList {
-	
+    
     /**
      * Log4j logger sent to view.
      */

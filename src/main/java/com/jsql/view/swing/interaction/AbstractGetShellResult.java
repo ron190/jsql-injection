@@ -20,7 +20,7 @@ import com.jsql.view.swing.shell.AbstractShell;
  * Append the result of a command in the terminal.
  */
 public class AbstractGetShellResult implements InteractionCommand {
-	
+    
     /**
      * Unique identifier for the terminal. Used for outputing results of
      * commands in the right shell tab (in case of multiple shell opened).

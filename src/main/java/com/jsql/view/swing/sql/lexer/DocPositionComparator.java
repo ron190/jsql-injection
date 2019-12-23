@@ -25,12 +25,12 @@ import java.util.Comparator;
  */
 class DocPositionComparator implements Comparator<DocPosition> {
     
-	public static final DocPositionComparator instance = new DocPositionComparator();
-	
-	private DocPositionComparator() {
-	    
-	}
-	
+    public static final DocPositionComparator instance = new DocPositionComparator();
+    
+    private DocPositionComparator() {
+        
+    }
+    
     /**
      * Does this Comparator equal another?
      * Since all DocPositionComparators are the same, they
@@ -38,9 +38,9 @@ class DocPositionComparator implements Comparator<DocPosition> {
      *
      * @return true for DocPositionComparators, false otherwise.
      */
-	@Override
+    @Override
     public boolean equals(Object obj){
-    	return this == obj;
+        return this == obj;
     }
 
     /**
@@ -50,9 +50,9 @@ class DocPositionComparator implements Comparator<DocPosition> {
      * @param o2 second DocPosition
      * @return negative if first < second, 0 if equal, positive if first > second
      */
-	@Override
+    @Override
     public int compare(DocPosition o1, DocPosition o2){
-	    DocPosition d1 = o1;
+        DocPosition d1 = o1;
         DocPosition d2 = o2;
         return d1.getPosition() - d2.getPosition();
     }

@@ -1,10 +1,12 @@
 {
     "version": "0.81",
     "news": [
-        "[In progress] Devops: ITs with single Spring API to multiple dockerized hibernate tenants.",
-        "[On hold] Tampering against WAF.",
+        "[Hiring] Apache PHP, Python and Node API integration on Travis CI.",
+        "[Hiring] Continuous integration on GitLab CI, Github Actions and Circle CI.",
+        "[Hiring] ProGuard shrinking, Continuous deployment.",
+        "[In progress] Tamper scripts against WAF. Enable creation of issues and exceptions on Github.",
         "[Roadmap] Burp integration, Crawler, Dump to a file, Full Path Disclosure, WAF detection.",
-        "[Done] Translation update: German, Arabic, Portuguese, Romanian.",
+        "[Done] Spock tests and integration tests with Spring API to dockerized hibernate tenants on Travis CI.",
         "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer."
     ]
 }

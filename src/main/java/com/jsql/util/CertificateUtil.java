@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  * in order to ignore connection exception in that specific case.
  */
 public class CertificateUtil {
-	
+    
     /**
      * Log4j logger sent to view.
      */
@@ -34,9 +34,9 @@ public class CertificateUtil {
         // Create a trust manager that does not validate certificate chains
         // and ignore exception PKIX path building failed: unable to find valid certification path to requested target
         TrustManager[] trustAllCerts = new TrustManager[] {
-        		
+                
             new X509TrustManager() {
-            	
+                
                 @Override
                 public X509Certificate[] getAcceptedIssuers() {
                     return new X509Certificate[0];

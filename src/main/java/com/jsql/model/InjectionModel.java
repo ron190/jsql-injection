@@ -102,7 +102,7 @@ public class InjectionModel extends AbstractModelObservable {
         this.mediatorUtils.setThreadUtil(new ThreadUtil(this));
         this.mediatorUtils.setTamperingUtil(new TamperingUtil(this));
     }
-	
+    
     /**
      * Log4j logger sent to view.
      */
@@ -802,7 +802,7 @@ public class InjectionModel extends AbstractModelObservable {
     
     public String getDatabaseInfos() {
         return
-    		"Database ["+ this.nameDatabase +"] "
+            "Database ["+ this.nameDatabase +"] "
             + "on "+ this.getMediatorVendor().getVendor() +" ["+ this.versionDatabase +"] "
             + "for user ["+ this.username +"]";
     }

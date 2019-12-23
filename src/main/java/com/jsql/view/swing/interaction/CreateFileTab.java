@@ -25,7 +25,7 @@ import com.jsql.view.swing.text.JPopupTextArea;
  * Create a new tab for the file.
  */
 public class CreateFileTab extends CreateTab implements InteractionCommand {
-	
+    
     /**
      * Name of the file.
      */

@@ -27,7 +27,7 @@ import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
  * Force to insertion char otherwise.
  */
 public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
-	
+    
     /**
      * Log4j logger sent to view.
      */

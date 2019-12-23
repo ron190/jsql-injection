@@ -70,7 +70,7 @@ import com.jsql.model.exception.IgnoreMessageException;
  * @see com.jgoodies.looks.common.ShadowPopupFactory
  */
 public final class ShadowPopup extends Popup {
-	
+    
     /**
      * Log4j logger sent to view.
      */

@@ -92,7 +92,7 @@ public class PanelConsoles extends JPanel {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
-	
+    
     /**
      * Console for default application messages.
      */

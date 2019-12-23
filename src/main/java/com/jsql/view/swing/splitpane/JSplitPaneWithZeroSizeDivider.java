@@ -45,7 +45,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
-	
+    
     /**
      * The size of the transparent drag area.
      */

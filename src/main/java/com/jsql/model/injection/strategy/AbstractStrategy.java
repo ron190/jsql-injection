@@ -21,7 +21,7 @@ public abstract class AbstractStrategy {
         this.injectionModel = injectionModel;
     }
     InjectionModel injectionModel;
-	
+    
     /**
      * True if injection can be used, false otherwise.
      */

@@ -24,7 +24,7 @@ import com.jsql.model.suspendable.AbstractSuspendable;
  * Injection strategy using blind attack.
  */
 public class StrategyInjectionBlind extends AbstractStrategy {
-	
+    
     /**
      * Log4j logger sent to view.
      */

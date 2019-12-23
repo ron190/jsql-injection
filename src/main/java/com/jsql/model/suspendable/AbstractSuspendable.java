@@ -9,7 +9,7 @@ import com.jsql.model.exception.JSqlException;
  * A thread used to inject database ; stoppable and pausable.
  */
 public abstract class AbstractSuspendable<T> {
-	
+    
     /**
      * Log4j logger sent to view.
      */
@@ -55,7 +55,7 @@ public abstract class AbstractSuspendable<T> {
      * Mark as stopped.
      */
     public void stop() {
-    	this.unpause();
+        this.unpause();
         this.isStopped = true;
     }
     

@@ -10,7 +10,7 @@ import javax.swing.text.StyleConstants;
  */
 @SuppressWarnings("serial")
 public class SimpleConsoleAdapter extends JColoredConsole {
-	
+    
     private SimpleAttributeSet attributeTimestamp = new SimpleAttributeSet();
     
     /**

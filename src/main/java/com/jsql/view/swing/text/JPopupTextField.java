@@ -20,7 +20,7 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public class JPopupTextField extends JPopupTextComponent<JTextField> implements DecoratorJComponent<JTextField> {
-	
+    
     /**
      * Build new instance of JTextField to decorate with default text.
      * @param string Text to display

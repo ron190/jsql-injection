@@ -33,7 +33,7 @@ import com.jsql.view.swing.HelperUi;
  * Used by renderer and editor.
  */
 public class NodeModelColumn extends AbstractNodeModel {
-	
+    
     /**
      * Node as a column model.
      * @param column Element column coming from model

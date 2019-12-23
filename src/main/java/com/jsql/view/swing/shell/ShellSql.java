@@ -20,7 +20,7 @@ import com.jsql.model.MediatorModel;
  */
 @SuppressWarnings("serial")
 public class ShellSql extends AbstractShell {
-	
+    
    /**
      * Build a SQL shell instance.
      * @param terminalID Unique identifier to discriminate beyond multiple opened terminals

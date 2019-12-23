@@ -32,7 +32,7 @@ public final class ThreadUtil {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
-	
+    
     /**
      * List of running jobs associated to a database injection task.
      * We can interract with those tasks in order to pause/resume and stop the process.

@@ -21,7 +21,7 @@ import com.jsql.model.InjectionModel;
  * It uses jsql-robot profile to post data to Github.
  */
 public class GitUtil {
-	
+    
     /**
      * Log4j logger sent to view.
      */
@@ -106,7 +106,7 @@ public class GitUtil {
      * @param reportTitle title of the Issue
      */
     public void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
-    	// Check proxy
+        // Check proxy
         if (!this.injectionModel.getMediatorUtils().getProxyUtil().isLive(showOnConsole)) {
             return;
         }

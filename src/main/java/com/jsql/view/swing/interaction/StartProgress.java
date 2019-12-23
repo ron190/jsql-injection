@@ -22,7 +22,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  * Start refreshing the progress bar of an element in the database tree.
  */
 public class StartProgress implements InteractionCommand {
-	
+    
     /**
      * The element in the database tree for which the progress starts.
      */

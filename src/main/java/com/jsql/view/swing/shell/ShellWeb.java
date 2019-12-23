@@ -20,7 +20,7 @@ import com.jsql.model.MediatorModel;
  */
 @SuppressWarnings("serial")
 public class ShellWeb extends AbstractShell {
-	
+    
     /**
      * Build a webshell instance.
      * @param terminalID Unique identifier to discriminate beyond multiple opened terminals

@@ -14,7 +14,7 @@ import com.jsql.model.InjectionModel;
  * It uses Github as the issue webtracker.
  */
 public class ExceptionUtil {
-	
+    
     /**
      * Using default log4j.properties from root /
      */
@@ -53,21 +53,21 @@ public class ExceptionUtil {
      * intercept and process the error to Github.
      */
     public void setUncaughtExceptionHandler() {
-    	
-    	// Regular Exception
-    	Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
+        
+        // Regular Exception
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler());
 
-    	// Event dispatching thread Exception
-    	try {
-			SwingUtilities.invokeAndWait(() ->
-		        // We are in the event dispatching thread
-				Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler())
-		    );
-		} catch (InvocationTargetException | InterruptedException e) {
-			LOGGER.error("Unhandled Exception on ExceptionUtil", e);
-		    Thread.currentThread().interrupt();
-		}
-    	
+        // Event dispatching thread Exception
+        try {
+            SwingUtilities.invokeAndWait(() ->
+                // We are in the event dispatching thread
+                Thread.currentThread().setUncaughtExceptionHandler(new ExceptionHandler())
+            );
+        } catch (InvocationTargetException | InterruptedException e) {
+            LOGGER.error("Unhandled Exception on ExceptionUtil", e);
+            Thread.currentThread().interrupt();
+        }
+        
     }
     
 }

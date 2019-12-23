@@ -59,7 +59,7 @@ import com.jsql.view.swing.text.JTextFieldPlaceholder;
  */
 @SuppressWarnings("serial")
 public class PanelTable extends JPanel {
-	
+    
     /**
      * Table to display in the panel.
      */

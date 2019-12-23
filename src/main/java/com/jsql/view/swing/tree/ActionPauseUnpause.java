@@ -23,7 +23,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  * Action to pause and unpause injection process.
  */
 public class ActionPauseUnpause implements ActionListener {
-	
+    
     AbstractNodeModel nodeModel;
     
     DefaultMutableTreeNode currentTableNode;

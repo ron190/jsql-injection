@@ -22,7 +22,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  * Stop the refreshing of progress bar.
  */
 public class EndProgress implements InteractionCommand {
-	
+    
     /**
      * The element in the database tree for which the progress ends.
      */

@@ -18,7 +18,7 @@ import javax.swing.JComponent;
  */
 @FunctionalInterface
 interface DecoratorJComponent<T extends JComponent> {
-	
+    
     /**
      * Get back the decorated component.
      * @return Proxyfied component

@@ -32,7 +32,7 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public class JPopupMenuTable extends JPopupMenu {
-	
+    
     /**
      * Table with new menu and shortcut.
      */

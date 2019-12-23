@@ -14,7 +14,7 @@ import com.jsql.util.GitUtil.ShowOnConsole;
  * The proxy configuration is saved as preferences and applied to the JVM.
  */
 public class ProxyUtil {
-	
+    
     /**
      * Log4j logger sent to view.
      */
@@ -74,7 +74,7 @@ public class ProxyUtil {
         String proxyAddressHttps,
         String proxyPortHttps
     ) {
-    	
+        
         // Set the application proxy settings
         this.setUsingProxy(isUsingProxy);
         this.setProxyAddress(proxyAddress);
@@ -117,7 +117,7 @@ public class ProxyUtil {
      * Initialize proxy information from JVM already saved preferences.
      */
     public void setProxy() {
-    	
+        
         // Use Preferences API to persist proxy configuration
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
 
@@ -152,7 +152,7 @@ public class ProxyUtil {
      * @return true if the proxy is up
      */
     public boolean isLive(ShowOnConsole showOnConsole) {
-    	
+        
         boolean proxyIsChecked = true;
         
         if (
@@ -161,12 +161,12 @@ public class ProxyUtil {
             && !"".equals(this.getProxyPort())
         ) {
             try {
-            	Socket socket = new Socket(this.getProxyAddress(), Integer.parseInt(this.getProxyPort()));
-            	socket.close();
-            	
-            	if (showOnConsole == ShowOnConsole.YES) {
-            	    ProxyUtil.LOGGER.debug("Connection to HTTP proxy "+ this.getProxyAddress() +":"+ this.getProxyPort() +" successful");
-            	}
+                Socket socket = new Socket(this.getProxyAddress(), Integer.parseInt(this.getProxyPort()));
+                socket.close();
+                
+                if (showOnConsole == ShowOnConsole.YES) {
+                    ProxyUtil.LOGGER.debug("Connection to HTTP proxy "+ this.getProxyAddress() +":"+ this.getProxyPort() +" successful");
+                }
             } catch (Exception e) {
                 proxyIsChecked = false;
                 

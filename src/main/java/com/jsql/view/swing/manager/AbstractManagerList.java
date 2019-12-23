@@ -45,7 +45,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
-	
+    
     protected transient List<ItemList> itemsList = new ArrayList<>();
     
     protected DnDList listFile;

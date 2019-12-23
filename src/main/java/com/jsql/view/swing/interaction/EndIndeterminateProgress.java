@@ -23,7 +23,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  * progression (like colum search).
  */
 public class EndIndeterminateProgress implements InteractionCommand {
-	
+    
     /**
      * The element in the database tree for which the progress ends.
      */

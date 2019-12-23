@@ -45,7 +45,7 @@ import com.jsql.view.swing.tree.PanelNode;
  * Model adding functional layer to the node ; used by renderer and editor.
  */
 public abstract class AbstractNodeModel {
-	
+    
     /**
      * Element from injection model in a linked list.
      */

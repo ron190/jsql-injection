@@ -35,7 +35,7 @@ import javax.swing.table.TableModel;
  *  of RESIZE_ALL_COLUMNS will work the best.
  */
 public class AdjusterTableColumn implements PropertyChangeListener, TableModelListener {
-	
+    
     private JTable tableAdjust;
     private int spacing;
     private boolean isColumnHeaderIncluded;

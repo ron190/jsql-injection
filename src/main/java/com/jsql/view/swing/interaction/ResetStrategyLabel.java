@@ -17,7 +17,7 @@ import com.jsql.view.swing.MediatorGui;
  * Erase the screen.
  */
 public class ResetStrategyLabel implements InteractionCommand {
-	
+    
     /**
      * @param interactionParams
      */

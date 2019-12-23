@@ -20,7 +20,7 @@ import com.jsql.view.swing.MediatorGui;
  * Append text to the tab Binary.
  */
 public class MessageBinary implements InteractionCommand {
-	
+    
     /**
      * Text to append to the Binary log area.
      */

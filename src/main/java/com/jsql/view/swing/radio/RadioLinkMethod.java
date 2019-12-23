@@ -13,7 +13,7 @@ import com.jsql.view.swing.MediatorGui;
  */
 @SuppressWarnings("serial")
 public class RadioLinkMethod extends AbstractRadioLink {
-	
+    
     /**
      * Group of radio label for address bar.
      */

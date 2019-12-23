@@ -19,7 +19,7 @@ import com.jsql.view.swing.MediatorGui;
  * End the refreshing of the main Start injection button.
  */
 public class EndPreparation implements InteractionCommand {
-	
+    
     /**
      * @param interactionParams
      */

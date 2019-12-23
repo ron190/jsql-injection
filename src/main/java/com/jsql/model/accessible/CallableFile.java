@@ -20,7 +20,7 @@ public class CallableFile implements Callable<CallableFile> {
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
-	
+    
     /**
      * Path to the file to read.
      */
@@ -36,7 +36,7 @@ public class CallableFile implements Callable<CallableFile> {
      */
     private SuspendableGetRows suspendableReadFile;
 
-	/**
+    /**
      * Create Callable to read a file.
      * @param pathFile
      */
@@ -94,12 +94,12 @@ public class CallableFile implements Callable<CallableFile> {
     }
 
     public String getSourceFile() {
-    	// TODO optional
+        // TODO optional
         return this.sourceFile;
     }
 
     public SuspendableGetRows getSuspendableReadFile() {
-		return this.suspendableReadFile;
-	}
+        return this.suspendableReadFile;
+    }
     
 }

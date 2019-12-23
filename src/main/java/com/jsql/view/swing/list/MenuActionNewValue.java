@@ -33,7 +33,7 @@ import com.jsql.view.swing.text.JPopupTextArea;
  * Action to add a new item to a JList.
  */
 public class MenuActionNewValue implements ActionListener {
-	
+    
     /**
      * List to add new items.
      */

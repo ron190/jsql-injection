@@ -21,7 +21,7 @@ import com.jsql.view.interaction.InteractionCommand;
  * Add the tables to the corresponding database.
  */
 public class AddTables implements InteractionCommand {
-	
+    
     /**
      * Using default log4j.properties from root /
      */

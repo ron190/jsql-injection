@@ -20,7 +20,7 @@ import com.jsql.view.interaction.InteractionCommand;
  * Create a new tab for the values.
  */
 public class CreateValuesTab implements InteractionCommand {
-	
+    
     /**
      * Using default log4j.properties from root /
      */

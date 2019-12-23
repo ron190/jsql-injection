@@ -21,7 +21,7 @@ import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
  * Parallelizes the search, provides the stop capability
  */
 public class SuspendableGetIndexes extends AbstractSuspendable<String> {
-	
+    
     /**
      * Log4j logger sent to view.
      */

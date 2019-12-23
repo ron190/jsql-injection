@@ -19,7 +19,7 @@ import com.jsql.view.swing.HelperUi;
  */
 @SuppressWarnings("serial")
 public class JTextFieldAddressBar extends JPopupTextField implements DecoratorJComponent<JTextField> {
-	
+    
     /**
      * Constructor with default text.
      * @param string The text to display

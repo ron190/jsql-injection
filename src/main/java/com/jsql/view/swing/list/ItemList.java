@@ -14,7 +14,7 @@ package com.jsql.view.swing.list;
  * Basic object to avoid String incompatibility with drag and drop feature.
  */
 public class ItemList {
-	
+    
     /**
      * Text displayed on item.
      */

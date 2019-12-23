@@ -56,7 +56,7 @@ import com.jsql.view.swing.ui.CustomBasicComboBoxUI;
  */
 @SuppressWarnings("serial")
 public final class HelperUi {
-	
+    
     /**
      * Log4j logger sent to view.
      */
@@ -158,7 +158,7 @@ public final class HelperUi {
     );
     
     public static final Border BORDER_ROUND_BLU = new AbstractBorder() {
-    	
+        
         @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
             Graphics2D g2 = (Graphics2D)g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

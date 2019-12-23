@@ -30,7 +30,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel.JPopupMenu2;
  * Action to start and stop injection process.
  */
 public class ActionLoadStop implements ActionListener {
-	
+    
     AbstractNodeModel nodeModel;
     
     DefaultMutableTreeNode currentTableNode;
@@ -68,7 +68,7 @@ public class ActionLoadStop implements ActionListener {
             new SwingWorker<Object, Object>(){
                 @Override
                 protected Object doInBackground() throws Exception {
-                	Thread.currentThread().setName("SwingWorkerActionLoadStop");
+                    Thread.currentThread().setName("SwingWorkerActionLoadStop");
                     MediatorModel.model().getDataAccess().listValues(columnsToSearch);
                     return null;
                 }

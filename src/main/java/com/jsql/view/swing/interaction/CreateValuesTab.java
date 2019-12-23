@@ -28,7 +28,7 @@ import com.jsql.view.swing.tree.model.AbstractNodeModel;
  * Create a new tab for the values.
  */
 public class CreateValuesTab extends CreateTab implements InteractionCommand {
-	
+    
     /**
      * Array of column names, diplayed in header table.
      */

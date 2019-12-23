@@ -43,7 +43,7 @@ import net.sourceforge.spnego.SpnegoHttpURLConnection;
  * library bugs (jcifs) or core design lazyness (custom HTTP method).
  */
 public class ConnectionUtil {
-	
+    
     /**
      * Log4j logger sent to view.
      */

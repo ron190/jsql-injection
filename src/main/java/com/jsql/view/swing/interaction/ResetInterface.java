@@ -17,7 +17,7 @@ import com.jsql.view.swing.MediatorGui;
  * Erase the screen.
  */
 public class ResetInterface implements InteractionCommand {
-	
+    
     /**
      * @param interactionParams
      */

@@ -22,7 +22,7 @@ import javax.swing.JTextArea;
  */
 @SuppressWarnings("serial")
 public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements DecoratorJComponent<JTextArea> {
-	
+    
     /**
      * Build new instance of readonly JTextArea to decorate.
      */

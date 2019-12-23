@@ -5,7 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import org.apache.log4j.Logger;
 
 public class HashBruter extends Bruter {
-	
+    
     /**
      * Log4j logger sent to view.
      */
