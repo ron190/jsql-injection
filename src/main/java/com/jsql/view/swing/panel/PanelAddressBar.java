@@ -54,8 +54,8 @@ import com.jsql.model.bean.util.Request;
 import com.jsql.model.injection.method.MethodInjection;
 import com.jsql.model.injection.strategy.AbstractStrategy;
 import com.jsql.model.injection.strategy.StrategyInjectionError;
-import com.jsql.model.injection.vendor.model.Model.Strategy.Error.Method;
 import com.jsql.model.injection.vendor.model.Vendor;
+import com.jsql.model.injection.vendor.model.yaml.Method;
 import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
@@ -535,8 +535,8 @@ public class PanelAddressBar extends JPanel {
         this.itemRadioStrategyError[0].removeAll();
 
         Integer[] i = { 0 };
-        if (vendor != MediatorModel.model().getMediatorVendor().getAuto() && vendor.instance().getXmlModel().getStrategy().getError() != null) {
-            for (Method methodError: vendor.instance().getXmlModel().getStrategy().getError().getMethod()) {
+        if (vendor != MediatorModel.model().getMediatorVendor().getAuto() && vendor.instance().getModelYaml().getStrategy().getError() != null) {
+            for (Method methodError: vendor.instance().getModelYaml().getStrategy().getError().getMethod()) {
                 JMenuItem itemRadioVendor = new JRadioButtonMenuItem(methodError.getName());
                 itemRadioVendor.setEnabled(false);
                 this.itemRadioStrategyError[0].add(itemRadioVendor);

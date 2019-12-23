@@ -2,10 +2,11 @@ package com.jsql.model.injection.vendor.model;
 
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
+import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
 
 public interface AbstractVendor {
     
-    Model getXmlModel();
+    ModelYaml getModelYaml();
     
     String sqlTestError();
     

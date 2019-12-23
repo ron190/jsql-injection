@@ -70,8 +70,6 @@ public class TamperingUtil {
         Object result = null;
         
         try {
-//            nashornEngine.eval(new FileReader("src/main/resources/random-case.js"));
-//            nashornEngine.eval("load('src/main/resources/random-case.js'); var tampering = function(sql) {return "+ js +"}");
             nashornEngine.eval(js);
             
             Invocable invocable = (Invocable) nashornEngine;
@@ -100,34 +98,34 @@ public class TamperingUtil {
         }
         
         if (this.isRandomCase) {
-            sqlQuery = eval(sqlQuery, Tampering.RANDOM_CASE.instance().getXmlModel().getJavascript());
+            sqlQuery = eval(sqlQuery, Tampering.RANDOM_CASE.instance().getModelYaml().getJavascript());
         }
 
         if (this.isHexToChar) {
-            sqlQuery = eval(sqlQuery, Tampering.HEX_TO_CHAR.instance().getXmlModel().getJavascript());
+            sqlQuery = eval(sqlQuery, Tampering.HEX_TO_CHAR.instance().getModelYaml().getJavascript());
         }
 
         if (this.isFunctionComment) {
-            sqlQuery = eval(sqlQuery, Tampering.COMMENT_TO_METHOD_SIGNATURE.instance().getXmlModel().getJavascript());
+            sqlQuery = eval(sqlQuery, Tampering.COMMENT_TO_METHOD_SIGNATURE.instance().getModelYaml().getJavascript());
         }
 
         if (this.isVersionComment) {
-            sqlQuery = eval(sqlQuery, Tampering.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getXmlModel().getJavascript());
+            sqlQuery = eval(sqlQuery, Tampering.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getModelYaml().getJavascript());
         }
         
         if (this.isEqualToLike) {
-            sqlQuery = eval(sqlQuery, Tampering.EQUAL_TO_LIKE.instance().getXmlModel().getJavascript());
+            sqlQuery = eval(sqlQuery, Tampering.EQUAL_TO_LIKE.instance().getModelYaml().getJavascript());
         }
         
         // Dependency to: EQUAL_TO_LIKE
         if (this.isSpaceToDashComment) {
-            sqlQuery = eval(sqlQuery, Tampering.SPACE_TO_DASH_COMMENT.instance().getXmlModel().getJavascript());
+            sqlQuery = eval(sqlQuery, Tampering.SPACE_TO_DASH_COMMENT.instance().getModelYaml().getJavascript());
             
         } else if (this.isSpaceToMultilineComment) {
-            sqlQuery = eval(sqlQuery, Tampering.SPACE_TO_MULTILINE_COMMENT.instance().getXmlModel().getJavascript());
+            sqlQuery = eval(sqlQuery, Tampering.SPACE_TO_MULTILINE_COMMENT.instance().getModelYaml().getJavascript());
             
         } else if (this.isSpaceToSharpComment) {
-            sqlQuery = eval(sqlQuery, Tampering.SPACE_TO_SHARP_COMMENT.instance().getXmlModel().getJavascript());
+            sqlQuery = eval(sqlQuery, Tampering.SPACE_TO_SHARP_COMMENT.instance().getModelYaml().getJavascript());
         }
         
         if (this.isEval) {
@@ -138,11 +136,11 @@ public class TamperingUtil {
         
         // Include character insertion at the beginning of query
         if (this.isQuoteToUtf8) {
-            sqlQuery = eval(sqlQuery, Tampering.QUOTE_TO_UTF8.instance().getXmlModel().getJavascript());
+            sqlQuery = eval(sqlQuery, Tampering.QUOTE_TO_UTF8.instance().getModelYaml().getJavascript());
         }
         
         if (this.isBase64) {
-            sqlQuery = eval(sqlQuery, Tampering.BASE64.instance().getXmlModel().getJavascript());
+            sqlQuery = eval(sqlQuery, Tampering.BASE64.instance().getModelYaml().getJavascript());
         }
         
         // Problème si le tag contient des caractères spéciaux

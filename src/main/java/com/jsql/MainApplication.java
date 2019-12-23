@@ -10,10 +10,6 @@ import org.apache.log4j.Appender;
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
 
-import com.ctc.wstx.stax.WstxInputFactory;
-import com.ctc.wstx.stax.WstxOutputFactory;
-import com.fasterxml.jackson.databind.ext.Java7Support;
-import com.fasterxml.jackson.databind.ext.Java7SupportImpl;
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.MediatorModel;
@@ -44,12 +40,6 @@ public class MainApplication {
     // Keep referenced class for Maven shade minimizeJar
     @SuppressWarnings("unused")
     private Appender consoleAppender = new ConsoleAppender();
-    @SuppressWarnings("unused")
-    private WstxInputFactory wstxInputFactory = new WstxInputFactory();
-    @SuppressWarnings("unused")
-    private WstxOutputFactory wstxOutputFactory = new WstxOutputFactory();
-    @SuppressWarnings("unused")
-    private Java7Support java7SupportImpl = new Java7SupportImpl();
     
     private MainApplication() {
         // nothing

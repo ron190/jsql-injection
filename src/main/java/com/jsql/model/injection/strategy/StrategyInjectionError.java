@@ -11,10 +11,10 @@ import com.jsql.model.accessible.DataAccess;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.StoppedByUserSlidingException;
-import com.jsql.model.injection.vendor.model.Model.Strategy;
-import com.jsql.model.injection.vendor.model.Model.Strategy.Configuration;
-import com.jsql.model.injection.vendor.model.Model.Strategy.Error.Method;
-import com.jsql.model.injection.vendor.model.VendorXml;
+import com.jsql.model.injection.vendor.model.VendorYaml;
+import com.jsql.model.injection.vendor.model.yaml.Configuration;
+import com.jsql.model.injection.vendor.model.yaml.Method;
+import com.jsql.model.injection.vendor.model.yaml.Strategy;
 import com.jsql.model.suspendable.AbstractSuspendable;
 
 /**
@@ -43,37 +43,37 @@ public class StrategyInjectionError extends AbstractStrategy {
         this.isApplicable = false;
         this.tabCapacityMethod = null;
         
-        Strategy strategyXml = this.injectionModel.getMediatorVendor().getVendor().instance().getXmlModel().getStrategy();
-        Configuration configurationXml = strategyXml.getConfiguration();
+        Strategy strategyYaml = this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy();
+        Configuration configurationYaml = strategyYaml.getConfiguration();
         
-        if (strategyXml.getError() == null) {
+        if (strategyYaml.getError() == null) {
             LOGGER.info("No Error strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
             return;
         }
 
         LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Error...");
         
-        this.tabCapacityMethod = new String[strategyXml.getError().getMethod().size()];
+        this.tabCapacityMethod = new String[strategyYaml.getError().getMethod().size()];
         int indexErrorMethod = 0;
         int errorCapacity = 0;
-        for (Method errorMethod: strategyXml.getError().getMethod()) {
+        for (Method errorMethod: strategyYaml.getError().getMethod()) {
             boolean methodIsApplicable = false;
             LOGGER.trace(I18n.valueByKey("LOG_CHECKING") +" "+ errorMethod.getName() +"...");
         
             String performanceSourcePage = this.injectionModel.injectWithoutIndex(
-                " "+ VendorXml.replaceTags(
+                " "+ VendorYaml.replaceTags(
                     errorMethod.getQuery()
-                    .replace("${WINDOW}", configurationXml.getSlidingWindow())
-                    .replace("${INJECTION}", configurationXml.getFailsafe().replace("${INDICE}","0"))
+                    .replace("${WINDOW}", configurationYaml.getSlidingWindow())
+                    .replace("${INJECTION}", configurationYaml.getFailsafe().replace("${INDICE}","0"))
                     .replace("${INDEX}", "1")
                     .replace("${CAPACITY}", Integer.toString(errorMethod.getCapacity()))
                 )
             );
     
             if (performanceSourcePage.matches(
-                VendorXml.replaceTags(
+                VendorYaml.replaceTags(
                     "(?s).*"+
-                    configurationXml.getFailsafe()
+                    configurationYaml.getFailsafe()
                     .replace("${INDICE}","0")
                     .replace("0%2b1", "1")
                     // TODO postgres
@@ -88,10 +88,10 @@ public class StrategyInjectionError extends AbstractStrategy {
             
             if (methodIsApplicable) {
                 String performanceErrorSourcePage = this.injectionModel.injectWithoutIndex(
-                    " "+ VendorXml.replaceTags(
+                    " "+ VendorYaml.replaceTags(
                         errorMethod.getQuery()
-                        .replace("${WINDOW}", configurationXml.getSlidingWindow())
-                        .replace("${INJECTION}", configurationXml.getCalibrator())
+                        .replace("${WINDOW}", configurationYaml.getSlidingWindow())
+                        .replace("${INJECTION}", configurationYaml.getCalibrator())
                         .replace("${INDEX}", "1")
                         .replace("${CAPACITY}", Integer.toString(errorMethod.getCapacity()))
                     )
@@ -146,7 +146,7 @@ public class StrategyInjectionError extends AbstractStrategy {
         LOGGER.info(
             I18n.valueByKey("LOG_USING_STRATEGY") +" ["
                 + this.getName() +" "
-                + this.injectionModel.getMediatorVendor().getVendor().instance().getXmlModel().getStrategy().getError().getMethod().get(this.indexMethod).getName()
+                + this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(this.indexMethod).getName()
             +"]"
         );
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getError());

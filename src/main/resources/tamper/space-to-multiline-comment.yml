@@ -1,0 +1,9 @@
+tooltip: "Replace blank space ' ' to multiline comment '/**/'"
+description: "Replace blank space ' ' to multiline comment '/**/'"
+group: ""
+javascript: |
+ var tampering = function(sql) {
+     return sql
+         .replace(/\\+$/gm,'%0A/**/')
+         .replace(/\\+/gm,'/**/')
+ }

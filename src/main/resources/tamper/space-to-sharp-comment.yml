@@ -1,0 +1,9 @@
+tooltip: "Replace blank space ' ' to sharp comment '#\\\\n'"
+description: "Replace blank space ' ' to sharp comment '#\\\\n'"
+group: ""
+javascript: |
+ var tampering = function(sql) {
+     return sql
+         .replace(/\\+$/gm,'%0A%23')
+         .replace(/\\+/gm,'%23%0A')
+ }

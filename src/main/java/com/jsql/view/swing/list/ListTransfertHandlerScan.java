@@ -30,8 +30,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 /**
  * Handler for processing cut/copy/paste/drag/drop action on a JList items.
  */
@@ -68,7 +66,7 @@ public class ListTransfertHandlerScan extends TransferHandler {
                 jsons.add(new JSONObject(itemScanPath.getBeanInjectionToJSON()));
             }
             stringTransferable.append(new JSONArray(jsons).toString(4));
-        } catch (JSONException | JsonProcessingException e) {
+        } catch (JSONException e) {
             LOGGER.error(e.getMessage(), e);
         }
 

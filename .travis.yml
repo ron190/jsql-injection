@@ -18,14 +18,14 @@ before_install:
   - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
     
   # Docker configuration
-#  - docker build -t mysql 
-#    -f src/test/resources/docker/Dockerfile.mysql .
-#    
-#  - docker build -t mysql 
-#    -f src/test/resources/docker/Dockerfile.mysql-5.5.40 .
-#    
-#  - docker build -t postgres 
-#    -f src/test/resources/docker/Dockerfile.postgres .
+  - docker build -t mysql 
+    -f src/test/resources/docker/Dockerfile.mysql .
+    
+  - docker build -t mysql 
+    -f src/test/resources/docker/Dockerfile.mysql-5.5.40 .
+    
+  - docker build -t postgres 
+    -f src/test/resources/docker/Dockerfile.postgres .
     
   - docker run --name jsql-mysql  
     --publish 3306:3306 

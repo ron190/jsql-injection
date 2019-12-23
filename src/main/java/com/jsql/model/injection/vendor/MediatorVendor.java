@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.injection.vendor.model.Vendor;
-import com.jsql.model.injection.vendor.model.VendorXml;
+import com.jsql.model.injection.vendor.model.VendorYaml;
 
 public class MediatorVendor {
 
@@ -57,26 +57,26 @@ public class MediatorVendor {
         this.injectionModel = injectionModel;
         
         this.auto = new Vendor("Database auto", null);
-        this.access = new Vendor("Access", new VendorXml("access.xml", this.injectionModel));
-        this.cockroachDB = new Vendor("CockroachDB", new VendorXml("cockroachdb.xml", this.injectionModel));
-        this.cubrid = new Vendor("CUBRID", new VendorXml("cubrid.xml", this.injectionModel));
-        this.db2 = new Vendor("DB2", new VendorXml("db2.xml", this.injectionModel));
-        this.derby = new Vendor("Derby", new VendorXml("derby.xml", this.injectionModel));
-        this.firebird = new Vendor("Firebird", new VendorXml("firebird.xml", this.injectionModel));
-        this.h2 = new Vendor("H2", new VendorXml("h2.xml", this.injectionModel));
-        this.hana = new Vendor("Hana", new VendorXml("hana.xml", this.injectionModel));
-        this.hsqldb = new Vendor("HSQLDB", new VendorXml("hsqldb.xml", this.injectionModel));
-        this.informix = new Vendor("Informix", new VendorXml("informix.xml", this.injectionModel));
-        this.ingres = new Vendor("Ingres", new VendorXml("ingres.xml", this.injectionModel));
-        this.maxDB = new Vendor("MaxDB", new VendorXml("maxdb.xml", this.injectionModel));
-        this.mckoi = new Vendor("Mckoi", new VendorXml("mckoi.xml", this.injectionModel));
-        this.memSQL = new Vendor("MemSQL", new VendorXml("memsql.xml", this.injectionModel));
-        this.mySQL = new Vendor("MySQL", new VendorXml("mysql.xml", this.injectionModel));
-        this.neo4j = new Vendor("Neo4j", new VendorXml("neo4j.xml", this.injectionModel));
-        this.nuoDB = new Vendor("NuoDB", new VendorXml("nuodb.xml", this.injectionModel));
-        this.oracle = new Vendor("Oracle", new VendorXml("oracle.xml", this.injectionModel));
-        this.postgreSQL = new Vendor("PostgreSQL", new VendorXml("postgresql.xml", this.injectionModel));
-        this.sqlite = new Vendor("SQLite", new VendorXml("sqlite.xml", this.injectionModel)) {
+        this.access = new Vendor("Access", new VendorYaml("access.yml", this.injectionModel));
+        this.cockroachDB = new Vendor("CockroachDB", new VendorYaml("cockroachdb.yml", this.injectionModel));
+        this.cubrid = new Vendor("CUBRID", new VendorYaml("cubrid.yml", this.injectionModel));
+        this.db2 = new Vendor("DB2", new VendorYaml("db2.yml", this.injectionModel));
+        this.derby = new Vendor("Derby", new VendorYaml("derby.yml", this.injectionModel));
+        this.firebird = new Vendor("Firebird", new VendorYaml("firebird.yml", this.injectionModel));
+        this.h2 = new Vendor("H2", new VendorYaml("h2.yml", this.injectionModel));
+        this.hana = new Vendor("Hana", new VendorYaml("hana.yml", this.injectionModel));
+        this.hsqldb = new Vendor("HSQLDB", new VendorYaml("hsqldb.yml", this.injectionModel));
+        this.informix = new Vendor("Informix", new VendorYaml("informix.yml", this.injectionModel));
+        this.ingres = new Vendor("Ingres", new VendorYaml("ingres.yml", this.injectionModel));
+        this.maxDB = new Vendor("MaxDB", new VendorYaml("maxdb.yml", this.injectionModel));
+        this.mckoi = new Vendor("Mckoi", new VendorYaml("mckoi.yml", this.injectionModel));
+        this.memSQL = new Vendor("MemSQL", new VendorYaml("memsql.yml", this.injectionModel));
+        this.mySQL = new Vendor("MySQL", new VendorYaml("mysql.yml", this.injectionModel));
+        this.neo4j = new Vendor("Neo4j", new VendorYaml("neo4j.yml", this.injectionModel));
+        this.nuoDB = new Vendor("NuoDB", new VendorYaml("nuodb.yml", this.injectionModel));
+        this.oracle = new Vendor("Oracle", new VendorYaml("oracle.yml", this.injectionModel));
+        this.postgreSQL = new Vendor("PostgreSQL", new VendorYaml("postgresql.yml", this.injectionModel));
+        this.sqlite = new Vendor("SQLite", new VendorYaml("sqlite.yml", this.injectionModel)) {
              
              @Override
              public String transformSQLite(String resultToParse) {
@@ -102,10 +102,10 @@ public class MediatorVendor {
              }
              
          };
-        this.sqlServer = new Vendor("SQL Server", new VendorXml("sqlserver.xml", this.injectionModel));
-        this.sybase = new Vendor("Sybase", new VendorXml("sybase.xml", this.injectionModel));
-        this.teradata = new Vendor("Teradata", new VendorXml("teradata.xml", this.injectionModel));
-        this.vertica = new Vendor("Vertica", new VendorXml("vertica.xml", this.injectionModel));
+        this.sqlServer = new Vendor("SQL Server", new VendorYaml("sqlserver.yml", this.injectionModel));
+        this.sybase = new Vendor("Sybase", new VendorYaml("sybase.yml", this.injectionModel));
+        this.teradata = new Vendor("Teradata", new VendorYaml("teradata.yml", this.injectionModel));
+        this.vertica = new Vendor("Vertica", new VendorYaml("vertica.yml", this.injectionModel));
         
         this.vendors = Arrays.asList(
             this.access,

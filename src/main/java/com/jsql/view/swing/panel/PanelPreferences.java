@@ -230,40 +230,40 @@ public class PanelPreferences extends JPanel {
         buttonCheckIp.addMouseListener(flatButtonMouseAdapter);
 
         /**/
-        String tooltipIsTamperingBase64 = Tampering.BASE64.instance().getXmlModel().getTooltip();
+        String tooltipIsTamperingBase64 = Tampering.BASE64.instance().getModelYaml().getTooltip();
         this.checkboxIsTamperingBase64.setToolTipText(tooltipIsTamperingBase64);
         this.checkboxIsTamperingBase64.setFocusable(false);
-        JButton labelIsTamperingBase64 = new JButton(Tampering.BASE64.instance().getXmlModel().getDescription());
+        JButton labelIsTamperingBase64 = new JButton(Tampering.BASE64.instance().getModelYaml().getDescription());
         labelIsTamperingBase64.setToolTipText(tooltipIsTamperingBase64);
         labelIsTamperingBase64.addActionListener(actionEvent -> {
             this.checkboxIsTamperingBase64.setSelected(!this.checkboxIsTamperingBase64.isSelected());
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingFunctionComment = Tampering.COMMENT_TO_METHOD_SIGNATURE.instance().getXmlModel().getTooltip();
+        String tooltipIsTamperingFunctionComment = Tampering.COMMENT_TO_METHOD_SIGNATURE.instance().getModelYaml().getTooltip();
         this.checkboxIsTamperingFunctionComment.setToolTipText(tooltipIsTamperingFunctionComment);
         this.checkboxIsTamperingFunctionComment.setFocusable(false);
-        JButton labelIsTamperingFunctionComment = new JButton(Tampering.COMMENT_TO_METHOD_SIGNATURE.instance().getXmlModel().getDescription());
+        JButton labelIsTamperingFunctionComment = new JButton(Tampering.COMMENT_TO_METHOD_SIGNATURE.instance().getModelYaml().getDescription());
         labelIsTamperingFunctionComment.setToolTipText(tooltipIsTamperingFunctionComment);
         labelIsTamperingFunctionComment.addActionListener(actionEvent -> {
             this.checkboxIsTamperingFunctionComment.setSelected(!this.checkboxIsTamperingFunctionComment.isSelected());
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingEqualToLike = Tampering.EQUAL_TO_LIKE.instance().getXmlModel().getTooltip();
+        String tooltipIsTamperingEqualToLike = Tampering.EQUAL_TO_LIKE.instance().getModelYaml().getTooltip();
         this.checkboxIsTamperingEqualToLike.setToolTipText(tooltipIsTamperingEqualToLike);
         this.checkboxIsTamperingEqualToLike.setFocusable(false);
-        JButton labelIsTamperingEqualToLike = new JButton(Tampering.EQUAL_TO_LIKE.instance().getXmlModel().getDescription());
+        JButton labelIsTamperingEqualToLike = new JButton(Tampering.EQUAL_TO_LIKE.instance().getModelYaml().getDescription());
         labelIsTamperingEqualToLike.setToolTipText(tooltipIsTamperingEqualToLike);
         labelIsTamperingEqualToLike.addActionListener(actionEvent -> {
             this.checkboxIsTamperingEqualToLike.setSelected(!this.checkboxIsTamperingEqualToLike.isSelected());
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingRandomCase = Tampering.RANDOM_CASE.instance().getXmlModel().getTooltip();
+        String tooltipIsTamperingRandomCase = Tampering.RANDOM_CASE.instance().getModelYaml().getTooltip();
         this.checkboxIsTamperingRandomCase.setToolTipText(tooltipIsTamperingRandomCase);
         this.checkboxIsTamperingRandomCase.setFocusable(false);
-        JButton labelIsTamperingRandomCase = new JButton(Tampering.RANDOM_CASE.instance().getXmlModel().getDescription());
+        JButton labelIsTamperingRandomCase = new JButton(Tampering.RANDOM_CASE.instance().getModelYaml().getDescription());
         labelIsTamperingRandomCase.setToolTipText(tooltipIsTamperingRandomCase);
         labelIsTamperingRandomCase.addActionListener(actionEvent -> {
             this.checkboxIsTamperingRandomCase.setSelected(!this.checkboxIsTamperingRandomCase.isSelected());
@@ -290,10 +290,10 @@ public class PanelPreferences extends JPanel {
         n.add(this.radioIsTamperingSpaceToMultilineComment);
         n.add(this.radioIsTamperingSpaceToSharpComment);
         
-        String tooltipIsTamperingSpaceToMultilineComment = Tampering.SPACE_TO_MULTILINE_COMMENT.instance().getXmlModel().getTooltip();
+        String tooltipIsTamperingSpaceToMultilineComment = Tampering.SPACE_TO_MULTILINE_COMMENT.instance().getModelYaml().getTooltip();
         this.radioIsTamperingSpaceToMultilineComment.setToolTipText(tooltipIsTamperingSpaceToMultilineComment);
         this.radioIsTamperingSpaceToMultilineComment.setFocusable(false);
-        JButton labelIsTamperingSpaceToMultilineComment = new JButton(Tampering.SPACE_TO_MULTILINE_COMMENT.instance().getXmlModel().getDescription());
+        JButton labelIsTamperingSpaceToMultilineComment = new JButton(Tampering.SPACE_TO_MULTILINE_COMMENT.instance().getModelYaml().getDescription());
         labelIsTamperingSpaceToMultilineComment.setToolTipText(tooltipIsTamperingSpaceToMultilineComment);
         labelIsTamperingSpaceToMultilineComment.addActionListener(actionEvent -> {
             if (this.radioIsTamperingSpaceToMultilineComment.isSelected()) {
@@ -304,10 +304,10 @@ public class PanelPreferences extends JPanel {
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingSpaceToDashComment = Tampering.SPACE_TO_DASH_COMMENT.instance().getXmlModel().getTooltip();
+        String tooltipIsTamperingSpaceToDashComment = Tampering.SPACE_TO_DASH_COMMENT.instance().getModelYaml().getTooltip();
         this.radioIsTamperingSpaceToDashComment.setToolTipText(tooltipIsTamperingSpaceToDashComment);
         this.radioIsTamperingSpaceToDashComment.setFocusable(false);
-        JButton labelIsTamperingSpaceToDashComment = new JButton(Tampering.SPACE_TO_DASH_COMMENT.instance().getXmlModel().getDescription());
+        JButton labelIsTamperingSpaceToDashComment = new JButton(Tampering.SPACE_TO_DASH_COMMENT.instance().getModelYaml().getDescription());
         labelIsTamperingSpaceToDashComment.setToolTipText(tooltipIsTamperingSpaceToDashComment);
         labelIsTamperingSpaceToDashComment.addActionListener(actionEvent -> {
             if (this.radioIsTamperingSpaceToDashComment.isSelected()) {
@@ -318,10 +318,10 @@ public class PanelPreferences extends JPanel {
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingSpaceToSharpComment = Tampering.SPACE_TO_SHARP_COMMENT.instance().getXmlModel().getTooltip();
+        String tooltipIsTamperingSpaceToSharpComment = Tampering.SPACE_TO_SHARP_COMMENT.instance().getModelYaml().getTooltip();
         this.radioIsTamperingSpaceToSharpComment.setToolTipText(tooltipIsTamperingSpaceToSharpComment);
         this.radioIsTamperingSpaceToSharpComment.setFocusable(false);
-        JButton labelIsTamperingSpaceToSharpComment = new JButton(Tampering.SPACE_TO_SHARP_COMMENT.instance().getXmlModel().getDescription());
+        JButton labelIsTamperingSpaceToSharpComment = new JButton(Tampering.SPACE_TO_SHARP_COMMENT.instance().getModelYaml().getDescription());
         labelIsTamperingSpaceToSharpComment.setToolTipText(tooltipIsTamperingSpaceToSharpComment);
         labelIsTamperingSpaceToSharpComment.addActionListener(actionEvent -> {
             if (this.radioIsTamperingSpaceToSharpComment.isSelected()) {
@@ -333,30 +333,30 @@ public class PanelPreferences extends JPanel {
         });
         /**/
         
-        String tooltipIsTamperingVersionComment = Tampering.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getXmlModel().getTooltip();
+        String tooltipIsTamperingVersionComment = Tampering.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getModelYaml().getTooltip();
         this.checkboxIsTamperingVersionComment.setToolTipText(tooltipIsTamperingVersionComment);
         this.checkboxIsTamperingVersionComment.setFocusable(false);
-        JButton labelIsTamperingVersionComment = new JButton(Tampering.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getXmlModel().getDescription());
+        JButton labelIsTamperingVersionComment = new JButton(Tampering.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getModelYaml().getDescription());
         labelIsTamperingVersionComment.setToolTipText(tooltipIsTamperingVersionComment);
         labelIsTamperingVersionComment.addActionListener(actionEvent -> {
             this.checkboxIsTamperingVersionComment.setSelected(!this.checkboxIsTamperingVersionComment.isSelected());
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingHexToChar = Tampering.HEX_TO_CHAR.instance().getXmlModel().getTooltip();
+        String tooltipIsTamperingHexToChar = Tampering.HEX_TO_CHAR.instance().getModelYaml().getTooltip();
         this.checkboxIsTamperingHexToChar.setToolTipText(tooltipIsTamperingHexToChar);
         this.checkboxIsTamperingHexToChar.setFocusable(false);
-        JButton labelIsTamperingHexToChar = new JButton(Tampering.HEX_TO_CHAR.instance().getXmlModel().getDescription());
+        JButton labelIsTamperingHexToChar = new JButton(Tampering.HEX_TO_CHAR.instance().getModelYaml().getDescription());
         labelIsTamperingHexToChar.setToolTipText(tooltipIsTamperingHexToChar);
         labelIsTamperingHexToChar.addActionListener(actionEvent -> {
             this.checkboxIsTamperingHexToChar.setSelected(!this.checkboxIsTamperingHexToChar.isSelected());
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingQouteToUtf8 = Tampering.QUOTE_TO_UTF8.instance().getXmlModel().getTooltip();
+        String tooltipIsTamperingQouteToUtf8 = Tampering.QUOTE_TO_UTF8.instance().getModelYaml().getTooltip();
         this.checkboxIsTamperingQuoteToUtf8.setToolTipText(tooltipIsTamperingQouteToUtf8);
         this.checkboxIsTamperingQuoteToUtf8.setFocusable(false);
-        JButton labelIsTamperingQuoteToUtf8 = new JButton(Tampering.QUOTE_TO_UTF8.instance().getXmlModel().getDescription());
+        JButton labelIsTamperingQuoteToUtf8 = new JButton(Tampering.QUOTE_TO_UTF8.instance().getModelYaml().getDescription());
         labelIsTamperingQuoteToUtf8.setToolTipText(tooltipIsTamperingQouteToUtf8);
         labelIsTamperingQuoteToUtf8.addActionListener(actionEvent -> {
             this.checkboxIsTamperingQuoteToUtf8.setSelected(!this.checkboxIsTamperingQuoteToUtf8.isSelected());

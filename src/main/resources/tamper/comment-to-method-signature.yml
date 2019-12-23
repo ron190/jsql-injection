@@ -1,0 +1,11 @@
+tooltip: "Add comment to method signature, e.g concat/**/()"
+description: "Add comment to method signature, e.g concat/**/()"
+group: ""
+javascript: |
+ var tampering = function(sql) {
+    return sql
+        .replace(
+            /([^_]concat|ifnull)\\(/gi,
+            '$1/**/('
+        )
+ }

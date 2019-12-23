@@ -1,0 +1,8 @@
+tooltip: "Replace single quote ' to full utf8 character %ef%bc%87"
+description: "/!\\ Replace single quote ' to full utf8 character %ef%bc%87"
+group: ""
+javascript: |
+ var tampering = function(sql) {
+     return sql
+         .replace(\"'\",'%ef%bc%87');
+ }
