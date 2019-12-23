@@ -41,13 +41,10 @@ public class ParameterUtil {
 
     /**
      * Verify integrity of parameters defined by user.
-     * @param isTest true if only cheking general integrity at the start of process
      * @param isParamByUser true if no injection point is defined
      * @param parameter currently injected from Query/Request/Header, is null if simply tests integrity
      * @throws InjectionFailureException when params' integrity is failure
      */
-    // TODO merge isTest with parameter: isTest = parameter == null
-    // TODO Spock coverage
     public void checkParametersFormat() throws InjectionFailureException {
         int nbStarInParameter = 0;
         

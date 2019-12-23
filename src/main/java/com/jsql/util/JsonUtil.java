@@ -120,6 +120,7 @@ public class JsonUtil {
                 // Erase * at the end of each params
                 methodInjection.getParams().stream().forEach(e -> e.setValue(e.getValue().replaceAll(Pattern.quote(InjectionModel.STAR) +"$", "")));
                 
+                // TODO It erases STAR from value => * can't be used in parameter
                 paramStar.setValue(paramStar.getValue().replace("*", ""));
             }
         }
