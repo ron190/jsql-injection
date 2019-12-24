@@ -9,6 +9,7 @@ resource:
       || rdb$get_context('SYSTEM', 'CURRENT_USER')
       || '${TRAIL_SQL}'
   from rdb$database
+  
  schema: 
   database: |
    /**
@@ -22,6 +23,7 @@ resource:
        || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
    from rdb$database
    {limit}
+   
   table: |
    SELECT 
        '${ENCLOSE_VALUE_SQL}'
@@ -29,6 +31,7 @@ resource:
        || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
    from rdb$relations
    {limit}
+   
   column: |
    SELECT 
        '${ENCLOSE_VALUE_SQL}'
@@ -37,6 +40,7 @@ resource:
    from rdb$relation_fields
    where rdb$relation_name = '${TABLE}'
    {limit}
+   
   row: 
    query: |
     SELECT 
@@ -48,6 +52,7 @@ resource:
    fields: 
     field: "trim(coalesce(${FIELD}, ''))"
     concat: "|| '%7f' ||"
+    
 strategy: 
  configuration: 
   slidingWindow: |
@@ -80,6 +85,7 @@ strategy:
     - "Warning: ibase_query()"
     - "function.ibase-query"
     - "Unexpected end of command - line"
+    
  normal: 
   indices: "union select ${INDICES} from RDB$DATABASE"
   capacity: "(select '${LEAD}${INDICE}' || ${CALIBRATOR} from RDB\\$DATABASE)"

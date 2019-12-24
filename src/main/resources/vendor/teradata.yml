@@ -8,6 +8,7 @@ resource:
       || '${ENCLOSE_VALUE_SQL}'
       || user
       || '${TRAIL_SQL}'
+      
  schema: 
   database: |
    select 
@@ -22,6 +23,7 @@ resource:
    ) x
    where 1 = 1
    {limit}
+   
   table: |
    select 
        '${ENCLOSE_VALUE_SQL}'
@@ -37,6 +39,7 @@ resource:
    ) x
    where 1 = 1
    {limit}
+   
   column: |
    select 
        '${ENCLOSE_VALUE_SQL}'
@@ -57,6 +60,7 @@ resource:
    )x
    where 1 = 1
    {limit}
+   
   row: 
    query: |
     SELECT 
@@ -74,6 +78,7 @@ resource:
    fields: 
     field: "trim(coalesce(''||${FIELD}, ''))"
     concat: "|| '%7f' ||"
+    
 strategy: 
  configuration: 
   slidingWindow: |
@@ -105,6 +110,7 @@ strategy:
   fingerprint: 
    errorMessage: 
     - "Teradata database"
+    
  normal: 
   indices: "union select ${INDICES} FROM (SELECT 1 AS x)x"
   capacity: "(select '${LEAD}${INDICE}' || ${CALIBRATOR})"

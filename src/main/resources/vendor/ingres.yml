@@ -9,6 +9,7 @@ resource:
       || dbmsinfo('session_user')
       || ${TRAIL_HEX} 
       r
+      
  schema: 
   database: |
    select 
@@ -28,6 +29,7 @@ resource:
        group by 1
        {limit}
    ) a
+   
   table: |
    select 
        rr
@@ -46,6 +48,7 @@ resource:
        group by 1
        {limit}
    ) a
+   
   column: |
    select 
        rr
@@ -64,6 +67,7 @@ resource:
        group by 1
        {limit}
    ) a
+   
   row: 
    query: |
     select 
@@ -86,6 +90,7 @@ resource:
    fields: 
     field: "trim(ifnull(varchar(${FIELD}), ''))"
     concat: "|| 0x7f ||"
+    
 strategy: 
  configuration: 
   slidingWindow: |
@@ -111,6 +116,7 @@ strategy:
   fingerprint: 
    errorMessage: 
     - "Non-terminated string"
+    
  normal: 
   indices: "union select ${RESULT_RANGE} from (${INDICE_UNIQUE})b"
   capacity: "'${LEAD}${INDICE}' || ${CALIBRATOR}"

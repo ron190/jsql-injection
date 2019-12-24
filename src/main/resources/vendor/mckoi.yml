@@ -9,6 +9,7 @@ resource:
       || user()
       || '${TRAIL_SQL}' 
       r
+      
  schema: 
   database: |
    select 
@@ -28,6 +29,7 @@ resource:
        group by t.s
        {limit}
    ) a
+   
   table: |
    select 
        rr
@@ -46,6 +48,7 @@ resource:
        group by t.s
        {limit}
    ) a
+   
   column: |
    select 
        rr
@@ -64,6 +67,7 @@ resource:
        group by t.s
        {limit}
    ) a
+   
   row: 
    query: |
     select 
@@ -86,6 +90,7 @@ resource:
    fields: 
     field: "trim(coalesce(${FIELD}, ''))"
     concat: "|| '%7f' ||"
+    
 strategy: 
  configuration: 
   slidingWindow: |
@@ -106,6 +111,7 @@ strategy:
   fingerprint: 
    errorMessage: 
     - mckoi
+    
  normal: 
   indices: "union all select rr from (${INDICE_UNIQUE})b"
   capacity: "'${LEAD}${INDICE}' || ${CALIBRATOR}"

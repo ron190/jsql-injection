@@ -9,6 +9,7 @@ resource:
       || user
       || '${TRAIL_SQL}'
   from sysibm.sysversions
+  
  schema: 
   database: |
    select varchar(
@@ -21,6 +22,7 @@ resource:
    )
    from syscat.schemata
    {limit}
+   
   table: |
    select varchar(
        LISTAGG(
@@ -33,6 +35,7 @@ resource:
    from sysibm.systables 
    where creator = '${DATABASE}'
    {limit}
+   
   column: |
    select varchar(
        LISTAGG(
@@ -47,6 +50,7 @@ resource:
    and tbcreator = '${DATABASE}'
    and tbname = '${TABLE}'
    {limit}
+   
   row: 
    query: |
     /**
@@ -78,6 +82,7 @@ resource:
          )
      )
     concat: "|| '%7f' ||"
+    
 strategy: 
  configuration: 
   slidingWindow: |
@@ -112,6 +117,7 @@ strategy:
     - "DB2 SQL Error"
     - "Warning: db2_execute()"
     - "Warning: db2_fetch_array()"
+    
  normal: 
   indices: "union select ${INDICES} from sysibm.sysdummy1"
   capacity: |
@@ -121,6 +127,7 @@ strategy:
     */
    varchar('${LEAD}${INDICE}' || ${CALIBRATOR}, 1024)
   orderBy: "order by 1337"
+  
  boolean: 
   test: 
    falses: 
@@ -150,4 +157,5 @@ strategy:
         ${BIT}
     )
    length: "length(${INJECTION}) > ${INDEX}"
+   
   blind: "and ${TEST}"

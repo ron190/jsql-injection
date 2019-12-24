@@ -10,6 +10,7 @@ resource:
       ),
       '${TRAIL_SQL}'
   )
+  
  schema: 
   database: |
    select concat(
@@ -35,6 +36,7 @@ resource:
        group by r
        {limit}
    ) x
+   
   table: |
    select concat(
        group_concat(
@@ -55,6 +57,7 @@ resource:
        order by r
        {limit}
    ) x
+   
   column: |
    select concat(
        group_concat(
@@ -74,6 +77,7 @@ resource:
        order by n
        {limit}
    ) x
+   
   row: 
    query: |
     select concat(
@@ -97,6 +101,7 @@ resource:
    fields: 
     field: "trim(ifnull(`${FIELD}`, ''))"
     concat: ",0x7f,"
+    
 strategy: 
  configuration: 
   slidingWindow: |
@@ -116,6 +121,7 @@ strategy:
   fingerprint: 
    errorMessage: 
     - memsql
+    
  normal: 
   indices: "union select ${INDICES}"
   capacity: |

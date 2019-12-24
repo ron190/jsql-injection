@@ -9,6 +9,7 @@ resource:
       %2Buser_name()
       %2B'${TRAIL_SQL}'
       r
+      
  schema: 
   database: |
    select 
@@ -28,6 +29,7 @@ resource:
        group by t.name
        {limit}
    ) a
+   
   table: |
    select 
        rr
@@ -46,6 +48,7 @@ resource:
        group by t.name
        {limit}
    ) a
+   
   column: |
    select 
        rr
@@ -64,6 +67,7 @@ resource:
        group by t.name
        {limit}
    ) a
+   
   row: 
    query: |
     select 
@@ -95,6 +99,7 @@ resource:
          )
      )
     concat: "%2b '%7f' %2b"
+    
 strategy: 
  configuration: 
   slidingWindow: |
@@ -126,6 +131,7 @@ strategy:
     - "Sybase: Server message:"
     - "Invalid SQL statement or JDBC escape, terminating '"
     - sybase
+    
  normal: 
   indices: "union select ${RESULT_RANGE} from (${INDICE_UNIQUE}) b"
   capacity: "(select '${LEAD}${INDICE}' %2b ${CALIBRATOR})"

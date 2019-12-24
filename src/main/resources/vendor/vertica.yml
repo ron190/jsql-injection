@@ -9,6 +9,7 @@ resource:
       || '${ENCLOSE_VALUE_SQL}'
       || user
       || '${TRAIL_SQL}'
+      
  schema: 
   database: |
    select 
@@ -27,6 +28,7 @@ resource:
        order by rr
        {limit}
    )x
+   
   table: |
    select 
        rr
@@ -45,6 +47,7 @@ resource:
        order by rr
        {limit}
    )x
+   
   column: |
    select 
        rr
@@ -64,6 +67,7 @@ resource:
        order by rr
        {limit}
    )x
+   
   row: 
    query: |
     select 
@@ -91,6 +95,7 @@ resource:
          )
      )
     concat: "|| '%7f' ||"
+    
 strategy: 
  configuration: 
   slidingWindow: |
@@ -115,10 +120,12 @@ strategy:
   fingerprint: 
    errorMessage: 
     - "Vertica Analytics"
+    
  normal: 
   indices: "union select ${INDICES}"
   capacity: "(select '${LEAD}' || ${INDICE} || ${CALIBRATOR})"
   orderBy: "order by 1337"
+  
  boolean: 
   test: 
    falses: 
@@ -151,4 +158,5 @@ strategy:
         ) %26 ${BIT}
     )
    length: "char_length((${INJECTION})) > ${INDEX}"
+   
   blind: "and ${TEST}"

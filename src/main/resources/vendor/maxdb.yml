@@ -11,6 +11,7 @@ resource:
       || '${TRAIL_SQL}'
       r
   from sysinfo.VERSION
+  
  schema: 
   database: |
    select 
@@ -30,6 +31,7 @@ resource:
        group by t.schemaname
        {limit}
    ) a
+   
   table: |
    select 
        rr
@@ -48,6 +50,7 @@ resource:
        group by t.tablename
        {limit}
    ) a
+   
   column: |
    select 
        rr
@@ -65,6 +68,7 @@ resource:
        group by t.COLUMNNAME
        {limit}
    ) a
+   
   row: 
    query: |
     select 
@@ -87,6 +91,7 @@ resource:
    fields: 
     field: "trim(ifnull(chr(${FIELD}), ''))"
     concat: "|| '%7f' ||"
+    
 strategy: 
  configuration: 
   slidingWindow: |
@@ -116,6 +121,7 @@ strategy:
     - "Warning: maxdb::"
     - "maxdb.query"
     - "): Invalid end of SQL statement"
+    
  normal: 
   indices: "union select ${RESULT_RANGE} from (${INDICE_UNIQUE})z"
   capacity: "(select '${LEAD}${INDICE}' || ${CALIBRATOR} from dual)"

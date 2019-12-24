@@ -10,6 +10,7 @@ resource:
       || CURRENT_USER
       || '${TRAIL_SQL}'
   from sys.m_database
+  
  schema: 
   database: |
    select 
@@ -29,6 +30,7 @@ resource:
        order by r
        {limit}
    )
+   
   table: |
    select 
        STRING_AGG(
@@ -52,6 +54,7 @@ resource:
        order by r
        {limit}
    )
+   
   column: |
    select 
        STRING_AGG(
@@ -77,6 +80,7 @@ resource:
        order by r
        {limit}
    )
+   
   row: 
    query: |
     select 
@@ -99,6 +103,7 @@ resource:
    fields: 
     field: "trim(coalesce(${FIELD}, ''))"
     concat: "|| '%7f' ||"
+    
 strategy: 
  configuration: 
   slidingWindow: |
@@ -129,10 +134,12 @@ strategy:
   fingerprint: 
    errorMessage: 
     - "Hana database"
+    
  normal: 
   indices: "union select ${INDICES} from dummy"
   capacity: "('${LEAD}'|| ${INDICE}|| ${CALIBRATOR})"
   orderBy: "order by 1337"
+  
  boolean: 
   test: 
    falses: 
@@ -166,4 +173,5 @@ strategy:
         ${BIT}
     )
    length: "length((${INJECTION})) > ${INDEX}"
+   
   blind: "and ${TEST}"

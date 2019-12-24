@@ -9,6 +9,7 @@ resource:
       || CURRENT_USER
       || '${TRAIL_SQL}'
   from SYSIBM.SYSDUMMY1
+  
  schema: 
   database: |
    /**
@@ -22,6 +23,7 @@ resource:
        || '${SEPARATOR_QTE_SQL}0${ENCLOSE_VALUE_SQL}${TRAIL_SQL}'
    FROM SYS.SYSSCHEMAS
    {limit}
+   
   table: |
    select 
        '${ENCLOSE_VALUE_SQL}'
@@ -31,6 +33,7 @@ resource:
    inner join sys.sysschemas s on t.schemaid = s.schemaid 
    where schemaname='${DATABASE}'
    {limit}
+   
   column: |
    select 
        '${ENCLOSE_VALUE_SQL}'
@@ -50,6 +53,7 @@ resource:
    and columndatatype || '' not like 'DECIMAL%'
    and columndatatype || '' not like 'BLOB%'
    {limit}
+   
   row: 
    query: |
     SELECT 
@@ -61,6 +65,7 @@ resource:
    fields: 
     field: "trim(coalesce(${FIELD}, ''))"
     concat: "|| '%7f' ||"
+    
 strategy: 
  configuration: 
   slidingWindow: |
@@ -91,6 +96,7 @@ strategy:
   fingerprint: 
    errorMessage: 
     - "Derby database"
+    
  normal: 
   indices: "union select ${INDICES} from SYSIBM.SYSDUMMY1"
   capacity: "(select '${LEAD}${INDICE}' || ${CALIBRATOR} from SYSIBM.SYSDUMMY1)"

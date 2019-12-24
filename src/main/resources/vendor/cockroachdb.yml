@@ -8,6 +8,7 @@ resource:
       '-'
   )
   || '${TRAIL_SQL}'
+  
  schema: 
   database: |
    select 
@@ -29,6 +30,7 @@ resource:
        order by 1
        {limit}
    ) x
+   
   table: |
    select
        concat_agg(
@@ -49,6 +51,7 @@ resource:
        order by 1
        {limit}
    ) x
+   
   column: |
    select 
        concat_agg(
@@ -70,6 +73,7 @@ resource:
        order by 1
        {limit}
    )x
+   
   row: 
    query: |
     select 
@@ -93,6 +97,7 @@ resource:
    fields: 
     field: "trim(coalesce(${FIELD}::text, ''))"
     concat: "|| '%7f' ||"
+    
 strategy: 
  configuration: 
   slidingWindow: |
@@ -117,10 +122,12 @@ strategy:
   fingerprint: 
    errorMessage: 
     - cockroachdb
+    
  normal: 
   indices: "union select ${INDICES}"
   capacity: "(select '${LEAD}${INDICE}' || ${CALIBRATOR})"
   orderBy: "order by 1337"
+  
  boolean: 
   test: 
    falses: 
@@ -155,6 +162,7 @@ strategy:
     )
    length: "length((${INJECTION})) > ${INDEX}"
   blind: "and ${TEST}"
+  
  error: 
   method: 
    - name: "CAST::text_numeric"
