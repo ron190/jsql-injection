@@ -1,6 +1,6 @@
-tooltip: "Replace equal sign '=' to 'like'"
-description: "Replace equal sign '=' to 'like'"
-group: ""
+tooltip: Replace equal sign '=' to 'like'
+description: Replace equal sign '=' to 'like'
+group: 
 javascript: |
  var tampering = function(sql) {
      return sql

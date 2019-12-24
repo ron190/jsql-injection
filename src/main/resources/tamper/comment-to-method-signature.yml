@@ -1,6 +1,6 @@
-tooltip: "Add comment to method signature, e.g concat/**/()"
-description: "Add comment to method signature, e.g concat/**/()"
-group: ""
+tooltip: Add comment to method signature, e.g concat/**/()
+description: Add comment to method signature, e.g concat/**/()
+group: 
 javascript: |
  var tampering = function(sql) {
     return sql

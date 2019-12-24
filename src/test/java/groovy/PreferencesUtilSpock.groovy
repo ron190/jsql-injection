@@ -190,4 +190,41 @@ class PreferencesUtilSpock extends Specification {
         
     }
     
+    // Restore default preferences to jvm
+    def cleanupSpec() {
+        
+        def preferencesUtil = new PreferencesUtil()
+        preferencesUtil.set(
+            true,
+            true,
+            false,
+            
+            false,
+            false,
+                 
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+                 
+            false,
+            false,
+            false,
+            false,
+                 
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+        )
+    }
+    
 }

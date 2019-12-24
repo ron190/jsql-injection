@@ -1,4 +1,4 @@
-vendor: ""
+vendor: 
 resource: 
  info: |
   concat(
@@ -95,7 +95,7 @@ resource:
         {limit}
     ) x
    fields: 
-    field: "trim(ifnull(`${FIELD}`, ''))"
+    field: trim(ifnull(`${FIELD}`, ''))
     concat: ",'%7f',"
     
 strategy: 
@@ -112,16 +112,16 @@ strategy:
                )
            )
    )
-  limit: "limit ${LIMIT}, 65536"
+  limit: limit ${LIMIT}, 65536
   failsafe: "'' || 1337${INDICE}7330%2b1"
-  calibrator: "repeat('${CALIBRATOR_SQL}', 65536)"
+  calibrator: repeat('${CALIBRATOR_SQL}', 65536)
   limitBoundary: 0
-  endingComment: "--+-"
+  endingComment: --+-
   fingerprint: 
    errorMessage: 
-    - "Cubrid database"
+    - Cubrid database
     
  normal: 
-  indices: "union select ${INDICES}"
-  capacity: "(select concat('${LEAD}', ${INDICE}, ${CALIBRATOR}))"
-  orderBy: "order by 1337"
+  indices: union select ${INDICES}
+  capacity: (select concat('${LEAD}', ${INDICE}, ${CALIBRATOR}))
+  orderBy: order by 1337

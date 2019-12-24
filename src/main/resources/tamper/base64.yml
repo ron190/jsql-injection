@@ -1,6 +1,6 @@
-tooltip: "Encode SQL expression to Base64"
-description: "Encode SQL expression to Base64"
-group: ""
+tooltip: Encode SQL expression to Base64
+description: Encode SQL expression to Base64
+group: 
 javascript: |
  var tampering = function(sql) {
      return new java.lang.String(

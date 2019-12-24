@@ -1,6 +1,6 @@
-tooltip: "Replace blank space ' ' to dash comment '--\\\\n'"
-description: "Replace blank space ' ' to dash comment '--\\\\n'"
-group: ""
+tooltip: Replace blank space ' ' to dash comment '--\\n'
+description: Replace blank space ' ' to dash comment '--\\n'
+group: 
 javascript: |
  var tampering = function(sql) {
      return sql

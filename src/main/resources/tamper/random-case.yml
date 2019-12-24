@@ -1,6 +1,6 @@
-tooltip: "Transform SQL keywords to random case"
-description: "Transform SQL keywords to random case"
-group: ""
+tooltip: Transform SQL keywords to random case
+description: Transform SQL keywords to random case
+group: 
 javascript: |
  load('src/main/resources/tamper/js/random-case.js');
  

