@@ -62,7 +62,6 @@ public class ListTransfertHandlerScan extends TransferHandler {
         try {
             for (ItemList itemPath: this.dragPaths) {
                 ItemListScan itemScanPath = (ItemListScan) itemPath;
-    //            jsons.add(new JSONObject(itemScanPath.getBeanInjection()));
                 jsons.add(new JSONObject(itemScanPath.getBeanInjectionToJSON()));
             }
             stringTransferable.append(new JSONArray(jsons).toString(4));

@@ -6,7 +6,7 @@ public class Strategy {
 
     private Configuration configuration;
     private Normal normal;
-    private Boolean _boolean;
+    private Boolean booleanStrategy;
     private Error error;
 
     public Configuration getConfiguration() {
@@ -26,11 +26,11 @@ public class Strategy {
     }
 
     public Boolean getBoolean() {
-        return _boolean;
+        return booleanStrategy;
     }
 
-    public void setBoolean(Boolean _boolean) {
-        this._boolean = _boolean;
+    public void setBoolean(Boolean booleanStrategy) {
+        this.booleanStrategy = booleanStrategy;
     }
 
     public Error getError() {

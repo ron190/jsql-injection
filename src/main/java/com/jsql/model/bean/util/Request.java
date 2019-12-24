@@ -17,7 +17,7 @@ package com.jsql.model.bean.util;
 public class Request {
     
     /**
-     * Class identifier for the interraction.
+     * Class identifier for the interaction.
      */
     private Interaction message;
     
@@ -27,8 +27,8 @@ public class Request {
     private Object[] parameters;
 
     /**
-     * Get identifier class name for this interraction.
-     * @return Name of interraction
+     * Get identifier class name for this interaction.
+     * @return Name of interaction
      */
     public Interaction getMessage() {
         return this.message;

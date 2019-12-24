@@ -1,14 +1,16 @@
 ## Description
-**jSQL Injection** is a lightweight application used to find database information from a distant server.
+**jSQL Injection** is a lightweight application used to find quickly database information from a distant server.
 
 It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X).
 
 ![Kali Linux logo](https://github.com/ron190/jsql-injection/raw/master/web/images/kali_favicon.png "Kali Linux logo") jSQL Injection is also part of the official penetration testing distribution [Kali Linux](http://www.kali.org/) and is included in other distributions like [Pentest Box](https://pentestbox.com/), [Parrot Security OS](https://www.parrotsec.org), [ArchStrike](https://archstrike.org/) or [BlackArch Linux](http://www.blackarch.org/).
 
-This software is developed using great open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration.  
+This software is developed using great open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration.
+
+Each program update is tested with Java version 8 through 13 in the cloud, against various MySQL, PostgreSQL and H2 databases. Source code is opened to pull request and to any contribution about multi-threading, devops, unit and integration tests and optimization. 
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)<br>
-[![Java 8](https://img.shields.io/badge/Java-8-orange)](http://www.oracle.com/technetwork/java/javase/downloads/)
+[![Java 8 to 13](https://img.shields.io/badge/Java-8%20to%2013-orange)](http://www.oracle.com/technetwork/java/javase/downloads/)
 [![JUnit 5](https://img.shields.io/badge/JUnit-5-50940f)](http://junit.org)
 [![Maven 3.1](https://img.shields.io/badge/Maven-3.1-a2265a)](https://maven.apache.org/)
 [![GitHub](https://img.shields.io/github/license/ron190/jsql-injection)](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)<br>
@@ -23,7 +25,7 @@ This software is developed using great open source libraries like [Spring](https
 - Automatic injection of 23 kinds of databases: Access, CockroachDB, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, Mckoi, MySQL, Neo4j, NuoDB, Oracle, PostgreSQL, SQLite, SQL Server, Sybase, Teradata and Vertica
 - Multiple injection strategies: Normal, Error, Blind and Time
 - Multiple injection structures: Standard, Zipped, Dump In One Shot
-- SQL Engine to study and optimize SQL expressions
+- SQL Engine to program and optimize SQL expressions
 - Injection of multiple targets
 - Search for administration pages
 - Creation and vizualisation of Web shell and SQL shell

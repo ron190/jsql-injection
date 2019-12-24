@@ -143,7 +143,6 @@ public class ManagerAdminPage extends AbstractManagerList {
         }
         
         this.lastLine.setLayout(new BorderLayout());
-//        this.lastLine.add(comboMenubar, BorderLayout.LINE_START);
         this.lastLine.setPreferredSize(new Dimension(0, 26));
         
         this.lastLine.setBorder(

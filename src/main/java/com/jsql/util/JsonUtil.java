@@ -33,11 +33,11 @@ public class JsonUtil {
         Object jsonEntity = null;
         
         try {
-            // Test for JSON Object: {...}
+            // Test for JSON Object
             jsonEntity = new JSONObject(param);
         } catch (JSONException exceptionJSONObject) {
             try {
-                // Test for JSON Array: [...]
+                // Test for JSON Array
                 jsonEntity = new JSONArray(param);
             } catch (JSONException exceptionJSONArray) {
                 // Not a JSON entity

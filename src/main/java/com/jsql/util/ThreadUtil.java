@@ -35,7 +35,7 @@ public final class ThreadUtil {
     
     /**
      * List of running jobs associated to a database injection task.
-     * We can interract with those tasks in order to pause/resume and stop the process.
+     * We can interact with those tasks in order to pause/resume and stop the process.
      */
     private final Map<AbstractElementDatabase, AbstractSuspendable<?>> suspendables = new HashMap<>();
     
@@ -77,7 +77,7 @@ public final class ThreadUtil {
     
     /**
      * Force to stop every threads still running and empty the list where
-     * they were instanciated in order to be garbage collected.
+     * they were instantiated in order to be garbage collected.
      */
     public void reset() {
         // Fix #8258: ConcurrentModificationException on java.util.HashMap$ValueIterator.next()

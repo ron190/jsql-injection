@@ -37,10 +37,11 @@ public class HeaderUtil {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
 
+    private InjectionModel injectionModel;
+    
     public HeaderUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }
-    InjectionModel injectionModel;
 
     /**
      * Parse the header component and decode any character of the form %xy
@@ -189,7 +190,6 @@ public class HeaderUtil {
             LOGGER.info("Please select option 'Disable connection test' and run again");
         }
         
-        // Form parsing;
         // TODO Extract
         Elements elementsForm = Jsoup.parse(pageSource.toString()).select("form");
         

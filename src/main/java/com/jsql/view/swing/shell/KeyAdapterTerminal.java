@@ -171,17 +171,17 @@ public class KeyAdapterTerminal extends KeyAdapter {
     
             } else if (
                 // Cancel the select all shortcut Ctrl+A
-                keyEvent.getKeyCode() == KeyEvent.VK_A && (keyEvent.getModifiers() & InputEvent.CTRL_MASK) != 0 ||
+                keyEvent.getKeyCode() == KeyEvent.VK_A && (keyEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ||
                 // Cancel the *beep* sound if deleting while at the end of line
                 keyEvent.getKeyCode() == KeyEvent.VK_DELETE && caretPosition == this.terminal.getDocument().getLength() ||
-                (keyEvent.getModifiers() & InputEvent.CTRL_MASK) != 0 && (keyEvent.getModifiers() & InputEvent.SHIFT_MASK) != 0 ||
+                (keyEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 && (keyEvent.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0 ||
                 keyEvent.getKeyCode() == KeyEvent.VK_PAGE_UP ||
                 keyEvent.getKeyCode() == KeyEvent.VK_PAGE_DOWN ||
                 keyEvent.getKeyCode() == KeyEvent.VK_TAB
             ) {
                 keyEvent.consume();
     
-            } else if (keyEvent.getKeyCode() == KeyEvent.VK_C && (keyEvent.getModifiers() & InputEvent.CTRL_MASK) != 0) {
+            } else if (keyEvent.getKeyCode() == KeyEvent.VK_C && (keyEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0) {
                 keyEvent.consume();
     
                 this.terminal.append("\n");

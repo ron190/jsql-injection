@@ -9,9 +9,6 @@ import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
 
-//import sun.net.www.protocol.http.AuthCacheImpl;
-//import sun.net.www.protocol.http.AuthCacheValue;
-
 /**
  * Manage authentication protocols Basic, Digest, NTLM and Kerberos.
  * Java class Authenticator processes Basic, Digest and NTLM, library spnego
@@ -56,10 +53,11 @@ public class AuthenticationUtil {
      */
     private String pathKerberosKrb5;
     
+    private InjectionModel injectionModel;
+    
     public AuthenticationUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }
-    InjectionModel injectionModel;
 
     /**
      * Get new authentication settings from the view, update the utility class,

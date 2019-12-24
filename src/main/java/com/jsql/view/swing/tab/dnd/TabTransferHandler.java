@@ -41,7 +41,7 @@ public class TabTransferHandler extends TransferHandler {
         if (c instanceof DnDTabbedPane) {
             this.source = (DnDTabbedPane) c;
         }
-        // return new DataHandler(c, localObjectFlavor.getMimeType());
+
         return new Transferable() {
             @Override public DataFlavor[] getTransferDataFlavors() {
                 return new DataFlavor[] {TabTransferHandler.this.localObjectFlavor};

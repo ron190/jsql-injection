@@ -34,12 +34,6 @@ public class StrategyInjectionNormal extends AbstractStrategy {
     // TODO Pojo injection
     private String performanceLength = "0";
     
-    /**
-     * i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body.
-     */
-    // TODO Pojo injection
-//    private String visibleIndex;
-
     public StrategyInjectionNormal(InjectionModel injectionModel) {
         super(injectionModel);
     }
@@ -57,7 +51,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
         
         this.isApplicable =
             !"".equals(this.injectionModel.getIndexesInUrl())
-            && new Integer(this.injectionModel.getMediatorStrategy().getNormal().getPerformanceLength()) > 0
+            && Integer.parseInt(this.injectionModel.getMediatorStrategy().getNormal().getPerformanceLength()) > 0
             && this.visibleIndex != null
         ;
         

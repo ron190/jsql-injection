@@ -191,8 +191,8 @@ public class PanelPreferences extends JPanel {
         TAMPERING(panelTampering),
         PROXY(panelProxy),
         AUTHENTICATION(panelAuthentication),
-        GENERAL(panelGeneral);
-//        USER_AGENT(new JPanel());
+        GENERAL(panelGeneral),
+        USER_AGENT(new JPanel());
         
         private Component panel;
 
@@ -273,17 +273,10 @@ public class PanelPreferences extends JPanel {
         String tooltipIsTamperingEval = "Custom tamper in JavaScript, e.g sql.replace(/\\+/gm,'/**/')";
         this.checkboxIsTamperingEval.setToolTipText(tooltipIsTamperingEval);
         this.checkboxIsTamperingEval.setFocusable(false);
-//        JTextArea l = new JPopupTextArea(new JTextAreaPlaceholder(tooltipIsTamperingEval)).getProxy();
         JTextPane l = new JPopupTextPane(new JTextPanePlaceholder(tooltipIsTamperingEval)).getProxy();
         LightScrollPane textAreaIsTamperingEval = new LightScrollPane(l);
         textAreaIsTamperingEval.setBorder(HelperUi.BORDER_FOCUS_LOST);
-//        textAreaIsTamperingEval.setPreferredSize(new Dimension(400, 100));
-//        textAreaIsTamperingEval.setMaximumSize(new Dimension(400, 100));
         textAreaIsTamperingEval.setMinimumSize(new Dimension(400, 100));
-//        labelIsTamperingRandomCase.addActionListener(actionEvent -> {
-//            this.checkboxIsTamperingRandomCase.setSelected(!this.checkboxIsTamperingRandomCase.isSelected());
-//            this.actionListenerSave.actionPerformed(null);
-//        });
         
         ButtonGroup n = new ButtonGroup();
         n.add(this.radioIsTamperingSpaceToDashComment);
@@ -389,7 +382,6 @@ public class PanelPreferences extends JPanel {
             public void warn() {
                 MediatorModel.model().getMediatorUtils().getTamperingUtil().setEval(l.getText());
             }
-            
         });
         
         l.setText(MediatorModel.model().getMediatorUtils().getTamperingUtil().getEval());

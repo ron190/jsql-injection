@@ -13,6 +13,7 @@ package com.jsql.view.swing.shell;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
@@ -39,16 +40,15 @@ public class BlockCaret extends DefaultCaret {
         this.setBlinkRate(500);
     }
 
-    @Override
-    protected synchronized void damage(Rectangle r) {
+    protected synchronized void damage(Rectangle2D r) {
         if (r == null) {
             return;
         }
 
         // give values to x,y,width,height (inherited from java.awt.Rectangle)
-        this.x = r.x;
-        this.y = r.y;
-        this.height = r.height;
+        this.x = (int) r.getX();
+        this.y = (int) r.getY();
+        this.height = (int) r.getHeight();
         // A value for width was probably set by paint(), which we leave alone.
         // But the first call to damage() precedes the first call to paint(), so
         // in this case we must be prepared to set a valid width, or else
@@ -73,10 +73,10 @@ public class BlockCaret extends DefaultCaret {
         }
 
         int dot = this.getDot();
-        Rectangle r = null;
+        Rectangle2D r = null;
         char dotChar;
         try {
-            r = comp.modelToView(dot);
+            r = comp.modelToView2D(dot);
             if (r == null) {
                 return;
             }
@@ -90,7 +90,7 @@ public class BlockCaret extends DefaultCaret {
             dotChar = '_';
         }
 
-        if (this.x != r.x || this.y != r.y) {
+        if (this.x != r.getX() || this.y != r.getY()) {
             // paint() has been called directly, without a previous call to
             // damage(), so do some cleanup. (This happens, for example, when
             // the text component is resized.)
@@ -105,7 +105,7 @@ public class BlockCaret extends DefaultCaret {
 
         this.width = g.getFontMetrics().charWidth(dotChar);
         if (this.isVisible()) {
-            g.fillRect(r.x, r.y, this.width, r.height);
+            g.fillRect((int) r.getX(), (int) r.getY(), this.width, (int) r.getHeight());
         }
     }
     

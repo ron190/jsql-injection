@@ -212,7 +212,7 @@ public class PanelTable extends JPanel {
         // Fix #43974: PatternSyntaxException on regexFilter() => Pattern.quote()
         textFilter.getDocument().addDocumentListener(new DocumentListener() {
             
-            private void insertUpdateFixed(DocumentEvent e) {
+            private void insertUpdateFixed() {
                 String text = textFilter.getText();
 
                 if (text.trim().length() == 0) {
@@ -224,12 +224,12 @@ public class PanelTable extends JPanel {
             
             @Override
             public void insertUpdate(DocumentEvent e) {
-                this.insertUpdateFixed(e);
+                this.insertUpdateFixed();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                this.insertUpdateFixed(e);
+                this.insertUpdateFixed();
             }
 
             @Override

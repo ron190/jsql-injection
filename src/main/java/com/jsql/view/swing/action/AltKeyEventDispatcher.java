@@ -33,7 +33,7 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
         
         boolean isAltReleased =
             keyEvent.getKeyCode() == KeyEvent.VK_ALT
-            && keyEvent.getModifiers() == (InputEvent.ALT_MASK & KeyEvent.KEY_RELEASED)
+            && keyEvent.getModifiersEx() == (InputEvent.ALT_DOWN_MASK & KeyEvent.KEY_RELEASED)
         ;
         
         boolean isAltPressed =

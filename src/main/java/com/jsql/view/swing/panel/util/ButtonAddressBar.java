@@ -33,7 +33,6 @@ public class ButtonAddressBar extends JButton {
      */
     public ButtonAddressBar() {
         this.setPreferredSize(new Dimension(18, 16));
-//        this.setBorder(null);
         this.setOpaque(false);
         this.setContentAreaFilled(false);
         this.setBorderPainted(false);

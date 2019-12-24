@@ -705,7 +705,6 @@ public class InjectionModel extends AbstractModelObservable {
             query = query.replaceAll("(?s)\\)", "%29");
             query = query.replaceAll("(?s)\\?", "%3F");
             query = query.replaceAll("(?s)>", "%3E");
-    //        query = query.replaceAll("(?s):", "%3A");
             // HTTP and Hibernate JPQL  purpose : => \:
             query = query.replaceAll("(?s):", "%5C%3A");
             query = query.replaceAll("(?s) ", "+");
@@ -718,7 +717,7 @@ public class InjectionModel extends AbstractModelObservable {
             // For cookies in Spring
             // Replace spaces
             query = query.replaceAll("\\+", "%20");
-            query = query.replaceAll(",", "%2C");
+            query = query.replace(",", "%2C");
         }
         
         if (this.getMediatorUtils().getConnectionUtil().getMethodInjection() == methodInjection) {
@@ -818,14 +817,6 @@ public class InjectionModel extends AbstractModelObservable {
     public String getSrcSuccess() {
         return this.srcSuccess;
     }
-
-//    public AbstractStrategy getStrategy() {
-//        return this.getMediatorStrategy().strategy;
-//    }
-//
-//    public void setStrategy(AbstractStrategy strategy) {
-//        this.getMediatorStrategy().strategy = strategy;
-//    }
 
     public void setSrcSuccess(String srcSuccess) {
         this.srcSuccess = srcSuccess;

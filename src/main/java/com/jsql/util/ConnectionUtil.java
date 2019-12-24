@@ -184,8 +184,6 @@ public class ConnectionUtil {
             } else {
                 pageSource = ConnectionUtil.getSource(connection);
             }
-        } catch (IOException e) {
-            throw e;
         } finally {
             msgHeader.put(Header.SOURCE, pageSource);
             
@@ -230,8 +228,6 @@ public class ConnectionUtil {
                     while (reader.read(buffer) > 0) {
                         pageSource.append(buffer);
                     }
-                } catch (Exception errorErrorStream) {
-                    throw errorErrorStream;
                 }
             }
         }

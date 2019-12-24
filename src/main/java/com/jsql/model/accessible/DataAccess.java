@@ -125,16 +125,12 @@ public class DataAccess {
      */
     public static final String CELL_TABLE = "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)"+ SEPARATOR_QTE_RGX +"([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?";
     
-//    // Utility class
-//    private DataAccess() {
-//        // not used
-//    }
+    private InjectionModel injectionModel;
+    
     // Utility class
     public DataAccess(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }
-    
-    InjectionModel injectionModel;
     
     /**
      * Get general database informations.<br>

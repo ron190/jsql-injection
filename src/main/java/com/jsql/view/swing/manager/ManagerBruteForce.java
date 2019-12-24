@@ -201,7 +201,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
         this.add(options, BorderLayout.NORTH);
 
         this.result = new JPopupTextPane("Result of brute force processing").getProxy();
-//        this.result.setLineWrap(true);
+
         this.add(new LightScrollPane(1, 1, 0, 0, this.result), BorderLayout.CENTER);
         
         JPanel lastLine = new JPanel();

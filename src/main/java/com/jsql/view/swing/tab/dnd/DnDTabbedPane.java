@@ -192,7 +192,7 @@ public class DnDTabbedPane extends JTabbedPane {
             RECT_LINE.setBounds(0, 0, 0, 0);
             return Optional.empty();
         }
-        int a = Math.min(index, 1); // index == 0 ? 0 : 1;
+        int a = Math.min(index, 1);
         Rectangle r = this.getBoundsAt(a * (index - 1));
         if (isTopBottomTabPlacement(this.getTabPlacement())) {
             RECT_LINE.setBounds(r.x - LINE_WIDTH / 2 + r.width * a, r.y, LINE_WIDTH, r.height);
@@ -259,7 +259,7 @@ public class DnDTabbedPane extends JTabbedPane {
                 this.startPt = null;
                 return;
             }
-            Point tabPt = e.getPoint(); // e.getDragOrigin();
+            Point tabPt = e.getPoint();
             int idx = src.indexAtLocation(tabPt.x, tabPt.y);
             // disabled tab, null component problem.
             // pointed out by daryl. NullPointerException: i.e. addTab("Tab", null)
@@ -269,7 +269,7 @@ public class DnDTabbedPane extends JTabbedPane {
         
         @Override
         public void mouseDragged(MouseEvent e) {
-            Point tabPt = e.getPoint(); // e.getDragOrigin();
+            Point tabPt = e.getPoint();
             if (Objects.nonNull(this.startPt) && this.startPt.distance(tabPt) > this.gestureMotionThreshold) {
                 DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
                 TransferHandler th = src.getTransferHandler();

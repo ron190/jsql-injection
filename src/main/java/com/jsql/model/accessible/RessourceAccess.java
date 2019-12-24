@@ -105,12 +105,9 @@ public class RessourceAccess {
      * List of ongoing jobs.
      */
     private List<CallableFile> callablesReadFile = new ArrayList<>();
-
-//    // Utility class
-//    private RessourceAccess() {
-//        // not used
-//    }
     
+    private InjectionModel injectionModel;
+
     public RessourceAccess(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
         
@@ -119,8 +116,6 @@ public class RessourceAccess {
         this.filenameUpload = ".ju.php";
         
     }
-    
-    InjectionModel injectionModel;
 
     /**
      * Check if every page in the list responds 200 Success.

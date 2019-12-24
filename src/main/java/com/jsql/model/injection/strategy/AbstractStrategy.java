@@ -17,10 +17,16 @@ import com.jsql.model.suspendable.AbstractSuspendable;
  */
 public abstract class AbstractStrategy {
     
+    /**
+     * i.e, 2 in "[..]union select 1,2,[..]", if 2 is found in HTML body.
+     */
+    protected String visibleIndex;
+    
+    protected InjectionModel injectionModel;
+    
     public AbstractStrategy(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }
-    InjectionModel injectionModel;
     
     /**
      * True if injection can be used, false otherwise.
@@ -94,8 +100,6 @@ public abstract class AbstractStrategy {
     public Integer getIndexMethodError() {
         return null;
     }
-
-    protected String visibleIndex;
     
     public String getVisibleIndex() {
         return this.visibleIndex;

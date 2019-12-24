@@ -385,12 +385,8 @@ public class AdjusterTableColumn implements PropertyChangeListener, TableModelLi
         public void actionPerformed(ActionEvent e) {
             if (this.isToggleDynamic) {
                 AdjusterTableColumn.this.setDynamicAdjustment(! AdjusterTableColumn.this.isDynamicAdjustment);
-                return;
-            }
-
-            if (this.isToggleLarger) {
+            } else if (this.isToggleLarger) {
                 AdjusterTableColumn.this.setOnlyAdjustLarger(! AdjusterTableColumn.this.isOnlyAdjustLarger);
-                return;
             }
         }
     }

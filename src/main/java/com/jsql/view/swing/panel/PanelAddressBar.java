@@ -314,20 +314,9 @@ public class PanelAddressBar extends JPanel {
         ComponentBorder buttonInTextfield = new ComponentBorder(this.buttonInUrl, 17, 0);
         buttonInTextfield.install(this.textFieldAddress);
         
-//        new ComponentBorder(new JComboBox<>(new String[]{"a", "z"}), 17, 0).install(this.textFieldAddress);
-//        new ComponentBorder(new JComboBox<>(new String[]{"a", "z"}), 17, 0).install(this.textFieldAddress);
-        
         JMenuBar panelLineBottom = new JMenuBar();
         panelLineBottom.setOpaque(false);
         panelLineBottom.setBorder(null);
-//        panelLineBottom.setMinimumSize(new Dimension(0, 20));
-
-//        panelLineBottom.setBorder(
-//            BorderFactory.createCompoundBorder(
-//                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
-//                BorderFactory.createEmptyBorder(1, 0, 1, 1)
-//            )
-//        );
 
         this.menuStrategy = new ComboMenu("Strategy auto");
 
@@ -378,9 +367,7 @@ public class PanelAddressBar extends JPanel {
         
 
         this.loader.setVisible(false);
-//        this.loader.setMinimumSize(new Dimension(0, 0));
-//        ComponentBorder loaderInTextfield = new ComponentBorder(this.loader, 17, 1);
-//        loaderInTextfield.install(this.textFieldAddress);
+
         new ComponentBorder(panelLineBottom, 17, 0).install(this.textFieldAddress);
         this.loader.setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 
