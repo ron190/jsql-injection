@@ -31,12 +31,9 @@ public class TamperingUtil {
     private boolean isSpaceToDashComment = false;
     private boolean isSpaceToSharpComment = false;
     
-    private String eval = null;
-
-    InjectionModel injectionModel;
-    public TamperingUtil(InjectionModel injectionModel) {
-        this.injectionModel = injectionModel;
-    }
+    private String customTamper = null;
+    
+    private final static ScriptEngine NASHORN_ENGINE = new ScriptEngineManager().getEngineByName("nashorn");
 
     public void set(
         boolean isBase64,
@@ -64,15 +61,13 @@ public class TamperingUtil {
         this.isSpaceToSharpComment = isSpaceToSharpComment;
     }
     
-    static ScriptEngine nashornEngine = new ScriptEngineManager().getEngineByName("nashorn");
-    
     private static String eval(String out, String js) {
         Object result = null;
         
         try {
-            nashornEngine.eval(js);
+            NASHORN_ENGINE.eval(js);
             
-            Invocable invocable = (Invocable) nashornEngine;
+            Invocable invocable = (Invocable) NASHORN_ENGINE;
             result = invocable.invokeFunction("tampering", out);
         } catch (ScriptException | NoSuchMethodException e) {
             LOGGER.warn(e);
@@ -129,7 +124,11 @@ public class TamperingUtil {
         }
         
         if (this.isEval) {
-            sqlQuery = eval(sqlQuery, this.eval);
+            sqlQuery = eval(sqlQuery, this.customTamper);
+        }
+        
+        if (this.isBase64) {
+            sqlQuery = eval(sqlQuery, Tampering.BASE64.instance().getModelYaml().getJavascript());
         }
         
         sqlQuery = lead + sqlQuery + trail;
@@ -139,10 +138,6 @@ public class TamperingUtil {
             sqlQuery = eval(sqlQuery, Tampering.QUOTE_TO_UTF8.instance().getModelYaml().getJavascript());
         }
         
-        if (this.isBase64) {
-            sqlQuery = eval(sqlQuery, Tampering.BASE64.instance().getModelYaml().getJavascript());
-        }
-        
         // Problème si le tag contient des caractères spéciaux
         sqlQuery = sqlQuery.replaceAll("(?i)SlQqLs", "");
         sqlQuery = sqlQuery.replaceAll("(?i)lSqQsL", "");
@@ -150,12 +145,12 @@ public class TamperingUtil {
         return sqlQuery;
     }
 
-    public String getEval() {
-        return this.eval;
+    public String getCustomTamper() {
+        return this.customTamper;
     }
 
-    public void setEval(String eval) {
-        this.eval = eval;
+    public void setCustomTamper(String customTamper) {
+        this.customTamper = customTamper;
     }
 
 }

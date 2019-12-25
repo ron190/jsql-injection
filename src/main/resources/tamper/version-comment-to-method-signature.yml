@@ -4,7 +4,7 @@ group:
 javascript: |
  var tampering = function(sql) {
     return sql.replace(
-        /([^_])(concat|ifnull)(\\/\\*\\*\\/)*\\(/gmi,
+        /([^_])(concat|ifnull)(\/\*\*\/)*\(/gmi,
         '$1/*!$2*/$3('
     )
  }

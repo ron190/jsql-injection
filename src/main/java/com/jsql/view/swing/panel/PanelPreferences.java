@@ -380,11 +380,11 @@ public class PanelPreferences extends JPanel {
             
             @Override
             public void warn() {
-                MediatorModel.model().getMediatorUtils().getTamperingUtil().setEval(l.getText());
+                MediatorModel.model().getMediatorUtils().getTamperingUtil().setCustomTamper(l.getText());
             }
         });
         
-        l.setText(MediatorModel.model().getMediatorUtils().getTamperingUtil().getEval());
+        l.setText(MediatorModel.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
         
         
         this.checkboxIsCheckingUpdate.setFocusable(false);

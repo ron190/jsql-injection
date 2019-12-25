@@ -4,6 +4,6 @@ group:
 javascript: |
  var tampering = function(sql) {
      return sql
-         .replace(/\\+$/gm,'%0A')
-         .replace(/\\+/gm,'--%0A')
+         .replace(/\+$/gm,'%0A')
+         .replace(/\+/gm,'--%0A')
  }

@@ -1,5 +1,5 @@
 ## Description
-**jSQL Injection** is a lightweight application used to find quickly database information from a distant server.
+**jSQL Injection** is a lightweight application used to find database information from a distant server with speed.
 
 It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X).
 
@@ -7,7 +7,7 @@ It is **free**, **open source** and **cross-platform** (Windows, Linux, Mac OS X
 
 This software is developed using great open source libraries like [Spring](https://spring.io), [Spock](http://spockframework.org) and [Hibernate](https://hibernate.org), and it uses platform [Travis CI](https://travis-ci.org) for continuous integration.
 
-Each program update is tested with Java version 8 through 13 in the cloud, against various MySQL, PostgreSQL and H2 databases. Source code is opened to pull request and to any contribution about multi-threading, devops, unit and integration tests and optimization. 
+Each program update is tested with Java version 8 through 13 in the cloud, against various MySQL, PostgreSQL and H2 databases. Source code is open to pull request and to any contribution on multi-threading, devops, unit and integration tests and optimization. 
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/ron190jsql.svg?style=social&label=ron190)](https://twitter.com/ron190jsql)<br>
 [![Java 8 to 13](https://img.shields.io/badge/Java-8%20to%2013-orange)](http://www.oracle.com/technetwork/java/javase/downloads/)

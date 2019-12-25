@@ -100,7 +100,7 @@ public class InjectionModel extends AbstractModelObservable {
         this.mediatorUtils.setPreferencesUtil(new PreferencesUtil());
         this.mediatorUtils.setProxyUtil(new ProxyUtil(this));
         this.mediatorUtils.setThreadUtil(new ThreadUtil(this));
-        this.mediatorUtils.setTamperingUtil(new TamperingUtil(this));
+        this.mediatorUtils.setTamperingUtil(new TamperingUtil());
     }
     
     /**

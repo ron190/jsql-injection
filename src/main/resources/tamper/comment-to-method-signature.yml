@@ -5,7 +5,7 @@ javascript: |
  var tampering = function(sql) {
     return sql
         .replace(
-            /([^_]concat|ifnull)\\(/gi,
+            /([^_]concat|ifnull)\(/gi,
             '$1/**/('
         )
  }
