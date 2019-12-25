@@ -34,7 +34,7 @@ Each program update is tested with Java version 8 through 13 in the cloud, again
 - Encode and decode a string
 
 ## Installation [[jsql-injection-v0.81.jar](https://github.com/ron190/jsql-injection/releases/download/v0.81/jsql-injection-v0.81.jar)]
-Install [Java 8](http://java.com), then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.81.jar` to launch the software.<br>
+Install [Java 8](http://java.com) up to Java 13, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.81.jar` to launch the software.<br>
 You can also type `java -jar jsql-injection-v0.81.jar` in your terminal to start the program.<br>
 If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
