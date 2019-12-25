@@ -9,7 +9,7 @@ public class Method {
     private Integer capacity;
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -17,7 +17,7 @@ public class Method {
     }
 
     public String getQuery() {
-        return query;
+        return this.query;
     }
 
     public void setQuery(String query) {
@@ -25,7 +25,7 @@ public class Method {
     }
 
     public Integer getCapacity() {
-        return capacity;
+        return this.capacity;
     }
 
     public void setCapacity(Integer capacity) {

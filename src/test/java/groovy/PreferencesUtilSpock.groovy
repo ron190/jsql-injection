@@ -1,13 +1,7 @@
 package groovy
 
-import java.util.AbstractMap.SimpleEntry
-import java.util.stream.Collectors
-
-import org.json.JSONArray
-import org.json.JSONObject
-
-import com.jsql.util.JsonUtil
 import com.jsql.util.PreferencesUtil
+
 import spock.lang.Specification
 
 class PreferencesUtilSpock extends Specification {
@@ -52,7 +46,7 @@ class PreferencesUtilSpock extends Specification {
     }
     
     def 'Check saved preferences are loaded from the JVM'() {
-        when: 
+        when:
             preferencesUtil.set(
                 isCheckingUpdate,
                 isReportingBugs,

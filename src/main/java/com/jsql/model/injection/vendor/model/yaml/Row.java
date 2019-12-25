@@ -8,7 +8,7 @@ public class Row {
     private Fields fields;
 
     public String getQuery() {
-        return query;
+        return this.query;
     }
 
     public void setQuery(String query) {
@@ -16,7 +16,7 @@ public class Row {
     }
 
     public Fields getFields() {
-        return fields;
+        return this.fields;
     }
 
     public void setFields(Fields fields) {

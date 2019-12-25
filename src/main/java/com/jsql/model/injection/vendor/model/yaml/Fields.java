@@ -8,7 +8,7 @@ public class Fields {
     private String concat;
 
     public String getField() {
-        return field;
+        return this.field;
     }
 
     public void setField(String field) {
@@ -16,7 +16,7 @@ public class Fields {
     }
 
     public String getConcat() {
-        return concat;
+        return this.concat;
     }
 
     public void setConcat(String concat) {

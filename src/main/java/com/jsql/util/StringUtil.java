@@ -33,7 +33,7 @@ import com.jsql.view.swing.HelperUi;
 public final class StringUtil {
     
     /**
-     * Define the schema of convertion to html entities.
+     * Define the schema of conversion to html entities.
      */
     private static final CharEncoder DECIMAL_HTML_ENCODER = new CharEncoder("&#", ";", 10);
     

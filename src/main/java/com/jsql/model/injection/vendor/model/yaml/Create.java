@@ -8,7 +8,7 @@ public class Create {
     private String query;
 
     public String getContent() {
-        return content;
+        return this.content;
     }
 
     public void setContent(String content) {
@@ -16,7 +16,7 @@ public class Create {
     }
 
     public String getQuery() {
-        return query;
+        return this.query;
     }
 
     public void setQuery(String query) {

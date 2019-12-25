@@ -10,7 +10,7 @@ public class Strategy {
     private Error error;
 
     public Configuration getConfiguration() {
-        return configuration;
+        return this.configuration;
     }
 
     public void setConfiguration(Configuration configuration) {
@@ -18,7 +18,7 @@ public class Strategy {
     }
 
     public Normal getNormal() {
-        return normal;
+        return this.normal;
     }
 
     public void setNormal(Normal normal) {
@@ -26,7 +26,7 @@ public class Strategy {
     }
 
     public Boolean getBoolean() {
-        return booleanStrategy;
+        return this.booleanStrategy;
     }
 
     public void setBoolean(Boolean booleanStrategy) {
@@ -34,7 +34,7 @@ public class Strategy {
     }
 
     public Error getError() {
-        return error;
+        return this.error;
     }
 
     public void setError(Error error) {

@@ -11,7 +11,7 @@ public class Schema {
     private String limit;
 
     public String getDatabase() {
-        return database;
+        return this.database;
     }
 
     public void setDatabase(String database) {
@@ -19,7 +19,7 @@ public class Schema {
     }
 
     public String getTable() {
-        return table;
+        return this.table;
     }
 
     public void setTable(String table) {
@@ -27,7 +27,7 @@ public class Schema {
     }
 
     public String getColumn() {
-        return column;
+        return this.column;
     }
 
     public void setColumn(String column) {
@@ -35,7 +35,7 @@ public class Schema {
     }
 
     public Row getRow() {
-        return row;
+        return this.row;
     }
 
     public void setRow(Row row) {
@@ -43,7 +43,7 @@ public class Schema {
     }
 
     public String getLimit() {
-        return limit;
+        return this.limit;
     }
 
     public void setLimit(String limit) {

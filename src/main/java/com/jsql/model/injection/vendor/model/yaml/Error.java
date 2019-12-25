@@ -8,7 +8,7 @@ public class Error {
     private List<Method> method = null;
 
     public List<Method> getMethod() {
-        return method;
+        return this.method;
     }
 
     public void setMethod(List<Method> method) {

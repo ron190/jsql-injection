@@ -10,7 +10,7 @@ public class ModelYaml {
     private String javascript;
 
     public String getTooltip() {
-        return tooltip;
+        return this.tooltip;
     }
 
     public void setTooltip(String tooltip) {
@@ -18,7 +18,7 @@ public class ModelYaml {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public void setDescription(String description) {
@@ -26,7 +26,7 @@ public class ModelYaml {
     }
 
     public String getGroup() {
-        return group;
+        return this.group;
     }
 
     public void setGroup(String group) {
@@ -34,7 +34,7 @@ public class ModelYaml {
     }
 
     public String getJavascript() {
-        return javascript;
+        return this.javascript;
     }
 
     public void setJavascript(String javascript) {

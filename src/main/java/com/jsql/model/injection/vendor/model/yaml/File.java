@@ -9,7 +9,7 @@ public class File {
     private Create create;
 
     public String getPrivilege() {
-        return privilege;
+        return this.privilege;
     }
 
     public void setPrivilege(String privilege) {
@@ -17,7 +17,7 @@ public class File {
     }
 
     public String getRead() {
-        return read;
+        return this.read;
     }
 
     public void setRead(String read) {
@@ -25,7 +25,7 @@ public class File {
     }
 
     public Create getCreate() {
-        return create;
+        return this.create;
     }
 
     public void setCreate(Create create) {

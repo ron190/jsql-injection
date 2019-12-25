@@ -11,7 +11,7 @@ public class Resource {
     private File file;
 
     public String getInfo() {
-        return info;
+        return this.info;
     }
 
     public void setInfo(String info) {
@@ -19,7 +19,7 @@ public class Resource {
     }
 
     public Schema getSchema() {
-        return schema;
+        return this.schema;
     }
 
     public void setSchema(Schema schema) {
@@ -27,7 +27,7 @@ public class Resource {
     }
 
     public Zipped getZipped() {
-        return zipped;
+        return this.zipped;
     }
 
     public void setZipped(Zipped zipped) {
@@ -35,7 +35,7 @@ public class Resource {
     }
 
     public Dios getDios() {
-        return dios;
+        return this.dios;
     }
 
     public void setDios(Dios dios) {
@@ -43,7 +43,7 @@ public class Resource {
     }
 
     public File getFile() {
-        return file;
+        return this.file;
     }
 
     public void setFile(File file) {

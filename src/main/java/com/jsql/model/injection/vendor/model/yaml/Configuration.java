@@ -13,7 +13,7 @@ public class Configuration {
     private Fingerprint fingerprint;
 
     public String getSlidingWindow() {
-        return slidingWindow;
+        return this.slidingWindow;
     }
 
     public void setSlidingWindow(String slidingWindow) {
@@ -21,7 +21,7 @@ public class Configuration {
     }
 
     public String getLimit() {
-        return limit;
+        return this.limit;
     }
 
     public void setLimit(String limit) {
@@ -29,7 +29,7 @@ public class Configuration {
     }
 
     public String getFailsafe() {
-        return failsafe;
+        return this.failsafe;
     }
 
     public void setFailsafe(String failsafe) {
@@ -37,7 +37,7 @@ public class Configuration {
     }
 
     public String getCalibrator() {
-        return calibrator;
+        return this.calibrator;
     }
 
     public void setCalibrator(String calibrator) {
@@ -45,7 +45,7 @@ public class Configuration {
     }
 
     public Integer getLimitBoundary() {
-        return limitBoundary;
+        return this.limitBoundary;
     }
 
     public void setLimitBoundary(Integer limitBoundary) {
@@ -53,7 +53,7 @@ public class Configuration {
     }
 
     public String getEndingComment() {
-        return endingComment;
+        return this.endingComment;
     }
 
     public void setEndingComment(String endingComment) {
@@ -61,7 +61,7 @@ public class Configuration {
     }
 
     public Fingerprint getFingerprint() {
-        return fingerprint;
+        return this.fingerprint;
     }
 
     public void setFingerprint(Fingerprint fingerprint) {

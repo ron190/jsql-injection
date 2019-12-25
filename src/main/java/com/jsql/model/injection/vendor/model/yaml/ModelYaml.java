@@ -9,7 +9,7 @@ public class ModelYaml {
     private Strategy strategy;
 
     public String getVendor() {
-        return vendor;
+        return this.vendor;
     }
 
     public void setVendor(String vendor) {
@@ -17,7 +17,7 @@ public class ModelYaml {
     }
 
     public Resource getResource() {
-        return resource;
+        return this.resource;
     }
 
     public void setResource(Resource resource) {
@@ -25,7 +25,7 @@ public class ModelYaml {
     }
 
     public Strategy getStrategy() {
-        return strategy;
+        return this.strategy;
     }
 
     public void setStrategy(Strategy strategy) {

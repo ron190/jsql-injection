@@ -1,12 +1,5 @@
 package groovy
 
-import java.util.AbstractMap.SimpleEntry
-import java.util.stream.Collectors
-
-import org.json.JSONArray
-import org.json.JSONObject
-
-import com.jsql.util.JsonUtil
 import com.jsql.util.tampering.TamperingUtil
 
 import spock.lang.Specification
@@ -43,7 +36,7 @@ class TamperingUtilSpock extends Specification {
     def 'Check RandomCase tampering'() {
         when: tamperingUtil.set(false, false, false, false, true, false, false, false, false, false, false)
         and: result = tamperingUtil.tamper('SlQqLs'+ 'abcdefghijklmnopqrstuvwxyz' +'lSqQsL')
-        then: 
+        then:
             ![
                 'abcdefghijklmnopqrstuvwxyz',
                 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',

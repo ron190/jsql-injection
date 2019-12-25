@@ -8,7 +8,7 @@ public class Fingerprint {
     private List<String> errorMessage = null;
 
     public List<String> getErrorMessage() {
-        return errorMessage;
+        return this.errorMessage;
     }
 
     public void setErrorMessage(List<String> errorMessage) {

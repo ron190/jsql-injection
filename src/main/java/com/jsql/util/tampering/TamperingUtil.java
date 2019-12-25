@@ -10,8 +10,6 @@ import javax.script.ScriptException;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.InjectionModel;
-
 public class TamperingUtil {
     
     /**

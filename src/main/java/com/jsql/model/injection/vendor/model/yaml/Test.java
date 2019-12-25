@@ -12,7 +12,7 @@ public class Test {
     private String length;
 
     public List<String> getTrues() {
-        return trues;
+        return this.trues;
     }
 
     public void setTrues(List<String> trues) {
@@ -20,7 +20,7 @@ public class Test {
     }
 
     public List<String> getFalses() {
-        return falses;
+        return this.falses;
     }
 
     public void setFalses(List<String> falses) {
@@ -28,7 +28,7 @@ public class Test {
     }
 
     public String getInitialization() {
-        return initialization;
+        return this.initialization;
     }
 
     public void setInitialization(String initialization) {
@@ -36,7 +36,7 @@ public class Test {
     }
 
     public String getBit() {
-        return bit;
+        return this.bit;
     }
 
     public void setBit(String bit) {
@@ -44,7 +44,7 @@ public class Test {
     }
 
     public String getLength() {
-        return length;
+        return this.length;
     }
 
     public void setLength(String length) {

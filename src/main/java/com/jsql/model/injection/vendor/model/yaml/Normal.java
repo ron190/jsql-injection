@@ -9,7 +9,7 @@ public class Normal {
     private String orderBy;
 
     public String getIndices() {
-        return indices;
+        return this.indices;
     }
 
     public void setIndices(String indices) {
@@ -17,7 +17,7 @@ public class Normal {
     }
 
     public String getCapacity() {
-        return capacity;
+        return this.capacity;
     }
 
     public void setCapacity(String capacity) {
@@ -25,7 +25,7 @@ public class Normal {
     }
 
     public String getOrderBy() {
-        return orderBy;
+        return this.orderBy;
     }
 
     public void setOrderBy(String orderBy) {

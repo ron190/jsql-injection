@@ -9,7 +9,7 @@ public class Boolean {
     private String time;
 
     public Test getTest() {
-        return test;
+        return this.test;
     }
 
     public void setTest(Test test) {
@@ -17,7 +17,7 @@ public class Boolean {
     }
 
     public String getBlind() {
-        return blind;
+        return this.blind;
     }
 
     public void setBlind(String blind) {
@@ -25,7 +25,7 @@ public class Boolean {
     }
 
     public String getTime() {
-        return time;
+        return this.time;
     }
 
     public void setTime(String time) {
