@@ -4,6 +4,7 @@ group:
 javascript: |
  var tampering = function(sql) {
      return sql
-         .replace(/\+$/gm,'%0A/**/')
-         .replace(/\+/gm,'/**/')
+         .replace(/([^-])\+$/gm,'$1%0A/**/')
+         // Ignore required space at ending comment -(-)+(-)
+         .replace(/([^-])\+([^-])/gm,'$1/**/$2')
  }

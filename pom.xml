@@ -145,6 +145,7 @@
                         <include>PostTestSuite</include>
                         <include>HeaderTestSuite</include>
                         <include>CookieTestSuite</include>
+                        <include>TamperingTestSuite</include>
 
                         <include>CheckAllTestSuite</include>
                         <include>JsonTestSuite</include>

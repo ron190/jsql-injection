@@ -77,6 +77,10 @@ public class SoapUtil {
     
     public static Document convertStringToDocument(String xmlStr) throws ParserConfigurationException, SAXException, IOException {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+        factory.setAttribute(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
+        factory.setExpandEntityReferences(false);
 
         DocumentBuilder builder = factory.newDocumentBuilder();
         

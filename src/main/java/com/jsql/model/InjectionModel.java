@@ -680,10 +680,11 @@ public class InjectionModel extends AbstractModelObservable {
         // Remove SQL comments
         query = query.replaceAll("(?s)/\\*.*?\\*/", "");
         
-        if (methodInjection == this.getMediatorMethodInjection().getRequest()) {
-            if (this.getMediatorUtils().getParameterUtil().isRequestSoap()) {
-                query = query.replace("%2b", "+");
-            }
+        if (
+            methodInjection == this.getMediatorMethodInjection().getRequest()
+            && this.getMediatorUtils().getParameterUtil().isRequestSoap()
+        ) {
+            query = query.replace("%2b", "+");
         } else {
             // Remove spaces after a word
             query = query.replaceAll("([^\\s\\w])(\\s+)", "$1");
@@ -693,6 +694,10 @@ public class InjectionModel extends AbstractModelObservable {
             
             // Replace spaces
             query = query.replaceAll("\\s+", "+");
+        }
+        
+        if (this.getMediatorUtils().getConnectionUtil().getMethodInjection() == methodInjection) {
+            query = this.getMediatorUtils().getTamperingUtil().tamper(query);
         }
         
         if (methodInjection != this.getMediatorMethodInjection().getHeader()) {
@@ -718,10 +723,6 @@ public class InjectionModel extends AbstractModelObservable {
             // Replace spaces
             query = query.replaceAll("\\+", "%20");
             query = query.replace(",", "%2C");
-        }
-        
-        if (this.getMediatorUtils().getConnectionUtil().getMethodInjection() == methodInjection) {
-            query = this.getMediatorUtils().getTamperingUtil().tamper(query);
         }
         
         query = query.trim();

@@ -102,7 +102,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                     taskExecutor.shutdownNow();
                 }
 
-                // TODO Get current progress and display
+                // Get current progress and display
                 StringBuilder result = new StringBuilder();
                 for (char[] c: bytes) {
                     try {

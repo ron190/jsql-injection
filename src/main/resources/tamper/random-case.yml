@@ -5,6 +5,8 @@ javascript: |
  load('src/main/resources/tamper/js/random-case.js');
  
  var tampering = function(sql) {
+     // Name of database and table is case sensitive on Linux (column name is case insensitive)
+     // TODO No case conversion for `database`.`table`
      return randomCase(sql)
          .replace(/0X/g,'0x');
  }

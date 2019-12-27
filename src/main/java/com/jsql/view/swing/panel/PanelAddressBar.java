@@ -450,6 +450,7 @@ public class PanelAddressBar extends JPanel {
     private class ActionStart implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            
             // No injection running
             if (PanelAddressBar.this.getButtonInUrl().getState() == StateButton.STARTABLE) {
                 this.startInjection();

@@ -59,24 +59,25 @@ class TamperingUtilSpock extends Specification {
     
     def 'Check SpaceToMultilineComment tampering'() {
         when: tamperingUtil.set(false, false, false, false, false, false, false, false, true, false, false)
-        and: result = tamperingUtil.tamper('SlQqLs'+ '++' +'lSqQsL')
-        then: result == '/**/%0A/**/'
+        and: result = tamperingUtil.tamper('SlQqLs'+ 'a+b' +'lSqQsL')
+        then: result == 'a/**/b'
     }
     
     def 'Check SpaceToDashComment tampering'() {
         when: tamperingUtil.set(false, false, false, false, false, false, false, false, false, true, false)
-        and: result = tamperingUtil.tamper('SlQqLs'+ '++' +'lSqQsL')
-        then: result == '--%0A%0A'
+        and: result = tamperingUtil.tamper('SlQqLs'+ 'a+b' +'lSqQsL')
+        then: result == 'a--%0Ab'
     }
     
     def 'Check SpaceToSharpComment tampering'() {
         when: tamperingUtil.set(false, false, false, false, false, false, false, false, false, false, true)
-        and: result = tamperingUtil.tamper('SlQqLs'+ '++' +'lSqQsL')
-        then: result == '%23%0A%0A%23'
+        and: result = tamperingUtil.tamper('SlQqLs'+ 'a+b' +'lSqQsL')
+        then: result == 'a%23%0Ab'
     }
     
     def setup() {
         tamperingUtil = new TamperingUtil()
+        result = null
     }
     
 }

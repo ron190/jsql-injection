@@ -4,16 +4,24 @@ group:
 javascript: |
  var tampering = function(sql) {
      return sql
-         .replace('separator+0x','separatorx')
+         // String next to [separator] can't be converted to char() in
+         // expression group_concat(col order by col separator ',')
+         // Step 1. Escape [separator]
+         .replace(/(separator)\+0x/ig,'$1x')
          .replace(/0x([a-z0-9]+)/ig, function(corr, p1){
              return 'concat('
                  + Array.prototype.map.call(
-                     p1.match(/.{1,2}/g).map(function(v){
+                     p1
+                     .match(/.{1,2}/g)
+                     .map(function(v){
                          return String.fromCharCode(parseInt(v, 16));
-                     }).join(''), function(chr){
+                     })
+                     .join(''), 
+                     function(chr){
                          return 'char('+(chr.charCodeAt(0))+')';
                      })
                  +')';
          })
-         .replace('separatorx','separator+0x');
+         // Step 2. Unescape [separator]
+         .replace(/(separator)x/ig,'$1+0x');
  }

@@ -1,6 +1,10 @@
 package com.jsql.util;
 
 import java.lang.reflect.InvocationTargetException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Set;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.swing.SwingUtilities;
 
@@ -8,9 +12,10 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.IgnoreMessageException;
 
 /**
- * Utility class managing an exception reporting mecanism.
+ * Utility class managing an exception reporting mechanism.
  * It uses Github as the issue webtracker.
  */
 public class ExceptionUtil {
@@ -20,10 +25,13 @@ public class ExceptionUtil {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
+    private InjectionModel injectionModel;
+    
+    private Set<String> exceptionsMd5Cached = new CopyOnWriteArraySet<>();
+    
     public ExceptionUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }
-    InjectionModel injectionModel;
 
     /**
      * Handler class processing errors on top of the JVM in order to send
@@ -33,23 +41,45 @@ public class ExceptionUtil {
 
         @Override
         public void uncaughtException(Thread thread, Throwable throwable) {
+            
             // for other uncaught exceptions
             LOGGER.error("Unhandled Exception on "+ thread.getName(), throwable);
-            
+
             //  Report #214: ignore if OutOfMemoryError: Java heap space
             if (
                 ExceptionUtil.this.injectionModel.getMediatorUtils().getPreferencesUtil().isReportingBugs()
                 && ExceptionUtils.getStackTrace(throwable).contains("com.jsql")
                 && !(throwable instanceof OutOfMemoryError)
             ) {
-                ExceptionUtil.this.injectionModel.getMediatorUtils().getGitUtil().sendUnhandledException(thread.getName(), throwable);
+                
+                try {
+                    MessageDigest md = MessageDigest.getInstance("Md5");
+                    
+                    String stackTrace = ExceptionUtils.getStackTrace(throwable).trim();
+                    String passwordString = new String(stackTrace.toCharArray());
+                    byte[] passwordByte = passwordString.getBytes();
+                    md.update(passwordByte, 0, passwordByte.length);
+                    byte[] encodedPassword = md.digest();
+                    String encodedPasswordInString = StringUtil.digestToHexString(encodedPassword);
+                    
+                    String md5Exception = encodedPasswordInString;
+                    
+                    if (!exceptionsMd5Cached.contains(md5Exception)) {                    
+                        exceptionsMd5Cached.add(md5Exception);
+                        ExceptionUtil.this.injectionModel.getMediatorUtils().getGitUtil().sendUnhandledException(thread.getName(), throwable);
+                    }
+                } catch (NoSuchAlgorithmException e) {
+                    // Ignore
+                    IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
+                    LOGGER.trace(exceptionIgnored, exceptionIgnored);
+                }
             }
         }
         
     }
     
     /**
-     * Add the error reporting mecanism on top of the JVM in order to
+     * Add the error reporting mechanism on top of the JVM in order to
      * intercept and process the error to Github.
      */
     public void setUncaughtExceptionHandler() {

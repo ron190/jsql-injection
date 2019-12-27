@@ -33,6 +33,7 @@ public class TamperingUtil {
     
     private final static ScriptEngine NASHORN_ENGINE = new ScriptEngineManager().getEngineByName("nashorn");
 
+    // TODO Use also setter
     public void set(
         boolean isBase64,
         boolean isVersionComment,
@@ -89,10 +90,6 @@ public class TamperingUtil {
            sqlQuery = m.group(2);
            trail = m.group(3);
         }
-        
-        if (this.isRandomCase) {
-            sqlQuery = eval(sqlQuery, Tampering.RANDOM_CASE.instance().getModelYaml().getJavascript());
-        }
 
         if (this.isHexToChar) {
             sqlQuery = eval(sqlQuery, Tampering.HEX_TO_CHAR.instance().getModelYaml().getJavascript());
@@ -127,6 +124,10 @@ public class TamperingUtil {
         
         if (this.isBase64) {
             sqlQuery = eval(sqlQuery, Tampering.BASE64.instance().getModelYaml().getJavascript());
+        }
+        
+        if (this.isRandomCase) {
+            sqlQuery = eval(sqlQuery, Tampering.RANDOM_CASE.instance().getModelYaml().getJavascript());
         }
         
         sqlQuery = lead + sqlQuery + trail;

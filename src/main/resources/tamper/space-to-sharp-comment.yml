@@ -1,9 +1,10 @@
-tooltip: Replace blank space ' ' to sharp comment '#\\n'
-description: Replace blank space ' ' to sharp comment '#\\n'
+tooltip: Replace blank space ' ' to sharp comment '#\n'
+description: Replace blank space ' ' to sharp comment '#\n'
 group: 
 javascript: |
  var tampering = function(sql) {
      return sql
-         .replace(/\+$/gm,'%0A%23')
-         .replace(/\+/gm,'%23%0A')
+         .replace(/([^-])\+$/gm,'$1%0A%23')
+         // Ignore required space at ending comment -(-)+(-)
+         .replace(/([^-])\+([^-])/gm,'$1%23%0A$2')
  }

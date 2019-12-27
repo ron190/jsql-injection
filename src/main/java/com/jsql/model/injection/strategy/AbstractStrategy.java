@@ -96,6 +96,11 @@ public abstract class AbstractStrategy {
      */
     public abstract String getName();
     
+    @Override
+    public String toString() {
+        return this.getName();
+    }
+    
     // TODO strategy Error
     public Integer getIndexMethodError() {
         return null;

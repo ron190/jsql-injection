@@ -191,8 +191,8 @@ public class PanelPreferences extends JPanel {
         TAMPERING(panelTampering),
         PROXY(panelProxy),
         AUTHENTICATION(panelAuthentication),
-        GENERAL(panelGeneral),
-        USER_AGENT(new JPanel());
+        GENERAL(panelGeneral);
+//        USER_AGENT(new JPanel());
         
         private Component panel;
 
