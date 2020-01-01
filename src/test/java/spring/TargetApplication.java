@@ -18,7 +18,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import model.Student;
 
 @SpringBootApplication
-public class Application {
+public class TargetApplication {
 
     static Properties propsH2 = new Properties();
     static Properties propsH2Api = new Properties();
@@ -80,6 +80,6 @@ public class Application {
         
         initializeDatabases();
         
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(TargetApplication.class, args);
     }
 }

@@ -472,6 +472,7 @@ public class InjectionModel extends AbstractModelObservable {
             connection.setRequestProperty("Pragma", "no-cache");
             connection.setRequestProperty("Cache-Control", "no-cache");
             connection.setRequestProperty("Expires", "-1");
+            connection.setRequestProperty("Content-Type", "text/plain");
             
             // Csrf
             
@@ -509,7 +510,7 @@ public class InjectionModel extends AbstractModelObservable {
                     ConnectionUtil.fixCustomRequestMethod(connection, this.getMediatorUtils().getConnectionUtil().getTypeRequest());
                     
                     connection.setDoOutput(true);
-                    connection.addRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
     
                     DataOutputStream dataOut = new DataOutputStream(connection.getOutputStream());
                     if (this.getMediatorUtils().getConnectionUtil().getTokenCsrf() != null) {
@@ -701,27 +702,24 @@ public class InjectionModel extends AbstractModelObservable {
         }
         
         if (methodInjection != this.getMediatorMethodInjection().getHeader()) {
-            // TODO
-            // Urlencode backtick and pipe (for Java only)
-            query = query.replaceAll("(?s)`", "%60");
-            query = query.replaceAll("(?s)\\|", "%7C");
-            query = query.replaceAll("(?s)'", "%27");
-            query = query.replaceAll("(?s)\\(", "%28");
-            query = query.replaceAll("(?s)\\)", "%29");
-            query = query.replaceAll("(?s)\\?", "%3F");
-            query = query.replaceAll("(?s)>", "%3E");
-            // HTTP and Hibernate JPQL  purpose : => \:
-            query = query.replaceAll("(?s):", "%5C%3A");
-            query = query.replaceAll("(?s) ", "+");
-            query = query.replaceAll("(?s)\"", "%22");
-            query = query.replaceAll("(?s)\\{", "%7B");
-            query = query.replaceAll("(?s)\\}", "%7D");
-            query = query.replaceAll("(?s)\\[", "%5B");
-            query = query.replaceAll("(?s)\\]", "%5D");
+            // URL encode each character because no query parameter context
+            query = query.replace("`", "%60");
+            query = query.replace("|", "%7C");
+            query = query.replace("'", "%27");
+            query = query.replace("(", "%28");
+            query = query.replace(")", "%29");
+            query = query.replace("?", "%3F");
+            query = query.replace(">", "%3E");
+            query = query.replace(" ", "+");
+            query = query.replace("\"", "%22");
+            query = query.replace("{", "%7B");
+            query = query.replace("}", "%7D");
+            query = query.replace("[", "%5B");
+            query = query.replace("]", "%5D");
         } else {
             // For cookies in Spring
             // Replace spaces
-            query = query.replaceAll("\\+", "%20");
+            query = query.replace("+", "%20");
             query = query.replace(",", "%2C");
         }
         

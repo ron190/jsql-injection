@@ -132,6 +132,7 @@ public class ConnectionUtil {
             connection.setRequestProperty("Pragma", "no-cache");
             connection.setRequestProperty("Cache-Control", "no-cache");
             connection.setRequestProperty("Expires", "-1");
+            connection.setRequestProperty("Content-Type", "text/plain");
             
             this.fixJcifsTimeout(connection);
             

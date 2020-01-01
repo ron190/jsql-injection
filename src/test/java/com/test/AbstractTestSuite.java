@@ -33,7 +33,7 @@ import com.jsql.model.bean.database.Table;
 import com.jsql.model.exception.InjectionFailureException;
 import com.jsql.model.exception.JSqlException;
 
-import spring.Application;
+import spring.TargetApplication;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
@@ -89,8 +89,8 @@ public abstract class AbstractTestSuite {
             LOGGER.info("@BeforeClass: loading H2, Hibernate and Spring...");
             
             Server.createTcpServer().start();
-            Application.initializeDatabases();
-            SpringApplication.run(Application.class, new String[] {});
+            TargetApplication.initializeDatabases();
+            SpringApplication.run(TargetApplication.class, new String[] {});
             
             isSetupDone.set(true);
         }

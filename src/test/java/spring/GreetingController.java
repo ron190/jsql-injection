@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,14 +38,15 @@ public class GreetingController {
     private SessionFactory sessionFactory;
 
     @SuppressWarnings("unchecked")
-    @PostMapping(path = "/greeting-post", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-        public Greeting greetingPost(HttpServletRequest a) throws IOException {
+    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, path = "/greeting-post", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    public Greeting greetingPost(HttpServletRequest a) throws IOException {
         
         Session session = this.sessionFactory.getCurrentSession();
         Greeting greeting = null;
         try {
             String name = a.getParameterMap().get("name")[0];
-            
+
+            name = name.replace(":", "\\:");
             Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
             
             List<Object[]> results = q.getResultList();
@@ -71,6 +73,7 @@ public class GreetingController {
         Greeting greeting = null;
         try {
             
+            name = name.replace(":", "\\:");
             Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
             
             List<Object[]> results = q.getResultList();
@@ -98,6 +101,7 @@ public class GreetingController {
         try {
             String name = a.get("name");
             
+            name = name.replace(":", "\\:");
             Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
             
             List<Object[]> results = q.getResultList();
@@ -129,6 +133,7 @@ public class GreetingController {
             
             String a = j;
             
+            a = a.replace(":", "\\:");
             Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+ a +"'");
             
             List<Object[]> results = q.getResultList();
@@ -152,6 +157,7 @@ public class GreetingController {
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Session session = this.sessionFactory.getCurrentSession();
+        name = name.replace(":", "\\:");
         Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
         
         Greeting greeting = null;
@@ -176,6 +182,7 @@ public class GreetingController {
     public Greeting greetingError(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Session session = this.sessionFactory.getCurrentSession();
+        name = name.replace(":", "\\:");
         Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
         
         Greeting greeting = null;
@@ -203,6 +210,7 @@ public class GreetingController {
     public Greeting greetingBlind(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Session session = this.sessionFactory.getCurrentSession();
+        name = name.replace(":", "\\:");
         Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
         
         Greeting greeting = null;
@@ -235,6 +243,7 @@ public class GreetingController {
     public Greeting greetingTime(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
         Session session = this.sessionFactory.getCurrentSession();
+        name = name.replace(":", "\\:");
         Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
         
         Greeting greeting = null;

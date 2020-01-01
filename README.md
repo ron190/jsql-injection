@@ -25,17 +25,18 @@ Each program update is tested with Java version 8 through 13 in the cloud, again
 - Automatic injection of 23 kinds of databases: Access, CockroachDB, CUBRID, DB2, Derby, Firebird, H2, Hana, HSQLDB, Informix, Ingres, MaxDB, Mckoi, MySQL, Neo4j, NuoDB, Oracle, PostgreSQL, SQLite, SQL Server, Sybase, Teradata and Vertica
 - Multiple injection strategies: Normal, Error, Blind and Time
 - Multiple injection structures: Standard, Zipped, Dump In One Shot
-- SQL Engine to program and optimize SQL expressions
+- SQL injection expressions programming at runtime
+- JavaScript/Java tampering methods programming at runtime
 - Injection of multiple targets
 - Search for administration pages
-- Creation and vizualisation of Web shell and SQL shell
+- Creation and visualization of Web shell and SQL shell
 - Read and write files on host using injection
 - Bruteforce of password's hash
 - Encode and decode a string
 
-## Installation [[jsql-injection-v0.81.jar](https://github.com/ron190/jsql-injection/releases/download/v0.81/jsql-injection-v0.81.jar)]
-Install [Java 8](http://java.com) up to Java 13, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.81.jar` to launch the software.<br>
-You can also type `java -jar jsql-injection-v0.81.jar` in your terminal to start the program.<br>
+## Installation [[jsql-injection-v0.82.jar](https://github.com/ron190/jsql-injection/releases/download/v0.82/jsql-injection-v0.82.jar)]
+Install [Java 8](http://java.com) up to Java 13, then download the latest [release](https://github.com/ron190/jsql-injection/releases/) and double-click on the file `jsql-injection-v0.82.jar` to launch the software.<br>
+You can also type `java -jar jsql-injection-v0.82.jar` in your terminal to start the program.<br>
 If you are using Kali Linux then get the latest release using command `sudo apt-get -f install jsql`, or make a system full upgrade with `apt update` then `apt full-upgrade`.
 
 ## [[Test-bed scripts](https://github.com/ron190/jsql-injection/tree/master/web/test-bed)]
@@ -77,6 +78,8 @@ while ($row = $result->fetch_array($result, MYSQLI_NUM))
 `Test-bed scripts for php5 and php7 shared on Github, SOAP injection, Fix multi-params injection, Fix adding items to Scan list, Fix translation dialog`
 
 ## Change log
+
+**v0.82** `Tampering options, Refactoring for Cloud and multithreading compatibility`
 
 **v0.81** `Test all parameters including JSON, Parse forms and Csrf tokens, Databases: CockroachDB Mckoi Neo4j NuoDB Hana and Vertica, Translation complete: Russian, Chinese`
 

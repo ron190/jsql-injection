@@ -270,8 +270,8 @@ public class NodeModelTable extends AbstractNodeModel {
             }
         );
 
-        tablePopupMenu.add(new JSeparator());
-        tablePopupMenu.add(menuCustomLoad);
+//        tablePopupMenu.add(new JSeparator());
+//        tablePopupMenu.add(menuCustomLoad);
         
         tablePopupMenu.setButtonGroupLoadRows(buttonGroupLoadRows);
         tablePopupMenu.setRadioCustomFromChar(radioCustomFromChar);

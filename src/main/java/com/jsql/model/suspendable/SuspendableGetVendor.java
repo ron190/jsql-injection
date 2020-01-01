@@ -79,7 +79,8 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
                     total--;
                     String pageSource = currentCallable.getContent();
                     
-                    for (Vendor vendorTest: this.injectionModel.getMediatorVendor().getVendors().stream().toArray(Vendor[]::new)) {
+                    // Test each vendor except Auto with skip(1)
+                    for (Vendor vendorTest: this.injectionModel.getMediatorVendor().getVendors().stream().skip(1).toArray(Vendor[]::new)) {
                       if (
                           pageSource.matches(
                               "(?si).*("

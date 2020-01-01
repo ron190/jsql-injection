@@ -108,6 +108,7 @@ public class MediatorVendor {
         this.vertica = new Vendor("Vertica", new VendorYaml("vertica.yml", this.injectionModel));
         
         this.vendors = Arrays.asList(
+            this.auto,
             this.access,
             this.cockroachDB,
             this.cubrid,

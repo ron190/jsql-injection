@@ -20,10 +20,10 @@ public class MasterService {
         DriverManager.setLogWriter(null);
 
         Stream.of(
-            Application.propsH2,
-            Application.propsMySQL,
-            Application.propsMySQLError,
-            Application.propsPostgres
+            TargetApplication.propsH2,
+            TargetApplication.propsMySQL,
+            TargetApplication.propsMySQLError,
+            TargetApplication.propsPostgres
         ).forEach(props -> {
             DatasourceConnectionProviderImpl connectionProviderPostgres = new DatasourceConnectionProviderImpl();
             DriverManagerDataSource dataSource = new DriverManagerDataSource();
