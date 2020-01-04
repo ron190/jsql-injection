@@ -1,11 +1,10 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-
 public class Fields {
 
-    private String field;
-    private String concat;
+    private String field = "";
+    private String concat = "";
 
     public String getField() {
         return this.field;

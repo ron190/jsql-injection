@@ -16,7 +16,7 @@ import com.jsql.model.injection.strategy.blind.patch.Diff;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 /**
- * A blind attack class using thread asynchronization.
+ * A blind attack class using concurrent threads.
  */
 public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
     
@@ -42,12 +42,13 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
      * Create blind attack initialization.
      * If every false test are not in true mark and every true test are in
      * true test, then blind attack is confirmed.
+     * @param blindMode
      */
-    public InjectionBlind(InjectionModel injectionModel) {
-        super(injectionModel);
+    public InjectionBlind(InjectionModel injectionModel, BooleanMode blindMode) {
+        super(injectionModel, blindMode);
         
         // No blind
-        if (this.falseTest.length == 0) {
+        if (this.falseTest.isEmpty()) {
             return;
         }
         
@@ -66,7 +67,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagFalse"));
         Collection<CallableBlind> listCallableTagFalse = new ArrayList<>();
         for (String urlTest: this.falseTest) {
-            listCallableTagFalse.add(new CallableBlind(urlTest, injectionModel, this));
+            listCallableTagFalse.add(new CallableBlind(urlTest, injectionModel, this, blindMode));
         }
         
         /*
@@ -105,7 +106,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
         ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetBlindTagTrue"));
         Collection<CallableBlind> listCallableTagTrue = new ArrayList<>();
         for (String urlTest: this.trueTest) {
-            listCallableTagTrue.add(new CallableBlind(urlTest, injectionModel, this));
+            listCallableTagTrue.add(new CallableBlind(urlTest, injectionModel, this, blindMode));
         }
         
         // Begin the url requests
@@ -138,12 +139,12 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
 
     @Override
     public CallableBlind getCallable(String string, int indexCharacter, boolean isTestingLength) {
-        return new CallableBlind(string, indexCharacter, isTestingLength, this.injectionModel, this);
+        return new CallableBlind(string, indexCharacter, isTestingLength, this.injectionModel, this, this.blindMode);
     }
 
     @Override
     public CallableBlind getCallable(String string, int indexCharacter, int bit) {
-        return new CallableBlind(string, indexCharacter, bit, this.injectionModel, this);
+        return new CallableBlind(string, indexCharacter, bit, this.injectionModel, this, this.blindMode);
     }
 
     @Override
@@ -152,7 +153,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             throw new StoppedByUserSlidingException();
         }
         
-        CallableBlind blindTest = new CallableBlind(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindFirst(), this.injectionModel, this);
+        CallableBlind blindTest = new CallableBlind(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindFirst(), this.injectionModel, this, this.blindMode);
         try {
             blindTest.call();
         } catch (Exception e) {

@@ -1,12 +1,11 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-
 public class ModelYaml {
 
-    private String vendor;
-    private Resource resource;
-    private Strategy strategy;
+    private String vendor = "";
+    private Resource resource = new Resource();
+    private Strategy strategy = new Strategy();
 
     public String getVendor() {
         return this.vendor;

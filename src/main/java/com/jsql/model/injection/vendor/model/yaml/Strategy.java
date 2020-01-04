@@ -1,13 +1,12 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-
 public class Strategy {
 
-    private Configuration configuration;
-    private Normal normal;
-    private Boolean booleanStrategy;
-    private Error error;
+    private Configuration configuration = new Configuration();
+    private Normal normal = new Normal();
+    private Boolean booleanStrategy = new Boolean();
+    private Error error = new Error();
 
     public Configuration getConfiguration() {
         return this.configuration;

@@ -47,7 +47,7 @@ public class ManagerCoder extends JPanel implements Manager {
     private JTextArea textInput;
 
     /**
-     * Encoding choosed by user.
+     * Encoding choice by user.
      */
     private JMenuItem menuMethod;
 

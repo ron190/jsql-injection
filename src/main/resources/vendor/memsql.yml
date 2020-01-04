@@ -117,7 +117,6 @@ strategy:
   failsafe: 1337${INDICE}7330%2b1
   calibrator: rpad('${CALIBRATOR_SQL}',1024,'${CALIBRATOR_SQL}')
   limitBoundary: 0
-  endingComment: 
   fingerprint: 
    errorMessage: 
     - memsql

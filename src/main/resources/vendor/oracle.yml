@@ -237,5 +237,6 @@ strategy:
         ${BIT}
     )
    length: length(${INJECTION}) > ${INDEX}
-   
-  blind: and ${TEST}
+  modeAnd: and
+  modeOr: or
+  blind: ${BOOLEAN.MODE} ${TEST}

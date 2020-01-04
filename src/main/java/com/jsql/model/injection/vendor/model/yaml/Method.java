@@ -1,12 +1,11 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-
 public class Method {
 
-    private String name;
-    private String query;
-    private Integer capacity;
+    private String name = "";
+    private String query = "";
+    private Integer capacity = 0;
 
     public String getName() {
         return this.name;

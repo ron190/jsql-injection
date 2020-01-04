@@ -84,6 +84,7 @@ public final class HelperUi {
     public static final Icon ICON_SHELL_SERVER = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/application_xp_terminal.png"));
     public static final Icon ICON_DATABASE_SERVER = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/database.png"));
     public static final Icon ICON_FILE_SERVER = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/file.png"));
+    public static final Icon ICON_COG = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/cog.png"));
     public static final Icon ICON_BRUTER = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/lock_open.png"));
     public static final Icon ICON_CODER = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/textfield.png"));
     public static final Icon ICON_UPLOAD = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/disk.png"));

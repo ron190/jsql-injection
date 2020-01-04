@@ -236,9 +236,9 @@ strategy:
         %26 ${BIT}
     )
    length: len(${INJECTION}) > ${INDEX}
-   
-  blind: and ${TEST}
-  
+  modeAnd: and
+  modeOr: or
+  blind: ${BOOLEAN.MODE} ${TEST}
   time: |
    ; if (${TEST}) 
        WAITFOR DELAY '00:00:00' 

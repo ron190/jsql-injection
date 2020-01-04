@@ -112,7 +112,6 @@ strategy:
        '${CALIBRATOR_SQL}'
    )
   limitBoundary: 1
-  endingComment: 
   fingerprint: 
    errorMessage: 
     - Non-terminated string

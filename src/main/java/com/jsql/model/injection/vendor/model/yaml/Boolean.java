@@ -1,12 +1,13 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-
 public class Boolean {
 
-    private Test test;
-    private String blind;
-    private String time;
+    private Test test = new Test();
+    private String blind = "";
+    private String time = "";
+    private String modeAnd = "";
+    private String modeOr = "";
 
     public Test getTest() {
         return this.test;
@@ -30,6 +31,22 @@ public class Boolean {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getModeAnd() {
+        return this.modeAnd;
+    }
+
+    public void setModeAnd(String modeAnd) {
+        this.modeAnd = modeAnd;
+    }
+
+    public String getModeOr() {
+        return this.modeOr;
+    }
+
+    public void setModeOr(String modeOr) {
+        this.modeOr = modeOr;
     }
 
 }

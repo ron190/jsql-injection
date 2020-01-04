@@ -703,19 +703,20 @@ public class InjectionModel extends AbstractModelObservable {
         
         if (methodInjection != this.getMediatorMethodInjection().getHeader()) {
             // URL encode each character because no query parameter context
-            query = query.replace("`", "%60");
-            query = query.replace("|", "%7C");
+            query = query.replace("\"", "%22");
             query = query.replace("'", "%27");
             query = query.replace("(", "%28");
             query = query.replace(")", "%29");
-            query = query.replace("?", "%3F");
-            query = query.replace(">", "%3E");
-            query = query.replace(" ", "+");
-            query = query.replace("\"", "%22");
             query = query.replace("{", "%7B");
-            query = query.replace("}", "%7D");
             query = query.replace("[", "%5B");
+            query = query.replace("|", "%7C");
+            query = query.replace("`", "%60");
             query = query.replace("]", "%5D");
+            query = query.replace("}", "%7D");
+            query = query.replace(">", "%3E");
+            query = query.replace("<", "%3C");
+            query = query.replace("?", "%3F");
+            query = query.replace(" ", "+");
         } else {
             // For cookies in Spring
             // Replace spaces

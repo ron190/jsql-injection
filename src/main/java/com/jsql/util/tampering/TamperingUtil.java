@@ -118,16 +118,16 @@ public class TamperingUtil {
             sqlQuery = eval(sqlQuery, Tampering.SPACE_TO_SHARP_COMMENT.instance().getModelYaml().getJavascript());
         }
         
+        if (this.isRandomCase) {
+            sqlQuery = eval(sqlQuery, Tampering.RANDOM_CASE.instance().getModelYaml().getJavascript());
+        }
+        
         if (this.isEval) {
             sqlQuery = eval(sqlQuery, this.customTamper);
         }
         
         if (this.isBase64) {
             sqlQuery = eval(sqlQuery, Tampering.BASE64.instance().getModelYaml().getJavascript());
-        }
-        
-        if (this.isRandomCase) {
-            sqlQuery = eval(sqlQuery, Tampering.RANDOM_CASE.instance().getModelYaml().getJavascript());
         }
         
         sqlQuery = lead + sqlQuery + trail;

@@ -194,7 +194,7 @@ public class GitUtil {
     }
     
     /**
-     * Instanciate the jsonObject from json data if not already set.
+     * Instantiate the jsonObject from json data if not already set.
      * @return jsonObject describing json data
      * @throws IOException if connection to json data fails
      */

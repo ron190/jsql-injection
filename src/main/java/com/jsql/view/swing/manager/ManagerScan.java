@@ -99,6 +99,7 @@ public class ManagerScan extends AbstractManagerList {
         }
         
         final DnDList dndListScan = new DnDList(itemsList);
+        dndListScan.isScan = true;
         dndListScan.setName("scan");
         dndListScan.setTransferHandler(null);
         dndListScan.setTransferHandler(new ListTransfertHandlerScan());

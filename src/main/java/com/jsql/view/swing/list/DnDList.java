@@ -257,7 +257,12 @@ public class DnDList extends JList<ItemList> {
                             // Fix Report #60
                             && 0 <= endPosition[0] && endPosition[0] <= this.listModel.size()
                         ) {
-                            this.listModel.add(endPosition[0]++, new ItemList(line.replace("\\", "/")));
+                            // TODO inheritance DnDListScan
+                            if (this.isScan) {
+                                this.listModel.add(endPosition[0]++, new ItemListScan(new BeanInjection(line.replace("\\", "/"))));
+                            } else {
+                                this.listModel.add(endPosition[0]++, new ItemList(line.replace("\\", "/")));
+                            }
                         }
                     }
                 } catch (IOException e) {
@@ -283,6 +288,8 @@ public class DnDList extends JList<ItemList> {
         });
         
     }
+    
+    public boolean isScan = false;
     
     public void restore() {
         this.listModel.clear();

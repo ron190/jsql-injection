@@ -1,15 +1,16 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Test {
 
-    private List<String> falses = null;
-    private List<String> trues = null;
-    private String initialization;
-    private String bit;
-    private String length;
+    private List<String> falses = new ArrayList<>();
+    private List<String> trues = new ArrayList<>();
+    private String initialization = "";
+    private String bit = "";
+    private String length = "";
 
     public List<String> getTrues() {
         return this.trues;

@@ -20,26 +20,19 @@ import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.model.suspendable.callable.ThreadFactoryCallable;
 
 public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean<T>> {
-    InjectionModel injectionModel;
-    public AbstractInjectionBoolean(InjectionModel injectionModel) {
-        this.injectionModel = injectionModel;
-
-        this.falseTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListFalseTest();
-        this.trueTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListTrueTest();
-    }
-
+    
     /**
      * Every FALSE SQL statements will be checked,
      * more statements means a more robust application
      */
-    protected String[] falseTest;
-
+    protected List<String> falseTest;
+    
     /**
      * Every TRUE SQL statements will be checked,
      * more statements means a more robust application
      */
-    protected String[] trueTest;
-
+    protected List<String> trueTest;
+    
     /**
      * Constant linked to a URL, true if that url
      * checks the end of the SQL result, false otherwise.
@@ -50,6 +43,22 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
      * Log4j logger sent to view.
      */
     private static final Logger LOGGER = Logger.getRootLogger();
+    
+    public enum BooleanMode {
+        AND, OR
+    }
+    
+    protected InjectionModel injectionModel;
+    
+    protected BooleanMode blindMode;
+    
+    public AbstractInjectionBoolean(InjectionModel injectionModel, BooleanMode blindMode) {
+        this.injectionModel = injectionModel;
+        this.blindMode = blindMode;
+
+        this.falseTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListFalseTest();
+        this.trueTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListTrueTest();
+    }
 
     /**
      * Process the whole blind injection, character by character, bit by bit.

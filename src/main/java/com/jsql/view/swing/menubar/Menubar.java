@@ -678,7 +678,7 @@ public class Menubar extends JMenuBar {
             MediatorGui.tabResults().setSelectedComponent(scroller);
 
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader(I18nView.valueByKey("MENUBAR_PREFERENCES"), HelperUi.ICON_FILE_SERVER);
+            TabHeader header = new TabHeader(I18nView.valueByKey("MENUBAR_PREFERENCES"), HelperUi.ICON_COG);
             I18nView.addComponentForKey("MENUBAR_PREFERENCES", header.getTabTitleLabel());
 
             // Apply the custom header to the tab
@@ -708,7 +708,7 @@ public class Menubar extends JMenuBar {
             MediatorGui.tabResults().setSelectedComponent(panelSqlEngine);
 
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader(I18nView.valueByKey("MENUBAR_SQL_ENGINE"), HelperUi.ICON_FILE_SERVER);
+            TabHeader header = new TabHeader(I18nView.valueByKey("MENUBAR_SQL_ENGINE"), HelperUi.ICON_COG);
             I18nView.addComponentForKey("MENUBAR_SQL_ENGINE", header.getTabTitleLabel());
 
             // Apply the custom header to the tab
@@ -822,7 +822,7 @@ public class Menubar extends JMenuBar {
     }
     
     public void switchLocale(Locale oldLocale, Locale newLocale, boolean isStartup) {
-        I18n.setLocaleDefault(ResourceBundle.getBundle("com.jsql.i18n.jsql", newLocale));
+        I18n.setLocaleDefault(ResourceBundle.getBundle("i18n.jsql", newLocale));
         
         JTableHeader header = MediatorGui.panelConsoles().getNetworkTable().getTableHeader();
         TableColumnModel colMod = header.getColumnModel();

@@ -19,6 +19,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collections;
+import java.util.Locale;
 
 import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
@@ -340,7 +341,7 @@ public class PanelAddressBar extends JPanel {
 
                 this.menuStrategy.add((JMenuItem) itemRadioStrategy);
                 ((JComponent) itemRadioStrategy)
-                        .setToolTipText(I18n.valueByKey("STRATEGY_" + strategy.getName().toUpperCase() + "_TOOLTIP"));
+                        .setToolTipText(I18n.valueByKey("STRATEGY_" + strategy.getName().toUpperCase(Locale.ROOT) + "_TOOLTIP"));
                 ((JComponent) itemRadioStrategy).setEnabled(false);
             }
         }

@@ -12,6 +12,7 @@ package com.jsql.view.swing.manager.util;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
 
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
@@ -108,7 +109,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
         }
 
         hashBruter.setType((String) this.bruteForceManager.getHashTypes().getSelectedItem());
-        hashBruter.setHash(this.bruteForceManager.getHash().getText().toUpperCase().replaceAll("[^a-zA-Z0-9]", "").trim());
+        hashBruter.setHash(this.bruteForceManager.getHash().getText().toUpperCase(Locale.ROOT).replaceAll("[^a-zA-Z0-9]", "").trim());
 
         // Begin the unhashing process
         new Thread(hashBruter::tryBruteForce, "ThreadRunBruteForce").start();

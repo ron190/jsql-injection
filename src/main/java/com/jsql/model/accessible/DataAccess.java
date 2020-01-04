@@ -416,7 +416,7 @@ public class DataAccess {
      * => hh[value 1]jj[count]hhgghh[value 2]jj[count]hhggh...hi<br>
      * Data window can be cut before the end of the request but the process helps to obtain
      * the rest of the unreachable data. The process can be interrupted by the user (stop/pause).
-     * @param columns choosed by the user
+     * @param columns choice by the user
      * @return a 2x2 table containing values by columns
      * @throws JSqlException when injection failure or stopped by user
      */

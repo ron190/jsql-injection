@@ -1,14 +1,13 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-
 public class Resource {
 
-    private String info;
-    private Schema schema;
-    private Zipped zipped;
-    private Dios dios;
-    private File file;
+    private String info = "";
+    private Schema schema = new Schema();
+    private Zipped zipped = new Zipped();
+    private Dios dios = new Dios();
+    private File file = new File();
 
     public String getInfo() {
         return this.info;

@@ -30,6 +30,7 @@ import org.yaml.snakeyaml.Yaml;
 import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
 import com.jsql.model.injection.strategy.blind.InjectionTime;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
 import com.jsql.util.StringUtil;
@@ -37,6 +38,9 @@ import com.jsql.util.StringUtil;
 public class VendorYaml implements AbstractVendor {
     
     private ModelYaml modelYaml;
+    
+    // TODO rename + clean names
+    private static final String BOOLEAN_MODE = "${BOOLEAN.MODE}";
     
     private static final String LIMIT = "${LIMIT}";
 
@@ -205,42 +209,43 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String[] getListFalseTest() {
-        return
-            this.modelYaml.getStrategy().getBoolean() != null
-            ? this.modelYaml.getStrategy().getBoolean().getTest().getFalses().toArray(new String[0])
-            : new String[0];
+    public List<String> getListFalseTest() {
+        return this.modelYaml.getStrategy().getBoolean().getTest().getFalses();
     }
 
     @Override
-    public String[] getListTrueTest() {
-        return
-            this.modelYaml.getStrategy().getBoolean() != null
-            ? this.modelYaml.getStrategy().getBoolean().getTest().getTrues().toArray(new String[0])
-            : new String[0];
+    public List<String> getListTrueTest() {
+        return this.modelYaml.getStrategy().getBoolean().getTest().getTrues();
     }
 
     @Override
     public String sqlTestBlindFirst() {
-        return
-            this.modelYaml.getStrategy().getBoolean() != null
-            ? this.modelYaml.getStrategy().getBoolean().getTest().getInitialization()
-            : null;
+        return this.modelYaml.getStrategy().getBoolean().getTest().getInitialization();
     }
 
     @Override
-    public String sqlTestBlind(String check) {
+    public String sqlTestBlind(String check, BooleanMode blindMode) {
         return
             " "+
             this.modelYaml.getStrategy().getBoolean().getBlind()
+                .replace(BOOLEAN_MODE,
+                    blindMode == BooleanMode.AND ?
+                        this.modelYaml.getStrategy().getBoolean().getModeAnd()
+                        : this.modelYaml.getStrategy().getBoolean().getModeOr()
+                )
                 .replace(TEST, check);
     }
 
     @Override
-    public String sqlBitTestBlind(String inj, int indexCharacter, int bit) {
+    public String sqlBitTestBlind(String inj, int indexCharacter, int bit, BooleanMode blindMode) {
         return
             " "+
             this.modelYaml.getStrategy().getBoolean().getBlind()
+                .replace(BOOLEAN_MODE,
+                    blindMode == BooleanMode.AND ?
+                        this.modelYaml.getStrategy().getBoolean().getModeAnd()
+                        : this.modelYaml.getStrategy().getBoolean().getModeOr()
+                )
                 .replace(TEST,
                     this.modelYaml.getStrategy().getBoolean().getTest().getBit()
                         .replace(INJECTION, inj)
@@ -250,10 +255,15 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlLengthTestBlind(String inj, int indexCharacter) {
+    public String sqlLengthTestBlind(String inj, int indexCharacter, BooleanMode blindMode) {
         return
             " "+
             this.modelYaml.getStrategy().getBoolean().getBlind()
+                .replace(BOOLEAN_MODE,
+                    blindMode == BooleanMode.AND ?
+                        this.modelYaml.getStrategy().getBoolean().getModeAnd()
+                        : this.modelYaml.getStrategy().getBoolean().getModeOr()
+                )
                 .replace(TEST,
                     this.modelYaml.getStrategy().getBoolean().getTest().getLength()
                         .replace(INJECTION, inj)
@@ -262,25 +272,31 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlTimeTest(String check) {
-        String sqlTime = "";
-        
-        if (this.modelYaml.getStrategy().getBoolean().getTime() != null) {
-            sqlTime =
-                " "+
-                this.modelYaml.getStrategy().getBoolean().getTime()
-                    .replace(TEST, check)
-                    .replace(SLEEP_TIME, Long.toString(InjectionTime.SLEEP_TIME));
-        }
+    public String sqlTimeTest(String check, BooleanMode blindMode) {
+        String sqlTime =
+            " "+
+            this.modelYaml.getStrategy().getBoolean().getTime()
+                .replace(BOOLEAN_MODE,
+                    blindMode == BooleanMode.AND ?
+                        this.modelYaml.getStrategy().getBoolean().getModeAnd()
+                        : this.modelYaml.getStrategy().getBoolean().getModeOr()
+                )
+                .replace(TEST, check)
+                .replace(SLEEP_TIME, Long.toString(InjectionTime.SLEEP_TIME));
         
         return sqlTime;
     }
 
     @Override
-    public String sqlBitTestTime(String inj, int indexCharacter, int bit) {
+    public String sqlBitTestTime(String inj, int indexCharacter, int bit, BooleanMode blindMode) {
         return
             " "+
             this.modelYaml.getStrategy().getBoolean().getTime()
+                .replace(BOOLEAN_MODE,
+                    blindMode == BooleanMode.AND ?
+                        this.modelYaml.getStrategy().getBoolean().getModeAnd()
+                        : this.modelYaml.getStrategy().getBoolean().getModeOr()
+                )
                 .replace(
                     TEST,
                     this.modelYaml.getStrategy().getBoolean().getTest().getBit()
@@ -295,10 +311,15 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlLengthTestTime(String inj, int indexCharacter) {
+    public String sqlLengthTestTime(String inj, int indexCharacter, BooleanMode blindMode) {
         return
             " "+
             this.modelYaml.getStrategy().getBoolean().getTime()
+                .replace(BOOLEAN_MODE,
+                    blindMode == BooleanMode.AND ?
+                        this.modelYaml.getStrategy().getBoolean().getModeAnd()
+                        : this.modelYaml.getStrategy().getBoolean().getModeOr()
+                )
                 .replace(
                     TEST,
                     this.modelYaml.getStrategy().getBoolean().getTest().getLength()

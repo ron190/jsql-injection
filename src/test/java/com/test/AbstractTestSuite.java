@@ -103,7 +103,7 @@ public abstract class AbstractTestSuite {
         if (this.injectionModel == null) {
             this.requestJdbc();
             this.setupInjection();
-            injectionModel.getMediatorUtils().getTamperingUtil().set(false, false, false, false, false, false, false, false, false, false, false);
+            this.injectionModel.getMediatorUtils().getTamperingUtil().set(false, false, false, false, false, false, false, false, false, false, false);
         }
     }
 

@@ -1,14 +1,13 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-
 public class Dios {
 
-    private String database;
-    private String table;
-    private String column;
-    private Row row;
-    private String limit;
+    private String database = "";
+    private String table = "";
+    private String column = "";
+    private Row row = new Row();
+    private String limit = "";
 
     public String getDatabase() {
         return this.database;

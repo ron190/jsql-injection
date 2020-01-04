@@ -64,8 +64,8 @@ public class ExceptionUtil {
                     
                     String md5Exception = encodedPasswordInString;
                     
-                    if (!exceptionsMd5Cached.contains(md5Exception)) {                    
-                        exceptionsMd5Cached.add(md5Exception);
+                    if (!ExceptionUtil.this.exceptionsMd5Cached.contains(md5Exception)) {
+                        ExceptionUtil.this.exceptionsMd5Cached.add(md5Exception);
                         ExceptionUtil.this.injectionModel.getMediatorUtils().getGitUtil().sendUnhandledException(thread.getName(), throwable);
                     }
                 } catch (NoSuchAlgorithmException e) {

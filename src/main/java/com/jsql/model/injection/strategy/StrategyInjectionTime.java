@@ -17,6 +17,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
 import com.jsql.model.injection.strategy.blind.InjectionTime;
 import com.jsql.model.suspendable.AbstractSuspendable;
 
@@ -33,7 +34,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
     /**
      * Injection method using time attack.
      */
-    private InjectionTime timeInjection;
+    private InjectionTime injectionTime;
     
     public StrategyInjectionTime(InjectionModel injectionModel) {
         super(injectionModel);
@@ -42,22 +43,33 @@ public class StrategyInjectionTime extends AbstractStrategy {
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
         
-        if (this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindFirst() == null) {
+        if (this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindFirst().isBlank()) {
             LOGGER.info("No Time strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
         } else {
-            LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Time...");
+            LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Time with operator AND...");
             
-            this.timeInjection = new InjectionTime(this.injectionModel);
+            this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.AND);
+            this.isApplicable = this.injectionTime.isInjectable();
             
-            this.isApplicable = this.timeInjection.isInjectable();
+            if (!this.isApplicable) {
+                LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Time with operator OR...");
+                
+                this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.OR);
+                this.isApplicable = this.injectionTime.isInjectable();
+                
+                if (this.isApplicable) {
+                    LOGGER.debug(I18n.valueByKey("LOG_VULNERABLE") +" Time injection with operator OR");
+                }
+            } else {
+                LOGGER.debug(I18n.valueByKey("LOG_VULNERABLE") +" Time injection with operator AND");
+            }
             
             if (this.isApplicable) {
-                LOGGER.debug(I18n.valueByKey("LOG_VULNERABLE") +" Time injection");
                 this.allow();
                 
                 Request requestMessageBinary = new Request();
                 requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
-                requestMessageBinary.setParameters(this.timeInjection.getInfoMessage());
+                requestMessageBinary.setParameters(this.injectionTime.getInfoMessage());
                 this.injectionModel.sendToViews(requestMessageBinary);
             } else {
                 this.unallow();
@@ -78,7 +90,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
-        return this.timeInjection.inject(
+        return this.injectionTime.inject(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(sqlQuery, startPosition),
             stoppable
         );

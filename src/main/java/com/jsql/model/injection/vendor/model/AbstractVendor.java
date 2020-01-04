@@ -1,7 +1,10 @@
 package com.jsql.model.injection.vendor.model;
 
+import java.util.List;
+
 import com.jsql.model.bean.database.Database;
 import com.jsql.model.bean.database.Table;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
 import com.jsql.model.injection.vendor.model.yaml.ModelYaml;
 
 public interface AbstractVendor {
@@ -32,15 +35,15 @@ public interface AbstractVendor {
     String sqlFileRead(String filePath);
     String sqlTextIntoFile(String content, String filePath);
 
-    String[] getListFalseTest();
-    String[] getListTrueTest();
+    List<String> getListFalseTest();
+    List<String> getListTrueTest();
 
     String sqlTestBlindFirst();
-    String sqlTestBlind(String check);
-    String sqlBitTestBlind(String inj, int indexCharacter, int bit);
-    String sqlLengthTestBlind(String inj, int indexCharacter);
-    String sqlTimeTest(String check);
-    String sqlBitTestTime(String inj, int indexCharacter, int bit);
-    String sqlLengthTestTime(String inj, int indexCharacter);
+    String sqlTestBlind(String check, BooleanMode blindMode);
+    String sqlBitTestBlind(String inj, int indexCharacter, int bit, BooleanMode blindMode);
+    String sqlLengthTestBlind(String inj, int indexCharacter, BooleanMode blindMode);
+    String sqlTimeTest(String check, BooleanMode blindMode);
+    String sqlBitTestTime(String inj, int indexCharacter, int bit, BooleanMode blindMode);
+    String sqlLengthTestTime(String inj, int indexCharacter, BooleanMode blindMode);
     
 }

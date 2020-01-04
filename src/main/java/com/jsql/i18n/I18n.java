@@ -8,8 +8,8 @@ import java.util.ResourceBundle;
 import org.apache.log4j.Logger;
 
 /**
- * Utility class managing different text translations like english, chinese and arabic.
- * It retreives text in the current language of the system and also the one choosed
+ * Utility class managing different text translations like English, Chinese and Arabic.
+ * It retrieves text in the current language of the system and also the one choice
  * manually by user.
  * If the current system language is not supported then the user is proposed to use
  * the community translation protocol.
@@ -22,18 +22,18 @@ public class I18n {
     private static final Logger LOGGER = Logger.getRootLogger();
     
 //    static {
-//        Locale.setDefault(new Locale("ja"));
+//        Locale.setDefault(new Locale("zh"));
 //    }
     
     /**
-     * Bundle of standard i18n keys and translated text for root language english
+     * Bundle of standard i18n keys and translated text for root language English
      */
-    private static final ResourceBundle LOCALE_ROOT = ResourceBundle.getBundle("com.jsql.i18n.jsql", Locale.ROOT);
+    private static final ResourceBundle LOCALE_ROOT = ResourceBundle.getBundle("i18n.jsql", Locale.ROOT);
     
     /**
      * Bundle of i18n keys and translated text for the current system language
      */
-    private static ResourceBundle localeDefault = ResourceBundle.getBundle("com.jsql.i18n.jsql", Locale.getDefault());
+    private static ResourceBundle localeDefault = ResourceBundle.getBundle("i18n.jsql", Locale.getDefault());
     
     // Utility class
     private I18n() {

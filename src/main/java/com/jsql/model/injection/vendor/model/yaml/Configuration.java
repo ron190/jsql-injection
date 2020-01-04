@@ -1,16 +1,15 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-
 public class Configuration {
 
-    private String slidingWindow;
-    private String limit;
-    private String failsafe;
-    private String calibrator;
-    private Integer limitBoundary;
-    private String endingComment;
-    private Fingerprint fingerprint;
+    private String slidingWindow = "";
+    private String limit = "";
+    private String failsafe = "";
+    private String calibrator = "";
+    private Integer limitBoundary = 0;
+    private String endingComment = "";
+    private Fingerprint fingerprint = new Fingerprint();
 
     public String getSlidingWindow() {
         return this.slidingWindow;

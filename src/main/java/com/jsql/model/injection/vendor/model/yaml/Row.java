@@ -1,11 +1,10 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-
 public class Row {
 
-    private String query;
-    private Fields fields;
+    private String query = "";
+    private Fields fields = new Fields();
 
     public String getQuery() {
         return this.query;

@@ -17,6 +17,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.bean.util.Interaction;
 import com.jsql.model.bean.util.Request;
 import com.jsql.model.exception.StoppedByUserSlidingException;
+import com.jsql.model.injection.strategy.blind.AbstractInjectionBoolean.BooleanMode;
 import com.jsql.model.injection.strategy.blind.InjectionBlind;
 import com.jsql.model.suspendable.AbstractSuspendable;
 
@@ -33,7 +34,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     /**
      * Blind injection object.
      */
-    private InjectionBlind blind;
+    private InjectionBlind injectionBlind;
     
     public StrategyInjectionBlind(InjectionModel injectionModel) {
         super(injectionModel);
@@ -42,22 +43,33 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
         
-        if (this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindFirst() == null) {
+        if (this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindFirst().isBlank()) {
             LOGGER.info("No Blind strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
         } else {
-            LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Blind...");
+            LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Blind with operator AND...");
             
-            this.blind = new InjectionBlind(this.injectionModel);
+            this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.AND);
+            this.isApplicable = this.injectionBlind.isInjectable();
             
-            this.isApplicable = this.blind.isInjectable();
+            if (!this.isApplicable) {
+                LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Blind with operator OR...");
+                
+                this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.OR);
+                this.isApplicable = this.injectionBlind.isInjectable();
+                
+                if (this.isApplicable) {
+                    LOGGER.debug(I18n.valueByKey("LOG_VULNERABLE") +" Blind injection with operator OR");
+                }
+            } else {
+                LOGGER.debug(I18n.valueByKey("LOG_VULNERABLE") +" Blind injection with operator AND");
+            }
             
             if (this.isApplicable) {
-                LOGGER.debug(I18n.valueByKey("LOG_VULNERABLE") +" Blind injection");
                 this.allow();
                 
                 Request requestMessageBinary = new Request();
                 requestMessageBinary.setMessage(Interaction.MESSAGE_BINARY);
-                requestMessageBinary.setParameters(this.blind.getInfoMessage());
+                requestMessageBinary.setParameters(this.injectionBlind.getInfoMessage());
                 this.injectionModel.sendToViews(requestMessageBinary);
             } else {
                 this.unallow();
@@ -78,7 +90,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
-        return this.blind.inject(
+        return this.injectionBlind.inject(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition),
             stoppable
         );

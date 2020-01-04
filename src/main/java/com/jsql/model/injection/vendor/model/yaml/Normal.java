@@ -1,12 +1,11 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-
 public class Normal {
 
-    private String indices;
-    private String capacity;
-    private String orderBy;
+    private String indices = "";
+    private String capacity = "";
+    private String orderBy = "";
 
     public String getIndices() {
         return this.indices;

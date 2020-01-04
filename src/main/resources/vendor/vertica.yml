@@ -158,5 +158,6 @@ strategy:
         ) %26 ${BIT}
     )
    length: char_length((${INJECTION})) > ${INDEX}
-   
-  blind: and ${TEST}
+  modeAnd: and
+  modeOr: or
+  blind: ${BOOLEAN.MODE} ${TEST}

@@ -1,12 +1,11 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-
 public class File {
 
-    private String privilege;
-    private String read;
-    private Create create;
+    private String privilege = "";
+    private String read = "";
+    private Create create = new Create();
 
     public String getPrivilege() {
         return this.privilege;

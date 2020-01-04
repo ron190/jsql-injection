@@ -1,11 +1,10 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-
 public class Create {
 
-    private String content;
-    private String query;
+    private String content = "";
+    private String query = "";
 
     public String getContent() {
         return this.content;
