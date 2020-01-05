@@ -39,7 +39,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     public CallableTime(String inj, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode) {
         this.injectionModel = injectionModel;
         this.injectionTime = injectionTime;
-        this.blindUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(inj, blindMode);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(inj, blindMode);
     }
     
     /**
@@ -51,7 +51,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     public CallableTime(String inj, int indexCharacter, int bit, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode) {
         this.injectionModel = injectionModel;
         this.injectionTime = injectionTime;
-        this.blindUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestTime(inj, indexCharacter, bit, blindMode);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestTime(inj, indexCharacter, bit, blindMode);
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
     }
@@ -59,7 +59,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     public CallableTime(String inj, int indexCharacter, boolean isTestingLength, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode) {
         this.injectionModel = injectionModel;
         this.injectionTime = injectionTime;
-        this.blindUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlLengthTestTime(inj, indexCharacter, blindMode);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlLengthTestTime(inj, indexCharacter, blindMode);
         this.isTestingLength = isTestingLength;
     }
     
@@ -76,7 +76,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     @Override
     public CallableTime call() throws Exception {
         this.calendar1.setTime(new Date());
-        this.injectionTime.callUrl(this.blindUrl);
+        this.injectionTime.callUrl(this.booleanUrl);
         this.calendar2.setTime(new Date());
         long milliseconds1 = this.calendar1.getTimeInMillis();
         long milliseconds2 = this.calendar2.getTimeInMillis();

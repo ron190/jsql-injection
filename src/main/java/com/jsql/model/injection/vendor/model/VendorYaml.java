@@ -219,7 +219,7 @@ public class VendorYaml implements AbstractVendor {
     }
 
     @Override
-    public String sqlTestBlindFirst() {
+    public String sqlTestBooleanInitialization() {
         return this.modelYaml.getStrategy().getBoolean().getTest().getInitialization();
     }
 

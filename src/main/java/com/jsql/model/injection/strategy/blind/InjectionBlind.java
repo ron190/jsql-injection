@@ -139,12 +139,12 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
 
     @Override
     public CallableBlind getCallable(String string, int indexCharacter, boolean isTestingLength) {
-        return new CallableBlind(string, indexCharacter, isTestingLength, this.injectionModel, this, this.blindMode);
+        return new CallableBlind(string, indexCharacter, isTestingLength, this.injectionModel, this, this.booleanMode);
     }
 
     @Override
     public CallableBlind getCallable(String string, int indexCharacter, int bit) {
-        return new CallableBlind(string, indexCharacter, bit, this.injectionModel, this, this.blindMode);
+        return new CallableBlind(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             throw new StoppedByUserSlidingException();
         }
         
-        CallableBlind blindTest = new CallableBlind(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindFirst(), this.injectionModel, this, this.blindMode);
+        CallableBlind blindTest = new CallableBlind(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization(), this.injectionModel, this, this.booleanMode);
         try {
             blindTest.call();
         } catch (Exception e) {

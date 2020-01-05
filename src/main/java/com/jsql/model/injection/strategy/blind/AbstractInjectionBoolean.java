@@ -50,18 +50,18 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     
     protected InjectionModel injectionModel;
     
-    protected BooleanMode blindMode;
+    protected BooleanMode booleanMode;
     
-    public AbstractInjectionBoolean(InjectionModel injectionModel, BooleanMode blindMode) {
+    public AbstractInjectionBoolean(InjectionModel injectionModel, BooleanMode booleanMode) {
         this.injectionModel = injectionModel;
-        this.blindMode = blindMode;
+        this.booleanMode = booleanMode;
 
         this.falseTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListFalseTest();
         this.trueTest = this.injectionModel.getMediatorVendor().getVendor().instance().getListTrueTest();
     }
 
     /**
-     * Process the whole blind injection, character by character, bit by bit.
+     * Process the whole boolean injection, character by character, bit by bit.
      * @param inj SQL query
      * @param suspendable Action a user can stop
      * @return Final string: SQLiABCDEF...
@@ -77,7 +77,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
         int indexCharacter = 0;
 
         // Parallelize the URL requests
-        ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableAbstractBlind"));
+        ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableAbstractBoolean"));
         CompletionService<T> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
 
         // Send the first binary question: is the SQL result empty?
@@ -254,8 +254,8 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     public abstract T getCallable(String string, int indexCharacter, int bit);
     
     /**
-     * Start one test to verify if blind works.
-     * @return true if blind method is confirmed
+     * Start one test to verify if boolean works.
+     * @return true if boolean method is confirmed
      * @throws InjectionFailureException
      */
     public abstract boolean isInjectable() throws StoppedByUserSlidingException;

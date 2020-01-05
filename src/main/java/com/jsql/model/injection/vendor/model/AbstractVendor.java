@@ -38,7 +38,7 @@ public interface AbstractVendor {
     List<String> getListFalseTest();
     List<String> getListTrueTest();
 
-    String sqlTestBlindFirst();
+    String sqlTestBooleanInitialization();
     String sqlTestBlind(String check, BooleanMode blindMode);
     String sqlBitTestBlind(String inj, int indexCharacter, int bit, BooleanMode blindMode);
     String sqlLengthTestBlind(String inj, int indexCharacter, BooleanMode blindMode);

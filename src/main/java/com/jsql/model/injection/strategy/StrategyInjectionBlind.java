@@ -43,7 +43,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
         
-        if (this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindFirst().isBlank()) {
+        if ("".equals(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization())) {
             LOGGER.info("No Blind strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
         } else {
             LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Blind with operator AND...");

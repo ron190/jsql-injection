@@ -43,7 +43,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
     @Override
     public void checkApplicability() throws StoppedByUserSlidingException {
         
-        if (this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindFirst().isBlank()) {
+        if ("".equals(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization())) {
             LOGGER.info("No Time strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
         } else {
             LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Time with operator AND...");

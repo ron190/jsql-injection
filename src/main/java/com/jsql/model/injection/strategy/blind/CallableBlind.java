@@ -34,7 +34,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     public CallableBlind(String inj, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode) {
         this.injectionModel = injectionModel;
         this.injectionBlind = injectionBlind;
-        this.blindUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlind(inj, blindMode);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlind(inj, blindMode);
     }
     
     /**
@@ -47,7 +47,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     public CallableBlind(String inj, int indexCharacter, int bit, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode) {
         this.injectionBlind = injectionBlind;
         this.injectionModel = injectionModel;
-        this.blindUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestBlind(inj, indexCharacter, bit, blindMode);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestBlind(inj, indexCharacter, bit, blindMode);
         this.currentIndex = indexCharacter;
         this.currentBit = bit;
     }
@@ -63,7 +63,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
     public CallableBlind(String inj, int indexCharacter, boolean isTestingLength, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode) {
         this.injectionBlind = injectionBlind;
         this.injectionModel = injectionModel;
-        this.blindUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlLengthTestBlind(inj, indexCharacter, blindMode);
+        this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlLengthTestBlind(inj, indexCharacter, blindMode);
         this.isTestingLength = isTestingLength;
     }
 
@@ -92,7 +92,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
      */
     @Override
     public CallableBlind call() throws Exception {
-        String ctnt = this.injectionBlind.callUrl(this.blindUrl);
+        String ctnt = this.injectionBlind.callUrl(this.booleanUrl);
         this.opcodes = DIFFMATCHPATCH.diffMain(this.injectionBlind.getBlankTrueMark(), ctnt, true);
         DIFFMATCHPATCH.diffCleanupEfficiency(this.opcodes);
         return this;

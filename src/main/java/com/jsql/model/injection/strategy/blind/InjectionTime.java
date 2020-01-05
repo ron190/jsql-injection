@@ -43,8 +43,8 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
      * If every false requests are under 5 seconds and every true are below 5 seconds,
      * then time attack is confirmed.
      */
-    public InjectionTime(InjectionModel injectionModel, BooleanMode blindMode) {
-        super(injectionModel, blindMode);
+    public InjectionTime(InjectionModel injectionModel, BooleanMode booleanMode) {
+        super(injectionModel, booleanMode);
         
         // No blind
         if (this.falseTest.isEmpty()) {
@@ -63,7 +63,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         ExecutorService executorTagFalse = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagFalse"));
         Collection<CallableTime> listCallableTagFalse = new ArrayList<>();
         for (String urlTest: this.falseTest) {
-            listCallableTagFalse.add(new CallableTime(urlTest, injectionModel, this, blindMode));
+            listCallableTagFalse.add(new CallableTime(urlTest, injectionModel, this, booleanMode));
         }
         
         // Begin the url requests
@@ -103,7 +103,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         ExecutorService executorTagTrue = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetTimeTagTrue"));
         Collection<CallableTime> listCallableTagTrue = new ArrayList<>();
         for (String urlTest: this.trueTest) {
-            listCallableTagTrue.add(new CallableTime(urlTest, injectionModel, this, blindMode));
+            listCallableTagTrue.add(new CallableTime(urlTest, injectionModel, this, booleanMode));
         }
         
         // Begin the url requests
@@ -139,12 +139,12 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
 
     @Override
     public CallableTime getCallable(String string, int indexCharacter, boolean isTestingLength) {
-        return new CallableTime(string, indexCharacter, isTestingLength, this.injectionModel, this, this.blindMode);
+        return new CallableTime(string, indexCharacter, isTestingLength, this.injectionModel, this, this.booleanMode);
     }
 
     @Override
     public CallableTime getCallable(String string, int indexCharacter, int bit) {
-        return new CallableTime(string, indexCharacter, bit, this.injectionModel, this, this.blindMode);
+        return new CallableTime(string, indexCharacter, bit, this.injectionModel, this, this.booleanMode);
     }
 
     @Override
@@ -153,14 +153,14 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             throw new StoppedByUserSlidingException();
         }
         
-        CallableTime blindTest = new CallableTime(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlindFirst(), this.injectionModel, this, this.blindMode);
+        CallableTime timeTest = new CallableTime(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization(), this.injectionModel, this, this.booleanMode);
         try {
-            blindTest.call();
+            timeTest.call();
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
 
-        return this.isTimeInjectable && blindTest.isTrue();
+        return this.isTimeInjectable && timeTest.isTrue();
     }
 
     @Override

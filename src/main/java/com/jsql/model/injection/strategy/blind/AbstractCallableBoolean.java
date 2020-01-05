@@ -10,7 +10,7 @@ public abstract class AbstractCallableBoolean<T extends AbstractCallableBoolean<
     /**
      * The URL called.
      */
-    protected String blindUrl;
+    protected String booleanUrl;
     
     /**
      * Character position.
