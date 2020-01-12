@@ -18,6 +18,7 @@ public class BeanInjection {
     public BeanInjection(
         String url
     ) {
+        
         this.url = url;
         this.injectionType = MediatorModel.model().getMediatorMethodInjection().getQuery();
         this.vendor = MediatorModel.model().getMediatorVendor().getAuto();
@@ -32,6 +33,7 @@ public class BeanInjection {
         String vendor,
         String requestType
     ) {
+        
         this(url);
         
         this.request = request;

@@ -92,6 +92,7 @@ public abstract class AbstractShell extends JTextPane {
      * @throws MalformedURLException
      */
     public AbstractShell(UUID uuidShell, String urlShell, String labelShell) throws MalformedURLException {
+        
         this.uuidShell = uuidShell;
         this.urlShell = urlShell;
         this.labelShell = labelShell;
@@ -119,6 +120,7 @@ public abstract class AbstractShell extends JTextPane {
      * Update terminal and use default behavior.
      */
     public void reset() {
+        
         this.isEdited[0] = false;
         this.setEditable(true);
         this.displayPrompt();
@@ -133,8 +135,10 @@ public abstract class AbstractShell extends JTextPane {
      * @throws BadLocationException
      */
     public int getLineOfOffset(int offset) throws BadLocationException {
+        
         String errorMsg = "Can't translate offset to line";
         Document doc = this.getDocument();
+        
         if (offset < 0) {
             throw new BadLocationException(errorMsg, -1);
         } else if (offset > doc.getLength()) {
@@ -152,7 +156,9 @@ public abstract class AbstractShell extends JTextPane {
      * @throws BadLocationException
      */
     public int getLineStartOffset(int line) throws BadLocationException {
+        
         Element map = this.getDocument().getDefaultRootElement();
+        
         if (line < 0) {
             throw new BadLocationException("Negative line", -1);
         } else if (line >= map.getElementCount()) {
@@ -168,6 +174,7 @@ public abstract class AbstractShell extends JTextPane {
      * @param string Text to add
      */
     public void append(String string) {
+        
         try {
             Document doc = this.getDocument();
             doc.insertString(doc.getLength(), string, null);
@@ -196,6 +203,7 @@ public abstract class AbstractShell extends JTextPane {
      * @param isAddingPrompt Should we measure prompt length?
      */
     public void displayPrompt(boolean isAddingPrompt) {
+        
         StyleConstants.setUnderline(this.style, true);
         this.appendPrompt("jsql", Color.LIGHT_GRAY, isAddingPrompt);
         StyleConstants.setUnderline(this.style, false);
@@ -215,6 +223,7 @@ public abstract class AbstractShell extends JTextPane {
      * @param isAddingPrompt Should we measure prompt length?
      */
     private void appendPrompt(String string, Color color, boolean isAddingPrompt) {
+        
         try {
             StyleConstants.setForeground(this.style, color);
             this.styledDocument.insertString(this.styledDocument.getLength(), string, this.style);
@@ -230,6 +239,7 @@ public abstract class AbstractShell extends JTextPane {
      * Cancel every mouse click, only gives focus.
      */
     private class EmptyFocus implements MouseListener {
+        
         @Override
         public void mousePressed(MouseEvent e) {
             e.consume();

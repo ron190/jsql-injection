@@ -46,6 +46,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
         if ("".equals(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization())) {
             LOGGER.info("No Blind strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
         } else {
+            
             LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Blind with operator AND...");
             
             this.injectionBlind = new InjectionBlind(this.injectionModel, BooleanMode.AND);
@@ -75,7 +76,6 @@ public class StrategyInjectionBlind extends AbstractStrategy {
                 this.unallow();
             }
         }
-        
     }
 
     @Override
@@ -90,6 +90,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
+        
         return this.injectionBlind.inject(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlBlind(sqlQuery, startPosition),
             stoppable
@@ -98,6 +99,7 @@ public class StrategyInjectionBlind extends AbstractStrategy {
 
     @Override
     public void activateStrategy() {
+        
         LOGGER.info(I18n.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getBlind());
         

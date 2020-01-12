@@ -50,7 +50,8 @@ public class MessageChunk implements InteractionCommand {
                     tabHeader.setFont(tabHeader.getFont().deriveFont(Font.BOLD));
                 }
             }
-        } catch(ArrayIndexOutOfBoundsException e) {
+        } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
+            // Fix #67063: NullPointerException on chunkTab.append()
             // Fix #4770 on chunkTab.append()
             LOGGER.error(e.getMessage(), e);
         }

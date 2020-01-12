@@ -25,10 +25,11 @@ public class JScrollPanePixelBorder extends JScrollPane {
     
     /**
      * Create a scrollpane with top and left border for default component and a slide one.
-     * A component slided to the right will normaly hide the left border, JScrollPanePixelBorder fix this.
+     * A component slided to the right will normally hide the left border, JScrollPanePixelBorder fix this.
      * @param c Component to decorate with a scroll
      */
     public JScrollPanePixelBorder(Component c) {
+        
         super(c);
         
         this.setBorder(BorderFactory.createMatteBorder(1, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
@@ -44,6 +45,7 @@ public class JScrollPanePixelBorder extends JScrollPane {
      * @param c Component to decorate
      */
     public JScrollPanePixelBorder(int top, int left, int bottom, int right, Component c) {
+        
         this(c);
 
         this.setBorder(BorderFactory.createMatteBorder(top, 0, bottom, 0, HelperUi.COLOR_COMPONENT_BORDER));

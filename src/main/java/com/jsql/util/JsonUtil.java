@@ -29,6 +29,7 @@ public class JsonUtil {
     }
 
     public static Object getJson(String param) {
+        
         // Will test if current value is a JSON entity
         Object jsonEntity = null;
         
@@ -49,6 +50,7 @@ public class JsonUtil {
     }
 
     public static List<SimpleEntry<String, String>> createEntries(Object jsonEntity, String parentName, SimpleEntry<String, String> parentXPath) {
+        
         List<SimpleEntry<String, String>> attributesXPath = new ArrayList<>();
         
         if (jsonEntity instanceof JSONObject) {
@@ -94,6 +96,7 @@ public class JsonUtil {
     }
     
     public boolean testStandardParameter(MethodInjection methodInjection, SimpleEntry<String, String> paramStar) {
+        
         boolean hasFoundInjection = false;
         
         // Add * to end of value
@@ -130,6 +133,7 @@ public class JsonUtil {
     }
     
     public boolean testJsonParameter(MethodInjection methodInjection, SimpleEntry<String, String> paramStar) {
+        
         boolean hasFoundInjection = false;
         
         // Will test if current value is a JSON entity

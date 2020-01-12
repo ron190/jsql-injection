@@ -46,6 +46,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
         if ("".equals(this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBooleanInitialization())) {
             LOGGER.info("No Time strategy known for "+ this.injectionModel.getMediatorVendor().getVendor());
         } else {
+            
             LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Time with operator AND...");
             
             this.injectionTime = new InjectionTime(this.injectionModel, BooleanMode.AND);
@@ -90,6 +91,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
+        
         return this.injectionTime.inject(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlTime(sqlQuery, startPosition),
             stoppable
@@ -98,6 +100,7 @@ public class StrategyInjectionTime extends AbstractStrategy {
 
     @Override
     public void activateStrategy() {
+        
         LOGGER.info(I18n.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getTime());
         

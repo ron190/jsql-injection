@@ -2,6 +2,8 @@ package com.jsql.view.swing.console;
 
 import java.awt.Color;
 import java.io.StringWriter;
+import java.util.AbstractMap;
+import java.util.stream.Stream;
 
 import javax.swing.SwingUtilities;
 import javax.swing.text.SimpleAttributeSet;
@@ -40,26 +42,18 @@ public class SwingAppender extends WriterAppender {
     public static final SimpleAttributeSet ALL = new SimpleAttributeSet();
     
     static {
-        StyleConstants.setFontFamily(ERROR, HelperUi.FONT_NAME_UBUNTU_MONO);
-        StyleConstants.setFontFamily(WARN, HelperUi.FONT_NAME_UBUNTU_MONO);
-        StyleConstants.setFontFamily(INFO, HelperUi.FONT_NAME_UBUNTU_MONO);
-        StyleConstants.setFontFamily(DEBUG, HelperUi.FONT_NAME_UBUNTU_MONO);
-        StyleConstants.setFontFamily(TRACE, HelperUi.FONT_NAME_UBUNTU_MONO);
-        StyleConstants.setFontFamily(ALL, HelperUi.FONT_NAME_UBUNTU_MONO);
-        
-        StyleConstants.setFontSize(ERROR, 14);
-        StyleConstants.setFontSize(WARN, 14);
-        StyleConstants.setFontSize(INFO, 14);
-        StyleConstants.setFontSize(DEBUG, 14);
-        StyleConstants.setFontSize(TRACE, 14);
-        StyleConstants.setFontSize(ALL, 14);
-        
-        StyleConstants.setForeground(ERROR, Color.RED);
-        StyleConstants.setForeground(WARN, Color.RED);
-        StyleConstants.setForeground(INFO, Color.BLUE);
-        StyleConstants.setForeground(DEBUG, HelperUi.COLOR_GREEN);
-        StyleConstants.setForeground(TRACE, Color.BLACK);
-        StyleConstants.setForeground(ALL, Color.BLACK);
+        Stream.of(
+            new AbstractMap.SimpleEntry<>(ERROR, Color.RED),
+            new AbstractMap.SimpleEntry<>(WARN, Color.RED),
+            new AbstractMap.SimpleEntry<>(INFO, Color.BLUE),
+            new AbstractMap.SimpleEntry<>(DEBUG, HelperUi.COLOR_GREEN),
+            new AbstractMap.SimpleEntry<>(TRACE, Color.BLACK),
+            new AbstractMap.SimpleEntry<>(ALL, Color.BLACK)
+        ).forEach(entry -> {
+            StyleConstants.setFontFamily(entry.getKey(), HelperUi.FONT_NAME_UBUNTU_MONO);
+            StyleConstants.setFontSize(entry.getKey(), 14);
+            StyleConstants.setForeground(entry.getKey(), entry.getValue());
+        });
     }
 
     public SwingAppender() {

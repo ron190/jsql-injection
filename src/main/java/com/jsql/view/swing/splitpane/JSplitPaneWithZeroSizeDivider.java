@@ -92,6 +92,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
 
     @Override
     public void doLayout() {
+        
         super.doLayout();
 
         // increase divider width or height
@@ -109,11 +110,13 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
 
     @Override
     public void updateUI() {
+        
         this.setUI(new SplitPaneWithZeroSizeDividerUI());
         this.revalidate();
     }
 
     private class SplitPaneWithZeroSizeDividerUI extends BasicSplitPaneUI {
+        
         @Override
         public BasicSplitPaneDivider createDefaultDivider() {
             return new ZeroSizeDivider(this);
@@ -121,6 +124,7 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
     }
 
     private class ZeroSizeDivider extends BasicSplitPaneDivider {
+        
         public ZeroSizeDivider(BasicSplitPaneUI ui) {
             super(ui);
             super.setBorder(null);
@@ -134,7 +138,9 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
 
         @Override
         public void paint(Graphics g) {
+            
             g.setColor(this.getBackground());
+            
             if (this.orientation == HORIZONTAL_SPLIT) {
                 // Fix #38925: ClassCastException on drawLine()
                 try {

@@ -22,7 +22,9 @@ public class SilentDeleteTextAction extends TextAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         JTextComponent target = this.getTextComponent(e);
+        
         if (Objects.nonNull(target) && target.isEditable()) {
             Caret caret = target.getCaret();
             int dot  = caret.getDot();

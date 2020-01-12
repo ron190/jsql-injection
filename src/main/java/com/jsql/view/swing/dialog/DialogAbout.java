@@ -112,7 +112,9 @@ public class DialogAbout extends JDialog {
             HelperUi.BORDER_FOCUS_GAINED,
             BorderFactory.createEmptyBorder(2, 20, 2, 20))
         );
+        
         buttonWebpage.addActionListener(ev -> {
+            
             try {
                 Desktop.getDesktop().browse(new URI((String) MediatorModel.model().getMediatorUtils().getPropertiesUtil().getProperties().get("github.url")));
             } catch (IOException e) {
@@ -153,7 +155,7 @@ public class DialogAbout extends JDialog {
             StringBuilder result = new StringBuilder();
             
             try (
-                InputStream in = DialogAbout.class.getResourceAsStream("about.htm");
+                InputStream in = DialogAbout.class.getClassLoader().getResourceAsStream("swing/about.htm");
                 BufferedReader reader = new BufferedReader(new InputStreamReader(in))
             ) {
                 String line;
@@ -168,16 +170,20 @@ public class DialogAbout extends JDialog {
         }
 
         text[0].addMouseListener(new MouseAdapter() {
+            
             @Override
             public void mousePressed(MouseEvent e) {
+                
                 super.mousePressed(e);
                 text[0].requestFocusInWindow();
             }
         });
 
         text[0].addFocusListener(new FocusAdapter() {
+            
             @Override
             public void focusGained(FocusEvent arg0) {
+                
                 text[0].getCaret().setVisible(true);
                 text[0].getCaret().setSelectionVisible(true);
             }
@@ -190,7 +196,9 @@ public class DialogAbout extends JDialog {
         text[0].setComponentPopupMenu(new JPopupMenuText(text[0]));
 
         text[0].addHyperlinkListener(linkEvent -> {
+            
             if (HyperlinkEvent.EventType.ACTIVATED.equals(linkEvent.getEventType())) {
+                
                 try {
                     Desktop.getDesktop().browse(linkEvent.getURL().toURI());
                 } catch (IOException e) {

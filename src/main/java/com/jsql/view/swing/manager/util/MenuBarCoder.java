@@ -20,10 +20,10 @@ public class MenuBarCoder extends JMenuBar {
             MenuBarCoder.this.menu.setText(item.getText());
             MenuBarCoder.this.menu.requestFocus();
         }
-        
     }
     
     public MenuBarCoder(JMenu menu) {
+        
         this.menu = menu;
         
         MenuItemListener listener = new MenuItemListener();
@@ -33,6 +33,7 @@ public class MenuBarCoder extends JMenuBar {
     }
 
     private void setListener(JMenuItem item, ActionListener listener) {
+        
         if (item instanceof JMenu) {
             JMenu menuContainingItems = (JMenu) item;
             int n = menuContainingItems.getItemCount();
@@ -51,5 +52,4 @@ public class MenuBarCoder extends JMenuBar {
     public String getSelectedItem() {
         return this.menu.getText();
     }
-    
 }

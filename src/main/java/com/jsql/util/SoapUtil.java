@@ -58,6 +58,7 @@ public class SoapUtil {
     }
     
     private static String convertDocumentToString(Document doc) {
+        
         TransformerFactory tf = TransformerFactory.newInstance();
         tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
         tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
@@ -76,6 +77,7 @@ public class SoapUtil {
     }
     
     public static Document convertStringToDocument(String xmlStr) throws ParserConfigurationException, SAXException, IOException {
+        
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
         factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
@@ -88,8 +90,10 @@ public class SoapUtil {
     }
 
     public static void deleteInjectionPoint(Document doc, Node node) {
+        
         NodeList nodeList = node.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++) {
+            
             Node currentNode = nodeList.item(i);
             if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
                 //calls this method for all the children which is Element
@@ -101,17 +105,22 @@ public class SoapUtil {
     }
 
     public boolean injectTextNodes(Document doc, Node node) {
+        
         NodeList nodeList = node.getChildNodes();
         boolean hasFoundInjection = false;
+        
         for (int i = 0; i < nodeList.getLength(); i++) {
+            
             Node currentNode = nodeList.item(i);
             if (currentNode.getNodeType() == Node.ELEMENT_NODE) {
+                
                 //calls this method for all the children which is Element
                 hasFoundInjection = this.injectTextNodes(doc, currentNode);
                 if (hasFoundInjection) {
                     break;
                 }
             } else if (currentNode.getNodeType() == Node.TEXT_NODE) {
+                
                 SoapUtil.deleteInjectionPoint(doc, doc.getDocumentElement());
                 
                 currentNode.setTextContent(currentNode.getTextContent() + InjectionModel.STAR);

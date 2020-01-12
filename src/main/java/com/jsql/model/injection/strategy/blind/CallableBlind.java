@@ -32,6 +32,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
      * @param injectionBlind
      */
     public CallableBlind(String inj, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode) {
+        
         this.injectionModel = injectionModel;
         this.injectionBlind = injectionBlind;
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTestBlind(inj, blindMode);
@@ -45,6 +46,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
      * @param injectionModel
      */
     public CallableBlind(String inj, int indexCharacter, int bit, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode) {
+        
         this.injectionBlind = injectionBlind;
         this.injectionModel = injectionModel;
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestBlind(inj, indexCharacter, bit, blindMode);
@@ -61,6 +63,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
      * @param injectionBlind2
      */
     public CallableBlind(String inj, int indexCharacter, boolean isTestingLength, InjectionModel injectionModel, InjectionBlind injectionBlind, BooleanMode blindMode) {
+        
         this.injectionBlind = injectionBlind;
         this.injectionModel = injectionModel;
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlLengthTestBlind(inj, indexCharacter, blindMode);
@@ -75,6 +78,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
      */
     @Override
     public boolean isTrue() {
+        
         for (Diff falseDiff: this.injectionBlind.getConstantFalseMark()) {
             // Fix #4386: NullPointerException on contains()
             // opcodes is initialized to an empty new LinkedList<>()
@@ -92,6 +96,7 @@ public class CallableBlind extends AbstractCallableBoolean<CallableBlind> {
      */
     @Override
     public CallableBlind call() throws Exception {
+        
         String ctnt = this.injectionBlind.callUrl(this.booleanUrl);
         this.opcodes = DIFFMATCHPATCH.diffMain(this.injectionBlind.getBlankTrueMark(), ctnt, true);
         DIFFMATCHPATCH.diffCleanupEfficiency(this.opcodes);

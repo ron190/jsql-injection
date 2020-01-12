@@ -40,7 +40,7 @@ public class MarkBlindVulnerable implements InteractionCommand {
     public void execute() {
         ListModel<ItemList> listModel = MediatorGui.managerScan().getListPaths().getModel();
         for (int i = 0 ; i < listModel.getSize() ; i++) {
-            if (listModel.getElementAt(i).getInternalString().contains(this.url)) {
+            if (this.url.contains(listModel.getElementAt(i).getOriginalString())) {
                 listModel.getElementAt(i).setIsVulnerable(true);
                 listModel.getElementAt(i).setInternalString(listModel.getElementAt(i).getInternalString().replace(" [Blind]", "") +" [Blind]");
                 ((DefaultListModel<ItemList>) listModel).setElementAt(listModel.getElementAt(i), i);

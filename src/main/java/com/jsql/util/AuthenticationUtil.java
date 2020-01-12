@@ -142,7 +142,6 @@ public class AuthenticationUtil {
         this.setAuthentication();
         
         return isRestartRequired;
-        
     }
     
     /**
@@ -180,7 +179,6 @@ public class AuthenticationUtil {
         }
         
         this.setAuthentication();
-        
     }
     
     /**
@@ -191,6 +189,7 @@ public class AuthenticationUtil {
     private void setAuthentication() {
         
         if (this.isKerberos) {
+            
             if (System.getProperty("java.protocol.handler.pkgs") != null) {
                 System.setProperty(
                     "java.protocol.handler.pkgs",
@@ -199,11 +198,13 @@ public class AuthenticationUtil {
                         .replace("jcifs", "")
                 );
             }
+            
             System.setProperty("java.security.krb5.conf", this.pathKerberosKrb5);
             System.setProperty("java.security.auth.login.config", this.pathKerberosLogin);
             System.setProperty("spnego.krb5.conf", this.pathKerberosKrb5);
             System.setProperty("spnego.login.conf", this.pathKerberosLogin);
         } else {
+            
             System.setProperty("java.protocol.handler.pkgs", "");
             System.setProperty("java.security.krb5.conf", "");
             System.setProperty("java.security.auth.login.config", "");
@@ -217,7 +218,6 @@ public class AuthenticationUtil {
             
             jcifs.Config.registerSmbURLHandler();
         }
-        
     }
     
     // Getters and setters
@@ -245,5 +245,4 @@ public class AuthenticationUtil {
     public boolean isKerberos() {
         return this.isKerberos;
     }
-    
 }

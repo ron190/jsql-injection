@@ -13,7 +13,7 @@ package com.jsql.view.swing.table;
 import java.util.Comparator;
 
 /**
- * Comporator for table column values ; column with only int data is sorted like 3 < 20 < 100,
+ * Comparator for table column values ; column with only int data is sorted like 3 < 20 < 100,
  * column with string will sort like 100 < 20 < 3.
  */
 public class ComparatorColumn<T> implements Comparator<T> {
@@ -27,6 +27,7 @@ public class ComparatorColumn<T> implements Comparator<T> {
      */
     @Override
     public int compare(T object1, T object2) {
+        
         boolean isFirstNumber = true;
         boolean isSecondNumber = true;
         

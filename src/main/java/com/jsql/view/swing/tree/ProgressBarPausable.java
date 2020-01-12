@@ -39,6 +39,7 @@ public class ProgressBarPausable extends JProgressBar {
 
     @Override
     public void paint(Graphics g) {
+        
         // Fix #42285: InternalError on paint()
         try {
             super.paint(g);
@@ -48,7 +49,7 @@ public class ProgressBarPausable extends JProgressBar {
 
         if (this.isIconDisplayed) {
             try {
-                BufferedImage im2 = ImageIO.read(ProgressBarPausable.class.getResource(HelperUi.PATH_PAUSE));
+                BufferedImage im2 = ImageIO.read(ProgressBarPausable.class.getClassLoader().getResource(HelperUi.PATH_PAUSE));
                 g.drawImage(
                     im2,
                     (this.getWidth() - im2.getWidth()) / 2,

@@ -50,18 +50,23 @@ public class MenuActionExport implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
+        
         @SuppressWarnings("serial")
         final JFileChooser importFileDialog = new JFileChooser(MediatorModel.model().getMediatorUtils().getPreferencesUtil().getPathFile()) {
+            
             @Override
             public void approveSelection() {
+                
                 File file = this.getSelectedFile();
                 if (file.exists() && this.getDialogType() == JFileChooser.SAVE_DIALOG) {
+                    
                     int replace = JOptionPane.showConfirmDialog(
                         this,
                         file.getName() +" "+ I18n.valueByKey("LIST_EXPORT_CONFIRM_LABEL"),
                         I18n.valueByKey("LIST_EXPORT_CONFIRM_TITLE"),
                         JOptionPane.YES_NO_OPTION
                     );
+                    
                     switch (replace) {
                         case JOptionPane.YES_OPTION:
                             super.approveSelection();

@@ -66,6 +66,7 @@ public class DnDList extends JList<ItemList> {
      * @param newList List to decorate
      */
     public DnDList(List<ItemList> newList) {
+        
         this.defaultList = newList;
 
         this.listModel = new DefaultListModel<>();
@@ -81,7 +82,10 @@ public class DnDList extends JList<ItemList> {
         // Transform Cut, selects next value
         ActionMap listActionMap = this.getActionMap();
         listActionMap.put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {
-            @Override public void actionPerformed(ActionEvent e) {
+            
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
                 if (DnDList.this.getSelectedValuesList().isEmpty()) {
                     return;
                 }
@@ -154,6 +158,7 @@ public class DnDList extends JList<ItemList> {
      * Delete selected items from the list.
      */
     void removeSelectedItem() {
+        
         if (this.getSelectedValuesList().isEmpty()) {
             return;
         }
@@ -195,13 +200,16 @@ public class DnDList extends JList<ItemList> {
      * @param position
      */
     void dropPasteFile(final List<File> filesToImport, int position) {
+        
         if (filesToImport.isEmpty()) {
             return;
         }
         
         for (File fileToImport : filesToImport) {
+            
             // Report NoSuchMethodError #1617
             if (!FilenameUtils.getExtension(fileToImport.getPath()).matches("txt|csv|ini")) {
+                
                 // Fix #42832: ClassCastException on showMessageDialog()
                 try {
                     JOptionPane.showMessageDialog(
@@ -248,6 +256,7 @@ public class DnDList extends JList<ItemList> {
         }
         
         SwingUtilities.invokeLater(() -> {
+            
             for (File file : filesToImport) {
                 try (BufferedReader fileReader = new BufferedReader(new FileReader(file))) {
                     String line;

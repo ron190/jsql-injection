@@ -27,5 +27,4 @@ public class ManagerWebShell extends AbstractManagerShell {
     void createPayload(String pathShell, String urlShell) throws JSqlException, InterruptedException {
         MediatorModel.model().getResourceAccess().createWebShell(pathShell, urlShell);
     }
-    
 }

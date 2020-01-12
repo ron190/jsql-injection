@@ -14,6 +14,7 @@ import javax.swing.text.JTextComponent;
 public interface InterfaceTextPlaceholder {
     
     default void drawPlaceholder(JTextComponent textComponent, Graphics g, String placeholderText) {
+        
         int w = textComponent.getWidth();
         
         ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);

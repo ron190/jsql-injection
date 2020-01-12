@@ -40,6 +40,7 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
     public Component getListCellRendererComponent(
         JList<? extends ItemList> list, ItemList value, int index, boolean isSelected, boolean isFocused
     ) {
+        
         JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(
             list, value, index, isSelected, isFocused
         );
@@ -47,6 +48,7 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
         renderer.setFont(HelperUi.FONT_SEGOE);
 
         if (isSelected) {
+            
             if (list.isFocusOwner()) {
                 renderer.setBackground(HelperUi.COLOR_FOCUS_GAINED);
             } else {
@@ -63,15 +65,19 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
         }
 
         if (isSelected) {
+            
             if (list.isFocusOwner()) {
                 renderer.setBorder(HelperUi.BORDER_FOCUS_GAINED);
             } else {
                 renderer.setBorder(HelperUi.BORDER_FOCUS_LOST);
             }
         } else if (isFocused) {
+            
             renderer.setBorder(BorderFactory.createCompoundBorder( new AbstractBorder() {
+                
                 @Override
                 public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
+                    
                     Graphics2D gg = (Graphics2D) g;
                     gg.setColor(Color.GRAY);
                     gg.setStroke(

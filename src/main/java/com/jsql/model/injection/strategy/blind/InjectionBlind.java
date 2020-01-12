@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -45,6 +46,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
      * @param blindMode
      */
     public InjectionBlind(InjectionModel injectionModel, BooleanMode blindMode) {
+        
         super(injectionModel, blindMode);
         
         // No blind
@@ -77,11 +79,15 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
          */
         try {
             // Begin the url requests
-            List<Future<CallableBlind>> listTagFalse = null;
-            listTagFalse = executorTagFalse.invokeAll(listCallableTagFalse);
+            List<Future<CallableBlind>> listTagFalse = executorTagFalse.invokeAll(listCallableTagFalse);
+            
             executorTagFalse.shutdown();
+            if (!executorTagFalse.awaitTermination(15, TimeUnit.SECONDS)) {
+                executorTagFalse.shutdownNow();
+            }
             
             this.constantFalseMark = listTagFalse.get(0).get().getOpcodes();
+            
             for (Future<CallableBlind> falseMark: listTagFalse) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
@@ -109,30 +115,29 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
             listCallableTagTrue.add(new CallableBlind(urlTest, injectionModel, this, blindMode));
         }
         
-        // Begin the url requests
-        List<Future<CallableBlind>> listTagTrue = null;
-        try {
-            listTagTrue = executorTagTrue.invokeAll(listCallableTagTrue);
-        } catch (InterruptedException e) {
-            LOGGER.error(e.getMessage(), e);
-            Thread.currentThread().interrupt();
-        }
-        executorTagTrue.shutdown();
-
         /*
          * Remove TRUE opcodes in the FALSE opcodes, because
          * a significant FALSE statement shouldn't contain any TRUE opcode.
          * Allow the user to stop the loop.
          */
         try {
+            List<Future<CallableBlind>> listTagTrue = executorTagTrue.invokeAll(listCallableTagTrue);
+            
+            executorTagTrue.shutdown();
+            if (!executorTagTrue.awaitTermination(15, TimeUnit.SECONDS)) {
+                executorTagTrue.shutdownNow();
+            }
+        
             for (Future<CallableBlind> trueTag: listTagTrue) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
                 }
                 this.constantFalseMark.removeAll(trueTag.get().getOpcodes());
             }
-        } catch (InterruptedException | ExecutionException e) {
-            LOGGER.error(e.getMessage(), e);
+        } catch (ExecutionException e) {
+            LOGGER.error("Searching fails for Blind True tags", e);
+        } catch (InterruptedException e) {
+            LOGGER.error("Interruption while searching for Blind True tags", e);
             Thread.currentThread().interrupt();
         }
     }
@@ -149,6 +154,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
 
     @Override
     public boolean isInjectable() throws StoppedByUserSlidingException {
+        
         if (this.injectionModel.isStoppedByUser()) {
             throw new StoppedByUserSlidingException();
         }
@@ -165,6 +171,7 @@ public class InjectionBlind extends AbstractInjectionBoolean<CallableBlind> {
 
     @Override
     public String getInfoMessage() {
+        
         return
             "Blind strategy: a request is true if the diff between "
             + "a correct page (e.g existing id) and current page "

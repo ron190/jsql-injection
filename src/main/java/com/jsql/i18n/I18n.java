@@ -55,7 +55,8 @@ public class I18n {
      * @throws URISyntaxException
      */
     public static void checkCurrentLanguage() {
-        URL path = I18n.class.getResource("/com/jsql/i18n/jsql_"+ Locale.getDefault().getLanguage() +".properties");
+        
+        URL path = I18n.class.getClassLoader().getResource("i18n/jsql_"+ Locale.getDefault().getLanguage() +".properties");
         if (!"en".equals(Locale.getDefault().getLanguage()) && path == null) {
             String languageHost = Locale.getDefault().getDisplayLanguage(Locale.ENGLISH);
             LOGGER.debug(
@@ -65,6 +66,12 @@ public class I18n {
                 + "translate some text into "+ languageHost +" then click on [Send]. Your translation will be integrated to the next release by the developer."
             );
         }
+    }
+    
+    public static boolean isAsian(Locale newLocale) {
+        return
+            new Locale("zh").getLanguage().equals(newLocale.getLanguage())
+            || new Locale("ko").getLanguage().equals(newLocale.getLanguage());
     }
     
     // Getters and setters

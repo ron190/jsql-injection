@@ -49,6 +49,7 @@ public final class ActionHandler {
      * Select all textfield content when focused.
      */
     public static void addTextFieldShortcutSelectAll() {
+        
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener(
             "permanentFocusOwner",
             propertyChangeEvent -> {
@@ -66,6 +67,7 @@ public final class ActionHandler {
      * Add action to a single tabbedpane (ctrl-tab, ctrl-shift-tab).
      */
     public static void addShortcut(JTabbedPane tabbedPane) {
+        
         KeyStroke ctrlTab = KeyStroke.getKeyStroke("ctrl TAB");
         KeyStroke ctrlShiftTab = KeyStroke.getKeyStroke("ctrl shift TAB");
 
@@ -90,6 +92,7 @@ public final class ActionHandler {
      */
     @SuppressWarnings("serial")
     public static void addShortcut(JRootPane rootPane, final JTabbedPane valuesTabbedPane) {
+        
         Action closeTab = new ActionCloseTabResult();
         
         Action nextTab = new AbstractAction() {
@@ -163,6 +166,7 @@ public final class ActionHandler {
      * @param menubar The menubar to display
      */
     public static void addShortcut(final Menubar menubar) {
+        
         /* Hide Menubar when focusing any component */
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addPropertyChangeListener("permanentFocusOwner",
             propertyChangeEvent -> SwingUtilities.invokeLater(() -> {

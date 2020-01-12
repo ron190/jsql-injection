@@ -35,6 +35,7 @@ public class MouseTabbedPane extends JTabbedPane {
      * Create tabs with ctrl-TAB, mousewheel and new UI.
      */
     public MouseTabbedPane() {
+        
         this.addMouseWheelListener(new TabbedPaneMouseWheelScroller());
         // UIManager.put() is not enough
         this.setUI(new CustomMetalTabbedPaneUI());
@@ -61,15 +62,18 @@ public class MouseTabbedPane extends JTabbedPane {
         
         @Override
         public void mouseWheelMoved(MouseWheelEvent e) {
+            
             JTabbedPane tabPane = (JTabbedPane) e.getSource();
             int dir = -e.getWheelRotation();
             int selIndex = tabPane.getSelectedIndex();
             int maxIndex = tabPane.getTabCount() - 1;
+            
             if ((selIndex == 0 && dir < 0) || (selIndex == maxIndex && dir > 0)) {
                 selIndex = maxIndex - selIndex;
             } else {
                 selIndex += dir;
             }
+            
             if (0 <= selIndex && selIndex < tabPane.getTabCount()) {
                 // Fix #54575: NullPointerException on setSelectedIndex()
                 try {

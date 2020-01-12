@@ -70,7 +70,7 @@ import net.sourceforge.spnego.SpnegoHttpURLConnection;
  * Different views can be attached to this observable, like Swing or command line, in order to separate
  * the functional job from the graphical processing.<br>
  * The Model has a specific database vendor and strategy which run an automatic injection to get name of
- * databases, tables, columns and values, and it can also retreive resources like files and shell.<br>
+ * databases, tables, columns and values, and it can also retrieve resources like files and shell.<br>
  * Tasks are run in multi-threads in general to speed the process.
  */
 public class InjectionModel extends AbstractModelObservable {
@@ -88,7 +88,7 @@ public class InjectionModel extends AbstractModelObservable {
         
         this.mediatorStrategy = new MediatorStrategy(this);
 
-        this.mediatorUtils.setPropertiesUtil(new PropertiesUtil(this));
+        this.mediatorUtils.setPropertiesUtil(new PropertiesUtil());
         this.mediatorUtils.setConnectionUtil(new ConnectionUtil(this));
         this.mediatorUtils.setAuthenticationUtil(new AuthenticationUtil(this));
         this.mediatorUtils.setGitUtil(new GitUtil(this));
@@ -151,6 +151,7 @@ public class InjectionModel extends AbstractModelObservable {
      * Reset each injection attributes: Database metadata, General Thread status, Strategy.
      */
     public void resetModel() {
+        
         // TODO make injection pojo for all fields
         this.getMediatorStrategy().getNormal().setVisibleIndex(null);
         this.indexesInUrl = "";
@@ -177,6 +178,7 @@ public class InjectionModel extends AbstractModelObservable {
      * Run by Scan, Standard and TU.
      */
     public void beginInjection() {
+        
         this.resetModel();
         
         try {
@@ -221,8 +223,10 @@ public class InjectionModel extends AbstractModelObservable {
             
             this.injectionAlreadyBuilt = true;
         } catch (JSqlException e) {
+            
             LOGGER.warn(e.getMessage(), e);
         } finally {
+            
             Request request = new Request();
             request.setMessage(Interaction.END_PREPARATION);
             this.sendToViews(request);
@@ -240,6 +244,7 @@ public class InjectionModel extends AbstractModelObservable {
      * @throws JSqlException when no params' integrity, process stopped by user, or injection failure
      */
     public boolean testParameters(MethodInjection methodInjection) throws JSqlException {
+        
         boolean hasFoundInjection = false;
         
         // Injects URL, Request or Header params only if user tests every params
@@ -256,14 +261,15 @@ public class InjectionModel extends AbstractModelObservable {
         
         // Injection by injection point
         if (methodInjection.getParamsAsString().contains(InjectionModel.STAR)) {
+            
             LOGGER.info("Checking single "+ methodInjection.name() +" parameter with injection point at *");
             
             // Will keep param value as is,
             // Does not test for insertion character (param is null)
             hasFoundInjection = this.testStrategies(!InjectionModel.IS_PARAM_BY_USER, !InjectionModel.IS_JSON, null);
-        
         // Default injection: last param tested only
         } else if (!methodInjection.isCheckingAllParam()) {
+            
             // Injection point defined on last parameter
             methodInjection.getParams().stream().reduce((a, b) -> b).ifPresent(e -> e.setValue(e.getValue() + InjectionModel.STAR));
 
@@ -271,7 +277,6 @@ public class InjectionModel extends AbstractModelObservable {
             // Notice options 'Inject each URL params' and 'inject JSON' must be checked both
             // for JSON injection of last param
             hasFoundInjection = this.testStrategies(InjectionModel.IS_PARAM_BY_USER, !InjectionModel.IS_JSON, methodInjection.getParams().stream().reduce((a, b) -> b).orElseThrow(NullPointerException::new));
-            
         // Injection of every params: isCheckingAllParam() == true.
         // Params are tested one by one in two loops:
         //  - inner loop erases * from previous param
@@ -387,6 +392,7 @@ public class InjectionModel extends AbstractModelObservable {
      */
     @Override
     public String inject(String newDataInjection, boolean isUsingIndex) {
+        
         // Temporary url, we go from "select 1,2,3,4..." to "select 1,([complex query]),2...", but keep initial url
         String urlInjection = this.getMediatorUtils().getConnectionUtil().getUrlBase();
         
@@ -416,10 +422,10 @@ public class InjectionModel extends AbstractModelObservable {
 
         /**
          * Build the GET query string infos
-         * TODO separate method
          */
         // TODO Extract in method
         if (!this.getMediatorUtils().getParameterUtil().getQueryString().isEmpty()) {
+            
             // URL without querystring like Request and Header can receive
             // new params from <form> parsing, in that case add the '?' to URL
             if (!urlInjection.contains("?")) {
@@ -502,7 +508,6 @@ public class InjectionModel extends AbstractModelObservable {
     
             /**
              * Build the POST and logs infos
-             * TODO separate method
              */
             // TODO Extract in method
             if (!this.getMediatorUtils().getParameterUtil().getRequest().isEmpty() || this.getMediatorUtils().getConnectionUtil().getTokenCsrf() != null) {
@@ -578,7 +583,9 @@ public class InjectionModel extends AbstractModelObservable {
      * @return Final data
      */
     private String buildURL(String urlBase, boolean isUsingIndex, String sqlTrail) {
+        
         if (urlBase.contains(InjectionModel.STAR)) {
+            
             if (!isUsingIndex) {
                 return urlBase.replace(InjectionModel.STAR, sqlTrail);
             } else {
@@ -597,10 +604,12 @@ public class InjectionModel extends AbstractModelObservable {
                 ;
             }
         }
+        
         return urlBase;
     }
     
     private String buildQuery(MethodInjection methodInjection, String paramLead, boolean isUsingIndex, String sqlTrail) {
+        
         String query;
         
         paramLead = paramLead.replace("*", "SlQqLs*lSqQsL");
@@ -612,16 +621,17 @@ public class InjectionModel extends AbstractModelObservable {
             // No parameter transformation if injection point in URL
             || this.getMediatorUtils().getConnectionUtil().getUrlBase().contains(InjectionModel.STAR)
         ) {
+            
             // Just pass parameters without any transformation
             query = paramLead;
             
         } else if (
-                
             // If method is selected by user and URL does not contains injection point
             // but parameters contain an injection point
             // then replace injection point by SQL expression in those parameter
             paramLead.contains(InjectionModel.STAR)
         ) {
+            
             // Several SQL expressions does not use indexes in SELECT,
             // like Boolean, Error, Shell and search for Insertion character,
             // in that case replace injection point by SQL expression.
@@ -647,6 +657,7 @@ public class InjectionModel extends AbstractModelObservable {
             }
             
         } else {
+            
             // Method is selected by user and there's no injection point
             if (
                 // Several SQL expressions does not use indexes in SELECT,
@@ -654,12 +665,14 @@ public class InjectionModel extends AbstractModelObservable {
                 // in that case concat SQL expression to the end of param.
                 !isUsingIndex
             ) {
+                
                 query = paramLead + sqlTrail;
                 
                 // Add ending line comment by vendor
                 query = query + this.getMediatorVendor().getVendor().instance().endingComment();
                 
             } else {
+                
                 // Concat indexes found for Normal strategy to params
                 // and use visible Index for injection
                 query = paramLead + this.indexesInUrl.replaceAll(
@@ -685,8 +698,10 @@ public class InjectionModel extends AbstractModelObservable {
             methodInjection == this.getMediatorMethodInjection().getRequest()
             && this.getMediatorUtils().getParameterUtil().isRequestSoap()
         ) {
+            
             query = query.replace("%2b", "+");
         } else {
+            
             // Remove spaces after a word
             query = query.replaceAll("([^\\s\\w])(\\s+)", "$1");
             
@@ -702,6 +717,7 @@ public class InjectionModel extends AbstractModelObservable {
         }
         
         if (methodInjection != this.getMediatorMethodInjection().getHeader()) {
+            
             // URL encode each character because no query parameter context
             query = query.replace("\"", "%22");
             query = query.replace("'", "%27");
@@ -778,6 +794,7 @@ public class InjectionModel extends AbstractModelObservable {
                 new Thread(InjectionModel.this::beginInjection, "ThreadBeginInjection").start();
             }
         } catch (MalformedURLException e) {
+            
             LOGGER.warn("Incorrect Url: "+ e.getMessage(), e);
             
             // Incorrect URL, reset the start button
@@ -789,6 +806,7 @@ public class InjectionModel extends AbstractModelObservable {
     
     // TODO Util
     public void displayVersion() {
+        
         String versionJava = System.getProperty("java.version");
         String nameSystemArchitecture = System.getProperty("os.arch");
         LOGGER.trace(
@@ -800,6 +818,7 @@ public class InjectionModel extends AbstractModelObservable {
     }
     
     public String getDatabaseInfos() {
+        
         return
             "Database ["+ this.nameDatabase +"] "
             + "on "+ this.getMediatorVendor().getVendor() +" ["+ this.versionDatabase +"] "
@@ -807,6 +826,7 @@ public class InjectionModel extends AbstractModelObservable {
     }
 
     public void setDatabaseInfos(String versionDatabase, String nameDatabase, String username) {
+        
         this.versionDatabase = versionDatabase;
         this.nameDatabase = nameDatabase;
         this.username = username;

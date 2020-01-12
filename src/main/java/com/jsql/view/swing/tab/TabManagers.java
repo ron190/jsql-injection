@@ -47,7 +47,9 @@ public class TabManagers extends MouseTabbedPane {
      * Create manager panel.
      */
     public TabManagers() {
+        
         this.setUI(new CustomMetalTabbedPaneUI() {
+            
             @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
                 return Math.max(75, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
             }
@@ -95,15 +97,18 @@ public class TabManagers extends MouseTabbedPane {
         Icon icon,
         Component manager
     ) {
-        final JToolTipI18n[] tooltip = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey(keyTooltip))};
+        
+        final JToolTipI18n[] refTooltip = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey(keyTooltip))};
+        
         JLabel labelTab = new JLabel(I18n.valueByKey(keyLabel), icon, SwingConstants.CENTER){
             @Override
             public JToolTip createToolTip() {
                 JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey(keyTooltip));
-                tooltip[0] = (JToolTipI18n) tipI18n;
+                refTooltip[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
             }
         };
+        
         labelTab.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -111,13 +116,15 @@ public class TabManagers extends MouseTabbedPane {
                 super.mousePressed(e);
             }
         });
+        
         this.addTab(I18n.valueByKey(keyLabel), icon, manager);
         this.setTabComponentAt(
             this.indexOfTab(I18n.valueByKey(keyLabel)),
             labelTab
         );
+        
         I18nView.addComponentForKey(keyLabel, labelTab);
-        I18nView.addComponentForKey(keyTooltip, tooltip[0]);
+        I18nView.addComponentForKey(keyTooltip, refTooltip[0]);
         labelTab.setToolTipText(I18n.valueByKey(keyTooltip));
         labelTab.addMouseListener(new TabSelectionMouseHandler());
     }

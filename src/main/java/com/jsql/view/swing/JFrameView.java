@@ -109,8 +109,10 @@ public class JFrameView extends JFrame {
         this.add(mainPanel);
 
         this.addWindowListener(new WindowAdapter() {
+            
             @Override
             public void windowClosing(WindowEvent e) {
+                
                 Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
                 prefs.putInt(
                     SplitHorizontalTopBottom.getNameVSplitpane(),
@@ -163,6 +165,7 @@ public class JFrameView extends JFrame {
      * Empty the interface.
      */
     public void resetInterface() {
+        
         if (MediatorModel.model().getMediatorVendor().getVendorByUser() == MediatorModel.model().getMediatorVendor().getAuto()) {
             MediatorGui.panelAddressBar().getMenuVendor().setText(MediatorModel.model().getMediatorVendor().getAuto().toString());
         }
@@ -191,6 +194,7 @@ public class JFrameView extends JFrame {
         treeModel.nodeChanged(root);
         // Refresh the tree
         treeModel.reload();
+        
         MediatorGui.treeDatabase().setRootVisible(true);
         
         for (int i = 0 ; i < MediatorGui.tabConsoles().getTabCount() ; i++) {

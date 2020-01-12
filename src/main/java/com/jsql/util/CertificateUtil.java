@@ -31,6 +31,7 @@ public class CertificateUtil {
      * Configure a fake SSL context in order to ignore malformed certificate.
      */
     public static void ignoreCertificationChain() {
+        
         // Create a trust manager that does not validate certificate chains
         // and ignore exception PKIX path building failed: unable to find valid certification path to requested target
         TrustManager[] trustAllCerts = new TrustManager[] {

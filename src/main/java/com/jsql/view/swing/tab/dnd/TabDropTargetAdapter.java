@@ -10,6 +10,7 @@ import java.awt.dnd.DropTargetEvent;
 public class TabDropTargetAdapter extends DropTargetAdapter {
     
     private void clearDropLocationPaint(Component c) {
+        
         if (c instanceof DnDTabbedPane) {
             DnDTabbedPane t = (DnDTabbedPane) c;
             t.setDropLocation(null, false);

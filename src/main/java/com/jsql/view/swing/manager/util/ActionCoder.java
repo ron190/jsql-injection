@@ -71,6 +71,7 @@ public class ActionCoder implements ActionListener {
         String result;
         String textInput = this.coderManager.getTextInput().getText();
         
+        // TODO externalize all
         if (
             "".equals(textInput)
             && !Arrays.asList("Md2", "Md4", "Md5", "Sha-1", "Sha-256", "Sha-384", "Sha-512", "Mysql").contains(nameMethod)

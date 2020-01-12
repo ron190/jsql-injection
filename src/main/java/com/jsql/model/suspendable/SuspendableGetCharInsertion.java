@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
@@ -98,6 +99,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
                 String pageSource = currentCallable.getContent();
                 
                 if (
+                    //TODO
                     // the correct character: mysql
                     Pattern.compile(".*Unknown column '1337' in 'order clause'.*", Pattern.DOTALL).matcher(pageSource).matches() ||
                     Pattern.compile(".*supplied argument is not a valid MySQL result resource.*", Pattern.DOTALL).matcher(pageSource).matches() ||
@@ -115,7 +117,19 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             
         }
         
+        // End the job
+        try {
+            taskExecutor.shutdown();
+            if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
+                taskExecutor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            LOGGER.error(e.getMessage(), e);
+            Thread.currentThread().interrupt();
+        }
+        
         if (characterInsertion == null) {
+            
             if ("".equals(characterInsertionByUser) || characterInsertionByUser == null || "*".equals(characterInsertionByUser)) {
                 characterInsertion = "1";
             } else {
@@ -123,6 +137,7 @@ public class SuspendableGetCharInsertion extends AbstractSuspendable<String> {
             }
             LOGGER.warn("No character insertion activates ORDER BY error, forcing to ["+ characterInsertion.replace(InjectionModel.STAR, "") +"]");
         } else if (!characterInsertionByUser.replace(InjectionModel.STAR, "").equals(characterInsertion)) {
+            
             String characterInsertionByUserFormat = characterInsertionByUser.replace(InjectionModel.STAR, "");
             LOGGER.debug("Found character insertion ["+ characterInsertion +"] in place of ["+ characterInsertionByUserFormat +"] to detect error on ORDER BY");
             LOGGER.trace("Add manually the character * like ["+ characterInsertionByUserFormat +"*] to force the value ["+ characterInsertionByUserFormat +"]");

@@ -44,6 +44,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
      * @param proxy Swing component to decorate
      */
     public JPopupTextComponent(final T proxy) {
+        
         super(proxy);
 
         this.getProxy().setComponentPopupMenu(new JPopupMenuText(this.getProxy()));
@@ -60,6 +61,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
         final String undoIdentifier = "Undo";
         this.getProxy().getActionMap().put(undoIdentifier,
             new AbstractAction(undoIdentifier) {
+            
                 @Override
                 public void actionPerformed(ActionEvent evt) {
                     try {
@@ -80,6 +82,7 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
         final String redoIdentifier = "Redo";
         this.getProxy().getActionMap().put(redoIdentifier,
             new AbstractAction(redoIdentifier) {
+            
                 @Override
                 public void actionPerformed(ActionEvent evt) {
                     try {

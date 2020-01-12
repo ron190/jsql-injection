@@ -56,6 +56,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
+        
         try {
             final Element root = this.terminal.getDocument().getDefaultRootElement();
             final int caretPosition = this.terminal.getCaretPosition();
@@ -79,6 +80,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
     
             // Validate user input ; disable text editing
             if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
+                
                 this.terminal.getIsEdited()[0] = true;
                 keyEvent.consume();
                 this.terminal.setEditable(false);
@@ -108,11 +110,11 @@ public class KeyAdapterTerminal extends KeyAdapter {
                     } else {
                         terminalCommand.reset();
                     }
-                    
                 }).start();
     
             // Get previous command
             } else if (keyEvent.getKeyCode() == KeyEvent.VK_UP) {
+                
                 keyEvent.consume();
     
                 if (this.cmdsIndex > 0) {
@@ -139,6 +141,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
     
             // Get next command
             } else if (keyEvent.getKeyCode() == KeyEvent.VK_DOWN) {
+                
                 keyEvent.consume();
     
                 if (this.cmdsIndex < this.cmds.size()) {
@@ -157,6 +160,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
     
             // Go to the left until prompt
             } else if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT || keyEvent.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                
                 int columnnum = caretPosition - this.terminal.getLineStartOffset(lineNumber);
 
                 if (columnnum <= this.terminal.getPrompt().length()) {
@@ -165,6 +169,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
     
             // Get to the beginning of the line
             } else if (keyEvent.getKeyCode() == KeyEvent.VK_HOME) {
+                
                 keyEvent.consume();
                 
                 this.terminal.setCaretPosition(this.terminal.getLineStartOffset(lineNumber) + this.terminal.getPrompt().length());
@@ -179,9 +184,11 @@ public class KeyAdapterTerminal extends KeyAdapter {
                 keyEvent.getKeyCode() == KeyEvent.VK_PAGE_DOWN ||
                 keyEvent.getKeyCode() == KeyEvent.VK_TAB
             ) {
+                
                 keyEvent.consume();
     
             } else if (keyEvent.getKeyCode() == KeyEvent.VK_C && (keyEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0) {
+                
                 keyEvent.consume();
     
                 this.terminal.append("\n");
@@ -191,5 +198,4 @@ public class KeyAdapterTerminal extends KeyAdapter {
             LOGGER.error(e.getMessage(), e);
         }
     }
-    
 }

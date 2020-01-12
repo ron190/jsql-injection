@@ -24,5 +24,4 @@ public class Vendor {
     public String transformSQLite(String resultToParse) {
         return resultToParse;
     }
-    
 }

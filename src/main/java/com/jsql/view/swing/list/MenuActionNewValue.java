@@ -24,6 +24,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import org.apache.log4j.Logger;
+
 import com.jsql.i18n.I18n;
 import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
@@ -33,6 +35,11 @@ import com.jsql.view.swing.text.JPopupTextArea;
  * Action to add a new item to a JList.
  */
 public class MenuActionNewValue implements ActionListener {
+    
+    /**
+     * Log4j logger sent to view.
+     */
+    private static final Logger LOGGER = Logger.getRootLogger();
     
     /**
      * List to add new items.
@@ -49,6 +56,7 @@ public class MenuActionNewValue implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent arg0) {
+        
         JPanel panel = new JPanel(new BorderLayout());
         final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
         JLabel labelAddValue = new JLabel(I18n.valueByKey("LIST_ADD_VALUE_LABEL") + ":");
@@ -60,25 +68,35 @@ public class MenuActionNewValue implements ActionListener {
         panel.setMinimumSize(new Dimension(600, 400));
         
         textarea.addMouseListener(new MouseAdapter() {
+            
             @Override
             public void mousePressed(MouseEvent e) {
+                
                 super.mousePressed(e);
                 textarea.requestFocusInWindow();
             }
         });
 
-        int result = JOptionPane.showOptionDialog(
-            this.myList.getTopLevelAncestor(),
-            panel,
-            I18n.valueByKey("LIST_ADD_VALUE_TITLE"),
-            JOptionPane.OK_CANCEL_OPTION,
-            JOptionPane.QUESTION_MESSAGE,
-            null,
-            new String[]{I18n.valueByKey("LIST_ADD_VALUE_OK"), I18n.valueByKey("LIST_ADD_VALUE_CANCEL")},
-            I18n.valueByKey("LIST_ADD_VALUE_CANCEL")
-        );
+        int result = -1;
+               
+        // Fix #70832: ClassCastException on showOptionDialog()
+        try {
+            result = JOptionPane.showOptionDialog(
+                this.myList.getTopLevelAncestor(),
+                panel,
+                I18n.valueByKey("LIST_ADD_VALUE_TITLE"),
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                new String[]{I18n.valueByKey("LIST_ADD_VALUE_OK"), I18n.valueByKey("LIST_ADD_VALUE_CANCEL")},
+                I18n.valueByKey("LIST_ADD_VALUE_CANCEL")
+            );
+        } catch (ClassCastException e) {
+            LOGGER.error(e, e);
+        }
 
         if (!"".equals(textarea.getText()) && result == JOptionPane.YES_OPTION) {
+            
             int lastIndex = 0;
             if (this.myList.getSelectedIndex() > 0) {
                 lastIndex = this.myList.getSelectedIndex();
@@ -87,6 +105,7 @@ public class MenuActionNewValue implements ActionListener {
             int firstIndex = lastIndex;
             
             if ("scan".equals(this.myList.getName())) {
+                
                 List<ItemListScan> listParsedItems = ListTransfertHandlerScan.parse(textarea.getText().replace("\\", "/"));
                 for (ItemListScan item: listParsedItems) {
                     ((DefaultListModel<ItemList>) this.myList.getModel()).add(
@@ -94,8 +113,8 @@ public class MenuActionNewValue implements ActionListener {
                         item
                     );
                 }
-                
             } else {
+                
                 for (String newItem: textarea.getText().split("\\n")) {
                     if (!"".equals(newItem)) {
                         ((DefaultListModel<ItemList>) this.myList.getModel()).add(

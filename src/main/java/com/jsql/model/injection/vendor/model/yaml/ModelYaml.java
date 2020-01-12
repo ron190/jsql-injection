@@ -1,7 +1,10 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-public class ModelYaml {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class ModelYaml implements Serializable {
 
     private String vendor = "";
     private Resource resource = new Resource();

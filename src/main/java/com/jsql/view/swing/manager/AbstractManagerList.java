@@ -83,6 +83,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
     }
     
     public AbstractManagerList(String nameFile) {
+        
         this.setLayout(new BorderLayout());
 
         try {
@@ -118,13 +119,16 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
      * @param element The string to add to the list
      */
     public void addToList(String element) {
+        
         boolean isFound = false;
         DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) this.listPaths.getModel();
+        
         for (int i = 0 ; i < listModel.size() ; i++) {
             if (listModel.get(i).toString().equals(element)) {
                 isFound = true;
             }
         }
+        
         if (!isFound) {
             ItemList itemList = new ItemList(element);
             listModel.addElement(itemList);
@@ -139,7 +143,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
     }
 
     /**
-     * Unselect every element of the list.
+     * Deselect every element of the list.
      */
     public void clearSelection() {
         this.listPaths.clearSelection();

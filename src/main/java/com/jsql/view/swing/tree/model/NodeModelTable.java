@@ -63,6 +63,7 @@ public class NodeModelTable extends AbstractNodeModel {
 
     @Override
     protected Icon getLeafIcon(boolean leaf) {
+        
         if (leaf) {
             return HelperUi.ICON_TABLE_GO;
         } else {
@@ -72,6 +73,7 @@ public class NodeModelTable extends AbstractNodeModel {
 
     @Override
     protected void displayProgress(PanelNode panel, DefaultMutableTreeNode currentNode) {
+        
         if ("information_schema".equals(this.getParent().toString())) {
             panel.showLoader();
             
@@ -88,6 +90,7 @@ public class NodeModelTable extends AbstractNodeModel {
 
     @Override
     public void runAction() {
+        
         final Table selectedTable = (Table) this.getElementDatabase();
         
         if (!this.isRunning()) {
@@ -111,8 +114,10 @@ public class NodeModelTable extends AbstractNodeModel {
 
     @Override
     protected void buildMenu(JPopupMenu2 tablePopupMenu, final TreePath path) {
+        
         JMenuItem menuItemCheckAll = new JMenuItem(I18nView.valueByKey("COLUMNS_CHECK_ALL"), 'C');
         I18nView.addComponentForKey("COLUMNS_CHECK_ALL", menuItemCheckAll);
+        
         JMenuItem menuItemUncheckAll = new JMenuItem(I18nView.valueByKey("COLUMNS_UNCHECK_ALL"), 'U');
         I18nView.addComponentForKey("COLUMNS_UNCHECK_ALL", menuItemUncheckAll);
 
@@ -261,6 +266,7 @@ public class NodeModelTable extends AbstractNodeModel {
                 }
             );
         }
+        
         menuItemDump.setUI(
             new BasicCheckBoxMenuItemUI() {
                 @Override

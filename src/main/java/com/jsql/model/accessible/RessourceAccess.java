@@ -55,7 +55,7 @@ import com.jsql.view.swing.list.ItemList;
 import com.jsql.view.swing.list.ItemListScan;
 
 /**
- * Ressource access object.
+ * Resource access object.
  * Get informations from file system, commands, webpage.
  */
 public class RessourceAccess {
@@ -81,12 +81,12 @@ public class RessourceAccess {
     public final String filenameUpload;
     
     /**
-     * True if admin page sould stop, false otherwise.
+     * True if admin page should stop, false otherwise.
      */
     private boolean isSearchAdminStopped = false;
     
     /**
-     * True if scan list sould stop, false otherwise.
+     * True if scan list should stop, false otherwise.
      */
     private boolean isScanStopped = false;
 
@@ -111,19 +111,20 @@ public class RessourceAccess {
     public RessourceAccess(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
         
+        // TODO
         this.filenameWebshell = "..jw.php";
         this.filenameSqlshell = ".js.php";
         this.filenameUpload = ".ju.php";
-        
     }
 
     /**
      * Check if every page in the list responds 200 Success.
      * @param urlInjection
-     * @param pageNames List of admin pages ot test
+     * @param pageNames List of admin pages to test
      * @throws InterruptedException
      */
     public void createAdminPages(String urlInjection, List<ItemList> pageNames) throws InterruptedException {
+        
         String urlWithoutProtocol = urlInjection.replaceAll("^https?://[^/]*", "");
         String urlProtocol = urlInjection.replace(urlWithoutProtocol, "");
         String urlWithoutFileName = urlWithoutProtocol.replaceAll("[^/]*$", "");
@@ -195,13 +196,14 @@ public class RessourceAccess {
     
     /**
      * Create a webshell in the server.
-     * @param pathShell Remote path othe file
+     * @param pathShell Remote path of the file
      * @param url
      * @throws InterruptedException
      * @throws InjectionFailureException
      * @throws StoppedByUserSlidingException
      */
     public void createWebShell(String pathShell, String urlShell) throws JSqlException, InterruptedException {
+        
         if (!this.isReadingAllowed()) {
             return;
         }
@@ -247,6 +249,7 @@ public class RessourceAccess {
         }
 
         if (resultInjection.indexOf(sourceShellToInject) > -1) {
+            
             LOGGER.debug("Web payload created into \""+ pathShellFixed + this.filenameWebshell +"\"");
             //
             String urlWithoutProtocol = url.replaceAll("^https?://[^/]*", "");
@@ -332,6 +335,7 @@ public class RessourceAccess {
      * @throws IOException
      */
     private String runCommandShell(String urlCommand) throws IOException {
+        
         HttpURLConnection connection;
 
         String url = urlCommand;
@@ -382,6 +386,7 @@ public class RessourceAccess {
      * @param urlShell Web path of the shell
      */
     public void runWebShell(String command, UUID uuidShell, String urlShell) {
+        
         String result = "";
         
         try {
@@ -416,6 +421,7 @@ public class RessourceAccess {
      * @throws StoppedByUserSlidingException
      */
     public void createSqlShell(String pathShell, String urlShell, String username, String password) throws JSqlException, InterruptedException {
+        
         if (!this.isReadingAllowed()) {
             return;
         }
@@ -548,6 +554,7 @@ public class RessourceAccess {
      * @param password USEr password [optional]
      */
     public void runSqlShell(String command, UUID uuidShell, String urlShell, String username, String password) {
+        
         String result = "";
         try {
             result = this.runCommandShell(
@@ -616,10 +623,13 @@ public class RessourceAccess {
                 result = result.replace("<SQLe>", "") + "\n";
             }
         } catch (UnsupportedEncodingException e) {
+            
             LOGGER.warn("Encoding command to ISO-8859-1 failed: "+ e.getMessage(), e);
         } catch (IOException e) {
+            
             LOGGER.warn("Shell execution error: "+ e.getMessage(), e);
         } finally {
+            
             // Unfroze interface
             Request request = new Request();
             request.setMessage(Interaction.GET_SQL_SHELL_RESULT);
@@ -637,6 +647,7 @@ public class RessourceAccess {
      * @throws IOException
      */
     public void uploadFile(String pathFile, String urlFile, File file) throws JSqlException, IOException {
+        
         if (!this.isReadingAllowed()) {
             return;
         }
@@ -775,6 +786,7 @@ public class RessourceAccess {
      * @throws JSqlException when an error occurs during injection
      */
     public boolean isReadingAllowed() throws JSqlException {
+        
         // Unsupported Reading file when <file> is not present in current xmlModel
         // Fix #41055: NullPointerException on getFile()
         if (this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getResource().getFile() == null) {
@@ -825,6 +837,7 @@ public class RessourceAccess {
      * @throws ExecutionException if the computation threw an exception
      */
     public void readFile(List<ItemList> pathsFiles) throws JSqlException, InterruptedException, ExecutionException {
+        
         if (!this.isReadingAllowed()) {
             return;
         }
@@ -847,8 +860,10 @@ public class RessourceAccess {
             tasksHandled < submittedTasks && !this.isSearchFileStopped ;
             tasksHandled++
         ) {
+            
             CallableFile currentCallable = taskCompletionService.take().get();
             if (!"".equals(currentCallable.getSourceFile())) {
+                
                 String name = currentCallable.getPathFile().substring(currentCallable.getPathFile().lastIndexOf('/') + 1, currentCallable.getPathFile().length());
                 String content = currentCallable.getSourceFile();
                 String path = currentCallable.getPathFile();
@@ -903,6 +918,7 @@ public class RessourceAccess {
      * @param urlList contains a list of String URL
      */
     public void scanList(List<ItemList> urlList) {
+        
         // Erase everything in the view from a previous injection
         Request requests = new Request();
         requests.setMessage(Interaction.RESET_INTERFACE);
@@ -965,6 +981,7 @@ public class RessourceAccess {
      * is cancelled.
      */
     public void stopSearchingFile() {
+        
         this.isSearchFileStopped = true;
         
         // Force ongoing suspendable to stop immediately

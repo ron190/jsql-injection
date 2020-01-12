@@ -39,6 +39,7 @@ public class StrategyInjectionError extends AbstractStrategy {
 
     @Override
     public void checkApplicability() {
+        
         // Reset applicability of new Vendor
         this.isApplicable = false;
         this.tabCapacityMethod = null;
@@ -56,7 +57,9 @@ public class StrategyInjectionError extends AbstractStrategy {
         this.tabCapacityMethod = new String[strategyYaml.getError().getMethod().size()];
         int indexErrorMethod = 0;
         int errorCapacity = 0;
+        
         for (Method errorMethod: strategyYaml.getError().getMethod()) {
+            
             boolean methodIsApplicable = false;
             LOGGER.trace(I18n.valueByKey("LOG_CHECKING") +" "+ errorMethod.getName() +"...");
         
@@ -87,6 +90,7 @@ public class StrategyInjectionError extends AbstractStrategy {
             }
             
             if (methodIsApplicable) {
+                
                 String performanceErrorSourcePage = this.injectionModel.injectWithoutIndex(
                     " "+ VendorYaml.replaceTags(
                         errorMethod.getQuery()
@@ -136,6 +140,7 @@ public class StrategyInjectionError extends AbstractStrategy {
 
     @Override
     public String inject(String sqlQuery, String startPosition, AbstractSuspendable<String> stoppable) throws StoppedByUserSlidingException {
+        
         return this.injectionModel.injectWithoutIndex(
             this.injectionModel.getMediatorVendor().getVendor().instance().sqlError(sqlQuery, startPosition)
         );
@@ -143,6 +148,7 @@ public class StrategyInjectionError extends AbstractStrategy {
 
     @Override
     public void activateStrategy() {
+        
         LOGGER.info(
             I18n.valueByKey("LOG_USING_STRATEGY") +" ["
                 + this.getName() +" "

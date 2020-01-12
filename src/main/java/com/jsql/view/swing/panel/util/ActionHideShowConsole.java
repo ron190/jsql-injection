@@ -43,7 +43,6 @@ public class ActionHideShowConsole implements ActionListener {
             MediatorGui.frame().getSplitHorizontalTopBottom().getBottomComponent().setVisible(false);
             this.panel.setVisible(true);
             MediatorGui.frame().getSplitHorizontalTopBottom().disableDragSize();
-            
         } else if (
             this.panel.isVisible()
             || !MediatorGui.frame().getSplitHorizontalTopBottom().getTopComponent().isVisible()
@@ -56,9 +55,6 @@ public class ActionHideShowConsole implements ActionListener {
             MediatorGui.frame().getSplitHorizontalTopBottom().setDividerLocation(PanelConsoles.getLoc());
             MediatorGui.frame().getSplitHorizontalTopBottom().enableDragSize();
             PanelConsoles.getButtonShowNorth().setVisible(true);
-            
         }
-        
     }
-    
 }

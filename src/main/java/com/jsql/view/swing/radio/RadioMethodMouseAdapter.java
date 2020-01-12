@@ -25,6 +25,7 @@ public class RadioMethodMouseAdapter extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        
         super.mouseClicked(e);
         
         AbstractRadioLink radio = (AbstractRadioLink) e.getComponent();
@@ -47,6 +48,7 @@ public class RadioMethodMouseAdapter extends MouseAdapter {
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        
         super.mouseEntered(e);
         
         AbstractRadioLink radio = (AbstractRadioLink) e.getComponent();
@@ -64,6 +66,7 @@ public class RadioMethodMouseAdapter extends MouseAdapter {
 
     @Override
     public void mouseExited(MouseEvent e) {
+        
         super.mouseExited(e);
         
         AbstractRadioLink radio = (AbstractRadioLink) e.getComponent();

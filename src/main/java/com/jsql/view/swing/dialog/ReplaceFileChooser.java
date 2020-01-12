@@ -33,15 +33,20 @@ public class ReplaceFileChooser extends JFileChooser {
     
     @Override
     public void approveSelection() {
+        
         File file = this.getSelectedFile();
+        
         if (this.getDialogType() == SAVE_DIALOG) {
+            
             if (file.exists()) {
+                
                 int result = JOptionPane.showConfirmDialog(
                     this,
                     this.getSelectedFile().getName() + " " + I18n.valueByKey("SAVE_TAB_CONFIRM_LABEL"),
                     I18n.valueByKey("SAVE_TAB_CONFIRM_TITLE"),
                     JOptionPane.YES_NO_OPTION
                 );
+                
                 switch (result) {
                     case JOptionPane.YES_OPTION:
                         super.approveSelection();

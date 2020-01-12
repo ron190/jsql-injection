@@ -16,6 +16,7 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
     
     @Override
     public boolean dispatchKeyEvent(KeyEvent keyEvent) {
+        
         boolean shouldTakeNoFurtherAction = false;
         
         // Alt key press/release generates 2 events
@@ -49,6 +50,7 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
         ;
         
         if (isAltDPressed) {
+            
             MediatorGui.panelAddressBar().getTextFieldAddress().requestFocusInWindow();
             MediatorGui.panelAddressBar().getTextFieldAddress().selectAll();
             this.wasAltDPressed[0] = true;
@@ -56,8 +58,10 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
             shouldTakeNoFurtherAction = true;
             
         } else if (isAltReleased) {
+            
             // Avoid flickering and AltGr pollution
             if (wasAltPressedAlready) {
+                
                 if (MenuSelectionManager.defaultManager().getSelectedPath().length > 0) {
                     MenuSelectionManager.defaultManager().clearSelectedPath();
                 } else if (!MediatorGui.panelAddressBar().isAdvanceIsActivated()) {
@@ -73,8 +77,10 @@ public class AltKeyEventDispatcher implements KeyEventDispatcher {
             shouldTakeNoFurtherAction = true;
             
         } else if (isAltPressed) {
+            
             // Avoid flickering and AltGr pollution
             if (!MediatorGui.panelAddressBar().isAdvanceIsActivated() && MediatorGui.menubar().isVisible()) {
+                
                 MenuSelectionManager.defaultManager().clearSelectedPath();
                 MediatorGui.menubar().setVisible(false);
                 this.wasAltPressed[0] = true;

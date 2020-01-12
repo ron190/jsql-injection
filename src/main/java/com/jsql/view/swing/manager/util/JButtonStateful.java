@@ -41,5 +41,4 @@ public class JButtonStateful extends JButton {
     public void setDefaultText(String defaultText) {
         this.defaultText = defaultText;
     }
-
 }

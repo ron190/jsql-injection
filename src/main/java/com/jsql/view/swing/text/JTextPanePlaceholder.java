@@ -38,6 +38,7 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
      * @param value Default value
      */
     public JTextPanePlaceholder(String placeholder, String value) {
+        
         this(placeholder);
         this.setText(value);
     }
@@ -47,6 +48,7 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
      * @param placeholder Text displayed when empty
      */
     public JTextPanePlaceholder(String placeholder) {
+        
         this.placeholderText = placeholder;
         
         this.setCaret(new DefaultCaret() {
@@ -80,6 +82,7 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
 
     @Override
     public void paint(Graphics g) {
+        
         // Fix #4012: ArrayIndexOutOfBoundsException on paint()
         // Fix #38546: ConcurrentModificationException on getText()
         // Fix #37872: IndexOutOfBoundsException on getText()

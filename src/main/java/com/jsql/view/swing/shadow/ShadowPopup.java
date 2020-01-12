@@ -153,6 +153,7 @@ public final class ShadowPopup extends Popup {
      */
     static Popup getInstance(Component owner, Component contents, int x,
             int y, Popup delegate) {
+        
         ShadowPopup result;
         synchronized (ShadowPopup.class) {
             if (cache == null) {
@@ -172,6 +173,7 @@ public final class ShadowPopup extends Popup {
      * Recycles the ShadowPopup.
      */
     private static void recycle(ShadowPopup popup) {
+        
         synchronized (ShadowPopup.class) {
             if (cache.size() < MAX_CACHE_SIZE) {
                 cache.add(popup);
@@ -196,6 +198,7 @@ public final class ShadowPopup extends Popup {
      */
     @Override
     public void hide() {
+        
         if (this.contents == null) {
             return;
         }
@@ -225,6 +228,7 @@ public final class ShadowPopup extends Popup {
      */
     @Override
     public void show() {
+        
         if (this.heavyWeightContainer != null) {
             this.snapshot();
         }
@@ -244,6 +248,7 @@ public final class ShadowPopup extends Popup {
         Component owner, Component contents, int x, int y,
         Popup popup
     ) {
+        
         this.owner = owner;
         this.contents = contents;
         this.popup = popup;
@@ -273,11 +278,13 @@ public final class ShadowPopup extends Popup {
                 break;
             }
         }
+        
         JComponent parent = (JComponent) contents.getParent();
         this.oldOpaque = parent.isOpaque();
         this.oldBorder = parent.getBorder();
         parent.setOpaque(false);
         parent.setBorder(SHADOW_BORDER);
+        
         // Pack it because we have changed the border.
         if (this.heavyWeightContainer != null) {
             this.heavyWeightContainer.setSize(this.heavyWeightContainer.getPreferredSize());
@@ -302,6 +309,7 @@ public final class ShadowPopup extends Popup {
      * @see Robot#createScreenCapture(Rectangle)
      */
     private void snapshot() {
+        
         try {
             Dimension size = this.heavyWeightContainer.getPreferredSize();
             int width = size.width;
@@ -351,7 +359,9 @@ public final class ShadowPopup extends Popup {
             if ((RECT.y + RECT.height) > layeredPaneHeight) {
                 RECT.height = layeredPaneHeight - RECT.y;
             }
+            
             if (!RECT.isEmpty()) {
+                
                 Graphics g = hShadowBg.createGraphics();
                 g.translate(-RECT.x, -RECT.y);
                 g.setClip(RECT);
@@ -379,7 +389,9 @@ public final class ShadowPopup extends Popup {
             if ((RECT.y + RECT.height) > layeredPaneHeight) {
                 RECT.height = layeredPaneHeight - RECT.y;
             }
+            
             if (!RECT.isEmpty()) {
+                
                 Graphics g = vShadowBg.createGraphics();
                 g.translate(-RECT.x, -RECT.y);
                 g.setClip(RECT);
@@ -394,7 +406,7 @@ public final class ShadowPopup extends Popup {
                 }
                 g.dispose();
             }
-        } catch (AWTException | SecurityException e) {
+        } catch (AWTException | SecurityException | IllegalArgumentException e) {
             this.canSnapshot = false;
             
             // Ignore
@@ -404,6 +416,7 @@ public final class ShadowPopup extends Popup {
     }
     
     private static void paintAll(JComponent c, Graphics g) {
+        
         // Fix #3127, Fix #6772, Fix #48907: Multiple Exceptions on paintAll()
         try {
             c.paintAll(g);
@@ -416,6 +429,7 @@ public final class ShadowPopup extends Popup {
      * @return the top level layered pane which contains the owner.
      */
     private Container getLayeredPane() {
+        
         // The code below is copied from PopupFactory#LightWeightPopup#show()
         Container parent = null;
         if (this.owner != null) {
@@ -423,6 +437,7 @@ public final class ShadowPopup extends Popup {
                     ? (Container) this.owner
                     : this.owner.getParent();
         }
+        
         // Try to find a JLayeredPane and Window to add
         for (Container p = parent; p != null; p = p.getParent()) {
             if (p instanceof JRootPane) {
@@ -446,5 +461,4 @@ public final class ShadowPopup extends Popup {
         }
         return parent;
     }
-
 }

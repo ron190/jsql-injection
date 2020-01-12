@@ -43,6 +43,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
      */
     @Override
     public void checkApplicability() throws JSqlException {
+        
         LOGGER.trace(I18n.valueByKey("LOG_CHECKING_STRATEGY") +" Normal...");
         this.injectionModel.setIndexesInUrl(new SuspendableGetIndexes(this.injectionModel).run());
 
@@ -80,6 +81,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
 
     @Override
     public void activateStrategy() {
+        
         LOGGER.info(I18n.valueByKey("LOG_USING_STRATEGY") +" ["+ this.getName() +"]");
         this.injectionModel.getMediatorStrategy().setStrategy(this.injectionModel.getMediatorStrategy().getNormal());
         
@@ -96,6 +98,7 @@ public class StrategyInjectionNormal extends AbstractStrategy {
      * @return Integer index with most efficiency and visible in source code
      */
     public String getVisibleIndex(String firstSuccessPageSource) {
+        
         // Parse all indexes found
         // Fix #4007 (initialize firstSuccessPageSource to "" instead of null)
         Matcher regexSearch = Pattern.compile("(?s)1337(\\d+?)7331").matcher(firstSuccessPageSource);

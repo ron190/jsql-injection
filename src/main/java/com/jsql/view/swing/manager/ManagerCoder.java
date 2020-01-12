@@ -36,7 +36,7 @@ import com.jsql.view.swing.text.JTextAreaPlaceholder;
 import com.jsql.view.swing.text.listener.DocumentListenerTyping;
 
 /**
- * Manager to code/uncode string in various methods.
+ * Manager to code/decode string in various methods.
  */
 @SuppressWarnings("serial")
 public class ManagerCoder extends JPanel implements Manager {
@@ -68,6 +68,7 @@ public class ManagerCoder extends JPanel implements Manager {
         
         @Override
         public void stateChanged(ChangeEvent e) {
+            
             if (e.getSource() instanceof JMenuItem) {
                 JMenuItem item = (JMenuItem) e.getSource();
                 if (item.isSelected() || item.isArmed()) {
@@ -75,13 +76,13 @@ public class ManagerCoder extends JPanel implements Manager {
                 }
             }
         }
-        
     }
 
     /**
      * Create a panel to encode a string.
      */
     public ManagerCoder() {
+        
         super(new BorderLayout());
 
         this.textInput = new JPopupTextArea(new JTextAreaPlaceholder("Type a string to convert")).getProxy();
@@ -94,7 +95,6 @@ public class ManagerCoder extends JPanel implements Manager {
             public void warn() {
                 ManagerCoder.this.actionCoder.actionPerformed();
             }
-            
         });
 
         JPanel topMixed = new JPanel(new BorderLayout());

@@ -55,6 +55,7 @@ public class CustomMetalTabbedPaneUI extends MetalTabbedPaneUI {
     
     @Override
     protected JButton createScrollButton(int direction) {
+        
         if (direction != SOUTH && direction != NORTH && direction != EAST && direction != WEST) {
             throw new IllegalArgumentException("Direction must be one of: SOUTH, NORTH, EAST or WEST");
         }
@@ -64,7 +65,9 @@ public class CustomMetalTabbedPaneUI extends MetalTabbedPaneUI {
     
     @SuppressWarnings("serial")
     private class ScrollableTabButton extends BasicArrowButton implements UIResource, SwingConstants {
+        
         public ScrollableTabButton(int direction) {
+            
             super(
                 direction,
                 HelperUi.COLOR_DEFAULT_BACKGROUND,

@@ -35,6 +35,7 @@ public class NodeModelDatabase extends AbstractNodeModel {
 
     @Override
     protected Icon getLeafIcon(boolean leaf) {
+        
         if (leaf) {
             return HelperUi.ICON_DATABASE_GO;
         } else {
@@ -44,7 +45,9 @@ public class NodeModelDatabase extends AbstractNodeModel {
 
     @Override
     public void runAction() {
+        
         final Database selectedDatabase = (Database) this.getElementDatabase();
+        
         if (/*!this.isLoaded && */!this.isRunning()) {
             MediatorGui.frame().getTreeNodeModels().get(this.getElementDatabase()).removeAllChildren();
             DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();

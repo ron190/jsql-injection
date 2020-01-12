@@ -78,30 +78,28 @@ public class MediatorVendor {
         this.postgreSQL = new Vendor("PostgreSQL", new VendorYaml("postgresql.yml", this.injectionModel));
         this.sqlite = new Vendor("SQLite", new VendorYaml("sqlite.yml", this.injectionModel)) {
              
-             @Override
-             public String transformSQLite(String resultToParse) {
-                 
-                 StringBuilder resultSQLite = new StringBuilder();
-                 String resultTmp = resultToParse.replaceFirst(".+?\\(", "").trim().replaceAll("\\)$", "");
-                 resultTmp = resultTmp.replaceAll("\\(.+?\\)", "");
-                 
-                 for (String columnNameAndType: resultTmp.split(",")) {
-                     // Some recent SQLite use tabulation character as a separator => split() by any  white space \s
-                     String columnName = columnNameAndType.trim().split("\\s")[0];
-                     
-                     // Some recent SQLite enclose names with ` => strip those `
-                     columnName = StringUtils.strip(columnName, "`");
-                     
-                     if (!"CONSTRAINT".equals(columnName) && !"UNIQUE".equals(columnName)) {
-                         resultSQLite.append((char) 4 + columnName + (char) 5 + "0" + (char) 4 + (char) 6);
-                     }
-                 }
+            @Override
+            public String transformSQLite(String resultToParse) {
+                
+                StringBuilder resultSQLite = new StringBuilder();
+                String resultTmp = resultToParse.replaceFirst(".+?\\(", "").trim().replaceAll("\\)$", "");
+                resultTmp = resultTmp.replaceAll("\\(.+?\\)", "");
+                
+                for (String columnNameAndType: resultTmp.split(",")) {
+                    // Some recent SQLite use tabulation character as a separator => split() by any  white space \s
+                    String columnName = columnNameAndType.trim().split("\\s")[0];
+                    
+                    // Some recent SQLite enclose names with ` => strip those `
+                    columnName = StringUtils.strip(columnName, "`");
+                    
+                    if (!"CONSTRAINT".equals(columnName) && !"UNIQUE".equals(columnName)) {
+                        resultSQLite.append((char) 4 + columnName + (char) 5 + "0" + (char) 4 + (char) 6);
+                    }
+                }
          
-                 return resultSQLite.toString();
-                 
-             }
-             
-         };
+                return resultSQLite.toString();
+            }
+        };
         this.sqlServer = new Vendor("SQL Server", new VendorYaml("sqlserver.yml", this.injectionModel));
         this.sybase = new Vendor("Sybase", new VendorYaml("sybase.yml", this.injectionModel));
         this.teradata = new Vendor("Teradata", new VendorYaml("teradata.yml", this.injectionModel));

@@ -40,6 +40,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
 
     @Override
     public String run(Object... args) throws JSqlException {
+        
         String initialSQLQuery = (String) args[0];
         String[] sourcePage = (String[]) args[1];
         boolean isUsingLimit = (Boolean) args[2];

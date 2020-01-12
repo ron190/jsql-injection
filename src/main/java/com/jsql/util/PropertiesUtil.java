@@ -6,8 +6,6 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-import com.jsql.model.InjectionModel;
-
 public class PropertiesUtil {
     
     /**
@@ -17,14 +15,11 @@ public class PropertiesUtil {
 
     private final Properties properties = new Properties();
     
-    InjectionModel injectionModel;
-    public PropertiesUtil(InjectionModel injectionModel) {
-        this.injectionModel = injectionModel;
-
+    public PropertiesUtil() {
+        
         InputStream input = null;
 
         try {
-
             String filename = "config.properties";
             input = PropertiesUtil.class.getClassLoader().getResourceAsStream(filename);
             if (input == null) {
@@ -34,10 +29,11 @@ public class PropertiesUtil {
 
             // load a properties file from class path, inside static method
             this.getProperties().load(input);
-
         } catch (IOException e) {
+            
             LOGGER.error(e, e);
         } finally {
+            
             if (input != null) {
                 try {
                     input.close();

@@ -72,6 +72,7 @@ public class PanelTable extends JPanel {
      * @param columnNames Names of columns from database
      */
     public PanelTable(String[][] data, String[] columnNames) {
+        
         super(new BorderLayout());
 
         this.tableValues = new JTable(data, columnNames) {
@@ -91,36 +92,43 @@ public class PanelTable extends JPanel {
 
         final TableCellRenderer cellRendererHeader = this.tableValues.getTableHeader().getDefaultRenderer();
         final DefaultTableCellRenderer cellRendererDefault = new DefaultTableCellRenderer();
+        
         this.tableValues.getTableHeader().setDefaultRenderer(
             (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
-            JLabel label = (JLabel) cellRendererHeader.getTableCellRendererComponent(
-                table, StringUtil.detectUtf8HtmlNoWrap(" "+ value +" "), isSelected, hasFocus, row, column
-            );
-            label.setBorder(
-                BorderFactory.createCompoundBorder(
-                    BorderFactory.createMatteBorder(1, 0, 1, 1, Color.LIGHT_GRAY),
-                    BorderFactory.createEmptyBorder(0, 5, 0, 5)
-                )
-            );
-            return label;
-        });
+                
+                JLabel label = (JLabel) cellRendererHeader.getTableCellRendererComponent(
+                    table, StringUtil.detectUtf8HtmlNoWrap(" "+ value +" "), isSelected, hasFocus, row, column
+                );
+                label.setBorder(
+                    BorderFactory.createCompoundBorder(
+                        BorderFactory.createMatteBorder(1, 0, 1, 1, Color.LIGHT_GRAY),
+                        BorderFactory.createEmptyBorder(0, 5, 0, 5)
+                    )
+                );
+                
+                return label;
+            }
+        );
         
         this.tableValues.setDefaultRenderer(this.tableValues.getColumnClass(2),
             (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
-            // Prepare cell value to be utf8 inspected
-            String cellValue = value != null ? value.toString() : "";
-            return cellRendererDefault.getTableCellRendererComponent(
-                table, StringUtil.detectUtf8HtmlNoWrap(cellValue), isSelected, hasFocus, row, column
-            );
-        });
+                // Prepare cell value to be utf8 inspected
+                String cellValue = value != null ? value.toString() : "";
+                return cellRendererDefault.getTableCellRendererComponent(
+                    table, StringUtil.detectUtf8HtmlNoWrap(cellValue), isSelected, hasFocus, row, column
+                );
+            }
+        );
 
         this.tableValues.getTableHeader().setReorderingAllowed(false);
 
         this.tableValues.setDragEnabled(true);
 
         this.tableValues.addMouseListener(new MouseAdapter() {
+            
             @Override
             public void mousePressed(MouseEvent e) {
+                
                 PanelTable.this.tableValues.requestFocusInWindow();
 
                 if (SwingUtilities.isRightMouseButton(e)) {
@@ -180,6 +188,7 @@ public class PanelTable extends JPanel {
         scroller.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         
         AdjustmentListener singleItemScroll = adjustmentEvent -> {
+            
             // The user scrolled the List (using the bar, mouse wheel or something else):
             if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK){
                 adjustmentEvent.getAdjustable().setBlockIncrement(100);

@@ -75,7 +75,9 @@ public class ListTransfertHandlerScan extends TransferHandler {
     @SuppressWarnings("unchecked")
     @Override
     protected void exportDone(JComponent c, Transferable data, int action) {
+        
         if (action == TransferHandler.MOVE) {
+            
             JList<ItemList> list = (JList<ItemList>) c;
             DefaultListModel<ItemList> model = (DefaultListModel<ItemList>) list.getModel();
             for (ItemList itemPath: this.dragPaths) {
@@ -88,6 +90,7 @@ public class ListTransfertHandlerScan extends TransferHandler {
 
     @Override
     public boolean canImport(TransferSupport support) {
+        
         return
             support.isDataFlavorSupported(DataFlavor.stringFlavor)
             || support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)
@@ -97,6 +100,7 @@ public class ListTransfertHandlerScan extends TransferHandler {
     @SuppressWarnings("unchecked")
     @Override
     public boolean importData(TransferSupport support) {
+        
         if (!this.canImport(support)) {
             return false;
         }
@@ -106,7 +110,9 @@ public class ListTransfertHandlerScan extends TransferHandler {
         
         //This is a drop
         if (support.isDrop()) {
+            
             if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                
                 JList.DropLocation dropLocation = (JList.DropLocation) support.getDropLocation();
                 int indexDropLocation = dropLocation.getIndex();
 
@@ -114,6 +120,7 @@ public class ListTransfertHandlerScan extends TransferHandler {
 
                 // DnD from list
                 if (this.dragPaths != null && !this.dragPaths.isEmpty()) {
+                    
                     for (ItemList itemPath: this.dragPaths) {
                         if (!"".equals(itemPath.toString())) {
                             //! FUUuu
@@ -124,6 +131,7 @@ public class ListTransfertHandlerScan extends TransferHandler {
                         }
                     }
                 } else {
+                    
                     // DnD from outside
                     try {
                         String importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
@@ -145,6 +153,7 @@ public class ListTransfertHandlerScan extends TransferHandler {
                 }
                 list.setSelectedIndices(selectedIndices);
             } else if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                
                 JList.DropLocation dl = (JList.DropLocation) support.getDropLocation();
                 int childIndex = dl.getIndex();
 
@@ -161,7 +170,9 @@ public class ListTransfertHandlerScan extends TransferHandler {
             //This is a paste
             Transferable transferableFromClipboard = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
             if (transferableFromClipboard != null) {
+                
                 if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                    
                     try {
                         String clipboardText = (String) transferableFromClipboard.getTransferData(DataFlavor.stringFlavor);
 
@@ -195,6 +206,7 @@ public class ListTransfertHandlerScan extends TransferHandler {
                         LOGGER.error(e.getMessage(), e);
                     }
                 } else if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                    
                     try {
                         int selectedIndex = 0;
                         if (list.getSelectedIndex() > 0) {
@@ -217,11 +229,14 @@ public class ListTransfertHandlerScan extends TransferHandler {
     }
     
     public static List<ItemListScan> parse(String clipboardText) {
+        
         List<ItemListScan> itemsParsed = new ArrayList<>();
+        
         try {
             JSONArray itemsJsonArray = new JSONArray(clipboardText);
             
             for (int i = 0; i < itemsJsonArray.length(); i++) {
+                
                 JSONObject itemJsonObject = itemsJsonArray.getJSONObject(i);
                 
                 BeanInjection beanInjection = new BeanInjection(
@@ -237,6 +252,7 @@ public class ListTransfertHandlerScan extends TransferHandler {
                 itemsParsed.add(newItem);
             }
         } catch (JSONException eJsonArray) {
+            
             try {
                 JSONObject itemsJsonObject = new JSONObject(clipboardText);
                 
@@ -252,6 +268,7 @@ public class ListTransfertHandlerScan extends TransferHandler {
                 ItemListScan newItem = new ItemListScan(beanInjection);
                 itemsParsed.add(newItem);
             } catch (JSONException eJsonObject) {
+                
                 for (String url: clipboardText.split("\\n")) {
                     BeanInjection beanInjection = new BeanInjection(url);
                     

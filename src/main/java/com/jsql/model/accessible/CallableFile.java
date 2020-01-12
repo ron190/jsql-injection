@@ -65,12 +65,14 @@ public class CallableFile implements Callable<CallableFile> {
                 null
             );
         } catch (InjectionFailureException e) {
+            
             // Usually thrown if File does not exist
             
             // Ignore
             IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
             LOGGER.trace(exceptionIgnored, exceptionIgnored);
         } catch (StoppedByUserSlidingException e) {
+            
             // Get partial source
             if (!"".equals(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();

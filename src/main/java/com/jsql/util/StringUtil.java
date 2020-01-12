@@ -29,7 +29,6 @@ import com.jsql.view.swing.HelperUi;
  * Utility class adding String operations like join() which are not
  * part of standard JVM.
  */
-// TODO Spock test
 public final class StringUtil {
     
     /**
@@ -55,11 +54,10 @@ public final class StringUtil {
         
         void encode(char c, StringBuilder buff) {
             buff
-                .append(this.prefix)
-                .append(Integer.toString(c, this.radix))
-                .append(this.suffix);
+            .append(this.prefix)
+            .append(Integer.toString(c, this.radix))
+            .append(this.suffix);
         }
-        
     }
     
     // Utility class.
@@ -71,7 +69,6 @@ public final class StringUtil {
      * Convert special characters like Chinese and Arabic letters to the corresponding html entities.
      * @param text string to encode
      * @return string encoded in html entities
-     * TODO create specialized class
      */
     public static String decimalHtmlEncode(String text) {
         return StringUtil.encode(text, DECIMAL_HTML_ENCODER);
@@ -84,6 +81,7 @@ public final class StringUtil {
      * @return string representation using the encoder schema
      */
     private static String encode(String text, CharEncoder encoder) {
+        
         StringBuilder buff = new StringBuilder();
         for (int i = 0 ; i < text.length() ; i++) {
             if (text.charAt(i) > 128) {
@@ -101,6 +99,7 @@ public final class StringUtil {
      * @return The string converted from hex
      */
     public static String hexstr(String hex) {
+        
         byte[] bytes = new byte[hex.length() / 2];
         for (int i = 0 ; i < bytes.length ; i++) {
             bytes[i] = (byte) Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
@@ -117,6 +116,7 @@ public final class StringUtil {
     }
     
     public static String detectUtf8Html(String text, boolean nowrap) {
+        
         // Fix #35217: NullPointerException on getBytes()
         if (text == null) {
             return "";
@@ -136,6 +136,7 @@ public final class StringUtil {
     }
     
     public static boolean isUtf8(String text) {
+        
         if (text == null) {
             return false;
         }
@@ -149,6 +150,7 @@ public final class StringUtil {
     }
     
     public static String detectUtf8(String text) {
+        
         if (text == null) {
             return "";
         }
@@ -191,6 +193,7 @@ public final class StringUtil {
      * @throws IOException
      */
     public static String compress(String str) throws IOException {
+        
         if (str == null || str.length() == 0) {
             return str;
         }
@@ -208,6 +211,7 @@ public final class StringUtil {
      * @throws IOException
      */
     public static String decompress(String str) throws IOException {
+        
         if (str == null || str.length() == 0) {
             return str;
         }
@@ -230,6 +234,7 @@ public final class StringUtil {
      * @param buf Hexadecimal converted character
      */
     private static void byte2hex(byte b, StringBuilder buf) {
+        
         char[] hexChars = {'0', '1', '2', '3', '4', '5', '6', '7', '8',
                 '9', 'A', 'B', 'C', 'D', 'E', 'F'};
         int high = (b & 0xf0) >> 4;
@@ -244,6 +249,7 @@ public final class StringUtil {
      * @return Hash as a string
      */
     public static String digestToHexString(byte[] block) {
+        
         StringBuilder  buf = new StringBuilder();
         int len = block.length;
         for (int i = 0 ; i < len ; i++) {
@@ -251,5 +257,4 @@ public final class StringUtil {
         }
         return buf.toString();
     }
-    
 }

@@ -10,6 +10,7 @@ import com.jsql.view.swing.HelperUi;
 public class ButtonClose extends JButton {
     
     public ButtonClose() {
+        
         super(HelperUi.ICON_CLOSE);
         
         Dimension closeButtonSize = new Dimension(

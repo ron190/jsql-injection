@@ -42,16 +42,18 @@ public class ImageOverlap extends ImageIcon {
      * @param iconPathOverlap Secondary icon to display on top of main icon
      */
     public ImageOverlap(String main, String iconPathOverlap) {
-        super(ImageOverlap.class.getResource(main));
+        super(ImageOverlap.class.getClassLoader().getResource(main));
 
         this.iconPathOverlap = iconPathOverlap;
     }
 
     @Override
     public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
+        
         super.paintIcon(c, g, x, y);
+        
         try {
-            BufferedImage im2 = ImageIO.read(ImageOverlap.class.getResource(this.iconPathOverlap));
+            BufferedImage im2 = ImageIO.read(ImageOverlap.class.getClassLoader().getResource(this.iconPathOverlap));
             g.drawImage(
                 im2,
                 (this.getIconWidth() - im2.getWidth()) / 2,

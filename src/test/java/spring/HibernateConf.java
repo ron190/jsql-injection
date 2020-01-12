@@ -13,6 +13,7 @@ public class HibernateConf {
  
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
+        
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setHibernateProperties(this.hibernateProperties());
  
@@ -20,6 +21,7 @@ public class HibernateConf {
     }
  
     private final Properties hibernateProperties() {
+        
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         hibernateProperties.setProperty("hibernate.multi_tenant_connection_provider", "spring.MultiTenantConnectionProviderImpl");

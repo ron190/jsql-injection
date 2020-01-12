@@ -26,6 +26,7 @@ public class ActionCheckUncheck implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         Object source = e.getSource();
         JCheckBox columnCheckBox = (JCheckBox) source;
         this.nodeModel.setSelected(columnCheckBox.isSelected());
@@ -35,6 +36,7 @@ public class ActionCheckUncheck implements ActionListener {
 
         int tableChildCount = treeModel.getChildCount(tableNode);
         boolean isOneChildSelected = false;
+        
         for (int i = 0 ; i < tableChildCount ; i++) {
             DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
             if (currentChild.getUserObject() instanceof AbstractNodeModel) {

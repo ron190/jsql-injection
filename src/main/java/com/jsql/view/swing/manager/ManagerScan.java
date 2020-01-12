@@ -82,6 +82,7 @@ public class ManagerScan extends AbstractManagerList {
         JSONArray jsonArrayScan;
         try {
             jsonArrayScan = new JSONArray(jsonScan.toString());
+            
             for (int i = 0 ; i < jsonArrayScan.length() ; i++) {
                 JSONObject jsonObjectScan = jsonArrayScan.getJSONObject(i);
                 BeanInjection beanInjection = new BeanInjection(
@@ -131,12 +132,14 @@ public class ManagerScan extends AbstractManagerList {
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
         
         this.run.addActionListener(actionEvent -> {
+            
             if (dndListScan.getSelectedValuesList().isEmpty()) {
                 LOGGER.warn("Select URL(s) to scan");
                 return;
             }
             
             new Thread(() -> {
+                
                 if (ManagerScan.this.run.getState() == StateButton.STARTABLE) {
                     ManagerScan.this.run.setText(I18nView.valueByKey("SCAN_RUN_BUTTON_STOP"));
                     ManagerScan.this.run.setState(StateButton.STOPPABLE);
@@ -167,6 +170,7 @@ public class ManagerScan extends AbstractManagerList {
         this.add(lastLine, BorderLayout.SOUTH);
         
         dndListScan.addListSelectionListener(e -> {
+            
             if (dndListScan.getSelectedValue() == null) {
                 return;
             }
@@ -179,7 +183,6 @@ public class ManagerScan extends AbstractManagerList {
             String requestType = beanInjection.getRequestType();
             if (requestType != null && !requestType.isEmpty()) {
                 MediatorGui.panelAddressBar().getRadioRequest().setText(requestType);
-//                Arrays.asList(new String[]{"OPTIONS", "HEAD", "POST", "PUT", "DELETE", "TRACE"}).contains(method)
             } else {
                 MediatorGui.panelAddressBar().getRadioRequest().setText("POST");
             }

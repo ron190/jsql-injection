@@ -45,6 +45,7 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
      * @param placeholder Text displayed when empty
      */
     public JTextAreaPlaceholder(String placeholder) {
+        
         this.placeholderText = placeholder;
         
         this.setCaret(new DefaultCaret() {
@@ -69,7 +70,6 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
                 JTextAreaPlaceholder.this.revalidate();
                 JTextAreaPlaceholder.this.repaint();
             }
-            
         });
         
         this.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new DeletePrevCharAction());
@@ -78,7 +78,9 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
 
     @Override
     public void paint(Graphics g) {
+        
         // Fix #6350: ArrayIndexOutOfBoundsException on paint()
+        // StateInvariantError possible on jdk 8 when WrappedPlainView.drawLine in paint()
         try {
             super.paint(g);
         } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {

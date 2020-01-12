@@ -5,28 +5,37 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JTextPane;
 
-import com.jsql.util.tampering.Tampering;
+import com.jsql.util.tampering.TamperingType;
 
 public class TamperingMouseAdapter extends MouseAdapter {
-    Tampering tampering;
-    JTextPane l;
-    String t = null;
-    public TamperingMouseAdapter(Tampering tampering, JTextPane l) {
+    
+    private TamperingType tampering;
+    private JTextPane textPaneEval;
+    private String eval = null;
+    
+    public TamperingMouseAdapter(TamperingType tampering, JTextPane textPaneEval) {
+        
         this.tampering = tampering;
-        this.l = l;
+        this.textPaneEval = textPaneEval;
     }
+    
     @Override
     public void mouseEntered(MouseEvent me) {
-        this.t=this.l.getText();
-        this.l.setText(this.tampering.instance().getModelYaml().getJavascript().trim());
+        
+        this.eval = this.textPaneEval.getText();
+        this.textPaneEval.setText(this.tampering.instance().getJavascript().trim());
     }
+    
     @Override
     public void mouseExited(MouseEvent e) {
-        this.l.setText(this.t);
+        
+        this.textPaneEval.setText(this.eval);
     }
+    
     @Override
     public void mouseClicked(MouseEvent e) {
-        this.t=this.tampering.instance().getModelYaml().getJavascript().trim();
-        this.l.setText(this.t);
+        
+        this.eval = this.tampering.instance().getJavascript().trim();
+        this.textPaneEval.setText(this.eval);
     }
 }

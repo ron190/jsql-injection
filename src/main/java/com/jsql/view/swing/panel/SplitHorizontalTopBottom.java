@@ -72,6 +72,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
      * and consoles in the bottom.
      */
     public SplitHorizontalTopBottom() {
+        
         super(JSplitPane.VERTICAL_SPLIT);
 
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());

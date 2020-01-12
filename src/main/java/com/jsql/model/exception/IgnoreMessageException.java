@@ -1,7 +1,6 @@
 package com.jsql.model.exception;
 
 
-// Instancier qu'une fois static
 @SuppressWarnings("serial")
 public class IgnoreMessageException extends Exception {
 

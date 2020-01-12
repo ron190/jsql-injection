@@ -68,6 +68,7 @@ public class Table extends AbstractElementDatabase {
      */
     @Override
     public String getLabelCount() {
+        
         String nbRow;
         if ("information_schema".equals(this.parentDatabase.toString())) {
             nbRow = "?";

@@ -142,7 +142,7 @@ public class PanelConsoles extends JPanel {
     private static final MouseTabbedPane NETWORK_TAB_DETAIL = new MouseTabbedPane();
     
     /**
-     * Create panel at the bottom with differents consoles to report injection process.
+     * Create panel at the bottom with different consoles to report injection process.
      */
     public PanelConsoles() {
         
@@ -165,6 +165,7 @@ public class PanelConsoles extends JPanel {
         this.network.setDividerLocation(600);
         this.network.setBorder(BorderFactory.createEmptyBorder());
         this.networkTable = new JTable(0, 4) {
+            
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -180,9 +181,12 @@ public class PanelConsoles extends JPanel {
         this.networkTable.getTableHeader().setReorderingAllowed(false);
         
         this.networkTable.addMouseListener(new MouseAdapter() {
+            
             @Override
             public void mousePressed(MouseEvent e) {
+                
                 PanelConsoles.this.networkTable.requestFocusInWindow();
+                
                 // move selected row and place cursor on focused cell
                 if (SwingUtilities.isRightMouseButton(e)) {
                     Point p = e.getPoint();
@@ -219,7 +223,6 @@ public class PanelConsoles extends JPanel {
             public String getColumnName(int index) {
                 return this.columns[index];
             }
-            
         });
 
         class PathCellRenderer extends DefaultTableCellRenderer {
@@ -228,6 +231,7 @@ public class PanelConsoles extends JPanel {
             public Component getTableCellRendererComponent(
                 JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
             ) {
+                
                 JLabel c = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 c.setToolTipText(
                     "<html><div style=\"font-size:10px;font-family:'Ubuntu Mono'\">"
@@ -237,7 +241,6 @@ public class PanelConsoles extends JPanel {
                 
                 return c;
             }
-            
         }
         
         this.networkTable.getColumnModel().getColumn(1).setCellRenderer(new PathCellRenderer());
@@ -477,6 +480,7 @@ public class PanelConsoles extends JPanel {
      * Add Chunk console to bottom panel.
      */
     public void insertChunkTab() {
+        
         this.buildI18nTab(
             "CONSOLE_CHUNK_LABEL",
             "CONSOLE_CHUNK_TOOLTIP",
@@ -490,6 +494,7 @@ public class PanelConsoles extends JPanel {
      * Add Binary console to bottom panel.
      */
     public void insertBooleanTab() {
+        
         this.buildI18nTab(
             "CONSOLE_BINARY_LABEL",
             "CONSOLE_BINARY_TOOLTIP",
@@ -503,6 +508,7 @@ public class PanelConsoles extends JPanel {
      * Add Network tab to bottom panel.
      */
     public void insertNetworkTab() {
+        
         this.buildI18nTab(
             "CONSOLE_NETWORK_LABEL",
             "CONSOLE_NETWORK_TOOLTIP",
@@ -516,6 +522,7 @@ public class PanelConsoles extends JPanel {
      * Add Java console to bottom panel.
      */
     public void insertJavaTab() {
+        
         this.buildI18nTab(
             "CONSOLE_JAVA_LABEL",
             "CONSOLE_JAVA_TOOLTIP",
@@ -530,6 +537,7 @@ public class PanelConsoles extends JPanel {
     }
     
     public void reset() {
+        
         this.listHttpHeader.clear();
         
         // Empty infos tabs
@@ -566,6 +574,7 @@ public class PanelConsoles extends JPanel {
     }
     
     public void changeTextNetwork() {
+        
         HttpHeader networkData = this.listHttpHeader.get(PanelConsoles.this.networkTable.getSelectedRow());
         PanelConsoles.NETWORK_TAB_HEADER.setText(networkData.getHeader());
         PanelConsoles.NETWORK_TAB_PARAM.setText(networkData.getPost());
@@ -623,15 +632,18 @@ public class PanelConsoles extends JPanel {
         Component manager,
         int position
     ) {
-        final JToolTipI18n[] j = new JToolTipI18n[]{new JToolTipI18n(I18nView.valueByKey(keyTooltip))};
+        
+        final JToolTipI18n[] refJToolTipI18n = new JToolTipI18n[]{new JToolTipI18n(I18nView.valueByKey(keyTooltip))};
+        
         JLabel labelTab = new JLabel(I18nView.valueByKey(keyLabel), icon, SwingConstants.CENTER){
             @Override
             public JToolTip createToolTip() {
                 JToolTip tipI18n = new JToolTipI18n(I18nView.valueByKey(keyTooltip));
-                j[0] = (JToolTipI18n) tipI18n;
+                refJToolTipI18n[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
             }
         };
+        
         labelTab.setName(keyLabel);
         labelTab.addMouseListener(new MouseAdapter() {
             @Override
@@ -640,13 +652,15 @@ public class PanelConsoles extends JPanel {
                 super.mousePressed(e);
             }
         });
+        
         MediatorGui.tabConsoles().insertTab(I18nView.valueByKey(keyLabel), icon, manager, null, position);
         MediatorGui.tabConsoles().setTabComponentAt(
             MediatorGui.tabConsoles().indexOfTab(I18nView.valueByKey(keyLabel)),
             labelTab
         );
+        
         I18nView.addComponentForKey(keyLabel, labelTab);
-        I18nView.addComponentForKey(keyTooltip, j[0]);
+        I18nView.addComponentForKey(keyTooltip, refJToolTipI18n[0]);
         labelTab.setToolTipText(I18nView.valueByKey(keyTooltip));
     }
     

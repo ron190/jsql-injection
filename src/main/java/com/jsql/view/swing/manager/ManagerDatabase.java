@@ -67,6 +67,7 @@ public class ManagerDatabase extends JPanel implements Manager {
 
             @Override
             public void focusLost(FocusEvent e) {
+                
                 DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) ManagerDatabase.this.tree.getLastSelectedPathComponent();
                 if (treeNode != null) {
                     AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
@@ -79,6 +80,7 @@ public class ManagerDatabase extends JPanel implements Manager {
 
             @Override
             public void focusGained(FocusEvent e) {
+                
                 DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) ManagerDatabase.this.tree.getLastSelectedPathComponent();
                 if (treeNode != null) {
                     AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
@@ -88,13 +90,13 @@ public class ManagerDatabase extends JPanel implements Manager {
                     }
                 }
             }
-
         });
 
         this.tree.addMouseListener(new MouseAdapter() {
 
             @Override
             public void mousePressed(MouseEvent e) {
+                
                 int selRow = ManagerDatabase.this.tree.getRowForLocation(e.getX(), e.getY());
                 TreePath selPath = ManagerDatabase.this.tree.getPathForLocation(e.getX(), e.getY());
                 if (selRow != -1 && e.getClickCount() == 2) {
@@ -105,13 +107,13 @@ public class ManagerDatabase extends JPanel implements Manager {
                     }
                 }
             }
-
         });
 
         this.tree.addKeyListener(new KeyAdapter() {
 
             @Override
             public void keyPressed(KeyEvent e) {
+                
                 if (e.getKeyCode() == KeyEvent.VK_F2) {
                     DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) ManagerDatabase.this.tree.getLastSelectedPathComponent();
                     if (treeNode != null) {
@@ -124,7 +126,6 @@ public class ManagerDatabase extends JPanel implements Manager {
                     }
                 }
             }
-
         });
 
         // Action manager for components
@@ -161,6 +162,7 @@ public class ManagerDatabase extends JPanel implements Manager {
         
         @Override
         public void treeNodesChanged(TreeModelEvent arg0) {
+            
             if (arg0 != null) {
                 ManagerDatabase.this.tree.firePropertyChange(
                     JTree.ROOT_VISIBLE_PROPERTY,
@@ -185,7 +187,6 @@ public class ManagerDatabase extends JPanel implements Manager {
         public void treeNodesInserted(TreeModelEvent arg0) {
             // Do nothing
         }
-        
     }
 
     // Getter and setter
@@ -193,5 +194,4 @@ public class ManagerDatabase extends JPanel implements Manager {
     public JTree getTree() {
         return this.tree;
     }
-
 }

@@ -37,6 +37,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
      * @param injectionModel
      */
     public CallableTime(String inj, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode) {
+        
         this.injectionModel = injectionModel;
         this.injectionTime = injectionTime;
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlTimeTest(inj, blindMode);
@@ -49,6 +50,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
      * @param bit
      */
     public CallableTime(String inj, int indexCharacter, int bit, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode) {
+        
         this.injectionModel = injectionModel;
         this.injectionTime = injectionTime;
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlBitTestTime(inj, indexCharacter, bit, blindMode);
@@ -57,6 +59,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
     }
 
     public CallableTime(String inj, int indexCharacter, boolean isTestingLength, InjectionModel injectionModel, InjectionTime injectionTime, BooleanMode blindMode) {
+        
         this.injectionModel = injectionModel;
         this.injectionTime = injectionTime;
         this.booleanUrl = this.injectionModel.getMediatorVendor().getVendor().instance().sqlLengthTestTime(inj, indexCharacter, blindMode);
@@ -75,6 +78,7 @@ public class CallableTime extends AbstractCallableBoolean<CallableTime> {
      */
     @Override
     public CallableTime call() throws Exception {
+        
         this.calendar1.setTime(new Date());
         this.injectionTime.callUrl(this.booleanUrl);
         this.calendar2.setTime(new Date());

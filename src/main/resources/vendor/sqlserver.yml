@@ -239,6 +239,7 @@ strategy:
   modeAnd: and
   modeOr: or
   blind: ${BOOLEAN.MODE} ${TEST}
+  # TODO no boolean mode here on Time for sqlserver
   time: |
    ; if (${TEST}) 
        WAITFOR DELAY '00:00:00' 

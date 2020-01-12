@@ -49,6 +49,7 @@ public class JTextFieldPlaceholder extends JTextField {
 
     @Override
     public void paint(Graphics g) {
+        
         try {
             super.paint(g);
         } catch (ClassCastException e) {

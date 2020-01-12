@@ -49,6 +49,7 @@ public class ActionSaveTab extends AbstractAction {
     final ReplaceFileChooser filechooser = new ReplaceFileChooser(MediatorModel.model().getMediatorUtils().getPreferencesUtil().getPathFile());
 
     public ActionSaveTab() {
+        
         this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
         this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
         this.putValue(Action.NAME, "Save Tab As...");
@@ -57,6 +58,7 @@ public class ActionSaveTab extends AbstractAction {
     
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         this.filechooser.setDialogTitle("Save Tab As");
 
         Component component = MediatorGui.tabResults().getSelectedComponent();
@@ -71,6 +73,7 @@ public class ActionSaveTab extends AbstractAction {
     }
     
     private void saveTablePanel() {
+        
         JTable table = ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).getTableValues();
         
         if (table == null) {
@@ -115,6 +118,7 @@ public class ActionSaveTab extends AbstractAction {
     }
     
     private void saveJTextComponent() {
+        
         JTextComponent textArea =
             (JTextComponent) ((LightScrollPane) MediatorGui.tabResults().getSelectedComponent()).scrollPane.getViewport().getView();
         

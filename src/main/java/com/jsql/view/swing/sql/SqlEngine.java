@@ -5,8 +5,12 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -40,10 +44,11 @@ import com.jsql.view.swing.sql.lexer.HighlightedDocument;
 import com.jsql.view.swing.sql.text.AttributeSetterForVendor;
 import com.jsql.view.swing.sql.text.JTextPaneLexer;
 import com.jsql.view.swing.sql.text.JTextPaneObjectMethod;
+import com.jsql.view.swing.tab.TabHeader.Cleanable;
 import com.jsql.view.swing.text.listener.DocumentListenerTyping;
 
 @SuppressWarnings("serial")
-public class SqlEngine extends JPanel {
+public class SqlEngine extends JPanel implements Cleanable {
     
     private ModelYaml modelYaml = MediatorModel.model().getMediatorVendor().getVendor().instance().getModelYaml();
 
@@ -262,6 +267,8 @@ public class SqlEngine extends JPanel {
         }
     };
     
+    private final List<JTextPaneLexer> textPanesError = new ArrayList<>();
+    
     public SqlEngine() {
         
         List<Vendor> listVendors = new LinkedList<>(MediatorModel.model().getMediatorVendor().getVendors());
@@ -280,137 +287,121 @@ public class SqlEngine extends JPanel {
         
         JTabbedPane tabsStandard = new JTabbedPane(SwingConstants.RIGHT);
         
-        this.textareaDatabase.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaTable.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaColumn.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaQuery.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaField.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaConcat.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaInfo.setBorder(SqlEngine.BORDER_RIGHT);
-        
-        this.textareaDatabaseZipped.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaTableZipped.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaColumnZipped.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaQueryZipped.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaFieldZipped.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaConcatZipped.setBorder(SqlEngine.BORDER_RIGHT);
-        
-        this.textareaDatabaseDios.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaTableDios.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaColumnDios.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaQueryDios.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaFieldDios.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaConcatDios.setBorder(SqlEngine.BORDER_RIGHT);
-        
-        this.textareaModeAnd.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaModeOr.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaBlind.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaTime.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaBitTest.setBorder(SqlEngine.BORDER_RIGHT);
-        this.textareaLengthTest.setBorder(SqlEngine.BORDER_RIGHT);
+        Stream.of(
+            this.textareaDatabase,
+            this.textareaTable,
+            this.textareaColumn,
+            this.textareaQuery,
+            this.textareaField,
+            this.textareaConcat,
+            this.textareaInfo,
+            
+            this.textareaDatabaseZipped,
+            this.textareaTableZipped,
+            this.textareaColumnZipped,
+            this.textareaQueryZipped,
+            this.textareaFieldZipped,
+            this.textareaConcatZipped,
+            
+            this.textareaDatabaseDios,
+            this.textareaTableDios,
+            this.textareaColumnDios,
+            this.textareaQueryDios,
+            this.textareaFieldDios,
+            this.textareaConcatDios,
+            
+            this.textareaModeAnd,
+            this.textareaModeOr,
+            this.textareaBlind,
+            this.textareaTime,
+            this.textareaBitTest,
+            this.textareaLengthTest
+        ).forEach(textPane -> textPane.setBorder(SqlEngine.BORDER_RIGHT));
         
         JTabbedPane tabsSchema = new JTabbedPane();
-        tabsSchema.addTab(I18n.valueByKey("SQLENGINE_DATABASES"), new LightScrollPane(1, 0, 1, 0, this.textareaDatabase));
-        tabsSchema.addTab(I18n.valueByKey("SQLENGINE_TABLES"), new LightScrollPane(1, 0, 1, 0, this.textareaTable));
-        tabsSchema.addTab(I18n.valueByKey("SQLENGINE_COLUMNS"), new LightScrollPane(1, 0, 1, 0, this.textareaColumn));
-        tabsSchema.addTab(I18n.valueByKey("SQLENGINE_ROWS"), new LightScrollPane(1, 0, 1, 0, this.textareaQuery));
-        tabsSchema.addTab(I18n.valueByKey("SQLENGINE_FIELD"), new LightScrollPane(1, 0, 1, 0, this.textareaField));
-        tabsSchema.addTab(I18n.valueByKey("SQLENGINE_FIELDS_SEPARATOR"), new LightScrollPane(1, 0, 1, 0, this.textareaConcat));
-        tabsSchema.addTab(I18n.valueByKey("SQLENGINE_METADATA"), new LightScrollPane(1, 0, 1, 0, this.textareaInfo));
-        
-        /* Structure */
-        JLabel labelDatabase = new JLabel(I18n.valueByKey("SQLENGINE_DATABASES"));
-        tabsSchema.setTabComponentAt(
-            tabsSchema.indexOfTab(I18n.valueByKey("SQLENGINE_DATABASES")),
-            labelDatabase
-        );
-        I18nView.addComponentForKey("SQLENGINE_DATABASES", labelDatabase);
-        
-        JLabel labelTable = new JLabel(I18n.valueByKey("SQLENGINE_TABLES"));
-        tabsSchema.setTabComponentAt(
-            tabsSchema.indexOfTab(I18n.valueByKey("SQLENGINE_TABLES")),
-            labelTable
-        );
-        I18nView.addComponentForKey("SQLENGINE_TABLES", labelTable);
-        
-        JLabel labelColumn = new JLabel(I18n.valueByKey("SQLENGINE_COLUMNS"));
-        tabsSchema.setTabComponentAt(
-            tabsSchema.indexOfTab(I18n.valueByKey("SQLENGINE_COLUMNS")),
-            labelColumn
-        );
-        I18nView.addComponentForKey("SQLENGINE_COLUMNS", labelColumn);
-        
-        JLabel labelRow = new JLabel(I18n.valueByKey("SQLENGINE_ROWS"));
-        tabsSchema.setTabComponentAt(
-            tabsSchema.indexOfTab(I18n.valueByKey("SQLENGINE_ROWS")),
-            labelRow
-        );
-        I18nView.addComponentForKey("SQLENGINE_ROWS", labelRow);
-        
-        JLabel labelField = new JLabel(I18n.valueByKey("SQLENGINE_FIELD"));
-        tabsSchema.setTabComponentAt(
-            tabsSchema.indexOfTab(I18n.valueByKey("SQLENGINE_FIELD")),
-            labelField
-        );
-        I18nView.addComponentForKey("SQLENGINE_FIELD", labelField);
-        
-        JLabel labelFieldSeparator = new JLabel(I18n.valueByKey("SQLENGINE_FIELDS_SEPARATOR"));
-        tabsSchema.setTabComponentAt(
-            tabsSchema.indexOfTab(I18n.valueByKey("SQLENGINE_FIELDS_SEPARATOR")),
-            labelFieldSeparator
-        );
-        I18nView.addComponentForKey("SQLENGINE_FIELDS_SEPARATOR", labelFieldSeparator);
-        
-        JLabel labelMetadata = new JLabel(I18n.valueByKey("SQLENGINE_METADATA"));
-        tabsSchema.setTabComponentAt(
-            tabsSchema.indexOfTab(I18n.valueByKey("SQLENGINE_METADATA")),
-            labelMetadata
-        );
-        I18nView.addComponentForKey("SQLENGINE_METADATA", labelMetadata);
-        /**/
+        Stream.of(
+            new SimpleEntry<>("SQLENGINE_DATABASES", this.textareaDatabase),
+            new SimpleEntry<>("SQLENGINE_TABLES", this.textareaTable),
+            new SimpleEntry<>("SQLENGINE_COLUMNS", this.textareaColumn),
+            new SimpleEntry<>("SQLENGINE_ROWS", this.textareaQuery),
+            new SimpleEntry<>("SQLENGINE_FIELD", this.textareaField),
+            new SimpleEntry<>("SQLENGINE_FIELDS_SEPARATOR", this.textareaConcat),
+            new SimpleEntry<>("SQLENGINE_METADATA", this.textareaInfo)
+        )
+        .forEach(entry -> {
+            tabsSchema.addTab(
+                I18n.valueByKey(entry.getKey()),
+                new LightScrollPane(1, 0, 1, 0, entry.getValue())
+            );
+            
+            JLabel label = new JLabel(I18n.valueByKey(entry.getKey()));
+            tabsSchema.setTabComponentAt(
+                tabsSchema.indexOfTab(I18n.valueByKey(entry.getKey())),
+                label
+            );
+            I18nView.addComponentForKey(entry.getKey(), label);
+        });
         
         JTabbedPane tabsZipped = new JTabbedPane();
-        tabsZipped.addTab("Databases", new LightScrollPane(1, 0, 1, 0, this.textareaDatabaseZipped));
-        tabsZipped.addTab("Tables", new LightScrollPane(1, 0, 1, 0, this.textareaTableZipped));
-        tabsZipped.addTab("Columns", new LightScrollPane(1, 0, 1, 0, this.textareaColumnZipped));
-        tabsZipped.addTab("Rows", new LightScrollPane(1, 0, 1, 0, this.textareaQueryZipped));
-        tabsZipped.addTab("Field", new LightScrollPane(1, 0, 1, 0, this.textareaFieldZipped));
-        tabsZipped.addTab("Fields separator", new LightScrollPane(1, 0, 1, 0, this.textareaConcatZipped));
+        Stream.of(
+            new SimpleEntry<>("SQLENGINE_DATABASES", this.textareaDatabaseZipped),
+            new SimpleEntry<>("SQLENGINE_TABLES", this.textareaTableZipped),
+            new SimpleEntry<>("SQLENGINE_COLUMNS", this.textareaColumnZipped),
+            new SimpleEntry<>("SQLENGINE_ROWS", this.textareaQueryZipped),
+            new SimpleEntry<>("SQLENGINE_FIELD", this.textareaFieldZipped),
+            new SimpleEntry<>("SQLENGINE_FIELDS_SEPARATOR", this.textareaConcatZipped)
+        )
+        .forEach(entry -> {
+            tabsZipped.addTab(
+                I18n.valueByKey(entry.getKey()),
+                new LightScrollPane(1, 0, 1, 0, entry.getValue())
+            );
+            
+            JLabel label = new JLabel(I18n.valueByKey(entry.getKey()));
+            tabsZipped.setTabComponentAt(
+                tabsZipped.indexOfTab(I18n.valueByKey(entry.getKey())),
+                label
+            );
+            I18nView.addComponentForKey(entry.getKey(), label);
+        });
         
         JTabbedPane tabsDios = new JTabbedPane();
-        tabsDios.addTab("Databases", new LightScrollPane(1, 0, 1, 0, this.textareaDatabaseDios));
-        tabsDios.addTab("Tables", new LightScrollPane(1, 0, 1, 0, this.textareaTableDios));
-        tabsDios.addTab("Columns", new LightScrollPane(1, 0, 1, 0, this.textareaColumnDios));
-        tabsDios.addTab("Rows", new LightScrollPane(1, 0, 1, 0, this.textareaQueryDios));
-        tabsDios.addTab("Field", new LightScrollPane(1, 0, 1, 0, this.textareaFieldDios));
-        tabsDios.addTab("Fields separator", new LightScrollPane(1, 0, 1, 0, this.textareaConcatDios));
+        Stream.of(
+            new SimpleEntry<>("SQLENGINE_DATABASES", this.textareaDatabaseDios),
+            new SimpleEntry<>("SQLENGINE_TABLES", this.textareaTableDios),
+            new SimpleEntry<>("SQLENGINE_COLUMNS", this.textareaColumnDios),
+            new SimpleEntry<>("SQLENGINE_ROWS", this.textareaQueryDios),
+            new SimpleEntry<>("SQLENGINE_FIELD", this.textareaFieldDios),
+            new SimpleEntry<>("SQLENGINE_FIELDS_SEPARATOR", this.textareaConcatDios)
+        )
+        .forEach(entry -> {
+            tabsDios.addTab(
+                I18n.valueByKey(entry.getKey()),
+                new LightScrollPane(1, 0, 1, 0, entry.getValue())
+            );
+            
+            JLabel label = new JLabel(I18n.valueByKey(entry.getKey()));
+            tabsDios.setTabComponentAt(
+                tabsDios.indexOfTab(I18n.valueByKey(entry.getKey())),
+                label
+            );
+            I18nView.addComponentForKey(entry.getKey(), label);
+        });
         
-        tabsStandard.addTab(I18n.valueByKey("SQLENGINE_STANDARD"), tabsSchema);
-        tabsStandard.addTab(I18n.valueByKey("SQLENGINE_ZIPPED"), tabsZipped);
-        tabsStandard.addTab(I18n.valueByKey("SQLENGINE_DIOS"), tabsDios);
-        
-        /* Structure */
-        JLabel labelStandard = new JLabel(I18n.valueByKey("SQLENGINE_STANDARD"));
-        tabsStandard.setTabComponentAt(
-            tabsStandard.indexOfTab(I18n.valueByKey("SQLENGINE_STANDARD")),
-            labelStandard
-        );
-        I18nView.addComponentForKey("SQLENGINE_STANDARD", labelStandard);
-        
-        JLabel labelZipped = new JLabel(I18n.valueByKey("SQLENGINE_ZIPPED"));
-        tabsStandard.setTabComponentAt(
-            tabsStandard.indexOfTab(I18n.valueByKey("SQLENGINE_ZIPPED")),
-            labelZipped
-        );
-        I18nView.addComponentForKey("SQLENGINE_ZIPPED", labelZipped);
-        
-        JLabel labelDios = new JLabel(I18n.valueByKey("SQLENGINE_DIOS"));
-        tabsStandard.setTabComponentAt(
-            tabsStandard.indexOfTab(I18n.valueByKey("SQLENGINE_DIOS")),
-            labelDios
-        );
-        I18nView.addComponentForKey("SQLENGINE_DIOS", labelDios);
-        /**/
+        Stream.of(
+            new SimpleEntry<>("SQLENGINE_STANDARD", tabsSchema),
+            new SimpleEntry<>("SQLENGINE_ZIPPED", tabsZipped),
+            new SimpleEntry<>("SQLENGINE_DIOS", tabsDios)
+        ).forEach(entry -> {
+            tabsStandard.addTab(I18n.valueByKey(entry.getKey()), entry.getValue());
+            
+            JLabel label = new JLabel(I18n.valueByKey(entry.getKey()));
+            tabsStandard.setTabComponentAt(
+                tabsStandard.indexOfTab(I18n.valueByKey(entry.getKey())),
+                label
+            );
+            I18nView.addComponentForKey(entry.getKey(), label);
+        });
         
         JPanel panelStructure = new JPanel(new BorderLayout());
         panelStructure.add(tabsStandard, BorderLayout.CENTER);
@@ -423,26 +414,7 @@ public class SqlEngine extends JPanel {
         panelStrategy.add(tabsStrategy, BorderLayout.CENTER);
         panelStrategy.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
         
-        JTabbedPane tabsBottom = new JTabbedPane(SwingConstants.BOTTOM);
-        tabsBottom.addTab(I18n.valueByKey("SQLENGINE_STRUCTURE"), panelStructure);
-        tabsBottom.addTab(I18n.valueByKey("SQLENGINE_STRATEGY"), panelStrategy);
         
-        /**/
-        JLabel labelStructure = new JLabel(I18n.valueByKey("SQLENGINE_STRUCTURE"));
-        tabsBottom.setTabComponentAt(
-            tabsBottom.indexOfTab(I18n.valueByKey("SQLENGINE_STRUCTURE")),
-            labelStructure
-        );
-        I18nView.addComponentForKey("SQLENGINE_STRUCTURE", labelStructure);
-        
-        JLabel labelStrategy = new JLabel(I18n.valueByKey("SQLENGINE_STRATEGY"));
-        tabsBottom.setTabComponentAt(
-            tabsBottom.indexOfTab(I18n.valueByKey("SQLENGINE_STRATEGY")),
-            labelStrategy
-        );
-        I18nView.addComponentForKey("SQLENGINE_STRATEGY", labelStrategy);
-        /**/
-
         /*Error*/
         JPanel panelError = new JPanel(new BorderLayout());
         panelError.add(SqlEngine.TAB_ERROR, BorderLayout.CENTER);
@@ -451,12 +423,15 @@ public class SqlEngine extends JPanel {
 
         /*Boolean*/
         JTabbedPane tabsBoolean = new JTabbedPane(SwingConstants.RIGHT);
-        tabsBoolean.addTab("AND mode", new LightScrollPane(1, 0, 1, 0, this.textareaModeAnd));
-        tabsBoolean.addTab("OR mode", new LightScrollPane(1, 0, 1, 0, this.textareaModeOr));
-        tabsBoolean.addTab("Blind", new LightScrollPane(1, 0, 1, 0, this.textareaBlind));
-        tabsBoolean.addTab("Time", new LightScrollPane(1, 0, 1, 0, this.textareaTime));
-        tabsBoolean.addTab("Bit Test", new LightScrollPane(1, 0, 1, 0, this.textareaBitTest));
-        tabsBoolean.addTab("Length Test", new LightScrollPane(1, 0, 1, 0, this.textareaLengthTest));
+        Stream.of(
+            new SimpleEntry<>("AND mode", this.textareaModeAnd),
+            new SimpleEntry<>("OR mode", this.textareaModeOr),
+            new SimpleEntry<>("Blind", this.textareaBlind),
+            new SimpleEntry<>("Time", this.textareaTime),
+            new SimpleEntry<>("Bit Test", this.textareaBitTest),
+            new SimpleEntry<>("Length Test", this.textareaLengthTest)
+        )
+        .forEach(entry -> tabsBoolean.addTab(entry.getKey(), new LightScrollPane(1, 0, 1, 0, entry.getValue())));
         
         JPanel panelBoolean = new JPanel(new BorderLayout());
         panelBoolean.add(tabsBoolean, BorderLayout.CENTER);
@@ -464,29 +439,21 @@ public class SqlEngine extends JPanel {
         tabsStrategy.addTab(I18n.valueByKey("SQLENGINE_BOOLEAN"), panelBoolean);
         
         /* Strategy */
-        JLabel labelNormal = new JLabel(I18n.valueByKey("SQLENGINE_NORMAL"));
-        tabsStrategy.setTabComponentAt(
-            tabsStrategy.indexOfTab(I18n.valueByKey("SQLENGINE_NORMAL")),
-            labelNormal
-        );
-        I18nView.addComponentForKey("SQLENGINE_NORMAL", labelNormal);
-
-        
-        JLabel labelError = new JLabel(I18n.valueByKey("SQLENGINE_ERROR"));
-        tabsStrategy.setTabComponentAt(
-            tabsStrategy.indexOfTab(I18n.valueByKey("SQLENGINE_ERROR")),
-            labelError
-        );
-        I18nView.addComponentForKey("SQLENGINE_ERROR", labelError);
-
-        
-        JLabel labelBoolean = new JLabel(I18n.valueByKey("SQLENGINE_BOOLEAN"));
-        tabsStrategy.setTabComponentAt(
-            tabsStrategy.indexOfTab(I18n.valueByKey("SQLENGINE_BOOLEAN")),
-            labelBoolean
-        );
-        I18nView.addComponentForKey("SQLENGINE_BOOLEAN", labelBoolean);
-        /**/
+        Stream.of(
+            "SQLENGINE_NORMAL",
+            "SQLENGINE_ERROR",
+            "SQLENGINE_BOOLEAN"
+        )
+        .forEach(keyI18n -> {
+            JLabel label = new JLabel(I18n.valueByKey(keyI18n));
+            
+            tabsStrategy.setTabComponentAt(
+                tabsStrategy.indexOfTab(I18n.valueByKey(keyI18n)),
+                label
+            );
+            
+            I18nView.addComponentForKey(keyI18n, label);
+        });
 
         /**/
         JTabbedPane tabsConfiguration = new JTabbedPane();
@@ -499,61 +466,46 @@ public class SqlEngine extends JPanel {
         tabsConfiguration.addTab("End comment", new LightScrollPane(1, 0, 1, 0, this.textareaEndingComment));
         
         /* Configuration */
-        JLabel labelOrderBy = new JLabel(I18n.valueByKey("SQLENGINE_ORDER_BY"));
-        tabsConfiguration.setTabComponentAt(
-            tabsConfiguration.indexOfTab(I18n.valueByKey("SQLENGINE_ORDER_BY")),
-            labelOrderBy
-        );
-        I18nView.addComponentForKey("SQLENGINE_ORDER_BY", labelOrderBy);
 
-        JLabel labelCharactersSlidingWindows = new JLabel(I18n.valueByKey("SQLENGINE_CHARACTERS_SLIDINGWINDOW"));
-        tabsConfiguration.setTabComponentAt(
-            tabsConfiguration.indexOfTab(I18n.valueByKey("SQLENGINE_CHARACTERS_SLIDINGWINDOW")),
-            labelCharactersSlidingWindows
-        );
-        I18nView.addComponentForKey("SQLENGINE_CHARACTERS_SLIDINGWINDOW", labelCharactersSlidingWindows);
-
-        JLabel labelRowsSlidingWindows = new JLabel(I18n.valueByKey("SQLENGINE_ROWS_SLIDINGWINDOW"));
-        tabsConfiguration.setTabComponentAt(
-            tabsConfiguration.indexOfTab(I18n.valueByKey("SQLENGINE_ROWS_SLIDINGWINDOW")),
-            labelRowsSlidingWindows
-        );
-        I18nView.addComponentForKey("SQLENGINE_ROWS_SLIDINGWINDOW", labelRowsSlidingWindows);
-
-        JLabel labelCapacity = new JLabel(I18n.valueByKey("SQLENGINE_CAPACITY"));
-        tabsConfiguration.setTabComponentAt(
-            tabsConfiguration.indexOfTab(I18n.valueByKey("SQLENGINE_CAPACITY")),
-            labelCapacity
-        );
-        I18nView.addComponentForKey("SQLENGINE_CAPACITY", labelCapacity);
-
-        JLabel labelCalibrator = new JLabel(I18n.valueByKey("SQLENGINE_CALIBRATOR"));
-        tabsConfiguration.setTabComponentAt(
-            tabsConfiguration.indexOfTab(I18n.valueByKey("SQLENGINE_CALIBRATOR")),
-            labelCalibrator
-        );
-        I18nView.addComponentForKey("SQLENGINE_CALIBRATOR", labelCalibrator);
-
-        JLabel labelTrapCanceller = new JLabel(I18n.valueByKey("SQLENGINE_TRAPCANCELLER"));
-        tabsConfiguration.setTabComponentAt(
-            tabsConfiguration.indexOfTab(I18n.valueByKey("SQLENGINE_TRAPCANCELLER")),
-            labelTrapCanceller
-        );
-        I18nView.addComponentForKey("SQLENGINE_TRAPCANCELLER", labelTrapCanceller);
-        /**/
+        Stream.of(
+            "SQLENGINE_ORDER_BY",
+            "SQLENGINE_CHARACTERS_SLIDINGWINDOW",
+            "SQLENGINE_ROWS_SLIDINGWINDOW",
+            "SQLENGINE_CAPACITY",
+            "SQLENGINE_CALIBRATOR",
+            "SQLENGINE_TRAPCANCELLER"
+        )
+        .forEach(keyI18n -> {
+            JLabel label = new JLabel(I18n.valueByKey(keyI18n));
+            tabsConfiguration.setTabComponentAt(
+                tabsConfiguration.indexOfTab(I18n.valueByKey(keyI18n)),
+                label
+            );
+            
+            I18nView.addComponentForKey(keyI18n, label);
+        });
         
         JPanel panelConfiguration = new JPanel(new BorderLayout());
         panelConfiguration.add(tabsConfiguration, BorderLayout.CENTER);
         panelConfiguration.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
 
-        tabsBottom.addTab(I18n.valueByKey("SQLENGINE_CONFIGURATION"), panelConfiguration);
-        
-        JLabel labelConfiguration = new JLabel(I18n.valueByKey("SQLENGINE_CONFIGURATION"));
-        tabsBottom.setTabComponentAt(
-            tabsBottom.indexOfTab(I18n.valueByKey("SQLENGINE_CONFIGURATION")),
-            labelConfiguration
-        );
-        I18nView.addComponentForKey("SQLENGINE_CONFIGURATION", labelConfiguration);
+        JTabbedPane tabsBottom = new JTabbedPane(SwingConstants.BOTTOM);
+        Stream.of(
+            new SimpleEntry<>("SQLENGINE_STRUCTURE", panelStructure),
+            new SimpleEntry<>("SQLENGINE_STRATEGY", panelStrategy),
+            new SimpleEntry<>("SQLENGINE_CONFIGURATION", panelConfiguration)
+        )
+        .forEach(entry -> {
+            tabsBottom.addTab(I18n.valueByKey(entry.getKey()), entry.getValue());
+            
+            JLabel label = new JLabel(I18n.valueByKey(entry.getKey()));
+            tabsBottom.setTabComponentAt(
+                tabsBottom.indexOfTab(I18n.valueByKey(entry.getKey())),
+                label
+            );
+            
+            I18nView.addComponentForKey(entry.getKey(), label);
+        });
 
         this.setLayout(new OverlayLayout(this));
 
@@ -579,11 +531,13 @@ public class SqlEngine extends JPanel {
 
         for (final Vendor vendor: listVendors) {
             JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorModel.model().getMediatorVendor().getVendor());
+            
             itemRadioVendor.addActionListener(actionEvent -> {
                 this.modelYaml = vendor.instance().getModelYaml();
                 this.changeVendor();
                 comboMenuVendor.setText(vendor.toString());
             });
+            
             itemRadioVendor.setUI(
                 new BasicRadioButtonMenuItemUI() {
                     @Override
@@ -592,6 +546,7 @@ public class SqlEngine extends JPanel {
                     }
                 }
             );
+            
             comboMenuVendor.add(itemRadioVendor);
             groupVendor.add(itemRadioVendor);
         }
@@ -610,26 +565,28 @@ public class SqlEngine extends JPanel {
     }
     
     private void initErrorTabs() {
+        
         SqlEngine.TAB_ERROR.removeAll();
         
         if (this.modelYaml.getStrategy().getError() != null) {
             for (Method methodError : this.modelYaml.getStrategy().getError().getMethod()) {
                 JPanel panelError = new JPanel(new BorderLayout());
                 
-                final Method[] m = new Method[]{methodError};
-                JTextPaneLexer textPane = new JTextPaneLexer(false) {
+                final Method[] refMethodError = new Method[]{methodError};
+                JTextPaneLexer textPaneError = new JTextPaneLexer() {
+                    
                     @Override
                     public void switchSetterToVendor() {
-                        this.attributeSetter = new AttributeSetterForVendor(m[0], "setQuery");
+                        this.attributeSetter = new AttributeSetterForVendor(refMethodError[0], "setQuery");
                     }
                 };
                 
-                SqlEngine.resetLexer(textPane);
-                textPane.switchSetterToVendor();
-                textPane.setText(methodError.getQuery().trim());
-                textPane.setBorder(SqlEngine.BORDER_RIGHT);
+                SqlEngine.resetLexer(textPaneError);
+                textPaneError.switchSetterToVendor();
+                textPaneError.setText(methodError.getQuery().trim());
+                textPaneError.setBorder(SqlEngine.BORDER_RIGHT);
     
-                panelError.add(new LightScrollPane(1, 0, 1, 0, textPane), BorderLayout.CENTER);
+                panelError.add(new LightScrollPane(1, 0, 1, 0, textPaneError), BorderLayout.CENTER);
                 
                 JPanel panelLimit = new JPanel();
                 panelLimit.setLayout(new BoxLayout(panelLimit, BoxLayout.LINE_AXIS));
@@ -641,61 +598,65 @@ public class SqlEngine extends JPanel {
                 SqlEngine.TAB_ERROR.addTab(methodError.getName(), panelError);
                 
                 SqlEngine.TAB_ERROR.setTitleAt(SqlEngine.TAB_ERROR.getTabCount() - 1, "<html><div style=\"text-align:left;width:150px;\">"+ methodError.getName() +"</div></html>");
+                
+                this.textPanesError.add(textPaneError);
             }
         }
     }
     
     private void showSql(ModelYaml modelYaml) {
-        JTextPaneLexer.TEXTPANES_LEXER.stream().forEach(textPaneLexer -> textPaneLexer.setText(""));
-
-        this.textareaDatabase.setText(modelYaml.getResource().getSchema().getDatabase().trim());
-        this.textareaTable.setText(modelYaml.getResource().getSchema().getTable().trim());
-        this.textareaColumn.setText(modelYaml.getResource().getSchema().getColumn().trim());
-        this.textareaQuery.setText(modelYaml.getResource().getSchema().getRow().getQuery().trim());
-        this.textareaField.setText(modelYaml.getResource().getSchema().getRow().getFields().getField().trim());
-        this.textareaConcat.setText(modelYaml.getResource().getSchema().getRow().getFields().getConcat().trim());
         
-        this.textareaDatabaseZipped.setText(modelYaml.getResource().getZipped().getDatabase().trim());
-        this.textareaTableZipped.setText(modelYaml.getResource().getZipped().getTable().trim());
-        this.textareaColumnZipped.setText(modelYaml.getResource().getZipped().getColumn().trim());
-        this.textareaQueryZipped.setText(modelYaml.getResource().getZipped().getRow().getQuery().trim());
-        this.textareaFieldZipped.setText(modelYaml.getResource().getZipped().getRow().getFields().getField().trim());
-        this.textareaConcatZipped.setText(modelYaml.getResource().getZipped().getRow().getFields().getConcat().trim());
+        this.getTextPanes().forEach(textPaneLexer -> textPaneLexer.setText(""));
         
-        this.textareaDatabaseDios.setText(modelYaml.getResource().getDios().getDatabase().trim());
-        this.textareaTableDios.setText(modelYaml.getResource().getDios().getTable().trim());
-        this.textareaColumnDios.setText(modelYaml.getResource().getDios().getColumn().trim());
-        this.textareaQueryDios.setText(modelYaml.getResource().getDios().getRow().getQuery().trim());
-        this.textareaFieldDios.setText(modelYaml.getResource().getDios().getRow().getFields().getField().trim());
-        this.textareaConcatDios.setText(modelYaml.getResource().getDios().getRow().getFields().getConcat().trim());
-        
-        this.textareaInfo.setText(modelYaml.getResource().getInfo().trim());
-        
-        this.textareaSlidingWindow.setText(modelYaml.getStrategy().getConfiguration().getSlidingWindow().trim());
-        this.textareaLimit.setText(modelYaml.getStrategy().getConfiguration().getLimit().trim());
-        this.textareaFailsafe.setText(modelYaml.getStrategy().getConfiguration().getFailsafe().trim());
-        this.textareaEndingComment.setText(modelYaml.getStrategy().getConfiguration().getEndingComment().trim());
-        this.textareaCalibrator.setText(modelYaml.getStrategy().getConfiguration().getCalibrator().trim());
-
-        this.textareaIndices.setText(modelYaml.getStrategy().getNormal().getIndices().trim());
-        this.textareaCapacity.setText(modelYaml.getStrategy().getNormal().getCapacity().trim());
-        this.textareaOrderBy.setText(modelYaml.getStrategy().getNormal().getOrderBy().trim());
-
-        this.textareaModeAnd.setText(modelYaml.getStrategy().getBoolean().getModeAnd().trim());
-        this.textareaModeOr.setText(modelYaml.getStrategy().getBoolean().getModeOr().trim());
-        this.textareaBlind.setText(modelYaml.getStrategy().getBoolean().getBlind().trim());
-        this.textareaTime.setText(modelYaml.getStrategy().getBoolean().getTime().trim());
-        this.textareaBitTest.setText(modelYaml.getStrategy().getBoolean().getTest().getBit().trim());
-        this.textareaLengthTest.setText(modelYaml.getStrategy().getBoolean().getTest().getLength().trim());
+        Stream.of(
+            new SimpleEntry<>(this.textareaDatabase, modelYaml.getResource().getSchema().getDatabase()),
+            new SimpleEntry<>(this.textareaTable, modelYaml.getResource().getSchema().getTable()),
+            new SimpleEntry<>(this.textareaColumn, modelYaml.getResource().getSchema().getColumn()),
+            new SimpleEntry<>(this.textareaQuery, modelYaml.getResource().getSchema().getRow().getQuery()),
+            new SimpleEntry<>(this.textareaField, modelYaml.getResource().getSchema().getRow().getFields().getField()),
+            new SimpleEntry<>(this.textareaConcat, modelYaml.getResource().getSchema().getRow().getFields().getConcat()),
+            
+            new SimpleEntry<>(this.textareaDatabaseZipped, modelYaml.getResource().getZipped().getDatabase()),
+            new SimpleEntry<>(this.textareaTableZipped, modelYaml.getResource().getZipped().getTable()),
+            new SimpleEntry<>(this.textareaColumnZipped, modelYaml.getResource().getZipped().getColumn()),
+            new SimpleEntry<>(this.textareaQueryZipped, modelYaml.getResource().getZipped().getRow().getQuery()),
+            new SimpleEntry<>(this.textareaFieldZipped, modelYaml.getResource().getZipped().getRow().getFields().getField()),
+            new SimpleEntry<>(this.textareaConcatZipped, modelYaml.getResource().getZipped().getRow().getFields().getConcat()),
+            
+            new SimpleEntry<>(this.textareaDatabaseDios, modelYaml.getResource().getDios().getDatabase()),
+            new SimpleEntry<>(this.textareaTableDios, modelYaml.getResource().getDios().getTable()),
+            new SimpleEntry<>(this.textareaColumnDios, modelYaml.getResource().getDios().getColumn()),
+            new SimpleEntry<>(this.textareaQueryDios, modelYaml.getResource().getDios().getRow().getQuery()),
+            new SimpleEntry<>(this.textareaFieldDios, modelYaml.getResource().getDios().getRow().getFields().getField()),
+            new SimpleEntry<>(this.textareaConcatDios, modelYaml.getResource().getDios().getRow().getFields().getConcat()),
+            
+            new SimpleEntry<>(this.textareaInfo, modelYaml.getResource().getInfo()),
+            
+            new SimpleEntry<>(this.textareaSlidingWindow, modelYaml.getStrategy().getConfiguration().getSlidingWindow()),
+            new SimpleEntry<>(this.textareaLimit, modelYaml.getStrategy().getConfiguration().getLimit()),
+            new SimpleEntry<>(this.textareaFailsafe, modelYaml.getStrategy().getConfiguration().getFailsafe()),
+            new SimpleEntry<>(this.textareaEndingComment, modelYaml.getStrategy().getConfiguration().getEndingComment()),
+            new SimpleEntry<>(this.textareaCalibrator, modelYaml.getStrategy().getConfiguration().getCalibrator()),
+            
+            new SimpleEntry<>(this.textareaIndices, modelYaml.getStrategy().getNormal().getIndices()),
+            new SimpleEntry<>(this.textareaCapacity, modelYaml.getStrategy().getNormal().getCapacity()),
+            new SimpleEntry<>(this.textareaOrderBy, modelYaml.getStrategy().getNormal().getOrderBy()),
+            
+            new SimpleEntry<>(this.textareaModeAnd, modelYaml.getStrategy().getBoolean().getModeAnd()),
+            new SimpleEntry<>(this.textareaModeOr, modelYaml.getStrategy().getBoolean().getModeOr()),
+            new SimpleEntry<>(this.textareaBlind, modelYaml.getStrategy().getBoolean().getBlind()),
+            new SimpleEntry<>(this.textareaTime, modelYaml.getStrategy().getBoolean().getTime()),
+            new SimpleEntry<>(this.textareaBitTest, modelYaml.getStrategy().getBoolean().getTest().getBit()),
+            new SimpleEntry<>(this.textareaLengthTest, modelYaml.getStrategy().getBoolean().getTest().getLength())
+        )
+        .forEach(entry -> entry.getKey().setText(entry.getValue().trim()));
 
         this.initErrorTabs();
     }
     
     private static void resetLexer(JTextPaneLexer textPane) {
-        if (textPane.getStyledDocument() instanceof HighlightedDocument) {
-            HighlightedDocument oldDocument = (HighlightedDocument) textPane.getStyledDocument();
-            oldDocument.stopColorer();
-        }
+        
+        clean(textPane);
         
         HighlightedDocument document = new HighlightedDocument(HighlightedDocument.SQL_STYLE);
         document.setHighlightStyle(HighlightedDocument.SQL_STYLE);
@@ -707,14 +668,74 @@ public class SqlEngine extends JPanel {
             public void warn() {
                 textPane.setAttribute();
             }
-            
         });
     }
     
+    private static void clean(JTextPaneLexer textPane) {
+        
+        if (textPane.getStyledDocument() instanceof HighlightedDocument) {
+            HighlightedDocument oldDocument = (HighlightedDocument) textPane.getStyledDocument();
+            oldDocument.stopColorer();
+        }
+    }
+    
     private void changeVendor() {
-        JTextPaneLexer.TEXTPANES_LEXER.stream().forEach(SqlEngine::resetLexer);
-        JTextPaneLexer.TEXTPANES_LEXER.stream().forEach(JTextPaneObjectMethod::switchSetterToVendor);
+        
+        this.getTextPanes().forEach(SqlEngine::resetLexer);
+        this.getTextPanes().forEach(JTextPaneObjectMethod::switchSetterToVendor);
         SqlEngine.this.showSql(this.modelYaml);
+    }
+
+    @Override
+    public void clean() {
+        
+        this.getTextPanes().forEach(SqlEngine::clean);
+    }
+    
+    private List<JTextPaneLexer> getTextPanes() {
+        return Stream.concat(
+            this.textPanesError.stream(),
+            Stream.of(
+                this.textareaDatabase,
+                this.textareaTable,
+                this.textareaColumn,
+                this.textareaQuery,
+                this.textareaField,
+                this.textareaConcat,
+                this.textareaInfo,
+                
+                this.textareaDatabaseZipped,
+                this.textareaTableZipped,
+                this.textareaColumnZipped,
+                this.textareaQueryZipped,
+                this.textareaFieldZipped,
+                this.textareaConcatZipped,
+                
+                this.textareaDatabaseDios,
+                this.textareaTableDios,
+                this.textareaColumnDios,
+                this.textareaQueryDios,
+                this.textareaFieldDios,
+                this.textareaConcatDios,
+                
+                this.textareaModeAnd,
+                this.textareaModeOr,
+                this.textareaBlind,
+                this.textareaTime,
+                this.textareaBitTest,
+                this.textareaLengthTest,
+                
+                this.textareaSlidingWindow,
+                this.textareaLimit,
+                this.textareaFailsafe,
+                this.textareaCalibrator,
+                this.textareaCapacity,
+                this.textareaOrderBy,
+                this.textareaEndingComment,
+                this.textareaIndices
+            )
+        )
+        .collect(Collectors.toList());
     }
 
 }

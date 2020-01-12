@@ -33,6 +33,7 @@ public class DeleteNextCharAction extends TextAction {
     /** The operation to perform when this action is triggered. */
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         JTextComponent target = this.getTextComponent(e);
 
         if ((target != null) && (target.isEditable())) {

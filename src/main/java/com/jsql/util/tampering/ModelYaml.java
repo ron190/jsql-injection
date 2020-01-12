@@ -1,5 +1,5 @@
 
-package com.jsql.util.tampering.yaml;
+package com.jsql.util.tampering;
 
 
 public class ModelYaml {

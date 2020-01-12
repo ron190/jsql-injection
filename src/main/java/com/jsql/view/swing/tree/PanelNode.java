@@ -69,6 +69,7 @@ public class PanelNode extends JPanel {
      * @param currentNode Node to draw in the tree
      */
     public PanelNode(final JTree tree, final DefaultMutableTreeNode currentNode) {
+        
         ImageIcon animatedGIF = new ImageIcon(PanelNode.class.getClassLoader().getResource(HelperUi.PATH_PROGRESSBAR));
         animatedGIF.setImageObserver(new ImageObserverAnimated(tree, currentNode));
         
@@ -110,6 +111,7 @@ public class PanelNode extends JPanel {
         this.textFieldEditable.setFont(HelperUi.FONT_SEGOE);
         this.textFieldEditable.setBorder(BorderFactory.createLineBorder(HelperUi.COLOR_FOCUS_GAINED, 1, false));
         this.textFieldEditable.addActionListener(e -> {
+            
             AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
             nodeModel.setIsEdited(false);
             
@@ -133,7 +135,6 @@ public class PanelNode extends JPanel {
                 tree.revalidate();
                 tree.repaint();
             }
-            
         });
         
         KeyAdapter keyAdapterF2 = new KeyAdapter() {
@@ -152,7 +153,6 @@ public class PanelNode extends JPanel {
                     tree.repaint();
                 }
             }
-            
         };
         
         this.addKeyListener(keyAdapterF2);
@@ -171,7 +171,6 @@ public class PanelNode extends JPanel {
                 PanelNode.this.label.setBackground(HelperUi.COLOR_FOCUS_GAINED);
                 PanelNode.this.label.setBorder(HelperUi.BORDER_FOCUS_GAINED);
             }
-            
         });
     }
 

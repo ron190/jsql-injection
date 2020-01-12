@@ -61,6 +61,7 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
      * Build the manager panel.
      */
     public AbstractManagerShell() {
+        
         this.setLayout(new BorderLayout());
 
         this.defaultText = "SHELL_RUN_BUTTON_LABEL";
@@ -138,28 +139,30 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
     abstract void createPayload(String pathShell, String urlShell) throws JSqlException, InterruptedException;
     
     private class ActionCreationShell implements ActionListener {
+        
         @Override
         public void actionPerformed(ActionEvent evt) {
+            
             if (AbstractManagerShell.this.getListPaths().getSelectedValuesList().isEmpty()) {
                 LOGGER.warn("Select at least one directory in the list");
                 return;
             }
 
-            String[] urlShell = new String[]{AbstractManagerShell.this.textfieldUrlShell.getText()};
+            String[] refUrlShell = new String[]{AbstractManagerShell.this.textfieldUrlShell.getText()};
             
-            if (!urlShell[0].isEmpty() && !urlShell[0].matches("(?i)^https?://.*")) {
-                if (!urlShell[0].matches("(?i)^\\w+://.*")) {
+            if (!refUrlShell[0].isEmpty() && !refUrlShell[0].matches("(?i)^https?://.*")) {
+                if (!refUrlShell[0].matches("(?i)^\\w+://.*")) {
                     LOGGER.info("Undefined shell URL protocol, forcing to [http://]");
-                    urlShell[0] = "http://"+ urlShell[0];
+                    refUrlShell[0] = "http://"+ refUrlShell[0];
                 } else {
                     LOGGER.warn("Unknown URL protocol");
                     return;
                 }
             }
             
-            if (!"".equals(urlShell[0])) {
+            if (!"".equals(refUrlShell[0])) {
                 try {
-                    new URL(urlShell[0]);
+                    new URL(refUrlShell[0]);
                 } catch (MalformedURLException e) {
                     LOGGER.warn("Incorrect URL: "+ e.getMessage(), e);
                     return;
@@ -168,10 +171,11 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
 
             for (final ItemList pathShell: AbstractManagerShell.this.getListPaths().getSelectedValuesList()) {
                 new Thread(() -> {
+                    
                     try {
                         AbstractManagerShell.this.createPayload(
                             pathShell.toString(),
-                            urlShell[0]
+                            refUrlShell[0]
                         );
                     } catch (JSqlException | InterruptedException e) {
                         LOGGER.warn("Payload creation error: "+ e.getMessage(), e);

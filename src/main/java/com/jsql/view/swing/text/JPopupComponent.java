@@ -35,9 +35,13 @@ public class JPopupComponent<T extends JComponent> extends JComponent implements
      * @param proxy Swing component to decorate
      */
     public JPopupComponent(final T proxy) {
+        
         this.proxy = proxy;
+        
         this.proxy.setComponentPopupMenu(new JPopupMenuComponent(this.proxy));
+        
         this.proxy.addMouseListener(new MouseAdapter() {
+            
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);

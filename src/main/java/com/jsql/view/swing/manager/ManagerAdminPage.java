@@ -53,6 +53,7 @@ public class ManagerAdminPage extends AbstractManagerList {
      * Create admin page finder.
      */
     public ManagerAdminPage() {
+        
         super("swing/list/admin-page.txt");
 
         this.defaultText = "ADMIN_PAGE_RUN_BUTTON_LABEL";
@@ -67,16 +68,17 @@ public class ManagerAdminPage extends AbstractManagerList {
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
 
         this.run.addActionListener(actionEvent -> {
+            
             if (this.listFile.getSelectedValuesList().isEmpty()) {
                 LOGGER.warn("Select at least one admin page in the list");
                 return;
             }
             
-            String[] urlQuery = new String[]{MediatorGui.panelAddressBar().getTextFieldAddress().getText()};
-            if (!urlQuery[0].isEmpty() && !urlQuery[0].matches("(?i)^https?://.*")) {
-                if (!urlQuery[0].matches("(?i)^\\w+://.*")) {
+            String[] refUrlQuery = new String[]{MediatorGui.panelAddressBar().getTextFieldAddress().getText()};
+            if (!refUrlQuery[0].isEmpty() && !refUrlQuery[0].matches("(?i)^https?://.*")) {
+                if (!refUrlQuery[0].matches("(?i)^\\w+://.*")) {
                     LOGGER.info("Undefined URL protocol, forcing to [http://]");
-                    urlQuery[0] = "http://"+ urlQuery[0];
+                    refUrlQuery[0] = "http://"+ refUrlQuery[0];
                 } else {
                     LOGGER.info("Unknown URL protocol");
                     return;
@@ -84,8 +86,9 @@ public class ManagerAdminPage extends AbstractManagerList {
             }
             
             new Thread(() -> {
+                
                 if (ManagerAdminPage.this.run.getState() == StateButton.STARTABLE) {
-                    if ("".equals(urlQuery[0])) {
+                    if ("".equals(refUrlQuery[0])) {
                         LOGGER.warn("Enter the main address");
                     } else {
                         LOGGER.trace("Checking admin page(s)...");
@@ -95,7 +98,7 @@ public class ManagerAdminPage extends AbstractManagerList {
                         
                         try {
                             MediatorModel.model().getResourceAccess().createAdminPages(
-                                urlQuery[0],
+                                refUrlQuery[0],
                                 this.listFile.getSelectedValuesList()
                             );
                         } catch (InterruptedException ex) {
@@ -113,6 +116,7 @@ public class ManagerAdminPage extends AbstractManagerList {
 
         this.loader.setVisible(false);
         
+        // TODO
         JMenu m = MenuBarCoder.createMenu("<User-Agent default>");
         MenuBarCoder comboMenubar = new MenuBarCoder(m);
         comboMenubar.setOpaque(false);
@@ -170,5 +174,4 @@ public class ManagerAdminPage extends AbstractManagerList {
         
         this.add(this.lastLine, BorderLayout.SOUTH);
     }
-    
 }

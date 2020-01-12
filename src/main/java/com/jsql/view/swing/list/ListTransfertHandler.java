@@ -50,6 +50,7 @@ public class ListTransfertHandler extends TransferHandler {
 
     @Override
     protected Transferable createTransferable(JComponent c) {
+        
         DnDList list = (DnDList) c;
         this.dragPaths = list.getSelectedValuesList();
 
@@ -64,6 +65,7 @@ public class ListTransfertHandler extends TransferHandler {
     @SuppressWarnings("unchecked")
     @Override
     protected void exportDone(JComponent c, Transferable data, int action) {
+        
         if (action == TransferHandler.MOVE) {
             JList<ItemList> list = (JList<ItemList>) c;
             DefaultListModel<ItemList> model = (DefaultListModel<ItemList>) list.getModel();
@@ -77,6 +79,7 @@ public class ListTransfertHandler extends TransferHandler {
 
     @Override
     public boolean canImport(TransferSupport support) {
+        
         return
             support.isDataFlavorSupported(DataFlavor.stringFlavor) ||
             support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)
@@ -86,15 +89,19 @@ public class ListTransfertHandler extends TransferHandler {
     @SuppressWarnings("unchecked")
     @Override
     public boolean importData(TransferSupport support) {
+        
         if (!this.canImport(support)) {
             return false;
         }
 
         DnDList list = (DnDList) support.getComponent();
         DefaultListModel<ItemList> listModel = (DefaultListModel<ItemList>) list.getModel();
+        
         //This is a drop
         if (support.isDrop()) {
+            
             if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                
                 JList.DropLocation dl = (JList.DropLocation) support.getDropLocation();
                 int childIndex = dl.getIndex();
 
@@ -102,6 +109,7 @@ public class ListTransfertHandler extends TransferHandler {
 
                 // DnD from list
                 if (this.dragPaths != null && !this.dragPaths.isEmpty()) {
+                    
                     for (ItemList value: this.dragPaths) {
                         if (!"".equals(value.toString())) {
                             //! FUUuu
@@ -111,6 +119,7 @@ public class ListTransfertHandler extends TransferHandler {
                         }
                     }
                 } else {
+                    
                     // DnD from outside
                     try {
                         String importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
@@ -133,6 +142,7 @@ public class ListTransfertHandler extends TransferHandler {
                 }
                 list.setSelectedIndices(selectedIndices);
             } else if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                
                 JList.DropLocation dl = (JList.DropLocation) support.getDropLocation();
                 int childIndex = dl.getIndex();
 
@@ -146,10 +156,13 @@ public class ListTransfertHandler extends TransferHandler {
                 }
             }
         } else {
+            
             //This is a paste
             Transferable transferableFromClipboard = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
             if (transferableFromClipboard != null) {
+                
                 if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                    
                     try {
                         String clipboardText = (String) transferableFromClipboard.getTransferData(DataFlavor.stringFlavor);
 
@@ -186,6 +199,7 @@ public class ListTransfertHandler extends TransferHandler {
                         LOGGER.error(e.getMessage(), e);
                     }
                 } else if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+                    
                     try {
                         int selectedIndex = 0;
                         if (list.getSelectedIndex() > 0) {

@@ -53,6 +53,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
     protected BooleanMode booleanMode;
     
     public AbstractInjectionBoolean(InjectionModel injectionModel, BooleanMode booleanMode) {
+        
         this.injectionModel = injectionModel;
         this.booleanMode = booleanMode;
 
@@ -73,6 +74,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
          *  e.g SQLi: bytes[0] => 01010011:S, bytes[1] => 01010001:Q ...
          */
         List<char[]> bytes = new ArrayList<>();
+        
         // Cursor for current character position
         int indexCharacter = 0;
 
@@ -139,6 +141,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                  * requests for that new character.
                  */
                 if (currentCallable.isTestingLength()) {
+                    
                     if (currentCallable.isTrue()) {
                         indexCharacter++;
                         // New undefined bits of the next character
@@ -158,6 +161,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                  * change the bit from undefined to 0 or 1
                  */
                 } else {
+                    
                     // The bits linked to the url
                     char[] codeAsciiInBinary = bytes.get(currentCallable.getCurrentIndex() - 1);
                     
@@ -167,7 +171,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                     /*
                      * Inform the View if a array of bits is complete, else nothing #Need fix
                      */
-                    try {
+                    if (new String(codeAsciiInBinary).matches("^\\d+$")) {
                         int codeAscii = Integer.parseInt(new String(codeAsciiInBinary), 2);
                         String charText = Character.toString((char) codeAscii);
                         
@@ -188,9 +192,6 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
                         interaction.setMessage(Interaction.MESSAGE_BINARY);
                         interaction.setParameters(new String(codeAsciiInBinary) +"="+ charText.replaceAll("\\n", "\\\\\\n").replaceAll("\\r", "\\\\\\r").replaceAll("\\t", "\\\\\\t"));
                         this.injectionModel.sendToViews(interaction);
-                    } catch (NumberFormatException err) {
-                        // Byte string not fully constructed : 0x1x010x
-                        // Ignore
                     }
                 }
             } catch (InterruptedException | ExecutionException e) {

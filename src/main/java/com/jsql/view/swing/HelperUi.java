@@ -52,7 +52,7 @@ import com.jsql.view.swing.ui.CheckBoxIcon;
 import com.jsql.view.swing.ui.CustomBasicComboBoxUI;
 
 /**
- * Build default component appearence, keyboard shortcuts and icons.
+ * Build default component appearance, keyboard shortcuts and icons.
  */
 @SuppressWarnings("serial")
 public final class HelperUi {
@@ -161,11 +161,14 @@ public final class HelperUi {
     public static final Border BORDER_ROUND_BLU = new AbstractBorder() {
         
         @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            
             Graphics2D g2 = (Graphics2D)g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             int r = 5;
+            
             RoundRectangle2D round = new RoundRectangle2D.Float(x, y, width-1f, height-1f, r, r);
             Container parent = c.getParent();
+            
             if (parent!=null) {
                 g2.setColor(parent.getBackground());
                 Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
@@ -179,6 +182,7 @@ public final class HelperUi {
                     LOGGER.error(e, e);
                 }
             }
+            
             g2.setColor(Color.GRAY);
             
             // Fix #55411: NoClassDefFoundError on draw()
@@ -249,6 +253,7 @@ public final class HelperUi {
      * Change the default style of various components.
      */
     public static void prepareGUI() {
+        
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         try (InputStream fontStream = new BufferedInputStream(SwingAppender.class.getClassLoader().getResourceAsStream("swing/font/UbuntuMono-R-ctrlchar.ttf"))) {
             Font ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, fontStream);
@@ -398,6 +403,7 @@ public final class HelperUi {
         // Custom ComboBox
         UIManager.put("ComboBox.font", HelperUi.FONT_SEGOE);
         UIManager.put("ComboBox.selectionBackground", HelperUi.COLOR_FOCUS_GAINED);
+        
         // Use ColorUIResource to preserve the background color for arrow
         UIManager.put("ComboBox.background", new ColorUIResource(Color.WHITE));
         UIManager.put("ComboBox.border", HelperUi.BORDER_BLU);

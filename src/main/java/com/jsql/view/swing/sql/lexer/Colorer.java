@@ -133,7 +133,7 @@ class Colorer extends Thread {
      * @param document The document to be colored.
      */
     public Colorer(HighlightedDocument document) {
-        super("Colorer");
+        super("ThreadColorer");
         this.document = new WeakReference<>(document);
     }
 
@@ -186,7 +186,8 @@ class Colorer extends Thread {
      */
     @Override
     public void run() {
-        while(this.document.get() != null) {
+        
+        while (this.document.get() != null) {
             try {
                 RecolorEvent re = new RecolorEvent(0, 0);
                 synchronized (this.eventsLock) {

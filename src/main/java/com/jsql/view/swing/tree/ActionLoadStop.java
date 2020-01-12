@@ -45,13 +45,16 @@ public class ActionLoadStop implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
         DefaultMutableTreeNode tableNode = this.currentTableNode;
         final List<Column> columnsToSearch = new ArrayList<>();
 
         int tableChildCount = treeModel.getChildCount(tableNode);
         for (int i = 0 ; i < tableChildCount ; i++) {
+            
             DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(tableNode, i);
+            
             if (currentChild.getUserObject() instanceof AbstractNodeModel) {
                 AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
                 if (columnTreeNodeModel.isSelected()) {
@@ -65,6 +68,7 @@ public class ActionLoadStop implements ActionListener {
         }
 
         if (!this.nodeModel.isRunning()) {
+            
             new SwingWorker<Object, Object>(){
                 @Override
                 protected Object doInBackground() throws Exception {
@@ -74,6 +78,7 @@ public class ActionLoadStop implements ActionListener {
                 }
             }.execute();
         } else {
+            
             AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());
             
             // Fix #21394: NullPointerException on stop()

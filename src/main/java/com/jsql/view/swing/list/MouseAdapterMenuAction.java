@@ -159,6 +159,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             mnNew.addActionListener(new MenuActionNewValue(this.dndList));
 
             mnImport.addActionListener(actionEvent -> {
+                
                 int choice = 0;
                 
                 // Fix #1896: NullPointerException on showOpenDialog()
@@ -178,6 +179,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             });
 
             mnCopy.addActionListener(actionEvent -> {
+                
                 Action action = this.dndList.getActionMap().get(TransferHandler.getCopyAction().getValue(Action.NAME));
                 if (action != null) {
                     action.actionPerformed(
@@ -187,6 +189,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             });
 
             mnCut.addActionListener(actionEvent -> {
+                
                 Action action = this.dndList.getActionMap().get(TransferHandler.getCutAction().getValue(Action.NAME));
                 if (action != null) {
                     action.actionPerformed(
@@ -196,6 +199,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             });
 
             mnPaste.addActionListener(actionEvent -> {
+                
                 Action action = this.dndList.getActionMap().get(TransferHandler.getPasteAction().getValue(Action.NAME));
                 if (action != null) {
                     action.actionPerformed(
@@ -211,6 +215,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             mnRestoreDefault.addActionListener(actionEvent -> this.dndList.restore());
 
             mnSelectAll.addActionListener(actionEvent -> {
+                
                 int start = 0;
                 int end = this.dndList.getModel().getSize() - 1;
                 if (end >= 0) {
@@ -258,7 +263,9 @@ public class MouseAdapterMenuAction extends MouseAdapter {
 
     @Override
     public void mousePressed(MouseEvent e) {
+        
         if (SwingUtilities.isRightMouseButton(e)) {
+            
             int clickIndex = this.dndList.locationToIndex(e.getPoint());
             boolean containsIndex = false;
             for (int currentIndex: this.dndList.getSelectedIndices()) {
@@ -267,10 +274,12 @@ public class MouseAdapterMenuAction extends MouseAdapter {
                     break;
                 }
             }
+            
             if (!containsIndex) {
                 this.dndList.setSelectedIndex(clickIndex);
             }
         }
+        
         this.showPopup(e);
     }
 

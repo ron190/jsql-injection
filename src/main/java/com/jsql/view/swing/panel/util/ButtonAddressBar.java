@@ -32,6 +32,7 @@ public class ButtonAddressBar extends JButton {
      * Create a button in address bar.
      */
     public ButtonAddressBar() {
+        
         this.setPreferredSize(new Dimension(18, 16));
         this.setOpaque(false);
         this.setContentAreaFilled(false);
@@ -56,6 +57,7 @@ public class ButtonAddressBar extends JButton {
      * Replace button with Stop icon ; user can stop current process.
      */
     public void setInjectionReady() {
+        
         this.state = StateButton.STARTABLE;
         this.setEnabled(true);
         
@@ -70,6 +72,7 @@ public class ButtonAddressBar extends JButton {
      * Replace button with Stop icon ; user can stop current process.
      */
     public void setInjectionRunning() {
+        
         this.state = StateButton.STOPPABLE;
         this.setEnabled(true);
         
@@ -85,6 +88,7 @@ public class ButtonAddressBar extends JButton {
      * is finished ; user waits the end of process.
      */
     public void setInjectionStopping() {
+        
         this.state = StateButton.STOPPING;
         
         // turn on before rollovers work

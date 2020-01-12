@@ -29,6 +29,7 @@ public class CellRendererNode extends DefaultTreeCellRenderer {
     public Component getTreeCellRendererComponent(
         JTree tree, Object nodeRenderer, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus
     ) {
+        
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         Object userObject = currentNode.getUserObject();
         AbstractNodeModel dataModel = (AbstractNodeModel) userObject;

@@ -1,5 +1,7 @@
 package com.jsql.view.swing.sql.text;
 
+import java.lang.reflect.Method;
+
 import org.apache.log4j.Logger;
 
 public class AttributeSetterForVendor {
@@ -9,11 +11,13 @@ public class AttributeSetterForVendor {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
-    Object attributeVendor;
-    java.lang.reflect.Method method;
+    private Object attributeVendor;
+    private Method method;
 
     public AttributeSetterForVendor(Object attributeVendor, String nameSetter) {
+        
         this.attributeVendor = attributeVendor;
+        
         try {
             this.method = attributeVendor.getClass().getMethod(nameSetter, String.class);
         } catch (NullPointerException | NoSuchMethodException | SecurityException e) {
@@ -25,7 +29,7 @@ public class AttributeSetterForVendor {
         return this.attributeVendor;
     }
 
-    public java.lang.reflect.Method getSetter() {
+    public Method getMethod() {
         return this.method;
     }
     

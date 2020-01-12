@@ -183,18 +183,22 @@ public class PanelAddressBar extends JPanel {
         final ButtonGroup buttonGroup = new ButtonGroup();
         
         for (String protocol : new String[]{"OPTIONS", "HEAD", "POST", "PUT", "DELETE", "TRACE"}) {
+            
             final JMenuItem newMenuItem = new JRadioButtonMenuItem(protocol, "POST".equals(protocol));
             newMenuItem.addActionListener(actionEvent -> {
                 PanelAddressBar.this.typeRequest = newMenuItem.getText();
                 this.radioMethod.setText(PanelAddressBar.this.typeRequest);
             });
+            
             popup.add(newMenuItem);
             buttonGroup.add(newMenuItem);
         }
         
         for (AbstractButton radioButton: Collections.list(buttonGroup.getElements())) {
+            
             radioButton.setUI(
                 new BasicRadioButtonMenuItemUI() {
+                    
                     @Override
                     protected void doClick(MenuSelectionManager msm) {
                         this.menuItem.doClick(0);
@@ -213,6 +217,7 @@ public class PanelAddressBar extends JPanel {
         buttonGroup.add(radioCustomMethod);
         
         radioCustomMethod.addActionListener(actionEvent -> {
+            
             if (!"".equals(inputCustomMethod.getText())) {
                 PanelAddressBar.this.typeRequest = inputCustomMethod.getText();
                 this.radioMethod.setText(PanelAddressBar.this.typeRequest);
@@ -226,8 +231,10 @@ public class PanelAddressBar extends JPanel {
         popup.insert(panelCustomMethod, popup.getComponentCount());
         
         buttonRequestMethod.addMouseListener(new MouseAdapter() {
+            
             @Override
             public void mousePressed(MouseEvent e) {
+                
                 popup.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
                 if (ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT) {
                     radioCustomMethod.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
@@ -324,26 +331,25 @@ public class PanelAddressBar extends JPanel {
         this.itemRadioStrategyError = new JMenu[1];
 
         for (final AbstractStrategy strategy: MediatorModel.model().getMediatorStrategy().getStrategies()) {
-            if (strategy != MediatorModel.model().getMediatorStrategy().getUndefined()) {
-                MenuElement itemRadioStrategy;
+            
+            MenuElement itemRadioStrategy;
 
-                if (strategy == MediatorModel.model().getMediatorStrategy().getError()) {
-                    itemRadioStrategy = new JMenu(strategy.toString());
-                    this.itemRadioStrategyError[0] = (JMenu) itemRadioStrategy;
-                } else {
-                    itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString());
-                    ((AbstractButton) itemRadioStrategy).addActionListener(actionEvent -> {
-                        this.menuStrategy.setText(strategy.toString());
-                        MediatorModel.model().getMediatorStrategy().setStrategy(strategy);
-                    });
-                    this.groupStrategy.add((AbstractButton) itemRadioStrategy);
-                }
-
-                this.menuStrategy.add((JMenuItem) itemRadioStrategy);
-                ((JComponent) itemRadioStrategy)
-                        .setToolTipText(I18n.valueByKey("STRATEGY_" + strategy.getName().toUpperCase(Locale.ROOT) + "_TOOLTIP"));
-                ((JComponent) itemRadioStrategy).setEnabled(false);
+            if (strategy == MediatorModel.model().getMediatorStrategy().getError()) {
+                itemRadioStrategy = new JMenu(strategy.toString());
+                this.itemRadioStrategyError[0] = (JMenu) itemRadioStrategy;
+            } else {
+                itemRadioStrategy = new JRadioButtonMenuItem(strategy.toString());
+                ((AbstractButton) itemRadioStrategy).addActionListener(actionEvent -> {
+                    this.menuStrategy.setText(strategy.toString());
+                    MediatorModel.model().getMediatorStrategy().setStrategy(strategy);
+                });
+                this.groupStrategy.add((AbstractButton) itemRadioStrategy);
             }
+
+            this.menuStrategy.add((JMenuItem) itemRadioStrategy);
+            ((JComponent) itemRadioStrategy)
+                    .setToolTipText(I18n.valueByKey("STRATEGY_" + strategy.getName().toUpperCase(Locale.ROOT) + "_TOOLTIP"));
+            ((JComponent) itemRadioStrategy).setEnabled(false);
         }
 
         this.menuVendor = new ComboMenu(MediatorModel.model().getMediatorVendor().getAuto().toString());
@@ -351,11 +357,13 @@ public class PanelAddressBar extends JPanel {
         ButtonGroup groupVendor = new ButtonGroup();
 
         for (final Vendor vendor: MediatorModel.model().getMediatorVendor().getVendors()) {
+            
             JMenuItem itemRadioVendor = new JRadioButtonMenuItem(vendor.toString(), vendor == MediatorModel.model().getMediatorVendor().getAuto());
             itemRadioVendor.addActionListener(actionEvent -> {
                 this.menuVendor.setText(vendor.toString());
                 MediatorModel.model().getMediatorVendor().setVendorByUser(vendor);
             });
+            
             this.menuVendor.add(itemRadioVendor);
             groupVendor.add(itemRadioVendor);
         }
@@ -365,7 +373,6 @@ public class PanelAddressBar extends JPanel {
         panelLineBottom.add(Box.createHorizontalStrut(5));
         panelLineBottom.add(this.menuVendor);
         panelLineBottom.add(this.menuStrategy);
-        
 
         this.loader.setVisible(false);
 
@@ -428,6 +435,7 @@ public class PanelAddressBar extends JPanel {
 
         advancedButton.setToolTipText(I18n.valueByKey("BUTTON_ADVANCED"));
         advancedButton.addActionListener(actionEvent -> {
+            
             boolean isVisible = advancedButton.getDirection() == SwingConstants.SOUTH;
 
             this.radioQueryString.setVisible(isVisible);
@@ -449,6 +457,7 @@ public class PanelAddressBar extends JPanel {
      * Start the connection.
      */
     private class ActionStart implements ActionListener {
+        
         @Override
         public void actionPerformed(ActionEvent e) {
             
@@ -463,9 +472,12 @@ public class PanelAddressBar extends JPanel {
         }
         
         protected void startInjection() {
+            
             int option = 0;
+            
             // Ask the user confirmation if injection already built
             if (MediatorModel.model().isInjectionAlreadyBuilt()) {
+                
                 // Fix #33930: ClassCastException on showConfirmDialog()
                 // Implementation by sun.awt.image
                 try {
@@ -482,6 +494,7 @@ public class PanelAddressBar extends JPanel {
 
             // Then start injection
             if (!MediatorModel.model().isInjectionAlreadyBuilt() || option == JOptionPane.OK_OPTION) {
+                
                 PanelAddressBar.this.getButtonInUrl().setToolTipText(I18n.valueByKey("BUTTON_STOP_TOOLTIP"));
                 PanelAddressBar.this.getButtonInUrl().setInjectionRunning();
                 PanelAddressBar.this.getLoader().setVisible(true);
@@ -503,6 +516,7 @@ public class PanelAddressBar extends JPanel {
         }
         
         private void stopInjection() {
+            
             PanelAddressBar.this.getLoader().setVisible(false);
             PanelAddressBar.this.getButtonInUrl().setInjectionStopping();
             PanelAddressBar.this.getButtonInUrl().setToolTipText(I18n.valueByKey("BUTTON_STOPPING_TOOLTIP"));
@@ -511,8 +525,10 @@ public class PanelAddressBar extends JPanel {
     }
     
     private class ActionEnterAddressBar extends ActionStart {
+        
         @Override
         public void actionPerformed(ActionEvent e) {
+            
             // No injection running
             if (PanelAddressBar.this.getButtonInUrl().getState() == StateButton.STARTABLE) {
                 this.startInjection();
@@ -521,11 +537,14 @@ public class PanelAddressBar extends JPanel {
     }
 
     public void initErrorMethods(Vendor vendor) {
+        
         this.itemRadioStrategyError[0].removeAll();
 
         Integer[] i = { 0 };
         if (vendor != MediatorModel.model().getMediatorVendor().getAuto() && vendor.instance().getModelYaml().getStrategy().getError() != null) {
+            
             for (Method methodError: vendor.instance().getModelYaml().getStrategy().getError().getMethod()) {
+                
                 JMenuItem itemRadioVendor = new JRadioButtonMenuItem(methodError.getName());
                 itemRadioVendor.setEnabled(false);
                 this.itemRadioStrategyError[0].add(itemRadioVendor);
@@ -533,6 +552,7 @@ public class PanelAddressBar extends JPanel {
 
                 final int indexError = i[0];
                 itemRadioVendor.addActionListener(actionEvent -> {
+                    
                     PanelAddressBar.this.menuStrategy.setText(methodError.getName());
                     MediatorModel.model().getMediatorStrategy().setStrategy(MediatorModel.model().getMediatorStrategy().getError());
                     ((StrategyInjectionError) MediatorModel.model().getMediatorStrategy().getError()).setIndexMethod(indexError);
@@ -546,16 +566,16 @@ public class PanelAddressBar extends JPanel {
     // Getter and setter
 
     public ButtonGroup getGroupStrategy() {
-  return this.groupStrategy;
-}
+        return this.groupStrategy;
+    }
 
-public JMenu getMenuVendor() {
-  return this.menuVendor;
-}
+    public JMenu getMenuVendor() {
+        return this.menuVendor;
+    }
 
-public JMenu getMenuStrategy() {
-  return this.menuStrategy;
-}
+    public JMenu getMenuStrategy() {
+        return this.menuStrategy;
+    }
 
     /**
      * Change the injection method based on selected radio.

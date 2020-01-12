@@ -29,7 +29,6 @@ public class ActionHideShowResult implements ActionListener {
             MediatorGui.frame().getSplitHorizontalTopBottom().getTopComponent().setVisible(false);
             MediatorGui.frame().getSplitHorizontalTopBottom().disableDragSize();
             PanelConsoles.getButtonShowNorth().setVisible(false);
-            
         } else if (
             MediatorGui.frame().getSplitHorizontalTopBottom().getTopComponent().isVisible()
             && !MediatorGui.frame().getSplitHorizontalTopBottom().getBottomComponent().isVisible()
@@ -39,9 +38,6 @@ public class ActionHideShowResult implements ActionListener {
             MediatorGui.frame().getSplitHorizontalTopBottom().getBottomComponent().setVisible(true);
             MediatorGui.frame().getSplitHorizontalTopBottom().getTopComponent().setVisible(true);
             MediatorGui.frame().getSplitHorizontalTopBottom().enableDragSize();
-            
         }
-        
     }
-    
 }

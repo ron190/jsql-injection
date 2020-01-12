@@ -36,6 +36,7 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
      */
     @Override
     public String run(Object... args) throws JSqlException {
+        
         // Parallelize the search
         ExecutorService taskExecutor = Executors.newCachedThreadPool(new ThreadFactoryCallable("CallableGetIndexes"));
         CompletionService<CallablePageSource> taskCompletionService = new ExecutorCompletionService<>(taskExecutor);
@@ -83,9 +84,19 @@ public class SuspendableGetIndexes extends AbstractSuspendable<String> {
                 }
                 
             }
-            taskExecutor.shutdown();
-            taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
+            
+            // End the job
+            try {
+                taskExecutor.shutdown();
+                if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
+                    taskExecutor.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                LOGGER.error(e.getMessage(), e);
+                Thread.currentThread().interrupt();
+            }
         } catch (InterruptedException | ExecutionException e) {
+            
             LOGGER.error("Interruption while determining injection indexes", e);
             Thread.currentThread().interrupt();
         }

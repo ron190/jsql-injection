@@ -30,13 +30,18 @@ import com.jsql.view.swing.action.ActionCloseTabResult;
 @SuppressWarnings("serial")
 public class TabHeader extends JPanel implements MouseListener {
     
+    public interface Cleanable {
+        void clean();
+    }
+    
+    private Cleanable cleanableTab;
+    
     private JLabel tabTitleLabel = new JLabel() {
         
         @Override
         public void setText(String text) {
             super.setText(text +" ");
         }
-        
     };
     
     /**
@@ -50,6 +55,7 @@ public class TabHeader extends JPanel implements MouseListener {
      * Tab header with a custom icon.
      */
     public TabHeader(Icon imageIcon) {
+        
         super(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
         this.setOpaque(false);
@@ -68,6 +74,12 @@ public class TabHeader extends JPanel implements MouseListener {
         this(imageIcon);
         this.getTabTitleLabel().setText(label);
     }
+
+    public TabHeader(String label, Icon imageIcon, Cleanable cleanableTab) {
+        this(imageIcon);
+        this.getTabTitleLabel().setText(label);
+        this.cleanableTab = cleanableTab;
+    }
     
     public TabHeader(String label) {
         this();
@@ -79,10 +91,15 @@ public class TabHeader extends JPanel implements MouseListener {
      */
     @Override
     public void mouseClicked(MouseEvent e) {
+        
         if (SwingUtilities.isRightMouseButton(e)) {
             return;
         }
         int closeTabNumber = MediatorGui.tabResults().indexOfTabComponent(TabHeader.this);
+        
+        if (this.getCleanableTab() != null) {
+            this.getCleanableTab().clean();
+        }
         
         ActionCloseTabResult.perform(closeTabNumber);
     }
@@ -109,6 +126,10 @@ public class TabHeader extends JPanel implements MouseListener {
 
     public JLabel getTabTitleLabel() {
         return this.tabTitleLabel;
+    }
+
+    public Cleanable getCleanableTab() {
+        return this.cleanableTab;
     }
     
 }

@@ -40,7 +40,7 @@ import net.sourceforge.spnego.SpnegoHttpURLConnection;
  * Utility class in charge of connection to web resources and management
  * of source page and request and response headers.
  * In the same time it allows to fix different lack of functionality induced by
- * library bugs (jcifs) or core design lazyness (custom HTTP method).
+ * library bugs (jcifs) or core design laziness (custom HTTP method).
  */
 public class ConnectionUtil {
     
@@ -145,6 +145,7 @@ public class ConnectionUtil {
             
             // Calling connection.disconnect() is not required, more calls will happen
         } catch (Exception e) {
+            
             String message = Optional.ofNullable(e.getMessage()).orElse("");
             throw new InjectionFailureException("Connection failed: "+ message.replace(e.getClass().getName() +": ", ""), e);
         }
@@ -165,6 +166,7 @@ public class ConnectionUtil {
     }
     
     public String getSource(String url, boolean lineFeed) throws IOException {
+        
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         connection.setReadTimeout(this.getTimeout());
         connection.setConnectTimeout(this.getTimeout());
@@ -200,6 +202,7 @@ public class ConnectionUtil {
     }
     
     public static String getSourceLineFeed(HttpURLConnection connection) throws IOException {
+        
         StringBuilder pageSource = new StringBuilder();
     
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -213,14 +216,17 @@ public class ConnectionUtil {
     }
     
     public static String getSource(HttpURLConnection connection) throws IOException {
+        
         StringBuilder pageSource = new StringBuilder();
         
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            
             char[] buffer = new char[4096];
             while (reader.read(buffer) > 0) {
                 pageSource.append(buffer);
             }
         } catch (IOException errorInputStream) {
+            
             InputStream errorStream = connection.getErrorStream();
             
             if (errorStream != null) {
@@ -245,10 +251,12 @@ public class ConnectionUtil {
      * @throws ProtocolException if backup solution fails during reflectivity
      */
     public static void fixCustomRequestMethod(HttpURLConnection connection, String customMethod) throws ProtocolException {
+        
         // Add a default or custom method : check whether we are running on a buggy JRE
         try {
             connection.setRequestMethod(customMethod);
         } catch (final ProtocolException pe) {
+            
             // Ignore
             IgnoreMessageException exceptionIgnored = new IgnoreMessageException(pe);
             LOGGER.trace(exceptionIgnored, exceptionIgnored);
@@ -282,10 +290,11 @@ public class ConnectionUtil {
     /**
      * Fix a bug introduced by authentication library jcifs which ignore
      * default timeout of connection.
-     * Use reflectivity to set connectTimeout and readTimeout attributs.
-     * @param connection whose default timeout attributs will be set
+     * Use reflectivity to set connectTimeout and readTimeout attributes.
+     * @param connection whose default timeout attributes will be set
      */
     public void fixJcifsTimeout(HttpURLConnection connection) {
+        
         Class<?> classConnection = connection.getClass();
         boolean connectionIsWrapped = true;
         
@@ -371,7 +380,4 @@ public class ConnectionUtil {
     public void setTokenCsrf(SimpleEntry<String, String> tokenCsrf) {
         this.tokenCsrf = tokenCsrf;
     }
-    
-    
-    
 }

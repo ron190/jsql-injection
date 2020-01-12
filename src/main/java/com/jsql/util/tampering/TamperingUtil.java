@@ -31,9 +31,8 @@ public class TamperingUtil {
     
     private String customTamper = null;
     
-    private final static ScriptEngine NASHORN_ENGINE = new ScriptEngineManager().getEngineByName("nashorn");
+    private static final ScriptEngine NASHORN_ENGINE = new ScriptEngineManager().getEngineByName("nashorn");
 
-    // TODO Use also setter
     public void set(
         boolean isBase64,
         boolean isVersionComment,
@@ -47,6 +46,7 @@ public class TamperingUtil {
         boolean isSpaceToDashComment,
         boolean isSpaceToSharpComment
     ) {
+        
         this.isBase64 = isBase64;
         this.isVersionComment = isVersionComment;
         this.isFunctionComment = isFunctionComment;
@@ -77,6 +77,7 @@ public class TamperingUtil {
     }
     
     public String tamper(String in) {
+        
         String sqlQueryDefault = in;
         
         String lead = null;
@@ -92,34 +93,34 @@ public class TamperingUtil {
         }
 
         if (this.isHexToChar) {
-            sqlQuery = eval(sqlQuery, Tampering.HEX_TO_CHAR.instance().getModelYaml().getJavascript());
+            sqlQuery = eval(sqlQuery, TamperingType.HEX_TO_CHAR.instance().getJavascript());
         }
 
         if (this.isFunctionComment) {
-            sqlQuery = eval(sqlQuery, Tampering.COMMENT_TO_METHOD_SIGNATURE.instance().getModelYaml().getJavascript());
+            sqlQuery = eval(sqlQuery, TamperingType.COMMENT_TO_METHOD_SIGNATURE.instance().getJavascript());
         }
 
         if (this.isVersionComment) {
-            sqlQuery = eval(sqlQuery, Tampering.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getModelYaml().getJavascript());
+            sqlQuery = eval(sqlQuery, TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getJavascript());
         }
         
         if (this.isEqualToLike) {
-            sqlQuery = eval(sqlQuery, Tampering.EQUAL_TO_LIKE.instance().getModelYaml().getJavascript());
+            sqlQuery = eval(sqlQuery, TamperingType.EQUAL_TO_LIKE.instance().getJavascript());
         }
         
         // Dependency to: EQUAL_TO_LIKE
         if (this.isSpaceToDashComment) {
-            sqlQuery = eval(sqlQuery, Tampering.SPACE_TO_DASH_COMMENT.instance().getModelYaml().getJavascript());
+            sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_DASH_COMMENT.instance().getJavascript());
             
         } else if (this.isSpaceToMultilineComment) {
-            sqlQuery = eval(sqlQuery, Tampering.SPACE_TO_MULTILINE_COMMENT.instance().getModelYaml().getJavascript());
+            sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getJavascript());
             
         } else if (this.isSpaceToSharpComment) {
-            sqlQuery = eval(sqlQuery, Tampering.SPACE_TO_SHARP_COMMENT.instance().getModelYaml().getJavascript());
+            sqlQuery = eval(sqlQuery, TamperingType.SPACE_TO_SHARP_COMMENT.instance().getJavascript());
         }
         
         if (this.isRandomCase) {
-            sqlQuery = eval(sqlQuery, Tampering.RANDOM_CASE.instance().getModelYaml().getJavascript());
+            sqlQuery = eval(sqlQuery, TamperingType.RANDOM_CASE.instance().getJavascript());
         }
         
         if (this.isEval) {
@@ -127,14 +128,14 @@ public class TamperingUtil {
         }
         
         if (this.isBase64) {
-            sqlQuery = eval(sqlQuery, Tampering.BASE64.instance().getModelYaml().getJavascript());
+            sqlQuery = eval(sqlQuery, TamperingType.BASE64.instance().getJavascript());
         }
         
         sqlQuery = lead + sqlQuery + trail;
         
         // Include character insertion at the beginning of query
         if (this.isQuoteToUtf8) {
-            sqlQuery = eval(sqlQuery, Tampering.QUOTE_TO_UTF8.instance().getModelYaml().getJavascript());
+            sqlQuery = eval(sqlQuery, TamperingType.QUOTE_TO_UTF8.instance().getJavascript());
         }
         
         // Problème si le tag contient des caractères spéciaux

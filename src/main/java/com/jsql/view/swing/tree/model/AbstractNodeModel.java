@@ -123,6 +123,7 @@ public abstract class AbstractNodeModel {
         return this.elementDatabase.getParent();
     }
     
+    // TODO extract
     @SuppressWarnings("serial")
     public class JPopupMenu2 extends JPopupMenu {
         
@@ -136,36 +137,47 @@ public abstract class AbstractNodeModel {
         public ButtonGroup getButtonGroupLoadRows() {
             return this.buttonGroupLoadRows;
         }
+        
         public void setButtonGroupLoadRows(ButtonGroup buttonGroupLoadRows) {
             this.buttonGroupLoadRows = buttonGroupLoadRows;
         }
+        
         public JCheckBox getRadioCustomFromRow() {
             return this.radioCustomFromRow;
         }
+        
         public void setRadioCustomFromRow(JCheckBox radioCustomFromRow) {
             this.radioCustomFromRow = radioCustomFromRow;
         }
+        
         public JCheckBox getRadioCustomToRow() {
             return this.radioCustomToRow;
         }
+        
         public void setRadioCustomToRow(JCheckBox radioCustomToRow) {
             this.radioCustomToRow = radioCustomToRow;
         }
+        
         public JCheckBox getRadioCustomFromChar() {
             return this.radioCustomFromChar;
         }
+        
         public void setRadioCustomFromChar(JCheckBox radioCustomFromChar) {
             this.radioCustomFromChar = radioCustomFromChar;
         }
+        
         public JCheckBox getRadioCustomToChar() {
             return this.radioCustomToChar;
         }
+        
         public void setRadioCustomToChar(JCheckBox radioCustomToChar) {
             this.radioCustomToChar = radioCustomToChar;
         }
+        
         public JMenuItem getMenuItemDump() {
             return this.menuItemDump;
         }
+        
         public void setMenuItemDump(JMenuItem menuItemDump) {
             this.menuItemDump = menuItemDump;
         }
@@ -180,6 +192,7 @@ public abstract class AbstractNodeModel {
      * @param y Popup menu y mouse coordinate
      */
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
+        
         JPopupMenu2 popupMenu = new JPopupMenu2();
         AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
 
@@ -213,13 +226,17 @@ public abstract class AbstractNodeModel {
         popupMenu.add(mnLoad);
         popupMenu.add(mnPause);
         
-        JMenuItem mnReload = new JMenuItem(
-            this instanceof NodeModelDatabase
-            ? I18nView.valueByKey("RELOAD_TABLES")
-            : this instanceof NodeModelTable
-                ? I18nView.valueByKey("RELOAD_COLUMNS")
-                : "?"
-        );
+        String textReload;
+        
+        if (this instanceof NodeModelDatabase) {
+            textReload = I18nView.valueByKey("RELOAD_TABLES");
+        } else if (this instanceof NodeModelTable) {
+            textReload = I18nView.valueByKey("RELOAD_COLUMNS");
+        } else {
+            textReload = "?";
+        }
+        
+        JMenuItem mnReload = new JMenuItem(textReload);
         mnReload.setIcon(HelperUi.ICON_EMPTY);
 
         mnReload.setEnabled(!this.isRunning);
@@ -277,6 +294,7 @@ public abstract class AbstractNodeModel {
     public Component getComponent(
         final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, boolean hasFocus
     ) {
+        
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         this.panel = new PanelNode(tree, currentNode);
 
@@ -336,11 +354,12 @@ public abstract class AbstractNodeModel {
     }
     
     /**
-     * Update progressbar ; dispay the pause icon if node is paused.
+     * Update progressbar ; display the pause icon if node is paused.
      * @param panel Panel that contains the bar to update
      * @param currentNode Functional node model object
      */
     protected void displayProgress(PanelNode panel, DefaultMutableTreeNode currentNode) {
+        
         int dataCount = this.elementDatabase.getChildCount();
         panel.getProgressBar().setMaximum(dataCount);
         panel.getProgressBar().setValue(this.indexProgress);

@@ -35,6 +35,7 @@ public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements De
      * with a default placeholder.
      */
     public JPopupTextArea(String placeholder) {
+        
         this(new JTextAreaPlaceholder(placeholder) {
             @Override
             public boolean isEditable() {
@@ -47,6 +48,7 @@ public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements De
      * Build new instance of JTextArea to decorate.
      */
     public JPopupTextArea(JTextArea proxy) {
+        
         super(proxy);
 
         this.getProxy().addFocusListener(new FocusAdapter() {

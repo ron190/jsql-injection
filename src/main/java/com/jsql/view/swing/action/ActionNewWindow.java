@@ -51,6 +51,7 @@ public class ActionNewWindow extends AbstractAction {
     private List<String> commands;
 
     public ActionNewWindow(String name, String... commands) {
+        
         this.commands = new ArrayList<>(Arrays.asList(PATH));
         this.commands.addAll(Arrays.asList(commands));
         this.commands.addAll(COMMANDS_DEFAULT);
@@ -60,6 +61,7 @@ public class ActionNewWindow extends AbstractAction {
     }
     
     public ActionNewWindow() {
+        
         this(I18n.valueByKey("NEW_WINDOW_MENU"), new String[0]);
         
         this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_N);
@@ -68,6 +70,7 @@ public class ActionNewWindow extends AbstractAction {
 
     @Override
     public void actionPerformed(ActionEvent event) {
+        
         LOGGER.info(I18n.valueByKey("NEW_WINDOW_START"));
         
         ProcessBuilder processBuilder = new ProcessBuilder(this.commands.toArray(new String[0]));

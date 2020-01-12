@@ -41,6 +41,7 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
 
     @Override
     protected void paintComponent(Graphics g) {
+        
         super.paintComponent(g);
 
         URL url = HelperUi.URL_GLOBE;

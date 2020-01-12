@@ -20,7 +20,7 @@ import com.jsql.i18n.I18n;
  *  also Containers. By default the layout manager is null, so we should be
  *  able to place a child component anywhere in the parent component. In order
  *  to prevent the child component from painting over top of the parent
- *  component a Border is added to the parent componet such that the insets of
+ *  component a Border is added to the parent component such that the insets of
  *  the Border will reserve space for the child component to be painted without
  *  affecting the parent component.
  */
@@ -110,7 +110,13 @@ public class ComponentBorder implements Border {
      *                     CENTER (default), LEFT and RIGHT.
      */
     public void setAlignment(float alignment) {
-        this.alignment = alignment > 1.0f ? 1.0f : alignment < 0.0f ? 0.0f : alignment;
+        if (alignment > 1.0f) {
+            this.alignment = 1.0f;
+        } else if (alignment < 0.0f) {
+            this.alignment = 0.0f;
+        } else {
+            this.alignment = alignment;
+        }
     }
 
     /**
@@ -212,7 +218,7 @@ public class ComponentBorder implements Border {
         this.borderInsets = new Insets(0, 0, 0, 0);
 
         //  The insets will only be updated for the edge the component will be
-        //  diplayed on.
+        //  displayed on.
         //
         //  The X, Y alignment of the component is controlled by both the edge
         //  and alignment parameters
@@ -244,9 +250,10 @@ public class ComponentBorder implements Border {
      *  the component to fit completely in the bounds of the parent component.
      */
     private void adjustBorderInsets() {
+        
         Insets parentInsets = this.parent.getInsets();
 
-        //  May need to adust the height of the parent component to fit
+        //  May need to adjust the height of the parent component to fit
         //  the component in the Border
         if (this.edge == Edge.RIGHT || this.edge == Edge.LEFT) {
             int parentHeight = this.parent.getPreferredSize().height - parentInsets.top - parentInsets.bottom;
@@ -260,7 +267,7 @@ public class ComponentBorder implements Border {
             }
         }
 
-        //  May need to adust the width of the parent component to fit
+        //  May need to adjust the width of the parent component to fit
         //  the component in the Border
         if (this.edge == Edge.TOP || this.edge == Edge.BOTTOM) {
             int parentWidth = this.parent.getPreferredSize().width - parentInsets.left - parentInsets.right;

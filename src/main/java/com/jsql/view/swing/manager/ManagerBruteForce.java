@@ -107,6 +107,7 @@ public class ManagerBruteForce extends JPanel implements Manager {
      * Create a panel to run brute force attack.
      */
     public ManagerBruteForce() {
+        
         super(new BorderLayout());
 
         JPanel options = new JPanel(new BorderLayout());

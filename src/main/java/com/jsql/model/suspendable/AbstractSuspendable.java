@@ -25,10 +25,11 @@ public abstract class AbstractSuspendable<T> {
      */
     private boolean isPaused = false;
 
+    protected InjectionModel injectionModel;
+    
     public AbstractSuspendable(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }
-    InjectionModel injectionModel;
 
     /**
      * Thread's states Pause and Stop are processed by this method.<br>
@@ -37,6 +38,7 @@ public abstract class AbstractSuspendable<T> {
      * @return Stop state
      */
     public synchronized boolean isSuspended() {
+        
         // Make application loop until shouldPauseThread is set to false by another user action
         while (this.isPaused) {
             try {

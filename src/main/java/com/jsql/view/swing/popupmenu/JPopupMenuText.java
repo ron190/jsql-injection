@@ -31,6 +31,7 @@ public class JPopupMenuText extends JPopupMenuComponent {
      * @param component The component receiving the menu
      */
     public JPopupMenuText(JTextComponent component) {
+        
         super(component);
 
         if (component.isEditable()) {

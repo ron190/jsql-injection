@@ -27,12 +27,13 @@ public class CallablePageSource implements Callable<CallablePageSource> {
      */
     private String insertionCharacter;
     
+    private InjectionModel injectionModel;
+    
     /**
      * Create a callable to get initial query or insertion character.
      * @param url
      * @param injectionModel
      */
-    InjectionModel injectionModel;
     public CallablePageSource(String url, InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
         this.url = url;

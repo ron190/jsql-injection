@@ -27,6 +27,7 @@ public class TabResults extends DnDTabbedPane {
      * Create the panel containing injection results.
      */
     public TabResults() {
+        
         this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
         TransferHandler handler = new TabTransferHandler();

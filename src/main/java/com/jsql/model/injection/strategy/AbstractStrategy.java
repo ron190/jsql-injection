@@ -60,6 +60,7 @@ public abstract class AbstractStrategy {
     protected abstract void unallow(int... i);
     
     public void markVulnerability(Interaction message, int... i) {
+        
         Request request = new Request();
         request.setMessage(message);
         

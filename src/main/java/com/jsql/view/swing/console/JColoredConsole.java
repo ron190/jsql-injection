@@ -38,7 +38,9 @@ public abstract class JColoredConsole extends JPopupTextPane {
      * @param tabName Text name of tab
      */
     public JColoredConsole(final String tabName, String placeholder) {
+        
         super(placeholder);
+        
         this.tabName = tabName;
         
         this.addFocusListener(new FocusAdapter() {
@@ -58,6 +60,7 @@ public abstract class JColoredConsole extends JPopupTextPane {
      * @param attribut Font
      */
     public void append(String message, SimpleAttributeSet attribut) {
+        
         try {
             boolean isCaretAtEnd = this.getProxy().getCaretPosition() == this.getProxy().getDocument().getLength();
             

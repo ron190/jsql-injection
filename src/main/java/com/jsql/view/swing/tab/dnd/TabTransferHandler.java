@@ -38,6 +38,7 @@ public class TabTransferHandler extends TransferHandler {
     
     @Override
     protected Transferable createTransferable(JComponent c) {
+        
         if (c instanceof DnDTabbedPane) {
             this.source = (DnDTabbedPane) c;
         }
@@ -61,15 +62,17 @@ public class TabTransferHandler extends TransferHandler {
     
     @Override
     public boolean canImport(TransferHandler.TransferSupport support) {
+        
         if (!support.isDrop() || !support.isDataFlavorSupported(this.localObjectFlavor)) {
             return false;
         }
+        
         support.setDropAction(TransferHandler.MOVE);
         DropLocation tdl = support.getDropLocation();
         Point pt = tdl.getDropPoint();
         DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
         target.autoScrollTest(pt);
-        DnDTabbedPane.DropLocation dl = target.dropLocationForPointDnD(pt);
+        DnDTabbedPane.DnDDropLocation dl = target.dropLocationForPointDnD(pt);
         int idx = dl.getIndex();
 
         boolean isDroppable = false;
@@ -94,6 +97,7 @@ public class TabTransferHandler extends TransferHandler {
     }
     
     private BufferedImage makeDragTabImage(DnDTabbedPane tabbedPane) {
+        
         Rectangle rect = tabbedPane.getBoundsAt(tabbedPane.dragTabIndex);
         BufferedImage image = new BufferedImage(tabbedPane.getWidth(), tabbedPane.getHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics g2 = image.createGraphics();
@@ -116,6 +120,7 @@ public class TabTransferHandler extends TransferHandler {
     
     @Override
     public int getSourceActions(JComponent c) {
+        
         if (c instanceof DnDTabbedPane) {
             DnDTabbedPane src = (DnDTabbedPane) c;
             c.getRootPane().setGlassPane(new GhostGlassPane(src));
@@ -126,17 +131,19 @@ public class TabTransferHandler extends TransferHandler {
             c.getRootPane().getGlassPane().setVisible(true);
             return TransferHandler.MOVE;
         }
+        
         return TransferHandler.NONE;
     }
     
     @Override
     public boolean importData(TransferHandler.TransferSupport support) {
+        
         if (!this.canImport(support)) {
             return false;
         }
 
         DnDTabbedPane target = (DnDTabbedPane) support.getComponent();
-        DnDTabbedPane.DropLocation dl = target.getDropLocation();
+        DnDTabbedPane.DnDDropLocation dl = target.getDropLocation();
         try {
             DnDTabData data = (DnDTabData) support.getTransferable().getTransferData(this.localObjectFlavor);
             DnDTabbedPane src = data.tabbedPane;
@@ -150,11 +157,13 @@ public class TabTransferHandler extends TransferHandler {
         } catch (UnsupportedFlavorException | IOException e) {
             LOGGER.error("Dragging tab failed", e);
         }
+        
         return false;
     }
     
     @Override
     protected void exportDone(JComponent c, Transferable data, int action) {
+        
         DnDTabbedPane src = (DnDTabbedPane) c;
         src.getRootPane().getGlassPane().setVisible(false);
         src.setDropLocation(null, false);

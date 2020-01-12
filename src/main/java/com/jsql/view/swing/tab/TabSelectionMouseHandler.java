@@ -28,6 +28,7 @@ public class TabSelectionMouseHandler extends MouseAdapter {
     
     @Override
     public void mouseClicked(MouseEvent e) {
+        
         if (SwingUtilities.isRightMouseButton(e)) {
             Component componentSource = (Component) e.getSource();
             JPopupMenu menu = new JPopupMenu();

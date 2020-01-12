@@ -89,6 +89,7 @@ public class DialogTranslate extends JDialog {
      * Create a dialog for general information on project jsql.
      */
     public DialogTranslate() {
+        
         super(MediatorGui.frame(), Dialog.ModalityType.MODELESS);
 
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -123,6 +124,7 @@ public class DialogTranslate extends JDialog {
         this.buttonSend.addMouseListener(new FlatButtonMouseAdapter(this.buttonSend));
         
         this.buttonSend.addActionListener(actionEvent -> {
+            
             if (this.textToTranslate[0].getText().equals(this.textBeforeChange)) {
                 LOGGER.warn("Nothing changed, translate a piece of text then click on Send");
                 return;
@@ -193,6 +195,7 @@ public class DialogTranslate extends JDialog {
      * Set back default setting for About frame.
      */
     public final void reinit(final Language language) {
+        
         this.progressBarTranslation.setValue(0);
         this.progressBarTranslation.setString("Loading...");
         
@@ -217,8 +220,8 @@ public class DialogTranslate extends JDialog {
         
         // Ubuntu Regular is compatible with all required languages, this includes Chinese and Arabic,
         // but it's not a technical Mono Font.
-        // Only Monospaced both works for copy/paste utf8 foreign characters in JTextArea and
-        // is a technical Mono Font.
+        // Only Monospaced works both for copy/paste utf8 foreign characters in JTextArea and
+        // it's a technical Mono Font.
         this.textToTranslate[0].setFont(new Font(
             HelperUi.FONT_NAME_MONOSPACED,
             Font.PLAIN,
@@ -240,6 +243,7 @@ public class DialogTranslate extends JDialog {
         private StringBuilder propertiesToTranslate = new StringBuilder();
         
         private void getI18nRoot() throws IOException {
+            
             try {
                 String pageSourceRoot = MediatorModel.model().getMediatorUtils().getConnectionUtil().getSourceLineFeed(
                     MediatorModel.model().getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.webservice.i18n.url")
@@ -247,6 +251,7 @@ public class DialogTranslate extends JDialog {
                 this.sourceProperties.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(pageSourceRoot)).replaceAll("{@|@}")));
                 LOGGER.info("Reference language loaded from Github");
             } catch (IOException e) {
+                
                 this.sourceProperties.load(new StringReader(Pattern.compile("\\\\\n").matcher(Matcher.quoteReplacement(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql.properties"))))).replaceAll("{@|@}")));
                 LOGGER.info("Reference language loaded from local");
                 
@@ -257,6 +262,7 @@ public class DialogTranslate extends JDialog {
         }
         
         private void getI18nLanguage() throws IOException {
+            
             try {
                 String pageSourceLanguage = MediatorModel.model().getMediatorUtils().getConnectionUtil().getSourceLineFeed(
                     "https://raw.githubusercontent.com/ron190/jsql-injection/master/web/services/i18n/jsql_"+ DialogTranslate.this.language.getNameLocale() +".properties"
@@ -264,6 +270,7 @@ public class DialogTranslate extends JDialog {
                 this.languageProperties.load(new StringReader(pageSourceLanguage));
                 LOGGER.info("Text for "+ DialogTranslate.this.language +" translation loaded from Github");
             } catch (IOException e) {
+                
                 this.languageProperties.load(new StringReader(new String(Files.readAllBytes(Paths.get("/com/jsql/i18n/jsql_"+ DialogTranslate.this.language.getNameLocale() +".properties")))));
                 LOGGER.info("Text for "+ DialogTranslate.this.language +" translation loaded from local");
                 
@@ -275,18 +282,21 @@ public class DialogTranslate extends JDialog {
         
         @Override
         protected Object doInBackground() throws Exception {
+            
             Thread.currentThread().setName("SwingWorkerDialogTranslate");
             
             DialogTranslate.this.progressBarTranslation.setVisible(DialogTranslate.this.language != Language.OT);
             
             try {
                 this.getI18nRoot();
+                
                 if (DialogTranslate.this.language != Language.OT) {
                     this.getI18nLanguage();
                 } else {
                     LOGGER.info("Text to translate loaded from source");
                 }
             } catch (IOException eGithub) {
+                
                 if (this.languageProperties.size() == 0) {
                     if (DialogTranslate.this.language == Language.OT) {
                         LOGGER.info("Language file not found, text to translate loaded from local", eGithub);
@@ -297,7 +307,9 @@ public class DialogTranslate extends JDialog {
                     throw new IOException("Reference language not found");
                 }
             } finally {
+                
                 for (Entry<String, String> key: this.sourceProperties.entrySet()) {
+                    
                     if (DialogTranslate.this.language == Language.OT || this.languageProperties.size() == 0) {
                         this.propertiesToTranslate.append("\n\n"+ key.getKey() +"="+ key.getValue().replace("{@|@}","\\\n"));
                     } else {

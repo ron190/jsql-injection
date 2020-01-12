@@ -26,7 +26,9 @@ public class GhostGlassPane extends JComponent {
     
     @Override
     protected void paintComponent(Graphics g) {
+        
         this.tabbedPane.getDropLineRect().ifPresent(rect -> {
+            
             Graphics2D g2 = (Graphics2D) g.create();
             Rectangle r = SwingUtilities.convertRectangle(this.tabbedPane, rect, this);
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, .5f));

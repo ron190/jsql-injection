@@ -60,13 +60,10 @@ public class HTMLEditorKitTextPaneWrap extends HTMLEditorKit {
                             r.alignment = 0.5f;
                             return r;
                         }
-
                     };
                 }
                 return v;
             }
-
         };
     }
-
 }

@@ -48,16 +48,12 @@ public class ProxyUtil {
     private static final String PROPERTIES_HTTPS_PROXY_HOST = "https.proxyHost";
     private static final String PROPERTIES_HTTPS_PROXY_PORT = "https.proxyPort";
     
-    // Utility class
     public ProxyUtil(InjectionModel injectionModel) {
-        this.injectionModel = injectionModel;
-        
         this.httpProxyDefaultAddress = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("http.proxy.default.ip");
         this.httpProxyDefaultPort = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("http.proxy.default.port");
         this.httpsProxyDefaultAddress = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("https.proxy.default.ip");
         this.httpsProxyDefaultPort = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("https.proxy.default.port");
     }
-    InjectionModel injectionModel;
     
     /**
      * Save proxy configuration into the JVM preferences.
@@ -148,7 +144,7 @@ public class ProxyUtil {
     
     /**
      * Check if the proxy is up.
-     * @param showOnConsole wether the message should be presented to the user
+     * @param showOnConsole whether the message should be presented to the user
      * @return true if the proxy is up
      */
     public boolean isLive(ShowOnConsole showOnConsole) {
@@ -160,6 +156,7 @@ public class ProxyUtil {
             && !"".equals(this.getProxyAddress())
             && !"".equals(this.getProxyPort())
         ) {
+            
             try {
                 Socket socket = new Socket(this.getProxyAddress(), Integer.parseInt(this.getProxyPort()));
                 socket.close();
@@ -188,6 +185,7 @@ public class ProxyUtil {
             && !"".equals(this.getProxyAddressHttps())
             && !"".equals(this.getProxyPortHttps())
         ) {
+            
             try {
                 Socket socket = new Socket(this.getProxyAddressHttps(), Integer.parseInt(this.getProxyPortHttps()));
                 socket.close();

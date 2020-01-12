@@ -54,7 +54,7 @@ public class LightScrollPane extends JComponent {
 
     /**
      * Create a scrollpane with top and left border for default component and a slide one.
-     * A component slided to the right will normaly hide the left border, JScrollPanePixelBorder fix this.
+     * A component slided to the right will normally hide the left border, JScrollPanePixelBorder fix this.
      * @param top Border top size
      * @param left Border left size
      * @param bottom Border bottom size
@@ -68,6 +68,7 @@ public class LightScrollPane extends JComponent {
     }
     
     public LightScrollPane(JComponent component) {
+        
         this.scrollPane = new JScrollPanePixelBorder(component);
         this.scrollPane.setBorder(BorderFactory.createEmptyBorder());
         
@@ -88,8 +89,10 @@ public class LightScrollPane extends JComponent {
         this.scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         this.scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.scrollPane.setLayout(new ScrollPaneLayout() {
+            
             @Override
             public void layoutContainer(Container parent) {
+                
                 // Fix #13412: NullPointerException on setBounds()
                 // Fix #48549: IllegalStateException on setBounds()
                 // Implementation by sun.swing.SwingUtilities2.getFontMetrics()
@@ -107,8 +110,10 @@ public class LightScrollPane extends JComponent {
         layeredPane.add(this.scrollPane);
 
         this.setLayout(new BorderLayout() {
+            
             @Override
             public void layoutContainer(Container target) {
+                
                 super.layoutContainer(target);
                 int width = LightScrollPane.this.getWidth();
                 int height = LightScrollPane.this.getHeight();
@@ -126,6 +131,7 @@ public class LightScrollPane extends JComponent {
                         height - cornerOffset
                     );
                 }
+                
                 if (LightScrollPane.this.horizontalScrollBar.isVisible()) {
                     LightScrollPane.this.horizontalScrollBar.setBounds(
                         0,
@@ -146,6 +152,7 @@ public class LightScrollPane extends JComponent {
     }
 
     private void displayVerticalScrollBarIfNecessary(JViewport viewPort) {
+        
         Rectangle viewRect = viewPort.getViewRect();
         Dimension viewSize = viewPort.getViewSize();
         boolean isDisplayingVerticalScrollBar =
@@ -154,6 +161,7 @@ public class LightScrollPane extends JComponent {
     }
 
     private void displayHorizontalScrollBarIfNecessary(JViewport viewPort) {
+        
         Rectangle viewRect = viewPort.getViewRect();
         Dimension viewSize = viewPort.getViewSize();
         boolean isDisplayingHorizontalScrollBar =
@@ -162,6 +170,7 @@ public class LightScrollPane extends JComponent {
     }
 
     private static class MyScrollBarButton extends JButton {
+        
         private MyScrollBarButton() {
             this.setOpaque(false);
             this.setFocusable(false);
@@ -172,6 +181,7 @@ public class LightScrollPane extends JComponent {
     }
 
     private  class MyScrollBarUI extends BasicScrollBarUI {
+        
         @Override
         protected JButton createDecreaseButton(int orientation) {
             return new MyScrollBarButton();
@@ -194,6 +204,7 @@ public class LightScrollPane extends JComponent {
         
         @Override
         protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
+            
             int alpha = this.isThumbRollover() ? LightScrollPane.this.scrollBarAlphaRollover : LightScrollPane.this.scrollBarAlpha;
             int orientation = this.scrollbar.getOrientation();
             int x = thumbBounds.x + THUMB_BORDER_SIZE;

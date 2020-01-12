@@ -7,6 +7,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 
@@ -44,6 +45,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
      * then time attack is confirmed.
      */
     public InjectionTime(InjectionModel injectionModel, BooleanMode booleanMode) {
+        
         super(injectionModel, booleanMode);
         
         // No blind
@@ -66,22 +68,19 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
             listCallableTagFalse.add(new CallableTime(urlTest, injectionModel, this, booleanMode));
         }
         
-        // Begin the url requests
-        List<Future<CallableTime>> listTagFalse = null;
-        try {
-            listTagFalse = executorTagFalse.invokeAll(listCallableTagFalse);
-        } catch (InterruptedException e) {
-            LOGGER.error("Interruption while checking Time False tags", e);
-            Thread.currentThread().interrupt();
-        }
-        executorTagFalse.shutdown();
-
         /*
          * If one FALSE query makes less than X seconds,
          * then the test is a failure => exit
          * Allow the user to stop the loop
          */
         try {
+            List<Future<CallableTime>> listTagFalse = executorTagFalse.invokeAll(listCallableTagFalse);
+            
+            executorTagFalse.shutdown();
+            if (!executorTagFalse.awaitTermination(15, TimeUnit.SECONDS)) {
+                executorTagFalse.shutdownNow();
+            }
+        
             for (Future<CallableTime> tagFalse: listTagFalse) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
@@ -91,8 +90,10 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
                     return;
                 }
             }
-        } catch (InterruptedException | ExecutionException e) {
-            LOGGER.error("Interruption while checking Time injection", e);
+        } catch (ExecutionException e) {
+            LOGGER.error("Searching fails for Time False tags", e);
+        } catch (InterruptedException e) {
+            LOGGER.error("Interruption while searching for Time False tags", e);
             Thread.currentThread().interrupt();
         }
 
@@ -105,16 +106,6 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
         for (String urlTest: this.trueTest) {
             listCallableTagTrue.add(new CallableTime(urlTest, injectionModel, this, booleanMode));
         }
-        
-        // Begin the url requests
-        List<Future<CallableTime>> listTagTrue = null;
-        try {
-            listTagTrue = executorTagTrue.invokeAll(listCallableTagTrue);
-        } catch (InterruptedException e) {
-            LOGGER.error("Interruption while checking Time True tags", e);
-            Thread.currentThread().interrupt();
-        }
-        executorTagTrue.shutdown();
 
         /*
          * If one TRUE query makes more than X seconds,
@@ -122,6 +113,13 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
          * Allow the user to stop the loop
          */
         try {
+            List<Future<CallableTime>> listTagTrue = executorTagTrue.invokeAll(listCallableTagTrue);
+            
+            executorTagTrue.shutdown();
+            if (!executorTagTrue.awaitTermination(15, TimeUnit.SECONDS)) {
+                executorTagTrue.shutdownNow();
+            }
+        
             for (Future<CallableTime> falseMark: listTagTrue) {
                 if (this.injectionModel.isStoppedByUser()) {
                     return;
@@ -131,8 +129,10 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
                     return;
                 }
             }
-        } catch (InterruptedException | ExecutionException e) {
-            LOGGER.error("Interruption while checking Time injection", e);
+        } catch (ExecutionException e) {
+            LOGGER.error("Searching fails for Time True tags", e);
+        } catch (InterruptedException e) {
+            LOGGER.error("Interruption while searching for Time True tags", e);
             Thread.currentThread().interrupt();
         }
     }
@@ -149,6 +149,7 @@ public class InjectionTime extends AbstractInjectionBoolean<CallableTime> {
 
     @Override
     public boolean isInjectable() throws StoppedByUserSlidingException {
+        
         if (this.injectionModel.isStoppedByUser()) {
             throw new StoppedByUserSlidingException();
         }

@@ -51,6 +51,7 @@ public class JPopupMenuComponent extends JPopupMenu {
      * @param component The component with the new menu
      */
     public JPopupMenuComponent(JComponent component) {
+        
         this.component = component;
         
         JMenuItem copyItem = new JMenuItem();
@@ -105,6 +106,7 @@ public class JPopupMenuComponent extends JPopupMenu {
         
         @Override
         public void popupMenuWillBecomeVisible(PopupMenuEvent event) {
+            
             // Fix #47018: NullPointerException on getLocation()
             try {
                 JPopupMenuComponent.this.setLocation(MouseInfo.getPointerInfo().getLocation());

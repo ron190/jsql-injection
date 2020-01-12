@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -30,7 +31,7 @@ import javax.swing.event.DocumentListener;
 import org.apache.commons.text.WordUtils;
 
 import com.jsql.model.MediatorModel;
-import com.jsql.util.tampering.Tampering;
+import com.jsql.util.tampering.TamperingType;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.action.ActionCheckIP;
@@ -230,40 +231,40 @@ public class PanelPreferences extends JPanel {
         buttonCheckIp.addMouseListener(flatButtonMouseAdapter);
 
         /**/
-        String tooltipIsTamperingBase64 = Tampering.BASE64.instance().getModelYaml().getTooltip();
+        String tooltipIsTamperingBase64 = TamperingType.BASE64.instance().getTooltip();
         this.checkboxIsTamperingBase64.setToolTipText(tooltipIsTamperingBase64);
         this.checkboxIsTamperingBase64.setFocusable(false);
-        JButton labelIsTamperingBase64 = new JButton(Tampering.BASE64.instance().getModelYaml().getDescription());
+        JButton labelIsTamperingBase64 = new JButton(TamperingType.BASE64.instance().getDescription());
         labelIsTamperingBase64.setToolTipText(tooltipIsTamperingBase64);
         labelIsTamperingBase64.addActionListener(actionEvent -> {
             this.checkboxIsTamperingBase64.setSelected(!this.checkboxIsTamperingBase64.isSelected());
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingFunctionComment = Tampering.COMMENT_TO_METHOD_SIGNATURE.instance().getModelYaml().getTooltip();
+        String tooltipIsTamperingFunctionComment = TamperingType.COMMENT_TO_METHOD_SIGNATURE.instance().getTooltip();
         this.checkboxIsTamperingFunctionComment.setToolTipText(tooltipIsTamperingFunctionComment);
         this.checkboxIsTamperingFunctionComment.setFocusable(false);
-        JButton labelIsTamperingFunctionComment = new JButton(Tampering.COMMENT_TO_METHOD_SIGNATURE.instance().getModelYaml().getDescription());
+        JButton labelIsTamperingFunctionComment = new JButton(TamperingType.COMMENT_TO_METHOD_SIGNATURE.instance().getDescription());
         labelIsTamperingFunctionComment.setToolTipText(tooltipIsTamperingFunctionComment);
         labelIsTamperingFunctionComment.addActionListener(actionEvent -> {
             this.checkboxIsTamperingFunctionComment.setSelected(!this.checkboxIsTamperingFunctionComment.isSelected());
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingEqualToLike = Tampering.EQUAL_TO_LIKE.instance().getModelYaml().getTooltip();
+        String tooltipIsTamperingEqualToLike = TamperingType.EQUAL_TO_LIKE.instance().getTooltip();
         this.checkboxIsTamperingEqualToLike.setToolTipText(tooltipIsTamperingEqualToLike);
         this.checkboxIsTamperingEqualToLike.setFocusable(false);
-        JButton labelIsTamperingEqualToLike = new JButton(Tampering.EQUAL_TO_LIKE.instance().getModelYaml().getDescription());
+        JButton labelIsTamperingEqualToLike = new JButton(TamperingType.EQUAL_TO_LIKE.instance().getDescription());
         labelIsTamperingEqualToLike.setToolTipText(tooltipIsTamperingEqualToLike);
         labelIsTamperingEqualToLike.addActionListener(actionEvent -> {
             this.checkboxIsTamperingEqualToLike.setSelected(!this.checkboxIsTamperingEqualToLike.isSelected());
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingRandomCase = Tampering.RANDOM_CASE.instance().getModelYaml().getTooltip();
+        String tooltipIsTamperingRandomCase = TamperingType.RANDOM_CASE.instance().getTooltip();
         this.checkboxIsTamperingRandomCase.setToolTipText(tooltipIsTamperingRandomCase);
         this.checkboxIsTamperingRandomCase.setFocusable(false);
-        JButton labelIsTamperingRandomCase = new JButton(Tampering.RANDOM_CASE.instance().getModelYaml().getDescription());
+        JButton labelIsTamperingRandomCase = new JButton(TamperingType.RANDOM_CASE.instance().getDescription());
         labelIsTamperingRandomCase.setToolTipText(tooltipIsTamperingRandomCase);
         labelIsTamperingRandomCase.addActionListener(actionEvent -> {
             this.checkboxIsTamperingRandomCase.setSelected(!this.checkboxIsTamperingRandomCase.isSelected());
@@ -273,52 +274,53 @@ public class PanelPreferences extends JPanel {
         String tooltipIsTamperingEval = "Custom tamper in JavaScript, e.g sql.replace(/\\+/gm,'/**/')";
         this.checkboxIsTamperingEval.setToolTipText(tooltipIsTamperingEval);
         this.checkboxIsTamperingEval.setFocusable(false);
-        JTextPane l = new JPopupTextPane(new JTextPanePlaceholder(tooltipIsTamperingEval)).getProxy();
-        LightScrollPane textAreaIsTamperingEval = new LightScrollPane(l);
+        
+        JTextPane textPaneEval = new JPopupTextPane(new JTextPanePlaceholder(tooltipIsTamperingEval)).getProxy();
+        LightScrollPane textAreaIsTamperingEval = new LightScrollPane(textPaneEval);
         textAreaIsTamperingEval.setBorder(HelperUi.BORDER_FOCUS_LOST);
         textAreaIsTamperingEval.setMinimumSize(new Dimension(400, 100));
         
-        ButtonGroup n = new ButtonGroup();
-        n.add(this.radioIsTamperingSpaceToDashComment);
-        n.add(this.radioIsTamperingSpaceToMultilineComment);
-        n.add(this.radioIsTamperingSpaceToSharpComment);
+        ButtonGroup groupSpaceToComment = new ButtonGroup();
+        groupSpaceToComment.add(this.radioIsTamperingSpaceToDashComment);
+        groupSpaceToComment.add(this.radioIsTamperingSpaceToMultilineComment);
+        groupSpaceToComment.add(this.radioIsTamperingSpaceToSharpComment);
         
-        String tooltipIsTamperingSpaceToMultilineComment = Tampering.SPACE_TO_MULTILINE_COMMENT.instance().getModelYaml().getTooltip();
+        String tooltipIsTamperingSpaceToMultilineComment = TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getTooltip();
         this.radioIsTamperingSpaceToMultilineComment.setToolTipText(tooltipIsTamperingSpaceToMultilineComment);
         this.radioIsTamperingSpaceToMultilineComment.setFocusable(false);
-        JButton labelIsTamperingSpaceToMultilineComment = new JButton(Tampering.SPACE_TO_MULTILINE_COMMENT.instance().getModelYaml().getDescription());
+        JButton labelIsTamperingSpaceToMultilineComment = new JButton(TamperingType.SPACE_TO_MULTILINE_COMMENT.instance().getDescription());
         labelIsTamperingSpaceToMultilineComment.setToolTipText(tooltipIsTamperingSpaceToMultilineComment);
         labelIsTamperingSpaceToMultilineComment.addActionListener(actionEvent -> {
             if (this.radioIsTamperingSpaceToMultilineComment.isSelected()) {
-                n.clearSelection();
+                groupSpaceToComment.clearSelection();
             } else {
                 this.radioIsTamperingSpaceToMultilineComment.setSelected(!this.radioIsTamperingSpaceToMultilineComment.isSelected());
             }
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingSpaceToDashComment = Tampering.SPACE_TO_DASH_COMMENT.instance().getModelYaml().getTooltip();
+        String tooltipIsTamperingSpaceToDashComment = TamperingType.SPACE_TO_DASH_COMMENT.instance().getTooltip();
         this.radioIsTamperingSpaceToDashComment.setToolTipText(tooltipIsTamperingSpaceToDashComment);
         this.radioIsTamperingSpaceToDashComment.setFocusable(false);
-        JButton labelIsTamperingSpaceToDashComment = new JButton(Tampering.SPACE_TO_DASH_COMMENT.instance().getModelYaml().getDescription());
+        JButton labelIsTamperingSpaceToDashComment = new JButton(TamperingType.SPACE_TO_DASH_COMMENT.instance().getDescription());
         labelIsTamperingSpaceToDashComment.setToolTipText(tooltipIsTamperingSpaceToDashComment);
         labelIsTamperingSpaceToDashComment.addActionListener(actionEvent -> {
             if (this.radioIsTamperingSpaceToDashComment.isSelected()) {
-                n.clearSelection();
+                groupSpaceToComment.clearSelection();
             } else {
                 this.radioIsTamperingSpaceToDashComment.setSelected(!this.radioIsTamperingSpaceToDashComment.isSelected());
             }
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingSpaceToSharpComment = Tampering.SPACE_TO_SHARP_COMMENT.instance().getModelYaml().getTooltip();
+        String tooltipIsTamperingSpaceToSharpComment = TamperingType.SPACE_TO_SHARP_COMMENT.instance().getTooltip();
         this.radioIsTamperingSpaceToSharpComment.setToolTipText(tooltipIsTamperingSpaceToSharpComment);
         this.radioIsTamperingSpaceToSharpComment.setFocusable(false);
-        JButton labelIsTamperingSpaceToSharpComment = new JButton(Tampering.SPACE_TO_SHARP_COMMENT.instance().getModelYaml().getDescription());
+        JButton labelIsTamperingSpaceToSharpComment = new JButton(TamperingType.SPACE_TO_SHARP_COMMENT.instance().getDescription());
         labelIsTamperingSpaceToSharpComment.setToolTipText(tooltipIsTamperingSpaceToSharpComment);
         labelIsTamperingSpaceToSharpComment.addActionListener(actionEvent -> {
             if (this.radioIsTamperingSpaceToSharpComment.isSelected()) {
-                n.clearSelection();
+                groupSpaceToComment.clearSelection();
             } else {
                 this.radioIsTamperingSpaceToSharpComment.setSelected(!this.radioIsTamperingSpaceToSharpComment.isSelected());
             }
@@ -326,65 +328,66 @@ public class PanelPreferences extends JPanel {
         });
         /**/
         
-        String tooltipIsTamperingVersionComment = Tampering.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getModelYaml().getTooltip();
+        String tooltipIsTamperingVersionComment = TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getTooltip();
         this.checkboxIsTamperingVersionComment.setToolTipText(tooltipIsTamperingVersionComment);
         this.checkboxIsTamperingVersionComment.setFocusable(false);
-        JButton labelIsTamperingVersionComment = new JButton(Tampering.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getModelYaml().getDescription());
+        JButton labelIsTamperingVersionComment = new JButton(TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE.instance().getDescription());
         labelIsTamperingVersionComment.setToolTipText(tooltipIsTamperingVersionComment);
         labelIsTamperingVersionComment.addActionListener(actionEvent -> {
             this.checkboxIsTamperingVersionComment.setSelected(!this.checkboxIsTamperingVersionComment.isSelected());
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingHexToChar = Tampering.HEX_TO_CHAR.instance().getModelYaml().getTooltip();
+        String tooltipIsTamperingHexToChar = TamperingType.HEX_TO_CHAR.instance().getTooltip();
         this.checkboxIsTamperingHexToChar.setToolTipText(tooltipIsTamperingHexToChar);
         this.checkboxIsTamperingHexToChar.setFocusable(false);
-        JButton labelIsTamperingHexToChar = new JButton(Tampering.HEX_TO_CHAR.instance().getModelYaml().getDescription());
+        JButton labelIsTamperingHexToChar = new JButton(TamperingType.HEX_TO_CHAR.instance().getDescription());
         labelIsTamperingHexToChar.setToolTipText(tooltipIsTamperingHexToChar);
         labelIsTamperingHexToChar.addActionListener(actionEvent -> {
             this.checkboxIsTamperingHexToChar.setSelected(!this.checkboxIsTamperingHexToChar.isSelected());
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingQouteToUtf8 = Tampering.QUOTE_TO_UTF8.instance().getModelYaml().getTooltip();
+        String tooltipIsTamperingQouteToUtf8 = TamperingType.QUOTE_TO_UTF8.instance().getTooltip();
         this.checkboxIsTamperingQuoteToUtf8.setToolTipText(tooltipIsTamperingQouteToUtf8);
         this.checkboxIsTamperingQuoteToUtf8.setFocusable(false);
-        JButton labelIsTamperingQuoteToUtf8 = new JButton(Tampering.QUOTE_TO_UTF8.instance().getModelYaml().getDescription());
+        JButton labelIsTamperingQuoteToUtf8 = new JButton(TamperingType.QUOTE_TO_UTF8.instance().getDescription());
         labelIsTamperingQuoteToUtf8.setToolTipText(tooltipIsTamperingQouteToUtf8);
         labelIsTamperingQuoteToUtf8.addActionListener(actionEvent -> {
             this.checkboxIsTamperingQuoteToUtf8.setSelected(!this.checkboxIsTamperingQuoteToUtf8.isSelected());
             this.actionListenerSave.actionPerformed(null);
         });
 
-        labelIsTamperingSpaceToSharpComment.addMouseListener(new TamperingMouseAdapter(Tampering.SPACE_TO_SHARP_COMMENT, l));
-        labelIsTamperingSpaceToDashComment.addMouseListener(new TamperingMouseAdapter(Tampering.SPACE_TO_DASH_COMMENT, l));
-        labelIsTamperingBase64.addMouseListener(new TamperingMouseAdapter(Tampering.BASE64, l));
-        labelIsTamperingEqualToLike.addMouseListener(new TamperingMouseAdapter(Tampering.EQUAL_TO_LIKE, l));
-        labelIsTamperingFunctionComment.addMouseListener(new TamperingMouseAdapter(Tampering.COMMENT_TO_METHOD_SIGNATURE, l));
-        labelIsTamperingRandomCase.addMouseListener(new TamperingMouseAdapter(Tampering.RANDOM_CASE, l));
-        labelIsTamperingHexToChar.addMouseListener(new TamperingMouseAdapter(Tampering.HEX_TO_CHAR, l));
-        labelIsTamperingQuoteToUtf8.addMouseListener(new TamperingMouseAdapter(Tampering.QUOTE_TO_UTF8, l));
-        labelIsTamperingSpaceToMultilineComment.addMouseListener(new TamperingMouseAdapter(Tampering.SPACE_TO_MULTILINE_COMMENT, l));
-        labelIsTamperingVersionComment.addMouseListener(new TamperingMouseAdapter(Tampering.VERSIONED_COMMENT_TO_METHOD_SIGNATURE, l));
+        labelIsTamperingSpaceToSharpComment.addMouseListener(new TamperingMouseAdapter(TamperingType.SPACE_TO_SHARP_COMMENT, textPaneEval));
+        labelIsTamperingSpaceToDashComment.addMouseListener(new TamperingMouseAdapter(TamperingType.SPACE_TO_DASH_COMMENT, textPaneEval));
+        labelIsTamperingBase64.addMouseListener(new TamperingMouseAdapter(TamperingType.BASE64, textPaneEval));
+        labelIsTamperingEqualToLike.addMouseListener(new TamperingMouseAdapter(TamperingType.EQUAL_TO_LIKE, textPaneEval));
+        labelIsTamperingFunctionComment.addMouseListener(new TamperingMouseAdapter(TamperingType.COMMENT_TO_METHOD_SIGNATURE, textPaneEval));
+        labelIsTamperingRandomCase.addMouseListener(new TamperingMouseAdapter(TamperingType.RANDOM_CASE, textPaneEval));
+        labelIsTamperingHexToChar.addMouseListener(new TamperingMouseAdapter(TamperingType.HEX_TO_CHAR, textPaneEval));
+        labelIsTamperingQuoteToUtf8.addMouseListener(new TamperingMouseAdapter(TamperingType.QUOTE_TO_UTF8, textPaneEval));
+        labelIsTamperingSpaceToMultilineComment.addMouseListener(new TamperingMouseAdapter(TamperingType.SPACE_TO_MULTILINE_COMMENT, textPaneEval));
+        labelIsTamperingVersionComment.addMouseListener(new TamperingMouseAdapter(TamperingType.VERSIONED_COMMENT_TO_METHOD_SIGNATURE, textPaneEval));
         
-        if (l.getStyledDocument() instanceof HighlightedDocument) {
-            HighlightedDocument oldDocument = (HighlightedDocument) l.getStyledDocument();
+        // TODO create group for cleanable textpanelexer
+        if (textPaneEval.getStyledDocument() instanceof HighlightedDocument) {
+            HighlightedDocument oldDocument = (HighlightedDocument) textPaneEval.getStyledDocument();
             oldDocument.stopColorer();
         }
         
         HighlightedDocument document = new HighlightedDocument(HighlightedDocument.JAVASCRIPT_STYLE);
         document.setHighlightStyle(HighlightedDocument.JAVASCRIPT_STYLE);
-        l.setStyledDocument(document);
+        textPaneEval.setStyledDocument(document);
         
         document.addDocumentListener(new DocumentListenerTyping() {
             
             @Override
             public void warn() {
-                MediatorModel.model().getMediatorUtils().getTamperingUtil().setCustomTamper(l.getText());
+                MediatorModel.model().getMediatorUtils().getTamperingUtil().setCustomTamper(textPaneEval.getText());
             }
         });
         
-        l.setText(MediatorModel.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
+        textPaneEval.setText(MediatorModel.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
         
         
         this.checkboxIsCheckingUpdate.setFocusable(false);
@@ -743,179 +746,100 @@ public class PanelPreferences extends JPanel {
         this.textDigestAuthenticationUsername.setFont(HelperUi.FONT_SEGOE_BIG);
         this.textDigestAuthenticationPassword.setFont(HelperUi.FONT_SEGOE_BIG);
         
-        this.checkboxIsCheckingUpdate.addActionListener(this.actionListenerSave);
-        this.checkboxIsFollowingRedirection.addActionListener(this.actionListenerSave);
-        this.checkboxIsNotInjectingMetadata.addActionListener(this.actionListenerSave);
-        this.checkboxIsReportingBugs.addActionListener(this.actionListenerSave);
-        this.checkboxIsUsingProxy.addActionListener(this.actionListenerSave);
-        this.checkboxIsParsingForm.addActionListener(this.actionListenerSave);
-        this.checkboxIsNotTestingConnection.addActionListener(this.actionListenerSave);
-        this.checkboxUseDigestAuthentication.addActionListener(this.actionListenerSave);
-        this.checkboxUseKerberos.addActionListener(this.actionListenerSave);
-        this.checkboxProcessCookies.addActionListener(this.actionListenerSave);
-        this.checkboxProcessCsrf.addActionListener(this.actionListenerSave);
-        
         this.checkboxIsCheckingAllParam.addActionListener(actionListenerCheckingAllParam);
-        this.checkboxIsCheckingAllURLParam.addActionListener(this.actionListenerSave);
-        this.checkboxIsCheckingAllRequestParam.addActionListener(this.actionListenerSave);
-        this.checkboxIsCheckingAllHeaderParam.addActionListener(this.actionListenerSave);
-        this.checkboxIsCheckingAllJSONParam.addActionListener(this.actionListenerSave);
-        this.checkboxIsCheckingAllCookieParam.addActionListener(this.actionListenerSave);
-        this.checkboxIsCheckingAllSOAPParam.addActionListener(this.actionListenerSave);
         
-        this.checkboxIsTamperingEval.addActionListener(this.actionListenerSave);
-        this.checkboxIsTamperingBase64.addActionListener(this.actionListenerSave);
-        this.checkboxIsTamperingFunctionComment.addActionListener(this.actionListenerSave);
-        this.checkboxIsTamperingVersionComment.addActionListener(this.actionListenerSave);
-        this.checkboxIsTamperingEqualToLike.addActionListener(this.actionListenerSave);
-        this.checkboxIsTamperingRandomCase.addActionListener(this.actionListenerSave);
-        this.checkboxIsTamperingHexToChar.addActionListener(this.actionListenerSave);
-        this.checkboxIsTamperingQuoteToUtf8.addActionListener(this.actionListenerSave);
-        this.radioIsTamperingSpaceToMultilineComment.addActionListener(this.actionListenerSave);
-        this.radioIsTamperingSpaceToDashComment.addActionListener(this.actionListenerSave);
-        this.radioIsTamperingSpaceToSharpComment.addActionListener(this.actionListenerSave);
+        Stream.of(
+            this.checkboxIsCheckingUpdate,
+            this.checkboxIsFollowingRedirection,
+            this.checkboxIsNotInjectingMetadata,
+            this.checkboxIsReportingBugs,
+            this.checkboxIsUsingProxy,
+            this.checkboxIsParsingForm,
+            this.checkboxIsNotTestingConnection,
+            this.checkboxUseDigestAuthentication,
+            this.checkboxUseKerberos,
+            this.checkboxProcessCookies,
+            this.checkboxProcessCsrf,
+            
+            this.checkboxIsCheckingAllURLParam,
+            this.checkboxIsCheckingAllRequestParam,
+            this.checkboxIsCheckingAllHeaderParam,
+            this.checkboxIsCheckingAllJSONParam,
+            this.checkboxIsCheckingAllCookieParam,
+            this.checkboxIsCheckingAllSOAPParam,
+            
+            this.checkboxIsTamperingEval,
+            this.checkboxIsTamperingBase64,
+            this.checkboxIsTamperingFunctionComment,
+            this.checkboxIsTamperingVersionComment,
+            this.checkboxIsTamperingEqualToLike,
+            this.checkboxIsTamperingRandomCase,
+            this.checkboxIsTamperingHexToChar,
+            this.checkboxIsTamperingQuoteToUtf8,
+            this.radioIsTamperingSpaceToMultilineComment,
+            this.radioIsTamperingSpaceToDashComment,
+            this.radioIsTamperingSpaceToSharpComment,
+            
+            this.checkboxIs4K
+        ).forEach(button -> button.addActionListener(this.actionListenerSave));
         
-        this.checkboxIs4K.addActionListener(this.actionListenerSave);
-        
-        class DocumentListenerSave extends DocumentListenerTyping {
+        DocumentListener documentListenerSave = new DocumentListenerTyping() {
             
             @Override
             public void warn() {
                 PanelPreferences.this.actionListenerSave.actionPerformed(null);
             }
-            
-        }
-        
-        DocumentListener documentListenerSave = new DocumentListenerSave();
+        };
 
-        this.textDigestAuthenticationPassword.getDocument().addDocumentListener(documentListenerSave);
-        this.textDigestAuthenticationUsername.getDocument().addDocumentListener(documentListenerSave);
-        this.textKerberosKrb5Conf.getDocument().addDocumentListener(documentListenerSave);
-        this.textKerberosLoginConf.getDocument().addDocumentListener(documentListenerSave);
-        this.textProxyAddress.getDocument().addDocumentListener(documentListenerSave);
-        this.textProxyPort.getDocument().addDocumentListener(documentListenerSave);
-        this.textProxyAddressHttps.getDocument().addDocumentListener(documentListenerSave);
-        this.textProxyPortHttps.getDocument().addDocumentListener(documentListenerSave);
+        Stream.of(
+            this.textDigestAuthenticationPassword,
+            this.textDigestAuthenticationUsername,
+            this.textKerberosKrb5Conf,
+            this.textKerberosLoginConf,
+            this.textProxyAddress,
+            this.textProxyPort,
+            this.textProxyAddressHttps,
+            this.textProxyPortHttps
+        )
+        .forEach(textField -> textField.getDocument().addDocumentListener(documentListenerSave));
 
-        labelIsCheckingUpdate.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsCheckingUpdate.setBorderPainted(false);
-        labelIsCheckingUpdate.setContentAreaFilled(false);
-        
-        labelIsReportingBugs.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsReportingBugs.setBorderPainted(false);
-        labelIsReportingBugs.setContentAreaFilled(false);
-        
-        labelIsFollowingRedirection.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsFollowingRedirection.setBorderPainted(false);
-        labelIsFollowingRedirection.setContentAreaFilled(false);
-        
-        labelTestConnection.setHorizontalAlignment(SwingConstants.LEFT);
-        labelTestConnection.setBorderPainted(false);
-        labelTestConnection.setContentAreaFilled(false);
-        
-        labelParseForm.setHorizontalAlignment(SwingConstants.LEFT);
-        labelParseForm.setBorderPainted(false);
-        labelParseForm.setContentAreaFilled(false);
-        
-        buttonIsUsingProxy.setHorizontalAlignment(SwingConstants.LEFT);
-        buttonIsUsingProxy.setBorderPainted(false);
-        buttonIsUsingProxy.setContentAreaFilled(false);
-        
-        buttonIsUsingProxyHttps.setHorizontalAlignment(SwingConstants.LEFT);
-        buttonIsUsingProxyHttps.setBorderPainted(false);
-        buttonIsUsingProxyHttps.setContentAreaFilled(false);
-        
-        labelUseDigestAuthentication.setHorizontalAlignment(SwingConstants.LEFT);
-        labelUseDigestAuthentication.setBorderPainted(false);
-        labelUseDigestAuthentication.setContentAreaFilled(false);
-        
-        labelUseKerberos.setHorizontalAlignment(SwingConstants.LEFT);
-        labelUseKerberos.setBorderPainted(false);
-        labelUseKerberos.setContentAreaFilled(false);
-        
-        labelIsNotInjectingMetadata.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsNotInjectingMetadata.setBorderPainted(false);
-        labelIsNotInjectingMetadata.setContentAreaFilled(false);
-        
-        labelIsCheckingAllParam.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsCheckingAllParam.setBorderPainted(false);
-        labelIsCheckingAllParam.setContentAreaFilled(false);
-        
-        labelIsCheckingAllURLParam.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsCheckingAllURLParam.setBorderPainted(false);
-        labelIsCheckingAllURLParam.setContentAreaFilled(false);
-        
-        labelIsCheckingAllRequestParam.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsCheckingAllRequestParam.setBorderPainted(false);
-        labelIsCheckingAllRequestParam.setContentAreaFilled(false);
-        
-        labelIsCheckingAllHeaderParam.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsCheckingAllHeaderParam.setBorderPainted(false);
-        labelIsCheckingAllHeaderParam.setContentAreaFilled(false);
-        
-        labelIsCheckingAllJSONParam.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsCheckingAllJSONParam.setBorderPainted(false);
-        labelIsCheckingAllJSONParam.setContentAreaFilled(false);
-
-        labelIsCheckingAllCookieParam.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsCheckingAllCookieParam.setBorderPainted(false);
-        labelIsCheckingAllCookieParam.setContentAreaFilled(false);
-        
-        labelIsCheckingAllSOAPParam.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsCheckingAllSOAPParam.setBorderPainted(false);
-        labelIsCheckingAllSOAPParam.setContentAreaFilled(false);
-        
-        labelProcessCookies.setHorizontalAlignment(SwingConstants.LEFT);
-        labelProcessCookies.setBorderPainted(false);
-        labelProcessCookies.setContentAreaFilled(false);
-        
-        labelProcessCsrf.setHorizontalAlignment(SwingConstants.LEFT);
-        labelProcessCsrf.setBorderPainted(false);
-        labelProcessCsrf.setContentAreaFilled(false);
-        
-        labelIsTamperingBase64.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsTamperingBase64.setBorderPainted(false);
-        labelIsTamperingBase64.setContentAreaFilled(false);
-        
-        labelIsTamperingFunctionComment.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsTamperingFunctionComment.setBorderPainted(false);
-        labelIsTamperingFunctionComment.setContentAreaFilled(false);
-        
-        labelIsTamperingVersionComment.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsTamperingVersionComment.setBorderPainted(false);
-        labelIsTamperingVersionComment.setContentAreaFilled(false);
-        
-        labelIsTamperingEqualToLike.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsTamperingEqualToLike.setBorderPainted(false);
-        labelIsTamperingEqualToLike.setContentAreaFilled(false);
-        
-        labelIsTamperingRandomCase.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsTamperingRandomCase.setBorderPainted(false);
-        labelIsTamperingRandomCase.setContentAreaFilled(false);
-        
-        labelIsTamperingHexToChar.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsTamperingHexToChar.setBorderPainted(false);
-        labelIsTamperingHexToChar.setContentAreaFilled(false);
-        
-        labelIsTamperingQuoteToUtf8.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsTamperingQuoteToUtf8.setBorderPainted(false);
-        labelIsTamperingQuoteToUtf8.setContentAreaFilled(false);
-        
-        labelIsTamperingSpaceToMultilineComment.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsTamperingSpaceToMultilineComment.setBorderPainted(false);
-        labelIsTamperingSpaceToMultilineComment.setContentAreaFilled(false);
-        
-        labelIsTamperingSpaceToDashComment.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsTamperingSpaceToDashComment.setBorderPainted(false);
-        labelIsTamperingSpaceToDashComment.setContentAreaFilled(false);
-        
-        labelIsTamperingSpaceToSharpComment.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIsTamperingSpaceToSharpComment.setBorderPainted(false);
-        labelIsTamperingSpaceToSharpComment.setContentAreaFilled(false);
-        
-        labelIs4K.setHorizontalAlignment(SwingConstants.LEFT);
-        labelIs4K.setBorderPainted(false);
-        labelIs4K.setContentAreaFilled(false);
+        Stream.of(
+            labelIsCheckingUpdate,
+            labelIsReportingBugs,
+            labelIsFollowingRedirection,
+            labelTestConnection,
+            labelParseForm,
+            buttonIsUsingProxy,
+            buttonIsUsingProxyHttps,
+            labelUseDigestAuthentication,
+            labelUseKerberos,
+            labelIsNotInjectingMetadata,
+            labelIsCheckingAllParam,
+            labelIsCheckingAllURLParam,
+            labelIsCheckingAllRequestParam,
+            labelIsCheckingAllHeaderParam,
+            labelIsCheckingAllJSONParam,
+            labelIsCheckingAllCookieParam,
+            labelIsCheckingAllSOAPParam,
+            labelProcessCookies,
+            labelProcessCsrf,
+            labelIsTamperingBase64,
+            labelIsTamperingFunctionComment,
+            labelIsTamperingVersionComment,
+            labelIsTamperingEqualToLike,
+            labelIsTamperingRandomCase,
+            labelIsTamperingHexToChar,
+            labelIsTamperingQuoteToUtf8,
+            labelIsTamperingSpaceToMultilineComment,
+            labelIsTamperingSpaceToDashComment,
+            labelIsTamperingSpaceToSharpComment,
+            labelIs4K
+        )
+        .forEach(label -> {
+            label.setHorizontalAlignment(SwingConstants.LEFT);
+            label.setBorderPainted(false);
+            label.setContentAreaFilled(false);
+        });
         
         // Proxy settings, Horizontal column rules
 

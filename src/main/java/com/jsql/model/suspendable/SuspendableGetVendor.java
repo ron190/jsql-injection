@@ -43,9 +43,11 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
      */
     @Override
     public Vendor run(Object... args) throws StoppedByUserSlidingException {
+        
         Vendor vendor = null;
         
         if (this.injectionModel.getMediatorVendor().getVendorByUser() != this.injectionModel.getMediatorVendor().getAuto()) {
+            
             vendor = this.injectionModel.getMediatorVendor().getVendorByUser();
             LOGGER.info(I18n.valueByKey("LOG_DATABASE_TYPE_FORCED_BY_USER") +" ["+ vendor +"]");
         } else {
@@ -103,23 +105,26 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
             // End the job
             try {
                 taskExecutor.shutdown();
-                taskExecutor.awaitTermination(15, TimeUnit.SECONDS);
+                if (!taskExecutor.awaitTermination(15, TimeUnit.SECONDS)) {
+                    taskExecutor.shutdownNow();
+                }
             } catch (InterruptedException e) {
                 LOGGER.error(e.getMessage(), e);
                 Thread.currentThread().interrupt();
             }
             
             if (vendor == null) {
+                
                 vendor = this.injectionModel.getMediatorVendor().getMySQL();
                 LOGGER.warn(I18n.valueByKey("LOG_DATABASE_TYPE_NOT_FOUND") +" ["+ vendor +"]");
             } else {
+                
                 LOGGER.info(I18n.valueByKey("LOG_USING_DATABASE_TYPE") +" ["+ vendor +"]");
                 
                 Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
                 msgHeader.put(
                     Header.URL,
-                    this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlBase()
-                    + this.injectionModel.getMediatorUtils().getParameterUtil().getQueryStringFromEntries()
+                    this.injectionModel.getMediatorUtils().getConnectionUtil().getUrlByUser()
                 );
                 msgHeader.put(Header.VENDOR, vendor);
                 
@@ -137,5 +142,4 @@ public class SuspendableGetVendor extends AbstractSuspendable<Vendor> {
         
         return vendor;
     }
-    
 }

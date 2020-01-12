@@ -32,7 +32,7 @@ import com.jsql.model.exception.SlidingException;
 import com.jsql.model.suspendable.SuspendableGetRows;
 
 /**
- * Database ressource object to read name of databases, tables, columns and values
+ * Database resource object to read name of databases, tables, columns and values
  * using most suited injection strategy.
  */
 public class DataAccess {
@@ -64,27 +64,27 @@ public class DataAccess {
     /**
      * Regex character used between each table cells.
      * Expected schema of multiple table cells :
-     * x04[table cell]x05[number of occurences]x04x06x04[table cell]x05[number of occurences]x04
+     * x04[table cell]x05[number of occurrences]x04x06x04[table cell]x05[number of occurrences]x04
      */
     public static final String SEPARATOR_CELL_RGX = "\\x06";
     
     /**
      * SQL character used between each table cells.
      * Expected schema of multiple table cells :
-     * %04[table cell]%05[number of occurences]%04%06%04[table cell]%05[number of occurences]%04
+     * %04[table cell]%05[number of occurrences]%04%06%04[table cell]%05[number of occurrences]%04
      */
     public static final String SEPARATOR_CELL_SQL = "%06";
     public static final String SEPARATOR_CELL_HEX = "0x06";
     
     /**
      * SQL character used between the table cell and the number of occurence of the cell text.
-     * Expected schema of a table cell data is %04[table cell]%05[number of occurences]%04
+     * Expected schema of a table cell data is %04[table cell]%05[number of occurrences]%04
      */
     public static final String SEPARATOR_QTE_SQL = "%05";
     
     /**
      * Regex character used between the table cell and the number of occurence of the cell text.
-     * Expected schema of a table cell data is x04[table cell]x05[number of occurences]x04
+     * Expected schema of a table cell data is x04[table cell]x05[number of occurrences]x04
      */
     public static final String SEPARATOR_QTE_RGX = "\\x05";
     public static final String SEPARATOR_QTE_HEX = "0x05";
@@ -92,7 +92,7 @@ public class DataAccess {
     /**
      * Regex character enclosing a table cell returned by injection.
      * It allows to detect the correct end of a table cell data during parsing.
-     * Expected schema of a table cell data is x04[table cell]x05[number of occurences]x04
+     * Expected schema of a table cell data is x04[table cell]x05[number of occurrences]x04
      */
     public static final String ENCLOSE_VALUE_RGX = "\\x04";
     public static final String ENCLOSE_VALUE_HEX = "0x04";
@@ -100,7 +100,7 @@ public class DataAccess {
     /**
      * SQL character enclosing a table cell returned by injection.
      * It allows to detect the correct end of a table cell data during parsing.
-     * Expected schema of a table cell data is %04[table cell]%05[number of occurences]%04
+     * Expected schema of a table cell data is %04[table cell]%05[number of occurrences]%04
      */
     public static final String ENCLOSE_VALUE_SQL = "%04";
     
@@ -117,11 +117,11 @@ public class DataAccess {
     public static final String MODE = "(?si)";
     
     /**
-     * Regex schema describing a table cell with firstly the cell content and secondly the number of occurences
+     * Regex schema describing a table cell with firstly the cell content and secondly the number of occurrences
      * of the cell text, separated by the reserved character x05 in hexadecimal.
      * The range of characters from x01 to x1F are not printable ASCII characters used to parse the data and exclude
      * printable characters during parsing.
-     * Expected schema of a table cell data is x04[table cell]x05[number of occurences]x04
+     * Expected schema of a table cell data is x04[table cell]x05[number of occurrences]x04
      */
     public static final String CELL_TABLE = "([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)"+ SEPARATOR_QTE_RGX +"([^\\x01-\\x09\\x0B-\\x0C\\x0E-\\x1F]*)(\\x08)?";
     
@@ -138,6 +138,7 @@ public class DataAccess {
      * @throws JSqlException
      */
     public void getDatabaseInfos() throws JSqlException {
+        
         LOGGER.trace(I18n.valueByKey("LOG_FETCHING_INFORMATIONS"));
         
         String[] sourcePage = {""};
@@ -180,6 +181,7 @@ public class DataAccess {
      * @throws JSqlException when injection failure or stopped by user
      */
     public List<Database> listDatabases() throws JSqlException {
+        
         LOGGER.trace(I18n.valueByKey("LOG_FETCHING_DATABASES"));
         
         List<Database> databases = new ArrayList<>();
@@ -251,6 +253,7 @@ public class DataAccess {
      * @throws JSqlException when injection failure or stopped by user
      */
     public List<Table> listTables(Database database) throws JSqlException {
+        
         // Reset stoppedByUser if list of Databases is partial
         // and some Tables are still reachable
         this.injectionModel.setIsStoppedByUser(false);
@@ -337,6 +340,7 @@ public class DataAccess {
      * @throws JSqlException when injection failure or stopped by user
      */
     public List<Column> listColumns(Table table) throws JSqlException {
+        
         List<Column> columns = new ArrayList<>();
         
         // Inform the view that table has just been used
@@ -356,6 +360,7 @@ public class DataAccess {
                 table
             );
         } catch (SlidingException e) {
+            
             LOGGER.warn(e.getMessage(), e);
             // Get pieces of data already retrieved instead of losing them
             if (!"".equals(e.getSlidingWindowAllRows())) {
@@ -421,6 +426,7 @@ public class DataAccess {
      * @throws JSqlException when injection failure or stopped by user
      */
     public String[][] listValues(List<Column> columns) throws JSqlException {
+        
         Database database = (Database) columns.get(0).getParent().getParent();
         Table table = (Table) columns.get(0).getParent();
         int rowCount = columns.get(0).getParent().getChildCount();
@@ -455,7 +461,9 @@ public class DataAccess {
                 table
             );
         } catch (SlidingException e) {
+            
             LOGGER.warn(e.getMessage(), e);
+            
             // Get pieces of data already retrieved instead of losing them
             if (!"".equals(e.getSlidingWindowAllRows())) {
                 resultToParse = e.getSlidingWindowAllRows();
@@ -492,6 +500,7 @@ public class DataAccess {
         // Build a 2D array of strings from the data we have parsed
         // => row number, occurrence, value1, value2...
         while (regexSearch.find()) {
+            
             String values = regexSearch.group(1);
             int instances = Integer.parseInt(regexSearch.group(2));
 
@@ -511,9 +520,12 @@ public class DataAccess {
 
         // Build a proper 2D array from the data
         String[][] tableDatas = new String[listValues.size()][columnsName.size()];
+        
         for (int indexRow = 0 ; indexRow < listValues.size() ; indexRow++) {
+            
             boolean isIncomplete = false;
             for (int indexColumn = 0 ; indexColumn < columnsName.size() ; indexColumn++) {
+                
                 try {
                     tableDatas[indexRow][indexColumn] = listValues.get(indexRow).get(indexColumn);
                 } catch (IndexOutOfBoundsException e) {

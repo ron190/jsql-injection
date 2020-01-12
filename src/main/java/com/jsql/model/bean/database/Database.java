@@ -59,6 +59,7 @@ public class Database extends AbstractElementDatabase {
      */
     @Override
     public String getLabelCount() {
+        
         // Report #1500: detect incorrect number of tables
         String sPlural = "";
         try {

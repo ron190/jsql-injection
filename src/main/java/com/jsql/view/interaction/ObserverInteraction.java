@@ -31,6 +31,7 @@ public class ObserverInteraction implements Observer {
      */
     @Override
     public void update(Observable model, Object newInteraction) {
+        
         Request interaction = (Request) newInteraction;
 
         try {

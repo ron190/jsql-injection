@@ -45,6 +45,7 @@ public class ManagerFile extends AbstractManagerList {
      * Create the manager panel to read a file.
      */
     public ManagerFile() {
+        
         super("swing/list/file.txt");
         
         this.defaultText = "FILE_RUN_BUTTON_LABEL";
@@ -60,12 +61,14 @@ public class ManagerFile extends AbstractManagerList {
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
         
         this.run.addActionListener(actionEvent -> {
+            
             if (this.listFile.getSelectedValuesList().isEmpty()) {
                 LOGGER.warn("Select at least one file to read in the list");
                 return;
             }
 
             new Thread(() -> {
+                
                 if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {
                     ManagerFile.this.run.setText(I18nView.valueByKey("FILE_RUN_BUTTON_STOP"));
                     ManagerFile.this.run.setState(StateButton.STOPPABLE);
@@ -105,5 +108,4 @@ public class ManagerFile extends AbstractManagerList {
         
         this.add(this.lastLine, BorderLayout.SOUTH);
     }
-    
 }

@@ -3,7 +3,6 @@ package com.jsql.view.i18n;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -66,16 +65,15 @@ public class I18nView {
      * @return text corresponding to the key
      */
     public static String valueByKey(String key) {
+        
         String result;
-        if (
-            // TODO
-            new Locale("zh").getLanguage().equals(I18n.getLocaleDefault().getLanguage())
-            || new Locale("ko").getLanguage().equals(I18n.getLocaleDefault().getLanguage())
-        ) {
+        
+        if (I18n.isAsian(I18n.getLocaleDefault())) {
             result = "<html><span style=\"font-family:'"+ HelperUi.FONT_NAME_UBUNTU_REGULAR +"'\">"+ I18n.valueByKey(key) +"</span></html>";
         } else {
             result = I18n.valueByKey(key);
         }
+        
         return result;
     }
 

@@ -59,6 +59,7 @@ public class ManagerUpload extends AbstractManagerList {
      * Build the manager panel.
      */
     public ManagerUpload() {
+        
         this.setLayout(new BorderLayout());
 
         this.defaultText = "UPLOAD_RUN_BUTTON_LABEL";
@@ -118,6 +119,7 @@ public class ManagerUpload extends AbstractManagerList {
         this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
         
         this.run.addActionListener(actionEvent -> {
+            
             if (ManagerUpload.this.getListPaths().getSelectedValuesList().isEmpty()) {
                 LOGGER.warn("Select directory(ies) to upload a file into");
                 return;
@@ -134,6 +136,7 @@ public class ManagerUpload extends AbstractManagerList {
                     for (final Object path: ManagerUpload.this.getListPaths().getSelectedValuesList()) {
                         
                         new Thread(() -> {
+                            
                             File file = filechooser.getSelectedFile();
                             try {
                                 ManagerUpload.this.loader.setVisible(true);
@@ -167,5 +170,4 @@ public class ManagerUpload extends AbstractManagerList {
         southPanel.add(lastLine);
         this.add(southPanel, BorderLayout.SOUTH);
     }
-    
 }

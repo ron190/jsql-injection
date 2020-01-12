@@ -11,6 +11,7 @@ import com.jsql.view.swing.HelperUi;
 public class LightScrollPaneShell extends LightScrollPane {
     
     public LightScrollPaneShell(JComponent component) {
+        
         super(component);
         
         this.colorThumb = HelperUi.COLOR_FOCUS_GAINED;

@@ -41,6 +41,7 @@ public class BlockCaret extends DefaultCaret {
 
     @Override
     protected synchronized void damage(Rectangle r) {
+        
         if (r == null) {
             return;
         }
@@ -66,6 +67,7 @@ public class BlockCaret extends DefaultCaret {
 
     @Override
     public void paint(Graphics g) {
+        
         JTextComponent comp = this.getComponent();
 
         if (comp == null) {

@@ -52,6 +52,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
      */
     @Override
     public CallableHttpHead call() throws Exception {
+        
         boolean isUrlIncorrect = false;
         
         URL targetUrl = null;
@@ -94,7 +95,7 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
     }
 
     /**
-     * Check if HTTP response is either 2xx or 3xx, which corrsponds to
+     * Check if HTTP response is either 2xx or 3xx, which corresponds to
      * a acceptable response from the website.
      * @return true if HTTP code start with 2 or 3
      */

@@ -27,6 +27,7 @@ public class ActionCheckIP implements ActionListener, Runnable {
 
     @Override
     public void run() {
+        
         if (!MediatorModel.model().getMediatorUtils().getProxyUtil().isLive(ShowOnConsole.YES)) {
             return;
         }

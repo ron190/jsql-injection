@@ -42,16 +42,18 @@ public class GitUtil {
         NO;
     }
 
+    private InjectionModel injectionModel;
+    
     public GitUtil(InjectionModel injectionModel) {
         this.injectionModel = injectionModel;
     }
-    InjectionModel injectionModel;
 
     /**
      * Verify if application is up to date against the version on Github.
      * @param displayUpdateMessage YES for manual update verification, hidden otherwise
      */
     public void checkUpdate(ShowOnConsole displayUpdateMessage) {
+        
         if (displayUpdateMessage == ShowOnConsole.YES) {
             LOGGER.trace(I18n.valueByKey("UPDATE_LOADING"));
         }
@@ -76,6 +78,7 @@ public class GitUtil {
      * @param throwable unhandled exception to report to Gihub
      */
     public void sendUnhandledException(String threadName, Throwable throwable) {
+        
         String javaVersion = System.getProperty("java.version");
         String osArch = System.getProperty("os.arch");
         
@@ -106,6 +109,7 @@ public class GitUtil {
      * @param reportTitle title of the Issue
      */
     public void sendReport(String reportBody, ShowOnConsole showOnConsole, String reportTitle) {
+        
         // Check proxy
         if (!this.injectionModel.getMediatorUtils().getProxyUtil().isLive(showOnConsole)) {
             return;
@@ -154,6 +158,7 @@ public class GitUtil {
             
             this.readGithubResponse(connection, showOnConsole);
         } catch (IOException | NoClassDefFoundError | JSONException e) {
+            
             // Fix #27623: NoClassDefFoundError on getOutputStream()
             // Implemented by jcifs.http.NtlmHttpURLConnection.getOutputStream()
             if (showOnConsole == ShowOnConsole.YES) {
@@ -163,6 +168,7 @@ public class GitUtil {
     }
     
     private void readGithubResponse(HttpURLConnection connection, ShowOnConsole showOnConsole) throws IOException {
+        
         try {
             // Read the response
             String sourcePage = ConnectionUtil.getSourceLineFeed(connection);
@@ -183,6 +189,7 @@ public class GitUtil {
      * and other useful statements for the community.
      */
     public void showNews() {
+        
         try {
             JSONArray news = this.getJSONObject().getJSONArray("news");
             for (int index = 0 ; index < news.length() ; index++) {
@@ -199,6 +206,7 @@ public class GitUtil {
      * @throws IOException if connection to json data fails
      */
     public JSONObject getJSONObject() throws IOException {
+        
         if (this.jsonObject == null) {
             String json = this.injectionModel.getMediatorUtils().getConnectionUtil().getSource(
                 this.injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("github.webservice.url")

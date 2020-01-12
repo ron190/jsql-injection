@@ -33,7 +33,9 @@ public class DeletePrevCharAction extends TextAction {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
+        
         JTextComponent target = this.getTextComponent(e);
+        
         if ((target != null) && (target.isEditable())) {
             try {
                 Document doc = target.getDocument();

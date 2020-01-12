@@ -66,6 +66,7 @@ public class JScrollIndicator extends JLayeredPane {
      * @param view the component to display in the scrollpane's viewport
      */
     public JScrollIndicator(final JComponent view) {
+        
         this(view, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
             ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     }
@@ -87,6 +88,7 @@ public class JScrollIndicator extends JLayeredPane {
      * @param hsbPolicy an integer that specifies the horizontal scrollbar policy
      */
     public JScrollIndicator(final JComponent view, int vsbPolicy, int hsbPolicy) {
+        
         this.scrollPane = new JScrollPane(view, vsbPolicy, hsbPolicy);
         this.scrollPane.setBorder(BorderFactory.createEmptyBorder());
         this.add(this.scrollPane, JLayeredPane.DEFAULT_LAYER);
@@ -96,8 +98,10 @@ public class JScrollIndicator extends JLayeredPane {
 
         this.addComponentListener(
             new ComponentAdapter() {
+                
                 @Override
                 public void componentResized(ComponentEvent e) {
+                    
                     // listen to changes of JLayeredPane size
                     JScrollIndicator.this.scrollPane.setSize(JScrollIndicator.this.getSize());
                     JScrollIndicator.this.scrollPane.getViewport().revalidate();
@@ -126,6 +130,7 @@ public class JScrollIndicator extends JLayeredPane {
         private final JMyScrollBar hScrollBar;
 
         private ControlPanel(JScrollPane scrollPane) {
+            
             this.setLayout(new BorderLayout());
             this.setOpaque(false);
 
@@ -150,6 +155,7 @@ public class JScrollIndicator extends JLayeredPane {
         protected final transient MyScrollBarUI scrollUI;
 
         public JMyScrollBar(int direction) {
+            
             super(direction);
 
             this.scrollUI = new MyScrollBarUI(this);
@@ -159,6 +165,7 @@ public class JScrollIndicator extends JLayeredPane {
             this.setPreferredSize(new Dimension(size, size));
             this.scrollUI.setVisible();
             this.addMouseListener(new MouseAdapter() {
+                
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     JMyScrollBar.this.scrollUI.setVisible();
@@ -190,6 +197,7 @@ public class JScrollIndicator extends JLayeredPane {
 
         @Override
         public void repaint(Rectangle r) {
+            
             JScrollIndicator scrollIndicator = JScrollIndicator.this;
             // Fix #15956: NullPointerException on convertRectangle()
             try {
@@ -204,6 +212,7 @@ public class JScrollIndicator extends JLayeredPane {
     }
 
     public class MyScrollBarUI extends BasicScrollBarUI {
+        
         private JMyScrollBar myScrollBar;
         private int alpha = 0;
 
@@ -213,6 +222,7 @@ public class JScrollIndicator extends JLayeredPane {
 
         @Override
         protected void installComponents() {
+            
             this.incrButton = new JButton();
             this.decrButton = new JButton();
             if (this.myScrollBar.getOrientation() == Adjustable.HORIZONTAL) {
@@ -226,6 +236,7 @@ public class JScrollIndicator extends JLayeredPane {
 
         @Override
         protected void installDefaults() {
+            
             super.installDefaults();
 
             // ensure the minimum size of the thumb
@@ -240,6 +251,7 @@ public class JScrollIndicator extends JLayeredPane {
         }
 
         private void paintThumb(Graphics g) {
+            
             int alphaThumb = this.isThumbRollover() ? SCROLL_BAR_ALPHA_ROLLOVER : SCROLL_BAR_ALPHA;
 
             g.setColor(new Color(this.getAlphaColor(THUMB_COLOR).getRed(),
@@ -262,6 +274,7 @@ public class JScrollIndicator extends JLayeredPane {
         }
 
         private Color getAlphaColor(Color color) {
+            
             if (this.alpha == 100) {
                 return color;
             }

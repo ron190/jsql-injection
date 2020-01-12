@@ -33,29 +33,36 @@ public class DnDTabbedPane extends JTabbedPane {
     private static final Rectangle RECT_FORWARD = new Rectangle();
     protected static final Rectangle RECT_LINE = new Rectangle();
     protected int dragTabIndex = -1;
-    private transient DropLocation dropLocation;
+    private transient DnDDropLocation dropLocation;
 
-    public static final class DropLocation extends TransferHandler.DropLocation {
+    public static final class DnDDropLocation extends TransferHandler.DropLocation {
+        
         private final int index;
         private boolean dropable = true;
-        protected DropLocation(Point p, int index) {
+        
+        protected DnDDropLocation(Point p, int index) {
             super(p);
             this.index = index;
         }
+        
         public int getIndex() {
             return this.index;
         }
+        
         public void setDroppable(boolean flag) {
             this.dropable = flag;
         }
+        
         public boolean isDroppable() {
             return this.dropable;
         }
     }
     
     private void clickArrowButton(String actionKey) {
+        
         JButton scrollForwardButton = null;
         JButton scrollBackwardButton = null;
+        
         for (Component c: this.getComponents()) {
             if (c instanceof JButton) {
                 if (scrollForwardButton == null && scrollBackwardButton == null) {
@@ -65,6 +72,7 @@ public class DnDTabbedPane extends JTabbedPane {
                 }
             }
         }
+        
         JButton button = "scrollTabsForwardAction".equals(actionKey) ? scrollForwardButton : scrollBackwardButton;
         Optional.ofNullable(button)
             .filter(JButton::isEnabled)
@@ -72,7 +80,9 @@ public class DnDTabbedPane extends JTabbedPane {
     }
     
     public void autoScrollTest(Point pt) {
+        
         Rectangle r = this.getTabAreaBounds();
+        
         if (isTopBottomTabPlacement(this.getTabPlacement())) {
             RECT_BACKWARD.setBounds(r.x, r.y, SCROLL_SIZE, r.height);
             RECT_FORWARD.setBounds(r.x + r.width - SCROLL_SIZE - BUTTON_SIZE, r.y, SCROLL_SIZE + BUTTON_SIZE, r.height);
@@ -80,6 +90,7 @@ public class DnDTabbedPane extends JTabbedPane {
             RECT_BACKWARD.setBounds(r.x, r.y, r.width, SCROLL_SIZE);
             RECT_FORWARD.setBounds(r.x, r.y + r.height - SCROLL_SIZE - BUTTON_SIZE, r.width, SCROLL_SIZE + BUTTON_SIZE);
         }
+        
         if (RECT_BACKWARD.contains(pt)) {
             this.clickArrowButton("scrollTabsBackwardAction");
         } else if (RECT_FORWARD.contains(pt)) {
@@ -88,6 +99,7 @@ public class DnDTabbedPane extends JTabbedPane {
     }
     
     protected DnDTabbedPane() {
+        
         super();
         Handler h = new Handler();
         this.addMouseListener(h);
@@ -95,6 +107,7 @@ public class DnDTabbedPane extends JTabbedPane {
         this.addPropertyChangeListener(h);
         
         this.addMouseWheelListener(mouseWheelEvent -> {
+            
             JTabbedPane tabPane = (JTabbedPane) mouseWheelEvent.getSource();
             
             int dir = -mouseWheelEvent.getWheelRotation();
@@ -117,34 +130,41 @@ public class DnDTabbedPane extends JTabbedPane {
         this.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
     }
     
-    public DropLocation dropLocationForPointDnD(Point p) {
+    public DnDDropLocation dropLocationForPointDnD(Point p) {
+        
         for (int i = 0; i < this.getTabCount(); i++) {
             if (this.getBoundsAt(i).contains(p)) {
-                return new DropLocation(p, i);
+                return new DnDDropLocation(p, i);
             }
         }
+        
         if (this.getTabAreaBounds().contains(p)) {
-            return new DropLocation(p, this.getTabCount());
+            return new DnDDropLocation(p, this.getTabCount());
         }
-        return new DropLocation(p, -1);
+        
+        return new DnDDropLocation(p, -1);
     }
     
-    public final DropLocation getDropLocation() {
+    public final DnDDropLocation getDropLocation() {
         return this.dropLocation;
     }
     
     public Object setDropLocation(TransferHandler.DropLocation location, boolean forDrop) {
-        DropLocation old = this.dropLocation;
+        
+        DnDDropLocation old = this.dropLocation;
+        
         if (Objects.isNull(location) || !forDrop) {
-            this.dropLocation = new DropLocation(new Point(), -1);
-        } else if (location instanceof DropLocation) {
-            this.dropLocation = (DropLocation) location;
+            this.dropLocation = new DnDDropLocation(new Point(), -1);
+        } else if (location instanceof DnDDropLocation) {
+            this.dropLocation = (DnDDropLocation) location;
         }
+        
         this.firePropertyChange("dropLocation", old, this.dropLocation);
         return null;
     }
     
     public void exportTab(int dragIndex, JTabbedPane target, int targetIndex) {
+        
         Component cmp = this.getComponentAt(dragIndex);
         Component tab = this.getTabComponentAt(dragIndex);
         String title = this.getTitleAt(dragIndex);
@@ -163,6 +183,7 @@ public class DnDTabbedPane extends JTabbedPane {
     }
     
     public void convertTab(int prev, int next) {
+        
         Component cmp = this.getComponentAt(prev);
         Component tab = this.getTabComponentAt(prev);
         String title = this.getTitleAt(prev);
@@ -173,20 +194,23 @@ public class DnDTabbedPane extends JTabbedPane {
         this.remove(prev);
         this.insertTab(title, icon, cmp, tip, tgtindex);
         this.setEnabledAt(tgtindex, isEnabled);
+        
         // When you drag'n'drop a disabled tab, it finishes enabled and selected.
         // pointed out by dlorde
         if (isEnabled) {
             this.setSelectedIndex(tgtindex);
         }
+        
         // I have a component in all tabs (jlabel with an X to close the tab) and when i move a tab the component disappear.
         // pointed out by Daniel Dario Morales Salas
         this.setTabComponentAt(tgtindex, tab);
     }
     
     public Optional<Rectangle> getDropLineRect() {
+        
         int index = Optional.ofNullable(this.getDropLocation())
-            .filter(DropLocation::isDroppable)
-            .map(DropLocation::getIndex)
+            .filter(DnDDropLocation::isDroppable)
+            .map(DnDDropLocation::getIndex)
             .orElse(-1);
         if (index < 0) {
             RECT_LINE.setBounds(0, 0, 0, 0);
@@ -199,10 +223,12 @@ public class DnDTabbedPane extends JTabbedPane {
         } else {
             RECT_LINE.setBounds(r.x, r.y - LINE_WIDTH / 2 + r.height * a, r.width, LINE_WIDTH);
         }
+        
         return Optional.of(RECT_LINE);
     }
     
     public Rectangle getTabAreaBounds() {
+        
         Rectangle tabbedRect = this.getBounds();
         int xx = tabbedRect.x;
         int yy = tabbedRect.y;
@@ -244,6 +270,7 @@ public class DnDTabbedPane extends JTabbedPane {
         // PropertyChangeListener
         @Override
         public void propertyChange(PropertyChangeEvent e) {
+            
             String propertyName = e.getPropertyName();
             if ("dropLocation".equals(propertyName)) {
                 this.repaintDropLocation();
@@ -253,6 +280,7 @@ public class DnDTabbedPane extends JTabbedPane {
         // MouseListener
         @Override
         public void mousePressed(MouseEvent e) {
+            
             DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
             boolean isOnlyOneTab = src.getTabCount() <= 1;
             if (isOnlyOneTab) {
@@ -269,6 +297,7 @@ public class DnDTabbedPane extends JTabbedPane {
         
         @Override
         public void mouseDragged(MouseEvent e) {
+            
             Point tabPt = e.getPoint();
             if (Objects.nonNull(this.startPt) && this.startPt.distance(tabPt) > this.gestureMotionThreshold) {
                 DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
@@ -277,13 +306,14 @@ public class DnDTabbedPane extends JTabbedPane {
                 th.exportAsDrag(src, e, TransferHandler.MOVE);
                 RECT_LINE.setBounds(0, 0, 0, 0);
                 src.getRootPane().getGlassPane().setVisible(true);
-                src.setDropLocation(new DropLocation(tabPt, -1), true);
+                src.setDropLocation(new DnDDropLocation(tabPt, -1), true);
                 this.startPt = null;
             }
         }
 
         @Override
         public void mouseClicked(MouseEvent e) {
+            
             Point tabPt = e.getPoint();
             JTabbedPane src = (JTabbedPane) e.getSource();
             

@@ -80,6 +80,7 @@ public final class ThreadUtil {
      * they were instantiated in order to be garbage collected.
      */
     public void reset() {
+        
         // Fix #8258: ConcurrentModificationException on java.util.HashMap$ValueIterator.next()
         try {
             for (AbstractSuspendable<?> suspendable : this.injectionModel.getMediatorUtils().getThreadUtil().suspendables.values()) {

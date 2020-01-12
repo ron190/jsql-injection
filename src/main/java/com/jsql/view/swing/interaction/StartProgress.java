@@ -46,13 +46,16 @@ public class StartProgress implements InteractionCommand {
 
         DefaultMutableTreeNode node = MediatorGui.frame().getTreeNodeModels().get(this.dataElementDatabase);
         
-        // Get the node
-        AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
-        // Mark the node model as 'display progress bar'
-        progressingTreeNodeModel.setLoading(true);
-
-        // Update the node
-        treeModel.nodeChanged(node);
+        // Fix rare #73981
+        if (node != null) {
+            // Get the node
+            AbstractNodeModel progressingTreeNodeModel = (AbstractNodeModel) node.getUserObject();
+            // Mark the node model as 'display progress bar'
+            progressingTreeNodeModel.setLoading(true);
+    
+            // Update the node
+            treeModel.nodeChanged(node);
+        }
     }
     
 }

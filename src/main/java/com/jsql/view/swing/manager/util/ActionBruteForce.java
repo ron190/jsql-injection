@@ -45,31 +45,38 @@ public class ActionBruteForce implements ActionListener, Runnable {
     @Override
     public void actionPerformed(ActionEvent arg0) {
         if (this.bruteForceManager.getRun().getState() == StateButton.STOPPABLE) {
+            
             this.bruteForceManager.getRun().setEnabled(false);
             this.isStopped = true;
         } else {
+            
             if (
                 !this.bruteForceManager.getMaximumLength().getValue().toString().matches("^\\d+$")
                 || !this.bruteForceManager.getMinimumLength().getValue().toString().matches("^\\d+$")
             ) {
+                
                 LOGGER.warn(I18n.valueByKey("BRUTEFORCE_INCORRECT_LENGTH"));
                 return;
             }
 
             if ("".equals(this.bruteForceManager.getHash().getText())) {
+                
                 LOGGER.warn(I18n.valueByKey("BRUTEFORCE_EMPTY_HASH"));
                 return;
             } else if (
-                    !this.bruteForceManager.getSpecialCharacters().isSelected()
-                    && !this.bruteForceManager.getUpperCaseCharacters().isSelected()
-                    && !this.bruteForceManager.getLowerCaseCharacters().isSelected()
-                    && !this.bruteForceManager.getNumericCharacters().isSelected()) {
+                !this.bruteForceManager.getSpecialCharacters().isSelected()
+                && !this.bruteForceManager.getUpperCaseCharacters().isSelected()
+                && !this.bruteForceManager.getLowerCaseCharacters().isSelected()
+                && !this.bruteForceManager.getNumericCharacters().isSelected()
+            ) {
+                
                 LOGGER.warn(I18n.valueByKey("BRUTEFORCE_CHARACTER_RANGE"));
                 return;
             } else if (
                 Integer.parseInt(this.bruteForceManager.getMaximumLength().getValue().toString()) <
                 Integer.parseInt(this.bruteForceManager.getMinimumLength().getValue().toString())
             ) {
+                
                 LOGGER.warn(I18n.valueByKey("BRUTEFORCE_INCORRECT_MIN_MAX_LENGTH"));
                 return;
             }
@@ -80,6 +87,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
     @Override
     public void run() {
+        
         // Reset the panel
         this.bruteForceManager.getRun().setText(I18nView.valueByKey("BRUTEFORCE_STOP"));
         this.bruteForceManager.getRun().setState(StateButton.STOPPABLE);
@@ -115,6 +123,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
         new Thread(hashBruter::tryBruteForce, "ThreadRunBruteForce").start();
 
         while (!hashBruter.isDone() && !hashBruter.isFound() && !this.isStopped) {
+            
             hashBruter.setEndtime(System.nanoTime());
 
             try {
@@ -167,8 +176,10 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
         // Display the result
         if (this.isStopped) {
+            
             LOGGER.warn(I18n.valueByKey("BRUTEFORCE_ABORTED"));
         } else if (hashBruter.isFound()) {
+            
             this.append(
                 this.bruteForceManager.getResult(),
                 "\n"+ I18n.valueByKey("BRUTEFORCE_FOUND_HASH") +":\n"+ hashBruter.getGeneratedHash() +" => "+ hashBruter.getPassword()
@@ -176,6 +187,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
             LOGGER.debug(I18n.valueByKey("BRUTEFORCE_FOUND_HASH") +": "+ hashBruter.getGeneratedHash() +" => "+ hashBruter.getPassword());
         } else if (hashBruter.isDone()) {
+            
             this.append(
                 this.bruteForceManager.getResult(),
                 "\n"+ I18n.valueByKey("BRUTEFORCE_HASH_NOT_FOUND")
@@ -192,6 +204,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
     }
     
     public void append(JTextPane l, String text) {
+        
         try {
             l.getDocument().insertString(
                 l.getDocument().getLength(),
@@ -202,5 +215,4 @@ public class ActionBruteForce implements ActionListener, Runnable {
             LOGGER.error(e.getMessage(), e);
         }
     }
-    
 }

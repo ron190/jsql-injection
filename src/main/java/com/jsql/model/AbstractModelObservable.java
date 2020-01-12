@@ -23,6 +23,7 @@ import com.jsql.model.bean.util.Request;
  * - communication with view, via Observable.
  */
 public abstract class AbstractModelObservable extends Observable {
+    
     /**
      * True if user wants to stop preparation.<br>
      * During the preparation, several methods will
@@ -57,6 +58,7 @@ public abstract class AbstractModelObservable extends Observable {
      * @param interaction The event bean corresponding to the interaction
      */
     public void sendToViews(final Request interaction) {
+        
         // Display model thread name in logs instead of the observer name
         String nameThread = Thread.currentThread().getName();
         SwingUtilities.invokeLater(() -> {

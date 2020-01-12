@@ -16,6 +16,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 public class RadioMenuItemIconCustom implements Icon, UIResource, Serializable {
     
     public void paintOceanIcon(Component c, Graphics g, int x, int y) {
+        
         ButtonModel model = ((AbstractButton) c).getModel();
         boolean isSelected = model.isSelected();
         boolean isEnabled = model.isEnabled();
@@ -86,5 +87,4 @@ public class RadioMenuItemIconCustom implements Icon, UIResource, Serializable {
     public int getIconHeight() {
         return new Dimension( 10, 10 ).height;
     }
-
-}  // End class RadioButtonMenuItemIcon
+}

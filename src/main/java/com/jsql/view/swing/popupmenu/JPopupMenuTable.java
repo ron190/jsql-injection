@@ -43,6 +43,7 @@ public class JPopupMenuTable extends JPopupMenu {
      * @param table The table receiving the menu
      */
     public JPopupMenuTable(JTable table) {
+        
         this.table = table;
 
         table.setComponentPopupMenu(this);
@@ -69,14 +70,20 @@ public class JPopupMenuTable extends JPopupMenu {
 
         // Show menu next mouse pointer
         this.addPopupMenuListener(new PopupMenuListener() {
+            
             @Override
             public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-                JPopupMenuTable.this.setLocation(MouseInfo.getPointerInfo().getLocation());
+                // Fix #67773: NullPointerException on getLocation()
+                if (MouseInfo.getPointerInfo() != null) {
+                    JPopupMenuTable.this.setLocation(MouseInfo.getPointerInfo().getLocation());
+                }
             }
+            
             @Override
             public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
                 // Do nothing
             }
+            
             @Override
             public void popupMenuCanceled(PopupMenuEvent e) {
                 // Do nothing
@@ -85,6 +92,7 @@ public class JPopupMenuTable extends JPopupMenu {
     }
 
     public JPopupMenuTable(JTable tableValues, Action actionShowSearchTable) {
+        
         this(tableValues);
         
         this.addSeparator();
@@ -102,6 +110,7 @@ public class JPopupMenuTable extends JPopupMenu {
      * An action for Select All shortcut.
      */
     private class ActionSelectAll extends AbstractAction {
+        
         @Override
         public void actionPerformed(ActionEvent e) {
             JPopupMenuTable.this.table.selectAll();
@@ -112,8 +121,10 @@ public class JPopupMenuTable extends JPopupMenu {
      * An action for Copy shortcut.
      */
     private class ActionCopy extends AbstractAction {
+        
         @Override
         public void actionPerformed(ActionEvent e) {
+            
             ActionEvent copyEvent = new ActionEvent(
                 JPopupMenuTable.this.table,
                 ActionEvent.ACTION_PERFORMED,

@@ -46,6 +46,7 @@ public class ParameterUtil {
      * @throws InjectionFailureException when params' integrity is failure
      */
     public void checkParametersFormat() throws InjectionFailureException {
+        
         int nbStarInParameter = 0;
         
         if (this.getQueryStringFromEntries().contains(InjectionModel.STAR)) {
@@ -112,11 +113,13 @@ public class ParameterUtil {
     
     // TODO Spock coverage
     public String getCharacterInsertion(boolean isParamByUser, SimpleEntry<String, String> parameter) {
+        
         String characterInsertionByUser = "";
         
         // Parse query information: url=>everything before the sign '=',
         // start of query string=>everything after '='
         if (this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.getMediatorMethodInjection().getQuery()) {
+            
             if (
                 !isParamByUser
                 && (
@@ -135,6 +138,7 @@ public class ParameterUtil {
             
         // Parse post information
         } else if (this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.getMediatorMethodInjection().getRequest()) {
+            
             if (
                 !isParamByUser
                 && this.getRequestFromEntries().contains(InjectionModel.STAR)
@@ -150,6 +154,7 @@ public class ParameterUtil {
             
         // Parse header information
         } else if (this.injectionModel.getMediatorUtils().getConnectionUtil().getMethodInjection() == this.injectionModel.getMediatorMethodInjection().getHeader()) {
+            
             if (
                 !isParamByUser
                 && this.getHeaderFromEntries().contains(InjectionModel.STAR)
@@ -168,6 +173,7 @@ public class ParameterUtil {
     }
     
     public String getQueryStringFromEntries() {
+        
         return this.queryString
             .stream()
             .filter(Objects::nonNull)
@@ -176,6 +182,7 @@ public class ParameterUtil {
     }
 
     public String getRequestFromEntries() {
+        
         return this.request
             .stream()
             .filter(Objects::nonNull)
@@ -184,6 +191,7 @@ public class ParameterUtil {
     }
     
     public String getHeaderFromEntries() {
+        
         return this.header
             .stream()
             .filter(Objects::nonNull)
@@ -192,6 +200,7 @@ public class ParameterUtil {
     }
 
     public void initQueryString(String urlQuery) throws MalformedURLException {
+        
         URL url = new URL(urlQuery);
         if ("".equals(urlQuery) || "".equals(url.getHost())) {
             throw new MalformedURLException("empty URL");
@@ -202,7 +211,9 @@ public class ParameterUtil {
         // Parse url and GET query string
         this.setQueryString(new ArrayList<SimpleEntry<String, String>>());
         Matcher regexSearch = Pattern.compile("(.*\\?)(.*)").matcher(urlQuery);
+        
         if (regexSearch.find()) {
+            
             this.injectionModel.getMediatorUtils().getConnectionUtil().setUrlBase(regexSearch.group(1));
             
             if (!"".equals(url.getQuery())) {
@@ -223,6 +234,7 @@ public class ParameterUtil {
     }
 
     public void initRequest(String request) {
+        
         this.requestAsText = request;
         
         if (!"".equals(request)) {
@@ -240,7 +252,9 @@ public class ParameterUtil {
     }
 
     public void initHeader(String header) {
+        
         if (!"".equals(header)) {
+            
             this.setHeader(
                 Pattern
                 .compile("\\\\r\\\\n")

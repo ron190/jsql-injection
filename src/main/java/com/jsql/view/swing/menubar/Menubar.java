@@ -24,9 +24,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
@@ -227,31 +230,18 @@ public class Menubar extends JMenuBar {
         JMenu menuTranslation = new JMenu(I18n.valueByKey("MENUBAR_LANGUAGE"));
         I18nView.addComponentForKey("MENUBAR_LANGUAGE", menuTranslation);
         
+        Object[] languages = Stream
+            .of("ru zh es fr tr ko se ar cs it pt pl in nl ro de".split(" "))
+            .map(flag -> new Locale(flag).getLanguage())
+            .collect(Collectors.toList())
+            .toArray();
+        
+        boolean isEnglish = !ArrayUtils.contains(languages, Locale.getDefault().getLanguage());
+    
         this.itemEnglish = new JRadioButtonMenuItem(
             new Locale("en").getDisplayLanguage(new Locale("en")),
             HelperUi.ICON_FLAG_EN,
-            !ArrayUtils.contains(
-                new String[]{
-                    // TODO
-                    new Locale("ru").getLanguage(),
-                    new Locale("zh").getLanguage(),
-                    new Locale("es").getLanguage(),
-                    new Locale("fr").getLanguage(),
-                    new Locale("tr").getLanguage(),
-                    new Locale("ko").getLanguage(),
-                    new Locale("se").getLanguage(),
-                    new Locale("ar").getLanguage(),
-                    new Locale("cs").getLanguage(),
-                    new Locale("it").getLanguage(),
-                    new Locale("pt").getLanguage(),
-                    new Locale("pl").getLanguage(),
-                    new Locale("in").getLanguage(),
-                    new Locale("nl").getLanguage(),
-                    new Locale("ro").getLanguage(),
-                    new Locale("de").getLanguage(),
-                },
-                Locale.getDefault().getLanguage()
-            )
+            isEnglish
         );
         this.itemEnglish.addActionListener(actionEvent -> Menubar.this.switchLocale(Locale.ROOT));
         
@@ -368,42 +358,29 @@ public class Menubar extends JMenuBar {
         );
         this.itemKorean.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("ko")));
         
-        menuTranslation.add(this.itemEnglish);
-        menuTranslation.add(this.itemRussian);
-        menuTranslation.add(this.itemChinese);
-        menuTranslation.add(this.itemSpanish);
-        menuTranslation.add(this.itemFrench);
-        menuTranslation.add(this.itemTurkish);
-        menuTranslation.add(this.itemKorean);
-        menuTranslation.add(this.itemSwedish);
-        menuTranslation.add(this.itemArabic);
-        menuTranslation.add(this.itemCzech);
-        menuTranslation.add(this.itemItalian);
-        menuTranslation.add(this.itemPortuguese);
-        menuTranslation.add(this.itemPolish);
-        menuTranslation.add(this.itemIndonesian);
-        menuTranslation.add(this.itemDutch);
-        menuTranslation.add(this.itemRomanian);
-        menuTranslation.add(this.itemGerman);
-        
         ButtonGroup groupRadioLanguage = new ButtonGroup();
-        groupRadioLanguage.add(this.itemEnglish);
-        groupRadioLanguage.add(this.itemRussian);
-        groupRadioLanguage.add(this.itemChinese);
-        groupRadioLanguage.add(this.itemSpanish);
-        groupRadioLanguage.add(this.itemFrench);
-        groupRadioLanguage.add(this.itemTurkish);
-        groupRadioLanguage.add(this.itemKorean);
-        groupRadioLanguage.add(this.itemSwedish);
-        groupRadioLanguage.add(this.itemArabic);
-        groupRadioLanguage.add(this.itemCzech);
-        groupRadioLanguage.add(this.itemItalian);
-        groupRadioLanguage.add(this.itemPortuguese);
-        groupRadioLanguage.add(this.itemPolish);
-        groupRadioLanguage.add(this.itemIndonesian);
-        groupRadioLanguage.add(this.itemDutch);
-        groupRadioLanguage.add(this.itemRomanian);
-        groupRadioLanguage.add(this.itemGerman);
+        Stream.of(
+            this.itemEnglish,
+            this.itemRussian,
+            this.itemChinese,
+            this.itemSpanish,
+            this.itemFrench,
+            this.itemTurkish,
+            this.itemKorean,
+            this.itemSwedish,
+            this.itemArabic,
+            this.itemCzech,
+            this.itemItalian,
+            this.itemPortuguese,
+            this.itemPolish,
+            this.itemIndonesian,
+            this.itemDutch,
+            this.itemRomanian,
+            this.itemGerman
+        ).forEach(menuItem -> {
+            menuTranslation.add(menuItem);
+            groupRadioLanguage.add(menuItem);
+        });
         
         JMenu menuI18nContribution = new JMenu(I18n.valueByKey("MENUBAR_COMMUNITY_HELPTRANSLATE"));
         I18nView.addComponentForKey("MENUBAR_COMMUNITY_HELPTRANSLATE", menuI18nContribution);
@@ -457,48 +434,58 @@ public class Menubar extends JMenuBar {
         
         this.itemIntoArabic.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         
-        menuI18nContribution.add(this.itemIntoFrench);
-        menuI18nContribution.add(this.itemIntoSpanish);
-        menuI18nContribution.add(this.itemIntoSwedish);
-        menuI18nContribution.add(this.itemIntoTurkish);
-        menuI18nContribution.add(this.itemIntoCzech);
-        menuI18nContribution.add(this.itemIntoRomanian);
-        menuI18nContribution.add(this.itemIntoItalian);
-        menuI18nContribution.add(this.itemIntoPortuguese);
-        menuI18nContribution.add(this.itemIntoArabic);
-        menuI18nContribution.add(this.itemIntoPolish);
-        menuI18nContribution.add(this.itemIntoRussia);
-        menuI18nContribution.add(this.itemIntoChina);
-        menuI18nContribution.add(this.itemIntoGerman);
-        menuI18nContribution.add(this.itemIntoIndonesian);
-        menuI18nContribution.add(this.itemIntoJapanese);
-        menuI18nContribution.add(this.itemIntoKorean);
-        menuI18nContribution.add(this.itemIntoHindi);
-        menuI18nContribution.add(this.itemIntoDutch);
-        menuI18nContribution.add(this.itemIntoTamil);
-        menuI18nContribution.add(new JSeparator());
-        menuI18nContribution.add(this.itemIntoOther);
+        Stream.of(
+            this.itemIntoFrench,
+            this.itemIntoSpanish,
+            this.itemIntoSwedish,
+            this.itemIntoTurkish,
+            this.itemIntoCzech,
+            this.itemIntoRomanian,
+            this.itemIntoItalian,
+            this.itemIntoPortuguese,
+            this.itemIntoArabic,
+            this.itemIntoPolish,
+            this.itemIntoRussia,
+            this.itemIntoChina,
+            this.itemIntoGerman,
+            this.itemIntoIndonesian,
+            this.itemIntoJapanese,
+            this.itemIntoKorean,
+            this.itemIntoHindi,
+            this.itemIntoDutch,
+            this.itemIntoTamil,
+            new JSeparator(),
+            this.itemIntoOther
+        )
+        .forEach(menuItem -> menuI18nContribution.add(menuItem));
         
-        this.itemIntoHindi.addActionListener(new ActionTranslate(Language.HI));
-        this.itemIntoArabic.addActionListener(new ActionTranslate(Language.AR));
-        this.itemIntoRussia.addActionListener(new ActionTranslate(Language.RU));
-        this.itemIntoChina.addActionListener(new ActionTranslate(Language.ZH));
-        this.itemIntoFrench.addActionListener(new ActionTranslate(Language.FR));
-        this.itemIntoTurkish.addActionListener(new ActionTranslate(Language.TR));
-        this.itemIntoCzech.addActionListener(new ActionTranslate(Language.CS));
-        this.itemIntoGerman.addActionListener(new ActionTranslate(Language.DE));
-        this.itemIntoRomanian.addActionListener(new ActionTranslate(Language.RO));
-        this.itemIntoTamil.addActionListener(new ActionTranslate(Language.TA));
-        this.itemIntoDutch.addActionListener(new ActionTranslate(Language.NL));
-        this.itemIntoIndonesian.addActionListener(new ActionTranslate(Language.IN_ID));
-        this.itemIntoItalian.addActionListener(new ActionTranslate(Language.IT));
-        this.itemIntoSpanish.addActionListener(new ActionTranslate(Language.ES));
-        this.itemIntoPortuguese.addActionListener(new ActionTranslate(Language.PT));
-        this.itemIntoPolish.addActionListener(new ActionTranslate(Language.PL));
-        this.itemIntoKorean.addActionListener(new ActionTranslate(Language.KO));
-        this.itemIntoJapanese.addActionListener(new ActionTranslate(Language.JA));
-        this.itemIntoSwedish.addActionListener(new ActionTranslate(Language.SE));
-        this.itemIntoOther.addActionListener(new ActionTranslate(Language.OT));
+        Stream.of(
+            new SimpleEntry<>(this.itemIntoHindi, Language.HI),
+            new SimpleEntry<>(this.itemIntoArabic, Language.AR),
+            new SimpleEntry<>(this.itemIntoRussia, Language.RU),
+            new SimpleEntry<>(this.itemIntoChina, Language.ZH),
+            new SimpleEntry<>(this.itemIntoFrench, Language.FR),
+            new SimpleEntry<>(this.itemIntoTurkish, Language.TR),
+            new SimpleEntry<>(this.itemIntoCzech, Language.CS),
+            new SimpleEntry<>(this.itemIntoGerman, Language.DE),
+            new SimpleEntry<>(this.itemIntoRomanian, Language.RO),
+            new SimpleEntry<>(this.itemIntoTamil, Language.TA),
+            new SimpleEntry<>(this.itemIntoDutch, Language.NL),
+            new SimpleEntry<>(this.itemIntoIndonesian, Language.IN_ID),
+            new SimpleEntry<>(this.itemIntoItalian, Language.IT),
+            new SimpleEntry<>(this.itemIntoSpanish, Language.ES),
+            new SimpleEntry<>(this.itemIntoPortuguese, Language.PT),
+            new SimpleEntry<>(this.itemIntoPolish, Language.PL),
+            new SimpleEntry<>(this.itemIntoKorean, Language.KO),
+            new SimpleEntry<>(this.itemIntoJapanese, Language.JA),
+            new SimpleEntry<>(this.itemIntoSwedish, Language.SE),
+            new SimpleEntry<>(this.itemIntoOther, Language.OT)
+        )
+        .forEach(
+            entry -> entry.getKey().addActionListener(
+                new ActionTranslate(entry.getValue())
+            )
+        );
         
         menuWindows.add(menuTranslation);
         menuWindows.add(new JSeparator());
@@ -708,7 +695,7 @@ public class Menubar extends JMenuBar {
             MediatorGui.tabResults().setSelectedComponent(panelSqlEngine);
 
             // Create a custom tab header with close button
-            TabHeader header = new TabHeader(I18nView.valueByKey("MENUBAR_SQL_ENGINE"), HelperUi.ICON_COG);
+            TabHeader header = new TabHeader(I18nView.valueByKey("MENUBAR_SQL_ENGINE"), HelperUi.ICON_COG, panelSqlEngine);
             I18nView.addComponentForKey("MENUBAR_SQL_ENGINE", header.getTabTitleLabel());
 
             // Apply the custom header to the tab
@@ -822,20 +809,22 @@ public class Menubar extends JMenuBar {
     }
     
     public void switchLocale(Locale oldLocale, Locale newLocale, boolean isStartup) {
+        
         I18n.setLocaleDefault(ResourceBundle.getBundle("i18n.jsql", newLocale));
         
         JTableHeader header = MediatorGui.panelConsoles().getNetworkTable().getTableHeader();
         TableColumnModel colMod = header.getColumnModel();
-        if (
-            new Locale("zh").getLanguage().equals(newLocale.getLanguage())
-            || new Locale("ko").getLanguage().equals(newLocale.getLanguage())
-        ) {
-            StyleConstants.setFontFamily(SwingAppender.ERROR, HelperUi.FONT_NAME_UBUNTU_REGULAR);
-            StyleConstants.setFontFamily(SwingAppender.WARN, HelperUi.FONT_NAME_UBUNTU_REGULAR);
-            StyleConstants.setFontFamily(SwingAppender.INFO, HelperUi.FONT_NAME_UBUNTU_REGULAR);
-            StyleConstants.setFontFamily(SwingAppender.DEBUG, HelperUi.FONT_NAME_UBUNTU_REGULAR);
-            StyleConstants.setFontFamily(SwingAppender.TRACE, HelperUi.FONT_NAME_UBUNTU_REGULAR);
-            StyleConstants.setFontFamily(SwingAppender.ALL, HelperUi.FONT_NAME_UBUNTU_REGULAR);
+        
+        if (I18n.isAsian(newLocale)) {
+            Stream.of(
+                SwingAppender.ERROR,
+                SwingAppender.WARN,
+                SwingAppender.INFO,
+                SwingAppender.DEBUG,
+                SwingAppender.TRACE,
+                SwingAppender.ALL
+            )
+            .forEach(attribute -> StyleConstants.setFontFamily(attribute, HelperUi.FONT_NAME_UBUNTU_REGULAR));
             
             MediatorGui.managerBruteForce().getResult().setFont(HelperUi.FONT_UBUNTU_REGULAR);
             
@@ -844,12 +833,15 @@ public class Menubar extends JMenuBar {
             colMod.getColumn(2).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
             colMod.getColumn(3).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
         } else {
-            StyleConstants.setFontFamily(SwingAppender.ERROR, HelperUi.FONT_NAME_UBUNTU_MONO);
-            StyleConstants.setFontFamily(SwingAppender.WARN, HelperUi.FONT_NAME_UBUNTU_MONO);
-            StyleConstants.setFontFamily(SwingAppender.INFO, HelperUi.FONT_NAME_UBUNTU_MONO);
-            StyleConstants.setFontFamily(SwingAppender.DEBUG, HelperUi.FONT_NAME_UBUNTU_MONO);
-            StyleConstants.setFontFamily(SwingAppender.TRACE, HelperUi.FONT_NAME_UBUNTU_MONO);
-            StyleConstants.setFontFamily(SwingAppender.ALL, HelperUi.FONT_NAME_UBUNTU_MONO);
+            Stream.of(
+                SwingAppender.ERROR,
+                SwingAppender.WARN,
+                SwingAppender.INFO,
+                SwingAppender.DEBUG,
+                SwingAppender.TRACE,
+                SwingAppender.ALL
+            )
+            .forEach(attribute -> StyleConstants.setFontFamily(attribute, HelperUi.FONT_NAME_UBUNTU_MONO));
             
             MediatorGui.managerBruteForce().getResult().setFont(HelperUi.FONT_UBUNTU_MONO);
             
@@ -870,11 +862,7 @@ public class Menubar extends JMenuBar {
                     } else {
                         Method methodSetText = classComponent.getMethod("setText", String.class);
                         methodSetText.setAccessible(true);
-                        if (
-                            // TODO
-                            new Locale("zh").getLanguage().equals(newLocale.getLanguage())
-                            || new Locale("ko").getLanguage().equals(newLocale.getLanguage())
-                        ) {
+                        if (I18n.isAsian(newLocale)) {
                             methodSetText.invoke(componentSwing, I18nView.valueByKey(key));
                         } else {
                             methodSetText.invoke(componentSwing, I18n.valueByKey(key));
@@ -891,43 +879,47 @@ public class Menubar extends JMenuBar {
         
         ComponentOrientation componentOrientation = ComponentOrientation.getOrientation(I18n.getLocaleDefault());
         MediatorGui.frame().applyComponentOrientation(componentOrientation);
-        this.itemArabic.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        this.itemEnglish.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemChinese.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemRussian.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemFrench.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemCzech.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemDutch.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemGerman.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemRomanian.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemSwedish.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemKorean.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemTurkish.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIndonesian.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemItalian.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemSpanish.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemPortuguese.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemPolish.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         
-        this.itemIntoArabic.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        this.itemIntoHindi.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoRussia.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoChina.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoFrench.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoTurkish.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoCzech.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoGerman.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoDutch.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoIndonesian.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoItalian.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoSpanish.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoPortuguese.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoPolish.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoKorean.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoJapanese.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoTamil.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoSwedish.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-        this.itemIntoOther.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        Stream.of(this.itemArabic, this.itemIntoArabic)
+        .forEach(menuItem -> menuItem.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));
+        
+        Stream.of(
+            this.itemChinese,
+            this.itemRussian,
+            this.itemFrench,
+            this.itemCzech,
+            this.itemDutch,
+            this.itemGerman,
+            this.itemRomanian,
+            this.itemSwedish,
+            this.itemKorean,
+            this.itemTurkish,
+            this.itemIndonesian,
+            this.itemItalian,
+            this.itemSpanish,
+            this.itemPortuguese,
+            this.itemPolish,
+            
+            this.itemIntoHindi,
+            this.itemIntoRussia,
+            this.itemIntoChina,
+            this.itemIntoFrench,
+            this.itemIntoTurkish,
+            this.itemIntoCzech,
+            this.itemIntoGerman,
+            this.itemIntoDutch,
+            this.itemIntoIndonesian,
+            this.itemIntoItalian,
+            this.itemIntoSpanish,
+            this.itemIntoPortuguese,
+            this.itemIntoPolish,
+            this.itemIntoKorean,
+            this.itemIntoJapanese,
+            this.itemIntoTamil,
+            this.itemIntoSwedish,
+            this.itemIntoOther
+        )
+        .forEach(menuItem -> menuItem.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT));
         
         if (ComponentOrientation.getOrientation(oldLocale) != ComponentOrientation.getOrientation(newLocale)) {
             Component c1 = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getLeftComponent();

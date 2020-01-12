@@ -112,6 +112,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlTables(Database database) {
+        
         return
             this.modelYaml.getResource().getSchema().getTable()
                 .replace(DATABASE_HEX, Hex.encodeHexString(database.toString().getBytes()))
@@ -120,6 +121,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlColumns(Table table) {
+        
         return
             this.modelYaml.getResource().getSchema().getColumn()
                 .replace(DATABASE_HEX, Hex.encodeHexString(table.getParent().toString().getBytes()))
@@ -130,6 +132,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlRows(String[] namesColumns, Database database, Table table) {
+        
         String sqlField = this.modelYaml.getResource().getSchema().getRow().getFields().getField();
         Matcher matcherSqlField = Pattern.compile("(?s)(.*)"+ Pattern.quote(FIELD) +"(.*)").matcher(sqlField);
         String leadSqlField = "";
@@ -143,6 +146,7 @@ public class VendorYaml implements AbstractVendor {
         String sqlConcatFields = this.modelYaml.getResource().getSchema().getRow().getFields().getConcat();
         
         String[] namesColumnUtf8 = new String[namesColumns.length];
+        
         for (int i = 0 ; i < namesColumns.length ; i++) {
             namesColumnUtf8[i] = StringUtil.detectUtf8(namesColumns[i]);
             try {
@@ -180,12 +184,12 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlPrivilegeTest() {
-        return
-            this.modelYaml.getResource().getFile().getPrivilege();
+        return this.modelYaml.getResource().getFile().getPrivilege();
     }
 
     @Override
     public String sqlFileRead(String filePath) {
+        
         return
             this.modelYaml.getResource().getFile().getRead()
                 .replace(FILEPATH_HEX, Hex.encodeHexString(filePath.getBytes()));
@@ -193,6 +197,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlTextIntoFile(String content, String filePath) {
+        
         return
             this.injectionModel.getIndexesInUrl()
                 .replaceAll(
@@ -204,8 +209,7 @@ public class VendorYaml implements AbstractVendor {
                         )
                 )
                 .replaceAll("--++", "") +" "+ this.modelYaml.getResource().getFile().getCreate().getQuery()
-                .replace(FILEPATH, filePath)
-        ;
+                .replace(FILEPATH, filePath);
     }
 
     @Override
@@ -225,6 +229,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlTestBlind(String check, BooleanMode blindMode) {
+        
         return
             " "+
             this.modelYaml.getStrategy().getBoolean().getBlind()
@@ -238,6 +243,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlBitTestBlind(String inj, int indexCharacter, int bit, BooleanMode blindMode) {
+        
         return
             " "+
             this.modelYaml.getStrategy().getBoolean().getBlind()
@@ -256,6 +262,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlLengthTestBlind(String inj, int indexCharacter, BooleanMode blindMode) {
+        
         return
             " "+
             this.modelYaml.getStrategy().getBoolean().getBlind()
@@ -273,7 +280,8 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlTimeTest(String check, BooleanMode blindMode) {
-        String sqlTime =
+        
+        return
             " "+
             this.modelYaml.getStrategy().getBoolean().getTime()
                 .replace(BOOLEAN_MODE,
@@ -283,12 +291,11 @@ public class VendorYaml implements AbstractVendor {
                 )
                 .replace(TEST, check)
                 .replace(SLEEP_TIME, Long.toString(InjectionTime.SLEEP_TIME));
-        
-        return sqlTime;
     }
 
     @Override
     public String sqlBitTestTime(String inj, int indexCharacter, int bit, BooleanMode blindMode) {
+        
         return
             " "+
             this.modelYaml.getStrategy().getBoolean().getTime()
@@ -312,6 +319,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlLengthTestTime(String inj, int indexCharacter, BooleanMode blindMode) {
+        
         return
             " "+
             this.modelYaml.getStrategy().getBoolean().getTime()
@@ -334,6 +342,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlBlind(String sqlQuery, String startPosition) {
+        
         return
             VendorYaml.replaceTags(
                 this.modelYaml.getStrategy().getConfiguration().getSlidingWindow()
@@ -345,6 +354,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlTime(String sqlQuery, String startPosition) {
+        
         return
             VendorYaml.replaceTags(
                 this.modelYaml.getStrategy().getConfiguration().getSlidingWindow()
@@ -356,6 +366,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlTestError() {
+        
         return
             " "+
             this.modelYaml.getStrategy().getError().getMethod().get(this.injectionModel.getMediatorStrategy().getError().getIndexMethodError()).getQuery()
@@ -366,6 +377,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlError(String sqlQuery, String startPosition) {
+        
         return
             " "+
             VendorYaml.replaceTags(
@@ -379,6 +391,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlNormal(String sqlQuery, String startPosition) {
+        
         return
             VendorYaml.replaceTags(
                 this.modelYaml.getStrategy().getConfiguration().getSlidingWindow()
@@ -390,8 +403,9 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlCapacity(String[] indexes) {
+        
         return
-                this.injectionModel.getIndexesInUrl().replaceAll(
+            this.injectionModel.getIndexesInUrl().replaceAll(
                 "1337("+ String.join("|", indexes) +")7331",
                 VendorYaml.replaceTags(
                     this.modelYaml.getStrategy().getNormal().getCapacity()
@@ -403,6 +417,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlIndices(Integer nbFields) {
+        
         String replaceTag = "";
         List<String> fields = new ArrayList<>();
         
@@ -411,6 +426,7 @@ public class VendorYaml implements AbstractVendor {
             fields.add(this.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(INDICE, Integer.toString(indice)));
             replaceTag = this.modelYaml.getStrategy().getConfiguration().getFailsafe().replace(INDICE, Integer.toString(indice));
         }
+        
         indice--;
         
         return
@@ -428,6 +444,7 @@ public class VendorYaml implements AbstractVendor {
 
     @Override
     public String sqlLimit(Integer limitSQLResult) {
+        
         int limitBoundary = this.modelYaml.getStrategy().getConfiguration().getLimitBoundary();
         return
             this.modelYaml.getStrategy().getConfiguration().getLimit()
@@ -441,6 +458,7 @@ public class VendorYaml implements AbstractVendor {
     
     @Override
     public String fingerprintErrorsAsRegex() {
+        
         return StringUtils.join(
             this.modelYaml.getStrategy().getConfiguration().getFingerprint().getErrorMessage()
                 .stream()
@@ -451,6 +469,7 @@ public class VendorYaml implements AbstractVendor {
     }
     
     public static String replaceTags(String sqlRequest) {
+        
         return
             sqlRequest
                 .replace("${ENCLOSE_VALUE_SQL}", ENCLOSE_VALUE_SQL)

@@ -50,6 +50,7 @@ public class HeaderUtil {
      * @param header string to decode
      */
     public static void sanitizeHeaders(HttpURLConnection connection, SimpleEntry<String, String> header) {
+        
         String keyHeader = header.getKey().trim();
         String valueHeader = header.getValue().trim();
         // Fix #2124: NullPointerException on addRequestProperty()
@@ -74,6 +75,7 @@ public class HeaderUtil {
      */
     @SuppressWarnings("unchecked")
     public void checkResponseHeader(HttpURLConnection connection, String urlByUser) throws IOException {
+        
         // TODO Extract
         Map<Header, Object> msgHeader = new EnumMap<>(Header.class);
         msgHeader.put(Header.URL, urlByUser);
@@ -156,12 +158,13 @@ public class HeaderUtil {
         StringBuilder pageSource = new StringBuilder();
         
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            
             char[] buffer = new char[4096];
             while (reader.read(buffer) > 0) {
                 pageSource.append(buffer);
             }
-            
         } catch (IOException errorInputStream) {
+            
             exception = errorInputStream;
             
             InputStream errorStream = connection.getErrorStream();
@@ -283,6 +286,7 @@ public class HeaderUtil {
      * @return Map of HTTP headers <name, value>
      */
     public static Map<String, String> getHttpHeaders(URLConnection connection) {
+        
         Map<String, String> mapHeaders = new HashMap<>();
         
         for (Map.Entry<String, List<String>> entries : connection.getHeaderFields().entrySet()) {

@@ -102,7 +102,6 @@ public class PreferencesUtil {
         this.setIs4K(prefs.getBoolean("is4K", false));
         
         HttpURLConnection.setFollowRedirects(this.isFollowingRedirection());
-        
     }
     
     /**
@@ -115,7 +114,6 @@ public class PreferencesUtil {
         
         Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
         prefs.put("pathFile", this.pathFile);
-        
     }
     
     /**
@@ -222,7 +220,6 @@ public class PreferencesUtil {
         preferences.putBoolean("is4K", this.is4K());
         
         HttpURLConnection.setFollowRedirects(this.isFollowingRedirection());
-        
     }
 
     // Getters and setters
@@ -435,5 +432,4 @@ public class PreferencesUtil {
     public void setIs4K(boolean is4k) {
         this.is4K = is4k;
     }
-    
 }
