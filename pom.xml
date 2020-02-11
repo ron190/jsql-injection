@@ -9,7 +9,7 @@
     <repositories>
         <repository>
             <id>jspresso-repository</id>
-            <url>http://repository.jspresso.org/maven2</url>
+            <url>https://repository.jspresso.org/maven2</url>
         </repository>
     </repositories>
 
