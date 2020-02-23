@@ -1,10 +1,13 @@
 package com.test.vendor.sqlserver;
 
+import java.sql.SQLException;
+
 import com.test.AbstractTestSuite;
 
 public abstract class ConcreteSQLServerTestSuite extends AbstractTestSuite {
 
-    public ConcreteSQLServerTestSuite () {
+    public ConcreteSQLServerTestSuite() throws SQLException {
+        
         this.jdbcURL = "jdbc:sqlserver://"+ AbstractTestSuite.HOSTNAME +":52382";
         this.jdbcUser = "sa";
         this.jdbcPass = "test";
@@ -23,5 +26,4 @@ public abstract class ConcreteSQLServerTestSuite extends AbstractTestSuite {
         
         this.requestJdbc();
     }
-    
 }

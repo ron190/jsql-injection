@@ -271,7 +271,7 @@ public class PanelPreferences extends JPanel {
             this.actionListenerSave.actionPerformed(null);
         });
         
-        String tooltipIsTamperingEval = "Custom tamper in JavaScript, e.g sql.replace(/\\+/gm,'/**/')";
+        String tooltipIsTamperingEval = "Custom tamper in JavaScript, e.g sql.replace(/\\+/gm,'/**/').\nMinimal context: var tampering = function(sql) {return sql}";
         this.checkboxIsTamperingEval.setToolTipText(tooltipIsTamperingEval);
         this.checkboxIsTamperingEval.setFocusable(false);
         

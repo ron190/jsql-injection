@@ -1,5 +1,7 @@
 package com.test.vendor.db2;
 
+import java.sql.SQLException;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -9,6 +11,11 @@ import com.jsql.model.exception.JSqlException;
 
 @Ignore
 public class DB2BlindGetTestSuite extends ConcreteDB2TestSuite {
+
+    public DB2BlindGetTestSuite() throws SQLException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
     @Override
     @BeforeClass
@@ -39,5 +46,4 @@ public class DB2BlindGetTestSuite extends ConcreteDB2TestSuite {
     public void listTables() throws JSqlException {
         LOGGER.info("Ignore: too slow");
     }
-    
 }

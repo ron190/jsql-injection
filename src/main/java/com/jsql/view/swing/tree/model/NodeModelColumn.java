@@ -87,7 +87,7 @@ public class NodeModelColumn extends AbstractNodeModel {
     }
     
     @Override
-    protected void buildMenu(JPopupMenu2 tablePopupMenu, TreePath path) {
+    protected void buildMenu(JPopupMenuCustomExtract tablePopupMenu, TreePath path) {
         // Do nothing
     }
     

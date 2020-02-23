@@ -35,5 +35,4 @@ public class H2NormalGetTestSuite extends ConcreteH2TestSuite {
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getH2());
         model.beginInjection();
     }
-    
 }

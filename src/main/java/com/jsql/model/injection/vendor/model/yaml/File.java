@@ -1,7 +1,10 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-public class File {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class File implements Serializable {
 
     private String privilege = "";
     private String read = "";

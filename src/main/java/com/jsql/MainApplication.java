@@ -107,5 +107,4 @@ public class MainApplication {
             LOGGER.warn("Your screen seems compatible with 4K resolution, please activate high-definition mode in Preferences");
         }
     }
-    
 }

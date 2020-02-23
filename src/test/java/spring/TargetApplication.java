@@ -35,8 +35,8 @@ public class TargetApplication {
             new SimpleEntry<>(propsMySQLError, "spring/hibernate.mysql-5.5.40.properties"),
             new SimpleEntry<>(propsPostgres, "spring/hibernate.postgres.properties")
         ).forEach(simpleEntry -> {
-            try (InputStream inputStreamH2 = classloader.getResourceAsStream(simpleEntry.getValue())) {
-                simpleEntry.getKey().load(inputStreamH2);
+            try (InputStream inputStream = classloader.getResourceAsStream(simpleEntry.getValue())) {
+                simpleEntry.getKey().load(inputStream);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -54,17 +54,20 @@ public class TargetApplication {
             Configuration configuration = new Configuration();
             configuration.addProperties(props).configure("spring/hibernate.cfg.xml");
             configuration.addAnnotatedClass(Student.class);
+            
             StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties());
-            SessionFactory factory = configuration.buildSessionFactory(builder.build());
-            Session session = factory.openSession();
-            Transaction transaction = session.beginTransaction();
-            Student student = new Student();
-            student.setAge(1);
-            session.save(student);
-            transaction.commit();
-            session.close();
-            factory.close();
+            
+            try (
+                SessionFactory factory = configuration.buildSessionFactory(builder.build());
+                Session session = factory.openSession()
+            ) {
+                Transaction transaction = session.beginTransaction();
+                Student student = new Student();
+                student.setAge(1);
+                session.save(student);
+                transaction.commit();
+            }
         });
     }
 

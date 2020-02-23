@@ -1,5 +1,7 @@
 package com.test.vendor.cubrid;
 
+import java.sql.SQLException;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 
@@ -8,7 +10,7 @@ import com.jsql.model.exception.InjectionFailureException;
 @Ignore
 public class CubridNormalGetTestSuite extends ConcreteCubridTestSuite {
 
-    public CubridNormalGetTestSuite() throws ClassNotFoundException {
+    public CubridNormalGetTestSuite() throws ClassNotFoundException, SQLException {
         super();
     }
 
@@ -29,5 +31,4 @@ public class CubridNormalGetTestSuite extends ConcreteCubridTestSuite {
 //
 //        MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
     }
-    
 }

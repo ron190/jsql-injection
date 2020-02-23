@@ -49,6 +49,7 @@ public class ProxyUtil {
     private static final String PROPERTIES_HTTPS_PROXY_PORT = "https.proxyPort";
     
     public ProxyUtil(InjectionModel injectionModel) {
+        
         this.httpProxyDefaultAddress = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("http.proxy.default.ip");
         this.httpProxyDefaultPort = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("http.proxy.default.port");
         this.httpsProxyDefaultAddress = injectionModel.getMediatorUtils().getPropertiesUtil().getProperties().getProperty("https.proxy.default.ip");
@@ -57,11 +58,10 @@ public class ProxyUtil {
     
     /**
      * Save proxy configuration into the JVM preferences.
-     * @param isUsingProxy wether the connection is using a proxy
+     * @param isUsingProxy whether the connection is using a proxy
      * @param proxyAddress IP address or name of the proxy
      * @param proxyPort port number of proxy
      */
-    // TODO Spock test
     public void set(
         boolean isUsingProxy,
         String proxyAddress,

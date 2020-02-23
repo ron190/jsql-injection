@@ -214,7 +214,7 @@ public class JFrameView extends JFrame {
         MediatorGui.managerUpload().changePrivilegeIcon(HelperUi.ICON_SQUARE_GREY);
     }
     
-    // Getters ans setters
+    // Getters and setters
 
     /**
      * Get list of terminal by unique identifier.

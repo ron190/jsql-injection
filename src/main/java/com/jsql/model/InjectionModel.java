@@ -82,26 +82,6 @@ public class InjectionModel extends AbstractModelObservable {
     
     private DataAccess dataAccess = new DataAccess(this);
     private RessourceAccess resourceAccess = new RessourceAccess(this);
-
-    public InjectionModel() {
-        this.mediatorUtils = new MediatorUtils();
-        
-        this.mediatorStrategy = new MediatorStrategy(this);
-
-        this.mediatorUtils.setPropertiesUtil(new PropertiesUtil());
-        this.mediatorUtils.setConnectionUtil(new ConnectionUtil(this));
-        this.mediatorUtils.setAuthenticationUtil(new AuthenticationUtil(this));
-        this.mediatorUtils.setGitUtil(new GitUtil(this));
-        this.mediatorUtils.setHeaderUtil(new HeaderUtil(this));
-        this.mediatorUtils.setParameterUtil(new ParameterUtil(this));
-        this.mediatorUtils.setExceptionUtil(new ExceptionUtil(this));
-        this.mediatorUtils.setSoapUtil(new SoapUtil(this));
-        this.mediatorUtils.setJsonUtil(new JsonUtil(this));
-        this.mediatorUtils.setPreferencesUtil(new PreferencesUtil());
-        this.mediatorUtils.setProxyUtil(new ProxyUtil(this));
-        this.mediatorUtils.setThreadUtil(new ThreadUtil(this));
-        this.mediatorUtils.setTamperingUtil(new TamperingUtil());
-    }
     
     /**
      * Log4j logger sent to view.
@@ -146,6 +126,26 @@ public class InjectionModel extends AbstractModelObservable {
     
     public static final boolean IS_PARAM_BY_USER = true;
     public static final boolean IS_JSON = true;
+
+    public InjectionModel() {
+        this.mediatorUtils = new MediatorUtils();
+        
+        this.mediatorStrategy = new MediatorStrategy(this);
+
+        this.mediatorUtils.setPropertiesUtil(new PropertiesUtil());
+        this.mediatorUtils.setConnectionUtil(new ConnectionUtil(this));
+        this.mediatorUtils.setAuthenticationUtil(new AuthenticationUtil(this));
+        this.mediatorUtils.setGitUtil(new GitUtil(this));
+        this.mediatorUtils.setHeaderUtil(new HeaderUtil(this));
+        this.mediatorUtils.setParameterUtil(new ParameterUtil(this));
+        this.mediatorUtils.setExceptionUtil(new ExceptionUtil(this));
+        this.mediatorUtils.setSoapUtil(new SoapUtil(this));
+        this.mediatorUtils.setJsonUtil(new JsonUtil(this));
+        this.mediatorUtils.setPreferencesUtil(new PreferencesUtil());
+        this.mediatorUtils.setProxyUtil(new ProxyUtil(this));
+        this.mediatorUtils.setThreadUtil(new ThreadUtil(this));
+        this.mediatorUtils.setTamperingUtil(new TamperingUtil());
+    }
 
     /**
      * Reset each injection attributes: Database metadata, General Thread status, Strategy.

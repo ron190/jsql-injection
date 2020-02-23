@@ -18,14 +18,6 @@ import com.test.vendor.mysql.ConcreteMySQLTestSuite;
 @Execution(ExecutionMode.CONCURRENT)
 public class CookieTestSuite extends ConcreteMySQLTestSuite {
     
-    // pour chaque vendor/méthode/strategy
-    /**
-     * liste db, table, colonne, value
-     * valeur à rallonge
-     * caractère spécial \
-     * @throws InjectionFailureException
-     */
-
     @Override
     public void setupInjection() throws Exception {
         
@@ -45,7 +37,6 @@ public class CookieTestSuite extends ConcreteMySQLTestSuite {
         model.setIsScanning(true);
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
-    
     }
     
     @Override
@@ -62,5 +53,4 @@ public class CookieTestSuite extends ConcreteMySQLTestSuite {
     public void listColumns() throws JSqlException {
         LOGGER.info("Ignore: too slow");
     }
-    
 }

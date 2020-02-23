@@ -31,7 +31,7 @@ public class TamperingUtil {
     
     private String customTamper = null;
     
-    private static final ScriptEngine NASHORN_ENGINE = new ScriptEngineManager().getEngineByName("nashorn");
+    private static final ScriptEngineManager ENGINE_MANAGER = new ScriptEngineManager();
 
     public void set(
         boolean isBase64,
@@ -60,20 +60,29 @@ public class TamperingUtil {
         this.isSpaceToSharpComment = isSpaceToSharpComment;
     }
     
-    private static String eval(String out, String js) {
-        Object result = null;
+    private static String eval(String sqlQuery, String jsTampering) {
+        Object resultSqlTampered = null;
         
         try {
-            NASHORN_ENGINE.eval(js);
+            if (jsTampering == null || jsTampering.trim().isEmpty()) {
+                throw new ScriptException("Tampering context is empty");
+            }
             
-            Invocable invocable = (Invocable) NASHORN_ENGINE;
-            result = invocable.invokeFunction("tampering", out);
-        } catch (ScriptException | NoSuchMethodException e) {
-            LOGGER.warn(e);
-            result = out;
+            ScriptEngine nashornEngine = ENGINE_MANAGER.getEngineByName("nashorn");
+            nashornEngine.eval(jsTampering);
+            
+            Invocable nashornInvocable = (Invocable) nashornEngine;
+            resultSqlTampered = nashornInvocable.invokeFunction("tampering", sqlQuery);
+        } catch (ScriptException e) {
+            LOGGER.warn("Tampering context contains errors: " + e.getMessage(), e);
+            resultSqlTampered = sqlQuery;
+        } catch (NoSuchMethodException e) {
+            LOGGER.warn("Tampering context is not properly defined: " + e.getMessage(), e);
+            LOGGER.warn("Minimal tampering context is: var tampering = function(sql) {return sql}");
+            resultSqlTampered = sqlQuery;
         }
         
-        return result.toString();
+        return resultSqlTampered.toString();
     }
     
     public String tamper(String in) {

@@ -11,7 +11,7 @@ import com.test.AbstractTestSuite;
 @Execution(ExecutionMode.CONCURRENT)
 public abstract class ConcreteMySQLTestSuite extends AbstractTestSuite {
 
-    public ConcreteMySQLTestSuite () {
+    public ConcreteMySQLTestSuite() {
         this.config();
     }
     
@@ -33,5 +33,4 @@ public abstract class ConcreteMySQLTestSuite extends AbstractTestSuite {
         this.jdbcQueryForColumnNames =   "select COLUMN_NAME from information_schema.columns where TABLE_SCHEMA='"+ this.jsqlDatabaseName +"' and TABLE_NAME='"+ this.jsqlTableName +"'";
         this.jdbcQueryForValues =    "select "+ this.jsqlColumnName +" from `"+ this.jsqlDatabaseName +"`.`"+ this.jsqlTableName +"`";
     }
-    
 }

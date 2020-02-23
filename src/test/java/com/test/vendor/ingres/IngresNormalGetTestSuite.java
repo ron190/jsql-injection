@@ -1,5 +1,7 @@
 package com.test.vendor.ingres;
 
+import java.sql.SQLException;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 
@@ -8,7 +10,7 @@ import com.jsql.model.exception.InjectionFailureException;
 @Ignore
 public class IngresNormalGetTestSuite extends ConcreteIngresTestSuite {
 
-    public IngresNormalGetTestSuite() throws ClassNotFoundException {
+    public IngresNormalGetTestSuite() throws ClassNotFoundException, SQLException {
         super();
     }
 
@@ -29,5 +31,4 @@ public class IngresNormalGetTestSuite extends ConcreteIngresTestSuite {
 //
 //        MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
     }
-    
 }

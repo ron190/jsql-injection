@@ -125,7 +125,7 @@ public abstract class AbstractNodeModel {
     
     // TODO extract
     @SuppressWarnings("serial")
-    public class JPopupMenu2 extends JPopupMenu {
+    public class JPopupMenuCustomExtract extends JPopupMenu {
         
         ButtonGroup buttonGroupLoadRows;
         JCheckBox radioCustomFromRow;
@@ -193,7 +193,7 @@ public abstract class AbstractNodeModel {
      */
     public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
         
-        JPopupMenu2 popupMenu = new JPopupMenu2();
+        JPopupMenuCustomExtract popupMenu = new JPopupMenuCustomExtract();
         AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
 
         JMenuItem mnLoad = new JMenuItem(
@@ -377,7 +377,7 @@ public abstract class AbstractNodeModel {
      * @param tablePopupMenu Menu to display
      * @param path Treepath of current node
      */
-    protected abstract void buildMenu(JPopupMenu2 tablePopupMenu, TreePath path);
+    protected abstract void buildMenu(JPopupMenuCustomExtract tablePopupMenu, TreePath path);
     
     /**
      * Check if menu should be opened.

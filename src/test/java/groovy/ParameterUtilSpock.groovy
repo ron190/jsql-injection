@@ -6,6 +6,9 @@ import com.jsql.model.exception.InjectionFailureException
 import spock.lang.Specification
 
 class ParameterUtilSpock extends Specification {
+    
+    def injectionModel
+    def parameterUtil
 
     def 'Check STAR is used by correct method injection when check all param is disabled'() {
         
@@ -67,11 +70,8 @@ class ParameterUtilSpock extends Specification {
         then: thrown InjectionFailureException
     }
     
-    def injectionModel
-    def parameterUtil
     def setup() {
         injectionModel = new InjectionModel()
         parameterUtil = injectionModel.mediatorUtils.parameterUtil
     }
-    
 }

@@ -17,17 +17,19 @@ package com.jsql.model.exception;
  */
 @SuppressWarnings("serial")
 public class StoppedByUserSlidingException extends SlidingException {
+    
+    private static final String STR_STOPPED_BY_USER = "Stopped by user";
 
     public StoppedByUserSlidingException() {
-        super("Stopped by user");
+        super(STR_STOPPED_BY_USER);
     }
     
     public StoppedByUserSlidingException(String slidingWindowAllRows) {
-        super("Stopped by user", slidingWindowAllRows);
+        super(STR_STOPPED_BY_USER, slidingWindowAllRows);
     }
 
     public StoppedByUserSlidingException(String slidingWindowAllRows, String slidingWindowCurrentRows) {
-        super("Stopped by user", slidingWindowAllRows, slidingWindowCurrentRows);
+        super(STR_STOPPED_BY_USER, slidingWindowAllRows, slidingWindowCurrentRows);
     }
 
 }

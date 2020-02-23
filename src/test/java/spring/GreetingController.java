@@ -37,18 +37,22 @@ public class GreetingController {
     private SessionFactory sessionFactory;
 
     @SuppressWarnings("unchecked")
-    @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, path = "/greeting-post", consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    public Greeting greetingPost(HttpServletRequest a) throws IOException {
+    @RequestMapping(
+        method = { RequestMethod.GET, RequestMethod.POST },
+        path = "/greeting-post",
+        consumes = { MediaType.APPLICATION_FORM_URLENCODED_VALUE, MediaType.TEXT_PLAIN_VALUE }
+    )
+    public Greeting greetingPost(HttpServletRequest request) throws IOException {
         
-        Session session = this.sessionFactory.getCurrentSession();
         Greeting greeting = null;
-        try {
-            String name = a.getParameterMap().get("name")[0];
-
-            name = name.replace(":", "\\:");
-            Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            List<Object[]> results = q.getResultList();
+            String name = request.getParameterMap().get("name")[0];
+            name = name.replace(":", "\\:");
+            
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+            List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
                 this.counter.incrementAndGet(),
@@ -57,8 +61,6 @@ public class GreetingController {
             );
         } catch (Exception e) {
             // Hide useless SQL error messages
-        } finally {
-            session.close();
         }
         
         return greeting;
@@ -68,24 +70,22 @@ public class GreetingController {
     @RequestMapping("/greeting-cookie")
     public Greeting greetingCookie(HttpServletRequest request, @CookieValue("name") String name) throws IOException {
 
-        Session session = this.sessionFactory.getCurrentSession();
         Greeting greeting = null;
-        try {
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
             
             name = name.replace(":", "\\:");
-            Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
             
-            List<Object[]> results = q.getResultList();
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+            List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
-                    this.counter.incrementAndGet(),
-                    String.format(template, name)
-                    + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
-                    );
+                this.counter.incrementAndGet(),
+                String.format(template, name)
+                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+            );
         } catch (Exception e) {
             // Hide useless SQL error messages
-        } finally {
-            session.close();
         }
         
         return greeting;
@@ -95,25 +95,23 @@ public class GreetingController {
     @RequestMapping("/greeting-header")
     public Greeting greetingHeader(@RequestHeader Map<String, String> a) throws IOException {
         
-        Session session = this.sessionFactory.getCurrentSession();
         Greeting greeting = null;
-        try {
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+            
             String name = a.get("name");
-            
             name = name.replace(":", "\\:");
-            Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
-            
-            List<Object[]> results = q.getResultList();
+
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+            List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
-                    this.counter.incrementAndGet(),
-                    String.format(template, name)
-                    + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
-                    );
+                this.counter.incrementAndGet(),
+                String.format(template, name)
+                + StringEscapeUtils.unescapeJava(this.objectMapper.writeValueAsString(results))
+            );
         } catch (Exception e) {
             // Hide useless SQL error messages
-        } finally {
-            session.close();
         }
         
         return greeting;
@@ -123,19 +121,18 @@ public class GreetingController {
     @RequestMapping("/greeting-json")
     public Greeting greetingJson(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        Session session = this.sessionFactory.getCurrentSession();
         Greeting greeting = null;
-        try {
+
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+            
             name = name.replaceAll("\\\\:", ":");
-            String j = new JSONObject(name).getJSONObject("b").getJSONArray("b").getJSONObject(2).getJSONObject("a").getString("a");
-            j = j.replaceAll(":", "\\\\:");
+            String param = new JSONObject(name).getJSONObject("b").getJSONArray("b").getJSONObject(2).getJSONObject("a").getString("a");
+            param = param.replaceAll(":", "\\\\:");
+            String a = param.replace(":", "\\:");
             
-            String a = j;
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+ a +"'");
             
-            a = a.replace(":", "\\:");
-            Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+ a +"'");
-            
-            List<Object[]> results = q.getResultList();
+            List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
                 this.counter.incrementAndGet(),
@@ -144,8 +141,6 @@ public class GreetingController {
             );
         } catch (Exception e) {
             // Hide useless SQL error messages
-        } finally {
-            session.close();
         }
         
         return greeting;
@@ -155,13 +150,13 @@ public class GreetingController {
     @RequestMapping("/greeting")
     public Greeting greeting(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        Session session = this.sessionFactory.getCurrentSession();
-        name = name.replace(":", "\\:");
-        Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
-        
         Greeting greeting = null;
-        try {
-            List<Object[]> results = q.getResultList();
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+            name = name.replace(":", "\\:");
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+        
+            List<Object[]> results = query.getResultList();
             
             greeting = new Greeting(
                 this.counter.incrementAndGet(),
@@ -170,8 +165,6 @@ public class GreetingController {
             );
         } catch (Exception e) {
             // Hide useless SQL error messages
-        } finally {
-            session.close();
         }
         
         return greeting;
@@ -180,13 +173,13 @@ public class GreetingController {
     @RequestMapping("/greeting-error")
     public Greeting greetingError(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        Session session = this.sessionFactory.getCurrentSession();
-        name = name.replace(":", "\\:");
-        Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
-        
         Greeting greeting = null;
-        try {
-            q.getResultList();
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+            name = name.replace(":", "\\:");
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+            
+            query.getResultList();
         } catch (Exception e) {
             String stacktrace = ExceptionUtils.getStackTrace(e);
             
@@ -197,8 +190,6 @@ public class GreetingController {
                 String.format(template+"#", name)
                 + StringEscapeUtils.unescapeJava(stacktrace)
             );
-        } finally {
-            session.close();
         }
         
         return greeting;
@@ -208,15 +199,16 @@ public class GreetingController {
     @RequestMapping("/greeting-blind")
     public Greeting greetingBlind(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        Session session = this.sessionFactory.getCurrentSession();
-        name = name.replace(":", "\\:");
-        Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
-        
         Greeting greeting = null;
-        try {
-            List<Object[]> l = q.getResultList();
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
             
-            if (l.isEmpty()) {
+            name = name.replace(":", "\\:");
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+        
+            List<Object[]> results = query.getResultList();
+            
+            if (results.isEmpty()) {
                 greeting = new Greeting(
                     this.counter.incrementAndGet(),
                     String.format(template+"#", name)
@@ -231,8 +223,6 @@ public class GreetingController {
             }
         } catch (Exception e) {
             // Hide useless SQL error messages
-        } finally {
-            session.close();
         }
         
         return greeting;
@@ -241,20 +231,17 @@ public class GreetingController {
     @RequestMapping("/greeting-time")
     public Greeting greetingTime(@RequestParam(value="name", defaultValue="World") String name) throws IOException {
         
-        Session session = this.sessionFactory.getCurrentSession();
-        name = name.replace(":", "\\:");
-        Query q = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
-        
         Greeting greeting = null;
-        try {
-            q.getResultList();
+        
+        try (Session session = this.sessionFactory.getCurrentSession()) {
+            
+            name = name.replace(":", "\\:");
+            Query query = session.createNativeQuery("select First_Name from Student where '1' = '"+name+"'");
+            query.getResultList();
         } catch (Exception e) {
             // Hide useless SQL error messages
-        } finally {
-            session.close();
         }
         
         return greeting;
     }
-
 }

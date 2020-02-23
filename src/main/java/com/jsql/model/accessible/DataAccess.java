@@ -524,6 +524,7 @@ public class DataAccess {
         for (int indexRow = 0 ; indexRow < listValues.size() ; indexRow++) {
             
             boolean isIncomplete = false;
+            
             for (int indexColumn = 0 ; indexColumn < columnsName.size() ; indexColumn++) {
                 
                 try {
@@ -537,6 +538,7 @@ public class DataAccess {
                     LOGGER.trace(exceptionIgnored, exceptionIgnored);
                 }
             }
+            
             if (isIncomplete) {
                 LOGGER.warn("String is too long, row #"+ (indexRow + 1) +" is incomplete:");
                 LOGGER.warn(String.join(", ", listValues.get(indexRow).toArray(new String[listValues.get(indexRow).size()])));

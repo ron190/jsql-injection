@@ -17,7 +17,8 @@ public class FlatButtonMouseAdapter extends MouseAdapter {
         this.buttonFlat = buttonFlat;
     }
     
-    @Override public void mouseEntered(MouseEvent e) {
+    @Override 
+    public void mouseEntered(MouseEvent e) {
         
         if (this.buttonFlat.isEnabled() && !this.isVisible) {
             this.buttonFlat.setContentAreaFilled(true);
@@ -25,7 +26,8 @@ public class FlatButtonMouseAdapter extends MouseAdapter {
         }
     }
 
-    @Override public void mouseExited(MouseEvent e) {
+    @Override 
+    public void mouseExited(MouseEvent e) {
         
         if (this.buttonFlat.isEnabled() && !this.isVisible) {
             this.buttonFlat.setContentAreaFilled(false);

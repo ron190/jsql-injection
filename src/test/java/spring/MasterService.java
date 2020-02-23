@@ -26,6 +26,7 @@ public class MasterService {
             TargetApplication.propsPostgres
         ).forEach(props -> {
             DatasourceConnectionProviderImpl connectionProviderPostgres = new DatasourceConnectionProviderImpl();
+            
             DriverManagerDataSource dataSource = new DriverManagerDataSource();
             dataSource.setUrl(props.getProperty("hibernate.connection.url"));
             dataSource.setUsername(props.getProperty("hibernate.connection.username"));
@@ -34,6 +35,7 @@ public class MasterService {
             Properties properties = new Properties();
             properties.put(Environment.DATASOURCE, dataSource);
             connectionProviderPostgres.configure(properties);
+            
             this.hashMap.put(props.getProperty("jsql.tenant"), connectionProviderPostgres);
         });
     }

@@ -1,5 +1,7 @@
 package com.test.vendor.oracle;
 
+import java.sql.SQLException;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 
@@ -7,6 +9,10 @@ import com.jsql.model.exception.InjectionFailureException;
 
 @Ignore
 public class OracleNormalGetTestSuite extends ConcreteOracleTestSuite {
+
+    public OracleNormalGetTestSuite() throws SQLException {
+        super();
+    }
 
     @Override
     @BeforeClass
@@ -25,5 +31,4 @@ public class OracleNormalGetTestSuite extends ConcreteOracleTestSuite {
 //
 //        MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
     }
-    
 }

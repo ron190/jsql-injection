@@ -1,10 +1,13 @@
 package com.test.vendor.db2;
 
+import java.sql.SQLException;
+
 import com.test.AbstractTestSuite;
 
 public abstract class ConcreteDB2TestSuite extends AbstractTestSuite {
 
-    public ConcreteDB2TestSuite () {
+    public ConcreteDB2TestSuite() throws SQLException {
+        
         this.jdbcURL = "jdbc:db2://"+ AbstractTestSuite.HOSTNAME +":50000/DB2";
         this.jdbcUser = "db2admin";
         this.jdbcPass = "ec3-benjo";
@@ -33,5 +36,4 @@ public abstract class ConcreteDB2TestSuite extends AbstractTestSuite {
         
         this.requestJdbc();
     }
-    
 }

@@ -37,6 +37,8 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
      */
     private String responseCodeHttp = "";
 
+    private InjectionModel injectionModel;
+    
     /**
      * Create a callable to find admin page.
      * @param urlAdminPage URL of admin page
@@ -45,7 +47,6 @@ public class CallableHttpHead implements Callable<CallableHttpHead> {
         this.urlAdminPage = urlAdminPage;
         this.injectionModel= injectionModel;
     }
-    InjectionModel injectionModel;
 
     /**
      * Call URL to a administration page in HEAD mode and send the result back to view.

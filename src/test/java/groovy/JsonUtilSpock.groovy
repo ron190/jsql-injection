@@ -13,6 +13,7 @@ import spock.lang.Specification
 class JsonUtilSpock extends Specification {
 
     def 'Add STAR when searching for key'() {
+        
         when: List<SimpleEntry<String, String>> entries = JsonUtil.createEntries(oJsonObject, "root", parentXPath)
         
         then:
@@ -32,6 +33,7 @@ class JsonUtilSpock extends Specification {
     }
 
     def 'Replace STAR when not searching for key'() {
+        
         when: JsonUtil.createEntries(oJsonObject, "root", null)
         and: List<SimpleEntry<String, String>> entries = JsonUtil.createEntries(oJsonObject, "root", null)
         
@@ -97,7 +99,6 @@ class JsonUtilSpock extends Specification {
                     null
                 ]
             """)
-        
     }
     
     def 'Convert json string to Java JSON'() {
@@ -105,5 +106,4 @@ class JsonUtilSpock extends Specification {
         and: JsonUtil.getJson("[]") instanceof JSONArray
         and: JsonUtil.getJson("0") instanceof Object
     }
-    
 }

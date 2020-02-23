@@ -1,7 +1,10 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-public class Strategy {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Strategy implements Serializable {
 
     private Configuration configuration = new Configuration();
     private Normal normal = new Normal();

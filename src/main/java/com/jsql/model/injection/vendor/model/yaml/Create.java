@@ -1,7 +1,10 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-public class Create {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Create implements Serializable {
 
     private String content = "";
     private String query = "";

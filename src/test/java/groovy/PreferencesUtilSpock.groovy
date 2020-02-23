@@ -220,5 +220,4 @@ class PreferencesUtilSpock extends Specification {
             false
         )
     }
-    
 }

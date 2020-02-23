@@ -1,5 +1,7 @@
 package com.test.vendor.informix;
 
+import java.sql.SQLException;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 
@@ -8,7 +10,7 @@ import com.jsql.model.exception.InjectionFailureException;
 @Ignore
 public class InformixNormalGetTestSuite extends ConcreteInformixTestSuite {
 
-    public InformixNormalGetTestSuite() throws ClassNotFoundException {
+    public InformixNormalGetTestSuite() throws ClassNotFoundException, SQLException {
         super();
     }
 
@@ -29,5 +31,4 @@ public class InformixNormalGetTestSuite extends ConcreteInformixTestSuite {
 //
 //        MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
     }
-    
 }

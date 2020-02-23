@@ -1,10 +1,12 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Test {
+@SuppressWarnings("serial")
+public class Test implements Serializable {
 
     private List<String> falses = new ArrayList<>();
     private List<String> trues = new ArrayList<>();

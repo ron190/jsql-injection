@@ -55,5 +55,4 @@ public class CheckAllTestSuite extends ConcreteMySQLTestSuite {
     public void listColumns() throws JSqlException {
         LOGGER.info("Ignore: too slow");
     }
-    
 }

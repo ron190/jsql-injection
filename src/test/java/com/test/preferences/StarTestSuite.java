@@ -54,5 +54,4 @@ public class StarTestSuite extends ConcreteMySQLTestSuite {
     public void listColumns() throws JSqlException {
         LOGGER.info("Ignore: too slow");
     }
-    
 }

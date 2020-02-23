@@ -8,7 +8,7 @@ import com.test.AbstractTestSuite;
 @Execution(ExecutionMode.CONCURRENT)
 public abstract class ConcreteH2TestSuite extends AbstractTestSuite {
 
-    public ConcreteH2TestSuite () {
+    public ConcreteH2TestSuite() {
         
         this.jdbcURL = "jdbc:h2:tcp://127.0.0.1/mem:public;IGNORECASE=TRUE;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;";
         this.jdbcUser = "sa";
@@ -26,5 +26,4 @@ public abstract class ConcreteH2TestSuite extends AbstractTestSuite {
         this.jdbcQueryForColumnNames =   "select COLUMN_NAME from information_schema.columns where TABLE_SCHEMA='"+ this.jsqlDatabaseName +"' and TABLE_NAME='"+ this.jsqlTableName +"'";
         this.jdbcQueryForValues =    "select "+ this.jsqlColumnName +" from `"+ this.jsqlDatabaseName +"`.`"+ this.jsqlTableName +"`";
     }
-    
 }

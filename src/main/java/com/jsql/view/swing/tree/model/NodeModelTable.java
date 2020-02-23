@@ -113,7 +113,7 @@ public class NodeModelTable extends AbstractNodeModel {
     }
 
     @Override
-    protected void buildMenu(JPopupMenu2 tablePopupMenu, final TreePath path) {
+    protected void buildMenu(JPopupMenuCustomExtract tablePopupMenu, final TreePath path) {
         
         JMenuItem menuItemCheckAll = new JMenuItem(I18nView.valueByKey("COLUMNS_CHECK_ALL"), 'C');
         I18nView.addComponentForKey("COLUMNS_CHECK_ALL", menuItemCheckAll);

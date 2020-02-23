@@ -1,12 +1,15 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-public class Resource {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Resource implements Serializable {
 
     private String info = "";
     private Schema schema = new Schema();
-    private Zipped zipped = new Zipped();
-    private Dios dios = new Dios();
+    private Schema zipped = new Schema();
+    private Schema dios = new Schema();
     private File file = new File();
 
     public String getInfo() {
@@ -25,19 +28,19 @@ public class Resource {
         this.schema = schema;
     }
 
-    public Zipped getZipped() {
+    public Schema getZipped() {
         return this.zipped;
     }
 
-    public void setZipped(Zipped zipped) {
+    public void setZipped(Schema zipped) {
         this.zipped = zipped;
     }
 
-    public Dios getDios() {
+    public Schema getDios() {
         return this.dios;
     }
 
-    public void setDios(Dios dios) {
+    public void setDios(Schema dios) {
         this.dios = dios;
     }
 

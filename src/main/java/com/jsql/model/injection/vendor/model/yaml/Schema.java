@@ -1,7 +1,10 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-public class Schema {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Schema implements Serializable {
 
     private String database = "";
     private String table = "";

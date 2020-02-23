@@ -155,6 +155,7 @@ public class Menubar extends JMenuBar {
      * Create a menubar on main frame.
      */
     public Menubar() {
+        
         // File Menu > save tab | exit
         JMenu menuFile = new JMenu(I18n.valueByKey("MENUBAR_FILE"));
         I18nView.addComponentForKey("MENUBAR_FILE", menuFile);
@@ -187,6 +188,7 @@ public class Menubar extends JMenuBar {
         itemCopy.setIcon(HelperUi.ICON_EMPTY);
         itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
         itemCopy.addActionListener(actionEvent -> {
+            
             if (MediatorGui.tabResults().getSelectedComponent() instanceof PanelTable) {
                 ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).copyTable();
             } else if (MediatorGui.tabResults().getSelectedComponent() instanceof JScrollPane) {
@@ -199,6 +201,7 @@ public class Menubar extends JMenuBar {
         itemSelectAll.setIcon(HelperUi.ICON_EMPTY);
         itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         itemSelectAll.addActionListener(actionEvent -> {
+            
             if (MediatorGui.tabResults().getSelectedComponent() instanceof PanelTable) {
                 ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).selectTable();
             // Textarea need focus to select all
@@ -359,7 +362,8 @@ public class Menubar extends JMenuBar {
         this.itemKorean.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("ko")));
         
         ButtonGroup groupRadioLanguage = new ButtonGroup();
-        Stream.of(
+        Stream
+        .of(
             this.itemEnglish,
             this.itemRussian,
             this.itemChinese,
@@ -397,6 +401,7 @@ public class Menubar extends JMenuBar {
             
             @Override
             public void actionPerformed(ActionEvent arg0) {
+                
                 dialogTranslate.reinit(this.language);
                 
                 // Center the dialog
@@ -434,7 +439,8 @@ public class Menubar extends JMenuBar {
         
         this.itemIntoArabic.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         
-        Stream.of(
+        Stream
+        .of(
             this.itemIntoFrench,
             this.itemIntoSpanish,
             this.itemIntoSwedish,
@@ -457,9 +463,10 @@ public class Menubar extends JMenuBar {
             new JSeparator(),
             this.itemIntoOther
         )
-        .forEach(menuItem -> menuI18nContribution.add(menuItem));
+        .forEach(menuI18nContribution::add);
         
-        Stream.of(
+        Stream
+        .of(
             new SimpleEntry<>(this.itemIntoHindi, Language.HI),
             new SimpleEntry<>(this.itemIntoArabic, Language.AR),
             new SimpleEntry<>(this.itemIntoRussia, Language.RU),
@@ -571,6 +578,7 @@ public class Menubar extends JMenuBar {
         for (JCheckBoxMenuItem menuItem: new JCheckBoxMenuItem[]{this.chunkMenu, this.binaryMenu, this.networkMenu, this.javaDebugMenu}) {
             menuItem.setUI(
                 new BasicCheckBoxMenuItemUI() {
+                    
                     @Override
                     protected void doClick(MenuSelectionManager msm) {
                         this.menuItem.doClick(0);
@@ -580,6 +588,7 @@ public class Menubar extends JMenuBar {
         }
 
         this.chunkMenu.addActionListener(actionEvent -> {
+            
             if (this.chunkMenu.isSelected()) {
                 MediatorGui.panelConsoles().insertChunkTab();
             } else {
@@ -588,6 +597,7 @@ public class Menubar extends JMenuBar {
         });
         
         this.binaryMenu.addActionListener(actionEvent -> {
+            
             if (this.binaryMenu.isSelected()) {
                 MediatorGui.panelConsoles().insertBooleanTab();
             } else {
@@ -596,6 +606,7 @@ public class Menubar extends JMenuBar {
         });
         
         this.networkMenu.addActionListener(actionEvent -> {
+            
             if (this.networkMenu.isSelected()) {
                 MediatorGui.panelConsoles().insertNetworkTab();
             } else {
@@ -604,6 +615,7 @@ public class Menubar extends JMenuBar {
         });
         
         this.javaDebugMenu.addActionListener(actionEvent -> {
+            
             if (this.javaDebugMenu.isSelected()) {
                 MediatorGui.panelConsoles().insertJavaTab();
             } else {
@@ -638,6 +650,7 @@ public class Menubar extends JMenuBar {
         // Render the Preferences dialog behind scene
         String titleTabPreferences = "Preferences";
         preferences.addActionListener(actionEvent -> {
+            
             for (int i = 0; i < MediatorGui.tabResults().getTabCount() ; i++) {
                 if (titleTabPreferences.equals(MediatorGui.tabResults().getTitleAt(i))) {
                     MediatorGui.tabResults().setSelectedIndex(i);
@@ -648,6 +661,7 @@ public class Menubar extends JMenuBar {
             CreateTab.initializeSplitOrientation();
             
             AdjustmentListener singleItemScroll = adjustmentEvent -> {
+                
                 // The user scrolled the List (using the bar, mouse wheel or something else):
                 if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK){
                     // Jump to the next "block" (which is a row".
@@ -678,6 +692,7 @@ public class Menubar extends JMenuBar {
         // Render the SQL Engine dialog behind scene
         String titleTabSqlEngine = "SQL Engine";
         sqlEngine.addActionListener(actionEvent -> {
+            
             for (int i = 0; i < MediatorGui.tabResults().getTabCount() ; i++) {
                 if (titleTabSqlEngine.equals(MediatorGui.tabResults().getTitleAt(i))) {
                     MediatorGui.tabResults().setSelectedIndex(i);
@@ -721,6 +736,7 @@ public class Menubar extends JMenuBar {
         // Render the About dialog behind scene
         final DialogAbout aboutDiag = new DialogAbout();
         itemHelp.addActionListener(actionEvent -> {
+            
             // Center the dialog
             if (!aboutDiag.isVisible()) {
                 aboutDiag.reinit();
@@ -746,6 +762,7 @@ public class Menubar extends JMenuBar {
         I18nView.addComponentForKey("MENUBAR_COMMUNITY_REPORTISSUE", itemReportIssue);
         
         itemReportIssue.addActionListener(actionEvent -> {
+            
             JPanel panel = new JPanel(new BorderLayout());
             final JTextArea textarea = new JPopupTextArea(new JTextArea()).getProxy();
             textarea.setFont(new Font(
@@ -769,6 +786,7 @@ public class Menubar extends JMenuBar {
             panel.setMinimumSize(new Dimension(400, 250));
             
             textarea.addMouseListener(new MouseAdapter() {
+                
                 @Override
                 public void mousePressed(MouseEvent e) {
                     super.mousePressed(e);
@@ -816,7 +834,8 @@ public class Menubar extends JMenuBar {
         TableColumnModel colMod = header.getColumnModel();
         
         if (I18n.isAsian(newLocale)) {
-            Stream.of(
+            Stream
+            .of(
                 SwingAppender.ERROR,
                 SwingAppender.WARN,
                 SwingAppender.INFO,
@@ -833,7 +852,8 @@ public class Menubar extends JMenuBar {
             colMod.getColumn(2).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
             colMod.getColumn(3).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
         } else {
-            Stream.of(
+            Stream
+            .of(
                 SwingAppender.ERROR,
                 SwingAppender.WARN,
                 SwingAppender.INFO,
@@ -880,10 +900,12 @@ public class Menubar extends JMenuBar {
         ComponentOrientation componentOrientation = ComponentOrientation.getOrientation(I18n.getLocaleDefault());
         MediatorGui.frame().applyComponentOrientation(componentOrientation);
         
-        Stream.of(this.itemArabic, this.itemIntoArabic)
+        Stream
+        .of(this.itemArabic, this.itemIntoArabic)
         .forEach(menuItem -> menuItem.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT));
         
-        Stream.of(
+        Stream
+        .of(
             this.itemChinese,
             this.itemRussian,
             this.itemFrench,
@@ -922,13 +944,13 @@ public class Menubar extends JMenuBar {
         .forEach(menuItem -> menuItem.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT));
         
         if (ComponentOrientation.getOrientation(oldLocale) != ComponentOrientation.getOrientation(newLocale)) {
-            Component c1 = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getLeftComponent();
-            Component c2 = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getRightComponent();
+            Component componentLeft = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getLeftComponent();
+            Component componentRight = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getRightComponent();
             
             MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setLeftComponent(null);
             MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setRightComponent(null);
-            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setLeftComponent(c2);
-            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setRightComponent(c1);
+            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setLeftComponent(componentRight);
+            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setRightComponent(componentLeft);
             
             if (isStartup) {
                 MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 @Execution(ExecutionMode.CONCURRENT)
 public abstract class ConcreteMySQLErrorTestSuite extends ConcreteMySQLTestSuite {
 
-    public ConcreteMySQLErrorTestSuite () {
+    public ConcreteMySQLErrorTestSuite() {
         super();
     }
     
@@ -18,5 +18,4 @@ public abstract class ConcreteMySQLErrorTestSuite extends ConcreteMySQLTestSuite
         super.config();
         this.jdbcURL = "jdbc:mysql://127.0.0.1:3307/musicstore";
     }
-    
 }

@@ -1,7 +1,10 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-public class Row {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Row implements Serializable {
 
     private String query = "";
     private Fields fields = new Fields();

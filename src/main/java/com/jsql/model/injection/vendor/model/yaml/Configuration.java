@@ -1,7 +1,10 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-public class Configuration {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Configuration implements Serializable {
 
     private String slidingWindow = "";
     private String limit = "";

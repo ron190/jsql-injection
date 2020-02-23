@@ -1,10 +1,13 @@
 package com.test.vendor.cubrid;
 
+import java.sql.SQLException;
+
 import com.test.AbstractTestSuite;
 
 public abstract class ConcreteCubridTestSuite extends AbstractTestSuite {
 
-    public ConcreteCubridTestSuite () throws ClassNotFoundException {
+    public ConcreteCubridTestSuite () throws ClassNotFoundException, SQLException {
+        
         // Explicit class name declaration
         Class.forName("cubrid.jdbc.driver.CUBRIDDriver");
         
@@ -36,5 +39,4 @@ public abstract class ConcreteCubridTestSuite extends AbstractTestSuite {
         
         this.requestJdbc();
     }
-    
 }

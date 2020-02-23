@@ -193,7 +193,7 @@ public class HeaderUtil {
             LOGGER.info("Please select option 'Disable connection test' and run again");
         }
         
-        // TODO Extract
+        // TODO Extract FormUtil
         Elements elementsForm = Jsoup.parse(pageSource.toString()).select("form");
         
         StringBuilder result = new StringBuilder();
@@ -246,7 +246,7 @@ public class HeaderUtil {
         }
         
         // Csrf
-        // TODO Extract
+        // TODO Extract CsrfUtil
         Optional<SimpleEntry<String, String>> optionalTokenCsrf = Jsoup
         .parse(pageSource.toString())
         .select("input")
@@ -269,7 +269,7 @@ public class HeaderUtil {
 
         msgHeader.put(Header.SOURCE, pageSource.toString());
         
-        // Inform the view about the log infos
+        // Inform the view about the log info
         Request request = new Request();
         request.setMessage(Interaction.MESSAGE_HEADER);
         request.setParameters(msgHeader);

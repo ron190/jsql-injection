@@ -1,7 +1,10 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-public class Boolean {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Boolean implements Serializable {
 
     private Test test = new Test();
     private String blind = "";

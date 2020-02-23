@@ -1,10 +1,12 @@
 package com.test.vendor.informix;
 
+import java.sql.SQLException;
+
 import com.test.AbstractTestSuite;
 
 public abstract class ConcreteInformixTestSuite extends AbstractTestSuite {
 
-    public ConcreteInformixTestSuite () throws ClassNotFoundException {
+    public ConcreteInformixTestSuite() throws ClassNotFoundException, SQLException {
         
         this.jdbcURL = "jdbc:informix-sqli://fe80::1125:78c0:ef17:8ab5%17:7360/sysmaster:user=informix;password=test;INFORMIXSERVER=ol_informix1210_2";
         
@@ -19,15 +21,10 @@ public abstract class ConcreteInformixTestSuite extends AbstractTestSuite {
         this.jdbcColumnForColumnName = "colname";
         
         this.jdbcQueryForDatabaseNames = "select distinct trim(name) name from sysmaster:sysdatabases";
-        
         this.jdbcQueryForTableNames = "select distinct trim(tabname) tabname from sysutils:systables";
-        
         this.jdbcQueryForColumnNames = "select distinct colname from sysutils:syscolumns c join sysutils:systables t on c.tabid = t.tabid where tabname='sysusers'";
-        
         this.jdbcQueryForValues = "select distinct trim(username) username from sysutils:sysusers";
         
         this.requestJdbc();
-        
     }
-    
 }

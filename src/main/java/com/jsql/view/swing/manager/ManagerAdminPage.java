@@ -117,32 +117,32 @@ public class ManagerAdminPage extends AbstractManagerList {
         this.loader.setVisible(false);
         
         // TODO
-        JMenu m = MenuBarCoder.createMenu("<User-Agent default>");
-        MenuBarCoder comboMenubar = new MenuBarCoder(m);
+        JMenu menuUserAgent = MenuBarCoder.createMenu("<User-Agent default>");
+        MenuBarCoder comboMenubar = new MenuBarCoder(menuUserAgent);
         comboMenubar.setOpaque(false);
         comboMenubar.setBorder(null);
         
-        ButtonGroup groupVendor = new ButtonGroup();
+        ButtonGroup groupUserAgent = new ButtonGroup();
         
-        JRadioButtonMenuItem r = new JRadioButtonMenuItem("<User-Agent default>", true);
-        r.addActionListener(actionEvent ->
-            m.setText("<User-Agent default>")
+        JRadioButtonMenuItem radioButtonMenuItemDefaultUserAgent = new JRadioButtonMenuItem("<User-Agent default>", true);
+        radioButtonMenuItemDefaultUserAgent.addActionListener(actionEvent ->
+            menuUserAgent.setText("<User-Agent default>")
         );
-        r.setToolTipText("Java/"+ System.getProperty("java.version"));
-        groupVendor.add(r);
-        m.add(r);
+        radioButtonMenuItemDefaultUserAgent.setToolTipText("Java/"+ System.getProperty("java.version"));
+        groupUserAgent.add(radioButtonMenuItemDefaultUserAgent);
+        menuUserAgent.add(radioButtonMenuItemDefaultUserAgent);
         
-        for (Entry<UserAgentType, List<UserAgent>> e: UserAgent.getList().entrySet()) {
-            JMenu mm = new JMenu(e.getKey().getLabel());
-            m.add(mm);
-            for (UserAgent u: e.getValue()) {
-                JRadioButtonMenuItem rr = new JRadioButtonMenuItem(u.getLabel());
-                rr.addActionListener(actionEvent ->
-                    m.setText(u.getLabel())
+        for (Entry<UserAgentType, List<UserAgent>> entryUserAgent: UserAgent.getList().entrySet()) {
+            JMenu menuAgentType = new JMenu(entryUserAgent.getKey().getLabel());
+            menuUserAgent.add(menuAgentType);
+            for (UserAgent userAgent: entryUserAgent.getValue()) {
+                JRadioButtonMenuItem radioButtonMenuItemUserAgent = new JRadioButtonMenuItem(userAgent.getLabel());
+                radioButtonMenuItemUserAgent.addActionListener(actionEvent ->
+                    menuUserAgent.setText(userAgent.getLabel())
                 );
-                rr.setToolTipText(u.getNameUserAgent());
-                groupVendor.add(rr);
-                mm.add(rr);
+                radioButtonMenuItemUserAgent.setToolTipText(userAgent.getNameUserAgent());
+                groupUserAgent.add(radioButtonMenuItemUserAgent);
+                menuAgentType.add(radioButtonMenuItemUserAgent);
             }
         }
         

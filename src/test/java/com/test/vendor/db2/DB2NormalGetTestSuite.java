@@ -1,5 +1,7 @@
 package com.test.vendor.db2;
 
+import java.sql.SQLException;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 
@@ -7,6 +9,11 @@ import com.jsql.model.exception.InjectionFailureException;
 
 @Ignore
 public class DB2NormalGetTestSuite extends ConcreteDB2TestSuite {
+
+    public DB2NormalGetTestSuite() throws SQLException {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
     @Override
     @BeforeClass
@@ -25,5 +32,4 @@ public class DB2NormalGetTestSuite extends ConcreteDB2TestSuite {
 //
 //        MediatorModel.model().setStrategy(StrategyInjection.NORMAL);
     }
-    
 }

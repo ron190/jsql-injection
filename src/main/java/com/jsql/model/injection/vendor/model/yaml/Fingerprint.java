@@ -1,10 +1,12 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Fingerprint {
+@SuppressWarnings("serial")
+public class Fingerprint implements Serializable {
 
     private List<String> errorMessage = new ArrayList<>();
 

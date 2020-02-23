@@ -2,7 +2,7 @@
 package com.jsql.util.tampering;
 
 
-public class ModelYaml {
+public class ModelYamlTampering {
 
     private String tooltip;
     private String description;

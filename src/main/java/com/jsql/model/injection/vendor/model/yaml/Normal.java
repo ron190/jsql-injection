@@ -1,7 +1,10 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-public class Normal {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Normal implements Serializable {
 
     private String indices = "";
     private String capacity = "";

@@ -1,7 +1,10 @@
 
 package com.jsql.model.injection.vendor.model.yaml;
 
-public class Fields {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Fields implements Serializable {
 
     private String field = "";
     private String concat = "";

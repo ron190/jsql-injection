@@ -36,5 +36,4 @@ public class PostgresErrorTestSuite extends ConcretePostgresTestSuite {
         model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getPostgreSQL());
         model.beginInjection();
     }
-    
 }

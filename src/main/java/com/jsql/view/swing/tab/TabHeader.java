@@ -34,7 +34,7 @@ public class TabHeader extends JPanel implements MouseListener {
         void clean();
     }
     
-    private Cleanable cleanableTab;
+    private transient Cleanable cleanableTab;
     
     private JLabel tabTitleLabel = new JLabel() {
         

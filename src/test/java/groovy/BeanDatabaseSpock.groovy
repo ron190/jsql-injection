@@ -11,6 +11,7 @@ import spock.lang.Specification
 class BeanDatabaseSpock extends Specification {
 
     def 'Check bean database hierarchie and labels'() {
+        
         expect:
             database.getParent() == null
             database.getLabelCount() == "database (5 tables)"
@@ -26,5 +27,4 @@ class BeanDatabaseSpock extends Specification {
             table = new Table("table", "10", database); 
             column = new Column("column", table); 
     }
-    
 }

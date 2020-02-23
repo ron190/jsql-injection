@@ -95,6 +95,7 @@ public abstract class AbstractInjectionBoolean<T extends AbstractCallableBoolean
          */
         while (submittedTasks > 0) {
             
+            // TODO Coverage with pausable multithreading
             if (suspendable.isSuspended()) {
                 taskExecutor.shutdown();
 

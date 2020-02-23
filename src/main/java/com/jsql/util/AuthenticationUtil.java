@@ -23,6 +23,8 @@ public class AuthenticationUtil {
      */
     private static final Logger LOGGER = Logger.getRootLogger();
     
+    private static final String STR_JAVA_PROTO_HDL_PKGS = "java.protocol.handler.pkgs";
+    
     /**
      * True if standard authent Basic, Digest, NTLM is activated.
      */
@@ -190,10 +192,10 @@ public class AuthenticationUtil {
         
         if (this.isKerberos) {
             
-            if (System.getProperty("java.protocol.handler.pkgs") != null) {
+            if (System.getProperty(STR_JAVA_PROTO_HDL_PKGS) != null) {
                 System.setProperty(
-                    "java.protocol.handler.pkgs",
-                    System.getProperty("java.protocol.handler.pkgs")
+                    STR_JAVA_PROTO_HDL_PKGS,
+                    System.getProperty(STR_JAVA_PROTO_HDL_PKGS)
                         .replace("|jcifs", "")
                         .replace("jcifs", "")
                 );
@@ -205,7 +207,7 @@ public class AuthenticationUtil {
             System.setProperty("spnego.login.conf", this.pathKerberosLogin);
         } else {
             
-            System.setProperty("java.protocol.handler.pkgs", "");
+            System.setProperty(STR_JAVA_PROTO_HDL_PKGS, "");
             System.setProperty("java.security.krb5.conf", "");
             System.setProperty("java.security.auth.login.config", "");
             System.setProperty("spnego.krb5.conf", "");

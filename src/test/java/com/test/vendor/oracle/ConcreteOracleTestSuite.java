@@ -1,10 +1,13 @@
 package com.test.vendor.oracle;
 
+import java.sql.SQLException;
+
 import com.test.AbstractTestSuite;
 
 public abstract class ConcreteOracleTestSuite extends AbstractTestSuite {
 
-    public ConcreteOracleTestSuite () {
+    public ConcreteOracleTestSuite() throws SQLException {
+        
         this.jdbcURL = "jdbc:oracle:thin:@"+ AbstractTestSuite.HOSTNAME +":1521:xe";
         this.jdbcUser = "system";
         this.jdbcPass = "test";
@@ -23,5 +26,4 @@ public abstract class ConcreteOracleTestSuite extends AbstractTestSuite {
         
         this.requestJdbc();
     }
-    
 }

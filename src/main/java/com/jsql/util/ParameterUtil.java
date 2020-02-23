@@ -111,7 +111,6 @@ public class ParameterUtil {
         }
     }
     
-    // TODO Spock coverage
     public String getCharacterInsertion(boolean isParamByUser, SimpleEntry<String, String> parameter) {
         
         String characterInsertionByUser = "";

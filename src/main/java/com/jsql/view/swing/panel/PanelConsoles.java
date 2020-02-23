@@ -31,6 +31,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.prefs.Preferences;
+import java.util.stream.Stream;
+import java.util.AbstractMap.SimpleEntry;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
@@ -305,55 +307,24 @@ public class PanelConsoles extends JPanel {
             }
         });
         
-        NETWORK_TAB_DETAIL.addTab(I18n.valueByKey("NETWORK_TAB_URL_LABEL"), new LightScrollPane(1, 1, 0, 0, PanelConsoles.NETWORK_TAB_URL));
-        JLabel labelConsoles = new JLabel(I18n.valueByKey("NETWORK_TAB_URL_LABEL"));
-        NETWORK_TAB_DETAIL.setTabComponentAt(
-            NETWORK_TAB_DETAIL.indexOfTab(I18n.valueByKey("NETWORK_TAB_URL_LABEL")),
-            labelConsoles
-        );
-        I18nView.addComponentForKey("NETWORK_TAB_URL_LABEL", labelConsoles);
-        
-        NETWORK_TAB_DETAIL.addTab(I18n.valueByKey("NETWORK_TAB_RESPONSE_LABEL"), new LightScrollPane(1, 1, 0, 0, PanelConsoles.NETWORK_TAB_RESPONSE));
-        JLabel labelConsoleq = new JLabel(I18n.valueByKey("NETWORK_TAB_RESPONSE_LABEL"));
-        NETWORK_TAB_DETAIL.setTabComponentAt(
-            NETWORK_TAB_DETAIL.indexOfTab(I18n.valueByKey("NETWORK_TAB_RESPONSE_LABEL")),
-            labelConsoleq
-        );
-        I18nView.addComponentForKey("NETWORK_TAB_RESPONSE_LABEL", labelConsoleq);
-        
         PanelConsoles.NETWORK_TAB_PREVIEW.setEditorKit(new HTMLEditorKitTextPaneWrap());
         
-        NETWORK_TAB_DETAIL.addTab(I18n.valueByKey("NETWORK_TAB_SOURCE_LABEL"), new LightScrollPane(1, 1, 0, 0, PanelConsoles.NETWORK_TAB_SOURCE));
-        JLabel labelConsoleds = new JLabel(I18n.valueByKey("NETWORK_TAB_SOURCE_LABEL"));
-        NETWORK_TAB_DETAIL.setTabComponentAt(
-            NETWORK_TAB_DETAIL.indexOfTab(I18n.valueByKey("NETWORK_TAB_SOURCE_LABEL")),
-            labelConsoleds
-        );
-        I18nView.addComponentForKey("NETWORK_TAB_SOURCE_LABEL", labelConsoleds);
-        
-        NETWORK_TAB_DETAIL.addTab(I18n.valueByKey("NETWORK_TAB_PREVIEW_LABEL"), new LightScrollPane(1, 1, 0, 0, PanelConsoles.NETWORK_TAB_PREVIEW));
-        JLabel labelConsoleaz = new JLabel(I18n.valueByKey("NETWORK_TAB_PREVIEW_LABEL"));
-        NETWORK_TAB_DETAIL.setTabComponentAt(
-            NETWORK_TAB_DETAIL.indexOfTab(I18n.valueByKey("NETWORK_TAB_PREVIEW_LABEL")),
-            labelConsoleaz
-        );
-        I18nView.addComponentForKey("NETWORK_TAB_PREVIEW_LABEL", labelConsoleaz);
-        
-        NETWORK_TAB_DETAIL.addTab(I18n.valueByKey("NETWORK_TAB_HEADERS_LABEL"), new LightScrollPane(1, 1, 0, 0, PanelConsoles.NETWORK_TAB_HEADER));
-        JLabel labelConsolexw = new JLabel(I18n.valueByKey("NETWORK_TAB_HEADERS_LABEL"));
-        NETWORK_TAB_DETAIL.setTabComponentAt(
-            NETWORK_TAB_DETAIL.indexOfTab(I18n.valueByKey("NETWORK_TAB_HEADERS_LABEL")),
-            labelConsolexw
-        );
-        I18nView.addComponentForKey("NETWORK_TAB_HEADERS_LABEL", labelConsolexw);
-        
-        NETWORK_TAB_DETAIL.addTab(I18n.valueByKey("NETWORK_TAB_PARAMS_LABEL"), new LightScrollPane(1, 1, 0, 0, PanelConsoles.NETWORK_TAB_PARAM));
-        JLabel labelConsolvbne = new JLabel(I18n.valueByKey("NETWORK_TAB_PARAMS_LABEL"));
-        NETWORK_TAB_DETAIL.setTabComponentAt(
-            NETWORK_TAB_DETAIL.indexOfTab(I18n.valueByKey("NETWORK_TAB_PARAMS_LABEL")),
-            labelConsolvbne
-        );
-        I18nView.addComponentForKey("NETWORK_TAB_PARAMS_LABEL", labelConsolvbne);
+        Stream.of(
+            new SimpleEntry<>("NETWORK_TAB_URL_LABEL", PanelConsoles.NETWORK_TAB_URL),
+            new SimpleEntry<>("NETWORK_TAB_RESPONSE_LABEL", PanelConsoles.NETWORK_TAB_RESPONSE),
+            new SimpleEntry<>("NETWORK_TAB_SOURCE_LABEL", PanelConsoles.NETWORK_TAB_SOURCE),
+            new SimpleEntry<>("NETWORK_TAB_PREVIEW_LABEL", PanelConsoles.NETWORK_TAB_PREVIEW),
+            new SimpleEntry<>("NETWORK_TAB_HEADERS_LABEL", PanelConsoles.NETWORK_TAB_HEADER),
+            new SimpleEntry<>("NETWORK_TAB_PARAMS_LABEL", PanelConsoles.NETWORK_TAB_PARAM)
+        ).forEach(entry -> {
+            NETWORK_TAB_DETAIL.addTab(I18n.valueByKey(entry.getKey()), new LightScrollPane(1, 1, 0, 0, entry.getValue()));
+            JLabel label = new JLabel(I18n.valueByKey(entry.getKey()));
+            NETWORK_TAB_DETAIL.setTabComponentAt(
+                NETWORK_TAB_DETAIL.indexOfTab(I18n.valueByKey(entry.getKey())),
+                label
+            );
+            I18nView.addComponentForKey(entry.getKey(), label);
+        });
         
         DefaultCaret caret = (DefaultCaret) PanelConsoles.NETWORK_TAB_RESPONSE.getCaret();
         caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);

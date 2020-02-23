@@ -38,7 +38,6 @@ public class TamperingTestSuite extends ConcreteMySQLTestSuite {
         model.setIsScanning(true);
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getNormal());
         model.beginInjection();
-    
     }
     
     @Override
@@ -55,5 +54,4 @@ public class TamperingTestSuite extends ConcreteMySQLTestSuite {
     public void listColumns() throws JSqlException {
         LOGGER.info("Ignore: too slow");
     }
-    
 }

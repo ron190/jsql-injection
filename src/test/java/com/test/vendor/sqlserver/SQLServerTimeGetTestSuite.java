@@ -1,5 +1,7 @@
 package com.test.vendor.sqlserver;
 
+import java.sql.SQLException;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -9,6 +11,10 @@ import com.jsql.model.exception.JSqlException;
 
 @Ignore
 public class SQLServerTimeGetTestSuite extends ConcreteSQLServerTestSuite {
+
+    public SQLServerTimeGetTestSuite() throws SQLException {
+        super();
+    }
 
     @Override
     @BeforeClass
@@ -39,5 +45,4 @@ public class SQLServerTimeGetTestSuite extends ConcreteSQLServerTestSuite {
     public void listTables() throws JSqlException {
         LOGGER.info("Ignore: too slow");
     }
-    
 }

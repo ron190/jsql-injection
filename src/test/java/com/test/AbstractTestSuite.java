@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,13 +13,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.h2.tools.Server;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.parallel.Execution;
@@ -52,10 +56,10 @@ public abstract class AbstractTestSuite {
 
     public static final String HOSTNAME = "localhost";
     
-    private List<String> databaseToFind = new ArrayList<>();
-    private List<String> tableToFind = new ArrayList<>();
-    private List<String> columnToFind = new ArrayList<>();
-    private List<String> valueToFind = new ArrayList<>();
+    private List<String> databasesFromJdbc = new ArrayList<>();
+    private List<String> tablesFromJdbc = new ArrayList<>();
+    private List<String> columnsFromJdbc = new ArrayList<>();
+    private List<String> valuesFromJdbc = new ArrayList<>();
     
     protected String jdbcURL;
     protected String jdbcUser;
@@ -74,9 +78,8 @@ public abstract class AbstractTestSuite {
     protected String jsqlTableName;
     protected String jsqlColumnName;
     
-    private static AtomicBoolean isSetupStarted = new AtomicBoolean(false);
-    
-    private static AtomicBoolean isSetupDone = new AtomicBoolean(false);
+    private final AtomicBoolean isSetupStarted = new AtomicBoolean(false);
+    private final CountDownLatch startSignal = new CountDownLatch(1);
     
     protected InjectionModel injectionModel;
     
@@ -85,233 +88,205 @@ public abstract class AbstractTestSuite {
     @BeforeAll
     public synchronized void initializeBackend() throws Exception {
         
-        if (isSetupStarted.compareAndSet(false, true)) {
-            LOGGER.info("@BeforeClass: loading H2, Hibernate and Spring...");
+        if (this.isSetupStarted.compareAndSet(false, true)) {
             
+            LOGGER.info("@BeforeClass: loading H2, Hibernate and Spring...");
             Server.createTcpServer().start();
             TargetApplication.initializeDatabases();
             SpringApplication.run(TargetApplication.class, new String[] {});
             
-            isSetupDone.set(true);
+            this.startSignal.countDown();
         }
             
-        while (!isSetupDone.get()) {
-            Thread.sleep(1000);
-            LOGGER.info("@BeforeClass: backend is setting up, please wait...");
-        }
+        LOGGER.info("@BeforeClass: backend is setting up, please wait...");
+        this.startSignal.await(30, TimeUnit.SECONDS);
             
         if (this.injectionModel == null) {
+            
             this.requestJdbc();
             this.setupInjection();
-            this.injectionModel.getMediatorUtils().getTamperingUtil().set(false, false, false, false, false, false, false, false, false, false, false);
         }
     }
 
     public void initialize() throws Exception {
-        LOGGER.warn(
-            "AbstractTestSuite and ConcreteTestSuite are for initialization purpose. "
-            + "Run test suite or unit test instead."
-        );
+        
+        LOGGER.warn("AbstractTestSuite and ConcreteTestSuite are for initialization purpose. Run test suite or unit test instead.");
         throw new InjectionFailureException();
     }
 
-    public void requestJdbc() {
-        try (Connection conn = DriverManager.getConnection(this.jdbcURL, this.jdbcUser, this.jdbcPass)) {
-            Statement stmt = conn.createStatement();
-            ResultSet res = stmt.executeQuery(this.jdbcQueryForDatabaseNames);
-            while (res.next()) {
-                String dbName = res.getString(this.jdbcColumnForDatabaseName);
-                this.databaseToFind.add(dbName);
+    public void requestJdbc() throws SQLException {
+        
+        try (
+            Connection conn = DriverManager.getConnection(this.jdbcURL, this.jdbcUser, this.jdbcPass);
+                
+            Statement statementDatabase = conn.createStatement();
+            ResultSet resultSetDatabase = statementDatabase.executeQuery(this.jdbcQueryForDatabaseNames);
+                
+            Statement statementTable = conn.createStatement();
+            ResultSet resultSetTable = statementTable.executeQuery(this.jdbcQueryForTableNames);
+                
+            Statement statementColumn = conn.createStatement();
+            ResultSet resultSetColumn = statementColumn.executeQuery(this.jdbcQueryForColumnNames);
+                
+            Statement statementValues = conn.createStatement();
+            ResultSet resultSetValues = statementValues.executeQuery(this.jdbcQueryForValues);
+        ) {
+            while (resultSetDatabase.next()) {
+                String dbName = resultSetDatabase.getString(this.jdbcColumnForDatabaseName);
+                this.databasesFromJdbc.add(dbName);
             }
-            res.close();
-            stmt.close();
             
-            stmt = conn.createStatement();
-            res = stmt.executeQuery(this.jdbcQueryForTableNames);
-            while (res.next()) {
-                String tableName = res.getString(this.jdbcColumnForTableName);
-                this.tableToFind.add(tableName);
+            while (resultSetTable.next()) {
+                String tableName = resultSetTable.getString(this.jdbcColumnForTableName);
+                this.tablesFromJdbc.add(tableName);
             }
-            res.close();
-            stmt.close();
             
-            stmt = conn.createStatement();
-            res = stmt.executeQuery(this.jdbcQueryForColumnNames);
-            while (res.next()) {
-                String colName = res.getString(this.jdbcColumnForColumnName);
-                this.columnToFind.add(colName);
+            while (resultSetColumn.next()) {
+                String colName = resultSetColumn.getString(this.jdbcColumnForColumnName);
+                this.columnsFromJdbc.add(colName);
             }
-            res.close();
-            stmt.close();
 
-            stmt = conn.createStatement();
-            res = stmt.executeQuery(this.jdbcQueryForValues);
-            while (res.next()) {
-                String value = res.getString(this.jsqlColumnName);
-                this.valueToFind.add(value);
+            while (resultSetValues.next()) {
+                String value = resultSetValues.getString(this.jsqlColumnName);
+                this.valuesFromJdbc.add(value);
             }
-            res.close();
-            stmt.close();
-        } catch (Exception e) {
-            LOGGER.warn(e);
         }
     }
 
     @RepeatFailedTest(3)
     public void listDatabases() throws JSqlException {
         
-        Set<Object> set1 = new HashSet<>();
-        Set<Object> set2 = new HashSet<>();
+        Set<String> valuesFromInjection = new HashSet<>();
+        Set<String> valuesFromJdbc = new HashSet<>();
         
         try {
-            List<Database> dbs = this.injectionModel.getDataAccess().listDatabases();
-            List<String> databasesFound = new ArrayList<>();
-            for (Database d: dbs) {
-                databasesFound.add(d.toString());
-            }
+            List<String> databases = this.injectionModel.getDataAccess().listDatabases()
+                .stream()
+                .map(Database::toString)
+                .collect(Collectors.toList());
 
-            set1.addAll(databasesFound);
-            set2.addAll(AbstractTestSuite.this.databaseToFind);
+            valuesFromInjection.addAll(databases);
+            valuesFromJdbc.addAll(AbstractTestSuite.this.databasesFromJdbc);
 
-            LOGGER.info("ListDatabases: found "+ set1 +" to find "+ set2);
+            LOGGER.info("ListDatabases: found "+ valuesFromInjection +" to find "+ valuesFromJdbc);
 
-            assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.containsAll(set2));
+            assertTrue(!valuesFromInjection.isEmpty() && !valuesFromJdbc.isEmpty() && valuesFromInjection.containsAll(valuesFromJdbc));
             
         } catch (AssertionError e) {
-            Set<Object> tmp = new TreeSet<>();
-            for (Object x: set1) {
-                if (!set2.contains(x)) {
-                    tmp.add(x);
-                }
-            }
-            for (Object x: set2) {
-                if (!set1.contains(x)) {
-                    tmp.add(x);
-                }
-            }
-            throw new AssertionError("Error listDatabases: "+ tmp +"\n"+ e);
+            
+            Set<String> tablesUnkown = Stream.concat(
+                valuesFromInjection.stream().filter(value -> !valuesFromJdbc.contains(value)),
+                valuesFromJdbc.stream().filter(value -> !valuesFromInjection.contains(value))
+            ).collect(Collectors.toCollection(TreeSet::new));
+            
+            throw new AssertionError(String.format("Unknown databases: %s\n%s", tablesUnkown, e));
         }
     }
 
-    @Test
+    @RepeatFailedTest(3)
     public void listTables() throws JSqlException {
-        Set<Object> set1 = new HashSet<>();
-        Set<Object> set2 = new HashSet<>();
+        
+        Set<String> valuesFromInjection = new HashSet<>();
+        Set<String> valuesFromJdbc = new HashSet<>();
 
         try {
-            List<Table> ts = this.injectionModel.getDataAccess().listTables(new Database(AbstractTestSuite.this.jsqlDatabaseName, "0"));
-            List<String> tablesFound = new ArrayList<>();
-            for (Table t: ts) {
-                tablesFound.add(t.toString());
-            }
+            List<String> tables = this.injectionModel.getDataAccess().listTables(new Database(AbstractTestSuite.this.jsqlDatabaseName, "0"))
+                .stream()
+                .map(Table::toString)
+                .collect(Collectors.toList());
 
-            set1.addAll(tablesFound);
-            set2.addAll(AbstractTestSuite.this.tableToFind);
+            valuesFromInjection.addAll(tables);
+            valuesFromJdbc.addAll(AbstractTestSuite.this.tablesFromJdbc);
 
-            LOGGER.info("listTables: found "+ set1 +" to find "+ set2);
-            assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
+            LOGGER.info(String.format("Tables: found %s to find %s", valuesFromInjection, valuesFromJdbc));
+            assertTrue(!valuesFromInjection.isEmpty() && !valuesFromJdbc.isEmpty() && valuesFromInjection.equals(valuesFromJdbc));
             
         } catch (AssertionError e) {
-            Set<Object> tmp = new TreeSet<>();
-            for (Object x: set1) {
-                if (!set2.contains(x)) {
-                    tmp.add(x);
-                }
-            }
-            for (Object x: set2) {
-                if (!set1.contains(x)) {
-                    tmp.add(x);
-                }
-            }
-            throw new AssertionError("Error listTables: "+ tmp +"\n"+ e);
+            
+            Set<String> tablesUnkown = Stream.concat(
+                valuesFromInjection.stream().filter(value -> !valuesFromJdbc.contains(value)),
+                valuesFromJdbc.stream().filter(value -> !valuesFromInjection.contains(value))
+            ).collect(Collectors.toCollection(TreeSet::new));
+            
+            throw new AssertionError(String.format("Unknown tables: %s\n%s", tablesUnkown, e));
         }
     }
 
-    @Test
+    @RepeatFailedTest(3)
     public void listColumns() throws JSqlException {
-        Set<Object> set1 = new HashSet<>();
-        Set<Object> set2 = new HashSet<>();
+        
+        Set<String> valuesFromInjection = new HashSet<>();
+        Set<String> valuesFromJdbc = new HashSet<>();
 
         try {
-            List<Column> cs = this.injectionModel.getDataAccess().listColumns(
-                new Table(AbstractTestSuite.this.jsqlTableName, "0",
-                    new Database(AbstractTestSuite.this.jsqlDatabaseName, "0")
-                )
-            );
-            List<String> columnsFound = new ArrayList<>();
-            for (Column c: cs) {
-                columnsFound.add(c.toString());
-            }
+            List<String> columns = this.injectionModel.getDataAccess().listColumns(
+                    new Table(AbstractTestSuite.this.jsqlTableName, "0",
+                        new Database(AbstractTestSuite.this.jsqlDatabaseName, "0")
+                    )
+                ).stream()
+                .map(Column::toString)
+                .collect(Collectors.toList());
 
-            set1.addAll(columnsFound);
-            set2.addAll(AbstractTestSuite.this.columnToFind);
+            valuesFromInjection.addAll(columns);
+            valuesFromJdbc.addAll(AbstractTestSuite.this.columnsFromJdbc);
 
-            LOGGER.info("listColumns: found "+ set1 +" to find "+ set2);
-            assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
+            LOGGER.info(String.format("listColumns: found %s to find %s", valuesFromInjection, valuesFromJdbc));
+            assertTrue(!valuesFromInjection.isEmpty() && !valuesFromJdbc.isEmpty() && valuesFromInjection.equals(valuesFromJdbc));
             
         } catch (AssertionError e) {
-            Set<Object> tmp = new TreeSet<>();
-            for (Object x: set1) {
-                if (!set2.contains(x)) {
-                    tmp.add(x);
-                }
-            }
-            for (Object x: set2) {
-                if (!set1.contains(x)) {
-                    tmp.add(x);
-                }
-            }
-            throw new AssertionError("Error listColumns: "+ tmp +"\n"+ e);
+            
+            Set<String> columnsUnkown = Stream.concat(
+                valuesFromInjection.stream().filter(value -> !valuesFromJdbc.contains(value)),
+                valuesFromJdbc.stream().filter(value -> !valuesFromInjection.contains(value))
+            ).collect(Collectors.toCollection(TreeSet::new));
+            
+            throw new AssertionError(String.format("Unknown columns: %s\n%s", columnsUnkown, e));
         }
     }
 
-    @Test
+    @RepeatFailedTest(3)
     public void listValues() throws JSqlException {
-        Set<Object> set1 = new TreeSet<>();
-        Set<Object> set2 = new TreeSet<>();
+        
+        Set<String> valuesFromInjection = new TreeSet<>();
+        Set<String> valuesFromJdbc = new TreeSet<>();
 
         try {
-            String[][] vs = this.injectionModel.getDataAccess().listValues(Arrays.asList(
+            String[][] rows = this.injectionModel.getDataAccess().listValues(Arrays.asList(
                 new Column(AbstractTestSuite.this.jsqlColumnName,
                     new Table(AbstractTestSuite.this.jsqlTableName, "0",
                         new Database(AbstractTestSuite.this.jsqlDatabaseName, "0")
                     )
                 )
             ));
-            List<String> valuesFound = new ArrayList<>();
-            for (String[] v: vs) {
-                valuesFound.add(v[2].replaceAll("\r\n", "\n"));
-            }
+            
+            List<String> valuesFound = Arrays.asList(rows).stream()
+                // => row number, occurrence, value1, value2...
+                .map(row -> row[2].replaceAll("\r\n", "\n"))
+                .collect(Collectors.toList());
 
-            set1.addAll(valuesFound);
-            set2.addAll(AbstractTestSuite.this.valueToFind);
+            valuesFromInjection.addAll(valuesFound);
+            valuesFromJdbc.addAll(AbstractTestSuite.this.valuesFromJdbc);
 
-            LOGGER.info(
-                "listValues: found "+
-                set1.toString()
-                    .replaceAll("\n", "[n]")
-                    .replaceAll("\r", "[r]") +
-                " to find "+
-                set2.toString()
-                    .replaceAll("\n", "[n]")
-                    .replaceAll("\r", "[r]")
-            );
-            assertTrue(!set1.isEmpty() && !set2.isEmpty() && set1.equals(set2));
+            String logValuesFromInjection = valuesFromInjection.toString()
+                .replaceAll("\n", "[n]")
+                .replaceAll("\r", "[r]");
+            
+            String logValuesFromJdbc = valuesFromJdbc.toString()
+                .replaceAll("\n", "[n]")
+                .replaceAll("\r", "[r]");
+            
+            LOGGER.info(String.format("Values: found %s to find %s", logValuesFromInjection, logValuesFromJdbc));
+            
+            assertTrue(!valuesFromInjection.isEmpty() && !valuesFromJdbc.isEmpty() && valuesFromInjection.equals(valuesFromJdbc));
             
         } catch (AssertionError e) {
-            Set<Object> tmp = new TreeSet<>();
-            for (Object x: set1) {
-                if (!set2.contains(x)) {
-                    tmp.add(x);
-                }
-            }
-            for (Object x: set2) {
-                if (!set1.contains(x)) {
-                    tmp.add(x);
-                }
-            }
-            throw new AssertionError("Error listValues: "+ tmp +"\n"+ e);
+            
+            Set<String> valuesUnknown = Stream.concat(
+                valuesFromInjection.stream().filter(value -> !valuesFromJdbc.contains(value)),
+                valuesFromJdbc.stream().filter(value -> !valuesFromInjection.contains(value))
+            ).collect(Collectors.toCollection(TreeSet::new));
+            
+            throw new AssertionError(String.format("Unknown values: %s\n%s", valuesUnknown, e));
         }
     }
-    
 }

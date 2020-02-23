@@ -7,6 +7,7 @@ jdk:
  - openjdk11
  - openjdk12
  - openjdk13
+ - openjdk14
 
 addons:
   sonarcloud:
@@ -45,7 +46,7 @@ before_install:
     
   - docker run --name jsql-postgres 
     --publish 5432:5432 
-    -e POSTGRES_PASSWORD=mysecretpassword 
+    -e POSTGRES_PASSWORD=my-secret-pw 
     -d postgres 
     -c 'shared_buffers=256MB'
     -c 'max_connections=1000'
@@ -76,7 +77,7 @@ script:
   # Check Postgres status
   - docker exec -it jsql-postgres /bin/bash
     -c "
-       export PGPASSWORD=mysecretpassword;
+       export PGPASSWORD=my-secret-pw;
        psql -U postgres -h 127.0.0.1 -d \"\" -e -a -c '
        show max_connections;
        ';

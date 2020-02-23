@@ -38,6 +38,10 @@ import com.jsql.view.swing.menubar.Menubar;
  */
 public final class ActionHandler {
     
+    private static final String STR_CTRL_TAB = "ctrl TAB";
+    private static final String STR_CTRL_SHIFT_TAB = "ctrl shift TAB";
+    private static final String STR_SELECT_TAB = "actionString-selectTab";
+    
     /**
      * Utility class without constructor.
      */
@@ -68,8 +72,8 @@ public final class ActionHandler {
      */
     public static void addShortcut(JTabbedPane tabbedPane) {
         
-        KeyStroke ctrlTab = KeyStroke.getKeyStroke("ctrl TAB");
-        KeyStroke ctrlShiftTab = KeyStroke.getKeyStroke("ctrl shift TAB");
+        KeyStroke ctrlTab = KeyStroke.getKeyStroke(STR_CTRL_TAB);
+        KeyStroke ctrlShiftTab = KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB);
 
         // Remove ctrl-tab from normal focus traversal
         Set<AWTKeyStroke> forwardKeys = new HashSet<>(tabbedPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
@@ -124,12 +128,12 @@ public final class ActionHandler {
         };
         
         Set<AWTKeyStroke> forwardKeys = new HashSet<>(rootPane.getFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS));
-        forwardKeys.remove(KeyStroke.getKeyStroke("ctrl TAB"));
+        forwardKeys.remove(KeyStroke.getKeyStroke(STR_CTRL_TAB));
         rootPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardKeys);
         
-        Set<AWTKeyStroke> forwardKeys2 = new HashSet<>(rootPane.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
-        forwardKeys2.remove(KeyStroke.getKeyStroke("ctrl shift TAB"));
-        rootPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, forwardKeys2);
+        Set<AWTKeyStroke> backwardKeys = new HashSet<>(rootPane.getFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS));
+        backwardKeys.remove(KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB));
+        rootPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardKeys);
         
         InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap actionMap = rootPane.getActionMap();
@@ -137,19 +141,19 @@ public final class ActionHandler {
         inputMap.put(KeyStroke.getKeyStroke("ctrl W"), "actionString-closeTab");
         actionMap.put("actionString-closeTab", closeTab);
         
-        inputMap.put(KeyStroke.getKeyStroke("ctrl TAB"), "actionString-nextTab");
+        inputMap.put(KeyStroke.getKeyStroke(STR_CTRL_TAB), "actionString-nextTab");
         actionMap.put("actionString-nextTab", nextTab);
 
-        inputMap.put(KeyStroke.getKeyStroke("ctrl shift TAB"), "actionString-previousTab");
+        inputMap.put(KeyStroke.getKeyStroke(STR_CTRL_SHIFT_TAB), "actionString-previousTab");
         actionMap.put("actionString-previousTab", previousTab);
         
         int i = MediatorGui.tabManagers().getTabCount();
         for (int k = 1 ; k <= i ; k++) {
-            inputMap.put(KeyStroke.getKeyStroke("ctrl "+ k), "actionString-selectTab"+ k);
-            inputMap.put(KeyStroke.getKeyStroke("ctrl NUMPAD"+ k), "actionString-selectTab"+ k);
+            inputMap.put(KeyStroke.getKeyStroke("ctrl "+ k), STR_SELECT_TAB + k);
+            inputMap.put(KeyStroke.getKeyStroke("ctrl NUMPAD"+ k), STR_SELECT_TAB + k);
             
             final int l = k;
-            actionMap.put("actionString-selectTab"+ k, new AbstractAction(){
+            actionMap.put(STR_SELECT_TAB + k, new AbstractAction(){
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     MediatorGui.tabManagers().setSelectedIndex(l-1);

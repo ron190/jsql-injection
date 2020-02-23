@@ -9,6 +9,7 @@ class StringUtilSpock extends Specification {
     def stringUtil
 
     def 'Check decimalHtmlEncode'() {
+        
         expect:
             stringUtil.decimalHtmlEncode('יאח') == '&#233;&#224;&#231;'
             stringUtil.hexstr('313233616263') == '123abc'
@@ -21,5 +22,4 @@ class StringUtilSpock extends Specification {
     def setup() {
         stringUtil = new StringUtil()
     }
-    
 }

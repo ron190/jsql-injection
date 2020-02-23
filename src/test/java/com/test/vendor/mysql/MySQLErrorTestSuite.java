@@ -36,5 +36,4 @@ public class MySQLErrorTestSuite extends ConcreteMySQLErrorTestSuite {
         model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getError());
         model.beginInjection();
     }
-    
 }

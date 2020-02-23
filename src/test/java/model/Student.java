@@ -12,6 +12,7 @@ import javax.persistence.Id;
  */
 @Entity
 public class Student {
+    
     //data members
     @Id
     @Column(name = "Student_Id")
@@ -28,7 +29,7 @@ public class Student {
     private int age;
  
     //no-argument constructor
-    public Student(){
+    public Student() {
  
     }
  

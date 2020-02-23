@@ -25,5 +25,4 @@ public class SystemOutTerminal extends ObserverInteraction {
     public SystemOutTerminal() {
         super("com.jsql.view.terminal.interaction");
     }
-    
 }

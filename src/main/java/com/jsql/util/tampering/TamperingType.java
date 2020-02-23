@@ -15,15 +15,15 @@ public enum TamperingType {
     HEX_TO_CHAR("hex-to-char.yml"),
     QUOTE_TO_UTF8("quote-to-utf8.yml");
     
-    private final ModelYaml instanceModelYaml;
+    private final ModelYamlTampering instanceModelYaml;
     
     private TamperingType(String fileYaml) {
         
         Yaml yaml = new Yaml();
-        this.instanceModelYaml = yaml.loadAs(TamperingType.class.getClassLoader().getResourceAsStream("tamper/"+ fileYaml), ModelYaml.class);
+        this.instanceModelYaml = yaml.loadAs(TamperingType.class.getClassLoader().getResourceAsStream("tamper/"+ fileYaml), ModelYamlTampering.class);
     }
     
-    public ModelYaml instance() {
+    public ModelYamlTampering instance() {
         return this.instanceModelYaml;
     }
 }
