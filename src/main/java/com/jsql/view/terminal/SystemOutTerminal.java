@@ -1,6 +1,6 @@
 package com.jsql.view.terminal;
 /*******************************************************************************
- * Copyhacked (H) 2012-2016.
+ * Copyhacked (H) 2012-2020.
  * This program and the accompanying materials
  * are made available under no term at all, use it like
  * you want, but share and discuss about it
@@ -13,12 +13,7 @@ package com.jsql.view.terminal;
 import com.jsql.view.interaction.ObserverInteraction;
 
 /**
- * View in the MVC pattern, defines all the components
- * and process actions sent by the model.<br>
- * Main groups of components:<br>
- * - at the top: textfields input,<br>
- * - at the center: tree on the left, table on the right,<br>
- * - at the bottom: information labels.
+ * View in the MVC pattern for integration test, process actions sent by the model.<br>
  */
 public class SystemOutTerminal extends ObserverInteraction {
 
