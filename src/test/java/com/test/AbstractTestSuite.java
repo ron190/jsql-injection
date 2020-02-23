@@ -78,8 +78,9 @@ public abstract class AbstractTestSuite {
     protected String jsqlTableName;
     protected String jsqlColumnName;
     
-    private final AtomicBoolean isSetupStarted = new AtomicBoolean(false);
-    private final CountDownLatch startSignal = new CountDownLatch(1);
+    private static AtomicBoolean isSetupStarted = new AtomicBoolean(false);
+    
+    private static AtomicBoolean isSetupDone = new AtomicBoolean(false);
     
     protected InjectionModel injectionModel;
     
@@ -95,11 +96,13 @@ public abstract class AbstractTestSuite {
             TargetApplication.initializeDatabases();
             SpringApplication.run(TargetApplication.class, new String[] {});
             
-            this.startSignal.countDown();
+            isSetupDone.set(true);
         }
             
-        LOGGER.info("@BeforeClass: backend is setting up, please wait...");
-        this.startSignal.await(30, TimeUnit.SECONDS);
+        while (!isSetupDone.get()) {
+            Thread.sleep(1000);
+            LOGGER.info("@BeforeClass: backend is setting up, please wait...");
+        }
             
         if (this.injectionModel == null) {
             
