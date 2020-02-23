@@ -25,11 +25,6 @@ import javax.swing.tree.TreePath;
 public class ImageObserverAnimated implements ImageObserver {
     
     private JTree tree;
-    
-    private DefaultTreeModel treeModel;
-    
-    private TreeNode node;
-    
     private TreePath path;
     
     /**
@@ -38,10 +33,11 @@ public class ImageObserverAnimated implements ImageObserver {
      * @param node Node with a GIF to animate
      */
     public ImageObserverAnimated(JTree tree, TreeNode node) {
+        
         this.tree = tree;
-        this.treeModel = (DefaultTreeModel) tree.getModel();
-        this.node = node;
-        this.path = new TreePath(this.treeModel.getPathToRoot(this.node));
+        
+        DefaultTreeModel treeModel = (DefaultTreeModel) tree.getModel();
+        this.path = new TreePath(treeModel.getPathToRoot(node));
     }
 
     @Override
@@ -56,5 +52,4 @@ public class ImageObserverAnimated implements ImageObserver {
         
         return (flags & (ALLBITS | ABORT)) == 0;
     }
-    
 }

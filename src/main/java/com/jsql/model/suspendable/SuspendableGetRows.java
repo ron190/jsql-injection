@@ -46,6 +46,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
         boolean isUsingLimit = (Boolean) args[2];
         int numberToFind = (Integer) args[3];
         AbstractElementDatabase searchName = (AbstractElementDatabase) args[4];
+        
         this.injectionModel.getMediatorUtils().getThreadUtil().put(searchName, this);
 
         String sqlQuery = initialSQLQuery.replaceAll("\\{limit\\}", this.injectionModel.getMediatorVendor().getVendor().instance().sqlLimit(0));

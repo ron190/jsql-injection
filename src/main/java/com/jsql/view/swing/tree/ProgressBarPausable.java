@@ -48,6 +48,7 @@ public class ProgressBarPausable extends JProgressBar {
         }
 
         if (this.isIconDisplayed) {
+            
             try {
                 BufferedImage im2 = ImageIO.read(ProgressBarPausable.class.getClassLoader().getResource(HelperUi.PATH_PAUSE));
                 g.drawImage(
@@ -68,5 +69,4 @@ public class ProgressBarPausable extends JProgressBar {
     public void pause() {
         this.isIconDisplayed = true;
     }
-    
 }

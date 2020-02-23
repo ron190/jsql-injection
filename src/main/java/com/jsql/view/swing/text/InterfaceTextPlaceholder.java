@@ -38,5 +38,4 @@ public interface InterfaceTextPlaceholder {
             fm.getAscent() + 2
         );
     }
-
 }

@@ -9,5 +9,4 @@ public class JTextAreaPlaceholderConsole extends JTextAreaPlaceholder {
     public JTextAreaPlaceholderConsole(String placeholder) {
         super(placeholder);
     }
-    
 }

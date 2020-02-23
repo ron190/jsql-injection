@@ -30,7 +30,6 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.xml.transform.stream.StreamSource;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
@@ -88,14 +87,13 @@ public class JFrameView extends JFrame {
         HelperUi.prepareGUI();
         ShadowPopupFactory.install();
         
-        initializePaneComponents();
-        
-        initializeWindow();
-
-        initializeShortcuts();
+        this.initializePaneComponents();
+        this.initializeWindow();
+        this.initializeShortcuts();
     }
 
     private void initializeWindow() {
+        
         // Define a small and large app icon
         this.setIconImages(HelperUi.getIcons());
 
@@ -191,6 +189,8 @@ public class JFrameView extends JFrame {
         for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
             MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).setEnabled(false);
         }
+        
+        // TODO remove Error strategy magic number 2
         ((JMenu) MediatorGui.panelAddressBar().getMenuStrategy().getItem(2)).removeAll();
         MediatorGui.panelAddressBar().getGroupStrategy().clearSelection();
         

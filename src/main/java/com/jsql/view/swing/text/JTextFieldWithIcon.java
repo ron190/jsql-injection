@@ -77,5 +77,4 @@ public class JTextFieldWithIcon extends JTextFieldPlaceholder {
             LOGGER.error(e.getMessage(), e);
         }
     }
-    
 }

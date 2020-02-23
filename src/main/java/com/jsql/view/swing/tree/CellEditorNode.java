@@ -54,6 +54,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
      * Build editor, add tree and mouse listener.
      */
     public CellEditorNode() {
+        
         this.defaultTreeRenderer = new CellRendererNode();
         MediatorGui.treeDatabase().addTreeSelectionListener(this);
         MediatorGui.treeDatabase().addMouseListener(this);
@@ -70,6 +71,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
 
         final DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
         Object currentNodeModel = currentNode.getUserObject();
+        
         try {
             this.nodeModel = (AbstractNodeModel) currentNodeModel;
             if (componentRenderer instanceof JCheckBox) {
@@ -91,6 +93,7 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
     
     @Override
     public void valueChanged(TreeSelectionEvent arg0) {
+        
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) MediatorGui.treeDatabase().getLastSelectedPathComponent();
 
         // Get rid of java.lang.NullPointerException
@@ -111,20 +114,25 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
      * @param e Mouse event
      */
     private void showPopup(MouseEvent e) {
-        if (e.isPopupTrigger()) {
-            JTree tree = (JTree) e.getSource();
-            TreePath path = tree.getPathForLocation(e.getX(), e.getY());
-            if (path == null) {
-                return;
-            }
+        
+        if (!e.isPopupTrigger()) {
+            return;
+        }
+        
+        JTree tree = (JTree) e.getSource();
+        TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+        
+        if (path == null) {
+            return;
+        }
 
-            DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
+        DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
 
-            if (currentTableNode.getUserObject() instanceof AbstractNodeModel) {
-                AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
-                if (currentTableModel.isPopupDisplayable()) {
-                    currentTableModel.showPopup(currentTableNode, path, e);
-                }
+        if (currentTableNode.getUserObject() instanceof AbstractNodeModel) {
+            AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
+            
+            if (currentTableModel.isPopupDisplayable()) {
+                currentTableModel.showPopup(currentTableNode, path, e);
             }
         }
     }
@@ -153,5 +161,4 @@ public class CellEditorNode extends AbstractCellEditor implements TreeCellEditor
     public void mouseExited(MouseEvent e) {
         // Do nothing
     }
-    
 }

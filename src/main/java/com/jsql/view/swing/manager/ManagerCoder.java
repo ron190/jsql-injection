@@ -92,7 +92,8 @@ public class ManagerCoder extends JPanel implements Manager {
         this.textInput.getDocument().addDocumentListener(new DocumentListenerTyping() {
             
             @Override
-            public void warn() {
+            public void process() {
+                
                 ManagerCoder.this.actionCoder.actionPerformed();
             }
         });

@@ -19,6 +19,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.nio.charset.StandardCharsets;
+import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -78,6 +79,13 @@ public class PanelNode extends JPanel {
 
         this.progressBar.setPreferredSize(new Dimension(20, 20));
         this.progressBar.setUI(new BasicProgressBarUI());
+        this.progressBar.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createEmptyBorder(4, 3, 4, 3),
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY),
+                BorderFactory.createLineBorder(Color.WHITE)
+            )
+        ));
         
         this.label.setOpaque(true);
         this.label.setBorder(HelperUi.BORDER_FOCUS_GAINED);
@@ -85,28 +93,40 @@ public class PanelNode extends JPanel {
         this.icon.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         
         this.setBackground(Color.WHITE);
-
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-        this.add(this.icon);
-        this.add(this.loader);
-        this.add(this.progressBar);
-        this.add(this.label);
-        this.add(this.textFieldEditable);
-        this.setComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
-
-        this.progressBar.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createEmptyBorder(4,3,4,3),
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GRAY),
-                BorderFactory.createLineBorder(Color.WHITE)
-            )
-        ));
         
-        this.progressBar.setVisible(false);
-        this.loader.setVisible(false);
-        this.label.setVisible(false);
-        this.icon.setVisible(false);
-        this.textFieldEditable.setVisible(false);
+        Stream.of(
+            this.icon,
+            this.loader,
+            this.progressBar,
+            this.label,
+            this.textFieldEditable
+        ).forEach(jcomponent -> {
+            this.add(jcomponent);
+            jcomponent.setVisible(false);
+        });
+        
+        this.setComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
+        
+        this.initializeTextFieldEditable(tree, currentNode);
+
+        this.addFocusListener(new FocusListener() {
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                PanelNode.this.label.setBackground(HelperUi.COLOR_FOCUS_LOST);
+                PanelNode.this.label.setBorder(HelperUi.BORDER_FOCUS_LOST);
+            }
+            
+            @Override
+            public void focusGained(FocusEvent e) {
+                PanelNode.this.label.setBackground(HelperUi.COLOR_FOCUS_GAINED);
+                PanelNode.this.label.setBorder(HelperUi.BORDER_FOCUS_GAINED);
+            }
+        });
+    }
+
+    private void initializeTextFieldEditable(final JTree tree, final DefaultMutableTreeNode currentNode) {
         
         this.textFieldEditable.setFont(HelperUi.FONT_SEGOE);
         this.textFieldEditable.setBorder(BorderFactory.createLineBorder(HelperUi.COLOR_FOCUS_GAINED, 1, false));
@@ -157,21 +177,6 @@ public class PanelNode extends JPanel {
         
         this.addKeyListener(keyAdapterF2);
         this.textFieldEditable.addKeyListener(keyAdapterF2);
-
-        this.addFocusListener(new FocusListener() {
-            
-            @Override
-            public void focusLost(FocusEvent e) {
-                PanelNode.this.label.setBackground(HelperUi.COLOR_FOCUS_LOST);
-                PanelNode.this.label.setBorder(HelperUi.BORDER_FOCUS_LOST);
-            }
-            
-            @Override
-            public void focusGained(FocusEvent e) {
-                PanelNode.this.label.setBackground(HelperUi.COLOR_FOCUS_GAINED);
-                PanelNode.this.label.setBorder(HelperUi.BORDER_FOCUS_GAINED);
-            }
-        });
     }
 
     /**
@@ -224,5 +229,4 @@ public class PanelNode extends JPanel {
     public JTextField getEditable() {
         return this.textFieldEditable;
     }
-    
 }

@@ -175,7 +175,6 @@ public class PanelPreferences extends JPanel {
                 new ActionNewWindow().actionPerformed(null);
             }
         }
-        
     }
     
     private transient ActionListener actionListenerSave = new ActionListenerSave();
@@ -213,6 +212,7 @@ public class PanelPreferences extends JPanel {
     }
     
     public PanelPreferences() {
+        
         BorderLayout borderLayoutPreferences = new BorderLayout();
         this.setLayout(borderLayoutPreferences);
 
@@ -382,13 +382,13 @@ public class PanelPreferences extends JPanel {
         document.addDocumentListener(new DocumentListenerTyping() {
             
             @Override
-            public void warn() {
+            public void process() {
+                
                 MediatorModel.model().getMediatorUtils().getTamperingUtil().setCustomTamper(textPaneEval.getText());
             }
         });
         
         textPaneEval.setText(MediatorModel.model().getMediatorUtils().getTamperingUtil().getCustomTamper());
-        
         
         this.checkboxIsCheckingUpdate.setFocusable(false);
         JButton labelIsCheckingUpdate = new JButton("Check update at startup");
@@ -786,7 +786,7 @@ public class PanelPreferences extends JPanel {
         DocumentListener documentListenerSave = new DocumentListenerTyping() {
             
             @Override
-            public void warn() {
+            public void process() {
                 PanelPreferences.this.actionListenerSave.actionPerformed(null);
             }
         };
@@ -1286,5 +1286,4 @@ public class PanelPreferences extends JPanel {
         this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         this.add(categories, BorderLayout.LINE_START);
     }
-    
 }

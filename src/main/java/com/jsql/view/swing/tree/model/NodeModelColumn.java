@@ -56,7 +56,6 @@ public class NodeModelColumn extends AbstractNodeModel {
         );
         
         checkbox.setText(StringUtil.detectUtf8HtmlNoWrap(this.toString()));
-        
 
         if (isSelected) {
             if (hasFocus) {
@@ -72,6 +71,7 @@ public class NodeModelColumn extends AbstractNodeModel {
         }
         
         checkbox.setComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
+        
         return checkbox;
     }
 
@@ -98,8 +98,6 @@ public class NodeModelColumn extends AbstractNodeModel {
     
     @Override
     public boolean isPopupDisplayable() {
-        // Do nothing
         return false;
     }
-    
 }

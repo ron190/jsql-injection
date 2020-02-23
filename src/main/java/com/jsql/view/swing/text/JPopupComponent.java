@@ -44,6 +44,7 @@ public class JPopupComponent<T extends JComponent> extends JComponent implements
             
             @Override
             public void mousePressed(MouseEvent e) {
+                
                 super.mousePressed(e);
 
                 // Left button will unselect text after selectAll, so only for right click
@@ -58,5 +59,4 @@ public class JPopupComponent<T extends JComponent> extends JComponent implements
     public T getProxy() {
         return this.proxy;
     }
-    
 }

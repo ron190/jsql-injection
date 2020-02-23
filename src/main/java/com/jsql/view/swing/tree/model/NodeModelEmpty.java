@@ -44,20 +44,20 @@ public class NodeModelEmpty extends AbstractNodeModel {
     ) {
         
         DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
-        JPanel emptyPanel = new JPanel(new BorderLayout());
-        JLabel text = new JLabel(currentNode.getUserObject().toString());
-        emptyPanel.add(text);
-        text.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        JPanel panelEmpty = new JPanel(new BorderLayout());
+        JLabel labelEmpty = new JLabel(currentNode.getUserObject().toString());
+        panelEmpty.add(labelEmpty);
+        labelEmpty.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         
         if (isSelected) {
-            emptyPanel.setBackground(HelperUi.COLOR_FOCUS_GAINED);
-            text.setBorder(HelperUi.BORDER_FOCUS_GAINED);
+            panelEmpty.setBackground(HelperUi.COLOR_FOCUS_GAINED);
+            labelEmpty.setBorder(HelperUi.BORDER_FOCUS_GAINED);
         } else {
-            emptyPanel.setBackground(Color.WHITE);
-            text.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+            panelEmpty.setBackground(Color.WHITE);
+            labelEmpty.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         }
 
-        return emptyPanel;
+        return panelEmpty;
     }
 
     @Override
@@ -83,8 +83,6 @@ public class NodeModelEmpty extends AbstractNodeModel {
     
     @Override
     public boolean isPopupDisplayable() {
-        // Not used
         return false;
     }
-    
 }

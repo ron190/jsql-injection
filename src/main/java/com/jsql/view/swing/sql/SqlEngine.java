@@ -665,7 +665,8 @@ public class SqlEngine extends JPanel implements Cleanable {
         document.addDocumentListener(new DocumentListenerTyping() {
             
             @Override
-            public void warn() {
+            public void process() {
+                
                 textPane.setAttribute();
             }
         });

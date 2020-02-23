@@ -24,7 +24,7 @@ public class CheckBoxIcon implements Icon, UIResource, Serializable {
         int w = this.getIconWidth();
         int h = this.getIconHeight();
         
-        if ( model.isEnabled() ) {
+        if (model.isEnabled()) {
             
             if (model.isPressed() && model.isArmed()) {
                 
@@ -86,5 +86,4 @@ public class CheckBoxIcon implements Icon, UIResource, Serializable {
     public int getIconHeight() {
         return CheckBoxIcon.CONTROL_SIZE;
     }
-    
 }

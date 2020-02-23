@@ -81,5 +81,4 @@ public class CustomMetalTabbedPaneUI extends MetalTabbedPaneUI {
             this.setBorderPainted(false);
         }
     }
-    
 }

@@ -51,62 +51,74 @@ public class JPopupTextComponent<T extends JTextComponent> extends JPopupCompone
 
         this.getProxy().setDragEnabled(true);
 
-        final UndoManager undo = new UndoManager();
+        UndoManager undoRedoManager = new UndoManager();
         Document doc = this.getProxy().getDocument();
 
         // Listen for undo and redo events
-        doc.addUndoableEditListener(undoableEditEvent -> undo.addEdit(undoableEditEvent.getEdit()));
+        doc.addUndoableEditListener(undoableEditEvent -> undoRedoManager.addEdit(undoableEditEvent.getEdit()));
 
+        this.initializeUndo(undoRedoManager);
+        this.initializeRedo(undoRedoManager);
+        this.makeDeleteSilent();
+    }
+
+    private void initializeUndo(final UndoManager undo) {
+        
         // Create an undo action and add it to the text component
         final String undoIdentifier = "Undo";
-        this.getProxy().getActionMap().put(undoIdentifier,
-            new AbstractAction(undoIdentifier) {
+        
+        this.getProxy().getActionMap().put(undoIdentifier, new AbstractAction(undoIdentifier) {
             
-                @Override
-                public void actionPerformed(ActionEvent evt) {
-                    try {
-                        if (undo.canUndo()) {
-                            undo.undo();
-                        }
-                    } catch (CannotUndoException e) {
-                        LOGGER.error(e.getMessage(), e);
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                
+                try {
+                    if (undo.canUndo()) {
+                        undo.undo();
                     }
+                } catch (CannotUndoException e) {
+                    LOGGER.error(e.getMessage(), e);
                 }
-           }
-        );
+            }
+       });
 
         // Bind the undo action to ctl-Z
         this.getProxy().getInputMap().put(KeyStroke.getKeyStroke("control Z"), undoIdentifier);
+    }
 
+    private void initializeRedo(final UndoManager undo) {
+        
         // Create a redo action and add it to the text component
         final String redoIdentifier = "Redo";
-        this.getProxy().getActionMap().put(redoIdentifier,
-            new AbstractAction(redoIdentifier) {
+        
+        this.getProxy().getActionMap().put(redoIdentifier, new AbstractAction(redoIdentifier) {
             
-                @Override
-                public void actionPerformed(ActionEvent evt) {
-                    try {
-                        if (undo.canRedo()) {
-                            undo.redo();
-                        }
-                    } catch (CannotRedoException e) {
-                        LOGGER.error(e.getMessage(), e);
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                
+                try {
+                    if (undo.canRedo()) {
+                        undo.redo();
                     }
+                } catch (CannotRedoException e) {
+                    LOGGER.error(e.getMessage(), e);
                 }
             }
-        );
+        });
 
         // Bind the redo action to ctl-Y
         this.getProxy().getInputMap().put(KeyStroke.getKeyStroke("control Y"), redoIdentifier);
+    }
+
+    private void makeDeleteSilent() {
         
         // Silent delete
-        ActionMap am = this.getProxy().getActionMap();
+        ActionMap actionMap = this.getProxy().getActionMap();
 
         String key = DefaultEditorKit.deletePrevCharAction;
-        am.put(key, new SilentDeleteTextAction(key, am.get(key)));
+        actionMap.put(key, new SilentDeleteTextAction(key, actionMap.get(key)));
 
         key = DefaultEditorKit.deleteNextCharAction;
-        am.put(key, new SilentDeleteTextAction(key, am.get(key)));
+        actionMap.put(key, new SilentDeleteTextAction(key, actionMap.get(key)));
     }
-    
 }

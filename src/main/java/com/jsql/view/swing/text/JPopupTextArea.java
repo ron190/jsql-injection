@@ -37,6 +37,7 @@ public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements De
     public JPopupTextArea(String placeholder) {
         
         this(new JTextAreaPlaceholder(placeholder) {
+            
             @Override
             public boolean isEditable() {
                 return false;
@@ -52,6 +53,7 @@ public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements De
         super(proxy);
 
         this.getProxy().addFocusListener(new FocusAdapter() {
+            
             @Override
             public void focusGained(FocusEvent arg0) {
                 JPopupTextArea.this.getProxy().getCaret().setVisible(true);
@@ -62,5 +64,4 @@ public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements De
         this.getProxy().setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
         this.getProxy().setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
     }
-    
 }

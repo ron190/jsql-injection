@@ -46,25 +46,27 @@ public class NodeModelDatabase extends AbstractNodeModel {
     @Override
     public void runAction() {
         
-        final Database selectedDatabase = (Database) this.getElementDatabase();
-        
-        if (/*!this.isLoaded && */!this.isRunning()) {
-            MediatorGui.frame().getTreeNodeModels().get(this.getElementDatabase()).removeAllChildren();
-            DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
-            treeModel.reload(MediatorGui.frame().getTreeNodeModels().get(this.getElementDatabase()));
-            
-            new SwingWorker<Object, Object>() {
-                
-                @Override
-                protected Object doInBackground() throws Exception {
-                    Thread.currentThread().setName("SwingWorkerNodeModelDatabase");
-                    return MediatorModel.model().getDataAccess().listTables(selectedDatabase);
-                }
-                
-            }.execute();
-            
-            this.setRunning(true);
+        if (this.isRunning()) {
+            return;
         }
+    
+        MediatorGui.frame().getTreeNodeModels().get(this.getElementDatabase()).removeAllChildren();
+        
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
+        treeModel.reload(MediatorGui.frame().getTreeNodeModels().get(this.getElementDatabase()));
+        
+        new SwingWorker<Object, Object>() {
+            
+            @Override
+            protected Object doInBackground() throws Exception {
+                
+                Thread.currentThread().setName("SwingWorkerNodeModelDatabase");
+                Database selectedDatabase = (Database) NodeModelDatabase.this.getElementDatabase();
+                return MediatorModel.model().getDataAccess().listTables(selectedDatabase);
+            }
+        }.execute();
+        
+        this.setRunning(true);
     }
 
     @Override
@@ -76,5 +78,4 @@ public class NodeModelDatabase extends AbstractNodeModel {
     protected void buildMenu(JPopupMenuCustomExtract tablePopupMenu, TreePath path) {
         // Do nothing
     }
-    
 }

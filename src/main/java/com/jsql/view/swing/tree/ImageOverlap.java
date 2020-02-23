@@ -64,5 +64,4 @@ public class ImageOverlap extends ImageIcon {
             LOGGER.error(e.getMessage(), e);
         }
     }
-    
 }

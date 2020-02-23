@@ -16,12 +16,9 @@ import java.awt.ComponentOrientation;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
 import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.JSeparator;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -95,7 +92,7 @@ public abstract class AbstractNodeModel {
      */
     private boolean isLoading = false;
     
-    private PanelNode panel;
+    private PanelNode panelNode;
 
     private boolean isEdited;
 
@@ -113,263 +110,6 @@ public abstract class AbstractNodeModel {
      */
     public AbstractNodeModel(String emptyObject) {
         this.textEmptyNode = emptyObject;
-    }
-
-    /**
-     * Get the database parent of current node.
-     * @return Parent
-     */
-    protected AbstractElementDatabase getParent() {
-        return this.elementDatabase.getParent();
-    }
-    
-    // TODO extract
-    @SuppressWarnings("serial")
-    public class JPopupMenuCustomExtract extends JPopupMenu {
-        
-        ButtonGroup buttonGroupLoadRows;
-        JCheckBox radioCustomFromRow;
-        JCheckBox radioCustomToRow;
-        JCheckBox radioCustomFromChar;
-        JCheckBox radioCustomToChar;
-        JMenuItem menuItemDump;
-        
-        public ButtonGroup getButtonGroupLoadRows() {
-            return this.buttonGroupLoadRows;
-        }
-        
-        public void setButtonGroupLoadRows(ButtonGroup buttonGroupLoadRows) {
-            this.buttonGroupLoadRows = buttonGroupLoadRows;
-        }
-        
-        public JCheckBox getRadioCustomFromRow() {
-            return this.radioCustomFromRow;
-        }
-        
-        public void setRadioCustomFromRow(JCheckBox radioCustomFromRow) {
-            this.radioCustomFromRow = radioCustomFromRow;
-        }
-        
-        public JCheckBox getRadioCustomToRow() {
-            return this.radioCustomToRow;
-        }
-        
-        public void setRadioCustomToRow(JCheckBox radioCustomToRow) {
-            this.radioCustomToRow = radioCustomToRow;
-        }
-        
-        public JCheckBox getRadioCustomFromChar() {
-            return this.radioCustomFromChar;
-        }
-        
-        public void setRadioCustomFromChar(JCheckBox radioCustomFromChar) {
-            this.radioCustomFromChar = radioCustomFromChar;
-        }
-        
-        public JCheckBox getRadioCustomToChar() {
-            return this.radioCustomToChar;
-        }
-        
-        public void setRadioCustomToChar(JCheckBox radioCustomToChar) {
-            this.radioCustomToChar = radioCustomToChar;
-        }
-        
-        public JMenuItem getMenuItemDump() {
-            return this.menuItemDump;
-        }
-        
-        public void setMenuItemDump(JMenuItem menuItemDump) {
-            this.menuItemDump = menuItemDump;
-        }
-        
-    }
-
-    /**
-     * Display a popup menu for a database or table node.
-     * @param currentTableNode Current node
-     * @param path Path of current node
-     * @param x Popup menu x mouse coordinate
-     * @param y Popup menu y mouse coordinate
-     */
-    public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
-        
-        JPopupMenuCustomExtract popupMenu = new JPopupMenuCustomExtract();
-        AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
-
-        JMenuItem mnLoad = new JMenuItem(
-            this.isRunning
-                ? I18nView.valueByKey("THREAD_STOP")
-                : I18nView.valueByKey("THREAD_LOAD"),
-            'o'
-        );
-        mnLoad.setIcon(HelperUi.ICON_EMPTY);
-        
-        if (!this.isContainingSelection && !this.isRunning) {
-            mnLoad.setEnabled(false);
-        }
-        mnLoad.addActionListener(new ActionLoadStop(this, currentTableNode, popupMenu));
-
-        JMenuItem mnPause = new JMenuItem(
-            // Report #133: ignore if thread not found
-            suspendableTask != null && suspendableTask.isPaused()
-                ? I18nView.valueByKey("THREAD_RESUME")
-                : I18nView.valueByKey("THREAD_PAUSE"),
-            's'
-        );
-        mnPause.setIcon(HelperUi.ICON_EMPTY);
-
-        if (!this.isRunning) {
-            mnPause.setEnabled(false);
-        }
-        mnPause.addActionListener(new ActionPauseUnpause(this, currentTableNode));
-        
-        popupMenu.add(mnLoad);
-        popupMenu.add(mnPause);
-        
-        String textReload;
-        
-        if (this instanceof NodeModelDatabase) {
-            textReload = I18nView.valueByKey("RELOAD_TABLES");
-        } else if (this instanceof NodeModelTable) {
-            textReload = I18nView.valueByKey("RELOAD_COLUMNS");
-        } else {
-            textReload = "?";
-        }
-        
-        JMenuItem mnReload = new JMenuItem(textReload);
-        mnReload.setIcon(HelperUi.ICON_EMPTY);
-
-        mnReload.setEnabled(!this.isRunning);
-        mnReload.addActionListener(actionEvent -> AbstractNodeModel.this.runAction());
-        
-        JMenuItem mnRename = new JMenuItem(I18nView.valueByKey("RENAME_NODE"));
-        mnRename.setIcon(HelperUi.ICON_EMPTY);
-        
-        mnRename.setEnabled(!this.isRunning);
-        mnRename.addActionListener(actionEvent -> {
-            AbstractNodeModel nodeModel = (AbstractNodeModel) currentTableNode.getUserObject();
-            nodeModel.setIsEdited(true);
-            
-            AbstractNodeModel.this.getPanel().getLabel().setVisible(false);
-            AbstractNodeModel.this.getPanel().getEditable().setVisible(true);
-            
-            MediatorGui.treeDatabase().setSelectionPath(path);
-        });
-        
-        popupMenu.add(new JSeparator());
-        popupMenu.add(mnRename);
-        popupMenu.add(mnReload);
-
-        this.buildMenu(popupMenu, path);
-        
-        popupMenu.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
-
-        popupMenu.show(
-            MediatorGui.treeDatabase(),
-            ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
-            ? e.getX() - popupMenu.getWidth()
-            : e.getX(),
-            e.getY()
-        );
-        
-        popupMenu.setLocation(
-            ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
-            ? e.getXOnScreen() - popupMenu.getWidth()
-            : e.getXOnScreen(),
-            e.getYOnScreen()
-        );
-    }
-    
-    /**
-     * Draw the panel component based on node model.
-     * @param tree
-     * @param nodeRenderer
-     * @param isSelected
-     * @param isExpanded
-     * @param isLeaf
-     * @param row
-     * @param hasFocus
-     * @return
-     */
-    public Component getComponent(
-        final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, boolean hasFocus
-    ) {
-        
-        DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
-        this.panel = new PanelNode(tree, currentNode);
-
-        this.panel.getLabel().setText(StringUtil.detectUtf8Html(this.toString()));
-        this.panel.getLabel().setVisible(true);
-        this.panel.showIcon();
-
-        this.panel.setIcon(this.getLeafIcon(isLeaf));
-        
-        AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
-        
-        if (StringUtil.isUtf8(this.getElementDatabase().toString())) {
-            this.panel.getEditable().setFont(HelperUi.FONT_UBUNTU_REGULAR);
-        } else {
-            this.panel.getEditable().setFont(HelperUi.FONT_SEGOE);
-        }
-
-        
-        this.panel.getEditable().setText(StringUtil.detectUtf8(this.getElementDatabase().toString()));
-        this.panel.getEditable().setVisible(nodeModel.isEdited);
-        this.panel.getLabel().setVisible(!nodeModel.isEdited);
-
-        if (isSelected) {
-            if (hasFocus) {
-                this.panel.getLabel().setBackground(HelperUi.COLOR_FOCUS_GAINED);
-                this.panel.getLabel().setBorder(HelperUi.BORDER_FOCUS_GAINED);
-            } else {
-                this.panel.getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
-                this.panel.getLabel().setBorder(HelperUi.BORDER_FOCUS_LOST);
-            }
-        } else {
-            this.panel.getLabel().setBackground(Color.WHITE);
-            this.panel.getLabel().setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        }
-        
-        if (this.isLoading) {
-            this.displayProgress(this.panel, currentNode);
-            this.panel.hideIcon();
-        } else if (this.isProgressing) {
-            this.panel.showLoader();
-            this.panel.hideIcon();
-
-            AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
-            if (suspendableTask != null && suspendableTask.isPaused()) {
-                ImageIcon animatedGIFPaused = new ImageOverlap(HelperUi.PATH_PROGRESSBAR, HelperUi.PATH_PAUSE);
-                animatedGIFPaused.setImageObserver(
-                    new ImageObserverAnimated(
-                        MediatorGui.treeDatabase(),
-                        currentNode
-                    )
-                );
-                this.panel.setLoaderIcon(animatedGIFPaused);
-            }
-        }
-        
-        return this.panel;
-    }
-    
-    /**
-     * Update progressbar ; display the pause icon if node is paused.
-     * @param panel Panel that contains the bar to update
-     * @param currentNode Functional node model object
-     */
-    protected void displayProgress(PanelNode panel, DefaultMutableTreeNode currentNode) {
-        
-        int dataCount = this.elementDatabase.getChildCount();
-        panel.getProgressBar().setMaximum(dataCount);
-        panel.getProgressBar().setValue(this.indexProgress);
-        panel.getProgressBar().setVisible(true);
-        
-        // Report #135: ignore if thread not found
-        AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
-        if (suspendableTask != null && suspendableTask.isPaused()) {
-            panel.getProgressBar().pause();
-        }
     }
     
     /**
@@ -398,6 +138,234 @@ public abstract class AbstractNodeModel {
      * Used by database and table nodes.
      */
     public abstract void runAction();
+
+    /**
+     * TODO Extract in other class
+     * Display a popup menu for a database or table node.
+     * @param currentTableNode Current node
+     * @param path Path of current node
+     * @param x Popup menu x mouse coordinate
+     * @param y Popup menu y mouse coordinate
+     */
+    public void showPopup(DefaultMutableTreeNode currentTableNode, TreePath path, MouseEvent e) {
+        
+        JPopupMenuCustomExtract popupMenu = new JPopupMenuCustomExtract();
+        AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
+
+        this.initializeItemLoadPause(currentTableNode, popupMenu, suspendableTask);
+        this.initializeItemRenameReload(currentTableNode, path, popupMenu);
+
+        this.buildMenu(popupMenu, path);
+        
+        this.displayPopupMenu(e, popupMenu);
+    }
+
+    private void displayPopupMenu(MouseEvent e, JPopupMenuCustomExtract popupMenu) {
+        
+        popupMenu.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
+
+        popupMenu.show(
+            MediatorGui.treeDatabase(),
+            ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+            ? e.getX() - popupMenu.getWidth()
+            : e.getX(),
+            e.getY()
+        );
+        
+        popupMenu.setLocation(
+            ComponentOrientation.getOrientation(I18n.getLocaleDefault()) == ComponentOrientation.RIGHT_TO_LEFT
+            ? e.getXOnScreen() - popupMenu.getWidth()
+            : e.getXOnScreen(),
+            e.getYOnScreen()
+        );
+    }
+
+    private void initializeItemRenameReload(
+        DefaultMutableTreeNode currentTableNode, TreePath path, JPopupMenuCustomExtract popupMenu
+    ) {
+        
+        String textReload;
+        
+        if (this instanceof NodeModelDatabase) {
+            textReload = I18nView.valueByKey("RELOAD_TABLES");
+        } else if (this instanceof NodeModelTable) {
+            textReload = I18nView.valueByKey("RELOAD_COLUMNS");
+        } else {
+            textReload = "?";
+        }
+        
+        JMenuItem menuItemReload = new JMenuItem(textReload);
+        menuItemReload.setIcon(HelperUi.ICON_EMPTY);
+
+        menuItemReload.setEnabled(!this.isRunning);
+        menuItemReload.addActionListener(actionEvent -> AbstractNodeModel.this.runAction());
+        
+        JMenuItem menuItemRename = new JMenuItem(I18nView.valueByKey("RENAME_NODE"));
+        menuItemRename.setIcon(HelperUi.ICON_EMPTY);
+        
+        menuItemRename.setEnabled(!this.isRunning);
+        menuItemRename.addActionListener(actionEvent -> {
+            AbstractNodeModel nodeModel = (AbstractNodeModel) currentTableNode.getUserObject();
+            nodeModel.setIsEdited(true);
+            
+            AbstractNodeModel.this.getPanel().getLabel().setVisible(false);
+            AbstractNodeModel.this.getPanel().getEditable().setVisible(true);
+            
+            MediatorGui.treeDatabase().setSelectionPath(path);
+        });
+        
+        popupMenu.add(new JSeparator());
+        popupMenu.add(menuItemRename);
+        popupMenu.add(menuItemReload);
+    }
+
+    private void initializeItemLoadPause(
+        DefaultMutableTreeNode currentTableNode, JPopupMenuCustomExtract popupMenu, AbstractSuspendable<?> suspendableTask
+    ) {
+        
+        JMenuItem menuItemLoad = new JMenuItem(
+            this.isRunning
+                ? I18nView.valueByKey("THREAD_STOP")
+                : I18nView.valueByKey("THREAD_LOAD"),
+            'o'
+        );
+        menuItemLoad.setIcon(HelperUi.ICON_EMPTY);
+        
+        if (!this.isContainingSelection && !this.isRunning) {
+            menuItemLoad.setEnabled(false);
+        }
+        menuItemLoad.addActionListener(new ActionLoadStop(this, currentTableNode));
+
+        JMenuItem menuItemPause = new JMenuItem(
+            // Report #133: ignore if thread not found
+            suspendableTask != null && suspendableTask.isPaused()
+                ? I18nView.valueByKey("THREAD_RESUME")
+                : I18nView.valueByKey("THREAD_PAUSE"),
+            's'
+        );
+        menuItemPause.setIcon(HelperUi.ICON_EMPTY);
+
+        if (!this.isRunning) {
+            menuItemPause.setEnabled(false);
+        }
+        menuItemPause.addActionListener(new ActionPauseUnpause(this));
+        
+        popupMenu.add(menuItemLoad);
+        popupMenu.add(menuItemPause);
+    }
+    
+    /**
+     * Draw the panel component based on node model.
+     * @param tree
+     * @param nodeRenderer
+     * @param isSelected
+     * @param isExpanded
+     * @param isLeaf
+     * @param row
+     * @param hasFocus
+     * @return
+     */
+    public Component getComponent(
+        final JTree tree, Object nodeRenderer, final boolean isSelected, boolean isLeaf, boolean hasFocus
+    ) {
+        
+        DefaultMutableTreeNode currentNode = (DefaultMutableTreeNode) nodeRenderer;
+        this.panelNode = new PanelNode(tree, currentNode);
+
+        this.initializeIcon(isLeaf);
+        
+        AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
+        boolean isEdited = nodeModel.isEdited;
+        
+        this.initializeEditable(isEdited);
+        this.initializeLabel(isSelected, hasFocus, isEdited);
+        this.initializeProgress(currentNode);
+        
+        return this.panelNode;
+    }
+
+    private void initializeIcon(boolean isLeaf) {
+        
+        this.panelNode.showIcon();
+        this.panelNode.setIcon(this.getLeafIcon(isLeaf));
+    }
+
+    private void initializeProgress(DefaultMutableTreeNode currentNode) {
+        
+        if (this.isLoading) {
+            
+            this.displayProgress(this.panelNode, currentNode);
+            this.panelNode.hideIcon();
+        } else if (this.isProgressing) {
+            
+            this.panelNode.showLoader();
+            this.panelNode.hideIcon();
+
+            AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
+            if (suspendableTask != null && suspendableTask.isPaused()) {
+                ImageIcon animatedGIFPaused = new ImageOverlap(HelperUi.PATH_PROGRESSBAR, HelperUi.PATH_PAUSE);
+                animatedGIFPaused.setImageObserver(
+                    new ImageObserverAnimated(
+                        MediatorGui.treeDatabase(),
+                        currentNode
+                    )
+                );
+                this.panelNode.setLoaderIcon(animatedGIFPaused);
+            }
+        }
+    }
+
+    private void initializeLabel(final boolean isSelected, boolean hasFocus, boolean isEdited) {
+        
+        this.panelNode.getLabel().setText(StringUtil.detectUtf8Html(this.toString()));
+        this.panelNode.getLabel().setVisible(true);
+        
+        this.panelNode.getLabel().setVisible(!isEdited);
+
+        if (isSelected) {
+            if (hasFocus) {
+                this.panelNode.getLabel().setBackground(HelperUi.COLOR_FOCUS_GAINED);
+                this.panelNode.getLabel().setBorder(HelperUi.BORDER_FOCUS_GAINED);
+            } else {
+                this.panelNode.getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
+                this.panelNode.getLabel().setBorder(HelperUi.BORDER_FOCUS_LOST);
+            }
+        } else {
+            this.panelNode.getLabel().setBackground(Color.WHITE);
+            this.panelNode.getLabel().setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        }
+    }
+
+    private void initializeEditable(boolean isEdited) {
+        
+        if (StringUtil.isUtf8(this.getElementDatabase().toString())) {
+            this.panelNode.getEditable().setFont(HelperUi.FONT_UBUNTU_REGULAR);
+        } else {
+            this.panelNode.getEditable().setFont(HelperUi.FONT_SEGOE);
+        }
+        
+        this.panelNode.getEditable().setText(StringUtil.detectUtf8(this.getElementDatabase().toString()));
+        this.panelNode.getEditable().setVisible(isEdited);
+    }
+    
+    /**
+     * Update progressbar ; display the pause icon if node is paused.
+     * @param panelNode Panel that contains the bar to update
+     * @param currentNode Functional node model object
+     */
+    protected void displayProgress(PanelNode panelNode, DefaultMutableTreeNode currentNode) {
+        
+        int dataCount = this.elementDatabase.getChildCount();
+        panelNode.getProgressBar().setMaximum(dataCount);
+        panelNode.getProgressBar().setValue(this.indexProgress);
+        panelNode.getProgressBar().setVisible(true);
+        
+        // Report #135: ignore if thread not found
+        AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.elementDatabase);
+        if (suspendableTask != null && suspendableTask.isPaused()) {
+            panelNode.getProgressBar().pause();
+        }
+    }
     
     @Override
     public String toString() {
@@ -405,6 +373,14 @@ public abstract class AbstractNodeModel {
     }
     
     // Getter and setter
+
+    /**
+     * Get the database parent of current node.
+     * @return Parent
+     */
+    protected AbstractElementDatabase getParent() {
+        return this.elementDatabase.getParent();
+    }
 
     public AbstractElementDatabase getElementDatabase() {
         return this.elementDatabase;
@@ -467,7 +443,7 @@ public abstract class AbstractNodeModel {
     }
 
     public PanelNode getPanel() {
-        return this.panel;
+        return this.panelNode;
     }
 
     public void setIsEdited(boolean b) {
@@ -477,5 +453,4 @@ public abstract class AbstractNodeModel {
     public void setText(String textI18n) {
         this.textEmptyNode = textI18n;
     }
-    
 }

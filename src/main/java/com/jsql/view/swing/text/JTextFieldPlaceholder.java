@@ -58,6 +58,7 @@ public class JTextFieldPlaceholder extends JTextField {
         }
         
         if (this.getText().length() == 0) {
+            // TODO use InterfaceTextPlaceholder
             int h = this.getHeight();
             int w = this.getWidth();
             ((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -82,5 +83,4 @@ public class JTextFieldPlaceholder extends JTextField {
     public void setPlaceholderText(String placeholderText) {
         this.placeholderText = placeholderText;
     }
-    
 }

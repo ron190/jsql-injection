@@ -77,6 +77,7 @@ public class DialogAbout extends JDialog {
      * Create a dialog for general information on project jsql.
      */
     public DialogAbout() {
+        
         super(MediatorGui.frame(), "About jSQL Injection", Dialog.ModalityType.MODELESS);
 
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -231,5 +232,4 @@ public class DialogAbout extends JDialog {
     public void requestButtonFocus() {
         this.buttonClose.requestFocusInWindow();
     }
-    
 }

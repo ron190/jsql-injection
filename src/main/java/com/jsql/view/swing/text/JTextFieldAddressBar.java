@@ -29,5 +29,4 @@ public class JTextFieldAddressBar extends JPopupTextField implements DecoratorJC
 
         this.getProxy().setFont(HelperUi.FONT_SEGOE_BIG);
     }
-    
 }

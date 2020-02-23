@@ -87,5 +87,4 @@ public class I18n {
     public static ResourceBundle getLocaleRoot() {
         return LOCALE_ROOT;
     }
-    
 }

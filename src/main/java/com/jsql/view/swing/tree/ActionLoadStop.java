@@ -24,27 +24,69 @@ import com.jsql.model.bean.database.Column;
 import com.jsql.model.suspendable.AbstractSuspendable;
 import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
-import com.jsql.view.swing.tree.model.AbstractNodeModel.JPopupMenuCustomExtract;
 
 /**
  * Action to start and stop injection process.
  */
 public class ActionLoadStop implements ActionListener {
     
-    AbstractNodeModel nodeModel;
-    
-    DefaultMutableTreeNode currentTableNode;
-    
-    JPopupMenuCustomExtract popupMenu;
+    private AbstractNodeModel nodeModel;
+    private DefaultMutableTreeNode currentTableNode;
 
-    public ActionLoadStop(AbstractNodeModel nodeModel, DefaultMutableTreeNode currentTableNode, JPopupMenuCustomExtract popupMenu) {
+    public ActionLoadStop(AbstractNodeModel nodeModel, DefaultMutableTreeNode currentTableNode) {
         this.nodeModel = nodeModel;
         this.currentTableNode = currentTableNode;
-        this.popupMenu = popupMenu;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        
+        final List<Column> columnsToSearch = this.getSelectedColumns();
+
+        if (!this.nodeModel.isRunning() && columnsToSearch.isEmpty()) {
+            return;
+        }
+
+        if (!this.nodeModel.isRunning()) {
+            this.startListValues(columnsToSearch);
+        } else {
+            this.stopAbstractNode();
+        }
+        
+        this.nodeModel.setRunning(!this.nodeModel.isRunning());
+    }
+
+    private void startListValues(final List<Column> columnsToSearch) {
+        
+        new SwingWorker<Object, Object>(){
+            
+            @Override
+            protected Object doInBackground() throws Exception {
+                
+                Thread.currentThread().setName("SwingWorkerActionLoadStop");
+                MediatorModel.model().getDataAccess().listValues(columnsToSearch);
+                return null;
+            }
+        }.execute();
+    }
+
+    private void stopAbstractNode() {
+        
+        AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());
+        
+        // Fix #21394: NullPointerException on stop()
+        if (suspendableTask != null) {
+            suspendableTask.stop();
+        }
+        
+        this.nodeModel.setIndexProgress(0);
+        this.nodeModel.setProgressing(false);
+        this.nodeModel.setLoading(false);
+        
+        MediatorModel.model().getMediatorUtils().getThreadUtil().remove(this.nodeModel.getElementDatabase());
+    }
+
+    private List<Column> getSelectedColumns() {
         
         DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
         DefaultMutableTreeNode tableNode = this.currentTableNode;
@@ -62,38 +104,7 @@ public class ActionLoadStop implements ActionListener {
                 }
             }
         }
-
-        if (!this.nodeModel.isRunning() && columnsToSearch.isEmpty()) {
-            return;
-        }
-
-        if (!this.nodeModel.isRunning()) {
-            
-            new SwingWorker<Object, Object>(){
-                
-                @Override
-                protected Object doInBackground() throws Exception {
-                    
-                    Thread.currentThread().setName("SwingWorkerActionLoadStop");
-                    MediatorModel.model().getDataAccess().listValues(columnsToSearch);
-                    return null;
-                }
-            }.execute();
-        } else {
-            
-            AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.nodeModel.getElementDatabase());
-            
-            // Fix #21394: NullPointerException on stop()
-            if (suspendableTask != null) {
-                suspendableTask.stop();
-            }
-            
-            this.nodeModel.setIndexProgress(0);
-            this.nodeModel.setProgressing(false);
-            this.nodeModel.setLoading(false);
-            
-            MediatorModel.model().getMediatorUtils().getThreadUtil().remove(this.nodeModel.getElementDatabase());
-        }
-        this.nodeModel.setRunning(!this.nodeModel.isRunning());
+        
+        return columnsToSearch;
     }
 }

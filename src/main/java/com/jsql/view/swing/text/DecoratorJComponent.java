@@ -24,5 +24,4 @@ interface DecoratorJComponent<T extends JComponent> {
      * @return Proxyfied component
      */
     T getProxy();
-    
 }

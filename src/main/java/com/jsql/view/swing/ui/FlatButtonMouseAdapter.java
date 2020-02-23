@@ -8,6 +8,10 @@ import javax.swing.JButton;
 
 import com.jsql.view.swing.HelperUi;
 
+/**
+ * Define behavior to set on button.
+ * Button's border is displayed on mouse hover, border is hidden on mouse out.
+ */
 public class FlatButtonMouseAdapter extends MouseAdapter {
     
     private JButton buttonFlat;
@@ -17,7 +21,7 @@ public class FlatButtonMouseAdapter extends MouseAdapter {
         this.buttonFlat = buttonFlat;
     }
     
-    @Override 
+    @Override
     public void mouseEntered(MouseEvent e) {
         
         if (this.buttonFlat.isEnabled() && !this.isVisible) {
@@ -26,7 +30,7 @@ public class FlatButtonMouseAdapter extends MouseAdapter {
         }
     }
 
-    @Override 
+    @Override
     public void mouseExited(MouseEvent e) {
         
         if (this.buttonFlat.isEnabled() && !this.isVisible) {
@@ -38,5 +42,4 @@ public class FlatButtonMouseAdapter extends MouseAdapter {
     public void setContentVisible(boolean isVisible) {
         this.isVisible = isVisible;
     }
-    
 }

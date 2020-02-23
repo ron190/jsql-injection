@@ -52,8 +52,10 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
         this.placeholderText = placeholder;
         
         this.setCaret(new DefaultCaret() {
+            
             @Override
             public void setSelectionVisible(boolean visible) {
+                
                 super.setSelectionVisible(true);
             }
         });
@@ -62,6 +64,7 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
             
             @Override
             public void focusLost(FocusEvent e) {
+                
                 JTextPanePlaceholder.this.setSelectionColor(HelperUi.COLOR_FOCUS_LOST);
                 JTextPanePlaceholder.this.revalidate();
                 JTextPanePlaceholder.this.repaint();
@@ -69,6 +72,7 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
             
             @Override
             public void focusGained(FocusEvent e) {
+                
                 JTextPanePlaceholder.this.setSelectionColor(HelperUi.COLOR_FOCUS_GAINED);
                 JTextPanePlaceholder.this.revalidate();
                 JTextPanePlaceholder.this.repaint();
@@ -89,6 +93,7 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
         // Fix #48915: ClassCastException on paint()
         try {
             super.paint(g);
+            
             if ("".equals(Jsoup.parse(this.getText()).text().trim())) {
                 this.drawPlaceholder(this, g, this.placeholderText);
             }
@@ -96,5 +101,4 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
             LOGGER.error(e.getMessage(), e);
         }
     }
-    
 }

@@ -51,5 +51,4 @@ public class JPopupTextField extends JPopupTextComponent<JTextField> implements 
             )
         );
     }
-    
 }

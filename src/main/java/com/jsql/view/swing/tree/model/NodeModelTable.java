@@ -12,8 +12,6 @@ package com.jsql.view.swing.tree.model;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -72,112 +70,58 @@ public class NodeModelTable extends AbstractNodeModel {
     }
 
     @Override
-    protected void displayProgress(PanelNode panel, DefaultMutableTreeNode currentNode) {
+    protected void displayProgress(PanelNode panelNode, DefaultMutableTreeNode currentNode) {
         
         if ("information_schema".equals(this.getParent().toString())) {
-            panel.showLoader();
+            panelNode.showLoader();
             
             AbstractSuspendable<?> suspendableTask = MediatorModel.model().getMediatorUtils().getThreadUtil().get(this.getElementDatabase());
             if (suspendableTask != null && suspendableTask.isPaused()) {
                 ImageIcon animatedGifPaused = new ImageOverlap(HelperUi.PATH_PROGRESSBAR, HelperUi.PATH_PAUSE);
                 animatedGifPaused.setImageObserver(new ImageObserverAnimated(MediatorGui.treeDatabase(), currentNode));
-                panel.setLoaderIcon(animatedGifPaused);
+                panelNode.setLoaderIcon(animatedGifPaused);
             }
         } else {
-            super.displayProgress(panel, currentNode);
+            super.displayProgress(panelNode, currentNode);
         }
     }
 
     @Override
     public void runAction() {
         
-        final Table selectedTable = (Table) this.getElementDatabase();
-        
-        if (!this.isRunning()) {
-            MediatorGui.frame().getTreeNodeModels().get(this.getElementDatabase()).removeAllChildren();
-            DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
-            treeModel.reload(MediatorGui.frame().getTreeNodeModels().get(this.getElementDatabase()));
-            
-            new SwingWorker<Object, Object>() {
-
-                @Override
-                protected Object doInBackground() throws Exception {
-                    Thread.currentThread().setName("SwingWorkerNodeModelTable");
-                    return MediatorModel.model().getDataAccess().listColumns(selectedTable);
-                }
-                
-            }.execute();
-            
-            this.setRunning(true);
+        // Prevent double thread run
+        if (this.isRunning()) {
+            return;
         }
+            
+        DefaultMutableTreeNode treeNode = MediatorGui.frame().getTreeNodeModels().get(this.getElementDatabase());
+        treeNode.removeAllChildren();
+        
+        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
+        treeModel.reload(treeNode);
+        
+        new SwingWorker<Object, Object>() {
+
+            @Override
+            protected Object doInBackground() throws Exception {
+                
+                Thread.currentThread().setName("SwingWorkerNodeModelTable");
+                Table selectedTable = (Table) NodeModelTable.this.getElementDatabase();
+                return MediatorModel.model().getDataAccess().listColumns(selectedTable);
+            }
+        }.execute();
+        
+        this.setRunning(true);
     }
 
     @Override
     protected void buildMenu(JPopupMenuCustomExtract tablePopupMenu, final TreePath path) {
         
-        JMenuItem menuItemCheckAll = new JMenuItem(I18nView.valueByKey("COLUMNS_CHECK_ALL"), 'C');
-        I18nView.addComponentForKey("COLUMNS_CHECK_ALL", menuItemCheckAll);
-        
-        JMenuItem menuItemUncheckAll = new JMenuItem(I18nView.valueByKey("COLUMNS_UNCHECK_ALL"), 'U');
-        I18nView.addComponentForKey("COLUMNS_UNCHECK_ALL", menuItemUncheckAll);
+        this.addCheckUncheckItems(tablePopupMenu, path);
+        this.addCustomLoadItems(tablePopupMenu);
+    }
 
-        menuItemCheckAll.setIcon(HelperUi.ICON_EMPTY);
-        menuItemUncheckAll.setIcon(HelperUi.ICON_EMPTY);
-
-        if (!this.isLoaded()) {
-            menuItemCheckAll.setEnabled(false);
-            menuItemUncheckAll.setEnabled(false);
-        }
-
-        class ActionCheckbox implements ActionListener {
-            private boolean isCheckboxesSelected;
-            
-            ActionCheckbox(boolean isCheckboxesSelected) {
-                this.isCheckboxesSelected = isCheckboxesSelected;
-            }
-
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                final DefaultMutableTreeNode currentTableNode = (DefaultMutableTreeNode) path.getLastPathComponent();
-                final AbstractNodeModel currentTableModel = (AbstractNodeModel) currentTableNode.getUserObject();
-                
-                DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
-
-                int tableChildCount = treeModel.getChildCount(currentTableNode);
-                for (int i = 0 ; i < tableChildCount ; i++) {
-                    DefaultMutableTreeNode currentChild = (DefaultMutableTreeNode) treeModel.getChild(currentTableNode, i);
-                    if (currentChild.getUserObject() instanceof AbstractNodeModel) {
-                        AbstractNodeModel columnTreeNodeModel = (AbstractNodeModel) currentChild.getUserObject();
-                        columnTreeNodeModel.setSelected(this.isCheckboxesSelected);
-                        currentTableModel.setContainingSelection(this.isCheckboxesSelected);
-                    }
-                }
-
-                treeModel.nodeChanged(currentTableNode);
-            }
-        }
-
-        class ActionCheckAll extends ActionCheckbox {
-            ActionCheckAll() {
-                super(true);
-            }
-        }
-
-        class ActionUncheckAll extends ActionCheckbox {
-            ActionUncheckAll() {
-                super(false);
-            }
-        }
-
-        menuItemCheckAll.addActionListener(new ActionCheckAll());
-        menuItemUncheckAll.addActionListener(new ActionUncheckAll());
-
-        menuItemCheckAll.setIcon(HelperUi.ICON_EMPTY);
-        menuItemUncheckAll.setIcon(HelperUi.ICON_EMPTY);
-
-        tablePopupMenu.add(new JSeparator());
-        tablePopupMenu.add(menuItemCheckAll);
-        tablePopupMenu.add(menuItemUncheckAll);
+    private void addCustomLoadItems(JPopupMenuCustomExtract tablePopupMenu) {
         
         JMenu menuCustomLoad = new JMenu("Custom load");
         
@@ -259,6 +203,7 @@ public class NodeModelTable extends AbstractNodeModel {
         for (JMenuItem menuItem: new JMenuItem[]{menuItemLoadAllRows, menuItemLoadOneRow}) {
             menuItem.setUI(
                 new BasicRadioButtonMenuItemUI() {
+                    
                     @Override
                     protected void doClick(MenuSelectionManager msm) {
                         this.menuItem.doClick(0);
@@ -269,6 +214,7 @@ public class NodeModelTable extends AbstractNodeModel {
         
         menuItemDump.setUI(
             new BasicCheckBoxMenuItemUI() {
+                
                 @Override
                 protected void doClick(MenuSelectionManager msm) {
                     this.menuItem.doClick(0);
@@ -285,10 +231,36 @@ public class NodeModelTable extends AbstractNodeModel {
         tablePopupMenu.setRadioCustomFromRow(radioCustomFromRow);
         tablePopupMenu.setRadioCustomToRow(radioCustomToRow);
     }
+
+    private void addCheckUncheckItems(JPopupMenuCustomExtract tablePopupMenu, final TreePath path) {
+        
+        JMenuItem menuItemCheckAll = new JMenuItem(I18nView.valueByKey("COLUMNS_CHECK_ALL"), 'C');
+        I18nView.addComponentForKey("COLUMNS_CHECK_ALL", menuItemCheckAll);
+        
+        JMenuItem menuItemUncheckAll = new JMenuItem(I18nView.valueByKey("COLUMNS_UNCHECK_ALL"), 'U');
+        I18nView.addComponentForKey("COLUMNS_UNCHECK_ALL", menuItemUncheckAll);
+
+        menuItemCheckAll.setIcon(HelperUi.ICON_EMPTY);
+        menuItemUncheckAll.setIcon(HelperUi.ICON_EMPTY);
+
+        if (!this.isLoaded()) {
+            menuItemCheckAll.setEnabled(false);
+            menuItemUncheckAll.setEnabled(false);
+        }
+
+        menuItemCheckAll.addActionListener(new ActionCheckbox(true, path));
+        menuItemUncheckAll.addActionListener(new ActionCheckbox(false, path));
+
+        menuItemCheckAll.setIcon(HelperUi.ICON_EMPTY);
+        menuItemUncheckAll.setIcon(HelperUi.ICON_EMPTY);
+
+        tablePopupMenu.add(new JSeparator());
+        tablePopupMenu.add(menuItemCheckAll);
+        tablePopupMenu.add(menuItemUncheckAll);
+    }
     
     @Override
     public boolean isPopupDisplayable() {
         return this.isLoaded() || !this.isLoaded() && this.isRunning();
     }
-    
 }

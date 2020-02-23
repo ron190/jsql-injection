@@ -50,5 +50,4 @@ public enum Language {
     public String getNameLocale() {
         return this.nameLocale;
     }
-    
 }

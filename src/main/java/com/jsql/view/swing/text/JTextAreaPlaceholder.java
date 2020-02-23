@@ -36,6 +36,7 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
      * @param value Default value
      */
     public JTextAreaPlaceholder(String placeholder, String value) {
+        
         this(placeholder);
         this.setText(value);
     }
@@ -46,11 +47,14 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
      */
     public JTextAreaPlaceholder(String placeholder) {
         
+        // TODO duplicated in JTextPanePlaceholder
         this.placeholderText = placeholder;
         
         this.setCaret(new DefaultCaret() {
+            
             @Override
             public void setSelectionVisible(boolean visible) {
+                
                 super.setSelectionVisible(true);
             }
         });
@@ -59,6 +63,7 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
             
             @Override
             public void focusLost(FocusEvent e) {
+                
                 JTextAreaPlaceholder.this.setSelectionColor(HelperUi.COLOR_FOCUS_LOST);
                 JTextAreaPlaceholder.this.revalidate();
                 JTextAreaPlaceholder.this.repaint();
@@ -66,6 +71,7 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
             
             @Override
             public void focusGained(FocusEvent e) {
+                
                 JTextAreaPlaceholder.this.setSelectionColor(HelperUi.COLOR_FOCUS_GAINED);
                 JTextAreaPlaceholder.this.revalidate();
                 JTextAreaPlaceholder.this.repaint();
@@ -83,13 +89,12 @@ public class JTextAreaPlaceholder extends JTextArea implements InterfaceTextPlac
         // StateInvariantError possible on jdk 8 when WrappedPlainView.drawLine in paint()
         try {
             super.paint(g);
+            
+            if ("".equals(this.getText())) {
+                this.drawPlaceholder(this, g, this.placeholderText);
+            }
         } catch (NullPointerException | ArrayIndexOutOfBoundsException e) {
             LOGGER.error(e.getMessage(), e);
         }
-        
-        if ("".equals(this.getText())) {
-            this.drawPlaceholder(this, g, this.placeholderText);
-        }
     }
-    
 }

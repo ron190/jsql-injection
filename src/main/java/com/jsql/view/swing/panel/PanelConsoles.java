@@ -26,13 +26,13 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.prefs.Preferences;
 import java.util.stream.Stream;
-import java.util.AbstractMap.SimpleEntry;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
