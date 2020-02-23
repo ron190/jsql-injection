@@ -41,6 +41,7 @@ public class MessageHeader implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
+        
         Map<String, Object> params = (Map<String, Object>) interactionParams[0];
         this.url = (String) params.get(Header.URL);
         this.post = (String) params.get(Header.POST);
@@ -50,6 +51,7 @@ public class MessageHeader implements InteractionCommand {
 
     @Override
     public void execute() {
+        
         LOGGER.debug(InteractionCommand.addGreenColor(this.getClass().getSimpleName()));
         LOGGER.debug("Method: " + this.response.get("Method"));
         LOGGER.debug("Url: " + this.url);
@@ -58,5 +60,4 @@ public class MessageHeader implements InteractionCommand {
         LOGGER.debug("Content-Length: " + this.response.get("Content-Length"));
         LOGGER.debug("Content-Type: " + this.response.get("Content-Type"));
     }
-    
 }

@@ -70,8 +70,10 @@ public class ActionLoadStop implements ActionListener {
         if (!this.nodeModel.isRunning()) {
             
             new SwingWorker<Object, Object>(){
+                
                 @Override
                 protected Object doInBackground() throws Exception {
+                    
                     Thread.currentThread().setName("SwingWorkerActionLoadStop");
                     MediatorModel.model().getDataAccess().listValues(columnsToSearch);
                     return null;
@@ -94,5 +96,4 @@ public class ActionLoadStop implements ActionListener {
         }
         this.nodeModel.setRunning(!this.nodeModel.isRunning());
     }
-    
 }

@@ -44,5 +44,4 @@ public class CreateValuesTab implements InteractionCommand {
         LOGGER.info(InteractionCommand.addGreenColor(this.getClass().getSimpleName()));
         LOGGER.info(Arrays.deepToString(this.data));
     }
-    
 }

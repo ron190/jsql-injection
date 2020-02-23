@@ -50,5 +50,4 @@ public class AddTables implements InteractionCommand {
             LOGGER.info(table);
         }
     }
-    
 }

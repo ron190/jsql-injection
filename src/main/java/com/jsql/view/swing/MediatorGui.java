@@ -178,5 +178,4 @@ public final class MediatorGui {
     public static void register(ManagerBruteForce managerBruteForce) {
         MediatorGui.managerBruteForce = managerBruteForce;
     }
-    
 }

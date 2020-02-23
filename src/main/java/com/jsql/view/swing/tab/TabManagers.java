@@ -85,10 +85,6 @@ public class TabManagers extends MouseTabbedPane {
         this.buildI18nTab("BRUTEFORCE_TAB", "BRUTEFORCE_TOOLTIP", HelperUi.ICON_BRUTER, managerBruteForce);
         this.buildI18nTab("CODER_TAB", "CODER_TOOLTIP", HelperUi.ICON_CODER, new ManagerCoder());
         this.buildI18nTab("SCANLIST_TAB", "SCANLIST_TOOLTIP", HelperUi.ICON_SCANLIST, managerScanList);
-        
-        managerFile.setButtonEnable(false);
-        managerWebShell.setButtonEnable(false);
-        managerSqlShell.setButtonEnable(false);
     }
     
     private void buildI18nTab(
@@ -128,5 +124,4 @@ public class TabManagers extends MouseTabbedPane {
         labelTab.setToolTipText(I18n.valueByKey(keyTooltip));
         labelTab.addMouseListener(new TabSelectionMouseHandler());
     }
-    
 }

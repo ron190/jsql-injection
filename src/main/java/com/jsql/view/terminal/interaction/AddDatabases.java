@@ -50,5 +50,4 @@ public class AddDatabases implements InteractionCommand {
             LOGGER.info(database);
         }
     }
-    
 }

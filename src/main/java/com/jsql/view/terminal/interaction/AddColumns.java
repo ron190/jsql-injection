@@ -50,5 +50,4 @@ public class AddColumns implements InteractionCommand {
             LOGGER.info(column);
         }
     }
-    
 }

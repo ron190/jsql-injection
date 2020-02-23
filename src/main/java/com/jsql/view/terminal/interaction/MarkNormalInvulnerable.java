@@ -28,5 +28,4 @@ public class MarkNormalInvulnerable implements InteractionCommand {
     public void execute() {
         LOGGER.info(InteractionCommand.addRedColor(this.getClass().getSimpleName()));
     }
-    
 }

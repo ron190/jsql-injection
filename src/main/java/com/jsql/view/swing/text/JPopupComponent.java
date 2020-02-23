@@ -46,7 +46,7 @@ public class JPopupComponent<T extends JComponent> extends JComponent implements
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
 
-                // Left button will deselect text after selectAll, so only for right click
+                // Left button will unselect text after selectAll, so only for right click
                 if (SwingUtilities.isRightMouseButton(e)) {
                     JPopupComponent.this.proxy.requestFocusInWindow();
                 }

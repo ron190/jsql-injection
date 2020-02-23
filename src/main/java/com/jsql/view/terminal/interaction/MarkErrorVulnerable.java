@@ -30,6 +30,7 @@ public class MarkErrorVulnerable implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public MarkErrorVulnerable(Object[] interactionParams) {
+        
         this.mapHeader = (Map<Header, Object>) interactionParams[0];
         this.indexMethodError = (int) this.mapHeader.get(Header.SOURCE);
         this.injectionModel = (InjectionModel) this.mapHeader.get(Header.INJECTION_MODEL);
@@ -39,5 +40,4 @@ public class MarkErrorVulnerable implements InteractionCommand {
     public void execute() {
         LOGGER.info(InteractionCommand.addGreenColor(this.injectionModel.getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(this.indexMethodError).getName()));
     }
-    
 }

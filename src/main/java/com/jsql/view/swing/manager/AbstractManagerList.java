@@ -143,7 +143,7 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
     }
 
     /**
-     * Deselect every element of the list.
+     * Unselect every element of the list.
      */
     public void clearSelection() {
         this.listPaths.clearSelection();

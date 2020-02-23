@@ -40,7 +40,7 @@ public class MarkErrorStrategy implements InteractionCommand {
         int indexError = MediatorModel.model().getMediatorStrategy().getError().getIndexMethodError();
         String nameError = MediatorModel.model().getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();
         
-        for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
+        for (int i = 0 ; i < menuError.getItemCount() ; i++) {
             // Fix #44635: ArrayIndexOutOfBoundsException on getItem()
             try {
                 if (menuError.getItem(i).getText().equals(nameError)) {

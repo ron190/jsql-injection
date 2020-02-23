@@ -21,6 +21,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.prefs.Preferences;
+import java.util.stream.Stream;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -29,6 +30,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.xml.transform.stream.StreamSource;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
@@ -81,32 +83,21 @@ public class JFrameView extends JFrame {
         super("jSQL Injection");
         
         MediatorGui.register(this);
-        
-        // Define a small and large app icon
-        this.setIconImages(HelperUi.getIcons());
 
         // Load UI before any component
         HelperUi.prepareGUI();
         ShadowPopupFactory.install();
         
-        // Save controller
-        Menubar menubar = new Menubar();
-        this.setJMenuBar(menubar);
-        MediatorGui.register(menubar);
+        initializePaneComponents();
         
-        // Define the default panel: each component on a vertical line
-        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
+        initializeWindow();
 
-        // Textfields at the top
-        PanelAddressBar panelAddressBar = new PanelAddressBar();
-        this.add(panelAddressBar);
-        MediatorGui.register(panelAddressBar);
+        initializeShortcuts();
+    }
 
-        // Main panel for tree ans tables in the middle
-        JPanel mainPanel = new JPanel(new GridLayout(1, 0));
-        this.splitHorizontalTopBottom = new SplitHorizontalTopBottom();
-        mainPanel.add(this.splitHorizontalTopBottom);
-        this.add(mainPanel);
+    private void initializeWindow() {
+        // Define a small and large app icon
+        this.setIconImages(HelperUi.getIcons());
 
         this.addWindowListener(new WindowAdapter() {
             
@@ -144,8 +135,6 @@ public class JFrameView extends JFrame {
             }
         });
         
-        this.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
-        
         // Size of window
         this.setSize(1024, 768);
         this.setVisible(true);
@@ -153,12 +142,39 @@ public class JFrameView extends JFrame {
 
         // Center the window
         this.setLocationRelativeTo(null);
+    }
 
+    private void initializeShortcuts() {
+        
         // Define the keyword shortcuts for tabs #Need to work even if the focus is not on tabs
         ActionHandler.addShortcut(this.getRootPane(), MediatorGui.tabResults());
         ActionHandler.addTextFieldShortcutSelectAll();
+    }
+
+    private void initializePaneComponents() {
+        
+        // Save controller
+        Menubar menubar = new Menubar();
+        this.setJMenuBar(menubar);
+        MediatorGui.register(menubar);
+        
+        // Define the default panel: each component on a vertical line
+        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
+
+        // Textfields at the top
+        PanelAddressBar panelAddressBar = new PanelAddressBar();
+        this.add(panelAddressBar);
+        MediatorGui.register(panelAddressBar);
+
+        // Main panel for tree and tables in the middle
+        JPanel mainPanel = new JPanel(new GridLayout(1, 0));
+        this.splitHorizontalTopBottom = new SplitHorizontalTopBottom();
+        mainPanel.add(this.splitHorizontalTopBottom);
+        this.add(mainPanel);
         
         menubar.switchLocale(Locale.ENGLISH, I18n.getLocaleDefault(), true);
+        
+        this.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
     }
 
     /**
@@ -204,14 +220,15 @@ public class JFrameView extends JFrame {
             }
         }
         
-        MediatorGui.managerFile().setButtonEnable(false);
-        MediatorGui.managerWebshell().setButtonEnable(false);
-        MediatorGui.managerSqlshell().setButtonEnable(false);
-
-        MediatorGui.managerFile().changePrivilegeIcon(HelperUi.ICON_SQUARE_GREY);
-        MediatorGui.managerWebshell().changePrivilegeIcon(HelperUi.ICON_SQUARE_GREY);
-        MediatorGui.managerSqlshell().changePrivilegeIcon(HelperUi.ICON_SQUARE_GREY);
-        MediatorGui.managerUpload().changePrivilegeIcon(HelperUi.ICON_SQUARE_GREY);
+        Stream.of(
+            MediatorGui.managerUpload(),
+            MediatorGui.managerFile(),
+            MediatorGui.managerWebshell(),
+            MediatorGui.managerSqlshell()
+        ).forEach(managerList -> {
+            managerList.setButtonEnable(false);
+            managerList.changePrivilegeIcon(HelperUi.ICON_SQUARE_GREY);
+        });
     }
     
     // Getters and setters
@@ -239,5 +256,4 @@ public class JFrameView extends JFrame {
     public SplitHorizontalTopBottom getSplitHorizontalTopBottom() {
         return this.splitHorizontalTopBottom;
     }
-    
 }

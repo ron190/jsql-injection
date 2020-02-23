@@ -145,6 +145,7 @@ public class SuspendableGetRows extends AbstractSuspendable<String> {
                 if (partOldRow.equals(regexAtLeastOneRow.group(1))) {
                     infiniteLoop++;
                     if (infiniteLoop >= 20) {
+                        this.stop();
                         throw new LoopDetectedSlidingException(
                             slidingWindowAllRows.toString(),
                             slidingWindowCurrentRow.toString()

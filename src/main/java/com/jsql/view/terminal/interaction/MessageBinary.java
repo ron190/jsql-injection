@@ -40,5 +40,4 @@ public class MessageBinary implements InteractionCommand {
     public void execute() {
         LOGGER.info(this.text);
     }
-    
 }

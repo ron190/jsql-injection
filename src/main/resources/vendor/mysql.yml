@@ -103,7 +103,7 @@ resource:
               {limit}
           ) x
    fields: 
-    field: trim(ifnull(`${FIELD}`, 0x00))
+    field: trim(ifnull(`${FIELD}`, 0x20))
     concat: ",0x7f,"
   limit: limit ${LIMIT}, 65536
   
@@ -148,7 +148,7 @@ resource:
           from `${DATABASE}`.`${TABLE}`
           {limit}
    fields: 
-    field: trim(ifnull(`${FIELD}`, 0x00))
+    field: trim(ifnull(`${FIELD}`, 0x20))
     concat: ",0x7f,"
   limit: limit ${LIMIT}, 1
   
@@ -197,7 +197,7 @@ resource:
               from `${DATABASE}`.`${TABLE}`
           )x where @ :=concat(@,a) {limit}), @, '${TRAIL_SQL}')
    fields: 
-    field: trim(ifnull(`${FIELD}`, 0x00))
+    field: trim(ifnull(`${FIELD}`, 0x20))
     concat: ",0x7f,"
   limit: limit ${LIMIT}, 1
   
