@@ -4,12 +4,18 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.Arrays;
 
 import org.junit.Ignore;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 
 @Ignore
+@TestInstance(Lifecycle.PER_CLASS)
+@Execution(ExecutionMode.CONCURRENT)
 public class SQLServerTimeGetTestSuite extends ConcreteSQLServerTestSuite {
 
     @Override
@@ -23,7 +29,7 @@ public class SQLServerTimeGetTestSuite extends ConcreteSQLServerTestSuite {
         model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting-time");
         model.getMediatorUtils().getParameterUtil().setQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "sqlserver"),
-            new SimpleEntry<>("name", "-1'")
+            new SimpleEntry<>("name", "1'")
         ));
         
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());

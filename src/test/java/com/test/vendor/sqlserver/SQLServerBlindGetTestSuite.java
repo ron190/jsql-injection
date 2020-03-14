@@ -27,7 +27,7 @@ public class SQLServerBlindGetTestSuite extends ConcreteSQLServerTestSuite {
         model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting-blind");
         model.getMediatorUtils().getParameterUtil().setQueryString(Arrays.asList(
             new SimpleEntry<>("tenant", "sqlserver"),
-            new SimpleEntry<>("name", "-1'")
+            new SimpleEntry<>("name", "1'")
         ));
         
         model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());

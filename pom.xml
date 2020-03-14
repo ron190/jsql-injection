@@ -153,7 +153,6 @@
                         
                         <include>SQLServerBlindGetTestSuite</include>
                         <include>SQLServerNormalGetTestSuite</include>
-                        <include>SQLServerTimeGetTestSuite</include>
                     </includes>        
 
                     <parallel>classes</parallel>
