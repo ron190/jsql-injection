@@ -128,30 +128,30 @@
                 <configuration>
                     <rerunFailingTestsCount>3</rerunFailingTestsCount>
                     <includes>
-                        <include>**/*Spock</include>
+<!--                         <include>**/*Spock</include> -->
                            
-                        <include>MySQLBlindTestSuite</include>
-                        <include>MySQLTimeTestSuite</include> 
-                        <include>MySQLNormalTestSuite</include>
-                        <include>MySQLErrorTestSuite</include>
+<!--                         <include>MySQLBlindTestSuite</include> -->
+<!--                         <include>MySQLTimeTestSuite</include>  -->
+<!--                         <include>MySQLNormalTestSuite</include> -->
+<!--                         <include>MySQLErrorTestSuite</include> -->
 
-                        <include>PostgresBlindGetTestSuite</include>
-                        <include>PostgresTimeGetTestSuite</include>
-                        <include>PostgresNormalGetTestSuite</include>
-                        <include>PostgresErrorTestSuite</include>
+<!--                         <include>PostgresBlindGetTestSuite</include> -->
+<!--                         <include>PostgresTimeGetTestSuite</include> -->
+<!--                         <include>PostgresNormalGetTestSuite</include> -->
+<!--                         <include>PostgresErrorTestSuite</include> -->
                         
-                        <include>H2NormalGetTestSuite</include>
+<!--                         <include>H2NormalGetTestSuite</include> -->
                         
-                        <include>PostTestSuite</include>
-                        <include>HeaderTestSuite</include>
-                        <include>CookieTestSuite</include>
-                        <include>TamperingTestSuite</include>
+<!--                         <include>PostTestSuite</include> -->
+<!--                         <include>HeaderTestSuite</include> -->
+<!--                         <include>CookieTestSuite</include> -->
+<!--                         <include>TamperingTestSuite</include> -->
 
-                        <include>CheckAllTestSuite</include>
-                        <include>JsonTestSuite</include>
-                        <include>StarTestSuite</include>
+<!--                         <include>CheckAllTestSuite</include> -->
+<!--                         <include>JsonTestSuite</include> -->
+<!--                         <include>StarTestSuite</include> -->
                         
-                        <include>SQLServerBlindGetTestSuite</include>
+<!--                         <include>SQLServerBlindGetTestSuite</include> -->
                         <include>SQLServerNormalGetTestSuite</include>
                     </includes>        
 
@@ -290,6 +290,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-c3p0</artifactId>
+            <version>5.4.12.Final</version>
             <scope>test</scope>
         </dependency>
         
@@ -330,6 +331,7 @@
 		<dependency>
 		    <groupId>com.microsoft.sqlserver</groupId>
 		    <artifactId>mssql-jdbc</artifactId>
+		    <version>8.2.1.jre8</version>
             <scope>test</scope>
 		</dependency>
         
