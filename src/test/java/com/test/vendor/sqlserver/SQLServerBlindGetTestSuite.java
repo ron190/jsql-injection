@@ -1,34 +1,57 @@
 package com.test.vendor.sqlserver;
 
-import java.sql.SQLException;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Arrays;
 
-import org.junit.BeforeClass;
-import org.junit.Ignore;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestInstance.Lifecycle;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
-import com.jsql.model.exception.InjectionFailureException;
+import com.jsql.model.InjectionModel;
+import com.jsql.model.exception.JSqlException;
+import com.jsql.view.terminal.SystemOutTerminal;
 
-@Ignore
+@TestInstance(Lifecycle.PER_CLASS)
+@Execution(ExecutionMode.CONCURRENT)
 public class SQLServerBlindGetTestSuite extends ConcreteSQLServerTestSuite {
 
-    public SQLServerBlindGetTestSuite() throws SQLException {
-        super();
+    @Override
+    public void setupInjection() throws Exception {
+        
+        InjectionModel model = new InjectionModel();
+        this.injectionModel = model;
+
+        model.addObserver(new SystemOutTerminal());
+
+        model.getMediatorUtils().getParameterUtil().initQueryString("http://localhost:8080/greeting-blind");
+        model.getMediatorUtils().getParameterUtil().setQueryString(Arrays.asList(
+            new SimpleEntry<>("tenant", "sqlserver"),
+            new SimpleEntry<>("name", "-1'")
+        ));
+        
+        model.getMediatorUtils().getConnectionUtil().setMethodInjection(model.getMediatorMethodInjection().getQuery());
+        model.getMediatorUtils().getConnectionUtil().setTypeRequest("GET");
+        
+        model.setIsScanning(true);
+        model.getMediatorStrategy().setStrategy(model.getMediatorStrategy().getBlind());
+        model.getMediatorVendor().setVendorByUser(model.getMediatorVendor().getSqlServer());
+        model.beginInjection();
+    }
+    
+    @Override
+    public void listDatabases() throws JSqlException {
+        LOGGER.info("Ignore: too slow");
+    }
+    
+    @Override
+    public void listTables() throws JSqlException {
+        LOGGER.info("Ignore: too slow");
+    }
+    
+    @Override
+    public void listColumns() throws JSqlException {
+        LOGGER.info("Ignore: too slow");
     }
 
-    @Override
-    @BeforeClass
-    public void setupInjection() throws InjectionFailureException {
-//        InjectionModel model = new InjectionModel();
-//        MediatorModel.register(model);
-//        model.displayVersion();
-//
-//        MediatorModel.model().addObserver(new SystemOutTerminal());
-//
-//        ConnectionUtil.setUrlBase("http://"+ AbstractTestSuite.HOSTNAME +"/sqlserver_simulate_get.php");
-//        ParameterUtil.setQueryString(Arrays.asList(new SimpleEntry<String, String>("lib", "1")));
-//        ConnectionUtil.setMethodInjection(MethodInjection.QUERY);
-//
-//        MediatorModel.model().beginInjection();
-//
-//        MediatorModel.model().setStrategy(StrategyInjection.BLIND);
-    }
 }

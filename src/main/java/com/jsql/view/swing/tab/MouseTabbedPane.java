@@ -37,6 +37,7 @@ public class MouseTabbedPane extends JTabbedPane {
     public MouseTabbedPane() {
         
         this.addMouseWheelListener(new TabbedPaneMouseWheelScroller());
+        
         // UIManager.put() is not enough
         this.setUI(new CustomMetalTabbedPaneUI());
         this.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -52,7 +53,7 @@ public class MouseTabbedPane extends JTabbedPane {
      * Display popupmenu with a list of tabs.
      */
     public void addMouseClickMenu() {
-        this.addMouseListener(new TabSelectionMouseHandler());
+        this.addMouseListener(new TabMouseAdapter());
     }
 
     /**
@@ -75,6 +76,7 @@ public class MouseTabbedPane extends JTabbedPane {
             }
             
             if (0 <= selIndex && selIndex < tabPane.getTabCount()) {
+                
                 // Fix #54575: NullPointerException on setSelectedIndex()
                 try {
                     tabPane.setSelectedIndex(selIndex);
@@ -83,7 +85,5 @@ public class MouseTabbedPane extends JTabbedPane {
                 }
             }
         }
-        
     }
-    
 }

@@ -27,6 +27,7 @@ public class JPopupTextArea extends JPopupTextComponent<JTextArea> implements De
      * Build new instance of readonly JTextArea to decorate.
      */
     public JPopupTextArea() {
+        
         this("");
     }
     

@@ -42,6 +42,7 @@ public class JPopupTextPane extends JPopupTextComponent<JTextPane> implements De
      * Build new instance of JTextArea to decorate.
      */
     public JPopupTextPane(JTextPane proxy) {
+        
         super(proxy);
 
         this.getProxy().addFocusListener(new FocusAdapter() {

@@ -53,5 +53,4 @@ public class ActionCloseTabResult extends AbstractAction {
             MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(i);
         }
     }
-    
 }

@@ -143,6 +143,7 @@ class Colorer extends Thread {
      * should be done inside a docLock.
      */
     public void color(int position, int adjustment) {
+        
         // figure out if this adjustment effects the current run.
         // if it does, then adjust the place in the document
         // that gets highlighted.
@@ -153,6 +154,7 @@ class Colorer extends Thread {
                 this.change += adjustment;
             }
         }
+        
         synchronized (this.eventsLock) {
             if(!this.events.isEmpty()) {
                 // check whether to coalesce with current last element
@@ -212,6 +214,7 @@ class Colorer extends Thread {
     }
     
     private void processEvent(int position, int adjustment) {
+        
         HighlightedDocument doc = this.document.get();
         if(doc == null) {
             return;
@@ -224,12 +227,11 @@ class Colorer extends Thread {
         DocumentReader documentReader = doc.getDocumentReader();
         Object docLock = doc.getDocumentLock();
 
-        if(globalStyle != null) {
+        if (globalStyle != null) {
             int start = Math.min(position, position + adjustment);
             int stop = Math.max(position, position + adjustment);
-            synchronized(docLock) {
-                doc.setCharacterAttributes(start, stop - start,
-                    globalStyle, true);
+            synchronized (docLock) {
+                doc.setCharacterAttributes(start, stop - start, globalStyle, true);
             }
             return;
         }
@@ -397,8 +399,7 @@ class Colorer extends Thread {
 
             // Remove all the positions that are after the end of
             // the file.:
-            workingIt = this.iniPositions.tailSet(
-                    new DocPosition(doc.getLength())).iterator();
+            workingIt = this.iniPositions.tailSet(new DocPosition(doc.getLength())).iterator();
             while (workingIt.hasNext()) {
                 workingIt.next();
                 workingIt.remove();
@@ -409,18 +410,22 @@ class Colorer extends Thread {
             this.iniPositions.addAll(this.newPositions);
             this.newPositions.clear();
         } catch (IOException e) {
+            
             // Ignore
             IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
             LOGGER.trace(exceptionIgnored, exceptionIgnored);
         }
+        
         synchronized (docLock) {
             this.lastPosition = -1;
             this.change = 0;
         }
     }
     
-    public void stopColorer() {
+    /**
+     * Stop the thread's method run()
+     */
+    public void stopThread() {
         this.document.clear();
     }
-    
 }

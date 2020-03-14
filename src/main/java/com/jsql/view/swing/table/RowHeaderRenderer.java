@@ -11,22 +11,24 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class RowHeaderRenderer extends DefaultTableCellRenderer {
     
     public RowHeaderRenderer() {
+        
         this.setHorizontalAlignment(SwingConstants.CENTER);
     }
 
     @Override
     public Component getTableCellRendererComponent(
-        JTable table, Object value, boolean isSelected,
-        boolean hasFocus, int row, int column
+        JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
     ) {
         
+        // TODO move to constructor
         this.setBackground(new Color(230, 230, 230));
         
         // Report #218: ignore if value is null
         if (value != null) {
+            
             this.setText(value.toString());
         }
+        
         return this;
     }
-    
 }

@@ -14,7 +14,7 @@ import java.util.Comparator;
 
 /**
  * Comparator for table column values ; column with only int data is sorted like 3 < 20 < 100,
- * column with string will sort like 100 < 20 < 3.
+ * column with string will sort like 100 < 20 < 3 < a.
  */
 public class ComparatorColumn<T> implements Comparator<T> {
     
@@ -26,42 +26,45 @@ public class ComparatorColumn<T> implements Comparator<T> {
      * @return
      */
     @Override
-    public int compare(T object1, T object2) {
+    public int compare(T cellLeft, T cellRight) {
         
         boolean isFirstNumber = true;
         boolean isSecondNumber = true;
         
-        String value1 = object1.toString().trim();
-        String value2 = object2.toString().trim();
+        String valueCellLeft = cellLeft.toString().trim();
+        String valueCellRight = cellRight.toString().trim();
 
         try {
-            Long.parseLong(value1);
+            Long.parseLong(valueCellLeft);
         } catch (NumberFormatException e) {
             isFirstNumber = false;
         }
         
         try {
-            Long.parseLong(value2);
+            Long.parseLong(valueCellRight);
         } catch (NumberFormatException e) {
             isSecondNumber = false;
         }
         
         int sortOrder;
         if (isFirstNumber && isSecondNumber) {
+            
             // or Sort by Number
-            sortOrder = Long.valueOf(value1).compareTo(Long.valueOf(value2));
+            sortOrder = Long.valueOf(valueCellLeft).compareTo(Long.valueOf(valueCellRight));
         } else if (isFirstNumber) {
+            
             // or Sort by Number first
             sortOrder = -1;
         } else if (isSecondNumber) {
+            
             // or Sort by Letter first
             sortOrder = 1;
         } else {
+            
             // Sort by Letter
-            sortOrder = value1.compareToIgnoreCase(value2);
+            sortOrder = valueCellLeft.compareToIgnoreCase(valueCellRight);
         }
         
         return sortOrder;
     }
-    
 }

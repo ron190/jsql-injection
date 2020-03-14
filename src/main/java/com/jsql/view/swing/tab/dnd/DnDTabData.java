@@ -7,5 +7,4 @@ public class DnDTabData {
     protected DnDTabData(DnDTabbedPane tabbedPane) {
         this.tabbedPane = tabbedPane;
     }
-    
 }

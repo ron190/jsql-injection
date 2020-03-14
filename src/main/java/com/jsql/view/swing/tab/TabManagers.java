@@ -50,7 +50,9 @@ public class TabManagers extends MouseTabbedPane {
         
         this.setUI(new CustomMetalTabbedPaneUI() {
             
-            @Override protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+            @Override
+            protected int calculateTabWidth(int tabPlacement, int tabIndex, FontMetrics metrics) {
+                
                 return Math.max(75, super.calculateTabWidth(tabPlacement, tabIndex, metrics));
             }
         });
@@ -87,18 +89,15 @@ public class TabManagers extends MouseTabbedPane {
         this.buildI18nTab("SCANLIST_TAB", "SCANLIST_TOOLTIP", HelperUi.ICON_SCANLIST, managerScanList);
     }
     
-    private void buildI18nTab(
-        String keyLabel,
-        String keyTooltip,
-        Icon icon,
-        Component manager
-    ) {
+    private void buildI18nTab(String keyLabel, String keyTooltip, Icon icon, Component manager) {
         
         final JToolTipI18n[] refTooltip = new JToolTipI18n[]{new JToolTipI18n(I18n.valueByKey(keyTooltip))};
         
         JLabel labelTab = new JLabel(I18n.valueByKey(keyLabel), icon, SwingConstants.CENTER){
+            
             @Override
             public JToolTip createToolTip() {
+                
                 JToolTip tipI18n = new JToolTipI18n(I18n.valueByKey(keyTooltip));
                 refTooltip[0] = (JToolTipI18n) tipI18n;
                 return tipI18n;
@@ -106,8 +105,10 @@ public class TabManagers extends MouseTabbedPane {
         };
         
         labelTab.addMouseListener(new MouseAdapter() {
+            
             @Override
             public void mousePressed(MouseEvent e) {
+                
                 TabManagers.this.setSelectedComponent(manager);
                 super.mousePressed(e);
             }
@@ -121,7 +122,8 @@ public class TabManagers extends MouseTabbedPane {
         
         I18nView.addComponentForKey(keyLabel, labelTab);
         I18nView.addComponentForKey(keyTooltip, refTooltip[0]);
+        
         labelTab.setToolTipText(I18n.valueByKey(keyTooltip));
-        labelTab.addMouseListener(new TabSelectionMouseHandler());
+        labelTab.addMouseListener(new TabMouseAdapter());
     }
 }

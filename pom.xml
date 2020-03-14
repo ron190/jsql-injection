@@ -150,6 +150,10 @@
                         <include>CheckAllTestSuite</include>
                         <include>JsonTestSuite</include>
                         <include>StarTestSuite</include>
+                        
+                        <include>SQLServerBlindGetTestSuite</include>
+                        <include>SQLServerNormalGetTestSuite</include>
+                        <include>SQLServerTimeGetTestSuite</include>
                     </includes>        
 
                     <parallel>classes</parallel>
@@ -324,6 +328,12 @@
             <artifactId>postgresql</artifactId>
             <scope>test</scope>
         </dependency>
+		<dependency>
+		    <groupId>com.microsoft.sqlserver</groupId>
+		    <artifactId>mssql-jdbc</artifactId>
+            <scope>test</scope>
+		</dependency>
+        
 
         <!-- jSQL purpose -->
         

@@ -64,7 +64,9 @@ public class DnDTabbedPane extends JTabbedPane {
         JButton scrollBackwardButton = null;
         
         for (Component c: this.getComponents()) {
+            
             if (c instanceof JButton) {
+                
                 if (scrollForwardButton == null && scrollBackwardButton == null) {
                     scrollForwardButton = (JButton) c;
                 } else if (scrollBackwardButton == null) {
@@ -212,12 +214,15 @@ public class DnDTabbedPane extends JTabbedPane {
             .filter(DnDDropLocation::isDroppable)
             .map(DnDDropLocation::getIndex)
             .orElse(-1);
+        
         if (index < 0) {
             RECT_LINE.setBounds(0, 0, 0, 0);
             return Optional.empty();
         }
+        
         int a = Math.min(index, 1);
         Rectangle r = this.getBoundsAt(a * (index - 1));
+        
         if (isTopBottomTabPlacement(this.getTabPlacement())) {
             RECT_LINE.setBounds(r.x - LINE_WIDTH / 2 + r.width * a, r.y, LINE_WIDTH, r.height);
         } else {
@@ -234,6 +239,7 @@ public class DnDTabbedPane extends JTabbedPane {
         int yy = tabbedRect.y;
         Rectangle compRect = Optional.ofNullable(this.getSelectedComponent()).map(Component::getBounds).orElseGet(Rectangle::new);
         int tabPlacement = this.getTabPlacement();
+        
         if (isTopBottomTabPlacement(tabPlacement)) {
             tabbedRect.height = tabbedRect.height - compRect.height;
             if (tabPlacement == BOTTOM) {
@@ -245,7 +251,9 @@ public class DnDTabbedPane extends JTabbedPane {
                 tabbedRect.x += compRect.x + compRect.width;
             }
         }
+        
         tabbedRect.translate(-xx, -yy);
+        
         return tabbedRect;
     }
 
@@ -259,8 +267,10 @@ public class DnDTabbedPane extends JTabbedPane {
         private final int gestureMotionThreshold = DragSource.getDragThreshold();
 
         private void repaintDropLocation() {
+            
             Component c = DnDTabbedPane.this.getRootPane().getGlassPane();
             if (c instanceof GhostGlassPane) {
+                
                 GhostGlassPane glassPane = (GhostGlassPane) c;
                 glassPane.setTargetTabbedPane(DnDTabbedPane.this);
                 glassPane.repaint();
@@ -287,11 +297,13 @@ public class DnDTabbedPane extends JTabbedPane {
                 this.startPt = null;
                 return;
             }
+            
             Point tabPt = e.getPoint();
             int idx = src.indexAtLocation(tabPt.x, tabPt.y);
             // disabled tab, null component problem.
             // pointed out by daryl. NullPointerException: i.e. addTab("Tab", null)
             boolean flag = idx < 0 || !src.isEnabledAt(idx) || Objects.isNull(src.getComponentAt(idx));
+            
             this.startPt = flag ? null : tabPt;
         }
         
@@ -300,6 +312,7 @@ public class DnDTabbedPane extends JTabbedPane {
             
             Point tabPt = e.getPoint();
             if (Objects.nonNull(this.startPt) && this.startPt.distance(tabPt) > this.gestureMotionThreshold) {
+                
                 DnDTabbedPane src = (DnDTabbedPane) e.getComponent();
                 TransferHandler th = src.getTransferHandler();
                 DnDTabbedPane.this.dragTabIndex = src.indexAtLocation(tabPt.x, tabPt.y);
@@ -307,6 +320,7 @@ public class DnDTabbedPane extends JTabbedPane {
                 RECT_LINE.setBounds(0, 0, 0, 0);
                 src.getRootPane().getGlassPane().setVisible(true);
                 src.setDropLocation(new DnDDropLocation(tabPt, -1), true);
+                
                 this.startPt = null;
             }
         }

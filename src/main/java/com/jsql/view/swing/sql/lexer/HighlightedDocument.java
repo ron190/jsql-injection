@@ -118,6 +118,7 @@ public class HighlightedDocument extends DefaultStyledDocument {
     }
 
     public void setHighlightStyle(Object valueSource) {
+        
         Object value = valueSource;
         
         if (value == HighlightedDocument.GRAYED_OUT_STYLE) {
@@ -153,8 +154,7 @@ public class HighlightedDocument extends DefaultStyledDocument {
     // Intercept inserts and removes to color them.
     //
     @Override
-    public void insertString(int offs, String str, AttributeSet a)
-            throws BadLocationException {
+    public void insertString(int offs, String str, AttributeSet a) throws BadLocationException {
         synchronized (this.docLock) {
             super.insertString(offs, str, a);
             this.color(offs, str.length());
@@ -177,8 +177,10 @@ public class HighlightedDocument extends DefaultStyledDocument {
     Lexer getSyntaxLexer() { return this.syntaxLexer; }
     AttributeSet getGlobalStyle() { return this.globalStyle; }
 
+    /**
+     * Deactivate the colorer to end the backend thread.
+     */
     public void stopColorer() {
-        this.colorer.stopColorer();
+        this.colorer.stopThread();
     }
-    
 }

@@ -25,6 +25,7 @@ public class JTextFieldAddressBar extends JPopupTextField implements DecoratorJC
      * @param string The text to display
      */
     public JTextFieldAddressBar(JTextField c) {
+        
         super(c);
 
         this.getProxy().setFont(HelperUi.FONT_SEGOE_BIG);

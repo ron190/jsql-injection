@@ -77,7 +77,6 @@ public class JTextPanePlaceholder extends JTextPane implements InterfaceTextPlac
                 JTextPanePlaceholder.this.revalidate();
                 JTextPanePlaceholder.this.repaint();
             }
-            
         });
         
         this.getActionMap().put(DefaultEditorKit.deletePrevCharAction, new DeletePrevCharAction());

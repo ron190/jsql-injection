@@ -59,30 +59,36 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
             
             @Override
             public boolean isCellEditable(int row,int column) {
+                
                 return false;
             }
         };
         
         this.fixedTable.setAutoCreateColumnsFromModel(false);
+        
         final DefaultTableModel modelFixedTable = new DefaultTableModel(){
             
             @Override
             public int getColumnCount() {
+                
                 return 2;
             }
 
             @Override
             public boolean isCellEditable(int row, int col) {
+                
                 return false;
             }
 
             @Override
             public int getRowCount() {
+                
                 return FixedColumnTable.this.mainTable.getRowCount();
             }
 
             @Override
             public Class<?> getColumnClass(int colNum) {
+                
                 Class<?> columnClass;
                 
                 if (colNum == 0) {
@@ -107,9 +113,9 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
             
             @Override
             public Component getTableCellRendererComponent(
-                JTable table, Object value, boolean isSelected,
-                boolean hasFocus, int row, int column
+                JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
             ) {
+                
                 JComponent label = (JComponent) super.getTableCellRendererComponent(
                     table, value, isSelected, hasFocus, row, column
                 );
@@ -122,6 +128,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         //  and add them to the fixed table
         TableColumnModel columnModel = this.mainTable.getColumnModel();
         for (int i = 0 ; i < fixedColumns ; i++) {
+            
             TableColumn column = columnModel.getColumn(i);
             column.setMinWidth(0);
             column.setMaxWidth(0);
@@ -141,6 +148,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
             
             // Copy data from hidden column in main table
             for (int i = 0 ; i < FixedColumnTable.this.mainTable.getRowCount() ; i++) {
+                
                 FixedColumnTable.this.fixedTable.setValueAt(FixedColumnTable.this.mainTable.getValueAt(i, 0), i, 0);
                 FixedColumnTable.this.fixedTable.setValueAt(FixedColumnTable.this.mainTable.getValueAt(i, 1), i, 1);
             }
@@ -152,6 +160,7 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
         
         // Copy data from first column of main table to fixed column
         for (int i = 0 ; i < this.mainTable.getRowCount() ; i++) {
+            
             this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 0), i, 0);
             this.fixedTable.setValueAt(this.mainTable.getValueAt(i, 1), i, 1);
         }
@@ -191,5 +200,4 @@ public class FixedColumnTable implements ChangeListener, PropertyChangeListener 
             this.fixedTable.setModel(this.mainTable.getModel());
         }
     }
-    
 }

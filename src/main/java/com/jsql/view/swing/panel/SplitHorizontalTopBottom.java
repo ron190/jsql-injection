@@ -125,7 +125,7 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         MediatorGui.register(new PanelConsoles());
 
         this.setBottomComponent(MediatorGui.panelConsoles());
-        this.setDividerLocation(671 - horizontalSplitter);
+        this.setDividerLocation(669 - horizontalSplitter);
 
         // defines left and bottom pane
         this.setResizeWeight(1);

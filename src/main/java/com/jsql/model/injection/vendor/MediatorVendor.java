@@ -173,6 +173,10 @@ public class MediatorVendor {
         return this.sqlite;
     }
 
+    public Vendor getSqlServer() {
+        return this.sqlServer;
+    }
+
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }

@@ -17,6 +17,7 @@ public class ButtonClose extends JButton {
             HelperUi.ICON_CLOSE.getIconWidth(),
             HelperUi.ICON_CLOSE.getIconHeight()
         );
+        
         this.setPreferredSize(closeButtonSize);
         
         this.setContentAreaFilled(false);
@@ -28,5 +29,4 @@ public class ButtonClose extends JButton {
         this.setRolloverIcon(HelperUi.ICON_CLOSE_ROLLOVER);
         this.setPressedIcon(HelperUi.ICON_CLOSE_PRESSED);
     }
-    
 }

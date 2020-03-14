@@ -15,13 +15,10 @@ public class GhostGlassPane extends JComponent {
     private DnDTabbedPane tabbedPane;
     
     protected GhostGlassPane(DnDTabbedPane tabbedPane) {
+        
         super();
         this.tabbedPane = tabbedPane;
         this.setOpaque(false);
-    }
-    
-    public void setTargetTabbedPane(DnDTabbedPane tab) {
-        this.tabbedPane = tab;
     }
     
     @Override
@@ -38,4 +35,7 @@ public class GhostGlassPane extends JComponent {
         });
     }
     
+    public void setTargetTabbedPane(DnDTabbedPane tab) {
+        this.tabbedPane = tab;
+    }
 }

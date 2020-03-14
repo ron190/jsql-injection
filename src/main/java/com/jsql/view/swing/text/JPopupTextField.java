@@ -26,6 +26,7 @@ public class JPopupTextField extends JPopupTextComponent<JTextField> implements 
      * @param string Text to display
      */
     public JPopupTextField(String placeholder) {
+        
         this(new JTextFieldPlaceholder(placeholder));
     }
 
@@ -34,6 +35,7 @@ public class JPopupTextField extends JPopupTextComponent<JTextField> implements 
      * @param string Text to display
      */
     public JPopupTextField(String placeholder, String value) {
+        
         this(new JTextFieldPlaceholder(placeholder, value));
     }
 
@@ -42,6 +44,7 @@ public class JPopupTextField extends JPopupTextComponent<JTextField> implements 
      * @param proxy The JTextField to decorate
      */
     public JPopupTextField(JTextField proxy) {
+        
         super(proxy);
 
         this.getProxy().setBorder(

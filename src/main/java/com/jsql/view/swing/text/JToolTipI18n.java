@@ -3,7 +3,8 @@ package com.jsql.view.swing.text;
 import javax.swing.JToolTip;
 
 /**
- * Create panel at the top with textfields and radio.
+ * Tooltip which text can be changed using setText() when switching i18n language.
+ * Overriden method getTipText() provide text to Swing after i18n switch.
  */
 @SuppressWarnings("serial")
 public class JToolTipI18n extends JToolTip {

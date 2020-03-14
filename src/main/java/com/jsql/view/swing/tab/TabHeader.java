@@ -40,6 +40,7 @@ public class TabHeader extends JPanel implements MouseListener {
         
         @Override
         public void setText(String text) {
+            
             super.setText(text +" ");
         }
     };
@@ -71,17 +72,20 @@ public class TabHeader extends JPanel implements MouseListener {
     }
 
     public TabHeader(String label, Icon imageIcon) {
+        
         this(imageIcon);
         this.getTabTitleLabel().setText(label);
     }
 
     public TabHeader(String label, Icon imageIcon, Cleanable cleanableTab) {
+        
         this(imageIcon);
         this.getTabTitleLabel().setText(label);
         this.cleanableTab = cleanableTab;
     }
     
     public TabHeader(String label) {
+        
         this();
         this.getTabTitleLabel().setText(label);
     }
@@ -131,5 +135,4 @@ public class TabHeader extends JPanel implements MouseListener {
     public Cleanable getCleanableTab() {
         return this.cleanableTab;
     }
-    
 }

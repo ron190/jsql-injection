@@ -132,6 +132,7 @@ public abstract class AbstractTestSuite {
             Statement statementValues = conn.createStatement();
             ResultSet resultSetValues = statementValues.executeQuery(this.jdbcQueryForValues);
         ) {
+            
             while (resultSetDatabase.next()) {
                 String dbName = resultSetDatabase.getString(this.jdbcColumnForDatabaseName);
                 this.databasesFromJdbc.add(dbName);
@@ -151,6 +152,9 @@ public abstract class AbstractTestSuite {
                 String value = resultSetValues.getString(this.jsqlColumnName);
                 this.valuesFromJdbc.add(value);
             }
+        } catch (SQLException e) {
+            
+            LOGGER.error(e, e);
         }
     }
 
