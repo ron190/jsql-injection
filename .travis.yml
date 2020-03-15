@@ -25,6 +25,9 @@ cache:
 before_install:
   
 #  - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
+
+  - docker rm $(docker ps -a -q)
+  - docker rmi $(docker images -q)
     
   # Docker configuration
   - docker build -t mysql 
@@ -57,7 +60,7 @@ before_install:
 #    -c 'max_connections=1000'
     
   - docker run --name jsql-sqlserver 
-    --publish 3308:1433 
+    --publish 1433:1433 
     -e ACCEPT_EULA=Y 
     -e SA_PASSWORD=my-secret-pw
     -d sqlserver 
