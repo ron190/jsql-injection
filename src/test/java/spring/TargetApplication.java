@@ -22,9 +22,9 @@ public class TargetApplication {
     static Properties propsH2 = new Properties();
     static Properties propsH2Api = new Properties();
     static Properties propsMysql = new Properties();
-    static Properties propsMysqlError = new Properties();
-    static Properties propsPostgres = new Properties();
-//    static Properties propsSqlServer = new Properties();
+//    static Properties propsMysqlError = new Properties();
+//    static Properties propsPostgres = new Properties();
+    static Properties propsSqlServer = new Properties();
 
     static {
         
@@ -33,9 +33,9 @@ public class TargetApplication {
         Stream.of(
             new SimpleEntry<>(propsH2, "spring/hibernate.h2.properties"),
             new SimpleEntry<>(propsMysql, "spring/hibernate.mysql.properties"),
-            new SimpleEntry<>(propsMysqlError, "spring/hibernate.mysql-5.5.40.properties"),
-            new SimpleEntry<>(propsPostgres, "spring/hibernate.postgres.properties")
-//            new SimpleEntry<>(propsSqlServer, "spring/hibernate.sqlserver.properties")
+//            new SimpleEntry<>(propsMysqlError, "spring/hibernate.mysql-5.5.40.properties"),
+//            new SimpleEntry<>(propsPostgres, "spring/hibernate.postgres.properties"),
+            new SimpleEntry<>(propsSqlServer, "spring/hibernate.sqlserver.properties")
         ).forEach(simpleEntry -> {
             try (InputStream inputStream = classloader.getResourceAsStream(simpleEntry.getValue())) {
                 simpleEntry.getKey().load(inputStream);
@@ -50,9 +50,9 @@ public class TargetApplication {
         Stream.of(
             propsH2,
             propsMysql,
-            propsMysqlError,
-            propsPostgres
-//            propsSqlServer
+//            propsMysqlError,
+//            propsPostgres,
+            propsSqlServer
         ).forEach(props -> {
             Configuration configuration = new Configuration();
             configuration.addProperties(props).configure("spring/hibernate.cfg.xml");
