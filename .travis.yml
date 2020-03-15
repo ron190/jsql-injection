@@ -2,11 +2,11 @@ language: java
 services: docker
 jdk: 
  # Keep concurrent jdk lower than Travis max job count of 5
- - openjdk8
- - openjdk9
- - openjdk10
+# - openjdk8
+# - openjdk9
+# - openjdk10
  # - openjdk11
- - openjdk12
+# - openjdk12
  - openjdk13
  # Need new version of gmavenplus-plugin
  # - openjdk14
@@ -53,8 +53,8 @@ before_install:
     --publish 5432:5432 
     -e POSTGRES_PASSWORD=my-secret-pw 
     -d postgres 
-    -c 'shared_buffers=256MB'
-    -c 'max_connections=1000'
+#    -c 'shared_buffers=256MB'
+#    -c 'max_connections=1000'
     
   - docker run --name jsql-sqlserver 
     --publish 3308:1433 
@@ -67,14 +67,14 @@ before_install:
 script:
   
   # Buff MySQL
-  - docker exec -it jsql-mysql /bin/bash
-    -c "
-       mysql -uroot -pmy-secret-pw -e '
-       SET GLOBAL max_connections = 100000;
-       SET GLOBAL thread_cache_size = 16384;
-       SET GLOBAL table_open_cache = 524288;
-       ';
-       "
+#  - docker exec -it jsql-mysql /bin/bash
+#    -c "
+#       mysql -uroot -pmy-secret-pw -e '
+#       SET GLOBAL max_connections = 100000;
+#       SET GLOBAL thread_cache_size = 16384;
+#       SET GLOBAL table_open_cache = 524288;
+#       ';
+#       "
 
   # Check MySQL status
   - docker exec -it jsql-mysql /bin/bash
