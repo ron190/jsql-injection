@@ -2,11 +2,11 @@ language: java
 services: docker
 jdk: 
  # Keep concurrent jdk lower than Travis max job count of 5
-# - openjdk8
-# - openjdk9
-# - openjdk10
+ - openjdk8
+ - openjdk9
+ - openjdk10
  # - openjdk11
-# - openjdk12
+ - openjdk12
  - openjdk13
  # Need new version of gmavenplus-plugin
  # - openjdk14
