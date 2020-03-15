@@ -26,7 +26,7 @@ before_install:
   
 #  - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
 
-  - docker system prune -a
+  - docker system prune -a -f
   - docker images purge
   - docker rm -f $(docker ps -a -q)
   - docker rmi -f $(docker images -q)
