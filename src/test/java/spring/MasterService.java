@@ -23,8 +23,8 @@ public class MasterService {
             TargetApplication.propsH2,
             TargetApplication.propsMysql,
             TargetApplication.propsMysqlError,
-            TargetApplication.propsPostgres,
-            TargetApplication.propsSqlServer
+            TargetApplication.propsPostgres
+//            TargetApplication.propsSqlServer
         ).forEach(props -> {
             DatasourceConnectionProviderImpl connectionProviderPostgres = new DatasourceConnectionProviderImpl();
             
