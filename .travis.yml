@@ -24,7 +24,7 @@ cache:
     
 before_install:
   
-  - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
+#  - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
     
   # Docker configuration
   - docker build -t mysql 
