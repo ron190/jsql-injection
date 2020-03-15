@@ -28,8 +28,8 @@ before_install:
 
   - docker system prune -a -f
   - docker images purge
-  - docker rm -f $(docker ps -a -q)
-  - docker rmi -f $(docker images -q)
+#  - docker rm -f $(docker ps -a -q)
+#  - docker rmi -f $(docker images -q)
     
   # Docker configuration
   - docker build -t mysql 
