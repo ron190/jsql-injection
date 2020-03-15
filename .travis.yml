@@ -24,7 +24,7 @@ cache:
     
 before_install:
   
-  - export MAVEN_OPTS="-Xms1024m -Xmx3g -XX:PermSize=512m $MAVEN_OPTS"
+  - export MAVEN_OPTS="-Xms1024m -Xmx3g -XX:PermSize=512m $MAVEN_OPTS" 
 
 #  - docker system prune -a -f
 #  - docker images purge
