@@ -72,8 +72,8 @@ before_install:
     
   - docker run --name jsql-sqlserver 
     --publish 1433:1433 
-    -e 'ACCEPT_EULA=Y' 
-    -e 'SA_PASSWORD=my-secret-pw'
+    -e "ACCEPT_EULA=Y"
+    -e "SA_PASSWORD=my-secret-pw"
     -d sqlserver 
     
   - docker images && docker ps && pwd
