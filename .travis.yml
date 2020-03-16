@@ -24,7 +24,16 @@ cache:
     
 before_install:
   
-  - export MAVEN_OPTS="-Xms1024m -Xmx3g -XX:PermSize=512m $MAVEN_OPTS" 
+#  - export MAVEN_OPTS="-Xms1024m -Xmx3g -XX:PermSize=512m $MAVEN_OPTS" 
+  
+  - echo $JAVA_OPTS
+  - export JAVA_OPTS=-Xmx4096m
+  - echo $JAVA_OPTS
+  - echo "MAVEN_OPTS='-Xmx4g -XX:MaxPermSize=2048m'" > ~/.mavenrc
+  - cat ~/.mavenrc
+  - echo $MAVEN_OPTS
+  - export MAVEN_OPTS='-Xmx4096m -XX:MaxPermSize=2048m'
+  - echo $MAVEN_OPTS
 
 #  - docker system prune -a -f
 #  - docker images purge
