@@ -81,6 +81,7 @@ before_install:
   - ifconfig
   - docker port jsql-sqlserver
   - nc -zv 127.0.0.1 1401
+  - sleep 60s
   - sudo docker exec -it jsql-sqlserver /opt/mssql-tools/bin/sqlcmd -S "tcp:127.0.0.1,1401" -U SA -P "my-secret-pw" -Q "select @@version"
 
 script:
