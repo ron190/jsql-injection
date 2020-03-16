@@ -71,7 +71,7 @@ before_install:
 #    -c 'max_connections=1000'
     
   - docker run --name jsql-sqlserver 
-    --publish 1433:1433 
+    --publish 1401:1433 
     -e "ACCEPT_EULA=Y"
     -e "SA_PASSWORD=my-secret-pw"
     -d sqlserver 
@@ -80,9 +80,8 @@ before_install:
   
   - ifconfig
   - docker port jsql-sqlserver
-  - sudo docker exec -it jsql-sqlserver /opt/mssql-tools/bin/sqlcmd 
-    -S 0.0.0.0 -U sa -P "my-secret-pw" 
-    -Q 'select @@version'
+  - nc -zv 127.0.0.1 1401
+  - sudo docker exec -it jsql-sqlserver /opt/mssql-tools/bin/sqlcmd -S "127.0.0.1,1401" -U sa -P "my-secret-pw" -Q "select @@version"
 
 script:
   
