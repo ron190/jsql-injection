@@ -31,7 +31,7 @@ public class TargetApplication {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 
         Stream.of(
-            new SimpleEntry<>(propsH2, "spring/hibernate.h2.properties"),
+//            new SimpleEntry<>(propsH2, "spring/hibernate.h2.properties"),
             new SimpleEntry<>(propsMysql, "spring/hibernate.mysql.properties"),
 //            new SimpleEntry<>(propsMysqlError, "spring/hibernate.mysql-5.5.40.properties"),
 //            new SimpleEntry<>(propsPostgres, "spring/hibernate.postgres.properties"),
@@ -48,7 +48,7 @@ public class TargetApplication {
     public static void initializeDatabases() {
         
         Stream.of(
-            propsH2,
+//            propsH2,
             propsMysql,
 //            propsMysqlError,
 //            propsPostgres,
