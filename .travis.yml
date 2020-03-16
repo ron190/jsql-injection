@@ -74,6 +74,7 @@ before_install:
     --publish 1401:1433 
     -e "ACCEPT_EULA=Y"
     -e "SA_PASSWORD=my-secret-pw1A"
+    -e "MSSQL_SA_PASSWORD=my-secret-pw1A"
     -d sqlserver 
     
   - docker images && docker ps && pwd
