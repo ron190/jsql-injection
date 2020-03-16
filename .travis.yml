@@ -62,9 +62,9 @@ before_install:
 #    -c 'max_connections=1000'
     
   - docker run --name jsql-sqlserver 
-    --publish 3308:1433 
+    --publish 1433:1433 
     -e 'ACCEPT_EULA=Y' 
-    -e 'SA_PASSWORD=my-secret-pw'
+    -e 'SA_PASSWORD=password'
     -d sqlserver 
     
   - docker images && docker ps && pwd
