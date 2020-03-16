@@ -79,8 +79,9 @@ before_install:
   - docker images && docker ps && pwd
   
   - ifconfig
+  - docker port jsql-sqlserver
   - sudo docker exec -it jsql-sqlserver /opt/mssql-tools/bin/sqlcmd 
-    -S localhost -U sa -P "my-secret-pw" 
+    -S 0.0.0.0 -U sa -P "my-secret-pw" 
     -Q 'select @@version'
 
 script:
