@@ -16,7 +16,7 @@ public class Student {
     //data members
     @Id
     @Column(name = "Student_Id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int studentId;
     @Column(name = "First_Name")
     private String firstName;
