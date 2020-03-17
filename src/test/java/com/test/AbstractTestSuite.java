@@ -90,11 +90,8 @@ public abstract class AbstractTestSuite {
         if (this.isSetupStarted.compareAndSet(false, true)) {
             
             LOGGER.info("@BeforeClass: loading H2, Hibernate and Spring...");
-            LOGGER.info("######################## Server.createTcpServer().start();");
             Server.createTcpServer().start();
-            LOGGER.info("######################## TargetApplication.initializeDatabases();");
             TargetApplication.initializeDatabases();
-            LOGGER.info("######################## SpringApplication.run(TargetApplication.class, new String[] {});");
             SpringApplication.run(TargetApplication.class, new String[] {});
             
             isSetupDone.set(true);
@@ -105,12 +102,9 @@ public abstract class AbstractTestSuite {
             LOGGER.info("@BeforeClass: backend is setting up, please wait...");
         }
             
-        LOGGER.info("######################## this.injectionModel == null");
         if (this.injectionModel == null) {
             
-            LOGGER.info("######################## this.requestJdbc();");
             this.requestJdbc();
-            LOGGER.info("######################## this.setupInjection();");
             this.setupInjection();
         }
     }
