@@ -28,9 +28,6 @@ public class HibernateConf {
         hibernateProperties.setProperty("hibernate.tenant_identifier_resolver", "spring.CurrentTenantIdentifierResolverImpl");
         hibernateProperties.setProperty("hibernate.multiTenancy", "DATABASE");
         
-        hibernateProperties.setProperty("hibernate.connection.release_mode", "after_transaction");
-        hibernateProperties.setProperty("hibernate.id.new_generator_mappings", "false");
-
         return hibernateProperties;
     }
 }
