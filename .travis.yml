@@ -50,8 +50,8 @@ before_install:
 #  - docker build -t postgres 
 #    -f src/test/resources/docker/Dockerfile.postgres .
     
-  - docker build -t sqlserver 
-    -f src/test/resources/docker/Dockerfile.sqlserver .
+#  - docker build -t sqlserver 
+#    -f src/test/resources/docker/Dockerfile.sqlserver .
     
   - docker run --name jsql-mysql  
     --publish 3306:3306 
@@ -76,7 +76,7 @@ before_install:
     -e "SA_PASSWORD=yourStrong(!)Password"
     -e "MSSQL_SA_PASSWORD=my-secret-pw1A"
     -u 0:0
-    -d mcr.microsoft.com/mssql/rhel/server:2019-CU1-rhel-8
+    -d mcr.microsoft.com/mssql/server:2017-latest
     
   - docker images && docker ps && pwd
   
