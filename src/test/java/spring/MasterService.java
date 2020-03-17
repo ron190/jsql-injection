@@ -17,13 +17,13 @@ public class MasterService {
     public MasterService() {
         
         // Remove annoying logs from jdbc driver
-//        DriverManager.setLogWriter(null);
+        DriverManager.setLogWriter(null);
 
         Stream.of(
-//            TargetApplication.propsH2,
+            TargetApplication.propsH2,
             TargetApplication.propsMysql,
-//            TargetApplication.propsMysqlError,
-//            TargetApplication.propsPostgres,
+            TargetApplication.propsMysqlError,
+            TargetApplication.propsPostgres,
             TargetApplication.propsSqlServer
         ).forEach(props -> {
             DatasourceConnectionProviderImpl connectionProviderPostgres = new DatasourceConnectionProviderImpl();
