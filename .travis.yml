@@ -59,7 +59,7 @@ before_install:
   - docker run --name jsql-sqlserver 
     --publish 1434:1434 
     -e "ACCEPT_EULA=Y" 
-    -e "SA_PASSWORD=my-secret-pw"
+    -e "SA_PASSWORD=yourStrong(!)Password"
     -u 0:0
     -d sqlserver 
     
@@ -95,8 +95,9 @@ script:
        ';
        "
        
-  - sleep 5s
-  - sudo docker exec -it jsql-sqlserver /opt/mssql-tools/bin/sqlcmd -S "tcp:127.0.0.1,1434" -U SA -P "my-secret-pw" -Q "select @@version"
+  - sleep 10s
+  - docker logs --details jsql-sqlserver 
+  - sudo docker exec -it jsql-sqlserver /opt/mssql-tools/bin/sqlcmd -S "tcp:127.0.0.1,1434" -U SA -P "yourStrong(!)Password" -Q "select @@version"
 
   - mvn clean verify sonar:sonar
   
