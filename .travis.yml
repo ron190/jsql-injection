@@ -60,7 +60,7 @@ before_install:
     --publish 1434:1434 
     --publish 1433:1433 
     -e "ACCEPT_EULA=Y" 
-    -e "SA_PASSWORD=my-secret-pw"
+    -e "SA_PASSWORD=yourStrong(!)Password"
     -u 0:0
     -d sqlserver 
     
@@ -94,7 +94,7 @@ before_install:
        ';
        "
        
-  - sudo docker exec -it jsql-sqlserver /opt/mssql-tools/bin/sqlcmd -S "tcp:127.0.0.1,1434" -U SA -P "my-secret-pw" -Q "select @@version"
+  - sudo docker exec -it jsql-sqlserver /opt/mssql-tools/bin/sqlcmd -S "tcp:127.0.0.1,1434" -U SA -P "yourStrong(!)Password" -Q "select @@version"
 
 
 script:
