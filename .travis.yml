@@ -60,7 +60,7 @@ before_install:
     --publish 1434:1434 
     --publish 1433:1433 
     -e "ACCEPT_EULA=Y" 
-    -e "SA_PASSWORD=yourStrong(!)Password"
+    -e "SA_PASSWORD=my-secret-pw"
     -u 0:0
     -d sqlserver 
     
