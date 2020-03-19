@@ -173,5 +173,4 @@ public class JSplitPaneWithZeroSizeDivider extends JSplitPane {
             super.finishDraggingTo(location + JSplitPaneWithZeroSizeDivider.this.dividerDragOffset);
         }
     }
-    
 }

@@ -1,11 +1,9 @@
 {
     "version": "0.82",
     "news": [
-        "[Done] Tampering options against WAF. Restore unhandle exception, translation and issue creation on Github.",
-        "[Hiring] ProGuard shrinking. Apache PHP, Python and Node API integration on Travis CI.",
-        "[Hiring] Continuous deployment on Travis CI. Continuous integration on GitLab CI, Github Actions and Circle CI.",
-        "[Done] Spock tests and integration tests with Spring API to dockerized hibernate tenants on Travis CI.",
+        "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer.",
+        "[Hiring] ProGuard shrinking. Apache PHP, Python and Node API Devops integration on Travis CI.",
         "[Roadmap] Burp integration, Dump to a file, Full Path Disclosure, WAF detection.",
-        "[Feature] Help the community and translate jSQL into your language. Click on the top right button to show the advanced settings and open menu Community, choose a language using 'I help translate jSQL' and translate some text then click on Send. Your translation will be integrated to the next release by the developer."
+        "[Done] Bypass WAF with tamper, Devops pipeline with dockerized SQL Server."
     ]
 }

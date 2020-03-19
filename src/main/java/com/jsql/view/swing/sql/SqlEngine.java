@@ -302,9 +302,9 @@ public class SqlEngine extends JPanel implements Cleanable {
             this.textareaLengthTest
         ).forEach(textPane -> textPane.setBorder(SqlEngine.BORDER_RIGHT));
         
-        JPanel panelStructure = getPanelStructure();
-        JPanel panelStrategy = getPanelStrategy();
-        JPanel panelConfiguration = getPanelConfiguration();
+        JPanel panelStructure = this.getPanelStructure();
+        JPanel panelStrategy = this.getPanelStrategy();
+        JPanel panelConfiguration = this.getPanelConfiguration();
 
         JTabbedPane tabsBottom = new JTabbedPane(SwingConstants.BOTTOM);
         Stream.of(
@@ -326,7 +326,7 @@ public class SqlEngine extends JPanel implements Cleanable {
 
         this.setLayout(new OverlayLayout(this));
 
-        initializeMenuVendor();
+        this.initializeMenuVendor();
         
         this.add(tabsBottom);
         
@@ -687,7 +687,7 @@ public class SqlEngine extends JPanel implements Cleanable {
     
     /**
      * Reset the textPane colorer.
-     * @param textPane which colorer will be reset. 
+     * @param textPane which colorer will be reset.
      */
     private static void resetLexer(JTextPaneLexer textPane) {
         

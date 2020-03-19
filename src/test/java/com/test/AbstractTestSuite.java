@@ -87,17 +87,17 @@ public abstract class AbstractTestSuite {
     @BeforeAll
     public synchronized void initializeBackend() throws Exception {
         
-        if (this.isSetupStarted.compareAndSet(false, true)) {
+        if (AbstractTestSuite.isSetupStarted.compareAndSet(false, true)) {
             
             LOGGER.info("@BeforeClass: loading H2, Hibernate and Spring...");
             Server.createTcpServer().start();
             TargetApplication.initializeDatabases();
             SpringApplication.run(TargetApplication.class, new String[] {});
             
-            isSetupDone.set(true);
+            AbstractTestSuite.isSetupDone.set(true);
         }
             
-        while (!isSetupDone.get()) {
+        while (!AbstractTestSuite.isSetupDone.get()) {
             Thread.sleep(1000);
             LOGGER.info("@BeforeClass: backend is setting up, please wait...");
         }

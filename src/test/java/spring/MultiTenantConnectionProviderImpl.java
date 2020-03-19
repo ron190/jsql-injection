@@ -18,5 +18,4 @@ public class MultiTenantConnectionProviderImpl extends AbstractMultiTenantConnec
     protected ConnectionProvider selectConnectionProvider(String tenant) {
         return MASTER_SERVICE.getDataSourceHashMap().get(tenant);
     }
-
 }
