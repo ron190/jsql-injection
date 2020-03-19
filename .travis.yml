@@ -24,17 +24,22 @@ cache:
     - $HOME/.sonar/cache
     
 before_install:
+
   - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
-  - import src/test/resources/docker/build.yml
-  - import src/test/resources/docker/run.yml
-  - docker images && docker ps && pwd
-  - import src/test/resources/docker/config.yml
+  
+import: 
+  - source: src/test/resources/docker/build.yml
+  - source: src/test/resources/docker/run.yml
+  - source: src/test/resources/docker/config.yml
 
 script:
+
   - mvn clean verify sonar:sonar
-  - import src/test/resources/docker/metrics.yml
+  
+import: src/test/resources/docker/metrics.yml
     
 after_success:
+
   - bash <(curl -s https://codecov.io/bash)
   
   - export CODACY_PROJECT_TOKEN=43e8b6719fbc4f3cbef25d863d7440c8

@@ -21,3 +21,5 @@
   -e "ACCEPT_EULA=Y" 
   -e "SA_PASSWORD=yourStrong(!)Password"
   -d sqlserver 
+  
+- docker images && docker ps && pwd
