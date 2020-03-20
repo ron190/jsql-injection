@@ -30,15 +30,16 @@ before_install:
   - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
   
 import: 
-  - ./src/test/resources/docker/build.yml
-  - ./src/test/resources/docker/run.yml
-  - ./src/test/resources/docker/config.yml
+  - src/test/resources/docker/build.yml
+  - src/test/resources/docker/run.yml
+  - src/test/resources/docker/config.yml
 
 script:
 
   - mvn clean verify sonar:sonar
   
-import: ./src/test/resources/docker/metrics.yml
+import: 
+  - src/test/resources/docker/metrics.yml
     
 after_success:
 
