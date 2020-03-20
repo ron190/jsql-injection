@@ -38,8 +38,7 @@ script:
 
   - mvn clean verify sonar:sonar
   
-import: 
-  - src/test/resources/docker/metrics.yml
+  - ./src/test/resources/docker/metrics.sh
     
 after_success:
 
