@@ -27,5 +27,5 @@ docker exec -it jsql-postgres /bin/bash\
    "
      
 REM Check SQL Server connection
-sleep 10s\
+sleep 10s
 sudo docker exec -it jsql-sqlserver /opt/mssql-tools/bin/sqlcmd -S "tcp:127.0.0.1,1434" -U SA -P "yourStrong(!)Password" -Q "select @@version"
