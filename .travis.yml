@@ -29,10 +29,9 @@ before_install:
 
   - export MAVEN_OPTS="-Xms512m -Xmx3g -XX:PermSize=256m $MAVEN_OPTS"
   
-import: 
-  - src/test/resources/docker/build.yml
-  - src/test/resources/docker/run.yml
-  - src/test/resources/docker/config.yml
+  - src/test/resources/docker/build.sh
+  - src/test/resources/docker/run.sh
+  - src/test/resources/docker/config.sh
 
 script:
 
