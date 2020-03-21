@@ -180,7 +180,7 @@ public class LightScrollPane extends JComponent {
         }
     }
 
-    private  class MyScrollBarUI extends BasicScrollBarUI {
+    private class MyScrollBarUI extends BasicScrollBarUI {
         
         @Override
         protected JButton createDecreaseButton(int orientation) {
@@ -229,6 +229,7 @@ public class LightScrollPane extends JComponent {
             
             // Fix Mac OS Color.DARK_GRAY and alpha incompatibility
             Color colorThumbAlpha;
+            
             try {
                 colorThumbAlpha = new Color(LightScrollPane.this.colorThumb.getRed(), LightScrollPane.this.colorThumb.getGreen(), LightScrollPane.this.colorThumb.getBlue(), alpha);
             } catch (NullPointerException e) {
@@ -238,11 +239,11 @@ public class LightScrollPane extends JComponent {
                 IgnoreMessageException exceptionIgnored = new IgnoreMessageException(e);
                 LOGGER.trace(exceptionIgnored, exceptionIgnored);
             }
+            
             graphics2D.setColor(colorThumbAlpha);
             
             graphics2D.fillRect(x, y, width, height);
             graphics2D.dispose();
         }
     }
-    
 }

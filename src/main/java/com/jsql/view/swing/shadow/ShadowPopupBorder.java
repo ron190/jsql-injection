@@ -86,13 +86,13 @@ public final class ShadowPopupBorder extends AbstractBorder {
         return instance;
     }
 
-
     /**
      * Paints the border for the specified component with the specified
      * position and size.
      */
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+        
         // Fix #7497, Fix #8247, Fix #8332: BufImgSurfaceData cannot be cast to XRSurfaceData on drawImage()
         try {
             // fake drop shadow effect in case of heavy weight popups
@@ -135,9 +135,9 @@ public final class ShadowPopupBorder extends AbstractBorder {
      */
     @Override
     public Insets getBorderInsets(Component c, Insets insets) {
+        
         insets.left = insets.top = 0;
         insets.right = insets.bottom = SHADOW_SIZE;
         return insets;
     }
-
 }

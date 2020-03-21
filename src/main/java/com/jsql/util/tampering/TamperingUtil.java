@@ -5,10 +5,11 @@ import java.util.regex.Pattern;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import org.apache.log4j.Logger;
+
+import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
 public class TamperingUtil {
     
@@ -31,7 +32,7 @@ public class TamperingUtil {
     
     private String customTamper = null;
     
-    private static final ScriptEngineManager ENGINE_MANAGER = new ScriptEngineManager();
+    private static final NashornScriptEngineFactory NASHORN_FACTORY = new NashornScriptEngineFactory();
 
     public void set(
         boolean isBase64,
@@ -60,6 +61,7 @@ public class TamperingUtil {
         this.isSpaceToSharpComment = isSpaceToSharpComment;
     }
     
+    
     private static String eval(String sqlQuery, String jsTampering) {
         Object resultSqlTampered = null;
         
@@ -68,7 +70,7 @@ public class TamperingUtil {
                 throw new ScriptException("Tampering context is empty");
             }
             
-            ScriptEngine nashornEngine = ENGINE_MANAGER.getEngineByName("nashorn");
+            ScriptEngine nashornEngine = NASHORN_FACTORY.getScriptEngine();
             nashornEngine.eval(jsTampering);
             
             Invocable nashornInvocable = (Invocable) nashornEngine;

@@ -151,10 +151,10 @@ public final class ShadowPopup extends Popup {
      * Returns a previously used {@code ShadowPopup}, or a new one
      * if none of the popups have been recycled.
      */
-    static Popup getInstance(Component owner, Component contents, int x,
-            int y, Popup delegate) {
+    static Popup getInstance(Component owner, Component contents, int x, int y, Popup delegate) {
         
         ShadowPopup result;
+        
         synchronized (ShadowPopup.class) {
             if (cache == null) {
                 cache = new ArrayList<>(MAX_CACHE_SIZE);
@@ -165,7 +165,9 @@ public final class ShadowPopup extends Popup {
                 result = new ShadowPopup();
             }
         }
+        
         result.reset(owner, contents, x, y, delegate);
+        
         return result;
     }
 
@@ -215,6 +217,7 @@ public final class ShadowPopup extends Popup {
                 this.heavyWeightContainer = null;
             }
         }
+        
         this.owner = null;
         this.contents = null;
         this.popup = null;
@@ -232,6 +235,7 @@ public final class ShadowPopup extends Popup {
         if (this.heavyWeightContainer != null) {
             this.snapshot();
         }
+        
         this.popup.show();
     }
 
@@ -266,6 +270,7 @@ public final class ShadowPopup extends Popup {
         } catch(NullPointerException e) {
             LOGGER.error(e.getMessage(), e);
         }
+        
         if (contentsPrefSize.width <= 0 || contentsPrefSize.height <= 0) {
             return;
         }
@@ -407,6 +412,7 @@ public final class ShadowPopup extends Popup {
                 g.dispose();
             }
         } catch (AWTException | SecurityException | IllegalArgumentException e) {
+            
             this.canSnapshot = false;
             
             // Ignore
@@ -440,6 +446,7 @@ public final class ShadowPopup extends Popup {
         
         // Try to find a JLayeredPane and Window to add
         for (Container p = parent; p != null; p = p.getParent()) {
+            
             if (p instanceof JRootPane) {
                 if (p.getParent() instanceof JInternalFrame) {
                     continue;
@@ -459,6 +466,7 @@ public final class ShadowPopup extends Popup {
                 break;
             }
         }
+        
         return parent;
     }
 }

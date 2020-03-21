@@ -77,6 +77,7 @@ public class BlockCaret extends DefaultCaret {
         int dot = this.getDot();
         Rectangle r = null;
         char dotChar;
+        
         try {
             r = comp.modelToView(dot);
             if (r == null) {
@@ -110,5 +111,4 @@ public class BlockCaret extends DefaultCaret {
             g.fillRect(r.x, r.y, this.width, r.height);
         }
     }
-    
 }

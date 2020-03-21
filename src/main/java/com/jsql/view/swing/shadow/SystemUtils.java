@@ -81,102 +81,86 @@ public class SystemUtils {
     /**
      * Is true if this is Linux.
      */
-    public static final boolean IS_OS_LINUX =
-        startsWith(OS_NAME, "Linux") || startsWith(OS_NAME, "LINUX");
+    public static final boolean IS_OS_LINUX = startsWith(OS_NAME, "Linux") || startsWith(OS_NAME, "LINUX");
 
     /**
      * True if this is the Mac OS.
      */
-    public static final boolean IS_OS_MAC =
-        startsWith(OS_NAME, "Mac OS");
+    public static final boolean IS_OS_MAC = startsWith(OS_NAME, "Mac OS");
 
     /**
      * True if this is Solaris.
      */
-    public static final boolean IS_OS_SOLARIS =
-        startsWith(OS_NAME, "Solaris");
+    public static final boolean IS_OS_SOLARIS = startsWith(OS_NAME, "Solaris");
 
     /**
      * True if this is Windows.
      */
-    public static final boolean IS_OS_WINDOWS =
-        startsWith(OS_NAME, OS_WINDOWS);
+    public static final boolean IS_OS_WINDOWS = startsWith(OS_NAME, OS_WINDOWS);
 
     /**
      * True if this is Windows 98.
      */
-    public static final boolean IS_OS_WINDOWS_98 =
-        startsWith(OS_NAME, "Windows 9") && startsWith(OS_VERSION, "4.1");
+    public static final boolean IS_OS_WINDOWS_98 = startsWith(OS_NAME, "Windows 9") && startsWith(OS_VERSION, "4.1");
 
     /**
      * True if this is Windows ME.
      */
-    public static final boolean IS_OS_WINDOWS_ME =
-        startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "4.9");
+    public static final boolean IS_OS_WINDOWS_ME = startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "4.9");
 
     /**
      * True if this is Windows 2000.
      */
-    public static final boolean IS_OS_WINDOWS_2000 =
-        startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "5.0");
+    public static final boolean IS_OS_WINDOWS_2000 = startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "5.0");
 
     /**
      * True if this is Windows XP.
      */
-    public static final boolean IS_OS_WINDOWS_XP =
-        startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "5.1");
+    public static final boolean IS_OS_WINDOWS_XP = startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "5.1");
 
     /**
      * True if this is Windows Vista or Server 2008.
      */
-    public static final boolean IS_OS_WINDOWS_VISTA =
-        startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "6.0");
+    public static final boolean IS_OS_WINDOWS_VISTA = startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "6.0");
 
     /**
      * True if this is Windows 7.
      */
-    public static final boolean IS_OS_WINDOWS_7 =
-        startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "6.1");
+    public static final boolean IS_OS_WINDOWS_7 = startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "6.1");
 
     /**
      * True if this is Windows 8.
      */
-    public static final boolean IS_OS_WINDOWS_8 =
-        startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "6.2");
+    public static final boolean IS_OS_WINDOWS_8 = startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "6.2");
 
     /**
      * True if this is Windows Vista/Server 2008/7/2008 R2/8.
      */
-    public static final boolean IS_OS_WINDOWS_6_OR_LATER =
-        startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "6.");
+    public static final boolean IS_OS_WINDOWS_6_OR_LATER = startsWith(OS_NAME, OS_WINDOWS) && startsWith(OS_VERSION, "6.");
 
     // Requesting the Java Version ********************************************
 
     /**
      * True if this is Java 6. We check for a prefix of 1.6.
      */
-    public static final boolean IS_JAVA_6 =
-        startsWith(JAVA_VERSION, "1.6");
+    public static final boolean IS_JAVA_6 = startsWith(JAVA_VERSION, "1.6");
 
     /**
      * True if this is Java 7. We check for a prefix of 1.7.
      */
-    public static final boolean IS_JAVA_7 =
-        startsWith(JAVA_VERSION, "1.7");
+    public static final boolean IS_JAVA_7 = startsWith(JAVA_VERSION, "1.7");
 
     /**
      * True if this is Java 7.x or later. We check that it's not 1.6.
      */
-    public static final boolean IS_JAVA_7_OR_LATER =
-           !IS_JAVA_6;
+    public static final boolean IS_JAVA_7_OR_LATER = !IS_JAVA_6;
 
     /**
      * True if this is Java 7. We check for a prefix of 1.7.
      * 
      * @since 1.6
      */
-    public static final boolean IS_JAVA_8 =
-        startsWith(JAVA_VERSION, "1.8");
+    public static final boolean IS_JAVA_8 = startsWith(JAVA_VERSION, "1.8");
 
     /**
      * True if this is Java 8.x or later.
@@ -184,8 +168,7 @@ public class SystemUtils {
      * 
      * @since 1.6
      */
-    public static final boolean IS_JAVA_8_OR_LATER =
-           !IS_JAVA_6 && !IS_JAVA_7;
+    public static final boolean IS_JAVA_8_OR_LATER = !IS_JAVA_6 && !IS_JAVA_7;
 
     // Visual Properties ******************************************************
 
@@ -231,6 +214,7 @@ public class SystemUtils {
      *     a SecurityException has been caught
      */
     protected static String getSystemProperty(String key) {
+        
         try {
             return System.getProperty(key);
         } catch (SecurityException e) {
@@ -253,6 +237,7 @@ public class SystemUtils {
      *     {@code false} if this class is not in the class path.
      */
     private static boolean hasModernRasterizer() {
+        
         try {
             Class.forName(AWT_UTILITIES_CLASS_NAME);
             return true;
@@ -277,6 +262,7 @@ public class SystemUtils {
      * @return true if the Windows XP style is enabled
      */
     private static boolean isWindowsXPLafEnabled() {
+        
         return IS_OS_WINDOWS
              && Boolean.TRUE.equals(Toolkit.getDefaultToolkit().
                      getDesktopProperty("win.xpstyle.themeActive"))
@@ -284,6 +270,7 @@ public class SystemUtils {
     }
 
     private static boolean isLowResolution() {
+        
         try {
             return Toolkit.getDefaultToolkit().getScreenResolution() < 120;
         } catch (HeadlessException e) {
@@ -291,5 +278,4 @@ public class SystemUtils {
             return true;
         }
     }
-
 }

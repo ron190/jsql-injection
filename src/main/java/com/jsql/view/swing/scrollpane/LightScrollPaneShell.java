@@ -20,5 +20,4 @@ public class LightScrollPaneShell extends LightScrollPane {
         
         this.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.BLACK));
     }
-    
 }

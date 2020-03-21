@@ -19,17 +19,19 @@ public class RadioLinkMethod extends AbstractRadioLink {
      */
     private static List<JLabel> groupMethod = new ArrayList<>();
 
-    MethodInjection methodInjection = null;
+    private MethodInjection methodInjection = null;
     
     /**
      * A default radio label.
      * @param string Text for radio label
-     * @param hEADER
+     * @param methodInjection
      */
-    public RadioLinkMethod(String string, MethodInjection hEADER) {
+    public RadioLinkMethod(String string, MethodInjection methodInjection) {
+        
         super(string);
+        
         this.init();
-        this.methodInjection = hEADER;
+        this.methodInjection = methodInjection;
     }
 
     /**
@@ -39,7 +41,9 @@ public class RadioLinkMethod extends AbstractRadioLink {
      * @param method
      */
     public RadioLinkMethod(String string, boolean isSelected, MethodInjection method) {
+        
         super(string, isSelected);
+        
         this.init();
         this.methodInjection = method;
     }
@@ -61,5 +65,4 @@ public class RadioLinkMethod extends AbstractRadioLink {
     List<JLabel> getGroup() {
         return RadioLinkMethod.groupMethod;
     }
-    
 }

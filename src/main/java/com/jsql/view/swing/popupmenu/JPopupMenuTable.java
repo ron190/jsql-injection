@@ -133,5 +133,4 @@ public class JPopupMenuTable extends JPopupMenu {
             JPopupMenuTable.this.table.getActionMap().get(copyEvent.getActionCommand()).actionPerformed(copyEvent);
         }
     }
-    
 }

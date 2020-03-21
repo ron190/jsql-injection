@@ -64,7 +64,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
             // Get current line
             int lineNumber = this.terminal.getLineOfOffset(caretPosition);
     
-            // Cancel every user keyboard input if another command has just been send
+            // Cancel every user keyboard input if another command has just been sent
             if (this.terminal.getIsEdited()[0]) {
                 keyEvent.consume();
                 return;
@@ -81,98 +81,27 @@ public class KeyAdapterTerminal extends KeyAdapter {
             // Validate user input ; disable text editing
             if (keyEvent.getKeyCode() == KeyEvent.VK_ENTER) {
                 
-                this.terminal.getIsEdited()[0] = true;
-                keyEvent.consume();
-                this.terminal.setEditable(false);
-    
-                // Populate cmd list for key up/down
-                if (!"".equals(command[0].trim())) {
-                    this.cmds.add(command[0].trim());
-                    this.cmdsIndex = this.cmds.size();
-                }
-    
-                // SwingUtilities instead of Thread to avoid some flickering
-                // Thread to give back control of the GUI to the user (SwingUtilities does not)
-                new Thread(() -> {
-                    
-                    AbstractShell terminalCommand = KeyAdapterTerminal.this.terminal;
-                    
-                    // Inside Swing thread to avoid flickering
-                    terminalCommand.append("\n");
-                    if (!"".equals(command[0].trim())) {
-                        terminalCommand.setCaretPosition(terminalCommand.getDocument().getLength());
-                        terminalCommand.action(
-                            command[0],
-                            terminalCommand.getUuidShell(),
-                            terminalCommand.getUrlShell(),
-                            terminalCommand.loginPassword
-                        );
-                    } else {
-                        terminalCommand.reset();
-                    }
-                }).start();
+                this.runCommand(keyEvent, command);
     
             // Get previous command
             } else if (keyEvent.getKeyCode() == KeyEvent.VK_UP) {
                 
-                keyEvent.consume();
-    
-                if (this.cmdsIndex > 0) {
-                    this.cmdsIndex--;
-                }
-    
-                if (!this.cmds.isEmpty()) {
-                    if (
-                        this.cmds.size() > 1 &&
-                        this.cmdsIndex == this.cmds.size() - 1 &&
-                        !"".equals(command[0].trim())
-                    ) {
-                        this.cmdsIndex--;
-                    }
-    
-                    this.terminal.getDocument().remove(
-                        root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),
-                        command[0].length() - 1
-                    );
-    
-                    this.terminal.append(this.cmds.get(this.cmdsIndex));
-                    this.terminal.setCaretPosition(this.terminal.getDocument().getLength());
-                }
+                this.appendPreviousCommand(keyEvent, root, lineNumber, command);
     
             // Get next command
             } else if (keyEvent.getKeyCode() == KeyEvent.VK_DOWN) {
                 
-                keyEvent.consume();
-    
-                if (this.cmdsIndex < this.cmds.size()) {
-                    this.cmdsIndex++;
-                }
-    
-                if (!this.cmds.isEmpty() && this.cmdsIndex < this.cmds.size()) {
-                    this.terminal.getDocument().remove(
-                        root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),
-                        command[0].length() - 1
-                    );
-    
-                    this.terminal.append(this.cmds.get(this.cmdsIndex));
-                    this.terminal.setCaretPosition(this.terminal.getDocument().getLength());
-                }
+                this.appendNextCommand(keyEvent, root, lineNumber, command);
     
             // Go to the left until prompt
             } else if (keyEvent.getKeyCode() == KeyEvent.VK_LEFT || keyEvent.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
                 
-                int columnnum = caretPosition - this.terminal.getLineStartOffset(lineNumber);
-
-                if (columnnum <= this.terminal.getPrompt().length()) {
-                    keyEvent.consume();
-                }
+                this.moveCaretLeft(keyEvent, caretPosition, lineNumber);
     
             // Get to the beginning of the line
             } else if (keyEvent.getKeyCode() == KeyEvent.VK_HOME) {
                 
-                keyEvent.consume();
-                
-                this.terminal.setCaretPosition(this.terminal.getLineStartOffset(lineNumber) + this.terminal.getPrompt().length());
+                this.moveCaretHome(keyEvent, lineNumber);
     
             } else if (
                 // Cancel the select all shortcut Ctrl+A
@@ -189,13 +118,109 @@ public class KeyAdapterTerminal extends KeyAdapter {
     
             } else if (keyEvent.getKeyCode() == KeyEvent.VK_C && (keyEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0) {
                 
-                keyEvent.consume();
-    
-                this.terminal.append("\n");
-                this.terminal.reset();
+                this.cancelCommand(keyEvent);
             }
         } catch (BadLocationException e) {
             LOGGER.error(e.getMessage(), e);
         }
+    }
+
+    private void cancelCommand(KeyEvent keyEvent) {
+        keyEvent.consume();
+   
+        this.terminal.append("\n");
+        this.terminal.reset();
+    }
+
+    private void moveCaretHome(KeyEvent keyEvent, int lineNumber) throws BadLocationException {
+        keyEvent.consume();
+        
+        this.terminal.setCaretPosition(this.terminal.getLineStartOffset(lineNumber) + this.terminal.getPrompt().length());
+    }
+
+    private void moveCaretLeft(KeyEvent keyEvent, final int caretPosition, int lineNumber) throws BadLocationException {
+        int columnnum = caretPosition - this.terminal.getLineStartOffset(lineNumber);
+
+        if (columnnum <= this.terminal.getPrompt().length()) {
+            keyEvent.consume();
+        }
+    }
+
+    private void appendNextCommand(KeyEvent keyEvent, final Element root, int lineNumber, final String[] command)
+            throws BadLocationException {
+        keyEvent.consume();
+   
+        if (this.cmdsIndex < this.cmds.size()) {
+            this.cmdsIndex++;
+        }
+   
+        if (!this.cmds.isEmpty() && this.cmdsIndex < this.cmds.size()) {
+            this.terminal.getDocument().remove(
+                root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),
+                command[0].length() - 1
+            );
+   
+            this.terminal.append(this.cmds.get(this.cmdsIndex));
+            this.terminal.setCaretPosition(this.terminal.getDocument().getLength());
+        }
+    }
+
+    private void appendPreviousCommand(KeyEvent keyEvent, final Element root, int lineNumber, final String[] command)
+            throws BadLocationException {
+        keyEvent.consume();
+   
+        if (this.cmdsIndex > 0) {
+            this.cmdsIndex--;
+        }
+   
+        if (!this.cmds.isEmpty()) {
+            if (
+                this.cmds.size() > 1 &&
+                this.cmdsIndex == this.cmds.size() - 1 &&
+                !"".equals(command[0].trim())
+            ) {
+                this.cmdsIndex--;
+            }
+   
+            this.terminal.getDocument().remove(
+                root.getElement(lineNumber).getStartOffset() + this.terminal.getPrompt().length(),
+                command[0].length() - 1
+            );
+   
+            this.terminal.append(this.cmds.get(this.cmdsIndex));
+            this.terminal.setCaretPosition(this.terminal.getDocument().getLength());
+        }
+    }
+
+    private void runCommand(KeyEvent keyEvent, final String[] command) {
+        this.terminal.getIsEdited()[0] = true;
+        keyEvent.consume();
+        this.terminal.setEditable(false);
+   
+        // Populate cmd list for key up/down
+        if (!"".equals(command[0].trim())) {
+            this.cmds.add(command[0].trim());
+            this.cmdsIndex = this.cmds.size();
+        }
+   
+        // Thread to give back control of the GUI to the user (SwingUtilities does not)
+        new Thread(() -> {
+            
+            AbstractShell terminalCommand = KeyAdapterTerminal.this.terminal;
+            
+            // Inside Swing thread to avoid flickering
+            terminalCommand.append("\n");
+            if (!"".equals(command[0].trim())) {
+                terminalCommand.setCaretPosition(terminalCommand.getDocument().getLength());
+                terminalCommand.action(
+                    command[0],
+                    terminalCommand.getUuidShell(),
+                    terminalCommand.getUrlShell(),
+                    terminalCommand.loginPassword
+                );
+            } else {
+                terminalCommand.reset();
+            }
+        }).start();
     }
 }

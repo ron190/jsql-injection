@@ -288,8 +288,10 @@ public class PanelConsoles extends JPanel {
         scrollerNetwork.scrollPane.setViewportBorder(BorderFactory.createEmptyBorder(0, 0, -1, -1));
         
         AdjustmentListener singleItemScroll = adjustmentEvent -> {
+            
             // The user scrolled the List (using the bar, mouse wheel or something else):
             if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK){
+                
                 // Jump to the next "block" (which is a row".
                 adjustmentEvent.getAdjustable().setBlockIncrement(100);
                 adjustmentEvent.getAdjustable().setUnitIncrement(100);
@@ -324,20 +326,10 @@ public class PanelConsoles extends JPanel {
                 label
             );
             I18nView.addComponentForKey(entry.getKey(), label);
+            
+            DefaultCaret caret = (DefaultCaret) entry.getValue().getCaret();
+            caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
         });
-        
-        DefaultCaret caret = (DefaultCaret) PanelConsoles.NETWORK_TAB_RESPONSE.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) PanelConsoles.NETWORK_TAB_SOURCE.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) PanelConsoles.NETWORK_TAB_PREVIEW.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) PanelConsoles.NETWORK_TAB_HEADER.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) PanelConsoles.NETWORK_TAB_PARAM.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-        caret = (DefaultCaret) PanelConsoles.NETWORK_TAB_URL.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
         
         PanelConsoles.NETWORK_TAB_HEADER.setLineWrap(true);
         PanelConsoles.NETWORK_TAB_PARAM.setLineWrap(true);
@@ -664,5 +656,4 @@ public class PanelConsoles extends JPanel {
     public JTable getNetworkTable() {
         return this.networkTable;
     }
-    
 }

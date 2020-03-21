@@ -21,7 +21,7 @@ import com.jsql.model.MediatorModel;
 @SuppressWarnings("serial")
 public class ShellSql extends AbstractShell {
     
-   /**
+    /**
      * Build a SQL shell instance.
      * @param terminalID Unique identifier to discriminate beyond multiple opened terminals
      * @param urlShell URL of current shell
@@ -37,5 +37,4 @@ public class ShellSql extends AbstractShell {
     void action(String cmd, UUID terminalID, String wbhPath, String... arg) {
         MediatorModel.model().getResourceAccess().runSqlShell(cmd, terminalID, wbhPath, arg[0], arg[1]);
     }
-    
 }

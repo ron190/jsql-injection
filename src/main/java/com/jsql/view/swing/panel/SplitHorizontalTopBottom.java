@@ -107,11 +107,12 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
         PANEL_HIDDEN_CONSOLES.setOpaque(false);
         PANEL_HIDDEN_CONSOLES.setPreferredSize(new Dimension(17, 22));
         PANEL_HIDDEN_CONSOLES.setMaximumSize(new Dimension(17, 22));
+        
         JButton buttonShowConsoles = new BasicArrowButton(SwingConstants.NORTH);
         buttonShowConsoles.setBorderPainted(false);
         buttonShowConsoles.setOpaque(false);
-
         buttonShowConsoles.addActionListener(SplitHorizontalTopBottom.ACTION_HIDE_SHOW_CONSOLE);
+        
         PANEL_HIDDEN_CONSOLES.add(Box.createHorizontalGlue());
         PANEL_HIDDEN_CONSOLES.add(buttonShowConsoles, BorderLayout.LINE_END);
         PANEL_HIDDEN_CONSOLES.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER));
@@ -156,5 +157,4 @@ public class SplitHorizontalTopBottom extends JSplitPaneWithZeroSizeDivider {
     public JLabel getLabelPlaceholderResult() {
         return this.labelPlaceholderResult;
     }
-    
 }

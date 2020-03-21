@@ -74,5 +74,4 @@ public class RadioMethodMouseAdapter extends MouseAdapter {
         radio.setFont(this.original);
         radio.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
-    
 }

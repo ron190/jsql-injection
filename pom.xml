@@ -126,6 +126,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M4</version>
                 <configuration>
+                    <argLine>-Dnashorn.args=--no-deprecation-warning</argLine>
                     <rerunFailingTestsCount>3</rerunFailingTestsCount>
                     <includes>
                         <include>**/*Spock</include>

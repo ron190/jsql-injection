@@ -39,6 +39,17 @@ public abstract class AbstractRadioLink extends JLabel {
     }
 
     /**
+     * An action run when radio is checked by user.
+     */
+    abstract void action();
+    
+    /**
+     * Group of radio components, either the radio for HTTP method or the one for injection strategy.
+     * @return
+     */
+    abstract List<JLabel> getGroup();
+
+    /**
      * Radio is selectable/hoverable if it is not already selected (bold).
      * @return True if radio is not already selected
      */
@@ -50,10 +61,13 @@ public abstract class AbstractRadioLink extends JLabel {
      * Change font of radio label to underline.
      */
     public final void setUnderlined() {
+        
         Font font = this.getFont();
+        
         Map<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
         attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);
         attributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_BOLD);
+        
         this.setFont(font.deriveFont(attributes));
     }
 
@@ -61,24 +75,16 @@ public abstract class AbstractRadioLink extends JLabel {
      * Change font of radio label to default.
      */
     public void removeFont() {
+        
         Font font = this.getFont();
         Map<TextAttribute, Object> attributes = new HashMap<>(font.getAttributes());
         attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_DOTTED);
+        
         this.setFont(font.deriveFont(attributes));
     }
-
-    /**
-     * An action run when radio is checked by user.
-     */
-    abstract void action();
-    
-    /**
-     * Group of radio components, either the radio for HTTP method or the one for injection strategy.
-     * @return
-     */
-    abstract List<JLabel> getGroup();
     
     public void setSelected() {
+        
         for (JLabel label: this.getGroup()) {
             if (this != label) {
                 label.setFont(HelperUi.FONT_SEGOE);
@@ -91,5 +97,4 @@ public abstract class AbstractRadioLink extends JLabel {
 
         this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     }
-    
 }

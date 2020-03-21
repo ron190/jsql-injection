@@ -35,6 +35,7 @@ public class JPopupMenuText extends JPopupMenuComponent {
         super(component);
 
         if (component.isEditable()) {
+            
             JMenuItem cutItem = new JMenuItem();
             cutItem.setIcon(HelperUi.ICON_EMPTY);
             cutItem.setAction(component.getActionMap().get(DefaultEditorKit.cutAction));
@@ -51,9 +52,9 @@ public class JPopupMenuText extends JPopupMenuComponent {
 
             // Before Copy menu
             this.add(cutItem, 0);
+            
             // After Copy menu
             this.add(pasteItem, 2);
         }
     }
-    
 }

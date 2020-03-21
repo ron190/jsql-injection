@@ -126,9 +126,10 @@ public class PreferencesUtil {
     public void set(
         boolean isCheckingUpdate,
         boolean isReportingBugs,
+        boolean is4K,
+        
         boolean isFollowingRedirection,
         boolean isNotInjectingMetadata,
-        
         boolean isCheckingAllParam,
         boolean isCheckingAllURLParam,
         boolean isCheckingAllRequestParam,
@@ -136,7 +137,6 @@ public class PreferencesUtil {
         boolean isCheckingAllJSONParam,
         boolean isCheckingAllCookieParam,
         boolean isCheckingAllSOAPParam,
-        
         boolean isParsingForm,
         boolean isNotTestingConnection,
         boolean isProcessingCookies,
@@ -150,16 +150,15 @@ public class PreferencesUtil {
         boolean isTamperingEval,
         boolean isTamperingSpaceToDashComment,
         boolean isTamperingSpaceToMultlineComment,
-        boolean isTamperingSpaceToSharpComment,
-        
-        boolean is4K
+        boolean isTamperingSpaceToSharpComment
     ) {
         
         this.setIsCheckingUpdate(isCheckingUpdate);
         this.setIsReportingBugs(isReportingBugs);
+        this.setIs4K(is4K);
+        
         this.setIsFollowingRedirection(isFollowingRedirection);
         this.setIsNotInjectingMetadata(isNotInjectingMetadata);
-        
         this.setIsCheckingAllParam(isCheckingAllParam);
         this.setIsCheckingAllURLParam(isCheckingAllURLParam);
         this.setIsCheckingAllRequestParam(isCheckingAllRequestParam);
@@ -167,10 +166,8 @@ public class PreferencesUtil {
         this.setIsCheckingAllJSONParam(isCheckingAllJSONParam);
         this.setIsCheckingAllCookieParam(isCheckingAllCookieParam);
         this.setIsCheckingAllSoapParam(isCheckingAllSOAPParam);
-        
         this.setIsParsingForm(isParsingForm);
         this.setIsNotTestingConnection(isNotTestingConnection);
-        
         this.setIsProcessingCookies(isProcessingCookies);
         this.setIsProcessingCsrf(isProcessingCsrf);
         
@@ -183,16 +180,15 @@ public class PreferencesUtil {
         this.setIsTamperingSpaceToDashComment(isTamperingSpaceToDashComment);
         this.setIsTamperingSpaceToMultlineComment(isTamperingSpaceToMultlineComment);
         this.setIsTamperingSpaceToSharpComment(isTamperingSpaceToSharpComment);
-        
-        this.setIs4K(is4K);
 
         Preferences preferences = Preferences.userRoot().node(InjectionModel.class.getName());
 
         preferences.putBoolean("isCheckingUpdate", this.isCheckingUpdate());
         preferences.putBoolean("isReportingBugs", this.isReportingBugs());
+        preferences.putBoolean("is4K", this.is4K());
+        
         preferences.putBoolean("isFollowingRedirection", this.isFollowingRedirection());
         preferences.putBoolean("isNotInjectingMetadata", this.isNotInjectingMetadata());
-        
         preferences.putBoolean("isCheckingAllParam", this.isCheckingAllParam());
         preferences.putBoolean("isCheckingAllURLParam", this.isCheckingAllURLParam());
         preferences.putBoolean("isCheckingAllRequestParam", this.isCheckingAllRequestParam());
@@ -200,10 +196,8 @@ public class PreferencesUtil {
         preferences.putBoolean("isCheckingAllJSONParam", this.isCheckingAllJSONParam());
         preferences.putBoolean("isCheckingAllCookieParam", this.isCheckingAllCookieParam());
         preferences.putBoolean("isCheckingAllSOAPParam", this.isCheckingAllSOAPParam());
-        
         preferences.putBoolean("isParsingForm", this.isParsingForm());
         preferences.putBoolean("isNotTestingConnection", this.isNotTestingConnection());
-        
         preferences.putBoolean("isProcessingCookies", this.isProcessingCookies());
         preferences.putBoolean("isProcessingCsrf", this.isProcessingCsrf());
         
@@ -216,8 +210,6 @@ public class PreferencesUtil {
         preferences.putBoolean("isTamperingSpaceToDashComment", this.isTamperingSpaceToDashComment());
         preferences.putBoolean("isTamperingSpaceToMultlineComment", this.isTamperingSpaceToMultlineComment());
         preferences.putBoolean("isTamperingSpaceToSharpComment", this.isTamperingSpaceToSharpComment());
-        
-        preferences.putBoolean("is4K", this.is4K());
         
         HttpURLConnection.setFollowRedirects(this.isFollowingRedirection());
     }

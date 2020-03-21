@@ -87,7 +87,6 @@ public class JPopupMenuComponent extends JPopupMenu {
                 public void actionPerformed(ActionEvent e) {
                     ((JTextComponent) JPopupMenuComponent.this.component).setText(null);
                 }
-                
             });
             
             clearItem.setText(I18n.valueByKey("CONTEXT_MENU_CLEAR"));
@@ -131,7 +130,5 @@ public class JPopupMenuComponent extends JPopupMenu {
         public void popupMenuCanceled(PopupMenuEvent e) {
             // Do nothing
         }
-        
     }
-    
 }
