@@ -31,9 +31,9 @@ public class ResetStrategyLabel implements InteractionCommand {
             LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
         }
         
-        for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
-            MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).setEnabled(false);
-            MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).setSelected(false);
+        for (int i = 0 ; i < MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().getItemCount() ; i++) {
+            MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().getItem(i).setEnabled(false);
+            MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().getItem(i).setSelected(false);
         }
     }
     

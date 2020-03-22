@@ -35,6 +35,7 @@ import com.jsql.view.swing.MediatorGui;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.tree.CellEditorNode;
 import com.jsql.view.swing.tree.CellRendererNode;
+import com.jsql.view.swing.tree.TreeDatabase;
 import com.jsql.view.swing.tree.model.AbstractNodeModel;
 import com.jsql.view.swing.tree.model.NodeModelEmpty;
 
@@ -44,12 +45,13 @@ import com.jsql.view.swing.tree.model.NodeModelEmpty;
 @SuppressWarnings("serial")
 public class ManagerDatabase extends JPanel implements Manager {
 
-    private JTree tree;
+    private TreeDatabase tree;
 
     /**
      * Create a panel to encode a string.
      */
     public ManagerDatabase() {
+        
         super(new BorderLayout());
 
         // First node in tree
@@ -57,7 +59,7 @@ public class ManagerDatabase extends JPanel implements Manager {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(nodeModelEmpty);
         I18nView.addComponentForKey("DATABASE_EMPTY", nodeModelEmpty);
         
-        this.tree = new JTree(root);
+        this.tree = new TreeDatabase(root);
         MediatorGui.register(this.tree);
 
         // Graphic manager for components

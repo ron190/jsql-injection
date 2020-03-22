@@ -34,8 +34,8 @@ public class SetVendor implements InteractionCommand {
             LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
         }
         
-        MediatorGui.panelAddressBar().getMenuVendor().setText(this.vendor.toString());
-        MediatorGui.panelAddressBar().initErrorMethods(this.vendor);
+        MediatorGui.panelAddressBar().getAddressMenuBar().getMenuVendor().setText(this.vendor.toString());
+        MediatorGui.panelAddressBar().getAddressMenuBar().initErrorMethods(this.vendor);
     }
     
 }

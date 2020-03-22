@@ -57,5 +57,4 @@ public class Request {
     public void setParameters(Object... parameters) {
         this.parameters = parameters;
     }
-    
 }

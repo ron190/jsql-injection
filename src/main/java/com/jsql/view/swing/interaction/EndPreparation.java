@@ -33,9 +33,9 @@ public class EndPreparation implements InteractionCommand {
             LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
         }
         
-        MediatorGui.panelAddressBar().getButtonInUrl().setToolTipText(I18n.valueByKey("BUTTON_START_TOOLTIP"));
-        MediatorGui.panelAddressBar().getButtonInUrl().setInjectionReady();
-        MediatorGui.panelAddressBar().getLoader().setVisible(false);
+        MediatorGui.panelAddressBar().getAddressMenuBar().getButtonInUrl().setToolTipText(I18n.valueByKey("BUTTON_START_TOOLTIP"));
+        MediatorGui.panelAddressBar().getAddressMenuBar().getButtonInUrl().setInjectionReady();
+        MediatorGui.panelAddressBar().getAddressMenuBar().getLoader().setVisible(false);
 
         if (MediatorModel.model().isInjectionAlreadyBuilt()) {
             MediatorGui.managerFile().setButtonEnable(true);

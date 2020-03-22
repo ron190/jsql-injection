@@ -32,9 +32,9 @@ public class MarkBlindVulnerable implements InteractionCommand {
             LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
         }
         
-        for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
-            if (MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).getText().equals(MediatorModel.model().getMediatorStrategy().getBlind().toString())) {
-                MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).setEnabled(true);
+        for (int i = 0 ; i < MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().getItemCount() ; i++) {
+            if (MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().getItem(i).getText().equals(MediatorModel.model().getMediatorStrategy().getBlind().toString())) {
+                MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().getItem(i).setEnabled(true);
                 break;
             }
         }

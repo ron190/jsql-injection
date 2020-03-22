@@ -16,6 +16,7 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
 
     @Override
     public void paintIcon( Component c, Graphics g, int x, int y ) {
+        
         AbstractButton b = (AbstractButton) c;
         ButtonModel model = b.getModel();
 
@@ -58,23 +59,28 @@ public class CheckBoxMenuItemIconCustom implements Icon, UIResource, Serializabl
         }
 
         if (isSelected) {
-            if (isEnabled) {
-                if ( model.isArmed() || ( c instanceof JMenu && model.isSelected() ) ) {
-                    g.setColor( MetalLookAndFeel.getMenuSelectedForeground() );
-                } else {
-                    g.setColor( b.getForeground() );
-                }
-            } else {
-                g.setColor( MetalLookAndFeel.getMenuDisabledForeground()  );
-            }
-
-            g.drawLine( 2, 2, 2, 6 );
-            g.drawLine( 3, 2, 3, 6 );
-            g.drawLine( 4, 4, 8, 0 );
-            g.drawLine( 4, 5, 9, 0 );
+            this.drawSelected(c, g, b, model, isEnabled);
         }
 
         g.translate( -x, -y );
+    }
+
+    private void drawSelected(Component c, Graphics g, AbstractButton b, ButtonModel model, boolean isEnabled) {
+        
+        if (isEnabled) {
+            if ( model.isArmed() || ( c instanceof JMenu && model.isSelected() ) ) {
+                g.setColor( MetalLookAndFeel.getMenuSelectedForeground() );
+            } else {
+                g.setColor( b.getForeground() );
+            }
+        } else {
+            g.setColor( MetalLookAndFeel.getMenuDisabledForeground()  );
+        }
+
+        g.drawLine( 2, 2, 2, 6 );
+        g.drawLine( 3, 2, 3, 6 );
+        g.drawLine( 4, 4, 8, 0 );
+        g.drawLine( 4, 5, 9, 0 );
     }
 
     @Override

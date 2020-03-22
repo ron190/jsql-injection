@@ -34,9 +34,9 @@ public class MarkErrorStrategy implements InteractionCommand {
             LOGGER.error("Unexpected unregistered MediatorGui.panelAddressBar() in "+ this.getClass());
         }
         
-        MediatorGui.panelAddressBar().getMenuStrategy().setText(MediatorModel.model().getMediatorStrategy().getError().toString());
+        MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().setText(MediatorModel.model().getMediatorStrategy().getError().toString());
         
-        JMenu menuError = (JMenu) MediatorGui.panelAddressBar().getMenuStrategy().getMenuComponent(2);
+        JMenu menuError = (JMenu) MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().getMenuComponent(2);
         int indexError = MediatorModel.model().getMediatorStrategy().getError().getIndexMethodError();
         String nameError = MediatorModel.model().getMediatorVendor().getVendor().instance().getModelYaml().getStrategy().getError().getMethod().get(indexError).getName();
         
@@ -45,7 +45,7 @@ public class MarkErrorStrategy implements InteractionCommand {
             try {
                 if (menuError.getItem(i).getText().equals(nameError)) {
                     menuError.getItem(i).setSelected(true);
-                    MediatorGui.panelAddressBar().getMenuStrategy().setText(nameError);
+                    MediatorGui.panelAddressBar().getAddressMenuBar().getMenuStrategy().setText(nameError);
                     break;
                 }
             } catch (ArrayIndexOutOfBoundsException e) {

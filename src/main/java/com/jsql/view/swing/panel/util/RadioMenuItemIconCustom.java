@@ -53,24 +53,29 @@ public class RadioMenuItemIconCustom implements Icon, UIResource, Serializable {
         g.drawLine( 7, 7, 7, 7 );
 
         if (isSelected) {
-            if (isEnabled) {
-                if (isArmed || (c instanceof JMenu && model.isSelected())) {
-                    g.setColor(MetalLookAndFeel.
-                            getMenuSelectedForeground() );
-                } else {
-                    g.setColor(MetalLookAndFeel.getControlInfo());
-                }
-            } else {
-                g.setColor(MetalLookAndFeel.getMenuDisabledForeground());
-            }
-            g.drawLine( 3, 2, 5, 2 );
-            g.drawLine( 2, 3, 6, 3 );
-            g.drawLine( 2, 4, 6, 4 );
-            g.drawLine( 2, 5, 6, 5 );
-            g.drawLine( 3, 6, 5, 6 );
+            this.drawSelected(c, g, model, isEnabled, isArmed);
         }
 
         g.translate( -x, -y );
+    }
+
+    private void drawSelected(Component c, Graphics g, ButtonModel model, boolean isEnabled, boolean isArmed) {
+        
+        if (isEnabled) {
+            if (isArmed || (c instanceof JMenu && model.isSelected())) {
+                g.setColor(MetalLookAndFeel.
+                        getMenuSelectedForeground() );
+            } else {
+                g.setColor(MetalLookAndFeel.getControlInfo());
+            }
+        } else {
+            g.setColor(MetalLookAndFeel.getMenuDisabledForeground());
+        }
+        g.drawLine( 3, 2, 5, 2 );
+        g.drawLine( 2, 3, 6, 3 );
+        g.drawLine( 2, 4, 6, 4 );
+        g.drawLine( 2, 5, 6, 5 );
+        g.drawLine( 3, 6, 5, 6 );
     }
 
     @Override

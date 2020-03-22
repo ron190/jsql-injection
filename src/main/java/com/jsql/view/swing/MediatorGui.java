@@ -1,7 +1,5 @@
 package com.jsql.view.swing;
 
-import javax.swing.JTree;
-
 import com.jsql.view.swing.manager.ManagerAdminPage;
 import com.jsql.view.swing.manager.ManagerBruteForce;
 import com.jsql.view.swing.manager.ManagerDatabase;
@@ -16,13 +14,14 @@ import com.jsql.view.swing.panel.PanelConsoles;
 import com.jsql.view.swing.tab.TabConsoles;
 import com.jsql.view.swing.tab.TabManagers;
 import com.jsql.view.swing.tab.TabResults;
+import com.jsql.view.swing.tree.TreeDatabase;
 
 /**
  * Mediator for loosely coupled components.
  */
 public final class MediatorGui {
     
-    private static JTree treeDatabase;
+    private static TreeDatabase treeDatabase;
     private static TabResults tabResults;
     private static TabManagers tabManagers;
     
@@ -48,7 +47,7 @@ public final class MediatorGui {
         //not called
     }
     
-    public static JTree treeDatabase() {
+    public static TreeDatabase treeDatabase() {
         return treeDatabase;
     }
     
@@ -134,7 +133,7 @@ public final class MediatorGui {
         MediatorGui.panelConsoles = panelConsoles;
     }
     
-    public static void register(JTree treeDatabase) {
+    public static void register(TreeDatabase treeDatabase) {
         MediatorGui.treeDatabase = treeDatabase;
     }
     

@@ -103,16 +103,7 @@ public class KeyAdapterTerminal extends KeyAdapter {
                 
                 this.moveCaretHome(keyEvent, lineNumber);
     
-            } else if (
-                // Cancel the select all shortcut Ctrl+A
-                keyEvent.getKeyCode() == KeyEvent.VK_A && (keyEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ||
-                // Cancel the *beep* sound if deleting while at the end of line
-                keyEvent.getKeyCode() == KeyEvent.VK_DELETE && caretPosition == this.terminal.getDocument().getLength() ||
-                (keyEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 && (keyEvent.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0 ||
-                keyEvent.getKeyCode() == KeyEvent.VK_PAGE_UP ||
-                keyEvent.getKeyCode() == KeyEvent.VK_PAGE_DOWN ||
-                keyEvent.getKeyCode() == KeyEvent.VK_TAB
-            ) {
+            } else if (this.isKeyNotAllowed(keyEvent, caretPosition)) {
                 
                 keyEvent.consume();
     
@@ -123,6 +114,19 @@ public class KeyAdapterTerminal extends KeyAdapter {
         } catch (BadLocationException e) {
             LOGGER.error(e.getMessage(), e);
         }
+    }
+
+    private boolean isKeyNotAllowed(KeyEvent keyEvent, final int caretPosition) {
+        
+        return
+            // Cancel the select all shortcut Ctrl+A
+            keyEvent.getKeyCode() == KeyEvent.VK_A && (keyEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 ||
+            // Cancel the *beep* sound if deleting while at the end of line
+            keyEvent.getKeyCode() == KeyEvent.VK_DELETE && caretPosition == this.terminal.getDocument().getLength() ||
+            (keyEvent.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0 && (keyEvent.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0 ||
+            keyEvent.getKeyCode() == KeyEvent.VK_PAGE_UP ||
+            keyEvent.getKeyCode() == KeyEvent.VK_PAGE_DOWN ||
+            keyEvent.getKeyCode() == KeyEvent.VK_TAB;
     }
 
     private void cancelCommand(KeyEvent keyEvent) {

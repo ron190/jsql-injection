@@ -182,16 +182,16 @@ public class ManagerScan extends AbstractManagerList {
             
             String requestType = beanInjection.getRequestType();
             if (requestType != null && !requestType.isEmpty()) {
-                MediatorGui.panelAddressBar().getRadioRequest().setText(requestType);
+                MediatorGui.panelAddressBar().getRadioMethod().setText(requestType);
             } else {
-                MediatorGui.panelAddressBar().getRadioRequest().setText("POST");
+                MediatorGui.panelAddressBar().getRadioMethod().setText("POST");
             }
             
             MethodInjection injectionType = beanInjection.getInjectionTypeAsEnum();
             if (injectionType == MediatorModel.model().getMediatorMethodInjection().getHeader()) {
                 MediatorGui.panelAddressBar().getRadioHeader().setSelected();
             } else if (injectionType == MediatorModel.model().getMediatorMethodInjection().getRequest()) {
-                MediatorGui.panelAddressBar().getRadioRequest().setSelected();
+                MediatorGui.panelAddressBar().getRadioMethod().setSelected();
             } else {
                 MediatorGui.panelAddressBar().getRadioQueryString().setSelected();
             }

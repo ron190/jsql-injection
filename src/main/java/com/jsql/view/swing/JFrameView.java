@@ -11,7 +11,6 @@
 package com.jsql.view.swing;
 
 import java.awt.Component;
-import java.awt.ComponentOrientation;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
@@ -25,15 +24,12 @@ import java.util.stream.Stream;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 
 import com.jsql.i18n.I18n;
 import com.jsql.model.InjectionModel;
-import com.jsql.model.MediatorModel;
 import com.jsql.model.bean.database.AbstractElementDatabase;
 import com.jsql.view.interaction.ObserverInteraction;
 import com.jsql.view.swing.action.ActionHandler;
@@ -178,38 +174,13 @@ public class JFrameView extends JFrame {
      */
     public void resetInterface() {
         
-        if (MediatorModel.model().getMediatorVendor().getVendorByUser() == MediatorModel.model().getMediatorVendor().getAuto()) {
-            MediatorGui.panelAddressBar().getMenuVendor().setText(MediatorModel.model().getMediatorVendor().getAuto().toString());
-        }
-        
-        MediatorGui.panelAddressBar().getMenuStrategy().setText("Strategy auto");
-        
-        for (int i = 0 ; i < MediatorGui.panelAddressBar().getMenuStrategy().getItemCount() ; i++) {
-            MediatorGui.panelAddressBar().getMenuStrategy().getItem(i).setEnabled(false);
-        }
-        
-        // TODO remove Error strategy magic number 2
-        ((JMenu) MediatorGui.panelAddressBar().getMenuStrategy().getItem(2)).removeAll();
-        MediatorGui.panelAddressBar().getGroupStrategy().clearSelection();
+        MediatorGui.panelAddressBar().getAddressMenuBar().reset();
         
         this.mapNodes.clear();
         this.mapShells.clear();
         
         MediatorGui.panelConsoles().reset();
-        
-        // Tree model for refreshing the tree
-        DefaultTreeModel treeModel = (DefaultTreeModel) MediatorGui.treeDatabase().getModel();
-        // The tree root
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) treeModel.getRoot();
-
-        // Remove tree nodes
-        root.removeAllChildren();
-        // Refresh the root
-        treeModel.nodeChanged(root);
-        // Refresh the tree
-        treeModel.reload();
-        
-        MediatorGui.treeDatabase().setRootVisible(true);
+        MediatorGui.treeDatabase().reset();
         
         for (int i = 0 ; i < MediatorGui.tabConsoles().getTabCount() ; i++) {
             Component tabComponent = MediatorGui.tabConsoles().getTabComponentAt(i);

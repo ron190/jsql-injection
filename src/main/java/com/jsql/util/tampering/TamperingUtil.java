@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 
+@SuppressWarnings("removal")
 public class TamperingUtil {
     
     /**
@@ -32,6 +33,7 @@ public class TamperingUtil {
     
     private String customTamper = null;
     
+    @SuppressWarnings({ "deprecation" })
     private static final NashornScriptEngineFactory NASHORN_FACTORY = new NashornScriptEngineFactory();
 
     public void set(
@@ -70,6 +72,7 @@ public class TamperingUtil {
                 throw new ScriptException("Tampering context is empty");
             }
             
+            @SuppressWarnings("deprecation")
             ScriptEngine nashornEngine = NASHORN_FACTORY.getScriptEngine();
             nashornEngine.eval(jsTampering);
             
