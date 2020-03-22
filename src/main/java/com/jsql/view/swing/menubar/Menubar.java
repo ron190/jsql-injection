@@ -906,6 +906,7 @@ public class Menubar extends JMenuBar {
         
         Stream
         .of(
+            this.itemEnglish,
             this.itemChinese,
             this.itemRussian,
             this.itemFrench,
@@ -929,6 +930,7 @@ public class Menubar extends JMenuBar {
             this.itemIntoTurkish,
             this.itemIntoCzech,
             this.itemIntoGerman,
+            this.itemIntoRomanian,
             this.itemIntoDutch,
             this.itemIntoIndonesian,
             this.itemIntoItalian,
@@ -938,8 +940,7 @@ public class Menubar extends JMenuBar {
             this.itemIntoKorean,
             this.itemIntoJapanese,
             this.itemIntoTamil,
-            this.itemIntoSwedish,
-            this.itemIntoOther
+            this.itemIntoSwedish
         )
         .forEach(menuItem -> menuItem.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT));
         
@@ -991,5 +992,4 @@ public class Menubar extends JMenuBar {
     public JMenu getMenuView() {
         return this.menuView;
     }
-    
 }

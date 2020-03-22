@@ -1,4 +1,4 @@
-package com.jsql.view.swing.panel.util;
+package com.jsql.view.swing.tree;
 
 import java.awt.Component;
 import java.awt.Graphics;

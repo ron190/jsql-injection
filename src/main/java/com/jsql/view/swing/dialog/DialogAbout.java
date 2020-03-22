@@ -165,7 +165,7 @@ public class DialogAbout extends JDialog {
                 }
             }
 
-            text[0].setText(result.toString().replace("%JSQLVERSION%", ""));
+            text[0].setText(result.toString().replace("%JSQLVERSION%", MediatorModel.model().getVersionJsql()));
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }

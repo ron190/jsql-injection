@@ -13,6 +13,7 @@ import com.jsql.model.InjectionModel;
 import com.jsql.model.exception.JSqlException;
 import com.jsql.view.terminal.SystemOutTerminal;
 
+//TODO Time not working
 @Ignore
 @TestInstance(Lifecycle.PER_CLASS)
 @Execution(ExecutionMode.CONCURRENT)
@@ -55,5 +56,4 @@ public class SQLServerTimeGetTestSuite extends ConcreteSQLServerTestSuite {
     public void listColumns() throws JSqlException {
         LOGGER.info("Ignore: too slow");
     }
-
 }

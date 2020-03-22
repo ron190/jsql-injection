@@ -17,7 +17,6 @@ import com.jsql.model.MediatorModel;
 import com.jsql.util.tampering.TamperingType;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.panel.PanelPreferences;
-import com.jsql.view.swing.panel.util.TamperingMouseAdapter;
 import com.jsql.view.swing.scrollpane.LightScrollPane;
 import com.jsql.view.swing.sql.lexer.HighlightedDocument;
 import com.jsql.view.swing.text.JPopupTextPane;

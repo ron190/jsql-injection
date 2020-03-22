@@ -275,10 +275,9 @@ public abstract class AbstractNodeModel {
         this.initializeIcon(isLeaf);
         
         AbstractNodeModel nodeModel = (AbstractNodeModel) currentNode.getUserObject();
-        boolean isEdited = nodeModel.isEdited;
         
-        this.initializeEditable(isEdited);
-        this.initializeLabel(isSelected, hasFocus, isEdited);
+        this.initializeEditable(nodeModel.isEdited);
+        this.initializeLabel(isSelected, hasFocus, nodeModel.isEdited);
         this.initializeProgress(currentNode);
         
         return this.panelNode;
@@ -446,8 +445,8 @@ public abstract class AbstractNodeModel {
         return this.panelNode;
     }
 
-    public void setIsEdited(boolean b) {
-        this.isEdited = b;
+    public void setIsEdited(boolean isEdited) {
+        this.isEdited = isEdited;
     }
     
     public void setText(String textI18n) {

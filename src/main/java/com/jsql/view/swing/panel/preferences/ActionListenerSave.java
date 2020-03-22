@@ -1,4 +1,4 @@
-package com.jsql.view.swing.panel.util;
+package com.jsql.view.swing.panel.preferences;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

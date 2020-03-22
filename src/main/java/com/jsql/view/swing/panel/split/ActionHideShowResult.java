@@ -1,10 +1,9 @@
-package com.jsql.view.swing.panel.util;
+package com.jsql.view.swing.panel.split;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import com.jsql.view.swing.MediatorGui;
-import com.jsql.view.swing.panel.PanelConsoles;
 
 /**
  * MouseAdapter to show/hide bottom panel.
@@ -25,16 +24,16 @@ public class ActionHideShowResult implements ActionListener {
             && MediatorGui.frame().getSplitHorizontalTopBottom().getBottomComponent().isVisible()
         ) {
             
-            PanelConsoles.setLoc(MediatorGui.frame().getSplitHorizontalTopBottom().getDividerLocation());
+            MediatorGui.panelConsoles().setDividerLocation(MediatorGui.frame().getSplitHorizontalTopBottom().getDividerLocation());
             MediatorGui.frame().getSplitHorizontalTopBottom().getTopComponent().setVisible(false);
             MediatorGui.frame().getSplitHorizontalTopBottom().disableDragSize();
-            PanelConsoles.getButtonShowNorth().setVisible(false);
+            MediatorGui.panelConsoles().getButtonShowNorth().setVisible(false);
         } else if (
             MediatorGui.frame().getSplitHorizontalTopBottom().getTopComponent().isVisible()
             && !MediatorGui.frame().getSplitHorizontalTopBottom().getBottomComponent().isVisible()
         ) {
             
-            MediatorGui.frame().getSplitHorizontalTopBottom().setDividerLocation(PanelConsoles.getLoc());
+            MediatorGui.frame().getSplitHorizontalTopBottom().setDividerLocation(MediatorGui.panelConsoles().getDividerLocation());
             MediatorGui.frame().getSplitHorizontalTopBottom().getBottomComponent().setVisible(true);
             MediatorGui.frame().getSplitHorizontalTopBottom().getTopComponent().setVisible(true);
             MediatorGui.frame().getSplitHorizontalTopBottom().enableDragSize();

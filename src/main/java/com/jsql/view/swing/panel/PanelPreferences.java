@@ -20,12 +20,12 @@ import org.apache.commons.text.WordUtils;
 
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.action.ActionCheckIP;
+import com.jsql.view.swing.panel.preferences.ActionListenerSave;
 import com.jsql.view.swing.panel.preferences.PanelAuthenticationPreferences;
 import com.jsql.view.swing.panel.preferences.PanelGeneralPreferences;
 import com.jsql.view.swing.panel.preferences.PanelInjectionPreferences;
 import com.jsql.view.swing.panel.preferences.PanelProxyPreferences;
 import com.jsql.view.swing.panel.preferences.PanelTamperingPreferences;
-import com.jsql.view.swing.panel.util.ActionListenerSave;
 import com.jsql.view.swing.ui.FlatButtonMouseAdapter;
 
 @SuppressWarnings("serial")
@@ -75,20 +75,6 @@ public class PanelPreferences extends JPanel {
         
         BorderLayout borderLayoutPreferences = new BorderLayout();
         this.setLayout(borderLayoutPreferences);
-
-        final JButton buttonCheckIp = new JButton("Check your IP");
-        buttonCheckIp.addActionListener(new ActionCheckIP());
-        buttonCheckIp.setToolTipText(
-            "<html><b>Verify what public IP address is used by jSQL</b><br>"
-            + "Usually it's your own public IP if you don't use a proxy. If you use a proxy<br>"
-            + "like TOR then your public IP is hidden and another one is used instead.</html>"
-        );
-        buttonCheckIp.setContentAreaFilled(true);
-        buttonCheckIp.setBorder(HelperUi.BORDER_ROUND_BLU);
-        
-        FlatButtonMouseAdapter flatButtonMouseAdapter = new FlatButtonMouseAdapter(buttonCheckIp);
-        flatButtonMouseAdapter.setContentVisible(true);
-        buttonCheckIp.addMouseListener(flatButtonMouseAdapter);
         
         panelTampering.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 15));
         panelTampering.add(new JLabel("<html><b>Tampering</b> / SQL expression alteration to bypass Web Application Firewall</html>"), BorderLayout.NORTH);
@@ -106,8 +92,34 @@ public class PanelPreferences extends JPanel {
         panelAuthentication.add(new JLabel("<html><b>Authentication</b> / Basic, Digest, NTLM or Kerberos</html>"), BorderLayout.NORTH);
         panelAuthentication.add(this.panelAuthenticationPreferences, BorderLayout.CENTER);
         
+        this.initializePanelProxy();
+        
+        this.add(panelInjection, BorderLayout.CENTER);
+        
+        JList<CategoryPreference> categories = this.getCategories(borderLayoutPreferences);
+        
+        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        this.add(categories, BorderLayout.LINE_START);
+    }
+
+    private void initializePanelProxy() {
+        
         panelProxy.setLayout(new BoxLayout(panelProxy, BoxLayout.Y_AXIS));
         panelProxy.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 15));
+        
+        final JButton buttonCheckIp = new JButton("Check your IP");
+        buttonCheckIp.addActionListener(new ActionCheckIP());
+        buttonCheckIp.setToolTipText(
+            "<html><b>Verify what public IP address is used by jSQL</b><br>"
+            + "Usually it's your own public IP if you don't use a proxy. If you use a proxy<br>"
+            + "like TOR then your public IP is hidden and another one is used instead.</html>"
+        );
+        buttonCheckIp.setContentAreaFilled(true);
+        buttonCheckIp.setBorder(HelperUi.BORDER_ROUND_BLU);
+        
+        FlatButtonMouseAdapter flatButtonMouseAdapter = new FlatButtonMouseAdapter(buttonCheckIp);
+        flatButtonMouseAdapter.setContentVisible(true);
+        buttonCheckIp.addMouseListener(flatButtonMouseAdapter);
         
         JLabel labelProxy = new JLabel("<html><b>Proxy</b> / Define proxy settings (e.g. TOR)</html>");
         panelProxy.removeAll();
@@ -123,13 +135,6 @@ public class PanelPreferences extends JPanel {
         labelProxy.setAlignmentX(Component.LEFT_ALIGNMENT);
         this.panelProxyPreferences.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelCheckIp.setAlignmentX(Component.LEFT_ALIGNMENT);
-        
-        this.add(panelInjection, BorderLayout.CENTER);
-        
-        JList<CategoryPreference> categories = this.getCategories(borderLayoutPreferences);
-        
-        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        this.add(categories, BorderLayout.LINE_START);
     }
 
     private JList<CategoryPreference> getCategories(BorderLayout borderLayoutPreferences) {

@@ -39,7 +39,7 @@ import com.jsql.view.interaction.ObserverInteraction;
 import com.jsql.view.swing.action.ActionHandler;
 import com.jsql.view.swing.menubar.Menubar;
 import com.jsql.view.swing.panel.PanelAddressBar;
-import com.jsql.view.swing.panel.SplitHorizontalTopBottom;
+import com.jsql.view.swing.panel.split.SplitHorizontalTopBottom;
 import com.jsql.view.swing.shadow.ShadowPopupFactory;
 import com.jsql.view.swing.shell.AbstractShell;
 
@@ -171,8 +171,6 @@ public class JFrameView extends JFrame {
         this.add(mainPanel);
         
         menubar.switchLocale(Locale.ENGLISH, I18n.getLocaleDefault(), true);
-        
-        this.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
     }
 
     /**

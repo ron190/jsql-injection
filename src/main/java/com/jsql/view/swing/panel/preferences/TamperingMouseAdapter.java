@@ -1,4 +1,4 @@
-package com.jsql.view.swing.panel.util;
+package com.jsql.view.swing.panel.preferences;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
