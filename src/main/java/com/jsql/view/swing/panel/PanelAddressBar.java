@@ -134,16 +134,6 @@ public class PanelAddressBar extends JPanel {
         I18nView.addComponentForKey("METHOD_HEADER_TOOLTIP", j6[0]);
                 
         this.requestPanel = new RequestPanel(this);
-                
-        // Vertical positioning for components
-        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-
-        // First panel at the top, contains text components
-        JPanel panelTextFields = new JPanel();
-        GroupLayout layoutTextFields = new GroupLayout(panelTextFields);
-        panelTextFields.setLayout(layoutTextFields);
-        panelTextFields.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
-        this.add(panelTextFields);
 
         this.radioQueryString.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
         this.requestPanel.setBorder(BorderFactory.createEmptyBorder(6, 3, 0, 3));
@@ -197,7 +187,28 @@ public class PanelAddressBar extends JPanel {
         this.addressMenuBar = new AddressMenuBar(this);
         new ComponentBorder(this.addressMenuBar, 17, 0).install(this.textFieldAddress);
 
+        this.radioQueryString.setVisible(false);
+        this.textFieldRequest.setVisible(false);
+        this.requestPanel.setVisible(false);
+        this.textFieldHeader.setVisible(false);
+        this.radioHeader.setVisible(false);
+        
+        this.initializeLayout();
+    }
+
+    private void initializeLayout() {
+        
         final BasicArrowButton advancedButton = this.initializeAdvancedButton(this.requestPanel);
+        
+        // Vertical positioning for components
+        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        
+        // First panel at the top, contains text components
+        JPanel panelTextFields = new JPanel();
+        GroupLayout layoutTextFields = new GroupLayout(panelTextFields);
+        panelTextFields.setLayout(layoutTextFields);
+        panelTextFields.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 0));
+        this.add(panelTextFields);
 
         // Horizontal column rules
         layoutTextFields.setHorizontalGroup(
@@ -240,14 +251,6 @@ public class PanelAddressBar extends JPanel {
                         .addComponent(this.textFieldHeader)
                 )
         );
-
-        this.radioQueryString.setVisible(false);
-
-        this.textFieldRequest.setVisible(false);
-        this.requestPanel.setVisible(false);
-
-        this.textFieldHeader.setVisible(false);
-        this.radioHeader.setVisible(false);
     }
 
     private BasicArrowButton initializeAdvancedButton(final JPanel panelHttpProtocol) {

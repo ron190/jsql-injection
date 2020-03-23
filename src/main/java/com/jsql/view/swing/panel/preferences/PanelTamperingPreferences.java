@@ -330,7 +330,6 @@ public class PanelTamperingPreferences extends JPanel {
             this.radioIsTamperingSpaceToSharpComment
         ).forEach(button -> button.addActionListener(panelPreferences.getActionListenerSave()));
     }
-
     
     // Getter and setter
 

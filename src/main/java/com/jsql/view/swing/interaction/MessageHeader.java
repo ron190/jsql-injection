@@ -44,6 +44,7 @@ public class MessageHeader implements InteractionCommand {
      */
     @SuppressWarnings("unchecked")
     public MessageHeader(Object[] interactionParams) {
+        
         this.params = (Map<String, Object>) interactionParams[0];
         this.url = (String) this.params.get(Header.URL);
         this.post = (String) this.params.get(Header.POST);
@@ -54,11 +55,12 @@ public class MessageHeader implements InteractionCommand {
 
     @Override
     public void execute() {
+        
         if (MediatorGui.panelConsoles() == null) {
             LOGGER.error("Unexpected unregistered MediatorGui.panelConsoles() in "+ this.getClass());
         }
         
-        MediatorGui.panelConsoles().addHeader(new HttpHeader(this.url, this.post, this.header, this.response, this.source));
+        MediatorGui.panelConsoles().getNetworkTable().addHeader(new HttpHeader(this.url, this.post, this.header, this.response, this.source));
         
         JViewport viewport = ((JScrollIndicator) MediatorGui.panelConsoles().getNetwork().getLeftComponent()).scrollPane.getViewport();
         JTable table = (JTable) viewport.getView();
@@ -85,5 +87,4 @@ public class MessageHeader implements InteractionCommand {
             LOGGER.error(e.getMessage(), e);
         }
     }
-    
 }

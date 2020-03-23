@@ -155,70 +155,29 @@ public class Menubar extends JMenuBar {
      * Create a menubar on main frame.
      */
     public Menubar() {
+
+        JMenu menuFile = this.initializeMenuFile();
+        JMenu menuEdit = this.initializeMenuEdit();
+        JMenu menuCommunity = this.initializeMenuCommunity();
+        JMenu menuWindows = this.initializeMenuWindows();
+        JMenu menuHelp = this.initializeMenuHelp();
+
+        this.add(menuFile);
+        this.add(menuEdit);
+        this.add(menuCommunity);
+        this.add(menuWindows);
+        this.add(menuHelp);
+    }
+
+    private JMenu initializeMenuWindows() {
         
-        // File Menu > save tab | exit
-        JMenu menuFile = new JMenu(I18n.valueByKey("MENUBAR_FILE"));
-        I18nView.addComponentForKey("MENUBAR_FILE", menuFile);
-        menuFile.setMnemonic('F');
-
-        JMenuItem itemNewWindows = new JMenuItem(new ActionNewWindow());
-        I18nView.addComponentForKey("NEW_WINDOW_MENU", itemNewWindows);
-
-        JMenuItem itemSave = new JMenuItem(new ActionSaveTab());
-        I18nView.addComponentForKey("MENUBAR_FILE_SAVETABAS", itemSave);
-
-        JMenuItem itemExit = new JMenuItem(I18n.valueByKey("MENUBAR_FILE_EXIT"), 'x');
-        I18nView.addComponentForKey("MENUBAR_FILE_EXIT", itemExit);
-        itemExit.setIcon(HelperUi.ICON_EMPTY);
-        itemExit.addActionListener(actionEvent -> MediatorGui.frame().dispose());
-
-        ActionHandler.addShortcut(Menubar.this);
-
-        menuFile.add(itemSave);
-        menuFile.add(new JSeparator());
-        menuFile.add(itemExit);
-
-        // Edit Menu > copy | select all
-        JMenu menuEdit = new JMenu(I18n.valueByKey("MENUBAR_EDIT"));
-        I18nView.addComponentForKey("MENUBAR_EDIT", menuEdit);
-        menuEdit.setMnemonic('E');
-
-        JMenuItem itemCopy = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_COPY"), 'C');
-        I18nView.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
-        itemCopy.setIcon(HelperUi.ICON_EMPTY);
-        itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
-        itemCopy.addActionListener(actionEvent -> {
-            
-            if (MediatorGui.tabResults().getSelectedComponent() instanceof PanelTable) {
-                ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).copyTable();
-            } else if (MediatorGui.tabResults().getSelectedComponent() instanceof JScrollPane) {
-                ((JTextArea) ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView()).copy();
-            }
-        });
-
-        JMenuItem itemSelectAll = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"), 'A');
-        I18nView.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
-        itemSelectAll.setIcon(HelperUi.ICON_EMPTY);
-        itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-        itemSelectAll.addActionListener(actionEvent -> {
-            
-            if (MediatorGui.tabResults().getSelectedComponent() instanceof PanelTable) {
-                ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).selectTable();
-            // Textarea need focus to select all
-            } else if (MediatorGui.tabResults().getSelectedComponent() instanceof JScrollPane) {
-                ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView().requestFocusInWindow();
-                ((JTextArea) ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView()).selectAll();
-            }
-        });
-
-        menuEdit.add(itemCopy);
-        menuEdit.add(new JSeparator());
-        menuEdit.add(itemSelectAll);
-
         // Window Menu > Preferences
         JMenu menuWindows = new JMenu(I18n.valueByKey("MENUBAR_WINDOWS"));
         I18nView.addComponentForKey("MENUBAR_WINDOWS", menuWindows);
         menuWindows.setMnemonic('W');
+
+        JMenuItem itemNewWindows = new JMenuItem(new ActionNewWindow());
+        I18nView.addComponentForKey("NEW_WINDOW_MENU", itemNewWindows);
         
         menuWindows.add(itemNewWindows);
         JMenu menuAppearance = new JMenu("Appearance");
@@ -230,6 +189,312 @@ public class Menubar extends JMenuBar {
         menuWindows.add(menuAppearance);
         menuWindows.add(new JSeparator());
 
+        JMenu menuTranslation = this.initializeMenuTranslation();
+        
+        menuWindows.add(menuTranslation);
+        menuWindows.add(new JSeparator());
+        
+        this.menuView = new JMenu(I18n.valueByKey("MENUBAR_VIEW"));
+        I18nView.addComponentForKey("MENUBAR_VIEW", this.menuView);
+        this.menuView.setMnemonic('V');
+        
+        JMenuItem database = new JMenuItem(I18n.valueByKey("DATABASE_TAB"), HelperUi.ICON_DATABASE_SERVER);
+        I18nView.addComponentForKey("DATABASE_TAB", database);
+        this.menuView.add(database);
+        
+        JMenuItem adminPage = new JMenuItem(I18n.valueByKey("ADMINPAGE_TAB"), HelperUi.ICON_ADMIN_SERVER);
+        I18nView.addComponentForKey("ADMINPAGE_TAB", adminPage);
+        this.menuView.add(adminPage);
+        
+        JMenuItem file = new JMenuItem(I18n.valueByKey("FILE_TAB"), HelperUi.ICON_FILE_SERVER);
+        I18nView.addComponentForKey("FILE_TAB", file);
+        this.menuView.add(file);
+        
+        JMenuItem webshell = new JMenuItem(I18n.valueByKey("WEBSHELL_TAB"), HelperUi.ICON_SHELL_SERVER);
+        I18nView.addComponentForKey("WEBSHELL_TAB", webshell);
+        this.menuView.add(webshell);
+        
+        JMenuItem sqlshell = new JMenuItem(I18n.valueByKey("SQLSHELL_TAB"), HelperUi.ICON_SHELL_SERVER);
+        I18nView.addComponentForKey("SQLSHELL_TAB", sqlshell);
+        this.menuView.add(sqlshell);
+        
+        JMenuItem upload = new JMenuItem(I18n.valueByKey("UPLOAD_TAB"), HelperUi.ICON_UPLOAD);
+        I18nView.addComponentForKey("UPLOAD_TAB", upload);
+        this.menuView.add(upload);
+        
+        JMenuItem bruteforce = new JMenuItem(I18n.valueByKey("BRUTEFORCE_TAB"), HelperUi.ICON_BRUTER);
+        I18nView.addComponentForKey("BRUTEFORCE_TAB", bruteforce);
+        this.menuView.add(bruteforce);
+        
+        JMenuItem coder = new JMenuItem(I18n.valueByKey("CODER_TAB"), HelperUi.ICON_CODER);
+        I18nView.addComponentForKey("CODER_TAB", coder);
+        this.menuView.add(coder);
+        
+        JMenuItem scanList = new JMenuItem(I18n.valueByKey("SCANLIST_TAB"), HelperUi.ICON_SCANLIST);
+        I18nView.addComponentForKey("SCANLIST_TAB", scanList);
+        this.menuView.add(scanList);
+        menuWindows.add(this.menuView);
+
+        Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
+
+        JMenu menuPanel = new JMenu(I18n.valueByKey("MENUBAR_PANEL"));
+        I18nView.addComponentForKey("MENUBAR_PANEL", menuPanel);
+        this.menuView.setMnemonic('V');
+        
+        this.chunkMenu = new JCheckBoxMenuItem(
+            I18n.valueByKey("CONSOLE_CHUNK_LABEL"),
+            HelperUi.ICON_CHUNK,
+            prefs.getBoolean(HelperUi.CHUNK_VISIBLE, true)
+        );
+        I18nView.addComponentForKey("CONSOLE_CHUNK_LABEL", this.chunkMenu);
+        menuPanel.add(this.chunkMenu);
+        
+        this.binaryMenu = new JCheckBoxMenuItem(
+            I18n.valueByKey("CONSOLE_BINARY_LABEL"),
+            HelperUi.ICON_BINARY,
+            prefs.getBoolean(HelperUi.BINARY_VISIBLE, true)
+        );
+        I18nView.addComponentForKey("CONSOLE_BINARY_LABEL", this.binaryMenu);
+        menuPanel.add(this.binaryMenu);
+        
+        this.networkMenu = new JCheckBoxMenuItem(
+            I18n.valueByKey("CONSOLE_NETWORK_LABEL"),
+            HelperUi.ICON_HEADER,
+            prefs.getBoolean(HelperUi.NETWORK_VISIBLE, true)
+        );
+        I18nView.addComponentForKey("CONSOLE_NETWORK_LABEL", this.networkMenu);
+        menuPanel.add(this.networkMenu);
+        
+        this.javaDebugMenu = new JCheckBoxMenuItem(
+            I18n.valueByKey("CONSOLE_JAVA_LABEL"),
+            HelperUi.ICON_CUP,
+            prefs.getBoolean(HelperUi.JAVA_VISIBLE, false)
+        );
+        I18nView.addComponentForKey("CONSOLE_JAVA_LABEL", this.javaDebugMenu);
+
+        for (JCheckBoxMenuItem menuItem: new JCheckBoxMenuItem[]{this.chunkMenu, this.binaryMenu, this.networkMenu, this.javaDebugMenu}) {
+            menuItem.setUI(
+                new BasicCheckBoxMenuItemUI() {
+                    
+                    @Override
+                    protected void doClick(MenuSelectionManager msm) {
+                        this.menuItem.doClick(0);
+                    }
+                }
+            );
+        }
+
+        this.chunkMenu.addActionListener(actionEvent -> {
+            
+            if (this.chunkMenu.isSelected()) {
+                MediatorGui.panelConsoles().insertChunkTab();
+            } else {
+                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_CHUNK));
+            }
+        });
+        
+        this.binaryMenu.addActionListener(actionEvent -> {
+            
+            if (this.binaryMenu.isSelected()) {
+                MediatorGui.panelConsoles().insertBooleanTab();
+            } else {
+                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_BINARY));
+            }
+        });
+        
+        this.networkMenu.addActionListener(actionEvent -> {
+            
+            if (this.networkMenu.isSelected()) {
+                MediatorGui.panelConsoles().insertNetworkTab();
+            } else {
+                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_HEADER));
+            }
+        });
+        
+        this.javaDebugMenu.addActionListener(actionEvent -> {
+            
+            if (this.javaDebugMenu.isSelected()) {
+                MediatorGui.panelConsoles().insertJavaTab();
+            } else {
+                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_CUP));
+            }
+        });
+
+        menuPanel.add(this.javaDebugMenu);
+        
+        menuWindows.add(menuPanel);
+        menuWindows.add(new JSeparator());
+
+        database.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.CTRL_MASK));
+        adminPage.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.CTRL_MASK));
+        file.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, ActionEvent.CTRL_MASK));
+        webshell.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_4, ActionEvent.CTRL_MASK));
+        sqlshell.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_5, ActionEvent.CTRL_MASK));
+        upload.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_6, ActionEvent.CTRL_MASK));
+        bruteforce.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_7, ActionEvent.CTRL_MASK));
+        coder.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_8, ActionEvent.CTRL_MASK));
+        scanList.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_9, ActionEvent.CTRL_MASK));
+
+        for (int position = 0 ; position < this.menuView.getItemCount() ; position++) {
+            
+            final JMenuItem itemMenu = this.menuView.getItem(position);
+            final int positionFinal = position;
+            itemMenu.addActionListener(actionEvent -> MediatorGui.tabManagers().setSelectedIndex(positionFinal));
+        }
+
+        JMenuItem itemPreferences = this.initializeItemPreferences();
+        JMenuItem itemSqlEngine = this.initializeItemSqlEngine();
+        
+        menuWindows.add(itemSqlEngine);
+        menuWindows.add(itemPreferences);
+        
+        return menuWindows;
+    }
+
+    private JMenu initializeMenuHelp() {
+        
+        // Help Menu > about
+        JMenu menuHelp = new JMenu(I18n.valueByKey("MENUBAR_HELP"));
+        menuHelp.setMnemonic('H');
+        I18nView.addComponentForKey("MENUBAR_HELP", menuHelp);
+        
+        JMenuItem itemHelp = new JMenuItem(I18n.valueByKey("MENUBAR_HELP_ABOUT"), 'A');
+        itemHelp.setIcon(HelperUi.ICON_EMPTY);
+        I18nView.addComponentForKey("MENUBAR_HELP_ABOUT", itemHelp);
+        
+        JMenuItem itemUpdate = new JMenuItem(I18n.valueByKey("MENUBAR_HELP_UPDATE"), 'U');
+        itemUpdate.setIcon(HelperUi.ICON_EMPTY);
+        I18nView.addComponentForKey("MENUBAR_HELP_UPDATE", itemUpdate);
+
+        // Render the About dialog behind scene
+        final DialogAbout aboutDiag = new DialogAbout();
+        itemHelp.addActionListener(actionEvent -> {
+            
+            // Center the dialog
+            if (!aboutDiag.isVisible()) {
+                
+                aboutDiag.reinit();
+                // needed here for button focus
+                aboutDiag.setVisible(true);
+                aboutDiag.requestButtonFocus();
+            }
+            
+            aboutDiag.setVisible(true);
+        });
+        itemUpdate.addActionListener(new ActionCheckUpdate());
+        
+        menuHelp.add(itemUpdate);
+        menuHelp.add(new JSeparator());
+        menuHelp.add(itemHelp);
+        
+        return menuHelp;
+    }
+
+    private JMenuItem initializeItemSqlEngine() {
+        
+        JMenuItem itemSqlEngine = new JMenuItem(I18n.valueByKey("MENUBAR_SQL_ENGINE"));
+        I18nView.addComponentForKey("MENUBAR_SQL_ENGINE", itemSqlEngine);
+        
+        // Render the SQL Engine dialog behind scene
+        String titleTabSqlEngine = "SQL Engine";
+        
+        itemSqlEngine.addActionListener(actionEvent -> {
+            
+            for (int i = 0; i < MediatorGui.tabResults().getTabCount() ; i++) {
+                if (titleTabSqlEngine.equals(MediatorGui.tabResults().getTitleAt(i))) {
+                    MediatorGui.tabResults().setSelectedIndex(i);
+                    return;
+                }
+            }
+            
+            CreateTab.initializeSplitOrientation();
+
+            SqlEngine panelSqlEngine = new SqlEngine();
+            
+            MediatorGui.tabResults().addTab(titleTabSqlEngine, panelSqlEngine);
+
+            // Focus on the new tab
+            MediatorGui.tabResults().setSelectedComponent(panelSqlEngine);
+
+            // Create a custom tab header with close button
+            TabHeader header = new TabHeader(I18nView.valueByKey("MENUBAR_SQL_ENGINE"), HelperUi.ICON_COG, panelSqlEngine);
+            I18nView.addComponentForKey("MENUBAR_SQL_ENGINE", header.getTabTitleLabel());
+
+            // Apply the custom header to the tab
+            MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(panelSqlEngine), header);
+        });
+        
+        return itemSqlEngine;
+    }
+
+    private JMenuItem initializeItemPreferences() {
+        
+        JMenuItem itemPreferences = new JMenuItem(I18n.valueByKey("MENUBAR_PREFERENCES"), 'P');
+        itemPreferences.setIcon(HelperUi.ICON_EMPTY);
+        I18nView.addComponentForKey("MENUBAR_PREFERENCES", itemPreferences);
+        
+        // Render the Preferences dialog behind scene
+        String titleTabPreferences = "Preferences";
+        
+        itemPreferences.addActionListener(actionEvent -> {
+            
+            for (int i = 0; i < MediatorGui.tabResults().getTabCount() ; i++) {
+                if (titleTabPreferences.equals(MediatorGui.tabResults().getTitleAt(i))) {
+                    MediatorGui.tabResults().setSelectedIndex(i);
+                    return;
+                }
+            }
+            
+            CreateTab.initializeSplitOrientation();
+            
+            AdjustmentListener singleItemScroll = adjustmentEvent -> {
+                
+                // The user scrolled the List (using the bar, mouse wheel or something else):
+                if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK){
+                    // Jump to the next "block" (which is a row".
+                    adjustmentEvent.getAdjustable().setBlockIncrement(100);
+                    adjustmentEvent.getAdjustable().setUnitIncrement(100);
+                }
+            };
+
+            LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, new PanelPreferences());
+            scroller.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
+            
+            MediatorGui.tabResults().addTab(titleTabPreferences, scroller);
+
+            // Focus on the new tab
+            MediatorGui.tabResults().setSelectedComponent(scroller);
+
+            // Create a custom tab header with close button
+            TabHeader header = new TabHeader(I18nView.valueByKey("MENUBAR_PREFERENCES"), HelperUi.ICON_COG);
+            I18nView.addComponentForKey("MENUBAR_PREFERENCES", header.getTabTitleLabel());
+
+            // Apply the custom header to the tab
+            MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(scroller), header);
+        });
+        
+        return itemPreferences;
+    }
+
+    private JMenu initializeMenuCommunity() {
+        
+        // Help Menu > about
+        JMenu menuCommunity = new JMenu(I18n.valueByKey("MENUBAR_COMMUNITY"));
+        menuCommunity.setMnemonic('C');
+        I18nView.addComponentForKey("MENUBAR_COMMUNITY", menuCommunity);
+        
+        JMenu menuI18nContribution = this.initializeMenuI18nContribution();
+        JMenuItem itemReportIssue = this.initializeItemReportIssue();
+        
+        menuCommunity.add(menuI18nContribution);
+        menuCommunity.add(new JSeparator());
+        menuCommunity.add(itemReportIssue);
+        
+        return menuCommunity;
+    }
+
+    private JMenu initializeMenuTranslation() {
+        
         JMenu menuTranslation = new JMenu(I18n.valueByKey("MENUBAR_LANGUAGE"));
         I18nView.addComponentForKey("MENUBAR_LANGUAGE", menuTranslation);
         
@@ -362,6 +627,7 @@ public class Menubar extends JMenuBar {
         this.itemKorean.addActionListener(actionEvent -> Menubar.this.switchLocale(new Locale("ko")));
         
         ButtonGroup groupRadioLanguage = new ButtonGroup();
+        
         Stream
         .of(
             this.itemEnglish,
@@ -386,6 +652,11 @@ public class Menubar extends JMenuBar {
             groupRadioLanguage.add(menuItem);
         });
         
+        return menuTranslation;
+    }
+
+    private JMenu initializeMenuI18nContribution() {
+        
         JMenu menuI18nContribution = new JMenu(I18n.valueByKey("MENUBAR_COMMUNITY_HELPTRANSLATE"));
         I18nView.addComponentForKey("MENUBAR_COMMUNITY_HELPTRANSLATE", menuI18nContribution);
         
@@ -393,6 +664,7 @@ public class Menubar extends JMenuBar {
         final DialogTranslate dialogTranslate = new DialogTranslate();
         
         class ActionTranslate implements ActionListener {
+            
             Language language;
             
             ActionTranslate(Language language) {
@@ -494,268 +766,10 @@ public class Menubar extends JMenuBar {
             )
         );
         
-        menuWindows.add(menuTranslation);
-        menuWindows.add(new JSeparator());
-        
-        this.menuView = new JMenu(I18n.valueByKey("MENUBAR_VIEW"));
-        I18nView.addComponentForKey("MENUBAR_VIEW", this.menuView);
-        this.menuView.setMnemonic('V');
-        
-        JMenuItem database = new JMenuItem(I18n.valueByKey("DATABASE_TAB"), HelperUi.ICON_DATABASE_SERVER);
-        I18nView.addComponentForKey("DATABASE_TAB", database);
-        this.menuView.add(database);
-        
-        JMenuItem adminPage = new JMenuItem(I18n.valueByKey("ADMINPAGE_TAB"), HelperUi.ICON_ADMIN_SERVER);
-        I18nView.addComponentForKey("ADMINPAGE_TAB", adminPage);
-        this.menuView.add(adminPage);
-        
-        JMenuItem file = new JMenuItem(I18n.valueByKey("FILE_TAB"), HelperUi.ICON_FILE_SERVER);
-        I18nView.addComponentForKey("FILE_TAB", file);
-        this.menuView.add(file);
-        
-        JMenuItem webshell = new JMenuItem(I18n.valueByKey("WEBSHELL_TAB"), HelperUi.ICON_SHELL_SERVER);
-        I18nView.addComponentForKey("WEBSHELL_TAB", webshell);
-        this.menuView.add(webshell);
-        
-        JMenuItem sqlshell = new JMenuItem(I18n.valueByKey("SQLSHELL_TAB"), HelperUi.ICON_SHELL_SERVER);
-        I18nView.addComponentForKey("SQLSHELL_TAB", sqlshell);
-        this.menuView.add(sqlshell);
-        
-        JMenuItem upload = new JMenuItem(I18n.valueByKey("UPLOAD_TAB"), HelperUi.ICON_UPLOAD);
-        I18nView.addComponentForKey("UPLOAD_TAB", upload);
-        this.menuView.add(upload);
-        
-        JMenuItem bruteforce = new JMenuItem(I18n.valueByKey("BRUTEFORCE_TAB"), HelperUi.ICON_BRUTER);
-        I18nView.addComponentForKey("BRUTEFORCE_TAB", bruteforce);
-        this.menuView.add(bruteforce);
-        
-        JMenuItem coder = new JMenuItem(I18n.valueByKey("CODER_TAB"), HelperUi.ICON_CODER);
-        I18nView.addComponentForKey("CODER_TAB", coder);
-        this.menuView.add(coder);
-        
-        JMenuItem scanList = new JMenuItem(I18n.valueByKey("SCANLIST_TAB"), HelperUi.ICON_SCANLIST);
-        I18nView.addComponentForKey("SCANLIST_TAB", scanList);
-        this.menuView.add(scanList);
-        menuWindows.add(this.menuView);
+        return menuI18nContribution;
+    }
 
-        Preferences prefs = Preferences.userRoot().node(InjectionModel.class.getName());
-
-        JMenu menuPanel = new JMenu(I18n.valueByKey("MENUBAR_PANEL"));
-        I18nView.addComponentForKey("MENUBAR_PANEL", menuPanel);
-        this.menuView.setMnemonic('V');
-        
-        this.chunkMenu = new JCheckBoxMenuItem(
-            I18n.valueByKey("CONSOLE_CHUNK_LABEL"),
-            HelperUi.ICON_CHUNK,
-            prefs.getBoolean(HelperUi.CHUNK_VISIBLE, true)
-        );
-        I18nView.addComponentForKey("CONSOLE_CHUNK_LABEL", this.chunkMenu);
-        menuPanel.add(this.chunkMenu);
-        
-        this.binaryMenu = new JCheckBoxMenuItem(
-            I18n.valueByKey("CONSOLE_BINARY_LABEL"),
-            HelperUi.ICON_BINARY,
-            prefs.getBoolean(HelperUi.BINARY_VISIBLE, true)
-        );
-        I18nView.addComponentForKey("CONSOLE_BINARY_LABEL", this.binaryMenu);
-        menuPanel.add(this.binaryMenu);
-        
-        this.networkMenu = new JCheckBoxMenuItem(
-            I18n.valueByKey("CONSOLE_NETWORK_LABEL"),
-            HelperUi.ICON_HEADER,
-            prefs.getBoolean(HelperUi.NETWORK_VISIBLE, true)
-        );
-        I18nView.addComponentForKey("CONSOLE_NETWORK_LABEL", this.networkMenu);
-        menuPanel.add(this.networkMenu);
-        
-        this.javaDebugMenu = new JCheckBoxMenuItem(
-            I18n.valueByKey("CONSOLE_JAVA_LABEL"),
-            HelperUi.ICON_CUP,
-            prefs.getBoolean(HelperUi.JAVA_VISIBLE, false)
-        );
-        I18nView.addComponentForKey("CONSOLE_JAVA_LABEL", this.javaDebugMenu);
-
-        for (JCheckBoxMenuItem menuItem: new JCheckBoxMenuItem[]{this.chunkMenu, this.binaryMenu, this.networkMenu, this.javaDebugMenu}) {
-            menuItem.setUI(
-                new BasicCheckBoxMenuItemUI() {
-                    
-                    @Override
-                    protected void doClick(MenuSelectionManager msm) {
-                        this.menuItem.doClick(0);
-                    }
-                }
-            );
-        }
-
-        this.chunkMenu.addActionListener(actionEvent -> {
-            
-            if (this.chunkMenu.isSelected()) {
-                MediatorGui.panelConsoles().insertChunkTab();
-            } else {
-                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_CHUNK));
-            }
-        });
-        
-        this.binaryMenu.addActionListener(actionEvent -> {
-            
-            if (this.binaryMenu.isSelected()) {
-                MediatorGui.panelConsoles().insertBooleanTab();
-            } else {
-                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_BINARY));
-            }
-        });
-        
-        this.networkMenu.addActionListener(actionEvent -> {
-            
-            if (this.networkMenu.isSelected()) {
-                MediatorGui.panelConsoles().insertNetworkTab();
-            } else {
-                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_HEADER));
-            }
-        });
-        
-        this.javaDebugMenu.addActionListener(actionEvent -> {
-            
-            if (this.javaDebugMenu.isSelected()) {
-                MediatorGui.panelConsoles().insertJavaTab();
-            } else {
-                MediatorGui.tabConsoles().remove(MediatorGui.tabConsoles().indexOfTab(HelperUi.ICON_CUP));
-            }
-        });
-
-        menuPanel.add(this.javaDebugMenu);
-        menuWindows.add(menuPanel);
-        menuWindows.add(new JSeparator());
-
-        database.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1, ActionEvent.CTRL_MASK));
-        adminPage.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_2, ActionEvent.CTRL_MASK));
-        file.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, ActionEvent.CTRL_MASK));
-        webshell.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_4, ActionEvent.CTRL_MASK));
-        sqlshell.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_5, ActionEvent.CTRL_MASK));
-        upload.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_6, ActionEvent.CTRL_MASK));
-        bruteforce.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_7, ActionEvent.CTRL_MASK));
-        coder.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_8, ActionEvent.CTRL_MASK));
-        scanList.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_9, ActionEvent.CTRL_MASK));
-
-        for (int position = 0 ; position < this.menuView.getItemCount() ; position++) {
-            final JMenuItem itemMenu = this.menuView.getItem(position);
-            final int positionFinal = position;
-            itemMenu.addActionListener(actionEvent -> MediatorGui.tabManagers().setSelectedIndex(positionFinal));
-        }
-
-        JMenuItem preferences = new JMenuItem(I18n.valueByKey("MENUBAR_PREFERENCES"), 'P');
-        preferences.setIcon(HelperUi.ICON_EMPTY);
-        I18nView.addComponentForKey("MENUBAR_PREFERENCES", preferences);
-        
-        // Render the Preferences dialog behind scene
-        String titleTabPreferences = "Preferences";
-        preferences.addActionListener(actionEvent -> {
-            
-            for (int i = 0; i < MediatorGui.tabResults().getTabCount() ; i++) {
-                if (titleTabPreferences.equals(MediatorGui.tabResults().getTitleAt(i))) {
-                    MediatorGui.tabResults().setSelectedIndex(i);
-                    return;
-                }
-            }
-            
-            CreateTab.initializeSplitOrientation();
-            
-            AdjustmentListener singleItemScroll = adjustmentEvent -> {
-                
-                // The user scrolled the List (using the bar, mouse wheel or something else):
-                if (adjustmentEvent.getAdjustmentType() == AdjustmentEvent.TRACK){
-                    // Jump to the next "block" (which is a row".
-                    adjustmentEvent.getAdjustable().setBlockIncrement(100);
-                    adjustmentEvent.getAdjustable().setUnitIncrement(100);
-                }
-            };
-
-            LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, new PanelPreferences());
-            scroller.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
-            
-            MediatorGui.tabResults().addTab(titleTabPreferences, scroller);
-
-            // Focus on the new tab
-            MediatorGui.tabResults().setSelectedComponent(scroller);
-
-            // Create a custom tab header with close button
-            TabHeader header = new TabHeader(I18nView.valueByKey("MENUBAR_PREFERENCES"), HelperUi.ICON_COG);
-            I18nView.addComponentForKey("MENUBAR_PREFERENCES", header.getTabTitleLabel());
-
-            // Apply the custom header to the tab
-            MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(scroller), header);
-        });
-        
-        JMenuItem sqlEngine = new JMenuItem(I18n.valueByKey("MENUBAR_SQL_ENGINE"));
-        I18nView.addComponentForKey("MENUBAR_SQL_ENGINE", sqlEngine);
-        
-        // Render the SQL Engine dialog behind scene
-        String titleTabSqlEngine = "SQL Engine";
-        sqlEngine.addActionListener(actionEvent -> {
-            
-            for (int i = 0; i < MediatorGui.tabResults().getTabCount() ; i++) {
-                if (titleTabSqlEngine.equals(MediatorGui.tabResults().getTitleAt(i))) {
-                    MediatorGui.tabResults().setSelectedIndex(i);
-                    return;
-                }
-            }
-            
-            CreateTab.initializeSplitOrientation();
-
-            SqlEngine panelSqlEngine = new SqlEngine();
-            
-            MediatorGui.tabResults().addTab(titleTabSqlEngine, panelSqlEngine);
-
-            // Focus on the new tab
-            MediatorGui.tabResults().setSelectedComponent(panelSqlEngine);
-
-            // Create a custom tab header with close button
-            TabHeader header = new TabHeader(I18nView.valueByKey("MENUBAR_SQL_ENGINE"), HelperUi.ICON_COG, panelSqlEngine);
-            I18nView.addComponentForKey("MENUBAR_SQL_ENGINE", header.getTabTitleLabel());
-
-            // Apply the custom header to the tab
-            MediatorGui.tabResults().setTabComponentAt(MediatorGui.tabResults().indexOfComponent(panelSqlEngine), header);
-        });
-        
-        menuWindows.add(sqlEngine);
-        menuWindows.add(preferences);
-
-        // Help Menu > about
-        JMenu menuHelp = new JMenu(I18n.valueByKey("MENUBAR_HELP"));
-        menuHelp.setMnemonic('H');
-        I18nView.addComponentForKey("MENUBAR_HELP", menuHelp);
-        
-        JMenuItem itemHelp = new JMenuItem(I18n.valueByKey("MENUBAR_HELP_ABOUT"), 'A');
-        itemHelp.setIcon(HelperUi.ICON_EMPTY);
-        I18nView.addComponentForKey("MENUBAR_HELP_ABOUT", itemHelp);
-        
-        JMenuItem itemUpdate = new JMenuItem(I18n.valueByKey("MENUBAR_HELP_UPDATE"), 'U');
-        itemUpdate.setIcon(HelperUi.ICON_EMPTY);
-        I18nView.addComponentForKey("MENUBAR_HELP_UPDATE", itemUpdate);
-
-        // Render the About dialog behind scene
-        final DialogAbout aboutDiag = new DialogAbout();
-        itemHelp.addActionListener(actionEvent -> {
-            
-            // Center the dialog
-            if (!aboutDiag.isVisible()) {
-                aboutDiag.reinit();
-                // needed here for button focus
-                aboutDiag.setVisible(true);
-                aboutDiag.requestButtonFocus();
-            }
-            aboutDiag.setVisible(true);
-        });
-        itemUpdate.addActionListener(new ActionCheckUpdate());
-        
-        menuHelp.add(itemUpdate);
-        menuHelp.add(new JSeparator());
-        menuHelp.add(itemHelp);
-
-        // Help Menu > about
-        JMenu menuCommunity = new JMenu(I18n.valueByKey("MENUBAR_COMMUNITY"));
-        menuCommunity.setMnemonic('C');
-        I18nView.addComponentForKey("MENUBAR_COMMUNITY", menuCommunity);
+    private JMenuItem initializeItemReportIssue() {
         
         JMenuItem itemReportIssue = new JMenuItem(I18n.valueByKey("MENUBAR_COMMUNITY_REPORTISSUE"), 'R');
         itemReportIssue.setIcon(HelperUi.ICON_EMPTY);
@@ -810,16 +824,73 @@ public class Menubar extends JMenuBar {
             }
         });
         
-        menuCommunity.add(menuI18nContribution);
-        menuCommunity.add(new JSeparator());
-        menuCommunity.add(itemReportIssue);
+        return itemReportIssue;
+    }
+
+    private JMenu initializeMenuEdit() {
         
-        // Make menubar
-        this.add(menuFile);
-        this.add(menuEdit);
-        this.add(menuCommunity);
-        this.add(menuWindows);
-        this.add(menuHelp);
+        // Edit Menu > copy | select all
+        JMenu menuEdit = new JMenu(I18n.valueByKey("MENUBAR_EDIT"));
+        I18nView.addComponentForKey("MENUBAR_EDIT", menuEdit);
+        menuEdit.setMnemonic('E');
+
+        JMenuItem itemCopy = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_COPY"), 'C');
+        I18nView.addComponentForKey("CONTEXT_MENU_COPY", itemCopy);
+        itemCopy.setIcon(HelperUi.ICON_EMPTY);
+        itemCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+        itemCopy.addActionListener(actionEvent -> {
+            
+            if (MediatorGui.tabResults().getSelectedComponent() instanceof PanelTable) {
+                ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).copyTable();
+            } else if (MediatorGui.tabResults().getSelectedComponent() instanceof JScrollPane) {
+                ((JTextArea) ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView()).copy();
+            }
+        });
+
+        JMenuItem itemSelectAll = new JMenuItem(I18n.valueByKey("CONTEXT_MENU_SELECT_ALL"), 'A');
+        I18nView.addComponentForKey("CONTEXT_MENU_SELECT_ALL", itemSelectAll);
+        itemSelectAll.setIcon(HelperUi.ICON_EMPTY);
+        itemSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+        itemSelectAll.addActionListener(actionEvent -> {
+            
+            if (MediatorGui.tabResults().getSelectedComponent() instanceof PanelTable) {
+                ((PanelTable) MediatorGui.tabResults().getSelectedComponent()).selectTable();
+            // Textarea need focus to select all
+            } else if (MediatorGui.tabResults().getSelectedComponent() instanceof JScrollPane) {
+                ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView().requestFocusInWindow();
+                ((JTextArea) ((JScrollPane) MediatorGui.tabResults().getSelectedComponent()).getViewport().getView()).selectAll();
+            }
+        });
+
+        menuEdit.add(itemCopy);
+        menuEdit.add(new JSeparator());
+        menuEdit.add(itemSelectAll);
+        
+        return menuEdit;
+    }
+
+    private JMenu initializeMenuFile() {
+        
+        // File Menu > save tab | exit
+        JMenu menuFile = new JMenu(I18n.valueByKey("MENUBAR_FILE"));
+        I18nView.addComponentForKey("MENUBAR_FILE", menuFile);
+        menuFile.setMnemonic('F');
+
+        JMenuItem itemSave = new JMenuItem(new ActionSaveTab());
+        I18nView.addComponentForKey("MENUBAR_FILE_SAVETABAS", itemSave);
+
+        JMenuItem itemExit = new JMenuItem(I18n.valueByKey("MENUBAR_FILE_EXIT"), 'x');
+        I18nView.addComponentForKey("MENUBAR_FILE_EXIT", itemExit);
+        itemExit.setIcon(HelperUi.ICON_EMPTY);
+        itemExit.addActionListener(actionEvent -> MediatorGui.frame().dispose());
+
+        ActionHandler.addShortcut(Menubar.this);
+
+        menuFile.add(itemSave);
+        menuFile.add(new JSeparator());
+        menuFile.add(itemExit);
+        
+        return menuFile;
     }
     
     public void switchLocale(Locale newLocale) {
@@ -829,59 +900,73 @@ public class Menubar extends JMenuBar {
     public void switchLocale(Locale oldLocale, Locale newLocale, boolean isStartup) {
         
         I18n.setLocaleDefault(ResourceBundle.getBundle("i18n.jsql", newLocale));
+        this.switchNetworkTable(newLocale);
+        this.switchI18nComponents(newLocale);
+        this.switchOrientation(oldLocale, newLocale, isStartup);
+        this.switchMenuItems();
         
-        JTableHeader header = MediatorGui.panelConsoles().getNetworkTable().getTableHeader();
-        TableColumnModel colMod = header.getColumnModel();
-        
-        if (I18n.isAsian(newLocale)) {
-            Stream
-            .of(
-                SwingAppender.ERROR,
-                SwingAppender.WARN,
-                SwingAppender.INFO,
-                SwingAppender.DEBUG,
-                SwingAppender.TRACE,
-                SwingAppender.ALL
-            )
-            .forEach(attribute -> StyleConstants.setFontFamily(attribute, HelperUi.FONT_NAME_UBUNTU_REGULAR));
+        // I18n of tree empty node
+        if (MediatorGui.treeDatabase().isRootVisible()) {
             
-            MediatorGui.managerBruteForce().getResult().setFont(HelperUi.FONT_UBUNTU_REGULAR);
-            
-            colMod.getColumn(0).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_METHOD_COLUMN"));
-            colMod.getColumn(1).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_URL_COLUMN"));
-            colMod.getColumn(2).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
-            colMod.getColumn(3).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
-        } else {
-            Stream
-            .of(
-                SwingAppender.ERROR,
-                SwingAppender.WARN,
-                SwingAppender.INFO,
-                SwingAppender.DEBUG,
-                SwingAppender.TRACE,
-                SwingAppender.ALL
-            )
-            .forEach(attribute -> StyleConstants.setFontFamily(attribute, HelperUi.FONT_NAME_UBUNTU_MONO));
-            
-            MediatorGui.managerBruteForce().getResult().setFont(HelperUi.FONT_UBUNTU_MONO);
-            
-            colMod.getColumn(0).setHeaderValue(I18n.valueByKey("NETWORK_TAB_METHOD_COLUMN"));
-            colMod.getColumn(1).setHeaderValue(I18n.valueByKey("NETWORK_TAB_URL_COLUMN"));
-            colMod.getColumn(2).setHeaderValue(I18n.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
-            colMod.getColumn(3).setHeaderValue(I18n.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
+            DefaultTreeModel model = (DefaultTreeModel) MediatorGui.managerDatabase().getTree().getModel();
+            DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+            model.reload(root);
+            MediatorGui.managerDatabase().getTree().revalidate();
         }
-        header.repaint();
         
+        // Fix glitches on Linux
+        MediatorGui.frame().revalidate();
+    }
+
+    private void switchOrientation(Locale oldLocale, Locale newLocale, boolean isStartup) {
+        
+        ComponentOrientation componentOrientation = ComponentOrientation.getOrientation(I18n.getLocaleDefault());
+        MediatorGui.frame().applyComponentOrientation(componentOrientation);
+        
+        if (ComponentOrientation.getOrientation(oldLocale) != ComponentOrientation.getOrientation(newLocale)) {
+            
+            Component componentLeft = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getLeftComponent();
+            Component componentRight = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getRightComponent();
+            
+            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setLeftComponent(null);
+            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setRightComponent(null);
+            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setLeftComponent(componentRight);
+            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setRightComponent(componentLeft);
+            
+            if (isStartup) {
+                
+                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(
+                    MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation()
+                );
+            } else {
+                
+                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(
+                    MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getWidth() -
+                    MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation()
+                );
+            }
+        }
+        
+        MediatorGui.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));
+    }
+
+    private void switchI18nComponents(Locale newLocale) {
+        
+        // TODO stream
         for (String key: I18nView.keys()) {
             for (Object componentSwing: I18nView.componentsByKey(key)) {
+                
                 Class<?> classComponent = componentSwing.getClass();
                 try {
                     if (componentSwing instanceof JTextFieldPlaceholder) {
+                        
                         Method setPlaceholderText = classComponent.getMethod("setPlaceholderText", String.class);
                         setPlaceholderText.invoke(componentSwing, I18n.valueByKey(key));
                     } else {
+                        
                         Method methodSetText = classComponent.getMethod("setText", String.class);
                         methodSetText.setAccessible(true);
+                        
                         if (I18n.isAsian(newLocale)) {
                             methodSetText.invoke(componentSwing, I18nView.valueByKey(key));
                         } else {
@@ -896,9 +981,9 @@ public class Menubar extends JMenuBar {
                 }
             }
         }
-        
-        ComponentOrientation componentOrientation = ComponentOrientation.getOrientation(I18n.getLocaleDefault());
-        MediatorGui.frame().applyComponentOrientation(componentOrientation);
+    }
+
+    private void switchMenuItems() {
         
         Stream
         .of(this.itemArabic, this.itemIntoArabic)
@@ -943,40 +1028,52 @@ public class Menubar extends JMenuBar {
             this.itemIntoSwedish
         )
         .forEach(menuItem -> menuItem.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT));
+    }
+
+    private void switchNetworkTable(Locale newLocale) {
         
-        if (ComponentOrientation.getOrientation(oldLocale) != ComponentOrientation.getOrientation(newLocale)) {
-            Component componentLeft = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getLeftComponent();
-            Component componentRight = MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getRightComponent();
+        JTableHeader header = MediatorGui.panelConsoles().getNetworkTable().getTableHeader();
+        TableColumnModel colMod = header.getColumnModel();
+        
+        if (I18n.isAsian(newLocale)) {
+            Stream
+            .of(
+                SwingAppender.ERROR,
+                SwingAppender.WARN,
+                SwingAppender.INFO,
+                SwingAppender.DEBUG,
+                SwingAppender.TRACE,
+                SwingAppender.ALL
+            )
+            .forEach(attribute -> StyleConstants.setFontFamily(attribute, HelperUi.FONT_NAME_UBUNTU_REGULAR));
             
-            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setLeftComponent(null);
-            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setRightComponent(null);
-            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setLeftComponent(componentRight);
-            MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setRightComponent(componentLeft);
+            MediatorGui.managerBruteForce().getResult().setFont(HelperUi.FONT_UBUNTU_REGULAR);
             
-            if (isStartup) {
-                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(
-                    MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation()
-                );
-            } else {
-                MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().setDividerLocation(
-                    MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getWidth() -
-                    MediatorGui.frame().getSplitHorizontalTopBottom().getSplitVerticalLeftRight().getDividerLocation()
-                );
-            }
+            colMod.getColumn(0).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_METHOD_COLUMN"));
+            colMod.getColumn(1).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_URL_COLUMN"));
+            colMod.getColumn(2).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
+            colMod.getColumn(3).setHeaderValue(I18nView.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
+        } else {
+            Stream
+            .of(
+                SwingAppender.ERROR,
+                SwingAppender.WARN,
+                SwingAppender.INFO,
+                SwingAppender.DEBUG,
+                SwingAppender.TRACE,
+                SwingAppender.ALL
+            )
+            .forEach(attribute -> StyleConstants.setFontFamily(attribute, HelperUi.FONT_NAME_UBUNTU_MONO));
+            
+            MediatorGui.managerBruteForce().getResult().setFont(HelperUi.FONT_UBUNTU_MONO);
+            
+            colMod.getColumn(0).setHeaderValue(I18n.valueByKey("NETWORK_TAB_METHOD_COLUMN"));
+            colMod.getColumn(1).setHeaderValue(I18n.valueByKey("NETWORK_TAB_URL_COLUMN"));
+            colMod.getColumn(2).setHeaderValue(I18n.valueByKey("NETWORK_TAB_SIZE_COLUMN"));
+            colMod.getColumn(3).setHeaderValue(I18n.valueByKey("NETWORK_TAB_TYPE_COLUMN"));
         }
         
-        MediatorGui.tabResults().setComponentOrientation(ComponentOrientation.getOrientation(newLocale));
-        
-        // I18n of tree empty node
-        if (MediatorGui.treeDatabase().isRootVisible()) {
-            DefaultTreeModel model = (DefaultTreeModel) MediatorGui.managerDatabase().getTree().getModel();
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-            model.reload(root);
-            MediatorGui.managerDatabase().getTree().revalidate();
-        }
-        
-        // Fix glitches on Linux
-        MediatorGui.frame().revalidate();
+        header.repaint();
     }
     
     // Getter and setter

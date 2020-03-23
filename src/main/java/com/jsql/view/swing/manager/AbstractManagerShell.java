@@ -63,24 +63,26 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
     public AbstractManagerShell() {
         
         this.setLayout(new BorderLayout());
-
-        this.defaultText = "SHELL_RUN_BUTTON_LABEL";
         
         List<ItemList> itemsList = new ArrayList<>();
-        try {
-            InputStream in = HelperUi.class.getClassLoader().getResourceAsStream(HelperUi.PATH_WEB_FOLDERS);
+        
+        try (
+            InputStream inputStream = HelperUi.class.getClassLoader().getResourceAsStream(HelperUi.PATH_WEB_FOLDERS);
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader reader = new BufferedReader(inputStreamReader);
+        ) {
             String line;
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
                 itemsList.add(new ItemList(line));
             }
-            reader.close();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
         this.listPaths = new DnDList(itemsList);
+        
         this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
+        
         this.add(new LightScrollPane(1, 0, 0, 0, this.getListPaths()), BorderLayout.CENTER);
         
         JPanel southPanel = new JPanel();
@@ -99,6 +101,18 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
             )
         );
 
+        JPanel lastLine = this.initializeRunButtonPanel();
+
+        southPanel.add(this.textfieldUrlShell);
+        southPanel.add(lastLine);
+        
+        this.add(southPanel, BorderLayout.SOUTH);
+    }
+
+    private JPanel initializeRunButtonPanel() {
+
+        this.defaultText = "SHELL_RUN_BUTTON_LABEL";
+        
         JPanel lastLine = new JPanel();
         lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
         lastLine.setBorder(
@@ -130,10 +144,8 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
         lastLine.add(Box.createHorizontalStrut(5));
         lastLine.add(Box.createHorizontalGlue());
         lastLine.add(this.run);
-
-        southPanel.add(this.textfieldUrlShell);
-        southPanel.add(lastLine);
-        this.add(southPanel, BorderLayout.SOUTH);
+        
+        return lastLine;
     }
     
     abstract void createPayload(String pathShell, String urlShell) throws JSqlException, InterruptedException;
@@ -185,5 +197,4 @@ public abstract class AbstractManagerShell extends AbstractManagerList {
             }
         }
     }
-    
 }

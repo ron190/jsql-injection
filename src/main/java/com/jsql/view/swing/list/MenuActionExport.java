@@ -58,6 +58,7 @@ public class MenuActionExport implements ActionListener {
             public void approveSelection() {
                 
                 File file = this.getSelectedFile();
+                
                 if (file.exists() && this.getDialogType() == JFileChooser.SAVE_DIALOG) {
                     
                     int replace = JOptionPane.showConfirmDialog(
@@ -85,24 +86,25 @@ public class MenuActionExport implements ActionListener {
                 }
             }
         };
+        
         importFileDialog.setDialogTitle(I18n.valueByKey("LIST_EXPORT_TITLE"));
         int choice = importFileDialog.showSaveDialog(this.myList.getTopLevelAncestor());
+        
         if (choice != JFileChooser.APPROVE_OPTION) {
             return;
         }
 
         try (
-            FileOutputStream file = new FileOutputStream(importFileDialog.getSelectedFile())
-        ) {
+            FileOutputStream file = new FileOutputStream(importFileDialog.getSelectedFile());
             PrintStream out = new PrintStream(file);
+        ) {
             int len = this.myList.getModel().getSize();
+            
             for (int i = 0 ; i < len ; i++) {
                 out.println(this.myList.getModel().getElementAt(i).toString());
             }
-            out.close();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
     }
-    
 }

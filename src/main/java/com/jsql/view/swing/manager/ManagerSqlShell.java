@@ -30,9 +30,9 @@ import com.jsql.view.swing.text.JPopupTextField;
 @SuppressWarnings("serial")
 public class ManagerSqlShell extends AbstractManagerShell {
     
-    final JTextField username = new JPopupTextField(I18n.valueByKey("SQL_SHELL_USERNAME_LABEL")).getProxy();
+    private final JTextField username = new JPopupTextField(I18n.valueByKey("SQL_SHELL_USERNAME_LABEL")).getProxy();
     
-    final JTextField password = new JPopupTextField(I18n.valueByKey("SQL_SHELL_PASSWORD_LABEL")).getProxy();
+    private final JTextField password = new JPopupTextField(I18n.valueByKey("SQL_SHELL_PASSWORD_LABEL")).getProxy();
     
     /**
      * Build the manager panel.
@@ -92,7 +92,7 @@ public class ManagerSqlShell extends AbstractManagerShell {
 
     @Override
     void createPayload(String shellPath, String shellURL) throws JSqlException, InterruptedException {
+        
         MediatorModel.model().getResourceAccess().createSqlShell(shellPath, shellURL, this.username.getText(), this.password.getText());
     }
-    
 }

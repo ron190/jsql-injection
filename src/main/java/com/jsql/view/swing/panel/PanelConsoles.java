@@ -29,7 +29,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JToolTip;
 import javax.swing.OverlayLayout;
@@ -40,7 +39,6 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.log4j.Logger;
 
 import com.jsql.model.InjectionModel;
-import com.jsql.model.bean.util.HttpHeader;
 import com.jsql.view.i18n.I18nView;
 import com.jsql.view.swing.HelperUi;
 import com.jsql.view.swing.MediatorGui;
@@ -105,20 +103,7 @@ public class PanelConsoles extends JPanel {
         this.javaTextPane.getProxy().setEditable(false);
         SwingAppender.register(this.javaTextPane);
         
-        this.networkSplitPane = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
-        
-        this.networkSplitPane.setResizeWeight(1);
-        this.networkSplitPane.setDividerSize(0);
-        this.networkSplitPane.setDividerLocation(600);
-        this.networkSplitPane.setBorder(BorderFactory.createEmptyBorder());
-        
-        this.tabbedPaneNetworkTab = new TabbedPaneNetworkTab();
-        this.networkSplitPane.setRightComponent(this.tabbedPaneNetworkTab);
-        
-        this.networkTable = new NetworkTable(this.tabbedPaneNetworkTab);
-        
-        JScrollIndicator scrollerNetwork = this.initializeScrollerTable();
-        this.networkSplitPane.setLeftComponent(scrollerNetwork);
+        this.initializeSplit();
 
         MediatorGui.register(this.tabConsoles);
         
@@ -136,6 +121,24 @@ public class PanelConsoles extends JPanel {
         expandPanel.setAlignmentY(Component.TOP_ALIGNMENT);
         this.tabConsoles.setAlignmentX(FlowLayout.LEADING);
         this.tabConsoles.setAlignmentY(Component.TOP_ALIGNMENT);
+    }
+
+    private void initializeSplit() {
+        
+        this.networkSplitPane = new JSplitPaneWithZeroSizeDivider(JSplitPane.HORIZONTAL_SPLIT);
+        
+        this.networkSplitPane.setResizeWeight(1);
+        this.networkSplitPane.setDividerSize(0);
+        this.networkSplitPane.setDividerLocation(600);
+        this.networkSplitPane.setBorder(BorderFactory.createEmptyBorder());
+        
+        this.tabbedPaneNetworkTab = new TabbedPaneNetworkTab();
+        this.networkSplitPane.setRightComponent(this.tabbedPaneNetworkTab);
+        
+        this.networkTable = new NetworkTable(this.tabbedPaneNetworkTab);
+        
+        JScrollIndicator scrollerNetwork = this.initializeScrollerTable();
+        this.networkSplitPane.setLeftComponent(scrollerNetwork);
     }
 
     private JScrollIndicator initializeScrollerTable() {
@@ -157,6 +160,7 @@ public class PanelConsoles extends JPanel {
 
         scrollerNetwork.scrollPane.getVerticalScrollBar().addAdjustmentListener(singleItemScroll);
         scrollerNetwork.scrollPane.getHorizontalScrollBar().addAdjustmentListener(singleItemScroll);
+        
         return scrollerNetwork;
     }
 
@@ -215,7 +219,9 @@ public class PanelConsoles extends JPanel {
             JTabbedPane tabs = this.tabConsoles;
             
             if (tabs.getSelectedIndex() > -1) {
+                
                 Component currentTabHeader = tabs.getTabComponentAt(tabs.getSelectedIndex());
+                
                 if (currentTabHeader != null) {
                     currentTabHeader.setFont(currentTabHeader.getFont().deriveFont(Font.PLAIN));
                     currentTabHeader.setForeground(Color.BLACK);
@@ -245,6 +251,7 @@ public class PanelConsoles extends JPanel {
         JPanel arrowDownPanel = new JPanel();
         arrowDownPanel.setLayout(new BorderLayout());
         arrowDownPanel.setOpaque(false);
+        
         // Disable overlap with zerosizesplitter
         arrowDownPanel.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
         arrowDownPanel.setPreferredSize(new Dimension(Integer.MAX_VALUE, 26));
@@ -257,10 +264,6 @@ public class PanelConsoles extends JPanel {
         arrowDownPanel.add(panelExpander, BorderLayout.LINE_END);
         
         return arrowDownPanel;
-    }
-    
-    public void addHeader(HttpHeader header) {
-        this.networkTable.getListHttpHeader().add(header);
     }
     
     public void reset() {
@@ -415,7 +418,7 @@ public class PanelConsoles extends JPanel {
         return this.buttonShowNorth;
     }
 
-    public JTable getNetworkTable() {
+    public NetworkTable getNetworkTable() {
         return this.networkTable;
     }
 }

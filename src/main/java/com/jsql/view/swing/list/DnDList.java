@@ -61,6 +61,8 @@ public class DnDList extends JList<ItemList> {
      */
     private transient List<ItemList> defaultList;
     
+    public boolean isScan = false;
+    
     /**
      * Create a JList decorated with drag/drop features.
      * @param newList List to decorate
@@ -76,9 +78,54 @@ public class DnDList extends JList<ItemList> {
         }
 
         this.setModel(this.listModel);
+
+        ListCellRenderer<ItemList> renderer = new RendererComplexCell();
+        this.setCellRenderer(renderer);
+        
+        this.initializeActionMap();
+        
+        this.initializeListener();
+        
+        this.setDragEnabled(true);
+        this.setDropMode(DropMode.INSERT);
+
+        // Set Drag and Drop
+        this.setTransferHandler(new ListTransfertHandler());
+    }
+
+    private void initializeListener() {
         
         this.addMouseListener(new MouseAdapterMenuAction(this));
 
+        // Allows color change when list loses/gains focus
+        this.addFocusListener(new FocusListener() {
+                
+            @Override
+            public void focusLost(FocusEvent arg0) {
+                DnDList.this.repaint();
+            }
+            
+            @Override
+            public void focusGained(FocusEvent arg0) {
+                DnDList.this.repaint();
+            }
+        });
+        
+        // Allows deleting values
+        this.addKeyListener(new KeyAdapter() {
+            
+            @Override
+            public void keyPressed(KeyEvent arg0) {
+                
+                if (arg0.getKeyCode() == KeyEvent.VK_DELETE) {
+                    DnDList.this.removeSelectedItem();
+                }
+            }
+        });
+    }
+
+    private void initializeActionMap() {
+        
         // Transform Cut, selects next value
         ActionMap listActionMap = this.getActionMap();
         listActionMap.put(TransferHandler.getCutAction().getValue(Action.NAME), new AbstractAction() {
@@ -92,6 +139,7 @@ public class DnDList extends JList<ItemList> {
                 
                 List<ItemList> selectedValues = DnDList.this.getSelectedValuesList();
                 List<ItemList> siblings = new ArrayList<>();
+                
                 for (ItemList value: selectedValues) {
                     int valueIndex = DnDList.this.listModel.indexOf(value);
 
@@ -103,11 +151,11 @@ public class DnDList extends JList<ItemList> {
                 }
 
                 TransferHandler.getCutAction().actionPerformed(e);
+                
                 for (ItemList sibling: siblings) {
                     DnDList.this.setSelectedValue(sibling, true);
                 }
             }
-
         });
 
         listActionMap.put(
@@ -118,40 +166,6 @@ public class DnDList extends JList<ItemList> {
             TransferHandler.getPasteAction().getValue(Action.NAME),
             TransferHandler.getPasteAction()
         );
-
-        ListCellRenderer<ItemList> renderer = new RendererComplexCell();
-        this.setCellRenderer(renderer);
-
-        // Allows color change when list loses/gains focus
-        this.addFocusListener(
-            new FocusListener() {
-                @Override
-                public void focusLost(FocusEvent arg0) {
-                    DnDList.this.repaint();
-                }
-                
-                @Override
-                public void focusGained(FocusEvent arg0) {
-                    DnDList.this.repaint();
-                }
-            }
-        );
-
-        this.setDragEnabled(true);
-        this.setDropMode(DropMode.INSERT);
-        
-        // Allows deleting values
-        this.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent arg0) {
-                if (arg0.getKeyCode() == KeyEvent.VK_DELETE) {
-                    DnDList.this.removeSelectedItem();
-                }
-            }
-        });
-
-        // Set Drag and Drop
-        this.setTransferHandler(new ListTransfertHandler());
     }
 
     /**
@@ -164,13 +178,16 @@ public class DnDList extends JList<ItemList> {
         }
 
         List<ItemList> selectedValues = this.getSelectedValuesList();
+        
         for (ItemList itemSelected: selectedValues) {
-            int l = this.listModel.indexOf(itemSelected);
+            
+            int indexOfItemSelected = this.listModel.indexOf(itemSelected);
             this.listModel.removeElement(itemSelected);
-            if (l == this.listModel.getSize()) {
-                this.setSelectedIndex(l - 1);
+            
+            if (indexOfItemSelected == this.listModel.getSize()) {
+                this.setSelectedIndex(indexOfItemSelected - 1);
             } else {
-                this.setSelectedIndex(l);
+                this.setSelectedIndex(indexOfItemSelected);
             }
         }
         
@@ -231,6 +248,7 @@ public class DnDList extends JList<ItemList> {
             I18n.valueByKey("LIST_IMPORT_CONFIRM_ADD"),
             I18n.valueByKey("LIST_ADD_VALUE_CANCEL")
         };
+        
         int answer = JOptionPane.showOptionDialog(
             this.getTopLevelAncestor(),
             I18n.valueByKey("LIST_IMPORT_CONFIRM_LABEL"),
@@ -257,27 +275,7 @@ public class DnDList extends JList<ItemList> {
         
         SwingUtilities.invokeLater(() -> {
             
-            for (File file : filesToImport) {
-                try (BufferedReader fileReader = new BufferedReader(new FileReader(file))) {
-                    String line;
-                    while ((line = fileReader.readLine()) != null) {
-                        if (
-                            !"".equals(line)
-                            // Fix Report #60
-                            && 0 <= endPosition[0] && endPosition[0] <= this.listModel.size()
-                        ) {
-                            // TODO inheritance DnDListScan
-                            if (this.isScan) {
-                                this.listModel.add(endPosition[0]++, new ItemListScan(new BeanInjection(line.replace("\\", "/"))));
-                            } else {
-                                this.listModel.add(endPosition[0]++, new ItemList(line.replace("\\", "/")));
-                            }
-                        }
-                    }
-                } catch (IOException e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
-            }
+            this.addItems(filesToImport, endPosition);
             
             if (!this.listModel.isEmpty()) {
                 DnDList.this.setSelectionInterval(startPosition[0], endPosition[0] - 1);
@@ -295,16 +293,45 @@ public class DnDList extends JList<ItemList> {
                 LOGGER.error(e.getMessage(), e);
             }
         });
+    }
+
+    private void addItems(final List<File> filesToImport, final int[] endPosition) {
         
+        for (File file : filesToImport) {
+            try (
+                FileReader fileReader = new FileReader(file);
+                BufferedReader bufferedReader = new BufferedReader(fileReader)
+            ) {
+                
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    
+                    if (
+                        !"".equals(line)
+                        // Fix Report #60
+                        && 0 <= endPosition[0] && endPosition[0] <= this.listModel.size()
+                    ) {
+                        
+                        // TODO inheritance DnDListScan
+                        if (this.isScan) {
+                            this.listModel.add(endPosition[0]++, new ItemListScan(new BeanInjection(line.replace("\\", "/"))));
+                        } else {
+                            this.listModel.add(endPosition[0]++, new ItemList(line.replace("\\", "/")));
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                LOGGER.error(e.getMessage(), e);
+            }
+        }
     }
     
-    public boolean isScan = false;
-    
     public void restore() {
+        
         this.listModel.clear();
+        
         for (ItemList path: this.defaultList) {
             this.listModel.addElement(path);
         }
     }
-    
 }

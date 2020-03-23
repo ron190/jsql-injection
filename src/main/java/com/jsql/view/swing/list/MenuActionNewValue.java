@@ -136,5 +136,4 @@ public class MenuActionNewValue implements ActionListener {
             textarea.setText(null);
         }
     }
-    
 }

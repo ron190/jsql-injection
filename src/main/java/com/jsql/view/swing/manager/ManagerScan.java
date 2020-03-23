@@ -62,17 +62,94 @@ public class ManagerScan extends AbstractManagerList {
      * Create admin page finder.
      */
     public ManagerScan() {
+        
         this.setLayout(new BorderLayout());
 
+        List<ItemList> itemsList = this.getItemList();
+        
+        final DnDList dndListScan = new DnDList(itemsList);
+        
+        dndListScan.isScan = true;
+        dndListScan.setName("scan");
+        dndListScan.setTransferHandler(null);
+        dndListScan.setTransferHandler(new ListTransfertHandlerScan());
+        
+        this.listPaths = dndListScan;
+        this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
+        this.add(new LightScrollPane(1, 0, 0, 0, dndListScan), BorderLayout.CENTER);
+
+        JPanel lastLine = this.getLastLinePanel(dndListScan);
+        this.add(lastLine, BorderLayout.SOUTH);
+        
+        dndListScan.addListSelectionListener(e -> {
+            
+            if (dndListScan.getSelectedValue() == null) {
+                return;
+            }
+            
+            BeanInjection beanInjection = ((ItemListScan) dndListScan.getSelectedValue()).getBeanInjection();
+            
+            MediatorGui.panelAddressBar().getTextFieldAddress().setText(beanInjection.getUrl());
+            MediatorGui.panelAddressBar().getTextFieldHeader().setText(beanInjection.getHeader());
+            MediatorGui.panelAddressBar().getTextFieldRequest().setText(beanInjection.getRequest());
+            
+            String requestType = beanInjection.getRequestType();
+            if (requestType != null && !requestType.isEmpty()) {
+                MediatorGui.panelAddressBar().getRadioMethod().setText(requestType);
+            } else {
+                MediatorGui.panelAddressBar().getRadioMethod().setText("POST");
+            }
+            
+            MethodInjection injectionType = beanInjection.getInjectionTypeAsEnum();
+            
+            if (injectionType == MediatorModel.model().getMediatorMethodInjection().getHeader()) {
+                MediatorGui.panelAddressBar().getRadioHeader().setSelected();
+            } else if (injectionType == MediatorModel.model().getMediatorMethodInjection().getRequest()) {
+                MediatorGui.panelAddressBar().getRadioMethod().setSelected();
+            } else {
+                MediatorGui.panelAddressBar().getRadioQueryString().setSelected();
+            }
+        });
+    }
+
+    private JPanel getLastLinePanel(final DnDList dndListScan) {
+        
+        JPanel lastLine = new JPanel();
+        lastLine.setOpaque(false);
+        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
+
+        lastLine.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)
+            )
+        );
+        
+        this.initializeRunButton(dndListScan);
+
+        this.loader.setVisible(false);
+
+        lastLine.add(Box.createHorizontalGlue());
+        lastLine.add(this.loader);
+        lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
+        lastLine.add(this.run);
+        
+        return lastLine;
+    }
+
+    private List<ItemList> getItemList() {
+        
         StringBuilder jsonScan = new StringBuilder();
-        try {
-            InputStream in = HelperUi.INPUT_STREAM_PAGES_SCAN;
+        try (
+            InputStream inputStream = HelperUi.class.getClassLoader().getResourceAsStream(HelperUi.INPUT_STREAM_PAGES_SCAN);
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader reader = new BufferedReader(inputStreamReader);
+        ) {
+            
             String line;
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
                 jsonScan.append(line);
             }
-            reader.close();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -84,7 +161,9 @@ public class ManagerScan extends AbstractManagerList {
             jsonArrayScan = new JSONArray(jsonScan.toString());
             
             for (int i = 0 ; i < jsonArrayScan.length() ; i++) {
+                
                 JSONObject jsonObjectScan = jsonArrayScan.getJSONObject(i);
+                
                 BeanInjection beanInjection = new BeanInjection(
                     jsonObjectScan.getString("url"),
                     jsonObjectScan.optString("request"),
@@ -93,32 +172,17 @@ public class ManagerScan extends AbstractManagerList {
                     jsonObjectScan.optString("vendor"),
                     jsonObjectScan.optString("requestType")
                 );
+                
                 itemsList.add(new ItemListScan(beanInjection));
             }
         } catch (JSONException e) {
             LOGGER.error(e.getMessage(), e);
         }
         
-        final DnDList dndListScan = new DnDList(itemsList);
-        dndListScan.isScan = true;
-        dndListScan.setName("scan");
-        dndListScan.setTransferHandler(null);
-        dndListScan.setTransferHandler(new ListTransfertHandlerScan());
-        
-        this.listPaths = dndListScan;
-        this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
-        this.add(new LightScrollPane(1, 0, 0, 0, dndListScan), BorderLayout.CENTER);
+        return itemsList;
+    }
 
-        JPanel lastLine = new JPanel();
-        lastLine.setOpaque(false);
-        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
-
-        lastLine.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
-                BorderFactory.createEmptyBorder(1, 0, 1, 1)
-            )
-        );
+    private void initializeRunButton(final DnDList dndListScan) {
         
         this.defaultText = "SCAN_RUN_BUTTON_LABEL";
         this.run = new JButtonStateful(this.defaultText);
@@ -141,6 +205,7 @@ public class ManagerScan extends AbstractManagerList {
             new Thread(() -> {
                 
                 if (ManagerScan.this.run.getState() == StateButton.STARTABLE) {
+                    
                     ManagerScan.this.run.setText(I18nView.valueByKey("SCAN_RUN_BUTTON_STOP"));
                     ManagerScan.this.run.setState(StateButton.STOPPABLE);
                     ManagerScan.this.loader.setVisible(true);
@@ -152,6 +217,7 @@ public class ManagerScan extends AbstractManagerList {
                     
                     MediatorModel.model().getResourceAccess().scanList(dndListScan.getSelectedValuesList());
                 } else {
+                    
                     MediatorModel.model().getResourceAccess().setScanStopped(true);
                     MediatorModel.model().setIsStoppedByUser(true);
                     ManagerScan.this.run.setEnabled(false);
@@ -159,43 +225,5 @@ public class ManagerScan extends AbstractManagerList {
                 }
             }, "ThreadScan").start();
         });
-
-        this.loader.setVisible(false);
-
-        lastLine.add(Box.createHorizontalGlue());
-        lastLine.add(this.loader);
-        lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
-        lastLine.add(this.run);
-        
-        this.add(lastLine, BorderLayout.SOUTH);
-        
-        dndListScan.addListSelectionListener(e -> {
-            
-            if (dndListScan.getSelectedValue() == null) {
-                return;
-            }
-            BeanInjection beanInjection = ((ItemListScan) dndListScan.getSelectedValue()).getBeanInjection();
-            
-            MediatorGui.panelAddressBar().getTextFieldAddress().setText(beanInjection.getUrl());
-            MediatorGui.panelAddressBar().getTextFieldHeader().setText(beanInjection.getHeader());
-            MediatorGui.panelAddressBar().getTextFieldRequest().setText(beanInjection.getRequest());
-            
-            String requestType = beanInjection.getRequestType();
-            if (requestType != null && !requestType.isEmpty()) {
-                MediatorGui.panelAddressBar().getRadioMethod().setText(requestType);
-            } else {
-                MediatorGui.panelAddressBar().getRadioMethod().setText("POST");
-            }
-            
-            MethodInjection injectionType = beanInjection.getInjectionTypeAsEnum();
-            if (injectionType == MediatorModel.model().getMediatorMethodInjection().getHeader()) {
-                MediatorGui.panelAddressBar().getRadioHeader().setSelected();
-            } else if (injectionType == MediatorModel.model().getMediatorMethodInjection().getRequest()) {
-                MediatorGui.panelAddressBar().getRadioMethod().setSelected();
-            } else {
-                MediatorGui.panelAddressBar().getRadioQueryString().setSelected();
-            }
-        });
     }
-    
 }

@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.Border;
 
 import org.apache.commons.text.WordUtils;
 
@@ -45,6 +46,8 @@ public class PanelPreferences extends JPanel {
     private static final JPanel panelGeneral = new JPanel(new BorderLayout());
     private static final JPanel panelTampering = new JPanel(new BorderLayout());
     
+    private Border panelBorder = BorderFactory.createEmptyBorder(10, 15, 0, 15);
+    
     private enum CategoryPreference {
         
         INJECTION(panelInjection),
@@ -68,44 +71,43 @@ public class PanelPreferences extends JPanel {
         public Component getPanel() {
             return this.panel;
         }
-        
     }
     
     public PanelPreferences() {
         
         BorderLayout borderLayoutPreferences = new BorderLayout();
         this.setLayout(borderLayoutPreferences);
+        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         
-        panelTampering.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 15));
+        JList<CategoryPreference> categories = this.getCategories(borderLayoutPreferences);
+        
+        this.add(categories, BorderLayout.LINE_START);
+        
+        panelTampering.setBorder(this.panelBorder);
         panelTampering.add(new JLabel("<html><b>Tampering</b> / SQL expression alteration to bypass Web Application Firewall</html>"), BorderLayout.NORTH);
         panelTampering.add(this.panelTamperingPreferences, BorderLayout.CENTER);
         
-        panelGeneral.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 15));
+        panelGeneral.setBorder(this.panelBorder);
         panelGeneral.add(new JLabel("<html><b>General</b> / Standard options</html>"), BorderLayout.NORTH);
         panelGeneral.add(this.panelGeneralPreferences, BorderLayout.CENTER);
         
-        panelInjection.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 15));
+        panelInjection.setBorder(this.panelBorder);
         panelInjection.add(new JLabel("<html><b>Injection</b> / Algorithm configuration</html>"), BorderLayout.NORTH);
         panelInjection.add(this.panelInjectionPreferences, BorderLayout.CENTER);
         
-        panelAuthentication.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 15));
+        panelAuthentication.setBorder(this.panelBorder);
         panelAuthentication.add(new JLabel("<html><b>Authentication</b> / Basic, Digest, NTLM or Kerberos</html>"), BorderLayout.NORTH);
         panelAuthentication.add(this.panelAuthenticationPreferences, BorderLayout.CENTER);
         
         this.initializePanelProxy();
         
         this.add(panelInjection, BorderLayout.CENTER);
-        
-        JList<CategoryPreference> categories = this.getCategories(borderLayoutPreferences);
-        
-        this.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        this.add(categories, BorderLayout.LINE_START);
     }
 
     private void initializePanelProxy() {
         
         panelProxy.setLayout(new BoxLayout(panelProxy, BoxLayout.Y_AXIS));
-        panelProxy.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 15));
+        panelProxy.setBorder(this.panelBorder);
         
         final JButton buttonCheckIp = new JButton("Check your IP");
         buttonCheckIp.addActionListener(new ActionCheckIP());
@@ -152,21 +154,24 @@ public class PanelPreferences extends JPanel {
             PanelPreferences.this.repaint();
         });
         
-        categories.setCellRenderer(new DefaultListCellRenderer(){
+        categories.setCellRenderer(new DefaultListCellRenderer() {
 
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                
                 JLabel labelItemList = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                
                 labelItemList.setBorder(
                     BorderFactory.createCompoundBorder(
                         BorderFactory.createMatteBorder(3, 3, 0, 3, Color.WHITE),
                         labelItemList.getBorder()
                     )
                 );
+                
                 return labelItemList;
             }
-            
         });
+        
         return categories;
     }
     

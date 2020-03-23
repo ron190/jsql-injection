@@ -65,19 +65,22 @@ public class ManagerUpload extends AbstractManagerList {
         this.defaultText = "UPLOAD_RUN_BUTTON_LABEL";
 
         List<ItemList> pathsList = new ArrayList<>();
-        try {
-            InputStream in = HelperUi.class.getClassLoader().getResourceAsStream(HelperUi.PATH_WEB_FOLDERS);
+        
+        try (
+            InputStream inputStream = HelperUi.class.getClassLoader().getResourceAsStream(HelperUi.PATH_WEB_FOLDERS);
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader reader = new BufferedReader(inputStreamReader);
+        ) {
             String line;
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
                 pathsList.add(new ItemList(line));
             }
-            reader.close();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
 
         this.listPaths = new DnDList(pathsList);
+        
         this.getListPaths().setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
         this.add(new LightScrollPane(1, 0, 0, 0, this.getListPaths()), BorderLayout.CENTER);
         
@@ -107,6 +110,26 @@ public class ManagerUpload extends AbstractManagerList {
             )
         );
 
+        this.initializeRunButton(shellURL);
+
+        this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.ICON_SQUARE_GREY, SwingConstants.LEFT);
+        I18nView.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
+        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND));
+        this.privilege.setToolTipText(I18n.valueByKey("PRIVILEGE_TOOLTIP"));
+
+        this.loader.setVisible(false);
+
+        lastLine.add(this.privilege);
+        lastLine.add(Box.createHorizontalGlue());
+        lastLine.add(this.run);
+
+        southPanel.add(shellURL);
+        southPanel.add(lastLine);
+        this.add(southPanel, BorderLayout.SOUTH);
+    }
+
+    private void initializeRunButton(final JTextField shellURL) {
+        
         this.run = new JButtonStateful("UPLOAD_RUN_BUTTON_LABEL");
         I18nView.addComponentForKey("UPLOAD_RUN_BUTTON_LABEL", this.run);
         this.run.setToolTipText(I18n.valueByKey("UPLOAD_RUN_BUTTON_TOOLTIP"));
@@ -132,7 +155,9 @@ public class ManagerUpload extends AbstractManagerList {
             // Fix #40547: ClassCastException on showOpenDialog()
             try {
                 int returnVal = filechooser.showOpenDialog(MediatorGui.frame());
+                
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    
                     for (final Object path: ManagerUpload.this.getListPaths().getSelectedValuesList()) {
                         
                         new Thread(() -> {
@@ -154,20 +179,5 @@ public class ManagerUpload extends AbstractManagerList {
                 LOGGER.error(ex, ex);
             }
         });
-
-        this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.ICON_SQUARE_GREY, SwingConstants.LEFT);
-        I18nView.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
-        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND));
-        this.privilege.setToolTipText(I18n.valueByKey("PRIVILEGE_TOOLTIP"));
-
-        this.loader.setVisible(false);
-
-        lastLine.add(this.privilege);
-        lastLine.add(Box.createHorizontalGlue());
-        lastLine.add(this.run);
-
-        southPanel.add(shellURL);
-        southPanel.add(lastLine);
-        this.add(southPanel, BorderLayout.SOUTH);
     }
 }

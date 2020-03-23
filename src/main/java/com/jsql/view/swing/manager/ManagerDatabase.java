@@ -11,7 +11,6 @@
 package com.jsql.view.swing.manager;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
@@ -20,7 +19,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.event.TreeModelEvent;
@@ -54,6 +52,14 @@ public class ManagerDatabase extends JPanel implements Manager {
         
         super(new BorderLayout());
 
+        this.initializeTree();
+        
+        LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, this.tree);
+        this.add(scroller, BorderLayout.CENTER);
+    }
+
+    private void initializeTree() {
+        
         // First node in tree
         AbstractNodeModel nodeModelEmpty = new NodeModelEmpty(I18nView.valueByKey("DATABASE_EMPTY"));
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(nodeModelEmpty);
@@ -65,14 +71,36 @@ public class ManagerDatabase extends JPanel implements Manager {
         // Graphic manager for components
         this.tree.setCellRenderer(new CellRendererNode());
 
+        this.initializeTreeListeners();
+
+        // Action manager for components
+        this.tree.setCellEditor(new CellEditorNode());
+
+        // Tree setting
+        // allows repaint nodes
+        this.tree.setEditable(true);
+        this.tree.setShowsRootHandles(true);
+        this.tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+
+        // Repaint Gif progressbar
+        this.tree.getModel().addTreeModelListener(new TreeModelGifListener());
+
+        this.tree.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
+    }
+
+    private void initializeTreeListeners() {
+        
         this.tree.addFocusListener(new FocusListener() {
 
             @Override
             public void focusLost(FocusEvent e) {
                 
                 DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) ManagerDatabase.this.tree.getLastSelectedPathComponent();
+                
                 if (treeNode != null) {
+                    
                     AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
+                    
                     if (nodeModel != null && nodeModel.getPanel() != null) {
                         nodeModel.getPanel().getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
                         nodeModel.getPanel().getLabel().setBorder(HelperUi.BORDER_FOCUS_LOST);
@@ -84,8 +112,11 @@ public class ManagerDatabase extends JPanel implements Manager {
             public void focusGained(FocusEvent e) {
                 
                 DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) ManagerDatabase.this.tree.getLastSelectedPathComponent();
+                
                 if (treeNode != null) {
+                    
                     AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
+                    
                     if (nodeModel != null && nodeModel.getPanel() != null) {
                         nodeModel.getPanel().getLabel().setBackground(HelperUi.COLOR_FOCUS_GAINED);
                         nodeModel.getPanel().getLabel().setBorder(HelperUi.BORDER_FOCUS_GAINED);
@@ -101,7 +132,9 @@ public class ManagerDatabase extends JPanel implements Manager {
                 
                 int selRow = ManagerDatabase.this.tree.getRowForLocation(e.getX(), e.getY());
                 TreePath selPath = ManagerDatabase.this.tree.getPathForLocation(e.getX(), e.getY());
+                
                 if (selRow != -1 && e.getClickCount() == 2) {
+                    
                     if (ManagerDatabase.this.tree.isExpanded(selPath)) {
                         ManagerDatabase.this.tree.collapsePath(selPath);
                     } else {
@@ -117,10 +150,14 @@ public class ManagerDatabase extends JPanel implements Manager {
             public void keyPressed(KeyEvent e) {
                 
                 if (e.getKeyCode() == KeyEvent.VK_F2) {
+                    
                     DefaultMutableTreeNode treeNode = (DefaultMutableTreeNode) ManagerDatabase.this.tree.getLastSelectedPathComponent();
+                    
                     if (treeNode != null) {
+                        
                         AbstractNodeModel nodeModel = (AbstractNodeModel) treeNode.getUserObject();
                         if (nodeModel != null && nodeModel.getPanel() != null && !nodeModel.isRunning()) {
+                            
                             nodeModel.getPanel().getLabel().setBackground(HelperUi.COLOR_FOCUS_LOST);
                             nodeModel.getPanel().getLabel().setBorder(HelperUi.BORDER_FOCUS_LOST);
                             nodeModel.setIsEdited(true);
@@ -129,35 +166,6 @@ public class ManagerDatabase extends JPanel implements Manager {
                 }
             }
         });
-
-        // Action manager for components
-        this.tree.setCellEditor(new CellEditorNode());
-
-        // Tree setting
-        // allows repaint nodes
-        this.tree.setEditable(true);
-        this.tree.setShowsRootHandles(true);
-        this.tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-
-        // Repaint Gif progressbar
-        this.tree.getModel().addTreeModelListener(new TreeModelGifListener());
-
-        this.tree.setBorder(BorderFactory.createEmptyBorder(0, 0, LightScrollPane.THUMB_SIZE, 0));
-        LightScrollPane scroller = new LightScrollPane(1, 0, 0, 0, this.tree);
-
-        JMenuBar panelLineBottom = new JMenuBar();
-        panelLineBottom.setOpaque(false);
-        panelLineBottom.setBorder(null);
-        panelLineBottom.setPreferredSize(new Dimension(0, 26));
-
-        panelLineBottom.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
-                BorderFactory.createEmptyBorder(1, 0, 1, 1)
-            )
-        );
-
-        this.add(scroller, BorderLayout.CENTER);
     }
     
     private class TreeModelGifListener implements TreeModelListener {
@@ -165,14 +173,16 @@ public class ManagerDatabase extends JPanel implements Manager {
         @Override
         public void treeNodesChanged(TreeModelEvent arg0) {
             
-            if (arg0 != null) {
-                ManagerDatabase.this.tree.firePropertyChange(
-                    JTree.ROOT_VISIBLE_PROPERTY,
-                    !ManagerDatabase.this.tree.isRootVisible(),
-                    ManagerDatabase.this.tree.isRootVisible()
-                );
-                ManagerDatabase.this.tree.treeDidChange();
+            if (arg0 == null) {
+                return;
             }
+            
+            ManagerDatabase.this.tree.firePropertyChange(
+                JTree.ROOT_VISIBLE_PROPERTY,
+                !ManagerDatabase.this.tree.isRootVisible(),
+                ManagerDatabase.this.tree.isRootVisible()
+            );
+            ManagerDatabase.this.tree.treeDidChange();
         }
 
         @Override

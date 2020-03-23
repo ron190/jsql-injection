@@ -79,21 +79,22 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
     protected JLabel loader = new JLabel(HelperUi.ICON_LOADER_GIF);
     
     public AbstractManagerList() {
-        
+        // Nothing
     }
     
     public AbstractManagerList(String nameFile) {
         
         this.setLayout(new BorderLayout());
 
-        try {
-            InputStream in = AbstractManagerList.class.getClassLoader().getResourceAsStream(nameFile);
+        try (
+            InputStream inputStream = HelperUi.class.getClassLoader().getResourceAsStream(nameFile);
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader reader = new BufferedReader(inputStreamReader);
+        ) {
             String line;
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((line = reader.readLine()) != null) {
                 this.itemsList.add(new ItemList(line));
             }
-            reader.close();
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -181,5 +182,4 @@ public abstract class AbstractManagerList extends JPanel implements Manager {
     public DnDList getListPaths() {
         return this.listPaths;
     }
-    
 }

@@ -20,9 +20,11 @@ public class HashBruter extends Bruter {
     private String type;
 
     public void tryBruteForce() {
+        
         this.starttime = System.nanoTime();
         
         for (int size = this.minLength; size <= this.maxLength; size++) {
+            
             if (this.found || this.done) {
                 break;
             } else {
@@ -44,7 +46,6 @@ public class HashBruter extends Bruter {
                     LOGGER.error("Interruption while generating brute force combinations", e);
                     Thread.currentThread().interrupt();
                 }
-                
             }
         }
         
@@ -52,12 +53,15 @@ public class HashBruter extends Bruter {
     }
 
     private void generateAllPossibleCombinations(String baseString, int length) throws NoSuchAlgorithmException, InterruptedException {
+        
         while (this.paused) {
             Thread.sleep(500);
         }
         
         if (!this.found || !this.done) {
+            
             if (baseString.length() == length) {
+                
                 if("adler32".equalsIgnoreCase(this.type)) {
                     this.generatedHash = Adler32.generateAdler32(baseString);
                 } else if("crc16".equalsIgnoreCase(this.type)) {
@@ -80,8 +84,10 @@ public class HashBruter extends Bruter {
                     this.found = true;
                     this.done = true;
                 }
+                
                 this.count++;
             } else if (baseString.length() < length) {
+                
                 for (String element : this.characters) {
                     this.generateAllPossibleCombinations(baseString + element, length);
                 }
@@ -95,8 +101,8 @@ public class HashBruter extends Bruter {
         return this.password;
     }
 
-    public void setHash(String p) {
-        this.hash = p;
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 
     public void setType(String digestType) {
@@ -106,5 +112,4 @@ public class HashBruter extends Bruter {
     public String getGeneratedHash() {
         return this.generatedHash;
     }
-    
 }

@@ -370,7 +370,6 @@ public class PanelInjectionPreferences extends JPanel {
         );
     }
 
-    
     // Getter and setter
     
     public JCheckBox getCheckboxIsFollowingRedirection() {

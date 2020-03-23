@@ -110,20 +110,92 @@ public class ManagerBruteForce extends JPanel implements Manager {
         
         super(new BorderLayout());
 
-        JPanel options = new JPanel(new BorderLayout());
+        JPanel panelOptions = this.initializeOptionsPanel();
+        this.add(panelOptions, BorderLayout.NORTH);
 
+        this.result = new JPopupTextPane("Result of brute force processing").getProxy();
+        this.add(new LightScrollPane(1, 1, 0, 0, this.result), BorderLayout.CENTER);
+        
+        JPanel panelButton = this.initializePanelButton();
+        this.add(panelButton, BorderLayout.SOUTH);
+    }
+
+    private JPanel initializePanelButton() {
+        
+        JPanel lastLine = new JPanel();
+        
+        lastLine.setOpaque(false);
+        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
+        lastLine.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)
+            )
+        );
+        
+        this.run = new JButtonStateful("BRUTEFORCE_RUN_BUTTON_LABEL");
+        I18nView.addComponentForKey("BRUTEFORCE_RUN_BUTTON_LABEL", this.run);
+        this.run.setToolTipText(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
+        
+        this.run.setContentAreaFilled(false);
+        this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        this.run.setBackground(new Color(200, 221, 242));
+        
+        this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
+        
+        this.run.addActionListener(new ActionBruteForce(this));
+
+        this.loader = new JLabel(HelperUi.ICON_LOADER_GIF);
+        this.loader.setVisible(false);
+
+        lastLine.add(Box.createHorizontalGlue());
+        lastLine.add(this.loader);
+        lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
+        lastLine.add(this.run);
+        
+        return lastLine;
+    }
+
+    private JPanel initializeOptionsPanel() {
+        
+        JPanel options = new JPanel(new BorderLayout());
+        JPanel firstLine = this.initializeFirstLine();
+
+        final JPanel secondLine = this.initializeSecondLine();
+        JPanel thirdLine = this.initializeThirdLine();
+        
+        final JPanel secondAndThirdLine = new JPanel(new BorderLayout());
+        secondAndThirdLine.add(secondLine, BorderLayout.NORTH);
+        secondAndThirdLine.add(thirdLine, BorderLayout.SOUTH);
+
+        options.add(firstLine, BorderLayout.NORTH);
+        options.add(secondAndThirdLine, BorderLayout.SOUTH);
+        
+        return options;
+    }
+
+    private JPanel initializeFirstLine() {
+        
         JPanel firstLine = new JPanel(new BorderLayout());
 
         this.hash = new JPopupTextField(I18n.valueByKey("BRUTEFORCE_HASH_LABEL")).getProxy();
+        
         this.hash.setToolTipText(I18n.valueByKey("BRUTEFORCE_HASH_TOOLTIP"));
+        
         firstLine.add(this.hash, BorderLayout.CENTER);
+        
         this.hash.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createMatteBorder(0, 0, 1, 1, HelperUi.COLOR_DEFAULT_BACKGROUND),
                 HelperUi.BORDER_BLU
             )
         );
+        
+        return firstLine;
+    }
 
+    private JPanel initializeSecondLine() {
+        
         final JPanel secondLine = new JPanel();
         secondLine.setLayout(new BoxLayout(secondLine, BoxLayout.X_AXIS));
 
@@ -143,7 +215,6 @@ public class ManagerBruteForce extends JPanel implements Manager {
         this.hashTypes.setToolTipText(I18n.valueByKey("BRUTEFORCE_HASH_TYPE_TOOLTIP"));
 
         secondLine.add(this.hashTypes);
-
         secondLine.add(this.lowerCaseCharacters);
         secondLine.add(this.upperCaseCharacters);
         secondLine.add(this.numericCharacters);
@@ -153,7 +224,12 @@ public class ManagerBruteForce extends JPanel implements Manager {
         this.upperCaseCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_UCASE_TOOLTIP"));
         this.numericCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_NUM_TOOLTIP"));
         this.specialCharacters.setToolTipText(I18n.valueByKey("BRUTEFORCE_SPEC_TOOLTIP"));
+        
+        return secondLine;
+    }
 
+    private JPanel initializeThirdLine() {
+        
         JPanel thirdLine = new JPanel();
         thirdLine.setLayout(new BoxLayout(thirdLine, BoxLayout.X_AXIS));
         
@@ -193,51 +269,9 @@ public class ManagerBruteForce extends JPanel implements Manager {
         I18nView.addComponentForKey("BRUTEFORCE_MAX_LABEL", labelMax);
         thirdLine.add(this.maximumLength);
         
-        final JPanel secondAndThirdLine = new JPanel(new BorderLayout());
-        secondAndThirdLine.add(secondLine, BorderLayout.NORTH);
-        secondAndThirdLine.add(thirdLine, BorderLayout.SOUTH);
-
-        options.add(firstLine, BorderLayout.NORTH);
-        options.add(secondAndThirdLine, BorderLayout.SOUTH);
-        this.add(options, BorderLayout.NORTH);
-
-        this.result = new JPopupTextPane("Result of brute force processing").getProxy();
-
-        this.add(new LightScrollPane(1, 1, 0, 0, this.result), BorderLayout.CENTER);
-        
-        JPanel lastLine = new JPanel();
-        lastLine.setOpaque(false);
-        lastLine.setLayout(new BoxLayout(lastLine, BoxLayout.X_AXIS));
-        lastLine.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
-                BorderFactory.createEmptyBorder(1, 0, 1, 1)
-            )
-        );
-        
-        this.run = new JButtonStateful("BRUTEFORCE_RUN_BUTTON_LABEL");
-        I18nView.addComponentForKey("BRUTEFORCE_RUN_BUTTON_LABEL", this.run);
-        this.run.setToolTipText(I18n.valueByKey("BRUTEFORCE_RUN_BUTTON_TOOLTIP"));
-        
-        this.run.setContentAreaFilled(false);
-        this.run.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
-        this.run.setBackground(new Color(200, 221, 242));
-        
-        this.run.addMouseListener(new FlatButtonMouseAdapter(this.run));
-
-        this.loader = new JLabel(HelperUi.ICON_LOADER_GIF);
-        this.loader.setVisible(false);
-
-        lastLine.add(Box.createHorizontalGlue());
-        lastLine.add(this.loader);
-        lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
-        lastLine.add(this.run);
-
-        this.run.addActionListener(new ActionBruteForce(this));
-
-        this.add(lastLine, BorderLayout.SOUTH);
+        return thirdLine;
     }
-    
+
     // Getter and setter
 
     public JButtonStateful getRun() {
@@ -287,5 +321,4 @@ public class ManagerBruteForce extends JPanel implements Manager {
     public JLabel getLoader() {
         return this.loader;
     }
-    
 }

@@ -48,11 +48,13 @@ public class ListTransfertHandlerScan extends TransferHandler {
     
     @Override
     public int getSourceActions(JComponent c) {
+        
         return TransferHandler.COPY_OR_MOVE;
     }
 
     @Override
     protected Transferable createTransferable(JComponent c) {
+        
         DnDList list = (DnDList) c;
         this.dragPaths = list.getSelectedValuesList();
         
@@ -64,6 +66,7 @@ public class ListTransfertHandlerScan extends TransferHandler {
                 ItemListScan itemScanPath = (ItemListScan) itemPath;
                 jsons.add(new JSONObject(itemScanPath.getBeanInjectionToJSON()));
             }
+            
             stringTransferable.append(new JSONArray(jsons).toString(4));
         } catch (JSONException e) {
             LOGGER.error(e.getMessage(), e);
@@ -80,6 +83,7 @@ public class ListTransfertHandlerScan extends TransferHandler {
             
             JList<ItemList> list = (JList<ItemList>) c;
             DefaultListModel<ItemList> model = (DefaultListModel<ItemList>) list.getModel();
+            
             for (ItemList itemPath: this.dragPaths) {
                 model.remove(model.indexOf(itemPath));
             }
@@ -91,13 +95,10 @@ public class ListTransfertHandlerScan extends TransferHandler {
     @Override
     public boolean canImport(TransferSupport support) {
         
-        return
-            support.isDataFlavorSupported(DataFlavor.stringFlavor)
-            || support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)
-        ;
+        return support.isDataFlavorSupported(DataFlavor.stringFlavor)
+            || support.isDataFlavorSupported(DataFlavor.javaFileListFlavor);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public boolean importData(TransferSupport support) {
         
@@ -112,120 +113,142 @@ public class ListTransfertHandlerScan extends TransferHandler {
         if (support.isDrop()) {
             
             if (support.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                
-                JList.DropLocation dropLocation = (JList.DropLocation) support.getDropLocation();
-                int indexDropLocation = dropLocation.getIndex();
-
-                List<Integer> listSelectedIndices = new ArrayList<>();
-
-                // DnD from list
-                if (this.dragPaths != null && !this.dragPaths.isEmpty()) {
-                    
-                    for (ItemList itemPath: this.dragPaths) {
-                        if (!"".equals(itemPath.toString())) {
-                            //! FUUuu
-                            ItemListScan itemDrag = (ItemListScan) itemPath;
-                            ItemListScan itemDrop = new ItemListScan(itemDrag.getBeanInjection());
-                            listSelectedIndices.add(indexDropLocation);
-                            listModel.add(indexDropLocation++, itemDrop);
-                        }
-                    }
-                } else {
-                    
-                    // DnD from outside
-                    try {
-                        String importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
-                        
-                        for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(importString)) {
-                            listSelectedIndices.add(indexDropLocation);
-                            listModel.add(indexDropLocation++, itemListScan);
-                        }
-                    } catch (UnsupportedFlavorException | IOException e) {
-                        LOGGER.error(e.getMessage(), e);
-                    }
-                }
-
-                int[] selectedIndices = new int[listSelectedIndices.size()];
-                int i = 0;
-                for (Integer integer: listSelectedIndices) {
-                    selectedIndices[i] = integer;
-                    i++;
-                }
-                list.setSelectedIndices(selectedIndices);
+                this.parseStringDrop(support, list, listModel);
             } else if (support.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                
-                JList.DropLocation dl = (JList.DropLocation) support.getDropLocation();
-                int childIndex = dl.getIndex();
-
-                try {
-                    list.dropPasteFile(
-                        (List<File>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor),
-                        childIndex
-                    );
-                } catch (UnsupportedFlavorException | IOException e) {
-                    LOGGER.error(e.getMessage(), e);
-                }
+                this.parseFileDrop(support, list);
             }
         } else {
+            
             //This is a paste
             Transferable transferableFromClipboard = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+            
             if (transferableFromClipboard != null) {
-                
+
                 if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                    
-                    try {
-                        String clipboardText = (String) transferableFromClipboard.getTransferData(DataFlavor.stringFlavor);
-
-                        int selectedIndex = 0;
-                        if (list.getSelectedIndex() > 0) {
-                            selectedIndex = list.getSelectedIndex();
-                        }
-                        list.clearSelection();
-                        
-                        List<Integer> selectedIndexes = new ArrayList<>();
-                        for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(clipboardText)) {
-                            selectedIndexes.add(selectedIndex);
-                            listModel.add(selectedIndex++, itemListScan);
-                        }
-
-                        int[] selectedIndexesPasted = new int[selectedIndexes.size()];
-                        int i = 0;
-                        for (Integer integer : selectedIndexes) {
-                            selectedIndexesPasted[i] = integer;
-                            i++;
-                        }
-                        list.setSelectedIndices(selectedIndexesPasted);
-                        list.scrollRectToVisible(
-                            list.getCellBounds(
-                                list.getMinSelectionIndex(),
-                                list.getMaxSelectionIndex()
-                            )
-                        );
-                    } catch (NullPointerException | UnsupportedFlavorException | IOException e) {
-                        // Fix #8831: Multiple Exception on scrollRectToVisible()
-                        LOGGER.error(e.getMessage(), e);
-                    }
+                    this.parseStringPaste(list, listModel, transferableFromClipboard);
                 } else if (transferableFromClipboard.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-                    
-                    try {
-                        int selectedIndex = 0;
-                        if (list.getSelectedIndex() > 0) {
-                            selectedIndex = list.getSelectedIndex();
-                        }
-                        list.clearSelection();
-
-                        list.dropPasteFile(
-                            (List<File>) transferableFromClipboard.getTransferData(DataFlavor.javaFileListFlavor),
-                            selectedIndex
-                        );
-                    } catch (UnsupportedFlavorException | IOException e) {
-                        LOGGER.error(e.getMessage(), e);
-                    }
+                    this.parseFilePaste(list, transferableFromClipboard);
                 }
             }
         }
 
         return true;
+    }
+
+    private void parseStringDrop(TransferSupport support, DnDList list, DefaultListModel<ItemList> listModel) {
+        
+        JList.DropLocation dropLocation = (JList.DropLocation) support.getDropLocation();
+        int indexDropLocation = dropLocation.getIndex();
+
+        List<Integer> listSelectedIndices = new ArrayList<>();
+
+        // DnD from list
+        if (this.dragPaths != null && !this.dragPaths.isEmpty()) {
+            
+            for (ItemList itemPath: this.dragPaths) {
+                if (!"".equals(itemPath.toString())) {
+                    //! FUUuu
+                    ItemListScan itemDrag = (ItemListScan) itemPath;
+                    ItemListScan itemDrop = new ItemListScan(itemDrag.getBeanInjection());
+                    listSelectedIndices.add(indexDropLocation);
+                    listModel.add(indexDropLocation++, itemDrop);
+                }
+            }
+        } else {
+            
+            // DnD from outside
+            try {
+                String importString = (String) support.getTransferable().getTransferData(DataFlavor.stringFlavor);
+                
+                for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(importString)) {
+                    listSelectedIndices.add(indexDropLocation);
+                    listModel.add(indexDropLocation++, itemListScan);
+                }
+            } catch (UnsupportedFlavorException | IOException e) {
+                LOGGER.error(e.getMessage(), e);
+            }
+        }
+
+        int[] selectedIndices = new int[listSelectedIndices.size()];
+        int i = 0;
+        for (Integer integer: listSelectedIndices) {
+            selectedIndices[i] = integer;
+            i++;
+        }
+        
+        list.setSelectedIndices(selectedIndices);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void parseFileDrop(TransferSupport support, DnDList list) {
+        
+        JList.DropLocation dl = (JList.DropLocation) support.getDropLocation();
+        int childIndex = dl.getIndex();
+
+        try {
+            list.dropPasteFile(
+                (List<File>) support.getTransferable().getTransferData(DataFlavor.javaFileListFlavor),
+                childIndex
+            );
+        } catch (UnsupportedFlavorException | IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    private void parseStringPaste(DnDList list, DefaultListModel<ItemList> listModel, Transferable transferableFromClipboard) {
+        
+        try {
+            String clipboardText = (String) transferableFromClipboard.getTransferData(DataFlavor.stringFlavor);
+
+            int selectedIndex = 0;
+            if (list.getSelectedIndex() > 0) {
+                selectedIndex = list.getSelectedIndex();
+            }
+            list.clearSelection();
+
+            List<Integer> selectedIndexes = new ArrayList<>();
+            for (ItemListScan itemListScan: ListTransfertHandlerScan.parse(clipboardText)) {
+                selectedIndexes.add(selectedIndex);
+                listModel.add(selectedIndex++, itemListScan);
+            }
+
+            int[] selectedIndexesPasted = new int[selectedIndexes.size()];
+            int i = 0;
+            for (Integer integer : selectedIndexes) {
+                selectedIndexesPasted[i] = integer;
+                i++;
+            }
+            
+            list.setSelectedIndices(selectedIndexesPasted);
+            list.scrollRectToVisible(
+                list.getCellBounds(
+                    list.getMinSelectionIndex(),
+                    list.getMaxSelectionIndex()
+                )
+            );
+        } catch (NullPointerException | UnsupportedFlavorException | IOException e) {
+            // Fix #8831: Multiple Exception on scrollRectToVisible()
+            LOGGER.error(e.getMessage(), e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void parseFilePaste(DnDList list, Transferable transferableFromClipboard) {
+        
+        try {
+            int selectedIndex = 0;
+            if (list.getSelectedIndex() > 0) {
+                selectedIndex = list.getSelectedIndex();
+            }
+            list.clearSelection();
+
+            list.dropPasteFile(
+                (List<File>) transferableFromClipboard.getTransferData(DataFlavor.javaFileListFlavor),
+                selectedIndex
+            );
+        } catch (UnsupportedFlavorException | IOException e) {
+            LOGGER.error(e.getMessage(), e);
+        }
     }
     
     public static List<ItemListScan> parse(String clipboardText) {
@@ -233,52 +256,60 @@ public class ListTransfertHandlerScan extends TransferHandler {
         List<ItemListScan> itemsParsed = new ArrayList<>();
         
         try {
-            JSONArray itemsJsonArray = new JSONArray(clipboardText);
-            
-            for (int i = 0; i < itemsJsonArray.length(); i++) {
-                
-                JSONObject itemJsonObject = itemsJsonArray.getJSONObject(i);
-                
-                BeanInjection beanInjection = new BeanInjection(
-                    itemJsonObject.optString("url", ""),
-                    itemJsonObject.optString("request", ""),
-                    itemJsonObject.optString("header", ""),
-                    itemJsonObject.optString("injectionType", ""),
-                    itemJsonObject.optString("vendor", ""),
-                    itemJsonObject.optString("requestType", "")
-                );
-                
-                ItemListScan newItem = new ItemListScan(beanInjection);
-                itemsParsed.add(newItem);
-            }
+            parseJsonArray(clipboardText, itemsParsed);
         } catch (JSONException eJsonArray) {
-            
-            try {
-                JSONObject itemsJsonObject = new JSONObject(clipboardText);
-                
-                BeanInjection beanInjection = new BeanInjection(
-                    itemsJsonObject.optString("url", ""),
-                    itemsJsonObject.optString("request", ""),
-                    itemsJsonObject.optString("header", ""),
-                    itemsJsonObject.optString("injectionType", ""),
-                    itemsJsonObject.optString("vendor", ""),
-                    itemsJsonObject.optString("requestType", "")
-                );
-                
-                ItemListScan newItem = new ItemListScan(beanInjection);
-                itemsParsed.add(newItem);
-            } catch (JSONException eJsonObject) {
-                
-                for (String url: clipboardText.split("\\n")) {
-                    BeanInjection beanInjection = new BeanInjection(url);
-                    
-                    ItemListScan newItem = new ItemListScan(beanInjection);
-                    itemsParsed.add(newItem);
-                }
-            }
+            parseJsonObject(clipboardText, itemsParsed);
         }
         
         return itemsParsed;
     }
-    
+
+    private static void parseJsonArray(String clipboardText, List<ItemListScan> itemsParsed) {
+        
+        JSONArray itemsJsonArray = new JSONArray(clipboardText);
+        
+        for (int i = 0; i < itemsJsonArray.length(); i++) {
+            
+            JSONObject itemJsonObject = itemsJsonArray.getJSONObject(i);
+            
+            BeanInjection beanInjection = new BeanInjection(
+                itemJsonObject.optString("url", ""),
+                itemJsonObject.optString("request", ""),
+                itemJsonObject.optString("header", ""),
+                itemJsonObject.optString("injectionType", ""),
+                itemJsonObject.optString("vendor", ""),
+                itemJsonObject.optString("requestType", "")
+            );
+            
+            ItemListScan newItem = new ItemListScan(beanInjection);
+            itemsParsed.add(newItem);
+        }
+    }
+
+    private static void parseJsonObject(String clipboardText, List<ItemListScan> itemsParsed) {
+        
+        try {
+            JSONObject itemsJsonObject = new JSONObject(clipboardText);
+            
+            BeanInjection beanInjection = new BeanInjection(
+                itemsJsonObject.optString("url", ""),
+                itemsJsonObject.optString("request", ""),
+                itemsJsonObject.optString("header", ""),
+                itemsJsonObject.optString("injectionType", ""),
+                itemsJsonObject.optString("vendor", ""),
+                itemsJsonObject.optString("requestType", "")
+            );
+            
+            ItemListScan newItem = new ItemListScan(beanInjection);
+            itemsParsed.add(newItem);
+        } catch (JSONException eJsonObject) {
+            
+            for (String url: clipboardText.split("\\n")) {
+                BeanInjection beanInjection = new BeanInjection(url);
+                
+                ItemListScan newItem = new ItemListScan(beanInjection);
+                itemsParsed.add(newItem);
+            }
+        }
+    }
 }

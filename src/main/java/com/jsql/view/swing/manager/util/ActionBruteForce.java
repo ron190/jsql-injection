@@ -39,43 +39,28 @@ public class ActionBruteForce implements ActionListener, Runnable {
     private boolean isStopped = false;
     
     public ActionBruteForce(ManagerBruteForce bruteForceManager) {
+        
         this.bruteForceManager = bruteForceManager;
     }
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
+        
         if (this.bruteForceManager.getRun().getState() == StateButton.STOPPABLE) {
             
             this.bruteForceManager.getRun().setEnabled(false);
             this.isStopped = true;
         } else {
-            
-            if (
-                !this.bruteForceManager.getMaximumLength().getValue().toString().matches("^\\d+$")
-                || !this.bruteForceManager.getMinimumLength().getValue().toString().matches("^\\d+$")
-            ) {
-                
-                LOGGER.warn(I18n.valueByKey("BRUTEFORCE_INCORRECT_LENGTH"));
-                return;
-            }
 
             if ("".equals(this.bruteForceManager.getHash().getText())) {
                 
                 LOGGER.warn(I18n.valueByKey("BRUTEFORCE_EMPTY_HASH"));
                 return;
-            } else if (
-                !this.bruteForceManager.getSpecialCharacters().isSelected()
-                && !this.bruteForceManager.getUpperCaseCharacters().isSelected()
-                && !this.bruteForceManager.getLowerCaseCharacters().isSelected()
-                && !this.bruteForceManager.getNumericCharacters().isSelected()
-            ) {
+            } else if (this.isRangeNotSelected()) {
                 
                 LOGGER.warn(I18n.valueByKey("BRUTEFORCE_CHARACTER_RANGE"));
                 return;
-            } else if (
-                Integer.parseInt(this.bruteForceManager.getMaximumLength().getValue().toString()) <
-                Integer.parseInt(this.bruteForceManager.getMinimumLength().getValue().toString())
-            ) {
+            } else if (this.isLengthNotValid()) {
                 
                 LOGGER.warn(I18n.valueByKey("BRUTEFORCE_INCORRECT_MIN_MAX_LENGTH"));
                 return;
@@ -83,6 +68,20 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
             new Thread(this, "ThreadDisplayBruteForce").start();
         }
+    }
+
+    private boolean isLengthNotValid() {
+        
+        return Integer.parseInt(this.bruteForceManager.getMaximumLength().getValue().toString()) <
+                Integer.parseInt(this.bruteForceManager.getMinimumLength().getValue().toString());
+    }
+
+    private boolean isRangeNotSelected() {
+        
+        return !this.bruteForceManager.getSpecialCharacters().isSelected()
+            && !this.bruteForceManager.getUpperCaseCharacters().isSelected()
+            && !this.bruteForceManager.getLowerCaseCharacters().isSelected()
+            && !this.bruteForceManager.getNumericCharacters().isSelected();
     }
 
     @Override
@@ -97,6 +96,81 @@ public class ActionBruteForce implements ActionListener, Runnable {
         // Configure the hasher
         final HashBruter hashBruter = new HashBruter();
 
+        this.initializeBruter(hashBruter);
+
+        // Begin the reverse hashing process
+        new Thread(hashBruter::tryBruteForce, "ThreadRunBruteForce").start();
+
+        while (!hashBruter.isDone() && !hashBruter.isFound() && !this.isStopped) {
+            
+            hashBruter.setEndtime(System.nanoTime());
+
+            try {
+                // delay to update result panel
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                LOGGER.error("Interruption while sleeping for brute force", e);
+                Thread.currentThread().interrupt();
+            }
+            
+            int selectionStart = this.bruteForceManager.getResult().getSelectionStart();
+            int selectionEnd = this.bruteForceManager.getResult().getSelectionEnd();
+            
+            this.updateResult(hashBruter);
+
+            this.bruteForceManager.getResult().setSelectionStart(selectionStart);
+            this.bruteForceManager.getResult().setSelectionEnd(selectionEnd);
+            
+            if (this.isStopped) {
+                hashBruter.setIsDone(true);
+                hashBruter.setFound(true);
+                break;
+            }
+        }
+
+        this.displayResult(hashBruter);
+
+        this.isStopped = false;
+        this.bruteForceManager.getLoader().setVisible(false);
+        this.bruteForceManager.getRun().setText(I18nView.valueByKey("BRUTEFORCE_START"));
+        this.bruteForceManager.getRun().setEnabled(true);
+        this.bruteForceManager.getRun().setState(StateButton.STARTABLE);
+    }
+
+    private void updateResult(final HashBruter hashBruter) {
+        
+        this.bruteForceManager.getResult().setText(I18n.valueByKey("BRUTEFORCE_CURRENT_STRING") + ": " + hashBruter.getPassword());
+        this.append(this.bruteForceManager.getResult(), I18n.valueByKey("BRUTEFORCE_CURRENT_HASH") + ": " + hashBruter.getGeneratedHash() + "\n");
+        this.append(this.bruteForceManager.getResult(), I18n.valueByKey("BRUTEFORCE_POSSIBILITIES") + ": " + hashBruter.getNumberOfPossibilities());
+        this.append(this.bruteForceManager.getResult(), I18n.valueByKey("BRUTEFORCE_CHECKED_HASHES") + ": " + hashBruter.getCounter());
+        this.append(this.bruteForceManager.getResult(), I18n.valueByKey("BRUTEFORCE_ESTIMATED") + ": " + hashBruter.getRemainder());
+        this.append(this.bruteForceManager.getResult(), I18n.valueByKey("BRUTEFORCE_PERSECOND") + ": " + hashBruter.getPerSecond() + "\n");
+        this.append(this.bruteForceManager.getResult(), hashBruter.calculateTimeElapsed());
+
+        if (hashBruter.getPerSecond() != 0) {
+            
+            Float remainingDuration = Float.parseFloat(Long.toString(hashBruter.getRemainder())) / hashBruter.getPerSecond();
+            
+            this.append(this.bruteForceManager.getResult(), (
+                I18n.valueByKey("BRUTEFORCE_TRAVERSING_REMAINING") + ": "
+                + Math.round(Math.floor(remainingDuration / 60f / 60.0f / 24f))   + I18n.valueByKey("BRUTEFORCE_DAYS") + " "
+                + Math.round(Math.floor(remainingDuration / 60f / 60f % 24))      + I18n.valueByKey("BRUTEFORCE_HOURS") + " "
+                + Math.round(Math.floor(remainingDuration / 60f % 60))            + I18n.valueByKey("BRUTEFORCE_MINUTES") + " "
+                + Math.round(remainingDuration % 60)                              + I18n.valueByKey("BRUTEFORCE_SECONDS")
+            ));
+        }
+
+        this.append(
+            this.bruteForceManager.getResult(),
+            I18n.valueByKey("BRUTEFORCE_PERCENT_DONE")
+            + ": "
+            + (100 * (float) hashBruter.getCounter() / hashBruter.getNumberOfPossibilities())
+            + "%"
+        );
+    }
+
+    private void initializeBruter(final HashBruter hashBruter) {
+        
         hashBruter.setMinLength(Integer.parseInt(this.bruteForceManager.getMinimumLength().getValue().toString()));
         hashBruter.setMaxLength(Integer.parseInt(this.bruteForceManager.getMaximumLength().getValue().toString()));
 
@@ -118,66 +192,15 @@ public class ActionBruteForce implements ActionListener, Runnable {
 
         hashBruter.setType((String) this.bruteForceManager.getHashTypes().getSelectedItem());
         hashBruter.setHash(this.bruteForceManager.getHash().getText().toUpperCase(Locale.ROOT).replaceAll("[^a-zA-Z0-9]", "").trim());
+    }
 
-        // Begin the unhashing process
-        new Thread(hashBruter::tryBruteForce, "ThreadRunBruteForce").start();
-
-        while (!hashBruter.isDone() && !hashBruter.isFound() && !this.isStopped) {
-            
-            hashBruter.setEndtime(System.nanoTime());
-
-            try {
-                // delay to update result panel
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                LOGGER.error("Interruption while sleeping for brute force", e);
-                Thread.currentThread().interrupt();
-            }
-            
-            int selectionStart = this.bruteForceManager.getResult().getSelectionStart();
-            int selectionEnd = this.bruteForceManager.getResult().getSelectionEnd();
-            
-            this.bruteForceManager.getResult().setText(I18n.valueByKey("BRUTEFORCE_CURRENT_STRING") + ": " + hashBruter.getPassword());
-            this.append(this.bruteForceManager.getResult(), I18n.valueByKey("BRUTEFORCE_CURRENT_HASH") + ": " + hashBruter.getGeneratedHash() + "\n");
-            this.append(this.bruteForceManager.getResult(), I18n.valueByKey("BRUTEFORCE_POSSIBILITIES") + ": " + hashBruter.getNumberOfPossibilities());
-            this.append(this.bruteForceManager.getResult(), I18n.valueByKey("BRUTEFORCE_CHECKED_HASHES") + ": " + hashBruter.getCounter());
-            this.append(this.bruteForceManager.getResult(), I18n.valueByKey("BRUTEFORCE_ESTIMATED") + ": " + hashBruter.getRemainder());
-            this.append(this.bruteForceManager.getResult(), I18n.valueByKey("BRUTEFORCE_PERSECOND") + ": " + hashBruter.getPerSecond() + "\n");
-            this.append(this.bruteForceManager.getResult(), hashBruter.calculateTimeElapsed());
-
-            if (hashBruter.getPerSecond() != 0) {
-                Float remainingDuration = Float.parseFloat(Long.toString(hashBruter.getRemainder())) / hashBruter.getPerSecond();
-                this.append(this.bruteForceManager.getResult(), (
-                    I18n.valueByKey("BRUTEFORCE_TRAVERSING_REMAINING") + ": "
-                    + Math.round(Math.floor(remainingDuration / 60f / 60.0f / 24f))   + I18n.valueByKey("BRUTEFORCE_DAYS") + " "
-                    + Math.round(Math.floor(remainingDuration / 60f / 60f % 24))      + I18n.valueByKey("BRUTEFORCE_HOURS") + " "
-                    + Math.round(Math.floor(remainingDuration / 60f % 60))            + I18n.valueByKey("BRUTEFORCE_MINUTES") + " "
-                    + Math.round(remainingDuration % 60)                              + I18n.valueByKey("BRUTEFORCE_SECONDS")
-                ));
-            }
-
-            this.append(
-                this.bruteForceManager.getResult(),
-                I18n.valueByKey("BRUTEFORCE_PERCENT_DONE")
-                + ": "
-                + (100 * (float) hashBruter.getCounter() / hashBruter.getNumberOfPossibilities())
-                + "%"
-            );
-
-            this.bruteForceManager.getResult().setSelectionStart(selectionStart);
-            this.bruteForceManager.getResult().setSelectionEnd(selectionEnd);
-            
-            if (this.isStopped) {
-                hashBruter.setIsDone(true);
-                hashBruter.setFound(true);
-                break;
-            }
-        }
-
+    private void displayResult(final HashBruter hashBruter) {
+        
         // Display the result
         if (this.isStopped) {
             
             LOGGER.warn(I18n.valueByKey("BRUTEFORCE_ABORTED"));
+            
         } else if (hashBruter.isFound()) {
             
             this.append(
@@ -186,6 +209,7 @@ public class ActionBruteForce implements ActionListener, Runnable {
             );
 
             LOGGER.debug(I18n.valueByKey("BRUTEFORCE_FOUND_HASH") +": "+ hashBruter.getGeneratedHash() +" => "+ hashBruter.getPassword());
+            
         } else if (hashBruter.isDone()) {
             
             this.append(
@@ -195,20 +219,14 @@ public class ActionBruteForce implements ActionListener, Runnable {
             
             LOGGER.warn(I18n.valueByKey("BRUTEFORCE_HASH_NOT_FOUND"));
         }
-
-        this.isStopped = false;
-        this.bruteForceManager.getLoader().setVisible(false);
-        this.bruteForceManager.getRun().setText(I18nView.valueByKey("BRUTEFORCE_START"));
-        this.bruteForceManager.getRun().setEnabled(true);
-        this.bruteForceManager.getRun().setState(StateButton.STARTABLE);
     }
     
-    public void append(JTextPane l, String text) {
+    public void append(JTextPane textPane, String text) {
         
         try {
-            l.getDocument().insertString(
-                l.getDocument().getLength(),
-                (l.getDocument().getLength() == 0 ? "" : "\n") + text,
+            textPane.getDocument().insertString(
+                textPane.getDocument().getLength(),
+                (textPane.getDocument().getLength() == 0 ? "" : "\n") + text,
                 null
             );
         } catch (BadLocationException e) {

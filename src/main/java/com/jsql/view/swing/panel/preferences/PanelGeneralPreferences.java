@@ -110,7 +110,6 @@ public class PanelGeneralPreferences extends JPanel {
         );
     }
 
-
     // Getter and setter
     
     public JCheckBox getCheckboxIsCheckingUpdate() {

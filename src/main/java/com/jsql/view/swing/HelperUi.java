@@ -139,8 +139,9 @@ public final class HelperUi {
     public static final ImageIcon IMG_STOP_DEFAULT = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/stopDefault.png"));
     public static final ImageIcon IMG_STOP_ROLLOVER = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/stopRollover.png"));
     public static final ImageIcon IMG_STOP_PPRESSED = new ImageIcon(HelperUi.class.getClassLoader().getResource("swing/images/icons/stopPressed.png"));
+    
     public static final String PATH_WEB_FOLDERS = "swing/list/payload.txt";
-    public static final InputStream INPUT_STREAM_PAGES_SCAN = HelperUi.class.getClassLoader().getResourceAsStream("swing/list/scan-page.json");
+    public static final String INPUT_STREAM_PAGES_SCAN = "swing/list/scan-page.json";
 
     public static final Icon ICON_EMPTY = new ImageIcon(new BufferedImage(16, 16, Transparency.TRANSLUCENT));
 

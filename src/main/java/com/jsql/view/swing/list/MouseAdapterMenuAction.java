@@ -17,7 +17,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
-import java.util.Locale;
 
 import javax.swing.Action;
 import javax.swing.JFileChooser;
@@ -66,176 +65,12 @@ public class MouseAdapterMenuAction extends MouseAdapter {
      */
     @SuppressWarnings("unchecked")
     public void showPopup(final MouseEvent mouseEvent) {
+        
         if (mouseEvent.isPopupTrigger()) {
+            
             JList<ItemList> list = (JList<ItemList>) mouseEvent.getSource();
 
-            JPopupMenu popupMenuList = new JPopupMenu();
-            
-            boolean isChinese = new Locale("zh").getLanguage().equals(I18n.getLocaleDefault().getLanguage());
-
-            JMenuItem mnImport = new JMenuItem(
-                isChinese
-                ? I18nView.valueByKey("LIST_IMPORT_CONFIRM_TITLE")
-                : I18n.valueByKey("LIST_IMPORT_CONFIRM_TITLE")
-            );
-            I18nView.addComponentForKey("LIST_IMPORT_CONFIRM_TITLE", mnImport);
-            
-            JMenuItem mnExport = new JMenuItem(
-                isChinese
-                ? I18nView.valueByKey("LIST_EXPORT_TITLE")
-                : I18n.valueByKey("LIST_EXPORT_TITLE")
-            );
-            I18nView.addComponentForKey("LIST_EXPORT_TITLE", mnExport);
-            
-            JMenuItem mnCut = new JMenuItem(
-                isChinese
-                ? I18nView.valueByKey("LIST_CUT")
-                : I18n.valueByKey("LIST_CUT")
-            );
-            I18nView.addComponentForKey("LIST_CUT", mnCut);
-            
-            JMenuItem mnCopy = new JMenuItem(
-                isChinese
-                ? I18nView.valueByKey("CONTEXT_MENU_COPY")
-                : I18n.valueByKey("CONTEXT_MENU_COPY")
-            );
-            I18nView.addComponentForKey("CONTEXT_MENU_COPY", mnCopy);
-            
-            JMenuItem mnPaste = new JMenuItem(
-                isChinese
-                ? I18nView.valueByKey("LIST_PASTE")
-                : I18n.valueByKey("LIST_PASTE")
-            );
-            I18nView.addComponentForKey("LIST_PASTE", mnPaste);
-            
-            JMenuItem mnDelete = new JMenuItem(
-                isChinese
-                ? I18nView.valueByKey("LIST_DELETE")
-                : I18n.valueByKey("LIST_DELETE")
-            );
-            I18nView.addComponentForKey("LIST_DELETE", mnDelete);
-            
-            JMenuItem mnNew = new JMenuItem(
-                isChinese
-                ? I18nView.valueByKey("LIST_NEW_VALUE")
-                : I18n.valueByKey("LIST_NEW_VALUE")
-            );
-            I18nView.addComponentForKey("LIST_NEW_VALUE", mnNew);
-            
-            JMenuItem mnRestoreDefault = new JMenuItem(
-                isChinese
-                ? I18nView.valueByKey("LIST_RESTORE_DEFAULT")
-                : I18n.valueByKey("LIST_RESTORE_DEFAULT")
-            );
-            I18nView.addComponentForKey("LIST_RESTORE_DEFAULT", mnRestoreDefault);
-            
-            JMenuItem mnSelectAll = new JMenuItem(
-                isChinese
-                ? I18nView.valueByKey("CONTEXT_MENU_SELECT_ALL")
-                : I18n.valueByKey("CONTEXT_MENU_SELECT_ALL")
-            );
-            I18nView.addComponentForKey("CONTEXT_MENU_SELECT_ALL", mnSelectAll);
-            
-            mnImport.setIcon(HelperUi.ICON_EMPTY);
-            mnExport.setIcon(HelperUi.ICON_EMPTY);
-            mnCut.setIcon(HelperUi.ICON_EMPTY);
-            mnCopy.setIcon(HelperUi.ICON_EMPTY);
-            mnPaste.setIcon(HelperUi.ICON_EMPTY);
-            mnDelete.setIcon(HelperUi.ICON_EMPTY);
-            mnNew.setIcon(HelperUi.ICON_EMPTY);
-            mnRestoreDefault.setIcon(HelperUi.ICON_EMPTY);
-            mnSelectAll.setIcon(HelperUi.ICON_EMPTY);
-
-            mnCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
-            mnCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
-            mnPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
-            mnSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-            
-            //Create a file chooser
-            final JFileChooser importFileDialog = new JFileChooser(MediatorModel.model().getMediatorUtils().getPreferencesUtil().getPathFile());
-            importFileDialog.setDialogTitle(I18n.valueByKey("LIST_IMPORT_CONFIRM_TITLE"));
-            importFileDialog.setMultiSelectionEnabled(true);
-
-            mnNew.addActionListener(new MenuActionNewValue(this.dndList));
-
-            mnImport.addActionListener(actionEvent -> {
-                
-                int choice = 0;
-                
-                // Fix #1896: NullPointerException on showOpenDialog()
-                // Fix #42831: ClassCastException on showOpenDialog()
-                try {
-                    choice = importFileDialog.showOpenDialog(this.dndList.getTopLevelAncestor());
-                } catch (ClassCastException | NullPointerException e) {
-                    LOGGER.error(e, e);
-                }
-                
-                if (choice == JFileChooser.APPROVE_OPTION) {
-                    this.dndList.dropPasteFile(
-                        Arrays.asList(importFileDialog.getSelectedFiles()),
-                        this.dndList.locationToIndex(mouseEvent.getPoint())
-                    );
-                }
-            });
-
-            mnCopy.addActionListener(actionEvent -> {
-                
-                Action action = this.dndList.getActionMap().get(TransferHandler.getCopyAction().getValue(Action.NAME));
-                if (action != null) {
-                    action.actionPerformed(
-                        new ActionEvent(this.dndList, ActionEvent.ACTION_PERFORMED, null)
-                    );
-                }
-            });
-
-            mnCut.addActionListener(actionEvent -> {
-                
-                Action action = this.dndList.getActionMap().get(TransferHandler.getCutAction().getValue(Action.NAME));
-                if (action != null) {
-                    action.actionPerformed(
-                        new ActionEvent(this.dndList, ActionEvent.ACTION_PERFORMED, null)
-                    );
-                }
-            });
-
-            mnPaste.addActionListener(actionEvent -> {
-                
-                Action action = this.dndList.getActionMap().get(TransferHandler.getPasteAction().getValue(Action.NAME));
-                if (action != null) {
-                    action.actionPerformed(
-                        new ActionEvent(this.dndList, ActionEvent.ACTION_PERFORMED, null)
-                    );
-                }
-            });
-
-            mnDelete.addActionListener(actionEvent -> this.dndList.removeSelectedItem());
-
-            mnExport.addActionListener(new MenuActionExport(this.dndList));
-
-            mnRestoreDefault.addActionListener(actionEvent -> this.dndList.restore());
-
-            mnSelectAll.addActionListener(actionEvent -> {
-                
-                int start = 0;
-                int end = this.dndList.getModel().getSize() - 1;
-                if (end >= 0) {
-                    this.dndList.setSelectionInterval(start, end);
-                }
-            });
-
-            popupMenuList.add(mnNew);
-            popupMenuList.add(new JSeparator());
-            popupMenuList.add(mnCut);
-            popupMenuList.add(mnCopy);
-            popupMenuList.add(mnPaste);
-            popupMenuList.add(mnDelete);
-            popupMenuList.add(new JSeparator());
-            popupMenuList.add(mnSelectAll);
-            popupMenuList.add(new JSeparator());
-            popupMenuList.add(mnImport);
-            popupMenuList.add(mnExport);
-            popupMenuList.add(new JSeparator());
-            popupMenuList.add(mnRestoreDefault);
+            JPopupMenu popupMenuList = this.initializeMenu(mouseEvent);
             
             popupMenuList.applyComponentOrientation(ComponentOrientation.getOrientation(I18n.getLocaleDefault()));
 
@@ -261,6 +96,179 @@ public class MouseAdapterMenuAction extends MouseAdapter {
         }
     }
 
+    private JPopupMenu initializeMenu(final MouseEvent mouseEvent) {
+        
+        JPopupMenu popupMenuList = new JPopupMenu();
+        
+        boolean isAsian = I18n.isAsian(I18n.getLocaleDefault());
+        
+        JMenuItem mnImport = new JMenuItem(
+            isAsian
+            ? I18nView.valueByKey("LIST_IMPORT_CONFIRM_TITLE")
+            : I18n.valueByKey("LIST_IMPORT_CONFIRM_TITLE")
+        );
+        I18nView.addComponentForKey("LIST_IMPORT_CONFIRM_TITLE", mnImport);
+        
+        JMenuItem mnExport = new JMenuItem(
+            isAsian
+            ? I18nView.valueByKey("LIST_EXPORT_TITLE")
+            : I18n.valueByKey("LIST_EXPORT_TITLE")
+        );
+        I18nView.addComponentForKey("LIST_EXPORT_TITLE", mnExport);
+        
+        JMenuItem mnCut = new JMenuItem(
+            isAsian
+            ? I18nView.valueByKey("LIST_CUT")
+            : I18n.valueByKey("LIST_CUT")
+        );
+        I18nView.addComponentForKey("LIST_CUT", mnCut);
+        
+        JMenuItem mnCopy = new JMenuItem(
+            isAsian
+            ? I18nView.valueByKey("CONTEXT_MENU_COPY")
+            : I18n.valueByKey("CONTEXT_MENU_COPY")
+        );
+        I18nView.addComponentForKey("CONTEXT_MENU_COPY", mnCopy);
+        
+        JMenuItem mnPaste = new JMenuItem(
+            isAsian
+            ? I18nView.valueByKey("LIST_PASTE")
+            : I18n.valueByKey("LIST_PASTE")
+        );
+        I18nView.addComponentForKey("LIST_PASTE", mnPaste);
+        
+        JMenuItem mnDelete = new JMenuItem(
+            isAsian
+            ? I18nView.valueByKey("LIST_DELETE")
+            : I18n.valueByKey("LIST_DELETE")
+        );
+        I18nView.addComponentForKey("LIST_DELETE", mnDelete);
+        
+        JMenuItem mnNew = new JMenuItem(
+            isAsian
+            ? I18nView.valueByKey("LIST_NEW_VALUE")
+            : I18n.valueByKey("LIST_NEW_VALUE")
+        );
+        I18nView.addComponentForKey("LIST_NEW_VALUE", mnNew);
+        
+        JMenuItem mnRestoreDefault = new JMenuItem(
+            isAsian
+            ? I18nView.valueByKey("LIST_RESTORE_DEFAULT")
+            : I18n.valueByKey("LIST_RESTORE_DEFAULT")
+        );
+        I18nView.addComponentForKey("LIST_RESTORE_DEFAULT", mnRestoreDefault);
+        
+        JMenuItem mnSelectAll = new JMenuItem(
+            isAsian
+            ? I18nView.valueByKey("CONTEXT_MENU_SELECT_ALL")
+            : I18n.valueByKey("CONTEXT_MENU_SELECT_ALL")
+        );
+        I18nView.addComponentForKey("CONTEXT_MENU_SELECT_ALL", mnSelectAll);
+        
+        mnImport.setIcon(HelperUi.ICON_EMPTY);
+        mnExport.setIcon(HelperUi.ICON_EMPTY);
+        mnCut.setIcon(HelperUi.ICON_EMPTY);
+        mnCopy.setIcon(HelperUi.ICON_EMPTY);
+        mnPaste.setIcon(HelperUi.ICON_EMPTY);
+        mnDelete.setIcon(HelperUi.ICON_EMPTY);
+        mnNew.setIcon(HelperUi.ICON_EMPTY);
+        mnRestoreDefault.setIcon(HelperUi.ICON_EMPTY);
+        mnSelectAll.setIcon(HelperUi.ICON_EMPTY);
+
+        mnCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
+        mnCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK));
+        mnPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.CTRL_MASK));
+        mnSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+        
+        //Create a file chooser
+        final JFileChooser importFileDialog = new JFileChooser(MediatorModel.model().getMediatorUtils().getPreferencesUtil().getPathFile());
+        importFileDialog.setDialogTitle(I18n.valueByKey("LIST_IMPORT_CONFIRM_TITLE"));
+        importFileDialog.setMultiSelectionEnabled(true);
+
+        mnNew.addActionListener(new MenuActionNewValue(this.dndList));
+
+        mnImport.addActionListener(actionEvent -> {
+            
+            int choice = 0;
+            
+            // Fix #1896: NullPointerException on showOpenDialog()
+            // Fix #42831: ClassCastException on showOpenDialog()
+            try {
+                choice = importFileDialog.showOpenDialog(this.dndList.getTopLevelAncestor());
+            } catch (ClassCastException | NullPointerException e) {
+                LOGGER.error(e, e);
+            }
+            
+            if (choice == JFileChooser.APPROVE_OPTION) {
+                this.dndList.dropPasteFile(
+                    Arrays.asList(importFileDialog.getSelectedFiles()),
+                    this.dndList.locationToIndex(mouseEvent.getPoint())
+                );
+            }
+        });
+
+        mnCopy.addActionListener(actionEvent -> {
+            
+            Action action = this.dndList.getActionMap().get(TransferHandler.getCopyAction().getValue(Action.NAME));
+            if (action != null) {
+                action.actionPerformed(
+                    new ActionEvent(this.dndList, ActionEvent.ACTION_PERFORMED, null)
+                );
+            }
+        });
+
+        mnCut.addActionListener(actionEvent -> {
+            
+            Action action = this.dndList.getActionMap().get(TransferHandler.getCutAction().getValue(Action.NAME));
+            if (action != null) {
+                action.actionPerformed(
+                    new ActionEvent(this.dndList, ActionEvent.ACTION_PERFORMED, null)
+                );
+            }
+        });
+
+        mnPaste.addActionListener(actionEvent -> {
+            
+            Action action = this.dndList.getActionMap().get(TransferHandler.getPasteAction().getValue(Action.NAME));
+            if (action != null) {
+                action.actionPerformed(
+                    new ActionEvent(this.dndList, ActionEvent.ACTION_PERFORMED, null)
+                );
+            }
+        });
+
+        mnDelete.addActionListener(actionEvent -> this.dndList.removeSelectedItem());
+
+        mnExport.addActionListener(new MenuActionExport(this.dndList));
+
+        mnRestoreDefault.addActionListener(actionEvent -> this.dndList.restore());
+
+        mnSelectAll.addActionListener(actionEvent -> {
+            
+            int start = 0;
+            int end = this.dndList.getModel().getSize() - 1;
+            if (end >= 0) {
+                this.dndList.setSelectionInterval(start, end);
+            }
+        });
+
+        popupMenuList.add(mnNew);
+        popupMenuList.add(new JSeparator());
+        popupMenuList.add(mnCut);
+        popupMenuList.add(mnCopy);
+        popupMenuList.add(mnPaste);
+        popupMenuList.add(mnDelete);
+        popupMenuList.add(new JSeparator());
+        popupMenuList.add(mnSelectAll);
+        popupMenuList.add(new JSeparator());
+        popupMenuList.add(mnImport);
+        popupMenuList.add(mnExport);
+        popupMenuList.add(new JSeparator());
+        popupMenuList.add(mnRestoreDefault);
+        
+        return popupMenuList;
+    }
+
     @Override
     public void mousePressed(MouseEvent e) {
         
@@ -268,6 +276,7 @@ public class MouseAdapterMenuAction extends MouseAdapter {
             
             int clickIndex = this.dndList.locationToIndex(e.getPoint());
             boolean containsIndex = false;
+            
             for (int currentIndex: this.dndList.getSelectedIndices()) {
                 if (currentIndex == clickIndex) {
                     containsIndex = true;
@@ -287,5 +296,4 @@ public class MouseAdapterMenuAction extends MouseAdapter {
     public void mouseReleased(MouseEvent e) {
         this.showPopup(e);
     }
-    
 }

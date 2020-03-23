@@ -15,9 +15,7 @@ public class BeanInjection {
     private Vendor vendor;
     private String requestType = "";
 
-    public BeanInjection(
-        String url
-    ) {
+    public BeanInjection(String url) {
         
         this.url = url;
         this.injectionType = MediatorModel.model().getMediatorMethodInjection().getQuery();
@@ -25,14 +23,7 @@ public class BeanInjection {
         this.requestType = "POST";
     }
     
-    public BeanInjection(
-        String url,
-        String request,
-        String header,
-        String injectionType,
-        String vendor,
-        String requestType
-    ) {
+    public BeanInjection(String url, String request, String header, String injectionType, String vendor, String requestType) {
         
         this(url);
         
@@ -85,5 +76,4 @@ public class BeanInjection {
     public Vendor getVendorAsEnum() {
         return this.vendor;
     }
-    
 }

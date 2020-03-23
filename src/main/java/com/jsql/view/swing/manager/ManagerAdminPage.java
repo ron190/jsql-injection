@@ -56,6 +56,78 @@ public class ManagerAdminPage extends AbstractManagerList {
         
         super("swing/list/admin-page.txt");
 
+        this.initializeRunButton();
+        
+        this.initializeMenuUserAgent();
+        
+        this.lastLine.setLayout(new BorderLayout());
+        this.lastLine.setPreferredSize(new Dimension(0, 26));
+        
+        this.lastLine.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)
+            )
+        );
+        
+        JPanel panelRunButton = new JPanel();
+        panelRunButton.setLayout(new BoxLayout(panelRunButton, BoxLayout.X_AXIS));
+        panelRunButton.setBorder(
+            BorderFactory.createCompoundBorder(
+                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
+                BorderFactory.createEmptyBorder(1, 0, 1, 1)
+            )
+        );
+        
+        panelRunButton.add(Box.createHorizontalGlue());
+        panelRunButton.add(this.loader);
+        panelRunButton.add(Box.createRigidArea(new Dimension(5, 0)));
+        panelRunButton.add(this.run);
+        
+        this.lastLine.add(panelRunButton, BorderLayout.LINE_END);
+        
+        this.add(this.lastLine, BorderLayout.SOUTH);
+    }
+
+    private void initializeMenuUserAgent() {
+        
+        // TODO
+        JMenu menuUserAgent = MenuBarCoder.createMenu("<User-Agent default>");
+        MenuBarCoder comboMenubar = new MenuBarCoder(menuUserAgent);
+        comboMenubar.setOpaque(false);
+        comboMenubar.setBorder(null);
+        
+        ButtonGroup groupUserAgent = new ButtonGroup();
+        
+        JRadioButtonMenuItem radioButtonMenuItemDefaultUserAgent = new JRadioButtonMenuItem("<User-Agent default>", true);
+        radioButtonMenuItemDefaultUserAgent.addActionListener(actionEvent ->
+            menuUserAgent.setText("<User-Agent default>")
+        );
+        radioButtonMenuItemDefaultUserAgent.setToolTipText("Java/"+ System.getProperty("java.version"));
+        groupUserAgent.add(radioButtonMenuItemDefaultUserAgent);
+        menuUserAgent.add(radioButtonMenuItemDefaultUserAgent);
+        
+        for (Entry<UserAgentType, List<UserAgent>> entryUserAgent: UserAgent.getList().entrySet()) {
+            
+            JMenu menuAgentType = new JMenu(entryUserAgent.getKey().getLabel());
+            menuUserAgent.add(menuAgentType);
+            
+            for (UserAgent userAgent: entryUserAgent.getValue()) {
+                
+                JRadioButtonMenuItem radioButtonMenuItemUserAgent = new JRadioButtonMenuItem(userAgent.getLabel());
+                radioButtonMenuItemUserAgent.addActionListener(actionEvent ->
+                    menuUserAgent.setText(userAgent.getLabel())
+                );
+                
+                radioButtonMenuItemUserAgent.setToolTipText(userAgent.getNameUserAgent());
+                groupUserAgent.add(radioButtonMenuItemUserAgent);
+                menuAgentType.add(radioButtonMenuItemUserAgent);
+            }
+        }
+    }
+
+    private void initializeRunButton() {
+        
         this.defaultText = "ADMIN_PAGE_RUN_BUTTON_LABEL";
         this.run = new JButtonStateful(this.defaultText);
         I18nView.addComponentForKey("ADMIN_PAGE_RUN_BUTTON_LABEL", this.run);
@@ -75,11 +147,15 @@ public class ManagerAdminPage extends AbstractManagerList {
             }
             
             String[] refUrlQuery = new String[]{MediatorGui.panelAddressBar().getTextFieldAddress().getText()};
+            
             if (!refUrlQuery[0].isEmpty() && !refUrlQuery[0].matches("(?i)^https?://.*")) {
+                
                 if (!refUrlQuery[0].matches("(?i)^\\w+://.*")) {
+                    
                     LOGGER.info("Undefined URL protocol, forcing to [http://]");
                     refUrlQuery[0] = "http://"+ refUrlQuery[0];
                 } else {
+                    
                     LOGGER.info("Unknown URL protocol");
                     return;
                 }
@@ -88,9 +164,11 @@ public class ManagerAdminPage extends AbstractManagerList {
             new Thread(() -> {
                 
                 if (ManagerAdminPage.this.run.getState() == StateButton.STARTABLE) {
+                    
                     if ("".equals(refUrlQuery[0])) {
                         LOGGER.warn("Enter the main address");
                     } else {
+                        
                         LOGGER.trace("Checking admin page(s)...");
                         ManagerAdminPage.this.run.setText(I18nView.valueByKey("ADMIN_PAGE_RUN_BUTTON_STOP"));
                         ManagerAdminPage.this.run.setState(StateButton.STOPPABLE);
@@ -107,6 +185,7 @@ public class ManagerAdminPage extends AbstractManagerList {
                         }
                     }
                 } else if (this.run.getState() == StateButton.STOPPABLE) {
+                    
                     MediatorModel.model().getResourceAccess().setSearchAdminStopped(true);
                     ManagerAdminPage.this.run.setEnabled(false);
                     ManagerAdminPage.this.run.setState(StateButton.STOPPING);
@@ -115,63 +194,5 @@ public class ManagerAdminPage extends AbstractManagerList {
         });
 
         this.loader.setVisible(false);
-        
-        // TODO
-        JMenu menuUserAgent = MenuBarCoder.createMenu("<User-Agent default>");
-        MenuBarCoder comboMenubar = new MenuBarCoder(menuUserAgent);
-        comboMenubar.setOpaque(false);
-        comboMenubar.setBorder(null);
-        
-        ButtonGroup groupUserAgent = new ButtonGroup();
-        
-        JRadioButtonMenuItem radioButtonMenuItemDefaultUserAgent = new JRadioButtonMenuItem("<User-Agent default>", true);
-        radioButtonMenuItemDefaultUserAgent.addActionListener(actionEvent ->
-            menuUserAgent.setText("<User-Agent default>")
-        );
-        radioButtonMenuItemDefaultUserAgent.setToolTipText("Java/"+ System.getProperty("java.version"));
-        groupUserAgent.add(radioButtonMenuItemDefaultUserAgent);
-        menuUserAgent.add(radioButtonMenuItemDefaultUserAgent);
-        
-        for (Entry<UserAgentType, List<UserAgent>> entryUserAgent: UserAgent.getList().entrySet()) {
-            JMenu menuAgentType = new JMenu(entryUserAgent.getKey().getLabel());
-            menuUserAgent.add(menuAgentType);
-            for (UserAgent userAgent: entryUserAgent.getValue()) {
-                JRadioButtonMenuItem radioButtonMenuItemUserAgent = new JRadioButtonMenuItem(userAgent.getLabel());
-                radioButtonMenuItemUserAgent.addActionListener(actionEvent ->
-                    menuUserAgent.setText(userAgent.getLabel())
-                );
-                radioButtonMenuItemUserAgent.setToolTipText(userAgent.getNameUserAgent());
-                groupUserAgent.add(radioButtonMenuItemUserAgent);
-                menuAgentType.add(radioButtonMenuItemUserAgent);
-            }
-        }
-        
-        this.lastLine.setLayout(new BorderLayout());
-        this.lastLine.setPreferredSize(new Dimension(0, 26));
-        
-        this.lastLine.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 1, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
-                BorderFactory.createEmptyBorder(1, 0, 1, 1)
-            )
-        );
-        
-        JPanel p = new JPanel();
-        p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
-        p.setBorder(
-            BorderFactory.createCompoundBorder(
-                BorderFactory.createMatteBorder(0, 0, 0, 0, HelperUi.COLOR_COMPONENT_BORDER),
-                BorderFactory.createEmptyBorder(1, 0, 1, 1)
-            )
-        );
-        
-        p.add(Box.createHorizontalGlue());
-        p.add(this.loader);
-        p.add(Box.createRigidArea(new Dimension(5, 0)));
-        p.add(this.run);
-        
-        this.lastLine.add(p, BorderLayout.LINE_END);
-        
-        this.add(this.lastLine, BorderLayout.SOUTH);
     }
 }

@@ -15,15 +15,29 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.zip.CRC32;
+import java.util.zip.Checksum;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.binary.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.mozilla.universalchardet.UniversalDetector;
 
 import com.jsql.view.swing.HelperUi;
+import com.jsql.view.swing.bruteforce.Adler32;
+import com.jsql.view.swing.bruteforce.Crc16;
+import com.jsql.view.swing.bruteforce.Crc64;
+import com.jsql.view.swing.bruteforce.DigestMD4;
 
 /**
  * Utility class adding String operations like join() which are not
@@ -71,7 +85,18 @@ public final class StringUtil {
      * @return string encoded in html entities
      */
     public static String decimalHtmlEncode(String text) {
-        return StringUtil.encode(text, DECIMAL_HTML_ENCODER);
+        return decimalHtmlEncode(text, false);
+    }
+    
+    public static String decimalHtmlEncode(String text, boolean isRaw) {
+        
+        String result = StringUtil.encode(text, DECIMAL_HTML_ENCODER);
+        
+        if (isRaw) {
+            return result.replace("<", "&lt;").replace(">", "&gt;").replace("&", "&amp;");
+        } else {
+            return result;
+        }
     }
     
     /**
@@ -197,10 +222,12 @@ public final class StringUtil {
         if (str == null || str.length() == 0) {
             return str;
         }
+        
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         GZIPOutputStream gzip = new GZIPOutputStream(out);
         gzip.write(str.getBytes());
         gzip.close();
+        
         return out.toString("ISO-8859-1");
     }
 
@@ -215,6 +242,7 @@ public final class StringUtil {
         if (str == null || str.length() == 0) {
             return str;
         }
+        
         final String encode = "ISO-8859-1";
         GZIPInputStream gis = new GZIPInputStream(new ByteArrayInputStream(str.getBytes(encode)));
         BufferedReader bf = new BufferedReader(new InputStreamReader(gis, encode));
@@ -222,9 +250,11 @@ public final class StringUtil {
         char[] buff = new char[1024];
         int read;
         StringBuilder response = new StringBuilder();
+        
         while ((read = bf.read(buff)) != -1) {
             response.append(buff, 0, read);
         }
+        
         return response.toString();
     }
 
@@ -255,6 +285,125 @@ public final class StringUtil {
         for (int i = 0 ; i < len ; i++) {
             StringUtil.byte2hex(block[i], buf);
         }
+        
         return buf.toString();
+    }
+    
+    public static String toAdler32(String text) {
+        return Adler32.generateAdler32(text);
+    }
+    
+    public static String toCrc16(String text) {
+        return Crc16.generateCRC16(text);
+    }
+    
+    public static String toCrc64(String text) {
+        return Crc64.generateCRC64(text.getBytes());
+    }
+    
+    public static String toHex(String text) throws UnsupportedEncodingException {
+        return Hex.encodeHexString(text.getBytes(StandardCharsets.UTF_8.name())).trim();
+    }
+    
+    public static String fromHex(String text) throws UnsupportedEncodingException, DecoderException {
+        byte[] hex = Hex.decodeHex(text.toCharArray());
+        return new String(hex, StandardCharsets.UTF_8.name());
+    }
+    
+    public static String toHexZip(String text) throws UnsupportedEncodingException, IOException {
+        byte[] zip = StringUtil.compress(text).getBytes(StandardCharsets.UTF_8.name());
+        return Hex.encodeHexString(zip).trim();
+    }
+    
+    public static String fromHexZip(String text) throws UnsupportedEncodingException, IOException, DecoderException {
+        byte[] hex = Hex.decodeHex(text.toCharArray());
+        String zip = new String(hex, StandardCharsets.UTF_8.name());
+        return StringUtil.decompress(zip);
+    }
+    
+    public static String toBase64Zip(String text) throws IOException {
+        return StringUtil.base64Encode(StringUtil.compress(text));
+    }
+    
+    public static String fromBase64Zip(String text) throws IOException {
+        return StringUtil.decompress(StringUtil.base64Decode(text));
+    }
+    
+    public static String toHtml(String text) {
+        return StringEscapeUtils
+            .escapeHtml4(text)
+            .replace("<", "&lt;")
+            .replace(">", "&gt;")
+            .replace("&", "&amp;");
+    }
+    
+    public static String fromHtml(String text) {
+        return StringEscapeUtils
+            .unescapeHtml4(text)
+            .replace("<", "&lt;")
+            .replace(">", "&gt;");
+    }
+    
+    public static String toUrl(String text) throws UnsupportedEncodingException {
+        return URLEncoder.encode(text, StandardCharsets.UTF_8.name());
+    }
+    
+    public static String fromUrl(String text) throws UnsupportedEncodingException {
+        return URLDecoder.decode(text, StandardCharsets.UTF_8.name());
+    }
+    
+    public static String toMySql(String textInput) throws NoSuchAlgorithmException {
+        
+        MessageDigest md = MessageDigest.getInstance("sha-1");
+        
+        String password = new String(textInput.toCharArray());
+        byte[] passwordBytes = password.getBytes();
+        md.update(passwordBytes, 0, passwordBytes.length);
+        byte[] hashSHA1 = md.digest();
+        String stringSHA1 = StringUtil.digestToHexString(hashSHA1);
+        
+        String passwordSHA1 = new String(StringUtil.hexstr(stringSHA1).toCharArray());
+        byte[] passwordSHA1Bytes = passwordSHA1.getBytes();
+        md.update(passwordSHA1Bytes, 0, passwordSHA1Bytes.length);
+        byte[] hashSHA1SH1 = md.digest();
+        String mysqlHash = StringUtil.digestToHexString(hashSHA1SH1);
+        
+        return mysqlHash;
+    }
+
+    public static String toCrc32(String textInput) {
+        
+        byte[] bytes = textInput.getBytes();
+        Checksum checksum = new CRC32();
+        checksum.update(bytes,0,bytes.length);
+        long lngChecksum = checksum.getValue();
+        
+        return Long.toString(lngChecksum);
+    }
+
+    public static String toMd4(String textInput) {
+        
+        MessageDigest md = new DigestMD4();
+
+        String passwordString = new String(textInput.toCharArray());
+        byte[] passwordByte = passwordString.getBytes();
+        md.update(passwordByte, 0, passwordByte.length);
+        byte[] encodedPassword = md.digest();
+        String encodedPasswordInString = StringUtil.digestToHexString(encodedPassword);
+        
+        return encodedPasswordInString;
+    }
+
+    public static String toHash(String nameMethod, String textInput) throws NoSuchAlgorithmException {
+        
+        MessageDigest md = MessageDigest.getInstance(nameMethod);
+        
+        String passwordString = new String(textInput.toCharArray());
+        byte[] passwordByte = passwordString.getBytes();
+        md.update(passwordByte, 0, passwordByte.length);
+        byte[] encodedPassword = md.digest();
+        String encodedPasswordInString = StringUtil.digestToHexString(encodedPassword);
+        
+        return encodedPasswordInString;
     }
 }

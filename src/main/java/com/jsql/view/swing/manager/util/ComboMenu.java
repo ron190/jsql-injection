@@ -34,5 +34,4 @@ public class ComboMenu extends JMenu {
         int y = Math.max(0, (d.height - this.iconRenderer.getIconHeight()) / 2 - 1);
         this.iconRenderer.paintIcon(this, g, x, y);
     }
-    
 }

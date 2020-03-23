@@ -50,6 +50,7 @@ public class NetworkTable extends JTable {
     private TabbedPaneNetworkTab tabbedPaneNetworkTab;
 
     public NetworkTable(TabbedPaneNetworkTab tabbedPaneNetworkTab) {
+        
         super(0, 4);
         
         this.tabbedPaneNetworkTab = tabbedPaneNetworkTab;
@@ -128,19 +129,19 @@ public class NetworkTable extends JTable {
         backward.add(KeyStroke.getKeyStroke("shift TAB"));
         this.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backward);
         
-        final TableCellRenderer tcrOs = this.getTableHeader().getDefaultRenderer();
+        final TableCellRenderer tableCellRenderer = this.getTableHeader().getDefaultRenderer();
         this.getTableHeader().setDefaultRenderer(
             (JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) -> {
                 
-                JLabel lbl = (JLabel) tcrOs.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                lbl.setBorder(
+                JLabel label = (JLabel) tableCellRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                label.setBorder(
                     BorderFactory.createCompoundBorder(
                         BorderFactory.createMatteBorder(0, 0, 1, 1, Color.LIGHT_GRAY),
                         BorderFactory.createEmptyBorder(0, 5, 0, 5)
                     )
                 );
                 
-                return lbl;
+                return label;
             }
         );
         
@@ -213,6 +214,10 @@ public class NetworkTable extends JTable {
     @Override
     public boolean isCellEditable(int row, int column) {
         return false;
+    }
+    
+    public void addHeader(HttpHeader header) {
+        this.listHttpHeader.add(header);
     }
 
     public List<HttpHeader> getListHttpHeader() {

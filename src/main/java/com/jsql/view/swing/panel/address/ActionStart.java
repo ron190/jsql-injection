@@ -90,6 +90,7 @@ public class ActionStart implements ActionListener {
         this.panelAddressBar.getAddressMenuBar().getLoader().setVisible(false);
         this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setInjectionStopping();
         this.panelAddressBar.getAddressMenuBar().getButtonInUrl().setToolTipText(I18n.valueByKey("BUTTON_STOPPING_TOOLTIP"));
+        
         MediatorModel.model().setIsStoppedByUser(true);
     }
 }

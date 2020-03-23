@@ -20,16 +20,19 @@ public class ItemListScan extends ItemList {
     private BeanInjection beanInjection;
 
     public ItemListScan(BeanInjection newString) {
+        
         super(newString.getUrl());
+        
         this.beanInjection = newString;
     }
 
     public BeanInjection getBeanInjection() {
+        
         return this.beanInjection;
     }
     
     public String getBeanInjectionToJSON() {
+        
         return new JSONObject(this.beanInjection).toString();
     }
-    
 }

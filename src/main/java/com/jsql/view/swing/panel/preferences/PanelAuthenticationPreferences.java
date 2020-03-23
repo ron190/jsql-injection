@@ -214,7 +214,6 @@ public class PanelAuthenticationPreferences extends JPanel {
         );
     }
     
-    
     // Getter and setter
     
     public JCheckBox getCheckboxUseDigestAuthentication() {

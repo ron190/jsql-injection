@@ -16,8 +16,10 @@ public class MenuBarCoder extends JMenuBar {
         
         @Override
         public void actionPerformed(ActionEvent e) {
+            
             JMenuItem item = (JMenuItem) e.getSource();
             MenuBarCoder.this.menu.setText(item.getText());
+            
             MenuBarCoder.this.menu.requestFocus();
         }
     }
@@ -35,9 +37,12 @@ public class MenuBarCoder extends JMenuBar {
     private void setListener(JMenuItem item, ActionListener listener) {
         
         if (item instanceof JMenu) {
+            
             JMenu menuContainingItems = (JMenu) item;
-            int n = menuContainingItems.getItemCount();
-            for (int i = 0 ; i < n ; i++) {
+            int countItems = menuContainingItems.getItemCount();
+            
+            for (int i = 0 ; i < countItems ; i++) {
+                
                 this.setListener(menuContainingItems.getItem(i), listener);
             }
         } else if (item != null) { // null means separator

@@ -48,6 +48,26 @@ public class ManagerFile extends AbstractManagerList {
         
         super("swing/list/file.txt");
         
+        this.initializeRunButton();
+
+        this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.ICON_SQUARE_GREY, SwingConstants.LEFT);
+        I18nView.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
+        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND));
+        this.privilege.setToolTipText(I18n.valueByKey("PRIVILEGE_TOOLTIP"));
+
+        this.loader.setVisible(false);
+
+        this.lastLine.add(this.privilege);
+        this.lastLine.add(Box.createHorizontalGlue());
+        this.lastLine.add(this.loader);
+        this.lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
+        this.lastLine.add(this.run);
+        
+        this.add(this.lastLine, BorderLayout.SOUTH);
+    }
+
+    private void initializeRunButton() {
+        
         this.defaultText = "FILE_RUN_BUTTON_LABEL";
         this.run = new JButtonStateful(this.defaultText);
         I18nView.addComponentForKey("FILE_RUN_BUTTON_LABEL", this.run);
@@ -70,12 +90,14 @@ public class ManagerFile extends AbstractManagerList {
             new Thread(() -> {
                 
                 if (ManagerFile.this.run.getState() == StateButton.STARTABLE) {
+                    
                     ManagerFile.this.run.setText(I18nView.valueByKey("FILE_RUN_BUTTON_STOP"));
                     ManagerFile.this.run.setState(StateButton.STOPPABLE);
                     ManagerFile.this.loader.setVisible(true);
                     
                     MediatorGui.managerWebshell().clearSelection();
                     MediatorGui.managerSqlshell().clearSelection();
+                    
                     try {
                         MediatorModel.model().getResourceAccess().readFile(this.listFile.getSelectedValuesList());
                     } catch (InterruptedException ex) {
@@ -84,28 +106,13 @@ public class ManagerFile extends AbstractManagerList {
                     } catch (Exception ex) {
                         LOGGER.warn(ex, ex);
                     }
-
                 } else {
+                    
                     MediatorModel.model().getResourceAccess().stopSearchingFile();
                     ManagerFile.this.run.setEnabled(false);
                     ManagerFile.this.run.setState(StateButton.STOPPING);
                 }
             }, "ThreadReadFile").start();
         });
-
-        this.privilege = new JLabel(I18n.valueByKey("PRIVILEGE_LABEL"), HelperUi.ICON_SQUARE_GREY, SwingConstants.LEFT);
-        I18nView.addComponentForKey("PRIVILEGE_LABEL", this.privilege);
-        this.privilege.setBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, HelperUi.COLOR_DEFAULT_BACKGROUND));
-        this.privilege.setToolTipText(I18n.valueByKey("PRIVILEGE_TOOLTIP"));
-
-        this.loader.setVisible(false);
-
-        this.lastLine.add(this.privilege);
-        this.lastLine.add(Box.createHorizontalGlue());
-        this.lastLine.add(this.loader);
-        this.lastLine.add(Box.createRigidArea(new Dimension(5, 0)));
-        this.lastLine.add(this.run);
-        
-        this.add(this.lastLine, BorderLayout.SOUTH);
     }
 }

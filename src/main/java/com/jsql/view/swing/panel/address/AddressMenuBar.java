@@ -77,8 +77,9 @@ public class AddressMenuBar extends JMenuBar {
             }
 
             this.menuStrategy.add((JMenuItem) itemRadioStrategy);
-            ((JComponent) itemRadioStrategy)
-                    .setToolTipText(I18n.valueByKey("STRATEGY_" + strategy.getName().toUpperCase(Locale.ROOT) + "_TOOLTIP"));
+            
+            // TODO i18n dynamic tooltip missing
+            ((JComponent) itemRadioStrategy).setToolTipText(I18n.valueByKey("STRATEGY_" + strategy.getName().toUpperCase(Locale.ROOT) + "_TOOLTIP"));
             ((JComponent) itemRadioStrategy).setEnabled(false);
         }
 

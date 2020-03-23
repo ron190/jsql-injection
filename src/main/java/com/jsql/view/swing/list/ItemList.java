@@ -34,6 +34,7 @@ public class ItemList {
      * @param newString
      */
     public ItemList(String newString) {
+        
         this.internalString = newString;
         this.originalString = newString;
     }
@@ -80,5 +81,4 @@ public class ItemList {
     public void setOriginalString(String originalString) {
         this.originalString = originalString;
     }
-    
 }

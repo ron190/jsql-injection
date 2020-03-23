@@ -35,18 +35,16 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
      */
     private static DefaultListCellRenderer defaultRenderer = new DefaultListCellRenderer();
 
-    @SuppressWarnings("serial")
     @Override
     public Component getListCellRendererComponent(
         JList<? extends ItemList> list, ItemList value, int index, boolean isSelected, boolean isFocused
     ) {
         
-        JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(
-            list, value, index, isSelected, isFocused
-        );
+        JLabel renderer = (JLabel) defaultRenderer.getListCellRendererComponent(list, value, index, isSelected, isFocused);
 
         renderer.setFont(HelperUi.FONT_SEGOE);
 
+        // setBackground
         if (isSelected) {
             
             if (list.isFocusOwner()) {
@@ -58,12 +56,14 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
             renderer.setBackground(Color.WHITE);
         }
         
+        // setForeground
         if (value.getIsVulnerable()) {
             renderer.setForeground(HelperUi.COLOR_GREEN);
         } else if (value.getIsDatabaseConfirmed()) {
             renderer.setForeground(Color.BLUE);
         }
 
+        // setBorder
         if (isSelected) {
             
             if (list.isFocusOwner()) {
@@ -73,26 +73,7 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
             }
         } else if (isFocused) {
             
-            renderer.setBorder(BorderFactory.createCompoundBorder( new AbstractBorder() {
-                
-                @Override
-                public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
-                    
-                    Graphics2D gg = (Graphics2D) g;
-                    gg.setColor(Color.GRAY);
-                    gg.setStroke(
-                        new BasicStroke(
-                            1,
-                            BasicStroke.CAP_BUTT,
-                            BasicStroke.JOIN_BEVEL,
-                            0,
-                            new float[]{1},
-                            0
-                        )
-                    );
-                    gg.drawRect(x, y, w - 1, h - 1);
-                }
-            }, BorderFactory.createEmptyBorder(0, 1, 0, 0)));
+            renderer.setBorder(BorderFactory.createCompoundBorder(new BorderList(), BorderFactory.createEmptyBorder(0, 1, 0, 0)));
         } else {
             renderer.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         }
@@ -100,4 +81,25 @@ public class RendererComplexCell implements ListCellRenderer<ItemList> {
         return renderer;
     }
     
+    @SuppressWarnings("serial")
+    private class BorderList extends AbstractBorder {
+        
+        @Override
+        public void paintBorder(Component comp, Graphics g, int x, int y, int w, int h) {
+            
+            Graphics2D g2D = (Graphics2D) g;
+            g2D.setColor(Color.GRAY);
+            g2D.setStroke(
+                new BasicStroke(
+                    1,
+                    BasicStroke.CAP_BUTT,
+                    BasicStroke.JOIN_BEVEL,
+                    0,
+                    new float[]{1},
+                    0
+                )
+            );
+            g2D.drawRect(x, y, w - 1, h - 1);
+        }
+    }
 }

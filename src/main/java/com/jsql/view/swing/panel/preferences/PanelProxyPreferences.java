@@ -188,7 +188,6 @@ public class PanelProxyPreferences extends JPanel {
             )
         );
     }
-
     
     // Getter and setter
     

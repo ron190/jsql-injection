@@ -22,5 +22,4 @@ public enum UserAgentType {
     public String getLabel() {
         return this.label;
     }
-    
 }
